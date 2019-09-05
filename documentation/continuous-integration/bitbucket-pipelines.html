@@ -727,7 +727,7 @@
 </ul>
 <blockquote><div class="blockquote-content"><p>TestCafe provides an <a href="https://github.com/DevExpress/testcafe/tree/master/examples/running-tests-in-chrome-using-bitbucket-pipelines-ci/">example</a> that shows how to run tests in Chrome with Bitbucket Pipelines CI.</p>
 </div></blockquote><h2><a class="anchor" id="step-1---install-testcafe-and-create-tests"></a>Step 1 - Install TestCafe and Create Tests <a class="permalink" href="#step-1---install-testcafe-and-create-tests">#</a></h2>
-<p>Install TestCafe <a href="../using-testcafe/installing-testcafe.html#locally">locally</a> in your project and <a href="../getting-started/#creating-a-test">create tests</a>.</p>
+<p>Install TestCafe <a href="../using-testcafe/installing-testcafe.html#local-installation">locally</a> in your project and <a href="../getting-started/#creating-a-test">create tests</a>.</p>
 <h2><a class="anchor" id="step-2---enable-bitbucket-pipelines-for-your-project"></a>Step 2 - Enable Bitbucket Pipelines for Your Project <a class="permalink" href="#step-2---enable-bitbucket-pipelines-for-your-project">#</a></h2>
 <p>To enable Bitbucket Pipelines for your project, create a <code>bitbucket-pipelines.yml</code> file in the project&#39;s root folder.</p>
 
@@ -737,19 +737,19 @@ However, if you already have a Docker image prepared, you can <a href="#option-2
 <p>For more information about how to get started with Pipelines, see the <a href="https://confluence.atlassian.com/bitbucket/get-started-with-bitbucket-pipelines-792298921.html">Atlassian Bitbucket support page</a>.</p>
 <h3><a class="anchor" id="option-1---use-testcafe-docker-image"></a>Option 1 - Use TestCafe Docker Image <a class="permalink" href="#option-1---use-testcafe-docker-image">#</a></h3>
 <p>Specify the <code>testcafe/testcafe</code> image name in the <a href="https://confluence.atlassian.com/bitbucket/configure-bitbucket-pipelines-yml-792298910.html">bitbucket-pipelines.yml file</a>&#39;s <code>image</code> field. Then, configure a pipeline that installs the project&#39;s dependencies and triggers a custom TestCafe launcher when you push commits and create pull requests.</p>
-<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="s">image</span><span class="pi">:</span> <span class="s">testcafe/testcafe</span>
-<span class="s">pipelines</span><span class="pi">:</span>
-  <span class="s">pull-requests</span><span class="pi">:</span>
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="na">image</span><span class="pi">:</span> <span class="s">testcafe/testcafe</span>
+<span class="na">pipelines</span><span class="pi">:</span>
+  <span class="na">pull-requests</span><span class="pi">:</span>
     <span class="s1">'</span><span class="s">**'</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s">step</span><span class="pi">:</span>
-          <span class="s">script</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">step</span><span class="pi">:</span>
+          <span class="na">script</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="s">npm ci</span>
             <span class="pi">-</span> <span class="s">/opt/testcafe/docker/testcafe-docker.sh firefox:headless,chromium tests/**/*</span>
 
-  <span class="s">branches</span><span class="pi">:</span>
-    <span class="s">master</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s">step</span><span class="pi">:</span>
-          <span class="s">script</span><span class="pi">:</span>
+  <span class="na">branches</span><span class="pi">:</span>
+    <span class="na">master</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">step</span><span class="pi">:</span>
+          <span class="na">script</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="s">npm ci</span>
             <span class="pi">-</span> <span class="s">/opt/testcafe/docker/testcafe-docker.sh firefox:headless,chromium tests/**/*</span>
 </code></pre></div>
@@ -760,27 +760,27 @@ However, if you already have a Docker image prepared, you can <a href="#option-2
 <p>Use the <code>image</code> field in the <a href="https://confluence.atlassian.com/bitbucket/configure-bitbucket-pipelines-yml-792298910.html">bitbucket-pipelines.yml file</a> to specify a Docker image with Node.js and browsers installed. Then, configure a pipeline that installs the project&#39;s dependencies and runs tests when you push commits and create pull requests.</p>
 <div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="c1"># Replace '10.14' with the latest Node.js LTS version</span>
 <span class="c1"># available on Docker Hub</span>
-<span class="s">image</span><span class="pi">:</span> <span class="s">circleci/node:10.14-browsers</span>
-<span class="s">pipelines</span><span class="pi">:</span>
-  <span class="s">pull-requests</span><span class="pi">:</span>
+<span class="na">image</span><span class="pi">:</span> <span class="s">circleci/node:10.14-browsers</span>
+<span class="na">pipelines</span><span class="pi">:</span>
+  <span class="na">pull-requests</span><span class="pi">:</span>
     <span class="s1">'</span><span class="s">**'</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s">step</span><span class="pi">:</span>
-          <span class="s">script</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">step</span><span class="pi">:</span>
+          <span class="na">script</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="s">npm ci</span>
             <span class="pi">-</span> <span class="s">npm test</span>
 
-  <span class="s">branches</span><span class="pi">:</span>
-    <span class="s">master</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s">step</span><span class="pi">:</span>
-          <span class="s">script</span><span class="pi">:</span>
+  <span class="na">branches</span><span class="pi">:</span>
+    <span class="na">master</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">step</span><span class="pi">:</span>
+          <span class="na">script</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="s">npm ci</span>
             <span class="pi">-</span> <span class="s">npm test</span>
 </code></pre></div>
 <p>To specify how npm should run TestCafe, add the <code>test</code> script to the project&#39;s <code>package.json</code> file and execute the <code>testcafe</code> command in this script.</p>
 
 <p>The following example shows a command that runs tests in Chromium in headless mode:</p>
-<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="s2">"scripts"</span><span class="err">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"test"</span><span class="p">:</span><span class="w">  </span><span class="s2">"testcafe 'chromium:headless --disable-setuid-sandbox --window-size=1920x1080' tests/index-test.js"</span><span class="w">
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"test"</span><span class="p">:</span><span class="w">  </span><span class="s2">"testcafe 'chromium:headless --disable-setuid-sandbox --window-size=1920x1080' tests/index-test.js"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>For more information on how to configure a test run with the <code>testcafe</code> command, see <a href="../using-testcafe/command-line-interface.html">Command Line Interface</a>.</p>
@@ -789,8 +789,8 @@ However, if you already have a Docker image prepared, you can <a href="#option-2
 <h3><a class="anchor" id="tip-start-a-custom-web-server"></a>Tip: Start a Custom Web Server <a class="permalink" href="#tip-start-a-custom-web-server">#</a></h3>
 <p>If you need to start a custom Web server to host your application, use the <a href="../using-testcafe/command-line-interface.html#-a-command---app-command">--app</a> TestCafe option followed by a command that starts this server.
 TestCafe executes this command before tests are launched. After tests finish, TestCafe stops the server.</p>
-<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="s2">"scripts"</span><span class="err">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-  </span><span class="nt">"test"</span><span class="p">:</span><span class="w">  </span><span class="s2">"testcafe 'chromium:headless --disable-setuid-sandbox --window-size=1920x1080' tests/index-test.js --app \"node server.js\""</span><span class="w">
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="nl">"test"</span><span class="p">:</span><span class="w">  </span><span class="s2">"testcafe 'chromium:headless --disable-setuid-sandbox --window-size=1920x1080' tests/index-test.js --app </span><span class="se">\"</span><span class="s2">node server.js</span><span class="se">\"</span><span class="s2">"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div><h2><a class="anchor" id="step-3---trigger-a-bitbucket-pipelines-ci-build"></a>Step 3 - Trigger a Bitbucket Pipelines CI Build <a class="permalink" href="#step-3---trigger-a-bitbucket-pipelines-ci-build">#</a></h2>
 <p>Bitbucket Pipelines CI is now configured to trigger the build when you push commits to your repository or create a pull request.</p>

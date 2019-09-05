@@ -796,10 +796,10 @@
 </code></pre></div><blockquote><div class="blockquote-content"><p>For more information on how to set environment variables, see <a href="https://superuser.com/questions/284342/what-are-path-and-other-environment-variables-and-how-can-i-set-or-use-them/284351#284351">this answer on StackExchange</a>.</p>
 </div></blockquote><h2><a class="anchor" id="access-environment-variables"></a>Access Environment Variables <a class="permalink" href="#access-environment-variables">#</a></h2>
 <p>Use the <a href="https://nodejs.org/api/process.html#process_process_env">process.env</a> property to access environment variables in test code:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">Fixture</span><span class="err">`</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My Fixture`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Print an Environment Variable'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Development mode: '</span><span class="p">,</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">DEV_MODE</span><span class="p">);</span>
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Print an Environment Variable</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">Development mode: </span><span class="dl">'</span><span class="p">,</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">DEV_MODE</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
 

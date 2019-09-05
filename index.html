@@ -518,13 +518,11 @@
                                 <p>You can use any text editor</p>
                             </div>
                         </div>
-                        <div class="gallery-alt-step-illustration"><pre><code>import Page from './basic-page-model';
+                        <div class="gallery-alt-step-illustration"><pre><code>import page from './basic-page-model';
 
 fixture `My first fixture`
     .page `http://devexpress.github.io/testcafe/example/`;
 
-const page = new Page();
-                                    
 test('My first test', async t => {
     await t
         .typeText(page.nameInput, 'P.Parker')

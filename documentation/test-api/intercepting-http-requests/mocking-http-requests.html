@@ -681,6 +681,13 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#run-tests-by-metadata"  >Run Tests by Metadata</a>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/test-code-structure.html#using-metadata-in-reports"  >Using Metadata in Reports</a>
 		
     </li>
@@ -1154,7 +1161,7 @@
 <td>All requests are mocked.</td>
 </tr>
 </tbody></table></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">mock</span> <span class="o">=</span> <span class="nx">RequestMock</span><span class="p">()</span>
-    <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="s1">'http://external-service.com/api/'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="dl">'</span><span class="s1">http://external-service.com/api/</span><span class="dl">'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">respond</span><span class="p">(</span><span class="cm">/*...*/</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="sr">/</span><span class="se">\/</span><span class="sr">users</span><span class="se">\/</span><span class="sr">/</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">respond</span><span class="p">(</span><span class="cm">/*...*/</span><span class="p">);</span>
@@ -1187,23 +1194,23 @@
     <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="cm">/*...*/</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">respond</span><span class="p">({</span> <span class="na">data</span><span class="p">:</span> <span class="mi">123</span> <span class="p">})</span> <span class="c1">// a JSON response</span>
     <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="cm">/*...*/</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">respond</span><span class="p">(</span><span class="s1">'&lt;html&gt;&lt;/html&gt;'</span><span class="p">)</span> <span class="c1">// an HTML response</span>
+    <span class="p">.</span><span class="nx">respond</span><span class="p">(</span><span class="dl">'</span><span class="s1">&lt;html&gt;&lt;/html&gt;</span><span class="dl">'</span><span class="p">)</span> <span class="c1">// an HTML response</span>
     <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="cm">/*...*/</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">respond</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="mi">204</span><span class="p">)</span> <span class="c1">// an empty response with a status code</span>
     <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="cm">/*...*/</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">respond</span><span class="p">(</span><span class="s1">'&lt;html_markup&gt;'</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="p">{</span> <span class="c1">// a response with custom headers</span>
-        <span class="s1">'server'</span><span class="p">:</span> <span class="s1">'nginx/1.10.3'</span>
+    <span class="p">.</span><span class="nx">respond</span><span class="p">(</span><span class="dl">'</span><span class="s1">&lt;html_markup&gt;</span><span class="dl">'</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="p">{</span> <span class="c1">// a response with custom headers</span>
+        <span class="dl">'</span><span class="s1">server</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">nginx/1.10.3</span><span class="dl">'</span>
     <span class="p">})</span>
     <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="cm">/*...*/</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">respond</span><span class="p">(</span><span class="nx">Buffer</span><span class="p">.</span><span class="nx">from</span><span class="p">([</span><span class="mh">0x62</span><span class="p">,</span> <span class="mh">0x75</span><span class="p">,</span> <span class="mh">0x66</span><span class="p">,</span> <span class="mh">0x66</span><span class="p">,</span> <span class="mh">0x65</span><span class="p">,</span> <span class="mh">0x72</span><span class="p">]))</span> <span class="c1">// a response with binary data</span>
+    <span class="p">.</span><span class="nx">respond</span><span class="p">(</span><span class="nx">Buffer</span><span class="p">.</span><span class="k">from</span><span class="p">([</span><span class="mh">0x62</span><span class="p">,</span> <span class="mh">0x75</span><span class="p">,</span> <span class="mh">0x66</span><span class="p">,</span> <span class="mh">0x66</span><span class="p">,</span> <span class="mh">0x65</span><span class="p">,</span> <span class="mh">0x72</span><span class="p">]))</span> <span class="c1">// a response with binary data</span>
     <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="cm">/*...*/</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">respond</span><span class="p">((</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="c1">// a custom response</span>
-        <span class="nx">res</span><span class="p">.</span><span class="nx">headers</span><span class="p">[</span><span class="s1">'x-calculated-header'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'calculated-value'</span><span class="p">;</span>
-        <span class="nx">res</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">=</span> <span class="s1">'200'</span><span class="p">;</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">headers</span><span class="p">[</span><span class="dl">'</span><span class="s1">x-calculated-header</span><span class="dl">'</span><span class="p">]</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">calculated-value</span><span class="dl">'</span><span class="p">;</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">200</span><span class="dl">'</span><span class="p">;</span>
 
-        <span class="kr">const</span> <span class="nx">parsedUrl</span> <span class="o">=</span> <span class="nx">url</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">path</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+        <span class="kd">const</span> <span class="nx">parsedUrl</span> <span class="o">=</span> <span class="nx">url</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">req</span><span class="p">.</span><span class="nx">path</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 
-        <span class="nx">res</span><span class="p">.</span><span class="nx">setBody</span><span class="p">(</span><span class="s1">'calculated body'</span> <span class="o">+</span> <span class="nx">parsedUrl</span><span class="p">.</span><span class="nx">query</span><span class="p">[</span><span class="s1">'param'</span><span class="p">]);</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">setBody</span><span class="p">(</span><span class="dl">'</span><span class="s1">calculated body</span><span class="dl">'</span> <span class="o">+</span> <span class="nx">parsedUrl</span><span class="p">.</span><span class="nx">query</span><span class="p">[</span><span class="dl">'</span><span class="s1">param</span><span class="dl">'</span><span class="p">]);</span>
     <span class="p">});</span>
 </code></pre></div><h3><a class="anchor" id="a-custom-response-function"></a>A Custom Response Function <a class="permalink" href="#a-custom-response-function">#</a></h3><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">mock</span> <span class="o">=</span> <span class="nx">RequestMock</span><span class="p">()</span>
     <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="cm">/*...*/</span><span class="p">)</span>
@@ -1258,18 +1265,18 @@
 <p>When you mock a cross-domain request, specify the allowed origin in the response&#39;s <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin">access-control-allow-origin</a> header to pass <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS">CORS</a> validation.</p>
 
 <p>If you specify the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Credentials">access-control-allow-credentials</a> header in the response, provide the tested site&#39;s domain in the <code>access-control-allow-origin</code> header.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">Fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//my.domain/tested/page/`</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My Fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://my.domain/tested/page/`</span>
 
-<span class="kr">const</span> <span class="nx">mock</span> <span class="o">=</span> <span class="nx">RequestMock</span><span class="p">()</span>
-    <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="s1">'https://different.domain/api/method/'</span><span class="p">)</span>
+<span class="kd">const</span> <span class="nx">mock</span> <span class="o">=</span> <span class="nx">RequestMock</span><span class="p">()</span>
+    <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://different.domain/api/method/</span><span class="dl">'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">respond</span><span class="p">({</span> <span class="na">data</span><span class="p">:</span> <span class="mi">123</span> <span class="p">},</span> <span class="mi">500</span><span class="p">,</span> <span class="p">{</span>
-        <span class="s1">'access-control-allow-credentials'</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-        <span class="s1">'access-control-allow-origin'</span><span class="p">:</span> <span class="s1">'https://my.domain'</span>
+        <span class="dl">'</span><span class="s1">access-control-allow-credentials</span><span class="dl">'</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="dl">'</span><span class="s1">access-control-allow-origin</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://my.domain</span><span class="dl">'</span>
     <span class="p">});</span>
 </code></pre></div>
 <p>In case you do not enable <code>access-control-allow-credentials</code>, you can also pass an asterisk <code>*</code> as the <code>access-control-allow-origin</code> value to indicate that cross-origin requests are permitted from any domain.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js">    <span class="p">.</span><span class="nx">respond</span><span class="p">({</span> <span class="na">data</span><span class="p">:</span> <span class="mi">123</span> <span class="p">},</span> <span class="mi">500</span><span class="p">,</span> <span class="p">{</span> <span class="s1">'access-control-allow-origin'</span><span class="p">:</span> <span class="s1">'*'</span> <span class="p">});</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js">    <span class="p">.</span><span class="nx">respond</span><span class="p">({</span> <span class="na">data</span><span class="p">:</span> <span class="mi">123</span> <span class="p">},</span> <span class="mi">500</span><span class="p">,</span> <span class="p">{</span> <span class="dl">'</span><span class="s1">access-control-allow-origin</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">*</span><span class="dl">'</span> <span class="p">});</span>
 </code></pre></div>
 
 		</div>

@@ -789,21 +789,21 @@
 <p>This topic describes how to debug TestCafe tests in <a href="https://www.jetbrains.com/webstorm/">WebStorm</a> with a Node.js debugger.</p>
 <h2><a class="anchor" id="step-1---install-testcafe"></a>Step 1 - Install TestCafe <a class="permalink" href="#step-1---install-testcafe">#</a></h2>
 <p>Execute the following command to install TestCafe locally and add it to the <code>devDependencies</code> section in <code>package.json</code>:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install --save-dev testcafe
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm <span class="nb">install</span> <span class="nt">--save-dev</span> testcafe
 </code></pre></div><div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nt">"testcafe"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="w">
+    </span><span class="nl">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"testcafe"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div><h2><a class="anchor" id="step-2---add-a-command-to-debug-testcafe"></a>Step 2 - Add a Command To Debug TestCafe <a class="permalink" href="#step-2---add-a-command-to-debug-testcafe">#</a></h2>
 <p>Add a <code>debug</code> script to the <code>scripts</code> section in <code>package.json</code>. This script contains a command that runs TestCafe and specifies the target browser.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nt">"debug"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testcafe $NODE_DEBUG_OPTION chrome"</span><span class="w">
+    </span><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"debug"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testcafe $NODE_DEBUG_OPTION chrome"</span><span class="w">
     </span><span class="p">},</span><span class="w">
 
-    </span><span class="nt">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nt">"testcafe"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="w">
+    </span><span class="nl">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"testcafe"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>

@@ -787,19 +787,19 @@
 
 			<h1>Import Third-Party Modules</h1>
 <p>You can import a module to a test file with the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import">import</a> statement or <a href="https://nodejs.org/api/modules.html#modules_require_id">require</a> function:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">nanoid</span> <span class="nx">from</span> <span class="s1">'nanoid'</span><span class="p">;</span>
-</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">nanoid</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'nanoid'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="nx">nanoid</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">nanoid</span><span class="dl">'</span><span class="p">;</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">nanoid</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">nanoid</span><span class="dl">'</span><span class="p">);</span>
 </code></pre></div>
 <p>Then you can use this module in test code:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">nanoid</span> <span class="nx">from</span> <span class="s1">'nanoid'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="nx">nanoid</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">nanoid</span><span class="dl">'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">Fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//example.com`;</span>
+<span class="nx">fixture</span> <span class="s2">`My Fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://example.com`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="err">`</span><span class="nx">My</span> <span class="nx">Test</span><span class="err">`</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">randomCredentials</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="na">username</span><span class="p">:</span> <span class="s1">'user'</span> <span class="o">+</span> <span class="nx">nanoid</span><span class="p">(),</span>
-        <span class="na">email</span><span class="p">:</span> <span class="s1">'testuser'</span> <span class="o">+</span> <span class="nx">nanoid</span><span class="p">()</span> <span class="o">+</span> <span class="s1">'@mycompany.com'</span><span class="p">,</span>
+<span class="nx">test</span><span class="p">(</span><span class="s2">`My Test`</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">randomCredentials</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="na">username</span><span class="p">:</span> <span class="dl">'</span><span class="s1">user</span><span class="dl">'</span> <span class="o">+</span> <span class="nx">nanoid</span><span class="p">(),</span>
+        <span class="na">email</span><span class="p">:</span> <span class="dl">'</span><span class="s1">testuser</span><span class="dl">'</span> <span class="o">+</span> <span class="nx">nanoid</span><span class="p">()</span> <span class="o">+</span> <span class="dl">'</span><span class="s1">@mycompany.com</span><span class="dl">'</span><span class="p">,</span>
         <span class="na">password</span><span class="p">:</span> <span class="nx">nanoid</span><span class="p">()</span>
     <span class="p">};</span>
 

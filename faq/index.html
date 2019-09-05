@@ -525,7 +525,7 @@ This proxy injects the driver script that emulates user actions into the tested 
 <td style="text-align: center">&#10003;</td>
 </tr>
 <tr>
-<td><a href="https://docs.devexpress.com/TestCafeStudio/400407/guides/record-tests/element-selectors#auto-generated-element-selectors">Automatic Selector Generation</a></td>
+<td><a href="https://docs.devexpress.com/TestCafeStudio/400407/test-actions/element-selectors#auto-generated-element-selectors">Automatic Selector Generation</a></td>
 <td style="text-align: center">&nbsp;</td>
 <td style="text-align: center">&#10003;</td>
 </tr>
@@ -552,34 +552,38 @@ except for the browsers whose versions are specified explicitly in this list.</p
 <p>We do not use the most recent JavaScript features in TestCafe code,
 which means it should work with any browser with HTML5 support released in the last three years.</p>
 <h3><a class="anchor" id="can-i-use-third-party-modules-in-tests"></a>Can I use third-party modules in tests? <a class="permalink" href="#can-i-use-third-party-modules-in-tests">#</a></h3>
-<p>You can import third-party modules to test files in the same way as a regular node.js module.</p>
+<p>You can import third-party modules to the test code and inject scripts into tested webpages.</p>
 
-<p>On the server side, use the <code>import</code> statement.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">fs</span> <span class="nx">from</span> <span class="s1">'fs'</span><span class="p">;</span>
+<p>To <a href="../documentation/recipes/import-third-party-modules.html">import a module to a test file</a>, use the <code>import</code> statement.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="nx">fs</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">fs</span><span class="dl">'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">fixture</span><span class="err">`</span>
-   <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'http://localhost/testcafe/'</span><span class="p">);</span>
+<span class="nx">fixture</span> <span class="s2">`fixture`</span>
+   <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="dl">'</span><span class="s1">http://localhost/testcafe/</span><span class="dl">'</span><span class="p">);</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-   <span class="kd">var</span> <span class="nx">filePath</span> <span class="o">=</span> <span class="s1">'filepath.js'</span><span class="p">;</span>
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+   <span class="kd">const</span> <span class="nx">filePath</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">filepath.js</span><span class="dl">'</span><span class="p">;</span>
 
-   <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">existsSync</span><span class="p">(</span><span class="nx">filePath</span><span class="p">)).</span><span class="nx">ok</span><span class="p">();</span>
+   <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">existsSync</span><span class="p">(</span><span class="nx">filePath</span><span class="p">)).</span><span class="nx">ok</span><span class="p">();</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>On the client side, use <code>t.eval</code> to include the desired module in the test.
-Then you can use this module inside client functions and selectors.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">test</span><span class="p">(</span><span class="s1">'test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="c1">// eval jquery code to add jQuery to the page</span>
-    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nb">eval</span><span class="p">(</span><span class="k">new</span> <span class="nb">Function</span><span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="s1">'./jquery.js'</span><span class="p">).</span><span class="nx">toString</span><span class="p">()));</span>
+<p>If a Node.js module or a JavaScript file can be executed in the browser, you can <a href="../documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html">inject it into the tested page</a>.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://example.com`</span>
+    <span class="c1">// The fixture.clientScripts method injects jquery.js</span>
+    <span class="c1">// into all pages visited in this fixture.</span>
+    <span class="p">.</span><span class="nx">clientScripts</span><span class="p">(</span><span class="dl">'</span><span class="s1">scripts/jquery.js</span><span class="dl">'</span><span class="p">);</span>
 
-    <span class="kd">var</span> <span class="nx">clientFunction</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">clientFunction</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="c1">// You can use $ here</span>
-        <span class="k">return</span> <span class="nx">$</span><span class="p">(</span><span class="s1">'div'</span><span class="p">).</span><span class="nx">text</span><span class="p">();</span>
+        <span class="k">return</span> <span class="nx">$</span><span class="p">(</span><span class="dl">'</span><span class="s1">div</span><span class="dl">'</span><span class="p">).</span><span class="nx">text</span><span class="p">();</span>
     <span class="p">});</span>
 
-    <span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">clientFunction</span><span class="p">();</span>
+    <span class="kd">const</span> <span class="nx">text</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">clientFunction</span><span class="p">();</span>
 <span class="p">});</span>
-</code></pre></div><h3><a class="anchor" id="how-do-i-work-with-configuration-files-and-environment-variables"></a>How do I work with configuration files and environment variables? <a class="permalink" href="#how-do-i-work-with-configuration-files-and-environment-variables">#</a></h3>
+</code></pre></div>
+<p>For more information about how to inject scripts, see <a href="../documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html">Inject Scripts Into Tested Pages</a>.</p>
+<h3><a class="anchor" id="how-do-i-work-with-configuration-files-and-environment-variables"></a>How do I work with configuration files and environment variables? <a class="permalink" href="#how-do-i-work-with-configuration-files-and-environment-variables">#</a></h3>
 <p>TestCafe allows you to specify settings in a <a href="../documentation/using-testcafe/configuration-file.html">configuration file</a>.</p>
 
 <p>If you need to use custom properties in the configuration, create a separate configuration file and import it to the tests.</p>
@@ -587,14 +591,14 @@ Then you can use this module inside client functions and selectors.</p>
 </div></blockquote>
 <p>For example, you can create the following <code>config.json</code> file to pass a website&#39;s base URL to test code:</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"baseUrl"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://localhost/testcafe"</span><span class="w">
+    </span><span class="nl">"baseUrl"</span><span class="p">:</span><span class="w"> </span><span class="s2">"http://localhost/testcafe"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>In the test code, import it like a regular JavaScript module:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">config</span> <span class="nx">from</span> <span class="s1">'./config'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="nx">config</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./config</span><span class="dl">'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">Fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">config</span><span class="p">.</span><span class="nx">baseUrl</span><span class="p">}</span><span class="sr">/test1/i</span><span class="nx">ndex</span><span class="p">.</span><span class="nx">html</span><span class="err">`</span><span class="p">;</span>
+<span class="nx">fixture</span> <span class="s2">`Fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`</span><span class="p">${</span><span class="nx">config</span><span class="p">.</span><span class="nx">baseUrl</span><span class="p">}</span><span class="s2">/test1/index.html`</span><span class="p">;</span>
 </code></pre></div>
 <p>Alternatively, you can use <a href="../documentation/recipes/access-environment-variables-in-tests.html">environment variables</a>.</p>
 <h2><a class="anchor" id="troubleshooting"></a>Troubleshooting <a class="permalink" href="#troubleshooting">#</a></h2><h3><a class="anchor" id="i-have-installed-testcafe-but-i-cannot-run-it-what-should-i-do"></a>I have installed TestCafe but I cannot run it. What should I do? <a class="permalink" href="#i-have-installed-testcafe-but-i-cannot-run-it-what-should-i-do">#</a></h3>
@@ -635,11 +639,11 @@ If you use a locally installed TestCafe, try installing it globally and running 
 outside of the project to eliminate the influence of third-party modules.</p>
 <h3><a class="anchor" id="i-have-installed-testcafe-plugins-but-they-do-not-work-what-have-i-done-wrong"></a>I have installed TestCafe plugins but they do not work. What have I done wrong? <a class="permalink" href="#i-have-installed-testcafe-plugins-but-they-do-not-work-what-have-i-done-wrong">#</a></h3>
 <p>Plugins should also be installed locally if you are using a locally installed TestCafe.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install --save-dev <span class="o">{</span>pluginName<span class="o">}</span>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm <span class="nb">install</span> <span class="nt">--save-dev</span> <span class="o">{</span>pluginName<span class="o">}</span>
 </code></pre></div>
 <p>If you are going to use a global TestCafe installation, or you wish
 to use the plugin in other projects as well, install it globally.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install -g <span class="o">{</span>pluginName<span class="o">}</span>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm <span class="nb">install</span> <span class="nt">-g</span> <span class="o">{</span>pluginName<span class="o">}</span>
 </code></pre></div><h3><a class="anchor" id="my-test-fails-because-testcafe-could-not-find-the-required-webpage-element-why-does-this-happen"></a>My test fails because TestCafe could not find the required webpage element. Why does this happen? <a class="permalink" href="#my-test-fails-because-testcafe-could-not-find-the-required-webpage-element-why-does-this-happen">#</a></h3>
 <p>This happens because either:</p>
 

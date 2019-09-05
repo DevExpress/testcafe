@@ -819,21 +819,21 @@
 <p>Created using the <a href="testcafe.html#createrunner">testCafe.createRunner</a> function.</p>
 
 <p><strong>Example</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">createTestCafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'testcafe'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">createTestCafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">);</span>
 <span class="kd">let</span> <span class="nx">testcafe</span>         <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
 
-<span class="nx">createTestCafe</span><span class="p">(</span><span class="s1">'localhost'</span><span class="p">,</span> <span class="mi">1337</span><span class="p">,</span> <span class="mi">1338</span><span class="p">)</span>
+<span class="nx">createTestCafe</span><span class="p">(</span><span class="dl">'</span><span class="s1">localhost</span><span class="dl">'</span><span class="p">,</span> <span class="mi">1337</span><span class="p">,</span> <span class="mi">1338</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">tc</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="nx">testcafe</span>     <span class="o">=</span> <span class="nx">tc</span><span class="p">;</span>
-        <span class="kr">const</span> <span class="nx">runner</span> <span class="o">=</span> <span class="nx">testcafe</span><span class="p">.</span><span class="nx">createRunner</span><span class="p">();</span>
+        <span class="kd">const</span> <span class="nx">runner</span> <span class="o">=</span> <span class="nx">testcafe</span><span class="p">.</span><span class="nx">createRunner</span><span class="p">();</span>
 
         <span class="k">return</span> <span class="nx">runner</span>
-            <span class="p">.</span><span class="nx">src</span><span class="p">([</span><span class="s1">'tests/fixture1.js'</span><span class="p">,</span> <span class="s1">'tests/func/fixture3.js'</span><span class="p">])</span>
-            <span class="p">.</span><span class="nx">browsers</span><span class="p">([</span><span class="s1">'chrome'</span><span class="p">,</span> <span class="s1">'safari'</span><span class="p">])</span>
+            <span class="p">.</span><span class="nx">src</span><span class="p">([</span><span class="dl">'</span><span class="s1">tests/fixture1.js</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">tests/func/fixture3.js</span><span class="dl">'</span><span class="p">])</span>
+            <span class="p">.</span><span class="nx">browsers</span><span class="p">([</span><span class="dl">'</span><span class="s1">chrome</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">safari</span><span class="dl">'</span><span class="p">])</span>
             <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
     <span class="p">})</span>
     <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">failedCount</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Tests failed: '</span> <span class="o">+</span> <span class="nx">failedCount</span><span class="p">);</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">Tests failed: </span><span class="dl">'</span> <span class="o">+</span> <span class="nx">failedCount</span><span class="p">);</span>
         <span class="nx">testcafe</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span>
     <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" id="methods"></a>Methods <a class="permalink" href="#methods">#</a></h2>
@@ -898,8 +898,8 @@
 <p><em>Related configuration file property</em>: <a href="../configuration-file.html#src">src</a></p>
 
 <p><strong>Examples</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">src</span><span class="p">([</span><span class="s1">'/home/user/js-tests/fixture.js'</span><span class="p">,</span> <span class="s1">'studio-fixture.testcafe'</span><span class="p">]);</span>
-</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">src</span><span class="p">([</span><span class="s1">'/home/user/tests/**/*.js'</span><span class="p">,</span> <span class="s1">'!/home/user/tests/foo.js'</span><span class="p">]);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">src</span><span class="p">([</span><span class="dl">'</span><span class="s1">/home/user/js-tests/fixture.js</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">studio-fixture.testcafe</span><span class="dl">'</span><span class="p">]);</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">src</span><span class="p">([</span><span class="dl">'</span><span class="s1">/home/user/tests/**/*.js</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">!/home/user/tests/foo.js</span><span class="dl">'</span><span class="p">]);</span>
 </code></pre></div><h3><a class="anchor" id="filter"></a>filter <a class="permalink" href="#filter">#</a></h3>
 <p>Allows you to select which tests should be run.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">filter(callback) → this
@@ -941,12 +941,12 @@
 </tr>
 <tr>
 <td><code>testMeta</code></td>
-<td>Object&lt;String, String&gt;</td>
+<td>Object</td>
 <td>The test metadata.</td>
 </tr>
 <tr>
 <td><code>fixtureMeta</code></td>
-<td>Object&lt;String, String&gt;</td>
+<td>Object</td>
 <td>The fixture metadata.</td>
 </tr>
 </tbody></table></div>
@@ -954,11 +954,11 @@
 
 <p><strong>Example</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">filter</span><span class="p">((</span><span class="nx">testName</span><span class="p">,</span> <span class="nx">fixtureName</span><span class="p">,</span> <span class="nx">fixturePath</span><span class="p">,</span> <span class="nx">testMeta</span><span class="p">,</span> <span class="nx">fixtureMeta</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">fixturePath</span><span class="p">.</span><span class="nx">startsWith</span><span class="p">(</span><span class="s1">'D'</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
+    <span class="k">return</span> <span class="nx">fixturePath</span><span class="p">.</span><span class="nx">startsWith</span><span class="p">(</span><span class="dl">'</span><span class="s1">D</span><span class="dl">'</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
         <span class="nx">testName</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">someRe</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
         <span class="nx">fixtureName</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">anotherRe</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
-        <span class="nx">testMeta</span><span class="p">.</span><span class="nx">mobile</span> <span class="o">===</span> <span class="s1">'true'</span> <span class="o">&amp;&amp;</span>
-        <span class="nx">fixtureMeta</span><span class="p">.</span><span class="nx">env</span> <span class="o">===</span> <span class="s1">'staging'</span><span class="p">;</span>
+        <span class="nx">testMeta</span><span class="p">.</span><span class="nx">mobile</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">true</span><span class="dl">'</span> <span class="o">&amp;&amp;</span>
+        <span class="nx">fixtureMeta</span><span class="p">.</span><span class="nx">env</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">staging</span><span class="dl">'</span><span class="p">;</span>
 <span class="p">});</span>
 </code></pre></div><h3><a class="anchor" id="browsers"></a>browsers <a class="permalink" href="#browsers">#</a></h3>
 <p>Configures the test runner to run tests in the specified browsers.</p>
@@ -993,31 +993,31 @@
 <ul>
 <li>running local browsers</li>
 </ul>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">browsers</span><span class="p">([</span><span class="s1">'safari'</span><span class="p">,</span> <span class="s1">'chrome'</span><span class="p">]);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">browsers</span><span class="p">([</span><span class="dl">'</span><span class="s1">safari</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">chrome</span><span class="dl">'</span><span class="p">]);</span>
 </code></pre></div>
 <ul>
 <li>running browsers accessed through browser provider plugins</li>
 </ul>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'saucelabs:Chrome@52.0:Windows 8.1'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="dl">'</span><span class="s1">saucelabs:Chrome@52.0:Windows 8.1</span><span class="dl">'</span><span class="p">);</span>
 </code></pre></div><h4><a class="anchor" id="specifying-the-path-to-the-browser-executable"></a>Specifying the Path to the Browser Executable <a class="permalink" href="#specifying-the-path-to-the-browser-executable">#</a></h4>
 <p>Use the <code>path:</code> prefix. Enclose the path in backticks if it contains spaces.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'path:`C:\\Program Files\\Internet Explorer\\iexplore.exe`'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="dl">'</span><span class="s1">path:`C:</span><span class="se">\\</span><span class="s1">Program Files</span><span class="se">\\</span><span class="s1">Internet Explorer</span><span class="se">\\</span><span class="s1">iexplore.exe`</span><span class="dl">'</span><span class="p">);</span>
 </code></pre></div><h4><a class="anchor" id="specifying-the-path-with-command-line-parameters"></a>Specifying the Path with Command Line Parameters <a class="permalink" href="#specifying-the-path-with-command-line-parameters">#</a></h4><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">browsers</span><span class="p">({</span>
-    <span class="na">path</span><span class="p">:</span> <span class="s1">'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'</span><span class="p">,</span>
-    <span class="na">cmd</span><span class="p">:</span> <span class="s1">'--new-window'</span>
+    <span class="na">path</span><span class="p">:</span> <span class="dl">'</span><span class="s1">C:</span><span class="se">\\</span><span class="s1">Program Files</span><span class="se">\\</span><span class="s1">Google</span><span class="se">\\</span><span class="s1">Chrome</span><span class="se">\\</span><span class="s1">Application</span><span class="se">\\</span><span class="s1">chrome.exe</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">cmd</span><span class="p">:</span> <span class="dl">'</span><span class="s1">--new-window</span><span class="dl">'</span>
 <span class="p">});</span>
 </code></pre></div><h4><a class="anchor" id="headless-mode-device-emulation-and-user-profiles"></a>Headless Mode, Device Emulation and User Profiles <a class="permalink" href="#headless-mode-device-emulation-and-user-profiles">#</a></h4>
 <p>You can add postfixes to browser aliases to run tests in the <a href="../common-concepts/browsers/testing-in-headless-mode.html">headless mode</a>, use <a href="../common-concepts/browsers/using-chrome-device-emulation.html">Chrome device emulation</a> or <a href="../common-concepts/browsers/user-profiles.html">user profiles</a>.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'chrome:headless'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="dl">'</span><span class="s1">chrome:headless</span><span class="dl">'</span><span class="p">);</span>
 </code></pre></div>
 <p>For portable browsers, use the browser alias followed by the path to an executable.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'firefox:/home/user/apps/firefox.app:userProfile'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="dl">'</span><span class="s1">firefox:/home/user/apps/firefox.app:userProfile</span><span class="dl">'</span><span class="p">);</span>
 </code></pre></div><blockquote><div class="blockquote-content"><p>The <code>path:</code> prefix does not support postfixes.</p>
-</div></blockquote><h4><a class="anchor" id="passing-a-remote-browser-connection"></a>Passing a Remote Browser Connection <a class="permalink" href="#passing-a-remote-browser-connection">#</a></h4><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">createTestCafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'testcafe'</span><span class="p">);</span>
+</div></blockquote><h4><a class="anchor" id="passing-a-remote-browser-connection"></a>Passing a Remote Browser Connection <a class="permalink" href="#passing-a-remote-browser-connection">#</a></h4><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">createTestCafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">);</span>
 <span class="kd">let</span> <span class="nx">runner</span>           <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
 <span class="kd">let</span> <span class="nx">testcafe</span>         <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
 
-<span class="nx">createTestCafe</span><span class="p">(</span><span class="s1">'localhost'</span><span class="p">,</span> <span class="mi">1337</span><span class="p">,</span> <span class="mi">1338</span><span class="p">)</span>
+<span class="nx">createTestCafe</span><span class="p">(</span><span class="dl">'</span><span class="s1">localhost</span><span class="dl">'</span><span class="p">,</span> <span class="mi">1337</span><span class="p">,</span> <span class="mi">1338</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">tc</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="nx">testcafe</span> <span class="o">=</span> <span class="nx">tc</span><span class="p">;</span>
         <span class="nx">runner</span>   <span class="o">=</span> <span class="nx">testcafe</span><span class="p">.</span><span class="nx">createRunner</span><span class="p">();</span>
@@ -1029,9 +1029,9 @@
         <span class="c1">// Outputs remoteConnection.url so that it can be visited from the remote browser.</span>
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">remoteConnection</span><span class="p">.</span><span class="nx">url</span><span class="p">);</span>
 
-        <span class="nx">remoteConnection</span><span class="p">.</span><span class="nx">once</span><span class="p">(</span><span class="s1">'ready'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">remoteConnection</span><span class="p">.</span><span class="nx">once</span><span class="p">(</span><span class="dl">'</span><span class="s1">ready</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
             <span class="nx">runner</span>
-                <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">'test.js'</span><span class="p">)</span>
+                <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="dl">'</span><span class="s1">test.js</span><span class="dl">'</span><span class="p">)</span>
                 <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="nx">remoteConnection</span><span class="p">)</span>
                 <span class="p">.</span><span class="nx">run</span><span class="p">()</span>
                 <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">failedCount</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -1080,7 +1080,7 @@
 </ul>
 
 <p><strong>Example</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">screenshots</span><span class="p">(</span><span class="s1">'reports/screenshots/'</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="s1">'${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">screenshots</span><span class="p">(</span><span class="dl">'</span><span class="s1">reports/screenshots/</span><span class="dl">'</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="dl">'</span><span class="s1">${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png</span><span class="dl">'</span><span class="p">);</span>
 </code></pre></div><h3><a class="anchor" id="video"></a>video <a class="permalink" href="#video">#</a></h3>
 <p>Enables TestCafe to record videos of test runs.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">video(path [, options, encodingOptions]) → this
@@ -1116,13 +1116,13 @@
 </ul>
 
 <p><strong>Example</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">video</span><span class="p">(</span><span class="s1">'reports/videos/'</span><span class="p">,</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">video</span><span class="p">(</span><span class="dl">'</span><span class="s1">reports/videos/</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
     <span class="na">singleFile</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
     <span class="na">failedOnly</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-    <span class="na">pathPattern</span><span class="p">:</span> <span class="s1">'${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.mp4'</span>
+    <span class="na">pathPattern</span><span class="p">:</span> <span class="dl">'</span><span class="s1">${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.mp4</span><span class="dl">'</span>
 <span class="p">},</span> <span class="p">{</span>
     <span class="na">r</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
-    <span class="na">aspect</span><span class="p">:</span> <span class="s1">'4:3'</span>
+    <span class="na">aspect</span><span class="p">:</span> <span class="dl">'</span><span class="s1">4:3</span><span class="dl">'</span>
 <span class="p">});</span>
 </code></pre></div><h3><a class="anchor" id="reporter"></a>reporter <a class="permalink" href="#reporter">#</a></h3>
 <p>Configures TestCafe&#39;s reporting feature.</p>
@@ -1154,21 +1154,21 @@ reporter([ name | { name, output }]) → this
 <p>Note that if you use multiple reporters, only one can write to <code>stdout</code>.</p>
 
 <p><em>Related configuration file property</em>: <a href="../configuration-file.html#reporter">reporter</a></p>
-<h4><a class="anchor" id="specifying-the-reporter"></a>Specifying the Reporter <a class="permalink" href="#specifying-the-reporter">#</a></h4><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">reporter</span><span class="p">(</span><span class="s1">'minimal'</span><span class="p">);</span>
-</code></pre></div><h4><a class="anchor" id="saving-the-report-to-a-file"></a>Saving the Report to a File <a class="permalink" href="#saving-the-report-to-a-file">#</a></h4><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">reporter</span><span class="p">(</span><span class="s1">'xunit'</span><span class="p">,</span> <span class="s1">'reports/report.xml'</span><span class="p">);</span>
-</code></pre></div><h4><a class="anchor" id="using-multiple-reporters"></a>Using Multiple Reporters <a class="permalink" href="#using-multiple-reporters">#</a></h4><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">reporter</span><span class="p">([</span><span class="s1">'spec'</span><span class="p">,</span> <span class="p">{</span>
-    <span class="na">name</span><span class="p">:</span> <span class="s1">'json'</span><span class="p">,</span>
-    <span class="na">output</span><span class="p">:</span> <span class="s1">'reports/report.json'</span>
+<h4><a class="anchor" id="specifying-the-reporter"></a>Specifying the Reporter <a class="permalink" href="#specifying-the-reporter">#</a></h4><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">reporter</span><span class="p">(</span><span class="dl">'</span><span class="s1">minimal</span><span class="dl">'</span><span class="p">);</span>
+</code></pre></div><h4><a class="anchor" id="saving-the-report-to-a-file"></a>Saving the Report to a File <a class="permalink" href="#saving-the-report-to-a-file">#</a></h4><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">reporter</span><span class="p">(</span><span class="dl">'</span><span class="s1">xunit</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">reports/report.xml</span><span class="dl">'</span><span class="p">);</span>
+</code></pre></div><h4><a class="anchor" id="using-multiple-reporters"></a>Using Multiple Reporters <a class="permalink" href="#using-multiple-reporters">#</a></h4><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">reporter</span><span class="p">([</span><span class="dl">'</span><span class="s1">spec</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">json</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">output</span><span class="p">:</span> <span class="dl">'</span><span class="s1">reports/report.json</span><span class="dl">'</span>
 <span class="p">}]);</span>
-</code></pre></div><h4><a class="anchor" id="implementing-a-custom-stream"></a>Implementing a Custom Stream <a class="permalink" href="#implementing-a-custom-stream">#</a></h4><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">class</span> <span class="nx">MyStream</span> <span class="kr">extends</span> <span class="nx">stream</span><span class="p">.</span><span class="nx">Writable</span> <span class="p">{</span>
+</code></pre></div><h4><a class="anchor" id="implementing-a-custom-stream"></a>Implementing a Custom Stream <a class="permalink" href="#implementing-a-custom-stream">#</a></h4><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">class</span> <span class="nx">MyStream</span> <span class="kd">extends</span> <span class="nx">stream</span><span class="p">.</span><span class="nx">Writable</span> <span class="p">{</span>
     <span class="nx">_write</span><span class="p">(</span><span class="nx">chunk</span><span class="p">,</span> <span class="nx">encoding</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
         <span class="nx">doSomething</span><span class="p">(</span><span class="nx">chunk</span><span class="p">);</span>
         <span class="nx">next</span><span class="p">();</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="kr">const</span> <span class="nx">stream</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyStream</span><span class="p">();</span>
-<span class="nx">runner</span><span class="p">.</span><span class="nx">reporter</span><span class="p">(</span><span class="s1">'json'</span><span class="p">,</span> <span class="nx">stream</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">stream</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MyStream</span><span class="p">();</span>
+<span class="nx">runner</span><span class="p">.</span><span class="nx">reporter</span><span class="p">(</span><span class="dl">'</span><span class="s1">json</span><span class="dl">'</span><span class="p">,</span> <span class="nx">stream</span><span class="p">);</span>
 </code></pre></div>
 <p>You can also build your own reporter. Use a <a href="https://github.com/DevExpress/generator-testcafe-reporter">dedicated Yeoman generator</a> to scaffold out a <a href="../../extending-testcafe/reporter-plugin/">reporter plugin</a>.</p>
 <h3><a class="anchor" id="concurrency"></a>concurrency <a class="permalink" href="#concurrency">#</a></h3>
@@ -1196,7 +1196,7 @@ Tests are run concurrently against this pool, that is, each test is run in the f
 
 <p>The following example shows how to run tests in three Chrome instances:</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span>
-    <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'chrome'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="dl">'</span><span class="s1">chrome</span><span class="dl">'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">concurrency</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
 </code></pre></div><h3><a class="anchor" id="startapp"></a>startApp <a class="permalink" href="#startapp">#</a></h3>
 <p>Specifies a shell command that is executed before running tests. Use it to launch or deploy the application that is tested.</p>
@@ -1230,7 +1230,7 @@ Tests are run concurrently against this pool, that is, each test is run in the f
 </ul>
 
 <p><strong>Example</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">startApp</span><span class="p">(</span><span class="s1">'node server.js'</span><span class="p">,</span> <span class="mi">4000</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">startApp</span><span class="p">(</span><span class="dl">'</span><span class="s1">node server.js</span><span class="dl">'</span><span class="p">,</span> <span class="mi">4000</span><span class="p">);</span>
 </code></pre></div><h3><a class="anchor" id="clientscripts"></a>clientScripts <a class="permalink" href="#clientscripts">#</a></h3>
 <p>Injects scripts into pages visited during the tests. Use this method to introduce client-side mock functions or helper scripts.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">async clientScripts( script[, script2[, ...[, scriptN]]] ) → this
@@ -1242,25 +1242,25 @@ Tests are run concurrently against this pool, that is, each test is run in the f
 </thead><tbody><tr>
 <td><code>script</code>, <code>script2</code>, <code>scriptN</code></td>
 <td>String &#124; Object &#124; Array</td>
-<td>Scripts to inject into the tested pages. See <a href="common-concepts/inject-scripts-into-tested-pages.html#provide-scripts-to-inject">Provide Scripts to Inject</a> to learn how to specify them.</td>
+<td>Scripts to inject into the tested pages. See <a href="../common-concepts/inject-scripts-into-tested-pages.html#provide-scripts-to-inject">Provide Scripts to Inject</a> to learn how to specify them.</td>
 </tr>
 </tbody></table></div><blockquote><div class="blockquote-content"><p>Relative paths resolve from the current working directory.</p>
 </div></blockquote>
-<p>You can use the <a href="common-concepts/inject-scripts-into-tested-pages.html#provide-scripts-for-specific-pages">page</a> option to specify pages into which scripts should be injected. Otherwise, TestCafe injects scripts into all pages visited during the test run.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">clientScripts</span><span class="p">(</span><span class="s1">'assets/jquery.js'</span><span class="p">);</span>
+<p>You can use the <a href="../common-concepts/inject-scripts-into-tested-pages.html#provide-scripts-for-specific-pages">page</a> option to specify pages into which scripts should be injected. Otherwise, TestCafe injects scripts into all pages visited during the test run.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">clientScripts</span><span class="p">(</span><span class="dl">'</span><span class="s1">assets/jquery.js</span><span class="dl">'</span><span class="p">);</span>
 </code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">clientScripts</span><span class="p">([</span>
     <span class="p">{</span>
-        <span class="na">module</span><span class="p">:</span> <span class="s1">'lodash'</span>
+        <span class="na">module</span><span class="p">:</span> <span class="dl">'</span><span class="s1">lodash</span><span class="dl">'</span>
     <span class="p">},</span>
     <span class="p">{</span>
-        <span class="na">path</span><span class="p">:</span> <span class="s1">'scripts/react-helpers.js'</span><span class="p">,</span>
-        <span class="na">page</span><span class="p">:</span> <span class="s1">'https://myapp.com/page/'</span>
+        <span class="na">path</span><span class="p">:</span> <span class="dl">'</span><span class="s1">scripts/react-helpers.js</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">page</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://myapp.com/page/</span><span class="dl">'</span>
     <span class="p">}</span>
 <span class="p">]);</span>
 </code></pre></div>
 <p>The <a href="../../test-api/test-code-structure.html#inject-scripts-into-tested-pages">fixture.clientScripts</a> and <a href="../../test-api/test-code-structure.html#inject-scripts-into-tested-pages">test.clientScripts</a> methods allow you to inject scripts into pages visited during an individual fixture or test.</p>
 
-<p>See <a href="common-concepts/inject-scripts-into-tested-pages.html">Inject Scripts into Tested Pages</a> for more information.</p>
+<p>See <a href="../common-concepts/inject-scripts-into-tested-pages.html">Inject Scripts into Tested Pages</a> for more information.</p>
 
 <p><em>Related configuration file property</em>: <a href="../configuration-file.html#clientscripts">clientScripts</a></p>
 <h3><a class="anchor" id="useproxy"></a>useProxy <a class="permalink" href="#useproxy">#</a></h3>
@@ -1298,16 +1298,16 @@ Tests are run concurrently against this pool, that is, each test is run in the f
 <p><strong>Examples</strong></p>
 
 <p>The following example shows how to use the proxy server at <code>proxy.corp.mycompany.com</code>:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">useProxy</span><span class="p">(</span><span class="s1">'proxy.corp.mycompany.com'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">useProxy</span><span class="p">(</span><span class="dl">'</span><span class="s1">proxy.corp.mycompany.com</span><span class="dl">'</span><span class="p">);</span>
 </code></pre></div>
 <p>In the example below, the proxy server address is <code>172.0.10.10:8080</code> and two resources at <code>localhost:8080</code> and <code>internal-resource.corp.mycompany.com</code> are accessed directly.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">useProxy</span><span class="p">(</span><span class="s1">'172.0.10.10:8080'</span><span class="p">,</span> <span class="p">[</span><span class="s1">'localhost:8080'</span><span class="p">,</span> <span class="s1">'internal-resource.corp.mycompany.com'</span><span class="p">]);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">useProxy</span><span class="p">(</span><span class="dl">'</span><span class="s1">172.0.10.10:8080</span><span class="dl">'</span><span class="p">,</span> <span class="p">[</span><span class="dl">'</span><span class="s1">localhost:8080</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">internal-resource.corp.mycompany.com</span><span class="dl">'</span><span class="p">]);</span>
 </code></pre></div>
 <p>The <code>*.mycompany.com</code> proxy bypass rule means that all URLs in <code>mycompany.com</code> subdomains are accessed directly.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">useProxy</span><span class="p">(</span><span class="s1">'proxy.corp.mycompany.com'</span><span class="p">,</span> <span class="s1">'*.mycompany.com'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">useProxy</span><span class="p">(</span><span class="dl">'</span><span class="s1">proxy.corp.mycompany.com</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">*.mycompany.com</span><span class="dl">'</span><span class="p">);</span>
 </code></pre></div>
 <p>You can also use the proxy host to specify authentication credentials.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">useProxy</span><span class="p">(</span><span class="s1">'username:password@proxy.mycorp.com'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">useProxy</span><span class="p">(</span><span class="dl">'</span><span class="s1">username:password@proxy.mycorp.com</span><span class="dl">'</span><span class="p">);</span>
 </code></pre></div><h3><a class="anchor" id="tsconfigpath"></a>tsConfigPath <a class="permalink" href="#tsconfigpath">#</a></h3>
 <p>Enables TestCafe to use a custom <a href="../../test-api/typescript-support.html#customize-compiler-options">TypeScript configuration file</a> and specifies its location.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">async tsConfigPath(path) → this
@@ -1321,7 +1321,7 @@ Tests are run concurrently against this pool, that is, each test is run in the f
 <td>String</td>
 <td>The absolute or relative path to the TypeScript configuration file. Relative paths resolve from the current directory (the directory from which you run TestCafe).</td>
 </tr>
-</tbody></table></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">tsConfigPath</span><span class="p">(</span><span class="s1">'/Users/s.johnson/testcafe/tsconfig.json'</span><span class="p">);</span>
+</tbody></table></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">tsConfigPath</span><span class="p">(</span><span class="dl">'</span><span class="s1">/Users/s.johnson/testcafe/tsconfig.json</span><span class="dl">'</span><span class="p">);</span>
 </code></pre></div>
 <p><em>Related configuration file property</em>: <a href="../configuration-file.html#tsconfigpath">tsConfigPath</a></p>
 <h3><a class="anchor" id="run"></a>run <a class="permalink" href="#run">#</a></h3>
@@ -1419,13 +1419,13 @@ where tests are not guaranteed to execute correctly.</p>
 </ul>
 
 <p><strong>Example</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">createTestCafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'testcafe'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">createTestCafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">);</span>
 <span class="kd">let</span> <span class="nx">testcafe</span>         <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
 
-<span class="nx">createTestCafe</span><span class="p">(</span><span class="s1">'localhost'</span><span class="p">,</span> <span class="mi">1337</span><span class="p">,</span> <span class="mi">1338</span><span class="p">)</span>
+<span class="nx">createTestCafe</span><span class="p">(</span><span class="dl">'</span><span class="s1">localhost</span><span class="dl">'</span><span class="p">,</span> <span class="mi">1337</span><span class="p">,</span> <span class="mi">1338</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">tc</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="nx">testcafe</span>     <span class="o">=</span> <span class="nx">tc</span><span class="p">;</span>
-        <span class="kr">const</span> <span class="nx">runner</span> <span class="o">=</span> <span class="nx">testcafe</span><span class="p">.</span><span class="nx">createRunner</span><span class="p">();</span>
+        <span class="kd">const</span> <span class="nx">runner</span> <span class="o">=</span> <span class="nx">testcafe</span><span class="p">.</span><span class="nx">createRunner</span><span class="p">();</span>
 
         <span class="k">return</span> <span class="nx">runner</span><span class="p">.</span><span class="nx">run</span><span class="p">({</span>
             <span class="na">skipJsErrors</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
@@ -1438,7 +1438,7 @@ where tests are not guaranteed to execute correctly.</p>
         <span class="p">});</span>
     <span class="p">})</span>
     <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">failed</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Tests failed: '</span> <span class="o">+</span> <span class="nx">failed</span><span class="p">);</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">Tests failed: </span><span class="dl">'</span> <span class="o">+</span> <span class="nx">failed</span><span class="p">);</span>
         <span class="nx">testcafe</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span>
     <span class="p">})</span>
     <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">error</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">});</span>
@@ -1448,10 +1448,10 @@ If the same problem occurs with this test two more times, the test run finishes 
 <blockquote><div class="blockquote-content"><p>When you use a <a href="livemoderunner.html">LiveModeRunner</a>, you can call the <code>runner.run</code> method only once. In rare cases when you need multiple live mode sessions running in parallel, you can create several <a href="testcafe.html">TestCafe server instances</a>.</p>
 </div></blockquote><h4><a class="anchor" id="cancelling-test-tasks"></a>Cancelling Test Tasks <a class="permalink" href="#cancelling-test-tasks">#</a></h4>
 <p>You can stop an individual test task at any moment by cancelling the corresponding promise.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">taskPromise</span> <span class="o">=</span> <span class="nx">runner</span>
-    <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">'tests/fixture1.js'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">browsers</span><span class="p">([</span><span class="nx">remoteConnection</span><span class="p">,</span> <span class="s1">'chrome'</span><span class="p">])</span>
-    <span class="p">.</span><span class="nx">reporter</span><span class="p">(</span><span class="s1">'json'</span><span class="p">)</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">taskPromise</span> <span class="o">=</span> <span class="nx">runner</span>
+    <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="dl">'</span><span class="s1">tests/fixture1.js</span><span class="dl">'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">browsers</span><span class="p">([</span><span class="nx">remoteConnection</span><span class="p">,</span> <span class="dl">'</span><span class="s1">chrome</span><span class="dl">'</span><span class="p">])</span>
+    <span class="p">.</span><span class="nx">reporter</span><span class="p">(</span><span class="dl">'</span><span class="s1">json</span><span class="dl">'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
 
 <span class="nx">taskPromise</span><span class="p">.</span><span class="nx">cancel</span><span class="p">();</span>

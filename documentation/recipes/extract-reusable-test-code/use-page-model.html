@@ -809,27 +809,27 @@ and use it in test code to refer to page elements.</p>
 <p>Consider the following fixture with two tests: one that types and edits
 the developer name on the <a href="https://devexpress.github.io/testcafe/example/">example</a> webpage and the other that
 checks check boxes in the Features section.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://devexpress.github.io/testcafe/example/`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Text typing basics'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">,</span> <span class="s1">'Peter'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">,</span> <span class="s1">'Paker'</span><span class="p">,</span> <span class="p">{</span> <span class="na">replace</span><span class="p">:</span> <span class="kc">true</span> <span class="p">})</span>
-        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">,</span> <span class="p">{</span> <span class="na">caretPos</span><span class="p">:</span> <span class="mi">2</span> <span class="p">})</span>
-        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">).</span><span class="nx">value</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'Parker'</span><span class="p">);</span>
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Text typing basics</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="dl">'</span><span class="s1">#developer-name</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Peter</span><span class="dl">'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="dl">'</span><span class="s1">#developer-name</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Paker</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span> <span class="na">replace</span><span class="p">:</span> <span class="kc">true</span> <span class="p">})</span>
+        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="dl">'</span><span class="s1">#developer-name</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">r</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span> <span class="na">caretPos</span><span class="p">:</span> <span class="mi">2</span> <span class="p">})</span>
+        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#developer-name</span><span class="dl">'</span><span class="p">).</span><span class="nx">value</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="dl">'</span><span class="s1">Parker</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Click check boxes and then verify their state'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'input[id=remote-testing]'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'input[id=remote-testing]'</span><span class="p">).</span><span class="nx">checked</span><span class="p">).</span><span class="nx">ok</span><span class="p">()</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'input[id=reusing-js-code]'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'input[id=reusing-js-code]'</span><span class="p">).</span><span class="nx">checked</span><span class="p">).</span><span class="nx">ok</span><span class="p">()</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'input[id=continuous-integration-embedding]'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="s1">'input[id=continuous-integration-embedding]'</span><span class="p">).</span><span class="nx">checked</span><span class="p">).</span><span class="nx">ok</span><span class="p">();</span>
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Click check boxes and then verify their state</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="dl">'</span><span class="s1">input[id=remote-testing]</span><span class="dl">'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">input[id=remote-testing]</span><span class="dl">'</span><span class="p">).</span><span class="nx">checked</span><span class="p">).</span><span class="nx">ok</span><span class="p">()</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="dl">'</span><span class="s1">input[id=reusing-js-code]</span><span class="dl">'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">input[id=reusing-js-code]</span><span class="dl">'</span><span class="p">).</span><span class="nx">checked</span><span class="p">).</span><span class="nx">ok</span><span class="p">()</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="dl">'</span><span class="s1">input[id=continuous-integration-embedding]</span><span class="dl">'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">input[id=continuous-integration-embedding]</span><span class="dl">'</span><span class="p">).</span><span class="nx">checked</span><span class="p">).</span><span class="nx">ok</span><span class="p">();</span>
 <span class="p">});</span>
 </code></pre></div>
 <p>Note that both tests contain excessive code.
@@ -844,106 +844,110 @@ you will only need to modify the page model.</p>
 the separation of concerns principle - you keep page representation in the Page Model,
 while tests remain focused on the behavior.</p>
 <h2><a class="anchor" id="create-a-page-model"></a>Create a Page Model <a class="permalink" href="#create-a-page-model">#</a></h2><h3><a class="anchor" id="step-1---declare-a-page-model-class"></a>Step 1 - Declare a Page Model Class <a class="permalink" href="#step-1---declare-a-page-model-class">#</a></h3>
-<p>Begin with a new <code>.js</code> file and declare the <code>Page</code> class there.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">export</span> <span class="k">default</span> <span class="kr">class</span> <span class="nx">Page</span> <span class="p">{</span>
-    <span class="nx">constructor</span> <span class="p">()</span> <span class="p">{</span>
+<p>Begin with a new <code>.js</code> file, declare the <code>Page</code> class there, and export its instance.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">class</span> <span class="nx">Page</span> <span class="p">{</span>
+    <span class="kd">constructor</span> <span class="p">()</span> <span class="p">{</span>
     <span class="p">}</span>
 <span class="p">}</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="k">new</span> <span class="nx">Page</span><span class="p">();</span>
 </code></pre></div>
 <p>This class will contain the Page Model, so name the file <code>page-model.js</code>.</p>
 <h3><a class="anchor" id="step-2---add-a-page-element-to-the-page-model"></a>Step 2 - Add a Page Element to the Page Model <a class="permalink" href="#step-2---add-a-page-element-to-the-page-model">#</a></h3>
 <p>Add the <code>Developer Name</code> input element to the model. To do this,
-introduce the <code>nameInput</code> property and assign a <a href="../test-api/selecting-page-elements/selectors/">selector</a> to it.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+introduce the <code>nameInput</code> property and assign a <a href="../../test-api/selecting-page-elements/selectors/">selector</a> to it.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
-<span class="kr">export</span> <span class="k">default</span> <span class="kr">class</span> <span class="nx">Page</span> <span class="p">{</span>
-    <span class="nx">constructor</span> <span class="p">()</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">nameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
+<span class="kd">class</span> <span class="nx">Page</span> <span class="p">{</span>
+    <span class="kd">constructor</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">nameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#developer-name</span><span class="dl">'</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="k">new</span> <span class="nx">Page</span><span class="p">();</span>
 </code></pre></div><h3><a class="anchor" id="step-3---write-a-test-that-uses-the-page-model"></a>Step 3 - Write a Test That Uses the Page Model <a class="permalink" href="#step-3---write-a-test-that-uses-the-page-model">#</a></h3>
-<p>In the test file, import <code>page-model.js</code> and create an instance of the <code>Page</code> class.
+<p>In the test file, import the page model instance from <code>page-model.js</code>.
 After that, you can use the <code>page.nameInput</code> property to identify the <code>Developer Name</code> input element.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">Page</span> <span class="nx">from</span> <span class="s1">'./page-model'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="nx">page</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./page-model</span><span class="dl">'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">page</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Page</span><span class="p">();</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://devexpress.github.io/testcafe/example/`</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
-
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Text typing basics'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">page</span><span class="p">.</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">'Peter'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">page</span><span class="p">.</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">'Paker'</span><span class="p">,</span> <span class="p">{</span> <span class="na">replace</span><span class="p">:</span> <span class="kc">true</span> <span class="p">})</span>
-        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">page</span><span class="p">.</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">,</span> <span class="p">{</span> <span class="na">caretPos</span><span class="p">:</span> <span class="mi">2</span> <span class="p">})</span>
-        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">page</span><span class="p">.</span><span class="nx">nameInput</span><span class="p">.</span><span class="nx">value</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'Parker'</span><span class="p">);</span>
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Text typing basics</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">page</span><span class="p">.</span><span class="nx">nameInput</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Peter</span><span class="dl">'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">page</span><span class="p">.</span><span class="nx">nameInput</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Paker</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span> <span class="na">replace</span><span class="p">:</span> <span class="kc">true</span> <span class="p">})</span>
+        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">page</span><span class="p">.</span><span class="nx">nameInput</span><span class="p">,</span> <span class="dl">'</span><span class="s1">r</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span> <span class="na">caretPos</span><span class="p">:</span> <span class="mi">2</span> <span class="p">})</span>
+        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">page</span><span class="p">.</span><span class="nx">nameInput</span><span class="p">.</span><span class="nx">value</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="dl">'</span><span class="s1">Parker</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div><h3><a class="anchor" id="step-4---add-a-new-class-for-check-boxes"></a>Step 4 - Add a New Class for Check Boxes <a class="permalink" href="#step-4---add-a-new-class-for-check-boxes">#</a></h3>
 <p>Add check boxes from the Features section to the Page Model.</p>
 
 <p>As long as each item in the Features section contains a check box and a label,
 introduce a new class <code>Feature</code> with two properties: <code>label</code> and <code>checkbox</code>.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">label</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'label'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">label</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">label</span><span class="dl">'</span><span class="p">);</span>
 
-<span class="kr">class</span> <span class="nx">Feature</span> <span class="p">{</span>
-    <span class="nx">constructor</span> <span class="p">(</span><span class="nx">text</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">class</span> <span class="nx">Feature</span> <span class="p">{</span>
+    <span class="kd">constructor</span> <span class="p">(</span><span class="nx">text</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">label</span>    <span class="o">=</span> <span class="nx">label</span><span class="p">.</span><span class="nx">withText</span><span class="p">(</span><span class="nx">text</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">checkbox</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">label</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">'input[type=checkbox]'</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">checkbox</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">label</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="dl">'</span><span class="s1">input[type=checkbox]</span><span class="dl">'</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="kr">export</span> <span class="k">default</span> <span class="kr">class</span> <span class="nx">Page</span> <span class="p">{</span>
-    <span class="nx">constructor</span> <span class="p">()</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">nameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
+<span class="kd">class</span> <span class="nx">Page</span> <span class="p">{</span>
+    <span class="kd">constructor</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">nameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#developer-name</span><span class="dl">'</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="k">new</span> <span class="nx">Page</span><span class="p">();</span>
 </code></pre></div><h3><a class="anchor" id="step-5---add-a-list-of-check-boxes-to-the-page-model"></a>Step 5 - Add a List of Check Boxes to the Page Model <a class="permalink" href="#step-5---add-a-list-of-check-boxes-to-the-page-model">#</a></h3>
 <p>In the <code>Page</code> class, add the <code>featureList</code> property with an array of <code>Feature</code> objects.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">label</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'label'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">label</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">label</span><span class="dl">'</span><span class="p">);</span>
 
-<span class="kr">class</span> <span class="nx">Feature</span> <span class="p">{</span>
-    <span class="nx">constructor</span> <span class="p">(</span><span class="nx">text</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">class</span> <span class="nx">Feature</span> <span class="p">{</span>
+    <span class="kd">constructor</span> <span class="p">(</span><span class="nx">text</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">label</span>    <span class="o">=</span> <span class="nx">label</span><span class="p">.</span><span class="nx">withText</span><span class="p">(</span><span class="nx">text</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">checkbox</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">label</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">'input[type=checkbox]'</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">checkbox</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">label</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="dl">'</span><span class="s1">input[type=checkbox]</span><span class="dl">'</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="kr">export</span> <span class="k">default</span> <span class="kr">class</span> <span class="nx">Page</span> <span class="p">{</span>
-    <span class="nx">constructor</span> <span class="p">()</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">nameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
+<span class="kd">class</span> <span class="nx">Page</span> <span class="p">{</span>
+    <span class="kd">constructor</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">nameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#developer-name</span><span class="dl">'</span><span class="p">);</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">featureList</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="k">new</span> <span class="nx">Feature</span><span class="p">(</span><span class="s1">'Support for testing on remote devices'</span><span class="p">),</span>
-            <span class="k">new</span> <span class="nx">Feature</span><span class="p">(</span><span class="s1">'Re-using existing JavaScript code for testing'</span><span class="p">),</span>
-            <span class="k">new</span> <span class="nx">Feature</span><span class="p">(</span><span class="s1">'Easy embedding into a Continuous integration system'</span><span class="p">)</span>
+            <span class="k">new</span> <span class="nx">Feature</span><span class="p">(</span><span class="dl">'</span><span class="s1">Support for testing on remote devices</span><span class="dl">'</span><span class="p">),</span>
+            <span class="k">new</span> <span class="nx">Feature</span><span class="p">(</span><span class="dl">'</span><span class="s1">Re-using existing JavaScript code for testing</span><span class="dl">'</span><span class="p">),</span>
+            <span class="k">new</span> <span class="nx">Feature</span><span class="p">(</span><span class="dl">'</span><span class="s1">Easy embedding into a Continuous integration system</span><span class="dl">'</span><span class="p">)</span>
         <span class="p">];</span>
     <span class="p">}</span>
 <span class="p">}</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="k">new</span> <span class="nx">Page</span><span class="p">();</span>
 </code></pre></div>
 <p>Organizing check boxes in an array makes the page model semantically correct and simplifies iterating through the check boxes.</p>
 <h3><a class="anchor" id="step-6---write-a-test-that-iterates-through-check-boxes"></a>Step 6 - Write a Test That Iterates Through Check Boxes <a class="permalink" href="#step-6---write-a-test-that-iterates-through-check-boxes">#</a></h3>
 <p>The second test now boils down to a single loop.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="nx">Page</span> <span class="nx">from</span> <span class="s1">'./page-model'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="nx">page</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">./page-model</span><span class="dl">'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://devexpress.github.io/testcafe/example/`</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">page</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Page</span><span class="p">();</span>
-
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Text typing basics'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">page</span><span class="p">.</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">'Peter'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">page</span><span class="p">.</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">'Paker'</span><span class="p">,</span> <span class="p">{</span> <span class="na">replace</span><span class="p">:</span> <span class="kc">true</span> <span class="p">})</span>
-        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">page</span><span class="p">.</span><span class="nx">nameInput</span><span class="p">,</span> <span class="s1">'r'</span><span class="p">,</span> <span class="p">{</span> <span class="na">caretPos</span><span class="p">:</span> <span class="mi">2</span> <span class="p">})</span>
-        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">page</span><span class="p">.</span><span class="nx">nameInput</span><span class="p">.</span><span class="nx">value</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'Parker'</span><span class="p">);</span>
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Text typing basics</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">page</span><span class="p">.</span><span class="nx">nameInput</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Peter</span><span class="dl">'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">page</span><span class="p">.</span><span class="nx">nameInput</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Paker</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span> <span class="na">replace</span><span class="p">:</span> <span class="kc">true</span> <span class="p">})</span>
+        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">page</span><span class="p">.</span><span class="nx">nameInput</span><span class="p">,</span> <span class="dl">'</span><span class="s1">r</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span> <span class="na">caretPos</span><span class="p">:</span> <span class="mi">2</span> <span class="p">})</span>
+        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">page</span><span class="p">.</span><span class="nx">nameInput</span><span class="p">.</span><span class="nx">value</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="dl">'</span><span class="s1">Parker</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Click check boxes and then verify their state'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="k">for</span> <span class="p">(</span><span class="kr">const</span> <span class="nx">feature</span> <span class="nx">of</span> <span class="nx">page</span><span class="p">.</span><span class="nx">featureList</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Click check boxes and then verify their state</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">const</span> <span class="nx">feature</span> <span class="k">of</span> <span class="nx">page</span><span class="p">.</span><span class="nx">featureList</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">await</span> <span class="nx">t</span>
             <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">feature</span><span class="p">.</span><span class="nx">label</span><span class="p">)</span>
             <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">feature</span><span class="p">.</span><span class="nx">checkbox</span><span class="p">.</span><span class="nx">checked</span><span class="p">).</span><span class="nx">ok</span><span class="p">();</span>
     <span class="p">}</span>
@@ -952,15 +956,15 @@ introduce a new class <code>Feature</code> with two properties: <code>label</cod
 <p>Add an action that enters the developer name and clicks the Submit button.</p>
 
 <ol>
-<li><p>Import <code>t</code>, a <a href="../test-api/test-code-structure.html#test-controller">test controller</a>, from the <code>testcafe</code> module.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span><span class="p">,</span> <span class="nx">t</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<li><p>Import <code>t</code>, a <a href="../../test-api/test-code-structure.html#test-controller">test controller</a>, from the <code>testcafe</code> module.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span><span class="p">,</span> <span class="nx">t</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 </code></pre></div></li>
 <li><p>Add a Submit button to the page model.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">this</span><span class="p">.</span><span class="nx">submitButton</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">this</span><span class="p">.</span><span class="nx">submitButton</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#submit-button</span><span class="dl">'</span><span class="p">);</span>
 </code></pre></div></li>
 <li><p>Declare an <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function">asynchronous function</a> in the <code>Page</code> class. This function uses the test controller to perform several actions on the tested page: enter the developer name and click the Submit button.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">async</span> <span class="nx">submitName</span> <span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">async</span> <span class="nx">submitName</span> <span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">nameInput</span><span class="p">,</span> <span class="nx">name</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">submitButton</span><span class="p">);</span>
 <span class="p">}</span>
@@ -968,107 +972,111 @@ introduce a new class <code>Feature</code> with two properties: <code>label</cod
 </ol>
 
 <p>Here is how the page model looks now.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span><span class="p">,</span> <span class="nx">t</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span><span class="p">,</span> <span class="nx">t</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">label</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'label'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">label</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">label</span><span class="dl">'</span><span class="p">);</span>
 
-<span class="kr">class</span> <span class="nx">Feature</span> <span class="p">{</span>
-    <span class="nx">constructor</span> <span class="p">(</span><span class="nx">text</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">class</span> <span class="nx">Feature</span> <span class="p">{</span>
+    <span class="kd">constructor</span> <span class="p">(</span><span class="nx">text</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">label</span>    <span class="o">=</span> <span class="nx">label</span><span class="p">.</span><span class="nx">withText</span><span class="p">(</span><span class="nx">text</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">checkbox</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">label</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">'input[type=checkbox]'</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">checkbox</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">label</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="dl">'</span><span class="s1">input[type=checkbox]</span><span class="dl">'</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="kr">export</span> <span class="k">default</span> <span class="kr">class</span> <span class="nx">Page</span> <span class="p">{</span>
-    <span class="nx">constructor</span> <span class="p">()</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">nameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
+<span class="kd">class</span> <span class="nx">Page</span> <span class="p">{</span>
+    <span class="kd">constructor</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">nameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#developer-name</span><span class="dl">'</span><span class="p">);</span>
 
         <span class="k">this</span><span class="p">.</span><span class="nx">featureList</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="k">new</span> <span class="nx">Feature</span><span class="p">(</span><span class="s1">'Support for testing on remote devices'</span><span class="p">),</span>
-            <span class="k">new</span> <span class="nx">Feature</span><span class="p">(</span><span class="s1">'Re-using existing JavaScript code for testing'</span><span class="p">),</span>
-            <span class="k">new</span> <span class="nx">Feature</span><span class="p">(</span><span class="s1">'Easy embedding into a Continuous integration system'</span><span class="p">)</span>
+            <span class="k">new</span> <span class="nx">Feature</span><span class="p">(</span><span class="dl">'</span><span class="s1">Support for testing on remote devices</span><span class="dl">'</span><span class="p">),</span>
+            <span class="k">new</span> <span class="nx">Feature</span><span class="p">(</span><span class="dl">'</span><span class="s1">Re-using existing JavaScript code for testing</span><span class="dl">'</span><span class="p">),</span>
+            <span class="k">new</span> <span class="nx">Feature</span><span class="p">(</span><span class="dl">'</span><span class="s1">Easy embedding into a Continuous integration system</span><span class="dl">'</span><span class="p">)</span>
         <span class="p">];</span>
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">submitButton</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">submitButton</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#submit-button</span><span class="dl">'</span><span class="p">);</span>
     <span class="p">}</span>
 
-    <span class="nx">async</span> <span class="nx">submitName</span> <span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">await</span> <span class="nx">t</span>
+    <span class="k">async</span> <span class="nx">submitName</span> <span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">await</span> <span class="nx">t</span>
             <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">nameInput</span><span class="p">,</span> <span class="nx">name</span><span class="p">)</span>
             <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">submitButton</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="k">new</span> <span class="nx">Page</span><span class="p">();</span>
 </code></pre></div><h3><a class="anchor" id="step-8---write-a-test-that-calls-actions-from-the-page-model"></a>Step 8 - Write a Test That Calls Actions From the Page Model <a class="permalink" href="#step-8---write-a-test-that-calls-actions-from-the-page-model">#</a></h3>
 <p>Now write a test that calls <code>page.submitName</code> and checks the message on the Thank You page.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">test</span><span class="p">(</span><span class="s1">'Submit a developer name and check the header'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">header</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#article-header'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Submit a developer name and check the header</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">header</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#article-header</span><span class="dl">'</span><span class="p">);</span>
 
-    <span class="nx">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">submitName</span><span class="p">(</span><span class="s1">'Peter'</span><span class="p">);</span>
+    <span class="k">await</span> <span class="nx">page</span><span class="p">.</span><span class="nx">submitName</span><span class="p">(</span><span class="dl">'</span><span class="s1">Peter</span><span class="dl">'</span><span class="p">);</span>
 
-    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">header</span><span class="p">.</span><span class="nx">innerText</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'Thank you, Peter!'</span><span class="p">);</span>
+    <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">header</span><span class="p">.</span><span class="nx">innerText</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="dl">'</span><span class="s1">Thank you, Peter!</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
 <p>This test works with a different page for which there is no page model. That is why it uses a selector. Don&#39;t forget to import it to the test file.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 </code></pre></div><h2><a class="anchor" id="page-model-example"></a>Page Model Example <a class="permalink" href="#page-model-example">#</a></h2>
 <p>This sample shows a page model for the example page at <a href="https://devexpress.github.io/testcafe/example/">https://devexpress.github.io/testcafe/example/</a>.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span><span class="p">,</span> <span class="nx">t</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span><span class="p">,</span> <span class="nx">t</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">label</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'label'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">label</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">label</span><span class="dl">'</span><span class="p">);</span>
 
-<span class="kr">class</span> <span class="nx">Feature</span> <span class="p">{</span>
-    <span class="nx">constructor</span> <span class="p">(</span><span class="nx">text</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">class</span> <span class="nx">Feature</span> <span class="p">{</span>
+    <span class="kd">constructor</span> <span class="p">(</span><span class="nx">text</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">label</span>    <span class="o">=</span> <span class="nx">label</span><span class="p">.</span><span class="nx">withText</span><span class="p">(</span><span class="nx">text</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">checkbox</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">label</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">'input[type=checkbox]'</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">checkbox</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">label</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="dl">'</span><span class="s1">input[type=checkbox]</span><span class="dl">'</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="kr">class</span> <span class="nx">OperatingSystem</span> <span class="p">{</span>
-    <span class="nx">constructor</span> <span class="p">(</span><span class="nx">text</span><span class="p">)</span> <span class="p">{</span>
+<span class="kd">class</span> <span class="nx">OperatingSystem</span> <span class="p">{</span>
+    <span class="kd">constructor</span> <span class="p">(</span><span class="nx">text</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">this</span><span class="p">.</span><span class="nx">label</span>       <span class="o">=</span> <span class="nx">label</span><span class="p">.</span><span class="nx">withText</span><span class="p">(</span><span class="nx">text</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">radioButton</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">label</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">'input[type=radio]'</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">radioButton</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">label</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="dl">'</span><span class="s1">input[type=radio]</span><span class="dl">'</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="kr">export</span> <span class="k">default</span> <span class="kr">class</span> <span class="nx">Page</span> <span class="p">{</span>
-    <span class="nx">constructor</span> <span class="p">()</span> <span class="p">{</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">nameInput</span>             <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">triedTestCafeCheckbox</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#tried-test-cafe'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">populateButton</span>        <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#populate'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">submitButton</span>          <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">results</span>               <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.result-content'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">commentsTextArea</span>      <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#comments'</span><span class="p">);</span>
+<span class="kd">class</span> <span class="nx">Page</span> <span class="p">{</span>
+    <span class="kd">constructor</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">nameInput</span>             <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#developer-name</span><span class="dl">'</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">triedTestCafeCheckbox</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#tried-test-cafe</span><span class="dl">'</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">populateButton</span>        <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#populate</span><span class="dl">'</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">submitButton</span>          <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#submit-button</span><span class="dl">'</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">results</span>               <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">.result-content</span><span class="dl">'</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">commentsTextArea</span>      <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#comments</span><span class="dl">'</span><span class="p">);</span>
 
         <span class="k">this</span><span class="p">.</span><span class="nx">featureList</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="k">new</span> <span class="nx">Feature</span><span class="p">(</span><span class="s1">'Support for testing on remote devices'</span><span class="p">),</span>
-            <span class="k">new</span> <span class="nx">Feature</span><span class="p">(</span><span class="s1">'Re-using existing JavaScript code for testing'</span><span class="p">),</span>
-            <span class="k">new</span> <span class="nx">Feature</span><span class="p">(</span><span class="s1">'Running tests in background and/or in parallel in multiple browsers'</span><span class="p">),</span>
-            <span class="k">new</span> <span class="nx">Feature</span><span class="p">(</span><span class="s1">'Easy embedding into a Continuous integration system'</span><span class="p">),</span>
-            <span class="k">new</span> <span class="nx">Feature</span><span class="p">(</span><span class="s1">'Advanced traffic and markup analysis'</span><span class="p">)</span>
+            <span class="k">new</span> <span class="nx">Feature</span><span class="p">(</span><span class="dl">'</span><span class="s1">Support for testing on remote devices</span><span class="dl">'</span><span class="p">),</span>
+            <span class="k">new</span> <span class="nx">Feature</span><span class="p">(</span><span class="dl">'</span><span class="s1">Re-using existing JavaScript code for testing</span><span class="dl">'</span><span class="p">),</span>
+            <span class="k">new</span> <span class="nx">Feature</span><span class="p">(</span><span class="dl">'</span><span class="s1">Running tests in background and/or in parallel in multiple browsers</span><span class="dl">'</span><span class="p">),</span>
+            <span class="k">new</span> <span class="nx">Feature</span><span class="p">(</span><span class="dl">'</span><span class="s1">Easy embedding into a Continuous integration system</span><span class="dl">'</span><span class="p">),</span>
+            <span class="k">new</span> <span class="nx">Feature</span><span class="p">(</span><span class="dl">'</span><span class="s1">Advanced traffic and markup analysis</span><span class="dl">'</span><span class="p">)</span>
         <span class="p">];</span>
 
         <span class="k">this</span><span class="p">.</span><span class="nx">osList</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="k">new</span> <span class="nx">OperatingSystem</span><span class="p">(</span><span class="s1">'Windows'</span><span class="p">),</span>
-            <span class="k">new</span> <span class="nx">OperatingSystem</span><span class="p">(</span><span class="s1">'MacOS'</span><span class="p">),</span>
-            <span class="k">new</span> <span class="nx">OperatingSystem</span><span class="p">(</span><span class="s1">'Linux'</span><span class="p">)</span>
+            <span class="k">new</span> <span class="nx">OperatingSystem</span><span class="p">(</span><span class="dl">'</span><span class="s1">Windows</span><span class="dl">'</span><span class="p">),</span>
+            <span class="k">new</span> <span class="nx">OperatingSystem</span><span class="p">(</span><span class="dl">'</span><span class="s1">MacOS</span><span class="dl">'</span><span class="p">),</span>
+            <span class="k">new</span> <span class="nx">OperatingSystem</span><span class="p">(</span><span class="dl">'</span><span class="s1">Linux</span><span class="dl">'</span><span class="p">)</span>
         <span class="p">];</span>
 
         <span class="k">this</span><span class="p">.</span><span class="nx">slider</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="na">handle</span><span class="p">:</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.ui-slider-handle'</span><span class="p">),</span>
-            <span class="na">tick</span><span class="p">:</span>   <span class="nx">Selector</span><span class="p">(</span><span class="s1">'.slider-value'</span><span class="p">)</span>
+            <span class="na">handle</span><span class="p">:</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">.ui-slider-handle</span><span class="dl">'</span><span class="p">),</span>
+            <span class="na">tick</span><span class="p">:</span>   <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">.slider-value</span><span class="dl">'</span><span class="p">)</span>
         <span class="p">};</span>
 
-        <span class="k">this</span><span class="p">.</span><span class="nx">interfaceSelect</span>       <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#preferred-interface'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">interfaceSelectOption</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">interfaceSelect</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">'option'</span><span class="p">);</span>
-        <span class="k">this</span><span class="p">.</span><span class="nx">submitButton</span>          <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">interfaceSelect</span>       <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#preferred-interface</span><span class="dl">'</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">interfaceSelectOption</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">interfaceSelect</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="dl">'</span><span class="s1">option</span><span class="dl">'</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">submitButton</span>          <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#submit-button</span><span class="dl">'</span><span class="p">);</span>
     <span class="p">}</span>
 
-    <span class="nx">async</span> <span class="nx">submitName</span> <span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">await</span> <span class="nx">t</span>
+    <span class="k">async</span> <span class="nx">submitName</span> <span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">await</span> <span class="nx">t</span>
             <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">nameInput</span><span class="p">,</span> <span class="nx">name</span><span class="p">)</span>
             <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">submitButton</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">}</span>
+
+<span class="k">export</span> <span class="k">default</span> <span class="k">new</span> <span class="nx">Page</span><span class="p">();</span>
 </code></pre></div>
 
 		</div>

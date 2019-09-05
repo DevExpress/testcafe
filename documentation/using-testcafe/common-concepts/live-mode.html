@@ -820,20 +820,20 @@
 <blockquote><div class="blockquote-content"><p>This feature replaces the <code>testcafe-live</code> module. This module is now deprecated.</p>
 </div></blockquote><h2><a class="anchor" id="how-to-enable-live-mode"></a>How to Enable Live Mode <a class="permalink" href="#how-to-enable-live-mode">#</a></h2>
 <p>Use the <a href="../command-line-interface.html#-l---live">-L (--live)</a> flag to enable live mode from the command line interface.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome tests/test.js -L
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome tests/test.js <span class="nt">-L</span>
 </code></pre></div>
 <p>In the API, create a <a href="../programming-interface/livemoderunner.html">live mode runner</a> with the <a href="../programming-interface/testcafe.html#createlivemoderunner">testcafe.createLiveModeRunner</a> function and use it instead of a <a href="../programming-interface/runner.html">regular test runner</a>.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">createTestCafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'testcafe'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">createTestCafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">);</span>
 <span class="kd">let</span> <span class="nx">testcafe</span>         <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
 
-<span class="nx">createTestCafe</span><span class="p">(</span><span class="s1">'localhost'</span><span class="p">,</span> <span class="mi">1337</span><span class="p">,</span> <span class="mi">1338</span><span class="p">)</span>
+<span class="nx">createTestCafe</span><span class="p">(</span><span class="dl">'</span><span class="s1">localhost</span><span class="dl">'</span><span class="p">,</span> <span class="mi">1337</span><span class="p">,</span> <span class="mi">1338</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">tc</span> <span class="o">=&gt;</span> <span class="p">{</span>
         <span class="nx">testcafe</span>         <span class="o">=</span> <span class="nx">tc</span><span class="p">;</span>
-        <span class="kr">const</span> <span class="nx">liveRunner</span> <span class="o">=</span> <span class="nx">testcafe</span><span class="p">.</span><span class="nx">createLiveModeRunner</span><span class="p">();</span>
+        <span class="kd">const</span> <span class="nx">liveRunner</span> <span class="o">=</span> <span class="nx">testcafe</span><span class="p">.</span><span class="nx">createLiveModeRunner</span><span class="p">();</span>
 
         <span class="k">return</span> <span class="nx">liveRunner</span>
-            <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">'tests/test.js'</span><span class="p">)</span>
-            <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'chrome'</span><span class="p">)</span>
+            <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="dl">'</span><span class="s1">tests/test.js</span><span class="dl">'</span><span class="p">)</span>
+            <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="dl">'</span><span class="s1">chrome</span><span class="dl">'</span><span class="p">)</span>
             <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
     <span class="p">})</span>
     <span class="p">.</span><span class="nx">then</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>

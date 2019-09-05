@@ -853,14 +853,14 @@
 
 <ul>
 <li><p>the <a href="../command-line-interface.html#-s-path---screenshots-path">-s (--screenshots)</a> command line flag,</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js -s artifacts/screenshots
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js <span class="nt">-s</span> artifacts/screenshots
 </code></pre></div></li>
 <li><p>the <a href="../programming-interface/runner.html#screenshots">runner.screenshots</a> API method,</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">screenshots</span><span class="p">(</span><span class="s1">'artifacts/screenshots'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">screenshots</span><span class="p">(</span><span class="dl">'</span><span class="s1">artifacts/screenshots</span><span class="dl">'</span><span class="p">);</span>
 </code></pre></div></li>
 <li><p>the <a href="../configuration-file.html#screenshotpath">screenshotPath</a> configuration file property.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"screenshotPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"artifacts/screenshots"</span><span class="w">
+    </span><span class="nl">"screenshotPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"artifacts/screenshots"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div></li>
 </ul>
@@ -868,16 +868,16 @@
 <p>You must provide the base path where TestCafe stores screenshots to this flag, method or property. See <a href="#where-screenshots-and-videos-are-saved">Where Screenshots and Videos Are Saved</a> for more information.</p>
 <h3><a class="anchor" id="take-screenshots-at-arbitrary-moments-during-test-run"></a>Take Screenshots at Arbitrary Moments During Test Run <a class="permalink" href="#take-screenshots-at-arbitrary-moments-during-test-run">#</a></h3>
 <p>You can take screenshots at any moment during test run. Use the <a href="../../test-api/actions/take-screenshot.html#take-a-screenshot-of-the-entire-page">t.takeScreenshot</a> action to take a screenshot of the entire page, or the <a href="../../test-api/actions/take-screenshot.html#take-a-screenshot-of-a-page-element">t.takeElementScreenshot</a> action to capture a particular element.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://devexpress.github.io/testcafe/example/`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Take a screenshot of a fieldset'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">,</span> <span class="s1">'Peter Parker'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#tried-test-cafe'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="s1">'#comments'</span><span class="p">,</span> <span class="s1">'I think TestCafe is awesome!'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">takeElementScreenshot</span><span class="p">(</span><span class="s1">'#comments'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">)</span>
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Take a screenshot of a fieldset</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="dl">'</span><span class="s1">#developer-name</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Peter Parker</span><span class="dl">'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="dl">'</span><span class="s1">#tried-test-cafe</span><span class="dl">'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="dl">'</span><span class="s1">#comments</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">I think TestCafe is awesome!</span><span class="dl">'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">takeElementScreenshot</span><span class="p">(</span><span class="dl">'</span><span class="s1">#comments</span><span class="dl">'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="dl">'</span><span class="s1">#submit-button</span><span class="dl">'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">takeScreenshot</span><span class="p">();</span>
 <span class="p">});</span>
 </code></pre></div><h3><a class="anchor" id="take-screenshots-when-a-test-fails"></a>Take Screenshots When a Test Fails <a class="permalink" href="#take-screenshots-when-a-test-fails">#</a></h3>
@@ -885,14 +885,14 @@
 
 <ul>
 <li><p>the <a href="../command-line-interface.html#-s---screenshots-on-fails">-S (--screenshots-on-fails)</a> command line flag,</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome tests/sample-fixture.js -S -s artifacts/screenshots
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome tests/sample-fixture.js <span class="nt">-S</span> <span class="nt">-s</span> artifacts/screenshots
 </code></pre></div></li>
 <li><p>the <code>takeOnFails</code> parameter of the <a href="../programming-interface/runner.html#screenshots">runner.screenshots</a> API method,</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">screenshots</span><span class="p">(</span><span class="s1">'artifacts/screenshots'</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">screenshots</span><span class="p">(</span><span class="dl">'</span><span class="s1">artifacts/screenshots</span><span class="dl">'</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 </code></pre></div></li>
 <li><p>the <a href="../configuration-file.html#takescreenshotsonfails">takeScreenshotsOnFails</a> configuration file property.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"takeScreenshotsOnFails"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="nl">"takeScreenshotsOnFails"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div></li>
 </ul>
@@ -916,14 +916,14 @@
 
 <ul>
 <li><p>the <a href="../command-line-interface.html#--video-basepath">--video</a> command line flag,</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js --video artifacts/videos
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js <span class="nt">--video</span> artifacts/videos
 </code></pre></div></li>
 <li><p>the <a href="../programming-interface/runner.html#video">runner.video</a> API method,</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">video</span><span class="p">(</span><span class="s1">'artifacts/videos'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">video</span><span class="p">(</span><span class="dl">'</span><span class="s1">artifacts/videos</span><span class="dl">'</span><span class="p">);</span>
 </code></pre></div></li>
 <li><p>the <a href="../configuration-file.html#videopath">videoPath</a> configuration file property.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"videoPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"artifacts/videos"</span><span class="w">
+    </span><span class="nl">"videoPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"artifacts/videos"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div></li>
 </ul>
@@ -968,21 +968,21 @@
 
 <ul>
 <li><p>the <a href="../command-line-interface.html#--video-options-optionvalueoption2value2">--video-options</a> command line flag,</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js --video artifacts/videos --video-options <span class="nv">singleFile</span><span class="o">=</span><span class="nb">true</span>,failedOnly<span class="o">=</span><span class="nb">true</span>,pathPattern<span class="o">=</span><span class="k">${</span><span class="nv">TEST_INDEX</span><span class="k">}</span>/<span class="k">${</span><span class="nv">USERAGENT</span><span class="k">}</span>/<span class="k">${</span><span class="nv">FILE_INDEX</span><span class="k">}</span>.mp4
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js <span class="nt">--video</span> artifacts/videos <span class="nt">--video-options</span> <span class="nv">singleFile</span><span class="o">=</span><span class="nb">true</span>,failedOnly<span class="o">=</span><span class="nb">true</span>,pathPattern<span class="o">=</span><span class="k">${</span><span class="nv">TEST_INDEX</span><span class="k">}</span>/<span class="k">${</span><span class="nv">USERAGENT</span><span class="k">}</span>/<span class="k">${</span><span class="nv">FILE_INDEX</span><span class="k">}</span>.mp4
 </code></pre></div></li>
 <li><p>the <code>options</code> parameter of the <a href="../programming-interface/runner.html#video">runner.video</a> API method,</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">video</span><span class="p">(</span><span class="s1">'artifacts/videos'</span><span class="p">,</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">video</span><span class="p">(</span><span class="dl">'</span><span class="s1">artifacts/videos</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
     <span class="na">singleFile</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
     <span class="na">failedOnly</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-    <span class="na">pathPattern</span><span class="p">:</span> <span class="s1">'${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.mp4'</span>
+    <span class="na">pathPattern</span><span class="p">:</span> <span class="dl">'</span><span class="s1">${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.mp4</span><span class="dl">'</span>
 <span class="p">});</span>
 </code></pre></div></li>
 <li><p>the <a href="../configuration-file.html#videooptions">videoOptions</a> configuration file property.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"videoOptions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nt">"singleFile"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-        </span><span class="nt">"failedOnly"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-        </span><span class="nt">"pathPattern"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.mp4"</span><span class="w">
+    </span><span class="nl">"videoOptions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"singleFile"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"failedOnly"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"pathPattern"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.mp4"</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div></li>
@@ -994,19 +994,19 @@
 
 <ul>
 <li><p>the <a href="../command-line-interface.html#--video-encoding-options-optionvalueoption2value2">--video-encoding-options</a> command line flag,</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js --video artifacts/videos --video-encoding-options <span class="nv">r</span><span class="o">=</span>20,aspect<span class="o">=</span>4:3
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js <span class="nt">--video</span> artifacts/videos <span class="nt">--video-encoding-options</span> <span class="nv">r</span><span class="o">=</span>20,aspect<span class="o">=</span>4:3
 </code></pre></div></li>
 <li><p>the <code>encodingOptions</code> parameter of the <a href="../programming-interface/runner.html#video">runner.video</a> API method,</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">video</span><span class="p">(</span><span class="s1">'artifacts/videos'</span><span class="p">,</span> <span class="p">{</span> <span class="p">},</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">video</span><span class="p">(</span><span class="dl">'</span><span class="s1">artifacts/videos</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span> <span class="p">},</span> <span class="p">{</span>
     <span class="na">r</span><span class="p">:</span> <span class="mi">20</span><span class="p">,</span>
-    <span class="na">aspect</span><span class="p">:</span> <span class="s1">'4:3'</span>
+    <span class="na">aspect</span><span class="p">:</span> <span class="dl">'</span><span class="s1">4:3</span><span class="dl">'</span>
 <span class="p">});</span>
 </code></pre></div></li>
 <li><p>the <a href="../configuration-file.html#videoencodingoptions">videoEncodingOptions</a> configuration file property.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"videoEncodingOptions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nt">"r"</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w">
-        </span><span class="nt">"aspect"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4:3"</span><span class="w">
+    </span><span class="nl">"videoEncodingOptions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"r"</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"aspect"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4:3"</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div></li>
@@ -1033,17 +1033,17 @@
 
 <ul>
 <li><p>the <a href="../command-line-interface.html#-p-pattern---screenshot-path-pattern-pattern">-p (--screenshot-path-pattern)</a> command line flag,</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js -s artifacts/screenshots -p <span class="s1">'${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png'</span>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js <span class="nt">-s</span> artifacts/screenshots <span class="nt">-p</span> <span class="s1">'${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png'</span>
 </code></pre></div>
 <p>In Windows <code>cmd.exe</code> shell, enclose the pattern in double quotes if it contains spaces:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js -s artifacts/screenshots -p <span class="s2">"</span><span class="k">${</span><span class="nv">DATE</span><span class="k">}</span><span class="s2"> </span><span class="k">${</span><span class="nv">TIME</span><span class="k">}</span><span class="s2">/test </span><span class="k">${</span><span class="nv">TEST_INDEX</span><span class="k">}</span><span class="s2">/</span><span class="k">${</span><span class="nv">USERAGENT</span><span class="k">}</span><span class="s2">/</span><span class="k">${</span><span class="nv">FILE_INDEX</span><span class="k">}</span><span class="s2">.png"</span>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js <span class="nt">-s</span> artifacts/screenshots <span class="nt">-p</span> <span class="s2">"</span><span class="k">${</span><span class="nv">DATE</span><span class="k">}</span><span class="s2"> </span><span class="k">${</span><span class="nv">TIME</span><span class="k">}</span><span class="s2">/test </span><span class="k">${</span><span class="nv">TEST_INDEX</span><span class="k">}</span><span class="s2">/</span><span class="k">${</span><span class="nv">USERAGENT</span><span class="k">}</span><span class="s2">/</span><span class="k">${</span><span class="nv">FILE_INDEX</span><span class="k">}</span><span class="s2">.png"</span>
 </code></pre></div></li>
 <li><p>the <code>pathPattern</code> parameter of the <a href="../programming-interface/runner.html#screenshots">runner.screenshots</a> API method,</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">screenshots</span><span class="p">(</span><span class="s1">'artifacts/screenshots'</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="s1">'${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">screenshots</span><span class="p">(</span><span class="dl">'</span><span class="s1">artifacts/screenshots</span><span class="dl">'</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="dl">'</span><span class="s1">${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png</span><span class="dl">'</span><span class="p">);</span>
 </code></pre></div></li>
 <li><p>the <a href="../configuration-file.html#screenshotpathpattern">screenshotPathPattern</a> configuration file property.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"screenshotPathPattern"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png"</span><span class="w">
+    </span><span class="nl">"screenshotPathPattern"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div></li>
 </ul>

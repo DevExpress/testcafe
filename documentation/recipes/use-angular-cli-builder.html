@@ -790,20 +790,20 @@
 <blockquote class="important"><div class="blockquote-content"><p>The <code>angular-testcafe-builder</code> module requires Angular v7 or newer.</p>
 </div></blockquote><h2><a class="anchor" id="install-the-builder"></a>Install the Builder <a class="permalink" href="#install-the-builder">#</a></h2>
 <p>Install <a href="https://github.com/politie/angular-testcafe">angular-testcafe-builder</a> from <code>npm</code>:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install --save-dev @politie/angular-testcafe-builder
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm <span class="nb">install</span> <span class="nt">--save-dev</span> @politie/angular-testcafe-builder
 </code></pre></div><h2><a class="anchor" id="configure-a-target-in-the-angular-workspace"></a>Configure a Target in the Angular Workspace <a class="permalink" href="#configure-a-target-in-the-angular-workspace">#</a></h2>
-<p>Open <code>angular.json</code> and configure the <code>e2e</code> <a href="https://angular.io/guide/workspace-config#project-tool-configuration-options">Architect target</a> to run TestCafe tests.</p>
+<p>Open <code>angular.json</code> and configure the <code>e2e</code> <em>Architect target</em> to run TestCafe tests.</p>
 
 <p>To do this, specify the <code>@politie/angular-testcafe-builder:testcafe</code> command in the <code>builder</code> property and provide TestCafe arguments in the <code>options</code> property:</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-  </span><span class="nt">"projects"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"my-project"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="nt">"architect"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nt">"e2e"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-          </span><span class="nt">"builder"</span><span class="p">:</span><span class="w"> </span><span class="s2">"@politie/angular-testcafe-builder:testcafe"</span><span class="p">,</span><span class="w">
-          </span><span class="nt">"options"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-            </span><span class="nt">"browsers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"chrome"</span><span class="p">],</span><span class="w">
-            </span><span class="nt">"src"</span><span class="p">:</span><span class="w"> </span><span class="s2">"e2e/*.e2e-spec.ts"</span><span class="w">
+  </span><span class="nl">"projects"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"my-project"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"architect"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"e2e"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"builder"</span><span class="p">:</span><span class="w"> </span><span class="s2">"@politie/angular-testcafe-builder:testcafe"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"options"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"browsers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"chrome"</span><span class="p">],</span><span class="w">
+            </span><span class="nl">"src"</span><span class="p">:</span><span class="w"> </span><span class="s2">"e2e/*.e2e-spec.ts"</span><span class="w">
           </span><span class="p">}</span><span class="w">
         </span><span class="p">}</span><span class="w">
       </span><span class="p">}</span><span class="w">
@@ -820,33 +820,33 @@
 <h2><a class="anchor" id="configuration-example"></a>Configuration Example <a class="permalink" href="#configuration-example">#</a></h2>
 <p>The following example shows the <code>angular.json</code> workspace configuration file with a TestCafe testing task:</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-  </span><span class="nt">"projects"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"my-project"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="nt">"architect"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nt">"e2e"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-          </span><span class="nt">"builder"</span><span class="p">:</span><span class="w"> </span><span class="s2">"@politie/angular-testcafe-builder:testcafe"</span><span class="p">,</span><span class="w">
-          </span><span class="nt">"options"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-            </span><span class="nt">"browsers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+  </span><span class="nl">"projects"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"my-project"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"architect"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"e2e"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"builder"</span><span class="p">:</span><span class="w"> </span><span class="s2">"@politie/angular-testcafe-builder:testcafe"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"options"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"browsers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
               </span><span class="s2">"chrome"</span><span class="p">,</span><span class="w">
               </span><span class="s2">"firefox"</span><span class="w">
             </span><span class="p">],</span><span class="w">
-            </span><span class="nt">"src"</span><span class="p">:</span><span class="w"> </span><span class="s2">"e2e/*.e2e-spec.ts"</span><span class="p">,</span><span class="w">
-            </span><span class="nt">"reporters"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="nl">"src"</span><span class="p">:</span><span class="w"> </span><span class="s2">"e2e/*.e2e-spec.ts"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"reporters"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
               </span><span class="p">{</span><span class="w">
-                </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"json"</span><span class="p">,</span><span class="w">
-                </span><span class="nt">"output"</span><span class="p">:</span><span class="w"> </span><span class="s2">"reports/report.json"</span><span class="w">
+                </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"json"</span><span class="p">,</span><span class="w">
+                </span><span class="nl">"output"</span><span class="p">:</span><span class="w"> </span><span class="s2">"reports/report.json"</span><span class="w">
               </span><span class="p">},</span><span class="w">
               </span><span class="p">{</span><span class="w">
-                </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"spec"</span><span class="w">
+                </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"spec"</span><span class="w">
               </span><span class="p">}</span><span class="w">
             </span><span class="p">],</span><span class="w">
-            </span><span class="nt">"concurrency"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
-            </span><span class="nt">"screenshotsPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"artifacts/screenshots"</span><span class="p">,</span><span class="w">
-            </span><span class="nt">"selectorTimeout"</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span><span class="p">,</span><span class="w">
-            </span><span class="nt">"quarantineMode"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-            </span><span class="nt">"stopOnFirstFail"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-            </span><span class="nt">"host"</span><span class="p">:</span><span class="w"> </span><span class="s2">"localhost"</span><span class="p">,</span><span class="w">
-            </span><span class="nt">"port"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4200"</span><span class="w">
+            </span><span class="nl">"concurrency"</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"screenshotsPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"artifacts/screenshots"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"selectorTimeout"</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"quarantineMode"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"stopOnFirstFail"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"host"</span><span class="p">:</span><span class="w"> </span><span class="s2">"localhost"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"port"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4200"</span><span class="w">
           </span><span class="p">}</span><span class="w">
         </span><span class="p">}</span><span class="w">
       </span><span class="p">}</span><span class="w">

@@ -819,8 +819,8 @@
 <p>However, if you need to start a browser with the current user profile, you can do this by specifying the <code>:userProfile</code> flag after the <a href="browser-support.html#locally-installed-browsers">browser alias</a>.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe firefox:userProfile tests/test.js
 </code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span>
-    <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">'tests/fixture1.js'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="s1">'firefox:userProfile'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="dl">'</span><span class="s1">tests/fixture1.js</span><span class="dl">'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="dl">'</span><span class="s1">firefox:userProfile</span><span class="dl">'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
 </code></pre></div>
 <p>When you pass the <code>:userProfile</code> flag to a portable browser, also use the <a href="browser-support.html#locally-installed-browsers">browser alias</a>. The <code>path:</code> prefix does not work in this case.</p>

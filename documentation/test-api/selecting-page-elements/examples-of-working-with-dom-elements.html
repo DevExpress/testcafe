@@ -681,6 +681,13 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#run-tests-by-metadata"  >Run Tests by Metadata</a>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/test-code-structure.html#using-metadata-in-reports"  >Using Metadata in Reports</a>
 		
     </li>
@@ -1124,51 +1131,51 @@
 </ul>
 <h2><a class="anchor" id="access-page-element-properties"></a>Access Page Element Properties <a class="permalink" href="#access-page-element-properties">#</a></h2>
 <p>To work with page elements, use TestCafe <a href="selectors/">selectors</a>. Import the <code>Selector</code> function, call it and pass a CSS selector inside. This function creates a selector object <a href="dom-node-state.html">whose API</a> exposes the most used members of HTML element API.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://devexpress.github.io/testcafe/example/`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">element</span>     <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
-    <span class="kr">const</span> <span class="nx">clientWidth</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">element</span><span class="p">.</span><span class="nx">clientWidth</span><span class="p">;</span>
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">My test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">element</span>     <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#developer-name</span><span class="dl">'</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">clientWidth</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">element</span><span class="p">.</span><span class="nx">clientWidth</span><span class="p">;</span>
 
     <span class="c1">// do something with clientWidth</span>
 <span class="p">});</span>
 </code></pre></div>
 <p>If you need to access element properties not included in the selector&#39;s API, use the <a href="selectors/extending-selectors.html">selector.addCustomDOMProperties</a> method to retrieve them from DOM.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//example.com`;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://example.com`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Check Label HTML'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">label</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'label'</span><span class="p">).</span><span class="nx">addCustomDOMProperties</span><span class="p">({</span>
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Check Label HTML</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">label</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">label</span><span class="dl">'</span><span class="p">).</span><span class="nx">addCustomDOMProperties</span><span class="p">({</span>
         <span class="na">innerHTML</span><span class="p">:</span> <span class="nx">el</span> <span class="o">=&gt;</span> <span class="nx">el</span><span class="p">.</span><span class="nx">innerHTML</span><span class="p">,</span>
         <span class="na">tabIndex</span><span class="p">:</span> <span class="nx">el</span> <span class="o">=&gt;</span> <span class="nx">el</span><span class="p">.</span><span class="nx">tabIndex</span><span class="p">,</span>
         <span class="na">lang</span><span class="p">:</span> <span class="nx">el</span> <span class="o">=&gt;</span> <span class="nx">el</span><span class="p">.</span><span class="nx">lang</span>
     <span class="p">});</span>
 
-    <span class="nx">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">label</span><span class="p">.</span><span class="nx">innerHTML</span><span class="p">).</span><span class="nx">contains</span><span class="p">(</span><span class="s1">'type="checkbox"'</span><span class="p">)</span>
+    <span class="k">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">label</span><span class="p">.</span><span class="nx">innerHTML</span><span class="p">).</span><span class="nx">contains</span><span class="p">(</span><span class="dl">'</span><span class="s1">type="checkbox"</span><span class="dl">'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">label</span><span class="p">.</span><span class="nx">tabIndex</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">label</span><span class="p">.</span><span class="nx">lang</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'en'</span><span class="p">);</span>
+        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">label</span><span class="p">.</span><span class="nx">lang</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="dl">'</span><span class="s1">en</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
 <p>You can also use a <a href="../obtaining-data-from-the-client/">client function</a> to obtain a single element property from the client. In this case, you should pass the selector to client function&#39;s <a href="../obtaining-data-from-the-client/#optionsdependencies">dependencies</a> option.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span><span class="p">,</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span><span class="p">,</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://devexpress.github.io/testcafe/example/`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Check Label HTML'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">label</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'label'</span><span class="p">);</span>
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Check Label HTML</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">label</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">label</span><span class="dl">'</span><span class="p">);</span>
 
-    <span class="kr">const</span> <span class="nx">getLabelHtml</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">label</span><span class="p">().</span><span class="nx">innerHTML</span><span class="p">,</span> <span class="p">{</span> <span class="na">dependencies</span><span class="p">:</span> <span class="p">{</span> <span class="nx">label</span> <span class="p">}</span> <span class="p">});</span>
+    <span class="kd">const</span> <span class="nx">getLabelHtml</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">label</span><span class="p">().</span><span class="nx">innerHTML</span><span class="p">,</span> <span class="p">{</span> <span class="na">dependencies</span><span class="p">:</span> <span class="p">{</span> <span class="nx">label</span> <span class="p">}</span> <span class="p">});</span>
 
-    <span class="nx">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">getLabelHtml</span><span class="p">()).</span><span class="nx">contains</span><span class="p">(</span><span class="s1">'type="checkbox"'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">getLabelHtml</span><span class="p">()).</span><span class="nx">contains</span><span class="p">(</span><span class="s1">'name="remote"'</span><span class="p">);</span>
+    <span class="k">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">getLabelHtml</span><span class="p">()).</span><span class="nx">contains</span><span class="p">(</span><span class="dl">'</span><span class="s1">type="checkbox"</span><span class="dl">'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">getLabelHtml</span><span class="p">()).</span><span class="nx">contains</span><span class="p">(</span><span class="dl">'</span><span class="s1">name="remote"</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div><blockquote><div class="blockquote-content"><p>Note that selector&#39;s property getters and client functions are asynchronous. If you need their resulting value in your code, use the <code>await</code> keyword.</p>
 
@@ -1176,23 +1183,23 @@
 </div></blockquote><h2><a class="anchor" id="get-a-page-element-using-custom-logic"></a>Get a Page Element Using Custom Logic <a class="permalink" href="#get-a-page-element-using-custom-logic">#</a></h2>
 <p>Sometimes CSS selectors are not powerful enough to identify the required page element.
 In this instance, you can introduce a function that picks the desired element.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://devexpress.github.io/testcafe/example/`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">checkBoxesStartingWithR</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="kd">let</span> <span class="nx">labels</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelectorAll</span><span class="p">(</span><span class="s1">'label'</span><span class="p">);</span>
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">My test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">checkBoxesStartingWithR</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kd">let</span> <span class="nx">labels</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelectorAll</span><span class="p">(</span><span class="dl">'</span><span class="s1">label</span><span class="dl">'</span><span class="p">);</span>
 
         <span class="nx">labels</span> <span class="o">=</span> <span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">labels</span><span class="p">);</span>
 
-        <span class="kr">const</span> <span class="nx">targetLabels</span> <span class="o">=</span> <span class="nx">labels</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">label</span> <span class="o">=&gt;</span> <span class="nx">label</span><span class="p">.</span><span class="nx">textContent</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/^R/</span><span class="p">));</span>
+        <span class="kd">const</span> <span class="nx">targetLabels</span> <span class="o">=</span> <span class="nx">labels</span><span class="p">.</span><span class="nx">filter</span><span class="p">(</span><span class="nx">label</span> <span class="o">=&gt;</span> <span class="nx">label</span><span class="p">.</span><span class="nx">textContent</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/^R/</span><span class="p">));</span>
 
         <span class="k">return</span> <span class="nx">targetLabels</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">label</span> <span class="o">=&gt;</span> <span class="nx">label</span><span class="p">.</span><span class="nx">children</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
     <span class="p">});</span>
 
-    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">checkBoxesStartingWithR</span><span class="p">.</span><span class="nx">nth</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span>
+    <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">checkBoxesStartingWithR</span><span class="p">.</span><span class="nx">nth</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span>
 <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" id="access-child-nodes-in-the-dom-hierarchy"></a>Access Child Nodes in the DOM Hierarchy <a class="permalink" href="#access-child-nodes-in-the-dom-hierarchy">#</a></h2>
 <p>The <a href="selectors/functional-style-selectors.html">selector API</a> allows you to filter matching elements and search through adjacent elements in the DOM tree.</p>
@@ -1226,7 +1233,7 @@ In this instance, you can introduce a function that picks the desired element.</
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="o">&lt;!</span><span class="nx">DOCTYPE</span> <span class="nx">html</span><span class="o">&gt;</span>
 <span class="o">&lt;</span><span class="nx">html</span><span class="o">&gt;</span>
     <span class="o">&lt;</span><span class="nx">body</span><span class="o">&gt;</span>
-        <span class="nx">This</span> <span class="nx">is</span> <span class="nx">my</span> <span class="nx">tested</span> <span class="nx">page</span><span class="p">.</span> <span class="c">&lt;!--</span><span class="nx">This</span> <span class="nx">is</span> <span class="nx">the</span> <span class="nx">first</span> <span class="nx">child</span> <span class="nx">node</span> <span class="nx">of</span> <span class="o">&lt;</span><span class="nx">body</span><span class="o">&gt;--&gt;</span>
+        <span class="nx">This</span> <span class="nx">is</span> <span class="nx">my</span> <span class="nx">tested</span> <span class="nx">page</span><span class="p">.</span> <span class="c">&lt;!--</span><span class="nx">This</span> <span class="nx">is</span> <span class="nx">the</span> <span class="nx">first</span> <span class="nx">child</span> <span class="nx">node</span> <span class="k">of</span> <span class="o">&lt;</span><span class="nx">body</span><span class="o">&gt;--&gt;</span>
         <span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">My</span> <span class="nx">first</span> <span class="nx">paragraph</span><span class="p">.</span><span class="o">&lt;</span><span class="sr">/p</span><span class="err">&gt;
 </span>        <span class="o">&lt;</span><span class="nx">p</span><span class="o">&gt;</span><span class="nx">My</span> <span class="nx">second</span> <span class="nx">paragraph</span><span class="p">.</span><span class="o">&lt;</span><span class="sr">/p</span><span class="err">&gt;
 </span>    <span class="o">&lt;</span><span class="sr">/body</span><span class="err">&gt;
@@ -1235,21 +1242,21 @@ In this instance, you can introduce a function that picks the desired element.</
 <p>Let&#39;s write a test that verifies text content of the body&#39;s first child node (<em>&#39;This is my tested page&#39;</em>).</p>
 
 <p>To select this node, use the <a href="selectors/functional-style-selectors.html#find">find</a> method that enumerates all nodes. Compare it with the <a href="selectors/functional-style-selectors.html#child">child</a> method that skips the text node and returns the <code>&lt;p&gt;</code> element.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">Fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">example</span><span class="p">.</span><span class="nx">html</span><span class="err">`</span><span class="p">;</span>
+<span class="nx">fixture</span> <span class="s2">`My Fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`example.html`</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">body</span>              <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'body'</span><span class="p">);</span>
-<span class="kr">const</span> <span class="nx">firstChildElement</span> <span class="o">=</span> <span class="nx">body</span><span class="p">.</span><span class="nx">child</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>                 <span class="c1">// &lt;p&gt;</span>
-<span class="kr">const</span> <span class="nx">firstChildNode</span>    <span class="o">=</span> <span class="nx">body</span><span class="p">.</span><span class="nx">find</span><span class="p">((</span><span class="nx">node</span><span class="p">,</span> <span class="nx">index</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>   <span class="c1">// text node</span>
+<span class="kd">const</span> <span class="nx">body</span>              <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">body</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">firstChildElement</span> <span class="o">=</span> <span class="nx">body</span><span class="p">.</span><span class="nx">child</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>                 <span class="c1">// &lt;p&gt;</span>
+<span class="kd">const</span> <span class="nx">firstChildNode</span>    <span class="o">=</span> <span class="nx">body</span><span class="p">.</span><span class="nx">find</span><span class="p">((</span><span class="nx">node</span><span class="p">,</span> <span class="nx">index</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>   <span class="c1">// text node</span>
     <span class="k">return</span> <span class="nx">index</span> <span class="o">===</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">});</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My Test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">firstChildElement</span><span class="p">.</span><span class="nx">textContent</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'My first paragraph.'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">firstChildNode</span><span class="p">.</span><span class="nx">textContent</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'\n        This is my tested page. '</span><span class="p">);</span>
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">My Test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">firstChildElement</span><span class="p">.</span><span class="nx">textContent</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="dl">'</span><span class="s1">My first paragraph.</span><span class="dl">'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">firstChildNode</span><span class="p">.</span><span class="nx">textContent</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="dl">'</span><span class="se">\n</span><span class="s1">        This is my tested page. </span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" id="access-shadow-dom"></a>Access Shadow DOM <a class="permalink" href="#access-shadow-dom">#</a></h2>
 <p>CSS selectors passed to the <a href="selectors/creating-selectors.html">Selector</a> constructor cannot identify elements in the shadow DOM.</p>
@@ -1257,23 +1264,23 @@ In this instance, you can introduce a function that picks the desired element.</
 <p>To select a shadow element, initialize a selector with client-side code and use the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/shadowRoot">shadowRoot</a> property to get and return the required element from shadow DOM.</p>
 
 <p>The following example shows the <code>paragraph</code> selector that returns <code>&lt;p&gt;</code> from the shadow DOM.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//chrisbateman.github.io/guide-to-web-components/demos/shadow-dom.htm`;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://chrisbateman.github.io/guide-to-web-components/demos/shadow-dom.htm`</span><span class="p">;</span>
 
-<span class="kr">const</span> <span class="nx">demoPage</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#demo1'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">demoPage</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#demo1</span><span class="dl">'</span><span class="p">);</span>
 
-<span class="kr">const</span> <span class="nx">paragraph</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">demoPageSelector</span><span class="p">().</span><span class="nx">shadowRoot</span><span class="p">.</span><span class="nx">querySelectorAll</span><span class="p">(</span><span class="s1">'p'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">paragraph</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">demoPageSelector</span><span class="p">().</span><span class="nx">shadowRoot</span><span class="p">.</span><span class="nx">querySelectorAll</span><span class="p">(</span><span class="dl">'</span><span class="s1">p</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">},</span> <span class="p">{</span> <span class="na">dependencies</span><span class="p">:</span> <span class="p">{</span> <span class="na">demoPageSelector</span><span class="p">:</span> <span class="nx">demoPage</span> <span class="p">}</span> <span class="p">});</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Get text within shadow root'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">paragraph</span><span class="p">.</span><span class="nx">nth</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span>
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Get text within shadow root</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">paragraph</span><span class="p">.</span><span class="nx">nth</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span>
 
-    <span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">paragraph</span><span class="p">.</span><span class="nx">nth</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="nx">textContent</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">paragraph</span><span class="p">.</span><span class="nx">nth</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="nx">textContent</span><span class="p">;</span>
 
-    <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">paragraph</span><span class="p">.</span><span class="nx">nth</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="nx">textContent</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="s1">'These paragraphs are in a shadow root.'</span><span class="p">);</span>
+    <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">paragraph</span><span class="p">.</span><span class="nx">nth</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="nx">textContent</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="dl">'</span><span class="s1">These paragraphs are in a shadow root.</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
 <p>The <code>paragraph</code> selector obtains <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/shadowRoot">shadowRoot</a> from the <code>#demo1</code> element. The <code>demoPage</code> selector that identifies <code>#demo1</code> is passed as a <a href="selectors/selector-options.html#optionsdependencies">dependency</a>.</p>
@@ -1283,16 +1290,16 @@ The tested website should guarantee that the test writer knows the page state at
 
 <p>However, in practice, things are usually a bit different. Many websites contain elements that may be invisible or non-existent at times.
 In this instance, it may be a good idea to check the element availability before taking actions on it.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://devexpress.github.io/testcafe/example/`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">element</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">);</span>
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">My test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">element</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#developer-name</span><span class="dl">'</span><span class="p">);</span>
 
-    <span class="k">if</span><span class="p">(</span><span class="nx">await</span> <span class="nx">element</span><span class="p">.</span><span class="nx">exists</span> <span class="o">&amp;&amp;</span> <span class="nx">await</span> <span class="nx">element</span><span class="p">.</span><span class="nx">visible</span><span class="p">)</span>
-        <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="s1">'Peter Parker'</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="k">await</span> <span class="nx">element</span><span class="p">.</span><span class="nx">exists</span> <span class="o">&amp;&amp;</span> <span class="k">await</span> <span class="nx">element</span><span class="p">.</span><span class="nx">visible</span><span class="p">)</span>
+        <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">element</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Peter Parker</span><span class="dl">'</span><span class="p">);</span>
 
     <span class="c1">// ...</span>
 <span class="p">});</span>
@@ -1300,17 +1307,17 @@ In this instance, it may be a good idea to check the element availability before
 <p>Another common case is creating a selector that matches several elements to perform certain actions using all of them.</p>
 
 <p>The following example clicks through a number of check boxes on the example page.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example/`;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://devexpress.github.io/testcafe/example/`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">checkboxes</span>    <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="s1">'legend'</span><span class="p">).</span><span class="nx">withText</span><span class="p">(</span><span class="s1">'Which features are important to you:'</span><span class="p">).</span><span class="nx">parent</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">'input'</span><span class="p">);</span>
-    <span class="kr">const</span> <span class="nx">checkboxCount</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">checkboxes</span><span class="p">.</span><span class="nx">count</span><span class="p">;</span>
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">My test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">checkboxes</span>    <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">legend</span><span class="dl">'</span><span class="p">).</span><span class="nx">withText</span><span class="p">(</span><span class="dl">'</span><span class="s1">Which features are important to you:</span><span class="dl">'</span><span class="p">).</span><span class="nx">parent</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="dl">'</span><span class="s1">input</span><span class="dl">'</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">checkboxCount</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">checkboxes</span><span class="p">.</span><span class="nx">count</span><span class="p">;</span>
 
     <span class="k">for</span><span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">checkboxCount</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
-        <span class="nx">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">checkboxes</span><span class="p">.</span><span class="nx">nth</span><span class="p">(</span><span class="nx">i</span><span class="p">));</span>
+        <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">checkboxes</span><span class="p">.</span><span class="nx">nth</span><span class="p">(</span><span class="nx">i</span><span class="p">));</span>
 <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" id="more-examples"></a>More Examples <a class="permalink" href="#more-examples">#</a></h2>
 <p>If you encounter a difficult situation while working with DOM elements,

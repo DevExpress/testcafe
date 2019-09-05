@@ -725,7 +725,7 @@
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">launchctl unload /Library/LaunchDaemons/org.jenkins-ci.plist
 </code></pre></div></li>
 <li><p>Open the <code>org.jenkins-ci.plist</code> file in a text editor:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">sudo nano /Library/LaunchDaemons/org.jenkins-ci.plist
+<div class="highlight"><pre><code class="language-sh" data-lang="sh"><span class="nb">sudo </span>nano /Library/LaunchDaemons/org.jenkins-ci.plist
 </code></pre></div></li>
 <li><p>Find the <code>USER_NAME</code> option and change its value to the username under whose account macOS is started:</p>
 <div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;key&gt;</span>USER_NAME<span class="nt">&lt;/key&gt;</span>
@@ -737,10 +737,10 @@
 </code></pre></div>
 <p>Close the file and save your changes.</p></li>
 <li><p>Change the Jenkins temporary directory:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">sudo defaults write /Library/Preferences/org.jenkins-ci tmpdir <span class="s2">"/tmp"</span>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh"><span class="nb">sudo </span>defaults write /Library/Preferences/org.jenkins-ci tmpdir <span class="s2">"/tmp"</span>
 </code></pre></div></li>
 <li><p>Change the <code>/var/log/jenkins</code> file ownership to your account:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">sudo chown peter.p /var/log/jenkins
+<div class="highlight"><pre><code class="language-sh" data-lang="sh"><span class="nb">sudo chown </span>peter.p /var/log/jenkins
 </code></pre></div></li>
 <li><p>Start Jenkins:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">launchctl load /Library/LaunchDaemons/org.jenkins-ci.plist
@@ -749,23 +749,23 @@
 <h3><a class="anchor" id="obtain-permissions-on-linux"></a>Obtain Permissions on Linux <a class="permalink" href="#obtain-permissions-on-linux">#</a></h3>
 <ol>
 <li><p>Stop Jenkins:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">sudo systemctl stop jenkins.service
+<div class="highlight"><pre><code class="language-sh" data-lang="sh"><span class="nb">sudo </span>systemctl stop jenkins.service
 </code></pre></div></li>
 <li><p>Open the <code>/etc/default/jenkins</code> file in a text editor:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">sudo nano /etc/default/jenkins
+<div class="highlight"><pre><code class="language-sh" data-lang="sh"><span class="nb">sudo </span>nano /etc/default/jenkins
 </code></pre></div></li>
 <li><p>Specify your username in the <code>JENKINS_USER</code> variable:</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">JENKINS_USER=peter.p
 </code></pre></div>
 <p>Then close the file and save your changes.</p></li>
 <li><p>Change the Jenkins directory ownership to your account:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">sudo chown peter.p /var/log/jenkins
-sudo chown peter.p /var/lib/jenkins
-sudo chown peter.p /var/run/jenkins
-sudo chown peter.p /var/cache/jenkins
+<div class="highlight"><pre><code class="language-sh" data-lang="sh"><span class="nb">sudo chown </span>peter.p /var/log/jenkins
+<span class="nb">sudo chown </span>peter.p /var/lib/jenkins
+<span class="nb">sudo chown </span>peter.p /var/run/jenkins
+<span class="nb">sudo chown </span>peter.p /var/cache/jenkins
 </code></pre></div></li>
 <li><p>Start Jenkins:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">sudo systemctl start jenkins.service
+<div class="highlight"><pre><code class="language-sh" data-lang="sh"><span class="nb">sudo </span>systemctl start jenkins.service
 </code></pre></div></li>
 </ol>
 <h2><a class="anchor" id="step-1---install-nodejs-plugin"></a>Step 1 - Install Node.js Plugin <a class="permalink" href="#step-1---install-nodejs-plugin">#</a></h2>
@@ -790,14 +790,14 @@ sudo chown peter.p /var/cache/jenkins
 <p><img src="../../images/jenkins/add-batch-command.png" alt="Add a Batch Command" title=""></p>
 
 <p>In the <strong>Command</strong> box, type the following.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install testcafe testcafe-reporter-xunit
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm <span class="nb">install </span>testcafe testcafe-reporter-xunit
 </code></pre></div>
 <p>This command installs the main <code>testcafe</code> module and a plugin that saves test run reports in the xUnit format.</p>
 
 <p><img src="../../images/jenkins/npm-install-command.png" alt="npm install Command" title=""></p>
 <h2><a class="anchor" id="step-4---add-a-command-to-run-testcafe"></a>Step 4 - Add a Command to Run TestCafe <a class="permalink" href="#step-4---add-a-command-to-run-testcafe">#</a></h2>
 <p>Add another step that executes a shell command and enter:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">node_modules/.bin/testcafe chrome tests/<span class="k">**</span>/<span class="k">*</span> -r xunit:res.xml
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">node_modules/.bin/testcafe chrome tests/<span class="k">**</span>/<span class="k">*</span> <span class="nt">-r</span> xunit:res.xml
 </code></pre></div>
 <p>This runs TestCafe tests from the <code>tests</code> directory in Google Chrome. Test results are saved to the <code>res.xml</code> file in the xUnit format.</p>
 
@@ -806,14 +806,14 @@ sudo chown peter.p /var/cache/jenkins
 </div></blockquote>
 <p>If you run Jenkins on a Linux machine and <a href="#enable-jenkins-to-start-the-browser-ui-macos-and-linux">test in local browsers in the UI mode</a>, set the <code>DISPLAY</code> environment variable to <code>1</code> before the <code>testcafe</code> command:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh"><span class="nb">export </span><span class="nv">DISPLAY</span><span class="o">=</span>:1
-node_modules/.bin/testcafe chrome tests/<span class="k">**</span>/<span class="k">*</span> -r xunit:res.xml
+node_modules/.bin/testcafe chrome tests/<span class="k">**</span>/<span class="k">*</span> <span class="nt">-r</span> xunit:res.xml
 </code></pre></div>
 <p>Alternatively, you can use the <a href="https://www.x.org/archive/X11R7.6/doc/man/man1/Xvfb.1.xhtml">Xvfb server</a>:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh"><span class="nb">export </span><span class="nv">DISPLAY</span><span class="o">=</span>:99.0
-sh -e /etc/init.d/xvfb start
-sleep 3
-fluxbox &gt;/dev/null 2&gt;&amp;1 &amp;
-node_modules/.bin/testcafe chrome tests/<span class="k">**</span>/<span class="k">*</span> -r xunit:res.xml
+sh <span class="nt">-e</span> /etc/init.d/xvfb start
+<span class="nb">sleep </span>3
+fluxbox <span class="o">&gt;</span>/dev/null 2&gt;&amp;1 &amp;
+node_modules/.bin/testcafe chrome tests/<span class="k">**</span>/<span class="k">*</span> <span class="nt">-r</span> xunit:res.xml
 </code></pre></div><h2><a class="anchor" id="step-5---publish-test-run-reports"></a>Step 5 - Publish Test Run Reports <a class="permalink" href="#step-5---publish-test-run-reports">#</a></h2>
 <p>Go to the <strong>Post-build Actions</strong> section and click <strong>Add post-build action</strong>. Select <strong>Publish JUnit test result report</strong> from the drop-down list.</p>
 

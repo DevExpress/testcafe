@@ -838,25 +838,25 @@
 
 <ul>
 <li><p>the <a href="../command-line-interface.html#--cs-pathpath2---client-scripts-pathpath2">--cs (--client-scripts)</a> command line option</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js --client-scripts<span class="o">=</span>mockDate.js,assets/react-helpers.js
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js <span class="nt">--client-scripts</span><span class="o">=</span>mockDate.js,assets/react-helpers.js
 </code></pre></div></li>
 <li><p>the <a href="../programming-interface/runner.html#clientscripts">runner.clientScripts</a> API method</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">clientScripts</span><span class="p">(</span><span class="s1">'mockDate.js'</span><span class="p">,</span> <span class="s1">'scripts/react-helpers.js'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">clientScripts</span><span class="p">(</span><span class="dl">'</span><span class="s1">mockDate.js</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">scripts/react-helpers.js</span><span class="dl">'</span><span class="p">);</span>
 </code></pre></div></li>
 <li><p>the <a href="../configuration-file.html#clientscripts">clientScripts</a> configuration file property</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"clientScripts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"mockDate.js"</span><span class="p">,</span><span class="w"> </span><span class="s2">"scripts/react-helpers.js"</span><span class="p">]</span><span class="w">
+    </span><span class="nl">"clientScripts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"mockDate.js"</span><span class="p">,</span><span class="w"> </span><span class="s2">"scripts/react-helpers.js"</span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div></li>
 </ul>
 <h2><a class="anchor" id="add-client-scripts-to-specific-tests"></a>Add Client Scripts to Specific Tests <a class="permalink" href="#add-client-scripts-to-specific-tests">#</a></h2>
 <p>Use the <a href="../../test-api/test-code-structure.html#inject-scripts-into-tested-pages">fixture.clientScripts</a> and <a href="../../test-api/test-code-structure.html#inject-scripts-into-tested-pages">test.clientScripts</a> methods to inject scripts into pages visited during a particular test or fixture.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//example.com`</span>
-    <span class="p">.</span><span class="nx">clientScripts</span><span class="p">(</span><span class="s1">'assets/jquery.js'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://example.com`</span>
+    <span class="p">.</span><span class="nx">clientScripts</span><span class="p">(</span><span class="dl">'</span><span class="s1">assets/jquery.js</span><span class="dl">'</span><span class="p">);</span>
 </code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">test</span>
-    <span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">})</span>
-    <span class="p">.</span><span class="nx">clientScripts</span><span class="p">({</span> <span class="na">module</span><span class="p">:</span> <span class="s1">'async'</span> <span class="p">});</span>
+    <span class="p">(</span><span class="dl">'</span><span class="s1">My test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">})</span>
+    <span class="p">.</span><span class="nx">clientScripts</span><span class="p">({</span> <span class="na">module</span><span class="p">:</span> <span class="dl">'</span><span class="s1">async</span><span class="dl">'</span> <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" id="provide-scripts-to-inject"></a>Provide Scripts to Inject <a class="permalink" href="#provide-scripts-to-inject">#</a></h2>
 <p>You can pass the following arguments to specify the scripts to inject:</p>
 
@@ -916,14 +916,14 @@ test.clientScripts([ filePath | { path: filePath } ])
 <p>When you use <a href="../../test-api/test-code-structure.html#inject-scripts-into-tested-pages">test API methods</a>, relative paths resolve from the <em>test file location</em>.</p>
 
 <p><strong>Examples</strong></p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests --cs assets/jquery.js
-</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">clientScripts</span><span class="p">(</span><span class="s1">'assets/jquery.js'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests <span class="nt">--cs</span> assets/jquery.js
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">clientScripts</span><span class="p">(</span><span class="dl">'</span><span class="s1">assets/jquery.js</span><span class="dl">'</span><span class="p">);</span>
 <span class="c1">// or</span>
-<span class="nx">runner</span><span class="p">.</span><span class="nx">clientScripts</span><span class="p">({</span> <span class="na">path</span><span class="p">:</span> <span class="s1">'assets/jquery.js'</span> <span class="p">});</span>
+<span class="nx">runner</span><span class="p">.</span><span class="nx">clientScripts</span><span class="p">({</span> <span class="na">path</span><span class="p">:</span> <span class="dl">'</span><span class="s1">assets/jquery.js</span><span class="dl">'</span> <span class="p">});</span>
 </code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">{</span>
-    <span class="s2">"clientScripts"</span><span class="err">:</span> <span class="s2">"assets/jquery.js"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">clientScripts</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">assets/jquery.js</span><span class="dl">"</span><span class="p">,</span>
     <span class="c1">// or</span>
-    <span class="s2">"clientScripts"</span><span class="err">:</span> <span class="p">{</span> <span class="s2">"path"</span><span class="err">:</span> <span class="s2">"assets/jquery.js"</span> <span class="p">}</span>
+    <span class="dl">"</span><span class="s2">clientScripts</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span> <span class="dl">"</span><span class="s2">path</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">assets/jquery.js</span><span class="dl">"</span> <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div><blockquote><div class="blockquote-content"><p>You cannot combine the <code>path</code>, <a href="#inject-a-module">module</a> and <a href="#inject-script-code">content</a> properties in a single object. To inject multiple items, pass several arguments or an array.</p>
 </div></blockquote><h3><a class="anchor" id="inject-a-module"></a>Inject a Module <a class="permalink" href="#inject-a-module">#</a></h3>
@@ -971,12 +971,12 @@ test.clientScripts([ { module: moduleName } ])
 </ul>
 </div></blockquote>
 <p><strong>Examples</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//example.com`</span>
-    <span class="p">.</span><span class="nx">clientScripts</span><span class="p">({</span> <span class="na">module</span><span class="p">:</span> <span class="s1">'lodash'</span> <span class="p">});</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://example.com`</span>
+    <span class="p">.</span><span class="nx">clientScripts</span><span class="p">({</span> <span class="na">module</span><span class="p">:</span> <span class="dl">'</span><span class="s1">lodash</span><span class="dl">'</span> <span class="p">});</span>
 </code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">{</span>
-    <span class="s2">"clientScripts"</span><span class="err">:</span> <span class="p">{</span>
-        <span class="s2">"module"</span><span class="err">:</span> <span class="s2">"lodash"</span>
+    <span class="dl">"</span><span class="s2">clientScripts</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="dl">"</span><span class="s2">module</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">lodash</span><span class="dl">"</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div><blockquote><div class="blockquote-content"><p>You cannot combine the <code>module</code>, <a href="#inject-a-javascript-file">path</a> and <a href="#inject-script-code">content</a> properties in a single object. To inject multiple items, pass several arguments or an array.</p>
@@ -1015,18 +1015,18 @@ test.clientScripts([ { content: code } ])
 </tr>
 </tbody></table></div>
 <p><strong>Examples</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">mockDate</span> <span class="o">=</span> <span class="err">`</span>
-    <span class="nb">Date</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">getTime</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="mi">42</span><span class="p">;</span>
-    <span class="p">};</span>
-<span class="err">`</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">mockDate</span> <span class="o">=</span> <span class="s2">`
+    Date.prototype.getTime = function () {
+        return 42;
+    };
+`</span><span class="p">;</span>
 
 <span class="nx">test</span>
-    <span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">})</span>
+    <span class="p">(</span><span class="dl">'</span><span class="s1">My test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">})</span>
     <span class="p">.</span><span class="nx">clientScripts</span><span class="p">({</span> <span class="na">content</span><span class="p">:</span> <span class="nx">mockDate</span> <span class="p">});</span>
 </code></pre></div><div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"clientScripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nt">"content"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Date.prototype.getTime = () =&gt; 42;"</span><span class="w">
+    </span><span class="nl">"clientScripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"content"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Date.prototype.getTime = () =&gt; 42;"</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div><blockquote><div class="blockquote-content"><p>You cannot combine the <code>content</code>, <a href="#inject-a-javascript-file">path</a> and <a href="#inject-a-module">module</a> properties in a single object. To inject multiple items, pass several arguments or an array.</p>
@@ -1117,57 +1117,57 @@ test.clientScripts([
 <p><strong>Examples</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">clientScripts</span><span class="p">({</span>
     <span class="na">page</span><span class="p">:</span> <span class="sr">/</span><span class="se">\/</span><span class="sr">user</span><span class="se">\/</span><span class="sr">profile</span><span class="se">\/</span><span class="sr">/</span><span class="p">,</span>
-    <span class="na">path</span><span class="p">:</span> <span class="s1">'dist/jquery.js'</span>
+    <span class="na">path</span><span class="p">:</span> <span class="dl">'</span><span class="s1">dist/jquery.js</span><span class="dl">'</span>
 <span class="p">});</span>
 </code></pre></div><div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"clientScripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nt">"page"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://myapp.com/page/"</span><span class="p">,</span><span class="w">
-        </span><span class="nt">"content"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Geolocation.prototype.getCurrentPosition = () =&gt; new Positon(0, 0);"</span><span class="w">
+    </span><span class="nl">"clientScripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"page"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://myapp.com/page/"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"content"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Geolocation.prototype.getCurrentPosition = () =&gt; new Positon(0, 0);"</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div><blockquote><div class="blockquote-content"><p>If the target page redirects to a different URL, ensure that the <code>page</code> property matches the destination URL. Otherwise, scripts are not injected.</p>
 </div></blockquote><h3><a class="anchor" id="inject-scripts-into-iframes"></a>Inject Scripts Into Iframes <a class="permalink" href="#inject-scripts-into-iframes">#</a></h3>
 <p>To inject a script into an iframe, specify the iframe URL in the <a href="#provide-scripts-for-specific-pages">page</a> property.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">clientScripts</span><span class="p">({</span>
-    <span class="na">path</span><span class="p">:</span> <span class="s1">'scripts/helpers.js'</span><span class="p">,</span>
-    <span class="na">page</span><span class="p">:</span> <span class="s1">'https://example.com/iframe/'</span>
+    <span class="na">path</span><span class="p">:</span> <span class="dl">'</span><span class="s1">scripts/helpers.js</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">page</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://example.com/iframe/</span><span class="dl">'</span>
 <span class="p">}));</span>
 </code></pre></div><h3><a class="anchor" id="specify-multiple-scripts"></a>Specify Multiple Scripts <a class="permalink" href="#specify-multiple-scripts">#</a></h3>
 <p>You can pass multiple arguments or an array to the <code>clientScripts</code> methods:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">https</span><span class="err">:</span><span class="c1">//example.com`</span>
-    <span class="p">.</span><span class="nx">clientScripts</span><span class="p">(</span><span class="s1">'scripts/react-helpers.js'</span><span class="p">,</span> <span class="p">{</span> <span class="na">content</span><span class="p">:</span> <span class="s1">'Date.prototype.getTime = () =&gt; 42;'</span> <span class="p">});</span>
-</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">clientScripts</span><span class="p">([</span><span class="s1">'scripts/react-helpers.js'</span><span class="p">,</span> <span class="s1">'dist/jquery.js'</span><span class="p">]);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://example.com`</span>
+    <span class="p">.</span><span class="nx">clientScripts</span><span class="p">(</span><span class="dl">'</span><span class="s1">scripts/react-helpers.js</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span> <span class="na">content</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Date.prototype.getTime = () =&gt; 42;</span><span class="dl">'</span> <span class="p">});</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">clientScripts</span><span class="p">([</span><span class="dl">'</span><span class="s1">scripts/react-helpers.js</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">dist/jquery.js</span><span class="dl">'</span><span class="p">]);</span>
 </code></pre></div>
 <p>The <a href="../configuration-file.html#clientscripts">clientScripts</a> configuration file property can also take arrays:</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"clientScripts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"vue-helpers.js"</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nt">"page"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://mycorp.com/login/"</span><span class="p">,</span><span class="w">
-        </span><span class="nt">"module"</span><span class="p">:</span><span class="w"> </span><span class="s2">"lodash"</span><span class="w">
+    </span><span class="nl">"clientScripts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"vue-helpers.js"</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"page"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://mycorp.com/login/"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"module"</span><span class="p">:</span><span class="w"> </span><span class="s2">"lodash"</span><span class="w">
     </span><span class="p">}]</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>The <a href="../command-line-interface.html#--cs-pathpath2---client-scripts-pathpath2">--cs (--client-scripts)</a> command line option supports multiple arguments as well:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js --client-scripts<span class="o">=</span>mockDate.js,assets/react-helpers.js
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js <span class="nt">--client-scripts</span><span class="o">=</span>mockDate.js,assets/react-helpers.js
 </code></pre></div>
 <p>Note that the <code>page</code>, <code>content</code> and <code>module</code> properties cannot take arrays. To inject multiple scripts into the same page, pass one argument for each script.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">scripts</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'test1.js'</span><span class="p">,</span> <span class="s1">'test2.js'</span><span class="p">,</span> <span class="s1">'test3.js'</span><span class="p">];</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">scripts</span> <span class="o">=</span> <span class="p">[</span><span class="dl">'</span><span class="s1">test1.js</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">test2.js</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">test3.js</span><span class="dl">'</span><span class="p">];</span>
 
 <span class="nx">runner</span><span class="p">.</span><span class="nx">clientScripts</span><span class="p">(</span><span class="nx">scripts</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">script</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="na">path</span><span class="p">:</span> <span class="nx">script</span><span class="p">,</span>
-    <span class="na">page</span><span class="p">:</span> <span class="s1">'http://example.com'</span>
+    <span class="na">page</span><span class="p">:</span> <span class="dl">'</span><span class="s1">http://example.com</span><span class="dl">'</span>
 <span class="p">}));</span>
 </code></pre></div><h2><a class="anchor" id="access-dom-in-the-injected-scripts"></a>Access DOM in the Injected Scripts <a class="permalink" href="#access-dom-in-the-injected-scripts">#</a></h2>
 <p>TestCafe injects scripts into the <code>head</code> tag, which means they are executed before DOM is loaded.</p>
 
 <p>To access DOM in these scripts, wait until the <code>DOMContentLoaded</code> event fires:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">const</span> <span class="nx">scriptContent</span> <span class="o">=</span> <span class="err">`</span>
-<span class="nb">window</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">'DOMContentLoaded'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-    <span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">style</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="s1">'green'</span><span class="p">;</span>
-<span class="p">});</span>
-<span class="err">`</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">scriptContent</span> <span class="o">=</span> <span class="s2">`
+window.addEventListener('DOMContentLoaded', function () {
+    document.body.style.backgroundColor = 'green';
+});
+`</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
     <span class="p">.</span><span class="nx">clientScripts</span><span class="p">({</span> <span class="na">content</span><span class="p">:</span> <span class="nx">scriptContent</span> <span class="p">});</span>
 </code></pre></div>
 

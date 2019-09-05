@@ -681,6 +681,13 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#run-tests-by-metadata"  >Run Tests by Metadata</a>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/test-code-structure.html#using-metadata-in-reports"  >Using Metadata in Reports</a>
 		
     </li>
@@ -1119,16 +1126,16 @@ painless scalability, check-as-you-type code verification and much more.</p>
 </div></blockquote>
 <p>TestCafe bundles the TypeScript declaration file with the npm package, so you do not need to install it separately.</p>
 <h2><a class="anchor" id="writing-tests-with-typescript"></a>Writing Tests with TypeScript <a class="permalink" href="#writing-tests-with-typescript">#</a></h2>
-<p>To start writing tests with TypeScript, install TestCafe into your project directory. For more information, see <a href="../using-testcafe/installing-testcafe.html#locally">Installing TestCafe</a>.</p>
+<p>To start writing tests with TypeScript, install TestCafe into your project directory. For more information, see <a href="../using-testcafe/installing-testcafe.html#local-installation">Installing TestCafe</a>.</p>
 
 <p>When writing test in TypeScript, it is required to import TestCafe module first.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 </code></pre></div>
 <p>After importing a <code>testcafe</code> module, an IDE (e.g. VS Code, Sublime Text, WebStorm, etc.) will load TestCafe declaration
 file and will show you code completion hints for TestCafe API:</p>
 
 <p><img src="../../images/typescript-support.png" alt="Writing Tests with TypeScript" title=""></p>
-<blockquote><div class="blockquote-content"><p>If installed <a href="../using-testcafe/installing-testcafe.html#globally">globally</a>, TestCafe will successfully compile and run your tests written in TypeScript.
+<blockquote><div class="blockquote-content"><p>If installed <a href="../using-testcafe/installing-testcafe.html#global-installation">globally</a>, TestCafe will successfully compile and run your tests written in TypeScript.
 In this case, your IDE will not be able to find the TestCafe declaration file and provide code completion.</p>
 </div></blockquote>
 <p>Now, you can write tests in the same manner as in JavaScript.
@@ -1145,24 +1152,24 @@ sections to learn how to extend selectors in TypeScript.</p>
 
 <ul>
 <li><p>the <a href="../using-testcafe/command-line-interface.html#--ts-config-path-path">--ts-config-path</a> command line parameter,</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests --ts-config-path /Users/s.johnson/testcafe/tsconfig.json
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests <span class="nt">--ts-config-path</span> /Users/s.johnson/testcafe/tsconfig.json
 </code></pre></div></li>
 <li><p>the <a href="../using-testcafe/programming-interface/runner.html#tsconfigpath">runner.tsConfigPath</a> API method,</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">tsConfigPath</span><span class="p">(</span><span class="s1">'/Users/s.johnson/testcafe/tsconfig.json'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">tsConfigPath</span><span class="p">(</span><span class="dl">'</span><span class="s1">/Users/s.johnson/testcafe/tsconfig.json</span><span class="dl">'</span><span class="p">);</span>
 </code></pre></div></li>
 <li><p>the <a href="../using-testcafe/configuration-file.html#tsconfigpath">tsConfigPath</a> configuration file property.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"tsConfigPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/Users/s.johnson/testcafe/tsconfig.json"</span><span class="w">
+    </span><span class="nl">"tsConfigPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/Users/s.johnson/testcafe/tsconfig.json"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div></li>
 </ul>
 
 <p>In <code>tsconfig.json</code>, define the <code>compilerOptions</code> property and specify the compiler options in this property:</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"compilerOptions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nt">"jsx"</span><span class="p">:</span><span class="w"> </span><span class="s2">"react"</span><span class="p">,</span><span class="w">
-        </span><span class="nt">"jsxFactory"</span><span class="p">:</span><span class="w"> </span><span class="s2">"myFactory"</span><span class="p">,</span><span class="w">
-        </span><span class="nt">"alwaysStrict"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="nl">"compilerOptions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"jsx"</span><span class="p">:</span><span class="w"> </span><span class="s2">"react"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"jsxFactory"</span><span class="p">:</span><span class="w"> </span><span class="s2">"myFactory"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"alwaysStrict"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>

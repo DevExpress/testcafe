@@ -788,15 +788,15 @@
 			<h1>Debug Tests in Visual Studio Code</h1>
 <p>Before you debug in Visual Studio Code, ensure that your root test directory contains a <code>package.json</code> file that includes <code>testcafe</code> in the <code>devDependencies</code> section.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-  </span><span class="nt">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nt">"testcafe"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="w">
+  </span><span class="nl">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"testcafe"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="w">
   </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>You can replace <code>*</code> with the actual TestCafe version you use.</p>
 
 <p>Then you need to install TestCafe locally in the test directory.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm <span class="nb">install</span>
 </code></pre></div>
 <p>The next step adds a launch configuration used to run TestCafe tests.</p>
 
@@ -806,17 +806,17 @@
 
 <p>You need to add the following configuration to the <code>launch.json</code> file.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"node"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"protocol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"inspector"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"request"</span><span class="p">:</span><span class="w"> </span><span class="s2">"launch"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Launch test files with TestCafe"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"program"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${workspaceRoot}/node_modules/testcafe/bin/testcafe.js"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"args"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"node"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"protocol"</span><span class="p">:</span><span class="w"> </span><span class="s2">"inspector"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"request"</span><span class="p">:</span><span class="w"> </span><span class="s2">"launch"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Launch test files with TestCafe"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"program"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${workspaceRoot}/node_modules/testcafe/bin/testcafe.js"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"args"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
         </span><span class="s2">"firefox"</span><span class="p">,</span><span class="w">
         </span><span class="s2">"${relativeFile}"</span><span class="w">
     </span><span class="p">],</span><span class="w">
-    </span><span class="nt">"console"</span><span class="p">:</span><span class="w"> </span><span class="s2">"integratedTerminal"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"cwd"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${workspaceRoot}"</span><span class="w">
+    </span><span class="nl">"console"</span><span class="p">:</span><span class="w"> </span><span class="s2">"integratedTerminal"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"cwd"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${workspaceRoot}"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>This configuration contains the following attributes:</p>

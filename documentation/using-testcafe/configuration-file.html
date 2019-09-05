@@ -874,43 +874,43 @@
 
 <p>You can use <a href="common-concepts/browsers/browser-support.html#locally-installed-browsers">browser aliases</a> to specify locally installed browsers.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"browsers"</span><span class="p">:</span><span class="w"> </span><span class="s2">"chrome"</span><span class="w">
+    </span><span class="nl">"browsers"</span><span class="p">:</span><span class="w"> </span><span class="s2">"chrome"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div><div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"browsers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"ie"</span><span class="p">,</span><span class="w"> </span><span class="s2">"firefox"</span><span class="p">]</span><span class="w">
+    </span><span class="nl">"browsers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"ie"</span><span class="p">,</span><span class="w"> </span><span class="s2">"firefox"</span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>Use the <code>all</code> alias to run tests in all the installed browsers.</p>
 
 <p>To specify a browser by the path to its executable, use the <code>path:</code> prefix. Enclose the path in backticks if it contains spaces.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"browsers"</span><span class="p">:</span><span class="w"> </span><span class="s2">"path:`C:\\Program Files\\Internet Explorer\\iexplore.exe`"</span><span class="w">
+    </span><span class="nl">"browsers"</span><span class="p">:</span><span class="w"> </span><span class="s2">"path:`C:</span><span class="se">\\</span><span class="s2">Program Files</span><span class="se">\\</span><span class="s2">Internet Explorer</span><span class="se">\\</span><span class="s2">iexplore.exe`"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>Alternatively, you can pass an object whose <code>path</code> property specifies the path to the browser executable. In this case, you can also provide an optional <code>cmd</code> property that contains command line parameters passed to the browser.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"browsers"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nt">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/home/user/portable/firefox.app"</span><span class="p">,</span><span class="w">
-        </span><span class="nt">"cmd"</span><span class="p">:</span><span class="w"> </span><span class="s2">"--no-remote"</span><span class="w">
+    </span><span class="nl">"browsers"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/home/user/portable/firefox.app"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"cmd"</span><span class="p">:</span><span class="w"> </span><span class="s2">"--no-remote"</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>To run tests in <a href="common-concepts/browsers/browser-support.html#browsers-in-cloud-testing-services">cloud browsers</a> or <a href="common-concepts/browsers/browser-support.html#nonconventional-browsers">other browsers</a> accessed through a <a href="../extending-testcafe/browser-provider-plugin/">browser provider plugin</a>,
 specify the browser&#39;s alias that consists of the <code>{browser-provider-name}</code> prefix and the name of a browser (the latter can be omitted); for example, <code>saucelabs:Chrome@52.0:Windows 8.1</code>.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"browsers"</span><span class="p">:</span><span class="w"> </span><span class="s2">"saucelabs:Chrome@52.0:Windows 8.1"</span><span class="w">
+    </span><span class="nl">"browsers"</span><span class="p">:</span><span class="w"> </span><span class="s2">"saucelabs:Chrome@52.0:Windows 8.1"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>To run tests in a <a href="common-concepts/browsers/browser-support.html#browsers-on-remote-devices">browser on a remote device</a>, specify <code>remote</code> as a browser alias.</p>
 
 <p>If you want to connect multiple browsers, specify <code>remote:</code> and the number of browsers. For example, if you need to use four remote browsers, specify <code>remote:4</code>.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"browsers"</span><span class="p">:</span><span class="w"> </span><span class="s2">"remote:4"</span><span class="w">
+    </span><span class="nl">"browsers"</span><span class="p">:</span><span class="w"> </span><span class="s2">"remote:4"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>You can add postfixes to browser aliases to run tests in the <a href="common-concepts/browsers/testing-in-headless-mode.html">headless mode</a>, use <a href="common-concepts/browsers/using-chrome-device-emulation.html">Chrome device emulation</a> or <a href="common-concepts/browsers/user-profiles.html">user profiles</a>.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"browsers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"firefox:headless"</span><span class="p">,</span><span class="w"> </span><span class="s2">"chrome:emulation:device=iphone X"</span><span class="p">]</span><span class="w">
+    </span><span class="nl">"browsers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"firefox:headless"</span><span class="p">,</span><span class="w"> </span><span class="s2">"chrome:emulation:device=iphone X"</span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div><blockquote><div class="blockquote-content"><p>You cannot add postfixes when you use the <code>path:</code> prefix or pass a <code>{ path, cmd }</code> object.</p>
 </div></blockquote>
@@ -927,15 +927,15 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
 <li>Legacy TestCafe v2015.1 tests.</li>
 </ul>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"src"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/home/user/tests/fixture.js"</span><span class="w">
+    </span><span class="nl">"src"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/home/user/tests/fixture.js"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div><div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"src"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"/home/user/auth-tests/fixture.testcafe"</span><span class="p">,</span><span class="w"> </span><span class="s2">"/home/user/mobile-tests/"</span><span class="p">]</span><span class="w">
+    </span><span class="nl">"src"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"/home/user/auth-tests/fixture.testcafe"</span><span class="p">,</span><span class="w"> </span><span class="s2">"/home/user/mobile-tests/"</span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>You can use <a href="https://github.com/isaacs/node-glob#glob-primer">globbing patterns</a> to specify a set of files.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"src"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"/home/user/tests/**/*.js"</span><span class="p">,</span><span class="w"> </span><span class="s2">"!/home/user/tests/foo.js"</span><span class="p">]</span><span class="w">
+    </span><span class="nl">"src"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"/home/user/tests/**/*.js"</span><span class="p">,</span><span class="w"> </span><span class="s2">"!/home/user/tests/foo.js"</span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p><em>CLI</em>: <a href="command-line-interface.html#file-pathglob-pattern">File Path/Glob Pattern</a><br>
@@ -943,26 +943,26 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
 <h2><a class="anchor" id="reporter"></a>reporter <a class="permalink" href="#reporter">#</a></h2>
 <p>Specifies the name of a <a href="common-concepts/reporters.html">built-in</a> or <a href="../extending-testcafe/reporter-plugin/">custom reporter</a> that should generate test reports.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"reporter"</span><span class="p">:</span><span class="w"> </span><span class="s2">"list"</span><span class="w">
+    </span><span class="nl">"reporter"</span><span class="p">:</span><span class="w"> </span><span class="s2">"list"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>This configuration outputs the test report to <code>stdout</code>. To save a report to a file, pass an object whose <code>name</code> property specifies the reporter name and <code>output</code> property specifies the path to the file.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"reporter"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"xunit"</span><span class="p">,</span><span class="w">
-        </span><span class="nt">"output"</span><span class="p">:</span><span class="w"> </span><span class="s2">"reports/report.xml"</span><span class="w">
+    </span><span class="nl">"reporter"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"xunit"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"output"</span><span class="p">:</span><span class="w"> </span><span class="s2">"reports/report.xml"</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>You can use multiple reporters, but note that only one reporter can write to <code>stdout</code>. All other reporters must output to files.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"reporter"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="nl">"reporter"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
         </span><span class="p">{</span><span class="w">
-            </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"spec"</span><span class="w">
+            </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"spec"</span><span class="w">
         </span><span class="p">},</span><span class="w">
         </span><span class="p">{</span><span class="w">
-            </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"json"</span><span class="p">,</span><span class="w">
-            </span><span class="nt">"output"</span><span class="p">:</span><span class="w"> </span><span class="s2">"reports/report.json"</span><span class="w">
+            </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"json"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"output"</span><span class="p">:</span><span class="w"> </span><span class="s2">"reports/report.json"</span><span class="w">
         </span><span class="p">}</span><span class="w">
     </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
@@ -972,7 +972,7 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
 <h2><a class="anchor" id="screenshotpath"></a>screenshotPath <a class="permalink" href="#screenshotpath">#</a></h2>
 <p>Enables screenshots and specifies the base directory where they are saved.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"screenshotPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/home/user/tests/screenshots/"</span><span class="w">
+    </span><span class="nl">"screenshotPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/home/user/tests/screenshots/"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>See <a href="common-concepts/screenshots-and-videos.html#screenshots">Screenshots</a> for details.</p>
@@ -982,7 +982,7 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
 <h2><a class="anchor" id="takescreenshotsonfails"></a>takeScreenshotsOnFails <a class="permalink" href="#takescreenshotsonfails">#</a></h2>
 <p>Specifies that a screenshot should be taken whenever a test fails.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"takeScreenshotsOnFails"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="nl">"takeScreenshotsOnFails"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>Screenshots are saved to the directory specified in the <a href="#screenshotpath">screenshotPath</a> option.</p>
@@ -992,7 +992,7 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
 <h2><a class="anchor" id="screenshotpathpattern"></a>screenshotPathPattern <a class="permalink" href="#screenshotpathpattern">#</a></h2>
 <p>Specifies a custom pattern to compose screenshot files&#39; relative path and name.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"screenshotPathPattern"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png"</span><span class="w">
+    </span><span class="nl">"screenshotPathPattern"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>See <a href="common-concepts/screenshots-and-videos.html#path-pattern-placeholders">Path Pattern Placeholders</a> for information about the available placeholders.</p>
@@ -1003,7 +1003,7 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
 <h2><a class="anchor" id="videopath"></a>videoPath <a class="permalink" href="#videopath">#</a></h2>
 <p>Enables TestCafe to record videos of test runs and specifies the base directory to save these videos.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"videoPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"reports/screen-captures"</span><span class="w">
+    </span><span class="nl">"videoPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"reports/screen-captures"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>See <a href="common-concepts/screenshots-and-videos.html#record-videos">Record Videos</a> for details.</p>
@@ -1013,10 +1013,10 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
 <h2><a class="anchor" id="videooptions"></a>videoOptions <a class="permalink" href="#videooptions">#</a></h2>
 <p>Specifies options that define how TestCafe records videos of test runs.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"videoOptions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nt">"singleFile"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-        </span><span class="nt">"failedOnly"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
-        </span><span class="nt">"pathPattern"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.mp4"</span><span class="w">
+    </span><span class="nl">"videoOptions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"singleFile"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"failedOnly"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"pathPattern"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.mp4"</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
@@ -1028,9 +1028,9 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
 <h2><a class="anchor" id="videoencodingoptions"></a>videoEncodingOptions <a class="permalink" href="#videoencodingoptions">#</a></h2>
 <p>Specifies video encoding options.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"videoEncodingOptions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nt">"r"</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w">
-        </span><span class="nt">"aspect"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4:3"</span><span class="w">
+    </span><span class="nl">"videoEncodingOptions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"r"</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"aspect"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4:3"</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
@@ -1042,7 +1042,7 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
 <h2><a class="anchor" id="quarantinemode"></a>quarantineMode <a class="permalink" href="#quarantinemode">#</a></h2>
 <p>Enables the <a href="programming-interface/runner.html#quarantine-mode">quarantine mode</a> for tests that fail.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"quarantineMode"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="nl">"quarantineMode"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p><em>CLI</em>: <a href="command-line-interface.html#-q---quarantine-mode">-q, --quarantine-mode</a><br>
@@ -1050,7 +1050,7 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
 <h2><a class="anchor" id="debugmode"></a>debugMode <a class="permalink" href="#debugmode">#</a></h2>
 <p>Runs tests in the debugging mode.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"debugMode"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="nl">"debugMode"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>See the <a href="command-line-interface.html#-d---debug-mode">--debug-mode</a> command line parameter for details.</p>
@@ -1060,7 +1060,7 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
 <h2><a class="anchor" id="debugonfail"></a>debugOnFail <a class="permalink" href="#debugonfail">#</a></h2>
 <p>Specifies whether to automatically enter the debug mode when a test fails.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"debugOnFail"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="nl">"debugOnFail"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>If this option is enabled, TestCafe pauses the test when it fails. This allows you to view the tested page and determine the cause of the fail.</p>
@@ -1072,7 +1072,7 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
 <h2><a class="anchor" id="skipjserrors"></a>skipJsErrors <a class="permalink" href="#skipjserrors">#</a></h2>
 <p>Ignores JavaScript errors on a webpage.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"skipJsErrors"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="nl">"skipJsErrors"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>When a JavaScript error occurs on a tested web page, TestCafe stops test execution and posts an error message and a stack trace to a report. To ignore JavaScript errors, set the <code>skipJsErrors</code> property to <code>true</code>.</p>
@@ -1082,7 +1082,7 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
 <h2><a class="anchor" id="skipuncaughterrors"></a>skipUncaughtErrors <a class="permalink" href="#skipuncaughterrors">#</a></h2>
 <p>Ignores uncaught errors and unhandled promise rejections in test code.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"skipUncaughtErrors"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="nl">"skipUncaughtErrors"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>When an uncaught error or unhandled promise rejection occurs on the server during test execution, TestCafe stops the test and posts an error message to a report. To ignore these errors, use the <code>skipUncaughtErrors</code> property.</p>
@@ -1094,8 +1094,8 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
 <h3><a class="anchor" id="filtertest"></a>filter.test <a class="permalink" href="#filtertest">#</a></h3>
 <p>Runs a test with the specified name.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"filter"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nt">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Click a label"</span><span class="w">
+    </span><span class="nl">"filter"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Click a label"</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
@@ -1104,8 +1104,8 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
 <h3><a class="anchor" id="filtertestgrep"></a>filter.testGrep <a class="permalink" href="#filtertestgrep">#</a></h3>
 <p>Runs tests whose names match the specified <code>grep</code> pattern.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"filter"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nt">"testGrep"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Click.*"</span><span class="w">
+    </span><span class="nl">"filter"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"testGrep"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Click.*"</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
@@ -1114,8 +1114,8 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
 <h3><a class="anchor" id="filterfixture"></a>filter.fixture <a class="permalink" href="#filterfixture">#</a></h3>
 <p>Runs a fixture with the specified name.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"filter"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nt">"fixture"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Sample fixture"</span><span class="w">
+    </span><span class="nl">"filter"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"fixture"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Sample fixture"</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
@@ -1124,8 +1124,8 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
 <h3><a class="anchor" id="filterfixturegrep"></a>filter.fixtureGrep <a class="permalink" href="#filterfixturegrep">#</a></h3>
 <p>Runs tests whose names match the specified <code>grep</code> pattern.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"filter"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nt">"fixtureGrep"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Page.*"</span><span class="w">
+    </span><span class="nl">"filter"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"fixtureGrep"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Page.*"</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
@@ -1134,10 +1134,10 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
 <h3><a class="anchor" id="filtertestmeta"></a>filter.testMeta <a class="permalink" href="#filtertestmeta">#</a></h3>
 <p>Runs tests whose <a href="../test-api/test-code-structure.html#specifying-testing-metadata">metadata</a> <a href="https://lodash.com/docs/#isMatch">matches</a> the specified key-value pair.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"filter"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nt">"testMeta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-            </span><span class="nt">"device"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mobile"</span><span class="p">,</span><span class="w">
-            </span><span class="nt">"env"</span><span class="p">:</span><span class="w"> </span><span class="s2">"production"</span><span class="w">
+    </span><span class="nl">"filter"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"testMeta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"device"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mobile"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"env"</span><span class="p">:</span><span class="w"> </span><span class="s2">"production"</span><span class="w">
         </span><span class="p">}</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
@@ -1149,10 +1149,10 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
 <h3><a class="anchor" id="filterfixturemeta"></a>filter.fixtureMeta <a class="permalink" href="#filterfixturemeta">#</a></h3>
 <p>Runs tests whose fixture&#39;s <a href="../test-api/test-code-structure.html#specifying-testing-metadata">metadata</a> <a href="https://lodash.com/docs/#isMatch">matches</a> the specified key-value pair.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"filter"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nt">"fixtureMeta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-            </span><span class="nt">"device"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mobile"</span><span class="p">,</span><span class="w">
-            </span><span class="nt">"env"</span><span class="p">:</span><span class="w"> </span><span class="s2">"production"</span><span class="w">
+    </span><span class="nl">"filter"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"fixtureMeta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"device"</span><span class="p">:</span><span class="w"> </span><span class="s2">"mobile"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"env"</span><span class="p">:</span><span class="w"> </span><span class="s2">"production"</span><span class="w">
         </span><span class="p">}</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
@@ -1164,7 +1164,7 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
 <h2><a class="anchor" id="appcommand"></a>appCommand <a class="permalink" href="#appcommand">#</a></h2>
 <p>Executes the specified shell command before running tests.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"appCommand"</span><span class="p">:</span><span class="w"> </span><span class="s2">"node server.js"</span><span class="w">
+    </span><span class="nl">"appCommand"</span><span class="p">:</span><span class="w"> </span><span class="s2">"node server.js"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>Use the <code>appCommand</code> property to launch the application you are going to test. This application is automatically terminated after testing is finished.</p>
@@ -1179,8 +1179,8 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
 
 <p>TestCafe waits for the specified time before it starts running tests.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"appCommand"</span><span class="p">:</span><span class="w"> </span><span class="s2">"node server.js"</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"appInitDelay"</span><span class="p">:</span><span class="w"> </span><span class="mi">3000</span><span class="w">
+    </span><span class="nl">"appCommand"</span><span class="p">:</span><span class="w"> </span><span class="s2">"node server.js"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"appInitDelay"</span><span class="p">:</span><span class="w"> </span><span class="mi">3000</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p><strong>Default value</strong>: <code>1000</code></p>
@@ -1190,7 +1190,7 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
 <h2><a class="anchor" id="concurrency"></a>concurrency <a class="permalink" href="#concurrency">#</a></h2>
 <p>Specifies the number of browser instances that should run tests concurrently.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"concurrency"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="w">
+    </span><span class="nl">"concurrency"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>TestCafe opens several instances of the same browser and creates a pool of browser instances. Tests are run concurrently against this pool, that is, each test is run in the first free instance.</p>
@@ -1202,7 +1202,7 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
 <h2><a class="anchor" id="selectortimeout"></a>selectorTimeout <a class="permalink" href="#selectortimeout">#</a></h2>
 <p>Specifies the time (in milliseconds) within which <a href="../test-api/selecting-page-elements/selectors/">selectors</a> attempt to obtain a node to be returned. See <a href="../test-api/selecting-page-elements/selectors/using-selectors.html#selector-timeout">Selector Timeout</a> for details.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"selectorTimeout"</span><span class="p">:</span><span class="w"> </span><span class="mi">3000</span><span class="w">
+    </span><span class="nl">"selectorTimeout"</span><span class="p">:</span><span class="w"> </span><span class="mi">3000</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p><strong>Default value</strong>: <code>10000</code></p>
@@ -1215,7 +1215,7 @@ if a <a href="../test-api/selecting-page-elements/selectors/using-selectors.html
 or a <a href="../test-api/obtaining-data-from-the-client/">client function</a> was passed as an actual value.
 See <a href="../test-api/assertions/#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a>.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"assertionTimeout"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="w">
+    </span><span class="nl">"assertionTimeout"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p><strong>Default value</strong>: <code>3000</code></p>
@@ -1227,7 +1227,7 @@ See <a href="../test-api/assertions/#smart-assertion-query-mechanism">Smart Asse
 
 <p>After the timeout passes or the <code>window.load</code> event is raised (whichever happens first), TestCafe starts the test.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"pageLoadTimeout"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="w">
+    </span><span class="nl">"pageLoadTimeout"</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p><strong>Default value</strong>: <code>3000</code></p>
@@ -1244,7 +1244,7 @@ to slow the test down.</p>
 
 <p>Provide a number between <code>1</code> (the fastest) and <code>0.01</code> (the slowest).</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"speed"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.1</span><span class="w">
+    </span><span class="nl">"speed"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.1</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p><strong>Default value</strong>: <code>1</code></p>
@@ -1256,16 +1256,16 @@ to slow the test down.</p>
 <h2><a class="anchor" id="clientscripts"></a>clientScripts <a class="permalink" href="#clientscripts">#</a></h2>
 <p>Injects scripts into pages visited during the tests. Use this property to introduce client-side mock functions or helper scripts.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"clientScripts"</span><span class="p">:</span><span class="w"> </span><span class="s2">"assets/jquery.js"</span><span class="w">
+    </span><span class="nl">"clientScripts"</span><span class="p">:</span><span class="w"> </span><span class="s2">"assets/jquery.js"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div><div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"clientScripts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="nl">"clientScripts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
         </span><span class="p">{</span><span class="w">
-            </span><span class="nt">"module"</span><span class="p">:</span><span class="w"> </span><span class="s2">"lodash"</span><span class="w">
+            </span><span class="nl">"module"</span><span class="p">:</span><span class="w"> </span><span class="s2">"lodash"</span><span class="w">
         </span><span class="p">},</span><span class="w">
         </span><span class="p">{</span><span class="w">
-            </span><span class="nt">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"scripts/react-helpers.js"</span><span class="p">,</span><span class="w">
-            </span><span class="nt">"page"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://myapp.com/page/"</span><span class="w">
+            </span><span class="nl">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"scripts/react-helpers.js"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"page"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://myapp.com/page/"</span><span class="w">
         </span><span class="p">}</span><span class="w">
     </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
@@ -1285,8 +1285,8 @@ to slow the test down.</p>
 <h2><a class="anchor" id="port1-port2"></a>port1, port2 <a class="permalink" href="#port1-port2">#</a></h2>
 <p>Specifies custom port numbers TestCafe uses to perform testing. The number range is [0-65535].</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"port1"</span><span class="p">:</span><span class="w"> </span><span class="mi">12345</span><span class="p">,</span><span class="w">
-    </span><span class="nt">"port2"</span><span class="p">:</span><span class="w"> </span><span class="mi">54321</span><span class="w">
+    </span><span class="nl">"port1"</span><span class="p">:</span><span class="w"> </span><span class="mi">12345</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"port2"</span><span class="p">:</span><span class="w"> </span><span class="mi">54321</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>TestCafe automatically selects ports if ports are not specified.</p>
@@ -1296,7 +1296,7 @@ to slow the test down.</p>
 <h2><a class="anchor" id="hostname"></a>hostname <a class="permalink" href="#hostname">#</a></h2>
 <p>Specifies your computer&#39;s hostname. It is used when you run tests in remote browsers.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"hostname"</span><span class="p">:</span><span class="w"> </span><span class="s2">"host.mycorp.com"</span><span class="w">
+    </span><span class="nl">"hostname"</span><span class="p">:</span><span class="w"> </span><span class="s2">"host.mycorp.com"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>If the hostname is not specified, TestCafe uses the operating system&#39;s hostname or the current machine&#39;s network IP address.</p>
@@ -1306,15 +1306,15 @@ to slow the test down.</p>
 <h2><a class="anchor" id="proxy"></a>proxy <a class="permalink" href="#proxy">#</a></h2>
 <p>Specifies the proxy server used in your local network to access the Internet.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"proxy"</span><span class="p">:</span><span class="w"> </span><span class="s2">"proxy.corp.mycompany.com"</span><span class="w">
+    </span><span class="nl">"proxy"</span><span class="p">:</span><span class="w"> </span><span class="s2">"proxy.corp.mycompany.com"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div><div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"proxy"</span><span class="p">:</span><span class="w"> </span><span class="s2">"172.0.10.10:8080"</span><span class="w">
+    </span><span class="nl">"proxy"</span><span class="p">:</span><span class="w"> </span><span class="s2">"172.0.10.10:8080"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>You can also specify authentication credentials with the proxy host.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"proxy"</span><span class="p">:</span><span class="w"> </span><span class="s2">"username:password@proxy.mycorp.com"</span><span class="w">
+    </span><span class="nl">"proxy"</span><span class="p">:</span><span class="w"> </span><span class="s2">"username:password@proxy.mycorp.com"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p><em>CLI</em>: <a href="command-line-interface.html#--proxy-host">--proxy</a><br>
@@ -1322,10 +1322,10 @@ to slow the test down.</p>
 <h2><a class="anchor" id="proxybypass"></a>proxyBypass <a class="permalink" href="#proxybypass">#</a></h2>
 <p>Requires that TestCafe bypasses the proxy server to access the specified resources.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"proxyBypass"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*.mycompany.com"</span><span class="w">
+    </span><span class="nl">"proxyBypass"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*.mycompany.com"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div><div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"proxyBypass"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"localhost:8080"</span><span class="p">,</span><span class="w"> </span><span class="s2">"internal-resource.corp.mycompany.com"</span><span class="p">]</span><span class="w">
+    </span><span class="nl">"proxyBypass"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"localhost:8080"</span><span class="p">,</span><span class="w"> </span><span class="s2">"internal-resource.corp.mycompany.com"</span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>See the <a href="command-line-interface.html#--proxy-bypass-rules">--proxy-bypass</a> command line parameter for details.</p>
@@ -1335,9 +1335,9 @@ to slow the test down.</p>
 <h2><a class="anchor" id="ssl"></a>ssl <a class="permalink" href="#ssl">#</a></h2>
 <p>Provides options that allow you to establish an HTTPS connection between the client browser and the TestCafe server.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"ssl"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nt">"pfx"</span><span class="p">:</span><span class="w"> </span><span class="s2">"path/to/file.pfx"</span><span class="p">,</span><span class="w">
-        </span><span class="nt">"rejectUnauthorized"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="nl">"ssl"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"pfx"</span><span class="p">:</span><span class="w"> </span><span class="s2">"path/to/file.pfx"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"rejectUnauthorized"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
@@ -1348,7 +1348,7 @@ to slow the test down.</p>
 <h2><a class="anchor" id="developmentmode"></a>developmentMode <a class="permalink" href="#developmentmode">#</a></h2>
 <p>Enables mechanisms to log and diagnose errors. You should enable this option if you are going to contact TestCafe Support to report an issue.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"developmentMode"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="nl">"developmentMode"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p><em>CLI</em>: <a href="command-line-interface.html#--dev">--dev</a><br>
@@ -1356,14 +1356,14 @@ to slow the test down.</p>
 <h2><a class="anchor" id="qrcode"></a>qrCode <a class="permalink" href="#qrcode">#</a></h2>
 <p>If you launch TestCafe from the console, this option outputs a QR-code that represents URLs used to connect the remote browsers.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"qrCode"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="nl">"qrCode"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p><em>CLI</em>: <a href="command-line-interface.html#--qr-code">--qr-code</a>  </p>
 <h2><a class="anchor" id="stoponfirstfail"></a>stopOnFirstFail <a class="permalink" href="#stoponfirstfail">#</a></h2>
 <p>Stops a test run if any test fails.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"stopOnFirstFail"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="nl">"stopOnFirstFail"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p><em>CLI</em>: <a href="command-line-interface.html#--sf---stop-on-first-fail">--sf, --stop-on-first-fail</a><br>
@@ -1371,7 +1371,7 @@ to slow the test down.</p>
 <h2><a class="anchor" id="tsconfigpath"></a>tsConfigPath <a class="permalink" href="#tsconfigpath">#</a></h2>
 <p>Enables TestCafe to use a custom <a href="../test-api/typescript-support.html#customize-compiler-options">TypeScript configuration file</a> and specifies its location.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"tsConfigPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/Users/s.johnson/testcafe/tsconfig.json"</span><span class="w">
+    </span><span class="nl">"tsConfigPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/Users/s.johnson/testcafe/tsconfig.json"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>You can specify an absolute or relative path. Relative paths resolve from the current directory (the directory from which you run TestCafe).</p>
@@ -1381,14 +1381,14 @@ to slow the test down.</p>
 <h2><a class="anchor" id="color"></a>color <a class="permalink" href="#color">#</a></h2>
 <p>Enables colors in the command line.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"color"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="nl">"color"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p><em>CLI</em>: <a href="command-line-interface.html#--color">--color</a></p>
 <h2><a class="anchor" id="nocolor"></a>noColor <a class="permalink" href="#nocolor">#</a></h2>
 <p>Disables colors in the command line.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"noColor"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="nl">"noColor"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p><em>CLI</em>: <a href="command-line-interface.html#--no-color">--no-color</a></p>

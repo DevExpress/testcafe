@@ -714,23 +714,23 @@
 <p>This topic describes how to integrate TestCafe tests into an <a href="https://azure.microsoft.com/en-us/services/devops/server/">Azure DevOps Server</a> and an <a href="https://azure.microsoft.com/en-us/services/devops/pipelines/">Azure Pipelines</a> project&#39;s build process.</p>
 <h2><a class="anchor" id="step-1---add-testcafe-dependency-to-the-project"></a>Step 1 - Add TestCafe Dependency to the Project <a class="permalink" href="#step-1---add-testcafe-dependency-to-the-project">#</a></h2>
 <p>Open the repository&#39;s root directory and execute the following command:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm install --save-dev testcafe
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm <span class="nb">install</span> <span class="nt">--save-dev</span> testcafe
 </code></pre></div>
 <p>This command installs the latest TestCafe version locally and adds it to the <code>devDependencies</code> section in the <code>package.json</code> file.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nt">"testcafe"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="w">
+    </span><span class="nl">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"testcafe"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div><h2><a class="anchor" id="step-2---provide-a-command-to-run-tests"></a>Step 2 - Provide a Command to Run Tests <a class="permalink" href="#step-2---provide-a-command-to-run-tests">#</a></h2>
 <p>The test run command that uses TestCafe should be also added to <code>package.json</code> to the <code>scripts</code> section because TestCafe is installed locally.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nt">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nt">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testcafe chrome:headless tests/**/*"</span><span class="w">
+    </span><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testcafe chrome:headless tests/**/*"</span><span class="w">
     </span><span class="p">},</span><span class="w">
 
-    </span><span class="nt">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nt">"testcafe"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="w">
+    </span><span class="nl">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"testcafe"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
@@ -739,20 +739,20 @@
 <p>Now you are ready to create a build task.</p>
 <h3><a class="anchor" id="configure-build-task-on-azure-pipelines"></a>Configure Build Task on Azure Pipelines <a class="permalink" href="#configure-build-task-on-azure-pipelines">#</a></h3>
 <p>Open <code>azure-pipelines.yml</code> or create it in the repository root and add the following <a href="https://docs.microsoft.com/en-us/azure/devops/pipelines/process/phases?view=vsts&tabs=yaml">job</a>:</p>
-<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="s">jobs</span><span class="pi">:</span>
-<span class="pi">-</span> <span class="s">job</span><span class="pi">:</span> <span class="s">e2e_tests</span>
-  <span class="s">pool</span><span class="pi">:</span>
-    <span class="s">vmImage</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Ubuntu</span><span class="nv"> </span><span class="s">16.04'</span>
-  <span class="s">steps</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="s">task</span><span class="pi">:</span> <span class="s">NodeTool@0</span>
-    <span class="s">inputs</span><span class="pi">:</span>
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="na">jobs</span><span class="pi">:</span>
+<span class="pi">-</span> <span class="na">job</span><span class="pi">:</span> <span class="s">e2e_tests</span>
+  <span class="na">pool</span><span class="pi">:</span>
+    <span class="na">vmImage</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Ubuntu</span><span class="nv"> </span><span class="s">16.04'</span>
+  <span class="na">steps</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">task</span><span class="pi">:</span> <span class="s">NodeTool@0</span>
+    <span class="na">inputs</span><span class="pi">:</span>
       <span class="c1"># Replace '10.14' with the latest Node.js LTS version</span>
-      <span class="s">versionSpec</span><span class="pi">:</span> <span class="s1">'</span><span class="s">10.14'</span>
-    <span class="s">displayName</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Install</span><span class="nv"> </span><span class="s">Node.js'</span>
-  <span class="pi">-</span> <span class="s">script</span><span class="pi">:</span> <span class="s">npm install</span>
-    <span class="s">displayName</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Install</span><span class="nv"> </span><span class="s">TestCafe'</span>
-  <span class="pi">-</span> <span class="s">script</span><span class="pi">:</span> <span class="s">npm test</span>
-    <span class="s">displayName</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Run</span><span class="nv"> </span><span class="s">TestCafe</span><span class="nv"> </span><span class="s">Tests'</span>
+      <span class="na">versionSpec</span><span class="pi">:</span> <span class="s1">'</span><span class="s">10.14'</span>
+    <span class="na">displayName</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Install</span><span class="nv"> </span><span class="s">Node.js'</span>
+  <span class="pi">-</span> <span class="na">script</span><span class="pi">:</span> <span class="s">npm install</span>
+    <span class="na">displayName</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Install</span><span class="nv"> </span><span class="s">TestCafe'</span>
+  <span class="pi">-</span> <span class="na">script</span><span class="pi">:</span> <span class="s">npm test</span>
+    <span class="na">displayName</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Run</span><span class="nv"> </span><span class="s">TestCafe</span><span class="nv"> </span><span class="s">Tests'</span>
 </code></pre></div>
 <ul>
 <li><code>jobs</code> - the list of <a href="https://docs.microsoft.com/en-us/azure/devops/pipelines/process/phases?view=vsts&tabs=yaml">jobs</a>.</li>

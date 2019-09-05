@@ -681,6 +681,13 @@
     <li>
 		    
 		
+<a href="/testcafe/documentation/test-api/test-code-structure.html#run-tests-by-metadata"  >Run Tests by Metadata</a>
+		
+    </li>
+
+    <li>
+		    
+		
 <a href="/testcafe/documentation/test-api/test-code-structure.html#using-metadata-in-reports"  >Using Metadata in Reports</a>
 		
     </li>
@@ -1123,19 +1130,19 @@
 <p>When performing certain actions on a tested web page (clicking buttons or links), it can redirect a browser to another page and you need to check if the desired page is open. For example, you are testing your web application&#39;s login form and need to verify if a particular web page opens after a user logs in.</p>
 
 <p>You can create a client function and use the <a href="https://www.w3schools.com/jsref/prop_loc_href.asp">window.location.href</a> property within it to return the URL of a page that is open on the client and then verify if the actual page URL matches the expected one using an <a href="../assertions/">assertion</a>. The sample below demonstrates how to do this.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">Fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//devexpress.github.io/testcafe/example`;</span>
+<span class="nx">fixture</span> <span class="s2">`My Fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://devexpress.github.io/testcafe/example`</span><span class="p">;</span>
 
 <span class="c1">//Returns the URL of the current web page</span>
-<span class="kr">const</span> <span class="nx">getPageUrl</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">getPageUrl</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="p">);</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'Check the page URL'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="s1">'#developer-name'</span><span class="p">,</span> <span class="s1">'John Smith'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">'#submit-button'</span><span class="p">)</span> <span class="c1">//Redirects to the 'Thank you' page</span>
-        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">getPageUrl</span><span class="p">()).</span><span class="nx">contains</span><span class="p">(</span><span class="s1">'thank-you'</span><span class="p">);</span> <span class="c1">//Checks if the current page URL contains the 'thank-you' string</span>
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Check the page URL</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="dl">'</span><span class="s1">#developer-name</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">John Smith</span><span class="dl">'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="dl">'</span><span class="s1">#submit-button</span><span class="dl">'</span><span class="p">)</span> <span class="c1">//Redirects to the 'Thank you' page</span>
+        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">getPageUrl</span><span class="p">()).</span><span class="nx">contains</span><span class="p">(</span><span class="dl">'</span><span class="s1">thank-you</span><span class="dl">'</span><span class="p">);</span> <span class="c1">//Checks if the current page URL contains the 'thank-you' string</span>
 <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" id="obtain-a-browser-alias-within-a-test"></a>Obtain a Browser Alias Within a Test <a class="permalink" href="#obtain-a-browser-alias-within-a-test">#</a></h2>
 <p>Sometimes you may need to determine a browser&#39;s alias from within a test. For example, you configured a test tasks using the <a href="../../using-testcafe/programming-interface/testcafe.html#createrunner">testCafe.createRunner</a> function and specified several browsers where the test should run: <code>runner.browsers([&#39;safari&#39;,&#39;chrome&#39;])</code>. However, the test logic should be different for different browsers. To do this, you need to detect which test instance corresponds to <code>safari</code> and which one corresponds to <code>chrome</code>.</p>
@@ -1143,47 +1150,47 @@
 <p>To obtain a browser&#39;s alias, create a client function that uses the <a href="https://www.w3schools.com/jsref/prop_nav_useragent.asp">navigator.userAgent</a> property. This function returns the browser&#39;s user-agent header, and you can use external modules (for example, <a href="https://github.com/faisalman/ua-parser-js">ua-parser-js</a>) to parse this header.</p>
 
 <p>The following sample demonstrates how to create a conditional test logic based on the browser. Before running this test, install <em>ua-parser-js</em> by running <code>npm install ua-parser-js</code>.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
-<span class="kr">import</span> <span class="nx">uaParser</span> <span class="nx">from</span> <span class="s1">'ua-parser-js'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
+<span class="k">import</span> <span class="nx">uaParser</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">ua-parser-js</span><span class="dl">'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">My</span> <span class="nx">fixture</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="err">`</span><span class="nx">http</span><span class="err">:</span><span class="c1">//example.com`;</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://example.com`</span><span class="p">;</span>
 
 <span class="c1">//Returns a user-agent header sent by the browser</span>
-<span class="kr">const</span> <span class="nx">getUA</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">navigator</span><span class="p">.</span><span class="nx">userAgent</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">getUA</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">navigator</span><span class="p">.</span><span class="nx">userAgent</span><span class="p">);</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kr">const</span> <span class="nx">ua</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">getUA</span><span class="p">();</span>
-    <span class="kr">const</span> <span class="nx">browserAlias</span> <span class="o">=</span><span class="nx">uaParser</span><span class="p">(</span><span class="nx">ua</span><span class="p">).</span><span class="nx">browser</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">My test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">ua</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">getUA</span><span class="p">();</span>
+    <span class="kd">const</span> <span class="nx">browserAlias</span> <span class="o">=</span><span class="nx">uaParser</span><span class="p">(</span><span class="nx">ua</span><span class="p">).</span><span class="nx">browser</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
 
     <span class="c1">//Some common actions</span>
 
     <span class="c1">//Conditional logic</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">browserAlias</span> <span class="o">===</span> <span class="s1">'Chrome'</span><span class="p">){</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">browserAlias</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">Chrome</span><span class="dl">'</span><span class="p">){</span>
         <span class="c1">//Test logic for Chrome</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'The browser is Chrome'</span><span class="p">);</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">The browser is Chrome</span><span class="dl">'</span><span class="p">);</span>
     <span class="p">}</span>
-    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">browserAlias</span> <span class="o">===</span> <span class="s1">'Safari'</span><span class="p">){</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">browserAlias</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">Safari</span><span class="dl">'</span><span class="p">){</span>
         <span class="c1">//Test logic for Safari</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'The browser is Safari'</span><span class="p">);</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">The browser is Safari</span><span class="dl">'</span><span class="p">);</span>
     <span class="p">}</span>
 <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" id="complex-dom-queries"></a>Complex DOM Queries <a class="permalink" href="#complex-dom-queries">#</a></h2>
 <p>Client functions can be helpful for complex DOM queries. For example, a tested page contains a table with some data, and you need to validate data from two columns only. To do this, obtain data from these columns, push them to an array and then compare the returned array with the expected one.</p>
 
 <p>Below is a sample test for the <a href="https://js.devexpress.com/">https://js.devexpress.com/</a> page that contains a grid. The sample demonstrates how to create a client function that returns an array containing data from the grid’s <strong>Customer</strong> and <strong>Sale Amount</strong> columns.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kr">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="nx">from</span> <span class="s1">'testcafe'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="err">`</span><span class="nx">Get</span> <span class="nx">sale</span> <span class="nx">amount</span><span class="err">`</span>
-    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="s1">'https://js.devexpress.com/'</span><span class="p">);</span>
+<span class="nx">fixture</span> <span class="s2">`Get sale amount`</span>
+    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://js.devexpress.com/</span><span class="dl">'</span><span class="p">);</span>
 
-    <span class="kr">const</span> <span class="nx">getSalesAmount</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="kr">const</span> <span class="nx">grid</span>      <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">'.dx-datagrid-rowsview'</span><span class="p">);</span>
-        <span class="kr">const</span> <span class="nx">rowCount</span>  <span class="o">=</span> <span class="nx">grid</span><span class="p">.</span><span class="nx">querySelectorAll</span><span class="p">(</span><span class="s1">'.dx-data-row'</span><span class="p">).</span><span class="nx">length</span><span class="p">;</span>
-        <span class="kr">const</span> <span class="nx">sales</span>     <span class="o">=</span> <span class="nx">grid</span><span class="p">.</span><span class="nx">querySelectorAll</span><span class="p">(</span><span class="s1">'td:nth-child(3)'</span><span class="p">);</span>
-        <span class="kr">const</span> <span class="nx">customers</span> <span class="o">=</span> <span class="nx">grid</span><span class="p">.</span><span class="nx">querySelectorAll</span><span class="p">(</span><span class="s1">'td:nth-child(7)'</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">getSalesAmount</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">grid</span>      <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">.dx-datagrid-rowsview</span><span class="dl">'</span><span class="p">);</span>
+        <span class="kd">const</span> <span class="nx">rowCount</span>  <span class="o">=</span> <span class="nx">grid</span><span class="p">.</span><span class="nx">querySelectorAll</span><span class="p">(</span><span class="dl">'</span><span class="s1">.dx-data-row</span><span class="dl">'</span><span class="p">).</span><span class="nx">length</span><span class="p">;</span>
+        <span class="kd">const</span> <span class="nx">sales</span>     <span class="o">=</span> <span class="nx">grid</span><span class="p">.</span><span class="nx">querySelectorAll</span><span class="p">(</span><span class="dl">'</span><span class="s1">td:nth-child(3)</span><span class="dl">'</span><span class="p">);</span>
+        <span class="kd">const</span> <span class="nx">customers</span> <span class="o">=</span> <span class="nx">grid</span><span class="p">.</span><span class="nx">querySelectorAll</span><span class="p">(</span><span class="dl">'</span><span class="s1">td:nth-child(7)</span><span class="dl">'</span><span class="p">);</span>
 
-        <span class="kr">const</span> <span class="nx">array</span> <span class="o">=</span> <span class="p">[];</span>
+        <span class="kd">const</span> <span class="nx">array</span> <span class="o">=</span> <span class="p">[];</span>
 
         <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">rowCount</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
             <span class="nx">array</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
@@ -1195,16 +1202,16 @@
         <span class="k">return</span> <span class="nx">array</span><span class="p">;</span>
     <span class="p">});</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="s1">'My test'</span><span class="p">,</span> <span class="nx">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">await</span> <span class="nx">t</span>
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">My test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">getSalesAmount</span><span class="p">()).</span><span class="nx">eql</span><span class="p">([</span>
-            <span class="p">{</span> <span class="na">sales</span><span class="p">:</span> <span class="s1">'$6,370'</span><span class="p">,</span> <span class="na">customer</span><span class="p">:</span> <span class="s1">'Renewable Supplies'</span> <span class="p">},</span>
-            <span class="p">{</span> <span class="na">sales</span><span class="p">:</span> <span class="s1">'$4,530'</span><span class="p">,</span> <span class="na">customer</span><span class="p">:</span> <span class="s1">'Apollo Inc'</span> <span class="p">},</span>
-            <span class="p">{</span> <span class="na">sales</span><span class="p">:</span> <span class="s1">'$1,110'</span><span class="p">,</span> <span class="na">customer</span><span class="p">:</span> <span class="s1">'Johnson &amp; Assoc'</span> <span class="p">},</span>
-            <span class="p">{</span> <span class="na">sales</span><span class="p">:</span> <span class="s1">'$6,600'</span><span class="p">,</span> <span class="na">customer</span><span class="p">:</span> <span class="s1">'Global Services'</span> <span class="p">},</span>
-            <span class="p">{</span> <span class="na">sales</span><span class="p">:</span> <span class="s1">'$2,830'</span><span class="p">,</span> <span class="na">customer</span><span class="p">:</span> <span class="s1">'Health Plus Inc'</span> <span class="p">},</span>
-            <span class="p">{</span> <span class="na">sales</span><span class="p">:</span> <span class="s1">'$6,770'</span><span class="p">,</span> <span class="na">customer</span><span class="p">:</span> <span class="s1">'Gemini Stores'</span> <span class="p">},</span>
-            <span class="p">{</span> <span class="na">sales</span><span class="p">:</span> <span class="s1">'$1,460'</span><span class="p">,</span> <span class="na">customer</span><span class="p">:</span> <span class="s1">'Discovery Systems'</span> <span class="p">}</span>
+            <span class="p">{</span> <span class="na">sales</span><span class="p">:</span> <span class="dl">'</span><span class="s1">$6,370</span><span class="dl">'</span><span class="p">,</span> <span class="na">customer</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Renewable Supplies</span><span class="dl">'</span> <span class="p">},</span>
+            <span class="p">{</span> <span class="na">sales</span><span class="p">:</span> <span class="dl">'</span><span class="s1">$4,530</span><span class="dl">'</span><span class="p">,</span> <span class="na">customer</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Apollo Inc</span><span class="dl">'</span> <span class="p">},</span>
+            <span class="p">{</span> <span class="na">sales</span><span class="p">:</span> <span class="dl">'</span><span class="s1">$1,110</span><span class="dl">'</span><span class="p">,</span> <span class="na">customer</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Johnson &amp; Assoc</span><span class="dl">'</span> <span class="p">},</span>
+            <span class="p">{</span> <span class="na">sales</span><span class="p">:</span> <span class="dl">'</span><span class="s1">$6,600</span><span class="dl">'</span><span class="p">,</span> <span class="na">customer</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Global Services</span><span class="dl">'</span> <span class="p">},</span>
+            <span class="p">{</span> <span class="na">sales</span><span class="p">:</span> <span class="dl">'</span><span class="s1">$2,830</span><span class="dl">'</span><span class="p">,</span> <span class="na">customer</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Health Plus Inc</span><span class="dl">'</span> <span class="p">},</span>
+            <span class="p">{</span> <span class="na">sales</span><span class="p">:</span> <span class="dl">'</span><span class="s1">$6,770</span><span class="dl">'</span><span class="p">,</span> <span class="na">customer</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Gemini Stores</span><span class="dl">'</span> <span class="p">},</span>
+            <span class="p">{</span> <span class="na">sales</span><span class="p">:</span> <span class="dl">'</span><span class="s1">$1,460</span><span class="dl">'</span><span class="p">,</span> <span class="na">customer</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Discovery Systems</span><span class="dl">'</span> <span class="p">}</span>
         <span class="p">]);</span>
 <span class="p">});</span>
 </code></pre></div>
