@@ -15,6 +15,7 @@ This topic contains the following sections:
   * [Setting Page Load Timeout](#setting-page-load-timeout)
 * [Specifying the Start Webpage](#specifying-the-start-webpage)
 * [Specifying Testing Metadata](#specifying-testing-metadata)
+  * [Run Tests by Metadata](#run-tests-by-metadata)
   * [Using Metadata in Reports](#using-metadata-in-reports)
 * [Initialization and Clean-Up](#initialization-and-clean-up)
   * [Test Hooks](#test-hooks)
@@ -333,19 +334,13 @@ test
     ('MyTest', async t => { /* ... */});
 ```
 
-All metadata entries specified for a fixture are applied to tests included in this fixture.
+### Run Tests by Metadata
 
-If you specified the same entries in the `test.meta` and `fixture.meta` methods, the `test.meta` method call overrides values of these entries. The following example demonstrates a `test.meta` method call that overrides the **creationDate** entry:
+You can run tests or fixtures whose metadata contains specific values. Use the following options to filter tests by metadata:
 
-```js
-fixture `My fixture`
-    .meta('creationDate', '05/03/2018')
-    .page `http://www.example.com/`;
-
-test
-    .meta('creationDate', '05/04/2018'); // The value of the creationDate entry is '05/04/2018'
-    ('MyTest', async t => { /* ... */});
-```
+* the [--test-meta](../using-testcafe/command-line-interface.md#--test-meta-keyvaluekey2value2) and [--fixture-meta](../using-testcafe/command-line-interface.md#--fixture-meta-keyvaluekey2value2) command line options
+* the `testMeta` and `fixtureMeta` parameters in the [runner.filter](../using-testcafe/programming-interface/runner.md#filter) method
+* the [filter.testMeta](../using-testcafe/configuration-file.md#filtertestmeta) and [filter.fixtureMeta](../using-testcafe/configuration-file.md#filterfixturemeta) configuration file properties
 
 ### Using Metadata in Reports
 
