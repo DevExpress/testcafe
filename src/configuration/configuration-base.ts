@@ -1,7 +1,5 @@
 import { isAbsolute } from 'path';
-// @ts-ignore Could not find a declaration file for module 'debug'
 import debug from 'debug';
-// @ts-ignore Could not find a declaration file for module 'debug'
 import JSON5 from 'json5';
 import { cloneDeep, castArray } from 'lodash';
 import { stat, readFile } from '../utils/promisified-functions';
@@ -148,7 +146,7 @@ export default class Configuration {
 
     private _parseConfigurationFileContent (configurationFileContent: Buffer): object | null {
         try {
-            return JSON5.parse(configurationFileContent);
+            return JSON5.parse(configurationFileContent.toString());
         }
         catch (error) {
             Configuration._showWarningForError(error, WARNING_MESSAGES.cannotParseConfigFile, this._filePath);
