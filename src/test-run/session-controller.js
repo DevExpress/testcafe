@@ -4,10 +4,11 @@ import { UNSTABLE_NETWORK_MODE_HEADER } from '../browser/connection/unstable-net
 
 
 const ACTIVE_SESSIONS_MAP = {};
+const UPLOADS_DIR_NAME = '_uploads_';
 
 export default class SessionController extends Session {
-    constructor (uploadsRoot) {
-        super(uploadsRoot);
+    constructor (uploadRoots) {
+        super(uploadRoots);
 
         this.currentTestRun = null;
     }
@@ -63,7 +64,13 @@ export default class SessionController extends Session {
             if (testRun.test.isLegacy)
                 session = testRun;
             else {
-                session = new SessionController(path.dirname(testRun.test.fixture.path));
+                const fixtureDir = path.dirname(testRun.test.fixture.path);
+
+                session = new SessionController([
+                    path.resolve(UPLOADS_DIR_NAME),
+                    path.resolve(fixtureDir, UPLOADS_DIR_NAME),
+                    fixtureDir
+                ]);
 
                 session.currentTestRun = testRun;
             }
