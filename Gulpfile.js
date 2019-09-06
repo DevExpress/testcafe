@@ -340,9 +340,9 @@ gulp.step('test-server-run', () => {
         }));
 });
 
-gulp.step('test-server-bootstrap', gulp.series(/*'build',*/ 'test-server-run'));
+gulp.step('test-server-bootstrap', gulp.series('build', 'test-server-run'));
 
-gulp.task('test-server', gulp.parallel(/*'check-licenses',*/ 'test-server-bootstrap'));
+gulp.task('test-server', gulp.parallel('check-licenses', 'test-server-bootstrap'));
 
 function testClient (tests, settings, envSettings, cliMode) {
     function runTests (env, runOpts) {
@@ -692,7 +692,7 @@ gulp.step('test-functional-local-run', () => {
     return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.localBrowsers);
 });
 
-gulp.task('test-functional-local', gulp.series(/*'build',*/ 'test-functional-local-run'));
+gulp.task('test-functional-local', gulp.series('build', 'test-functional-local-run'));
 
 gulp.step('test-functional-local-ie-run', () => {
     return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.localBrowsersIE);
