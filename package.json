@@ -132,6 +132,7 @@
     "@ffmpeg-installer/ffmpeg": "^1.0.17",
     "@types/chai": "^3.5.2",
     "@types/debug": "^4.1.5",
+    "@types/dedent": "^0.7.0",
     "@types/json5": "0.0.30",
     "@typescript-eslint/eslint-plugin": "^1.6.0",
     "@typescript-eslint/parser": "^1.6.0",

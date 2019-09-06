@@ -36,14 +36,14 @@ describe('CLI argument parser', function () {
         it('Should be parsed as array of aliases or paths', function () {
             return parse('path:"/Applications/Firefox.app",ie,chrome,firefox,')
                 .then(function (parser) {
-                    expect(parser.browsers).eql(['path:/Applications/Firefox.app', 'ie', 'chrome', 'firefox']);
+                    expect(parser.opts.browsers).eql(['path:/Applications/Firefox.app', 'ie', 'chrome', 'firefox']);
                 });
         });
 
         it('Should accept "remote" alias', function () {
             return parse('remote:12,ie,remote,chrome,remote:3')
                 .then(function (parser) {
-                    expect(parser.browsers).eql(['ie', 'chrome']);
+                    expect(parser.opts.browsers).eql(['ie', 'chrome']);
                     expect(parser.remoteCount).eql(16);
                 });
         });
@@ -51,14 +51,14 @@ describe('CLI argument parser', function () {
         it('Should accept "all" alias', function () {
             return parse('ie,chrome,all')
                 .then(function (parser) {
-                    expect(parser.browsers).eql(['ie', 'chrome', 'all']);
+                    expect(parser.opts.browsers).eql(['ie', 'chrome', 'all']);
                 });
         });
 
         it('Should split browsers correctly if paths have commas and quotes', function () {
             return parse('path:"/Apps,Libs/\'Firefox.app",ie,chrome,firefox,path:\'/Apps,Libs/"Chrome.app\'')
                 .then(function (parser) {
-                    expect(parser.browsers).eql([
+                    expect(parser.opts.browsers).eql([
                         'path:/Apps,Libs/\'Firefox.app', 'ie', 'chrome', 'firefox',
                         'path:/Apps,Libs/"Chrome.app'
                     ]);
@@ -68,7 +68,7 @@ describe('CLI argument parser', function () {
         it('Should split browsers correctly if providers have arguments', function () {
             return parse(['path:"/Apps/Firefox.app --arg1",chrome --arg2'])
                 .then(function (parser) {
-                    expect(parser.browsers).eql([
+                    expect(parser.opts.browsers).eql([
                         'path:/Apps/Firefox.app --arg1',
                         'chrome --arg2'
                     ]);
@@ -174,21 +174,21 @@ describe('CLI argument parser', function () {
         it('Should filter by test name with "-t, --test" option', function () {
             return parse('-t test.js')
                 .then(function (parser) {
-                    expect(parser.filter('test.js')).to.be.true;
-                    expect(parser.filter('1test.js')).to.be.false;
-                    expect(parser.filter('test-js')).to.be.false;
+                    expect(parser.opts.filter('test.js')).to.be.true;
+                    expect(parser.opts.filter('1test.js')).to.be.false;
+                    expect(parser.opts.filter('test-js')).to.be.false;
                 });
         });
 
         it('Should filter by test name with "-T, --test-grep" option', function () {
             parse('-T ^test\\d+$')
                 .then(function (parser) {
-                    expect(parser.filter.testGrep.test('test1')).to.be.true;
-                    expect(parser.filter.testGrep.test('test')).to.be.false;
+                    expect(parser.opts.filter.testGrep.test('test1')).to.be.true;
+                    expect(parser.opts.filter.testGrep.test('test')).to.be.false;
 
-                    expect(parser.filter('test1')).to.be.true;
-                    expect(parser.filter('test2')).to.be.true;
-                    expect(parser.filter('test')).to.be.false;
+                    expect(parser.opts.filter('test1')).to.be.true;
+                    expect(parser.opts.filter('test2')).to.be.true;
+                    expect(parser.opts.filter('test')).to.be.false;
                 });
         });
 
@@ -199,21 +199,21 @@ describe('CLI argument parser', function () {
         it('Should filter by fixture name with "-f, --fixture" option', function () {
             return parse('-f fixture.js')
                 .then(function (parser) {
-                    expect(parser.filter('test', 'fixture.js')).to.be.true;
-                    expect(parser.filter('test', '1fixture.js')).to.be.false;
-                    expect(parser.filter('test', 'fixture-js')).to.be.false;
+                    expect(parser.opts.filter('test', 'fixture.js')).to.be.true;
+                    expect(parser.opts.filter('test', '1fixture.js')).to.be.false;
+                    expect(parser.opts.filter('test', 'fixture-js')).to.be.false;
                 });
         });
 
         it('Should filter by fixture name with "-F, --fixture-grep" option', function () {
             return parse('-F ^fixture\\d+$')
                 .then(function (parser) {
-                    expect(parser.filter.fixtureGrep.test('fixture1')).to.be.true;
-                    expect(parser.filter.fixtureGrep.test('fixture')).to.be.false;
+                    expect(parser.opts.filter.fixtureGrep.test('fixture1')).to.be.true;
+                    expect(parser.opts.filter.fixtureGrep.test('fixture')).to.be.false;
 
-                    expect(parser.filter('test', 'fixture1')).to.be.true;
-                    expect(parser.filter('test', 'fixture2')).to.be.true;
-                    expect(parser.filter('test', 'fixture')).to.be.false;
+                    expect(parser.opts.filter('test', 'fixture1')).to.be.true;
+                    expect(parser.opts.filter('test', 'fixture2')).to.be.true;
+                    expect(parser.opts.filter('test', 'fixture')).to.be.false;
                 });
         });
 
@@ -224,25 +224,25 @@ describe('CLI argument parser', function () {
         it('Should filter by test meta with "--test-meta" option', function () {
             return parse('--test-meta meta=test')
                 .then(function (parser) {
-                    expect(parser.filter.testMeta).to.be.deep.equal({ meta: 'test' });
+                    expect(parser.opts.filter.testMeta).to.be.deep.equal({ meta: 'test' });
 
-                    expect(parser.filter(null, null, null, { meta: 'test' })).to.be.true;
-                    expect(parser.filter(null, null, null, { another: 'meta', meta: 'test' })).to.be.true;
-                    expect(parser.filter(null, null, null, {})).to.be.false;
-                    expect(parser.filter(null, null, null, { meta: 'notest' })).to.be.false;
+                    expect(parser.opts.filter(null, null, null, { meta: 'test' })).to.be.true;
+                    expect(parser.opts.filter(null, null, null, { another: 'meta', meta: 'test' })).to.be.true;
+                    expect(parser.opts.filter(null, null, null, {})).to.be.false;
+                    expect(parser.opts.filter(null, null, null, { meta: 'notest' })).to.be.false;
                 });
         });
 
         it('Should filter by fixture meta with "--fixture-meta" option', function () {
             return parse('--fixture-meta meta=test,more=meta')
                 .then(function (parser) {
-                    expect(parser.filter.fixtureMeta).to.be.deep.equal({ meta: 'test', more: 'meta' });
+                    expect(parser.opts.fixtureMeta).to.be.deep.equal({ meta: 'test', more: 'meta' });
 
-                    expect(parser.filter(null, null, null, null, { meta: 'test', more: 'meta' })).to.be.true;
-                    expect(parser.filter(null, null, null, null, { another: 'meta', meta: 'test', more: 'meta' })).to.be.true;
-                    expect(parser.filter(null, null, null, null, {})).to.be.false;
-                    expect(parser.filter(null, null, null, null, { meta: 'test' })).to.be.false;
-                    expect(parser.filter(null, null, null, null, { meta: 'test', more: 'another' })).to.be.false;
+                    expect(parser.opts.filter(null, null, null, null, { meta: 'test', more: 'meta' })).to.be.true;
+                    expect(parser.opts.filter(null, null, null, null, { another: 'meta', meta: 'test', more: 'meta' })).to.be.true;
+                    expect(parser.opts.filter(null, null, null, null, {})).to.be.false;
+                    expect(parser.opts.filter(null, null, null, null, { meta: 'test' })).to.be.false;
+                    expect(parser.opts.filter(null, null, null, null, { meta: 'test', more: 'another' })).to.be.false;
                 });
         });
 
@@ -291,105 +291,105 @@ describe('CLI argument parser', function () {
         it('Should combine filters provided by multiple options', function () {
             return parse('-t thetest1 -T test\\d+$')
                 .then(function (parser) {
-                    expect(parser.filter('thetest1')).to.be.true;
-                    expect(parser.filter('thetest2')).to.be.false;
+                    expect(parser.opts.filter('thetest1')).to.be.true;
+                    expect(parser.opts.filter('thetest2')).to.be.false;
                 })
                 .then(function () {
                     return parse('-t thetest1 -T test$ ');
                 })
                 .then(function (parser) {
-                    expect(parser.filter('thetest1')).to.be.false;
-                    expect(parser.filter('thetest')).to.be.false;
+                    expect(parser.opts.filter('thetest1')).to.be.false;
+                    expect(parser.opts.filter('thetest')).to.be.false;
                 })
                 .then(function () {
                     return parse('-f thefixture1 -F fixture\\d+$');
                 })
                 .then(function (parser) {
-                    expect(parser.filter(null, 'thefixture1')).to.be.true;
-                    expect(parser.filter(null, 'thefixture2')).to.be.false;
+                    expect(parser.opts.filter(null, 'thefixture1')).to.be.true;
+                    expect(parser.opts.filter(null, 'thefixture2')).to.be.false;
                 })
                 .then(function () {
                     return parse('-f thefixture1 -F fixture$');
                 })
                 .then(function (parser) {
-                    expect(parser.filter(null, 'thefixture1')).to.be.false;
-                    expect(parser.filter(null, 'thefixture')).to.be.false;
+                    expect(parser.opts.filter(null, 'thefixture1')).to.be.false;
+                    expect(parser.opts.filter(null, 'thefixture')).to.be.false;
                 })
                 .then(function () {
                     return parse('-t thetest1 -f thefixture1');
                 })
                 .then(function (parser) {
-                    expect(parser.filter('thetest1', 'thefixture1')).to.be.true;
-                    expect(parser.filter('thetest', 'thefixture1')).to.be.false;
-                    expect(parser.filter('thetest1', 'thefixture')).to.be.false;
+                    expect(parser.opts.filter('thetest1', 'thefixture1')).to.be.true;
+                    expect(parser.opts.filter('thetest', 'thefixture1')).to.be.false;
+                    expect(parser.opts.filter('thetest1', 'thefixture')).to.be.false;
                 })
                 .then(function () {
                     return parse('-T test\\d+$ -f thefixture1 -F fixture\\d+$');
                 })
                 .then(function (parser) {
-                    expect(parser.filter('thetest1', 'thefixture1')).to.be.true;
-                    expect(parser.filter('thetest', 'thefixture1')).to.be.false;
-                    expect(parser.filter('thetest1', 'thefixture')).to.be.false;
+                    expect(parser.opts.filter('thetest1', 'thefixture1')).to.be.true;
+                    expect(parser.opts.filter('thetest', 'thefixture1')).to.be.false;
+                    expect(parser.opts.filter('thetest1', 'thefixture')).to.be.false;
                 })
                 .then(function () {
                     return parse('-t thetest1 --test-meta meta=test');
                 })
                 .then(function (parser) {
-                    expect(parser.filter('thetest1', null, null, { meta: 'test' })).to.be.true;
-                    expect(parser.filter('thetest1', null, null, {})).to.be.false;
-                    expect(parser.filter('thetest2', null, null, { meta: 'test' })).to.be.false;
+                    expect(parser.opts.filter('thetest1', null, null, { meta: 'test' })).to.be.true;
+                    expect(parser.opts.filter('thetest1', null, null, {})).to.be.false;
+                    expect(parser.opts.filter('thetest2', null, null, { meta: 'test' })).to.be.false;
                 })
                 .then(function () {
                     return parse('-f thefixture1 --test-meta meta=test');
                 })
                 .then(function (parser) {
-                    expect(parser.filter(null, 'thefixture1', null, { meta: 'test' })).to.be.true;
-                    expect(parser.filter(null, 'thefixture1', null, {})).to.be.false;
-                    expect(parser.filter(null, 'thefixture2', null, { meta: 'test' })).to.be.false;
+                    expect(parser.opts.filter(null, 'thefixture1', null, { meta: 'test' })).to.be.true;
+                    expect(parser.opts.filter(null, 'thefixture1', null, {})).to.be.false;
+                    expect(parser.opts.filter(null, 'thefixture2', null, { meta: 'test' })).to.be.false;
                 })
                 .then(function () {
                     return parse('-t thetest1 -f thefixture1 --test-meta meta=test');
                 })
                 .then(function (parser) {
-                    expect(parser.filter('thetest1', 'thefixture1', null, { meta: 'test' })).to.be.true;
-                    expect(parser.filter('thetest1', 'thefixture1', null, {})).to.be.false;
-                    expect(parser.filter('thetest1', 'thefixture2', null, { meta: 'test' })).to.be.false;
-                    expect(parser.filter('thetest2', 'thefixture1', null, { meta: 'test' })).to.be.false;
+                    expect(parser.opts.filter('thetest1', 'thefixture1', null, { meta: 'test' })).to.be.true;
+                    expect(parser.opts.filter('thetest1', 'thefixture1', null, {})).to.be.false;
+                    expect(parser.opts.filter('thetest1', 'thefixture2', null, { meta: 'test' })).to.be.false;
+                    expect(parser.opts.filter('thetest2', 'thefixture1', null, { meta: 'test' })).to.be.false;
                 })
                 .then(function () {
                     return parse('-t thetest1 --fixture-meta meta=test');
                 })
                 .then(function (parser) {
-                    expect(parser.filter('thetest1', null, null, null, { meta: 'test' })).to.be.true;
-                    expect(parser.filter('thetest1', null, null, null, {})).to.be.false;
-                    expect(parser.filter('thetest2', null, null, null, { meta: 'test' })).to.be.false;
+                    expect(parser.opts.filter('thetest1', null, null, null, { meta: 'test' })).to.be.true;
+                    expect(parser.opts.filter('thetest1', null, null, null, {})).to.be.false;
+                    expect(parser.opts.filter('thetest2', null, null, null, { meta: 'test' })).to.be.false;
                 })
                 .then(function () {
                     return parse('-f thefixture1 --fixture-meta meta=test');
                 })
                 .then(function (parser) {
-                    expect(parser.filter(null, 'thefixture1', null, null, { meta: 'test' })).to.be.true;
-                    expect(parser.filter(null, 'thefixture1', null, null, {})).to.be.false;
-                    expect(parser.filter(null, 'thefixture2', null, null, { meta: 'test' })).to.be.false;
+                    expect(parser.opts.filter(null, 'thefixture1', null, null, { meta: 'test' })).to.be.true;
+                    expect(parser.opts.filter(null, 'thefixture1', null, null, {})).to.be.false;
+                    expect(parser.opts.filter(null, 'thefixture2', null, null, { meta: 'test' })).to.be.false;
                 })
                 .then(function () {
                     return parse('-t thetest1 -f thefixture1 --fixture-meta meta=test');
                 })
                 .then(function (parser) {
-                    expect(parser.filter('thetest1', 'thefixture1', null, null, { meta: 'test' })).to.be.true;
-                    expect(parser.filter('thetest1', 'thefixture1', null, null, {})).to.be.false;
-                    expect(parser.filter('thetest1', 'thefixture2', null, null, { meta: 'test' })).to.be.false;
-                    expect(parser.filter('thetest2', 'thefixture1', null, null, { meta: 'test' })).to.be.false;
+                    expect(parser.opts.filter('thetest1', 'thefixture1', null, null, { meta: 'test' })).to.be.true;
+                    expect(parser.opts.filter('thetest1', 'thefixture1', null, null, {})).to.be.false;
+                    expect(parser.opts.filter('thetest1', 'thefixture2', null, null, { meta: 'test' })).to.be.false;
+                    expect(parser.opts.filter('thetest2', 'thefixture1', null, null, { meta: 'test' })).to.be.false;
                 })
                 .then(function () {
                     return parse('-t thetest1 -f thefixture1 --test-meta test=test --fixture-meta fixture=test');
                 })
                 .then(function (parser) {
-                    expect(parser.filter('thetest1', 'thefixture1', null, { test: 'test' }, { fixture: 'test' })).to.be.true;
-                    expect(parser.filter('thetest1', 'thefixture1', null, {}, { fixture: 'test' })).to.be.false;
-                    expect(parser.filter('thetest1', 'thefixture1', null, { test: 'test' }, {})).to.be.false;
-                    expect(parser.filter('thetest1', 'thefixture2', null, { test: 'test' }, { fixture: 'test' })).to.be.false;
-                    expect(parser.filter('thetest2', 'thefixture1', null, { test: 'test' }, { fixture: 'test' })).to.be.false;
+                    expect(parser.opts.filter('thetest1', 'thefixture1', null, { test: 'test' }, { fixture: 'test' })).to.be.true;
+                    expect(parser.opts.filter('thetest1', 'thefixture1', null, {}, { fixture: 'test' })).to.be.false;
+                    expect(parser.opts.filter('thetest1', 'thefixture1', null, { test: 'test' }, {})).to.be.false;
+                    expect(parser.opts.filter('thetest1', 'thefixture2', null, { test: 'test' }, { fixture: 'test' })).to.be.false;
+                    expect(parser.opts.filter('thetest2', 'thefixture1', null, { test: 'test' }, { fixture: 'test' })).to.be.false;
                 });
         });
 
@@ -521,8 +521,8 @@ describe('CLI argument parser', function () {
     it('Should parse command line arguments', function () {
         return parse('-r list -S -q -e --hostname myhost --proxy localhost:1234 --proxy-bypass localhost:5678 --qr-code --app run-app --speed 0.5 --debug-on-fail --disable-page-reloads --dev --sf --disable-page-caching ie test/server/data/file-list/file-1.js')
             .then(parser => {
-                expect(parser.browsers).eql(['ie']);
-                expect(parser.src).eql(['test/server/data/file-list/file-1.js']);
+                expect(parser.opts.browsers).eql(['ie']);
+                expect(parser.opts.src).eql(['test/server/data/file-list/file-1.js']);
                 expect(parser.opts.reporter[0].name).eql('list');
                 expect(parser.opts.hostname).eql('myhost');
                 expect(parser.opts.app).eql('run-app');
@@ -601,5 +601,15 @@ describe('CLI argument parser', function () {
             expect(option.long).eql(EXPECTED_OPTIONS[i].long, WARNING);
             expect(option.short).eql(EXPECTED_OPTIONS[i].short, WARNING);
         }
+    });
+
+    it('run options', () => {
+        return parse('ie,chrome test.js --debug-on-fail')
+            .then(parser => {
+                const runOpts = parser.getRunOptions();
+
+                expect(runOpts.debugOnFail).eql(true);
+                expect(runOpts.browsers).to.be.undefined;
+            });
     });
 });

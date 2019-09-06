@@ -25,20 +25,20 @@ async function getBrowserInfo (browser) {
 export default async function (args, configuration) {
     const browsersOption = configuration.getOption(OPTION_NAMES.browsers);
 
-    if (!args.browsers || !args.browsers.length)
-        return { browsers: [], sources: args.src };
+    if (!args.opts.browsers || !args.opts.browsers.length)
+        return { browsers: [], sources: args.opts.src };
 
     if (!browsersOption || !browsersOption.length)
-        return { browsers: args.browsers, sources: args.src };
+        return { browsers: args.opts.browsers, sources: args.opts.src };
 
-    const browserInfo              = await Promise.all(args.browsers.map(browser => getBrowserInfo(browser)));
+    const browserInfo              = await Promise.all(args.opts.browsers.map(browser => getBrowserInfo(browser)));
     const [parsedInfo, failedInfo] = partition(browserInfo, info => !info.error);
 
     if (parsedInfo.length === browserInfo.length)
-        return { browsers: args.browsers, sources: args.src };
+        return { browsers: args.opts.browsers, sources: args.opts.src };
 
     if (!parsedInfo.length)
-        return { browsers: [], sources: [args.args[0], ...args.src] };
+        return { browsers: [], sources: [args.args[0], ...args.opts.src] };
 
     throw new CompositeError(failedInfo.map(info => info.error));
 }

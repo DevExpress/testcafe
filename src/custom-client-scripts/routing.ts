@@ -2,8 +2,9 @@ import getCustomClientScriptUrl from './get-url';
 import getCustomClientScriptCode from './get-code';
 import CONTENT_TYPES from '../assets/content-types';
 import ClientScript from './client-script';
+import { Proxy } from 'testcafe-hammerhead';
 
-export function register (proxy: any, tests: any[]): string[] {
+export function register (proxy: Proxy, tests: any[]): string[] {
     const routes: string[] = [];
 
     tests.forEach(test => {
@@ -25,7 +26,7 @@ export function register (proxy: any, tests: any[]): string[] {
     return routes;
 }
 
-export function unRegister (proxy: any, routes: string[]): void {
+export function unRegister (proxy: Proxy, routes: string[]): void {
     routes.forEach(route => {
         proxy.unRegisterRoute(route, 'GET');
     });

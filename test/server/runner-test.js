@@ -977,12 +977,13 @@ describe('Runner', () => {
         });
     });
 
-    it('Should interpret the empty array of the arguments as the "undefined" value (only in CLI mode for "browsers" and "src" methods)', () => {
+    it('Should interpret the empty array of the arguments as the "undefined" value', () => {
         runner.isCli = true;
 
         runner
             .src('/path-to-test')
-            .browsers('ie');
+            .browsers('ie')
+            .reporter('json');
 
         runner.apiMethodWasCalled.reset();
 
@@ -992,5 +993,6 @@ describe('Runner', () => {
 
         expect(runner.configuration.getOption('src')).eql(['/path-to-test']);
         expect(runner.configuration.getOption('browsers')).eql(['ie']);
+        expect(runner.configuration.getOption('reporter')).eql([ { name: 'json', output: void 0 } ]);
     });
 });
