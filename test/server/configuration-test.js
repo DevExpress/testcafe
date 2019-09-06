@@ -7,34 +7,35 @@ const tmp           = require('tmp');
 const nanoid        = require('nanoid');
 
 const TestCafeConfiguration                   = require('../../lib/configuration/testcafe-configuration');
-const TypescriptConfiguration                 = require('../../lib/configuration/typescript-configuration');
+const TypeScriptConfiguration                 = require('../../lib/configuration/typescript-configuration');
 const { DEFAULT_TYPESCRIPT_COMPILER_OPTIONS } = require('../../lib/configuration/default-values');
 const consoleWrapper                          = require('./helpers/console-wrapper');
 
-let configuration     = null;
-let configPath        = null;
-let keyFileContent    = null;
+const tsConfigPath           = 'tsconfig.json';
+const customTSConfigFilePath = 'custom-config.json';
 
-const createConfigFile = options => {
+const createConfigFile = (path, options) => {
     options = options || {};
-    fs.writeFileSync(configPath, JSON.stringify(options));
+    fs.writeFileSync(path, JSON.stringify(options));
 };
 
-describe('TestCafeConfiguration', () => {
-    consoleWrapper.init();
+const createTestCafeConfigurationFile   = createConfigFile.bind(null, TestCafeConfiguration.FILENAME);
+const createTypeScriptConfigurationFile = createConfigFile.bind(null, tsConfigPath);
 
+describe('TestCafeConfiguration', () => {
+    const testCafeConfiguration = new TestCafeConfiguration();
+    let keyFileContent          = null;
+
+    consoleWrapper.init();
     tmp.setGracefulCleanup();
 
     beforeEach(() => {
-        configuration = new TestCafeConfiguration();
-        configPath    = configuration.filePath;
-
         const keyFile = tmp.fileSync();
 
         keyFileContent = Buffer.from(nanoid());
         fs.writeFileSync(keyFile.name, keyFileContent);
 
-        createConfigFile({
+        createTestCafeConfigurationFile({
             'hostname': '123.456.789',
             'port1':    1234,
             'port2':    5678,
@@ -58,8 +59,8 @@ describe('TestCafeConfiguration', () => {
     });
 
     afterEach(() => {
-        if (fs.existsSync(configPath))
-            fs.unlinkSync(configPath);
+        if (fs.existsSync(testCafeConfiguration.filePath))
+            fs.unlinkSync(testCafeConfiguration.filePath);
 
         consoleWrapper.unwrap();
         consoleWrapper.messages.clear();
@@ -68,79 +69,79 @@ describe('TestCafeConfiguration', () => {
     describe('Init', () => {
         describe('Exists', () => {
             it('Config is not well-formed', () => {
-                fs.writeFileSync(configPath, '{');
+                fs.writeFileSync(testCafeConfiguration.filePath, '{');
                 consoleWrapper.wrap();
 
-                return configuration.init()
+                return testCafeConfiguration.init()
                     .then(() => {
                         consoleWrapper.unwrap();
 
-                        expect(configuration.getOption('hostname')).eql(void 0);
-                        expect(consoleWrapper.messages.log).contains("Failed to parse the '.testcaferc.json' file.");
+                        expect(testCafeConfiguration.getOption('hostname')).eql(void 0);
+                        expect(consoleWrapper.messages.log).contains(`Failed to parse the '${testCafeConfiguration.filePath}' file.`);
                     });
             });
 
             it('Options', () => {
-                return configuration.init()
+                return testCafeConfiguration.init()
                     .then(() => {
-                        expect(configuration.getOption('hostname')).eql('123.456.789');
-                        expect(configuration.getOption('port1')).eql(1234);
+                        expect(testCafeConfiguration.getOption('hostname')).eql('123.456.789');
+                        expect(testCafeConfiguration.getOption('port1')).eql(1234);
 
-                        const ssl = configuration.getOption('ssl');
+                        const ssl = testCafeConfiguration.getOption('ssl');
 
                         expect(ssl.key).eql(keyFileContent);
                         expect(ssl.rejectUnauthorized).eql(true);
-                        expect(configuration.getOption('src')).eql([ 'path1/folder' ]);
-                        expect(configuration.getOption('browsers')).eql([ 'ie' ]);
-                        expect(configuration.getOption('concurrency')).eql(0.5);
-                        expect(configuration.getOption('filter')).to.be.a('function');
-                        expect(configuration.getOption('filter').testGrep.test('test1')).to.be.true;
-                        expect(configuration.getOption('filter').fixtureGrep.test('fixture1')).to.be.true;
-                        expect(configuration.getOption('filter').testMeta).to.be.deep.equal({ test: 'meta' });
-                        expect(configuration.getOption('filter').fixtureMeta).to.be.deep.equal({ fixture: 'meta' });
-                        expect(configuration.getOption('clientScripts')).eql([ 'test-client-script.js' ]);
+                        expect(testCafeConfiguration.getOption('src')).eql([ 'path1/folder' ]);
+                        expect(testCafeConfiguration.getOption('browsers')).eql([ 'ie' ]);
+                        expect(testCafeConfiguration.getOption('concurrency')).eql(0.5);
+                        expect(testCafeConfiguration.getOption('filter')).to.be.a('function');
+                        expect(testCafeConfiguration.getOption('filter').testGrep.test('test1')).to.be.true;
+                        expect(testCafeConfiguration.getOption('filter').fixtureGrep.test('fixture1')).to.be.true;
+                        expect(testCafeConfiguration.getOption('filter').testMeta).to.be.deep.equal({ test: 'meta' });
+                        expect(testCafeConfiguration.getOption('filter').fixtureMeta).to.be.deep.equal({ fixture: 'meta' });
+                        expect(testCafeConfiguration.getOption('clientScripts')).eql([ 'test-client-script.js' ]);
                     });
             });
 
             it('"Reporter" option', () => {
                 let optionValue = null;
 
-                createConfigFile({
+                createTestCafeConfigurationFile({
                     reporter: 'json'
                 });
 
-                return configuration
+                return testCafeConfiguration
                     .init()
                     .then(() => {
-                        optionValue = configuration.getOption('reporter');
+                        optionValue = testCafeConfiguration.getOption('reporter');
 
                         expect(optionValue.length).eql(1);
                         expect(optionValue[0].name).eql('json');
 
-                        createConfigFile({
+                        createTestCafeConfigurationFile({
                             reporter: ['json', 'minimal']
                         });
 
-                        return configuration.init();
+                        return testCafeConfiguration.init();
                     })
                     .then(() => {
-                        optionValue = configuration.getOption('reporter');
+                        optionValue = testCafeConfiguration.getOption('reporter');
 
                         expect(optionValue.length).eql(2);
                         expect(optionValue[0].name).eql('json');
                         expect(optionValue[1].name).eql('minimal');
 
-                        createConfigFile({
+                        createTestCafeConfigurationFile({
                             reporter: [ {
                                 name: 'json',
                                 file: 'path/to/file'
                             }]
                         });
 
-                        return configuration.init();
+                        return testCafeConfiguration.init();
                     })
                     .then(() => {
-                        optionValue = configuration.getOption('reporter');
+                        optionValue = testCafeConfiguration.getOption('reporter');
 
                         expect(optionValue.length).eql(1);
                         expect(optionValue[0].name).eql('json');
@@ -150,13 +151,13 @@ describe('TestCafeConfiguration', () => {
         });
 
         it('File doesn\'t exists', () => {
-            fs.unlinkSync(configPath);
+            fs.unlinkSync(testCafeConfiguration.filePath);
 
-            const defaultOptions = cloneDeep(configuration._options);
+            const defaultOptions = cloneDeep(testCafeConfiguration._options);
 
-            return configuration.init()
+            return testCafeConfiguration.init()
                 .then(() => {
-                    expect(configuration._options).to.deep.equal(defaultOptions);
+                    expect(testCafeConfiguration._options).to.deep.equal(defaultOptions);
                 });
         });
     });
@@ -165,14 +166,14 @@ describe('TestCafeConfiguration', () => {
         it('One', () => {
             consoleWrapper.wrap();
 
-            return configuration.init()
+            return testCafeConfiguration.init()
                 .then(() => {
-                    configuration.mergeOptions({ 'hostname': 'anotherHostname' });
-                    configuration.notifyAboutOverridenOptions();
+                    testCafeConfiguration.mergeOptions({ 'hostname': 'anotherHostname' });
+                    testCafeConfiguration.notifyAboutOverriddenOptions();
 
                     consoleWrapper.unwrap();
 
-                    expect(configuration.getOption('hostname')).eql('anotherHostname');
+                    expect(testCafeConfiguration.getOption('hostname')).eql('anotherHostname');
                     expect(consoleWrapper.messages.log).eql('The "hostname" option from the configuration file will be ignored.');
                 });
         });
@@ -180,61 +181,74 @@ describe('TestCafeConfiguration', () => {
         it('Many', () => {
             consoleWrapper.wrap();
 
-            return configuration.init()
+            return testCafeConfiguration.init()
                 .then(() => {
-                    configuration.mergeOptions({
+                    testCafeConfiguration.mergeOptions({
                         'hostname': 'anotherHostname',
                         'port1':    'anotherPort1',
                         'port2':    'anotherPort2'
                     });
 
-                    configuration.notifyAboutOverridenOptions();
+                    testCafeConfiguration.notifyAboutOverriddenOptions();
 
                     consoleWrapper.unwrap();
 
-                    expect(configuration.getOption('hostname')).eql('anotherHostname');
-                    expect(configuration.getOption('port1')).eql('anotherPort1');
-                    expect(configuration.getOption('port2')).eql('anotherPort2');
+                    expect(testCafeConfiguration.getOption('hostname')).eql('anotherHostname');
+                    expect(testCafeConfiguration.getOption('port1')).eql('anotherPort1');
+                    expect(testCafeConfiguration.getOption('port2')).eql('anotherPort2');
                     expect(consoleWrapper.messages.log).eql('The "hostname", "port1", "port2" options from the configuration file will be ignored.');
                 });
         });
 
         it('Should ignore an option with the "undefined" value', () => {
-            return configuration.init()
+            return testCafeConfiguration.init()
                 .then(() => {
-                    configuration.mergeOptions({ 'hostname': void 0 });
+                    testCafeConfiguration.mergeOptions({ 'hostname': void 0 });
 
-                    expect(configuration.getOption('hostname')).eql('123.456.789');
+                    expect(testCafeConfiguration.getOption('hostname')).eql('123.456.789');
                 });
         });
     });
 });
 
 describe('TypeScriptConfiguration', () => {
-    const tsConfigPath = 'tsconfig.json';
+    const typeScriptConfiguration = new TypeScriptConfiguration(tsConfigPath);
 
     it('Default', () => {
-        configuration = new TypescriptConfiguration();
+        const defaultTypeScriptConfiguration = new TypeScriptConfiguration();
 
-        return configuration.init()
+        return defaultTypeScriptConfiguration.init()
             .then(() => {
-                expect(configuration.getOptions()).to.deep.equal(DEFAULT_TYPESCRIPT_COMPILER_OPTIONS);
+                expect(defaultTypeScriptConfiguration.getOptions()).to.deep.equal(DEFAULT_TYPESCRIPT_COMPILER_OPTIONS);
             });
     });
 
     it('Configuration file does not exist', async () => {
         let message = null;
 
-        configuration = new TypescriptConfiguration('non-existing-path');
+        const nonExistingConfiguration = new TypeScriptConfiguration('non-existing-path');
 
         try {
-            await configuration.init();
+            await nonExistingConfiguration.init();
         }
         catch (err) {
             message = err.message;
         }
 
-        expect(message).eql(`Unable to find the TypeScript configuration file in "${configuration.filePath}"`);
+        expect(message).eql(`Unable to find the TypeScript configuration file in "${nonExistingConfiguration.filePath}"`);
+    });
+
+    it('Config is not well-formed', () => {
+        fs.writeFileSync(tsConfigPath, '{');
+        consoleWrapper.wrap();
+
+        return typeScriptConfiguration.init()
+            .then(() => {
+                consoleWrapper.unwrap();
+
+                expect(typeScriptConfiguration.getOption('hostname')).eql(void 0);
+                expect(consoleWrapper.messages.log).contains(`Failed to parse the '${typeScriptConfiguration.filePath}' file.`);
+            });
     });
 
     describe('With configuration file', () => {
@@ -246,39 +260,35 @@ describe('TypeScriptConfiguration', () => {
         });
 
         afterEach(() => {
-            if (configuration.filePath)
-                fs.unlinkSync(configuration.filePath);
+            if (typeScriptConfiguration.filePath)
+                fs.unlinkSync(typeScriptConfiguration.filePath);
 
             consoleWrapper.unwrap();
             consoleWrapper.messages.clear();
         });
 
         it('tsconfig.json does not apply automatically', () => {
-            configuration = new TypescriptConfiguration();
-            configPath    = tsConfigPath;
+            const defaultTSConfiguration = new TypeScriptConfiguration();
 
-            createConfigFile({
+            createTypeScriptConfigurationFile({
                 compilerOptions: {
                     experimentalDecorators: false,
                 }
             });
 
-            return configuration.init()
+            return defaultTSConfiguration.init()
                 .then(() => {
                     consoleWrapper.unwrap();
 
-                    const options = configuration.getOptions();
+                    const options = defaultTSConfiguration.getOptions();
 
                     expect(options['experimentalDecorators']).eql(true);
                 });
         });
 
         it('override options', () => {
-            configuration = new TypescriptConfiguration(tsConfigPath);
-            configPath    = configuration.filePath;
-
             // NOTE: suppressOutputPathCheck can't be overridden by a config file
-            createConfigFile({
+            createTypeScriptConfigurationFile({
                 compilerOptions: {
                     experimentalDecorators: false,
                     emitDecoratorMetadata:  false,
@@ -303,11 +313,11 @@ describe('TypeScriptConfiguration', () => {
                 }
             });
 
-            return configuration.init()
+            return typeScriptConfiguration.init()
                 .then(() => {
                     consoleWrapper.unwrap();
 
-                    const options = configuration.getOptions();
+                    const options = typeScriptConfiguration.getOptions();
 
                     expect(options['experimentalDecorators']).eql(false);
                     expect(options['emitDecoratorMetadata']).eql(false);
@@ -340,10 +350,9 @@ describe('TypeScriptConfiguration', () => {
         });
 
         it('Should not display override messages if config values are the same as default values', () => {
-            configuration = new TypescriptConfiguration(tsConfigPath);
-            configPath    = configuration.filePath;
+            const tsConfiguration = new TypeScriptConfiguration(tsConfigPath);
 
-            createConfigFile({
+            createTypeScriptConfigurationFile({
                 compilerOptions: {
                     module:           'commonjs',
                     moduleResolution: 'node',
@@ -351,7 +360,7 @@ describe('TypeScriptConfiguration', () => {
                 }
             });
 
-            return configuration.init()
+            return tsConfiguration.init()
                 .then(() => {
                     consoleWrapper.unwrap();
 
@@ -362,23 +371,17 @@ describe('TypeScriptConfiguration', () => {
         it('TestCafe config + TypeScript config', () => {
             let runner = null;
 
-            configuration = new TestCafeConfiguration();
-
-            configPath = configuration.filePath;
-
-            const customConfigFilePath = 'custom-config.json';
-
-            createConfigFile({
-                tsConfigPath: customConfigFilePath
+            createTestCafeConfigurationFile({
+                tsConfigPath: customTSConfigFilePath
             });
 
-            configPath = customConfigFilePath;
-
-            createConfigFile({
+            createConfigFile(customTSConfigFilePath, {
                 compilerOptions: {
                     target: 'es5'
                 }
             });
+
+            const configuration = new TestCafeConfiguration();
 
             return configuration.init()
                 .then(() => {
@@ -392,9 +395,10 @@ describe('TypeScriptConfiguration', () => {
                     return runner.bootstrapper._getTests();
                 })
                 .then(() => {
-                    fs.unlinkSync(customConfigFilePath);
+                    fs.unlinkSync(TestCafeConfiguration.FILENAME);
+                    typeScriptConfiguration._filePath = customTSConfigFilePath;
 
-                    expect(runner.bootstrapper.tsConfigPath).eql(customConfigFilePath);
+                    expect(runner.bootstrapper.tsConfigPath).eql(customTSConfigFilePath);
                     expect(consoleWrapper.messages.log).contains('You cannot override the "target" compiler option in the TypeScript configuration file.');
                 });
         });
@@ -402,29 +406,25 @@ describe('TypeScriptConfiguration', () => {
         it('Runner + TypeScript config', () => {
             let runner = null;
 
-            const customConfigFilePath = 'custom-config.json';
-
-            configPath    = customConfigFilePath;
-            configuration = { filePath: customConfigFilePath };
-
-            createConfigFile({
+            createConfigFile(customTSConfigFilePath, {
                 compilerOptions: {
                     target: 'es5'
                 }
             });
-
 
             const RunnerCtor = require('../../lib/runner');
 
             runner = new RunnerCtor(null, null, new TestCafeConfiguration());
 
             runner.src('test/server/data/test-suites/typescript-basic/testfile1.ts');
-            runner.tsConfigPath(customConfigFilePath);
+            runner.tsConfigPath(customTSConfigFilePath);
             runner._setBootstrapperOptions();
 
             return runner.bootstrapper._getTests()
                 .then(() => {
-                    expect(runner.bootstrapper.tsConfigPath).eql(customConfigFilePath);
+                    typeScriptConfiguration._filePath = customTSConfigFilePath;
+
+                    expect(runner.bootstrapper.tsConfigPath).eql(customTSConfigFilePath);
                     expect(consoleWrapper.messages.log).contains('You cannot override the "target" compiler option in the TypeScript configuration file.');
                 });
         });

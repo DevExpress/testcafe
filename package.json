@@ -131,6 +131,8 @@
     "@belym.a.2105/broken-link-checker": "^0.7.9",
     "@ffmpeg-installer/ffmpeg": "^1.0.17",
     "@types/chai": "^3.5.2",
+    "@types/debug": "^4.1.5",
+    "@types/json5": "0.0.30",
     "@typescript-eslint/eslint-plugin": "^1.6.0",
     "@typescript-eslint/parser": "^1.6.0",
     "babel-eslint": "^7.1.1",

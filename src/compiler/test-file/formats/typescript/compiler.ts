@@ -6,7 +6,8 @@ import ESNextTestFileCompiler from '../es-next/compiler';
 import TypescriptConfiguration from '../../../../configuration/typescript-configuration';
 
 // NOTE: For type definitions only
-import TypeScript from 'typescript';
+import TypeScript, { CompilerOptionsValue } from 'typescript';
+import { Dictionary } from '../../../../configuration/interfaces';
 
 
 declare type TypeScriptInstance = typeof TypeScript;
@@ -86,7 +87,7 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
     }
 
     private _compileFilesToCache (ts: TypeScriptInstance, filenames: string[]): void {
-        const opts    = this.tsConfig.getOptions();
+        const opts    = this.tsConfig.getOptions() as Dictionary<CompilerOptionsValue>;
         const program = ts.createProgram([TypeScriptTestFileCompiler.tsDefsPath, ...filenames], opts);
 
         program.getSourceFiles().forEach(sourceFile => {

@@ -297,7 +297,7 @@ export default class Runner extends EventEmitter {
 
     _setBootstrapperOptions () {
         this.configuration.prepare();
-        this.configuration.notifyAboutOverridenOptions();
+        this.configuration.notifyAboutOverriddenOptions();
 
         this.bootstrapper.sources       = this.configuration.getOption(OPTION_NAMES.src) || this.bootstrapper.sources;
         this.bootstrapper.browsers      = this.configuration.getOption(OPTION_NAMES.browsers) || this.bootstrapper.browsers;
