@@ -3,6 +3,7 @@ import { Parser } from 'parse5';
 import { renderers } from 'callsite-record';
 import TEMPLATES from './templates';
 import createStackFilter from '../create-stack-filter';
+import renderCallsiteSync from '../../utils/render-callsite-sync';
 
 const parser = new Parser();
 
@@ -60,15 +61,10 @@ export default class TestRunErrorFormattableAdapter {
         if (typeof this.callsite === 'string')
             return this.callsite;
 
-        try {
-            return this.callsite.renderSync({
-                renderer:    renderers.html,
-                stackFilter: createStackFilter(Error.stackTraceLimit)
-            });
-        }
-        catch (err) {
-            return '';
-        }
+        return renderCallsiteSync(this.callsite, {
+            renderer:    renderers.html,
+            stackFilter: createStackFilter(Error.stackTraceLimit)
+        });
     }
 
     formatMessage (decorator, viewportWidth) {

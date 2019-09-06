@@ -85,7 +85,8 @@ export default class TestRun extends AsyncEventEmitter {
         this.speed                = this.opts.speed;
         this.pageLoadTimeout      = this.opts.pageLoadTimeout;
 
-        this.disablePageReloads = test.disablePageReloads || opts.disablePageReloads && test.disablePageReloads !== false;
+        this.disablePageReloads = test.disablePageReloads || opts.disablePageReloads && test.disablePageReloads !==
+                                  false;
         this.disablePageCaching = test.disablePageCaching || opts.disablePageCaching;
 
         this.session = SessionController.getSession(this);
@@ -501,7 +502,8 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     _handleDriverRequest (driverStatus) {
-        const isTestDone                 = this.currentDriverTask && this.currentDriverTask.command.type === COMMAND_TYPE.testDone;
+        const isTestDone                 = this.currentDriverTask && this.currentDriverTask.command.type ===
+                                           COMMAND_TYPE.testDone;
         const pageError                  = this.pendingPageError || driverStatus.pageError;
         const currentTaskRejectedByError = pageError && this._handlePageErrorStatus(pageError);
 
@@ -547,7 +549,8 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     async _executeAssertion (command, callsite) {
-        const assertionTimeout = command.options.timeout === void 0 ? this.opts.assertionTimeout : command.options.timeout;
+        const assertionTimeout = command.options.timeout ===
+                                 void 0 ? this.opts.assertionTimeout : command.options.timeout;
         const executor         = new AssertionExecutor(command, assertionTimeout, callsite);
 
         executor.once('start-assertion-retries', timeout => this.executeCommand(new serviceCommands.ShowAssertionRetriesStatusCommand(timeout)));
