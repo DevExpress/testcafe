@@ -31,14 +31,14 @@ class LiveModeBootstrapper extends Bootstrapper {
     }
 
     _mockRequire () {
-        const runner = this.runner;
+        const controller = this.runner.controller;
 
         // NODE: we replace the `require` method to add required files to watcher
         Module.prototype.require = function (filePath) {
             const filename = Module._resolveFilename(filePath, this, false);
 
             if (path.isAbsolute(filename) || /^\.\.?[/\\]/.test(filename))
-                runner.emit(runner.REQUIRED_MODULE_FOUND_EVENT, { filename });
+                controller.addFileToWatches(filename);
 
 
             return originalRequire.apply(this, arguments);

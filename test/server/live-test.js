@@ -7,6 +7,8 @@ const LiveModeController   = require('../../lib/live/controller');
 const LiveModeRunner       = require('../../lib/live/test-runner');
 const LiveModeBootstrapper = require('../../lib/live/bootstrapper');
 
+const LiveModeKeyboardEventObserver = require('../../lib/live/keyboard-observer');
+
 const testFileWithSingleTestPath               = path.resolve('test/server/data/test-suites/live/test.js');
 const testFileWithMultipleTestsPath            = path.resolve('test/server/data/test-suites/live/multiple-tests.js');
 const testFileWithSyntaxErrorPath              = path.resolve('test/server/data/test-suites/live/test-with-syntax-error.js');
@@ -18,11 +20,7 @@ const externalModulePath         = path.resolve('test/server/data/test-suites/li
 const externalCommonJsModulePath = path.resolve('test/server/data/test-suites/live/commonjs-module.js');
 
 class FileWatcherMock extends FileWatcher {
-    constructor (files) {
-        super(files);
-    }
-
-    addFile (file) {
+    addFile (controller, file) {
         if (file.replace(/^\/usr\/lib\/node_modules\/testcafe/, '').indexOf('node_modules') > -1)
             return;
 
@@ -33,6 +31,11 @@ class FileWatcherMock extends FileWatcher {
 }
 
 let errors = [];
+
+class LiveModeKeyboardEventObserverMock extends LiveModeKeyboardEventObserver {
+    _listenKeyEvents () {
+    }
+}
 
 class ControllerMock extends LiveModeController {
     constructor (runner) {
@@ -52,16 +55,12 @@ class ControllerMock extends LiveModeController {
         };
     }
 
-    dispose () {
+    _createKeyboardObserver () {
+        return new LiveModeKeyboardEventObserverMock();
     }
 
-    _createFileWatcher (src) {
-        this.fileWatcher = new FileWatcherMock(src);
-
-        return this.fileWatcher;
-    }
-
-    _listenKeyPress () {
+    _createFileWatcher () {
+        return new FileWatcherMock();
     }
 }
 
@@ -122,6 +121,7 @@ class RunnerMock extends LiveModeRunner {
     _validateScreenshotOptions () {
         if (this.errorOnValidate)
             throw new Error('validationError');
+
         super._validateScreenshotOptions();
     }
 
@@ -135,6 +135,8 @@ class RunnerMock extends LiveModeRunner {
                 return super.runTests();
             })
             .then(() => {
+                this.emit('tests-completed');
+
                 this.stopInfiniteWaiting();
             });
     }
@@ -191,6 +193,10 @@ describe('TestCafe Live', function () {
 
     beforeEach(function () {
         errors = [];
+
+        const observer = new LiveModeKeyboardEventObserverMock();
+
+        observer.controllers = [];
     });
 
     it('run', function () {
@@ -222,7 +228,7 @@ describe('TestCafe Live', function () {
             .then(() => {
                 let err = null;
 
-                runner.controller.fileWatcher._onChanged(externalCommonJsModulePath);
+                runner.controller.fileWatcher._onChanged(runner.controller, externalCommonJsModulePath);
 
                 try {
                     require(externalCommonJsModulePath);
@@ -256,6 +262,8 @@ describe('TestCafe Live', function () {
     });
 
     it('rerun uncompilable', function () {
+        expect(errors.length).eql(0);
+
         return runTests(testFileWithSingleTestPath)
             .then(() => {
                 runner.src(testFileWithSyntaxErrorPath);
@@ -335,23 +343,49 @@ describe('TestCafe Live', function () {
     });
 
     it('same runner runs twice', function () {
+        runner = new RunnerMock(testCafe, {})
+            .browsers('chrome');
+
+        const promise = runner.run();
+
         try {
-            runner = new RunnerMock(testCafe, {});
-
-            runner.browsers('chrome');
-
-            runner.run();
             runner.run();
         }
         catch (err) {
             expect(err.message.indexOf('Cannot run a live mode runner multiple times') > -1).to.be.true;
         }
+
+        return promise;
     });
 
     it('error on validate', function () {
         return runTests(testFileWithSingleTestPath, { errorOnValidate: true })
             .catch(err => {
                 expect(err.message.indexOf('validationError') > -1).to.be.true;
+            });
+    });
+
+    it('Keyboard event observer stopped after run', function () {
+        let counter = 0;
+
+        runner = new RunnerMock(testCafe, {});
+
+        runner.once('tests-completed', () => {
+            counter++;
+
+            expect(runner.controller.keyboardObserver.controllers.length).eql(1);
+        });
+
+        return runner
+            .src(testFileWithSingleTestPath)
+            .browsers('chrome')
+            .run()
+            .then(() => {
+                counter++;
+                expect(runner.controller.keyboardObserver.controllers.length).eql(0);
+            })
+            .then(() => {
+                expect(counter).eql(2);
             });
     });
 

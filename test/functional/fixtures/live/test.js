@@ -8,17 +8,49 @@ const helper         = require('./test-helper');
 const DEFAULT_BROWSERS = ['chrome', 'firefox'];
 let cafe               = null;
 
+const LiveModeController            = require('../../../../lib/live/controller');
+const LiveModeRunner                = require('../../../../lib/live/test-runner');
+const LiveModeKeyboardEventObserver = require('../../../../lib/live/keyboard-observer');
+
+class LiveModeKeyboardEventObserverMock extends LiveModeKeyboardEventObserver {
+    _listenKeyEvents () {
+    }
+}
+
+class ControllerMock extends LiveModeController {
+    constructor (runner) {
+        super(runner);
+
+        this.logger = {
+            writeIntroMessage:          noop,
+            writeStopRunningMessage:    noop,
+            writeTestsFinishedMessage:  noop,
+            writeRunTestsMessage:       noop,
+            writeToggleWatchingMessage: noop,
+            writeExitMessage:           noop,
+        };
+    }
+
+    _createKeyboardObserver () {
+        return new LiveModeKeyboardEventObserverMock();
+    }
+}
+
+class RunnerMock extends LiveModeRunner {
+    _createController () {
+        return new ControllerMock(this);
+    }
+}
+
 function createLiveModeRunner (tc, src, browsers = DEFAULT_BROWSERS) {
-    const runner = tc.createLiveModeRunner();
+    const { proxy, browserConnectionGateway, configuration } = tc;
 
-    runner.controller._listenKeyPress   = () => { };
-    runner.controller._initFileWatching = () => { };
-    runner.controller.dispose           = () => { };
+    const runner = new RunnerMock(proxy, browserConnectionGateway, configuration.clone());
 
-    src = path.join(__dirname, src);
+    tc.runners.push(runner);
 
     return runner
-        .src(src)
+        .src(path.join(__dirname, src))
         .browsers(browsers)
         .reporter(() => {
             return {
@@ -114,6 +146,47 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
                 .then(() => {
                     return cafe.close();
                 });
+        });
+
+
+        it('Same runner stops and then runs again with other settings', function () {
+            let finishTest = null;
+
+            const promise = new Promise(resolve => {
+                finishTest = resolve;
+            });
+
+
+            createTestCafe('localhost', 1337, 1338)
+                .then(tc => {
+                    cafe         = tc;
+                    const runner = createLiveModeRunner(cafe, '/testcafe-fixtures/test-1.js', ['chrome']);
+
+                    setTimeout(() => {
+                        return runner.stop()
+                            .then(() => {
+                                helper.emitter.once('tests-completed', () => {
+                                    runner.exit();
+                                });
+
+                                return runner
+                                    .browsers(['firefox'])
+                                    .src(path.join(__dirname, '/testcafe-fixtures/test-2.js'))
+                                    .run()
+                                    .then(() => {
+                                        return cafe.close();
+                                    })
+                                    .then(() => {
+                                        finishTest();
+                                    });
+                            });
+                    }, 10000);
+
+                    return runner
+                        .run();
+                });
+
+            return promise;
         });
     });
 }
