@@ -989,7 +989,8 @@ describe('Runner', () => {
 
         runner
             .src([])
-            .browsers([]);
+            .browsers([])
+            .reporter([]);
 
         expect(runner.configuration.getOption('src')).eql(['/path-to-test']);
         expect(runner.configuration.getOption('browsers')).eql(['ie']);
