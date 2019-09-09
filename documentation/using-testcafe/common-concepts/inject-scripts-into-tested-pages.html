@@ -838,7 +838,7 @@
 
 <ul>
 <li><p>the <a href="../command-line-interface.html#--cs-pathpath2---client-scripts-pathpath2">--cs (--client-scripts)</a> command line option</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js <span class="nt">--client-scripts</span><span class="o">=</span>mockDate.js,assets/react-helpers.js
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js <span class="nt">--client-scripts</span> mockDate.js,assets/react-helpers.js
 </code></pre></div></li>
 <li><p>the <a href="../programming-interface/runner.html#clientscripts">runner.clientScripts</a> API method</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">clientScripts</span><span class="p">(</span><span class="dl">'</span><span class="s1">mockDate.js</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">scripts/react-helpers.js</span><span class="dl">'</span><span class="p">);</span>
@@ -1148,7 +1148,7 @@ test.clientScripts([
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>The <a href="../command-line-interface.html#--cs-pathpath2---client-scripts-pathpath2">--cs (--client-scripts)</a> command line option supports multiple arguments as well:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js <span class="nt">--client-scripts</span><span class="o">=</span>mockDate.js,assets/react-helpers.js
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js <span class="nt">--client-scripts</span> mockDate.js,assets/react-helpers.js
 </code></pre></div>
 <p>Note that the <code>page</code>, <code>content</code> and <code>module</code> properties cannot take arrays. To inject multiple scripts into the same page, pass one argument for each script.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">scripts</span> <span class="o">=</span> <span class="p">[</span><span class="dl">'</span><span class="s1">test1.js</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">test2.js</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">test3.js</span><span class="dl">'</span><span class="p">];</span>
