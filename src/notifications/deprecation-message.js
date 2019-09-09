@@ -4,10 +4,10 @@ import renderCallsiteSync from '../utils/render-callsite-sync';
 import createStackFilter from '../errors/create-stack-filter';
 
 export default function showDeprecationMessage (callsite, info) {
-    const callsiteStr = callsite ? renderCallsiteSync(callsite, {
+    const callsiteStr = renderCallsiteSync(callsite, {
         renderer:    renderers.noColor,
         stackFilter: createStackFilter(Error.stackTraceLimit)
-    }) : '';
+    });
 
     /* eslint-disable no-console */
     console.error(chalk.yellow('\n----'));

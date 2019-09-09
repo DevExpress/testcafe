@@ -54,13 +54,6 @@ export default class TestRunErrorFormattableAdapter {
     }
 
     getCallsiteMarkup () {
-        if (!this.callsite)
-            return '';
-
-        // NOTE: for raw API callsites
-        if (typeof this.callsite === 'string')
-            return this.callsite;
-
         return renderCallsiteSync(this.callsite, {
             renderer:    renderers.html,
             stackFilter: createStackFilter(Error.stackTraceLimit)

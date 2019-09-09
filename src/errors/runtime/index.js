@@ -75,18 +75,11 @@ export class APIError extends Error {
         });
     }
 
-    _renderCallsite (renderer) {
-        if (!this.callsite)
-            return '';
-
-        return renderCallsiteSync(this.callsite, {
+    _createStack (renderer) {
+        const renderedCallsite = renderCallsiteSync(this.callsite, {
             renderer:    renderer,
             stackFilter: createStackFilter(Error.stackTraceLimit)
         });
-    }
-
-    _createStack (renderer) {
-        const renderedCallsite = this._renderCallsite(renderer);
 
         if (!renderedCallsite)
             return this.message;

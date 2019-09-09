@@ -61,17 +61,11 @@ export default {
         if (!this.streamsOverridden)
             this._overrideStreams();
 
-        // NOTE: Raw API does not have callsite.
-        const hasCallsite = callsite && callsite.renderSync;
-        let callsiteStr   = '';
-
-        if (hasCallsite) {
-            callsiteStr = renderCallsiteSync(callsite, {
-                frameSize:   1,
-                stackFilter: createStackFilter(Error.stackTraceLimit),
-                stack:       false
-            });
-        }
+        const callsiteStr = renderCallsiteSync(callsite, {
+            frameSize:   1,
+            stackFilter: createStackFilter(Error.stackTraceLimit),
+            stack:       false
+        });
 
         const frame = `\n` +
                       `----\n` +
