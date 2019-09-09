@@ -20,7 +20,7 @@ To add client scripts to all tests, specify them in the command line, API or con
 * the [--cs (--client-scripts)](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--cs-pathpath2---client-scripts-pathpath2) command line argument
 
     ```sh
-    testcafe chrome test.js --client-scripts=mockDate.js,assets/react-helpers.js
+    testcafe chrome test.js --client-scripts mockDate.js,assets/react-helpers.js
     ```
 
 * the [runner.clientScripts](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#clientscripts) API method
