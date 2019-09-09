@@ -27,7 +27,7 @@ Use either of the following options to inject scripts into pages visited during 
 * the [--cs (--client-scripts)](../command-line-interface.md#--cs-pathpath2---client-scripts-pathpath2) command line option
 
     ```sh
-    testcafe chrome test.js --client-scripts=mockDate.js,assets/react-helpers.js
+    testcafe chrome test.js --client-scripts mockDate.js,assets/react-helpers.js
     ```
 
 * the [runner.clientScripts](../programming-interface/runner.md#clientscripts) API method
@@ -435,7 +435,7 @@ The [clientScripts](../configuration-file.md#clientscripts) configuration file p
 The [--cs (--client-scripts)](../command-line-interface.md#--cs-pathpath2---client-scripts-pathpath2) command line option supports multiple arguments as well:
 
 ```sh
-testcafe chrome test.js --client-scripts=mockDate.js,assets/react-helpers.js
+testcafe chrome test.js --client-scripts mockDate.js,assets/react-helpers.js
 ```
 
 Note that the `page`, `content` and `module` properties cannot take arrays. To inject multiple scripts into the same page, pass one argument for each script.
