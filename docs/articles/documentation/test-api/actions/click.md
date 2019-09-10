@@ -48,7 +48,7 @@ test('Click Input', async t => {
     await t
         .typeText(nameInput, 'Peter Parker')
         .click(nameInput, { caretPos: 5 })
-        .keyPress('backspace')
+        .pressKey('backspace')
         .expect(nameInput.value).eql('Pete Parker');
 });
 ```
