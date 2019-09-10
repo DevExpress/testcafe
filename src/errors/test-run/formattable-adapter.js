@@ -3,6 +3,7 @@ import { Parser } from 'parse5';
 import { renderers } from 'callsite-record';
 import TEMPLATES from './templates';
 import createStackFilter from '../create-stack-filter';
+import { markup } from './utils';
 
 const parser = new Parser();
 
@@ -49,7 +50,9 @@ export default class TestRunErrorFormattableAdapter {
     }
 
     getErrorMarkup (viewportWidth) {
-        return this.TEMPLATES[this.code](this, viewportWidth);
+        const errMessage = this.TEMPLATES[this.code](this, viewportWidth);
+
+        return markup(this, errMessage);
     }
 
     getCallsiteMarkup () {

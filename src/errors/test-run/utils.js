@@ -1,6 +1,7 @@
 import dedent from 'dedent';
 import { escape as escapeHtml, repeat } from 'lodash';
 import TEST_RUN_PHASE from '../../test-run/phase';
+import { TEST_RUN_ERRORS } from '../types';
 
 const SUBTITLES = {
     [TEST_RUN_PHASE.initial]:                 '',
@@ -14,6 +15,12 @@ const SUBTITLES = {
     [TEST_RUN_PHASE.inRoleInitializer]:       '<span class="subtitle">Error in Role initializer</span>\n',
     [TEST_RUN_PHASE.inBookmarkRestore]:       '<span class="subtitle">Error while restoring configuration after Role switch</span>\n'
 };
+
+function shouldSkipCallsite (err) {
+    return err.code === TEST_RUN_ERRORS.uncaughtNonErrorObjectInTestCode ||
+           err.code === TEST_RUN_ERRORS.unhandledPromiseRejection ||
+           err.code === TEST_RUN_ERRORS.uncaughtException;
+}
 
 export function renderForbiddenCharsList (forbiddenCharsList) {
     return forbiddenCharsList.map(charInfo => `\t"${charInfo.chars}" at index ${charInfo.index}\n`).join('');
@@ -52,7 +59,7 @@ export function replaceLeadingSpacesWithNbsp (str) {
     });
 }
 
-export function markup (err, msgMarkup, opts = {}) {
+export function markup (err, msgMarkup) {
     msgMarkup = dedent(`
         ${SUBTITLES[err.testRunPhase]}<div class="message">${dedent(msgMarkup)}</div>
 
@@ -62,7 +69,7 @@ export function markup (err, msgMarkup, opts = {}) {
     if (err.screenshotPath)
         msgMarkup += `\n<div class="screenshot-info"><strong>Screenshot:</strong> <a class="screenshot-path">${escapeHtml(err.screenshotPath)}</a></div>`;
 
-    if (!opts.withoutCallsite) {
+    if (!shouldSkipCallsite(err)) {
         const callsiteMarkup = err.getCallsiteMarkup();
 
         if (callsiteMarkup)
