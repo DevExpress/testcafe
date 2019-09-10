@@ -57,7 +57,6 @@ async function assertError (expression, expectedMessage, expectedLine, expectedC
         expect(err.column).eql(expectedColumn);
         expect(err.callsite).eql(callsite.toString());
         expect(err.errStack.replace(WHITE_SPACES_REGEXP, '')).contains(expression.replace(WHITE_SPACES_REGEXP, ''));
-        expect(err.errStack).contains('[JS code]');
     }
 
     expect(catched).eql(true);

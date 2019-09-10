@@ -25,7 +25,7 @@ function getErrorLineColumn (err) {
 function formatExpression (expression) {
     const expresionMessage = expression.split('\n');
 
-    return '[JS code]\n' + expresionMessage.map(str => {
+    return expresionMessage.map(str => {
         return ' '.repeat(10) + str;
     }).join('\n');
 }
