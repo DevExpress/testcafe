@@ -11,24 +11,21 @@ class LiveModeRunner extends Runner {
     constructor (proxy, browserConnectionGateway, options) {
         super(proxy, browserConnectionGateway, options);
 
-        /* EVENTS */
-        this.TEST_RUN_DONE_EVENT         = 'test-run-done';
-        this.REQUIRED_MODULE_FOUND_EVENT = 'require-module-found';
-
         this.stopping              = false;
         this.runnerTaskPromise     = null;
         this.stopInfiniteWaiting   = noop;
         this.rejectInfiniteWaiting = noop;
-        this.preventRunCall        = false;
-        this.assets                = null;
+
+        this.assets = null;
 
         this.testRunController = new LiveModeTestRunController();
+        this.controller        = this._createController();
+
 
         this.embeddingOptions({
             TestRunCtor: this.testRunController.TestRunCtor,
             assets:      []
         });
-
         this.controller         = this._createController();
         this.configurationCache = null;
     }
@@ -56,7 +53,7 @@ class LiveModeRunner extends Runner {
             .then(() => {
                 this.runnerTaskPromise = null;
 
-                this.emit(this.TEST_RUN_DONE_EVENT, { err: runError });
+                this.controller.onTestRunDone(runError);
             });
     }
 
@@ -87,10 +84,18 @@ class LiveModeRunner extends Runner {
     }
 
     run (options) {
-        if (this.preventRunCall)
+        this.configurationCache = null;
+
+        if (this._running)
             throw new GeneralError(RUNTIME_ERRORS.cannotRunLiveModeRunnerMultipleTimes);
 
-        this.preventRunCall = true;
+        this._running = this._waitUntilExit()
+            .then(() => {
+                return this._dispose();
+            })
+            .then(() => {
+                delete this._running;
+            });
 
         this.opts = Object.assign({}, this.opts, options);
 
@@ -99,18 +104,13 @@ class LiveModeRunner extends Runner {
         const fileListPromise = parseFileList(this.bootstrapper.sources, process.cwd());
 
         fileListPromise
-            .then(files => this.controller.init(files))
+            .then(files => {
+                return this.controller.init(files);
+            })
             .then(() => this._createRunnableConfiguration())
             .then(() => this.runTests(true));
 
-
-        return this._waitUntilExit()
-            .then(() => {
-                return this._dispose();
-            })
-            .then(() => {
-                this.preventRunCall = false;
-            });
+        return this._running;
     }
 
     suspend () {
@@ -125,7 +125,14 @@ class LiveModeRunner extends Runner {
             .then(() => {
                 this.stopping = false;
 
-                this.emit(this.TEST_RUN_DONE_EVENT, {});
+                this.controller.onTestRunDone();
+            });
+    }
+
+    stop () {
+        return super.stop()
+            .then(() => {
+                return this.controller._exit();
             });
     }
 
@@ -134,7 +141,8 @@ class LiveModeRunner extends Runner {
             this.runnerTaskPromise.cancel();
 
         return Promise.resolve()
-            .then(() => this.stopInfiniteWaiting());
+            .then(() => this.stopInfiniteWaiting())
+            .then(() => this._running);
     }
 
     async _finishPreviousTestRuns () {
