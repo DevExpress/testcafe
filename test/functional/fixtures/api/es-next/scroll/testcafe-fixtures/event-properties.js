@@ -17,8 +17,6 @@ test('test', async t => {
 
     const { log } = await t.getBrowserConsoleMessages();
 
-    console.log(JSON.stringify(log, null, 4));
-
     const mouseenterEventProperties = JSON.parse(log[0]);
     const mouseleaveEventProperties = JSON.parse(log[1]);
 
