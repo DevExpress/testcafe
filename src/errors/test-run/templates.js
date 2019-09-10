@@ -307,7 +307,7 @@ export default {
         ${escapeHtml(err.errMsg)}
     `,
 
-    [TEST_RUN_ERRORS.executeAsyncExpressionError]: err => `
+    [TEST_RUN_ERRORS.uncaughtErrorInCustomScript]: err => `
         An unhandled error occurred in the TestCafe script:
         
         ${escapeHtml(err.errMsg)}

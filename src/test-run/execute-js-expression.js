@@ -1,5 +1,5 @@
 import { runInContext } from 'vm';
-import { ExecuteAsyncExpressionError } from '../errors/test-run';
+import { UncaughtErrorInCustomScript } from '../errors/test-run';
 import { setContextOptions } from '../api/test-controller/execution-context';
 
 const ERROR_LINE_COLUMN_REGEXP = /:(\d+):(\d+)/;
@@ -67,6 +67,6 @@ export async function executeAsyncJsExpression (expression, testRun, callsite) {
 
         const { line, column } = getErrorLineColumn(err);
 
-        throw new ExecuteAsyncExpressionError(err, expression, line, column, callsite);
+        throw new UncaughtErrorInCustomScript(err, expression, line, column, callsite);
     }
 }

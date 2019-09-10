@@ -437,9 +437,9 @@ export class ActionInvalidScrollTargetError extends TestRunErrorBase {
     }
 }
 
-export class ExecuteAsyncExpressionError extends TestRunErrorBase {
+export class UncaughtErrorInCustomScript extends TestRunErrorBase {
     constructor (err, expression, line, column, callsite) {
-        super(TEST_RUN_ERRORS.executeAsyncExpressionError);
+        super(TEST_RUN_ERRORS.uncaughtErrorInCustomScript);
 
         this.callsite   = callsite;
         this.expression = expression;
