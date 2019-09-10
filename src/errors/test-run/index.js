@@ -441,12 +441,13 @@ export class ExecuteAsyncExpressionError extends TestRunErrorBase {
     constructor (err, expression, line, column, callsite) {
         super(TEST_RUN_ERRORS.executeAsyncExpressionError);
 
-        this.errMsg     = err.message;
         this.callsite   = callsite;
-        this.errStack   = err.stack;
         this.expression = expression;
         this.line       = line;
         this.column     = column;
+
+        this.originError = err;
+        this.errMsg      = err.message;
     }
 }
 

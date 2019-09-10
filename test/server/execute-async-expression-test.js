@@ -42,8 +42,6 @@ async function executeExpression (expression, customVarName, testRun = createTes
 }
 
 async function assertError (expression, expectedMessage, expectedLine, expectedColumn) {
-    const WHITE_SPACES_REGEXP = /\s/g;
-
     let catched = false;
 
     try {
@@ -56,7 +54,7 @@ async function assertError (expression, expectedMessage, expectedLine, expectedC
         expect(err.line).eql(expectedLine);
         expect(err.column).eql(expectedColumn);
         expect(err.callsite).eql(callsite.toString());
-        expect(err.errStack.replace(WHITE_SPACES_REGEXP, '')).contains(expression.replace(WHITE_SPACES_REGEXP, ''));
+        expect(err.expression).eql(expression);
     }
 
     expect(catched).eql(true);
