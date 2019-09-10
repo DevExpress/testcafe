@@ -12,7 +12,8 @@ const getElementClassFromPoint = ClientFunction((x, y) => {
 test('test', async t => {
     await t
         .hover('.item')
-        .click(Selector('.space').nth(1));
+        .click(Selector('.space').nth(1))
+        .wait(1000);
 
     const { log } = await t.getBrowserConsoleMessages();
 

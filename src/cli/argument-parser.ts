@@ -8,6 +8,8 @@ import getViewPortWidth from '../utils/get-viewport-width';
 import { wordWrap, splitQuotedText } from '../utils/string';
 import { getSSLOptions, getVideoOptions, getMetaOptions, getGrepOptions } from '../utils/get-options';
 import getFilterFn from '../utils/get-filter-fn';
+import RUN_OPTION_NAMES from '../configuration/run-option-names';
+import { Dictionary, ReporterOption, RunnerRunOptions } from '../configuration/interfaces';
 
 const REMOTE_ALIAS_RE = /^remote(?::(\d*))?$/;
 
@@ -26,34 +28,59 @@ const DESCRIPTION = dedent(`
     More info: https://devexpress.github.io/testcafe/documentation
 `);
 
+interface CommandLineOptions {
+    testGrep?: string | RegExp;
+    fixtureGrep?: string | RegExp;
+    src?: string[];
+    browsers?: string[];
+    listBrowsers?: boolean | string;
+    testMeta?: string | Dictionary<string | number | boolean>;
+    fixtureMeta?: string | Dictionary<string | number | boolean>;
+    filter?: Function;
+    appInitDelay?: string | number;
+    assertionTimeout?: string | number;
+    selectorTimeout?: string | number;
+    speed?: string | number;
+    pageLoadTimeout?: string | number;
+    concurrency?: string | number;
+    ports?: string | number[];
+    providerName?: string;
+    ssl?: string | Dictionary<string | number | boolean >;
+    reporter?: string | ReporterOption[];
+    videoOptions?: string | Dictionary<number | string | boolean>;
+    videoEncodingOptions?: string | Dictionary<number | string | boolean>;
+}
+
 export default class CLIArgumentParser {
-    constructor (cwd) {
-        this.program = new Command('testcafe');
+    private program: Command;
+    private cwd: string;
+    private remoteCount: number;
+    public opts: CommandLineOptions;
+    public args: string[];
 
-        this.cwd = cwd || process.cwd();
-
-        this.src         = null;
-        this.browsers    = null;
-        this.filter      = null;
+    public constructor (cwd: string) {
+        this.program     = new Command('testcafe');
+        this.cwd         = cwd || process.cwd();
         this.remoteCount = 0;
-        this.opts        = null;
+        this.opts        = {};
+        this.args        = [];
 
         this._describeProgram();
     }
 
-    static _parsePortNumber (value) {
+    private static _parsePortNumber (value: string): number {
         assertType(is.nonNegativeNumberString, null, 'Port number', value);
 
         return parseInt(value, 10);
     }
 
-    static _getDescription () {
+    private static _getDescription (): string {
         // NOTE: add empty line to workaround commander-forced indentation on the first line.
         return '\n' + wordWrap(DESCRIPTION, 2, getViewPortWidth(process.stdout));
     }
 
-    _describeProgram () {
-        const version = JSON.parse(read('../../package.json')).version;
+    private _describeProgram (): void {
+        const version = JSON.parse(read('../../package.json') as string).version;
 
         this.program
             .version(version, '-v, --version')
@@ -105,106 +132,109 @@ export default class CLIArgumentParser {
             .option('--no-color', 'disable colors in command line');
     }
 
-    _parseList (val) {
+    private _parseList (val: string): string[] {
         return val.split(',');
     }
 
-    _filterAndCountRemotes (browser) {
+    private _checkAndCountRemotes (browser: string): boolean {
         const remoteMatch = browser.match(REMOTE_ALIAS_RE);
 
         if (remoteMatch) {
             this.remoteCount += parseInt(remoteMatch[1], 10) || 1;
+
             return false;
         }
 
         return true;
     }
 
-    async _parseFilteringOptions () {
+    public async _parseFilteringOptions (): Promise<void> {
         if (this.opts.testGrep)
-            this.opts.testGrep = getGrepOptions('--test-grep', this.opts.testGrep);
+            this.opts.testGrep = getGrepOptions('--test-grep', this.opts.testGrep as string);
 
         if (this.opts.fixtureGrep)
-            this.opts.fixtureGrep = getGrepOptions('--fixture-grep', this.opts.fixtureGrep);
+            this.opts.fixtureGrep = getGrepOptions('--fixture-grep', this.opts.fixtureGrep as string);
 
         if (this.opts.testMeta)
-            this.opts.testMeta = await getMetaOptions('--test-meta', this.opts.testMeta);
+            this.opts.testMeta = await getMetaOptions('--test-meta', this.opts.testMeta as string);
 
         if (this.opts.fixtureMeta)
-            this.opts.fixtureMeta = await getMetaOptions('--fixture-meta', this.opts.fixtureMeta);
+            this.opts.fixtureMeta = await getMetaOptions('--fixture-meta', this.opts.fixtureMeta as string);
 
-        this.filter = getFilterFn(this.opts);
+        this.opts.filter = getFilterFn(this.opts);
     }
 
-    _parseAppInitDelay () {
+    private _parseAppInitDelay (): void {
         if (this.opts.appInitDelay) {
             assertType(is.nonNegativeNumberString, null, 'Tested app initialization delay', this.opts.appInitDelay);
 
-            this.opts.appInitDelay = parseInt(this.opts.appInitDelay, 10);
+            this.opts.appInitDelay = parseInt(this.opts.appInitDelay as string, 10);
         }
     }
 
-    _parseSelectorTimeout () {
+    private _parseSelectorTimeout (): void {
         if (this.opts.selectorTimeout) {
             assertType(is.nonNegativeNumberString, null, 'Selector timeout', this.opts.selectorTimeout);
 
-            this.opts.selectorTimeout = parseInt(this.opts.selectorTimeout, 10);
+            this.opts.selectorTimeout = parseInt(this.opts.selectorTimeout as string, 10);
         }
     }
 
-    _parseAssertionTimeout () {
+    private _parseAssertionTimeout (): void {
         if (this.opts.assertionTimeout) {
             assertType(is.nonNegativeNumberString, null, 'Assertion timeout', this.opts.assertionTimeout);
 
-            this.opts.assertionTimeout = parseInt(this.opts.assertionTimeout, 10);
+            this.opts.assertionTimeout = parseInt(this.opts.assertionTimeout as string, 10);
         }
     }
 
-    _parsePageLoadTimeout () {
+    private _parsePageLoadTimeout (): void {
         if (this.opts.pageLoadTimeout) {
             assertType(is.nonNegativeNumberString, null, 'Page load timeout', this.opts.pageLoadTimeout);
 
-            this.opts.pageLoadTimeout = parseInt(this.opts.pageLoadTimeout, 10);
+            this.opts.pageLoadTimeout = parseInt(this.opts.pageLoadTimeout as string, 10);
         }
     }
 
-    _parseSpeed () {
+    private _parseSpeed (): void {
         if (this.opts.speed)
-            this.opts.speed = parseFloat(this.opts.speed);
+            this.opts.speed = parseFloat(this.opts.speed as string);
     }
 
-    _parseConcurrency () {
+    private _parseConcurrency (): void {
         if (this.opts.concurrency)
-            this.opts.concurrency = parseInt(this.opts.concurrency, 10);
+            this.opts.concurrency = parseInt(this.opts.concurrency as string, 10);
     }
 
-    _parsePorts () {
+    private _parsePorts (): void {
         if (this.opts.ports) {
-            this.opts.ports = this.opts.ports
+            const parsedPorts = (this.opts.ports as string) /* eslint-disable-line no-extra-parens */
                 .split(',')
                 .map(CLIArgumentParser._parsePortNumber);
 
-            if (this.opts.ports.length < 2)
+            if (parsedPorts.length < 2)
                 throw new GeneralError(RUNTIME_ERRORS.portsOptionRequiresTwoNumbers);
+
+            this.opts.ports = parsedPorts as number[];
         }
     }
 
-    _parseBrowserList () {
+    private _parseBrowserList (): void {
         const browsersArg = this.program.args[0] || '';
 
-        this.browsers = splitQuotedText(browsersArg, ',')
-            .filter(browser => browser && this._filterAndCountRemotes(browser));
+        this.opts.browsers = splitQuotedText(browsersArg, ',')
+            .filter(browser => browser && this._checkAndCountRemotes(browser));
     }
 
-    async _parseSslOptions () {
+    public async _parseSslOptions (): Promise<void> {
         if (this.opts.ssl)
-            this.opts.ssl = await getSSLOptions(this.opts.ssl);
+            this.opts.ssl = await getSSLOptions(this.opts.ssl as string);
     }
 
-    async _parseReporters () {
-        const reporters = this.opts.reporter ? this.opts.reporter.split(',') : [];
+    private async _parseReporters (): Promise<void> {
+        const reporters = this.opts.reporter ? (this.opts.reporter as string).split(',') : []; /* eslint-disable-line no-extra-parens*/
 
-        this.opts.reporter = reporters.map(reporter => {
+        this.opts.reporter = reporters.map((reporter: string) => {
             const separatorIndex = reporter.indexOf(':');
 
             if (separatorIndex < 0)
@@ -217,23 +247,24 @@ export default class CLIArgumentParser {
         });
     }
 
-    _parseFileList () {
-        this.src = this.program.args.slice(1);
+    private _parseFileList (): void {
+        this.opts.src = this.program.args.slice(1);
     }
 
-    async _parseVideoOptions () {
+    private async _parseVideoOptions (): Promise<void> {
         if (this.opts.videoOptions)
-            this.opts.videoOptions = await getVideoOptions(this.opts.videoOptions);
+            this.opts.videoOptions = await getVideoOptions(this.opts.videoOptions as string);
 
         if (this.opts.videoEncodingOptions)
-            this.opts.videoEncodingOptions = await getVideoOptions(this.opts.videoEncodingOptions);
+            this.opts.videoEncodingOptions = await getVideoOptions(this.opts.videoEncodingOptions as string);
     }
 
-    _getProviderName () {
-        this.opts.providerName = this.opts.listBrowsers === true ? void 0 : this.opts.listBrowsers;
+    private _setUpProviderName (): void {
+        if (this.opts.listBrowsers)
+            this.opts.providerName = this.opts.listBrowsers as string;
     }
 
-    async parse (argv) {
+    public async parse (argv: string[]): Promise<void> {
         this.program.parse(argv);
 
         this.args = this.program.args;
@@ -243,7 +274,8 @@ export default class CLIArgumentParser {
         // NOTE: the '-list-browsers' option only lists browsers and immediately exits the app.
         // Therefore, we don't need to process other arguments.
         if (this.opts.listBrowsers) {
-            this._getProviderName();
+            this._setUpProviderName();
+
             return;
         }
 
@@ -261,5 +293,17 @@ export default class CLIArgumentParser {
         await this._parseVideoOptions();
         await this._parseSslOptions();
         await this._parseReporters();
+    }
+
+    public getRunOptions (): RunnerRunOptions {
+        const result = Object.create(null);
+
+        RUN_OPTION_NAMES.forEach(optionName => {
+            if (optionName in this.opts)
+                // @ts-ignore a hack to add an index signature to interface
+                result[optionName] = this.opts[optionName];
+        });
+
+        return result as RunnerRunOptions;
     }
 }

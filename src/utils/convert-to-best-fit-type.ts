@@ -1,8 +1,7 @@
 const NUMBER_REG_EX               = /^[0-9-.,]+$/;
 const BOOLEAN_STRING_VALUES       = ['true', 'false'];
 
-
-export default function (valueStr) {
+export default function (valueStr: any): any { /* eslint-disable-line @typescript-eslint/no-explicit-any */
     if (typeof valueStr !== 'string')
         return valueStr;
 

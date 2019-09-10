@@ -14,6 +14,26 @@ export interface StaticContentCachingOptions {
 }
 
 export interface Dictionary<T> {
-    [Key: string]: T;
+    [key: string]: T;
+}
+
+export interface RunnerRunOptions {
+    skipJsErrors?: boolean;
+    skipUncaughtErrors?: boolean;
+    quarantineMode?: boolean;
+    debugMode?: boolean;
+    debugOnFail?: boolean;
+    selectorTimeout?: number;
+    assertionTimeout?: number;
+    pageLoadTimeout?: number;
+    speed?: number;
+    stopOnFirstFail?: number;
+}
+
+export interface GetOptionConfiguration {
+    optionsSeparator?: string;
+    keyValueSeparator?: string;
+    skipOptionValueTypeConversion?: boolean;
+    onOptionParsed?: Function;
 }
 

@@ -91,7 +91,7 @@ async function runTests (argParser) {
         .browsers(browsers)
         .reporter(argParser.opts.reporter)
         .concurrency(argParser.opts.concurrency)
-        .filter(argParser.filter)
+        .filter(argParser.opts.filter)
         .video(opts.video, opts.videoOptions, opts.videoEncodingOptions)
         .screenshots(opts.screenshots, opts.screenshotsOnFails, opts.screenshotPathPattern)
         .startApp(opts.app, opts.appInitDelay)
@@ -100,7 +100,9 @@ async function runTests (argParser) {
     runner.once('done-bootstrapping', () => log.hideSpinner());
 
     try {
-        failed = await runner.run(opts);
+        const runOpts = argParser.getRunOptions();
+
+        failed = await runner.run(runOpts);
     }
 
     finally {

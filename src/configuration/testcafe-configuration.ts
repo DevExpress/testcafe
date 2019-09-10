@@ -17,7 +17,7 @@ import {
 } from './default-values';
 
 import OptionSource from './option-source';
-import { FilterOption, ReporterOption, StaticContentCachingOptions } from './interfaces';
+import { Dictionary, FilterOption, ReporterOption, StaticContentCachingOptions } from './interfaces';
 
 const CONFIGURATION_FILENAME = '.testcaferc.json';
 
@@ -152,7 +152,7 @@ export default class TestCafeConfiguration extends Configuration {
         if (!sslOptions)
             return;
 
-        sslOptions.value = await getSSLOptions(sslOptions.value) as string;
+        sslOptions.value = await getSSLOptions(sslOptions.value as string) as Dictionary<string | boolean | number>;
     }
 
     private _setDefaultValues (): void {
