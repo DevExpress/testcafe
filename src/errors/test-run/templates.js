@@ -308,7 +308,7 @@ export default {
     `,
 
     [TEST_RUN_ERRORS.executeAsyncExpressionError]: err => `
-        An unhandled error occurred in a step with custom JS code:
+        An unhandled error occurred in the TestCafe script:
         
         ${escapeHtml(err.errMsg)}
         
