@@ -1,6 +1,7 @@
 import chalk from 'chalk';
 import { findIndex } from 'lodash';
 import logUpdate from 'log-update-async-hook';
+import renderCallsiteSync from '../utils/render-callsite-sync';
 import createStackFilter from '../errors/create-stack-filter';
 
 export default {
@@ -60,21 +61,20 @@ export default {
         if (!this.streamsOverridden)
             this._overrideStreams();
 
-        // NOTE: Raw API does not have callsite.
-        const hasCallsite = callsite && callsite.renderSync;
-
-        const callsiteStr = hasCallsite ? callsite.renderSync({
+        const callsiteStr = renderCallsiteSync(callsite, {
             frameSize:   1,
             stackFilter: createStackFilter(Error.stackTraceLimit),
             stack:       false
-        }) : '';
+        });
 
         const frame = `\n` +
-                    `----\n` +
-                    `${userAgent}\n` +
-                    chalk.yellow(testError ? 'DEBUGGER PAUSE ON FAILED TEST:' : 'DEBUGGER PAUSE:') + `\n` +
-                    `${testError ? testError : callsiteStr}\n` +
-                    `----\n`;
+                      `----\n` +
+                      `${userAgent}\n` +
+                      chalk.yellow(testError ? 'DEBUGGER PAUSE ON FAILED TEST:' : 'DEBUGGER PAUSE:') +
+                      `${testError ? `\n${testError}` : ''}` +
+                      `${!testError && callsiteStr ? `\n${callsiteStr}` : ''}` +
+                      '\n' +
+                      `----\n`;
 
         const message = { testRunId, frame };
         const index   = findIndex(this.messages, { testRunId });

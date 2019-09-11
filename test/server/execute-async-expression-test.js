@@ -11,12 +11,19 @@ let callsite = 0;
 
 function createTestRunMock () {
     function TestRunMock () {
-        this.session    = { id: nanoid(7) };
-        this.test       = { name: 'Test', testFile: { filename: __filename } };
-        this.debugLog   = { command: noop };
-        this.controller = new TestController(this);
+        this.session         = { id: nanoid(7) };
+        this.test            = { name: 'Test', testFile: { filename: __filename } };
+        this.debugLog        = { command: noop };
+        this.controller      = new TestController(this);
+        this.driverTaskQueue = [];
+        this.emit            = noop;
 
         this[markerSymbol] = true;
+
+        this.browserConnection = {
+            isHeadlessBrowser: () => false,
+            userAgent:         'Chrome'
+        };
     }
 
     TestRunMock.prototype = TestRun.prototype;
@@ -254,6 +261,33 @@ describe('Code steps', () => {
 
             expect(testRun1.sharedVar).eql(1);
             expect(testRun2.sharedVar).eql(2);
+        });
+
+        it('debug', async () => {
+            const testRun = createTestRunMock();
+            let debugMsg  = '';
+            let err       = null;
+
+            testRun._enqueueCommand = () => Promise.resolve();
+
+            const initialWrite = process.stdout.write;
+
+            process.stdout.write = chunk => {
+                debugMsg += chunk.toString();
+            };
+
+            try {
+                await executeAsyncExpression('await t.debug();', testRun);
+            }
+            catch (e) {
+                err = e;
+            }
+
+            process.stdout.write = initialWrite;
+
+            expect(err).eql(null);
+            expect(debugMsg).contains('Chrome');
+            expect(debugMsg).contains('DEBUGGER PAUSE');
         });
     });
 });
