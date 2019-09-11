@@ -67,7 +67,8 @@ export const TEST_RUN_ERRORS = {
     requestHookUnhandledError:                             'E63',
     uncaughtErrorInCustomClientScriptCode:                 'E64',
     uncaughtErrorInCustomClientScriptCodeLoadedFromModule: 'E65',
-    uncaughtErrorInCustomScript:                           'E66'
+    uncaughtErrorInCustomScript:                           'E66',
+    uncaughtTestCafeErrorInCustomScript:                   'E67'
 };
 
 export const RUNTIME_ERRORS = {

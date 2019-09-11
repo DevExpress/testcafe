@@ -1,5 +1,5 @@
 import { runInContext } from 'vm';
-import { UncaughtErrorInCustomScript } from '../errors/test-run';
+import { UncaughtErrorInCustomScript, UncaughtTestCafeErrorInCustomScript } from '../errors/test-run';
 import { setContextOptions } from '../api/test-controller/execution-context';
 
 const ERROR_LINE_COLUMN_REGEXP = /:(\d+):(\d+)/;
@@ -22,14 +22,6 @@ function getErrorLineColumn (err) {
     return { line, column };
 }
 
-function formatExpression (expression) {
-    const expresionMessage = expression.split('\n');
-
-    return expresionMessage.map(str => {
-        return ' '.repeat(10) + str;
-    }).join('\n');
-}
-
 function createErrorFormattingOptions (expression) {
     return {
         filename:     formatExpression(expression),
@@ -45,6 +37,14 @@ function getExecutionContext (testController, options = {}) {
     setContextOptions(context, options);
 
     return context;
+}
+
+export function formatExpression (expression) {
+    const expresionMessage = expression.split('\n');
+
+    return expresionMessage.map(str => {
+        return ' '.repeat(4) + str;
+    }).join('\n');
 }
 
 export function executeJsExpression (expression, testRun, options) {
@@ -63,7 +63,7 @@ export async function executeAsyncJsExpression (expression, testRun, callsite) {
     }
     catch (err) {
         if (err.isTestCafeError)
-            throw err;
+            throw new UncaughtTestCafeErrorInCustomScript(err, expression, callsite);
 
         const { line, column } = getErrorLineColumn(err);
 

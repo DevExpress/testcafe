@@ -7,6 +7,8 @@ const TestController = require('../../lib/api/test-controller');
 const COMMAND_TYPE   = require('../../lib/test-run/commands/type');
 const markerSymbol   = require('../../lib/test-run/marker-symbol');
 
+const assertTestRunError = require('./helpers/assert-test-run-error');
+
 let callsite = 0;
 
 function createTestRunMock () {
@@ -60,6 +62,21 @@ async function assertError (expression, expectedMessage, expectedLine, expectedC
     expect(catched).eql(true);
 }
 
+async function assertTestCafeError (expression, expectedFileName) {
+    let catched = false;
+
+    try {
+        await executeAsyncExpression(expression);
+    }
+    catch (err) {
+        catched = true;
+
+        assertTestRunError(err, expectedFileName, false);
+    }
+
+    expect(catched).eql(true);
+}
+
 describe('Code steps', () => {
     beforeEach(() => {
         callsite = 0;
@@ -84,6 +101,10 @@ describe('Code steps', () => {
             'q = 4;\n' +
             'throw new Error(\'custom error\')'
             , 'custom error', 3, 7, '3');
+    });
+
+    it('TestCafe errors', async () => {
+        await assertTestCafeError("await t.wait('10');", '../data/execute-async-expression/uncaught-test-cafe-error-in-custom-script');
     });
 
     it('sync expression does not spoil global context', async () => {

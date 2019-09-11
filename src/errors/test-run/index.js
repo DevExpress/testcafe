@@ -451,6 +451,18 @@ export class UncaughtErrorInCustomScript extends TestRunErrorBase {
     }
 }
 
+export class UncaughtTestCafeErrorInCustomScript extends TestRunErrorBase {
+    constructor (err, expression, callsite) {
+        super(TEST_RUN_ERRORS.uncaughtTestCafeErrorInCustomScript);
+
+        this.callsite   = callsite;
+        this.expression = expression;
+
+        this.originError = err;
+        this.errCallsite = err.callsite;
+    }
+}
+
 export class WindowDimensionsOverflowError extends TestRunErrorBase {
     constructor (callsite) {
         super(TEST_RUN_ERRORS.windowDimensionsOverflowError);

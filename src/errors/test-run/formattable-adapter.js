@@ -1,16 +1,13 @@
 import { find, assignIn } from 'lodash';
 import { Parser } from 'parse5';
 import { renderers } from 'callsite-record';
-import TEMPLATES from './templates';
+import renderErrorTemplate from './render-error-template';
 import createStackFilter from '../create-stack-filter';
-import { markup } from './utils';
 
 const parser = new Parser();
 
 export default class TestRunErrorFormattableAdapter {
     constructor (err, metaInfo) {
-        this.TEMPLATES = TEMPLATES;
-
         this.userAgent      = metaInfo.userAgent;
         this.screenshotPath = metaInfo.screenshotPath;
         this.testRunPhase   = metaInfo.testRunPhase;
@@ -50,9 +47,7 @@ export default class TestRunErrorFormattableAdapter {
     }
 
     getErrorMarkup (viewportWidth) {
-        const errMessage = this.TEMPLATES[this.code](this, viewportWidth);
-
-        return markup(this, errMessage);
+        return renderErrorTemplate(this, viewportWidth);
     }
 
     getCallsiteMarkup () {

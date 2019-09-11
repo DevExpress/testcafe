@@ -16,12 +16,6 @@ const SUBTITLES = {
     [TEST_RUN_PHASE.inBookmarkRestore]:       '<span class="subtitle">Error while restoring configuration after Role switch</span>\n'
 };
 
-function shouldSkipCallsite (err) {
-    return err.code === TEST_RUN_ERRORS.uncaughtNonErrorObjectInTestCode ||
-           err.code === TEST_RUN_ERRORS.unhandledPromiseRejection ||
-           err.code === TEST_RUN_ERRORS.uncaughtException;
-}
-
 export function renderForbiddenCharsList (forbiddenCharsList) {
     return forbiddenCharsList.map(charInfo => `\t"${charInfo.chars}" at index ${charInfo.index}\n`).join('');
 }
@@ -59,12 +53,18 @@ export function replaceLeadingSpacesWithNbsp (str) {
     });
 }
 
-export function markup (err, msgMarkup) {
-    msgMarkup = dedent(`
-        ${SUBTITLES[err.testRunPhase]}<div class="message">${dedent(msgMarkup)}</div>
+export function shouldSkipCallsite (err) {
+    return err.code === TEST_RUN_ERRORS.uncaughtNonErrorObjectInTestCode ||
+           err.code === TEST_RUN_ERRORS.unhandledPromiseRejection ||
+           err.code === TEST_RUN_ERRORS.uncaughtException;
+}
 
-        <strong>Browser:</strong> <span class="user-agent">${err.userAgent}</span>
-    `);
+export function markup (err, msgMarkup, errCallsite = '') {
+    msgMarkup = dedent(`${SUBTITLES[err.testRunPhase]}<div class="message">${dedent(msgMarkup)}</div>`);
+
+    msgMarkup += errCallsite ? `\n\n${errCallsite}\n` : '\n';
+
+    msgMarkup += `\n<strong>Browser:</strong> <span class="user-agent">${err.userAgent}</span>`;
 
     if (err.screenshotPath)
         msgMarkup += `\n<div class="screenshot-info"><strong>Screenshot:</strong> <a class="screenshot-path">${escapeHtml(err.screenshotPath)}</a></div>`;
@@ -76,6 +76,6 @@ export function markup (err, msgMarkup) {
             msgMarkup += `\n\n${callsiteMarkup}`;
     }
 
-    return msgMarkup
-        .replace('\t', '&nbsp;'.repeat(4));
+    return msgMarkup.replace('\t', '&nbsp;'.repeat(4));
 }
+

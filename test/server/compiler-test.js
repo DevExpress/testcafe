@@ -6,7 +6,7 @@ const sinon               = require('sinon');
 const { TEST_RUN_ERRORS } = require('../../lib/errors/types');
 const exportableLib       = require('../../lib/api/exportable-lib');
 const createStackFilter   = require('../../lib/errors/create-stack-filter.js');
-const assertError         = require('./helpers/assert-error').assertError;
+const assertError         = require('./helpers/assert-runtime-error').assertError;
 const compile             = require('./helpers/compile');
 const { exec }            = require('child_process');
 
