@@ -1163,7 +1163,7 @@
     <span class="k">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Peter Parker</span><span class="dl">'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="p">{</span> <span class="na">caretPos</span><span class="p">:</span> <span class="mi">5</span> <span class="p">})</span>
-        <span class="p">.</span><span class="nx">keyPress</span><span class="p">(</span><span class="dl">'</span><span class="s1">backspace</span><span class="dl">'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">pressKey</span><span class="p">(</span><span class="dl">'</span><span class="s1">backspace</span><span class="dl">'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">.</span><span class="nx">value</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="dl">'</span><span class="s1">Pete Parker</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
