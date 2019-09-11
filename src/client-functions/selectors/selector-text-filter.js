@@ -25,18 +25,10 @@ export default function selectorTextFilter (node, index, originNode, textFilter)
 
     // Element
     if (node.nodeType === 1) {
-        let text = node.innerText;
-
         // NOTE: In Firefox, <option> elements don't have `innerText`.
         // So, we fallback to `textContent` in that case (see GH-861).
-        if (node.tagName.toLowerCase() === 'option') {
-            const textContent = node.textContent;
-
-            if (!text && textContent)
-                text = textContent;
-        }
-
-        return checkNodeText(text);
+        // SVG elements do not have `innerText` property as well
+        return checkNodeText(node.innerText || node.textContent);
     }
 
     // Document
