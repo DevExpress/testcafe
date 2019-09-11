@@ -4,7 +4,8 @@ import {
     renderForbiddenCharsList,
     formatSelectorCallstack,
     formatUrl,
-    replaceLeadingSpacesWithNbsp
+    replaceLeadingSpacesWithNbsp,
+    formatExpression
 } from './utils';
 
 const EXTERNAL_LINKS = {
@@ -312,7 +313,6 @@ export default {
         
         ${escapeHtml(err.errMsg)}
         
-        ${escapeHtml(err.expression)}
-        at ${err.line}:${err.column}
+        ${formatExpression(err.expression, err.line, err.column)}
     `
 };

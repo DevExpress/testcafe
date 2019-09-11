@@ -14,7 +14,10 @@ function wrapInAsync (expression) {
 }
 
 function getErrorLineColumn (err) {
-    const result = err.stack.match(ERROR_LINE_COLUMN_REGEXP);
+    const result = err.stack && err.stack.match(ERROR_LINE_COLUMN_REGEXP);
+
+    if (!result)
+        return {};
 
     const line   = parseInt(result[1], 10);
     const column = parseInt(result[2], 10);
