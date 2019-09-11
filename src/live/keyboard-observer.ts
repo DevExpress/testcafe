@@ -75,18 +75,18 @@ export default class LiveModeKeyboardEventObserver {
     }
 
     private _stop (): void {
-        this.controllers.forEach(c => c.stop());
+        this.controllers.forEach(c => c._stop());
     }
 
     private _restart (): void {
-        this.controllers.forEach(c => c.restart());
+        this.controllers.forEach(c => c._restart());
     }
 
     private _exit (): void {
-        this.controllers.forEach(c => c.exit());
+        this.controllers.forEach(c => c._exit());
     }
 
     private _toggleWatching (): void {
-        this.controllers.forEach(c => c.toggleWatching());
+        this.controllers.forEach(c => c._toggleWatching());
     }
 }
