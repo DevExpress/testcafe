@@ -6,9 +6,9 @@
 
 #### :gear: Page Caching Can be Disabled ([#3780](https://github.com/DevExpress/testcafe/issues/3780))
 
-In order to guarantee seamless test execution, browsers that run TestCafe tests should always fetch the tested page from the TestCafe proxy server. This ensures that automation scripts on the page are in sync with the server side.
+TestCafe may be unable to log in to the tested website correctly if the web server uses caching for authentication pages or pages to which users are redirected after login. See the [User Roles](https://devexpress.github.io/testcafe/documentation/test-api/authentication/user-roles.html#test-actions-fail-after-authentication) topic for details.
 
-However, if the browser uses a cached copy of the page, automation mechanisms may be interrupted. Among other issues, this could reset authentication data in the cookies, local and session storages during navigation. As a result, if the web server enables caching for authentication pages or pages to which users are redirected after login, test may fail unexpectedly. In this instance, you can disable page caching in TestCafe.
+If tests fail unexpectedly after authentication, disable page caching in TestCafe.
 
 Use the [fixture.disablePageCaching](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#disable-page-caching) and [test.disablePageCaching](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#disable-page-caching) methods to disable caching during a particular fixture or test.
 
@@ -46,7 +46,7 @@ To disable page caching during the entire test run, use either of the following 
     }
     ```
 
-If tests run correctly when page caching is disabled, you can keep using this TestCafe option. However, we recommend that you adjust the server settings instead and disable caching for authentication pages and pages to which the server redirects from them.
+If tests run correctly without page caching, we recommend that you adjust the server settings to disable caching for authentication pages and pages to which the server redirects from them.
 
 ### Bug Fixes
 
