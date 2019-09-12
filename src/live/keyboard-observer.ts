@@ -1,7 +1,7 @@
 import process from 'process';
 import { emitKeypressEvents, Key } from 'readline';
 import { pull } from 'lodash';
-import { LiveModeController } from './interfaces';
+import LiveModeController from './controller';
 
 const LOCK_KEY_PRESS_TIMEOUT = 1000;
 

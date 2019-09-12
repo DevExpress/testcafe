@@ -80,7 +80,7 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
 
                     helper.emitter.once('tests-completed', () => {
                         setTimeout(() => {
-                            runner.controller._restart()
+                            runner.controller.restart()
                                 .then(() => {
                                     runner.exit();
                                 });
@@ -131,7 +131,7 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
 
                     helper.emitter.once('tests-completed', () => {
                         setTimeout(() => {
-                            runner.controller._restart().then(() => {
+                            runner.controller.restart().then(() => {
                                 expect(Object.keys(helper.data).length).eql(2);
                                 expect(helper.data[0]).eql(true);
                                 expect(helper.data[1]).eql(true);
