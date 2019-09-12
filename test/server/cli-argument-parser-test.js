@@ -604,11 +604,38 @@ describe('CLI argument parser', function () {
     });
 
     it('run options', () => {
-        return parse('ie,chrome test.js --debug-on-fail')
+        const argumentsString = 'ie,chrome test.js' + [
+            '--debug-on-fail',
+            '--skip-js-errors',
+            '--skip-uncaught-errors',
+            '--quarantine-mode',
+            '--debug-mode',
+            '--debug-on-fail',
+            '--selector-timeout 1000',
+            '--assertion-timeout 1000',
+            '--page-load-timeout 1000',
+            '--speed 1',
+            '--stop-on-first-fail',
+            '--disable-page-caching',
+            '--disable-page-reloads'
+        ].join(' ');
+
+        return parse(argumentsString)
             .then(parser => {
                 const runOpts = parser.getRunOptions();
 
+                expect(runOpts.skipJsErrors).eql(true);
+                expect(runOpts.skipUncaughtErrors).eql(true);
+                expect(runOpts.quarantineMode).eql(true);
+                expect(runOpts.debugMode).eql(true);
                 expect(runOpts.debugOnFail).eql(true);
+                expect(runOpts.selectorTimeout).eql(1000);
+                expect(runOpts.assertionTimeout).eql(1000);
+                expect(runOpts.pageLoadTimeout).eql(1000);
+                expect(runOpts.speed).eql(1);
+                expect(runOpts.stopOnFirstFail).eql(true);
+                expect(runOpts.disablePageCaching).eql(true);
+                expect(runOpts.disablePageReloads).eql(true);
                 expect(runOpts.browsers).to.be.undefined;
             });
     });
