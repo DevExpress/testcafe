@@ -1,7 +1,7 @@
 import process from 'process';
 import { emitKeypressEvents, Key } from 'readline';
 import { pull } from 'lodash';
-import { LiveModeController } from './interfaces';
+import LiveModeController from './controller';
 
 const LOCK_KEY_PRESS_TIMEOUT = 1000;
 
@@ -75,18 +75,18 @@ export default class LiveModeKeyboardEventObserver {
     }
 
     private _stop (): void {
-        this.controllers.forEach(c => c._stop());
+        this.controllers.forEach(c => c.stop());
     }
 
     private _restart (): void {
-        this.controllers.forEach(c => c._restart());
+        this.controllers.forEach(c => c.restart());
     }
 
     private _exit (): void {
-        this.controllers.forEach(c => c._exit());
+        this.controllers.forEach(c => c.exit());
     }
 
     private _toggleWatching (): void {
-        this.controllers.forEach(c => c._toggleWatching());
+        this.controllers.forEach(c => c.toggleWatching());
     }
 }

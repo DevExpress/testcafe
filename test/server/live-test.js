@@ -216,7 +216,7 @@ describe('TestCafe Live', function () {
     it('rerun', function () {
         return runTests(testFileWithSingleTestPath)
             .then(() => {
-                return runner.controller._restart()
+                return runner.controller.restart()
                     .then(() => {
                         expect(runner.runCount).eql(2);
                     });
@@ -247,7 +247,7 @@ describe('TestCafe Live', function () {
                 runner.src(testFileWithMultipleTestsPath);
             })
             .then(() => {
-                return runner.controller._restart();
+                return runner.controller.restart();
             })
             .then(() => {
                 expect(runner.runCount).eql(2);
@@ -268,7 +268,7 @@ describe('TestCafe Live', function () {
             .then(() => {
                 runner.src(testFileWithSyntaxErrorPath);
 
-                return runner.controller._restart();
+                return runner.controller.restart();
             })
             .then(() => {
                 expect(errors.length).eql(1);
@@ -279,7 +279,7 @@ describe('TestCafe Live', function () {
                 runner.clearSources();
                 runner.src(testFileWithSingleTestPath);
 
-                return runner.controller._restart();
+                return runner.controller.restart();
             })
             .then(() => {
                 expect(runner.runCount).eql(3);
@@ -293,7 +293,7 @@ describe('TestCafe Live', function () {
                 runner.clearSources();
                 runner.src(testFileWithSyntaxErrorPath);
 
-                return runner.controller._restart();
+                return runner.controller.restart();
             })
             .then(() => {
                 expect(runner.runCount).eql(4);
@@ -400,7 +400,7 @@ describe('TestCafe Live', function () {
 
                     expect(runner.runCount).eql(1);
 
-                    return runner.controller._restart();
+                    return runner.controller.restart();
                 })
                 .then(() => {
                     expect(runner.runCount).eql(2);
@@ -412,12 +412,12 @@ describe('TestCafe Live', function () {
                 .then(() => {
                     expect(runner.runCount).eql(1);
 
-                    runner.controller._restart();
+                    runner.controller.restart();
 
                     expect(runner.controller.restarting).eql(false);
                     expect(runner.controller.running).eql(true);
 
-                    runner.controller._restart();
+                    runner.controller.restart();
 
                     expect(runner.controller.restarting).eql(true);
                     expect(runner.controller.running).eql(true);
@@ -430,9 +430,9 @@ describe('TestCafe Live', function () {
             return runTests(testFileWithSingleTestPath, { runTimeout: 100 })
                 .then(() => {
                     expect(runner.runCount).eql(1);
-                    runner.controller._restart();
+                    runner.controller.restart();
 
-                    return runner.controller._stop();
+                    return runner.controller.stop();
                 })
                 .then(() => {
                     expect(runner.runCount).eql(1);
@@ -446,16 +446,16 @@ describe('TestCafe Live', function () {
                 .then(() => {
                     expect(runner.runCount).eql(1);
 
-                    runner.controller._toggleWatching();
+                    runner.controller.toggleWatching();
 
-                    return runner.controller._restart();
+                    return runner.controller.restart();
                 })
                 .then(() => {
                     expect(runner.runCount).eql(1);
 
-                    runner.controller._toggleWatching();
+                    runner.controller.toggleWatching();
 
-                    return runner.controller._restart();
+                    return runner.controller.restart();
                 })
                 .then(() => {
                     expect(runner.runCount).eql(2);

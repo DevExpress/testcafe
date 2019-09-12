@@ -132,7 +132,7 @@ class LiveModeRunner extends Runner {
     stop () {
         return super.stop()
             .then(() => {
-                return this.controller._exit();
+                return this.controller.exit();
             });
     }
 

@@ -2,23 +2,33 @@ import EventEmitter from 'events';
 import Logger from './logger';
 import FileWatcher from './file-watcher';
 import LiveModeKeyboardEventObserver from './keyboard-observer';
+import LiveModeRunner from './test-runner';
 
 class LiveModeController extends EventEmitter {
-    constructor (runner) {
+    private running: boolean;
+    private restarting: boolean;
+    private watchingPaused: boolean;
+    private stopping: boolean;
+    private logger: Logger;
+    private runner: LiveModeRunner;
+    private keyboardObserver: LiveModeKeyboardEventObserver;
+    private fileWatcher: FileWatcher;
+
+    public constructor (runner: LiveModeRunner) {
         super();
 
-        this.running        = false;
-        this.restarting     = false;
+        this.running = false;
+        this.restarting = false;
         this.watchingPaused = false;
-        this.stopping       = false;
-        this.logger         = new Logger();
-        this.runner         = runner;
+        this.stopping = false;
+        this.logger = new Logger();
+        this.runner = runner;
 
         this.keyboardObserver = this._createKeyboardObserver();
-        this.fileWatcher      = this._createFileWatcher();
+        this.fileWatcher = this._createFileWatcher();
     }
 
-    init (files) {
+    public init (files: string[]): Promise<void> {
         this.keyboardObserver.push(this);
 
         this._initFileWatching(files);
@@ -29,13 +39,13 @@ class LiveModeController extends EventEmitter {
             .then(() => this.logger.writeIntroMessage(files));
     }
 
-    dispose () {
+    public dispose (): void {
         this.fileWatcher.stop();
 
         this.keyboardObserver.remove(this);
     }
 
-    runTests (sourceChanged) {
+    public runTests (sourceChanged?: boolean): Promise<void> {
         if (this.watchingPaused || this.running)
             return Promise.resolve();
 
@@ -46,7 +56,7 @@ class LiveModeController extends EventEmitter {
         return this.runner.runTests();
     }
 
-    onTestRunDone (err) {
+    public onTestRunDone (err: Error): void {
         this.running = false;
 
         if (!this.restarting)
@@ -56,13 +66,13 @@ class LiveModeController extends EventEmitter {
             this.logger.err(err);
     }
 
-    _toggleWatching () {
+    public toggleWatching (): void {
         this.watchingPaused = !this.watchingPaused;
 
         this.logger.writeToggleWatchingMessage(!this.watchingPaused);
     }
 
-    _stop () {
+    public stop (): Promise<void> {
         if (!this.runner || !this.running) {
             this.logger.writeNothingToStopMessage();
 
@@ -74,18 +84,18 @@ class LiveModeController extends EventEmitter {
         return this.runner.suspend()
             .then(() => {
                 this.restarting = false;
-                this.running    = false;
+                this.running = false;
             });
     }
 
-    _restart () {
+    public restart (): Promise<void> {
         if (this.restarting || this.watchingPaused)
             return Promise.resolve();
 
         this.restarting = true;
 
         if (this.running) {
-            return this._stop()
+            return this.stop()
                 .then(() => this.logger.writeTestsFinishedMessage())
                 .then(() => this.runTests());
         }
@@ -93,7 +103,7 @@ class LiveModeController extends EventEmitter {
         return this.runTests();
     }
 
-    _exit () {
+    public exit (): Promise<void> {
         if (this.stopping)
             return Promise.resolve();
 
@@ -104,26 +114,26 @@ class LiveModeController extends EventEmitter {
         return this.runner ? this.runner.exit() : Promise.resolve();
     }
 
-    _createFileWatcher () {
-        return new FileWatcher();
-    }
-
-    _createKeyboardObserver () {
-        return new LiveModeKeyboardEventObserver();
-    }
-
-    addFileToWatches (filename) {
+    public addFileToWatches (filename: string): void {
         this.fileWatcher.addFile(this, filename);
     }
 
-    _initFileWatching (files) {
+    protected _createFileWatcher (): FileWatcher {
+        return new FileWatcher();
+    }
+
+    protected _createKeyboardObserver (): LiveModeKeyboardEventObserver {
+        return new LiveModeKeyboardEventObserver();
+    }
+
+    private _initFileWatching (files: string[]): void {
         files.forEach(file => this.addFileToWatches(file));
     }
 
-    _setRunning () {
-        this.running    = true;
+    private _setRunning (): void {
+        this.running = true;
         this.restarting = false;
-        this.stopping   = false;
+        this.stopping = false;
     }
 }
 
