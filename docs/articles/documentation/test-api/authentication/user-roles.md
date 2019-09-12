@@ -10,7 +10,7 @@ to isolate authentication test actions and apply them easily whenever you need t
 
 A piece of logic that logs in a particular user is called a *role*. Define a role for each user account participating in your test.
 
-* [Why Use Roles](#why-roles)
+* [Why Use Roles](#why-use-roles)
 * [Create and Apply Roles](#create-and-apply-roles)
 * [Anonymous Role](#anonymous-role)
 * [Role Options](#role-options)
