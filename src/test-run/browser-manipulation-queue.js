@@ -77,13 +77,15 @@ export default class BrowserManipulationQueue {
                     customPath:     command.path,
                     pageDimensions: driverMsg.pageDimensions,
                     cropDimensions: driverMsg.cropDimensions,
-                    markSeed:       command.markSeed
+                    markSeed:       command.markSeed,
+                    fullPage:       command.fullPage
                 }));
 
             case COMMAND_TYPE.takeScreenshotOnFail:
                 return await this._takeScreenshot(() => this.screenshotCapturer.captureError({
                     pageDimensions: driverMsg.pageDimensions,
-                    markSeed:       command.markSeed
+                    markSeed:       command.markSeed,
+                    fullPage:       command.fullPage
                 }));
 
             case COMMAND_TYPE.resizeWindow:

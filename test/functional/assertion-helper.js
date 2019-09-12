@@ -65,6 +65,24 @@ function checkScreenshotFileCropped (filePath) {
         });
 }
 
+function checkScreenshotFileFullPage (filePath) {
+    return readPngFile(filePath)
+        .then(function (png) {
+            const width  = png.width;
+            const height = png.height;
+
+            const size = 5050;
+
+            if (width !== size || height !== size)
+                return false;
+
+            return hasPixel(png, RED_PIXEL, 0, 0) &&
+                   hasPixel(png, RED_PIXEL, size - 1, size - 1) &&
+                   hasPixel(png, GREEN_PIXEL, 0, size - 1) &&
+                   hasPixel(png, GREEN_PIXEL, size - 1, 0);
+        });
+}
+
 function checkScreenshotFileIsNotWhite (filePath) {
     return readPngFile(filePath)
         .then(function (png) {
@@ -283,6 +301,10 @@ exports.checkScreenshotsCropped = function (forError, customPath) {
 
 exports.checkScreenshotIsNotWhite = function (forError, customPath) {
     return checkScreenshotImages(forError, customPath, checkScreenshotFileIsNotWhite);
+};
+
+exports.checkScreenshotFileFullPage = function (forError, customPath) {
+    return checkScreenshotImages(forError, customPath, checkScreenshotFileFullPage);
 };
 
 exports.isScreenshotsEqual = function (customPath, referenceImagePathGetter) {

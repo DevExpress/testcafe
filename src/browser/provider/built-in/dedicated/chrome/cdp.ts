@@ -50,14 +50,7 @@ async function getActiveTab (cdpPort: number, browserId: string): Promise<remote
 }
 
 async function setEmulationBounds ({ client, config, viewportSize, emulatedDevicePixelRatio }: RuntimeInfo): Promise<void> {
-    await client.Emulation.setDeviceMetricsOverride({
-        width:             viewportSize.width,
-        height:            viewportSize.height,
-        deviceScaleFactor: emulatedDevicePixelRatio,
-        mobile:            config.mobile,
-        // @ts-ignore Specify this property for backward compatibility with older protocol versions
-        fitWindow:         false
-    });
+    await setDeviceMetricsOverride(client, viewportSize.width, viewportSize.height, emulatedDevicePixelRatio, config.mobile);
 
     await client.Emulation.setVisibleSize({ width: viewportSize.width, height: viewportSize.height });
 }
@@ -92,10 +85,33 @@ async function enableDownloads ({ client }: RuntimeInfo): Promise<void> {
     });
 }
 
-export async function getScreenshotData ({ client }: RuntimeInfo): Promise<Buffer> {
+export async function getScreenshotData ({ client, config }: RuntimeInfo, fullPage?: boolean): Promise<Buffer> {
+    if (fullPage) {
+        const { contentSize } = await client.Page.getLayoutMetrics();
+
+        const width = Math.ceil(contentSize.width);
+        const height = Math.ceil(contentSize.height);
+
+        await setDeviceMetricsOverride(client, width, height, config.scaleFactor, config.mobile);
+    }
+
     const screenshotData = await client.Page.captureScreenshot({});
 
+    if (fullPage)
+        await setDeviceMetricsOverride(client, config.width, config.height, config.scaleFactor, config.mobile);
+
     return Buffer.from(screenshotData.data, 'base64');
+}
+
+async function setDeviceMetricsOverride (client: remoteChrome.ProtocolApi, width: number, height: number, deviceScaleFactor: number, mobile: boolean): Promise<void> {
+    await client.Emulation.setDeviceMetricsOverride({
+        width,
+        height,
+        deviceScaleFactor,
+        mobile,
+        // @ts-ignore
+        fitWindow: false
+    });
 }
 
 export async function createClient (runtimeInfo: RuntimeInfo): Promise<void> {

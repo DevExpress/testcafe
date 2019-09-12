@@ -289,7 +289,7 @@ export default class BrowserProvider {
         return await this.plugin.maximizeWindow(browserId);
     }
 
-    async takeScreenshot (browserId, screenshotPath, pageWidth, pageHeight) {
+    async takeScreenshot (browserId, screenshotPath, pageWidth, pageHeight, fullPage) {
         const canUseDefaultWindowActions = await this._canUseDefaultWindowActions(browserId);
         const customActionsInfo          = await this.hasCustomActionForBrowser(browserId);
         const hasCustomTakeScreenshot    = customActionsInfo.hasTakeScreenshot;
@@ -299,7 +299,7 @@ export default class BrowserProvider {
             return;
         }
 
-        await this.plugin.takeScreenshot(browserId, screenshotPath, pageWidth, pageHeight);
+        await this.plugin.takeScreenshot(browserId, screenshotPath, pageWidth, pageHeight, fullPage);
     }
 
     async getVideoFrameData (browserId) {

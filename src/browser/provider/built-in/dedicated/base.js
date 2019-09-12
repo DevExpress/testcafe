@@ -47,15 +47,18 @@ export default {
         };
     },
 
-    async takeScreenshot (browserId, path, viewportWidth, viewportHeight) {
+    async takeScreenshot (browserId, path, viewportWidth, viewportHeight, fullPage) {
         const runtimeInfo    = this.openedBrowsers[browserId];
         const browserClient  = this._getBrowserProtocolClient(runtimeInfo);
-        const binaryImage    = await browserClient.getScreenshotData(runtimeInfo);
-        const pngImage       = await readPng(binaryImage);
+        const binaryImage    = await browserClient.getScreenshotData(runtimeInfo, fullPage);
         const cropDimensions = this._getCropDimensions(viewportWidth, viewportHeight);
-        const croppedImage   = await cropScreenshot(pngImage, { path, cropDimensions });
 
-        await writePng(path, croppedImage || pngImage);
+        let pngImage = await readPng(binaryImage);
+
+        if (!fullPage)
+            pngImage = await cropScreenshot(pngImage, { path, cropDimensions });
+
+        await writePng(path, pngImage);
     },
 
     async maximizeWindow (browserId) {

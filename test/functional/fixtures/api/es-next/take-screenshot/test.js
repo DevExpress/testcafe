@@ -582,3 +582,19 @@ describe('[API] t.takeElementScreenshot()', function () {
     }
 });
 
+describe('[API] t.takeScreenshot({ fullPage: true })', function () {
+    afterEach(assertionHelper.removeScreenshotDir);
+
+    if (config.useLocalBrowsers && config.useHeadlessBrowsers) {
+        it('Should take a screenshot', function () {
+            return runTests('./testcafe-fixtures/take-full-page-screenshot.js', 'API', { setScreenshotPath: true })
+                .then(function () {
+                    return assertionHelper.checkScreenshotFileFullPage(false, 'custom');
+                })
+                .then(function (result) {
+                    expect(result).eql(true);
+                });
+        });
+    }
+});
+
