@@ -109,4 +109,4 @@ Parameter                      | Type   | Description             | Default
 `orientation` *(optional)*  | `vertical` &#124; `horizontal` | The device orientation | `vertical`
 `userAgent` *(optional)*    | String  | The user agent string | The user agent string of the selected `device` or the browser.
 `touch` *(optional)*        | Boolean | Enables or disables the touch event emulation. | `true` if a touch-supported device is set via the `device` property or your system supports touch events. Otherwise `false`.
-`cdpPort` *(optional)*      | Number  | A port (0-65535) used for the Chrome Debugging Protocol. | `9222`
+`cdpPort` *(optional)*      | Number  | A port (0-65535) used for the Chrome Debugging Protocol. | `9222` if you load a user profile with the [:userProfile](user-profiles.md) or `--user-data-dir` flag. Otherwise, TestCafe automatically assigns a free port.
