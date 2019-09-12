@@ -11,7 +11,7 @@ This release introduces the capability to disable page caching in TestCafe.
 
 ## Enhancements
 
-### :gear: Page Caching Can be Disabled ([#3780](https://github.com/DevExpress/testcafe/issues/3780))
+### ⚙ Page Caching Can be Disabled ([#3780](https://github.com/DevExpress/testcafe/issues/3780))
 
 TestCafe may be unable to log in to the tested website correctly if the web server uses caching for authentication pages or pages to which users are redirected after login. See the [User Roles](https://devexpress.github.io/testcafe/documentation/test-api/authentication/user-roles.html#test-actions-fail-after-authentication) topic for details.
 
