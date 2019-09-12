@@ -546,6 +546,7 @@ Parameter         | Type    | Description                                       
 `pageLoadTimeout` | Number  |  Specifies the time (in milliseconds) TestCafe waits for the `window.load` event to fire after the `DOMContentLoaded` event. After the timeout passes or the `window.load` event is raised (whichever happens first), TestCafe starts the test. You can set this timeout to `0` to skip waiting for `window.load`. | `3000`
 `speed`           | Number  | Specifies the test execution speed. A number between `1` (fastest) and `0.01` (slowest). If an [individual action's](../../test-api/actions/action-options.md#basic-action-options) speed is also specified, the action speed setting overrides the test speed. | `1`
 `stopOnFirstFail`    | Boolean | Defines whether to stop a test run if a test fails. You do not need to wait for all the tests to finish to focus on the first error. | `false`
+`disablePageCaching` | Boolean | Prevents the browser from caching the page content. When navigation to a cached page occurs in [role code](../../test-api/authentication/user-roles.md), local and session storage content is not preserved. Set `disablePageCaching` to `true` to retain the storage items after navigation. For more information, see [Troubleshooting: Test Actions Fail After Authentication](../../test-api/authentication/user-roles.md#test-actions-fail-after-authentication). You can also disable page caching [for an individual fixture or test](../../test-api/test-code-structure.md#disable-page-caching).
 
 After all tests are finished, call the [testcafe.close](testcafe.md#close) function to stop the TestCafe server.
 
@@ -561,6 +562,7 @@ After all tests are finished, call the [testcafe.close](testcafe.md#close) funct
 * [pageLoadTimeout](../configuration-file.md#pageloadtimeout)
 * [speed](../configuration-file.md#speed)
 * [stopOnFirstFail](../configuration-file.md#stoponfirstfail)
+* [disablePageCaching](../configuration-file.md#disablepagecaching)
 
 **Example**
 

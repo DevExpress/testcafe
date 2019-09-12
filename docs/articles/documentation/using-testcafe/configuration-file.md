@@ -51,6 +51,7 @@ A configuration file can include the following settings:
 * [qrCode](#qrcode)
 * [stopOnFirstFail](#stoponfirstfail)
 * [tsConfigPath](#tsconfigpath)
+* [disablePageCaching](#disablepagecaching)
 * [color](#color)
 * [noColor](#nocolor)
 
@@ -800,6 +801,23 @@ You can specify an absolute or relative path. Relative paths resolve from the cu
 
 *CLI*: [--ts-config-path](command-line-interface.md#--ts-config-path-path)  
 *API*: [runner.tsConfigPath](programming-interface/runner.md#tsconfigpath)
+
+## disablePageCaching
+
+Prevents the browser from caching the page content.
+
+```json
+{
+    "disablePageCaching": true
+}
+```
+
+When navigation to a cached page occurs in [role code](../test-api/authentication/user-roles.md), local and session storage content is not preserved. Set `disablePageCaching` to `true` to retain the storage items after navigation. For more information, see [Troubleshooting: Test Actions Fail After Authentication](../test-api/authentication/user-roles.md#test-actions-fail-after-authentication).
+
+You can also disable page caching [for an individual fixture or test](../test-api/test-code-structure.md#disable-page-caching).
+
+*CLI*: [--disable-page-caching](command-line-interface.md#--disable-page-caching)  
+*API*: [runner.run({ disablePageCaching })](programming-interface/runner.md#run)
 
 ## color
 

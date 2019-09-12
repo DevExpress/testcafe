@@ -24,6 +24,7 @@ This topic contains the following sections:
     * [Sharing Variables Between Fixture Hooks and Test Code](#sharing-variables-between-fixture-hooks-and-test-code)
 * [Skipping Tests](#skipping-tests)
 * [Inject Scripts into Tested Pages](#inject-scripts-into-tested-pages)
+* [Disable Page Caching](#disable-page-caching)
 
 > If you use [eslint](http://eslint.org/) in your project, use  the [TestCafe plugin](https://www.npmjs.com/package/eslint-plugin-testcafe)
 to avoid the `'fixture' is not defined` and `'test' is not defined` errors.
@@ -627,3 +628,37 @@ To inject scripts into pages visited during all tests, use either of the followi
 * the [clientScripts](../using-testcafe/configuration-file.md#clientscripts) configuration file property
 
 See [Inject Scripts into Tested Pages](../using-testcafe/common-concepts/inject-scripts-into-tested-pages.md) for more information.
+
+## Disable Page Caching
+
+When navigation to a cached page occurs in [role code](authentication/user-roles.md), local and session storage content is not preserved. See [Troubleshooting: Test Actions Fail After Authentication](authentication/user-roles.md#test-actions-fail-after-authentication) for more information.
+
+You can disable page caching to keep items in these storages after navigation. Use the `fixture.disablePageCaching` and `test.disablePageCaching` methods to disable caching during a particular fixture or test.
+
+```text
+fixture.disablePageCaching
+```
+
+```text
+test.disablePageCaching
+```
+
+**Examples**
+
+```js
+fixture
+    .disablePageCaching `My fixture`
+    .page `https://example.com`;
+```
+
+```js
+test
+    .disablePageCaching
+    ('My test', async t => { /* ... */ });
+```
+
+To disable page caching during the entire test run, use either of the following options:
+
+* the [--disable-page-caching](../using-testcafe/command-line-interface.md#--disable-page-caching) command line flag
+* the `disablePageCaching` option in the [runner.run](../using-testcafe/programming-interface/runner.md#run) method
+* the [disablePageCaching](../using-testcafe/configuration-file.md#disablepagecaching) configuration file option
