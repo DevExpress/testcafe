@@ -1400,6 +1400,12 @@ where tests are not guaranteed to execute correctly.</p>
 <td>Defines whether to stop a test run if a test fails. You do not need to wait for all the tests to finish to focus on the first error.</td>
 <td><code>false</code></td>
 </tr>
+<tr>
+<td><code>disablePageCaching</code></td>
+<td>Boolean</td>
+<td>Prevents the browser from caching the page content. When navigation to a cached page occurs in <a href="../../test-api/authentication/user-roles.html">role code</a>, local and session storage content is not preserved. Set <code>disablePageCaching</code> to <code>true</code> to retain the storage items after navigation. For more information, see <a href="../../test-api/authentication/user-roles.html#test-actions-fail-after-authentication">Troubleshooting: Test Actions Fail After Authentication</a>. You can also disable page caching <a href="../../test-api/test-code-structure.html#disable-page-caching">for an individual fixture or test</a>.</td>
+<td></td>
+</tr>
 </tbody></table></div>
 <p>After all tests are finished, call the <a href="testcafe.html#close">testcafe.close</a> function to stop the TestCafe server.</p>
 
@@ -1416,6 +1422,7 @@ where tests are not guaranteed to execute correctly.</p>
 <li><a href="../configuration-file.html#pageloadtimeout">pageLoadTimeout</a></li>
 <li><a href="../configuration-file.html#speed">speed</a></li>
 <li><a href="../configuration-file.html#stoponfirstfail">stopOnFirstFail</a></li>
+<li><a href="../configuration-file.html#disablepagecaching">disablePageCaching</a></li>
 </ul>
 
 <p><strong>Example</strong></p>

@@ -1123,6 +1123,22 @@
 to isolate authentication test actions and apply them easily whenever you need to switch the user account.</p>
 
 <p>A piece of logic that logs in a particular user is called a <em>role</em>. Define a role for each user account participating in your test.</p>
+
+<ul>
+<li><a href="#why-use-roles">Why Use Roles</a></li>
+<li><a href="#create-and-apply-roles">Create and Apply Roles</a></li>
+<li><a href="#anonymous-role">Anonymous Role</a></li>
+<li><a href="#role-options">Role Options</a>
+
+<ul>
+<li><a href="#optionspreserveurl">options.preserveUrl</a></li>
+</ul></li>
+<li><a href="#troubleshooting">Troubleshooting</a>
+
+<ul>
+<li><a href="#test-actions-fail-after-authentication">Test Actions Fail After Authentication</a></li>
+</ul></li>
+</ul>
 <h2><a class="anchor" id="why-use-roles"></a>Why Use Roles <a class="permalink" href="#why-use-roles">#</a></h2>
 <p>Roles are more than just another way to <a href="../../recipes/extract-reusable-test-code/">extract reusable test logic</a>. They were specially designed for login operations and provide the following dedicated features:</p>
 
@@ -1135,7 +1151,7 @@ to isolate authentication test actions and apply them easily whenever you need t
 <li><strong>Anonymous role.</strong> A built-in role that quilckly logs you out of all the accounts.</li>
 </ul>
 <blockquote><div class="blockquote-content"><p>Roles work with authentication data in cookies and browser storages. If your authentication system stores data elsewhere, you may not be able to use roles.</p>
-</div></blockquote><h2><a class="anchor" id="create-and-use-roles"></a>Create and Use Roles <a class="permalink" href="#create-and-use-roles">#</a></h2>
+</div></blockquote><h2><a class="anchor" id="create-and-apply-roles"></a>Create and Apply Roles <a class="permalink" href="#create-and-apply-roles">#</a></h2>
 <p>Use the <code>Role</code> constructor to create and initialize a role.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">Role( url, func( t ) [, options] )
 </code></pre></div><div class="table-wrapper"><table><thead><tr>
@@ -1249,7 +1265,7 @@ to isolate authentication test actions and apply them easily whenever you need t
         <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">comment</span><span class="p">.</span><span class="nx">innerText</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="dl">'</span><span class="s1">Hey ya!</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" id="role-options"></a>Role Options <a class="permalink" href="#role-options">#</a></h2>
-<p>You can pass the following options to the <a href="#create-and-use-roles">Role constructor</a>.</p>
+<p>You can pass the following options to the <a href="#create-and-apply-roles">Role constructor</a>.</p>
 <h3><a class="anchor" id="optionspreserveurl"></a>options.preserveUrl <a class="permalink" href="#optionspreserveurl">#</a></h3>
 <p>Use this option to control which page is opened after you switch to the role.</p>
 
@@ -1279,6 +1295,29 @@ TestCafe will navigate to the saved URL each time after you switch to this role.
         <span class="p">.</span><span class="nx">useRole</span><span class="p">(</span><span class="nx">role</span><span class="p">);</span>
 </code></pre></div>
 <p><strong>Default value</strong>: <code>false</code></p>
+<h2><a class="anchor" id="troubleshooting"></a>Troubleshooting <a class="permalink" href="#troubleshooting">#</a></h2><h3><a class="anchor" id="test-actions-fail-after-authentication"></a>Test Actions Fail After Authentication <a class="permalink" href="#test-actions-fail-after-authentication">#</a></h3>
+<p>This issue can be caused by the browser&#39;s page caching.</p>
+
+<p>In order to guarantee seamless test execution, browsers that run TestCafe tests should always fetch the tested page from the TestCafe proxy server. This ensures that automation scripts on the page are in sync with the server side.</p>
+
+<p>However, if the browser uses a cached copy of the page, automation mechanisms may be interrupted. Among other issues, this could reset authentication data in the cookies, local and session storages during navigation.</p>
+
+<p>If tests fail unexpectedly after authentication, try the following steps:</p>
+
+<ul>
+<li>Enable the <a href="#optionspreserveurl">preserveUrl</a> option to avoid automatic navigation.</li>
+<li>If <code>preserveUrl</code> does not fix the issue, disable page caching. Note that this slows down test execution.</li>
+</ul>
+
+<p>Use the <a href="../test-code-structure.html#disable-page-caching">fixture.disablePageCaching</a> and <a href="../test-code-structure.html#disable-page-caching">test.disablePageCaching</a> methods to disable caching during a particular fixture or test.</p>
+
+<p>To disable page caching during the entire test run, use either of the following options:</p>
+
+<ul>
+<li>the <a href="../../using-testcafe/command-line-interface.html#--disable-page-caching">--disable-page-caching</a> command line flag</li>
+<li>the <code>disablePageCaching</code> option in the <a href="../../using-testcafe/programming-interface/runner.html#run">runner.run</a> method</li>
+<li>the <a href="../../using-testcafe/configuration-file.html#disablepagecaching">disablePageCaching</a> configuration file property</li>
+</ul>
 
 
 		</div>

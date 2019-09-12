@@ -5,9 +5,66 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 10 Sep 2019 21:02:19 +0300</pubDate>
-    <lastBuildDate>Tue, 10 Sep 2019 21:02:19 +0300</lastBuildDate>
+    <pubDate>Thu, 12 Sep 2019 20:13:05 +0300</pubDate>
+    <lastBuildDate>Thu, 12 Sep 2019 20:13:05 +0300</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>TestCafe v1.5.0 Released</title>
+        <description>&lt;h1&gt;TestCafe v1.5.0 Released&lt;/h1&gt;
+&lt;p&gt;This release introduces the capability to disable page caching in TestCafe.&lt;/p&gt;
+
+&lt;!--more--&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;page-caching-can-be-disabled-3780&quot;&gt;&lt;/a&gt;⚙ Page Caching Can be Disabled (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3780&quot;&gt;#3780&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#page-caching-can-be-disabled-3780&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;TestCafe may be unable to log in to the tested website correctly if the web server uses caching for authentication pages or pages to which users are redirected after login. See the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/authentication/user-roles.html#test-actions-fail-after-authentication&quot;&gt;User Roles&lt;/a&gt; topic for details.&lt;/p&gt;
+
+&lt;p&gt;If tests fail unexpectedly after authentication, disable page caching in TestCafe.&lt;/p&gt;
+
+&lt;p&gt;Use the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#disable-page-caching&quot;&gt;fixture.disablePageCaching&lt;/a&gt; and &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#disable-page-caching&quot;&gt;test.disablePageCaching&lt;/a&gt; methods to disable caching during a particular fixture or test.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;disablePageCaching&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`My fixture`&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`https://example.com`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;disablePageCaching&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;My test&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* ... */&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;To disable page caching during the entire test run, use either of the following options:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--disable-page-caching&quot;&gt;--disable-page-caching&lt;/a&gt; command line flag&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome my-tests &lt;span class=&quot;nt&quot;&gt;--disable-page-caching&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;the &lt;code&gt;disablePageCaching&lt;/code&gt; option in the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#run&quot;&gt;runner.run&lt;/a&gt; method&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;disablePageCaching&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#disablepagecaching&quot;&gt;disablePageCaching&lt;/a&gt; configuration file property&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;disablePageCaching&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If tests run correctly without page caching, we recommend that you adjust the server settings to disable caching for authentication pages and pages to which the server redirects from them.&lt;/p&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Fixed an error that occured when a selector matched an &lt;code&gt;&amp;lt;svg&amp;gt;&lt;/code&gt; element (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3684&quot;&gt;#3684&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Fixed an issue when the &lt;code&gt;reporter&lt;/code&gt; configuration file option was not applied (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/4234&quot;&gt;#4234&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Fixed a warning message about invalid &lt;code&gt;tsconfig.json&lt;/code&gt; file (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/4154&quot;&gt;#4154&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;LiveRunner.stop()&lt;/code&gt; now closes the browsers (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/4107&quot;&gt;#4107&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Quarantined tests now re-run correctly in live mode (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/4093&quot;&gt;#4093&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Fixed a bug when client scripts were not injected in live mode when it re-executed tests (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/4183&quot;&gt;#4183&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;form.elements.length&lt;/code&gt; now returns the correct value for forms with file inputs (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2034&quot;&gt;testcafe-hammerhead/#2034&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Fixed a bug when images were not displayed in inputs with the &lt;code&gt;image&lt;/code&gt; type (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2116&quot;&gt;testcafe-hammerhead/#2116&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Fixed an AngularJS compatibility issue that caused a &lt;code&gt;TypeError&lt;/code&gt; (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2099&quot;&gt;testcafe-hammerhead/#2099&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;TestCafe now works correctly with servers that use &lt;code&gt;JSZip&lt;/code&gt; to unpack uploaded files (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2115&quot;&gt;testcafe-hammerhead/#2115&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Thu, 12 Sep 2019 00:00:00 +0300</pubDate>
+        <link>https://devexpress.github.io/testcafe/blog/testcafe-v1-5-0-released.html</link>
+        <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v1-5-0-released.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>TestCafe v1.4.0 Released</title>
@@ -608,89 +665,6 @@ If the same problem occurs with this test two more times, the test run finishes 
         <pubDate>Mon, 03 Sep 2018 00:00:00 +0300</pubDate>
         <link>https://devexpress.github.io/testcafe/blog/testcafe-v0-22-0-released.html</link>
         <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v0-22-0-released.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>TestCafe v0.21.0 Released</title>
-        <description>&lt;h1&gt;TestCafe v0.21.0 Released&lt;/h1&gt;
-&lt;p&gt;Test web pages served over HTTPS, construct screenshot paths with patterns and use more info in custom reporters.&lt;/p&gt;
-
-&lt;!--more--&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;test-web-pages-served-over-https-1985&quot;&gt;&lt;/a&gt;⚙ Test Web Pages Served Over HTTPS (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1985&quot;&gt;#1985&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#test-web-pages-served-over-https-1985&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;Some browser features (like &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API&quot;&gt;Service Workers&lt;/a&gt;, &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API&quot;&gt;Geolocation API&lt;/a&gt;, &lt;a href=&quot;https://developer.apple.com/documentation/apple_pay_on_the_web/applepaysession&quot;&gt;ApplePaySession&lt;/a&gt;, or &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto&quot;&gt;SubtleCrypto&lt;/a&gt;) require a secure origin. This means that the website should use the HTTPS protocol.&lt;/p&gt;
-
-&lt;p&gt;Starting with v0.21.0, TestCafe can serve proxied web pages over HTTPS. This allows you to test pages that require a secure origin.&lt;/p&gt;
-
-&lt;p&gt;To enable HTTPS when you use TestCafe through the command line, specify the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--ssl-options&quot;&gt;--ssl&lt;/a&gt; flag followed by the &lt;a href=&quot;https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener&quot;&gt;HTTPS server options&lt;/a&gt;. The most commonly used options are described in the &lt;a href=&quot;https://nodejs.org/api/tls.html#tls_tls_createsecurecontext_options&quot;&gt;TLS topic&lt;/a&gt; in the Node.js documentation.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe &lt;span class=&quot;nt&quot;&gt;--ssl&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;pfx&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;path/to/file.pfx&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;rejectUnauthorized&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;...
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;When you use a programming API, pass the HTTPS server options to the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/createtestcafe.html&quot;&gt;createTestCafe&lt;/a&gt; method.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;use strict&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;createTestCafe&lt;/span&gt;        &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;testcafe&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;selfSignedSertificate&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;openssl-self-signed-certificate&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;                  &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;sslOptions&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;nx&quot;&gt;selfSignedSertificate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;cert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;selfSignedSertificate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cert&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;createTestCafe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;localhost&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1337&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1338&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;sslOptions&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;testcafe&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;testcafe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;createRunner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;
-            &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;test.js&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-            &lt;span class=&quot;c1&quot;&gt;// Browsers restrict self-signed certificate usage unless you&lt;/span&gt;
-            &lt;span class=&quot;c1&quot;&gt;// explicitly set a flag specific to each browser.&lt;/span&gt;
-            &lt;span class=&quot;c1&quot;&gt;// For Chrome, this is '--allow-insecure-localhost'.&lt;/span&gt;
-            &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;browsers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;chrome --allow-insecure-localhost&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-            &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;See &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/connect-to-the-testcafe-server-over-https.html&quot;&gt;Connect to TestCafe Server over HTTPS&lt;/a&gt; for more information.&lt;/p&gt;
-&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;construct-screenshot-paths-with-patterns-2152&quot;&gt;&lt;/a&gt;⚙ Construct Screenshot Paths with Patterns (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2152&quot;&gt;#2152&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#construct-screenshot-paths-with-patterns-2152&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;You can now use patterns to construct paths to screenshots. TestCafe provides a number of placeholders you can include in the path, for example, &lt;code&gt;${DATE}&lt;/code&gt;, &lt;code&gt;${TIME}&lt;/code&gt;, &lt;code&gt;${USERAGENT}&lt;/code&gt;, etc. For a complete list, refer to the command line &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-p-pattern---screenshot-path-pattern-pattern&quot;&gt;--screenshot-path-pattern flag description&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;You specify a screenshot path pattern when you run tests. Each time TestCafe takes a screenshot, it substitutes the placeholders with actual values and saves the screenshot to the resulting path.&lt;/p&gt;
-
-&lt;p&gt;The following example shows how to specify a screenshot path pattern through the command line:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe all test.js &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; screenshots &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png'&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;When you use a programming API, pass the screenshot path pattern to the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#screenshots&quot;&gt;runner.screenshots method&lt;/a&gt;.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;screenshots&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;reports/screenshots/&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;${TEST_INDEX}/${OS}/${BROWSER}-v${BROWSER_VERSION}/${FILE_INDEX}.png&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;add-info-about-screenshots-and-quarantine-attempts-to-custom-reports-2216&quot;&gt;&lt;/a&gt;⚙ Add Info About Screenshots and Quarantine Attempts to Custom Reports (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2216&quot;&gt;#2216&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#add-info-about-screenshots-and-quarantine-attempts-to-custom-reports-2216&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;Custom reporters can now access screenshots&amp;#39; data and the history of quarantine attempts (if the test run in the quarantine mode).&lt;/p&gt;
-
-&lt;p&gt;The following information about screenshots is now available:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;the path to the screenshot file,&lt;/li&gt;
-&lt;li&gt;the path to the thumbnail image,&lt;/li&gt;
-&lt;li&gt;the user agent of the browser in which the screenshot was taken,&lt;/li&gt;
-&lt;li&gt;the quarantine attempt number (if the screenshot was taken in the quarantine mode),&lt;/li&gt;
-&lt;li&gt;whether the screenshot was taken because the test failed.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;If the test was run in the quarantine mode, you can also determine which attempts failed and passed.&lt;/p&gt;
-
-&lt;p&gt;Refer to the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttestdone&quot;&gt;reportTestDone method description&lt;/a&gt; for details on how to access this information.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;HTML5 drag events are no longer simulated if &lt;code&gt;event.preventDefault&lt;/code&gt; is called for the &lt;code&gt;mousedown&lt;/code&gt; event (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2529&quot;&gt;#2529&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;File upload no longer causes an exception when there are several file inputs on the page (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2642&quot;&gt;#2642&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;File upload now works with inputs that have the &lt;code&gt;required&lt;/code&gt; attribute (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2509&quot;&gt;#2509&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;The &lt;code&gt;load&lt;/code&gt; event listener is no longer triggered when added to an image (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1688&quot;&gt;testcafe-hammerhead/#1688&lt;/a&gt;)&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Thu, 02 Aug 2018 00:00:00 +0300</pubDate>
-        <link>https://devexpress.github.io/testcafe/blog/testcafe-v0-21-0-released.html</link>
-        <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v0-21-0-released.html</guid>
         
         
       </item>
