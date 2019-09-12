@@ -863,6 +863,7 @@
 <li><a href="#qrcode">qrCode</a></li>
 <li><a href="#stoponfirstfail">stopOnFirstFail</a></li>
 <li><a href="#tsconfigpath">tsConfigPath</a></li>
+<li><a href="#disablepagecaching">disablePageCaching</a></li>
 <li><a href="#color">color</a></li>
 <li><a href="#nocolor">noColor</a></li>
 </ul>
@@ -1378,6 +1379,18 @@ to slow the test down.</p>
 
 <p><em>CLI</em>: <a href="command-line-interface.html#--ts-config-path-path">--ts-config-path</a><br>
 <em>API</em>: <a href="programming-interface/runner.html#tsconfigpath">runner.tsConfigPath</a></p>
+<h2><a class="anchor" id="disablepagecaching"></a>disablePageCaching <a class="permalink" href="#disablepagecaching">#</a></h2>
+<p>Prevents the browser from caching the page content.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nl">"disablePageCaching"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>When navigation to a cached page occurs in <a href="../test-api/authentication/user-roles.html">role code</a>, local and session storage content is not preserved. Set <code>disablePageCaching</code> to <code>true</code> to retain the storage items after navigation. For more information, see <a href="../test-api/authentication/user-roles.html#test-actions-fail-after-authentication">Troubleshooting: Test Actions Fail After Authentication</a>.</p>
+
+<p>You can also disable page caching <a href="../test-api/test-code-structure.html#disable-page-caching">for an individual fixture or test</a>.</p>
+
+<p><em>CLI</em>: <a href="command-line-interface.html#--disable-page-caching">--disable-page-caching</a><br>
+<em>API</em>: <a href="programming-interface/runner.html#run">runner.run({ disablePageCaching })</a></p>
 <h2><a class="anchor" id="color"></a>color <a class="permalink" href="#color">#</a></h2>
 <p>Enables colors in the command line.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">

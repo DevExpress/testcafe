@@ -870,6 +870,7 @@
 <li><a href="#--qr-code">--qr-code</a></li>
 <li><a href="#--sf---stop-on-first-fail">--sf, --stop-on-first-fail</a></li>
 <li><a href="#--ts-config-path-path">--ts-config-path &lt;path&gt;</a></li>
+<li><a href="#--disable-page-caching">--disable-page-caching</a></li>
 <li><a href="#--color">--color</a></li>
 <li><a href="#--no-color">--no-color</a></li>
 </ul></li>
@@ -1314,6 +1315,15 @@ See <a href="common-concepts/test-https-and-http2-websites.html">Test HTTPS and 
 <p>You can specify an absolute or relative path. Relative paths resolve from the current directory (the directory from which you run TestCafe).</p>
 
 <p><em>Related configuration file property</em>: <a href="configuration-file.html#tsconfigpath">tsConfigPath</a>.</p>
+<h3><a class="anchor" id="--disable-page-caching"></a>--disable-page-caching <a class="permalink" href="#--disable-page-caching">#</a></h3>
+<p>Prevents the browser from caching the page content.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests <span class="nt">--disable-page-caching</span>
+</code></pre></div>
+<p>When navigation to a cached page occurs in <a href="../test-api/authentication/user-roles.html">role code</a>, local and session storage content is not preserved. Use the <code>--disable-page-caching</code> flag to retain the storage items after navigation. For more information, see <a href="../test-api/authentication/user-roles.html#test-actions-fail-after-authentication">Troubleshooting: Test Actions Fail After Authentication</a>.</p>
+
+<p>You can also disable page caching <a href="../test-api/test-code-structure.html#disable-page-caching">for an individual fixture or test</a>.</p>
+
+<p><em>Related configuration file property</em>: <a href="configuration-file.html#disablepagecaching">disablePageCaching</a>.</p>
 <h3><a class="anchor" id="--color"></a>--color <a class="permalink" href="#--color">#</a></h3>
 <p>Enables colors in the command line.</p>
 

@@ -1147,6 +1147,7 @@
 </ul></li>
 <li><a href="#skipping-tests">Skipping Tests</a></li>
 <li><a href="#inject-scripts-into-tested-pages">Inject Scripts into Tested Pages</a></li>
+<li><a href="#disable-page-caching">Disable Page Caching</a></li>
 </ul>
 <blockquote><div class="blockquote-content"><p>If you use <a href="http://eslint.org/">eslint</a> in your project, use  the <a href="https://www.npmjs.com/package/eslint-plugin-testcafe">TestCafe plugin</a>
 to avoid the <code>&#39;fixture&#39; is not defined</code> and <code>&#39;test&#39; is not defined</code> errors.</p>
@@ -1662,6 +1663,28 @@ Use the <code>fixture.skip</code> and <code>test.skip</code> methods for this.</
 </ul>
 
 <p>See <a href="../using-testcafe/common-concepts/inject-scripts-into-tested-pages.html">Inject Scripts into Tested Pages</a> for more information.</p>
+<h2><a class="anchor" id="disable-page-caching"></a>Disable Page Caching <a class="permalink" href="#disable-page-caching">#</a></h2>
+<p>When navigation to a cached page occurs in <a href="authentication/user-roles.html">role code</a>, local and session storage content is not preserved. See <a href="authentication/user-roles.html#test-actions-fail-after-authentication">Troubleshooting: Test Actions Fail After Authentication</a> for more information.</p>
+
+<p>You can disable page caching to keep items in these storages after navigation. Use the <code>fixture.disablePageCaching</code> and <code>test.disablePageCaching</code> methods to disable caching during a particular fixture or test.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">fixture.disablePageCaching
+</code></pre></div><div class="highlight"><pre><code class="language-text" data-lang="text">test.disablePageCaching
+</code></pre></div>
+<p><strong>Examples</strong></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span>
+    <span class="p">.</span><span class="nx">disablePageCaching</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://example.com`</span><span class="p">;</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">test</span>
+    <span class="p">.</span><span class="nx">disablePageCaching</span>
+    <span class="p">(</span><span class="dl">'</span><span class="s1">My test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">});</span>
+</code></pre></div>
+<p>To disable page caching during the entire test run, use either of the following options:</p>
+
+<ul>
+<li>the <a href="../using-testcafe/command-line-interface.html#--disable-page-caching">--disable-page-caching</a> command line flag</li>
+<li>the <code>disablePageCaching</code> option in the <a href="../using-testcafe/programming-interface/runner.html#run">runner.run</a> method</li>
+<li>the <a href="../using-testcafe/configuration-file.html#disablepagecaching">disablePageCaching</a> configuration file option</li>
+</ul>
 
 
 		</div>
