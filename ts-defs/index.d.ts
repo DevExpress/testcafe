@@ -1947,6 +1947,12 @@ interface FixtureFn {
      * @param hooks - The set of the RequestHook subclasses
      */
     requestHooks(...hooks: object[]): this;
+    /**
+     * Injects scripts into fixture run during the test execution.
+     *
+     * @param scripts - Scripts that should be added to the tested pages.
+    */
+   clientScripts (scripts: ClientScript | ClientScript[]): this;
 }
 
 interface TestFn {
@@ -2012,6 +2018,12 @@ interface TestFn {
      * @param hooks - The set of the RequestHook subclasses
      */
     requestHooks(...hooks: object[]): this;
+    /**
+     * Injects scripts into tests run during the test execution.
+     *
+     * @param scripts - Scripts that should be added to the tested pages.
+    */
+   clientScripts (scripts: ClientScript | ClientScript[]): this;
 }
 
 declare var fixture: FixtureFn;
