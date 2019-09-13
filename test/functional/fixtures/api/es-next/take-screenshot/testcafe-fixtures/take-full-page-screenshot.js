@@ -18,3 +18,9 @@ test('Runner', async t => {
     await t.takeScreenshot('custom/' + parse(ua).family + '.png');
 });
 
+test('Screenshot on fail', async () => {
+    const ua = await getUserAgent();
+
+    throw new Error('screenshot on fail' + parse(ua).family);
+});
+
