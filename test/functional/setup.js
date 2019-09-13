@@ -190,6 +190,7 @@ before(function () {
                     quarantineMode,
                     screenshotPathPattern,
                     screenshotsOnFails,
+                    screenshotFullPage,
                     videoOptions,
                     videoEncodingOptions,
                     speed,
@@ -246,7 +247,7 @@ before(function () {
                         return testName ? test === testName : true;
                     })
                     .src(fixturePath)
-                    .screenshots(screenshotPath, screenshotsOnFails, screenshotPathPattern)
+                    .screenshots(screenshotPath, screenshotsOnFails, screenshotPathPattern, screenshotFullPage)
                     .video(videoPath, videoOptions, videoEncodingOptions)
                     .startApp(appCommand, appInitDelay)
                     .clientScripts(clientScripts)

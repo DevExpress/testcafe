@@ -10,7 +10,7 @@ import { readPngFile, deleteFile, stat, writePng } from '../utils/promisified-fu
 
 
 export default class Capturer {
-    constructor (baseScreenshotsPath, testEntry, connection, pathPattern, warningLog) {
+    constructor (baseScreenshotsPath, testEntry, connection, pathPattern, fullPage, warningLog) {
         this.enabled             = !!baseScreenshotsPath;
         this.baseScreenshotsPath = baseScreenshotsPath;
         this.testEntry           = testEntry;
@@ -18,6 +18,7 @@ export default class Capturer {
         this.browserId           = connection.id;
         this.warningLog          = warningLog;
         this.pathPattern         = pathPattern;
+        this.fullPage            = fullPage;
     }
 
     static _getDimensionWithoutScrollbar (fullDimension, documentDimension, bodyDimension) {
@@ -103,6 +104,9 @@ export default class Capturer {
 
     async _takeScreenshot (filePath, pageWidth, pageHeight, fullPage) {
         await makeDir(dirname(filePath));
+
+        fullPage = fullPage !== void 0 ? fullPage : this.fullPage;
+
         await this.provider.takeScreenshot(this.browserId, filePath, pageWidth, pageHeight, fullPage);
     }
 

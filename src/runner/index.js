@@ -377,11 +377,12 @@ export default class Runner extends EventEmitter {
         return this;
     }
 
-    screenshots (path, takeOnFails, pattern) {
+    screenshots (path, takeOnFails, pattern, fullPage) {
         this.configuration.mergeOptions({
             [OPTION_NAMES.screenshotPath]:         path,
             [OPTION_NAMES.takeScreenshotsOnFails]: takeOnFails,
-            [OPTION_NAMES.screenshotPathPattern]:  pattern
+            [OPTION_NAMES.screenshotPathPattern]:  pattern,
+            [OPTION_NAMES.screenshotFullPage]:     fullPage
         });
 
         return this;

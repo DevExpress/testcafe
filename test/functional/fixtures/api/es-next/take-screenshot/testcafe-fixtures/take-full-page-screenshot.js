@@ -12,3 +12,9 @@ test('API', async t => {
     await t.takeScreenshot('custom/' + parse(ua).family + '.png', { fullPage: true });
 });
 
+test('Runner', async t => {
+    const ua = await getUserAgent();
+
+    await t.takeScreenshot('custom/' + parse(ua).family + '.png');
+});
+

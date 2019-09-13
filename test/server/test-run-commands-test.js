@@ -847,7 +847,7 @@ describe('Test run commands', () => {
                 selector: '#yo',
                 path:     'custom',
                 dummy:    'test',
-                fullPage:  true,
+                fullPage: true,
 
                 options: {
                     dummy: 'yo'
