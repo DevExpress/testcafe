@@ -1948,7 +1948,7 @@ interface FixtureFn {
      */
     requestHooks(...hooks: object[]): this;
     /**
-     * Injects scripts into fixture run during the test execution.
+     * Injects scripts into pages visited during the fixture execution.
      *
      * @param scripts - Scripts that should be added to the tested pages.
     */
@@ -2019,7 +2019,7 @@ interface TestFn {
      */
     requestHooks(...hooks: object[]): this;
     /**
-     * Injects scripts into tests run during the test execution.
+     * Injects scripts into pages visited during the test execution.
      *
      * @param scripts - Scripts that should be added to the tested pages.
     */
