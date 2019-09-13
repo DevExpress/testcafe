@@ -1570,12 +1570,12 @@ interface TestCafe {
     /**
      * Creates a remote browser connection.
      */
-    createBrowserConnection(): Promise<BrowserConnection>;
+    async createBrowserConnection(): Promise<BrowserConnection>;
 
     /**
      * Stops the TestCafe server. Forcibly closes all connections and pending test runs immediately.
      */
-    close(): Promise<void>;
+    async close(): Promise<void>;
 }
 
 interface Runner {
