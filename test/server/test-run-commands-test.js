@@ -847,6 +847,7 @@ describe('Test run commands', () => {
                 selector: '#yo',
                 path:     'custom',
                 dummy:    'test',
+                fullPage:  true,
 
                 options: {
                     dummy: 'yo'
@@ -859,7 +860,8 @@ describe('Test run commands', () => {
                 type:     TYPE.takeScreenshot,
                 markData: '',
                 markSeed: null,
-                path:     'custom'
+                path:     'custom',
+                fullPage: true
             });
 
             commandObj = {
@@ -878,7 +880,8 @@ describe('Test run commands', () => {
                 type:     TYPE.takeScreenshot,
                 markData: '',
                 markSeed: null,
-                path:     ''
+                path:     '',
+                fullPage: false
             });
         });
 

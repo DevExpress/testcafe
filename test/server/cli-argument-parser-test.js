@@ -586,6 +586,7 @@ describe('CLI argument parser', function () {
             { long: '--video-encoding-options' },
             { long: '--ts-config-path' },
             { long: '--client-scripts', short: '--cs' },
+            { long: '--screenshots-full-page' },
             { long: '--disable-page-caching' }
         ];
 
