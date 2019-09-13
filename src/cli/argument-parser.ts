@@ -126,7 +126,7 @@ export default class CLIArgumentParser {
             .option('--ts-config-path <path>', 'use a custom TypeScript configuration file and specify its location')
             .option('--cs, --client-scripts <paths>', 'inject scripts into tested pages', this._parseList, [])
             .option('--disable-page-caching', 'disable page caching during test execution')
-            .option('--screenshots-full-page', 'enable full page screenshots')
+            .option('--screenshot-full-page', 'enable full page screenshots')
 
             // NOTE: these options will be handled by chalk internally
             .option('--color', 'force colors in command line')
