@@ -71,15 +71,13 @@ function checkScreenshotFileFullPage (filePath) {
             const width  = png.width;
             const height = png.height;
 
-            const size = 5050;
+            const expectedHeight = 5000;
 
-            if (width !== size || height !== size)
-                return false;
-
-            return hasPixel(png, RED_PIXEL, 0, 0) &&
-                   hasPixel(png, RED_PIXEL, size - 1, size - 1) &&
-                   hasPixel(png, GREEN_PIXEL, 0, size - 1) &&
-                   hasPixel(png, GREEN_PIXEL, size - 1, 0);
+            return height === expectedHeight &&
+                hasPixel(png, RED_PIXEL, 0, 0) &&
+                hasPixel(png, RED_PIXEL, width - 1, height - 1) &&
+                hasPixel(png, GREEN_PIXEL, 0, height - 1) &&
+                hasPixel(png, GREEN_PIXEL, width - 1, 0);
         });
 }
 
