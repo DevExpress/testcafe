@@ -9,13 +9,13 @@ fixture `Take a full-page screenshot`
 test('API', async t => {
     const ua = await getUserAgent();
 
-    await t.takeScreenshot('custom/' + parse(ua).family + '.png', { fullPage: true });
+    await t.takeScreenshot({ path: 'custom/' + parse(ua).family + '.png', fullPage: true });
 });
 
 test('Runner', async t => {
     const ua = await getUserAgent();
 
-    await t.takeScreenshot('custom/' + parse(ua).family + '.png');
+    await t.takeScreenshot({ path: 'custom/' + parse(ua).family + '.png', fullPage: true });
 });
 
 test('Screenshot on fail', async () => {

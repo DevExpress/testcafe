@@ -210,8 +210,11 @@ export default class TestController {
         return this._enqueueCommand('clearUpload', ClearUploadCommand, { selector });
     }
 
-    _takeScreenshot$ (path, options) {
-        return this._enqueueCommand('takeScreenshot', TakeScreenshotCommand, Object.assign({ path }, options));
+    _takeScreenshot$ (options) {
+        if (typeof options === 'string')
+            options = { path: options };
+
+        return this._enqueueCommand('takeScreenshot', TakeScreenshotCommand, options);
     }
 
     _takeElementScreenshot$ (selector, ...args) {

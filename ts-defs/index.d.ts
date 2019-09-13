@@ -758,6 +758,22 @@ interface ActionOptions {
     speed?: number;
 }
 
+interface ScreenshotsOptions {
+    path: string;
+
+    takeOnFails?: boolean;
+
+    pathPattern?: string;
+
+    fullPage?: boolean;
+}
+
+interface TakeScreenshotOptions {
+    path?: string;
+
+    fullPage?: boolean;
+}
+
 interface TakeElementScreenshotOptions extends ActionOptions {
     /**
      * Allows to crop the target element on the screenshot.
@@ -1176,6 +1192,12 @@ interface TestController {
      * If path doesn't have .png extension, it will be added automatically.
      */
     takeScreenshot(path?: string): TestControllerPromise;
+    /**
+    * Takes a screenshot of the tested page.
+    *
+    * @param options
+    */
+    takeScreenshot(options: TakeScreenshotOptions): TestControllerPromise;
     /**
      * Takes a screenshot of the specified element.
      *
@@ -1635,6 +1657,8 @@ interface Runner {
      * @param pathPattern - The pattern to compose screenshot files' relative path and name.
      */
     screenshots(path: string, takeOnFails?: boolean, pathPattern?: string): this;
+
+    screenshots(options: ScreenshotsOptions): this;
 
     /**
      * Configures TestCafe's reporting feature.
