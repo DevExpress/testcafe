@@ -85,20 +85,38 @@ async function enableDownloads ({ client }: RuntimeInfo): Promise<void> {
     });
 }
 
-export async function getScreenshotData ({ client, config }: RuntimeInfo, fullPage?: boolean): Promise<Buffer> {
+export async function getScreenshotData ({ client, config, emulatedDevicePixelRatio }: RuntimeInfo, fullPage?: boolean): Promise<Buffer> {
+    let viewportWidth = 0;
+    let viewportHeight = 0;
+
     if (fullPage) {
-        const { contentSize } = await client.Page.getLayoutMetrics();
+        const { contentSize, visualViewport } = await client.Page.getLayoutMetrics();
 
-        const width = Math.ceil(contentSize.width);
-        const height = Math.ceil(contentSize.height);
+        await setDeviceMetricsOverride(
+            client,
+            Math.ceil(contentSize.width),
+            Math.ceil(contentSize.height),
+            emulatedDevicePixelRatio,
+            config.mobile);
 
-        await setDeviceMetricsOverride(client, width, height, config.scaleFactor, config.mobile);
+        viewportWidth = visualViewport.clientWidth;
+        viewportHeight = visualViewport.clientHeight;
     }
 
     const screenshotData = await client.Page.captureScreenshot({});
 
-    if (fullPage)
-        await setDeviceMetricsOverride(client, config.width, config.height, config.scaleFactor, config.mobile);
+    if (fullPage) {
+        if (config.emulation) {
+            await setDeviceMetricsOverride(
+                client,
+                config.width || viewportWidth,
+                config.height || viewportHeight,
+                emulatedDevicePixelRatio,
+                config.mobile);
+        }
+        else
+            await client.Emulation.clearDeviceMetricsOverride();
+    }
 
     return Buffer.from(screenshotData.data, 'base64');
 }
