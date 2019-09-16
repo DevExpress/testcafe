@@ -119,7 +119,7 @@ class CleanupProcess {
                 if (initialized !== void 0)
                     return initialized;
 
-                this.worker = spawn(process.argv[0], [WORKER_PATH], { detached: true, stdio: WORKER_STDIO_CONFIG });
+                this.worker = spawn(process.argv0, [WORKER_PATH], { detached: true, stdio: WORKER_STDIO_CONFIG });
 
                 this._setupWorkerEventHandlers();
                 this._unrefWorkerProcess();

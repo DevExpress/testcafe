@@ -4,7 +4,7 @@
   ],
   "rules": {
     "no-unused-expressions": 0,
-    "max-nested-callbacks": [2, 5],
+    "max-nested-callbacks": [2, 6],
     "no-only-tests/no-only-tests": 2
   },
   "env": {
