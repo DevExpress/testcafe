@@ -377,11 +377,11 @@ export default class Runner extends EventEmitter {
         return this;
     }
 
-    screenshots (options) {
-        if (typeof options === 'string')
-            options = { path: options };
+    screenshots (...options) {
+        let [path, takeOnFails, pathPattern, fullPage] = options;
 
-        const { path, takeOnFails, pathPattern, fullPage } = options;
+        if (options.length === 1 && options[0] && typeof options[0] === 'object')
+            ({ path, takeOnFails, pathPattern, fullPage } = options[0]);
 
         this.configuration.mergeOptions({
             [OPTION_NAMES.screenshotPath]:         path,
