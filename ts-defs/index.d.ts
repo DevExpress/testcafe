@@ -1575,7 +1575,7 @@ interface TestCafe {
     /**
      * Stops the TestCafe server. Forcibly closes all connections and pending test runs immediately.
      */
-    close(): void;
+    close(): Promise<void>;
 }
 
 interface Runner {
@@ -1749,6 +1749,10 @@ interface RunOptions {
      * Defines whether to disable checks for test and fixture directives in test files. Use this option to run dynamically loaded tests.
      */
     disableTestSyntaxValidation: boolean;
+    /**
+     * Defines whether to disable page caching during test execution.
+     */
+    disablePageCaching: boolean;
 }
 
 // Exportable lib
