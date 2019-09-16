@@ -211,7 +211,7 @@ export default class TestController {
     }
 
     _takeScreenshot$ (options) {
-        if (typeof options === 'string')
+        if (options && typeof options !== 'object')
             options = { path: options };
 
         return this._enqueueCommand('takeScreenshot', TakeScreenshotCommand, options);
