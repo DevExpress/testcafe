@@ -447,16 +447,18 @@ export class UncaughtErrorInCustomScript extends TestRunErrorBase {
         this.column     = column;
 
         this.originError = err;
-        this.errMsg      = err.message;
+        this.errMsg      = err.message || err.toString();
     }
 }
 
 export class UncaughtTestCafeErrorInCustomScript extends TestRunErrorBase {
-    constructor (err, expression, callsite) {
+    constructor (err, expression, line, column, callsite) {
         super(TEST_RUN_ERRORS.uncaughtTestCafeErrorInCustomScript);
 
         this.callsite   = callsite;
         this.expression = expression;
+        this.line       = line;
+        this.column     = column;
 
         this.originError = err;
         this.errCallsite = err.callsite;

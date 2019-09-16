@@ -3,7 +3,7 @@ An unhandled error occurred in the TestCafe script:
 The "timeout" argument is expected to be a positive integer, but it was
 string.
 
- > 1 |          await t.wait('10');
+ > 1 |await t.wait('10');
 
 Browser: Chrome 15.0.874 / Mac OS X 10.8.1
 Screenshot: /unix/path/with/<tag>

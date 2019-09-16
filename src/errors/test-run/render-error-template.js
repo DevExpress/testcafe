@@ -1,26 +1,28 @@
-import { escape as escapeHtml } from 'lodash';
 import { renderers } from 'callsite-record';
 import { TEST_RUN_ERRORS } from '../types';
-import { markup, shouldSkipCallsite } from './utils';
+import { markup, shouldSkipCallsite, formatExpressionMessage } from './utils';
 import TEMPLATES from './templates';
 
 function getTestCafeErrorInCustomScriptError (err, viewportWidth) {
+    const originErrTemplate  = TEMPLATES[err.originError.code];
+    const originErrMessage   = '\n' + err.originError.message;
     let originCallsiteMarkup = '';
 
-    if (err.errCallsite && !shouldSkipCallsite(err.originError)) {
+    if (err.errCallsite && originErrTemplate && !shouldSkipCallsite(err.originError)) {
         // HACK: we need to get callsite for custom TestCafe script without real file for it.
-        // We use expression as a file content.
-        originCallsiteMarkup = err.errCallsite._renderRecord(err.errCallsite.filename, {
+        // We use expression as a file content
+        originCallsiteMarkup = err.errCallsite._renderRecord(err.expression, {
             renderer: renderers.html,
             stack:    false
         });
     }
 
-    const originErrorText = TEMPLATES[err.originError.code](err.originError, viewportWidth);
+    const originErrorText = originErrTemplate ? originErrTemplate(err.originError, viewportWidth) : originErrMessage +
+                                                                                                    '\n';
 
     return markup(err, `
         An unhandled error occurred in the TestCafe script:
-        ${originErrorText}${!originCallsiteMarkup ? `\n${escapeHtml(err.expression)}` : ''}
+        ${originErrorText}${!originCallsiteMarkup ? `\n${formatExpressionMessage(err.expression, err.line, err.column)}` : ''}
     `, originCallsiteMarkup);
 }
 

@@ -103,8 +103,14 @@ describe('Code steps', () => {
             , 'custom error', 3, 7, '3');
     });
 
-    it('TestCafe errors', async () => {
-        await assertTestCafeError("await t.wait('10');", '../data/execute-async-expression/uncaught-test-cafe-error-in-custom-script');
+    describe('TestCafe errors', () => {
+        it('Test run error', async () => {
+            await assertTestCafeError("await t.wait('10');", '../data/execute-async-expression/test-run-error');
+        });
+
+        it('Runtime run error', async () => {
+            await assertTestCafeError('const s = Selector();', '../data/execute-async-expression/runtime-error');
+        });
     });
 
     it('sync expression does not spoil global context', async () => {

@@ -392,7 +392,7 @@ describe('Error formatting', () => {
             const expression  = 'Hey ya!';
             const originError = getErrorAdapter(new UncaughtNonErrorObjectInTestCode(expression));
 
-            assertErrorMessage('uncaught-test-cafe-error-in-custom-script', new UncaughtTestCafeErrorInCustomScript(originError, expression, 'RAW API callsite'));
+            assertErrorMessage('uncaught-test-cafe-error-in-custom-script', new UncaughtTestCafeErrorInCustomScript(originError, expression, void 0, void 0, 'RAW API callsite'));
         });
     });
 

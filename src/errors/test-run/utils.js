@@ -47,13 +47,13 @@ export function formatSelectorCallstack (apiFnChain, apiFnIndex, viewportWidth) 
     }).join('\n');
 }
 
-export function formatExpression (expression, line, column) {
-    let expressionStr = escapeHtml(expression);
+export function formatExpressionMessage (expression, line, column) {
+    const expressionStr = escapeHtml(expression);
 
-    if (line !== void 0 && column !== void 0)
-        expressionStr += `\nat ${line}:${column}`;
+    if (line === void 0 || column === void 0)
+        return expressionStr;
 
-    return expressionStr;
+    return `${expressionStr}\nat ${line}:${column}`;
 }
 
 export function replaceLeadingSpacesWithNbsp (str) {

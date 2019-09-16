@@ -5,7 +5,7 @@ import {
     formatSelectorCallstack,
     formatUrl,
     replaceLeadingSpacesWithNbsp,
-    formatExpression
+    formatExpressionMessage
 } from './utils';
 
 const EXTERNAL_LINKS = {
@@ -313,6 +313,6 @@ export default {
         
         ${escapeHtml(err.errMsg)}
         
-        ${formatExpression(err.expression, err.line, err.column)}
+        ${formatExpressionMessage(err.expression, err.line, err.column)}
     `
 };
