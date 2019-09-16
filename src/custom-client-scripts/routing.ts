@@ -4,11 +4,26 @@ import CONTENT_TYPES from '../assets/content-types';
 import ClientScript from './client-script';
 import { Proxy } from 'testcafe-hammerhead';
 
-export function register (proxy: Proxy, tests: any[]): string[] {
+
+interface Test {
+    clientScripts: ClientScript[];
+}
+
+interface LegacyTest {
+    isLegacy: boolean;
+}
+
+type TestItem = Test | LegacyTest;
+
+export function isLegacyTest (test: TestItem): test is LegacyTest {
+    return !!(test as LegacyTest).isLegacy;
+}
+
+export function register (proxy: Proxy, tests: TestItem[]): string[] {
     const routes: string[] = [];
 
     tests.forEach(test => {
-        if (test.isLegacy)
+        if (isLegacyTest(test))
             return;
 
         test.clientScripts.forEach((script: ClientScript) => {

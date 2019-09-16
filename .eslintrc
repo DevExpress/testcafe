@@ -86,12 +86,12 @@
       }
     }],
     "radix": 2,
-    "no-extra-parens": 2,
     "new-cap": [2, { "capIsNew": false }],
     "space-before-function-paren": [2, "always"],
     "handle-callback-err": 0,
     "linebreak-style": [2, "unix"],
     "no-duplicate-imports": 2,
+    "@typescript-eslint/no-extra-parens": 2,
     "@typescript-eslint/no-use-before-define": [2, "nofunc"],
     "@typescript-eslint/no-var-requires": [0],
     "@typescript-eslint/explicit-function-return-type": [2, { "allowExpressions": true }],
