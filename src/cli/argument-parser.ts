@@ -12,6 +12,7 @@ import getFilterFn from '../utils/get-filter-fn';
 import SCREENSHOT_OPTION_NAMES from '../configuration/screenshot-option-names';
 import RUN_OPTION_NAMES from '../configuration/run-option-names';
 import { Dictionary, ReporterOption, RunnerRunOptions } from '../configuration/interfaces';
+import * as ALLOW_MULTIPLE_WINDOWS_OPTION from '../configuration/allow-multiple-windows-option';
 
 const REMOTE_ALIAS_RE = /^remote(?::(\d*))?$/;
 
@@ -132,10 +133,15 @@ export default class CLIArgumentParser {
             .option('--disable-page-caching', 'disable page caching during test execution')
             .option('--disable-page-reloads', 'disable page reloads between tests')
             .option('--disable-screenshots', 'disable screenshots')
+            .option('--screenshots-full-page', 'enable full-page screenshots')
+            .option(ALLOW_MULTIPLE_WINDOWS_OPTION.FLAGS, ALLOW_MULTIPLE_WINDOWS_OPTION.DESCRIPTION)
 
             // NOTE: these options will be handled by chalk internally
             .option('--color', 'force colors in command line')
             .option('--no-color', 'disable colors in command line');
+
+        // NOTE: temporary hide '--allow-multiple-windows' option from --help command
+        ALLOW_MULTIPLE_WINDOWS_OPTION.removeOptionDescriptionFromHelp(this.program);
     }
 
     private _parseList (val: string): string[] {

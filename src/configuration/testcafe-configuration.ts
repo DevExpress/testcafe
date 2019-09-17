@@ -36,7 +36,8 @@ const OPTION_FLAG_NAMES = [
     OPTION_NAMES.retryTestPages,
     OPTION_NAMES.disablePageCaching,
     OPTION_NAMES.disablePageReloads,
-    OPTION_NAMES.disableScreenshots
+    OPTION_NAMES.disableScreenshots,
+    OPTION_NAMES.allowMultipleWindows
 ];
 
 interface TestCafeAdditionalStartOptions {

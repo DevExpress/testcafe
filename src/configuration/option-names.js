@@ -38,5 +38,6 @@ export default {
     disablePageReloads:     'disablePageReloads',
     disablePageCaching:     'disablePageCaching',
     disableScreenshots:     'disableScreenshots',
-    debugLogger:            'debugLogger'
+    debugLogger:            'debugLogger',
+    allowMultipleWindows:   'allowMultipleWindows'
 };

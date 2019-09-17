@@ -650,9 +650,15 @@ describe('CLI argument parser', function () {
             { long: '--video-encoding-options' },
             { long: '--ts-config-path' },
             { long: '--client-scripts', short: '--cs' },
+<<<<<<< HEAD
             { long: '--disable-page-caching' },
             { long: '--disable-page-reloads' },
             { long: '--disable-screenshots' }
+=======
+            { long: '--screenshots-full-page' },
+            { long: '--disable-page-caching' },
+            { long: '--allow-multiple-windows', short: '-m' }
+>>>>>>> initial
         ];
 
         const parser  = new CliArgumentParser('');
@@ -669,7 +675,7 @@ describe('CLI argument parser', function () {
         }
     });
 
-    it('run options', () => {
+    it('Run options', () => {
         const argumentsString = 'ie,chrome test.js' + [
             '--debug-on-fail',
             '--skip-js-errors',
@@ -684,7 +690,8 @@ describe('CLI argument parser', function () {
             '--stop-on-first-fail',
             '--disable-page-caching',
             '--disable-page-reloads',
-            '--disable-screenshots'
+            '--disable-screenshots',
+            '--allow-multiple-windows'
         ].join(' ');
 
         return parse(argumentsString)
