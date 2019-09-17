@@ -447,7 +447,7 @@ export class UncaughtErrorInCustomScript extends TestRunErrorBase {
         this.column     = column;
 
         this.originError = err;
-        this.errMsg      = err.message || err.toString();
+        this.errMsg      = err.message || String(err);
     }
 }
 
