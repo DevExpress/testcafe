@@ -1,11 +1,14 @@
 const path                             = require('path');
 const { PassThrough }                  = require('stream');
+const EventEmitter                     = require('events');
 const Module                           = require('module');
 const fs                               = require('fs');
 const del                              = require('del');
 const OS                               = require('os-family');
 const { expect }                       = require('chai');
 const { noop }                         = require('lodash');
+const proxyquire                       = require('proxyquire');
+const sinon                            = require('sinon');
 const correctFilePath                  = require('../../lib/utils/correct-file-path');
 const escapeUserAgent                  = require('../../lib/utils/escape-user-agent');
 const parseFileList                    = require('../../lib/utils/parse-file-list');
@@ -147,6 +150,50 @@ describe('Utils', () => {
 
                     expect(subDirs.length).eql(0);
                 });
+        });
+
+        describe('Cleanup Process', () => {
+            const origArgv0 = process.argv[0];
+
+            beforeEach(() => {
+                process.argv[0] = origArgv0;
+            });
+
+            afterEach(() => {
+                process.argv[0] = origArgv0;
+            });
+
+            it('Should always start a subprocess using the correct Node.js path (GH-4276)', async () => {
+                class FakeChildProcess extends EventEmitter {
+                    constructor () {
+                        super();
+
+                        this.unref         = noop;
+                        this.stdout        = new PassThrough();
+                        this.stdout.unref  = noop;
+                        this.stderr        = new PassThrough();
+                        this.stderr.unref  = noop;
+                        this.channel       = new EventEmitter();
+                        this.channel.unref = noop;
+
+                        this.on('newListener', () => process.nextTick(() => this.emit('exit')));
+                    }
+                }
+
+                const fakeSpawn = sinon.stub().returns(new FakeChildProcess());
+
+                process.argv[0] = 'wrong path';
+
+                const cleanupProcess = proxyquire('../../lib/utils/temp-directory/cleanup-process', {
+                    'child_process': {
+                        spawn: fakeSpawn
+                    }
+                });
+
+                await cleanupProcess.init();
+
+                expect(fakeSpawn.args[0][0]).contains('node');
+            });
         });
     });
 
