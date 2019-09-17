@@ -56,7 +56,7 @@ export default {
         let pngImage = await readPng(binaryImage);
 
         if (!fullPage)
-            pngImage = await cropScreenshot(pngImage, { path, cropDimensions });
+            pngImage = await cropScreenshot(pngImage, { path, cropDimensions }) || pngImage;
 
         await writePng(path, pngImage);
     },
