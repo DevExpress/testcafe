@@ -37,7 +37,7 @@ function assertStack (err, expected) {
     }
 }
 
-function assertError (err, expected, messageContainsStack) {
+function assertRuntimeError (err, expected, messageContainsStack) {
     // NOTE: https://github.com/nodejs/node/issues/27388
     if (messageContainsStack)
         expect(err.message.indexOf(expected.message)).eql(0);
@@ -50,7 +50,7 @@ function assertError (err, expected, messageContainsStack) {
 }
 
 function assertAPIError (err, expected) {
-    assertError(err, expected);
+    assertRuntimeError(err, expected);
 
     expect(expected.callsite).to.not.empty;
     expect(err.stack.indexOf(expected.message + '\n\n' + expected.callsite)).eql(0);
@@ -72,7 +72,7 @@ function assertThrow (fn, expectedErr) {
 }
 
 module.exports = {
-    assertError:    assertError,
+    assertError:    assertRuntimeError,
     assertAPIError: assertAPIError,
     assertThrow:    assertThrow
 };

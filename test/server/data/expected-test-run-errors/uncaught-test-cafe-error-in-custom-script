@@ -1,0 +1,10 @@
+An unhandled error occurred in the TestCafe script:
+
+Uncaught string "Hey ya!" was thrown. Throw Error instead.
+
+Hey ya!
+
+Browser: Chrome 15.0.874 / Mac OS X 10.8.1
+Screenshot: /unix/path/with/<tag>
+
+RAW API callsite

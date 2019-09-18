@@ -1,6 +1,7 @@
 import dedent from 'dedent';
 import { escape as escapeHtml, repeat } from 'lodash';
 import TEST_RUN_PHASE from '../../test-run/phase';
+import { TEST_RUN_ERRORS } from '../types';
 
 const SUBTITLES = {
     [TEST_RUN_PHASE.initial]:                 '',
@@ -46,29 +47,44 @@ export function formatSelectorCallstack (apiFnChain, apiFnIndex, viewportWidth) 
     }).join('\n');
 }
 
+export function formatExpressionMessage (expression, line, column) {
+    const expressionStr = escapeHtml(expression);
+
+    if (line === void 0 || column === void 0)
+        return expressionStr;
+
+    return `${expressionStr}\nat ${line}:${column}`;
+}
+
 export function replaceLeadingSpacesWithNbsp (str) {
     return str.replace(/^ +/mg, match => {
         return repeat('&nbsp;', match.length);
     });
 }
 
-export function markup (err, msgMarkup, opts = {}) {
-    msgMarkup = dedent(`
-        ${SUBTITLES[err.testRunPhase]}<div class="message">${dedent(msgMarkup)}</div>
+export function shouldSkipCallsite (err) {
+    return err.code === TEST_RUN_ERRORS.uncaughtNonErrorObjectInTestCode ||
+           err.code === TEST_RUN_ERRORS.unhandledPromiseRejection ||
+           err.code === TEST_RUN_ERRORS.uncaughtException;
+}
 
-        <strong>Browser:</strong> <span class="user-agent">${err.userAgent}</span>
-    `);
+export function markup (err, msgMarkup, errCallsite = '') {
+    msgMarkup = dedent(`${SUBTITLES[err.testRunPhase]}<div class="message">${dedent(msgMarkup)}</div>`);
+
+    msgMarkup += errCallsite ? `\n\n${errCallsite}\n` : '\n';
+
+    msgMarkup += `\n<strong>Browser:</strong> <span class="user-agent">${err.userAgent}</span>`;
 
     if (err.screenshotPath)
         msgMarkup += `\n<div class="screenshot-info"><strong>Screenshot:</strong> <a class="screenshot-path">${escapeHtml(err.screenshotPath)}</a></div>`;
 
-    if (!opts.withoutCallsite) {
+    if (!shouldSkipCallsite(err)) {
         const callsiteMarkup = err.getCallsiteMarkup();
 
         if (callsiteMarkup)
             msgMarkup += `\n\n${callsiteMarkup}`;
     }
 
-    return msgMarkup
-        .replace('\t', '&nbsp;'.repeat(4));
+    return msgMarkup.replace('\t', '&nbsp;'.repeat(4));
 }
+

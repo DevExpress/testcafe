@@ -437,16 +437,31 @@ export class ActionInvalidScrollTargetError extends TestRunErrorBase {
     }
 }
 
-export class ExecuteAsyncExpressionError extends TestRunErrorBase {
+export class UncaughtErrorInCustomScript extends TestRunErrorBase {
     constructor (err, expression, line, column, callsite) {
-        super(TEST_RUN_ERRORS.executeAsyncExpressionError);
+        super(TEST_RUN_ERRORS.uncaughtErrorInCustomScript);
 
-        this.errMsg     = err.message;
         this.callsite   = callsite;
-        this.errStack   = err.stack;
         this.expression = expression;
         this.line       = line;
         this.column     = column;
+
+        this.originError = err;
+        this.errMsg      = err.message || String(err);
+    }
+}
+
+export class UncaughtTestCafeErrorInCustomScript extends TestRunErrorBase {
+    constructor (err, expression, line, column, callsite) {
+        super(TEST_RUN_ERRORS.uncaughtTestCafeErrorInCustomScript);
+
+        this.callsite   = callsite;
+        this.expression = expression;
+        this.line       = line;
+        this.column     = column;
+
+        this.originError = err;
+        this.errCallsite = err.callsite;
     }
 }
 

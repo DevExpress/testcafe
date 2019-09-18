@@ -1,11 +1,10 @@
-const expect                                             = require('chai').expect;
-const read                                               = require('read-file-relative').readSync;
-const { escapeRegExp, pull: remove, chain, values }      = require('lodash');
-const ReporterPluginHost                                 = require('../../lib/reporter/plugin-host');
-const TEST_RUN_PHASE                                     = require('../../lib/test-run/phase');
-const { TEST_RUN_ERRORS, RUNTIME_ERRORS }                = require('../../lib/errors/types');
-const TestRunErrorFormattableAdapter                     = require('../../lib/errors/test-run/formattable-adapter');
-const testCallsite                                       = require('./data/test-callsite');
+const expect                              = require('chai').expect;
+const { pull: remove, chain, values }     = require('lodash');
+const TEST_RUN_PHASE                      = require('../../lib/test-run/phase');
+const { TEST_RUN_ERRORS, RUNTIME_ERRORS } = require('../../lib/errors/types');
+const TestRunErrorFormattableAdapter      = require('../../lib/errors/test-run/formattable-adapter');
+const testCallsite                        = require('./data/test-callsite');
+const assertTestRunError                  = require('./helpers/assert-test-run-error');
 
 const {
     AssertionExecutableArgumentError,
@@ -71,12 +70,9 @@ const {
     RequestHookUnhandledError,
     UncaughtErrorInCustomClientScriptCode,
     UncaughtErrorInCustomClientScriptLoadedFromModule,
-    ExecuteAsyncExpressionError
+    UncaughtErrorInCustomScript,
+    UncaughtTestCafeErrorInCustomScript
 } = require('../../lib/errors/test-run');
-
-const { createSimpleTestStream } = require('../functional/utils/stream');
-
-const TEST_FILE_STACK_ENTRY_RE = new RegExp('\\s*\\n?\\(' + escapeRegExp(require.resolve('./data/test-callsite')), 'g');
 
 const untestedErrorTypes = Object.keys(TEST_RUN_ERRORS).map(key => TEST_RUN_ERRORS[key]);
 
@@ -95,29 +91,19 @@ const testAssertionError = (function () {
 
 const longSelector = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua';
 
-function assertErrorMessage (file, err) {
+function getErrorAdapter (err) {
     const screenshotPath = '/unix/path/with/<tag>';
-    const outStreamMock  = createSimpleTestStream();
-    const plugin         = new ReporterPluginHost({}, outStreamMock);
 
-    const errAdapter = new TestRunErrorFormattableAdapter(err, {
+    return new TestRunErrorFormattableAdapter(err, {
         userAgent:      userAgentMock,
         screenshotPath: screenshotPath,
         callsite:       testCallsite,
         testRunPhase:   TEST_RUN_PHASE.initial
     });
+}
 
-    plugin
-        .useWordWrap(true)
-        .write(plugin.formatError(errAdapter));
-
-    const expectedMsg = read('./data/expected-test-run-errors/' + file)
-        .replace(/(\r\n)/gm, '\n')
-        .trim();
-
-    const actual = outStreamMock.data.replace(TEST_FILE_STACK_ENTRY_RE, ' (testfile.js');
-
-    expect(actual).eql(expectedMsg);
+function assertErrorMessage (file, err) {
+    assertTestRunError(err, '../data/expected-test-run-errors/' + file);
 
     // NOTE: check that the list of error types contains an
     // error of this type and remove tested messages from the list
@@ -191,7 +177,10 @@ describe('Error formatting', () => {
         });
 
         it('Should format "actionElementNotFoundError" message', () => {
-            assertErrorMessage('action-element-not-found-error', new ActionElementNotFoundError({ apiFnChain: [longSelector, 'one', 'two', 'three'], apiFnIndex: 1 }));
+            assertErrorMessage('action-element-not-found-error', new ActionElementNotFoundError({
+                apiFnChain: [longSelector, 'one', 'two', 'three'],
+                apiFnIndex: 1
+            }));
         });
 
         it('Should format "actionElementIsInvisibleError" message', () => {
@@ -231,7 +220,10 @@ describe('Error formatting', () => {
         });
 
         it('Should format "actionAdditionalElementNotFoundError" message', () => {
-            assertErrorMessage('action-additional-element-not-found-error', new ActionAdditionalElementNotFoundError('startSelector', { apiFnChain: [longSelector, 'one', 'two', 'three'], apiFnIndex: 1 }));
+            assertErrorMessage('action-additional-element-not-found-error', new ActionAdditionalElementNotFoundError('startSelector', {
+                apiFnChain: [longSelector, 'one', 'two', 'three'],
+                apiFnIndex: 1
+            }));
         });
 
         it('Should format "actionAdditionalElementIsInvisibleError" message', () => {
@@ -331,7 +323,10 @@ describe('Error formatting', () => {
         });
 
         it('Should format "cannotObtainInfoForElementSpecifiedBySelectorError"', () => {
-            assertErrorMessage('cannot-obtain-info-for-element-specified-by-selector-error', new CannotObtainInfoForElementSpecifiedBySelectorError(testCallsite, { apiFnChain: [longSelector, 'one', 'two', 'three'], apiFnIndex: 1 }));
+            assertErrorMessage('cannot-obtain-info-for-element-specified-by-selector-error', new CannotObtainInfoForElementSpecifiedBySelectorError(testCallsite, {
+                apiFnChain: [longSelector, 'one', 'two', 'three'],
+                apiFnIndex: 1
+            }));
         });
 
         it('Should format "windowDimensionsOverflowError"', () => {
@@ -339,7 +334,10 @@ describe('Error formatting', () => {
         });
 
         it('Should format "forbiddenCharactersInScreenshotPathError"', () => {
-            assertErrorMessage('forbidden-characters-in-screenshot-path-error', new ForbiddenCharactersInScreenshotPathError('/root/bla:bla', [{ chars: ':', index: 9 }]));
+            assertErrorMessage('forbidden-characters-in-screenshot-path-error', new ForbiddenCharactersInScreenshotPathError('/root/bla:bla', [{
+                chars: ':',
+                index: 9
+            }]));
         });
 
         it('Should format "invalidElementScreenshotDimensionsError"', () => {
@@ -379,15 +377,22 @@ describe('Error formatting', () => {
         });
 
         it('Should format "uncaughtErrorInCustomClientScriptCode"', () => {
-            assertErrorMessage('uncaughtErrorInCustomClientScriptCode', new UncaughtErrorInCustomClientScriptCode(new TypeError('Cannot read property "prop" of undefined')));
+            assertErrorMessage('uncaught-error-in-custom-client-script-code', new UncaughtErrorInCustomClientScriptCode(new TypeError('Cannot read property "prop" of undefined')));
         });
 
         it('Should format "uncaughtErrorInCustomClientScriptCodeLoadedFromModule"', () => {
-            assertErrorMessage('uncaughtErrorInCustomClientScriptCodeLoadedFromModule', new UncaughtErrorInCustomClientScriptLoadedFromModule(new TypeError('Cannot read property "prop" of undefined'), 'test-module'));
+            assertErrorMessage('uncaught-error-in-custom-client-script-code-loaded-from-module', new UncaughtErrorInCustomClientScriptLoadedFromModule(new TypeError('Cannot read property "prop" of undefined'), 'test-module'));
         });
 
-        it('Should format "executeAsyncExpressionError"', () => {
-            assertErrorMessage('execute-js-expression-error', new ExecuteAsyncExpressionError(new Error('Test error'), '1+1', 1, 1, 1));
+        it('Should format "uncaughtErrorInCustomScript"', () => {
+            assertErrorMessage('uncaught-error-in-custom-script', new UncaughtErrorInCustomScript(new Error('Test error'), '1+1', 1, 1, 'RAW API callsite'));
+        });
+
+        it('Should format "uncaughtTestCafeErrorInCustomScript"', () => {
+            const expression  = 'Hey ya!';
+            const originError = getErrorAdapter(new UncaughtNonErrorObjectInTestCode(expression));
+
+            assertErrorMessage('uncaught-test-cafe-error-in-custom-script', new UncaughtTestCafeErrorInCustomScript(originError, expression, void 0, void 0, 'RAW API callsite'));
         });
     });
 

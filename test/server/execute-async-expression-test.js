@@ -7,6 +7,8 @@ const TestController = require('../../lib/api/test-controller');
 const COMMAND_TYPE   = require('../../lib/test-run/commands/type');
 const markerSymbol   = require('../../lib/test-run/marker-symbol');
 
+const assertTestRunError = require('./helpers/assert-test-run-error');
+
 let callsite = 0;
 
 function createTestRunMock () {
@@ -49,8 +51,6 @@ async function executeExpression (expression, customVarName, testRun = createTes
 }
 
 async function assertError (expression, expectedMessage, expectedLine, expectedColumn) {
-    const WHITE_SPACES_REGEXP = /\s/g;
-
     let catched = false;
 
     try {
@@ -63,8 +63,22 @@ async function assertError (expression, expectedMessage, expectedLine, expectedC
         expect(err.line).eql(expectedLine);
         expect(err.column).eql(expectedColumn);
         expect(err.callsite).eql(callsite.toString());
-        expect(err.errStack.replace(WHITE_SPACES_REGEXP, '')).contains(expression.replace(WHITE_SPACES_REGEXP, ''));
-        expect(err.errStack).contains('[JS code]');
+        expect(err.expression).eql(expression);
+    }
+
+    expect(catched).eql(true);
+}
+
+async function assertTestCafeError (expression, expectedFileName) {
+    let catched = false;
+
+    try {
+        await executeAsyncExpression(expression);
+    }
+    catch (err) {
+        catched = true;
+
+        assertTestRunError(err, expectedFileName, false);
     }
 
     expect(catched).eql(true);
@@ -94,6 +108,16 @@ describe('Code steps', () => {
             'q = 4;\n' +
             'throw new Error(\'custom error\')'
             , 'custom error', 3, 7, '3');
+    });
+
+    describe('TestCafe errors', () => {
+        it('Test run error', async () => {
+            await assertTestCafeError("await t.wait('10');", '../data/execute-async-expression/test-run-error');
+        });
+
+        it('Runtime run error', async () => {
+            await assertTestCafeError('const s = Selector();', '../data/execute-async-expression/runtime-error');
+        });
     });
 
     it('sync expression does not spoil global context', async () => {

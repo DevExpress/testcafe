@@ -1,6 +1,6 @@
 const expect         = require('chai').expect;
 const resolve        = require('path').resolve;
-const assertAPIError = require('./helpers/assert-error').assertAPIError;
+const assertAPIError = require('./helpers/assert-runtime-error').assertAPIError;
 const compile        = require('./helpers/compile');
 
 describe('API', function () {
