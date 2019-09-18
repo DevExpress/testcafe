@@ -15,7 +15,7 @@ Please vote on the features you want us to implement first to help us prioritize
 
 Feature                                                                                           | Status
 ------------------------------------------------------------------------------------------------- | -------------------
-[Testing in Multiple Browser Windows](https://github.com/DevExpress/testcafe/issues/912)          | Planned
+[Testing in Multiple Browser Windows](https://github.com/DevExpress/testcafe/issues/912)          | **In Progress**
 [HTTP API Testing](https://github.com/DevExpress/testcafe/issues/4288)                            | Planned
 
 ## API
@@ -23,7 +23,7 @@ Feature                                                                         
 Feature                                                                                           | Status
 ------------------------------------------------------------------------------------------------- | -------------------
 [Configuration File](https://github.com/DevExpress/testcafe/issues/3131)                          | **Implemented**
-[Screenshots of the Entire Page](https://github.com/DevExpress/testcafe/issues/1520)              | Planned
+[Screenshots of the Entire Page](https://github.com/DevExpress/testcafe/issues/1520)              | **In Progress**
 [Browser Information in Test Code](https://github.com/DevExpress/testcafe/issues/481)             | Planned
 
 ## Debugging
