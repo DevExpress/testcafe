@@ -5,7 +5,7 @@ permalink: /roadmap/
 ---
 # Roadmap
 
-This roadmap includes the most important features planned for 2019.
+This roadmap includes the most important features planned for the upcoming releases.
 
 This list is not exhaustive and will be updated with more entries as we receive your feedback.
 
@@ -15,18 +15,16 @@ Please vote on the features you want us to implement first to help us prioritize
 
 Feature                                                                                           | Status
 ------------------------------------------------------------------------------------------------- | -------------------
-[Visual Regression Testing](https://github.com/DevExpress/testcafe/issues/1207)                   | Under Consideration
-[Testing in Multiple Browser Windows](https://github.com/DevExpress/testcafe/issues/912)          | Under Consideration
+[Testing in Multiple Browser Windows](https://github.com/DevExpress/testcafe/issues/912)          | **In Progress**
+[API Testing](https://github.com/DevExpress/testcafe/issues/4288)                                 | Planned
 
 ## API
 
 Feature                                                                                           | Status
 ------------------------------------------------------------------------------------------------- | -------------------
 [Configuration File](https://github.com/DevExpress/testcafe/issues/3131)                          | **Implemented**
-[Screenshots of the Entire Page](https://github.com/DevExpress/testcafe/issues/1520)              | Under Consideration
-[Custom Actions](https://github.com/DevExpress/testcafe/issues/1535)                              | Under Consideration
-[Conditional Test Skip](https://github.com/DevExpress/testcafe/issues/1626)                       | Under Consideration
-[Browser Information in Test Code](https://github.com/DevExpress/testcafe/issues/481)             | Under Consideration
+[Screenshots of the Entire Page](https://github.com/DevExpress/testcafe/issues/1520)              | **In Progress**
+[Browser Information in Test Code](https://github.com/DevExpress/testcafe/issues/481)             | Planned
 
 ## Debugging
 
@@ -41,4 +39,4 @@ Feature                                                                         
 Feature                                                                                           | Status
 ------------------------------------------------------------------------------------------------- | -------------------
 [Custom TypeScript Compilation Options](https://github.com/DevExpress/testcafe/issues/1845)       | **Implemented**
-[Cucumber Integration](https://github.com/DevExpress/testcafe/issues/2835)                        | Under Consideration
+[Jenkins Plugin](https://github.com/DevExpress/testcafe/issues/4289)                              | Planned
