@@ -758,20 +758,21 @@ interface ActionOptions {
     speed?: number;
 }
 
-interface ScreenshotsOptions {
+interface BasicScreenshotsOptions {
+    path?: string;
+
+    fullPage?: boolean;
+}
+
+interface ScreenshotsOptions extends BasicScreenshotsOptions {
     path: string;
 
     takeOnFails?: boolean;
 
     pathPattern?: string;
-
-    fullPage?: boolean;
 }
 
-interface TakeScreenshotOptions {
-    path?: string;
-
-    fullPage?: boolean;
+interface TakeScreenshotOptions extends BasicScreenshotsOptions  {
 }
 
 interface TakeElementScreenshotOptions extends ActionOptions {
