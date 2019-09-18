@@ -102,10 +102,8 @@ export default class Capturer {
         return joinPath(imageDir, 'thumbnails', imageName);
     }
 
-    async _takeScreenshot (filePath, pageWidth, pageHeight, fullPage) {
+    async _takeScreenshot ({ filePath, pageWidth, pageHeight, fullPage = this.fullPage }) {
         await makeDir(dirname(filePath));
-
-        fullPage = fullPage !== void 0 ? fullPage : this.fullPage;
 
         await this.provider.takeScreenshot(this.browserId, filePath, pageWidth, pageHeight, fullPage);
     }
@@ -123,7 +121,14 @@ export default class Capturer {
         await addToQueue(screenshotPath, async () => {
             const clientAreaDimensions = Capturer._getClientAreaDimensions(pageDimensions);
 
-            await this._takeScreenshot(screenshotPath, ...clientAreaDimensions ? [clientAreaDimensions.width, clientAreaDimensions.height] : [], fullPage);
+            const takeScreenshotOptions = {
+                filePath: screenshotPath,
+                width:    clientAreaDimensions.width,
+                height:   clientAreaDimensions.height,
+                fullPage
+            };
+
+            await this._takeScreenshot(takeScreenshotOptions);
 
             if (!await Capturer._isScreenshotCaptured(screenshotPath))
                 return;

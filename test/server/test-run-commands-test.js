@@ -868,6 +868,7 @@ describe('Test run commands', () => {
                 type:     TYPE.takeScreenshot,
                 selector: '#yo',
                 dummy:    'test',
+                fullPage: void 0,
 
                 options: {
                     dummy: 'yo'
@@ -880,8 +881,7 @@ describe('Test run commands', () => {
                 type:     TYPE.takeScreenshot,
                 markData: '',
                 markSeed: null,
-                path:     '',
-                fullPage: false
+                path:     ''
             });
         });
 

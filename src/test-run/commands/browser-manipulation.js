@@ -43,7 +43,7 @@ export class TakeScreenshotCommand extends TakeScreenshotBaseCommand {
     _getAssignableProperties () {
         return [
             { name: 'path', type: screenshotPathArgument, defaultValue: '' },
-            { name: 'fullPage', type: booleanArgument, defaultValue: false }
+            { name: 'fullPage', type: booleanArgument, defaultValue: void 0 }
         ];
     }
 }

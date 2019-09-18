@@ -278,7 +278,7 @@ describe('Browser provider', function () {
 
                 return provider.takeScreenshot(bc.id, '', 1, 1, true)
                     .then(() => {
-                        expect(bc.message).eql(WARNING_MESSAGE.screenshotFullPageNotSupported);
+                        expect(bc.message).eql(WARNING_MESSAGE.screenshotsFullPageNotSupported);
                     });
             });
         });

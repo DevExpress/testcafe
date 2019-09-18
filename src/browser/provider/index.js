@@ -299,7 +299,7 @@ export default class BrowserProvider {
             if (fullPage) {
                 const connection = BrowserConnection.getById(browserId);
 
-                connection.addWarning(WARNING_MESSAGE.screenshotFullPageNotSupported, connection.browserInfo.browserName);
+                connection.addWarning(WARNING_MESSAGE.screenshotsFullPageNotSupported, connection.browserInfo.browserName);
             }
             else
                 await this._takeLocalBrowserScreenshot(browserId, screenshotPath, pageWidth, pageHeight);

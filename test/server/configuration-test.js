@@ -58,7 +58,7 @@ describe('TestCafeConfiguration', () => {
             'screenshotPath':         'screenshot-path',
             'screenshotPathPattern':  'screenshot-path-pattern',
             'takeScreenshotsOnFails': true,
-            'screenshotFullPage':     true
+            'screenshotsFullPage':    true
         });
     });
 
@@ -107,7 +107,7 @@ describe('TestCafeConfiguration', () => {
                         expect(testCafeConfiguration.getOption('screenshotPath')).eql('screenshot-path');
                         expect(testCafeConfiguration.getOption('screenshotPathPattern')).eql('screenshot-path-pattern');
                         expect(testCafeConfiguration.getOption('takeScreenshotsOnFails')).eql(true);
-                        expect(testCafeConfiguration.getOption('screenshotFullPage')).eql(true);
+                        expect(testCafeConfiguration.getOption('screenshotsFullPage')).eql(true);
                     });
             });
 

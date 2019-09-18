@@ -97,7 +97,7 @@ async function runTests (argParser) {
             path:        opts.screenshots,
             takeOnFails: opts.screenshotsOnFails,
             pathPattern: opts.screenshotPathPattern,
-            fullPage:    opts.screenshotFullPage
+            fullPage:    opts.screenshotsFullPage
         })
         .startApp(opts.app, opts.appInitDelay)
         .clientScripts(argParser.opts.clientScripts);

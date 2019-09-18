@@ -598,8 +598,8 @@ describe('[API] Take full page screenshots', function () {
 
         it('Should take a full page screenshot via Runner', function () {
             return runTests('./testcafe-fixtures/take-full-page-screenshot.js', 'Runner', {
-                setScreenshotPath:  true,
-                screenshotFullPage: true
+                setScreenshotPath:   true,
+                screenshotsFullPage: true
             })
                 .then(function () {
                     return assertionHelper.checkScreenshotFileFullPage(false, 'custom');
@@ -611,10 +611,10 @@ describe('[API] Take full page screenshots', function () {
 
         it('Should take a screenshot on fail', function () {
             return runTests('./testcafe-fixtures/take-full-page-screenshot.js', 'Screenshot on fail', {
-                shouldFail:         true,
-                setScreenshotPath:  true,
-                screenshotFullPage: true,
-                screenshotsOnFails: true
+                shouldFail:          true,
+                setScreenshotPath:   true,
+                screenshotsFullPage: true,
+                screenshotsOnFails:  true
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('screenshot on fail');

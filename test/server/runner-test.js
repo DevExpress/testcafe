@@ -305,7 +305,7 @@ describe('Runner', () => {
             expect(runner.configuration.getOption('screenshotPath')).eql('path');
             expect(runner.configuration.getOption('takeScreenshotsOnFails')).eql(true);
             expect(runner.configuration.getOption('screenshotPathPattern')).eql('pathPattern');
-            expect(runner.configuration.getOption('screenshotFullPage')).eql(true);
+            expect(runner.configuration.getOption('screenshotsFullPage')).eql(true);
         });
     });
 
