@@ -759,16 +759,28 @@ interface ActionOptions {
 }
 
 interface BasicScreenshotsOptions {
+    /**
+     * Specifies the path to save the screenshot
+     */
     path?: string;
-
+    /**
+     * Allows to make full-page screenshots
+     */
     fullPage?: boolean;
 }
 
 interface ScreenshotsOptions extends BasicScreenshotsOptions {
+    /**
+     * Specifies the base directory where the the screenshots are saved.
+     */
     path: string;
-
+    /**
+     * Specifies that a screenshot should be taken whenever a test fails
+     */
     takeOnFails?: boolean;
-
+    /**
+     * Specifies a custom pattern to compose screenshot files' relative path and name.
+     */
     pathPattern?: string;
 }
 
@@ -1196,7 +1208,7 @@ interface TestController {
     /**
     * Takes a screenshot of the tested page.
     *
-    * @param options
+    * @param options - TakeScreenshot Options
     */
     takeScreenshot(options: TakeScreenshotOptions): TestControllerPromise;
     /**
@@ -1659,6 +1671,11 @@ interface Runner {
      */
     screenshots(path: string, takeOnFails?: boolean, pathPattern?: string): this;
 
+    /**
+     * Enables TestCafe to take screenshots of the tested webpages.
+     *
+     * @param options - Screenshots options
+     */
     screenshots(options: ScreenshotsOptions): this;
 
     /**
