@@ -121,10 +121,12 @@ export default class Capturer {
         await addToQueue(screenshotPath, async () => {
             const clientAreaDimensions = Capturer._getClientAreaDimensions(pageDimensions);
 
+            const { width: pageWidth, height: pageHeight } = clientAreaDimensions || {};
+
             const takeScreenshotOptions = {
                 filePath: screenshotPath,
-                width:    clientAreaDimensions.width,
-                height:   clientAreaDimensions.height,
+                pageWidth,
+                pageHeight,
                 fullPage
             };
 
