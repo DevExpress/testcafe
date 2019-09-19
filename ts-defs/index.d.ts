@@ -698,10 +698,9 @@ interface SelectorPromise extends SelectorAPI, Promise<NodeSnapshot> {
 
 // Role
 //----------------------------------------------------------------------------
-declare class Role {
-    private constructor();
+interface Role {
+    (...args: any[]): this;
 }
-
 
 interface RoleOptions {
     /**
