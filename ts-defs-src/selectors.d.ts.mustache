@@ -1,0 +1,8 @@
+declare module 'testcafe' {
+    global {
+        {{#format}}
+            {{>test-api-types.d.ts}}
+            {{>selectors-exports.d.ts}}
+        {{/format}}
+    }
+}

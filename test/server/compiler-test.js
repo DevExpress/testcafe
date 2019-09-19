@@ -3,6 +3,7 @@ const path                = require('path');
 const fs                  = require('fs');
 const proxyquire          = require('proxyquire');
 const sinon               = require('sinon');
+const globby              = require('globby');
 const { TEST_RUN_ERRORS } = require('../../lib/errors/types');
 const exportableLib       = require('../../lib/api/exportable-lib');
 const createStackFilter   = require('../../lib/errors/create-stack-filter.js');
@@ -243,10 +244,10 @@ describe('Compiler', function () {
         it('Should complile ts-definitions successfully with the `--strict` option enabled', function () {
             this.timeout(60000);
 
-            const tscPath  = path.resolve('node_modules/typescript/bin/tsc');
+            const tscPath  = path.resolve('node_modules/.bin/tsc');
             const defsPath = path.resolve('ts-defs/index.d.ts');
             const args     = '--strict';
-            const command  = `node ${tscPath} ${defsPath} ${args} --target ES6`;
+            const command  = `${tscPath} ${defsPath} ${args} --target ES6 --noEmit`;
 
             return new Promise(resolve => {
                 exec(command, (error, stdout) => {
@@ -317,6 +318,42 @@ describe('Compiler', function () {
             await tsCompiler.precompile(testData);
 
             expect(createProgram.callCount).eql(1);
+        });
+
+        it('Should provide correct globals in TestCafe scripts', async () => {
+            this.timeout(60000);
+
+            const tscPath     = path.resolve('node_modules/.bin/tsc');
+            const defsPath    = path.resolve('ts-defs/testcafe-scripts.d.ts');
+            const scriptPaths = await globby('test/server/data/test-suites/typescript-testcafe-scripts-defs/*.ts');
+            const command     = `${tscPath} ${defsPath} ${scriptPaths.join(' ')} --target ES6 --noEmit`;
+
+            return new Promise(resolve => {
+                exec(command, (error, stdout) => {
+                    resolve({ error, stdout });
+                });
+            }).then(value => {
+                expect(value.stdout).eql('');
+                expect(value.error).is.null;
+            });
+        });
+
+        it('Should provide correct globals for selector and client-functions only', async () => {
+            this.timeout(60000);
+
+            const tscPath     = path.resolve('node_modules/.bin/tsc');
+            const defsPath    = path.resolve('ts-defs/selectors.d.ts');
+            const scriptPaths = await globby('test/server/data/test-suites/typescript-selectors-defs/*.ts');
+            const command     = `${tscPath} ${defsPath} ${scriptPaths.join(' ')} --target ES6 --noEmit`;
+
+            return new Promise(resolve => {
+                exec(command, (error, stdout) => {
+                    resolve({ error, stdout });
+                });
+            }).then(value => {
+                expect(value.stdout).eql('');
+                expect(value.error).is.null;
+            });
         });
     });
 

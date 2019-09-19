@@ -17,8 +17,9 @@ const del                  = require('del');
 const fs                   = require('fs');
 const path                 = require('path');
 const { Transform }        = require('stream');
+const { promisify }        = require('util');
 const globby               = require('globby');
-const open                  = require('open');
+const open                 = require('open');
 const connect              = require('connect');
 const spawn                = require('cross-spawn');
 const serveStatic          = require('serve-static');
@@ -35,6 +36,7 @@ const checkLicenses        = require('./test/dependency-licenses-checker');
 const packageInfo          = require('./package');
 const getPublishTags       = require('./docker/get-publish-tags');
 
+const readFile = promisify(fs.readFile);
 
 gulpStep.install();
 
@@ -151,6 +153,12 @@ process.env.PATH = NODE_MODULE_BINS + path.delimiter + process.env.PATH + path.d
 
 let websiteServer = null;
 
+function promisifyStream (stream) {
+    return new Promise((resolve, reject) => {
+        stream.on('end', resolve).on('error', reject);
+    });
+}
+
 gulp.task('audit', () => {
     return npmAuditor()
         .then(result => {
@@ -193,6 +201,49 @@ gulp.task('check-licenses', () => {
 });
 
 // Build
+const EMPTY_COMMENT_REGEXP = /^\s*\/\/\s*$/mg;
+const EMPTY_LINES_REGEXP   = /^\s*$/mg;
+const NEWLINE_REGEXP       = /^/mg;
+const IDNENT_SPACE_REGEXP  = /^\s*\n(\s*)\S/;
+const SPACE                = ' ';
+const INDENT_SPACE_COUNT   = 4;
+
+gulp.step('ts-defs', async () => {
+    const partialPaths = await globby('ts-defs-src/*/**/*.d.ts');
+    const partials     = {};
+
+    for (const partialPath of partialPaths)
+        partials[path.basename(partialPath)] = String(await readFile(partialPath));
+
+    const stream = gulp
+        .src('ts-defs-src/*.mustache')
+        .pipe(mustache(
+            {
+                allowReferences: false,
+
+                format: () => (text, render) => {
+                    const renderedText = render(text);
+
+                    const indent       = IDNENT_SPACE_REGEXP.exec(text);
+                    const indentLength = indent[1].length - INDENT_SPACE_COUNT;
+
+                    return renderedText
+                        .replace(NEWLINE_REGEXP, SPACE.repeat(indentLength))
+                        .replace(EMPTY_COMMENT_REGEXP, '')
+                        .replace(EMPTY_LINES_REGEXP, '');
+                }
+            },
+            {},
+            partials
+        ))
+        .pipe(rename(file => {
+            file.extname  = '';
+        }))
+        .pipe(gulp.dest('./ts-defs/'));
+
+
+    await promisifyStream(stream);
+});
 
 gulp.step('client-scripts-bundle', () => {
     return gulp
@@ -325,7 +376,7 @@ gulp.step('images', () => {
         .pipe(gulp.dest('lib'));
 });
 
-gulp.step('package-content', gulp.parallel('server-scripts', 'client-scripts', 'styles', 'images', 'templates'));
+gulp.step('package-content', gulp.parallel('ts-defs', 'server-scripts', 'client-scripts', 'styles', 'images', 'templates'));
 
 gulp.task('fast-build', gulp.series('clean', 'package-content'));
 

@@ -1,4 +1,5 @@
 /node_modules
+/ts-defs
 .idea
 .vscode
 /lib
