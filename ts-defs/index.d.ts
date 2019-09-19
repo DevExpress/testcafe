@@ -760,22 +760,22 @@ interface ActionOptions {
 
 interface BasicScreenshotsOptions {
     /**
-     * Specifies the path to save the screenshot
+     * Specifies the path where the screenshots are saved.
      */
     path?: string;
     /**
-     * Allows to make full-page screenshots
+     * Specifies that TestCafe should take full-page screenshots.
      */
     fullPage?: boolean;
 }
 
 interface ScreenshotsOptions extends BasicScreenshotsOptions {
     /**
-     * Specifies the base directory where the the screenshots are saved.
+     * Specifies the base directory where the screenshots are saved.
      */
     path: string;
     /**
-     * Specifies that a screenshot should be taken whenever a test fails
+     * Specifies that a screenshot should be taken whenever a test fails.
      */
     takeOnFails?: boolean;
     /**
