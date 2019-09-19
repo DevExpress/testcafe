@@ -698,8 +698,21 @@ interface SelectorPromise extends SelectorAPI, Promise<NodeSnapshot> {
 
 // Role
 //----------------------------------------------------------------------------
-interface Role {
-    (...args: any[]): this;
+interface RoleInstance {
+    /**
+     * Creates a user role.
+     *
+     * @param url - The URL of the login page.
+     * @param fn - An asynchronous function that contains logic that authenticates the user.
+     * @param fn `t` - The test controller used to access test run API.
+     * @param options - Role options.
+     */
+    (url: String, fn: (t: TestController) => Promise<any>, options?: RoleOptions): this;
+
+    /**
+     * Creates an anonymous user role.
+     */
+    anonymous(): this;
 }
 
 interface RoleOptions {
@@ -1271,7 +1284,7 @@ interface TestController {
      *
      * @param role - The role you need to use further in the test.
      */
-    useRole(role: Role): TestControllerPromise;
+    useRole(role: RoleInstance): TestControllerPromise;
     /**
      * Attaches the hooks during a test run
      *
@@ -1825,21 +1838,7 @@ declare module 'testcafe' {
     /**
      * Creates a Role
      */
-    export const Role: {
-        /**
-         * Creates a user role.
-         *
-         * @param url - The URL of the login page.
-         * @param fn - An asynchronous function that contains logic that authenticates the user.
-         * @param fn `t` - The test controller used to access test run API.
-         * @param options - Role options.
-         */
-        (url: String, fn: (t: TestController) => Promise<any>, options?: RoleOptions): Role;
-        /**
-         * Creates an anonymous user role.
-         */
-        anonymous(): Role;
-    };
+    export const Role: RoleInstance;
 
     /**
      * The test controller used to access test run API.
