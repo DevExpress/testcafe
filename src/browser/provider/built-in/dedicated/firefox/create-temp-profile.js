@@ -1,7 +1,17 @@
 import path from 'path';
 import TempDirectory from '../../../../../utils/temp-directory';
 import { writeFile } from '../../../../../utils/promisified-functions';
+import db from 'mime-db';
 
+function getMimeTypes () {
+    const mimeTypes = Object.keys(db);
+
+    return mimeTypes.filter(mimeType => {
+        const { extensions } = db[mimeType];
+
+        return extensions && extensions.length;
+    }).join(',');
+}
 
 async function generatePreferences (profileDir, { marionettePort, config }) {
     const prefsFileName = path.join(profileDir, 'user.js');
@@ -19,6 +29,8 @@ async function generatePreferences (profileDir, { marionettePort, config }) {
         'user_pref("browser.tabs.warnOnCloseOtherTabs", false);',
         'user_pref("browser.tabs.warnOnClose", false);',
         'user_pref("browser.sessionstore.resume_from_crash", false);',
+        `user_pref("browser.helperApps.neverAsk.saveToDisk", "${getMimeTypes()}");`,
+        `user_pref("pdfjs.disabled", true);`,
         'user_pref("toolkit.telemetry.reportingpolicy.firstRun", false);',
         'user_pref("toolkit.telemetry.enabled", false);',
         'user_pref("toolkit.telemetry.rejected", true);',
