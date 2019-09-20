@@ -6,8 +6,10 @@ import timeLimit from 'time-limit-promise';
 import del from 'del';
 import delay from '../../../../../../lib/utils/delay';
 
+const DOWNLOADED_JSON_FILE_PATH = join(homedir(), 'Downloads', 'package.json');
+const DOWNLOADED_ZIP_FILE_PATH  = join(homedir(), 'Downloads', 'dummy.zip');
+const DOWNLOADED_PDF_FILE_PATH  = join(homedir(), 'Downloads', 'dummy.pdf');
 
-const DOWNLOADED_FILE_PATH  = join(homedir(), 'Downloads', 'package.json');
 const FILE_CHECK_INTERVAL   = 3000;
 
 const stat = promisify(statCb);
@@ -32,14 +34,32 @@ async function waitForFileWithTimeout (path, ms) {
     await timeLimit(waitForFile(path), ms, { rejectWith: new Error('Timed out when waiting for a file') });
 }
 
+function deleteFiles () {
+    del(DOWNLOADED_JSON_FILE_PATH, { force: true });
+    del(DOWNLOADED_ZIP_FILE_PATH, { force: true });
+    del(DOWNLOADED_PDF_FILE_PATH, { force: true });
+}
+
 fixture `gh3127`
     .page `http://localhost:3000/fixtures/regression/gh-3127/pages/index.html`
-    .beforeEach(() => del(DOWNLOADED_FILE_PATH, { force: true }))
-    .after(() => del(DOWNLOADED_FILE_PATH, { force: true }));
+    .beforeEach(deleteFiles)
+    .after(deleteFiles);
 
 
-test('Download a file', async t => {
-    await t.click('#link');
+test('JSON', async t => {
+    await t.click('#json');
 
-    await waitForFileWithTimeout(DOWNLOADED_FILE_PATH, 20000);
+    await waitForFileWithTimeout(DOWNLOADED_JSON_FILE_PATH, 20000);
+});
+
+test('ZIP', async t => {
+    await t.click('#zip');
+
+    await waitForFileWithTimeout(DOWNLOADED_ZIP_FILE_PATH, 20000);
+});
+
+test('PDF', async t => {
+    await t.click('#pdf');
+
+    await waitForFileWithTimeout(DOWNLOADED_PDF_FILE_PATH, 20000);
 });

@@ -1,6 +1,13 @@
-// NOTE: Right now, we can only download files in Chrome: https://github.com/DevExpress/testcafe/issues/2741
-describe('[Regression](GH-3127) Should download files', function () {
-    it('Basic test', function () {
-        return runTests('testcafe-fixtures/index-test.js', 'Download a file', { only: 'chrome' });
+describe('[Regression](GH-3127, GH-2741) Should download files', function () {
+    it('JSON', function () {
+        return runTests('testcafe-fixtures/index-test.js', 'JSON', { only: ['chrome', 'firefox'] });
+    });
+
+    it('Download ZIP', function () {
+        return runTests('testcafe-fixtures/index-test.js', 'ZIP', { only: ['chrome', 'firefox'] });
+    });
+
+    it('Download PDF', function () {
+        return runTests('testcafe-fixtures/index-test.js', 'PDF', { only: 'firefox' });
     });
 });
