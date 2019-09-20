@@ -258,9 +258,9 @@ interface SelectorOptions {
     timeout?: number;
     /**
      * Use this option to pass functions, variables or objects to selectors initialized with a function.
-     * The dependencies object's properties are added to the function's scope as variables.
+     * The `dependencies` object's properties are added to the function's scope as variables.
      */
-    dependencies?: any;
+    dependencies?: {[key: string]: any};
     /**
      * `true` to additionally require the returned element to become visible within `options.timeout`.
      */
