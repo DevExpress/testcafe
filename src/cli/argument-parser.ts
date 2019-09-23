@@ -260,8 +260,7 @@ export default class CLIArgumentParser {
     }
 
     private _setUpProviderName (): void {
-        if (this.opts.listBrowsers)
-            this.opts.providerName = this.opts.listBrowsers as string;
+        this.opts.providerName = (this.opts.listBrowsers === true ? void 0 : this.opts.listBrowsers) as string;
     }
 
     public async parse (argv: string[]): Promise<void> {
