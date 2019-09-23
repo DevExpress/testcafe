@@ -16,7 +16,9 @@ const CONTENT_TYPES = {
     '.js':   'application/javascript',
     '.css':  'text/css',
     '.html': 'text/html',
-    '.png':  'image/png'
+    '.png':  'image/png',
+    '.zip':  'application/zip',
+    '.pdf':  'application/pdf'
 };
 
 const NON_CACHEABLE_PAGES = [

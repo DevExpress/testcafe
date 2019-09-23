@@ -19,7 +19,9 @@ export default async function (proxyHostName) {
                 'lastDockState':    '"bottom"'
             }
         },
-
+        'plugins': {
+            'always_open_pdf_externally': true
+        },
         'profile': {
             'content_settings': {
                 'exceptions': {
