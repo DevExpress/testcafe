@@ -21,7 +21,7 @@ You can create your own request hook to handle HTTP requests. This topic describ
     ```js
     import { RequestHook } from 'testcafe';
 
-    class MyRequestHook extends RequestHook {
+    export class MyRequestHook extends RequestHook {
         // ...
     }
     ```
@@ -97,7 +97,7 @@ Do the following to write a custom hook:
 ```js
 import { RequestHook } from 'testcafe';
 
-class MyRequestHook extends RequestHook {
+export class MyRequestHook extends RequestHook {
     constructor (requestFilterRules, responseEventConfigureOpts) {
         super(requestFilterRules, responseEventConfigureOpts);
         // ...
