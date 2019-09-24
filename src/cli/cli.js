@@ -113,7 +113,7 @@ async function runTests (argParser) {
     exit(failed);
 }
 
-async function listBrowsers (providerName = 'locally-installed') {
+async function listBrowsers (providerName) {
     const provider = await browserProviderPool.getProvider(providerName);
 
     if (!provider)

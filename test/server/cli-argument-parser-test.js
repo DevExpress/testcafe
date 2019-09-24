@@ -32,6 +32,40 @@ describe('CLI argument parser', function () {
             });
     }
 
+    describe('Set browser provider name', function () {
+        it('Should set the default provider name to "locally-installed" from "--list-browsers"', function () {
+            return parse('--list-browsers')
+                .then(function (parser) {
+                    expect(parser.opts.listBrowsers).eql(true);
+                    expect(parser.opts.providerName).eql('locally-installed');
+                });
+        });
+
+        it('Should parse the browser provider name from "--list-browsers saucelabs"', function () {
+            return parse('--list-browsers saucelabs')
+                .then(function (parser) {
+                    expect(parser.opts.listBrowsers).eql(true);
+                    expect(parser.opts.providerName).eql('saucelabs');
+                });
+        });
+
+        it('Should set the default provider name to "locally-installed" from "-b"', function () {
+            return parse('-b')
+                .then(function (parser) {
+                    expect(parser.opts.listBrowsers).eql(true);
+                    expect(parser.opts.providerName).eql('locally-installed');
+                });
+        });
+
+        it('Should parse "-b saucelabs" browser provider name from "-b saucelabs"', function () {
+            return parse('-b saucelabs')
+                .then(function (parser) {
+                    expect(parser.opts.listBrowsers).eql(true);
+                    expect(parser.opts.providerName).eql('saucelabs');
+                });
+        });
+    });
+
     describe('Browser list', function () {
         it('Should be parsed as array of aliases or paths', function () {
             return parse('path:"/Applications/Firefox.app",ie,chrome,firefox,')
