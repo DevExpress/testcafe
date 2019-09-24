@@ -3,6 +3,8 @@ import fs from 'graceful-fs';
 import { PNG } from 'pngjs';
 import promisifyEvent from 'promisify-event';
 import { promisify } from 'util';
+import makeDir from 'make-dir';
+import { dirname } from 'path';
 
 export const readDir    = promisify(fs.readdir);
 export const stat       = promisify(fs.stat);
@@ -34,7 +36,9 @@ export async function readPngFile (filePath) {
     return await readPng(buffer);
 }
 
-export function writePng (filePath, png) {
+export async function writePng (filePath, png) {
+    await ensureDir(filePath);
+
     const outStream = fs.createWriteStream(filePath);
     const pngStream = png.pack();
 
@@ -49,4 +53,13 @@ export function writePng (filePath, png) {
     return finishPromise;
 }
 
+async function ensureDir (filePath) {
+    const dirName = dirname(filePath);
 
+    try {
+        await stat(dirName);
+    }
+    catch (err) {
+        await makeDir(dirName);
+    }
+}
