@@ -16,7 +16,12 @@ describe('createExecutionContext', () => {
             test: { testFile: { filename: `${process.cwd()}/test/server/data/execution-context/fixture.testcafe` } }
         };
 
-        const context = createExecutionContext(testRun);
+        let context = createExecutionContext(testRun);
+
+        expect(context.require('module-for-test')()).to.be.true;
+
+        testRun.test.testFile.filename = `${process.cwd()}/test/server/data/execution-context/fixtures/fixture.testcafe`;
+        context = createExecutionContext(testRun);
 
         expect(context.require('module-for-test')()).to.be.true;
     });

@@ -1,9 +1,18 @@
 import { createContext } from 'vm';
 import Module from 'module';
-import { dirname } from 'path';
+import path from 'path';
 import exportableLib from '../exportable-lib';
 
-const OPTIONS_KEY = Symbol('options');
+const OPTIONS_KEY      = Symbol('options');
+const NODE_MODULES_DIR = 'node_modules';
+
+function getModuleBasePaths (currentPath) {
+    const root      = path.parse(currentPath).root;
+    const parentDir = path.dirname(currentPath);
+    const parentPaths = parentDir === root ? [] : getModuleBasePaths(parentDir);
+
+    return [ path.join(parentDir, NODE_MODULES_DIR), ... parentPaths];
+}
 
 function createRequire (filename) {
     //Deprecated since: Node v12.2.0
@@ -14,10 +23,10 @@ function createRequire (filename) {
         return Module.createRequire(filename);
 
     const dummyModule          = new Module(filename, module);
-    const nearbyModulesPath    = dirname(filename).concat('/node_modules');
+    const localModulesPaths    = getModuleBasePaths(filename);
 
     dummyModule.filename = filename;
-    dummyModule.paths    = [filename, nearbyModulesPath].concat(module.paths);
+    dummyModule.paths    = localModulesPaths.concat(module.paths);
 
     return id => dummyModule.require(id);
 }
@@ -58,7 +67,7 @@ export function createExecutionContext (testRun) {
     const replacers = {
         require:        createRequire(filename),
         __filename:     filename,
-        __dirname:      dirname(filename),
+        __dirname:      path.dirname(filename),
         t:              testRun.controller,
         Selector:       createSelectorDefinition(testRun),
         ClientFunction: createClientFunctionDefinition(testRun),
