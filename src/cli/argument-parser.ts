@@ -219,7 +219,7 @@ export default class CLIArgumentParser {
         }
     }
 
-    private _parseBrowserList (): void {
+    private _parseBrowsersFromArgs (): void {
         const browsersArg = this.program.args[0] || '';
 
         this.opts.browsers = splitQuotedText(browsersArg, ',')
@@ -259,7 +259,7 @@ export default class CLIArgumentParser {
             this.opts.videoEncodingOptions = await getVideoOptions(this.opts.videoEncodingOptions as string);
     }
 
-    private _setProviderName (): void {
+    private _parseListBrowsers (): void {
         const listBrowserOption = this.opts.listBrowsers;
 
         this.opts.listBrowsers = !!this.opts.listBrowsers;
@@ -267,7 +267,7 @@ export default class CLIArgumentParser {
         if (!this.opts.listBrowsers)
             return;
 
-        // NOTE: If the "listBrowserOption" is not presented by "string" we set providerName to the default "locally-installed" value (GH-4294)
+        // NOTE: If the "listBrowserOption" is not presented by "string", we set "providerName" to the default "locally-installed" value (GH-4294)
         this.opts.providerName = typeof listBrowserOption === 'string' ? listBrowserOption : 'locally-installed';
     }
 
@@ -278,7 +278,7 @@ export default class CLIArgumentParser {
 
         this.opts = this.program.opts();
 
-        this._setProviderName();
+        this._parseListBrowsers();
 
         // NOTE: the '-list-browsers' option only lists browsers and immediately exits the app.
         // Therefore, we don't need to process other arguments.
@@ -291,7 +291,7 @@ export default class CLIArgumentParser {
         this._parseAppInitDelay();
         this._parseSpeed();
         this._parsePorts();
-        this._parseBrowserList();
+        this._parseBrowsersFromArgs();
         this._parseConcurrency();
         this._parseFileList();
 
