@@ -6,13 +6,18 @@ import exportableLib from '../exportable-lib';
 const OPTIONS_KEY = Symbol('options');
 
 function createRequire (filename) {
+    //Deprecated since: Node v12.2.0
     if (Module.createRequireFromPath)
         return Module.createRequireFromPath(filename);
 
-    const dummyModule = new Module(filename, module);
+    if (Module.createRequire)
+        return Module.createRequire(filename);
+
+    const dummyModule          = new Module(filename, module);
+    const nearbyModulesPath    = dirname(filename).concat('/node_modules');
 
     dummyModule.filename = filename;
-    dummyModule.paths    = [filename].concat(module.paths);
+    dummyModule.paths    = [filename, nearbyModulesPath].concat(module.paths);
 
     return id => dummyModule.require(id);
 }
