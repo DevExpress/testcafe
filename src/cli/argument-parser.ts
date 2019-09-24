@@ -267,7 +267,6 @@ export default class CLIArgumentParser {
         if (!this.opts.listBrowsers)
             return;
 
-        // NOTE: If the "listBrowserOption" is not presented by "string", we set "providerName" to the default "locally-installed" value (GH-4294)
         this.opts.providerName = typeof listBrowserOption === 'string' ? listBrowserOption : 'locally-installed';
     }
 
