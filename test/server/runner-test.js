@@ -292,6 +292,21 @@ describe('Runner', () => {
                     expect(consoleWrapper.messages.log).eql(null);
                 });
         });
+
+        it('should allow to set object as a `screenshots` method parameter', () => {
+            runner
+                .screenshots({
+                    path:        'path',
+                    takeOnFails: true,
+                    pathPattern: 'pathPattern',
+                    fullPage:    true
+                });
+
+            expect(runner.configuration.getOption('screenshotPath')).eql('path');
+            expect(runner.configuration.getOption('takeScreenshotsOnFails')).eql(true);
+            expect(runner.configuration.getOption('screenshotPathPattern')).eql('pathPattern');
+            expect(runner.configuration.getOption('screenshotsFullPage')).eql(true);
+        });
     });
 
     describe('.video()', () => {

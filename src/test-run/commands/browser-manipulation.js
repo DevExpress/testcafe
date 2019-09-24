@@ -4,6 +4,7 @@ import { ElementScreenshotOptions, ResizeToFitDeviceOptions } from './options';
 import { initSelector } from './validations/initializers';
 
 import {
+    booleanArgument,
     positiveIntegerArgument,
     screenshotPathArgument,
     resizeWindowDeviceArgument,
@@ -41,7 +42,8 @@ export class TakeScreenshotCommand extends TakeScreenshotBaseCommand {
 
     _getAssignableProperties () {
         return [
-            { name: 'path', type: screenshotPathArgument, defaultValue: '' }
+            { name: 'path', type: screenshotPathArgument, defaultValue: '' },
+            { name: 'fullPage', type: booleanArgument, defaultValue: void 0 }
         ];
     }
 }
@@ -66,7 +68,9 @@ export class TakeScreenshotOnFailCommand extends TakeScreenshotBaseCommand {
     }
 
     _getAssignableProperties () {
-        return [];
+        return [
+            { name: 'fullPage', type: booleanArgument, defaultValue: false }
+        ];
     }
 }
 

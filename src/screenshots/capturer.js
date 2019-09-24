@@ -10,7 +10,7 @@ import { readPngFile, deleteFile, stat, writePng } from '../utils/promisified-fu
 
 
 export default class Capturer {
-    constructor (baseScreenshotsPath, testEntry, connection, pathPattern, warningLog) {
+    constructor (baseScreenshotsPath, testEntry, connection, pathPattern, fullPage, warningLog) {
         this.enabled             = !!baseScreenshotsPath;
         this.baseScreenshotsPath = baseScreenshotsPath;
         this.testEntry           = testEntry;
@@ -18,6 +18,7 @@ export default class Capturer {
         this.browserId           = connection.id;
         this.warningLog          = warningLog;
         this.pathPattern         = pathPattern;
+        this.fullPage            = fullPage;
     }
 
     static _getDimensionWithoutScrollbar (fullDimension, documentDimension, bodyDimension) {
@@ -101,12 +102,13 @@ export default class Capturer {
         return joinPath(imageDir, 'thumbnails', imageName);
     }
 
-    async _takeScreenshot (filePath, pageWidth, pageHeight) {
+    async _takeScreenshot ({ filePath, pageWidth, pageHeight, fullPage = this.fullPage }) {
         await makeDir(dirname(filePath));
-        await this.provider.takeScreenshot(this.browserId, filePath, pageWidth, pageHeight);
+
+        await this.provider.takeScreenshot(this.browserId, filePath, pageWidth, pageHeight, fullPage);
     }
 
-    async _capture (forError, { pageDimensions, cropDimensions, markSeed, customPath } = {}) {
+    async _capture (forError, { pageDimensions, cropDimensions, markSeed, customPath, fullPage } = {}) {
         if (!this.enabled)
             return null;
 
@@ -119,7 +121,16 @@ export default class Capturer {
         await addToQueue(screenshotPath, async () => {
             const clientAreaDimensions = Capturer._getClientAreaDimensions(pageDimensions);
 
-            await this._takeScreenshot(screenshotPath, ...clientAreaDimensions ? [clientAreaDimensions.width, clientAreaDimensions.height] : []);
+            const { width: pageWidth, height: pageHeight } = clientAreaDimensions || {};
+
+            const takeScreenshotOptions = {
+                filePath: screenshotPath,
+                pageWidth,
+                pageHeight,
+                fullPage
+            };
+
+            await this._takeScreenshot(takeScreenshotOptions);
 
             if (!await Capturer._isScreenshotCaptured(screenshotPath))
                 return;

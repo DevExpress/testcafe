@@ -8,10 +8,11 @@ import getCommonPath from '../utils/get-common-path';
 const SCREENSHOT_EXTENSION = 'png';
 
 export default class Screenshots {
-    constructor (path, pattern) {
+    constructor (path, pattern, fullPage) {
         this.enabled            = !!path;
         this.screenshotsPath    = path;
         this.screenshotsPattern = pattern;
+        this.fullPage           = fullPage;
         this.testEntries        = [];
         this.now                = moment();
     }
@@ -66,6 +67,6 @@ export default class Screenshots {
             parsedUserAgent:   connection.browserInfo.parsedUserAgent,
         });
 
-        return new Capturer(this.screenshotsPath, testEntry, connection, pathPattern, warningLog);
+        return new Capturer(this.screenshotsPath, testEntry, connection, pathPattern, this.fullPage, warningLog);
     }
 }

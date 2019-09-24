@@ -54,7 +54,11 @@ describe('TestCafeConfiguration', () => {
                 'testMeta':    { test: 'meta' },
                 'fixtureMeta': { fixture: 'meta' }
             },
-            'clientScripts': 'test-client-script.js'
+            'clientScripts':          'test-client-script.js',
+            'screenshotPath':         'screenshot-path',
+            'screenshotPathPattern':  'screenshot-path-pattern',
+            'takeScreenshotsOnFails': true,
+            'screenshotsFullPage':    true
         });
     });
 
@@ -100,6 +104,10 @@ describe('TestCafeConfiguration', () => {
                         expect(testCafeConfiguration.getOption('filter').testMeta).to.be.deep.equal({ test: 'meta' });
                         expect(testCafeConfiguration.getOption('filter').fixtureMeta).to.be.deep.equal({ fixture: 'meta' });
                         expect(testCafeConfiguration.getOption('clientScripts')).eql([ 'test-client-script.js' ]);
+                        expect(testCafeConfiguration.getOption('screenshotPath')).eql('screenshot-path');
+                        expect(testCafeConfiguration.getOption('screenshotPathPattern')).eql('screenshot-path-pattern');
+                        expect(testCafeConfiguration.getOption('takeScreenshotsOnFails')).eql(true);
+                        expect(testCafeConfiguration.getOption('screenshotsFullPage')).eql(true);
                     });
             });
 

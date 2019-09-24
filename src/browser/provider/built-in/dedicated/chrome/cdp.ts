@@ -50,14 +50,7 @@ async function getActiveTab (cdpPort: number, browserId: string): Promise<remote
 }
 
 async function setEmulationBounds ({ client, config, viewportSize, emulatedDevicePixelRatio }: RuntimeInfo): Promise<void> {
-    await client.Emulation.setDeviceMetricsOverride({
-        width:             viewportSize.width,
-        height:            viewportSize.height,
-        deviceScaleFactor: emulatedDevicePixelRatio,
-        mobile:            config.mobile,
-        // @ts-ignore Specify this property for backward compatibility with older protocol versions
-        fitWindow:         false
-    });
+    await setDeviceMetricsOverride(client, viewportSize.width, viewportSize.height, emulatedDevicePixelRatio, config.mobile);
 
     await client.Emulation.setVisibleSize({ width: viewportSize.width, height: viewportSize.height });
 }
@@ -92,10 +85,51 @@ async function enableDownloads ({ client }: RuntimeInfo): Promise<void> {
     });
 }
 
-export async function getScreenshotData ({ client }: RuntimeInfo): Promise<Buffer> {
+export async function getScreenshotData ({ client, config, emulatedDevicePixelRatio }: RuntimeInfo, fullPage?: boolean): Promise<Buffer> {
+    let viewportWidth = 0;
+    let viewportHeight = 0;
+
+    if (fullPage) {
+        const { contentSize, visualViewport } = await client.Page.getLayoutMetrics();
+
+        await setDeviceMetricsOverride(
+            client,
+            Math.ceil(contentSize.width),
+            Math.ceil(contentSize.height),
+            emulatedDevicePixelRatio,
+            config.mobile);
+
+        viewportWidth = visualViewport.clientWidth;
+        viewportHeight = visualViewport.clientHeight;
+    }
+
     const screenshotData = await client.Page.captureScreenshot({});
 
+    if (fullPage) {
+        if (config.emulation) {
+            await setDeviceMetricsOverride(
+                client,
+                config.width || viewportWidth,
+                config.height || viewportHeight,
+                emulatedDevicePixelRatio,
+                config.mobile);
+        }
+        else
+            await client.Emulation.clearDeviceMetricsOverride();
+    }
+
     return Buffer.from(screenshotData.data, 'base64');
+}
+
+async function setDeviceMetricsOverride (client: remoteChrome.ProtocolApi, width: number, height: number, deviceScaleFactor: number, mobile: boolean): Promise<void> {
+    await client.Emulation.setDeviceMetricsOverride({
+        width,
+        height,
+        deviceScaleFactor,
+        mobile,
+        // @ts-ignore
+        fitWindow: false
+    });
 }
 
 export async function createClient (runtimeInfo: RuntimeInfo): Promise<void> {

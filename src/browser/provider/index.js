@@ -3,6 +3,7 @@ import OS from 'os-family';
 import BrowserConnection from '../connection';
 import delay from '../../utils/delay';
 import { GET_TITLE_SCRIPT, GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from './utils/client-functions';
+import WARNING_MESSAGE from '../../notifications/warning-message';
 
 
 const BROWSER_OPENING_DELAY = 2000;
@@ -289,17 +290,22 @@ export default class BrowserProvider {
         return await this.plugin.maximizeWindow(browserId);
     }
 
-    async takeScreenshot (browserId, screenshotPath, pageWidth, pageHeight) {
+    async takeScreenshot (browserId, screenshotPath, pageWidth, pageHeight, fullPage) {
         const canUseDefaultWindowActions = await this._canUseDefaultWindowActions(browserId);
         const customActionsInfo          = await this.hasCustomActionForBrowser(browserId);
         const hasCustomTakeScreenshot    = customActionsInfo.hasTakeScreenshot;
 
         if (canUseDefaultWindowActions && !hasCustomTakeScreenshot) {
-            await this._takeLocalBrowserScreenshot(browserId, screenshotPath, pageWidth, pageHeight);
-            return;
-        }
+            if (fullPage) {
+                const connection = BrowserConnection.getById(browserId);
 
-        await this.plugin.takeScreenshot(browserId, screenshotPath, pageWidth, pageHeight);
+                connection.addWarning(WARNING_MESSAGE.screenshotsFullPageNotSupported, connection.browserInfo.alias);
+            }
+            else
+                await this._takeLocalBrowserScreenshot(browserId, screenshotPath, pageWidth, pageHeight);
+        }
+        else
+            await this.plugin.takeScreenshot(browserId, screenshotPath, pageWidth, pageHeight, fullPage);
     }
 
     async getVideoFrameData (browserId) {

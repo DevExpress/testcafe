@@ -1,8 +1,25 @@
-const expect                = require('chai').expect;
-const proxyquire            = require('proxyquire');
-const testcafeBrowserTools  = require('testcafe-browser-tools');
-const browserProviderPool   = require('../../lib/browser/provider/pool');
-const parseProviderName     = require('../../lib/browser/provider/parse-provider-name');
+const expect               = require('chai').expect;
+const proxyquire           = require('proxyquire');
+const testcafeBrowserTools = require('testcafe-browser-tools');
+const browserProviderPool  = require('../../lib/browser/provider/pool');
+const parseProviderName    = require('../../lib/browser/provider/parse-provider-name');
+const BrowserConnection    = require('../../lib/browser/connection');
+const WARNING_MESSAGE      = require('../../lib/notifications/warning-message');
+
+class BrowserConnectionMock extends BrowserConnection {
+    constructor () {
+        super({ startServingConnection: () => {} }, { openBrowser: () => {} });
+
+        this.ready = true;
+    }
+
+    _runBrowser () {
+    }
+
+    addWarning (...args) {
+        this.message = args[0];
+    }
+}
 
 
 describe('Browser provider', function () {
@@ -245,6 +262,23 @@ describe('Browser provider', function () {
                     .isValidBrowserName('browser')
                     .then(result => {
                         expect(result).to.be.true;
+                    });
+            });
+
+            it('Should add warning if provider does not support `fullPage` screenshots', () => {
+                const ProviderCtor = require('../../lib/browser/provider/');
+
+                const provider = new ProviderCtor({
+                    isLocalBrowser:            () => true,
+                    isHeadlessBrowser:         () => false,
+                    hasCustomActionForBrowser: () => false
+                });
+
+                const bc = new BrowserConnectionMock();
+
+                return provider.takeScreenshot(bc.id, '', 1, 1, true)
+                    .then(() => {
+                        expect(bc.message).eql(WARNING_MESSAGE.screenshotsFullPageNotSupported);
                     });
             });
         });

@@ -93,7 +93,12 @@ async function runTests (argParser) {
         .concurrency(argParser.opts.concurrency)
         .filter(argParser.opts.filter)
         .video(opts.video, opts.videoOptions, opts.videoEncodingOptions)
-        .screenshots(opts.screenshots, opts.screenshotsOnFails, opts.screenshotPathPattern)
+        .screenshots({
+            path:        opts.screenshots,
+            takeOnFails: opts.screenshotsOnFails,
+            pathPattern: opts.screenshotPathPattern,
+            fullPage:    opts.screenshotsFullPage
+        })
         .startApp(opts.app, opts.appInitDelay)
         .clientScripts(argParser.opts.clientScripts);
 

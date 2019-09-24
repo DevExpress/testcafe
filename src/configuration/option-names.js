@@ -11,6 +11,7 @@ export default {
     screenshotPath:         'screenshotPath',
     screenshotPathPattern:  'screenshotPathPattern',
     takeScreenshotsOnFails: 'takeScreenshotsOnFails',
+    screenshotsFullPage:    'screenshotsFullPage',
     proxyBypass:            'proxyBypass',
     appCommand:             'appCommand',
     appInitDelay:           'appInitDelay',

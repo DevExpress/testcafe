@@ -141,8 +141,14 @@ module.exports = class MarionetteClient {
         return responsePacket.body[3];
     }
 
-    async _getScreenshotRawData () {
-        return await this._getResponse({ command: COMMANDS.takeScreenshot });
+    async _getScreenshotRawData (fullPage) {
+        return await this._getResponse({
+            command:    COMMANDS.takeScreenshot,
+            parameters: {
+                full: fullPage,
+                hash: false
+            }
+        });
     }
 
     async connect () {
@@ -170,8 +176,8 @@ module.exports = class MarionetteClient {
         });
     }
 
-    async getScreenshotData () {
-        const frameData = await this._getScreenshotRawData();
+    async getScreenshotData (_, fullPage) {
+        const frameData = await this._getScreenshotRawData(fullPage);
 
         return Buffer.from(frameData.value, 'base64');
     }
