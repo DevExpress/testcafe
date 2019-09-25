@@ -12,7 +12,7 @@ export function exists (el) {
 }
 
 export function visible (el) {
-    if (!domUtils.isDomElement(el) && !domUtils.isTextNode(el))
+    if (!exists(el) || !domUtils.isDomElement(el) && !domUtils.isTextNode(el))
         return false;
 
     if (domUtils.isOptionElement(el) || domUtils.getTagName(el) === 'optgroup')

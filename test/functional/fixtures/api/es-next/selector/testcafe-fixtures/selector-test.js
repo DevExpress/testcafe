@@ -1085,3 +1085,10 @@ test('Selector `addCustomMethods` method - Selector mode', async t => {
     await t.expect(await nonExistingElement()).eql(null);
 });
 
+test('Inexistent element with exists/visible checks', async t => {
+    const selector = Selector('#idonotexist');
+
+    await t
+        .expect(selector.exists).notOk()
+        .expect(selector.visible).notOk();
+});
