@@ -4,7 +4,7 @@ import { Dictionary } from '../../configuration/interfaces';
 
 
 function isScreenshotOption (option: string): option is SCREENSHOT_OPTION_NAMES {
-    return Object.values(SCREENSHOT_OPTION_NAMES).includes(option);
+    return Object.values(SCREENSHOT_OPTION_NAMES).includes(option as SCREENSHOT_OPTION_NAMES);
 }
 
 export default async function (options: string | Dictionary<string | number | boolean>): Promise<Dictionary<number | string | boolean>> {
