@@ -6,7 +6,7 @@ import { RUNTIME_ERRORS } from '../errors/types';
 import { assertType, is } from '../errors/runtime/type-assertions';
 import getViewPortWidth from '../utils/get-viewport-width';
 import { wordWrap, splitQuotedText } from '../utils/string';
-import { getSSLOptions, getVideoOptions, getMetaOptions, getGrepOptions } from '../utils/get-options';
+import { getSSLOptions, getScreenshotOptions, getVideoOptions, getMetaOptions, getGrepOptions } from '../utils/get-options';
 import getFilterFn from '../utils/get-filter-fn';
 import RUN_OPTION_NAMES from '../configuration/run-option-names';
 import { Dictionary, ReporterOption, RunnerRunOptions } from '../configuration/interfaces';
@@ -47,6 +47,9 @@ interface CommandLineOptions {
     providerName?: string;
     ssl?: string | Dictionary<string | number | boolean >;
     reporter?: string | ReporterOption[];
+    screenshots?: Dictionary<string | number | boolean> | string;
+    screenshotPathPattern?: string;
+    screenshotsOnFails?: boolean;
     videoOptions?: string | Dictionary<number | string | boolean>;
     videoEncodingOptions?: string | Dictionary<number | string | boolean>;
 }
@@ -126,7 +129,6 @@ export default class CLIArgumentParser {
             .option('--ts-config-path <path>', 'use a custom TypeScript configuration file and specify its location')
             .option('--cs, --client-scripts <paths>', 'inject scripts into tested pages', this._parseList, [])
             .option('--disable-page-caching', 'disable page caching during test execution')
-            .option('--screenshots-full-page', 'enable full-page screenshots')
 
             // NOTE: these options will be handled by chalk internally
             .option('--color', 'force colors in command line')
@@ -252,6 +254,19 @@ export default class CLIArgumentParser {
         this.opts.src = this.program.args.slice(1);
     }
 
+    private async _parseScreenshotOptions (): Promise<void> {
+        if (this.opts.screenshots)
+            this.opts.screenshots = await getScreenshotOptions(this.opts.screenshots);
+        else
+            this.opts.screenshots = {};
+
+        if (this.opts.screenshotPathPattern)
+            this.opts.screenshots.pathPattern = this.opts.screenshotPathPattern;
+
+        if (this.opts.screenshotsOnFails)
+            this.opts.screenshots.takeOnFails = this.opts.screenshotsOnFails;
+    }
+
     private async _parseVideoOptions (): Promise<void> {
         if (this.opts.videoOptions)
             this.opts.videoOptions = await getVideoOptions(this.opts.videoOptions as string);
@@ -296,6 +311,7 @@ export default class CLIArgumentParser {
         this._parseFileList();
 
         await this._parseFilteringOptions();
+        await this._parseScreenshotOptions();
         await this._parseVideoOptions();
         await this._parseSslOptions();
         await this._parseReporters();
