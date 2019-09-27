@@ -75,7 +75,8 @@ export default class SessionController extends Session {
                 session.currentTestRun = testRun;
             }
 
-            session.disablePageCaching = testRun.disablePageCaching;
+            session.disablePageCaching   = testRun.disablePageCaching;
+            session.allowMultipleWindows = testRun.allowMultipleWindows;
 
             sessionInfo = {
                 session: session,
