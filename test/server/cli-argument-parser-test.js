@@ -560,8 +560,10 @@ describe('CLI argument parser', function () {
                 expect(parser.opts.reporter[0].name).eql('list');
                 expect(parser.opts.hostname).eql('myhost');
                 expect(parser.opts.app).eql('run-app');
-                expect(parser.opts.screenshots).to.be.undefined;
-                expect(parser.opts.screenshotsOnFails).to.be.ok;
+                expect(parser.opts.screenshots.takeOnFails).to.be.ok;
+                expect(parser.opts.screenshots.path).to.be.undefined;
+                expect(parser.opts.screenshots.fullPage).to.be.undefined;
+                expect(parser.opts.screenshots.pathPattern).to.be.undefined;
                 expect(parser.opts.quarantineMode).to.be.ok;
                 expect(parser.opts.skipJsErrors).to.be.ok;
                 expect(parser.opts.disablePageReloads).to.be.ok;
@@ -620,7 +622,6 @@ describe('CLI argument parser', function () {
             { long: '--video-encoding-options' },
             { long: '--ts-config-path' },
             { long: '--client-scripts', short: '--cs' },
-            { long: '--screenshots-full-page' },
             { long: '--disable-page-caching' }
         ];
 
