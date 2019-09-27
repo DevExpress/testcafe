@@ -1136,7 +1136,7 @@
 <li><p>All TestCafe request hooks inherit from the <code>RequestHook</code> class.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">RequestHook</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
-<span class="kd">class</span> <span class="nx">MyRequestHook</span> <span class="kd">extends</span> <span class="nx">RequestHook</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">MyRequestHook</span> <span class="kd">extends</span> <span class="nx">RequestHook</span> <span class="p">{</span>
     <span class="c1">// ...</span>
 <span class="p">}</span>
 </code></pre></div>
@@ -1196,7 +1196,7 @@
 </ul>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">RequestHook</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
-<span class="kd">class</span> <span class="nx">MyRequestHook</span> <span class="kd">extends</span> <span class="nx">RequestHook</span> <span class="p">{</span>
+<span class="k">export</span> <span class="kd">class</span> <span class="nx">MyRequestHook</span> <span class="kd">extends</span> <span class="nx">RequestHook</span> <span class="p">{</span>
     <span class="kd">constructor</span> <span class="p">(</span><span class="nx">requestFilterRules</span><span class="p">,</span> <span class="nx">responseEventConfigureOpts</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">super</span><span class="p">(</span><span class="nx">requestFilterRules</span><span class="p">,</span> <span class="nx">responseEventConfigureOpts</span><span class="p">);</span>
         <span class="c1">// ...</span>
