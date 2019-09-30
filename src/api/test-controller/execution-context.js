@@ -6,6 +6,14 @@ import exportableLib from '../exportable-lib';
 const OPTIONS_KEY      = Symbol('options');
 const NODE_MODULES_DIR = 'node_modules';
 
+function getModuleBasePaths (currentPath) {
+    const root      = path.parse(currentPath).root;
+    const parentDir = path.dirname(currentPath);
+    const parentPaths = parentDir === root ? [] : getModuleBasePaths(parentDir);
+
+    return [ path.join(parentDir, NODE_MODULES_DIR), ... parentPaths];
+}
+
 function createRequire (filename) {
     //Deprecated since: Node v12.2.0
     if (Module.createRequireFromPath)
@@ -15,14 +23,7 @@ function createRequire (filename) {
         return Module.createRequire(filename);
 
     const dummyModule          = new Module(filename, module);
-    const localModulesPaths    = [];
-    const pathParts            = path.dirname(path.resolve(filename)).split(path.sep);
-    const pathsNumber          = pathParts.length;
-
-    for (let i = 0; i < pathsNumber; i++) {
-        localModulesPaths.push(path.join(...pathParts, NODE_MODULES_DIR));
-        pathParts.pop();
-    }
+    const localModulesPaths    = getModuleBasePaths(filename);
 
     dummyModule.filename = filename;
     dummyModule.paths    = localModulesPaths.concat(module.paths);
