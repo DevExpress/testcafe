@@ -122,7 +122,8 @@ export default class TestRun extends AsyncEventEmitter {
 
         this.debugLog = new TestRunDebugLog(this.browserConnection.userAgent);
 
-        this.quarantine = null;
+        this.quarantine  = null;
+        this.debugLogger = debugLogger;
 
         this._addInjectables();
         this._initRequestHooks();
@@ -435,7 +436,8 @@ export default class TestRun extends AsyncEventEmitter {
             return;
         }
 
-        debugLogger.showBreakpoint(this.session.id, this.browserConnection.userAgent, callsite, error);
+        if (this.debugLogger)
+            this.debugLogger.showBreakpoint(this.session.id, this.browserConnection.userAgent, callsite, error);
 
         this.debugging = await this.executeCommand(new serviceCommands.SetBreakpointCommand(!!error), callsite);
     }
@@ -562,7 +564,8 @@ export default class TestRun extends AsyncEventEmitter {
     _adjustConfigurationWithCommand (command) {
         if (command.type === COMMAND_TYPE.testDone) {
             this.testDoneCommandQueued = true;
-            debugLogger.hideBreakpoint(this.session.id);
+            if (this.debugLogger)
+                this.debugLogger.hideBreakpoint(this.session.id);
         }
 
         else if (command.type === COMMAND_TYPE.setNativeDialogHandler)
