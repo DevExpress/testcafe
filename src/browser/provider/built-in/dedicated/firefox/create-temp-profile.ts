@@ -3,17 +3,18 @@ import TempDirectory from '../../../../../utils/temp-directory';
 import { writeFile } from '../../../../../utils/promisified-functions';
 import db from 'mime-db';
 
-function getMimeTypes () {
+function getMimeTypes (): string {
     const mimeTypes = Object.keys(db);
 
     return mimeTypes.filter(mimeType => {
+        // @ts-ignore: Export of the 'mime-db' module has no index signature.
         const { extensions } = db[mimeType];
 
         return extensions && extensions.length;
     }).join(',');
 }
 
-async function generatePreferences (profileDir, { marionettePort, config }) {
+async function generatePreferences (profileDir: string, { marionettePort, config }: { marionettePort: number; config: any }): Promise<void> {
     const prefsFileName = path.join(profileDir, 'user.js');
 
     let prefs = [
@@ -65,7 +66,7 @@ async function generatePreferences (profileDir, { marionettePort, config }) {
     await writeFile(prefsFileName, prefs.join('\n'));
 }
 
-export default async function (runtimeInfo) {
+export default async function (runtimeInfo: any): Promise<TempDirectory> {
     const tmpDir = await TempDirectory.createDirectory('firefox-profile');
 
     await generatePreferences(tmpDir.path, runtimeInfo);

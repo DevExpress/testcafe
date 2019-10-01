@@ -109,16 +109,23 @@ export default class TestCafeConfiguration extends Configuration {
         return result;
     }
 
-    private _prepareFlags (): void {
-        OPTION_FLAG_NAMES.forEach(name => {
-            const option = this._ensureOption(name, void 0, OptionSource.Configuration);
+    private _prepareFlag (name: string): void {
+        const option = this._ensureOption(name, void 0, OptionSource.Configuration);
 
-            option.value = !!option.value;
-        });
+        option.value = !!option.value;
+    }
+
+    private _prepareFlags (): void {
+        OPTION_FLAG_NAMES.forEach(name => this._prepareFlag(name));
+    }
+
+    private _prepareInitFlags (): void {
+        OPTION_INIT_FLAG_NAMES.forEach(name => this._prepareFlag(name));
     }
 
     private async _normalizeOptionsAfterLoad (): Promise<void> {
         await this._prepareSslOptions();
+        this._prepareInitFlags();
         this._prepareFilterFn();
         this._ensureArrayOption(OPTION_NAMES.src);
         this._ensureArrayOption(OPTION_NAMES.browsers);
