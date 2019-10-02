@@ -1,0 +1,12 @@
+declare module 'testcafe' {
+    global {
+        {{#format}}
+            {{>test-api-types.d.ts}}
+            {{>test-api-exports.d.ts}}
+        {{/format}}
+    }
+
+    {{#format}}
+        {{>test-api-exports.d.ts}}
+    {{/format}}
+}

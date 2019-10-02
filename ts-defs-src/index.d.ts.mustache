@@ -1,0 +1,17 @@
+declare module 'testcafe' {
+    global {
+        {{#format}}
+            {{>test-api-types.d.ts}}
+            {{>test-api-globals.d.ts}}
+            {{>runner-api.d.ts}}
+        {{/format}}
+    }
+
+    {{#format}}
+        {{>test-api-exports.d.ts}}
+    {{/format}}
+
+    const createTestCafe: TestCafeFactory;
+
+    export default createTestCafe;
+}
