@@ -7,11 +7,17 @@ const OPTIONS_KEY      = Symbol('options');
 const NODE_MODULES_DIR = 'node_modules';
 
 function getModuleBasePaths (currentPath) {
-    const root      = path.parse(currentPath).root;
-    const parentDir = path.dirname(currentPath);
-    const parentPaths = parentDir === root ? [] : getModuleBasePaths(parentDir);
+    const nodePaths = [];
+    let parentDir   = path.dirname(currentPath);
 
-    return [ path.join(parentDir, NODE_MODULES_DIR), ... parentPaths];
+    while (currentPath !== parentDir) {
+        currentPath = parentDir;
+        parentDir   = path.dirname(currentPath);
+        
+        nodePaths.push(path.join(currentPath, NODE_MODULES_DIR));
+    }
+
+    return nodePaths;
 }
 
 function createRequire (filename) {
