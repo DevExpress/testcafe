@@ -191,6 +191,14 @@ interface TestController {
     /**
      * Takes a screenshot of the tested page.
      *
+     * @param path - relative path to the screenshot file. Resolved from the screenshot directory specified by
+     * using the `runner.screenshots` API method or the `screenshots-path` command line option.
+     * If path doesn't have .png extension, it will be added automatically.
+     */
+    takeScreenshot(path?: string): TestControllerPromise;
+    /**
+     * Takes a screenshot of the tested page.
+     *
      * @param options - TakeScreenshot Options
      */
     takeScreenshot(options: TakeScreenshotOptions): TestControllerPromise;

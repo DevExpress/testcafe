@@ -95,7 +95,16 @@ interface Runner {
     browsers(browser: BrowserConnection): this;
 
     /**
-     /**
+     * Enables TestCafe to take screenshots of the tested webpages.
+     *
+     * @param path - The base path where the screenshots are saved. Note that to construct a complete path to these screenshots, TestCafe uses default path patterns.
+     * @param takeOnFails - Specifies if screenshots should be taken automatically when a test fails.
+     * @param pathPattern - The pattern to compose screenshot files' relative path and name.
+     */
+    screenshots(path: string, takeOnFails?: boolean, pathPattern?: string): this;
+
+    /**
+     *
      * Enables TestCafe to take screenshots of the tested webpages.
      *
      * @param options - Screenshots options
