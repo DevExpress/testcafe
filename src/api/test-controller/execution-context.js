@@ -13,7 +13,7 @@ function getModuleBasePaths (currentPath) {
     while (currentPath !== parentDir) {
         currentPath = parentDir;
         parentDir   = path.dirname(currentPath);
-        
+
         nodePaths.push(path.join(currentPath, NODE_MODULES_DIR));
     }
 
