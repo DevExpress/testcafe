@@ -1,7 +1,7 @@
 import { isAbsolute } from 'path';
 import debug from 'debug';
 import JSON5 from 'json5';
-import { cloneDeep, castArray } from 'lodash';
+import { castArray, cloneDeep, isPlainObject, mergeWith } from 'lodash';
 import { stat, readFile } from '../utils/promisified-functions';
 import Option from './option';
 import OptionSource from './option-source';
@@ -58,6 +58,7 @@ export default class Configuration {
     }
 
     public async init (): Promise<void> {
+        this._overriddenOptions = [];
     }
 
     public mergeOptions (options: object): void {
@@ -67,11 +68,16 @@ export default class Configuration {
             if (value === void 0)
                 return;
 
-            if (option.value !== value &&
-                option.source === OptionSource.Configuration)
-                this._overriddenOptions.push(key);
-
             this._setOptionValue(option, value);
+        });
+    }
+
+    protected mergeDeep (option: Option, source: object, overrideExisting: boolean = true): void {
+        mergeWith(option.value, source, (targetValue: OptionValue, sourceValue: OptionValue, property: string) => {
+            if (overrideExisting)
+                this._addOverriddenOptionIfRequired(targetValue, sourceValue, option.source, `${option.name}.${property}`);
+
+            return sourceValue !== void 0 && overrideExisting ? sourceValue : targetValue;
         });
     }
 
@@ -190,8 +196,22 @@ export default class Configuration {
         option.source = source;
     }
 
+    protected _addOverriddenOptionIfRequired (value1: OptionValue, value2: OptionValue, source: OptionSource, optionName: string): void {
+        if (value1 === void 0 || value2 === void 0 || value1 === value2 || source !== OptionSource.Configuration)
+            return;
+
+        this._overriddenOptions.push(optionName);
+    }
+
     protected _setOptionValue (option: Option, value: OptionValue): void {
-        option.value  = value;
+        if (isPlainObject(option.value) && isPlainObject(value))
+            this.mergeDeep(option, value as object);
+        else {
+            this._addOverriddenOptionIfRequired(option.value, value, option.source, option.name);
+
+            option.value = value;
+        }
+
         option.source = OptionSource.Input;
     }
 }

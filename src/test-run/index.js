@@ -291,7 +291,9 @@ export default class TestRun extends AsyncEventEmitter {
         catch (err) {
             let screenshotPath = null;
 
-            if (this.opts.takeScreenshotsOnFails)
+            const { screenshots } = this.opts;
+
+            if (screenshots && screenshots.takeOnFails)
                 screenshotPath = await this.executeCommand(new browserManipulationCommands.TakeScreenshotOnFailCommand());
 
             this.addError(err, screenshotPath);

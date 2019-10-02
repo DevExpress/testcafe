@@ -302,10 +302,42 @@ describe('Runner', () => {
                     fullPage:    true
                 });
 
-            expect(runner.configuration.getOption('screenshotPath')).eql('path');
-            expect(runner.configuration.getOption('takeScreenshotsOnFails')).eql(true);
-            expect(runner.configuration.getOption('screenshotPathPattern')).eql('pathPattern');
-            expect(runner.configuration.getOption('screenshotsFullPage')).eql(true);
+            expect(runner.configuration.getOption('screenshots').path).eql('path');
+            expect(runner.configuration.getOption('screenshots').takeOnFails).eql(true);
+            expect(runner.configuration.getOption('screenshots').pathPattern).eql('pathPattern');
+            expect(runner.configuration.getOption('screenshots').fullPage).eql(true);
+        });
+
+        it('Validate screenshot options. The `screenshots` option has priority', () => {
+            runner.configuration.mergeOptions({
+                'screenshots': {
+                    'path':        'path1',
+                    'pathPattern': 'pattern1',
+                    'fullPage':    true
+                },
+                'screenshotPath':        'path2',
+                'screenshotPathPattern': 'pattern2'
+            });
+
+            expect(runner._getScreenshotOptions()).eql({
+                path:        'path1',
+                pathPattern: 'pattern1',
+            });
+        });
+
+        it('Validate screenshot options. Obsolete options are still validated', () => {
+            runner.configuration.mergeOptions({
+                'screenshots': {
+                    'fullPage': true
+                },
+                'screenshotPath':        'path2',
+                'screenshotPathPattern': 'pattern2'
+            });
+
+            expect(runner._getScreenshotOptions()).eql({
+                path:        'path2',
+                pathPattern: 'pattern2'
+            });
         });
     });
 

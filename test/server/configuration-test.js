@@ -1,5 +1,5 @@
 /*eslint-disable no-console */
-
+const { resolve }   = require('path');
 const { cloneDeep } = require('lodash');
 const { expect }    = require('chai');
 const fs            = require('fs');
@@ -10,6 +10,7 @@ const TestCafeConfiguration                   = require('../../lib/configuration
 const TypeScriptConfiguration                 = require('../../lib/configuration/typescript-configuration');
 const { DEFAULT_TYPESCRIPT_COMPILER_OPTIONS } = require('../../lib/configuration/default-values');
 const consoleWrapper                          = require('./helpers/console-wrapper');
+const Task                                    = require('../../lib/runner/task');
 
 const tsConfigPath           = 'tsconfig.json';
 const customTSConfigFilePath = 'custom-config.json';
@@ -54,11 +55,7 @@ describe('TestCafeConfiguration', () => {
                 'testMeta':    { test: 'meta' },
                 'fixtureMeta': { fixture: 'meta' }
             },
-            'clientScripts':          'test-client-script.js',
-            'screenshotPath':         'screenshot-path',
-            'screenshotPathPattern':  'screenshot-path-pattern',
-            'takeScreenshotsOnFails': true,
-            'screenshotsFullPage':    true
+            'clientScripts': 'test-client-script.js',
         });
     });
 
@@ -104,10 +101,7 @@ describe('TestCafeConfiguration', () => {
                         expect(testCafeConfiguration.getOption('filter').testMeta).to.be.deep.equal({ test: 'meta' });
                         expect(testCafeConfiguration.getOption('filter').fixtureMeta).to.be.deep.equal({ fixture: 'meta' });
                         expect(testCafeConfiguration.getOption('clientScripts')).eql([ 'test-client-script.js' ]);
-                        expect(testCafeConfiguration.getOption('screenshotPath')).eql('screenshot-path');
-                        expect(testCafeConfiguration.getOption('screenshotPathPattern')).eql('screenshot-path-pattern');
-                        expect(testCafeConfiguration.getOption('takeScreenshotsOnFails')).eql(true);
-                        expect(testCafeConfiguration.getOption('screenshotsFullPage')).eql(true);
+                        expect(testCafeConfiguration.getOption('screenshots')).eql({ path: resolve(process.cwd(), 'screenshots') });
                     });
             });
 
@@ -155,6 +149,195 @@ describe('TestCafeConfiguration', () => {
                         expect(optionValue[0].name).eql('json');
                         expect(optionValue[0].file).eql('path/to/file');
                     });
+            });
+
+            describe('Screenshot options', () => {
+                it('`mergeOptions` overrides config values', () => {
+                    createTestCafeConfigurationFile({
+                        'screenshots': {
+                            'path':        'screenshot-path',
+                            'pathPattern': 'screenshot-path-pattern',
+                            'takeOnFails': true,
+                            'fullPage':    true,
+                        }
+                    });
+
+                    return testCafeConfiguration.init()
+                        .then(() => {
+                            testCafeConfiguration.mergeOptions({
+                                screenshots: {
+                                    path:        'modified-path',
+                                    pathPattern: 'modified-pattern',
+                                    takeOnFails: false,
+                                    fullPage:    false
+                                }
+                            });
+
+                            expect(testCafeConfiguration.getOption('screenshots')).eql({
+                                path:        'modified-path',
+                                pathPattern: 'modified-pattern',
+                                takeOnFails: false,
+                                fullPage:    false
+                            });
+
+                            expect(testCafeConfiguration._overriddenOptions).eql([
+                                'screenshots.path',
+                                'screenshots.pathPattern',
+                                'screenshots.takeOnFails',
+                                'screenshots.fullPage'
+                            ]);
+                        });
+                });
+
+                it('`mergeOptions` merges config values', () => {
+                    createTestCafeConfigurationFile({
+                        'screenshots': {
+                            'path':        'screenshot-path',
+                            'pathPattern': 'screenshot-path-pattern'
+                        }
+                    });
+
+                    return testCafeConfiguration.init()
+                        .then(() => {
+                            testCafeConfiguration.mergeOptions({
+                                screenshots: {
+                                    path:        'modified-path',
+                                    pathPattern: void 0,
+                                    takeOnFails: false,
+                                }
+                            });
+
+                            expect(testCafeConfiguration.getOption('screenshots')).eql({
+                                path:        'modified-path',
+                                pathPattern: 'screenshot-path-pattern',
+                                takeOnFails: false
+                            });
+
+                            expect(testCafeConfiguration._overriddenOptions).eql(['screenshots.path']);
+                        });
+                });
+
+                it('`mergeOptions` with an empty object does not override anything', () => {
+                    createTestCafeConfigurationFile({
+                        'screenshots': {
+                            'path':        'screenshot-path',
+                            'pathPattern': 'screenshot-path-pattern'
+                        }
+                    });
+
+                    return testCafeConfiguration.init()
+                        .then(() => {
+
+                            testCafeConfiguration.mergeOptions({ });
+
+                            testCafeConfiguration.mergeOptions({ screenshots: {} });
+
+                            expect(testCafeConfiguration.getOption('screenshots')).eql({
+                                path:        'screenshot-path',
+                                pathPattern: 'screenshot-path-pattern'
+                            });
+                        });
+                });
+
+                it('`mergeOptions` overrides the `screenshots` partially', () => {
+                    createTestCafeConfigurationFile({
+                        'screenshots': {
+                            'pathPattern': 'screenshot-path-pattern'
+                        }
+                    });
+
+                    return testCafeConfiguration.init()
+                        .then(() => {
+                            expect(testCafeConfiguration.getOption('screenshots')).eql({
+                                path:        resolve(process.cwd(), 'screenshots'),
+                                pathPattern: 'screenshot-path-pattern'
+                            });
+
+                            expect(testCafeConfiguration._overriddenOptions).eql([]);
+
+                            testCafeConfiguration.mergeOptions({ 'screenshots': { path: 'custom-path' } });
+
+                            expect(testCafeConfiguration._overriddenOptions).eql(['screenshots.path']);
+                        });
+                });
+
+                it('both `screenshots` options exist in config', () => {
+                    createTestCafeConfigurationFile({
+                        'screenshots': {
+                            'path':        'screenshot-path-1',
+                            'pathPattern': 'screenshot-path-pattern-1',
+                            'takeOnFails': true,
+                            'fullPage':    true,
+                        },
+                        'screenshotPath':         'screenshot-path-2',
+                        'screenshotPathPattern':  'screenshot-path-pattern-2',
+                        'takeScreenshotsOnFails': false
+                    });
+
+                    return testCafeConfiguration.init()
+                        .then(() => {
+                            expect(testCafeConfiguration._overriddenOptions.length).eql(0);
+
+                            expect(testCafeConfiguration.getOption('screenshots')).eql({
+                                path:        'screenshot-path-1',
+                                pathPattern: 'screenshot-path-pattern-1',
+                                takeOnFails: true,
+                                fullPage:    true,
+                            });
+
+                            expect(testCafeConfiguration.getOption('screenshotPath')).eql('screenshot-path-2');
+                            expect(testCafeConfiguration.getOption('screenshotPathPattern')).eql('screenshot-path-pattern-2');
+                            expect(testCafeConfiguration.getOption('takeScreenshotsOnFails')).eql(false);
+                        });
+                });
+
+                it('The `screenshots` option integration', () => {
+                    let task = new Task([], [], null, {
+                        screenshots: {
+                            path:        'path-1',
+                            pathPattern: 'path-pattern-1',
+                            fullPage:    true
+                        },
+                        screenshotPath:        'path-2',
+                        screenshotPathPattern: 'path-pattern-2'
+                    });
+
+                    expect(task.screenshots.enabled).eql(true);
+                    expect(task.screenshots.screenshotsPath).eql('path-1');
+                    expect(task.screenshots.screenshotsPattern).eql('path-pattern-1');
+                    expect(task.screenshots.fullPage).eql(true);
+
+                    const capturerArgs = [{ fixture: {} }, 0, null, {
+                        browserInfo: {
+                            parsedUserAgent: {
+                                toVersion: () => {},
+                                os:        {
+                                    toVersion: () => {}
+                                }
+                            }
+                        }
+                    }, null];
+
+                    const capturer = task.screenshots.createCapturerFor(...capturerArgs);
+
+                    expect(capturer.enabled).eql(true);
+                    expect(capturer.baseScreenshotsPath).eql('path-1');
+                    expect(capturer.fullPage).eql(true);
+
+                    task = new Task([], [], null, {
+                        screenshots: {
+                            fullPage: true
+                        },
+                        screenshotPath:        'path-2', // NOTE: skip this option, since it's validated in runner
+                        screenshotPathPattern: 'path-pattern-2'
+                    });
+
+                    expect(task.screenshots.enabled).eql(false);
+                    expect(task.screenshots.screenshotsPath).eql(void 0);
+                    expect(task.screenshots.screenshotsPattern).eql('path-pattern-2');
+                    expect(task.screenshots.fullPage).eql(true);
+
+                });
             });
         });
 
