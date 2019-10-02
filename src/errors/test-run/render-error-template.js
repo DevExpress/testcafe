@@ -21,7 +21,7 @@ function getTestCafeErrorInCustomScriptError (err, viewportWidth) {
                                                                                                     '\n';
 
     return markup(err, `
-        An unhandled error occurred in the TestCafe script:
+        An unhandled error occurred in the custom script:
         ${originErrorText}${!originCallsiteMarkup ? `\n${formatExpressionMessage(err.expression, err.line, err.column)}` : ''}
     `, originCallsiteMarkup);
 }

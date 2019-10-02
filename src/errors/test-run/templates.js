@@ -309,7 +309,7 @@ export default {
     `,
 
     [TEST_RUN_ERRORS.uncaughtErrorInCustomScript]: err => `
-        An unhandled error occurred in the TestCafe script:
+        An unhandled error occurred in the custom script:
         
         ${escapeHtml(err.errMsg)}
         
