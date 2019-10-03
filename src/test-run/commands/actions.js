@@ -375,3 +375,9 @@ export class UseRoleCommand extends CommandBase {
         ];
     }
 }
+
+export class GetBrowserInfoCommand {
+    constructor () {
+        this.type = TYPE.getBrowserInfo;
+    }
+}

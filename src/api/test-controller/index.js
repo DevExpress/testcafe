@@ -28,7 +28,8 @@ import {
     GetBrowserConsoleMessagesCommand,
     SetTestSpeedCommand,
     SetPageLoadTimeoutCommand,
-    UseRoleCommand
+    UseRoleCommand,
+    GetBrowserInfoCommand
 } from '../../test-run/commands/actions';
 
 import {
@@ -327,6 +328,12 @@ export default class TestController {
 
             hooks.forEach(hook => this.testRun.removeRequestHook(hook));
         });
+    }
+
+    _getBrowserInfo$ () {
+        const callsite = getCallsiteForMethod('getBrowserInfo');
+
+        return this.testRun.executeCommand(new GetBrowserInfoCommand(), callsite);
     }
 }
 

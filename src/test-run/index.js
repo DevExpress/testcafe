@@ -445,6 +445,17 @@ export default class TestRun extends AsyncEventEmitter {
         this.debugging = await this.executeCommand(new serviceCommands.SetBreakpointCommand(!!error), callsite);
     }
 
+    async _getBrowserInfoCommand (command, callsite) {
+        await this._enqueueCommand(command, callsite);
+
+        return {
+            alias:        this.browserConnection.browserInfo.alias,
+            browserName:  this.browserConnection.browserInfo.browserName,
+            userAgent:    this.browserConnection.browserInfo.fullUserAgent,
+            providerName: this.browserConnection.browserInfo.providerName
+        };
+    }
+
     _removeAllNonServiceTasks () {
         this.driverTaskQueue = this.driverTaskQueue.filter(driverTask => isServiceCommand(driverTask.command));
 
@@ -656,6 +667,9 @@ export default class TestRun extends AsyncEventEmitter {
 
         if (command.type === COMMAND_TYPE.getBrowserConsoleMessages)
             return await this._enqueueBrowserConsoleMessagesCommand(command, callsite);
+
+        if (command.type === COMMAND_TYPE.getBrowserInfo)
+            return await this._getBrowserInfoCommand(command, callsite);
 
         return this._enqueueCommand(command, callsite);
     }
