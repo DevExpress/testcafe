@@ -43,6 +43,25 @@ interface BrowserConsoleMessages {
     info: string[]
 }
 
+interface BrowserInfo {
+    /**
+     * The alias of the browser.
+     */
+    alias: string,
+    /**
+     * The name of the browser.
+     */
+    browserName: string,
+    /**
+     * The user agent of the browser.
+     */
+    userAgent: string,
+    /**
+     * The provider name of the browser.
+     */
+    providerName: string
+}
+
 interface TestController {
     /**
      * Dictionary that is shared between test hook functions and test code.
@@ -271,6 +290,10 @@ interface TestController {
      * Returns an object that contains messages output to the browser console.
      */
     getBrowserConsoleMessages(): Promise<BrowserConsoleMessages>;
+    /**
+     * Returns an object that contains browser information.
+     */
+    getBrowserInfo(): Promise<BrowserInfo>;
     /**
      * Starts an assertion chain and specifies assertion actual value.
      *
