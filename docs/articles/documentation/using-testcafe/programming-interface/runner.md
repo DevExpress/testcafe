@@ -231,32 +231,38 @@ createTestCafe('localhost', 1337, 1338)
 
 ### screenshots
 
-Enables TestCafe to take screenshots of the tested webpages.
+Specifies how TestCafe should take screenshots of the tested pages.
 
 ```text
-screenshots(path [, takeOnFails, pathPattern]) → this
+screenshots(options) → this
+obsolete: screenshots(path [, takeOnFails] [, pathPattern] ) → this
 ```
 
-Parameter                  | Type    | Description                                                                   | Default
+The `options` object can include the following properties:
+
+Option           | Type    | Description                                                                   | Default
 -------------------------- | ------- | ----------------------------------------------------------------------------- | -------
-`path`                     | String  | The base path where the screenshots are saved. Note that to construct a complete path to these screenshots, TestCafe uses the default [path patterns](../common-concepts/screenshots-and-videos.md#default-path-patterns). You can override these patterns using the method's `screenshotPathPattern` parameter.
+`path`&#160;*(optional)*   | String  | The base path where the screenshots are saved. Note that to construct a complete path to these screenshots, TestCafe uses the default [path patterns](../common-concepts/screenshots-and-videos.md#default-path-pattern). You can override these patterns using the `pathPattern` property. | `'./screenshots'`
 `takeOnFails`&#160;*(optional)* | Boolean | Specifies if screenshots should be taken automatically when a test fails. | `false`
 `pathPattern`&#160;*(optional)* | String | The pattern to compose screenshot files' relative path and name. See [Path Pattern Placeholders](../common-concepts/screenshots-and-videos.md#path-pattern-placeholders) for information about the available placeholders.
-
-> Important! TestCafe does not take screenshots if the `screenshots` function is not called.
+`fullPage`&#160;*(optional)*    | Boolean | Specifies that the full page should be captured, including content that is not visible due to overflow. | `false`
 
 See [Screenshots](../common-concepts/screenshots-and-videos.md#screenshots) for details.
 
 *Related configuration file properties*:
 
-* [screenshotPath](../configuration-file.md#screenshotpath)
-* [takeScreenshotsOnFails](../configuration-file.md#takescreenshotsonfails)
-* [screenshotPathPattern](../configuration-file.md#screenshotpathpattern)
+* [screenshots.path](../configuration-file.md#screenshotspath)
+* [screenshots.takeOnFails](../configuration-file.md#screenshotstakeonfails)
+* [screenshots.pathPattern](../configuration-file.md#screenshotspathpattern)
 
 **Example**
 
 ```js
-runner.screenshots('reports/screenshots/', true, '${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png');
+runner.screenshots({
+    path: 'reports/screenshots/',
+    takeOnFails: true,
+    pathPattern: '${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png'
+});
 ```
 
 ### video
@@ -269,7 +275,7 @@ video(path [, options, encodingOptions]) → this
 
 Parameter                | Type                        | Description
 ------------------------ | --------------------------- | -----------
-`path`                   | String                      | The base directory where videos are saved. Relative paths to video files are composed according to [path patterns](../common-concepts/screenshots-and-videos.md#default-path-patterns). You can also use the `options.pathPattern` property to specify a custom pattern.
+`path`                   | String                      | The base directory where videos are saved. Relative paths to video files are composed according to [path patterns](../common-concepts/screenshots-and-videos.md#default-path-pattern). You can also use the `options.pathPattern` property to specify a custom pattern.
 `options`&#160;*(optional)* | Object | Options that define how videos are recorded. See [Basic Video Options](../common-concepts/screenshots-and-videos.md#basic-video-options) for a list of options.
 `encodingOptions`&#160;*(optional)* | Object | Options that specify video encoding. You can pass all the options supported by the FFmpeg library. Refer to [the FFmpeg documentation](https://ffmpeg.org/ffmpeg.html#Options) for information about the available options.
 

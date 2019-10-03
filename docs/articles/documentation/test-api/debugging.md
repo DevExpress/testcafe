@@ -81,11 +81,10 @@ test('My test', async t => {
 });
 ```
 
-You can also turn on the [--screenshots-on-fails](../using-testcafe/command-line-interface.md#-s---screenshots-on-fails)
-option to automatically take a screenshot when a test fails.
+You can also specify the [takeOnFails](../using-testcafe/command-line-interface.md#takeonfails) option to automatically take a screenshot when a test fails.
 
 ```sh
-testcafe chrome ./my-tests --screenshots ./screenshots --screenshots-on-fails
+testcafe chrome ./my-tests --screenshots path=./screenshots,takeOnFails=true
 ```
 
 Analyzing these screenshots reduces debugging time and allows you to determine the reason of issues earlier.

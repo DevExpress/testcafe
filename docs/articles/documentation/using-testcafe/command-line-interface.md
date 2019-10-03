@@ -24,9 +24,14 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [-v, --version](#-v---version)
   * [-b, --list-browsers](#-b---list-browsers)
   * [-r \<name\[:output\],\[...\]\>, --reporter \<name\[:output\],\[...\]\>](#-r-nameoutput---reporter-nameoutput)
-  * [-s \<path\>, --screenshots \<path\>](#-s-path---screenshots-path)
-  * [-S, --screenshots-on-fails](#-s---screenshots-on-fails)
-  * [-p \<pattern\>, --screenshot-path-pattern \<pattern\>](#-p-pattern---screenshot-path-pattern-pattern)
+  * [-s, --screenshots \<option=value\[,option2=value2,...\]\>](#-s---screenshots-optionvalueoption2value2)
+    * [path](#path)
+    * [takeOnFails](#takeonfails)
+    * [pathPattern](#pathpattern)
+    * [fullPage](#fullpage)
+  * [-s \<path\>, --screenshots \<path\>](#-s-path---screenshots-path) *(obsolete)*
+  * [-S, --screenshots-on-fails](#-s---screenshots-on-fails) *(obsolete)*
+  * [-p \<pattern\>, --screenshot-path-pattern \<pattern\>](#-p-pattern---screenshot-path-pattern-pattern) *(obsolete)*
   * [--video \<basePath\>](#--video-basepath)
   * [--video-options \<option=value\[,option2=value2,...\]\>](#--video-options-optionvalueoption2value2)
   * [--video-encoding-options \<option=value\[,option2=value2,...\]\>](#--video-encoding-options-optionvalueoption2value2)
@@ -300,49 +305,121 @@ Note that only one reporter can write to `stdout`. All other reporters must outp
 
 *Related configuration file property*: [reporter](configuration-file.md#reporter).
 
+### -s, --screenshots \<option=value\[,option2=value2,...\]\>
+
+Specifies screenshot options.
+
+```sh
+testcafe all tests/sample-fixture.js -s path=artifacts/screenshots,takeOnFails=true
+```
+
+#### path
+
+Specifies the base directory where screenshots are saved.
+
+```sh
+testcafe all tests/sample-fixture.js -s path=artifacts/screenshots
+```
+
+See [Screenshots](common-concepts/screenshots-and-videos.md#screenshots) for details.
+
+*Related configuration file property*: [screenshots.path](configuration-file.md#screenshotspath).
+
+#### takeOnFails
+
+Takes a screenshot whenever a test fails.
+
+```sh
+testcafe all tests/sample-fixture.js -s takeOnFails=true
+```
+
+TestCafe saves screenshots to the directory specified in the [path](#path) parameter.
+
+*Related configuration file property*: [screenshots.takeOnFails](configuration-file.md#screenshotstakeonfails).
+
+#### pathPattern
+
+Specifies a custom pattern to compose screenshot files' relative path and name.
+
+```sh
+testcafe all tests/sample-fixture.js -s pathPattern=${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png
+```
+
+See [Path Pattern Placeholders](common-concepts/screenshots-and-videos.md#path-pattern-placeholders) for information about the available placeholders.
+
+Enclose the pattern in quotes if it contains spaces:
+
+```sh
+testcafe all tests/sample-fixture.js -s pathPattern='${DATE} ${TIME}/test ${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png'
+```
+
+In Windows `cmd.exe` shell, use double quotes:
+
+```sh
+testcafe all tests/sample-fixture.js -s pathPattern="${DATE} ${TIME}/test ${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png"
+```
+
+*Related configuration file property*: [screenshots.pathPattern](configuration-file.md#screenshotspathpattern).
+
+#### fullPage
+
+Specifies that the full page should be captured, including content that is not visible due to overflow.
+
+```sh
+testcafe all tests/sample-fixture.js -s fullPage=true
+```
+
+*Related configuration file property*: [screenshots.fullPage](configuration-file.md#screenshotsfullpage).
+
 ### -s \<path\>, --screenshots \<path\>
 
-Enables screenshots and specifies the base directory where they are saved.
+**Obsolete.** Enables screenshots and specifies the base directory where they are saved.
 
 ```sh
 testcafe all tests/sample-fixture.js -s screenshots
 ```
 
-See [Screenshots](common-concepts/screenshots-and-videos.md#screenshots) for details.
+This option will be deprecated in the future versions.
 
-*Related configuration file property*: [screenshotPath](configuration-file.md#screenshotpath).
+In **v1.5.0** and newer, screenshots are always enabled. The default directory is *./screenshots*.
+
+To specify a different path, use the [path](#path) parameter:
+
+```sh
+testcafe all tests/sample-fixture.js -s path=screenshots
+```
 
 ### -S, --screenshots-on-fails
 
-Takes a screenshot whenever a test fails. Screenshots are saved to the directory specified in the [-s (--screenshots)](#-s-path---screenshots-path) option.
-
-For example, the following command runs tests from the `sample-fixture.js` file in all browsers, takes screenshots if tests fail, and saves the screenshots to the `screenshots` directory:
+**Obsolete.** Takes a screenshot whenever a test fails.
 
 ```sh
 testcafe all tests/sample-fixture.js -S -s screenshots
 ```
 
-*Related configuration file property*: [takeScreenshotsOnFails](configuration-file.md#takescreenshotsonfails).
+This option will be deprecated in the future versions.
+
+In **v1.5.0** and newer, use the [takeOnFails](#takeonfails) parameter:
+
+```sh
+testcafe all tests/sample-fixture.js -s takeOnFails=true
+```
 
 ### -p \<pattern\>, --screenshot-path-pattern \<pattern\>
 
-Specifies a custom pattern to compose screenshot files' relative path and name.
+**Obsolete.** Specifies a custom pattern to compose screenshot files' relative path and name.
 
 ```sh
 testcafe all tests/sample-fixture.js -s screenshots -p '${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png'
 ```
 
-See [Path Pattern Placeholders](common-concepts/screenshots-and-videos.md#path-pattern-placeholders) for information about the available placeholders.
+This option will be deprecated in the future versions.
 
-In Windows `cmd.exe` shell, enclose the pattern in double quotes if it contains spaces:
+In **v1.5.0** and newer, use the [pathPattern](#pathpattern) parameter:
 
 ```sh
-testcafe all tests/sample-fixture.js -s screenshots -p "${DATE} ${TIME}/test ${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png"
+testcafe all tests/sample-fixture.js -s pathPattern=${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png
 ```
-
-> Use the [-s (--screenshots)](#-s-path---screenshots-path) flag to enable screenshots.
-
-*Related configuration file property*: [screenshotPathPattern](configuration-file.md#screenshotpathpattern).
 
 ### --video \<basePath\>
 
@@ -365,6 +442,18 @@ testcafe chrome test.js --video videos --video-options singleFile=true,failedOnl
 ```
 
 See [Basic Video Options](common-concepts/screenshots-and-videos.md#basic-video-options) for details.
+
+Enclose parameter values in quotes if they contain spaces:
+
+```sh
+testcafe chrome test.js --video videos --video-options pathPattern='${DATE} ${TIME}/test ${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png'
+```
+
+In Windows `cmd.exe` shell, use double quotes:
+
+```sh
+testcafe chrome test.js --video videos --video-options pathPattern="${DATE} ${TIME}/test ${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png"
+```
 
 > Use the [--video](#--video-basepath) flag to enable video recording.
 
