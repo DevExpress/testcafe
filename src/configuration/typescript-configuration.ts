@@ -71,6 +71,6 @@ export default class TypescriptConfiguration extends Configuration {
         if (TYPESCRIPT_COMPILER_NON_OVERRIDABLE_OPTIONS.indexOf(option.name) === -1)
             super._setOptionValue(option, value);
         else
-            this._addOverriddenOptionIfRequired(option.value, value, option.source, option.name);
+            this._addOverriddenOptionIfNecessary(option.value, value, option.source, option.name);
     }
 }

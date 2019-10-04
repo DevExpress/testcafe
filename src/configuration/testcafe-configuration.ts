@@ -1,4 +1,3 @@
-import { resolve } from 'path';
 import Configuration from './configuration-base';
 import { castArray } from 'lodash';
 import { getGrepOptions, getSSLOptions } from '../utils/get-options';
@@ -8,6 +7,7 @@ import prepareReporters from '../utils/prepare-reporters';
 import { getConcatenatedValuesString, getPluralSuffix } from '../utils/string';
 import renderTemplate from '../utils/render-template';
 import WARNING_MESSAGES from '../notifications/warning-message';
+import resolvePathRelativelyCwd from '../utils/resolve-path-relatively-cwd';
 
 import {
     DEFAULT_APP_INIT_DELAY,
@@ -21,6 +21,8 @@ import OptionSource from './option-source';
 import { Dictionary, FilterOption, ReporterOption, StaticContentCachingOptions } from './interfaces';
 
 const CONFIGURATION_FILENAME = '.testcaferc.json';
+
+const DEFAULT_SCREENSHOTS_DIRECTORY = 'screenshots';
 
 const OPTION_FLAG_NAMES = [
     OPTION_NAMES.skipJsErrors,
@@ -140,8 +142,7 @@ export default class TestCafeConfiguration extends Configuration {
     }
 
     private _ensureScreenshotPath (): void {
-        const path = resolve(process.cwd(), 'screenshots');
-
+        const path        = resolvePathRelativelyCwd(DEFAULT_SCREENSHOTS_DIRECTORY);
         const screenshots = this._ensureOption(OPTION_NAMES.screenshots, {}, OptionSource.Configuration);
 
         this.mergeDeep(screenshots, { path }, false);

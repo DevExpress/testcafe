@@ -75,7 +75,7 @@ export default class Configuration {
     protected mergeDeep (option: Option, source: object, overrideExisting: boolean = true): void {
         mergeWith(option.value, source, (targetValue: OptionValue, sourceValue: OptionValue, property: string) => {
             if (overrideExisting)
-                this._addOverriddenOptionIfRequired(targetValue, sourceValue, option.source, `${option.name}.${property}`);
+                this._addOverriddenOptionIfNecessary(targetValue, sourceValue, option.source, `${option.name}.${property}`);
 
             return sourceValue !== void 0 && overrideExisting ? sourceValue : targetValue;
         });
@@ -196,7 +196,7 @@ export default class Configuration {
         option.source = source;
     }
 
-    protected _addOverriddenOptionIfRequired (value1: OptionValue, value2: OptionValue, source: OptionSource, optionName: string): void {
+    protected _addOverriddenOptionIfNecessary (value1: OptionValue, value2: OptionValue, source: OptionSource, optionName: string): void {
         if (value1 === void 0 || value2 === void 0 || value1 === value2 || source !== OptionSource.Configuration)
             return;
 
@@ -207,7 +207,7 @@ export default class Configuration {
         if (isPlainObject(option.value) && isPlainObject(value))
             this.mergeDeep(option, value as object);
         else {
-            this._addOverriddenOptionIfRequired(option.value, value, option.source, option.name);
+            this._addOverriddenOptionIfNecessary(option.value, value, option.source, option.name);
 
             option.value = value;
         }
