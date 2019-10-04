@@ -1,5 +1,124 @@
 # Changelog
 
+## v1.6.0 (2019-10-7)
+
+### Enhancements
+
+#### :gear: Full-Page Screenshots ([#1520](https://github.com/DevExpress/testcafe/issues/1520))
+
+TestCafe can now take screenshots that show the full page, including content that is not visible due to overflow.
+
+Enable the `fullPage` option in CLI, API or configuration file to capture the full page on all screenshots. You can also pass this option to `t.takeScreenshot` to capture a single full-page screenshot.
+
+*Command line interface*
+
+Enable the [fullPage](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#fullpage) parameter of the [-s (--screenshots)](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-s---screenshots-optionvalueoption2value2) flag:
+
+```sh
+testcafe chrome test.js -s fullPage=true
+```
+
+*API*
+
+Pass the `fullPage` option to [runner.screenshots](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#screenshots):
+
+```js
+runner.screenshots({
+    fullPage: true
+});
+```
+
+*Configuration file*
+
+Set the [screenshots.fullPage](https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#screenshotsfullpage) property:
+
+```json
+{
+    "screenshots": {
+        "fullPage": true
+    }
+}
+```
+
+*Test code*
+
+Pass the `fullPage` option to the [t.takeScreenshot](https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-the-entire-page) action:
+
+```js
+t.takeScreenshot({
+    fullPage: true
+});
+```
+
+#### :gear: Compound Screenshot Options
+
+The command line interface and configuration file schema have been updated to provide a more concise way to specify the screenshot options.
+
+> TestCafe v1.6.0 also supports the existing options to maintain backward compatibility. However, these options are now marked *obsolete* in the documentation. In the future updates, we will deprecate them and emit warnings.
+
+*Command line interface*
+
+Screenshot options in CLI are now consolidated under the [-s (--screenshots)](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-s---screenshots-optionvalueoption2value2) flag in an `option=value` string:
+
+```sh
+testcafe chrome test.js -s takeOnFails=true,pathPattern=${DATE}_${TIME}/${FILE_INDEX}.png
+```
+
+Old Usage                                      | New Usage
+---------------------------------------------- | -----------
+`-s artifacts/screenshots`                     | `-s path=artifacts/screenshots`
+`-S`, `--screenshots-on-fails`                 | `-s takeOnFails=true`
+`-p ${DATE}_${TIME}/${FILE_INDEX}.png`         | `-s pathPattern=${DATE}_${TIME}/${FILE_INDEX}.png`
+
+*Configuration file*
+
+Configuration file properties that specify screenshot options are now combined in the [screenshots](https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#screenshots) object:
+
+```json
+{
+    "screenshots": {
+        "path": "artifacts/screenshots",
+        "takeOnFails": true,
+        "pathPattern": "${DATE}_${TIME}/${FILE_INDEX}.png"
+    }
+}
+```
+
+Old Property             | New Property
+------------------------ | ----------------------------
+`screenshotPath`         | `screenshots.path`
+`takeScreenshotsOnFails` | `screenshots.takeOnFails`
+`screenshotPathPattern`  | `screenshots.pathPattern`
+
+#### :gear: Default Screenshot Directory
+
+TestCafe now saves the screenshots to `./screenshots` if the base directory is not specified.
+
+The [--screenshots](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-s---screenshots-optionvalueoption2value2) CLI flag, the [runner.screenshots](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#screenshots) method or the [screenshotPath](https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#screenshotpath) configuration option are not required to take screenshots. For instance, you can run TestCafe with no additional parameters and use the [t.takeScreenshot](https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-the-entire-page) action in test code:
+
+```sh
+testcafe chrome test.js
+```
+
+*test.js*
+
+```js
+fixture `My fixture`
+    .page `https://example.com`;
+
+test('Take a screenshot', async t => {
+    await t.takeScreenshot();
+});
+```
+
+The `path` argument in [runner.screenshots](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#screenshots) is now optional.
+
+```js
+runner.screenshots({
+    takeOnFails: true
+});
+```
+
 ## v1.5.0 (2019-9-12)
 
 ### Enhancements
