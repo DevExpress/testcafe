@@ -119,6 +119,15 @@ runner.screenshots({
 });
 ```
 
+### Bug Fixes
+
+* Fixed an error thrown when you pass the `-b` command line flag ([#4294](https://github.com/DevExpress/testcafe/issues/4294))
+* TestCafe no longer hangs when Firefox downloads a file ([#2741](https://github.com/DevExpress/testcafe/issues/2741))
+* You can now start tests from TypeScript code executed with `ts-node` ([#4276](https://github.com/DevExpress/testcafe/issues/4276))
+* Fixed TypeScript definitions for client script injection API ([PR #4272](https://github.com/DevExpress/testcafe/pull/4272))
+* Fixed TypeScript definitions for `disablePageCaching` ([PR #4274](https://github.com/DevExpress/testcafe/pull/4274))
+* Fixed a bug when anchor links did not navigate to their target destinations ([testcafe-hammerhead#2080](https://github.com/DevExpress/testcafe-hammerhead/issues/2080))
+
 ## v1.5.0 (2019-9-12)
 
 ### Enhancements
