@@ -7,7 +7,7 @@ import { flattenDeep as flatten, pull as remove } from 'lodash';
 import Bootstrapper from './bootstrapper';
 import Reporter from '../reporter';
 import Task from './task';
-import defaultDebugLogger from '../notifications/debug-logger/default';
+import defaultDebugLogger from '../notifications/debug-logger';
 import { GeneralError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
 import { assertType, is } from '../errors/runtime/type-assertions';
