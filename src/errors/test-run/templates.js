@@ -311,7 +311,7 @@ export default {
     [TEST_RUN_ERRORS.uncaughtErrorInCustomScript]: err => `
         An unhandled error occurred in the custom script:
         
-        ${escapeHtml(err.errMsg)}
+        Error details: ${escapeHtml(err.errMsg)}
         
         ${formatExpressionMessage(err.expression, err.line, err.column)}
     `
