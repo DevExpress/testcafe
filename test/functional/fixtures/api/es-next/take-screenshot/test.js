@@ -102,6 +102,28 @@ describe('[API] t.takeScreenshot()', function () {
                 });
         });
 
+        it('Should create warning if screenshots are disabled', function () {
+            return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot', { disableScreenshots: true })
+                .then(function () {
+                    expect(assertionHelper.isScreenshotDirExists()).eql(false);
+                    expect(testReport.warnings).eql([
+                        'The screenshot functionality is disabled. Remove the "--disable-screenshots" command line ' +
+                        'option or the "disableScreenshots" runner and configuration option to enable it.'
+                    ]);
+                });
+        });
+
+        it('Should create warning if screenshots are disabled when a custom path is specified', function () {
+            return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot with a custom path (OS separator)', { disableScreenshots: true })
+                .then(function () {
+                    expect(assertionHelper.isScreenshotDirExists()).eql(false);
+                    expect(testReport.warnings).eql([
+                        'The screenshot functionality is disabled. Remove the "--disable-screenshots" command line ' +
+                        'option or the "disableScreenshots" runner and configuration option to enable it.'
+                    ]);
+                });
+        });
+
         it('Should validate path argument', function () {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Incorrect action path argument', {
                 shouldFail: true,
@@ -282,6 +304,17 @@ describe('[API] t.takeElementScreenshot()', function () {
                     expect(assertionHelper.checkScreenshotsCreated({ baseDir: 'screenshots', customPath: 'custom' })).eql(true);
 
                     return assertionHelper.removeScreenshotDir('screenshots');
+                });
+        });
+
+        it('Should create warning if screenshots are disabled', function () {
+            return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Element', { disableScreenshots: true })
+                .then(function () {
+                    expect(assertionHelper.isScreenshotDirExists()).eql(false);
+                    expect(testReport.warnings).eql([
+                        'The screenshot functionality is disabled. Remove the "--disable-screenshots" command line ' +
+                        'option or the "disableScreenshots" runner and configuration option to enable it.'
+                    ]);
                 });
         });
 

@@ -612,8 +612,15 @@ export default class TestRun extends AsyncEventEmitter {
 
         await this._setBreakpointIfNecessary(command, callsite);
 
-        if (isScreenshotCommand(command))
+        if (isScreenshotCommand(command)) {
+            if (this.opts.disableScreenshots) {
+                this.warningLog.addWarning(WARNING_MESSAGE.screenshotsDisabled);
+
+                return null;
+            }
+
             await this._adjustScreenshotCommand(command);
+        }
 
         if (isBrowserManipulationCommand(command)) {
             this.browserManipulationQueue.push(command);

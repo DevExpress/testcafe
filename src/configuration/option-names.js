@@ -16,7 +16,6 @@ export default {
     appCommand:             'appCommand',
     appInitDelay:           'appInitDelay',
     skipJsErrors:           'skipJsErrors',
-    disablePageReloads:     'disablePageReloads',
     quarantineMode:         'quarantineMode',
     debugMode:              'debugMode',
     debugOnFail:            'debugOnFail',
@@ -36,5 +35,7 @@ export default {
     port1:                  'port1',
     port2:                  'port2',
     developmentMode:        'developmentMode',
-    disablePageCaching:     'disablePageCaching'
+    disablePageReloads:     'disablePageReloads',
+    disablePageCaching:     'disablePageCaching',
+    disableScreenshots:     'disableScreenshots'
 };

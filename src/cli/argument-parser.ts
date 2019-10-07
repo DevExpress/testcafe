@@ -124,13 +124,14 @@ export default class CLIArgumentParser {
             .option('--video <path>', ' record videos of test runs')
             .option('--video-options <option=value[,...]>', 'specify video recording options')
             .option('--video-encoding-options <option=value[,...]>', 'specify encoding options')
-            .option('--disable-page-reloads', 'disable page reloads between tests')
             .option('--dev', 'enables mechanisms to log and diagnose errors')
             .option('--qr-code', 'outputs QR-code that repeats URLs used to connect the remote browsers')
             .option('--sf, --stop-on-first-fail', 'stop an entire test run if any test fails')
             .option('--ts-config-path <path>', 'use a custom TypeScript configuration file and specify its location')
             .option('--cs, --client-scripts <paths>', 'inject scripts into tested pages', this._parseList, [])
             .option('--disable-page-caching', 'disable page caching during test execution')
+            .option('--disable-page-reloads', 'disable page reloads between tests')
+            .option('--disable-screenshots', 'disable taking screenshots')
 
             // NOTE: these options will be handled by chalk internally
             .option('--color', 'force colors in command line')

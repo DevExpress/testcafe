@@ -186,7 +186,6 @@ before(function () {
 
                 const {
                     skipJsErrors,
-                    disablePageReloads,
                     quarantineMode,
                     screenshotPathPattern,
                     screenshotsOnFails,
@@ -203,7 +202,9 @@ before(function () {
                     only: onlyOption,
                     skip: skipOption,
                     stopOnFirstFail,
-                    disablePageCaching
+                    disablePageCaching,
+                    disablePageReloads,
+                    disableScreenshots
                 } = opts;
 
                 const actualBrowsers = browsersInfo.filter(browserInfo => {
@@ -253,7 +254,6 @@ before(function () {
                     .clientScripts(clientScripts)
                     .run({
                         skipJsErrors,
-                        disablePageReloads,
                         quarantineMode,
                         selectorTimeout,
                         assertionTimeout,
@@ -261,7 +261,9 @@ before(function () {
                         speed,
                         stopOnFirstFail,
                         skipUncaughtErrors,
-                        disablePageCaching
+                        disablePageCaching,
+                        disablePageReloads,
+                        disableScreenshots
                     })
                     .then(failedCount => {
                         if (customReporters)

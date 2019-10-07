@@ -12,5 +12,6 @@ export default [
     OPTION_NAMES.speed,
     OPTION_NAMES.stopOnFirstFail,
     OPTION_NAMES.disablePageCaching,
-    OPTION_NAMES.disablePageReloads
+    OPTION_NAMES.disablePageReloads,
+    OPTION_NAMES.disableScreenshots
 ];
