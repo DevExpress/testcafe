@@ -71,9 +71,12 @@ export function shouldSkipCallsite (err) {
 export function markup (err, msgMarkup, errCallsite = '') {
     msgMarkup = dedent(`${SUBTITLES[err.testRunPhase]}<div class="message">${dedent(msgMarkup)}</div>`);
 
-    msgMarkup += errCallsite ? `\n\n${errCallsite}\n` : '\n';
+    const browserStr = `\n\n<strong>Browser:</strong> <span class="user-agent">${err.userAgent}</span>`;
 
-    msgMarkup += `\n<strong>Browser:</strong> <span class="user-agent">${err.userAgent}</span>`;
+    if (errCallsite)
+        msgMarkup += `${browserStr}\n\n${errCallsite}\n`;
+    else
+        msgMarkup += browserStr;
 
     if (err.screenshotPath)
         msgMarkup += `\n<div class="screenshot-info"><strong>Screenshot:</strong> <a class="screenshot-path">${escapeHtml(err.screenshotPath)}</a></div>`;
