@@ -326,9 +326,9 @@ When TestCafe saves a screenshot or video file, it substitutes each placeholder 
 2019-10-02_11-35-40/Firefox/screenshot-2.png
 ```
 
-You use the [default](#default-path-pattern) or [custom path pattern](#custom-path-patterns).
+You can use the [default](#default-path-pattern) or [custom path pattern](#custom-path-patterns).
 
-> You can specify the exact path when you take a screenshot with the [t.takeScreenshot](../../test-api/actions/take-screenshot.md#take-a-screenshot-of-the-entire-page) or [t.takeElementScreenshot](../../test-api/actions/take-screenshot.md#take-a-screenshot-of-a-page-element) actions. In this instance, TestCafe saves this screenshot to the specified location and does not use patterns.
+> When you take a screenshot with the [t.takeScreenshot](../../test-api/actions/take-screenshot.md#take-a-screenshot-of-the-entire-page) or [t.takeElementScreenshot](../../test-api/actions/take-screenshot.md#take-a-screenshot-of-a-page-element) action, you can specify the exact file path. In this instance, TestCafe saves this screenshot to the specified location and does not use patterns.
 
 #### Default Path Pattern
 
