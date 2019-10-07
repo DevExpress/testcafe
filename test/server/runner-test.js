@@ -759,6 +759,23 @@ describe('Runner', () => {
                     expect(consoleWrapper.messages.log).eql(null);
                 });
         });
+
+        it('Should use default debugLogger if need', () => {
+            const defaultLogger = require('../../lib/notifications/debug-logger');
+
+            runner._validateDebugLogger();
+
+            expect(runner.configuration.getOption('debugLogger')).to.deep.equal(defaultLogger);
+
+            const customLogger = {
+                showBreakpoint: () => {},
+                hideBreakpoint: () => {}
+            };
+
+            runner.configuration.mergeOptions({ debugLogger: customLogger });
+
+            expect(runner.configuration.getOption('debugLogger')).to.deep.equal(customLogger);
+        });
     });
 
     describe('.clientScripts', () => {
