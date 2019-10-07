@@ -190,7 +190,7 @@ export default class Runner extends EventEmitter {
         if (debugLogger !== void 0) {
             this.configuration.mergeOptions({
                 [OPTION_NAMES.debugLogger]: defaultDebugLogger
-            })
+            });
         }
     }
 
