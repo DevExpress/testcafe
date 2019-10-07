@@ -7,6 +7,7 @@ import { flattenDeep as flatten, pull as remove } from 'lodash';
 import Bootstrapper from './bootstrapper';
 import Reporter from '../reporter';
 import Task from './task';
+import defaultDebugLogger from '../notifications/debug-logger/default';
 import { GeneralError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
 import { assertType, is } from '../errors/runtime/type-assertions';
@@ -183,6 +184,16 @@ export default class Runner extends EventEmitter {
         assets.forEach(asset => this.proxy.GET(asset.path, asset.info));
     }
 
+    _validateDebugLogger () {
+        const debugLogger = this.configuration.getOption(OPTION_NAMES.debugLogger);
+
+        if (debugLogger !== void 0) {
+            this.configuration.mergeOptions({
+                [OPTION_NAMES.debugLogger]: defaultDebugLogger
+            })
+        }
+    }
+
     _validateSpeedOption () {
         const speed = this.configuration.getOption(OPTION_NAMES.speed);
 
@@ -271,6 +282,7 @@ export default class Runner extends EventEmitter {
     }
 
     async _validateRunOptions () {
+        this._validateDebugLogger();
         this._validateScreenshotOptions();
         await this._validateVideoOptions();
         this._validateSpeedOption();

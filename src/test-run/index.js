@@ -3,7 +3,6 @@ import { readSync as read } from 'read-file-relative';
 import promisifyEvent from 'promisify-event';
 import Mustache from 'mustache';
 import AsyncEventEmitter from '../utils/async-event-emitter';
-import debugLogger from '../notifications/debug-logger';
 import TestRunDebugLog from './debug-log';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
 import TestCafeErrorList from '../errors/error-list';
@@ -123,7 +122,8 @@ export default class TestRun extends AsyncEventEmitter {
         this.debugLog = new TestRunDebugLog(this.browserConnection.userAgent);
 
         this.quarantine  = null;
-        this.debugLogger = debugLogger;
+
+        this.debugLogger = this.opts.debugLogger;
 
         this._addInjectables();
         this._initRequestHooks();
