@@ -17,7 +17,7 @@ describe('[Raw API] Code steps', function () {
         return runTests('./testcafe-fixtures/code-steps.testcafe', 'Error', { shouldFail: true })
             .catch(err => {
                 expect(err[0]).contains(
-                    'An unhandled error occurred in the custom script:  Assignment to constant variable.  ' +
+                    'An unhandled error occurred in the custom script:  Error details: Assignment to constant variable.  ' +
                     'const q = 1; q = 2; at 2:3'
                 );
             });
