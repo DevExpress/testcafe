@@ -1,3 +1,4 @@
+import { has } from 'lodash';
 import { Command } from 'commander';
 import dedent from 'dedent';
 import { readSync as read } from 'read-file-relative';
@@ -8,6 +9,7 @@ import getViewPortWidth from '../utils/get-viewport-width';
 import { wordWrap, splitQuotedText } from '../utils/string';
 import { getSSLOptions, getScreenshotOptions, getVideoOptions, getMetaOptions, getGrepOptions } from '../utils/get-options';
 import getFilterFn from '../utils/get-filter-fn';
+import SCREENSHOT_OPTION_NAMES from '../configuration/screenshot-option-names';
 import RUN_OPTION_NAMES from '../configuration/run-option-names';
 import { Dictionary, ReporterOption, RunnerRunOptions } from '../configuration/interfaces';
 
@@ -92,7 +94,7 @@ export default class CLIArgumentParser {
 
             .option('-b, --list-browsers [provider]', 'output the aliases for local browsers or browsers available through the specified browser provider')
             .option('-r, --reporter <name[:outputFile][,...]>', 'specify the reporters and optionally files where reports are saved')
-            .option('-s, --screenshots <path>', 'enable screenshot capturing and specify the path to save the screenshots to')
+            .option('-s, --screenshots <option=value[,...]>', 'specify screenshot options')
             .option('-S, --screenshots-on-fails', 'take a screenshot whenever a test fails')
             .option('-p, --screenshot-path-pattern <pattern>', 'use patterns to compose screenshot file names and paths: ${BROWSER}, ${BROWSER_VERSION}, ${OS}, etc.')
             .option('-q, --quarantine-mode', 'enable the quarantine mode')
@@ -260,11 +262,11 @@ export default class CLIArgumentParser {
         else
             this.opts.screenshots = {};
 
-        if (this.opts.screenshotPathPattern)
-            this.opts.screenshots.pathPattern = this.opts.screenshotPathPattern;
+        if (!has(this.opts.screenshots, SCREENSHOT_OPTION_NAMES.pathPattern) && this.opts.screenshotPathPattern)
+            this.opts.screenshots[SCREENSHOT_OPTION_NAMES.pathPattern] = this.opts.screenshotPathPattern;
 
-        if (this.opts.screenshotsOnFails)
-            this.opts.screenshots.takeOnFails = this.opts.screenshotsOnFails;
+        if (!has(this.opts.screenshots, SCREENSHOT_OPTION_NAMES.takeOnFails) && this.opts.screenshotsOnFails)
+            this.opts.screenshots[SCREENSHOT_OPTION_NAMES.takeOnFails] = this.opts.screenshotsOnFails;
     }
 
     private async _parseVideoOptions (): Promise<void> {
