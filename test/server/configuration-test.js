@@ -101,7 +101,6 @@ describe('TestCafeConfiguration', () => {
                         expect(testCafeConfiguration.getOption('filter').testMeta).to.be.deep.equal({ test: 'meta' });
                         expect(testCafeConfiguration.getOption('filter').fixtureMeta).to.be.deep.equal({ fixture: 'meta' });
                         expect(testCafeConfiguration.getOption('clientScripts')).eql([ 'test-client-script.js' ]);
-                        expect(testCafeConfiguration.getOption('screenshots')).eql({ path: resolve(process.cwd(), 'screenshots') });
                     });
             });
 
@@ -236,28 +235,6 @@ describe('TestCafeConfiguration', () => {
                                 path:        'screenshot-path',
                                 pathPattern: 'screenshot-path-pattern'
                             });
-                        });
-                });
-
-                it('`mergeOptions` overrides the `screenshots` partially', () => {
-                    createTestCafeConfigurationFile({
-                        'screenshots': {
-                            'pathPattern': 'screenshot-path-pattern'
-                        }
-                    });
-
-                    return testCafeConfiguration.init()
-                        .then(() => {
-                            expect(testCafeConfiguration.getOption('screenshots')).eql({
-                                path:        resolve(process.cwd(), 'screenshots'),
-                                pathPattern: 'screenshot-path-pattern'
-                            });
-
-                            expect(testCafeConfiguration._overriddenOptions).eql([]);
-
-                            testCafeConfiguration.mergeOptions({ 'screenshots': { path: 'custom-path' } });
-
-                            expect(testCafeConfiguration._overriddenOptions).eql(['screenshots.path']);
                         });
                 });
 

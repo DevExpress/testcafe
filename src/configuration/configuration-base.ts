@@ -72,12 +72,11 @@ export default class Configuration {
         });
     }
 
-    protected mergeDeep (option: Option, source: object, overrideExisting: boolean = true): void {
+    protected mergeDeep (option: Option, source: object): void {
         mergeWith(option.value, source, (targetValue: OptionValue, sourceValue: OptionValue, property: string) => {
-            if (overrideExisting)
-                this._addOverriddenOptionIfNecessary(targetValue, sourceValue, option.source, `${option.name}.${property}`);
+            this._addOverriddenOptionIfNecessary(targetValue, sourceValue, option.source, `${option.name}.${property}`);
 
-            return sourceValue !== void 0 && overrideExisting ? sourceValue : targetValue;
+            return sourceValue !== void 0 ? sourceValue : targetValue;
         });
     }
 
