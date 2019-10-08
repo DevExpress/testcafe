@@ -3,9 +3,10 @@ An unhandled error occurred in the custom script:
 The "timeout" argument is expected to be a positive integer, but it was
 string.
 
+Browser: Chrome 15.0.874 / Mac OS X 10.8.1
+
  > 1 |await t.wait('10');
 
-Browser: Chrome 15.0.874 / Mac OS X 10.8.1
 Screenshot: /unix/path/with/<tag>
 
 1
