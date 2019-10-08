@@ -1,5 +1,4 @@
 /*eslint-disable no-console */
-const { resolve }   = require('path');
 const { cloneDeep } = require('lodash');
 const { expect }    = require('chai');
 const fs            = require('fs');
