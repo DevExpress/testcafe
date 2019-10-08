@@ -7,6 +7,7 @@ import prepareReporters from '../utils/prepare-reporters';
 import { getConcatenatedValuesString, getPluralSuffix } from '../utils/string';
 import renderTemplate from '../utils/render-template';
 import WARNING_MESSAGES from '../notifications/warning-message';
+import resolvePathRelativelyCwd from '../utils/resolve-path-relatively-cwd';
 
 import {
     DEFAULT_APP_INIT_DELAY,
@@ -21,6 +22,8 @@ import { Dictionary, FilterOption, ReporterOption, StaticContentCachingOptions }
 
 const CONFIGURATION_FILENAME = '.testcaferc.json';
 
+const DEFAULT_SCREENSHOTS_DIRECTORY = 'screenshots';
+
 const OPTION_FLAG_NAMES = [
     OPTION_NAMES.skipJsErrors,
     OPTION_NAMES.disablePageReloads,
@@ -30,7 +33,6 @@ const OPTION_FLAG_NAMES = [
     OPTION_NAMES.skipUncaughtErrors,
     OPTION_NAMES.stopOnFirstFail,
     OPTION_NAMES.takeScreenshotsOnFails,
-    OPTION_NAMES.screenshotsFullPage,
     OPTION_NAMES.disablePageCaching,
     OPTION_NAMES.developmentMode,
     OPTION_NAMES.retryTestPages,
@@ -56,6 +58,8 @@ export default class TestCafeConfiguration extends Configuration {
     }
 
     public async init (options = {}): Promise<void> {
+        await super.init();
+
         const opts = await this._load();
 
         if (opts) {
@@ -113,6 +117,7 @@ export default class TestCafeConfiguration extends Configuration {
     private async _normalizeOptionsAfterLoad (): Promise<void> {
         await this._prepareSslOptions();
         this._prepareFilterFn();
+        this._ensureScreenshotPath();
         this._ensureArrayOption(OPTION_NAMES.src);
         this._ensureArrayOption(OPTION_NAMES.browsers);
         this._ensureArrayOption(OPTION_NAMES.clientScripts);
@@ -134,6 +139,13 @@ export default class TestCafeConfiguration extends Configuration {
             filterOptionValue.fixtureGrep = getGrepOptions(OPTION_NAMES.filterFixtureGrep, filterOptionValue.fixtureGrep as string);
 
         filterOption.value = getFilterFn(filterOption.value) as Function;
+    }
+
+    private _ensureScreenshotPath (): void {
+        const path        = resolvePathRelativelyCwd(DEFAULT_SCREENSHOTS_DIRECTORY);
+        const screenshots = this._ensureOption(OPTION_NAMES.screenshots, {}, OptionSource.Configuration);
+
+        this.mergeDeep(screenshots, { path }, false);
     }
 
     private _prepareReporters (): void {

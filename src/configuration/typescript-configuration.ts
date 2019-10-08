@@ -70,5 +70,7 @@ export default class TypescriptConfiguration extends Configuration {
     protected _setOptionValue (option: Option, value: OptionValue): void {
         if (TYPESCRIPT_COMPILER_NON_OVERRIDABLE_OPTIONS.indexOf(option.name) === -1)
             super._setOptionValue(option, value);
+        else
+            this._addOverriddenOptionIfNecessary(option.value, value, option.source, option.name);
     }
 }

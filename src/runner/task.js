@@ -18,7 +18,7 @@ export default class Task extends AsyncEventEmitter {
         this.tests                   = tests;
         this.opts                    = opts;
         this.proxy                   = proxy;
-        this.screenshots             = new Screenshots(this.opts.screenshotPath, this.opts.screenshotPathPattern, this.opts.screenshotsFullPage);
+        this.screenshots             = new Screenshots(this.opts.screenshots, this.opts);
         this.warningLog              = new WarningLog();
 
         this.fixtureHookController = new FixtureHookController(tests, browserConnectionGroups.length);

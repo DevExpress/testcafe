@@ -223,14 +223,25 @@ export default class Runner extends EventEmitter {
         this.configuration.mergeOptions({ proxyBypass });
     }
 
+    _getScreenshotOptions () {
+        let { path, pathPattern } = this.configuration.getOption(OPTION_NAMES.screenshots) || {};
+
+        if (!path)
+            path = this.configuration.getOption(OPTION_NAMES.screenshotPath);
+
+        if (!pathPattern)
+            pathPattern = this.configuration.getOption(OPTION_NAMES.screenshotPathPattern);
+
+        return { path, pathPattern };
+    }
+
     _validateScreenshotOptions () {
-        const screenshotPath        = this.configuration.getOption(OPTION_NAMES.screenshotPath);
-        const screenshotPathPattern = this.configuration.getOption(OPTION_NAMES.screenshotPathPattern);
+        const { path: screenshotPath, pathPattern: screenshotPathPattern } = this._getScreenshotOptions();
 
         if (screenshotPath) {
             this._validateScreenshotPath(screenshotPath, 'screenshots base directory path');
 
-            this.configuration.mergeOptions({ [OPTION_NAMES.screenshotPath]: resolvePath(screenshotPath) });
+            this.configuration.mergeOptions({ [OPTION_NAMES.screenshots]: { path: resolvePath(screenshotPath) } });
         }
 
         if (screenshotPathPattern)
@@ -384,12 +395,7 @@ export default class Runner extends EventEmitter {
         if (options.length === 1 && options[0] && typeof options[0] === 'object')
             ({ path, takeOnFails, pathPattern, fullPage } = options[0]);
 
-        this.configuration.mergeOptions({
-            [OPTION_NAMES.screenshotPath]:         path,
-            [OPTION_NAMES.takeScreenshotsOnFails]: takeOnFails,
-            [OPTION_NAMES.screenshotPathPattern]:  pathPattern,
-            [OPTION_NAMES.screenshotsFullPage]:    fullPage
-        });
+        this.configuration.mergeOptions({ screenshots: { path, takeOnFails, pathPattern, fullPage } });
 
         return this;
     }
