@@ -760,7 +760,7 @@ describe('Runner', () => {
                 });
         });
 
-        it('Should use default debugLogger if need', () => {
+        it('Should use the default debugLogger if necessary', () => {
             const defaultLogger = require('../../lib/notifications/debug-logger');
 
             runner._validateDebugLogger();
