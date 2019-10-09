@@ -308,7 +308,7 @@ describe('[API] t.takeElementScreenshot()', function () {
         });
 
         it('Should create warning if screenshots are disabled', function () {
-            return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Element', { disableScreenshots: true })
+            return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Element with margins', { disableScreenshots: true })
                 .then(function () {
                     expect(assertionHelper.isScreenshotDirExists()).eql(false);
                     expect(testReport.warnings).eql([

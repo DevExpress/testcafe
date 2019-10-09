@@ -266,54 +266,6 @@ describe('TestCafeConfiguration', () => {
                             expect(testCafeConfiguration.getOption('takeScreenshotsOnFails')).eql(false);
                         });
                 });
-
-                it('The `screenshots` option integration', () => {
-                    let task = new Task([], [], null, {
-                        screenshots: {
-                            path:        'path-1',
-                            pathPattern: 'path-pattern-1',
-                            fullPage:    true
-                        },
-                        screenshotPath:        'path-2',
-                        screenshotPathPattern: 'path-pattern-2'
-                    });
-
-                    expect(task.screenshots.enabled).eql(true);
-                    expect(task.screenshots.screenshotsPath).eql('path-1');
-                    expect(task.screenshots.screenshotsPattern).eql('path-pattern-1');
-                    expect(task.screenshots.fullPage).eql(true);
-
-                    const capturerArgs = [{ fixture: {} }, 0, null, {
-                        browserInfo: {
-                            parsedUserAgent: {
-                                toVersion: () => {},
-                                os:        {
-                                    toVersion: () => {}
-                                }
-                            }
-                        }
-                    }, null];
-
-                    const capturer = task.screenshots.createCapturerFor(...capturerArgs);
-
-                    expect(capturer.enabled).eql(true);
-                    expect(capturer.baseScreenshotsPath).eql('path-1');
-                    expect(capturer.fullPage).eql(true);
-
-                    task = new Task([], [], null, {
-                        screenshots: {
-                            fullPage: true
-                        },
-                        screenshotPath:        'path-2', // NOTE: skip this option, since it's validated in runner
-                        screenshotPathPattern: 'path-pattern-2'
-                    });
-
-                    expect(task.screenshots.enabled).eql(false);
-                    expect(task.screenshots.screenshotsPath).eql(void 0);
-                    expect(task.screenshots.screenshotsPattern).eql('path-pattern-2');
-                    expect(task.screenshots.fullPage).eql(true);
-
-                });
             });
         });
 
