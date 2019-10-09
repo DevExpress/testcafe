@@ -236,16 +236,26 @@ export default class Runner extends EventEmitter {
     }
 
     _validateScreenshotOptions () {
-        const { path: screenshotPath, pathPattern: screenshotPathPattern } = this._getScreenshotOptions();
+        const { path, pathPattern } = this._getScreenshotOptions();
 
-        if (screenshotPath) {
-            this._validateScreenshotPath(screenshotPath, 'screenshots base directory path');
+        const disableScreenshots = this.configuration.getOption(OPTION_NAMES.disableScreenshots) || !path;
 
-            this.configuration.mergeOptions({ [OPTION_NAMES.screenshots]: { path: resolvePath(screenshotPath) } });
+        this.configuration.mergeOptions({ [OPTION_NAMES.disableScreenshots]: disableScreenshots });
+
+        if (disableScreenshots)
+            return;
+
+        if (path) {
+            this._validateScreenshotPath(path, 'screenshots base directory path');
+
+            this.configuration.mergeOptions({ [OPTION_NAMES.screenshots]: { path: resolvePath(path) } });
         }
 
-        if (screenshotPathPattern)
-            this._validateScreenshotPath(screenshotPathPattern, 'screenshots path pattern');
+        if (pathPattern) {
+            this._validateScreenshotPath(pathPattern, 'screenshots path pattern');
+
+            this.configuration.mergeOptions({ [OPTION_NAMES.screenshots]: { pathPattern } });
+        }
     }
 
     async _validateVideoOptions () {
