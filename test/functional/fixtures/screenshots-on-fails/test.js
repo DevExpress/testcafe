@@ -100,17 +100,13 @@ describe('Screenshots on fails', function () {
                 });
         });
 
-        it('Should not take a screenshot if the ensureElement method fails with no screenshotPath specified', function () {
+        it('Should save a screenshot to default dir if the ensureElement method fails without screenshotPath specified', function () {
             return runTests('./testcafe-fixtures/screenshots-on-fails.js', 'Screenshot on the ensureElement method fail',
                 { shouldFail: true, selectorTimeout: 0, screenshotsOnFails: true })
-                .catch(function (errs) {
-                    expect(assertionHelper.isScreenshotDirExists()).eql(false);
-                    assertionHelper.errorInEachBrowserNotContains(errs, SCREENSHOT_PATH_MESSAGE_TEXT, 0);
-                    expect(testReport.warnings).eql([
-                        'Was unable to take screenshots because the screenshot directory is not specified. To specify it, ' +
-                        'use the "-s" or "--screenshots" command line option or the "screenshots" method of the ' +
-                        'test runner in case you are using API.'
-                    ]);
+                .catch(function () {
+                    expect(assertionHelper.checkScreenshotsCreated({ baseDir: 'screenshots', forError: true })).eql(true);
+
+                    return assertionHelper.removeScreenshotDir('screenshots');
                 });
         });
 

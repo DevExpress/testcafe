@@ -117,7 +117,6 @@ export default class TestCafeConfiguration extends Configuration {
     private async _normalizeOptionsAfterLoad (): Promise<void> {
         await this._prepareSslOptions();
         this._prepareFilterFn();
-        this._ensureScreenshotPath();
         this._ensureArrayOption(OPTION_NAMES.src);
         this._ensureArrayOption(OPTION_NAMES.browsers);
         this._ensureArrayOption(OPTION_NAMES.clientScripts);
@@ -143,9 +142,10 @@ export default class TestCafeConfiguration extends Configuration {
 
     private _ensureScreenshotPath (): void {
         const path        = resolvePathRelativelyCwd(DEFAULT_SCREENSHOTS_DIRECTORY);
-        const screenshots = this._ensureOption(OPTION_NAMES.screenshots, {}, OptionSource.Configuration);
+        const screenshots = this._ensureOption(OPTION_NAMES.screenshots, {}, OptionSource.Configuration).value as Dictionary<string>;
 
-        this.mergeDeep(screenshots, { path }, false);
+        if (!screenshots.path)
+            screenshots.path = path;
     }
 
     private _prepareReporters (): void {
@@ -175,6 +175,8 @@ export default class TestCafeConfiguration extends Configuration {
         this._ensureOptionWithValue(OPTION_NAMES.speed, DEFAULT_SPEED_VALUE, OptionSource.Configuration);
         this._ensureOptionWithValue(OPTION_NAMES.appInitDelay, DEFAULT_APP_INIT_DELAY, OptionSource.Configuration);
         this._ensureOptionWithValue(OPTION_NAMES.concurrency, DEFAULT_CONCURRENCY_VALUE, OptionSource.Configuration);
+
+        this._ensureScreenshotPath();
     }
 
     public static get FILENAME (): string {

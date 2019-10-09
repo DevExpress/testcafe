@@ -264,7 +264,11 @@ describe('Runner', () => {
                 .run();
         });
 
-        it('Should throw an error if the screenshot path pattern is specified without a base screenshot path', () => {
+        it('Should allow to specify path pattern without a base screenshot path', () => {
+            runner._createRunnableConfiguration = () => {
+                throw new Error('stop executing runner.');
+            };
+
             return runner
                 .browsers(connection)
                 .screenshots(void 0, true, '${DATE}')
@@ -274,7 +278,10 @@ describe('Runner', () => {
                     throw new Error('Promise rejection expected');
                 })
                 .catch(err => {
-                    expect(err.message).eql('Unable to set the screenshot path pattern when screenshots are disabled. Specify the base path where screenshots are stored to enable them.');
+                    expect(err.message).eql('stop executing runner.');
+
+                    expect(runner.configuration.getOption('screenshots').path).eql(path.resolve(process.cwd(), 'screenshots'));
+                    expect(runner.configuration.getOption('screenshots').pathPattern).eql('${DATE}');
                 });
         });
 
@@ -338,6 +345,21 @@ describe('Runner', () => {
                 path:        'path2',
                 pathPattern: 'pattern2'
             });
+        });
+
+        it('Should use default `screenshots.path` if is not set', () => {
+            runner._createRunnableConfiguration = () => {
+                throw new Error('stop executing runner.');
+            };
+
+            return runner
+                .browsers(connection)
+                .src('test/server/data/test-suites/basic/testfile1.js')
+                .run()
+                .catch(err => {
+                    expect(err.message).eql('stop executing runner.');
+                    expect(runner.configuration.getOption('screenshots').path).eql(path.resolve(process.cwd(), 'screenshots'));
+                });
         });
     });
 

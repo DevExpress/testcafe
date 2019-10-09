@@ -246,9 +246,6 @@ export default class Runner extends EventEmitter {
 
         if (screenshotPathPattern)
             this._validateScreenshotPath(screenshotPathPattern, 'screenshots path pattern');
-
-        if (!screenshotPath && screenshotPathPattern)
-            throw new GeneralError(RUNTIME_ERRORS.cannotUseScreenshotPathPatternWithoutBaseScreenshotPathSpecified);
     }
 
     async _validateVideoOptions () {

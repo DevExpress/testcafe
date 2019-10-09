@@ -1,5 +1,4 @@
 export default {
-    screenshotsPathNotSpecified:             'Was unable to take screenshots because the screenshot directory is not specified. To specify it, use the "-s" or "--screenshots" command line option or the "screenshots" method of the test runner in case you are using API.',
     screenshotError:                         'Was unable to take a screenshot due to an error.\n\n{errMessage}',
     screenshotMarkNotFound:                  'Unable to locate the page area in the browser window screenshot at {screenshotPath}, because the page area mark with ID {markId} is not found in the screenshot.',
     screenshotsFullPageNotSupported:         'TestCafe does not support full-page screenshots in {browserAlias}.',
