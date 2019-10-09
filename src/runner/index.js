@@ -3,7 +3,7 @@ import debug from 'debug';
 import promisifyEvent from 'promisify-event';
 import mapReverse from 'map-reverse';
 import { EventEmitter } from 'events';
-import { flattenDeep as flatten, pull as remove } from 'lodash';
+import { flattenDeep as flatten, pull as remove, isFunction } from 'lodash';
 import Bootstrapper from './bootstrapper';
 import Reporter from '../reporter';
 import Task from './task';
@@ -188,7 +188,7 @@ export default class Runner extends EventEmitter {
         const debugLogger = this.configuration.getOption(OPTION_NAMES.debugLogger);
 
         const debugLoggerDefinedCorrectly = debugLogger &&
-            ['showBreakpoint', 'hideBreakpoint'].every(method => method in debugLogger && debugLogger[method] instanceof Function);
+            ['showBreakpoint', 'hideBreakpoint'].every(method => method in debugLogger && isFunction(debugLogger[method]));
 
         if (debugLogger === void 0 || !debugLoggerDefinedCorrectly) {
             this.configuration.mergeOptions({
