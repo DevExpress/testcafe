@@ -137,7 +137,7 @@ You can disable screenshots with a command line, API or configuration file optio
     runner.run({ disableScreenshots: true });
     ```
 
-* the [disableScreenshots](https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#disableScreenshots) configuration file property
+* the [disableScreenshots](https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#disablescreenshots) configuration file property
 
     ```json
     {
