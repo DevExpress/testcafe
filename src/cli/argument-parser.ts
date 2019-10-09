@@ -1,3 +1,4 @@
+import { has } from 'lodash';
 import { Command } from 'commander';
 import dedent from 'dedent';
 import { readSync as read } from 'read-file-relative';
@@ -6,8 +7,9 @@ import { RUNTIME_ERRORS } from '../errors/types';
 import { assertType, is } from '../errors/runtime/type-assertions';
 import getViewPortWidth from '../utils/get-viewport-width';
 import { wordWrap, splitQuotedText } from '../utils/string';
-import { getSSLOptions, getVideoOptions, getMetaOptions, getGrepOptions } from '../utils/get-options';
+import { getSSLOptions, getScreenshotOptions, getVideoOptions, getMetaOptions, getGrepOptions } from '../utils/get-options';
 import getFilterFn from '../utils/get-filter-fn';
+import SCREENSHOT_OPTION_NAMES from '../configuration/screenshot-option-names';
 import RUN_OPTION_NAMES from '../configuration/run-option-names';
 import { Dictionary, ReporterOption, RunnerRunOptions } from '../configuration/interfaces';
 
@@ -47,6 +49,9 @@ interface CommandLineOptions {
     providerName?: string;
     ssl?: string | Dictionary<string | number | boolean >;
     reporter?: string | ReporterOption[];
+    screenshots?: Dictionary<string | number | boolean> | string;
+    screenshotPathPattern?: string;
+    screenshotsOnFails?: boolean;
     videoOptions?: string | Dictionary<number | string | boolean>;
     videoEncodingOptions?: string | Dictionary<number | string | boolean>;
 }
@@ -89,7 +94,7 @@ export default class CLIArgumentParser {
 
             .option('-b, --list-browsers [provider]', 'output the aliases for local browsers or browsers available through the specified browser provider')
             .option('-r, --reporter <name[:outputFile][,...]>', 'specify the reporters and optionally files where reports are saved')
-            .option('-s, --screenshots <path>', 'enable screenshot capturing and specify the path to save the screenshots to')
+            .option('-s, --screenshots <option=value[,...]>', 'specify screenshot options')
             .option('-S, --screenshots-on-fails', 'take a screenshot whenever a test fails')
             .option('-p, --screenshot-path-pattern <pattern>', 'use patterns to compose screenshot file names and paths: ${BROWSER}, ${BROWSER_VERSION}, ${OS}, etc.')
             .option('-q, --quarantine-mode', 'enable the quarantine mode')
@@ -126,7 +131,6 @@ export default class CLIArgumentParser {
             .option('--ts-config-path <path>', 'use a custom TypeScript configuration file and specify its location')
             .option('--cs, --client-scripts <paths>', 'inject scripts into tested pages', this._parseList, [])
             .option('--disable-page-caching', 'disable page caching during test execution')
-            .option('--screenshots-full-page', 'enable full-page screenshots')
 
             // NOTE: these options will be handled by chalk internally
             .option('--color', 'force colors in command line')
@@ -252,6 +256,19 @@ export default class CLIArgumentParser {
         this.opts.src = this.program.args.slice(1);
     }
 
+    private async _parseScreenshotOptions (): Promise<void> {
+        if (this.opts.screenshots)
+            this.opts.screenshots = await getScreenshotOptions(this.opts.screenshots);
+        else
+            this.opts.screenshots = {};
+
+        if (!has(this.opts.screenshots, SCREENSHOT_OPTION_NAMES.pathPattern) && this.opts.screenshotPathPattern)
+            this.opts.screenshots[SCREENSHOT_OPTION_NAMES.pathPattern] = this.opts.screenshotPathPattern;
+
+        if (!has(this.opts.screenshots, SCREENSHOT_OPTION_NAMES.takeOnFails) && this.opts.screenshotsOnFails)
+            this.opts.screenshots[SCREENSHOT_OPTION_NAMES.takeOnFails] = this.opts.screenshotsOnFails;
+    }
+
     private async _parseVideoOptions (): Promise<void> {
         if (this.opts.videoOptions)
             this.opts.videoOptions = await getVideoOptions(this.opts.videoOptions as string);
@@ -296,6 +313,7 @@ export default class CLIArgumentParser {
         this._parseFileList();
 
         await this._parseFilteringOptions();
+        await this._parseScreenshotOptions();
         await this._parseVideoOptions();
         await this._parseSslOptions();
         await this._parseReporters();

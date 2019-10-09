@@ -529,6 +529,35 @@ describe('CLI argument parser', function () {
         });
     });
 
+    describe('Screenshot options', () => {
+        it('Should parse screenshot options', async () => {
+            const parser = await parse('--screenshots path=/a/b/c,fullPage=true,takeOnFails=true,pathPattern=${TEST}.png');
+
+            expect(parser.opts.screenshots.takeOnFails).to.be.ok;
+            expect(parser.opts.screenshots.path).equal('/a/b/c');
+            expect(parser.opts.screenshots.fullPage).to.be.ok;
+            expect(parser.opts.screenshots.pathPattern).equal('${TEST}.png');
+        });
+
+        it('Should understand legacy keys', async () => {
+            const parser = await parse('--screenshots-on-fails --screenshots /a/b/c --screenshot-path-pattern ${TEST}.png');
+
+            expect(parser.opts.screenshots.takeOnFails).to.be.ok;
+            expect(parser.opts.screenshots.path).equal('/a/b/c');
+            expect(parser.opts.screenshots.fullPage).to.be.undefined;
+            expect(parser.opts.screenshots.pathPattern).equal('${TEST}.png');
+        });
+
+        it('Should prioritize over legacy keys', async () => {
+            const parser = await parse('--screenshots path=/a/b/c,takeOnFails=false,pathPattern=${TEST}.png --screenshots-on-fails --screenshot-path-pattern not${TEST}.png');
+
+            expect(parser.opts.screenshots.takeOnFails).to.be.false;
+            expect(parser.opts.screenshots.path).equal('/a/b/c');
+            expect(parser.opts.screenshots.fullPage).to.be.undefined;
+            expect(parser.opts.screenshots.pathPattern).equal('${TEST}.png');
+        });
+    });
+
     it('Client scripts', () => {
         return parse('--client-scripts asserts/jquery.js,mockDate.js')
             .then(parser => {
@@ -560,8 +589,10 @@ describe('CLI argument parser', function () {
                 expect(parser.opts.reporter[0].name).eql('list');
                 expect(parser.opts.hostname).eql('myhost');
                 expect(parser.opts.app).eql('run-app');
-                expect(parser.opts.screenshots).to.be.undefined;
-                expect(parser.opts.screenshotsOnFails).to.be.ok;
+                expect(parser.opts.screenshots.takeOnFails).to.be.ok;
+                expect(parser.opts.screenshots.path).to.be.undefined;
+                expect(parser.opts.screenshots.fullPage).to.be.undefined;
+                expect(parser.opts.screenshots.pathPattern).to.be.undefined;
                 expect(parser.opts.quarantineMode).to.be.ok;
                 expect(parser.opts.skipJsErrors).to.be.ok;
                 expect(parser.opts.disablePageReloads).to.be.ok;
@@ -620,7 +651,6 @@ describe('CLI argument parser', function () {
             { long: '--video-encoding-options' },
             { long: '--ts-config-path' },
             { long: '--client-scripts', short: '--cs' },
-            { long: '--screenshots-full-page' },
             { long: '--disable-page-caching' }
         ];
 
