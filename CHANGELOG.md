@@ -119,6 +119,32 @@ runner.screenshots({
 });
 ```
 
+#### :gear: New Option to Disable Screenshots
+
+We have added an option that allows you to disable taking screenshots. If this option is specified, TestCafe does not take screenshots when a test fails and when the [t.takeScreenshot](https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-the-entire-page) or [t.takeElementScreenshot](https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-a-page-element) action is executed.
+
+You can disable screenshots with a command line, API or configuration file option:
+
+* the [--disable-screenshots](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--disable-screenshots) command line flag
+
+    ```sh
+    testcafe chrome my-tests --disable-screenshots
+    ```
+
+* the `disableScreenshots` option in the [runner.run](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#run) method
+
+    ```js
+    runner.run({ disableScreenshots: true });
+    ```
+
+* the [disableScreenshots](https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#disableScreenshots) configuration file property
+
+    ```json
+    {
+        "disableScreenshots": true
+    }
+    ```
+
 ### Bug Fixes
 
 * Fixed an error thrown when you pass the `-b` command line flag ([#4294](https://github.com/DevExpress/testcafe/issues/4294))
@@ -126,7 +152,7 @@ runner.screenshots({
 * You can now start tests from TypeScript code executed with `ts-node` ([#4276](https://github.com/DevExpress/testcafe/issues/4276))
 * Fixed TypeScript definitions for client script injection API ([PR #4272](https://github.com/DevExpress/testcafe/pull/4272))
 * Fixed TypeScript definitions for `disablePageCaching` ([PR #4274](https://github.com/DevExpress/testcafe/pull/4274))
-* Fixed a bug when anchor links did not navigate to their target destinations ([testcafe-hammerhead#2080](https://github.com/DevExpress/testcafe-hammerhead/issues/2080))
+* Fixed a bug when anchor links did not navigate to their target destinations ([testcafe-hammerhead/#2080](https://github.com/DevExpress/testcafe-hammerhead/issues/2080))
 
 ## v1.5.0 (2019-9-12)
 
