@@ -84,27 +84,21 @@ describe('[API] t.takeScreenshot()', function () {
                 });
         });
 
-        it('Should create warning if screenshotPath is not specified', function () {
+        it('Should save screenshots to default dir if screenshotPath is not specified', function () {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot')
                 .then(function () {
-                    expect(assertionHelper.isScreenshotDirExists()).eql(false);
-                    expect(testReport.warnings).eql([
-                        'Was unable to take screenshots because the screenshot directory is not specified. To specify it, ' +
-                        'use the "-s" or "--screenshots" command line option or the "screenshots" method of the ' +
-                        'test runner in case you are using API.'
-                    ]);
+                    expect(assertionHelper.checkScreenshotsCreated({ baseDir: 'screenshots', screenshotsCount: 4 })).eql(true);
+
+                    return assertionHelper.removeScreenshotDir('screenshots');
                 });
         });
 
-        it('Should create warning if screenshotPath is not specified even if a custom path is specified', function () {
+        it('Should save screenshots to default dir with custom path specified', function () {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot with a custom path (OS separator)')
                 .then(function () {
-                    expect(assertionHelper.isScreenshotDirExists()).eql(false);
-                    expect(testReport.warnings).eql([
-                        'Was unable to take screenshots because the screenshot directory is not specified. To specify it, ' +
-                        'use the "-s" or "--screenshots" command line option or the "screenshots" method of the ' +
-                        'test runner in case you are using API.'
-                    ]);
+                    expect(assertionHelper.checkScreenshotsCreated({ baseDir: 'screenshots', customPath: 'custom' })).eql(true);
+
+                    return assertionHelper.removeScreenshotDir('screenshots');
                 });
         });
 
@@ -282,15 +276,12 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
-        it('Should create warning if screenshotPath is not specified even if a custom path is specified', function () {
+        it('Should save screenshots to default dir with custom path specified', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Element')
                 .then(function () {
-                    expect(assertionHelper.isScreenshotDirExists()).eql(false);
-                    expect(testReport.warnings).eql([
-                        'Was unable to take screenshots because the screenshot directory is not specified. To specify it, ' +
-                        'use the "-s" or "--screenshots" command line option or the "screenshots" method of the ' +
-                        'test runner in case you are using API.'
-                    ]);
+                    expect(assertionHelper.checkScreenshotsCreated({ baseDir: 'screenshots', customPath: 'custom' })).eql(true);
+
+                    return assertionHelper.removeScreenshotDir('screenshots');
                 });
         });
 

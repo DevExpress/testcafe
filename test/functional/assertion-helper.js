@@ -235,19 +235,21 @@ exports.isScreenshotDirExists = function () {
     return isDirExists(SCREENSHOTS_PATH);
 };
 
-exports.checkScreenshotsCreated = function ({ forError, customPath, screenshotsCount, runDirCount, browsersCount }) {
+exports.checkScreenshotsCreated = function ({ forError, customPath, screenshotsCount, runDirCount, browsersCount, baseDir }) {
     const expectedSubDirCount     = browsersCount || config.browsers.length;
     const expectedScreenshotCount = screenshotsCount || 2;
 
-    if (!isDirExists(SCREENSHOTS_PATH))
+    baseDir = baseDir || SCREENSHOTS_PATH;
+
+    if (!isDirExists(baseDir))
         return false;
 
-    const taskDirs = fs.readdirSync(SCREENSHOTS_PATH);
+    const taskDirs = fs.readdirSync(baseDir);
 
     if (!taskDirs || !taskDirs[0] || taskDirs.length !== 1)
         return false;
 
-    const taskDirPath = path.join(SCREENSHOTS_PATH, taskDirs[0]);
+    const taskDirPath = path.join(baseDir, taskDirs[0]);
 
     if (customPath) {
         const customDirExists = taskDirPath.includes(customPath);
@@ -335,7 +337,7 @@ function removeDir (dirPath) {
     return Promise.resolve();
 }
 
-exports.removeScreenshotDir = () => removeDir(SCREENSHOTS_PATH);
+exports.removeScreenshotDir = (dir = SCREENSHOTS_PATH) => removeDir(dir);
 
 exports.removeVideosDir = () => removeDir(VIDEOS_PATH);
 
