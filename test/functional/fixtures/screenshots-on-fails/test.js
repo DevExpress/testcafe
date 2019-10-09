@@ -112,7 +112,7 @@ describe('Screenshots on fails', function () {
 
         it('Should create warning if screenshots are disabled', function () {
             return runTests('./testcafe-fixtures/screenshots-on-fails.js', 'Screenshot on the ensureElement method fail', { disableScreenshots: true })
-                .then(function () {
+                .catch(function (errs) {
                     expect(assertionHelper.isScreenshotDirExists()).eql(false);
                     assertionHelper.errorInEachBrowserNotContains(errs, SCREENSHOT_PATH_MESSAGE_TEXT, 0);
                     expect(testReport.warnings).eql([
