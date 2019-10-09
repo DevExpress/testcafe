@@ -272,7 +272,8 @@ TestCafe developers and community members made these plugins:
 
 * **IDE Plugins**<br/>
   Run tests and view results from your favorite IDE.
-  * [Visual Studio Code](https://github.com/romanresh/vscode-testcafe) (by [@romanresh](https://github.com/romanresh))
+  * [TestCafe Test Runner](https://github.com/romanresh/vscode-testcafe) for Visual Studio Code (by [@romanresh](https://github.com/romanresh))
+  * [TestLatte](https://github.com/Selminha/testlatte) for Visual Studio Code (by [@Selminha](https://github.com/Selminha))
   * [Code snippets for TestCafe](https://github.com/hdorgeval/testcafe-snippets) (by [@hdorgeval](https://github.com/hdorgeval))
   * [SublimeText](https://github.com/churkin/testcafe-sublimetext) (by [@churkin](https://github.com/churkin))
 
