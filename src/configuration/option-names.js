@@ -36,5 +36,6 @@ export default {
     port1:                  'port1',
     port2:                  'port2',
     developmentMode:        'developmentMode',
-    disablePageCaching:     'disablePageCaching'
+    disablePageCaching:     'disablePageCaching',
+    debugLogger:            'debugLogger'
 };

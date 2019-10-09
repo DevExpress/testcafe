@@ -6,6 +6,7 @@ const TestRun        = require('../../lib/test-run/index');
 const TestController = require('../../lib/api/test-controller');
 const COMMAND_TYPE   = require('../../lib/test-run/commands/type');
 const markerSymbol   = require('../../lib/test-run/marker-symbol');
+const debugLogger    = require('../../lib/notifications/debug-logger');
 
 const assertTestRunError = require('./helpers/assert-test-run-error');
 
@@ -19,6 +20,7 @@ function createTestRunMock () {
         this.controller      = new TestController(this);
         this.driverTaskQueue = [];
         this.emit            = noop;
+        this.debugLogger     = debugLogger;
 
         this[markerSymbol] = true;
 
