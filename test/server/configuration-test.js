@@ -9,7 +9,6 @@ const TestCafeConfiguration                   = require('../../lib/configuration
 const TypeScriptConfiguration                 = require('../../lib/configuration/typescript-configuration');
 const { DEFAULT_TYPESCRIPT_COMPILER_OPTIONS } = require('../../lib/configuration/default-values');
 const consoleWrapper                          = require('./helpers/console-wrapper');
-const Task                                    = require('../../lib/runner/task');
 
 const tsConfigPath           = 'tsconfig.json';
 const customTSConfigFilePath = 'custom-config.json';
