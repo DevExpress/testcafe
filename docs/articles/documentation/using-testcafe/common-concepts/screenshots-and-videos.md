@@ -11,6 +11,8 @@ TestCafe allows you to take screenshots of the tested webpage and record videos 
   * [Prerequisites for Screenshots](#prerequisites-for-screenshots)
   * [Take Screenshots at Arbitrary Moments During Test Run](#take-screenshots-at-arbitrary-moments-during-test-run)
   * [Take Screenshots When a Test Fails](#take-screenshots-when-a-test-fails)
+  * [Screenshot Options](#screenshot-options)
+  * [Disable Screenshots](#disable-screenshots)
 * [Record Videos](#record-videos)
   * [Prerequisites for Video Recording](#prerequisites-for-video-recording)
   * [Enable Video Recording](#enable-video-recording)
@@ -121,6 +123,32 @@ You can specify screenshot options in either of the following ways:
             "fullPage": true,
             "pathPattern": "${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png"
         }
+    }
+    ```
+
+### Disable Screenshots
+
+You can prevent TestCafe from taking screenshots whenever a test fails or a [screenshot action](../../test-api/actions/take-screenshot.md) is executed. Use one of the following options:
+
+* the [--disable-screenshots](../command-line-interface.md#--disable-screenshots) command line flag,
+
+    ```sh
+    testcafe chrome tests/sample-fixture.js --disable-screenshots
+    ```
+
+* the `disableScreenshots` option of the [runner.run](../programming-interface/runner.md#run) API method,
+
+    ```js
+    runner.run({
+        disableScreenshots: true
+    });
+    ```
+
+* the [disableScreenshots](../configuration-file.md#disablescreenshots) configuration file property.
+
+    ```json
+    {
+        "disableScreenshots": true
     }
     ```
 

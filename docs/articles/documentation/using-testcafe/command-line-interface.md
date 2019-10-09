@@ -29,6 +29,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
     * [takeOnFails](#takeonfails)
     * [pathPattern](#pathpattern)
     * [fullPage](#fullpage)
+  * [--disable-screenshots](#--disable-screenshots)
   * [-s \<path\>, --screenshots \<path\>](#-s-path---screenshots-path) *(obsolete)*
   * [-S, --screenshots-on-fails](#-s---screenshots-on-fails) *(obsolete)*
   * [-p \<pattern\>, --screenshot-path-pattern \<pattern\>](#-p-pattern---screenshot-path-pattern-pattern) *(obsolete)*
@@ -371,6 +372,18 @@ testcafe all tests/sample-fixture.js -s fullPage=true
 
 *Related configuration file property*: [screenshots.fullPage](configuration-file.md#screenshotsfullpage).
 
+### --disable-screenshots
+
+Prevents TestCafe from taking screenshots.
+
+```sh
+testcafe all tests/sample-fixture.js --disable-screenshots
+```
+
+When this option is specified, screenshots are not taken whenever a test fails or a [screenshot action](../test-api/actions/take-screenshot.md) is executed.
+
+*Related configuration file property*: [disableScreenshots](configuration-file.md#disablescreenshots).
+
 ### -s \<path\>, --screenshots \<path\>
 
 **Obsolete.** Enables screenshots and specifies the base directory where they are saved.
@@ -381,12 +394,18 @@ testcafe all tests/sample-fixture.js -s screenshots
 
 This option will be deprecated in the future versions.
 
-In **v1.5.0** and newer, screenshots are always enabled. The default directory is *./screenshots*.
+In **v1.5.0** and newer, screenshots are enabled by default and saved to *./screenshots*.
 
-To specify a different path, use the [path](#path) parameter:
+To specify a different location, pass the [path](#path) parameter:
 
 ```sh
 testcafe all tests/sample-fixture.js -s path=screenshots
+```
+
+Use the [--disable-screenshots](#--disable-screenshots) option to prevent TestCafe from taking screenshots:
+
+```sh
+testcafe all tests/sample-fixture.js --disable-screenshots
 ```
 
 ### -S, --screenshots-on-fails

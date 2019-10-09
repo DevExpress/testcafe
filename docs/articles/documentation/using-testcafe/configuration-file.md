@@ -21,6 +21,7 @@ A configuration file can include the following settings:
   * [takeOnFails](#screenshotstakeonfails)
   * [pathPattern](#screenshotspathpattern)
   * [fullPage](#screenshotsfullpage)
+* [disableScreenshots](#disablescreenshots)
 * [screenshotPath](#screenshotpath) *(obsolete)*
 * [takeScreenshotsOnFails](#takescreenshotsonfails) *(obsolete)*
 * [screenshotPathPattern](#screenshotpathpattern) *(obsolete)*
@@ -278,6 +279,21 @@ Specifies that the full page should be captured, including content that is not v
 *CLI*: [--screenshots fullPage](command-line-interface.md#fullpage)  
 *API*: [runner.screenshots](programming-interface/runner.md#screenshots)
 
+## disableScreenshots
+
+Prevents TestCafe from taking screenshots.
+
+```json
+{
+    "disableScreenshots": true
+}
+```
+
+When this property is specified, screenshots are not taken whenever a test fails or a [screenshot action](../test-api/actions/take-screenshot.md) is executed.
+
+*CLI*: [--disable-screenshots](command-line-interface.md#--disable-screenshots)  
+*API*: [runner.run({ disableScreenshots })](programming-interface/runner.md#run)
+
 ## screenshotPath
 
 **Obsolete.** Enables screenshots and specifies the base directory where they are saved.
@@ -290,15 +306,23 @@ Specifies that the full page should be captured, including content that is not v
 
 This property will be deprecated in the future versions.
 
-In **v1.5.0** and newer, screenshots are always enabled. The default directory is *./screenshots*.
+In **v1.5.0** and newer, screenshots are enabled by default and saved to *./screenshots*.
 
-To specify a different path, use the [screenshots.path](#screenshotspath) property:
+To save them to a different location, specify the [screenshots.path](#screenshotspath) property:
 
 ```json
 {
     "screenshots": {
         "path": "/home/user/tests/screenshots/"
     }
+}
+```
+
+Use the [disableScreenshots](#disablescreenshots) property to prevent TestCafe from taking screenshots:
+
+```json
+{
+    "disableScreenshots": true
 }
 ```
 
