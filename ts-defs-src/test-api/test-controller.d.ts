@@ -45,21 +45,37 @@ interface BrowserConsoleMessages {
 
 interface BrowserInfo {
     /**
-     * The alias of the browser.
-     */
-    alias: string,
-    /**
      * The name of the browser.
      */
-    browserName: string,
+    name: string,
     /**
-     * The user agent of the browser.
+     * The version of the browser.
      */
-    userAgent: string,
+    version: string,
     /**
-     * The provider name of the browser.
+     * The platform of the browser.
      */
-    providerName: string
+    platform: string,
+    /**
+     * Indicates the headless browser mode.
+     */
+    headless: string,
+    /**
+     * The operating system information.
+     */
+    os: { name: string, version: string },
+    /**
+     * The engine information.
+     */
+    engine: { name: string, version: string },
+    /**
+     * The full user agent of the browser.
+     */
+    fullUserAgent: string,
+    /**
+     * The compact user agent ("Browser / OS")
+     */
+    userAgent: string
 }
 
 interface TestController {
@@ -71,6 +87,10 @@ interface TestController {
      * Dictionary that is shared between `fixture.before` and `fixture.after`, test hook functions and test code.
      */
     readonly fixtureCtx: {[key: string]: any};
+    /**
+     * Returns an object that contains browser information.
+     */
+    readonly browser: BrowserInfo;
     /**
      * Clicks a webpage element.
      *
@@ -290,10 +310,6 @@ interface TestController {
      * Returns an object that contains messages output to the browser console.
      */
     getBrowserConsoleMessages(): Promise<BrowserConsoleMessages>;
-    /**
-     * Returns an object that contains browser information.
-     */
-    getBrowserInfo(): Promise<BrowserInfo>;
     /**
      * Starts an assertion chain and specifies assertion actual value.
      *

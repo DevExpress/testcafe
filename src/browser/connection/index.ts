@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
 import Mustache from 'mustache';
 import { pull as remove } from 'lodash';
-import { parse as parseUserAgent } from 'useragent';
+import Bowser from 'bowser';
 import { readSync as read } from 'read-file-relative';
 import promisifyEvent from 'promisify-event';
 import nanoid from 'nanoid';
@@ -259,6 +259,35 @@ export default class BrowserConnection extends EventEmitter {
         this.disconnectionPromise.reject  = rejectFn as unknown as Function;
     }
 
+    _prepareBrowserInfo (userAgent) {
+        const parsedUserAgent = Bowser.parse(userAgent);
+
+        const headless = this.browserInfo.alias.indexOf(':headless') !== -1;
+
+        this.browserInfo.fullUserAgent   = userAgent;
+        this.browserInfo.parsedUserAgent = {
+            name:     parsedUserAgent.browser.name,
+            version:  parsedUserAgent.browser.version,
+            platform: parsedUserAgent.platform.type,
+            headless,
+            os:       {
+                name:    parsedUserAgent.os.name,
+                // NOTE: we use the more readable 'versionName' value in the case of Windows.
+                // Windows 8.1: os.version: "NT 6.3", os.versionName: "8.1" (GH-481).
+                version: parsedUserAgent.os.name.toLowerCase() === 'windows' ? parsedUserAgent.os.versionName : parsedUserAgent.os.version
+            },
+            engine: parsedUserAgent.engine
+        };
+
+        const compactUserAgent = parsedUserAgent.browser.name + ' ' + parsedUserAgent.browser.version +
+            (parsedUserAgent.os.name ? ' / ' + parsedUserAgent.os.name + ' ' + this.browserInfo.parsedUserAgent.os.version : '');
+
+        this.browserInfo.parsedUserAgent.userAgent     = compactUserAgent;
+        this.browserInfo.parsedUserAgent.fullUserAgent = userAgent;
+
+        this.browserInfo.userAgent = compactUserAgent;
+    }
+
     public async processDisconnection (disconnectionThresholdExceedeed: boolean): Promise<void> {
         const { resolve, reject } = this.disconnectionPromise as DisconnectionPromise<void>;
 
@@ -330,12 +359,7 @@ export default class BrowserConnection extends EventEmitter {
     public establish (userAgent: string): void {
         this.ready = true;
 
-        const parsedUserAgent = parseUserAgent(userAgent);
-
-        this.browserInfo.userAgent       = parsedUserAgent.toString();
-        this.browserInfo.fullUserAgent   = userAgent;
-        this.browserInfo.parsedUserAgent = parsedUserAgent;
-
+        this._prepareBrowserInfo(userAgent);
         this._waitForHeartbeat();
         this.emit('ready');
     }

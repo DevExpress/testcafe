@@ -424,10 +424,6 @@ export default class Driver {
         this._onReady(new DriverStatus({ isCommandResult: true }));
     }
 
-    _onGetBrowserInfoCommand () {
-        this._onReady(new DriverStatus({ isCommandResult: true }));
-    }
-
     _onNavigateToCommand (command) {
         this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, true);
 
@@ -619,9 +615,6 @@ export default class Driver {
 
         else if (command.type === COMMAND_TYPE.getBrowserConsoleMessages)
             this._onGetBrowserConsoleMessagesCommand(command);
-
-        else if (command.type === COMMAND_TYPE.getBrowserInfo)
-            this._onGetBrowserInfoCommand(command);
 
         else if (command.type === COMMAND_TYPE.setTestSpeed)
             this._onSetTestSpeedCommand(command);

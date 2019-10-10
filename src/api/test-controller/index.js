@@ -28,8 +28,7 @@ import {
     GetBrowserConsoleMessagesCommand,
     SetTestSpeedCommand,
     SetPageLoadTimeoutCommand,
-    UseRoleCommand,
-    GetBrowserInfoCommand
+    UseRoleCommand
 } from '../../test-run/commands/actions';
 
 import {
@@ -145,6 +144,10 @@ export default class TestController {
 
     _fixtureCtx$getter () {
         return this.testRun.fixtureCtx;
+    }
+
+    _browser$getter () {
+        return this.testRun.browserConnection.browserInfo.parsedUserAgent;
     }
 
     _click$ (selector, options) {
@@ -328,12 +331,6 @@ export default class TestController {
 
             hooks.forEach(hook => this.testRun.removeRequestHook(hook));
         });
-    }
-
-    _getBrowserInfo$ () {
-        const callsite = getCallsiteForMethod('getBrowserInfo');
-
-        return this.testRun.executeCommand(new GetBrowserInfoCommand(), callsite);
     }
 }
 
