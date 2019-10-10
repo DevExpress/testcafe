@@ -110,7 +110,14 @@ export default class TestController {
                 throw err;
             }
 
-            return () => this.testRun.executeCommand(command, callsite);
+            return () => {
+                return this.testRun.executeCommand(command, callsite)
+                    .catch(err => {
+                        this.executionChain = Promise.resolve();
+
+                        throw err;
+                    });
+            };
         });
     }
 
