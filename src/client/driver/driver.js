@@ -210,7 +210,7 @@ export default class Driver {
     // We have to cancel every form submit after a test is done
     // to prevent requests to a closed session
     _onFormSubmit (e) {
-        if (this.contextStorage !== null && this.contextStorage.getItem(TEST_DONE_SENT_FLAG))
+        if (this.contextStorage.getItem(TEST_DONE_SENT_FLAG))
             e.preventSubmit = true;
     }
 
