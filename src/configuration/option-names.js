@@ -37,5 +37,6 @@ export default {
     developmentMode:        'developmentMode',
     disablePageReloads:     'disablePageReloads',
     disablePageCaching:     'disablePageCaching',
-    disableScreenshots:     'disableScreenshots'
+    disableScreenshots:     'disableScreenshots',
+    debugLogger:            'debugLogger'
 };

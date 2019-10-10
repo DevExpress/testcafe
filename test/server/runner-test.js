@@ -813,6 +813,35 @@ describe('Runner', () => {
                     expect(consoleWrapper.messages.log).eql(null);
                 });
         });
+
+        it('Should use the default debugLogger if necessary', () => {
+            const defaultLogger = require('../../lib/notifications/debug-logger');
+
+            runner._validateDebugLogger();
+
+            expect(runner.configuration.getOption('debugLogger')).to.deep.equal(defaultLogger);
+
+            const customLogger = {
+                showBreakpoint: 'foo',
+                hideBreakpoint: () => {}
+            };
+
+            runner.configuration.mergeOptions({ debugLogger: customLogger });
+            runner._validateDebugLogger();
+
+            expect(runner.configuration.getOption('debugLogger')).to.deep.equal(defaultLogger);
+
+            customLogger.showBreakpoint = () => {};
+
+            runner.configuration.mergeOptions({ debugLogger: null });
+
+            expect(runner.configuration.getOption('debugLogger')).is.null;
+
+            runner.configuration.mergeOptions({ debugLogger: customLogger });
+            runner._validateDebugLogger();
+
+            expect(runner.configuration.getOption('debugLogger')).to.deep.equal(customLogger);
+        });
     });
 
     describe('.clientScripts', () => {
