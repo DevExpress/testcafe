@@ -74,14 +74,15 @@ export default class IframeDriver extends Driver {
 
     // API
     start () {
+        // TODO: refactor it to leave this in the base class only
+        this.contextStorage = new ContextStorage(window, id);
+
         this.nativeDialogsTracker = new IframeNativeDialogTracker(this.dialogHandler);
         this.statusBar            = new IframeStatusBar();
 
         const initializePromise = this.parentDriverLink
             .establishConnection()
             .then(id => {
-                this.contextStorage = new ContextStorage(window, id);
-
                 if (this._failIfClientCodeExecutionIsInterrupted())
                     return;
 
