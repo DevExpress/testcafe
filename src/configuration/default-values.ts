@@ -17,6 +17,8 @@ export const DEFAULT_APP_INIT_DELAY = 1000;
 
 export const DEFAULT_CONCURRENCY_VALUE = 1;
 
+export const DEFAULT_SOURCE_DIRECTORIES = ['tests', 'test'];
+
 export const DEFAULT_TYPESCRIPT_COMPILER_OPTIONS: Dictionary<boolean | number> = {
     experimentalDecorators:  true,
     emitDecoratorMetadata:   true,

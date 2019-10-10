@@ -80,7 +80,7 @@ export const RUNTIME_ERRORS = {
     cannotFindBrowser:                                  'E1005',
     browserProviderNotFound:                            'E1006',
     browserNotSet:                                      'E1007',
-    testSourcesNotSet:                                  'E1008',
+    testFilesNotFound:                                  'E1008',
     noTestsToRun:                                       'E1009',
     cannotFindReporterForAlias:                         'E1010',
     multipleStdoutReporters:                            'E1011',

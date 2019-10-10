@@ -14,7 +14,7 @@ export default {
     [RUNTIME_ERRORS.cannotFindBrowser]:                                  'Unable to find the browser. "{browser}" is not a browser alias or path to an executable file.',
     [RUNTIME_ERRORS.browserProviderNotFound]:                            'The specified "{providerName}" browser provider was not found.',
     [RUNTIME_ERRORS.browserNotSet]:                                      'No browser selected to test against.',
-    [RUNTIME_ERRORS.testSourcesNotSet]:                                  'No test file specified.',
+    [RUNTIME_ERRORS.testFilesNotFound]:                                  'No test files are found with the specified test file patterns or in the default test directories.',
     [RUNTIME_ERRORS.noTestsToRun]:                                       'No tests to run. Either the test files contain no tests or the filter function is too restrictive.',
     [RUNTIME_ERRORS.cannotFindReporterForAlias]:                         'The provided "{name}" reporter does not exist. Check that you have specified the report format correctly.',
     [RUNTIME_ERRORS.multipleStdoutReporters]:                            'Multiple reporters attempting to write to stdout: "{reporters}". Only one reporter can write to stdout.',

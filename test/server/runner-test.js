@@ -432,16 +432,18 @@ describe('Runner', () => {
                 .run();
         });
 
-        it('Should raise an error if the source was not set', () => {
+        it('Should use default `src` if the source was not set', () => {
+            runner._createRunnableConfiguration = () => {
+                throw new Error('stop executing runner.');
+            };
+
             return runner
                 .browsers(connection)
                 .reporter('list')
                 .run()
-                .then(() => {
-                    throw new Error('Promise rejection expected');
-                })
                 .catch(err => {
-                    expect(err.message).eql('No test file specified.');
+                    expect(err.message).eql('stop executing runner.');
+                    expect(runner.configuration.getOption('src')).eql(['tests', 'test']);
                 });
         });
 
@@ -567,7 +569,7 @@ describe('Runner', () => {
     });
 
     describe('.run()', () => {
-        it('Should not create a new remote browser connection if sources are empty', () => {
+        it('Should not create a new remote browser connection if tests are not found', () => {
             const origGenerateId   = BrowserConnection._generateId;
 
             let connectionsCount = 0;
@@ -580,7 +582,7 @@ describe('Runner', () => {
             return runner
                 .browsers(connection)
                 .reporter('list')
-                .src([])
+                .src(['non-existing-file.js'])
                 .run()
                 .then(() => {
                     BrowserConnection._generateId = origGenerateId;
@@ -590,7 +592,7 @@ describe('Runner', () => {
                 .catch(err => {
                     BrowserConnection._generateId = origGenerateId;
 
-                    expect(err.message).eql('No test file specified.');
+                    expect(err.message).eql('No test files are found with the specified test file patterns or in the default test directories.');
 
                     expect(connectionsCount).eql(0);
                 });

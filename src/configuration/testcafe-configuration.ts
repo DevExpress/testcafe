@@ -14,6 +14,7 @@ import {
     DEFAULT_CONCURRENCY_VALUE,
     DEFAULT_SPEED_VALUE,
     DEFAULT_TIMEOUT,
+    DEFAULT_SOURCE_DIRECTORIES,
     STATIC_CONTENT_CACHING_SETTINGS
 } from './default-values';
 
@@ -175,6 +176,7 @@ export default class TestCafeConfiguration extends Configuration {
         this._ensureOptionWithValue(OPTION_NAMES.speed, DEFAULT_SPEED_VALUE, OptionSource.Configuration);
         this._ensureOptionWithValue(OPTION_NAMES.appInitDelay, DEFAULT_APP_INIT_DELAY, OptionSource.Configuration);
         this._ensureOptionWithValue(OPTION_NAMES.concurrency, DEFAULT_CONCURRENCY_VALUE, OptionSource.Configuration);
+        this._ensureOptionWithValue(OPTION_NAMES.src, DEFAULT_SOURCE_DIRECTORIES, OptionSource.Configuration);
 
         this._ensureScreenshotPath();
     }
