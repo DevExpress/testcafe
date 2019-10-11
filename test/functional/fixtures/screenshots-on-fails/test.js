@@ -123,8 +123,8 @@ describe('Screenshots on fails', function () {
                     expect(assertionHelper.isScreenshotDirExists()).eql(false);
                     assertionHelper.errorInEachBrowserNotContains(errs, SCREENSHOT_PATH_MESSAGE_TEXT, 0);
                     expect(testReport.warnings).eql([
-                        'The screenshot functionality is disabled. Remove the "--disable-screenshots" command line ' +
-                        'option or the "disableScreenshots" runner and configuration option to enable it.'
+                        'Screenshots are disabled. To take screenshots, remove the "--disable-screenshots" command line flag ' +
+                        'or set the "disableScreenshots" option to "false" in the API or configuration file.'
                     ]);
                 });
         });
