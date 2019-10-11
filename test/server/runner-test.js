@@ -592,7 +592,7 @@ describe('Runner', () => {
                 .catch(err => {
                     BrowserConnection._generateId = origGenerateId;
 
-                    expect(err.message).eql('No test files are found with the specified test file patterns or in the default test directories.');
+                    expect(err.message).eql('The specified glob pattern does not match any file or the default test directories are empty.');
 
                     expect(connectionsCount).eql(0);
                 });
