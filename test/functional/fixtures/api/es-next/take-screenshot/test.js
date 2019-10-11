@@ -107,8 +107,8 @@ describe('[API] t.takeScreenshot()', function () {
                 .then(function () {
                     expect(assertionHelper.isScreenshotDirExists()).eql(false);
                     expect(testReport.warnings).eql([
-                        'The screenshot functionality is disabled. Remove the "--disable-screenshots" command line ' +
-                        'option or the "disableScreenshots" runner and configuration option to enable it.'
+                        'Screenshots are disabled. To take screenshots, remove the "--disable-screenshots" command line flag ' +
+                        'or set the "disableScreenshots" option to "false" in the API or configuration file.'
                     ]);
                 });
         });
@@ -118,8 +118,8 @@ describe('[API] t.takeScreenshot()', function () {
                 .then(function () {
                     expect(assertionHelper.isScreenshotDirExists()).eql(false);
                     expect(testReport.warnings).eql([
-                        'The screenshot functionality is disabled. Remove the "--disable-screenshots" command line ' +
-                        'option or the "disableScreenshots" runner and configuration option to enable it.'
+                        'Screenshots are disabled. To take screenshots, remove the "--disable-screenshots" command line flag ' +
+                        'or set the "disableScreenshots" option to "false" in the API or configuration file.'
                     ]);
                 });
         });
@@ -312,8 +312,8 @@ describe('[API] t.takeElementScreenshot()', function () {
                 .then(function () {
                     expect(assertionHelper.isScreenshotDirExists()).eql(false);
                     expect(testReport.warnings).eql([
-                        'The screenshot functionality is disabled. Remove the "--disable-screenshots" command line ' +
-                        'option or the "disableScreenshots" runner and configuration option to enable it.'
+                        'Screenshots are disabled. To take screenshots, remove the "--disable-screenshots" command line flag ' +
+                        'or set the "disableScreenshots" option to "false" in the API or configuration file.'
                     ]);
                 });
         });
