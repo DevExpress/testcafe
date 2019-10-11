@@ -1,6 +1,7 @@
 import { copyImagePart } from './utils';
 import limitNumber from '../utils/limit-number';
 import renderTemplate from '../utils/render-template';
+import { deleteFile } from '../utils/promisified-functions';
 import { InvalidElementScreenshotDimensionsError } from '../errors/test-run/';
 import { MARK_LENGTH, MARK_RIGHT_MARGIN, MARK_BYTES_PER_PIXEL } from './constants';
 import WARNING_MESSAGES from '../notifications/warning-message';
@@ -29,6 +30,17 @@ function getCorrectedColorPart (colorPart) {
         return WHITE_COLOR_PART;
 
     return colorPart;
+}
+
+async function validateClipInfo (clipInfo, path) {
+    const clipWidth  = clipInfo.clipRight - clipInfo.clipLeft;
+    const clipHeight = clipInfo.clipBottom - clipInfo.clipTop;
+
+    if (clipWidth <= 0 || clipHeight <= 0) {
+        await deleteFile(path);
+
+        throw new InvalidElementScreenshotDimensionsError(clipWidth, clipHeight);
+    }
 }
 
 export function calculateMarkPosition (pngImage, markSeed) {
@@ -109,12 +121,6 @@ export function calculateClipInfo (pngImage, path, markSeed, clientAreaDimension
     if (markPosition && markPosition.y === clipInfo.clipBottom)
         clipInfo.clipBottom--;
 
-    const clipWidth  = clipInfo.clipRight - clipInfo.clipLeft;
-    const clipHeight = clipInfo.clipBottom - clipInfo.clipTop;
-
-    if (clipWidth <= 0 || clipHeight <= 0)
-        throw new InvalidElementScreenshotDimensionsError(clipWidth, clipHeight);
-
     return clipInfo;
 }
 
@@ -123,6 +129,8 @@ export async function cropScreenshot (image, { path, markSeed, clientAreaDimensi
         return null;
 
     const clip = calculateClipInfo(image, path, markSeed, clientAreaDimensions, cropDimensions);
+
+    await validateClipInfo(clip, path);
 
     return copyImagePart(image, clip);
 }

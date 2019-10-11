@@ -5,7 +5,7 @@ import { isInQueue, addToQueue } from '../utils/async-queue';
 import WARNING_MESSAGE from '../notifications/warning-message';
 import escapeUserAgent from '../utils/escape-user-agent';
 import correctFilePath from '../utils/correct-file-path';
-import { readPngFile, deleteFile, stat, writePng } from '../utils/promisified-functions';
+import { readPngFile, stat, writePng } from '../utils/promisified-functions';
 
 
 export default class Capturer {
@@ -132,25 +132,17 @@ export default class Capturer {
             if (!await Capturer._isScreenshotCaptured(screenshotPath))
                 return;
 
-            try {
-                const image = await readPngFile(screenshotPath);
+            const image = await readPngFile(screenshotPath);
 
-                const croppedImage = await cropScreenshot(image, {
-                    markSeed,
-                    clientAreaDimensions,
+            const croppedImage = await cropScreenshot(image, {
+                markSeed,
+                clientAreaDimensions,
+                path:           screenshotPath,
+                cropDimensions: Capturer._getCropDimensions(cropDimensions, pageDimensions)
+            });
 
-                    path:           screenshotPath,
-                    cropDimensions: Capturer._getCropDimensions(cropDimensions, pageDimensions)
-                });
-
-                if (croppedImage)
-                    await writePng(screenshotPath, croppedImage);
-            }
-            catch (err) {
-                await deleteFile(screenshotPath);
-
-                throw err;
-            }
+            if (croppedImage)
+                await writePng(screenshotPath, croppedImage);
 
             await generateThumbnail(screenshotPath, thumbnailPath);
         });
