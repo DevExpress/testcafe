@@ -1,5 +1,5 @@
 export default {
-    screenshotsDisabled:                     'The screenshot functionality is disabled. Remove the "--disable-screenshots" command line option or the "disableScreenshots" runner and configuration option to enable it.',
+    screenshotsDisabled:                     'Screenshots are disabled. To take screenshots, remove the "--disable-screenshots" command line flag or set the "disableScreenshots" option to "false" in the API or configuration file.',
     screenshotError:                         'Was unable to take a screenshot due to an error.\n\n{errMessage}',
     screenshotMarkNotFound:                  'Unable to locate the page area in the browser window screenshot at {screenshotPath}, because the page area mark with ID {markId} is not found in the screenshot.',
     screenshotsFullPageNotSupported:         'TestCafe does not support full-page screenshots in {browserAlias}.',
