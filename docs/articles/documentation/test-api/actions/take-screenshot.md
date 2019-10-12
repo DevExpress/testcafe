@@ -6,21 +6,21 @@ checked: true
 ---
 # Take Screenshot
 
-This topic describes how to use test actions to take screenshots of the tested page.
-
-> Important! Screenshot actions are ignored if the screenshot directory is not specified with the [runner.screenshots](../../using-testcafe/programming-interface/runner.md#screenshots) API method or the [-s (--screenshots)](../../using-testcafe/command-line-interface.md#-s-path---screenshots-path) command line option.
-
-See [Screenshots](../../using-testcafe/common-concepts/screenshots-and-videos.md#screenshots) for more information about this feature.
+This topic describes test actions that take screenshots of the tested page.
 
 ## Take a Screenshot of the Entire Page
 
 ```text
-t.takeScreenshot( [path] )
+t.takeScreenshot( [options] )
+obsolete: t.takeScreenshot( [path] )
 ```
 
-Parameter           | Type   | Description
-------------------- | ------ | -----------------------------------------------------------------------------------------------------
-`path`&#160;*(optional)* | String | The screenshot file's relative path and name. The path is relative to the root directory the [runner.screenshots](../../using-testcafe/programming-interface/runner.md#screenshots) API method or the [-s (--screenshots)](../../using-testcafe/command-line-interface.md#-s-path---screenshots-path) command line option specifies. This path overrides the relative path the default or custom [path patterns](../../using-testcafe/common-concepts/screenshots-and-videos.md#where-screenshots-and-videos-are-saved) specify.
+The `options` object can include the following properties:
+
+Parameter           | Type   | Description | Default Value
+------------------- | ------ | ----------- | ----------
+`path`&#160;*(optional)* | String | The screenshot file's relative path and name. The path is relative to the root directory specified in the [runner.screenshots](../../using-testcafe/programming-interface/runner.md#screenshots) API method or the [-s (--screenshots)](../../using-testcafe/command-line-interface.md#-s---screenshots-optionvalueoption2value2) command line option. This property overrides the relative path specified with the default or custom [path patterns](../../using-testcafe/common-concepts/screenshots-and-videos.md#screenshot-and-video-directories).
+`fullPage`&#160;*(optional)* | Boolean | Specifies that the full page should be captured, including content that is not visible due to overflow. | `false`
 
 The following example shows how to use the `t.takeScreenshot` action:
 
@@ -34,9 +34,14 @@ test('Take a screenshot of a fieldset', async t => {
     await t
         .typeText('#developer-name', 'Peter Parker')
         .click('#submit-button')
-        .takeScreenshot('my-fixture/thank-you-page.png');
+        .takeScreenshot({
+            path:     'my-fixture/thank-you-page.png',
+            fullPage: true
+        });
 });
 ```
+
+See [Screenshots and Videos](../../using-testcafe/common-concepts/screenshots-and-videos.md) for more information.
 
 ## Take a Screenshot of a Page Element
 
@@ -49,7 +54,7 @@ Takes a screenshot of the specified page element.
 Parameter                | Type   | Description
 ------------------------ | ------ | -----------------------------------------------------------------------------------------------------
 `selector`               | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element whose screenshot should be taken. See [Selecting Target Elements](README.md#selecting-target-elements).
-`path`&#160;*(optional)* | String | The screenshot file's relative path and name. The path is relative to the root directory specified by using the [runner.screenshots](../../using-testcafe/programming-interface/runner.md#screenshots) API method or the [-s (--screenshots)](../../using-testcafe/command-line-interface.md#-s-path---screenshots-path) command line option. This path overrides the relative path the default or custom [path patterns](../../using-testcafe/common-concepts/screenshots-and-videos.md#where-screenshots-and-videos-are-saved) specify.
+`path`&#160;*(optional)* | String | The screenshot file's relative path and name. The path is relative to the root directory specified by using the [runner.screenshots](../../using-testcafe/programming-interface/runner.md#screenshots) API method or the [-s (--screenshots)](../../using-testcafe/command-line-interface.md#-s---screenshots-optionvalueoption2value2) command line option. This path overrides the relative path the default or custom [path patterns](../../using-testcafe/common-concepts/screenshots-and-videos.md#screenshot-and-video-directories) specify.
 `options`&#160;*(optional)*   | Object | Options that define how the screenshot is taken. See details below.
 
 ```js
@@ -109,3 +114,5 @@ test('Take a screenshot of my new avatar', async t => {
         });
 });
 ```
+
+See [Screenshots and Videos](../../using-testcafe/common-concepts/screenshots-and-videos.md) for more information.
