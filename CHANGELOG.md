@@ -1,6 +1,10 @@
 # Changelog
 
-## v1.6.0 (2019-10-7)
+## v1.6.0 (2019-10-15)
+
+### :star2: Support for macOS 10.15 Catalina
+
+This version provides compatibility with macOS 10.15. Update TestCafe to v1.6.0 if you run macOS Catalina.
 
 ### Enhancements
 
