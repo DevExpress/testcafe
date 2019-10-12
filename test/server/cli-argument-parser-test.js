@@ -638,7 +638,6 @@ describe('CLI argument parser', function () {
             { long: '--hostname' },
             { long: '--proxy' },
             { long: '--proxy-bypass' },
-            { long: '--disable-page-reloads' },
             { long: '--dev' },
             { long: '--ssl' },
             { long: '--qr-code' },
@@ -651,7 +650,9 @@ describe('CLI argument parser', function () {
             { long: '--video-encoding-options' },
             { long: '--ts-config-path' },
             { long: '--client-scripts', short: '--cs' },
-            { long: '--disable-page-caching' }
+            { long: '--disable-page-caching' },
+            { long: '--disable-page-reloads' },
+            { long: '--disable-screenshots' }
         ];
 
         const parser  = new CliArgumentParser('');
@@ -682,7 +683,8 @@ describe('CLI argument parser', function () {
             '--speed 1',
             '--stop-on-first-fail',
             '--disable-page-caching',
-            '--disable-page-reloads'
+            '--disable-page-reloads',
+            '--disable-screenshots'
         ].join(' ');
 
         return parse(argumentsString)
@@ -701,6 +703,7 @@ describe('CLI argument parser', function () {
                 expect(runOpts.stopOnFirstFail).eql(true);
                 expect(runOpts.disablePageCaching).eql(true);
                 expect(runOpts.disablePageReloads).eql(true);
+                expect(runOpts.disableScreenshots).eql(true);
                 expect(runOpts.browsers).to.be.undefined;
             });
     });

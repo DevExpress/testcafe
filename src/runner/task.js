@@ -18,8 +18,13 @@ export default class Task extends AsyncEventEmitter {
         this.tests                   = tests;
         this.opts                    = opts;
         this.proxy                   = proxy;
-        this.screenshots             = new Screenshots(this.opts.screenshots, this.opts);
         this.warningLog              = new WarningLog();
+
+        this.screenshots = new Screenshots({
+            enabled: !this.opts.disableScreenshots,
+
+            ...this.opts.screenshots
+        });
 
         this.fixtureHookController = new FixtureHookController(tests, browserConnectionGroups.length);
         this.pendingBrowserJobs    = this._createBrowserJobs(proxy, this.opts);

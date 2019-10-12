@@ -8,10 +8,10 @@ import getCommonPath from '../utils/get-common-path';
 const SCREENSHOT_EXTENSION = 'png';
 
 export default class Screenshots {
-    constructor ({ path, pathPattern, fullPage } = {}, { screenshotPathPattern }) {
-        this.enabled            = !!path;
+    constructor ({ enabled, path, pathPattern, fullPage }) {
+        this.enabled            = enabled;
         this.screenshotsPath    = path;
-        this.screenshotsPattern = pathPattern || screenshotPathPattern;
+        this.screenshotsPattern = pathPattern;
         this.fullPage           = fullPage;
         this.testEntries        = [];
         this.now                = moment();
