@@ -77,7 +77,7 @@ describe('Browser connection', function () {
             .then(function (res) {
                 expect(eventFired).to.be.true;
                 expect(connection.ready).to.be.true;
-                expect(connection.userAgent).eql('Chrome 41.0.2227 / Mac OS X 10.10.1');
+                expect(connection.userAgent).eql('Chrome 41.0.2227.1 / macOS 10.10.1');
                 expect(res.statusCode).eql(302);
                 expect(res.headers['location']).eql(connection.idleUrl);
             });
@@ -98,7 +98,7 @@ describe('Browser connection', function () {
         connection.HEARTBEAT_TIMEOUT = 0;
 
         connection.on('error', function (error) {
-            expect(error.message).eql('The Chrome 41.0.2227 / Mac OS X 10.10.1 browser disconnected. This problem may ' +
+            expect(error.message).eql('The Chrome 41.0.2227.1 / macOS 10.10.1 browser disconnected. This problem may ' +
                                       'appear when a browser hangs or is closed, or due to network issues.');
             done();
         });

@@ -73,7 +73,7 @@ interface BrowserInfo {
      */
     fullUserAgent: string,
     /**
-     * The compact user agent ("Browser / OS")
+     * The compact user agent ("Browser / OS") of the browser.
      */
     userAgent: string
 }

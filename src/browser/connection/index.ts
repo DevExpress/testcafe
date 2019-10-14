@@ -259,33 +259,43 @@ export default class BrowserConnection extends EventEmitter {
         this.disconnectionPromise.reject  = rejectFn as unknown as Function;
     }
 
-    _prepareBrowserInfo (userAgent) {
-        const parsedUserAgent = Bowser.parse(userAgent);
+    static _parseUserAgent (userAgent, alias) {
+        let parsedUserAgent;
 
-        const headless = this.browserInfo.alias.indexOf(':headless') !== -1;
+        if (!userAgent) {
+            parsedUserAgent = {
+                browser:  { name: 'Other', version: '0.0' },
+                os:       { name: 'Other', version: '0.0', versionName: '0.0' },
+                platform: { type: '' },
+                engine:   { name: 'Other', version: '0.0' }
+            };
+        }
+        else
+            parsedUserAgent = Bowser.parse(userAgent);
 
-        this.browserInfo.fullUserAgent   = userAgent;
-        this.browserInfo.parsedUserAgent = {
+
+        const headless = alias.indexOf(':headless') !== -1;
+
+        // NOTE: we use the more readable 'versionName' property in the case of Windows.
+        // Windows 8.1: os.version: "NT 6.3", os.versionName: "8.1" (GH-481).
+        const osVersion = parsedUserAgent.os.name.toLowerCase() === 'windows' ? parsedUserAgent.os.versionName : parsedUserAgent.os.version;
+
+        const compactUserAgent = parsedUserAgent.browser.name + ' ' + parsedUserAgent.browser.version +
+                                 (parsedUserAgent.os.name ? ' / ' + parsedUserAgent.os.name + ' ' + osVersion : '');
+
+        return {
             name:     parsedUserAgent.browser.name,
             version:  parsedUserAgent.browser.version,
             platform: parsedUserAgent.platform.type,
             headless,
             os:       {
                 name:    parsedUserAgent.os.name,
-                // NOTE: we use the more readable 'versionName' value in the case of Windows.
-                // Windows 8.1: os.version: "NT 6.3", os.versionName: "8.1" (GH-481).
-                version: parsedUserAgent.os.name.toLowerCase() === 'windows' ? parsedUserAgent.os.versionName : parsedUserAgent.os.version
+                version: osVersion
             },
-            engine: parsedUserAgent.engine
+            engine:        parsedUserAgent.engine,
+            userAgent:     compactUserAgent,
+            fullUserAgent: userAgent
         };
-
-        const compactUserAgent = parsedUserAgent.browser.name + ' ' + parsedUserAgent.browser.version +
-            (parsedUserAgent.os.name ? ' / ' + parsedUserAgent.os.name + ' ' + this.browserInfo.parsedUserAgent.os.version : '');
-
-        this.browserInfo.parsedUserAgent.userAgent     = compactUserAgent;
-        this.browserInfo.parsedUserAgent.fullUserAgent = userAgent;
-
-        this.browserInfo.userAgent = compactUserAgent;
     }
 
     public async processDisconnection (disconnectionThresholdExceedeed: boolean): Promise<void> {
@@ -359,7 +369,13 @@ export default class BrowserConnection extends EventEmitter {
     public establish (userAgent: string): void {
         this.ready = true;
 
-        this._prepareBrowserInfo(userAgent);
+        this.browserInfo.fullUserAgent = userAgent;
+
+        const parsedUserAgent = BrowserConnection._parseUserAgent(userAgent, this.browserInfo.alias);
+
+        this.browserInfo.parsedUserAgent = parsedUserAgent;
+        this.browserInfo.userAgent       = this.browserInfo.parsedUserAgent.userAgent;
+
         this._waitForHeartbeat();
         this.emit('ready');
     }
