@@ -62,10 +62,9 @@ const VIEWS = {
     onlyIcon:           { name: 'show-icon-only', maxSize: 380, className: 'only-icon-view' }
 };
 
-const REGULAR_VIEW_SEQUENCE       = [VIEWS.onlyIcon, VIEWS.onlyIconAndFixture];
-const CUSTOM_STATUS_VIEW_SEQUENCE = [VIEWS.all];
-const WAITING_VIEW_SEQUENCE       = [VIEWS.onlyIcon, VIEWS.hideFixture, VIEWS.all];
-const DEBUGGING_VIEW_SEQUENCE     = [VIEWS.onlyButtons, VIEWS.hideUnlockArea, VIEWS.hideStatus, VIEWS.hideFixture, VIEWS.all];
+const REGULAR_VIEW_SEQUENCE   = [VIEWS.onlyIcon, VIEWS.onlyIconAndFixture];
+const WAITING_VIEW_SEQUENCE   = [VIEWS.onlyIcon, VIEWS.hideFixture, VIEWS.all];
+const DEBUGGING_VIEW_SEQUENCE = [VIEWS.onlyButtons, VIEWS.hideUnlockArea, VIEWS.hideStatus, VIEWS.hideFixture, VIEWS.all];
 
 export default class StatusBar extends serviceUtils.EventEmitter {
     constructor (userAgent, fixtureName, testName) {
@@ -101,8 +100,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
             debugging:        false,
             waiting:          false,
             assertionRetries: false,
-            hidden:           false,
-            customStatus:     false
+            hidden:           false
         };
 
         this.currentView = null;
@@ -280,9 +278,6 @@ export default class StatusBar extends serviceUtils.EventEmitter {
 
         if (this.state.waiting)
             return WAITING_VIEW_SEQUENCE;
-
-        if (this.state.customStatus)
-            return CUSTOM_STATUS_VIEW_SEQUENCE;
 
         return REGULAR_VIEW_SEQUENCE;
     }
@@ -531,7 +526,6 @@ export default class StatusBar extends serviceUtils.EventEmitter {
 
     _setWaitingStatus (timeout, startTime) {
         this.state.waiting = true;
-        this.state.customStatus = false;
         this.progressBar.determinateIndicator.start(timeout, startTime);
 
         this.showingTimeout = nativeMethods.setTimeout.call(window, () => {
@@ -543,7 +537,6 @@ export default class StatusBar extends serviceUtils.EventEmitter {
 
     _resetWaitingStatus (waitingSuccess) {
         this.state.waiting = false;
-        this.state.customStatus = false;
         this.progressBar.determinateIndicator.stop();
 
         if (waitingSuccess)
@@ -597,7 +590,6 @@ export default class StatusBar extends serviceUtils.EventEmitter {
 
     showWaitingAssertionRetriesStatus (timeout, startTime) {
         this.state.assertionRetries = true;
-        this.state.customStatus = false;
         this._setWaitingStatus(timeout, startTime);
     }
 
@@ -606,12 +598,5 @@ export default class StatusBar extends serviceUtils.EventEmitter {
             .then(() => {
                 this.state.assertionRetries = false;
             });
-    }
-
-    setCustomStatus (statusText) {
-        this.state.customStatus = true;
-        nativeMethods.nodeTextContentSetter.call(this.statusDiv, statusText);
-        this._setStatusDivLeftMargin();
-        this._recalculateSizes();
     }
 }
