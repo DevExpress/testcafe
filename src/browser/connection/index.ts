@@ -263,12 +263,10 @@ export default class BrowserConnection extends EventEmitter {
         let parsedUserAgent;
 
         if (!userAgent) {
-            parsedUserAgent = {
-                browser:  { name: 'Other', version: '0.0' },
-                platform: { type: '' },
-                os:       { name: 'Other', version: '0.0', versionName: '0.0' },
-                engine:   { name: 'Other', version: '0.0' }
-            };
+            parsedUserAgent = Bowser.parse(' ');
+
+            parsedUserAgent.browser.name    = 'Other';
+            parsedUserAgent.browser.version = '0.0';
         }
         else
             parsedUserAgent = Bowser.parse(userAgent);
@@ -276,23 +274,29 @@ export default class BrowserConnection extends EventEmitter {
 
         const headless = alias.indexOf(':headless') !== -1;
 
-        // NOTE: we use the more readable 'versionName' property in the case of Windows.
-        // Windows 8.1: os.version: "NT 6.3", os.versionName: "8.1" (GH-481).
-        const osVersion = parsedUserAgent.os.name.toLowerCase() === 'windows' ? parsedUserAgent.os.versionName : parsedUserAgent.os.version;
+        const os = {};
+
+        if (parsedUserAgent.os.name) {
+            os.name = parsedUserAgent.os.name;
+
+            // NOTE: we use the more readable 'versionName' property in the case of Windows.
+            // Windows 8.1: os.version: "NT 6.3", os.versionName: "8.1" (GH-481).
+            if (parsedUserAgent.os.name.toLowerCase() === 'windows' && parsedUserAgent.os.versionName)
+                os.version = parsedUserAgent.os.versionName;
+            else if (parsedUserAgent.os.version)
+                os.version = parsedUserAgent.os.version;
+        }
 
         const compactUserAgent = parsedUserAgent.browser.name + ' ' + parsedUserAgent.browser.version +
-                                 (parsedUserAgent.os.name ? ' / ' + parsedUserAgent.os.name + ' ' + osVersion : '');
+                                 (parsedUserAgent.os.name ? ' / ' + parsedUserAgent.os.name + (os.version ? ' ' + os.version : '') : '');
 
         return {
             alias,
             headless,
-            name:     parsedUserAgent.browser.name,
-            version:  parsedUserAgent.browser.version,
-            platform: parsedUserAgent.platform.type,
-            os:       {
-                name:    parsedUserAgent.os.name,
-                version: osVersion
-            },
+            name:          parsedUserAgent.browser.name,
+            version:       parsedUserAgent.browser.version,
+            platform:      parsedUserAgent.platform.type,
+            os,
             engine:        parsedUserAgent.engine,
             userAgent:     compactUserAgent,
             fullUserAgent: userAgent

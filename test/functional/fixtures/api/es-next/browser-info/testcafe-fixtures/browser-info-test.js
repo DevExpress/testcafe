@@ -1,24 +1,34 @@
 fixture `Browser information`;
 
 
-function isNotValidBrowser (name) {
-    const loweredName = name.toLowerCase();
+// NOTE: the possible values based on our CI functional test configs:
+const testedBrowserNames = [
+    'firefox',
+    'chrome',
+    'safari',
+    'internet explorer'
+];
+const testedPlatforms    = [
+    'desktop',
+    'mobile',
+    'tablet'
+];
+const testedOs           = [
+    'windows',
+    'macos',
+    'ios',
+    'linux'
+];
 
-    return loweredName.indexOf('chromium') === -1 &&
-           loweredName.indexOf('chrome') === -1 &&
-           loweredName.indexOf('internet explorer') === -1 &&
-           loweredName.indexOf('microsoft edge') === -1 &&
-           loweredName.indexOf('firefox') === -1 &&
-           loweredName.indexOf('opera') === -1 &&
-           loweredName.indexOf('safari') === -1;
-}
+function isNotValidValue (value, expectedValues) {
+    const loweredValue = value.toLowerCase();
 
-function isNotValidPlatform (name) {
-    const loweredName = name.toLowerCase();
+    expectedValues.forEach(function (expectedValue) {
+        if (loweredValue === expectedValue)
+            return false;
 
-    return loweredName.indexOf('desktop') === -1 &&
-           loweredName.indexOf('mobile') === -1 &&
-           loweredName.indexOf('tablet') === -1;
+        return true;
+    });
 }
 
 test
@@ -29,7 +39,9 @@ test
     // [WIP] remove it
     console.log(browserInfo); // eslint-disable-line no-console
 
-    if (isNotValidBrowser(browserInfo.name) || isNotValidPlatform(browserInfo.platform))
+    if (isNotValidValue(browserInfo.name, testedBrowserNames) ||
+        isNotValidValue(browserInfo.platform, testedPlatforms) ||
+        isNotValidValue(browserInfo.os.name, testedOs))
         await t.expect(false).ok();
     else
         await t.expect(true).ok();
