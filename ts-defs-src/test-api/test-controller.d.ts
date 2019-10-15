@@ -45,6 +45,10 @@ interface BrowserConsoleMessages {
 
 interface BrowserInfo {
     /**
+     * The alias of the browser.
+     */
+    alias: string
+    /**
      * The name of the browser.
      */
     name: string,

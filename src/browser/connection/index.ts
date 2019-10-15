@@ -265,8 +265,8 @@ export default class BrowserConnection extends EventEmitter {
         if (!userAgent) {
             parsedUserAgent = {
                 browser:  { name: 'Other', version: '0.0' },
-                os:       { name: 'Other', version: '0.0', versionName: '0.0' },
                 platform: { type: '' },
+                os:       { name: 'Other', version: '0.0', versionName: '0.0' },
                 engine:   { name: 'Other', version: '0.0' }
             };
         }
@@ -284,10 +284,11 @@ export default class BrowserConnection extends EventEmitter {
                                  (parsedUserAgent.os.name ? ' / ' + parsedUserAgent.os.name + ' ' + osVersion : '');
 
         return {
+            alias,
+            headless,
             name:     parsedUserAgent.browser.name,
             version:  parsedUserAgent.browser.version,
             platform: parsedUserAgent.platform.type,
-            headless,
             os:       {
                 name:    parsedUserAgent.os.name,
                 version: osVersion
