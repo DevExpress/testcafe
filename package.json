@@ -174,7 +174,7 @@
     "license-checker": "^20.0.0",
     "markdownlint": ">=0.0.8",
     "merge-stream": "^1.0.1",
-    "mime-db": "^1.41.0",
+    "mime-db": "^1.42.0",
     "minimist": "^1.2.0",
     "multer": "^1.1.0",
     "npm-auditor": "^1.1.1",
