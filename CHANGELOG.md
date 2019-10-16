@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.6.0 (2019-10-15)
+## v1.6.0 (2019-10-16)
 
 ### :star2: Support for macOS 10.15 Catalina
 
