@@ -1180,9 +1180,8 @@ command line option to pause the test before the first action or assertion.</p>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="dl">'</span><span class="s1">#submit-button</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>You can also turn on the <a href="../using-testcafe/command-line-interface.html#-s---screenshots-on-fails">--screenshots-on-fails</a>
-option to automatically take a screenshot when a test fails.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome ./my-tests <span class="nt">--screenshots</span> ./screenshots <span class="nt">--screenshots-on-fails</span>
+<p>You can also specify the <a href="../using-testcafe/command-line-interface.html#takeonfails">takeOnFails</a> option to automatically take a screenshot when a test fails.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome ./my-tests <span class="nt">--screenshots</span> <span class="nv">path</span><span class="o">=</span>./screenshots,takeOnFails<span class="o">=</span><span class="nb">true</span>
 </code></pre></div>
 <p>Analyzing these screenshots reduces debugging time and allows you to determine the reason of issues earlier.</p>
 <h3><a class="anchor" id="test-speed"></a>Test Speed <a class="permalink" href="#test-speed">#</a></h3>

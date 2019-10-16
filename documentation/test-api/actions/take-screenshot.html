@@ -1119,20 +1119,28 @@
 		<div class="post-content">
 
 			<h1>Take Screenshot</h1>
-<p>This topic describes how to use test actions to take screenshots of the tested page.</p>
-<blockquote class="important"><div class="blockquote-content"><p>Screenshot actions are ignored if the screenshot directory is not specified with the <a href="../../using-testcafe/programming-interface/runner.html#screenshots">runner.screenshots</a> API method or the <a href="../../using-testcafe/command-line-interface.html#-s-path---screenshots-path">-s (--screenshots)</a> command line option.</p>
-</div></blockquote>
-<p>See <a href="../../using-testcafe/common-concepts/screenshots-and-videos.html#screenshots">Screenshots</a> for more information about this feature.</p>
-<h2><a class="anchor" id="take-a-screenshot-of-the-entire-page"></a>Take a Screenshot of the Entire Page <a class="permalink" href="#take-a-screenshot-of-the-entire-page">#</a></h2><div class="highlight"><pre><code class="language-text" data-lang="text">t.takeScreenshot( [path] )
-</code></pre></div><div class="table-wrapper"><table><thead><tr>
+<p>This topic describes test actions that take screenshots of the tested page.</p>
+<h2><a class="anchor" id="take-a-screenshot-of-the-entire-page"></a>Take a Screenshot of the Entire Page <a class="permalink" href="#take-a-screenshot-of-the-entire-page">#</a></h2><div class="highlight"><pre><code class="language-text" data-lang="text">t.takeScreenshot( [options] )
+obsolete: t.takeScreenshot( [path] )
+</code></pre></div>
+<p>The <code>options</code> object can include the following properties:</p>
+<div class="table-wrapper"><table><thead><tr>
 <th>Parameter</th>
 <th>Type</th>
 <th>Description</th>
+<th>Default Value</th>
 </tr>
 </thead><tbody><tr>
 <td><code>path</code>&#160;<em>(optional)</em></td>
 <td>String</td>
-<td>The screenshot file&#39;s relative path and name. The path is relative to the root directory the <a href="../../using-testcafe/programming-interface/runner.html#screenshots">runner.screenshots</a> API method or the <a href="../../using-testcafe/command-line-interface.html#-s-path---screenshots-path">-s (--screenshots)</a> command line option specifies. This path overrides the relative path the default or custom <a href="../../using-testcafe/common-concepts/screenshots-and-videos.html#where-screenshots-and-videos-are-saved">path patterns</a> specify.</td>
+<td>The screenshot file&#39;s relative path and name. The path is relative to the root directory specified in the <a href="../../using-testcafe/programming-interface/runner.html#screenshots">runner.screenshots</a> API method or the <a href="../../using-testcafe/command-line-interface.html#-s---screenshots-optionvalueoption2value2">-s (--screenshots)</a> command line option. This property overrides the relative path specified with the default or custom <a href="../../using-testcafe/common-concepts/screenshots-and-videos.html#screenshot-and-video-directories">path patterns</a>.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>fullPage</code>&#160;<em>(optional)</em></td>
+<td>Boolean</td>
+<td>Specifies that the full page should be captured, including content that is not visible due to overflow.</td>
+<td><code>false</code></td>
 </tr>
 </tbody></table></div>
 <p>The following example shows how to use the <code>t.takeScreenshot</code> action:</p>
@@ -1145,9 +1153,14 @@
     <span class="k">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="dl">'</span><span class="s1">#developer-name</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Peter Parker</span><span class="dl">'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="dl">'</span><span class="s1">#submit-button</span><span class="dl">'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">takeScreenshot</span><span class="p">(</span><span class="dl">'</span><span class="s1">my-fixture/thank-you-page.png</span><span class="dl">'</span><span class="p">);</span>
+        <span class="p">.</span><span class="nx">takeScreenshot</span><span class="p">({</span>
+            <span class="na">path</span><span class="p">:</span>     <span class="dl">'</span><span class="s1">my-fixture/thank-you-page.png</span><span class="dl">'</span><span class="p">,</span>
+            <span class="na">fullPage</span><span class="p">:</span> <span class="kc">true</span>
+        <span class="p">});</span>
 <span class="p">});</span>
-</code></pre></div><h2><a class="anchor" id="take-a-screenshot-of-a-page-element"></a>Take a Screenshot of a Page Element <a class="permalink" href="#take-a-screenshot-of-a-page-element">#</a></h2><div class="highlight"><pre><code class="language-text" data-lang="text">t.takeElementScreenshot(selector[, path][, options])
+</code></pre></div>
+<p>See <a href="../../using-testcafe/common-concepts/screenshots-and-videos.html">Screenshots and Videos</a> for more information.</p>
+<h2><a class="anchor" id="take-a-screenshot-of-a-page-element"></a>Take a Screenshot of a Page Element <a class="permalink" href="#take-a-screenshot-of-a-page-element">#</a></h2><div class="highlight"><pre><code class="language-text" data-lang="text">t.takeElementScreenshot(selector[, path][, options])
 </code></pre></div>
 <p>Takes a screenshot of the specified page element.</p>
 <div class="table-wrapper"><table><thead><tr>
@@ -1163,7 +1176,7 @@
 <tr>
 <td><code>path</code>&#160;<em>(optional)</em></td>
 <td>String</td>
-<td>The screenshot file&#39;s relative path and name. The path is relative to the root directory specified by using the <a href="../../using-testcafe/programming-interface/runner.html#screenshots">runner.screenshots</a> API method or the <a href="../../using-testcafe/command-line-interface.html#-s-path---screenshots-path">-s (--screenshots)</a> command line option. This path overrides the relative path the default or custom <a href="../../using-testcafe/common-concepts/screenshots-and-videos.html#where-screenshots-and-videos-are-saved">path patterns</a> specify.</td>
+<td>The screenshot file&#39;s relative path and name. The path is relative to the root directory specified by using the <a href="../../using-testcafe/programming-interface/runner.html#screenshots">runner.screenshots</a> API method or the <a href="../../using-testcafe/command-line-interface.html#-s---screenshots-optionvalueoption2value2">-s (--screenshots)</a> command line option. This path overrides the relative path the default or custom <a href="../../using-testcafe/common-concepts/screenshots-and-videos.html#screenshot-and-video-directories">path patterns</a> specify.</td>
 </tr>
 <tr>
 <td><code>options</code>&#160;<em>(optional)</em></td>
@@ -1269,6 +1282,8 @@
         <span class="p">});</span>
 <span class="p">});</span>
 </code></pre></div>
+<p>See <a href="../../using-testcafe/common-concepts/screenshots-and-videos.html">Screenshots and Videos</a> for more information.</p>
+
 
 		</div>
 	</article>
