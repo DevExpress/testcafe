@@ -9,20 +9,22 @@ TestCafe allows you to take screenshots of the tested webpage and record videos 
 
 * [Screenshots](#screenshots)
   * [Prerequisites for Screenshots](#prerequisites-for-screenshots)
-  * [Enable Screenshots](#enable-screenshots)
   * [Take Screenshots at Arbitrary Moments During Test Run](#take-screenshots-at-arbitrary-moments-during-test-run)
   * [Take Screenshots When a Test Fails](#take-screenshots-when-a-test-fails)
+  * [Screenshot Options](#screenshot-options)
+  * [Disable Screenshots](#disable-screenshots)
 * [Record Videos](#record-videos)
   * [Prerequisites for Video Recording](#prerequisites-for-video-recording)
   * [Enable Video Recording](#enable-video-recording)
   * [Basic Video Options](#basic-video-options)
   * [Video Encoding Options](#video-encoding-options)
-* [Where Screenshots and Videos Are Saved](#where-screenshots-and-videos-are-saved)
-  * [Default Path Patterns](#default-path-patterns)
-  * [Custom Path Patterns](#custom-path-patterns)
-    * [Screenshot Custom Path Pattern](#screenshot-custom-path-pattern)
-    * [Video Custom Path Pattern](#video-custom-path-pattern)
-  * [Path Pattern Placeholders](#path-pattern-placeholders)
+* [Screenshot and Video Directories](#screenshot-and-video-directories)
+  * [Base Directory](#base-directory)
+  * [Subdirectories and File Names](#subdirectories-and-file-names)
+    * [Path Patterns](#path-patterns)
+    * [Default Path Pattern](#default-path-pattern)
+    * [Custom Path Patterns](#custom-path-patterns)
+    * [Path Pattern Placeholders](#path-pattern-placeholders)
 
 ## Screenshots
 
@@ -33,32 +35,6 @@ TestCafe allows you to take screenshots of the tested webpage at any moment duri
 ### Prerequisites for Screenshots
 
 Screenshots require .NET 4.0 or newer installed on Windows machines and an [ICCCM/EWMH-compliant window manager](https://en.wikipedia.org/wiki/Comparison_of_X_window_managers) on Linux.
-
-### Enable Screenshots
-
-To enable TestCafe to take screenshots, use either of the following:
-
-* the [-s (--screenshots)](../command-line-interface.md#-s-path---screenshots-path) command line flag,
-
-    ```sh
-    testcafe chrome test.js -s artifacts/screenshots
-    ```
-
-* the [runner.screenshots](../programming-interface/runner.md#screenshots) API method,
-
-    ```js
-    runner.screenshots('artifacts/screenshots');
-    ```
-
-* the [screenshotPath](../configuration-file.md#screenshotpath) configuration file property.
-
-    ```json
-    {
-        "screenshotPath": "artifacts/screenshots"
-    }
-    ```
-
-You must provide the base path where TestCafe stores screenshots to this flag, method or property. See [Where Screenshots and Videos Are Saved](#where-screenshots-and-videos-are-saved) for more information.
 
 ### Take Screenshots at Arbitrary Moments During Test Run
 
@@ -83,23 +59,96 @@ test('Take a screenshot of a fieldset', async t => {
 
 You can configure TestCafe to automatically take a screenshot whenever a test fails. Use either of the following:
 
-* the [-S (--screenshots-on-fails)](../command-line-interface.md#-s---screenshots-on-fails) command line flag,
+* the [takeOnFails](../command-line-interface.md#takeonfails) parameter in the `-s` (`--screenshots`) command line flag,
 
     ```sh
-    testcafe chrome tests/sample-fixture.js -S -s artifacts/screenshots
+    testcafe chrome tests/sample-fixture.js -s takeOnFails=true
     ```
 
 * the `takeOnFails` parameter of the [runner.screenshots](../programming-interface/runner.md#screenshots) API method,
 
     ```js
-    runner.screenshots('artifacts/screenshots', true);
+    runner.screenshots({
+        takeOnFails: true
+    });
     ```
 
-* the [takeScreenshotsOnFails](../configuration-file.md#takescreenshotsonfails) configuration file property.
+* the [screenshots.takeOnfails](../configuration-file.md#screenshotstakeonfails) configuration file property.
 
     ```json
     {
-        "takeScreenshotsOnFails": true
+        "screenshots": {
+            "takeOnFails": true
+        }
+    }
+    ```
+
+### Screenshot Options
+
+TestCafe supports the following screenshot options:
+
+Option | Type | Description | Default Value
+------ | ---- | ----------- | --------------
+`path` | String | The base directory where screenshots are saved. | `./screenshots`
+`takeOnFails` | Boolean | `true` to take a screenshot whenever a test fails. | `false`
+`pathPattern` | String | A pattern that defines how TestCafe composes the relative path to a screenshot file. See [Screenshot and Video Directories](#screenshot-and-video-directories). | See [Default Path Pattern](#default-path-pattern).
+`fullPage` | String | `true` to capture the full page, including content that is not visible due to overflow. | `false`
+
+You can specify screenshot options in either of the following ways:
+
+* the [-s (--screenshots)](../command-line-interface.md#-s---screenshots-optionvalueoption2value2) command line flag,
+
+    ```sh
+    testcafe chrome test.js -s path=artifacts/screenshots,fullPage=true,pathPattern=${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png
+    ```
+
+    > Enclose parameter values in quotes if they contain spaces. In Windows `cmd.exe` shell, use double quotes.
+
+* the `options` parameter of the [runner.screenshots](../programming-interface/runner.md#screenshots) API method,
+
+    ```js
+    runner.screenshots({
+        path: 'artifacts/screenshots',
+        fullPage: true,
+        pathPattern: '${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png'
+    });
+    ```
+
+* the [screenshots](../configuration-file.md#screenshots) configuration file property.
+
+    ```json
+    {
+        "screenshots": {
+            "path": "artifacts/screenshots",
+            "fullPage": true,
+            "pathPattern": "${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png"
+        }
+    }
+    ```
+
+### Disable Screenshots
+
+You can prevent TestCafe from taking screenshots whenever a test fails or a [screenshot action](../../test-api/actions/take-screenshot.md) is executed. Use one of the following options:
+
+* the [--disable-screenshots](../command-line-interface.md#--disable-screenshots) command line flag,
+
+    ```sh
+    testcafe chrome tests/sample-fixture.js --disable-screenshots
+    ```
+
+* the `disableScreenshots` option of the [runner.run](../programming-interface/runner.md#run) API method,
+
+    ```js
+    runner.run({
+        disableScreenshots: true
+    });
+    ```
+
+* the [disableScreenshots](../configuration-file.md#disablescreenshots) configuration file property.
+
+    ```json
+    {
+        "disableScreenshots": true
     }
     ```
 
@@ -145,7 +194,7 @@ Use either of the following to enable video recording:
     }
     ```
 
-You should provide the base path where TestCafe stores videos to this flag, method or property. See [Where Screenshots and Videos Are Saved](#where-screenshots-and-videos-are-saved) for more information.
+You should provide the base path where TestCafe stores videos to this flag, method or property. See [Screenshot and Video Directories](#screenshot-and-video-directories) for more information.
 
 TestCafe records all the tests and saves the recording of each test in a separate file. To change this behavior, use the `failedOnly` and `singleFile` [video options](#basic-video-options).
 
@@ -158,7 +207,7 @@ Option | Type | Description | Default Value
 `failedOnly` | Boolean | `true` to record only failed tests; `false` to record all tests. | `false`
 `singleFile` | Boolean | `true` to save the entire recording as a single file; `false` to create a separate file for each test. | `false`
 `ffmpegPath` | String | The path to the FFmpeg codec executable. | Auto-detected
-`pathPattern` | String | A pattern that defines how TestCafe composes the relative path to a video file and the file name. See [Where Screenshots and Videos Are Saved](#where-screenshots-and-videos-are-saved). | See [Default Path Patterns](#default-path-patterns).
+`pathPattern` | String | A pattern that defines how TestCafe composes the relative path to a video file. See [Screenshot and Video Directories](#screenshot-and-video-directories). | See [Default Path Pattern](#default-path-pattern).
 
 You can specify video options in either of the following ways:
 
@@ -167,6 +216,8 @@ You can specify video options in either of the following ways:
     ```sh
     testcafe chrome test.js --video artifacts/videos --video-options singleFile=true,failedOnly=true,pathPattern=${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.mp4
     ```
+
+    > Enclose parameter values in quotes if they contain spaces. In Windows `cmd.exe` shell, use double quotes.
 
 * the `options` parameter of the [runner.video](../programming-interface/runner.md#video) API method,
 
@@ -222,15 +273,92 @@ To provide video encoding options, use either of the following options:
     }
     ```
 
-## Where Screenshots and Videos Are Saved
+## Screenshot and Video Directories
 
-You should specify the base path to the directory that stores screenshots or videos to enable these features. See [Enable Screenshots](#enable-screenshots) and [Enable Video Recording](#enable-video-recording).
+### Base Directory
 
-Inside the base directory, screenshots and videos are organized into subdirectories and named according to the [default](#default-path-patterns) or [custom](#custom-path-patterns) *path patterns*.
+**Screenshots**
 
-> When you pass a specific path to the [t.takeScreenshot](../../test-api/actions/take-screenshot.md#take-a-screenshot-of-the-entire-page) or [t.takeElementScreenshot](../../test-api/actions/take-screenshot.md#take-a-screenshot-of-a-page-element) action, this path overrides the relative path defined by the [default](#default-path-patterns) or [custom path pattern](#custom-path-patterns).
+The **default** base directory for screenshots is *\<project\>/screenshots*.
 
-### Default Path Patterns
+You can use the `path` [option](#screenshot-options) to specify a different base directory:
+
+*CLI*
+
+```sh
+testcafe chrome test.js -s path=artifacts/screenshots
+```
+
+*API*
+
+```js
+runner.screenshots({
+    path: 'artifacts/screenshots'
+});
+```
+
+*Configuration file*
+
+```json
+{
+    "screenshots": {
+        "path": "artifacts/screenshots"
+    }
+}
+```
+
+**Videos**
+
+The base directory for video files must be specified in order to [enable video recording](#enable-video-recording):
+
+*CLI*
+
+```sh
+testcafe chrome test.js --video artifacts/videos
+```
+
+*API*
+
+```js
+runner.video('artifacts/videos');
+```
+
+*Configuration file*
+
+```json
+{
+    "videoPath": "artifacts/videos"
+}
+```
+
+### Subdirectories and File Names
+
+Inside the base directory, screenshots and videos are organized into subdirectories and named according to the *path patterns*.
+
+#### Path Patterns
+
+A path pattern is a template for relative paths to individual screenshot or video files. The pattern uses [placeholders](#path-pattern-placeholders) to define positions where TestCafe should insert values like date, time or browser name.
+
+The following example shows a path pattern for screenshot files:
+
+```text
+${DATE}_${TIME}/${BROWSER}/screenshot-${FILE_INDEX}.png
+```
+
+When TestCafe saves a screenshot or video file, it substitutes each placeholder with an actual value. For instance, the pattern shown above forms the following paths:
+
+```text
+2019-10-02_11-35-40/Chrome/screenshot-1.png
+2019-10-02_11-35-40/Chrome/screenshot-2.png
+2019-10-02_11-35-40/Firefox/screenshot-1.png
+2019-10-02_11-35-40/Firefox/screenshot-2.png
+```
+
+You can use the [default](#default-path-pattern) or [custom path pattern](#custom-path-patterns).
+
+> When you take a screenshot with the [t.takeScreenshot](../../test-api/actions/take-screenshot.md#take-a-screenshot-of-the-entire-page) or [t.takeElementScreenshot](../../test-api/actions/take-screenshot.md#take-a-screenshot-of-a-page-element) action, you can specify the exact file path. In this instance, TestCafe saves this screenshot to the specified location and does not use patterns.
+
+#### Default Path Pattern
 
 TestCafe composes paths to screenshots and videos according to the following pattern:
 
@@ -238,57 +366,33 @@ TestCafe composes paths to screenshots and videos according to the following pat
 ${DATE}_${TIME}/${TEST_ID}/${RUN_ID}/${USERAGENT}/${FILE_INDEX}.<ext>
 ```
 
-where `<ext>` is `.png` for screenshots and `.mp4` for videos. See the meaning of other placeholders in the [Path Pattern Placeholders](#path-pattern-placeholders) section.
+where `<ext>` is `.png` for screenshots and `.mp4` for videos.
 
-When TestCafe takes a screenshot because a test fails (see [Take Screenshots When a Test Fails](#take-screenshots-when-a-test-fails)), it adds the `errors` subfolder to the pattern.
+When TestCafe [takes a screenshot because a test fails](#take-screenshots-when-a-test-fails), it adds the `errors` subfolder to the pattern.
 
 ```sh
 ${DATE}_${TIME}/${TEST_ID}/${RUN_ID}/${USERAGENT}/errors/${FILE_INDEX}.png
 ```
 
-### Custom Path Patterns
+#### Custom Path Patterns
 
-You can override the default path pattern for screenshots and videos.
+You can create a custom [path pattern](#path-patterns) for screenshots and videos. Use [placeholders](#path-pattern-placeholders) to define which values should be used in relative paths.
 
-To compose a custom pattern, use placeholders described in the [Path Pattern Placeholders](#path-pattern-placeholders) section.
+To specify a custom pattern, use the `pathPattern` parameter in [screenshot](#screenshot-options) or [video](#basic-video-options) options.
 
-#### Screenshot Custom Path Pattern
+```sh
+testcafe chrome test.js -s pathPattern=${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png
+```
 
-To specify a path pattern for screenshots, use one of the following:
+```js
+runner.video('artifacts/videos', {
+    pathPattern: '${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.mp4'
+});
+```
 
-* the [-p (--screenshot-path-pattern)](../command-line-interface.md#-p-pattern---screenshot-path-pattern-pattern) command line flag,
+#### Path Pattern Placeholders
 
-    ```sh
-    testcafe chrome test.js -s artifacts/screenshots -p '${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png'
-    ```
-
-    In Windows `cmd.exe` shell, enclose the pattern in double quotes if it contains spaces:
-
-    ```sh
-    testcafe chrome test.js -s artifacts/screenshots -p "${DATE} ${TIME}/test ${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png"
-    ```
-
-* the `pathPattern` parameter of the [runner.screenshots](../programming-interface/runner.md#screenshots) API method,
-
-    ```js
-    runner.screenshots('artifacts/screenshots', true, '${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png');
-    ```
-
-* the [screenshotPathPattern](../configuration-file.md#screenshotpathpattern) configuration file property.
-
-    ```json
-    {
-        "screenshotPathPattern": "${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png"
-    }
-    ```
-
-#### Video Custom Path Pattern
-
-To specify a custom path pattern for videos, pass the `pathPattern` parameter to [video options](#basic-video-options).
-
-### Path Pattern Placeholders
-
-The following placeholders are used in screenshot and video path patterns:
+You can use the following placeholders in screenshot and video path patterns:
 
 Placeholder | Description
 ----------- | ------------

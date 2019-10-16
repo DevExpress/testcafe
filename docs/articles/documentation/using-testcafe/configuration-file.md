@@ -16,9 +16,15 @@ A configuration file can include the following settings:
 * [browsers](#browsers)
 * [src](#src)
 * [reporter](#reporter)
-* [screenshotPath](#screenshotpath)
-* [takeScreenshotsOnFails](#takescreenshotsonfails)
-* [screenshotPathPattern](#screenshotpathpattern)
+* [screenshots](#screenshots)
+  * [path](#screenshotspath)
+  * [takeOnFails](#screenshotstakeonfails)
+  * [pathPattern](#screenshotspathpattern)
+  * [fullPage](#screenshotsfullpage)
+* [disableScreenshots](#disablescreenshots)
+* [screenshotPath](#screenshotpath) *(obsolete)*
+* [takeScreenshotsOnFails](#takescreenshotsonfails) *(obsolete)*
+* [screenshotPathPattern](#screenshotpathpattern) *(obsolete)*
 * [videoPath](#videopath)
 * [videoOptions](#videooptions)
 * [videoEncodingOptions](#videoencodingoptions)
@@ -203,9 +209,94 @@ You can use multiple reporters, but note that only one reporter can write to `st
 *CLI*: [-r, --reporter](command-line-interface.md#-r-nameoutput---reporter-nameoutput)  
 *API*: [runner.reporter](programming-interface/runner.md#reporter)
 
+## screenshots
+
+Allows you to specify the screenshot options.
+
+### screenshots.path
+
+Specifies the base directory where screenshots are saved.
+
+```json
+{
+    "screenshots": {
+        "path": "/home/user/tests/screenshots/"
+    }
+}
+```
+
+See [Screenshots](common-concepts/screenshots-and-videos.md#screenshots) for details.
+
+*CLI*: [--screenshots path](command-line-interface.md#path)  
+*API*: [runner.screenshots](programming-interface/runner.md#screenshots)
+
+### screenshots.takeOnFails
+
+Specifies that a screenshot should be taken whenever a test fails.
+
+```json
+{
+    "screenshots": {
+        "takeOnFails": true
+    }
+}
+```
+
+Screenshots are saved to the directory specified in the [screenshots.path](#screenshotspath) property.
+
+*CLI*: [--screenshots takeOnFails](command-line-interface.md#takeonfails)  
+*API*: [runner.screenshots](programming-interface/runner.md#screenshots)
+
+### screenshots.pathPattern
+
+Specifies a custom pattern to compose screenshot files' relative path and name.
+
+```json
+{
+    "screenshots": {
+        "pathPattern": "${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png"
+    }
+}
+```
+
+See [Path Pattern Placeholders](common-concepts/screenshots-and-videos.md#path-pattern-placeholders) for information about the available placeholders.
+
+*CLI*: [--screenshots pathPattern](command-line-interface.md#pathpattern)  
+*API*: [runner.screenshots](programming-interface/runner.md#screenshots)
+
+### screenshots.fullPage
+
+Specifies that the full page should be captured, including content that is not visible due to overflow.
+
+```json
+{
+    "screenshots": {
+        "fullPage": true
+    }
+}
+```
+
+*CLI*: [--screenshots fullPage](command-line-interface.md#fullpage)  
+*API*: [runner.screenshots](programming-interface/runner.md#screenshots)
+
+## disableScreenshots
+
+Prevents TestCafe from taking screenshots.
+
+```json
+{
+    "disableScreenshots": true
+}
+```
+
+When this property is specified, screenshots are not taken whenever a test fails or a [screenshot action](../test-api/actions/take-screenshot.md) is executed.
+
+*CLI*: [--disable-screenshots](command-line-interface.md#--disable-screenshots)  
+*API*: [runner.run({ disableScreenshots })](programming-interface/runner.md#run)
+
 ## screenshotPath
 
-Enables screenshots and specifies the base directory where they are saved.
+**Obsolete.** Enables screenshots and specifies the base directory where they are saved.
 
 ```json
 {
@@ -213,14 +304,31 @@ Enables screenshots and specifies the base directory where they are saved.
 }
 ```
 
-See [Screenshots](common-concepts/screenshots-and-videos.md#screenshots) for details.
+This property will be deprecated in the future versions.
 
-*CLI*: [-s, --screenshots](command-line-interface.md#-s-path---screenshots-path)  
-*API*: [runner.screenshots](programming-interface/runner.md#screenshots)
+In **v1.5.0** and newer, screenshots are enabled by default and saved to *./screenshots*.
+
+To save them to a different location, specify the [screenshots.path](#screenshotspath) property:
+
+```json
+{
+    "screenshots": {
+        "path": "/home/user/tests/screenshots/"
+    }
+}
+```
+
+Use the [disableScreenshots](#disablescreenshots) property to prevent TestCafe from taking screenshots:
+
+```json
+{
+    "disableScreenshots": true
+}
+```
 
 ## takeScreenshotsOnFails
 
-Specifies that a screenshot should be taken whenever a test fails.
+**Obsolete.** Specifies that a screenshot should be taken whenever a test fails.
 
 ```json
 {
@@ -228,14 +336,21 @@ Specifies that a screenshot should be taken whenever a test fails.
 }
 ```
 
-Screenshots are saved to the directory specified in the [screenshotPath](#screenshotpath) option.
+This property will be deprecated in the future versions.
 
-*CLI*: [-S, --screenshots-on-fails](command-line-interface.md#-s---screenshots-on-fails)  
-*API*: [runner.screenshots](programming-interface/runner.md#screenshots)
+In **v1.5.0** and newer, use the [screenshots.takeOnFails](#screenshotstakeonfails) property:
+
+```json
+{
+    "screenshots": {
+        "takeOnFails": true
+    }
+}
+```
 
 ## screenshotPathPattern
 
-Specifies a custom pattern to compose screenshot files' relative path and name.
+**Obsolete.** Specifies a custom pattern to compose screenshot files' relative path and name.
 
 ```json
 {
@@ -243,12 +358,17 @@ Specifies a custom pattern to compose screenshot files' relative path and name.
 }
 ```
 
-See [Path Pattern Placeholders](common-concepts/screenshots-and-videos.md#path-pattern-placeholders) for information about the available placeholders.
+This property will be deprecated in the future versions.
 
-> Use the [screenshotPath](#screenshotpath) option to enable screenshots.
+In **v1.5.0** and newer, use the [screenshots.pathPattern](#screenshotspathpattern) property:
 
-*CLI*: [-p, --screenshot-path-pattern](command-line-interface.md#-p-pattern---screenshot-path-pattern-pattern)  
-*API*: [runner.screenshots](programming-interface/runner.md#screenshots)
+```json
+{
+    "screenshots": {
+        "pathPattern": "${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png"
+    }
+}
+```
 
 ## videoPath
 

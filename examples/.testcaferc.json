@@ -5,9 +5,11 @@
         "name": "xunit",
         "output": "reports/report.xml"
     },
-    "screenshotPath": "/home/user/tests/screenshots/",
-    "screenshotPathPattern": "${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png",
-    "takeScreenshotsOnFails": true,
+    "screenshots": {
+        "path": "/home/user/tests/screenshots/",
+        "takeOnFails": true,
+        "pathPattern": "${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png"
+    },
     "videoPath": "reports/screen-captures",
     "videoOptions": {
         "singleFile": true,

@@ -110,6 +110,25 @@ describe('Screenshots on fails', function () {
                 });
         });
 
+        it('Should create warning if screenshots are disabled', function () {
+            const opts = {
+                shouldFail:         true,
+                selectorTimeout:    0,
+                screenshotsOnFails: true,
+                disableScreenshots: true
+            };
+
+            return runTests('./testcafe-fixtures/screenshots-on-fails.js', 'Screenshot on the ensureElement method fail', opts)
+                .catch(function (errs) {
+                    expect(assertionHelper.isScreenshotDirExists()).eql(false);
+                    assertionHelper.errorInEachBrowserNotContains(errs, SCREENSHOT_PATH_MESSAGE_TEXT, 0);
+                    expect(testReport.warnings).eql([
+                        'Screenshots are disabled. To take screenshots, remove the "--disable-screenshots" command line flag ' +
+                        'or set the "disableScreenshots" option to "false" in the API or configuration file.'
+                    ]);
+                });
+        });
+
         it('Should crop screenshots to a page viewport area', function () {
             return runTests('./testcafe-fixtures/screenshots-on-fails.js', 'Crop screenshots',
                 { shouldFail: true, screenshotsOnFails: true, setScreenshotPath: true })

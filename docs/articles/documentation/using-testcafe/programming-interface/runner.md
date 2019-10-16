@@ -231,32 +231,46 @@ createTestCafe('localhost', 1337, 1338)
 
 ### screenshots
 
-Enables TestCafe to take screenshots of the tested webpages.
+Specifies how TestCafe should take screenshots of the tested pages.
 
 ```text
-screenshots(path [, takeOnFails, pathPattern]) → this
+screenshots(options) → this
+obsolete: screenshots(path [, takeOnFails] [, pathPattern] ) → this
 ```
 
-Parameter                  | Type    | Description                                                                   | Default
+The `options` object can include the following properties:
+
+Option           | Type    | Description                                                                   | Default
 -------------------------- | ------- | ----------------------------------------------------------------------------- | -------
-`path`                     | String  | The base path where the screenshots are saved. Note that to construct a complete path to these screenshots, TestCafe uses the default [path patterns](../common-concepts/screenshots-and-videos.md#default-path-patterns). You can override these patterns using the method's `screenshotPathPattern` parameter.
+`path`&#160;*(optional)*   | String  | The base path where the screenshots are saved. Note that to construct a complete path to these screenshots, TestCafe uses the default [path patterns](../common-concepts/screenshots-and-videos.md#default-path-pattern). You can override these patterns using the `pathPattern` property. | `'./screenshots'`
 `takeOnFails`&#160;*(optional)* | Boolean | Specifies if screenshots should be taken automatically when a test fails. | `false`
 `pathPattern`&#160;*(optional)* | String | The pattern to compose screenshot files' relative path and name. See [Path Pattern Placeholders](../common-concepts/screenshots-and-videos.md#path-pattern-placeholders) for information about the available placeholders.
-
-> Important! TestCafe does not take screenshots if the `screenshots` function is not called.
+`fullPage`&#160;*(optional)*    | Boolean | Specifies that the full page should be captured, including content that is not visible due to overflow. | `false`
 
 See [Screenshots](../common-concepts/screenshots-and-videos.md#screenshots) for details.
 
+Pass the `disableScreenshots` option to the [runner.run](#run) method to disable taking screenshots:
+
+```js
+runner.run({
+    disableScreenshots: true
+});
+```
+
 *Related configuration file properties*:
 
-* [screenshotPath](../configuration-file.md#screenshotpath)
-* [takeScreenshotsOnFails](../configuration-file.md#takescreenshotsonfails)
-* [screenshotPathPattern](../configuration-file.md#screenshotpathpattern)
+* [screenshots.path](../configuration-file.md#screenshotspath)
+* [screenshots.takeOnFails](../configuration-file.md#screenshotstakeonfails)
+* [screenshots.pathPattern](../configuration-file.md#screenshotspathpattern)
 
 **Example**
 
 ```js
-runner.screenshots('reports/screenshots/', true, '${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png');
+runner.screenshots({
+    path: 'reports/screenshots/',
+    takeOnFails: true,
+    pathPattern: '${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png'
+});
 ```
 
 ### video
@@ -269,7 +283,7 @@ video(path [, options, encodingOptions]) → this
 
 Parameter                | Type                        | Description
 ------------------------ | --------------------------- | -----------
-`path`                   | String                      | The base directory where videos are saved. Relative paths to video files are composed according to [path patterns](../common-concepts/screenshots-and-videos.md#default-path-patterns). You can also use the `options.pathPattern` property to specify a custom pattern.
+`path`                   | String                      | The base directory where videos are saved. Relative paths to video files are composed according to [path patterns](../common-concepts/screenshots-and-videos.md#default-path-pattern). You can also use the `options.pathPattern` property to specify a custom pattern.
 `options`&#160;*(optional)* | Object | Options that define how videos are recorded. See [Basic Video Options](../common-concepts/screenshots-and-videos.md#basic-video-options) for a list of options.
 `encodingOptions`&#160;*(optional)* | Object | Options that specify video encoding. You can pass all the options supported by the FFmpeg library. Refer to [the FFmpeg documentation](https://ffmpeg.org/ffmpeg.html#Options) for information about the available options.
 
@@ -547,6 +561,7 @@ Parameter         | Type    | Description                                       
 `speed`           | Number  | Specifies the test execution speed. A number between `1` (fastest) and `0.01` (slowest). If an [individual action's](../../test-api/actions/action-options.md#basic-action-options) speed is also specified, the action speed setting overrides the test speed. | `1`
 `stopOnFirstFail`    | Boolean | Defines whether to stop a test run if a test fails. You do not need to wait for all the tests to finish to focus on the first error. | `false`
 `disablePageCaching` | Boolean | Prevents the browser from caching the page content. When navigation to a cached page occurs in [role code](../../test-api/authentication/user-roles.md), local and session storage content is not preserved. Set `disablePageCaching` to `true` to retain the storage items after navigation. For more information, see [Troubleshooting: Test Actions Fail After Authentication](../../test-api/authentication/user-roles.md#test-actions-fail-after-authentication). You can also disable page caching [for an individual fixture or test](../../test-api/test-code-structure.md#disable-page-caching).
+`disableScreenshots` | Boolean | Prevents TestCafe from taking screenshots. When this option is specified, screenshots are not taken whenever a test fails or a [screenshot action](../../test-api/actions/take-screenshot.md) is executed.
 
 After all tests are finished, call the [testcafe.close](testcafe.md#close) function to stop the TestCafe server.
 
@@ -563,6 +578,7 @@ After all tests are finished, call the [testcafe.close](testcafe.md#close) funct
 * [speed](../configuration-file.md#speed)
 * [stopOnFirstFail](../configuration-file.md#stoponfirstfail)
 * [disablePageCaching](../configuration-file.md#disablepagecaching)
+* [disableScreenshots](../configuration-file.md#disablescreenshots)
 
 **Example**
 

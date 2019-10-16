@@ -26,16 +26,17 @@ const DEFAULT_SCREENSHOTS_DIRECTORY = 'screenshots';
 
 const OPTION_FLAG_NAMES = [
     OPTION_NAMES.skipJsErrors,
-    OPTION_NAMES.disablePageReloads,
     OPTION_NAMES.quarantineMode,
     OPTION_NAMES.debugMode,
     OPTION_NAMES.debugOnFail,
     OPTION_NAMES.skipUncaughtErrors,
     OPTION_NAMES.stopOnFirstFail,
     OPTION_NAMES.takeScreenshotsOnFails,
-    OPTION_NAMES.disablePageCaching,
     OPTION_NAMES.developmentMode,
     OPTION_NAMES.retryTestPages,
+    OPTION_NAMES.disablePageCaching,
+    OPTION_NAMES.disablePageReloads,
+    OPTION_NAMES.disableScreenshots
 ];
 
 interface TestCafeAdditionalStartOptions {

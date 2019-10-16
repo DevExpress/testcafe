@@ -50,9 +50,6 @@ export default class BrowserManipulationQueue {
     }
 
     async _takeScreenshot (capture) {
-        if (!this.screenshotCapturer.enabled)
-            return null;
-
         try {
             return await capture();
         }
