@@ -14,15 +14,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>TestCafe v0.21.0 Released | TestCafe</title>
+  <title>TestCafe v1.6.0 Released | TestCafe</title>
 
-  <meta name="description" content="TestCafe v0.21.0 ReleasedTest web pages served over HTTPS, construct screenshot paths with patterns and use more info in custom reporters.">
+  <meta name="description" content="TestCafe v1.6.0 ReleasedThis release adds support for macOS 10.15 Catalina, introduces full-page screenshots and compound screenshot options.">
   <meta name="viewport" content="width=device-width">
 
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://devexpress.github.io/testcafe/blog/testcafe-v0-21-0-released.html" />
-  <meta property="og:title" content="TestCafe v0.21.0 Released | TestCafe" />
+  <meta property="og:url" content="https://devexpress.github.io/testcafe/blog/testcafe-v1-6-0-released.html" />
+  <meta property="og:title" content="TestCafe v1.6.0 Released | TestCafe" />
 
   
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/styles/docco.min.css">
@@ -30,7 +30,7 @@
   
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
-  <link rel="canonical" href="https://devexpress.github.io/testcafe/blog/testcafe-v0-21-0-released.html">
+  <link rel="canonical" href="https://devexpress.github.io/testcafe/blog/testcafe-v1-6-0-released.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="https://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -420,85 +420,142 @@
     <main>
     <div class="post">
         <div class="post-date">
-            AUG  2, 2018
+            OCT 16, 2019
         </div>
         <article class="post-content">
-            <h1>TestCafe v0.21.0 Released</h1>
-<p>Test web pages served over HTTPS, construct screenshot paths with patterns and use more info in custom reporters.</p>
+            <h1>TestCafe v1.6.0 Released</h1>
+<p>This release adds support for macOS 10.15 Catalina, introduces full-page screenshots and compound screenshot options.</p>
 
 <!--more-->
-<h2><a class="anchor" id="enhancements"></a>Enhancements <a class="permalink" href="#enhancements">#</a></h2><h3><a class="anchor" id="test-web-pages-served-over-https-1985"></a>⚙ Test Web Pages Served Over HTTPS (<a href="https://github.com/DevExpress/testcafe/issues/1985">#1985</a>) <a class="permalink" href="#test-web-pages-served-over-https-1985">#</a></h3>
-<p>Some browser features (like <a href="https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API">Service Workers</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API">Geolocation API</a>, <a href="https://developer.apple.com/documentation/apple_pay_on_the_web/applepaysession">ApplePaySession</a>, or <a href="https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto">SubtleCrypto</a>) require a secure origin. This means that the website should use the HTTPS protocol.</p>
+<h2><a class="anchor" id="support-for-macos-1015-catalina"></a>🌟 Support for macOS 10.15 Catalina <a class="permalink" href="#support-for-macos-1015-catalina">#</a></h2>
+<p>This version provides compatibility with macOS 10.15. Update TestCafe to v1.6.0 if you run macOS Catalina.</p>
+<h2><a class="anchor" id="enhancements"></a>Enhancements <a class="permalink" href="#enhancements">#</a></h2><h3><a class="anchor" id="full-page-screenshots-1520"></a>⚙ Full-Page Screenshots (<a href="https://github.com/DevExpress/testcafe/issues/1520">#1520</a>) <a class="permalink" href="#full-page-screenshots-1520">#</a></h3>
+<p>TestCafe can now take screenshots that show the full page, including content that is not visible due to overflow.</p>
 
-<p>Starting with v0.21.0, TestCafe can serve proxied web pages over HTTPS. This allows you to test pages that require a secure origin.</p>
+<p>Enable the <code>fullPage</code> option in CLI, API or configuration file to capture the full page on all screenshots. You can also pass this option to <code>t.takeScreenshot</code> to capture a single full-page screenshot.</p>
 
-<p>To enable HTTPS when you use TestCafe through the command line, specify the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--ssl-options">--ssl</a> flag followed by the <a href="https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener">HTTPS server options</a>. The most commonly used options are described in the <a href="https://nodejs.org/api/tls.html#tls_tls_createsecurecontext_options">TLS topic</a> in the Node.js documentation.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="nt">--ssl</span> <span class="nv">pfx</span><span class="o">=</span>path/to/file.pfx<span class="p">;</span><span class="nv">rejectUnauthorized</span><span class="o">=</span><span class="nb">true</span><span class="p">;</span>...
+<p><em>Command line interface</em></p>
+
+<p>Enable the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#fullpage">fullPage</a> parameter of the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-s---screenshots-optionvalueoption2value2">-s (--screenshots)</a> flag:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js <span class="nt">-s</span> <span class="nv">fullPage</span><span class="o">=</span><span class="nb">true</span>
 </code></pre></div>
-<p>When you use a programming API, pass the HTTPS server options to the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/createtestcafe.html">createTestCafe</a> method.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="dl">'</span><span class="s1">use strict</span><span class="dl">'</span><span class="p">;</span>
+<p><em>API</em></p>
 
-<span class="kd">const</span> <span class="nx">createTestCafe</span>        <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">);</span>
-<span class="kd">const</span> <span class="nx">selfSignedSertificate</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">openssl-self-signed-certificate</span><span class="dl">'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">runner</span>                  <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
-
-<span class="kd">const</span> <span class="nx">sslOptions</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="na">key</span><span class="p">:</span>  <span class="nx">selfSignedSertificate</span><span class="p">.</span><span class="nx">key</span><span class="p">,</span>
-    <span class="na">cert</span><span class="p">:</span> <span class="nx">selfSignedSertificate</span><span class="p">.</span><span class="nx">cert</span>
-<span class="p">};</span>
-
-<span class="nx">createTestCafe</span><span class="p">(</span><span class="dl">'</span><span class="s1">localhost</span><span class="dl">'</span><span class="p">,</span> <span class="mi">1337</span><span class="p">,</span> <span class="mi">1338</span><span class="p">,</span> <span class="nx">sslOptions</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">testcafe</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="nx">runner</span> <span class="o">=</span> <span class="nx">testcafe</span><span class="p">.</span><span class="nx">createRunner</span><span class="p">();</span>
-    <span class="p">})</span>
-    <span class="p">.</span><span class="nx">then</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">runner</span>
-            <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="dl">'</span><span class="s1">test.js</span><span class="dl">'</span><span class="p">)</span>
-
-            <span class="c1">// Browsers restrict self-signed certificate usage unless you</span>
-            <span class="c1">// explicitly set a flag specific to each browser.</span>
-            <span class="c1">// For Chrome, this is '--allow-insecure-localhost'.</span>
-            <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="dl">'</span><span class="s1">chrome --allow-insecure-localhost</span><span class="dl">'</span><span class="p">)</span>
-            <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
-    <span class="p">});</span>
-</code></pre></div>
-<p>See <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/connect-to-the-testcafe-server-over-https.html">Connect to TestCafe Server over HTTPS</a> for more information.</p>
-<h3><a class="anchor" id="construct-screenshot-paths-with-patterns-2152"></a>⚙ Construct Screenshot Paths with Patterns (<a href="https://github.com/DevExpress/testcafe/issues/2152">#2152</a>) <a class="permalink" href="#construct-screenshot-paths-with-patterns-2152">#</a></h3>
-<p>You can now use patterns to construct paths to screenshots. TestCafe provides a number of placeholders you can include in the path, for example, <code>${DATE}</code>, <code>${TIME}</code>, <code>${USERAGENT}</code>, etc. For a complete list, refer to <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html#path-pattern-placeholders">Path Pattern Placeholders</a>.</p>
-
-<p>You specify a screenshot path pattern when you run tests. Each time TestCafe takes a screenshot, it substitutes the placeholders with actual values and saves the screenshot to the resulting path.</p>
-
-<p>The following example shows how to specify a screenshot path pattern through the command line:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all test.js <span class="nt">-s</span> <span class="nv">path</span><span class="o">=</span>screenshots,pathPattern<span class="o">=</span><span class="k">${</span><span class="nv">DATE</span><span class="k">}</span>_<span class="k">${</span><span class="nv">TIME</span><span class="k">}</span>/test-<span class="k">${</span><span class="nv">TEST_INDEX</span><span class="k">}</span>/<span class="k">${</span><span class="nv">USERAGENT</span><span class="k">}</span>/<span class="k">${</span><span class="nv">FILE_INDEX</span><span class="k">}</span>.png
-</code></pre></div>
-<p>When you use a programming API, pass the screenshot path pattern to the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#screenshots">runner.screenshots method</a>.</p>
+<p>Pass the <code>fullPage</code> option to <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#screenshots">runner.screenshots</a>:</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">screenshots</span><span class="p">({</span>
-    <span class="na">path</span><span class="p">:</span> <span class="dl">'</span><span class="s1">reports/screenshots/</span><span class="dl">'</span><span class="p">,</span>
-    <span class="na">takeOnFails</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-    <span class="na">pathPattern</span><span class="p">:</span> <span class="dl">'</span><span class="s1">${TEST_INDEX}/${OS}/${BROWSER}-v${BROWSER_VERSION}/${FILE_INDEX}.png</span><span class="dl">'</span>
+    <span class="na">fullPage</span><span class="p">:</span> <span class="kc">true</span>
 <span class="p">});</span>
-</code></pre></div><h3><a class="anchor" id="add-info-about-screenshots-and-quarantine-attempts-to-custom-reports-2216"></a>⚙ Add Info About Screenshots and Quarantine Attempts to Custom Reports (<a href="https://github.com/DevExpress/testcafe/issues/2216">#2216</a>) <a class="permalink" href="#add-info-about-screenshots-and-quarantine-attempts-to-custom-reports-2216">#</a></h3>
-<p>Custom reporters can now access screenshots&#39; data and the history of quarantine attempts (if the test run in the quarantine mode).</p>
+</code></pre></div>
+<p><em>Configuration file</em></p>
 
-<p>The following information about screenshots is now available:</p>
+<p>Set the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#screenshotsfullpage">screenshots.fullPage</a> property:</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nl">"screenshots"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"fullPage"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p><em>Test code</em></p>
+
+<p>Pass the <code>fullPage</code> option to the <a href="https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-the-entire-page">t.takeScreenshot</a> action:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">t</span><span class="p">.</span><span class="nx">takeScreenshot</span><span class="p">({</span>
+    <span class="na">fullPage</span><span class="p">:</span> <span class="kc">true</span>
+<span class="p">});</span>
+</code></pre></div><h3><a class="anchor" id="compound-screenshot-options"></a>⚙ Compound Screenshot Options <a class="permalink" href="#compound-screenshot-options">#</a></h3>
+<p>The command line interface and configuration file schema have been updated to provide a more concise way to specify the screenshot options.</p>
+<blockquote><div class="blockquote-content"><p>TestCafe v1.6.0 also supports the existing options to maintain backward compatibility. However, these options are now marked <em>obsolete</em> in the documentation. In the future updates, we will deprecate them and emit warnings.</p>
+</div></blockquote>
+<p><em>Command line interface</em></p>
+
+<p>Screenshot options in CLI are now consolidated under the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-s---screenshots-optionvalueoption2value2">-s (--screenshots)</a> flag in an <code>option=value</code> string:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js <span class="nt">-s</span> <span class="nv">takeOnFails</span><span class="o">=</span><span class="nb">true</span>,pathPattern<span class="o">=</span><span class="k">${</span><span class="nv">DATE</span><span class="k">}</span>_<span class="k">${</span><span class="nv">TIME</span><span class="k">}</span>/<span class="k">${</span><span class="nv">FILE_INDEX</span><span class="k">}</span>.png
+</code></pre></div><div class="table-wrapper"><table><thead><tr>
+<th>Old Usage</th>
+<th>New Usage</th>
+</tr>
+</thead><tbody><tr>
+<td><code>-s artifacts/screenshots</code></td>
+<td><code>-s path=artifacts/screenshots</code></td>
+</tr>
+<tr>
+<td><code>-S</code>, <code>--screenshots-on-fails</code></td>
+<td><code>-s takeOnFails=true</code></td>
+</tr>
+<tr>
+<td><code>-p ${DATE}_${TIME}/${FILE_INDEX}.png</code></td>
+<td><code>-s pathPattern=${DATE}_${TIME}/${FILE_INDEX}.png</code></td>
+</tr>
+</tbody></table></div>
+<p><em>Configuration file</em></p>
+
+<p>Configuration file properties that specify screenshot options are now combined in the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#screenshots">screenshots</a> object:</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nl">"screenshots"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"artifacts/screenshots"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"takeOnFails"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"pathPattern"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${DATE}_${TIME}/${FILE_INDEX}.png"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><div class="table-wrapper"><table><thead><tr>
+<th>Old Property</th>
+<th>New Property</th>
+</tr>
+</thead><tbody><tr>
+<td><code>screenshotPath</code></td>
+<td><code>screenshots.path</code></td>
+</tr>
+<tr>
+<td><code>takeScreenshotsOnFails</code></td>
+<td><code>screenshots.takeOnFails</code></td>
+</tr>
+<tr>
+<td><code>screenshotPathPattern</code></td>
+<td><code>screenshots.pathPattern</code></td>
+</tr>
+</tbody></table></div><h3><a class="anchor" id="default-screenshot-directory"></a>⚙ Default Screenshot Directory <a class="permalink" href="#default-screenshot-directory">#</a></h3>
+<p>TestCafe now saves the screenshots to <code>./screenshots</code> if the base directory is not specified.</p>
+
+<p>The <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-s---screenshots-optionvalueoption2value2">--screenshots</a> CLI flag, the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#screenshots">runner.screenshots</a> method or the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#screenshotpath">screenshotPath</a> configuration option are not required to take screenshots. For instance, you can run TestCafe with no additional parameters and use the <a href="https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-the-entire-page">t.takeScreenshot</a> action in test code:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js
+</code></pre></div>
+<p><em>test.js</em></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://example.com`</span><span class="p">;</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Take a screenshot</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">takeScreenshot</span><span class="p">();</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>The <code>path</code> argument in <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#screenshots">runner.screenshots</a> is now optional.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">screenshots</span><span class="p">({</span>
+    <span class="na">takeOnFails</span><span class="p">:</span> <span class="kc">true</span>
+<span class="p">});</span>
+</code></pre></div><h3><a class="anchor" id="new-option-to-disable-screenshots"></a>⚙ New Option to Disable Screenshots <a class="permalink" href="#new-option-to-disable-screenshots">#</a></h3>
+<p>We have added an option that allows you to disable taking screenshots. If this option is specified, TestCafe does not take screenshots when a test fails and when the <a href="https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-the-entire-page">t.takeScreenshot</a> or <a href="https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-a-page-element">t.takeElementScreenshot</a> action is executed.</p>
+
+<p>You can disable screenshots with a command line, API or configuration file option:</p>
 
 <ul>
-<li>the path to the screenshot file,</li>
-<li>the path to the thumbnail image,</li>
-<li>the user agent of the browser in which the screenshot was taken,</li>
-<li>the quarantine attempt number (if the screenshot was taken in the quarantine mode),</li>
-<li>whether the screenshot was taken because the test failed.</li>
+<li><p>the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--disable-screenshots">--disable-screenshots</a> command line flag</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests <span class="nt">--disable-screenshots</span>
+</code></pre></div></li>
+<li><p>the <code>disableScreenshots</code> option in the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#run">runner.run</a> method</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">run</span><span class="p">({</span> <span class="na">disableScreenshots</span><span class="p">:</span> <span class="kc">true</span> <span class="p">});</span>
+</code></pre></div></li>
+<li><p>the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#disablescreenshots">disableScreenshots</a> configuration file property</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nl">"disableScreenshots"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></li>
 </ul>
-
-<p>If the test was run in the quarantine mode, you can also determine which attempts failed and passed.</p>
-
-<p>Refer to the <a href="https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttestdone">reportTestDone method description</a> for details on how to access this information.</p>
 <h2><a class="anchor" id="bug-fixes"></a>Bug Fixes <a class="permalink" href="#bug-fixes">#</a></h2>
 <ul>
-<li>HTML5 drag events are no longer simulated if <code>event.preventDefault</code> is called for the <code>mousedown</code> event (<a href="https://github.com/DevExpress/testcafe/issues/2529">#2529</a>)</li>
-<li>File upload no longer causes an exception when there are several file inputs on the page (<a href="https://github.com/DevExpress/testcafe/issues/2642">#2642</a>)</li>
-<li>File upload now works with inputs that have the <code>required</code> attribute (<a href="https://github.com/DevExpress/testcafe/issues/2509">#2509</a>)</li>
-<li>The <code>load</code> event listener is no longer triggered when added to an image (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/1688">testcafe-hammerhead/#1688</a>)</li>
+<li>Fixed an error thrown when you pass the <code>-b</code> command line flag (<a href="https://github.com/DevExpress/testcafe/issues/4294">#4294</a>)</li>
+<li>TestCafe no longer hangs when Firefox downloads a file (<a href="https://github.com/DevExpress/testcafe/issues/2741">#2741</a>)</li>
+<li>You can now start tests from TypeScript code executed with <code>ts-node</code> (<a href="https://github.com/DevExpress/testcafe/issues/4276">#4276</a>)</li>
+<li>Fixed TypeScript definitions for client script injection API (<a href="https://github.com/DevExpress/testcafe/pull/4272">PR #4272</a>)</li>
+<li>Fixed TypeScript definitions for <code>disablePageCaching</code> (<a href="https://github.com/DevExpress/testcafe/pull/4274">PR #4274</a>)</li>
+<li>Fixed a bug when anchor links did not navigate to their target destinations (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/2080">testcafe-hammerhead/#2080</a>)</li>
 </ul>
 
         </article>
@@ -512,8 +569,8 @@
 <!-- 
 <script>
     var disqus_config = function () {
-        this.page.url = 'https://devexpress.github.io/testcafe/blog/testcafe-v0-21-0-released.html';
-        this.page.identifier = '/blog/testcafe-v0-21-0-released';
+        this.page.url = 'https://devexpress.github.io/testcafe/blog/testcafe-v1-6-0-released.html';
+        this.page.identifier = '/blog/testcafe-v1-6-0-released';
     };
     (function() {
         var d = document, s = d.createElement('script');

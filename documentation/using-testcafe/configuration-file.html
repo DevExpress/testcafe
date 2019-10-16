@@ -825,9 +825,18 @@
 <li><a href="#browsers">browsers</a></li>
 <li><a href="#src">src</a></li>
 <li><a href="#reporter">reporter</a></li>
-<li><a href="#screenshotpath">screenshotPath</a></li>
-<li><a href="#takescreenshotsonfails">takeScreenshotsOnFails</a></li>
-<li><a href="#screenshotpathpattern">screenshotPathPattern</a></li>
+<li><a href="#screenshots">screenshots</a>
+
+<ul>
+<li><a href="#screenshotspath">path</a></li>
+<li><a href="#screenshotstakeonfails">takeOnFails</a></li>
+<li><a href="#screenshotspathpattern">pathPattern</a></li>
+<li><a href="#screenshotsfullpage">fullPage</a></li>
+</ul></li>
+<li><a href="#disablescreenshots">disableScreenshots</a></li>
+<li><a href="#screenshotpath">screenshotPath</a> <em>(obsolete)</em></li>
+<li><a href="#takescreenshotsonfails">takeScreenshotsOnFails</a> <em>(obsolete)</em></li>
+<li><a href="#screenshotpathpattern">screenshotPathPattern</a> <em>(obsolete)</em></li>
 <li><a href="#videopath">videoPath</a></li>
 <li><a href="#videooptions">videoOptions</a></li>
 <li><a href="#videoencodingoptions">videoEncodingOptions</a></li>
@@ -970,38 +979,114 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
 </span></code></pre></div>
 <p><em>CLI</em>: <a href="command-line-interface.html#-r-nameoutput---reporter-nameoutput">-r, --reporter</a><br>
 <em>API</em>: <a href="programming-interface/runner.html#reporter">runner.reporter</a></p>
-<h2><a class="anchor" id="screenshotpath"></a>screenshotPath <a class="permalink" href="#screenshotpath">#</a></h2>
-<p>Enables screenshots and specifies the base directory where they are saved.</p>
+<h2><a class="anchor" id="screenshots"></a>screenshots <a class="permalink" href="#screenshots">#</a></h2>
+<p>Allows you to specify the screenshot options.</p>
+<h3><a class="anchor" id="screenshotspath"></a>screenshots.path <a class="permalink" href="#screenshotspath">#</a></h3>
+<p>Specifies the base directory where screenshots are saved.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nl">"screenshotPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/home/user/tests/screenshots/"</span><span class="w">
+    </span><span class="nl">"screenshots"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/home/user/tests/screenshots/"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p>See <a href="common-concepts/screenshots-and-videos.html#screenshots">Screenshots</a> for details.</p>
 
-<p><em>CLI</em>: <a href="command-line-interface.html#-s-path---screenshots-path">-s, --screenshots</a><br>
+<p><em>CLI</em>: <a href="command-line-interface.html#path">--screenshots path</a><br>
 <em>API</em>: <a href="programming-interface/runner.html#screenshots">runner.screenshots</a></p>
-<h2><a class="anchor" id="takescreenshotsonfails"></a>takeScreenshotsOnFails <a class="permalink" href="#takescreenshotsonfails">#</a></h2>
+<h3><a class="anchor" id="screenshotstakeonfails"></a>screenshots.takeOnFails <a class="permalink" href="#screenshotstakeonfails">#</a></h3>
 <p>Specifies that a screenshot should be taken whenever a test fails.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nl">"screenshots"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"takeOnFails"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>Screenshots are saved to the directory specified in the <a href="#screenshotspath">screenshots.path</a> property.</p>
+
+<p><em>CLI</em>: <a href="command-line-interface.html#takeonfails">--screenshots takeOnFails</a><br>
+<em>API</em>: <a href="programming-interface/runner.html#screenshots">runner.screenshots</a></p>
+<h3><a class="anchor" id="screenshotspathpattern"></a>screenshots.pathPattern <a class="permalink" href="#screenshotspathpattern">#</a></h3>
+<p>Specifies a custom pattern to compose screenshot files&#39; relative path and name.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nl">"screenshots"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"pathPattern"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>See <a href="common-concepts/screenshots-and-videos.html#path-pattern-placeholders">Path Pattern Placeholders</a> for information about the available placeholders.</p>
+
+<p><em>CLI</em>: <a href="command-line-interface.html#pathpattern">--screenshots pathPattern</a><br>
+<em>API</em>: <a href="programming-interface/runner.html#screenshots">runner.screenshots</a></p>
+<h3><a class="anchor" id="screenshotsfullpage"></a>screenshots.fullPage <a class="permalink" href="#screenshotsfullpage">#</a></h3>
+<p>Specifies that the full page should be captured, including content that is not visible due to overflow.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nl">"screenshots"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"fullPage"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p><em>CLI</em>: <a href="command-line-interface.html#fullpage">--screenshots fullPage</a><br>
+<em>API</em>: <a href="programming-interface/runner.html#screenshots">runner.screenshots</a></p>
+<h2><a class="anchor" id="disablescreenshots"></a>disableScreenshots <a class="permalink" href="#disablescreenshots">#</a></h2>
+<p>Prevents TestCafe from taking screenshots.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nl">"disableScreenshots"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>When this property is specified, screenshots are not taken whenever a test fails or a <a href="../test-api/actions/take-screenshot.html">screenshot action</a> is executed.</p>
+
+<p><em>CLI</em>: <a href="command-line-interface.html#--disable-screenshots">--disable-screenshots</a><br>
+<em>API</em>: <a href="programming-interface/runner.html#run">runner.run({ disableScreenshots })</a></p>
+<h2><a class="anchor" id="screenshotpath"></a>screenshotPath <a class="permalink" href="#screenshotpath">#</a></h2>
+<p><strong>Obsolete.</strong> Enables screenshots and specifies the base directory where they are saved.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nl">"screenshotPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/home/user/tests/screenshots/"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>This property will be deprecated in the future versions.</p>
+
+<p>In <strong>v1.5.0</strong> and newer, screenshots are enabled by default and saved to <em>./screenshots</em>.</p>
+
+<p>To save them to a different location, specify the <a href="#screenshotspath">screenshots.path</a> property:</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nl">"screenshots"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/home/user/tests/screenshots/"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>Use the <a href="#disablescreenshots">disableScreenshots</a> property to prevent TestCafe from taking screenshots:</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nl">"disableScreenshots"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h2><a class="anchor" id="takescreenshotsonfails"></a>takeScreenshotsOnFails <a class="permalink" href="#takescreenshotsonfails">#</a></h2>
+<p><strong>Obsolete.</strong> Specifies that a screenshot should be taken whenever a test fails.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
     </span><span class="nl">"takeScreenshotsOnFails"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
-<p>Screenshots are saved to the directory specified in the <a href="#screenshotpath">screenshotPath</a> option.</p>
+<p>This property will be deprecated in the future versions.</p>
 
-<p><em>CLI</em>: <a href="command-line-interface.html#-s---screenshots-on-fails">-S, --screenshots-on-fails</a><br>
-<em>API</em>: <a href="programming-interface/runner.html#screenshots">runner.screenshots</a></p>
-<h2><a class="anchor" id="screenshotpathpattern"></a>screenshotPathPattern <a class="permalink" href="#screenshotpathpattern">#</a></h2>
-<p>Specifies a custom pattern to compose screenshot files&#39; relative path and name.</p>
+<p>In <strong>v1.5.0</strong> and newer, use the <a href="#screenshotstakeonfails">screenshots.takeOnFails</a> property:</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nl">"screenshots"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"takeOnFails"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h2><a class="anchor" id="screenshotpathpattern"></a>screenshotPathPattern <a class="permalink" href="#screenshotpathpattern">#</a></h2>
+<p><strong>Obsolete.</strong> Specifies a custom pattern to compose screenshot files&#39; relative path and name.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
     </span><span class="nl">"screenshotPathPattern"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
-<p>See <a href="common-concepts/screenshots-and-videos.html#path-pattern-placeholders">Path Pattern Placeholders</a> for information about the available placeholders.</p>
-<blockquote><div class="blockquote-content"><p>Use the <a href="#screenshotpath">screenshotPath</a> option to enable screenshots.</p>
-</div></blockquote>
-<p><em>CLI</em>: <a href="command-line-interface.html#-p-pattern---screenshot-path-pattern-pattern">-p, --screenshot-path-pattern</a><br>
-<em>API</em>: <a href="programming-interface/runner.html#screenshots">runner.screenshots</a></p>
-<h2><a class="anchor" id="videopath"></a>videoPath <a class="permalink" href="#videopath">#</a></h2>
+<p>This property will be deprecated in the future versions.</p>
+
+<p>In <strong>v1.5.0</strong> and newer, use the <a href="#screenshotspathpattern">screenshots.pathPattern</a> property:</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nl">"screenshots"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"pathPattern"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h2><a class="anchor" id="videopath"></a>videoPath <a class="permalink" href="#videopath">#</a></h2>
 <p>Enables TestCafe to record videos of test runs and specifies the base directory to save these videos.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
     </span><span class="nl">"videoPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"reports/screen-captures"</span><span class="w">

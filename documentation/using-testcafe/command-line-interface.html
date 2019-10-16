@@ -835,9 +835,15 @@
 <li><a href="#-v---version">-v, --version</a></li>
 <li><a href="#-b---list-browsers">-b, --list-browsers</a></li>
 <li><a href="#-r-nameoutput---reporter-nameoutput">-r &lt;name[:output],[...]&gt;, --reporter &lt;name[:output],[...]&gt;</a></li>
-<li><a href="#-s-path---screenshots-path">-s &lt;path&gt;, --screenshots &lt;path&gt;</a></li>
-<li><a href="#-s---screenshots-on-fails">-S, --screenshots-on-fails</a></li>
-<li><a href="#-p-pattern---screenshot-path-pattern-pattern">-p &lt;pattern&gt;, --screenshot-path-pattern &lt;pattern&gt;</a></li>
+<li><a href="#-s---screenshots-optionvalueoption2value2">-s, --screenshots &lt;option=value[,option2=value2,...]&gt;</a></li>
+<li><a href="#path">path</a></li>
+<li><a href="#takeonfails">takeOnFails</a></li>
+<li><a href="#pathpattern">pathPattern</a></li>
+<li><a href="#fullpage">fullPage</a></li>
+<li><a href="#--disable-screenshots">--disable-screenshots</a></li>
+<li><a href="#-s-path---screenshots-path">-s &lt;path&gt;, --screenshots &lt;path&gt;</a> <em>(obsolete)</em></li>
+<li><a href="#-s---screenshots-on-fails">-S, --screenshots-on-fails</a> <em>(obsolete)</em></li>
+<li><a href="#-p-pattern---screenshot-path-pattern-pattern">-p &lt;pattern&gt;, --screenshot-path-pattern &lt;pattern&gt;</a> <em>(obsolete)</em></li>
 <li><a href="#--video-basepath">--video &lt;basePath&gt;</a></li>
 <li><a href="#--video-options-optionvalueoption2value2">--video-options &lt;option=value[,option2=value2,...]&gt;</a></li>
 <li><a href="#--video-encoding-options-optionvalueoption2value2">--video-encoding-options &lt;option=value[,option2=value2,...]&gt;</a></li>
@@ -1011,32 +1017,78 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
 <p>Note that only one reporter can write to <code>stdout</code>. All other reporters must output to files.</p>
 
 <p><em>Related configuration file property</em>: <a href="configuration-file.html#reporter">reporter</a>.</p>
-<h3><a class="anchor" id="-s-path---screenshots-path"></a>-s &lt;path&gt;, --screenshots &lt;path&gt; <a class="permalink" href="#-s-path---screenshots-path">#</a></h3>
-<p>Enables screenshots and specifies the base directory where they are saved.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js <span class="nt">-s</span> screenshots
+<h3><a class="anchor" id="-s---screenshots-optionvalueoption2value2"></a>-s, --screenshots &lt;option=value[,option2=value2,...]&gt; <a class="permalink" href="#-s---screenshots-optionvalueoption2value2">#</a></h3>
+<p>Specifies screenshot options.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js <span class="nt">-s</span> <span class="nv">path</span><span class="o">=</span>artifacts/screenshots,takeOnFails<span class="o">=</span><span class="nb">true</span>
+</code></pre></div><h4><a class="anchor" id="path"></a>path <a class="permalink" href="#path">#</a></h4>
+<p>Specifies the base directory where screenshots are saved.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js <span class="nt">-s</span> <span class="nv">path</span><span class="o">=</span>artifacts/screenshots
 </code></pre></div>
 <p>See <a href="common-concepts/screenshots-and-videos.html#screenshots">Screenshots</a> for details.</p>
 
-<p><em>Related configuration file property</em>: <a href="configuration-file.html#screenshotpath">screenshotPath</a>.</p>
-<h3><a class="anchor" id="-s---screenshots-on-fails"></a>-S, --screenshots-on-fails <a class="permalink" href="#-s---screenshots-on-fails">#</a></h3>
-<p>Takes a screenshot whenever a test fails. Screenshots are saved to the directory specified in the <a href="#-s-path---screenshots-path">-s (--screenshots)</a> option.</p>
-
-<p>For example, the following command runs tests from the <code>sample-fixture.js</code> file in all browsers, takes screenshots if tests fail, and saves the screenshots to the <code>screenshots</code> directory:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js <span class="nt">-S</span> <span class="nt">-s</span> screenshots
+<p><em>Related configuration file property</em>: <a href="configuration-file.html#screenshotspath">screenshots.path</a>.</p>
+<h4><a class="anchor" id="takeonfails"></a>takeOnFails <a class="permalink" href="#takeonfails">#</a></h4>
+<p>Takes a screenshot whenever a test fails.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js <span class="nt">-s</span> <span class="nv">takeOnFails</span><span class="o">=</span><span class="nb">true</span>
 </code></pre></div>
-<p><em>Related configuration file property</em>: <a href="configuration-file.html#takescreenshotsonfails">takeScreenshotsOnFails</a>.</p>
-<h3><a class="anchor" id="-p-pattern---screenshot-path-pattern-pattern"></a>-p &lt;pattern&gt;, --screenshot-path-pattern &lt;pattern&gt; <a class="permalink" href="#-p-pattern---screenshot-path-pattern-pattern">#</a></h3>
+<p>TestCafe saves screenshots to the directory specified in the <a href="#path">path</a> parameter.</p>
+
+<p><em>Related configuration file property</em>: <a href="configuration-file.html#screenshotstakeonfails">screenshots.takeOnFails</a>.</p>
+<h4><a class="anchor" id="pathpattern"></a>pathPattern <a class="permalink" href="#pathpattern">#</a></h4>
 <p>Specifies a custom pattern to compose screenshot files&#39; relative path and name.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js <span class="nt">-s</span> screenshots <span class="nt">-p</span> <span class="s1">'${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png'</span>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js <span class="nt">-s</span> <span class="nv">pathPattern</span><span class="o">=</span><span class="k">${</span><span class="nv">DATE</span><span class="k">}</span>_<span class="k">${</span><span class="nv">TIME</span><span class="k">}</span>/test-<span class="k">${</span><span class="nv">TEST_INDEX</span><span class="k">}</span>/<span class="k">${</span><span class="nv">USERAGENT</span><span class="k">}</span>/<span class="k">${</span><span class="nv">FILE_INDEX</span><span class="k">}</span>.png
 </code></pre></div>
 <p>See <a href="common-concepts/screenshots-and-videos.html#path-pattern-placeholders">Path Pattern Placeholders</a> for information about the available placeholders.</p>
 
-<p>In Windows <code>cmd.exe</code> shell, enclose the pattern in double quotes if it contains spaces:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js <span class="nt">-s</span> screenshots <span class="nt">-p</span> <span class="s2">"</span><span class="k">${</span><span class="nv">DATE</span><span class="k">}</span><span class="s2"> </span><span class="k">${</span><span class="nv">TIME</span><span class="k">}</span><span class="s2">/test </span><span class="k">${</span><span class="nv">TEST_INDEX</span><span class="k">}</span><span class="s2">/</span><span class="k">${</span><span class="nv">USERAGENT</span><span class="k">}</span><span class="s2">/</span><span class="k">${</span><span class="nv">FILE_INDEX</span><span class="k">}</span><span class="s2">.png"</span>
-</code></pre></div><blockquote><div class="blockquote-content"><p>Use the <a href="#-s-path---screenshots-path">-s (--screenshots)</a> flag to enable screenshots.</p>
-</div></blockquote>
-<p><em>Related configuration file property</em>: <a href="configuration-file.html#screenshotpathpattern">screenshotPathPattern</a>.</p>
-<h3><a class="anchor" id="--video-basepath"></a>--video &lt;basePath&gt; <a class="permalink" href="#--video-basepath">#</a></h3>
+<p>Enclose the pattern in quotes if it contains spaces:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js <span class="nt">-s</span> <span class="nv">pathPattern</span><span class="o">=</span><span class="s1">'${DATE} ${TIME}/test ${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png'</span>
+</code></pre></div>
+<p>In Windows <code>cmd.exe</code> shell, use double quotes:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js <span class="nt">-s</span> <span class="nv">pathPattern</span><span class="o">=</span><span class="s2">"</span><span class="k">${</span><span class="nv">DATE</span><span class="k">}</span><span class="s2"> </span><span class="k">${</span><span class="nv">TIME</span><span class="k">}</span><span class="s2">/test </span><span class="k">${</span><span class="nv">TEST_INDEX</span><span class="k">}</span><span class="s2">/</span><span class="k">${</span><span class="nv">USERAGENT</span><span class="k">}</span><span class="s2">/</span><span class="k">${</span><span class="nv">FILE_INDEX</span><span class="k">}</span><span class="s2">.png"</span>
+</code></pre></div>
+<p><em>Related configuration file property</em>: <a href="configuration-file.html#screenshotspathpattern">screenshots.pathPattern</a>.</p>
+<h4><a class="anchor" id="fullpage"></a>fullPage <a class="permalink" href="#fullpage">#</a></h4>
+<p>Specifies that the full page should be captured, including content that is not visible due to overflow.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js <span class="nt">-s</span> <span class="nv">fullPage</span><span class="o">=</span><span class="nb">true</span>
+</code></pre></div>
+<p><em>Related configuration file property</em>: <a href="configuration-file.html#screenshotsfullpage">screenshots.fullPage</a>.</p>
+<h3><a class="anchor" id="--disable-screenshots"></a>--disable-screenshots <a class="permalink" href="#--disable-screenshots">#</a></h3>
+<p>Prevents TestCafe from taking screenshots.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js <span class="nt">--disable-screenshots</span>
+</code></pre></div>
+<p>When this option is specified, screenshots are not taken whenever a test fails or a <a href="../test-api/actions/take-screenshot.html">screenshot action</a> is executed.</p>
+
+<p><em>Related configuration file property</em>: <a href="configuration-file.html#disablescreenshots">disableScreenshots</a>.</p>
+<h3><a class="anchor" id="-s-path---screenshots-path"></a>-s &lt;path&gt;, --screenshots &lt;path&gt; <a class="permalink" href="#-s-path---screenshots-path">#</a></h3>
+<p><strong>Obsolete.</strong> Enables screenshots and specifies the base directory where they are saved.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js <span class="nt">-s</span> screenshots
+</code></pre></div>
+<p>This option will be deprecated in the future versions.</p>
+
+<p>In <strong>v1.5.0</strong> and newer, screenshots are enabled by default and saved to <em>./screenshots</em>.</p>
+
+<p>To specify a different location, pass the <a href="#path">path</a> parameter:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js <span class="nt">-s</span> <span class="nv">path</span><span class="o">=</span>screenshots
+</code></pre></div>
+<p>Use the <a href="#--disable-screenshots">--disable-screenshots</a> option to prevent TestCafe from taking screenshots:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js <span class="nt">--disable-screenshots</span>
+</code></pre></div><h3><a class="anchor" id="-s---screenshots-on-fails"></a>-S, --screenshots-on-fails <a class="permalink" href="#-s---screenshots-on-fails">#</a></h3>
+<p><strong>Obsolete.</strong> Takes a screenshot whenever a test fails.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js <span class="nt">-S</span> <span class="nt">-s</span> screenshots
+</code></pre></div>
+<p>This option will be deprecated in the future versions.</p>
+
+<p>In <strong>v1.5.0</strong> and newer, use the <a href="#takeonfails">takeOnFails</a> parameter:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js <span class="nt">-s</span> <span class="nv">takeOnFails</span><span class="o">=</span><span class="nb">true</span>
+</code></pre></div><h3><a class="anchor" id="-p-pattern---screenshot-path-pattern-pattern"></a>-p &lt;pattern&gt;, --screenshot-path-pattern &lt;pattern&gt; <a class="permalink" href="#-p-pattern---screenshot-path-pattern-pattern">#</a></h3>
+<p><strong>Obsolete.</strong> Specifies a custom pattern to compose screenshot files&#39; relative path and name.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js <span class="nt">-s</span> screenshots <span class="nt">-p</span> <span class="s1">'${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png'</span>
+</code></pre></div>
+<p>This option will be deprecated in the future versions.</p>
+
+<p>In <strong>v1.5.0</strong> and newer, use the <a href="#pathpattern">pathPattern</a> parameter:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js <span class="nt">-s</span> <span class="nv">pathPattern</span><span class="o">=</span><span class="k">${</span><span class="nv">DATE</span><span class="k">}</span>_<span class="k">${</span><span class="nv">TIME</span><span class="k">}</span>/test-<span class="k">${</span><span class="nv">TEST_INDEX</span><span class="k">}</span>/<span class="k">${</span><span class="nv">USERAGENT</span><span class="k">}</span>/<span class="k">${</span><span class="nv">FILE_INDEX</span><span class="k">}</span>.png
+</code></pre></div><h3><a class="anchor" id="--video-basepath"></a>--video &lt;basePath&gt; <a class="permalink" href="#--video-basepath">#</a></h3>
 <p>Enables TestCafe to record videos of test runs and specifies the base directory to save these videos.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js <span class="nt">--video</span> reports/screen-captures
 </code></pre></div>
@@ -1048,7 +1100,13 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js <span class="nt">--video</span> videos <span class="nt">--video-options</span> <span class="nv">singleFile</span><span class="o">=</span><span class="nb">true</span>,failedOnly<span class="o">=</span><span class="nb">true</span>
 </code></pre></div>
 <p>See <a href="common-concepts/screenshots-and-videos.html#basic-video-options">Basic Video Options</a> for details.</p>
-<blockquote><div class="blockquote-content"><p>Use the <a href="#--video-basepath">--video</a> flag to enable video recording.</p>
+
+<p>Enclose parameter values in quotes if they contain spaces:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js <span class="nt">--video</span> videos <span class="nt">--video-options</span> <span class="nv">pathPattern</span><span class="o">=</span><span class="s1">'${DATE} ${TIME}/test ${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png'</span>
+</code></pre></div>
+<p>In Windows <code>cmd.exe</code> shell, use double quotes:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js <span class="nt">--video</span> videos <span class="nt">--video-options</span> <span class="nv">pathPattern</span><span class="o">=</span><span class="s2">"</span><span class="k">${</span><span class="nv">DATE</span><span class="k">}</span><span class="s2"> </span><span class="k">${</span><span class="nv">TIME</span><span class="k">}</span><span class="s2">/test </span><span class="k">${</span><span class="nv">TEST_INDEX</span><span class="k">}</span><span class="s2">/</span><span class="k">${</span><span class="nv">USERAGENT</span><span class="k">}</span><span class="s2">/</span><span class="k">${</span><span class="nv">FILE_INDEX</span><span class="k">}</span><span class="s2">.png"</span>
+</code></pre></div><blockquote><div class="blockquote-content"><p>Use the <a href="#--video-basepath">--video</a> flag to enable video recording.</p>
 </div></blockquote>
 <p><em>Related configuration file property</em>: <a href="configuration-file.html#videooptions">videoOptions</a>.</p>
 <h3><a class="anchor" id="--video-encoding-options-optionvalueoption2value2"></a>--video-encoding-options &lt;option=value[,option2=value2,...]&gt; <a class="permalink" href="#--video-encoding-options-optionvalueoption2value2">#</a></h3>

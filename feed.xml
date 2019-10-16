@@ -5,9 +5,153 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 23 Sep 2019 19:39:29 +0300</pubDate>
-    <lastBuildDate>Mon, 23 Sep 2019 19:39:29 +0300</lastBuildDate>
+    <pubDate>Wed, 16 Oct 2019 15:03:43 +0300</pubDate>
+    <lastBuildDate>Wed, 16 Oct 2019 15:03:43 +0300</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>TestCafe v1.6.0 Released</title>
+        <description>&lt;h1&gt;TestCafe v1.6.0 Released&lt;/h1&gt;
+&lt;p&gt;This release adds support for macOS 10.15 Catalina, introduces full-page screenshots and compound screenshot options.&lt;/p&gt;
+
+&lt;!--more--&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;support-for-macos-1015-catalina&quot;&gt;&lt;/a&gt;🌟 Support for macOS 10.15 Catalina &lt;a class=&quot;permalink&quot; href=&quot;#support-for-macos-1015-catalina&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;This version provides compatibility with macOS 10.15. Update TestCafe to v1.6.0 if you run macOS Catalina.&lt;/p&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;full-page-screenshots-1520&quot;&gt;&lt;/a&gt;⚙ Full-Page Screenshots (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1520&quot;&gt;#1520&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#full-page-screenshots-1520&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;TestCafe can now take screenshots that show the full page, including content that is not visible due to overflow.&lt;/p&gt;
+
+&lt;p&gt;Enable the &lt;code&gt;fullPage&lt;/code&gt; option in CLI, API or configuration file to capture the full page on all screenshots. You can also pass this option to &lt;code&gt;t.takeScreenshot&lt;/code&gt; to capture a single full-page screenshot.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Command line interface&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Enable the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#fullpage&quot;&gt;fullPage&lt;/a&gt; parameter of the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-s---screenshots-optionvalueoption2value2&quot;&gt;-s (--screenshots)&lt;/a&gt; flag:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome test.js &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;fullPage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;em&gt;API&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Pass the &lt;code&gt;fullPage&lt;/code&gt; option to &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#screenshots&quot;&gt;runner.screenshots&lt;/a&gt;:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;screenshots&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;fullPage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;em&gt;Configuration file&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Set the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#screenshotsfullpage&quot;&gt;screenshots.fullPage&lt;/a&gt; property:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;screenshots&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;fullPage&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;em&gt;Test code&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Pass the &lt;code&gt;fullPage&lt;/code&gt; option to the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-the-entire-page&quot;&gt;t.takeScreenshot&lt;/a&gt; action:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;takeScreenshot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;fullPage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;compound-screenshot-options&quot;&gt;&lt;/a&gt;⚙ Compound Screenshot Options &lt;a class=&quot;permalink&quot; href=&quot;#compound-screenshot-options&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;The command line interface and configuration file schema have been updated to provide a more concise way to specify the screenshot options.&lt;/p&gt;
+&lt;blockquote&gt;&lt;div class=&quot;blockquote-content&quot;&gt;&lt;p&gt;TestCafe v1.6.0 also supports the existing options to maintain backward compatibility. However, these options are now marked &lt;em&gt;obsolete&lt;/em&gt; in the documentation. In the future updates, we will deprecate them and emit warnings.&lt;/p&gt;
+&lt;/div&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;em&gt;Command line interface&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Screenshot options in CLI are now consolidated under the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-s---screenshots-optionvalueoption2value2&quot;&gt;-s (--screenshots)&lt;/a&gt; flag in an &lt;code&gt;option=value&lt;/code&gt; string:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome test.js &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;takeOnFails&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;,pathPattern&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;DATE&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;_&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;TIME&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;/&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;FILE_INDEX&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;.png
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;table-wrapper&quot;&gt;&lt;table&gt;&lt;thead&gt;&lt;tr&gt;
+&lt;th&gt;Old Usage&lt;/th&gt;
+&lt;th&gt;New Usage&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;-s artifacts/screenshots&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;-s path=artifacts/screenshots&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;-S&lt;/code&gt;, &lt;code&gt;--screenshots-on-fails&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;-s takeOnFails=true&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;-p ${DATE}_${TIME}/${FILE_INDEX}.png&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;-s pathPattern=${DATE}_${TIME}/${FILE_INDEX}.png&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;
+&lt;p&gt;&lt;em&gt;Configuration file&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Configuration file properties that specify screenshot options are now combined in the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#screenshots&quot;&gt;screenshots&lt;/a&gt; object:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;screenshots&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;path&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;artifacts/screenshots&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;takeOnFails&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;pathPattern&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;${DATE}_${TIME}/${FILE_INDEX}.png&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;table-wrapper&quot;&gt;&lt;table&gt;&lt;thead&gt;&lt;tr&gt;
+&lt;th&gt;Old Property&lt;/th&gt;
+&lt;th&gt;New Property&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;screenshotPath&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;screenshots.path&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;takeScreenshotsOnFails&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;screenshots.takeOnFails&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;screenshotPathPattern&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;screenshots.pathPattern&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;default-screenshot-directory&quot;&gt;&lt;/a&gt;⚙ Default Screenshot Directory &lt;a class=&quot;permalink&quot; href=&quot;#default-screenshot-directory&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;TestCafe now saves the screenshots to &lt;code&gt;./screenshots&lt;/code&gt; if the base directory is not specified.&lt;/p&gt;
+
+&lt;p&gt;The &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-s---screenshots-optionvalueoption2value2&quot;&gt;--screenshots&lt;/a&gt; CLI flag, the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#screenshots&quot;&gt;runner.screenshots&lt;/a&gt; method or the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#screenshotpath&quot;&gt;screenshotPath&lt;/a&gt; configuration option are not required to take screenshots. For instance, you can run TestCafe with no additional parameters and use the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-the-entire-page&quot;&gt;t.takeScreenshot&lt;/a&gt; action in test code:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome test.js
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;em&gt;test.js&lt;/em&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`My fixture`&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`https://example.com`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Take a screenshot&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;takeScreenshot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The &lt;code&gt;path&lt;/code&gt; argument in &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#screenshots&quot;&gt;runner.screenshots&lt;/a&gt; is now optional.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;screenshots&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;takeOnFails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;new-option-to-disable-screenshots&quot;&gt;&lt;/a&gt;⚙ New Option to Disable Screenshots &lt;a class=&quot;permalink&quot; href=&quot;#new-option-to-disable-screenshots&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;We have added an option that allows you to disable taking screenshots. If this option is specified, TestCafe does not take screenshots when a test fails and when the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-the-entire-page&quot;&gt;t.takeScreenshot&lt;/a&gt; or &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-a-page-element&quot;&gt;t.takeElementScreenshot&lt;/a&gt; action is executed.&lt;/p&gt;
+
+&lt;p&gt;You can disable screenshots with a command line, API or configuration file option:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--disable-screenshots&quot;&gt;--disable-screenshots&lt;/a&gt; command line flag&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome my-tests &lt;span class=&quot;nt&quot;&gt;--disable-screenshots&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;the &lt;code&gt;disableScreenshots&lt;/code&gt; option in the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#run&quot;&gt;runner.run&lt;/a&gt; method&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;disableScreenshots&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#disablescreenshots&quot;&gt;disableScreenshots&lt;/a&gt; configuration file property&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;disableScreenshots&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Fixed an error thrown when you pass the &lt;code&gt;-b&lt;/code&gt; command line flag (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/4294&quot;&gt;#4294&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;TestCafe no longer hangs when Firefox downloads a file (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2741&quot;&gt;#2741&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;You can now start tests from TypeScript code executed with &lt;code&gt;ts-node&lt;/code&gt; (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/4276&quot;&gt;#4276&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Fixed TypeScript definitions for client script injection API (&lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/4272&quot;&gt;PR #4272&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Fixed TypeScript definitions for &lt;code&gt;disablePageCaching&lt;/code&gt; (&lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/4274&quot;&gt;PR #4274&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Fixed a bug when anchor links did not navigate to their target destinations (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2080&quot;&gt;testcafe-hammerhead/#2080&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Wed, 16 Oct 2019 00:00:00 +0300</pubDate>
+        <link>https://devexpress.github.io/testcafe/blog/testcafe-v1-6-0-released.html</link>
+        <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v1-6-0-released.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>TestCafe v1.5.0 Released</title>
@@ -606,65 +750,6 @@ If the same problem occurs with this test two more times, the test run finishes 
         <pubDate>Thu, 25 Oct 2018 00:00:00 +0300</pubDate>
         <link>https://devexpress.github.io/testcafe/blog/testcafe-v0-23-0-released.html</link>
         <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v0-23-0-released.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>TestCafe v0.22.0 Released</title>
-        <description>&lt;h1&gt;TestCafe v0.22.0 Released&lt;/h1&gt;
-&lt;p&gt;Write tests in CoffeeScript, view failed selector methods in test run reports and detect server-side errors and unhandled promise rejections.&lt;/p&gt;
-
-&lt;!--more--&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;coffeescript-support-1556-by-geoffreybooth&quot;&gt;&lt;/a&gt;⚙ CoffeeScript Support (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1556&quot;&gt;#1556&lt;/a&gt;) by &lt;a href=&quot;https://github.com/GeoffreyBooth&quot;&gt;@GeoffreyBooth&lt;/a&gt; &lt;a class=&quot;permalink&quot; href=&quot;#coffeescript-support-1556-by-geoffreybooth&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;TestCafe now allows you to write tests in CoffeeScript. You do not need to compile CoffeeScript manually or make any customizations - everything works out of the box.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-coffee&quot; data-lang=&quot;coffee&quot;&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'testcafe'&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'CoffeeScript Example'&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;page&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'https://devexpress.github.io/testcafe/example/'&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;nameInput&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'#developer-name'&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'Test'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;typeText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nameInput&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'Peter'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;typeText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nameInput&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'Paker'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;replace&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;true&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;typeText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nameInput&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'r'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;caretPos&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nameInput&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;eql&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'Parker'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;failed-selector-method-pinpointed-in-the-report-2568&quot;&gt;&lt;/a&gt;⚙ Failed Selector Method Pinpointed in the Report (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2568&quot;&gt;#2568&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#failed-selector-method-pinpointed-in-the-report-2568&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;Now the test run report can identify which selector&amp;#39;s method does not match any DOM element.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../images/failed-selector-report.png&quot; alt=&quot;Failed Selector Report&quot; title=&quot;&quot;&gt;&lt;/p&gt;
-&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;fail-on-uncaught-server-errors-2546&quot;&gt;&lt;/a&gt;⚙ Fail on Uncaught Server Errors (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2546&quot;&gt;#2546&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#fail-on-uncaught-server-errors-2546&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;Previously, TestCafe ignored uncaught errors and unhandled promise rejections that occurred on the server. Whenever an error or a promise rejection happened, test execution continued.&lt;/p&gt;
-
-&lt;p&gt;Starting from v0.22.0, tests fail if a server error or promise rejection is unhandled. To return to the previous behavior, we have introduced the &lt;code&gt;skipUncaughtErrors&lt;/code&gt; option. Use the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-u---skip-uncaught-errors&quot;&gt;--skip-uncaught-errors&lt;/a&gt; flag in the command line or the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#run&quot;&gt;skipUncaughtErrors&lt;/a&gt; option in the API.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome tests/fixture.js &lt;span class=&quot;nt&quot;&gt;--skipUncaughtErrors&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;skipUncaughtErrors&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;use-glob-patterns-in-runnersrc-980&quot;&gt;&lt;/a&gt;⚙ Use Glob Patterns in &lt;code&gt;runner.src&lt;/code&gt; (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/980&quot;&gt;#980&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#use-glob-patterns-in-runnersrc-980&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;You can now use &lt;a href=&quot;https://github.com/isaacs/node-glob#glob-primer&quot;&gt;glob patterns&lt;/a&gt; in the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#src&quot;&gt;runner.src&lt;/a&gt; method to specify a set of test files.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;([&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;/home/user/tests/**/*.js&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;!/home/user/tests/foo.js&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;RequestLogger&lt;/code&gt; no longer fails when it tries to stringify a null request body (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2718&quot;&gt;#2718&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Temporary directories are now correctly removed when the test run is finished (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2735&quot;&gt;#2735&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;TestCafe no longer throws &lt;code&gt;ECONNRESET&lt;/code&gt; when run against a Webpack project (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2711&quot;&gt;#2711&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;An error is no longer thrown when TestCafe tests Sencha ExtJS applications in IE11 (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2639&quot;&gt;#2639&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Firefox no longer waits for page elements to appear without necessity (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2080&quot;&gt;#2080&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;${BROWSER}&lt;/code&gt; in the screenshot pattern now correctly resolves to the browser name (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2742&quot;&gt;#2742&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;The &lt;code&gt;toString&lt;/code&gt; function now returns a native string for overridden descriptor ancestors (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1713&quot;&gt;testcafe-hammerhead/#1713&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;The &lt;code&gt;iframe&lt;/code&gt; flag is no longer added when a form with &lt;code&gt;target=&amp;quot;_parent&amp;quot;&lt;/code&gt; is submitted (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1680&quot;&gt;testcafe-hammerhead/#1680&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Hammerhead no longer sends request headers in lower case (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1380&quot;&gt;testcafe-hammerhead/#1380&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;The overridden &lt;code&gt;createHTMLDocument&lt;/code&gt; method has the right context now (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1722&quot;&gt;testcafe-hammerhead/#1722&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Tests no longer lose connection (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1647&quot;&gt;testcafe-hammerhead/#1647&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;The case when both the &lt;code&gt;X-Frame-Options&lt;/code&gt; header and a CSP with &lt;code&gt;frame-ancestors&lt;/code&gt; are set is now handled correctly (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1666&quot;&gt;testcafe-hammerhead/#1666&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;The mechanism that resolves URLs on the client now works correctly (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1701&quot;&gt;testcafe-hammerhead/#1701&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;LiveNodeListWrapper&lt;/code&gt; now imitates the native behavior correctly (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1376&quot;&gt;testcafe-hammerhead/#1376&lt;/a&gt;)&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Mon, 03 Sep 2018 00:00:00 +0300</pubDate>
-        <link>https://devexpress.github.io/testcafe/blog/testcafe-v0-22-0-released.html</link>
-        <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v0-22-0-released.html</guid>
         
         
       </item>

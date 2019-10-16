@@ -821,9 +821,10 @@
 
 <ul>
 <li><a href="#prerequisites-for-screenshots">Prerequisites for Screenshots</a></li>
-<li><a href="#enable-screenshots">Enable Screenshots</a></li>
 <li><a href="#take-screenshots-at-arbitrary-moments-during-test-run">Take Screenshots at Arbitrary Moments During Test Run</a></li>
 <li><a href="#take-screenshots-when-a-test-fails">Take Screenshots When a Test Fails</a></li>
+<li><a href="#screenshot-options">Screenshot Options</a></li>
+<li><a href="#disable-screenshots">Disable Screenshots</a></li>
 </ul></li>
 <li><a href="#record-videos">Record Videos</a>
 
@@ -833,13 +834,14 @@
 <li><a href="#basic-video-options">Basic Video Options</a></li>
 <li><a href="#video-encoding-options">Video Encoding Options</a></li>
 </ul></li>
-<li><a href="#where-screenshots-and-videos-are-saved">Where Screenshots and Videos Are Saved</a>
+<li><a href="#screenshot-and-video-directories">Screenshot and Video Directories</a>
 
 <ul>
-<li><a href="#default-path-patterns">Default Path Patterns</a></li>
+<li><a href="#base-directory">Base Directory</a></li>
+<li><a href="#subdirectories-and-file-names">Subdirectories and File Names</a></li>
+<li><a href="#path-patterns">Path Patterns</a></li>
+<li><a href="#default-path-pattern">Default Path Pattern</a></li>
 <li><a href="#custom-path-patterns">Custom Path Patterns</a></li>
-<li><a href="#screenshot-custom-path-pattern">Screenshot Custom Path Pattern</a></li>
-<li><a href="#video-custom-path-pattern">Video Custom Path Pattern</a></li>
 <li><a href="#path-pattern-placeholders">Path Pattern Placeholders</a></li>
 </ul></li>
 </ul>
@@ -848,24 +850,6 @@
 <blockquote class="important"><div class="blockquote-content"><p>Screenshots are not supported when you run tests in <a href="browsers/browser-support.html#browsers-on-remote-devices">remote browsers</a>.</p>
 </div></blockquote><h3><a class="anchor" id="prerequisites-for-screenshots"></a>Prerequisites for Screenshots <a class="permalink" href="#prerequisites-for-screenshots">#</a></h3>
 <p>Screenshots require .NET 4.0 or newer installed on Windows machines and an <a href="https://en.wikipedia.org/wiki/Comparison_of_X_window_managers">ICCCM/EWMH-compliant window manager</a> on Linux.</p>
-<h3><a class="anchor" id="enable-screenshots"></a>Enable Screenshots <a class="permalink" href="#enable-screenshots">#</a></h3>
-<p>To enable TestCafe to take screenshots, use either of the following:</p>
-
-<ul>
-<li><p>the <a href="../command-line-interface.html#-s-path---screenshots-path">-s (--screenshots)</a> command line flag,</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js <span class="nt">-s</span> artifacts/screenshots
-</code></pre></div></li>
-<li><p>the <a href="../programming-interface/runner.html#screenshots">runner.screenshots</a> API method,</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">screenshots</span><span class="p">(</span><span class="dl">'</span><span class="s1">artifacts/screenshots</span><span class="dl">'</span><span class="p">);</span>
-</code></pre></div></li>
-<li><p>the <a href="../configuration-file.html#screenshotpath">screenshotPath</a> configuration file property.</p>
-<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nl">"screenshotPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"artifacts/screenshots"</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre></div></li>
-</ul>
-
-<p>You must provide the base path where TestCafe stores screenshots to this flag, method or property. See <a href="#where-screenshots-and-videos-are-saved">Where Screenshots and Videos Are Saved</a> for more information.</p>
 <h3><a class="anchor" id="take-screenshots-at-arbitrary-moments-during-test-run"></a>Take Screenshots at Arbitrary Moments During Test Run <a class="permalink" href="#take-screenshots-at-arbitrary-moments-during-test-run">#</a></h3>
 <p>You can take screenshots at any moment during test run. Use the <a href="../../test-api/actions/take-screenshot.html#take-a-screenshot-of-the-entire-page">t.takeScreenshot</a> action to take a screenshot of the entire page, or the <a href="../../test-api/actions/take-screenshot.html#take-a-screenshot-of-a-page-element">t.takeElementScreenshot</a> action to capture a particular element.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
@@ -884,15 +868,94 @@
 <p>You can configure TestCafe to automatically take a screenshot whenever a test fails. Use either of the following:</p>
 
 <ul>
-<li><p>the <a href="../command-line-interface.html#-s---screenshots-on-fails">-S (--screenshots-on-fails)</a> command line flag,</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome tests/sample-fixture.js <span class="nt">-S</span> <span class="nt">-s</span> artifacts/screenshots
+<li><p>the <a href="../command-line-interface.html#takeonfails">takeOnFails</a> parameter in the <code>-s</code> (<code>--screenshots</code>) command line flag,</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome tests/sample-fixture.js <span class="nt">-s</span> <span class="nv">takeOnFails</span><span class="o">=</span><span class="nb">true</span>
 </code></pre></div></li>
 <li><p>the <code>takeOnFails</code> parameter of the <a href="../programming-interface/runner.html#screenshots">runner.screenshots</a> API method,</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">screenshots</span><span class="p">(</span><span class="dl">'</span><span class="s1">artifacts/screenshots</span><span class="dl">'</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">screenshots</span><span class="p">({</span>
+    <span class="na">takeOnFails</span><span class="p">:</span> <span class="kc">true</span>
+<span class="p">});</span>
 </code></pre></div></li>
-<li><p>the <a href="../configuration-file.html#takescreenshotsonfails">takeScreenshotsOnFails</a> configuration file property.</p>
+<li><p>the <a href="../configuration-file.html#screenshotstakeonfails">screenshots.takeOnfails</a> configuration file property.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nl">"takeScreenshotsOnFails"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="nl">"screenshots"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"takeOnFails"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></li>
+</ul>
+<h3><a class="anchor" id="screenshot-options"></a>Screenshot Options <a class="permalink" href="#screenshot-options">#</a></h3>
+<p>TestCafe supports the following screenshot options:</p>
+<div class="table-wrapper"><table><thead><tr>
+<th>Option</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default Value</th>
+</tr>
+</thead><tbody><tr>
+<td><code>path</code></td>
+<td>String</td>
+<td>The base directory where screenshots are saved.</td>
+<td><code>./screenshots</code></td>
+</tr>
+<tr>
+<td><code>takeOnFails</code></td>
+<td>Boolean</td>
+<td><code>true</code> to take a screenshot whenever a test fails.</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>pathPattern</code></td>
+<td>String</td>
+<td>A pattern that defines how TestCafe composes the relative path to a screenshot file. See <a href="#screenshot-and-video-directories">Screenshot and Video Directories</a>.</td>
+<td>See <a href="#default-path-pattern">Default Path Pattern</a>.</td>
+</tr>
+<tr>
+<td><code>fullPage</code></td>
+<td>String</td>
+<td><code>true</code> to capture the full page, including content that is not visible due to overflow.</td>
+<td><code>false</code></td>
+</tr>
+</tbody></table></div>
+<p>You can specify screenshot options in either of the following ways:</p>
+
+<ul>
+<li><p>the <a href="../command-line-interface.html#-s---screenshots-optionvalueoption2value2">-s (--screenshots)</a> command line flag,</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js <span class="nt">-s</span> <span class="nv">path</span><span class="o">=</span>artifacts/screenshots,fullPage<span class="o">=</span><span class="nb">true</span>,pathPattern<span class="o">=</span><span class="k">${</span><span class="nv">TEST_INDEX</span><span class="k">}</span>/<span class="k">${</span><span class="nv">USERAGENT</span><span class="k">}</span>/<span class="k">${</span><span class="nv">FILE_INDEX</span><span class="k">}</span>.png
+</code></pre></div><blockquote><div class="blockquote-content"><p>Enclose parameter values in quotes if they contain spaces. In Windows <code>cmd.exe</code> shell, use double quotes.</p>
+</div></blockquote></li>
+<li><p>the <code>options</code> parameter of the <a href="../programming-interface/runner.html#screenshots">runner.screenshots</a> API method,</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">screenshots</span><span class="p">({</span>
+    <span class="na">path</span><span class="p">:</span> <span class="dl">'</span><span class="s1">artifacts/screenshots</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">fullPage</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="na">pathPattern</span><span class="p">:</span> <span class="dl">'</span><span class="s1">${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png</span><span class="dl">'</span>
+<span class="p">});</span>
+</code></pre></div></li>
+<li><p>the <a href="../configuration-file.html#screenshots">screenshots</a> configuration file property.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nl">"screenshots"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"artifacts/screenshots"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"fullPage"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"pathPattern"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></li>
+</ul>
+<h3><a class="anchor" id="disable-screenshots"></a>Disable Screenshots <a class="permalink" href="#disable-screenshots">#</a></h3>
+<p>You can prevent TestCafe from taking screenshots whenever a test fails or a <a href="../../test-api/actions/take-screenshot.html">screenshot action</a> is executed. Use one of the following options:</p>
+
+<ul>
+<li><p>the <a href="../command-line-interface.html#--disable-screenshots">--disable-screenshots</a> command line flag,</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome tests/sample-fixture.js <span class="nt">--disable-screenshots</span>
+</code></pre></div></li>
+<li><p>the <code>disableScreenshots</code> option of the <a href="../programming-interface/runner.html#run">runner.run</a> API method,</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">run</span><span class="p">({</span>
+    <span class="na">disableScreenshots</span><span class="p">:</span> <span class="kc">true</span>
+<span class="p">});</span>
+</code></pre></div></li>
+<li><p>the <a href="../configuration-file.html#disablescreenshots">disableScreenshots</a> configuration file property.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nl">"disableScreenshots"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div></li>
 </ul>
@@ -928,7 +991,7 @@
 </span></code></pre></div></li>
 </ul>
 
-<p>You should provide the base path where TestCafe stores videos to this flag, method or property. See <a href="#where-screenshots-and-videos-are-saved">Where Screenshots and Videos Are Saved</a> for more information.</p>
+<p>You should provide the base path where TestCafe stores videos to this flag, method or property. See <a href="#screenshot-and-video-directories">Screenshot and Video Directories</a> for more information.</p>
 
 <p>TestCafe records all the tests and saves the recording of each test in a separate file. To change this behavior, use the <code>failedOnly</code> and <code>singleFile</code> <a href="#basic-video-options">video options</a>.</p>
 <h3><a class="anchor" id="basic-video-options"></a>Basic Video Options <a class="permalink" href="#basic-video-options">#</a></h3>
@@ -960,8 +1023,8 @@
 <tr>
 <td><code>pathPattern</code></td>
 <td>String</td>
-<td>A pattern that defines how TestCafe composes the relative path to a video file and the file name. See <a href="#where-screenshots-and-videos-are-saved">Where Screenshots and Videos Are Saved</a>.</td>
-<td>See <a href="#default-path-patterns">Default Path Patterns</a>.</td>
+<td>A pattern that defines how TestCafe composes the relative path to a video file. See <a href="#screenshot-and-video-directories">Screenshot and Video Directories</a>.</td>
+<td>See <a href="#default-path-pattern">Default Path Pattern</a>.</td>
 </tr>
 </tbody></table></div>
 <p>You can specify video options in either of the following ways:</p>
@@ -969,7 +1032,8 @@
 <ul>
 <li><p>the <a href="../command-line-interface.html#--video-options-optionvalueoption2value2">--video-options</a> command line flag,</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js <span class="nt">--video</span> artifacts/videos <span class="nt">--video-options</span> <span class="nv">singleFile</span><span class="o">=</span><span class="nb">true</span>,failedOnly<span class="o">=</span><span class="nb">true</span>,pathPattern<span class="o">=</span><span class="k">${</span><span class="nv">TEST_INDEX</span><span class="k">}</span>/<span class="k">${</span><span class="nv">USERAGENT</span><span class="k">}</span>/<span class="k">${</span><span class="nv">FILE_INDEX</span><span class="k">}</span>.mp4
-</code></pre></div></li>
+</code></pre></div><blockquote><div class="blockquote-content"><p>Enclose parameter values in quotes if they contain spaces. In Windows <code>cmd.exe</code> shell, use double quotes.</p>
+</div></blockquote></li>
 <li><p>the <code>options</code> parameter of the <a href="../programming-interface/runner.html#video">runner.video</a> API method,</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">video</span><span class="p">(</span><span class="dl">'</span><span class="s1">artifacts/videos</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
     <span class="na">singleFile</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
@@ -1011,46 +1075,76 @@
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div></li>
 </ul>
-<h2><a class="anchor" id="where-screenshots-and-videos-are-saved"></a>Where Screenshots and Videos Are Saved <a class="permalink" href="#where-screenshots-and-videos-are-saved">#</a></h2>
-<p>You should specify the base path to the directory that stores screenshots or videos to enable these features. See <a href="#enable-screenshots">Enable Screenshots</a> and <a href="#enable-video-recording">Enable Video Recording</a>.</p>
+<h2><a class="anchor" id="screenshot-and-video-directories"></a>Screenshot and Video Directories <a class="permalink" href="#screenshot-and-video-directories">#</a></h2><h3><a class="anchor" id="base-directory"></a>Base Directory <a class="permalink" href="#base-directory">#</a></h3>
+<p><strong>Screenshots</strong></p>
 
-<p>Inside the base directory, screenshots and videos are organized into subdirectories and named according to the <a href="#default-path-patterns">default</a> or <a href="#custom-path-patterns">custom</a> <em>path patterns</em>.</p>
-<blockquote><div class="blockquote-content"><p>When you pass a specific path to the <a href="../../test-api/actions/take-screenshot.html#take-a-screenshot-of-the-entire-page">t.takeScreenshot</a> or <a href="../../test-api/actions/take-screenshot.html#take-a-screenshot-of-a-page-element">t.takeElementScreenshot</a> action, this path overrides the relative path defined by the <a href="#default-path-patterns">default</a> or <a href="#custom-path-patterns">custom path pattern</a>.</p>
-</div></blockquote><h3><a class="anchor" id="default-path-patterns"></a>Default Path Patterns <a class="permalink" href="#default-path-patterns">#</a></h3>
+<p>The <strong>default</strong> base directory for screenshots is <em>&lt;project&gt;/screenshots</em>.</p>
+
+<p>You can use the <code>path</code> <a href="#screenshot-options">option</a> to specify a different base directory:</p>
+
+<p><em>CLI</em></p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js <span class="nt">-s</span> <span class="nv">path</span><span class="o">=</span>artifacts/screenshots
+</code></pre></div>
+<p><em>API</em></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">screenshots</span><span class="p">({</span>
+    <span class="na">path</span><span class="p">:</span> <span class="dl">'</span><span class="s1">artifacts/screenshots</span><span class="dl">'</span>
+<span class="p">});</span>
+</code></pre></div>
+<p><em>Configuration file</em></p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nl">"screenshots"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"artifacts/screenshots"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p><strong>Videos</strong></p>
+
+<p>The base directory for video files must be specified in order to <a href="#enable-video-recording">enable video recording</a>:</p>
+
+<p><em>CLI</em></p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js <span class="nt">--video</span> artifacts/videos
+</code></pre></div>
+<p><em>API</em></p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">video</span><span class="p">(</span><span class="dl">'</span><span class="s1">artifacts/videos</span><span class="dl">'</span><span class="p">);</span>
+</code></pre></div>
+<p><em>Configuration file</em></p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nl">"videoPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"artifacts/videos"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h3><a class="anchor" id="subdirectories-and-file-names"></a>Subdirectories and File Names <a class="permalink" href="#subdirectories-and-file-names">#</a></h3>
+<p>Inside the base directory, screenshots and videos are organized into subdirectories and named according to the <em>path patterns</em>.</p>
+<h4><a class="anchor" id="path-patterns"></a>Path Patterns <a class="permalink" href="#path-patterns">#</a></h4>
+<p>A path pattern is a template for relative paths to individual screenshot or video files. The pattern uses <a href="#path-pattern-placeholders">placeholders</a> to define positions where TestCafe should insert values like date, time or browser name.</p>
+
+<p>The following example shows a path pattern for screenshot files:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">${DATE}_${TIME}/${BROWSER}/screenshot-${FILE_INDEX}.png
+</code></pre></div>
+<p>When TestCafe saves a screenshot or video file, it substitutes each placeholder with an actual value. For instance, the pattern shown above forms the following paths:</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">2019-10-02_11-35-40/Chrome/screenshot-1.png
+2019-10-02_11-35-40/Chrome/screenshot-2.png
+2019-10-02_11-35-40/Firefox/screenshot-1.png
+2019-10-02_11-35-40/Firefox/screenshot-2.png
+</code></pre></div>
+<p>You can use the <a href="#default-path-pattern">default</a> or <a href="#custom-path-patterns">custom path pattern</a>.</p>
+<blockquote><div class="blockquote-content"><p>When you take a screenshot with the <a href="../../test-api/actions/take-screenshot.html#take-a-screenshot-of-the-entire-page">t.takeScreenshot</a> or <a href="../../test-api/actions/take-screenshot.html#take-a-screenshot-of-a-page-element">t.takeElementScreenshot</a> action, you can specify the exact file path. In this instance, TestCafe saves this screenshot to the specified location and does not use patterns.</p>
+</div></blockquote><h4><a class="anchor" id="default-path-pattern"></a>Default Path Pattern <a class="permalink" href="#default-path-pattern">#</a></h4>
 <p>TestCafe composes paths to screenshots and videos according to the following pattern:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh"><span class="k">${</span><span class="nv">DATE</span><span class="k">}</span>_<span class="k">${</span><span class="nv">TIME</span><span class="k">}</span>/<span class="k">${</span><span class="nv">TEST_ID</span><span class="k">}</span>/<span class="k">${</span><span class="nv">RUN_ID</span><span class="k">}</span>/<span class="k">${</span><span class="nv">USERAGENT</span><span class="k">}</span>/<span class="k">${</span><span class="nv">FILE_INDEX</span><span class="k">}</span>.&lt;ext&gt;
 </code></pre></div>
-<p>where <code>&lt;ext&gt;</code> is <code>.png</code> for screenshots and <code>.mp4</code> for videos. See the meaning of other placeholders in the <a href="#path-pattern-placeholders">Path Pattern Placeholders</a> section.</p>
+<p>where <code>&lt;ext&gt;</code> is <code>.png</code> for screenshots and <code>.mp4</code> for videos.</p>
 
-<p>When TestCafe takes a screenshot because a test fails (see <a href="#take-screenshots-when-a-test-fails">Take Screenshots When a Test Fails</a>), it adds the <code>errors</code> subfolder to the pattern.</p>
+<p>When TestCafe <a href="#take-screenshots-when-a-test-fails">takes a screenshot because a test fails</a>, it adds the <code>errors</code> subfolder to the pattern.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh"><span class="k">${</span><span class="nv">DATE</span><span class="k">}</span>_<span class="k">${</span><span class="nv">TIME</span><span class="k">}</span>/<span class="k">${</span><span class="nv">TEST_ID</span><span class="k">}</span>/<span class="k">${</span><span class="nv">RUN_ID</span><span class="k">}</span>/<span class="k">${</span><span class="nv">USERAGENT</span><span class="k">}</span>/errors/<span class="k">${</span><span class="nv">FILE_INDEX</span><span class="k">}</span>.png
-</code></pre></div><h3><a class="anchor" id="custom-path-patterns"></a>Custom Path Patterns <a class="permalink" href="#custom-path-patterns">#</a></h3>
-<p>You can override the default path pattern for screenshots and videos.</p>
+</code></pre></div><h4><a class="anchor" id="custom-path-patterns"></a>Custom Path Patterns <a class="permalink" href="#custom-path-patterns">#</a></h4>
+<p>You can create a custom <a href="#path-patterns">path pattern</a> for screenshots and videos. Use <a href="#path-pattern-placeholders">placeholders</a> to define which values should be used in relative paths.</p>
 
-<p>To compose a custom pattern, use placeholders described in the <a href="#path-pattern-placeholders">Path Pattern Placeholders</a> section.</p>
-<h4><a class="anchor" id="screenshot-custom-path-pattern"></a>Screenshot Custom Path Pattern <a class="permalink" href="#screenshot-custom-path-pattern">#</a></h4>
-<p>To specify a path pattern for screenshots, use one of the following:</p>
-
-<ul>
-<li><p>the <a href="../command-line-interface.html#-p-pattern---screenshot-path-pattern-pattern">-p (--screenshot-path-pattern)</a> command line flag,</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js <span class="nt">-s</span> artifacts/screenshots <span class="nt">-p</span> <span class="s1">'${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png'</span>
-</code></pre></div>
-<p>In Windows <code>cmd.exe</code> shell, enclose the pattern in double quotes if it contains spaces:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js <span class="nt">-s</span> artifacts/screenshots <span class="nt">-p</span> <span class="s2">"</span><span class="k">${</span><span class="nv">DATE</span><span class="k">}</span><span class="s2"> </span><span class="k">${</span><span class="nv">TIME</span><span class="k">}</span><span class="s2">/test </span><span class="k">${</span><span class="nv">TEST_INDEX</span><span class="k">}</span><span class="s2">/</span><span class="k">${</span><span class="nv">USERAGENT</span><span class="k">}</span><span class="s2">/</span><span class="k">${</span><span class="nv">FILE_INDEX</span><span class="k">}</span><span class="s2">.png"</span>
-</code></pre></div></li>
-<li><p>the <code>pathPattern</code> parameter of the <a href="../programming-interface/runner.html#screenshots">runner.screenshots</a> API method,</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">screenshots</span><span class="p">(</span><span class="dl">'</span><span class="s1">artifacts/screenshots</span><span class="dl">'</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="dl">'</span><span class="s1">${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png</span><span class="dl">'</span><span class="p">);</span>
-</code></pre></div></li>
-<li><p>the <a href="../configuration-file.html#screenshotpathpattern">screenshotPathPattern</a> configuration file property.</p>
-<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nl">"screenshotPathPattern"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png"</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre></div></li>
-</ul>
-<h4><a class="anchor" id="video-custom-path-pattern"></a>Video Custom Path Pattern <a class="permalink" href="#video-custom-path-pattern">#</a></h4>
-<p>To specify a custom path pattern for videos, pass the <code>pathPattern</code> parameter to <a href="#basic-video-options">video options</a>.</p>
-<h3><a class="anchor" id="path-pattern-placeholders"></a>Path Pattern Placeholders <a class="permalink" href="#path-pattern-placeholders">#</a></h3>
-<p>The following placeholders are used in screenshot and video path patterns:</p>
+<p>To specify a custom pattern, use the <code>pathPattern</code> parameter in <a href="#screenshot-options">screenshot</a> or <a href="#basic-video-options">video</a> options.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js <span class="nt">-s</span> <span class="nv">pathPattern</span><span class="o">=</span><span class="k">${</span><span class="nv">DATE</span><span class="k">}</span>_<span class="k">${</span><span class="nv">TIME</span><span class="k">}</span>/test-<span class="k">${</span><span class="nv">TEST_INDEX</span><span class="k">}</span>/<span class="k">${</span><span class="nv">USERAGENT</span><span class="k">}</span>/<span class="k">${</span><span class="nv">FILE_INDEX</span><span class="k">}</span>.png
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">video</span><span class="p">(</span><span class="dl">'</span><span class="s1">artifacts/videos</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="na">pathPattern</span><span class="p">:</span> <span class="dl">'</span><span class="s1">${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.mp4</span><span class="dl">'</span>
+<span class="p">});</span>
+</code></pre></div><h4><a class="anchor" id="path-pattern-placeholders"></a>Path Pattern Placeholders <a class="permalink" href="#path-pattern-placeholders">#</a></h4>
+<p>You can use the following placeholders in screenshot and video path patterns:</p>
 <div class="table-wrapper"><table><thead><tr>
 <th>Placeholder</th>
 <th>Description</th>
