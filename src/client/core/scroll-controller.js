@@ -1,6 +1,6 @@
 import { eventSandbox, Promise } from './deps/hammerhead';
 import { EventEmitter } from './utils/service';
-
+import { domUtils } from './';
 
 const listeners = eventSandbox.listeners;
 
@@ -31,10 +31,23 @@ class ScrollController {
         listeners.addFirstInternalHandler(window, ['scroll'], (...args) => this._internalListener(...args));
     }
 
-    waitForScroll () {
+    waitForScroll (scrollElement) {
         let promiseResolver = null;
 
         const promise = new Promise(resolve => {
+
+            const isShadowElement = domUtils.findDocument(scrollElement) !== scrollElement.getRootNode();
+
+            if (isShadowElement) {
+                listeners.initElementListening(scrollElement, ['scroll']);
+
+                listeners.addFirstInternalHandler(scrollElement, ['scroll'], () => {
+                    listeners.cancelElementListening(scrollElement);
+
+                    resolve();
+                });
+            }
+
             promiseResolver = resolve;
         });
 

@@ -1,7 +1,8 @@
+import { flatten } from 'lodash';
+
 import hammerhead from '../deps/hammerhead';
 import * as domUtils from './dom';
 import { filter } from './array';
-
 
 const styleUtils   = hammerhead.utils.style;
 const browserUtils = hammerhead.utils.browser;
@@ -69,8 +70,31 @@ export function isNotVisibleNode (node) {
     return !domUtils.isRenderedNode(node) || isHiddenNode(node) || isVisibilityHiddenNode(node);
 }
 
+function getSlotParents (el) {
+    const parents = [el];
+
+    let parent  = domUtils.findParent(el.assignedSlot);
+
+    // eslint-disable-next-line no-restricted-properties
+    while (parent && !parent.host) {
+        parents.push(parent);
+
+        parent = domUtils.findParent(parent);
+    }
+
+    return parents;
+}
+
 export function getScrollableParents (element) {
-    const parentsArray = domUtils.getParents(element);
+    const parentsArray = flatten(
+        domUtils.getParents(element)
+            .map(parent => {
+                if (parent.assignedSlot)
+                    return getSlotParents(parent);
+
+                return parent;
+            }));
+
 
     if (domUtils.isElementInIframe(element)) {
         const iFrameParents = domUtils.getParents(domUtils.getIframeByElement(element));

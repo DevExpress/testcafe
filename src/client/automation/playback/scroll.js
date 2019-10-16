@@ -63,7 +63,7 @@ export default class ScrollAutomation {
         left = Math.max(left, 0);
         top  = Math.max(top, 0);
 
-        let scrollPromise = scrollController.waitForScroll();
+        let scrollPromise = scrollController.waitForScroll(scrollElement);
 
         styleUtils.setScrollLeft(scrollElement, left);
         styleUtils.setScrollTop(scrollElement, top);
