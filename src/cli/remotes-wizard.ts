@@ -4,8 +4,7 @@ import log from './log';
 import promisifyEvent from 'promisify-event';
 import dedent from 'dedent';
 
-
-export default async function (testCafe, remoteCount, showQRCode) {
+export default async function (testCafe: any, remoteCount: number, showQRCode: boolean): Promise<any> {
     const connectionPromises = [];
 
     if (remoteCount) {
@@ -31,8 +30,8 @@ export default async function (testCafe, remoteCount, showQRCode) {
         for (let i = 0; i < remoteCount; i++) {
             connectionPromises.push(testCafe
                 .createBrowserConnection()
-                .then(bc => promisifyEvent(bc, 'ready').then(() => bc))
-                .then(bc => {
+                .then((bc: any) => promisifyEvent(bc, 'ready').then(() => bc))
+                .then((bc: any) => {
                     log.write(`${chalk.green('CONNECTED')} ${bc.userAgent}`);
                     return bc;
                 })
