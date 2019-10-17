@@ -245,7 +245,7 @@ export default class BrowserProvider {
 
     public async closeBrowser (browserId: string): Promise<void> {
         const canUseDefaultWindowActions = await this._canUseDefaultWindowActions(browserId);
-        const customActionsInfo          = await this.getCustomActionsInfo(browserId);
+        const customActionsInfo          = await this.hasCustomActionForBrowser(browserId);
         const hasCustomCloseBrowser      = customActionsInfo.hasCloseBrowser;
         const usePluginsCloseBrowser     = hasCustomCloseBrowser || !canUseDefaultWindowActions;
 
@@ -268,7 +268,7 @@ export default class BrowserProvider {
 
     public async resizeWindow (browserId: string, width: number, height: number, currentWidth: number, currentHeight: number): Promise<void> {
         const canUseDefaultWindowActions = await this._canUseDefaultWindowActions(browserId);
-        const customActionsInfo          = await this.getCustomActionsInfo(browserId);
+        const customActionsInfo          = await this.hasCustomActionForBrowser(browserId);
         const hasCustomResizeWindow      = customActionsInfo.hasResizeWindow;
 
 
@@ -282,7 +282,7 @@ export default class BrowserProvider {
 
     public async canResizeWindowToDimensions (browserId: string, width: number, height: number): Promise<boolean> {
         const canUseDefaultWindowActions     = await this._canUseDefaultWindowActions(browserId);
-        const customActionsInfo              = await this.getCustomActionsInfo(browserId);
+        const customActionsInfo              = await this.hasCustomActionForBrowser(browserId);
         const hasCustomCanResizeToDimensions = customActionsInfo.hasCanResizeWindowToDimensions;
 
 
@@ -294,7 +294,7 @@ export default class BrowserProvider {
 
     public async maximizeWindow (browserId: string): Promise<void> {
         const canUseDefaultWindowActions = await this._canUseDefaultWindowActions(browserId);
-        const customActionsInfo          = await this.getCustomActionsInfo(browserId);
+        const customActionsInfo          = await this.hasCustomActionForBrowser(browserId);
         const hasCustomMaximizeWindow    = customActionsInfo.hasMaximizeWindow;
 
         if (canUseDefaultWindowActions && !hasCustomMaximizeWindow)
@@ -305,7 +305,7 @@ export default class BrowserProvider {
 
     public async takeScreenshot (browserId: string, screenshotPath: string, pageWidth: number, pageHeight: number, fullPage: boolean): Promise<void> {
         const canUseDefaultWindowActions = await this._canUseDefaultWindowActions(browserId);
-        const customActionsInfo          = await this.getCustomActionsInfo(browserId);
+        const customActionsInfo          = await this.hasCustomActionForBrowser(browserId);
         const hasCustomTakeScreenshot    = customActionsInfo.hasTakeScreenshot;
 
         if (canUseDefaultWindowActions && !hasCustomTakeScreenshot) {
@@ -325,7 +325,7 @@ export default class BrowserProvider {
         return this.plugin.getVideoFrameData(browserId);
     }
 
-    public async getCustomActionsInfo (browserId: string): Promise<any> {
+    public async hasCustomActionForBrowser (browserId: string): Promise<any> {
         return this.plugin.hasCustomActionForBrowser(browserId);
     }
 
