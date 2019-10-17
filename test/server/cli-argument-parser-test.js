@@ -650,15 +650,11 @@ describe('CLI argument parser', function () {
             { long: '--video-encoding-options' },
             { long: '--ts-config-path' },
             { long: '--client-scripts', short: '--cs' },
-<<<<<<< HEAD
             { long: '--disable-page-caching' },
             { long: '--disable-page-reloads' },
-            { long: '--disable-screenshots' }
-=======
+            { long: '--disable-screenshots' },
             { long: '--screenshots-full-page' },
-            { long: '--disable-page-caching' },
             { long: '--allow-multiple-windows', short: '-m' }
->>>>>>> initial
         ];
 
         const parser  = new CliArgumentParser('');
