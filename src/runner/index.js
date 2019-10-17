@@ -332,15 +332,16 @@ export default class Runner extends EventEmitter {
         this.configuration.prepare();
         this.configuration.notifyAboutOverriddenOptions();
 
-        this.bootstrapper.sources       = this.configuration.getOption(OPTION_NAMES.src) || this.bootstrapper.sources;
-        this.bootstrapper.browsers      = this.configuration.getOption(OPTION_NAMES.browsers) || this.bootstrapper.browsers;
-        this.bootstrapper.concurrency   = this.configuration.getOption(OPTION_NAMES.concurrency);
-        this.bootstrapper.appCommand    = this.configuration.getOption(OPTION_NAMES.appCommand) || this.bootstrapper.appCommand;
-        this.bootstrapper.appInitDelay  = this.configuration.getOption(OPTION_NAMES.appInitDelay);
-        this.bootstrapper.filter        = this.configuration.getOption(OPTION_NAMES.filter) || this.bootstrapper.filter;
-        this.bootstrapper.reporters     = this.configuration.getOption(OPTION_NAMES.reporter) || this.bootstrapper.reporters;
-        this.bootstrapper.tsConfigPath  = this.configuration.getOption(OPTION_NAMES.tsConfigPath);
-        this.bootstrapper.clientScripts = this.configuration.getOption(OPTION_NAMES.clientScripts) || this.bootstrapper.clientScripts;
+        this.bootstrapper.sources              = this.configuration.getOption(OPTION_NAMES.src) || this.bootstrapper.sources;
+        this.bootstrapper.browsers             = this.configuration.getOption(OPTION_NAMES.browsers) || this.bootstrapper.browsers;
+        this.bootstrapper.concurrency          = this.configuration.getOption(OPTION_NAMES.concurrency);
+        this.bootstrapper.appCommand           = this.configuration.getOption(OPTION_NAMES.appCommand) || this.bootstrapper.appCommand;
+        this.bootstrapper.appInitDelay         = this.configuration.getOption(OPTION_NAMES.appInitDelay);
+        this.bootstrapper.filter               = this.configuration.getOption(OPTION_NAMES.filter) || this.bootstrapper.filter;
+        this.bootstrapper.reporters            = this.configuration.getOption(OPTION_NAMES.reporter) || this.bootstrapper.reporters;
+        this.bootstrapper.tsConfigPath         = this.configuration.getOption(OPTION_NAMES.tsConfigPath);
+        this.bootstrapper.clientScripts        = this.configuration.getOption(OPTION_NAMES.clientScripts) || this.bootstrapper.clientScripts;
+        this.bootstrapper.allowMultipleWindows = this.configuration.getOption(OPTION_NAMES.allowMultipleWindows) || this.bootstrapper.allowMultipleWindows;
     }
 
     // API

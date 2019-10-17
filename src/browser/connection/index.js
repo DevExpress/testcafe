@@ -16,7 +16,7 @@ const connections        = {};
 
 
 export default class BrowserConnection extends EventEmitter {
-    constructor (gateway, browserInfo, permanent) {
+    constructor (gateway, browserInfo, permanent, allowMultipleWindows) {
         super();
 
         this.HEARTBEAT_TIMEOUT       = HEARTBEAT_TIMEOUT;
@@ -35,14 +35,15 @@ export default class BrowserConnection extends EventEmitter {
 
         this.provider = browserInfo.provider;
 
-        this.permanent         = permanent;
-        this.closing           = false;
-        this.closed            = false;
-        this.ready             = false;
-        this.opened            = false;
-        this.idle              = true;
-        this.heartbeatTimeout  = null;
-        this.pendingTestRunUrl = null;
+        this.permanent            = permanent;
+        this.closing              = false;
+        this.closed               = false;
+        this.ready                = false;
+        this.opened               = false;
+        this.idle                 = true;
+        this.heartbeatTimeout     = null;
+        this.pendingTestRunUrl    = null;
+        this.allowMultipleWindows = allowMultipleWindows;
 
         this.url           = `${gateway.domain}/browser/connect/${this.id}`;
         this.idleUrl       = `${gateway.domain}/browser/idle/${this.id}`;
@@ -75,7 +76,7 @@ export default class BrowserConnection extends EventEmitter {
 
     async _runBrowser () {
         try {
-            await this.provider.openBrowser(this.id, this.url, this.browserInfo.browserName);
+            await this.provider.openBrowser(this.id, this.url, this.browserInfo.browserName, this.allowMultipleWindows);
 
             if (!this.ready)
                 await promisifyEvent(this, 'ready');
