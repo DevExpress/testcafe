@@ -56,7 +56,7 @@ export default class Bootstrapper {
             return [];
 
         return browserInfo
-            .map(browser => times(this.concurrency, () => new BrowserConnection(this.browserConnectionGateway, browser, this.allowMultipleWindows)));
+            .map(browser => times(this.concurrency, () => new BrowserConnection(this.browserConnectionGateway, browser, false, this.allowMultipleWindows)));
     }
 
     async _getBrowserConnections (browserInfo) {
