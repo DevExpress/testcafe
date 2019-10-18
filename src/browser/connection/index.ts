@@ -36,7 +36,7 @@ interface InitScript {
 
 export default class BrowserConnection extends EventEmitter {
     private gateway: any;
-    private browserInfo: any;
+    public browserInfo: any;
     private permanent: any;
     private readonly allowMultipleWindows: any;
     private readonly HEARTBEAT_TIMEOUT: number;
@@ -52,7 +52,7 @@ export default class BrowserConnection extends EventEmitter {
     private closed: boolean;
     private ready: boolean;
     private opened: boolean;
-    private idle: boolean;
+    public idle: boolean;
     private heartbeatTimeout: NodeJS.Timeout | null;
     private pendingTestRunUrl: string | null;
     private readonly url: string;

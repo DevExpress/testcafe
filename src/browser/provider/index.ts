@@ -78,7 +78,7 @@ export default class BrowserProvider {
     }
 
     private _isBrowserIdle (browserId: string): boolean {
-        const connection = BrowserConnection.getById(browserId);
+        const connection = BrowserConnection.getById(browserId) as BrowserConnection;
 
         return connection.idle;
     }
@@ -310,7 +310,7 @@ export default class BrowserProvider {
 
         if (canUseDefaultWindowActions && !hasCustomTakeScreenshot) {
             if (fullPage) {
-                const connection = BrowserConnection.getById(browserId);
+                const connection = BrowserConnection.getById(browserId) as BrowserConnection;
 
                 connection.addWarning(WARNING_MESSAGE.screenshotsFullPageNotSupported, connection.browserInfo.alias);
             }
