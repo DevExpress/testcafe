@@ -11,7 +11,6 @@ import { GeneralError } from '../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../errors/types';
 import { HEARTBEAT_TIMEOUT, BROWSER_RESTART_TIMEOUT } from '../../utils/browser-connection-timeouts';
 import { Dictionary } from '../../configuration/interfaces';
-//import Timeout = NodeJS.Timeout;
 
 const IDLE_PAGE_TEMPLATE                         = read('../../client/browser/idle-page/index.html.mustache');
 const connections: Dictionary<BrowserConnection> = {};

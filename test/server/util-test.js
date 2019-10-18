@@ -19,6 +19,7 @@ const resolvePathRelativelyCwd         = require('../../lib/utils/resolve-path-r
 const getFilterFn                      = require('../../lib/utils/get-filter-fn');
 const prepareReporters                 = require('../../lib/utils/prepare-reporters');
 const { replaceLeadingSpacesWithNbsp } = require('../../lib/errors/test-run/utils');
+const createTempProfile                = require('../../lib/browser/provider/built-in/dedicated/chrome/create-temp-profile');
 
 const {
     buildChromeArgs,
@@ -446,5 +447,38 @@ describe('Utils', () => {
         expect(inDockerFlagMatch.length).eql(1);
         inDockerFlagMatch = chromeArgs.match(DISABLE_DEV_SHM_USAGE_RE);
         expect(inDockerFlagMatch.length).eql(1);
+    });
+
+    describe('Create temporary profile for the Google Chrome browser', () => {
+        const TMP_ROOT     = resolvePathRelativelyCwd('__tmp__');
+        const savedTmpRoot = TempDirectory.TEMP_DIRECTORIES_ROOT;
+
+        beforeEach(() => {
+            TempDirectory.TEMP_DIRECTORIES_ROOT = TMP_ROOT;
+
+            return del(TMP_ROOT);
+        });
+
+        afterEach(() => {
+            TempDirectory.TEMP_DIRECTORIES_ROOT = savedTmpRoot;
+
+            return del(TMP_ROOT);
+        });
+
+        it("With 'allowMultipleWindows' option", async () => {
+            const tempDir     = await createTempProfile('testhost', true);
+            const profileFile = path.join(tempDir.path, 'Default', 'Preferences');
+            const preferences = JSON.parse(fs.readFileSync(profileFile));
+
+            expect(preferences.profile.content_settings.exceptions.popups).eql({'testhost': { setting: 1}});
+        });
+
+        it("Without 'allowMultipleWindows' option", async () => {
+            const tempDir     = await createTempProfile('testhost', false);
+            const profileFile = path.join(tempDir.path, 'Default', 'Preferences');
+            const preferences = JSON.parse(fs.readFileSync(profileFile));
+
+            expect(preferences.profile.content_settings.exceptions.popups).to.be.undefined;
+        });
     });
 });
