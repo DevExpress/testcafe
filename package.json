@@ -54,11 +54,7 @@
     "prepublish": "publish-please guard"
   },
   "dependencies": {
-    "@types/mime-db": "^1.27.0",
-    "@types/mustache": "^0.8.32",
-    "@types/nanoid": "^2.0.0",
     "@types/node": "^10.12.19",
-    "@types/useragent": "^2.1.1",
     "async-exit-hook": "^1.1.2",
     "babel-core": "^6.22.1",
     "babel-plugin-transform-class-properties": "^6.24.1",
@@ -139,6 +135,10 @@
     "@types/debug": "^4.1.5",
     "@types/dedent": "^0.7.0",
     "@types/json5": "0.0.30",
+    "@types/mime-db": "^1.27.0",
+    "@types/mustache": "^0.8.32",
+    "@types/nanoid": "^2.1.0",
+    "@types/useragent": "^2.1.1",
     "@typescript-eslint/eslint-plugin": "1.13.0",
     "@typescript-eslint/parser": "1.13.0",
     "babel-plugin-add-module-exports": "^0.2.0",
