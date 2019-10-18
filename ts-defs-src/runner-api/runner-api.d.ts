@@ -165,6 +165,11 @@ interface Runner {
      * Stops all the pending test tasks.
      */
     stop(): void;
+
+    /**
+     * The absolute or relative path to the TypeScript configuration file. Relative paths resolve from the current directory (the directory from which you run TestCafe).
+     */
+    tsConfigPath(path: string): this;
 }
 
 interface BrowserConnection {
