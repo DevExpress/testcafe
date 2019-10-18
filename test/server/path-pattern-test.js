@@ -1,7 +1,7 @@
 const path           = require('path');
 const expect         = require('chai').expect;
 const moment         = require('moment');
-const parseUserAgent = require('../../lib/browser/connection')._parseUserAgent;
+const parseUserAgent = require('../../lib/utils/parse-user-agent');
 const PathPattern    = require('../../lib/utils/path-pattern');
 
 

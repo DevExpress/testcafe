@@ -1,5 +1,5 @@
 const expect         = require('chai').expect;
-const parseUserAgent = require('useragent').parse;
+const parseUserAgent = require('../../../../../../lib/utils/parse-user-agent');
 const config         = require('../../../../config');
 
 describe('[API] t.eval', function () {
@@ -13,7 +13,7 @@ describe('[API] t.eval', function () {
             if (!isErrorsArray && !errs)
                 throw new Error('Error for "' + alias + '" haven\'t created');
 
-            const ua = parseUserAgent(errs[0]).toString().toLowerCase();
+            const ua = parseUserAgent(errs[0]).userAgent.toLowerCase();
 
             expect(ua.indexOf(expected)).eql(0, ua + ' doesn\'t start with "' + expected + '"');
         }

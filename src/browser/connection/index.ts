@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
 import Mustache from 'mustache';
 import { pull as remove } from 'lodash';
-import Bowser from 'bowser';
+import parseUserAgent from '../../utils/parse-user-agent';
 import { readSync as read } from 'read-file-relative';
 import promisifyEvent from 'promisify-event';
 import nanoid from 'nanoid';
@@ -259,50 +259,6 @@ export default class BrowserConnection extends EventEmitter {
         this.disconnectionPromise.reject  = rejectFn as unknown as Function;
     }
 
-    static _parseUserAgent (userAgent, alias) {
-        let parsedUserAgent;
-
-        if (!userAgent) {
-            parsedUserAgent = Bowser.parse(' ');
-
-            parsedUserAgent.browser.name    = 'Other';
-            parsedUserAgent.browser.version = '0.0';
-        }
-        else
-            parsedUserAgent = Bowser.parse(userAgent);
-
-
-        const headless = alias.indexOf(':headless') !== -1;
-
-        const os = {};
-
-        if (parsedUserAgent.os.name) {
-            os.name = parsedUserAgent.os.name;
-
-            // NOTE: we use the more readable 'versionName' property in the case of Windows.
-            // Windows 8.1: os.version: "NT 6.3", os.versionName: "8.1" (GH-481).
-            if (parsedUserAgent.os.name.toLowerCase() === 'windows' && parsedUserAgent.os.versionName)
-                os.version = parsedUserAgent.os.versionName;
-            else if (parsedUserAgent.os.version)
-                os.version = parsedUserAgent.os.version;
-        }
-
-        const compactUserAgent = parsedUserAgent.browser.name + ' ' + parsedUserAgent.browser.version +
-                                 (parsedUserAgent.os.name ? ' / ' + parsedUserAgent.os.name + (os.version ? ' ' + os.version : '') : '');
-
-        return {
-            alias,
-            headless,
-            name:          parsedUserAgent.browser.name,
-            version:       parsedUserAgent.browser.version,
-            platform:      parsedUserAgent.platform.type,
-            os,
-            engine:        parsedUserAgent.engine,
-            userAgent:     compactUserAgent,
-            fullUserAgent: userAgent
-        };
-    }
-
     public async processDisconnection (disconnectionThresholdExceedeed: boolean): Promise<void> {
         const { resolve, reject } = this.disconnectionPromise as DisconnectionPromise<void>;
 
@@ -376,7 +332,7 @@ export default class BrowserConnection extends EventEmitter {
 
         this.browserInfo.fullUserAgent = userAgent;
 
-        const parsedUserAgent = BrowserConnection._parseUserAgent(userAgent, this.browserInfo.alias);
+        const parsedUserAgent = parseUserAgent(userAgent, this.browserInfo.alias);
 
         this.browserInfo.parsedUserAgent = parsedUserAgent;
         this.browserInfo.userAgent       = this.browserInfo.parsedUserAgent.userAgent;

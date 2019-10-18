@@ -1,6 +1,6 @@
 import { ConfigureResponseEventOptions } from 'testcafe-hammerhead';
 import RequestHook from './hook';
-import { parse as parseUserAgent } from 'useragent';
+import parseUserAgent from '../../utils/parse-user-agent';
 import testRunTracker from '../test-run-tracker';
 import ReExecutablePromise from '../../utils/re-executable-promise';
 import { APIError } from '../../errors/runtime';
