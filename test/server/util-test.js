@@ -470,7 +470,7 @@ describe('Utils', () => {
             const profileFile = path.join(tempDir.path, 'Default', 'Preferences');
             const preferences = JSON.parse(fs.readFileSync(profileFile));
 
-            expect(preferences.profile.content_settings.exceptions.popups).eql({'testhost': { setting: 1}});
+            expect(preferences.profile.content_settings.exceptions.popups).eql({ 'testhost': { setting: 1 } });
         });
 
         it("Without 'allowMultipleWindows' option", async () => {
