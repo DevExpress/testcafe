@@ -21,8 +21,9 @@ export default {
         return cdp;
     },
 
-    async openBrowser (browserId, pageUrl, configString) {
-        const runtimeInfo = await getRuntimeInfo(parseUrl(pageUrl).hostname, configString);
+    async openBrowser (browserId, pageUrl, configString, allowMultipleWindows) {
+        const parsedPageUrl = parseUrl(pageUrl);
+        const runtimeInfo   = await getRuntimeInfo(parsedPageUrl.hostname, configString, allowMultipleWindows);
 
         runtimeInfo.browserName = this._getBrowserName();
         runtimeInfo.browserId   = browserId;

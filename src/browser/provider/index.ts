@@ -78,7 +78,7 @@ export default class BrowserProvider {
     }
 
     private _isBrowserIdle (browserId: string): boolean {
-        const connection = BrowserConnection.getById(browserId);
+        const connection = BrowserConnection.getById(browserId) as BrowserConnection;
 
         return connection.idle;
     }
@@ -236,8 +236,8 @@ export default class BrowserProvider {
         return this.plugin.isHeadlessBrowser(browserId);
     }
 
-    public async openBrowser (browserId: string, pageUrl: string, browserName: string): Promise<void> {
-        await this.plugin.openBrowser(browserId, pageUrl, browserName);
+    public async openBrowser (browserId: string, pageUrl: string, browserName: string, allowMultipleWindows: boolean): Promise<void> {
+        await this.plugin.openBrowser(browserId, pageUrl, browserName, allowMultipleWindows);
 
         if (await this._canUseDefaultWindowActions(browserId))
             await this._ensureBrowserWindowParameters(browserId);
@@ -310,7 +310,7 @@ export default class BrowserProvider {
 
         if (canUseDefaultWindowActions && !hasCustomTakeScreenshot) {
             if (fullPage) {
-                const connection = BrowserConnection.getById(browserId);
+                const connection = BrowserConnection.getById(browserId) as BrowserConnection;
 
                 connection.addWarning(WARNING_MESSAGE.screenshotsFullPageNotSupported, connection.browserInfo.alias);
             }

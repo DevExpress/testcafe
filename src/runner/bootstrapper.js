@@ -25,6 +25,7 @@ export default class Bootstrapper {
         this.appInitDelay             = null;
         this.tsConfigPath             = null;
         this.clientScripts            = [];
+        this.allowMultipleWindows     = false;
     }
 
     static _splitBrowserInfo (browserInfo) {
@@ -55,7 +56,7 @@ export default class Bootstrapper {
             return [];
 
         return browserInfo
-            .map(browser => times(this.concurrency, () => new BrowserConnection(this.browserConnectionGateway, browser)));
+            .map(browser => times(this.concurrency, () => new BrowserConnection(this.browserConnectionGateway, browser, false, this.allowMultipleWindows)));
     }
 
     async _getBrowserConnections (browserInfo) {

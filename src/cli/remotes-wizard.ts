@@ -3,6 +3,7 @@ import chalk from 'chalk';
 import log from './log';
 import promisifyEvent from 'promisify-event';
 import dedent from 'dedent';
+import BrowserConnection from '../browser/connection';
 
 export default async function (testCafe: any, remoteCount: number, showQRCode: boolean): Promise<any> {
     const connectionPromises = [];
@@ -30,8 +31,8 @@ export default async function (testCafe: any, remoteCount: number, showQRCode: b
         for (let i = 0; i < remoteCount; i++) {
             connectionPromises.push(testCafe
                 .createBrowserConnection()
-                .then((bc: any) => promisifyEvent(bc, 'ready').then(() => bc))
-                .then((bc: any) => {
+                .then((bc: BrowserConnection) => promisifyEvent(bc, 'ready').then(() => bc))
+                .then((bc: BrowserConnection) => {
                     log.write(`${chalk.green('CONNECTED')} ${bc.userAgent}`);
                     return bc;
                 })
