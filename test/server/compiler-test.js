@@ -355,6 +355,21 @@ describe('Compiler', function () {
                 expect(value.error).is.null;
             });
         });
+
+        it('Should provide correct globals when they are redeclared in node_modules/@types', async () => {
+            const currentDir = process.cwd();
+            const scriptDir  = 'test/server/data/test-suites/typescript-test-redeclared-in-types';
+            const scriptName = 'testfile.ts';
+
+            process.chdir(scriptDir);
+
+            try {
+                return await compile(scriptName);
+            }
+            finally {
+                process.chdir(currentDir);
+            }
+        });
     });
 
 
