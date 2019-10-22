@@ -35,7 +35,8 @@ const OPTION_FLAG_NAMES = [
     OPTION_NAMES.takeScreenshotsOnFails,
     OPTION_NAMES.disablePageCaching,
     OPTION_NAMES.disablePageReloads,
-    OPTION_NAMES.disableScreenshots
+    OPTION_NAMES.disableScreenshots,
+    OPTION_NAMES.allowMultipleWindows
 ];
 
 const OPTION_INIT_FLAG_NAMES = [
