@@ -2,7 +2,6 @@ declare module 'testcafe' {
     global {
         {{#format}}
             {{>test-api-types.d.ts}}
-            {{>test-api-globals.d.ts}}
             {{>runner-api.d.ts}}
         {{/format}}
     }
@@ -15,3 +14,6 @@ declare module 'testcafe' {
 
     export default createTestCafe;
 }
+
+
+{{>test-api-globals.d.ts}}
