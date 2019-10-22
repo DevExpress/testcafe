@@ -101,11 +101,11 @@ export default class StatusBar extends serviceUtils.EventEmitter {
             debugging:        false,
             waiting:          false,
             assertionRetries: false,
-            hidden:           false,
-            customStatus:     false
+            hidden:           false
         };
 
-        this.currentView = null;
+        this.currentView       = null;
+        this.statusPrefixText  = '';
 
         this._createBeforeReady();
         this._initChildListening();
@@ -281,7 +281,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
         if (this.state.waiting)
             return WAITING_VIEW_SEQUENCE;
 
-        if (this.state.customStatus)
+        if (this.statusPrefixText)
             return CUSTOM_STATUS_VIEW_SEQUENCE;
 
         return REGULAR_VIEW_SEQUENCE;
@@ -464,15 +464,18 @@ export default class StatusBar extends serviceUtils.EventEmitter {
         this.buttons.style.display        = 'none';
         this.unlockPageArea.style.display = 'none';
 
-        nativeMethods.nodeTextContentSetter.call(this.statusDiv, '');
+        nativeMethods.nodeTextContentSetter.call(this.statusDiv, this._getFullStatusText(''));
         this.progressBar.hide();
         this._recalculateSizes();
     }
 
+    _getFullStatusText (statusText) {
+        return `${this.statusPrefixText}. ${statusText}`;
+    }
+
     _showWaitingStatus () {
         const waitingStatusText = this.state.assertionRetries ? WAITING_FOR_ASSERTION_EXECUTION_TEXT : WAITING_FOR_ELEMENT_TEXT;
-
-        nativeMethods.nodeTextContentSetter.call(this.statusDiv, waitingStatusText);
+        nativeMethods.nodeTextContentSetter.call(this.statusDiv, this._getFullStatusText(waitingStatusText));
         this._setStatusDivLeftMargin();
         this._recalculateSizes();
         this.progressBar.show();
@@ -508,12 +511,12 @@ export default class StatusBar extends serviceUtils.EventEmitter {
                 this.buttons.removeChild(this.resumeButton);
                 this.buttons.appendChild(this.finishButton);
 
-                nativeMethods.nodeTextContentSetter.call(this.statusDiv, TEST_FAILED_TEXT);
+                nativeMethods.nodeTextContentSetter.call(this.statusDiv, this._getFullStatusText(TEST_FAILED_TEXT));
                 shadowUI.removeClass(this.statusBar, WAITING_SUCCESS_CLASS);
                 shadowUI.addClass(this.statusBar, WAITING_FAILED_CLASS);
             }
             else
-                nativeMethods.nodeTextContentSetter.call(this.statusDiv, DEBUGGING_TEXT);
+                nativeMethods.nodeTextContentSetter.call(this.statusDiv, this._getFullStatusText(DEBUGGING_TEXT));
 
             this.buttons.style.display        = '';
             this.unlockPageArea.style.display = '';
@@ -531,7 +534,6 @@ export default class StatusBar extends serviceUtils.EventEmitter {
 
     _setWaitingStatus (timeout, startTime) {
         this.state.waiting = true;
-        this.state.customStatus = false;
         this.progressBar.determinateIndicator.start(timeout, startTime);
 
         this.showingTimeout = nativeMethods.setTimeout.call(window, () => {
@@ -543,7 +545,6 @@ export default class StatusBar extends serviceUtils.EventEmitter {
 
     _resetWaitingStatus (waitingSuccess) {
         this.state.waiting = false;
-        this.state.customStatus = false;
         this.progressBar.determinateIndicator.stop();
 
         if (waitingSuccess)
@@ -597,7 +598,6 @@ export default class StatusBar extends serviceUtils.EventEmitter {
 
     showWaitingAssertionRetriesStatus (timeout, startTime) {
         this.state.assertionRetries = true;
-        this.state.customStatus = false;
         this._setWaitingStatus(timeout, startTime);
     }
 
@@ -608,10 +608,8 @@ export default class StatusBar extends serviceUtils.EventEmitter {
             });
     }
 
-    setCustomStatus (statusText) {
-        this.state.customStatus = true;
-        nativeMethods.nodeTextContentSetter.call(this.statusDiv, statusText);
-        this._setStatusDivLeftMargin();
-        this._recalculateSizes();
+    setStatusPrefix (prefixText) {
+        this.statusPrefixText = prefixText;
+        this._resetState();
     }
 }
