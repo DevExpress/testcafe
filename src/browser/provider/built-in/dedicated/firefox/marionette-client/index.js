@@ -141,12 +141,13 @@ module.exports = class MarionetteClient {
         return responsePacket.body[3];
     }
 
-    async _getScreenshotRawData (fullPage) {
+    async _getScreenshotRawData (fullPage = false) {
         return await this._getResponse({
             command:    COMMANDS.takeScreenshot,
             parameters: {
-                full: fullPage,
-                hash: false
+                full:   fullPage,
+                hash:   false,
+                scroll: false
             }
         });
     }

@@ -129,7 +129,7 @@ describe('Screenshots on fails', function () {
                 });
         });
 
-        it.skip('Should crop screenshots to a page viewport area', function () {
+        it('Should crop screenshots to a page viewport area', function () {
             return runTests('./testcafe-fixtures/screenshots-on-fails.js', 'Crop screenshots',
                 { shouldFail: true, screenshotsOnFails: true, setScreenshotPath: true })
                 .catch(function (errs) {
