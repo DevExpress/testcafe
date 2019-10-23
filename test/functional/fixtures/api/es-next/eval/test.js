@@ -13,9 +13,12 @@ describe('[API] t.eval', function () {
             if (!isErrorsArray && !errs)
                 throw new Error('Error for "' + alias + '" haven\'t created');
 
-            const ua = parseUserAgent(errs[0]).userAgent.toLowerCase();
+            const parsedUA  = parseUserAgent(errs[0]);
+            const compactUA = parsedUA.userAgent.toLowerCase();
+            const sourceUA  = errs[0].toLowerCase();
 
-            expect(ua.indexOf(expected)).eql(0, ua + ' doesn\'t start with "' + expected + '"');
+            expect(compactUA.indexOf(alias)).eql(0, compactUA + ' doesn\'t start with "' + alias + '"');
+            expect(sourceUA.indexOf(expected) > -1).eql(true, sourceUA + ' doesn\'t contain "' + expected + '"');
         }
 
         const browsers = 'chrome,firefox,ie';

@@ -332,7 +332,7 @@ describe('[API] t.takeElementScreenshot()', function () {
 
                     expect(errs[0]).to.contains(
                         ' 29 |test(\'Incorrect action selector argument\', async t => {' +
-                        ' > 30 |    await t.takeElementScreenshot(1, \'custom/\' + t.ctx.parsedUA.family + \'.png\');' +
+                        ' > 30 |    await t.takeElementScreenshot(1, \'custom/\' + t.ctx.parsedUA.name + \'.png\');' +
                         ' 31 |});'
                     );
                 });
@@ -449,7 +449,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                     expect(errs[0]).to.contains('Unable to capture an element image because the resulting image width is zero or negative.');
                     expect(errs[0]).to.contains(
                         ' 37 |test(\'Invalid dimensions\', async t => {' +
-                        ' > 38 |    await t.takeElementScreenshot(\'table\', \'custom/\' + t.ctx.parsedUA.family + \'.png\', { crop: { left: -10, right: -50 } });' +
+                        ' > 38 |    await t.takeElementScreenshot(\'table\', \'custom/\' + t.ctx.parsedUA.name + \'.png\', { crop: { left: -10, right: -50 } });' +
                         ' 39 |});'
                     );
                 });
@@ -465,7 +465,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                     expect(errs[0]).to.contains('The element that matches the specified selector is not visible.');
                     expect(errs[0]).to.contains(
                         ' 43 |        .click(\'#hide\')' +
-                        ' > 44 |        .takeElementScreenshot(\'table\', \'custom/\' + t.ctx.parsedUA.family + \'.png\');' +
+                        ' > 44 |        .takeElementScreenshot(\'table\', \'custom/\' + t.ctx.parsedUA.name + \'.png\');' +
                         ' 45 |});'
                     );
                 });
@@ -484,7 +484,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                     );
                     expect(errs[0]).to.contains(
                         ' 49 |        .click(\'#remove\')' +
-                        ' > 50 |        .takeElementScreenshot(\'table\', \'custom/\' + t.ctx.parsedUA.family + \'.png\');' +
+                        ' > 50 |        .takeElementScreenshot(\'table\', \'custom/\' + t.ctx.parsedUA.name + \'.png\');' +
                         ' 51 |});'
                     );
                 });
@@ -502,7 +502,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                                                 'is not located inside the element\'s cropping region');
                     expect(errs[0]).to.contains(
                         ' 53 |test(\'Invalid scroll target\', async t => {' +
-                        ' > 54 |    await t.takeElementScreenshot(\'table\', \'custom/\' + t.ctx.parsedUA.family + \'.png\', { scrollTargetX: -2000, scrollTargetY: -3000 });' +
+                        ' > 54 |    await t.takeElementScreenshot(\'table\', \'custom/\' + t.ctx.parsedUA.name + \'.png\', { scrollTargetX: -2000, scrollTargetY: -3000 });' +
                         ' 55 |});'
                     );
                 });

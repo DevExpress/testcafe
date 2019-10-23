@@ -36,9 +36,6 @@ test
 ('t.browser', async t => {
     const browserInfo = t.browser;
 
-    // [WIP] remove it
-    console.log(browserInfo); // eslint-disable-line no-console
-
     if (isNotValidValue(browserInfo.name, testedBrowserNames) ||
         isNotValidValue(browserInfo.platform, testedPlatforms) ||
         isNotValidValue(browserInfo.os.name, testedOs))
