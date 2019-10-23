@@ -4,7 +4,7 @@ const config         = require('../../../../config');
 
 describe('[API] ClientFunction', function () {
     it('Should be correctly dispatched to test run', function () {
-        function assertUA (errs, alias, expected) {
+        function assertUA (errs, alias) {
             const isErrorsArray = config.currentEnvironment.browsers.length === 1 && Array.isArray(errs);
 
             if (!isErrorsArray)
@@ -15,10 +15,11 @@ describe('[API] ClientFunction', function () {
 
             const parsedUA  = parseUserAgent(errs[0]);
             const compactUA = parsedUA.userAgent.toLowerCase();
-            const sourceUA  = errs[0].toLowerCase();
 
-            expect(compactUA.indexOf(alias)).eql(0, compactUA + ' doesn\'t start with "' + alias + '"');
-            expect(sourceUA.indexOf(expected) > -1).eql(true, sourceUA + ' doesn\'t contain "' + expected + '"');
+            // NOTE: the "ie" alias corresponds to the "internet explorer" lowered part of a compact user agent string (GH-481)
+            const expectedBrowserName = alias === 'ie' ? 'internet explorer' : alias;
+
+            expect(compactUA.indexOf(expectedBrowserName)).eql(0, compactUA + ' doesn\'t start with "' + expectedBrowserName + '"');
         }
 
         const browsers = 'chrome,firefox,ie';
@@ -30,7 +31,7 @@ describe('[API] ClientFunction', function () {
                         return browsers.indexOf(browser.alias) > -1;
                     })
                     .forEach(function (browser) {
-                        assertUA(errs, browser.alias, browser.userAgent || browser.alias);
+                        assertUA(errs, browser.alias);
                     });
             });
     });
