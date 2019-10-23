@@ -67,7 +67,7 @@ export default class BrowserConnection extends EventEmitter {
     private statusDoneUrl: string;
     private switchingToIdle: boolean;
 
-    public constructor (gateway: any, browserInfo: any, permanent: boolean, allowMultipleWindows: boolean) {
+    public constructor (gateway: any, browserInfo: any, permanent: boolean, allowMultipleWindows = false) {
         super();
 
         this.HEARTBEAT_TIMEOUT       = HEARTBEAT_TIMEOUT;
