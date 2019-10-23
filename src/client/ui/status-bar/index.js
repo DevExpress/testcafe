@@ -470,11 +470,14 @@ export default class StatusBar extends serviceUtils.EventEmitter {
     }
 
     _getFullStatusText (statusText) {
-        return `${this.statusPrefixText}. ${statusText}`;
+        const prefix = this.statusPrefixText && `${this.statusPrefixText}. `;
+
+        return `${prefix}${statusText}`;
     }
 
     _showWaitingStatus () {
         const waitingStatusText = this.state.assertionRetries ? WAITING_FOR_ASSERTION_EXECUTION_TEXT : WAITING_FOR_ELEMENT_TEXT;
+
         nativeMethods.nodeTextContentSetter.call(this.statusDiv, this._getFullStatusText(waitingStatusText));
         this._setStatusDivLeftMargin();
         this._recalculateSizes();
