@@ -1,15 +1,20 @@
-import { isUndefined, filter, flatten, chunk, times } from 'lodash';
-import Compiler from '../compiler';
-import BrowserConnection from '../browser/connection';
-import { GeneralError } from '../errors/runtime';
-import browserProviderPool from '../browser/provider/pool';
-import { RUNTIME_ERRORS } from '../errors/types';
-import BrowserSet from './browser-set';
-import TestedApp from './tested-app';
-import parseFileList from '../utils/parse-file-list';
 import path from 'path';
 import fs from 'fs';
+import isCI from 'is-ci';
+import { isUndefined, filter, flatten, chunk, times } from 'lodash';
 import makeDir from 'make-dir';
+import OS from 'os-family';
+import { errors, findWindow } from 'testcafe-browser-tools';
+import authenticationHelper from '../cli/authentication-helper';
+import Compiler from '../compiler';
+import BrowserConnection from '../browser/connection';
+import browserProviderPool from '../browser/provider/pool';
+import BrowserSet from './browser-set';
+import RemoteBrowserProvider from '../browser/provider/built-in/remote';
+import { GeneralError } from '../errors/runtime';
+import { RUNTIME_ERRORS } from '../errors/types';
+import TestedApp from './tested-app';
+import parseFileList from '../utils/parse-file-list';
 import resolvePathRelativelyCwd from '../utils/resolve-path-relatively-cwd';
 import loadClientScripts from '../custom-client-scripts/load';
 
@@ -40,6 +45,35 @@ export default class Bootstrapper {
         });
 
         return { remotes, automated };
+    }
+
+    static async _hasLocalBrowsers (browserInfo) {
+        for (const browser of browserInfo) {
+            if (await browser.provider.isLocalBrowser(null, browserInfo.browserName))
+                return true;
+        }
+
+        return false;
+    }
+
+    static async _checkRequiredPermissions (browserInfo) {
+        const hasLocalBrowsers = await Bootstrapper._hasLocalBrowsers(browserInfo);
+
+        const { error } = await authenticationHelper(
+            () => findWindow(''),
+            errors.UnableToAccessScreenRecordingAPIError,
+            {
+                interactive: hasLocalBrowsers && !isCI
+            }
+        );
+
+        if (!error)
+            return;
+
+        if (hasLocalBrowsers)
+            throw error;
+
+        RemoteBrowserProvider.canDetectLocalBrowsers = false;
     }
 
     async _getBrowserInfo () {
@@ -232,6 +266,9 @@ export default class Bootstrapper {
         // It's very ambiguous for the user, who might be confused by compilation errors from an unexpected test.
         // So, we need to retrieve the browser aliases and paths before tests compilation.
         const browserInfo = await this._getBrowserInfo();
+
+        if (OS.mac)
+            await this._checkRequiredPermissions();
 
         if (await this._canUseParallelBootstrapping(browserInfo))
             return { reporterPlugins, ...await this._bootstrapParallel(browserInfo), commonClientScripts };
