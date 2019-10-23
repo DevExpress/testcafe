@@ -401,7 +401,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
-        it('Should perform top-right crop', function () {
+        it.skip('Should perform top-right crop', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Top-right',
                 { setScreenshotPath: true })
                 .then(function () {
