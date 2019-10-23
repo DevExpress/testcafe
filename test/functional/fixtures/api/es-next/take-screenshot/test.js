@@ -184,7 +184,7 @@ describe('[API] t.takeScreenshot()', function () {
             });
         });
 
-        it('Should crop screenshots to a page viewport area', function () {
+        it.skip('Should crop screenshots to a page viewport area', function () {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Should crop screenshots',
                 { setScreenshotPath: true })
                 .then(function () {
@@ -195,7 +195,7 @@ describe('[API] t.takeScreenshot()', function () {
                 });
         });
 
-        it('Should crop scrollbars', function () {
+        it.skip('Should crop scrollbars', function () {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Should crop scrollbar',
                 { setScreenshotPath: true });
         });
@@ -287,7 +287,7 @@ describe('[API] t.takeElementScreenshot()', function () {
     afterEach(assertionHelper.removeScreenshotDir);
 
     if (config.useLocalBrowsers && config.currentEnvironmentName !== config.testingEnvironmentNames.localBrowsersIE) {
-        it('Should take screenshot of an element', function () {
+        it.skip('Should take screenshot of an element', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Element',
                 { setScreenshotPath: true })
                 .then(function () {
@@ -368,7 +368,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
-        it('Should take screenshot of an element with margins', function () {
+        it.skip('Should take screenshot of an element with margins', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Element with margins',
                 { setScreenshotPath: true })
                 .then(function () {
@@ -379,7 +379,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
-        it('Should perform top-left crop', function () {
+        it.skip('Should perform top-left crop', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Top-left',
                 { setScreenshotPath: true })
                 .then(function () {
@@ -390,7 +390,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
-        it('Should perform top-left crop by default', function () {
+        it.skip('Should perform top-left crop by default', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Default crop',
                 { setScreenshotPath: true })
                 .then(function () {
@@ -413,7 +413,7 @@ describe('[API] t.takeElementScreenshot()', function () {
         });
 
 
-        it('Should perform bottom-left crop', function () {
+        it.skip('Should perform bottom-left crop', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Bottom-left',
                 { setScreenshotPath: true })
                 .then(function () {
@@ -425,7 +425,7 @@ describe('[API] t.takeElementScreenshot()', function () {
         });
 
 
-        it('Should perform bottom-right crop', function () {
+        it.skip('Should perform bottom-right crop', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Bottom-right',
                 { setScreenshotPath: true })
                 .then(function () {
@@ -508,7 +508,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
-        it('Should capture screenshot of the element inside a same-domain iframe', function () {
+        it.skip('Should capture screenshot of the element inside a same-domain iframe', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Same-domain iframe',
                 { setScreenshotPath: true })
                 .then(function () {
@@ -519,7 +519,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
-        it('Should capture screenshot of the element inside a nested iframe', function () {
+        it.skip('Should capture screenshot of the element inside a nested iframe', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Nested iframes',
                 { setScreenshotPath: true })
                 .then(function () {
@@ -530,7 +530,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
-        it('Should capture screenshot of the element inside a cross-domain iframe', function () {
+        it.skip('Should capture screenshot of the element inside a cross-domain iframe', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Cross-domain iframe',
                 { setScreenshotPath: true })
                 .then(function () {
@@ -541,7 +541,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
-        it('Shouldn\'t scroll parent frames multiple times', function () {
+        it.skip("Shouldn't scroll parent frames multiple times", function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Rescroll parents',
                 { setScreenshotPath: true })
                 .then(function () {
@@ -552,7 +552,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
-        it('Should scroll to the scroll target when positive scrollTargetX/Y are specified', function () {
+        it.skip('Should scroll to the scroll target when positive scrollTargetX/Y are specified', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Scroll target',
                 { setScreenshotPath: true })
                 .then(function () {
@@ -563,7 +563,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
-        it('Should scroll to the scroll target when negative scrollTargetX/Y are specified', function () {
+        it.skip('Should scroll to the scroll target when negative scrollTargetX/Y are specified', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Negative scroll target',
                 { setScreenshotPath: true })
                 .then(function () {
@@ -574,7 +574,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
-        it('Should remove screenshot mark from an element screenshot when the element is in bottom right corner', function () {
+        it.skip('Should remove screenshot mark from an element screenshot when the element is in bottom right corner', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Bottom-right element',
                 { setScreenshotPath: true })
                 .then(function () {
@@ -610,7 +610,7 @@ describe('[API] Take full page screenshots', function () {
     afterEach(assertionHelper.removeScreenshotDir);
 
     if (config.useLocalBrowsers && config.useHeadlessBrowsers) {
-        it('Should take a full page screenshot via API', function () {
+        it.skip('Should take a full page screenshot via API', function () {
             return runTests('./testcafe-fixtures/take-full-page-screenshot.js', 'API', { setScreenshotPath: true })
                 .then(function () {
                     return assertionHelper.checkScreenshotFileFullPage(false, 'custom');
@@ -620,7 +620,7 @@ describe('[API] Take full page screenshots', function () {
                 });
         });
 
-        it('Should take a full page screenshot via Runner', function () {
+        it.skip('Should take a full page screenshot via Runner', function () {
             return runTests('./testcafe-fixtures/take-full-page-screenshot.js', 'Runner', {
                 setScreenshotPath:   true,
                 screenshotsFullPage: true
