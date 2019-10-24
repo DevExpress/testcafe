@@ -5,7 +5,7 @@ import promisifyEvent from 'promisify-event';
 import dedent from 'dedent';
 import BrowserConnection from '../browser/connection';
 
-export default async function (testCafe: any, remoteCount: number, showQRCode: boolean): Promise<any> {
+export default async function (testCafe: any, remoteCount: number, showQRCode: boolean): Promise<BrowserConnection[]> {
     const connectionPromises = [];
 
     if (remoteCount) {
@@ -34,6 +34,7 @@ export default async function (testCafe: any, remoteCount: number, showQRCode: b
                 .then((bc: BrowserConnection) => promisifyEvent(bc, 'ready').then(() => bc))
                 .then((bc: BrowserConnection) => {
                     log.write(`${chalk.green('CONNECTED')} ${bc.userAgent}`);
+
                     return bc;
                 })
             );
