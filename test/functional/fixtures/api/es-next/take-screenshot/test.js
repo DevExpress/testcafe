@@ -541,7 +541,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
-        it('Shouldn\'t scroll parent frames multiple times', function () {
+        it("Shouldn't scroll parent frames multiple times", function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Rescroll parents',
                 { setScreenshotPath: true })
                 .then(function () {

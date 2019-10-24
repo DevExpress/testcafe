@@ -1,6 +1,6 @@
 const proxyquire = require('proxyquire');
 const { expect } = require('chai');
-
+const semver     = require('semver');
 
 describe('Debug Log', () => {
     function debugMock (id) {
@@ -38,13 +38,11 @@ describe('Debug Log', () => {
         delete data1.data2;
         delete data2.data1;
 
-        expect(debugMock.data['testcafe:test-run:Chrome:command'].replace(/\s/g, '')).equal(
-            '{data2:{data1:[Circular]}}'
-        );
+        const expectedCommandValue       = semver.gte(process.version, '13.0.0') ? '<ref*1>{data2:{data1:[Circular*1]}}' : '{data2:{data1:[Circular]}}';
+        const expectedDriverMessageValue = semver.gte(process.version, '13.0.0') ? '<ref*1>{data2:{data1:[Circular*1]}}' : '{data2:{data1:[Circular]}}';
 
-        expect(debugMock.data['testcafe:test-run:Chrome:driver-message'].replace(/\s/g, '')).equal(
-            '{data2:{data1:[Circular]}}'
-        );
+        expect(debugMock.data['testcafe:test-run:Chrome:command'].replace(/\s/g, '')).equal(expectedCommandValue);
+        expect(debugMock.data['testcafe:test-run:Chrome:driver-message'].replace(/\s/g, '')).equal(expectedDriverMessageValue);
     });
 
     it('Should not throw if data inspection fails', () => {
