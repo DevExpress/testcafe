@@ -823,6 +823,11 @@ describe('Runner', () => {
 
             expect(runner.configuration.getOption('debugLogger')).to.deep.equal(defaultLogger);
 
+            runner.configuration.mergeOptions({ debugLogger: null });
+            runner._validateDebugLogger();
+
+            expect(runner.configuration.getOption('debugLogger')).to.be.null;
+
             const customLogger = {
                 showBreakpoint: 'foo',
                 hideBreakpoint: () => {}
@@ -834,11 +839,6 @@ describe('Runner', () => {
             expect(runner.configuration.getOption('debugLogger')).to.deep.equal(defaultLogger);
 
             customLogger.showBreakpoint = () => {};
-
-            runner.configuration.mergeOptions({ debugLogger: null });
-
-            expect(runner.configuration.getOption('debugLogger')).is.null;
-
             runner.configuration.mergeOptions({ debugLogger: customLogger });
             runner._validateDebugLogger();
 

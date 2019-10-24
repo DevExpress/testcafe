@@ -187,10 +187,10 @@ export default class Runner extends EventEmitter {
     _validateDebugLogger () {
         const debugLogger = this.configuration.getOption(OPTION_NAMES.debugLogger);
 
-        const debugLoggerDefinedCorrectly = debugLogger &&
+        const debugLoggerDefinedCorrectly = debugLogger === null || !!debugLogger &&
             ['showBreakpoint', 'hideBreakpoint'].every(method => method in debugLogger && isFunction(debugLogger[method]));
 
-        if (debugLogger === void 0 || !debugLoggerDefinedCorrectly) {
+        if (!debugLoggerDefinedCorrectly) {
             this.configuration.mergeOptions({
                 [OPTION_NAMES.debugLogger]: defaultDebugLogger
             });
