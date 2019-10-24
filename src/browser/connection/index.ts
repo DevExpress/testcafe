@@ -81,7 +81,6 @@ export default class BrowserConnection extends EventEmitter {
         this.testRunAborted           = false;
 
         this.browserInfo                           = browserInfo;
-        this.browserInfo.userAgent                 = '';
         this.browserInfo.userAgentProviderMetaInfo = '';
 
         this.provider = browserInfo.provider;
@@ -278,7 +277,7 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     public get userAgent (): string {
-        let userAgent = this.browserInfo.userAgent;
+        let userAgent = this.browserInfo.parsedUserAgent.userAgent;
 
         if (this.browserInfo.userAgentProviderMetaInfo)
             userAgent += ` (${this.browserInfo.userAgentProviderMetaInfo})`;
@@ -335,7 +334,6 @@ export default class BrowserConnection extends EventEmitter {
         const parsedUserAgent = parseUserAgent(userAgent, this.browserInfo.alias);
 
         this.browserInfo.parsedUserAgent = parsedUserAgent;
-        this.browserInfo.userAgent       = this.browserInfo.parsedUserAgent.userAgent;
 
         this._waitForHeartbeat();
         this.emit('ready');
