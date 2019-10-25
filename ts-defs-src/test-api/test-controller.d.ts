@@ -28,58 +28,58 @@ interface BrowserConsoleMessages {
     /**
      * Messages output to the browser console by the console.log() method.
      */
-    log: string[],
+    log: string[];
     /**
      * Warning messages output to the browser console by the console.warn() method.
      */
-    warn: string[],
+    warn: string[];
     /**
      * Error messages output to the browser console by the console.error() method.
      */
-    error: string[],
+    error: string[];
     /**
      * Information messages output to the browser console by the console.info() method.
      */
-    info: string[]
+    info: string[];
 }
 
 interface BrowserInfo {
     /**
      * The alias of the browser.
      */
-    alias: string
+    alias: string;
     /**
      * The name of the browser.
      */
-    name: string,
+    name: string;
     /**
      * The version of the browser.
      */
-    version: string,
+    version: string;
     /**
      * The platform of the browser.
      */
-    platform: string,
+    platform: string;
     /**
      * Indicates the headless browser mode.
      */
-    headless: string,
+    headless: string;
     /**
      * The operating system information.
      */
-    os: { name: string, version: string },
+    os: { name?: string; version?: string };
     /**
      * The engine information.
      */
-    engine: { name: string, version: string },
+    engine: { name?: string; version?: string };
     /**
      * The full user agent of the browser.
      */
-    fullUserAgent: string,
+    fullUserAgent: string;
     /**
      * The compact user agent ("Browser / OS") of the browser.
      */
-    userAgent: string
+    userAgent: string;
 }
 
 interface TestController {
