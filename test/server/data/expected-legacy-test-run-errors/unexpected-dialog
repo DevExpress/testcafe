@@ -1,5 +1,5 @@
 Error at step "Step with <tag>":
 Unexpected system test-dialog dialog message with <tag> appeared.
 
-Browser: Chrome 77.0.3865.120 / macOS 10.15
+Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>

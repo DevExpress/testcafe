@@ -1,6 +1,6 @@
 The action element is expected to be a <textarea>.
 
-Browser: Chrome 77.0.3865.120 / macOS 10.15
+Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>
 
    18 |function func1 () {

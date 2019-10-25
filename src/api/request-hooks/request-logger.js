@@ -38,12 +38,10 @@ class RequestLoggerImplementation extends RequestHook {
     }
 
     async onRequest (event) {
-        const userAgent = parseUserAgent(event._requestInfo.userAgent).userAgent;
-
         const loggedReq = {
             id:        event._requestInfo.requestId,
             testRunId: event._requestInfo.sessionId,
-            userAgent,
+            userAgent: parseUserAgent(event._requestInfo.userAgent).userAgent,
             request:   {
                 url:    event._requestInfo.url,
                 method: event._requestInfo.method,

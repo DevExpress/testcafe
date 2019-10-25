@@ -2,15 +2,13 @@ import Bowser from 'bowser';
 
 const DEFAULT_BROWSER_NAME    = 'Other';
 const DEFAULT_BROWSER_VERSION = '0.0';
-// NOTE: we need to pass the ' ' user agent to get a "default" parsed object (GH-481)
-const EMPTY_BOWSER_USER_AGENT = ' ';
+const EMPTY_PARSED_USER_AGENT = Bowser.parse(' ');
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function parseUserAgent (userAgent: string, browserAlias?: string): any {
     let parsedUserAgent;
 
     if (!userAgent) {
-        parsedUserAgent = Bowser.parse(EMPTY_BOWSER_USER_AGENT);
+        parsedUserAgent = EMPTY_PARSED_USER_AGENT;
 
         parsedUserAgent.browser.name    = DEFAULT_BROWSER_NAME;
         parsedUserAgent.browser.version = DEFAULT_BROWSER_VERSION;

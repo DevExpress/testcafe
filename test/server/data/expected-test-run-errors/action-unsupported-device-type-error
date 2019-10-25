@@ -1,7 +1,7 @@
 The "device" argument specifies an unsupported "iPhone 555" device. For a
 list of supported devices, refer to "http://viewportsizes.com".
 
-Browser: Chrome 77.0.3865.120 / macOS 10.15
+Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>
 
    18 |function func1 () {

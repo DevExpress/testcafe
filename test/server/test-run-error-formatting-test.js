@@ -76,7 +76,7 @@ const {
 
 const untestedErrorTypes = Object.keys(TEST_RUN_ERRORS).map(key => TEST_RUN_ERRORS[key]);
 
-const userAgentMock = 'Chrome 77.0.3865.120 / macOS 10.15';
+const userAgentMock = 'Chrome 15.0.874.120 / macOS 10.15';
 
 const testAssertionError = (function () {
     try {

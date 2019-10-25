@@ -1,7 +1,6 @@
 fixture `Browser information`;
 
 
-// NOTE: the possible values based on our CI functional test configs:
 const testedBrowserNames = [
     'firefox',
     'chrome',

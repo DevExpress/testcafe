@@ -1,7 +1,7 @@
 Error at step "Step with <tag>":
 waitFor action's timeout exceeded.
 
-Browser: Chrome 77.0.3865.120 / macOS 10.15
+Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>
 
 Code:

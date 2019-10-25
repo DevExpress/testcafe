@@ -4,7 +4,7 @@ Uncaught string "Hey ya!" was thrown. Throw Error instead.
 
 Hey ya!
 
-Browser: Chrome 77.0.3865.120 / macOS 10.15
+Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>
 
 RAW API callsite

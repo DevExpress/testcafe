@@ -1,7 +1,7 @@
 The specified "startSelector" is expected to match a DOM element, but it
 matches a text node.
 
-Browser: Chrome 77.0.3865.120 / macOS 10.15
+Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>
 
    18 |function func1 () {
