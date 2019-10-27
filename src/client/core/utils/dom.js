@@ -499,3 +499,7 @@ export function setElementValue (element, value) {
 
     return value;
 }
+
+export function isShadowElement (element) {
+    return element.getRootNode && findDocument(element) !== element.getRootNode();
+}

@@ -1,6 +1,6 @@
 import { eventSandbox, Promise } from './deps/hammerhead';
 import { EventEmitter } from './utils/service';
-import { domUtils } from './';
+import { isShadowElement } from './utils/dom';
 
 const listeners = eventSandbox.listeners;
 
@@ -51,9 +51,7 @@ class ScrollController {
     handleScrollEvents (el, handler) {
         this.events.once('scroll', handler);
 
-        const isShadowElement = el.getRootNode && domUtils.findDocument(el) !== el.getRootNode();
-
-        if (isShadowElement) {
+        if (isShadowElement(el)) {
             listeners.initElementListening(el, ['scroll']);
             listeners.addFirstInternalHandler(el, ['scroll'], (...args) => {
                 this._internalListener(...args);
