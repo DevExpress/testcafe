@@ -501,5 +501,5 @@ export function setElementValue (element, value) {
 }
 
 export function isShadowElement (element) {
-    return element.getRootNode && findDocument(element) !== element.getRootNode();
+    return element && element.getRootNode && findDocument(element) !== element.getRootNode();
 }
