@@ -22,7 +22,7 @@ test('Show status prefix', async t => {
         .expect(statusDiv.innerText).eql('Status prefix. Waiting for assertion execution...');
 });
 
-test('Recalculate view size with status prefix', async t => {
+test('Recalculate a view size with a status prefix', async t => {
     const statusDiv        = Selector(() => window['%testCafeDriverInstance%'].statusBar.statusDiv);
     const buttons          = Selector(() => window['%testCafeDriverInstance%'].statusBar.buttons);
     const unlockPageArea   = Selector(() => window['%testCafeDriverInstance%'].statusBar.unlockPageArea);
