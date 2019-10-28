@@ -39,6 +39,7 @@ test('Recalculate a view size with a status prefix', async t => {
     await t
         .resizeWindow(1350, 500);
 
+    //If we await these properties during the assertion execution, the status will be changed to "Waiting for..."
     const getStatusBarItemsVisibility = async () => {
         const fixtureContainerVisible = await fixtureContainer.visible;
         const statusVisible           = await statusDiv.visible;
@@ -55,8 +56,7 @@ test('Recalculate a view size with a status prefix', async t => {
         .expect(itemsVisibility.statusVisible).ok()
         .expect(itemsVisibility.buttonsVisible).ok()
         .expect(itemsVisibility.unlockPageAreaVisible).ok()
-        .resizeWindow(1100, 500)
-        .wait(3000);
+        .resizeWindow(1100, 500);
 
     itemsVisibility = await getStatusBarItemsVisibility();
 
