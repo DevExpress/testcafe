@@ -63,9 +63,13 @@ const VIEWS = {
 };
 
 const REGULAR_VIEW_SEQUENCE       = [VIEWS.onlyIcon, VIEWS.onlyIconAndFixture];
-const CUSTOM_STATUS_VIEW_SEQUENCE = [VIEWS.all];
 const WAITING_VIEW_SEQUENCE       = [VIEWS.onlyIcon, VIEWS.hideFixture, VIEWS.all];
 const DEBUGGING_VIEW_SEQUENCE     = [VIEWS.onlyButtons, VIEWS.hideUnlockArea, VIEWS.hideStatus, VIEWS.hideFixture, VIEWS.all];
+
+const STATUS_PREFIX_SIZES = {
+    [VIEWS.hideStatus.name]:  260,
+    [VIEWS.hideFixture.name]: 400
+};
 
 export default class StatusBar extends serviceUtils.EventEmitter {
     constructor (userAgent, fixtureName, testName) {
@@ -278,11 +282,8 @@ export default class StatusBar extends serviceUtils.EventEmitter {
         if (this.state.debugging)
             return DEBUGGING_VIEW_SEQUENCE;
 
-        if (this.state.waiting)
+        if (this.state.waiting || this.statusPrefixText)
             return WAITING_VIEW_SEQUENCE;
-
-        if (this.statusPrefixText)
-            return CUSTOM_STATUS_VIEW_SEQUENCE;
 
         return REGULAR_VIEW_SEQUENCE;
     }
@@ -290,7 +291,13 @@ export default class StatusBar extends serviceUtils.EventEmitter {
     _calculateActualView (windowWidth) {
         return this
             ._getActualViewSequence()
-            .reduce((currentView, nextView) => currentView.maxSize >= windowWidth ? currentView : nextView);
+            .reduce((currentView, nextView) => {
+                const statusPrefixWidth = STATUS_PREFIX_SIZES[currentView.name] || 0;
+                const maxSize = this.statusPrefixText && statusPrefixWidth ? currentView.maxSize + statusPrefixWidth :
+                    currentView.maxSize;
+
+                return maxSize >= windowWidth ? currentView : nextView;
+            });
     }
 
     _setFixtureContainerWidth () {
