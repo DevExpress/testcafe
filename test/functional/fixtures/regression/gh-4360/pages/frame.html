@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>gh-4360</title>
+</head>
+<body>
+<form></form>
+<div id="target"></div>
+
+<script type="text/javascript">
+    if (localStorage.getItem('preventReload'))
+        document.querySelector('#target').innerHTML = 'OK';
+    else {
+        localStorage.setItem('preventReload', true);
+
+        var form = document.querySelector('form');
+
+        form.submit();
+    }
+</script>
+</body>
+</html>
