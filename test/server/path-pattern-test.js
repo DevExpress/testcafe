@@ -9,7 +9,6 @@ const SCREENSHOT_EXTENSION = 'png';
 
 describe('Screenshot path pattern', () => {
     const TEST_USER_AGENT = 'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36';
-    const TEST_ALIAS      = 'chrome';
 
     const createPathPatternData = ({ forQuarantine }) => ({
         now:               moment('2010-01-02 11:12:13'),
@@ -18,7 +17,7 @@ describe('Screenshot path pattern', () => {
         quarantineAttempt: forQuarantine ? 2 : null,
         fixture:           'fixture',
         test:              'test',
-        parsedUserAgent:   parseUserAgent(TEST_USER_AGENT, TEST_ALIAS)
+        parsedUserAgent:   parseUserAgent(TEST_USER_AGENT)
     });
 
     const createPathPattern = (pattern, { forQuarantine } = {}) => {
