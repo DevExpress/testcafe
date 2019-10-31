@@ -2958,7 +2958,7 @@ describe('Test run commands', () => {
             );
         });
 
-        it('Should validate ExecuteAsyncExpressionСommand', function () {
+        it('Should validate ExecuteAsyncExpressionCommand', function () {
             assertThrow(
                 function () {
                     return createCommand({
@@ -2970,22 +2970,6 @@ describe('Test run commands', () => {
                     code:            'E16',
                     argumentName:    'expression',
                     actualValue:     'undefined',
-                    callsite:        null
-                }
-            );
-
-            assertThrow(
-                function () {
-                    return createCommand({
-                        type:       TYPE.executeAsyncExpression,
-                        expression: ''
-                    });
-                },
-                {
-                    isTestCafeError: true,
-                    code:            'E16',
-                    argumentName:    'expression',
-                    actualValue:     '""',
                     callsite:        null
                 }
             );

@@ -12,6 +12,7 @@ import {
     actionOptions,
     integerArgument,
     positiveIntegerArgument,
+    stringArgument,
     nonEmptyStringArgument,
     nullableStringArgument,
     urlArgument,
@@ -59,16 +60,20 @@ function initDialogHandler (name, val, { skipVisibilityCheck, testRun }) {
 
     const options      = val.options;
     const methodName   = 'setNativeDialogHandler';
-    let builder      = fn && fn[functionBuilderSymbol];
-    const isSelector   = builder instanceof SelectorBuilder;
     const functionType = typeof fn;
+
+    let builder = fn && fn[functionBuilderSymbol];
+
+    const isSelector       = builder instanceof SelectorBuilder;
+    const isClientFunction = builder instanceof ClientFunctionBuilder;
 
     if (functionType !== 'function' || isSelector)
         throw new SetNativeDialogHandlerCodeWrongTypeError(isSelector ? 'Selector' : functionType);
 
-    builder = builder instanceof ClientFunctionBuilder ?
-        fn.with(options)[functionBuilderSymbol] :
-        new ClientFunctionBuilder(fn, options, { instantiation: methodName, execution: methodName });
+    if (isClientFunction)
+        builder = fn.with(options)[functionBuilderSymbol];
+    else
+        builder = new ClientFunctionBuilder(fn, options, { instantiation: methodName, execution: methodName });
 
     return builder.getCommand([]);
 
@@ -121,7 +126,7 @@ export class ExecuteAsyncExpressionCommand extends CommandBase {
 
     _getAssignableProperties () {
         return [
-            { name: 'expression', type: nonEmptyStringArgument, required: true }
+            { name: 'expression', type: stringArgument, required: true }
         ];
     }
 }
