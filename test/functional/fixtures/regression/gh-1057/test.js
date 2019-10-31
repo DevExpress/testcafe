@@ -3,7 +3,7 @@ describe('[Regression](GH-1057) - hidden by fixed parent', function () {
         return runTests('testcafe-fixtures/hiddenByFixedParent.js', 'gh-1057', {
             // NOTE: https://github.com/DevExpress/testcafe/issues/1237
             // TODO: Android disabled because of https://github.com/DevExpress/testcafe/issues/1492
-            skip: 'iphone,ipad,android'
+            skip: ['iphone', 'ipad', 'android']
         });
     });
 
@@ -11,7 +11,7 @@ describe('[Regression](GH-1057) - hidden by fixed parent', function () {
         return runTests('testcafe-fixtures/hiddenByFixedParent.js', 'gh-1057 with custom offsets', {
             // NOTE: https://github.com/DevExpress/testcafe/issues/1237
             // TODO: Android disabled because of https://github.com/DevExpress/testcafe/issues/1492
-            skip: 'iphone,ipad,android'
+            skip: ['iphone', 'ipad', 'android']
         });
     });
 });

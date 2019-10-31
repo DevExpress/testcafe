@@ -1,28 +1,10 @@
-const expect         = require('chai').expect;
-const parseUserAgent = require('../../../../../../lib/utils/parse-user-agent');
-const config         = require('../../../../config');
+const expect             = require('chai').expect;
+const config             = require('../../../../config');
+const { checkUserAgent } = require('../../../../assertion-helper');
 
 describe('[API] t.eval', function () {
     it('Should execute an anonymous client function', function () {
-        function assertUA (errs, alias) {
-            const isErrorsArray = config.currentEnvironment.browsers.length === 1 && Array.isArray(errs);
-
-            if (!isErrorsArray)
-                errs = errs[alias];
-
-            if (!isErrorsArray && !errs)
-                throw new Error('Error for "' + alias + '" haven\'t created');
-
-            const parsedUA  = parseUserAgent(errs[0]);
-            const compactUA = parsedUA.userAgent.toLowerCase();
-
-            // NOTE: the "ie" alias corresponds to the "internet explorer" lowered part of a compact user agent string (GH-481)
-            const expectedBrowserName = alias === 'ie' ? 'internet explorer' : alias;
-
-            expect(compactUA.indexOf(expectedBrowserName)).eql(0, compactUA + ' doesn\'t start with "' + expectedBrowserName + '"');
-        }
-
-        const browsers = 'chrome,firefox,ie';
+        const browsers = ['chrome', 'firefox', 'ie'];
 
         return runTests('./testcafe-fixtures/eval-test.js', 'Get UA', { shouldFail: true, only: browsers })
             .catch(function (errs) {
@@ -31,7 +13,7 @@ describe('[API] t.eval', function () {
                         return browsers.indexOf(browser.alias) > -1;
                     })
                     .forEach(function (browser) {
-                        assertUA(errs, browser.alias);
+                        checkUserAgent(errs, browser.alias);
                     });
             });
     });

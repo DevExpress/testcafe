@@ -114,7 +114,7 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
                 selectorTimeout: DEFAULT_SELECTOR_TIMEOUT,
 
                 // NOTE: https://github.com/DevExpress/testcafe-hammerhead/issues/667
-                skip: 'iphone,ipad'
+                skip: ['iphone', 'ipad']
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('Content of the iframe in which the test is currently operating did not load.');

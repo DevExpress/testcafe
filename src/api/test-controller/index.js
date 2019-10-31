@@ -147,7 +147,11 @@ export default class TestController {
     }
 
     _browser$getter () {
-        return this.testRun.browserConnection.browserInfo.parsedUserAgent;
+        return assign({}, this.testRun.browserConnection.browserInfo.parsedUserAgent,
+            {
+                alias:    this.testRun.browserConnection.browserInfo.alias,
+                headless: this.testRun.browserConnection.isHeadlessBrowser()
+            });
     }
 
     _click$ (selector, options) {

@@ -4,7 +4,27 @@ const DEFAULT_BROWSER_NAME    = 'Other';
 const DEFAULT_BROWSER_VERSION = '0.0';
 const EMPTY_PARSED_USER_AGENT = Bowser.parse(' ');
 
-export default function parseUserAgent (userAgent: string, browserAlias?: string): any {
+interface ParsedOS {
+    name?: string;
+    version?: string;
+}
+
+interface ParsedEngine {
+    name?: string;
+    version?: string;
+}
+
+interface ParsedUserAgent {
+    name: string;
+    version: string;
+    platform: string;
+    os: ParsedOS;
+    engine: ParsedEngine;
+    userAgent: string;
+    fullUserAgent: string;
+}
+
+export default function parseUserAgent (userAgent: string = ''): ParsedUserAgent {
     let parsedUserAgent;
 
     if (!userAgent) {
@@ -16,16 +36,13 @@ export default function parseUserAgent (userAgent: string, browserAlias?: string
     else
         parsedUserAgent = Bowser.parse(userAgent);
 
-    const headless = !!browserAlias && browserAlias.indexOf(':headless') !== -1;
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const os: any = {};
+    const os: ParsedOS = {};
 
     if (parsedUserAgent.os.name) {
         os.name = parsedUserAgent.os.name;
 
-        // NOTE: we use the more readable 'versionName' property in the case of Windows.
-        // Windows 8.1: os.version: "NT 6.3", os.versionName: "8.1" (GH-481).
+        // NOTE: a 'versionName' property value is more readable in the case of Windows (GH-481):
+        // Windows 8.1: os.version: "NT 6.3", os.versionName: "8.1".
         if (parsedUserAgent.os.name.toLowerCase() === 'windows' && parsedUserAgent.os.versionName)
             os.version = parsedUserAgent.os.versionName;
         else if (parsedUserAgent.os.version)
@@ -36,11 +53,9 @@ export default function parseUserAgent (userAgent: string, browserAlias?: string
         (parsedUserAgent.os.name ? ' / ' + parsedUserAgent.os.name + (os.version ? ' ' + os.version : '') : '');
 
     return {
-        alias:         browserAlias,
-        headless,
-        name:          parsedUserAgent.browser.name,
-        version:       parsedUserAgent.browser.version,
-        platform:      parsedUserAgent.platform.type,
+        name:          parsedUserAgent.browser.name || '',
+        version:       parsedUserAgent.browser.version || '',
+        platform:      parsedUserAgent.platform.type || '',
         os,
         engine:        parsedUserAgent.engine,
         userAgent:     compactUserAgent,

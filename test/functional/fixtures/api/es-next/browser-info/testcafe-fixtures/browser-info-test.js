@@ -1,44 +1,20 @@
-fixture `Browser information`;
+import { ClientFunction } from 'testcafe';
+import parseUserAgent from '../../../../../../../lib/utils/parse-user-agent';
+import config from '../../../../../config';
 
-
-const testedBrowserNames = [
-    'firefox',
-    'chrome',
-    'safari',
-    'internet explorer'
-];
-const testedPlatforms    = [
-    'desktop',
-    'mobile',
-    'tablet'
-];
-const testedOs           = [
-    'windows',
-    'macos',
-    'ios',
-    'linux'
-];
-
-function isNotValidValue (value, expectedValues) {
-    const loweredValue = value.toLowerCase();
-
-    expectedValues.forEach(function (expectedValue) {
-        if (loweredValue === expectedValue)
-            return false;
-
-        return true;
-    });
-}
+fixture `Browser information in headless Chrome`;
 
 test
     .page `http://localhost:3000/fixtures/api/es-next/browser-info/pages/index.html`
 ('t.browser', async t => {
-    const browserInfo = t.browser;
+    const userAgent       = ClientFunction(() => window.navigator.userAgent);
+    const parsedUserAgent = parseUserAgent(await userAgent());
+    const currentBrowser  = config.currentEnvironment.browsers.find(browser => browser.userAgent === 'headlesschrome');
+    const expected        = Object.assign({}, parsedUserAgent, {
+        alias:    currentBrowser.browserName,
+        headless: true
+    });
+    const browserInfo     = t.browser;
 
-    if (isNotValidValue(browserInfo.name, testedBrowserNames) ||
-        isNotValidValue(browserInfo.platform, testedPlatforms) ||
-        isNotValidValue(browserInfo.os.name, testedOs))
-        await t.expect(false).ok();
-    else
-        await t.expect(true).ok();
+    await t.expect(browserInfo).eql(expected);
 });

@@ -9,7 +9,7 @@ if (config.useLocalBrowsers) {
 
         it('Should record video without options', () => {
             return runTests('./testcafe-fixtures/index-test.js', '', {
-                only:         'chrome,firefox',
+                only:         ['chrome', 'firefox'],
                 setVideoPath: true,
                 shouldFail:   true
             })
@@ -26,7 +26,7 @@ if (config.useLocalBrowsers) {
 
         it('Should record video in a single file', ()=> {
             return runTests('./testcafe-fixtures/index-test.js', '', {
-                only:         'chrome,firefox',
+                only:         ['chrome', 'firefox'],
                 shouldFail:   true,
                 setVideoPath: true,
 
@@ -47,7 +47,7 @@ if (config.useLocalBrowsers) {
 
         it('Should record only failed tests', () => {
             return runTests('./testcafe-fixtures/index-test.js', '', {
-                only:         'chrome,firefox',
+                only:         ['chrome', 'firefox'],
                 shouldFail:   true,
                 setVideoPath: true,
 
@@ -68,7 +68,7 @@ if (config.useLocalBrowsers) {
 
         it('Should record only failed tests in a single file', () => {
             return runTests('./testcafe-fixtures/index-test.js', '', {
-                only:         'chrome,firefox',
+                only:         ['chrome', 'firefox'],
                 shouldFail:   true,
                 setVideoPath: true,
 

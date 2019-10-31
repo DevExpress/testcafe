@@ -62,7 +62,7 @@ describe('[API] test.before/test.after hooks', () => {
 
 describe('[API] t.ctx', () => {
     it('Should pass context object to tests and hooks', () => {
-        return runTests('./testcafe-fixtures/run-all.js', 't.ctx', { shouldFail: true, only: 'chrome,ie,firefox' })
+        return runTests('./testcafe-fixtures/run-all.js', 't.ctx', { shouldFail: true, only: ['chrome', 'ie', 'firefox'] })
             .catch(errs => {
                 const testedBrowsers = config.currentEnvironment.browsers;
 
@@ -112,7 +112,7 @@ describe('[API] fixture.before/fixture.after hooks', () => {
     it('Should fail all tests in fixture if fixture.before hooks fails', () => {
         return runTests('./testcafe-fixtures/fixture-before-fail.js', null, {
             shouldFail: true,
-            only:       'chrome, firefox'
+            only:       ['chrome', 'firefox']
         }).catch(errs => {
             const allErrors = config.currentEnvironment.browsers.length === 1 ? errs : errs['chrome'].concat(errs['firefox']);
 
@@ -126,6 +126,6 @@ describe('[API] fixture.before/fixture.after hooks', () => {
     });
 
     it('Fixture context', () => {
-        return runTests('./testcafe-fixtures/fixture-ctx.js', null, { only: 'chrome, firefox' });
+        return runTests('./testcafe-fixtures/fixture-ctx.js', null, { only: ['chrome', 'firefox'] });
     });
 });
