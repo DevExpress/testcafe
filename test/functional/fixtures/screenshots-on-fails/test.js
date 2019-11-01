@@ -146,6 +146,7 @@ describe('Screenshots on fails', function () {
             return runTests('./testcafe-fixtures/screenshots-on-fails.js', 'Screenshot on the ensureElement method fail',
                 {
                     only:               'chrome',
+                    skip:               'chrome-osx',
                     shouldFail:         true,
                     screenshotsOnFails: true,
                     selectorTimeout:    0,

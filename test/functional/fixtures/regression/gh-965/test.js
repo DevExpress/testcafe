@@ -6,6 +6,7 @@ describe('[Regression](GH-965)', function () {
         it('in navigateTo', function () {
             return runTests('testcafe-fixtures/navigate-to-test.js', 'navigateTo', {
                 only:       'chrome',
+                skip:       'chrome-osx',
                 shouldFail: true
             })
                 .catch(function (errs) {
@@ -17,6 +18,7 @@ describe('[Regression](GH-965)', function () {
         it('in test page', function () {
             return runTests('testcafe-fixtures/test-page.js', 'test.page', {
                 only:       'chrome',
+                skip:       'chrome-osx',
                 shouldFail: true
             })
                 .catch(function (err) {

@@ -7,7 +7,7 @@ const TEST_DURATION_BOUND = 10000;
 // Actions functionality is tested in lower-level raw API.
 describe('[API] t.click()', function () {
     it('Should make click on a button', function () {
-        return runTests('./testcafe-fixtures/click-test.js', 'Click button', { shouldFail: true, only: 'chrome' })
+        return runTests('./testcafe-fixtures/click-test.js', 'Click button', { shouldFail: true, only: 'chrome', skip: 'chrome-osx' })
             .catch(function (errs) {
                 // GH-1674
                 expect(testReport.durationMs).below(TEST_DURATION_BOUND);
@@ -28,7 +28,8 @@ describe('[API] t.click()', function () {
     it('Should validate options', function () {
         return runTests('./testcafe-fixtures/click-test.js', 'Incorrect action option', {
             shouldFail: true,
-            only:       'chrome'
+            only:       'chrome',
+            skip:       'chrome-osx'
         })
             .catch(function (errs) {
                 expect(errs[0]).to.contains('The "offsetX" option is expected to be an integer, but it was -3.5.');
@@ -51,7 +52,8 @@ describe('[API] t.click()', function () {
     it('Should validate selector', function () {
         return runTests('./testcafe-fixtures/click-test.js', 'Incorrect action selector', {
             shouldFail: true,
-            only:       'chrome'
+            only:       'chrome',
+            skip:       'chrome-osx'
         })
             .catch(function (errs) {
                 expect(errs[0]).to.contains(

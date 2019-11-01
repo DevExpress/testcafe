@@ -6,7 +6,8 @@ describe('[API] t.rightClick()', function () {
     it('Should make right click on a button', function () {
         return runTests('./testcafe-fixtures/right-click-test.js', 'Right click button', {
             shouldFail: true,
-            only:       'chrome'
+            only:       'chrome',
+            skip:       'chrome-osx'
         })
             .catch(function (errs) {
                 expect(errs[0]).to.contains('Right click on the button');
@@ -17,7 +18,8 @@ describe('[API] t.rightClick()', function () {
     it('Should validate options', function () {
         return runTests('./testcafe-fixtures/right-click-test.js', 'Incorrect action option', {
             shouldFail: true,
-            only:       'chrome'
+            only:       'chrome',
+            skip:       'chrome-osx'
         })
             .catch(function (errs) {
                 expect(errs[0]).to.contains('The "offsetX" option is expected to be an integer, but it was -3.5.');
@@ -28,7 +30,8 @@ describe('[API] t.rightClick()', function () {
     it('Should validate selector', function () {
         return runTests('./testcafe-fixtures/right-click-test.js', 'Incorrect action selector', {
             shouldFail: true,
-            only:       'chrome'
+            only:       'chrome',
+            skip:       'chrome-osx'
         })
             .catch(function (errs) {
                 expect(errs[0]).to.contains(

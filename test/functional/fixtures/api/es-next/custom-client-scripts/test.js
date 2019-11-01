@@ -59,14 +59,14 @@ describe('Custom client scripts', () => {
         // NOTE: Error message format is a little different in various browsers.
         // This is why, we run these tests only in Chrome
         it('Script loaded from file', () => {
-            return runTests('./testcafe-fixtures/error-in-script-from-file.js', null, { shouldFail: true, only: 'chrome' })
+            return runTests('./testcafe-fixtures/error-in-script-from-file.js', null, { shouldFail: true, only: 'chrome', skip: 'chrome-osx' })
                 .catch(errs => {
                     expect(errs[0]).eql("An error occurred in a script injected into the tested page:  TypeError: Cannot read property 'some-property' of undefined  [[user-agent]]");
                 });
         });
 
         it('Script loaded from module', () => {
-            return runTests('./testcafe-fixtures/error-in-script-from-module.js', null, { shouldFail: true, only: 'chrome' })
+            return runTests('./testcafe-fixtures/error-in-script-from-module.js', null, { shouldFail: true, only: 'chrome', skip: 'chrome-osx' })
                 .catch(errs => {
                     expect(errs[0]).eql("An error occurred in the 'is-docker' module injected into the tested page. Make sure that this module can be executed in the browser environment.  Error details: ReferenceError: require is not defined  [[user-agent]]");
                 });

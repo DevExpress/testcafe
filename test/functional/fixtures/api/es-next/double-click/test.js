@@ -4,7 +4,8 @@ describe('[API] t.doubleClick()', function () {
     it('Should make double click on a button', function () {
         return runTests('./testcafe-fixtures/double-click-test.js', 'Double click on a button', {
             shouldFail: true,
-            only:       'chrome'
+            only:       'chrome',
+            skip:       'chrome-osx'
         })
             .catch(function (errs) {
                 expect(errs[0]).to.contains('Click on button raised 2 times. Double click on button raised.');
@@ -15,7 +16,8 @@ describe('[API] t.doubleClick()', function () {
     it('Should validate options', function () {
         return runTests('./testcafe-fixtures/double-click-test.js', 'Incorrect action option', {
             shouldFail: true,
-            only:       'chrome'
+            only:       'chrome',
+            skip:       'chrome-osx'
         })
             .catch(function (errs) {
                 expect(errs[0]).to.contains('The "offsetX" option is expected to be an integer, but it was 3.14.');
@@ -26,7 +28,8 @@ describe('[API] t.doubleClick()', function () {
     it('Should validate selector', function () {
         return runTests('./testcafe-fixtures/double-click-test.js', 'Incorrect action selector', {
             shouldFail: true,
-            only:       'chrome'
+            only:       'chrome',
+            skip:       'chrome-osx'
         })
             .catch(function (errs) {
                 expect(errs[0]).to.contains(

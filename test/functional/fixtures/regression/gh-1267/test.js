@@ -2,7 +2,7 @@ const expect = require('chai').expect;
 
 describe('[Regression](GH-1267)', function () {
     it('Incorrect callsite stack for failed assertion in a method of some class (GH-1267)', function () {
-        return runTests('testcafe-fixtures/index.test.js', null, { only: ['chrome'] })
+        return runTests('testcafe-fixtures/index.test.js', null, { only: 'chrome', skip: 'chrome-osx' })
             .catch(function (errs) {
                 expect(errs[0]).to.contains(
                     '  3 |class Page {\n' +

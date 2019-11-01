@@ -5,11 +5,11 @@ const errorInEachBrowserContains = require('../../../../assertion-helper.js').er
 // (like derivative selectors, ClientFunctions, RegExp usage etc..)
 describe('[Raw API] Selector', function () {
     it('Should work with different type of selectors', function () {
-        return runTests('./testcafe-fixtures/test.testcafe', 'Different types of selectors', { only: 'chrome' });
+        return runTests('./testcafe-fixtures/test.testcafe', 'Different types of selectors', { only: 'chrome', skip: 'chrome-osx' });
     });
 
     it('Should raise an error is selector fails', function () {
-        return runTests('./testcafe-fixtures/test.testcafe', 'Incorrect selector', { only: 'chrome', shouldFail: true })
+        return runTests('./testcafe-fixtures/test.testcafe', 'Incorrect selector', { only: 'chrome', skip: 'chrome-osx', shouldFail: true })
             .catch(function (errs) {
                 errorInEachBrowserContains(errs, 'WrongSelector is not defined', 0);
             });

@@ -271,7 +271,7 @@ describe('[API] t.takeScreenshot()', function () {
     else if (!config.useLocalBrowsers) {
         it('Should show a warning on an attempt to capture a screenshot for a remote browser', () => {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot',
-                { only: 'chrome', setScreenshotPath: true })
+                { only: 'chrome', skip: 'chrome-osx', setScreenshotPath: true })
                 .then(() => {
                     expect(testReport.warnings).eql([
                         'The screenshot and window resize functionalities are not supported in a remote browser. ' +
@@ -594,7 +594,7 @@ describe('[API] t.takeElementScreenshot()', function () {
     else if (!config.useLocalBrowsers) {
         it('Should show a warning on an attempt to capture an element screenshot for a remote browser', () => {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Element',
-                { only: 'chrome', setScreenshotPath: true })
+                { only: 'chrome', skip: 'chrome-osx', setScreenshotPath: true })
                 .then(() => {
                     expect(testReport.warnings).eql([
                         'The screenshot and window resize functionalities are not supported in a remote browser. ' +
