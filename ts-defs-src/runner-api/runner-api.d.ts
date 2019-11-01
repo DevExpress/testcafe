@@ -1,7 +1,8 @@
 
+// {{#allowReferences}}
+// NOTE: Must be added manually to the top of the index.d.ts template
 /// <reference types="node" />
 
-// {{#allowReferences}}
 /// <reference path="../test-api/client-script.d.ts" />
 /// <reference path="../test-api/action-options.d.ts" />
 // {{/allowReferences}}
