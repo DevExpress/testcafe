@@ -320,7 +320,7 @@ describe('Compiler', function () {
             expect(createProgram.callCount).eql(1);
         });
 
-        it('Should provide correct globals in TestCafe scripts', async () => {
+        it('Should provide correct globals in TestCafe scripts', async function () {
             this.timeout(60000);
 
             const tscPath     = path.resolve('node_modules/.bin/tsc');
@@ -338,7 +338,7 @@ describe('Compiler', function () {
             });
         });
 
-        it('Should provide correct globals for selector and client-functions only', async () => {
+        it('Should provide correct globals for selector and client-functions only', async function () {
             this.timeout(60000);
 
             const tscPath     = path.resolve('node_modules/.bin/tsc');
