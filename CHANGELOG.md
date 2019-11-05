@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.6.1 (2019-10-29)
+
+### Bug Fixes
+
+* Fixed a conflict with Jest type definitions that caused a TypeScript error ([#4405](https://github.com/DevExpress/testcafe/issues/4405))
+* TestCafe no longer deletes screenshots with no page content detected ([#3552](https://github.com/DevExpress/testcafe/issues/3552))
+* Fixed a bug when TestCafe did not use the default path to the test files ([#4331](https://github.com/DevExpress/testcafe/issues/4331))
+* Fixed a bug when the FFmpeg library could not be detected in the `PATH` locations ([PR #4377](https://github.com/DevExpress/testcafe/pull/4377))
+* Added a TypeScript definition for `runner.tsConfigPath` ([PR #4403](https://github.com/DevExpress/testcafe/pull/4403))
+
 ## v1.6.0 (2019-10-16)
 
 ### :star2: Support for macOS 10.15 Catalina
