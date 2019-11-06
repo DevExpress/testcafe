@@ -1,15 +1,23 @@
-const expect              = require('chai').expect;
-const path                = require('path');
+const { exec }            = require('child_process');
 const fs                  = require('fs');
+const os                  = require('os');
+const path                = require('path');
+const { promisify }       = require('util');
+const expect              = require('chai').expect;
 const proxyquire          = require('proxyquire');
 const sinon               = require('sinon');
 const globby              = require('globby');
+const nanoid              = require('nanoid');
 const { TEST_RUN_ERRORS } = require('../../lib/errors/types');
 const exportableLib       = require('../../lib/api/exportable-lib');
 const createStackFilter   = require('../../lib/errors/create-stack-filter.js');
 const assertError         = require('./helpers/assert-runtime-error').assertError;
 const compile             = require('./helpers/compile');
-const { exec }            = require('child_process');
+
+
+const copy   = promisify(fs.copyFile);
+const remove = promisify(fs.unlink);
+
 
 require('source-map-support').install();
 
@@ -368,6 +376,28 @@ describe('Compiler', function () {
             }
             finally {
                 process.chdir(currentDir);
+            }
+        });
+
+        it('Should provide Node.js global when TestCafe is installed globally', async function () {
+            this.timeout(60000);
+
+            const tmpFileName = `testfile-${nanoid()}.ts`;
+            const tmpFileDir  = os.tmpdir();
+            const tmpFilePath = path.join(tmpFileDir, tmpFileName);
+            const currentDir  = process.cwd();
+
+            await copy(path.resolve('test/server/data/test-suites/typescript-nodejs-globals/testfile.ts'), tmpFilePath);
+
+            try {
+                process.chdir(tmpFileDir);
+
+                await compile(tmpFileName);
+            }
+            finally {
+                process.chdir(currentDir);
+
+                await remove(tmpFilePath);
             }
         });
     });
