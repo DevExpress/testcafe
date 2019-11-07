@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import {Selector} from "testcafe";
 
 
 const getElementById = Selector(id => document.getElementById(id));
