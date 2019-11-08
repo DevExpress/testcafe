@@ -96,7 +96,7 @@ The short browser name.
 }
 ```
 
-If the browser cannot be [detected automatically](../using-testcafe/common-concepts/browsers/browser-support.md#locally-installed-browsers), TestCafe sets the `name` property to `'Other'`.
+If the browser cannot be [detected automatically](../using-testcafe/common-concepts/browsers/browser-support.md#locally-installed-browsers), the `name` property is set to `'Other'`.
 
 ### version
 
@@ -115,6 +115,8 @@ The browser version.
     version: '69.0'
 }
 ```
+
+The `version` property is set to `'0.0'` if the browser version cannot be determined.
 
 ### platform
 
@@ -156,7 +158,7 @@ Provides the operating system's `name` and `version`.
 }
 ```
 
-If the operating system cannot be detected, TestCafe sets the `os.name` property to `'Other'`.
+If the operating system cannot be detected, the `os.name` property is set to `'Other'`. The `os.version` property defaults to `'0.0'` if TestCafe is unable to determine the OS version.
 
 ### engine
 
@@ -170,6 +172,8 @@ Provides the browser engine's `name` and `version`.
     }
 }
 ```
+
+If the browser engine cannot be detected, the `engine.name` property is set to `'Other'`. The `engine.version` property defaults to `'0.0'` if TestCafe is unable to determine the engine version.
 
 ### userAgent
 
@@ -196,6 +200,8 @@ The formatted name and version of the browser and operating system. This string 
     prettyUserAgent: 'Chrome 77.0.3865.120 / macOS 10.15.1'
 }
 ```
+
+The `prettyUserAgent` property is set to an empty string if TestCafe cannot parse the user agent.
 
 ## Examples
 
