@@ -179,6 +179,8 @@
     url: /documentation/test-api/working-with-iframes.md
   - name: Debugging
     url: /documentation/test-api/debugging.md
+  - name: Identify the Browser and Platform
+    url: /documentation/test-api/identify-the-browser-and-platform.md
   - name: Accessing Console Messages
     url: /documentation/test-api/accessing-console-messages.md
   - name: TypeScript Support

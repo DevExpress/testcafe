@@ -27,7 +27,7 @@ async reportTaskStart (startTime, userAgents, testCount)
 Parameter    | Type             | Description
 ------------ | ---------------- | ---------------------------------------
 `startTime`  | Date             | The date and time when testing started.
-`userAgents` | Array of Strings | The list of browsers used for testing.
+`userAgents` | Array of Strings | The list of browsers used for testing. Contains the formatted names and versions of the browsers and operating systems.
 `testCount`  | Number           | The total number of tests to run.
 
 **Example**
