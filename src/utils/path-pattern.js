@@ -74,7 +74,7 @@ export default class PathPattern extends EventEmitter {
             [PLACEHOLDERS.FIXTURE]:            this.data.fixture,
             [PLACEHOLDERS.TEST]:               this.data.test,
             [PLACEHOLDERS.FILE_INDEX]:         forError => forError ? this.data.errorFileIndex : this.data.fileIndex,
-            [PLACEHOLDERS.USERAGENT]:          this.data.parsedUserAgent.userAgent,
+            [PLACEHOLDERS.USERAGENT]:          this.data.parsedUserAgent.prettyUserAgent,
             [PLACEHOLDERS.BROWSER]:            this.data.parsedUserAgent.name,
             [PLACEHOLDERS.BROWSER_VERSION]:    this.data.parsedUserAgent.version,
             [PLACEHOLDERS.OS]:                 this.data.parsedUserAgent.os.name,

@@ -277,7 +277,7 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     public get userAgent (): string {
-        let userAgent = this.browserInfo.parsedUserAgent.userAgent;
+        let userAgent = this.browserInfo.parsedUserAgent.prettyUserAgent;
 
         if (this.browserInfo.userAgentProviderMetaInfo)
             userAgent += ` (${this.browserInfo.userAgentProviderMetaInfo})`;

@@ -43,43 +43,43 @@ interface BrowserConsoleMessages {
     info: string[];
 }
 
-interface BrowserInfo {
+interface Browser {
     /**
-     * The alias of the browser.
+     * The browser alias string specified when tests were launched.
      */
     alias: string;
     /**
-     * The name of the browser.
+     * The short browser name.
      */
     name: string;
     /**
-     * The version of the browser.
+     * The browser version.
      */
     version: string;
     /**
-     * The platform of the browser.
+     * The browser platform type.
      */
     platform: string;
     /**
-     * Indicates the headless browser mode.
+     * Specifies if the browser is in headless mode.
      */
     headless: string;
     /**
-     * The operating system information.
+     * The operating system's name and version.
      */
     os: { name?: string; version?: string };
     /**
-     * The engine information.
+     * The browser engine's name and version.
      */
     engine: { name?: string; version?: string };
     /**
-     * The full user agent of the browser.
-     */
-    fullUserAgent: string;
-    /**
-     * The compact user agent ("Browser / OS") of the browser.
+     * The user agent string.
      */
     userAgent: string;
+    /**
+     * The formatted name and version of the browser and operating system.
+     */
+    prettyUserAgent: string;
 }
 
 interface TestController {
@@ -94,7 +94,7 @@ interface TestController {
     /**
      * Returns an object that contains browser information.
      */
-    readonly browser: BrowserInfo;
+    readonly browser: Browser;
     /**
      * Clicks a webpage element.
      *
