@@ -264,9 +264,9 @@ test('Check the installer platform', async t => {
 });
 ```
 
-### Block Ads on Mobile Devices
+### Handle Ads on Mobile Devices
 
-The following example uses the [t.browser.platform](#platform) property to determine the platform and [attach](intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.md) a [request mock](intercepting-http-requests/mocking-http-requests.md) that blocks ad banners if the test runs on a mobile device.
+The following example uses the [t.browser.platform](#platform) property to determine the platform and [attach](intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.md) a [request mock](intercepting-http-requests/mocking-http-requests.md) that blocks ad requests if the test runs on a mobile device.
 
 ```js
 import { RequestMock } from 'testcafe';
