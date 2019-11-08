@@ -216,9 +216,9 @@ fixture `My fixture`
     });
 ```
 
-### Generate the Screenshot File Name
+### Generate the Screenshot File Path
 
-This example shows how to generate the screenshot path based on the [browser name](#name). This prevents screenshots taken with [t.takeElementScreenshot](actions/take-screenshot.md#take-a-screenshot-of-a-page-element) from being overwritten.
+This example shows how to generate the screenshot path based on the [browser name](#name). This prevents screenshots taken with [t.takeElementScreenshot](actions/take-screenshot.md#take-a-screenshot-of-a-page-element) in different browsers from being overwritten.
 
 ```js
 import { Selector } from 'testcafe';
