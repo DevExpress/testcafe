@@ -18,7 +18,6 @@ const testingEnvironmentNames = {
     localHeadlessChrome:         'local-headless-chrome',
     localHeadlessFirefox:        'local-headless-firefox',
     remote:                      'remote',
-    oldBrowsers:                 'old-browsers',
     legacy:                      'legacy'
 };
 
@@ -172,33 +171,6 @@ testingEnvironments[testingEnvironmentNames.remote] = {
     }]
 };
 
-testingEnvironments[testingEnvironmentNames.oldBrowsers] = {
-    jobName: 'functional tests - ms desktop browsers',
-
-    sauceLabs: {
-        username:  process.env.SAUCE_USERNAME_FUNCTIONAL_DESKTOP,
-        accessKey: process.env.SAUCE_ACCESS_KEY_FUNCTIONAL_DESKTOP,
-
-    },
-
-    retryTestPages: true,
-
-    browsers: [
-        {
-            platform:    'Windows 8',
-            browserName: 'internet explorer',
-            version:     '10.0',
-            alias:       'ie 10'
-        },
-        {
-            platform:    'Windows 7',
-            browserName: 'internet explorer',
-            version:     '9.0',
-            alias:       'ie 9'
-        }
-    ]
-};
-
 testingEnvironments[testingEnvironmentNames.legacy] = {
     isLocalBrowsers:    true,
     isHeadlessBrowsers: true,
@@ -212,7 +184,6 @@ testingEnvironments[testingEnvironmentNames.legacy] = {
         }
     ]
 };
-
 
 module.exports = {
     get currentEnvironmentName () {
