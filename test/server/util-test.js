@@ -40,18 +40,20 @@ describe('Utils', () => {
     });
 
     it('Parse user agent', () => {
+        const expectedEmptyParsedUA = {
+            name:            'Other',
+            version:         '0.0',
+            platform:        'Other',
+            os:              { name: 'Other', version: '0.0' },
+            engine:          { name: 'Other', version: '0.0' },
+            prettyUserAgent: 'Other 0.0 / Other 0.0',
+            userAgent:       ''
+        };
+
         const testCases = [
             {
                 sourceUA: '',
-                expected: {
-                    name:            'Other',
-                    version:         '0.0',
-                    platform:        'Other',
-                    os:              { name: 'Other', version: '0.0' },
-                    engine:          { name: 'Other', version: '0.0' },
-                    prettyUserAgent: 'Other 0.0 / Other 0.0',
-                    userAgent:       ''
-                }
+                expected: expectedEmptyParsedUA
             },
             {
                 sourceUA: 'Chrome',
@@ -130,6 +132,8 @@ describe('Utils', () => {
         testCases.forEach(testCase => {
             expect(parseUserAgent(testCase.sourceUA)).to.deep.eql(testCase.expected);
         });
+
+        expect(parseUserAgent()).to.deep.eql(expectedEmptyParsedUA);
     });
 
     describe('Parse file list', () => {
