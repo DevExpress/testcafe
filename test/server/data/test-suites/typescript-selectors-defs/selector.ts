@@ -880,3 +880,22 @@ const getElementById = Selector(id => document.getElementById(id));
     expect(sel.hasAttribute('id')).not.ok;
     expect(el.hasAttribute).eql(void 0);
 })();
+
+(async () => {
+    await Selector('div').withAttribute('data', 'data')();
+    await Selector('div').nth(0)();
+    await Selector('div').with({ timeout: 5000 })();
+    await Selector('div').addCustomDOMProperties({ prop: el => el.tagName })();
+    await Selector('div').addCustomMethods({ meth: el => el.tagName })();
+    await Selector('div').prevSibling()();
+    await Selector('div').nextSibling()();
+    await Selector('div').sibling()();
+    await Selector('div').child()();
+    await Selector('div').parent()();
+    await Selector('div').find('span')();
+    await Selector('div').filterHidden()();
+    await Selector('div').filterVisible()();
+    await Selector('div').filter('span')();
+    await Selector('div').withExactText('text')();
+    await Selector('div').withText('text')();
+})();
