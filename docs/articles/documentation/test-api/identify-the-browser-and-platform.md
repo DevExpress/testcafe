@@ -24,17 +24,17 @@ test('My test', async t => {
 
 `t.browser` exposes the following properties:
 
-Property | Description   | Example
--------- | ------------- | -------
-[alias](#alias) | The browser alias string specified when tests were launched. | `firefox:headless`
-[name](#name) | The browser name. | `Chrome`
-[version](#version) | The browser version. | `77.0.3865.120`
-[platform](#platform) | The platform type. | `desktop`
-[headless](#headless) | `true` if the browser runs in headless mode.
-[os](#os) | The name and version of the operating system. | `{ name: 'macOS', version: '10.15.1' }`
-[engine](#engine) | The name and version of the browser engine. |  `{ name: 'Gecko', version: '20100101' }`
-[userAgent](#useragent) | The user agent string. | `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/77.0.3865.120 Safari/537.36`
-[prettyUserAgent](#prettyuseragent) | Formatted string with the browser's and operating system's name and version. | `Chrome 77.0.3865.75 / macOS 10.14.0`
+Property | Type | Description   | Example
+-------- | ---- | ------------- | -------
+[alias](#alias) | String | The browser alias string specified when tests were launched. | `firefox:headless`
+[name](#name) | String | The browser name. | `Chrome`
+[version](#version) | String | The browser version. | `77.0.3865.120`
+[platform](#platform) | String | The platform type. | `desktop`
+[headless](#headless) | Boolean | `true` if the browser runs in headless mode. | `false`
+[os](#os) | Object | The name and version of the operating system. | `{ name: 'macOS', version: '10.15.1' }`
+[engine](#engine) | Object | The name and version of the browser engine. |  `{ name: 'Gecko', version: '20100101' }`
+[userAgent](#useragent) | String | The user agent string. | `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/77.0.3865.120 Safari/537.36`
+[prettyUserAgent](#prettyuseragent) | String | Formatted string with the browser's and operating system's name and version. | `Chrome 77.0.3865.75 / macOS 10.14.0`
 
 ## Properties
 
@@ -125,6 +125,7 @@ Identifies the platform type. This property can have the following values:
 * `desktop`
 * `mobile`
 * `tablet`
+* `other` (identifies other platforms, or indicates that the platform cannot be detected)
 
 ```js
 {
