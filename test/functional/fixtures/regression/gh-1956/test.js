@@ -30,13 +30,13 @@ describe('Should support TextInput event[Regression](GH-1956)', function () {
 
     it('Prevent Input event on TextInput when type to ContentEditable div IE11', function () {
         return runTests('testcafe-fixtures/index.js',
-            'Prevent Input event on TextInput when type to ContentEditable div IE11',
+            'Prevent Input event on TextInput when type to ContentEditable div IE11/Firefox',
             { only: [ 'ie' ] });
     });
 
     it('Prevent Input event on TextInput when type to ContentEditable div Firefox', function () {
         return runTests('testcafe-fixtures/index.js',
-            'Prevent Input event on TextInput when type to ContentEditable div Firefox',
+            'Prevent Input event on TextInput when type to ContentEditable div IE11/Firefox',
             { only: [ 'firefox' ], shouldFail: true })
             .catch(function (errs) {
                 expect(errs[0]).contains('Input event has raised');

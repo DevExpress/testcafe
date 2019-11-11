@@ -59,11 +59,11 @@ describe('Utils', () => {
                 sourceUA: 'Chrome',
                 expected: {
                     name:            'Chrome',
-                    version:         '',
+                    version:         '0.0',
                     platform:        'Other',
                     os:              { name: 'Other', version: '0.0' },
                     engine:          { name: 'Other', version: '0.0' },
-                    prettyUserAgent: 'Chrome / Other 0.0',
+                    prettyUserAgent: 'Chrome 0.0 / Other 0.0',
                     userAgent:       'Chrome'
                 }
             },
@@ -73,9 +73,9 @@ describe('Utils', () => {
                     name:            'Other',
                     version:         '0.0',
                     platform:        'desktop',
-                    os:              { name: 'Windows', version: '' },
+                    os:              { name: 'Windows', version: '0.0' },
                     engine:          { name: 'Other', version: '0.0' },
-                    prettyUserAgent: 'Other 0.0 / Windows',
+                    prettyUserAgent: 'Other 0.0 / Windows 0.0',
                     userAgent:       'Windows'
                 }
             },
@@ -83,11 +83,11 @@ describe('Utils', () => {
                 sourceUA: 'AppleWebKit',
                 expected: {
                     name:            'Safari',
-                    version:         '',
+                    version:         '0.0',
                     platform:        'Other',
                     os:              { name: 'Other', version: '0.0' },
-                    engine:          { name: 'WebKit', version: '' },
-                    prettyUserAgent: 'Safari / Other 0.0',
+                    engine:          { name: 'WebKit', version: '0.0' },
+                    prettyUserAgent: 'Safari 0.0 / Other 0.0',
                     userAgent:       'AppleWebKit'
                 }
             },
@@ -98,7 +98,7 @@ describe('Utils', () => {
                     version:         '78.0.3904.70',
                     platform:        'desktop',
                     os:              { name: 'Windows', version: '10' },
-                    engine:          { name: 'Blink', version: '' },
+                    engine:          { name: 'Blink', version: '0.0' },
                     prettyUserAgent: 'Chrome 78.0.3904.70 / Windows 10',
                     userAgent:       'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36'
                 }
@@ -122,7 +122,7 @@ describe('Utils', () => {
                     version:         '67.0.3396.87',
                     platform:        'mobile',
                     os:              { name: 'Android', version: '8.1.0' },
-                    engine:          { name: 'Blink', version: '' },
+                    engine:          { name: 'Blink', version: '0.0' },
                     prettyUserAgent: 'Chrome 67.0.3396.87 / Android 8.1.0',
                     userAgent:       'Mozilla/5.0 (Linux; Android 8.1.0; Android SDK built for x86 Build/OSM1.180201.026) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.87 Mobile Safari/537.36'
                 }

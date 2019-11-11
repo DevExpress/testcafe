@@ -36,17 +36,8 @@ export default function parseUserAgent (userAgent: string = ''): ParsedUserAgent
     else
         parsedUserAgent = Bowser.parse(userAgent);
 
-    let browserName: string;
-    let browserVersion: string;
-
-    if (parsedUserAgent.browser.name) {
-        browserName    = parsedUserAgent.browser.name;
-        browserVersion = parsedUserAgent.browser.version || '';
-    }
-    else {
-        browserName = DEFAULT_NAME;
-        browserVersion = DEFAULT_VERSION;
-    }
+    const browserName    = parsedUserAgent.browser.name || DEFAULT_NAME;
+    const browserVersion = parsedUserAgent.browser.version || DEFAULT_VERSION;
 
     const os: ParsedComponent = { name: DEFAULT_NAME, version: DEFAULT_VERSION };
 
@@ -55,21 +46,21 @@ export default function parseUserAgent (userAgent: string = ''): ParsedUserAgent
 
         // NOTE: a 'versionName' property value is more readable in the case of Windows (GH-481):
         // Windows 8.1: os.version: "NT 6.3", os.versionName: "8.1".
-        if (parsedUserAgent.os.name.toLowerCase() === 'windows')
-            os.version = parsedUserAgent.os.versionName || '';
-        else
-            os.version = parsedUserAgent.os.version || '';
+        if (parsedUserAgent.os.name.toLowerCase() === 'windows') {
+            if (parsedUserAgent.os.versionName)
+                os.version = parsedUserAgent.os.versionName;
+        }
+        else if (parsedUserAgent.os.version)
+            os.version = parsedUserAgent.os.version;
     }
 
-    const engine: ParsedComponent = { name: DEFAULT_NAME, version: DEFAULT_VERSION };
+    const engine: ParsedComponent = {
+        name:    parsedUserAgent.engine.name || DEFAULT_NAME,
+        version: parsedUserAgent.engine.version || DEFAULT_VERSION
+    };
 
-    if (parsedUserAgent.engine.name) {
-        engine.name    = parsedUserAgent.engine.name;
-        engine.version = parsedUserAgent.engine.version || '';
-    }
-
-    const prettyUserAgent = browserName + (browserVersion ? ' ' + browserVersion : '') +
-        (os.name ? ' / ' + os.name + (os.version ? ' ' + os.version : '') : '');
+    const prettyUserAgent = browserName + ' ' + browserVersion +
+        ' / ' + os.name + ' ' + os.version;
 
     return {
         name:            browserName,
