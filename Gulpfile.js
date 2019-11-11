@@ -787,12 +787,6 @@ gulp.step('test-functional-local-legacy-run', () => {
 
 gulp.task('test-functional-local-legacy', gulp.series('build', 'test-functional-local-legacy-run'));
 
-gulp.step('test-functional-travis-old-browsers-run', () => {
-    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.oldBrowsers, functionalTestConfig.browserProviderNames.sauceLabs);
-});
-
-gulp.task('test-functional-travis-old-browsers', gulp.series('build', 'test-functional-travis-old-browsers-run'));
-
 function getDockerEnv (machineName) {
     return childProcess
         .execSync('docker-machine env --shell bash ' + machineName)

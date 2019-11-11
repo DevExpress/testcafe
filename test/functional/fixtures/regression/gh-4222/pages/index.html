@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>gh-4222</title>
+    <style>
+        .scroll-content-div {
+            background-image: linear-gradient(red, yellow);
+        }
+
+        button {
+            margin-top: 2000px;
+        }
+    </style>
+</head>
+<body>
+
+<script>
+    customElements.define('scrollable-area',
+        class extends HTMLElement {
+            constructor () {
+                super();
+
+                let template        = document.getElementById('scrollable-area-template');
+                let templateContent = template.content;
+
+                const shadowRoot = this.attachShadow({ mode: 'open' }).appendChild(templateContent.cloneNode(true));
+            }
+        });
+</script>
+
+<template id="scrollable-area-template">
+    <style>
+        .scrollable-area-div {
+            height: 500px;
+            width: 100px;
+            overflow-y: auto;
+        }
+    </style>
+
+    <div class="scrollable-area-div">
+        <slot name="scroll-content"></slot>
+    </div>
+</template>
+
+<scrollable-area>
+    <div class="scroll-content-div" slot="scroll-content">
+        <button onclick="window.clicked = true;">click me</button>
+    </div>
+</scrollable-area>
+
+</body>
+</html>
