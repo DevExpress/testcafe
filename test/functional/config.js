@@ -15,6 +15,7 @@ const testingEnvironmentNames = {
     localBrowsersIE:             'local-browsers-ie',
     localBrowsersChromeFirefox:  'local-browsers-chrome-firefox',
     localBrowsers:               'local-browsers',
+    localChrome:                 'local-chrome',
     localHeadlessChrome:         'local-headless-chrome',
     localHeadlessFirefox:        'local-headless-firefox',
     remote:                      'remote',
@@ -90,6 +91,18 @@ testingEnvironments[testingEnvironmentNames.localBrowsers] = {
             platform:    'Windows 10',
             browserName: 'firefox',
             alias:       'firefox'
+        }
+    ]
+};
+
+testingEnvironments[testingEnvironmentNames.localChrome] = {
+    isLocalBrowsers: true,
+
+    browsers: [
+        {
+            platform:    'Windows 10',
+            browserName: 'chrome',
+            alias:       'chrome'
         }
     ]
 };
@@ -207,7 +220,7 @@ module.exports = {
     },
 
     get devMode () {
-        return !!process.env.DEV_MODE;
+        return true;/* !!process.env.DEV_MODE;*/
     },
 
     get retryTestPages () {

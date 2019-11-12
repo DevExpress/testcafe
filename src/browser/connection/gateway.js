@@ -2,13 +2,10 @@ import { readSync as read } from 'read-file-relative';
 import { respond404, respond500, respondWithJSON, redirect, preventCaching } from '../../utils/http';
 import RemotesQueue from './remotes-queue';
 
-
-// Const
 const IDLE_PAGE_SCRIPT = read('../../client/browser/idle-page/index.js');
 const IDLE_PAGE_STYLE  = read('../../client/browser/idle-page/styles.css');
 const IDLE_PAGE_LOGO   = read('../../client/browser/idle-page/logo.svg', true);
 
-// Gateway
 export default class BrowserConnectionGateway {
     constructor (proxy, options = {}) {
         this.connections  = {};
@@ -44,6 +41,8 @@ export default class BrowserConnectionGateway {
         this._dispatch('/browser/status-done/{id}', proxy, BrowserConnectionGateway.onStatusRequestOnTestDone);
         this._dispatch('/browser/init-script/{id}', proxy, BrowserConnectionGateway.onInitScriptRequest);
         this._dispatch('/browser/init-script/{id}', proxy, BrowserConnectionGateway.onInitScriptResponse, 'POST');
+        this._dispatch('/browser/active-page-id/{id}', proxy, BrowserConnectionGateway._onGetActivePageIdRequest);
+        this._dispatch('/browser/active-page-id/{id}', proxy, BrowserConnectionGateway._onSetActivePageIdRequest, 'POST');
 
         proxy.GET('/browser/connect', (req, res) => this._connectNextRemoteBrowser(req, res));
         proxy.GET('/browser/connect/', (req, res) => this._connectNextRemoteBrowser(req, res));
@@ -61,6 +60,18 @@ export default class BrowserConnectionGateway {
         }
 
         return true;
+    }
+
+    static _fetchRequestData (req, callback) {
+        let data = '';
+
+        req.on('data', chunk => {
+            data += chunk;
+        });
+
+        req.on('end', () => {
+            callback(data.toString());
+        });
     }
 
 
@@ -124,16 +135,30 @@ export default class BrowserConnectionGateway {
 
     static onInitScriptResponse (req, res, connection) {
         if (BrowserConnectionGateway.ensureConnectionReady(res, connection)) {
-            let data = '';
-
-            req.on('data', chunk => {
-                data += chunk;
-            });
-
-            req.on('end', () => {
+            BrowserConnectionGateway._fetchRequestData(req, data => {
                 connection.handleInitScriptResult(data);
 
                 res.end();
+            });
+        }
+    }
+
+    static _onGetActivePageIdRequest (req, res, connection) {
+        if (BrowserConnectionGateway.ensureConnectionReady(res, connection)) {
+            respondWithJSON(res, {
+                activePageId: connection.activePageId
+            });
+        }
+    }
+
+    static _onSetActivePageIdRequest (req, res, connection) {
+        if (BrowserConnectionGateway.ensureConnectionReady(res, connection)) {
+            BrowserConnectionGateway._fetchRequestData(req, data => {
+                const parsedData = JSON.parse(data);
+
+                connection.activePageId = parsedData.pageId;
+
+                respondWithJSON(res);
             });
         }
     }

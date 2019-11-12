@@ -20,6 +20,7 @@ import FlagList from '../utils/flag-list';
 import prepareReporters from '../utils/prepare-reporters';
 import loadClientScripts from '../custom-client-scripts/load';
 import { setUniqueUrls } from '../custom-client-scripts/utils';
+import { getConcatenatedValuesString, getPluralSuffix } from '../utils/string';
 
 const DEBUG_LOGGER = debug('testcafe:runner');
 
@@ -311,6 +312,35 @@ export default class Runner extends EventEmitter {
         this._validateProxyBypassOption();
     }
 
+    _validateTestForAllowMultipleWindowsOption (tests) {
+        if (tests.some(test => test.isLegacy))
+            throw new GeneralError(RUNTIME_ERRORS.cannotUseAllowMultipleWindowsOptionForLegacyTests);
+    }
+
+    _validateBrowsersForAllowMultipleWindowsOption (browserSet) {
+        const browserConnections            = browserSet.browserConnectionGroups.map(browserConnectionGroup => browserConnectionGroup[0]);
+        const unsupportedBrowserConnections = browserConnections.filter(browserConnection => !browserConnection.activePageId);
+
+        if (!unsupportedBrowserConnections.length)
+            return;
+
+        const unsupportedBrowserAliases = unsupportedBrowserConnections.map(browserConnection => browserConnection.browserInfo.alias);
+        const browserAliases            = getConcatenatedValuesString(unsupportedBrowserAliases);
+        const browserSuffix             = getPluralSuffix(unsupportedBrowserAliases);
+
+        throw new GeneralError(RUNTIME_ERRORS.cannotUseAllowMultipleWindowsOptionForSomeBrowsers, browserAliases, browserSuffix);
+    }
+
+    _validateAllowMultipleWindowsOption (tests, browserSet) {
+        const allowMultipleWindows = this.configuration.getOption(OPTION_NAMES.allowMultipleWindows);
+
+        if (!allowMultipleWindows)
+            return;
+
+        this._validateTestForAllowMultipleWindowsOption(tests);
+        this._validateBrowsersForAllowMultipleWindowsOption(browserSet);
+    }
+
     _createRunnableConfiguration () {
         return this.bootstrapper
             .createRunnableConfiguration()
@@ -486,6 +516,8 @@ export default class Runner extends EventEmitter {
             .then(() => this._createRunnableConfiguration())
             .then(async ({ reporterPlugins, browserSet, tests, testedApp, commonClientScripts }) => {
                 await this._prepareClientScripts(tests, commonClientScripts);
+
+                this._validateAllowMultipleWindowsOption(tests, browserSet);
 
                 return this._runTask(reporterPlugins, browserSet, tests, testedApp);
             });

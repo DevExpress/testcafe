@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+</head>
+<body>
+    <h1>Handle errors</h1>
+    <button id="openNewPageBtn">Open new page</button>
+    <script>
+        var openNewPageBtn = document.getElementById('openNewPageBtn');
+
+        openNewPageBtn.addEventListener('click', function () {
+           window.open('page-with-js-error.html', '_blank');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Page with error</title>
+</head>
+<body>
+    <button id="raiseJsErrorBtn">Raise JavaScript error</button>
+    <script>
+        var raiseJsErrorBtn = document.getElementById('raiseJsErrorBtn');
+
+        raiseJsErrorBtn.addEventListener('click', function () {
+            throw new Error('Error');
+        });
+    </script>
+</body>
+</html>

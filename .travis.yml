@@ -24,6 +24,10 @@ matrix:
     env: GULP_TASK="test-functional-local-headless-firefox"
   - node_js: "10"
     env: GULP_TASK="test-functional-local-legacy"
+  - node_js: "10"
+    env: GULP_TASK="test-functional-local-multiple-windows"
+    services:
+      - xvfb
  fast_finish: true
 
 cache:

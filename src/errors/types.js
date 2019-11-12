@@ -68,7 +68,11 @@ export const TEST_RUN_ERRORS = {
     uncaughtErrorInCustomClientScriptCode:                 'E64',
     uncaughtErrorInCustomClientScriptCodeLoadedFromModule: 'E65',
     uncaughtErrorInCustomScript:                           'E66',
-    uncaughtTestCafeErrorInCustomScript:                   'E67'
+    uncaughtTestCafeErrorInCustomScript:                   'E67',
+    childWindowIsNotLoadedError:                           'E68',
+    childWindowNotFoundError:                              'E69',
+    cannotSwitchToWindowError:                             'E70',
+    closeChildWindowError:                                 'E71'
 };
 
 export const RUNTIME_ERRORS = {
@@ -125,5 +129,7 @@ export const RUNTIME_ERRORS = {
     malformedIPCMessage:                                'E1051',
     unexpectedIPCHeadPacket:                            'E1052',
     unexpectedIPCBodyPacket:                            'E1053',
-    unexpectedIPCTailPacket:                            'E1054'
+    unexpectedIPCTailPacket:                            'E1054',
+    cannotUseAllowMultipleWindowsOptionForLegacyTests:  'E1055',
+    cannotUseAllowMultipleWindowsOptionForSomeBrowsers: 'E1056'
 };

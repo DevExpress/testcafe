@@ -720,6 +720,8 @@ describe('Runner', () => {
                                     brokenConnection.emit('error', new Error('I have failed :('));
                                 else
                                     check();
+                            }).catch(err => {
+                                throw err;
                             });
                         }, 200);
                     }
@@ -802,7 +804,7 @@ describe('Runner', () => {
                 });
         });
 
-        it('Should not display a message about "overriden options" after call "run" method with flags with undefined value', () => {
+        it('Should not display a message about "overridden options" after call "run" method with flags with undefined value', () => {
             const savedConsoleLog = console.log;
 
             console.log = consoleWrapper.log;
@@ -843,6 +845,26 @@ describe('Runner', () => {
             runner._validateDebugLogger();
 
             expect(runner.configuration.getOption('debugLogger')).to.deep.equal(customLogger);
+        });
+
+        it('Should raise an error if "allowMultipleWindows" option is used for legacy tests', () => {
+            return runner
+                .browsers(connection)
+                .src('test/server/data/test-suites/legacy/test.test.js')
+                .run({ allowMultipleWindows: true })
+                .catch(err => {
+                    expect(err.message).eql('You cannot use the "allowMultipleWindows" option for tests written in Legacy API format.');
+                });
+        });
+
+        it('Should raise an error if "allowMultipleWindows" option is used non-local browsers', () => {
+            return runner
+                .browsers(connection)
+                .src('test/server/data/test-suites/basic/testfile1.js')
+                .run({ allowMultipleWindows: true })
+                .catch(err => {
+                    expect(err.message).eql('You cannot use the "allowMultipleWindows" option for "remote" browser.');
+                });
         });
     });
 

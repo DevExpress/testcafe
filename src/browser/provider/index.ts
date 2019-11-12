@@ -4,7 +4,7 @@ import { dirname } from 'path';
 import makeDir from 'make-dir';
 import BrowserConnection from '../connection';
 import delay from '../../utils/delay';
-import { GET_TITLE_SCRIPT, GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from './utils/client-functions';
+import { GET_TITLE_SCRIPT, GET_WINDOW_DIMENSIONS_INFO_SCRIPT, GET_PAGE_ID_SCRIPT } from './utils/client-functions';
 import WARNING_MESSAGE from '../../notifications/warning-message';
 import { Dictionary } from '../../configuration/interfaces';
 
@@ -24,6 +24,7 @@ interface LocalBrowserInfo {
     windowDescriptor: null | string;
     maxScreenSize: null | Size;
     resizeCorrections: null | Size;
+    activePageId: null | string;
 }
 
 function sumSizes (sizeA: Size, sizeB: Size): Size {
@@ -63,7 +64,8 @@ export default class BrowserProvider {
         this.localBrowsersInfo[browserId] = {
             windowDescriptor:  null,
             maxScreenSize:     null,
-            resizeCorrections: null
+            resizeCorrections: null,
+            activePageId:      null
         };
     }
 
@@ -83,6 +85,12 @@ export default class BrowserProvider {
         const connection = BrowserConnection.getById(browserId) as BrowserConnection;
 
         return connection.idle;
+    }
+
+    private async _calculatePageId (browserId: string): Promise<void> {
+        const pageId = await this.plugin.runInitScript(browserId, GET_PAGE_ID_SCRIPT);
+
+        this.localBrowsersInfo[browserId].activePageId = pageId;
     }
 
     private async _calculateResizeCorrections (browserId: string): Promise<void> {
@@ -149,6 +157,8 @@ export default class BrowserProvider {
             await this._calculateResizeCorrections(browserId);
         else if (OS.mac && !this._getMaxScreenSize(browserId))
             await this._calculateMacSizeLimits(browserId);
+
+        await this._calculatePageId(browserId);
     }
 
     private async _closeLocalBrowser (browserId: string): Promise<void> {

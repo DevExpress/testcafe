@@ -76,7 +76,7 @@ export default class ChildDriverLink {
             });
     }
 
-    confirmConnectionEstablished (requestMsgId) {
+    confirmMessage (requestMsgId) {
         const msg = new ConfirmationMessage(requestMsgId, { id: this.driverId });
 
         eventSandbox.message.sendServiceMsg(msg, this.driverWindow);

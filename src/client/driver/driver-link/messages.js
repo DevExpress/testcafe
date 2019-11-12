@@ -5,9 +5,10 @@ export const TYPE = {
     commandExecuted:        'driver|command-executed',
     executeCommand:         'driver|execute-command',
     confirmation:           'driver|confirmation',
-    setNativeDialogHandler: 'driver|set-native-dialog-handler'
+    setNativeDialogHandler: 'driver|set-native-dialog-handler',
+    setAsMaster:            'driver|set-as-master',
+    closeAllChildWindows:   'driver|close-all-child-windows'
 };
-
 
 class InterDriverMessage {
     constructor (type) {
@@ -53,5 +54,17 @@ export class SetNativeDialogHandlerMessage extends InterDriverMessage {
         super(TYPE.setNativeDialogHandler);
 
         this.dialogHandler = dialogHandler;
+    }
+}
+
+export class SetAsMasterMessage extends InterDriverMessage {
+    constructor () {
+        super(TYPE.setAsMaster);
+    }
+}
+
+export class CloseAllChildWindowsMessage extends InterDriverMessage {
+    constructor () {
+        super(TYPE.closeAllChildWindows);
     }
 }
