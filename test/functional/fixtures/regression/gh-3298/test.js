@@ -16,7 +16,7 @@ const expected = [
 
 describe('[Regression](GH-3298) - Fixture hooks of subsequent tests should not overlap each other', function () {
     it('Run two tests with fixture hooks in sequence', function () {
-        return runTests('testcafe-fixtures/index.js', null, { only: 'chrome', skip: 'chrome-osx' })
+        return runTests('testcafe-fixtures/index.js', null, { only: ['chrome'] })
             .then(() => {
                 expect(actual).eql(expected);
             });

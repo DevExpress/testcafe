@@ -1,6 +1,6 @@
 const expect = require('chai').expect;
 
-const browsersWithLimitations = [ 'ie', 'firefox' ];
+const browsersWithLimitations = [ 'ie', 'firefox', 'firefox-osx' ];
 
 describe('Should support TextInput event[Regression](GH-1956)', function () {
     it('Prevent Input event on TextInput when type to input element', function () {
@@ -12,7 +12,7 @@ describe('Should support TextInput event[Regression](GH-1956)', function () {
     it('Prevent Input event on TextInput when type to input element IE11/Firefox', function () {
         return runTests('testcafe-fixtures/index.js',
             'Prevent Input event on TextInput when type to input element IE11/Firefox',
-            { only: browsersWithLimitations, shouldFail: true })
+            { only: [ 'ie', 'firefox', 'firefox-osx' ], shouldFail: true })
             .catch(function (errs) {
                 const errors = [ errs['ie'], errs['firefox'] ].filter(err => err);
 
@@ -37,7 +37,7 @@ describe('Should support TextInput event[Regression](GH-1956)', function () {
     it('Prevent Input event on TextInput when type to ContentEditable div Firefox', function () {
         return runTests('testcafe-fixtures/index.js',
             'Prevent Input event on TextInput when type to ContentEditable div IE11/Firefox',
-            { only: [ 'firefox' ], shouldFail: true })
+            { only: [ 'firefox', 'firefox-osx' ], shouldFail: true })
             .catch(function (errs) {
                 expect(errs[0]).contains('Input event has raised');
             });

@@ -2,14 +2,13 @@ const expect = require('chai').expect;
 
 describe('[API] Hover action', function () {
     it('Should run hover over elements', function () {
-        return runTests('./testcafe-fixtures/hover-test.js', 'Hover over elements', { only: 'chrome', skip: 'chrome-osx' });
+        return runTests('./testcafe-fixtures/hover-test.js', 'Hover over elements', { only: 'chrome' });
     });
 
     it('Should validate options', function () {
         return runTests('./testcafe-fixtures/hover-test.js', 'Incorrect action option', {
             shouldFail: true,
-            only:       'chrome',
-            skip:       'chrome-osx'
+            only:       'chrome'
         })
             .catch(function (errs) {
                 expect(errs[0]).to.contains('The "offsetX" option is expected to be an integer, but it was NaN.');
@@ -20,8 +19,7 @@ describe('[API] Hover action', function () {
     it('Should validate selector', function () {
         return runTests('./testcafe-fixtures/hover-test.js', 'Incorrect action selector', {
             shouldFail: true,
-            only:       'chrome',
-            skip:       'chrome-osx'
+            only:       'chrome'
         })
             .catch(function (errs) {
                 expect(errs[0]).to.contains(

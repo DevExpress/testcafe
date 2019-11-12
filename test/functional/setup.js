@@ -134,17 +134,6 @@ function closeLocalBrowsers () {
     return Promise.all(closeBrowserPromises);
 }
 
-function isMatchedBrowser (runOpt, browserSettings) {
-    const { alias, userAgent } = browserSettings;
-
-    for (const value of runOpt) {
-        if ([alias, userAgent].some(prop => prop && prop.includes(value)))
-            return true;
-    }
-
-    return false;
-}
-
 before(function () {
     const mocha = this;
 
@@ -195,12 +184,6 @@ before(function () {
                 const videoPath                   = opts && opts.setVideoPath ? config.testVideosDir : '';
                 const clientScripts               = opts && opts.clientScripts || [];
 
-                if (opts.only && typeof opts.only === 'string')
-                    opts.only = [opts.only];
-
-                if (opts.skip && typeof opts.skip === 'string')
-                    opts.skip = [opts.skip];
-
                 const {
                     skipJsErrors,
                     quarantineMode,
@@ -226,8 +209,10 @@ before(function () {
                 } = opts;
 
                 const actualBrowsers = browsersInfo.filter(browserInfo => {
-                    const only = onlyOption ? isMatchedBrowser(onlyOption, browserInfo.settings) : true;
-                    const skip = skipOption ? isMatchedBrowser(skipOption, browserInfo.settings) : false;
+                    const { alias, userAgent } = browserInfo.settings;
+
+                    const only = onlyOption ? [alias, userAgent].some(prop => onlyOption.includes(prop)) : true;
+                    const skip = skipOption ? [alias, userAgent].some(prop => skipOption.includes(prop)) : false;
 
                     return only && !skip;
                 });

@@ -21,8 +21,7 @@ describe('Reporter', () => {
         const stream2 = createSimpleTestStream();
 
         return runTests('testcafe-fixtures/index-test.js', 'Simple test', {
-            only:     'chrome',
-            skip:     'chrome-osx',
+            only:     ['chrome'],
             reporter: [
                 {
                     name:   'json',
@@ -48,8 +47,7 @@ describe('Reporter', () => {
         const stream = createAsyncTestStream();
 
         const runOpts = {
-            only:     'chrome',
-            skip:     'chrome-osx',
+            only:     ['chrome'],
             reporter: [
                 {
                     name:   'json',
@@ -68,8 +66,7 @@ describe('Reporter', () => {
         const stream = createAsyncTestStream({ shouldFail: true });
 
         const runOpts = {
-            only:     'chrome',
-            skip:     'chrome-osx',
+            only:     ['chrome'],
             reporter: [
                 {
                     name:   'json',
@@ -96,8 +93,7 @@ describe('Reporter', () => {
         });
 
         const runOpts = {
-            only:     'chrome',
-            skip:     'chrome-osx',
+            only:     ['chrome'],
             reporter: [
                 {
                     name:   'json',
@@ -126,8 +122,7 @@ describe('Reporter', () => {
         });
 
         const runOpts = {
-            only:     'chrome',
-            skip:     'chrome-osx',
+            only:     ['chrome'],
             reporter: [
                 {
                     name:   'json',
@@ -156,8 +151,7 @@ describe('Reporter', () => {
         });
 
         const runOpts = {
-            only:     'chrome',
-            skip:     'chrome-osx',
+            only:     ['chrome'],
             reporter: [
                 {
                     name:   'json',
@@ -178,8 +172,7 @@ describe('Reporter', () => {
         stream.isTTY = true;
 
         const runOpts = {
-            only:     'chrome',
-            skip:     'chrome-osx',
+            only:     ['chrome'],
             reporter: [
                 {
                     name:   'json',
@@ -199,8 +192,7 @@ describe('Reporter', () => {
         const reportFileName = 'list.report';
 
         return runTests('testcafe-fixtures/index-test.js', 'Simple test', {
-            only:     'chrome',
-            skip:     'chrome-osx',
+            only:     ['chrome'],
             reporter: [
                 {
                     name:   'list',
@@ -225,8 +217,8 @@ describe('Reporter', () => {
         const stream = createSyncTestStream();
 
         const runOpts = {
-            only:     'chrome',
-            skip:     'chrome-osx',
+            only: ['chrome'],
+
             reporter: [
                 {
                     name:   'json',

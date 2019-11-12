@@ -4,14 +4,13 @@ const expect = require('chai').expect;
 describe('[API] Upload', function () {
     describe('t.setFilesToUpload', function () {
         it('Should upload the specified file', function () {
-            return runTests('./testcafe-fixtures/upload-test.js', 'Upload the file', { only: 'chrome', skip: 'chrome-osx' });
+            return runTests('./testcafe-fixtures/upload-test.js', 'Upload the file', { only: 'chrome' });
         });
 
         it('Should validate the selector argument', function () {
             return runTests('./testcafe-fixtures/upload-test.js', 'Invalid selector argument (setFilesToUpload)', {
                 shouldFail: true,
-                only:       'chrome',
-                skip:       'chrome-osx'
+                only:       'chrome'
             })
                 .catch(function (errs) {
                     expect(errs[0]).contains(
@@ -26,8 +25,7 @@ describe('[API] Upload', function () {
         it('Should validate the filePath argument', function () {
             return runTests('./testcafe-fixtures/upload-test.js', 'Invalid filePath argument', {
                 shouldFail: true,
-                only:       'chrome',
-                skip:       'chrome-osx'
+                only:       'chrome'
             })
                 .catch(function (errs) {
                     expect(errs[0]).contains('The "filePath" argument is expected to be a non-empty string or a string array, but it was "".');
@@ -38,14 +36,13 @@ describe('[API] Upload', function () {
 
     describe('t.clearUpload', function () {
         it('Should clear the upload', function () {
-            return runTests('./testcafe-fixtures/upload-test.js', 'Clear the upload', { only: 'chrome', skip: 'chrome-osx' });
+            return runTests('./testcafe-fixtures/upload-test.js', 'Clear the upload', { only: 'chrome' });
         });
 
         it('Should validate the selector argument', function () {
             return runTests('./testcafe-fixtures/upload-test.js', 'Invalid selector argument (clearUpload)', {
                 shouldFail: true,
-                only:       'chrome',
-                skip:       'chrome-osx'
+                only:       'chrome'
             })
                 .catch(function (errs) {
                     expect(errs[0]).contains(

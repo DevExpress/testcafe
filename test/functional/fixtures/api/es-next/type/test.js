@@ -4,14 +4,13 @@ const expect = require('chai').expect;
 // Actions functionality is tested in lower-level raw API.
 describe('[API] t.typeText()', function () {
     it('Should type text in input', function () {
-        return runTests('./testcafe-fixtures/type-test.js', 'Type text in input', { only: 'chrome', skip: 'chrome-osx' });
+        return runTests('./testcafe-fixtures/type-test.js', 'Type text in input', { only: 'chrome' });
     });
 
     it('Should validate options', function () {
         return runTests('./testcafe-fixtures/type-test.js', 'Incorrect action options', {
             shouldFail: true,
-            only:       'chrome',
-            skip:       'chrome-osx'
+            only:       'chrome'
         })
             .catch(function (errs) {
                 expect(errs[0]).to.contains('The "replace" option is expected to be a boolean value, but it was object.');
@@ -22,8 +21,7 @@ describe('[API] t.typeText()', function () {
     it('Should validate text', function () {
         return runTests('./testcafe-fixtures/type-test.js', 'Incorrect action text', {
             shouldFail: true,
-            only:       'chrome',
-            skip:       'chrome-osx'
+            only:       'chrome'
         })
             .catch(function (errs) {
                 expect(errs[0]).to.contains('The "text" argument is expected to be a non-empty string, but it was number.');
@@ -34,8 +32,7 @@ describe('[API] t.typeText()', function () {
     it('Should validate selector', function () {
         return runTests('./testcafe-fixtures/type-test.js', 'Incorrect action selector', {
             shouldFail: true,
-            only:       'chrome',
-            skip:       'chrome-osx'
+            only:       'chrome'
         })
             .catch(function (errs) {
                 expect(errs[0]).to.contains(
