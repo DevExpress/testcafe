@@ -49,7 +49,7 @@ interface Browser {
      */
     alias: string;
     /**
-     * The short browser name.
+     * The browser name.
      */
     name: string;
     /**
@@ -57,7 +57,7 @@ interface Browser {
      */
     version: string;
     /**
-     * The browser platform type.
+     * The platform type.
      */
     platform: string;
     /**
@@ -65,11 +65,11 @@ interface Browser {
      */
     headless: string;
     /**
-     * The operating system's name and version.
+     * The name and version of the operating system.
      */
     os: { name?: string; version?: string };
     /**
-     * The browser engine's name and version.
+     * The name and version of the browser engine.
      */
     engine: { name?: string; version?: string };
     /**
@@ -77,7 +77,7 @@ interface Browser {
      */
     userAgent: string;
     /**
-     * The formatted name and version of the browser and operating system.
+     * Formatted string with the browser's and operating system's name and version.
      */
     prettyUserAgent: string;
 }

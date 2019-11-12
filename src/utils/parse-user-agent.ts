@@ -1,7 +1,8 @@
 import Bowser from 'bowser';
 
-const DEFAULT_NAME    = 'Other';
-const DEFAULT_VERSION = '0.0';
+const DEFAULT_NAME            = 'Other';
+const DEFAULT_VERSION         = '0.0';
+const DEFAULT_PLATFORM_TYPE   = DEFAULT_NAME.toLowerCase();
 const EMPTY_PARSED_USER_AGENT = Bowser.parse(' ');
 
 interface ParsedComponent {
@@ -29,7 +30,7 @@ export default function parseUserAgent (userAgent: string = ''): ParsedUserAgent
         parsedUserAgent.browser.version = DEFAULT_VERSION;
         parsedUserAgent.os.name         = DEFAULT_NAME;
         parsedUserAgent.os.version      = DEFAULT_VERSION;
-        parsedUserAgent.platform.type   = DEFAULT_NAME;
+        parsedUserAgent.platform.type   = DEFAULT_PLATFORM_TYPE;
         parsedUserAgent.engine.name     = DEFAULT_NAME;
         parsedUserAgent.engine.version  = DEFAULT_VERSION;
     }
@@ -59,13 +60,12 @@ export default function parseUserAgent (userAgent: string = ''): ParsedUserAgent
         version: parsedUserAgent.engine.version || DEFAULT_VERSION
     };
 
-    const prettyUserAgent = browserName + ' ' + browserVersion +
-        ' / ' + os.name + ' ' + os.version;
+    const prettyUserAgent = `${browserName} ${browserVersion} / ${os.name} ${os.version}`;
 
     return {
         name:            browserName,
         version:         browserVersion,
-        platform:        parsedUserAgent.platform.type || DEFAULT_NAME,
+        platform:        parsedUserAgent.platform.type || DEFAULT_PLATFORM_TYPE,
         os,
         engine,
         prettyUserAgent: prettyUserAgent,
