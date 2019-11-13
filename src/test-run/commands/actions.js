@@ -375,3 +375,15 @@ export class UseRoleCommand extends CommandBase {
         ];
     }
 }
+
+export class RecorderCommand extends CommandBase {
+    constructor (obj, testRun) {
+        super(obj, testRun, TYPE.recorder);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'subtype', type: nonEmptyStringArgument, required: true }
+        ];
+    }
+}

@@ -1181,6 +1181,24 @@ describe('Test run commands', () => {
                 }
             });
         });
+
+        it('Should create RecorderCommand from object', function () {
+            const commandObj = {
+                type:    TYPE.recorder,
+                subtype: 'test',
+
+                options: {
+                    dummy: 'yo'
+                }
+            };
+
+            const command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type:    TYPE.recorder,
+                subtype: 'test'
+            });
+        });
     });
 
     describe('Validation', function () {
@@ -3032,6 +3050,55 @@ describe('Test run commands', () => {
 
                     callsite:    null,
                     originError: null
+                }
+            );
+        });
+
+        it('Should validate RecorderCommand', function () {
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type: TYPE.recorder
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    code:            'E16',
+                    argumentName:    'subtype',
+                    actualValue:     'undefined',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:    TYPE.recorder,
+                        subtype: ''
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    code:            'E16',
+                    argumentName:    'subtype',
+                    actualValue:     '""',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:    TYPE.recorder,
+                        subtype: 2
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    code:            'E16',
+                    argumentName:    'subtype',
+                    actualValue:     'number',
+                    callsite:        null
                 }
             );
         });
