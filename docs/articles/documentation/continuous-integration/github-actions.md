@@ -22,7 +22,7 @@ Create a YAML file (for instance, `testcafe-workflow.yml`) in the `.github/workf
 
 Specify the [workflow name](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#name) and the [event](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#on) that triggers this workflow.
 
-```yaml
+```yml
 name: End-to-End Tests
 on: [push]
 ```
@@ -35,7 +35,7 @@ Create a job that runs the TestCafe tests.
 
 Provide the [job name](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idname) and specify the [type of machine](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idruns-on) that should run the job.
 
-```yaml
+```yml
 name: End-to-End Tests
 on: [push]
 
@@ -51,7 +51,7 @@ This job runs on a GitHub-hosted virtual machine with the latest Windows version
 
 Add a [step](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idsteps) that uses the [checkout](https://github.com/actions/checkout) action to fetch your repository content.
 
-```yaml
+```yml
 name: End-to-End Tests
 on: [push]
 
@@ -68,7 +68,7 @@ jobs:
 
 Add the [Run TestCafe](https://github.com/DevExpress/testcafe-action) action. Use the [args](#args) parameter to provide TestCafe [command line arguments](../using-testcafe/command-line-interface.md).
 
-```yaml
+```yml
 name: End-to-End Tests
 on: [push]
 
@@ -91,7 +91,7 @@ jobs:
 
 TestCafe [command line arguments](../using-testcafe/command-line-interface.md).
 
-```yaml
+```yml
 - uses: DevExpress/testcafe-action@latest
   with:
     args: "chrome fixture.js -s takeOnFails=true -q -c 3"
@@ -103,7 +103,7 @@ TestCafe [command line arguments](../using-testcafe/command-line-interface.md).
 
 The TestCafe version to install.
 
-```yaml
+```yml
 - uses: DevExpress/testcafe-action@latest
   with:
     version: "1.6.0"
@@ -116,7 +116,7 @@ The TestCafe version to install.
 
 The following workflow demonstrates how to run TestCafe tests across Node.js versions and operating systems.
 
-```yaml
+```yml
 name: Target Multiple Node.js Versions and Operating Systems
 on: [push]
 
