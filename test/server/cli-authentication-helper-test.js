@@ -37,7 +37,18 @@ describe('CLI', () => {
             expect(result).equal('OK');
             expect(getAnyKey.callCount).equal(2);
             expect(log.write.callCount).equal(2);
-            expect(log.write.alwaysCalledWith('Please allow TestCafe to access the Screen Recording API and press any key')).be.true;
+
+            expect(
+                log.write.alwaysCalledWith(
+                        'TestCafe requires permission to record the screen to execute browser actions and take screenshots. ' +
+                    'To ensure that screen recording is allowed, open ' +
+                    '\'System Preferences > Security & Privacy > Privacy > Screen Recording\' and check ' +
+                    '\'TestCafe Browser Tools\' in the application list.\n' +
+                    '\n' +
+                    'Press any key to retry.'
+                ),
+                log.write.args
+            ).be.true;
         });
 
         it('Should retry until the timeout expires until permissions granted', async () => {
@@ -70,7 +81,15 @@ describe('CLI', () => {
             expect(TimerConstructor.callCount).equal(1);
             expect(TimerConstructor.args[0]).deep.equal([30000]);
             expect(log.write.callCount).equal(1);
-            expect(log.write.args[0]).deep.equal(['Please allow TestCafe to access the Screen Recording API and press any key']);
+
+            expect(log.write.args[0]).deep.equal([
+                'TestCafe requires permission to record the screen to execute browser actions and take screenshots. ' +
+                'To ensure that screen recording is allowed, open ' +
+                '\'System Preferences > Security & Privacy > Privacy > Screen Recording\' and check ' +
+                '\'TestCafe Browser Tools\' in the application list.\n' +
+                '\n' +
+                'Press any key to retry.'
+            ]);
         });
 
         it('Should return an error if the timeout expires and no permissions granted', async () => {
@@ -103,7 +122,15 @@ describe('CLI', () => {
             expect(TimerConstructor.args[0]).deep.equal([30000]);
             expect(getAnyKey.callCount).equal(1);
             expect(log.write.callCount).equal(1);
-            expect(log.write.args[0]).deep.equal(['Please allow TestCafe to access the Screen Recording API and press any key']);
+
+            expect(log.write.args[0]).deep.equal([
+                'TestCafe requires permission to record the screen to execute browser actions and take screenshots. ' +
+                'To ensure that screen recording is allowed, open ' +
+                '\'System Preferences > Security & Privacy > Privacy > Screen Recording\' and check ' +
+                '\'TestCafe Browser Tools\' in the application list.\n' +
+                '\n' +
+                'Press any key to retry.'
+            ]);
         });
 
         it('Should throw if an unexpected error occurs', async () => {
