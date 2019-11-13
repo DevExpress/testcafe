@@ -9,7 +9,7 @@ This topic describes how to use the [Run TestCafe action](https://github.com/Dev
 
 * [Step 1 - Create a Workflow](#step-1---create-a-workflow)
 * [Step 2 - Create a Job](#step-2---create-a-job)
-* [Step 3 - Add a Step That Checks Out The Repository](#step-3---add-a-step-that-checks-out-the-repository)
+* [Step 3 - Add a Step That Fetches The Repository](#step-3---add-a-step-that-fetches-the-repository)
 * [Step 4 - Add a Step That Runs TestCafe](#step-4---add-a-step-that-runs-testcafe)
 * [Action Options](#action-options)
   * [args](#args)
@@ -47,7 +47,7 @@ jobs:
 
 This job runs on a GitHub-hosted virtual machine with the latest Windows version. `test` is the [job ID](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_id) that must be unique to the `jobs` object.
 
-## Step 3 - Add a Step That Checks Out The Repository
+## Step 3 - Add a Step That Fetches The Repository
 
 Add a [step](https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idsteps) that uses the [checkout](https://github.com/actions/checkout) action to fetch your repository content.
 
@@ -110,7 +110,7 @@ The TestCafe version to install.
     args: "chrome tests"
 ```
 
-**Default value**: `latest` (the latest version)
+**Default value**: `latest`
 
 ## Example
 
@@ -141,4 +141,4 @@ jobs:
 
 This job contains a matrix strategy that duplicates it to run on Windows and Ubuntu virtual machines in three Node.js versions (`8`, `10`, and `12`).
 
-The [setup-node](https://github.com/actions/setup-node) action installs the Node.js version defined in the matrix. Then, [checkout](https://github.com/actions/checkout) fetches the code and `testcafe-action` runs tests.
+The [setup-node](https://github.com/actions/setup-node) action installs the Node.js version defined in the matrix. Then [checkout](https://github.com/actions/checkout) fetches the code and `testcafe-action` runs tests.
