@@ -20,14 +20,14 @@ interface ParsedUserAgent {
     userAgent: string;
 }
 
-function calculateBrowserComponent (browserDetails: Bowser.Parser.BrowserDetails): ParsedComponent {
+function calculateBrowser (browserDetails: Bowser.Parser.BrowserDetails): ParsedComponent {
     return {
         name:    browserDetails.name || DEFAULT_NAME,
         version: browserDetails.version || DEFAULT_VERSION
     };
 }
 
-function calculateOsComponent (parsedOsDetails: Bowser.Parser.OSDetails): ParsedComponent {
+function calculateOs (parsedOsDetails: Bowser.Parser.OSDetails): ParsedComponent {
     const name = parsedOsDetails.name || DEFAULT_NAME;
 
     let version = DEFAULT_VERSION;
@@ -44,7 +44,7 @@ function calculateOsComponent (parsedOsDetails: Bowser.Parser.OSDetails): Parsed
     return { name, version };
 }
 
-function calculateEngineComponent (engineDetails: Bowser.Parser.EngineDetails): ParsedComponent {
+function calculateEngine (engineDetails: Bowser.Parser.EngineDetails): ParsedComponent {
     return {
         name:    engineDetails.name || DEFAULT_NAME,
         version: engineDetails.version || DEFAULT_VERSION
@@ -57,9 +57,9 @@ function calculatePrettyUserAgent (browser: ParsedComponent, os: ParsedComponent
 
 export default function parseUserAgent (userAgent: string = ''): ParsedUserAgent {
     const parsedUserAgent = userAgent ? Bowser.parse(userAgent) : EMPTY_PARSED_USER_AGENT;
-    const browser         = calculateBrowserComponent(parsedUserAgent.browser);
-    const os              = calculateOsComponent(parsedUserAgent.os);
-    const engine          = calculateEngineComponent(parsedUserAgent.engine);
+    const browser         = calculateBrowser(parsedUserAgent.browser);
+    const os              = calculateOs(parsedUserAgent.os);
+    const engine          = calculateEngine(parsedUserAgent.engine);
     const prettyUserAgent = calculatePrettyUserAgent(browser, os);
 
     return {
