@@ -40,9 +40,8 @@ describe('CLI', () => {
 
             expect(
                 log.write.alwaysCalledWith(
-                        'TestCafe requires permission to record the screen to execute browser actions and take screenshots. ' +
-                    'To ensure that screen recording is allowed, open ' +
-                    '\'System Preferences > Security & Privacy > Privacy > Screen Recording\' and check ' +
+                    'TestCafe requires permission to record the screen. ' +
+                    'Open \'System Preferences > Security & Privacy > Privacy > Screen Recording\' and check ' +
                     '\'TestCafe Browser Tools\' in the application list.\n' +
                     '\n' +
                     'Press any key to retry.'
@@ -83,9 +82,8 @@ describe('CLI', () => {
             expect(log.write.callCount).equal(1);
 
             expect(log.write.args[0]).deep.equal([
-                'TestCafe requires permission to record the screen to execute browser actions and take screenshots. ' +
-                'To ensure that screen recording is allowed, open ' +
-                '\'System Preferences > Security & Privacy > Privacy > Screen Recording\' and check ' +
+                'TestCafe requires permission to record the screen. ' +
+                'Open \'System Preferences > Security & Privacy > Privacy > Screen Recording\' and check ' +
                 '\'TestCafe Browser Tools\' in the application list.\n' +
                 '\n' +
                 'Press any key to retry.'
@@ -124,9 +122,8 @@ describe('CLI', () => {
             expect(log.write.callCount).equal(1);
 
             expect(log.write.args[0]).deep.equal([
-                'TestCafe requires permission to record the screen to execute browser actions and take screenshots. ' +
-                'To ensure that screen recording is allowed, open ' +
-                '\'System Preferences > Security & Privacy > Privacy > Screen Recording\' and check ' +
+                'TestCafe requires permission to record the screen. ' +
+                'Open \'System Preferences > Security & Privacy > Privacy > Screen Recording\' and check ' +
                 '\'TestCafe Browser Tools\' in the application list.\n' +
                 '\n' +
                 'Press any key to retry.'
