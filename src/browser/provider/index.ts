@@ -1,5 +1,7 @@
 import browserTools from 'testcafe-browser-tools';
 import OS from 'os-family';
+import { dirname } from 'path';
+import makeDir from 'make-dir';
 import BrowserConnection from '../connection';
 import delay from '../../utils/delay';
 import { GET_TITLE_SCRIPT, GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from './utils/client-functions';
@@ -317,8 +319,11 @@ export default class BrowserProvider {
             else
                 await this._takeLocalBrowserScreenshot(browserId, screenshotPath);
         }
-        else
+        else {
+            await makeDir(dirname(screenshotPath));
+
             await this.plugin.takeScreenshot(browserId, screenshotPath, pageWidth, pageHeight, fullPage);
+        }
     }
 
     public async getVideoFrameData (browserId: string): Promise<any> {
