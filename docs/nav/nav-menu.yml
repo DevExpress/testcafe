@@ -213,6 +213,8 @@
     url: /documentation/continuous-integration/bitbucket-pipelines.md
   - name: CircleCI
     url: /documentation/continuous-integration/circleci.md
+  - name: GitHub Actions
+    url: /documentation/continuous-integration/github-actions.md  
   - name: GitLab
     url: /documentation/continuous-integration/gitlab.md
   - name: Jenkins
