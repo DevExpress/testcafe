@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .sprite{display:none}.sprite:target{display:inline}
+    </style>
+  </defs>
+  <g class="sprite" id="logo-icon">
+    <svg width="40" height="26" viewBox="0 0 40 26" fill="none">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M30.3446 17.7898H24.1379L22.7585 19.1579H28.9656L34.4826 23.9475H5.51742L11.0344 19.1579H15.8621L14.4826 17.7898H9.65537L0 26H40L30.3446 17.7898Z" fill="white"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M37.2416 3.42102L33.7933 0L19.3103 14.3684L13.7933 8.89492L10.3447 12.3159L19.3103 21.2109L37.2416 3.42102Z" fill="#36B6E5"/>
+    </svg>
+  </g>
+  <g class="sprite" id="finish">
+    <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="2.02408" height="8.05393" transform="matrix(0.699638 -0.714497 0.699639 0.714497 7 15.2456)" fill="white"/>
+      <rect width="12.7588" height="2.02408" transform="matrix(0.70062 -0.713534 0.700621 0.713534 12.6428 18.1038)" fill="white"/>
+    </svg>
+  </g>
+  <g class="sprite" id="step">
+    <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 8L19 15L10 22V8Z" fill="white"/>
+      <rect x="19" y="8" width="2" height="14" fill="white"/>
+    </svg>
+  </g>
+  <g class="sprite" id="locked">
+    <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="9" y="15" width="12" height="7" rx="1" fill="white"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M17 15V11C17 9.89543 16.1046 9 15 9C13.8954 9 13 9.89543 13 11V15H11V11C11 8.79086 12.7909 7 15 7C17.2091 7 19 8.79086 19 11V15H17Z" fill="white"/>
+    </svg>
+  </g>
+  <g class="sprite" id="unlocked">
+    <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M9 15C9 14.4477 9.44772 14 10 14H20C20.5523 14 21 14.4477 21 15V21C21 21.5523 20.5523 22 20 22H10C9.44772 22 9 21.5523 9 21V15Z" fill="white"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M17.1519 11V8C17.1519 6.89543 16.2564 6 15.1519 6C14.0473 6 13.1519 6.89543 13.1519 8V14.0429C13.1519 14.7186 13.4869 15.3161 14 15.6781V17.8746C12.3523 17.38 11.1519 15.8517 11.1519 14.0429V8C11.1519 5.79086 12.9427 4 15.1519 4C17.361 4 19.1519 5.79086 19.1519 8V11H17.1519Z" fill="white"/>
+    </svg>
+  </g>
+  <g class="sprite" id="resume">
+    <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M11 8L20 15L11 22V8Z" fill="white"/>
+    </svg>
+  </g>
+</svg>
