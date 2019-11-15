@@ -99,6 +99,7 @@
   * [Azure DevOps](articles/documentation/continuous-integration/azure-devops.md)
   * [Bitbucket Pipelines](articles/documentation/continuous-integration/bitbucket-pipelines.md)
   * [CircleCI](articles/documentation/continuous-integration/circleci.md)
+  * [GitHub Actions](articles/documentation/continuous-integration/github-actions.md)
   * [GitLab](articles/documentation/continuous-integration/gitlab.md)
   * [Jenkins](articles/documentation/continuous-integration/jenkins.md)
   * [TeamCity](articles/documentation/continuous-integration/teamcity.md)

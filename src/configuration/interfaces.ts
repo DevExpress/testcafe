@@ -28,6 +28,7 @@ export interface RunnerRunOptions {
     pageLoadTimeout?: number;
     speed?: number;
     stopOnFirstFail?: number;
+    allowMultipleWindows: boolean;
 }
 
 export interface GetOptionConfiguration {

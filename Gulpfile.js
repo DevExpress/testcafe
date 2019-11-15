@@ -19,6 +19,7 @@ const path                 = require('path');
 const { Transform }        = require('stream');
 const { promisify }        = require('util');
 const globby               = require('globby');
+const isCI                 = require('is-ci');
 const open                 = require('open');
 const connect              = require('connect');
 const spawn                = require('cross-spawn');
@@ -55,6 +56,7 @@ ll
 const ARGS          = minimist(process.argv.slice(2));
 const DEV_MODE      = 'dev' in ARGS;
 const QR_CODE       = 'qr-code' in ARGS;
+const SKIP_BUILD    = isCI || process.env.SKIP_BUILD || 'skip-build' in ARGS;
 const BROWSER_ALIAS = ARGS['browser-alias'];
 
 const CLIENT_TESTS_PATH        = 'test/client/fixtures';
@@ -383,6 +385,8 @@ gulp.task('fast-build', gulp.series('clean', 'package-content'));
 gulp.task('build', DEV_MODE ? gulp.registry().get('fast-build') : gulp.parallel('lint', 'fast-build'));
 
 // Test
+gulp.step('prepare-tests', gulp.registry().get(SKIP_BUILD ? 'lint' : 'build'));
+
 gulp.step('test-server-run', () => {
     return gulp
         .src('test/server/*-test.js', { read: false })
@@ -391,7 +395,7 @@ gulp.step('test-server-run', () => {
         }));
 });
 
-gulp.step('test-server-bootstrap', gulp.series('build', 'test-server-run'));
+gulp.step('test-server-bootstrap', gulp.series('prepare-tests', 'test-server-run'));
 
 gulp.task('test-server', gulp.parallel('check-licenses', 'test-server-bootstrap'));
 
@@ -422,19 +426,19 @@ gulp.step('test-client-run', () => {
     return testClient('test/client/fixtures/**/*-test.js', CLIENT_TESTS_SETTINGS);
 });
 
-gulp.task('test-client', gulp.series('build', 'test-client-run'));
+gulp.task('test-client', gulp.series('prepare-tests', 'test-client-run'));
 
 gulp.step('test-client-local-run', () => {
     return testClient('test/client/fixtures/**/*-test.js', CLIENT_TESTS_LOCAL_SETTINGS, {}, true);
 });
 
-gulp.task('test-client-local', gulp.series('build', 'test-client-local-run'));
+gulp.task('test-client-local', gulp.series('prepare-tests', 'test-client-local-run'));
 
 gulp.step('test-client-legacy-run', () => {
     return testClient('test/client/legacy-fixtures/**/*-test.js', CLIENT_TESTS_LEGACY_SETTINGS);
 });
 
-gulp.task('test-client-legacy', gulp.series('build', 'test-client-legacy-run'));
+gulp.task('test-client-legacy', gulp.series('prepare-tests', 'test-client-legacy-run'));
 
 gulp.step('test-client-travis-run', () => {
     const saucelabsSettings = CLIENT_TESTS_SAUCELABS_SETTINGS;
@@ -444,7 +448,7 @@ gulp.step('test-client-travis-run', () => {
     return testClient('test/client/fixtures/**/*-test.js', CLIENT_TESTS_SETTINGS, saucelabsSettings);
 });
 
-gulp.task('test-client-travis', gulp.series('build', 'test-client-travis-run'));
+gulp.task('test-client-travis', gulp.series('prepare-tests', 'test-client-travis-run'));
 
 gulp.step('test-client-travis-mobile-run', () => {
     const saucelabsSettings = CLIENT_TESTS_SAUCELABS_SETTINGS;
@@ -454,7 +458,7 @@ gulp.step('test-client-travis-mobile-run', () => {
     return testClient('test/client/fixtures/**/*-test.js', CLIENT_TESTS_SETTINGS, saucelabsSettings);
 });
 
-gulp.task('test-client-travis-mobile', gulp.series('build', 'test-client-travis-mobile-run'));
+gulp.task('test-client-travis-mobile', gulp.series('prepare-tests', 'test-client-travis-mobile-run'));
 
 gulp.step('test-client-legacy-travis-run', () => {
     const saucelabsSettings = CLIENT_TESTS_SAUCELABS_SETTINGS;
@@ -464,7 +468,7 @@ gulp.step('test-client-legacy-travis-run', () => {
     return testClient('test/client/legacy-fixtures/**/*-test.js', CLIENT_TESTS_LEGACY_SETTINGS, saucelabsSettings);
 });
 
-gulp.task('test-client-legacy-travis', gulp.series('build', 'test-client-legacy-travis-run'));
+gulp.task('test-client-legacy-travis', gulp.series('prepare-tests', 'test-client-legacy-travis-run'));
 
 gulp.step('test-client-legacy-travis-mobile-run', () => {
     const saucelabsSettings = CLIENT_TESTS_SAUCELABS_SETTINGS;
@@ -474,7 +478,7 @@ gulp.step('test-client-legacy-travis-mobile-run', () => {
     return testClient('test/client/legacy-fixtures/**/*-test.js', CLIENT_TESTS_LEGACY_SETTINGS, saucelabsSettings);
 });
 
-gulp.task('test-client-legacy-travis-mobile', gulp.series('build', 'test-client-legacy-travis-mobile-run'));
+gulp.task('test-client-legacy-travis-mobile', gulp.series('prepare-tests', 'test-client-legacy-travis-mobile-run'));
 
 //Documentation
 gulp.task('generate-docs-readme', done => {
@@ -731,43 +735,43 @@ gulp.step('test-functional-travis-desktop-osx-and-ms-edge-run', () => {
     return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers, functionalTestConfig.browserProviderNames.browserstack);
 });
 
-gulp.task('test-functional-travis-desktop-osx-and-ms-edge', gulp.series('build', 'test-functional-travis-desktop-osx-and-ms-edge-run'));
+gulp.task('test-functional-travis-desktop-osx-and-ms-edge', gulp.series('prepare-tests', 'test-functional-travis-desktop-osx-and-ms-edge-run'));
 
 gulp.step('test-functional-travis-mobile-run', () => {
     return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.mobileBrowsers, functionalTestConfig.browserProviderNames.browserstack);
 });
 
-gulp.task('test-functional-travis-mobile', gulp.series('build', 'test-functional-travis-mobile-run'));
+gulp.task('test-functional-travis-mobile', gulp.series('prepare-tests', 'test-functional-travis-mobile-run'));
 
 gulp.step('test-functional-local-run', () => {
     return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.localBrowsers);
 });
 
-gulp.task('test-functional-local', gulp.series('build', 'test-functional-local-run'));
+gulp.task('test-functional-local', gulp.series('prepare-tests', 'test-functional-local-run'));
 
 gulp.step('test-functional-local-ie-run', () => {
     return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.localBrowsersIE);
 });
 
-gulp.task('test-functional-local-ie', gulp.series('build', 'test-functional-local-ie-run'));
+gulp.task('test-functional-local-ie', gulp.series('prepare-tests', 'test-functional-local-ie-run'));
 
 gulp.step('test-functional-local-chrome-firefox-run', () => {
     return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.localBrowsersChromeFirefox);
 });
 
-gulp.task('test-functional-local-chrome-firefox', gulp.series('build', 'test-functional-local-chrome-firefox-run'));
+gulp.task('test-functional-local-chrome-firefox', gulp.series('prepare-tests', 'test-functional-local-chrome-firefox-run'));
 
 gulp.step('test-functional-local-headless-chrome-run', () => {
     return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.localHeadlessChrome);
 });
 
-gulp.task('test-functional-local-headless-chrome', gulp.series('build', 'test-functional-local-headless-chrome-run'));
+gulp.task('test-functional-local-headless-chrome', gulp.series('prepare-tests', 'test-functional-local-headless-chrome-run'));
 
 gulp.step('test-functional-local-headless-firefox-run', () => {
     return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.localHeadlessFirefox);
 });
 
-gulp.task('test-functional-local-headless-firefox', gulp.series('build', 'test-functional-local-headless-firefox-run'));
+gulp.task('test-functional-local-headless-firefox', gulp.series('prepare-tests', 'test-functional-local-headless-firefox-run'));
 
 gulp.step('test-functional-remote-run', () => {
     if (QR_CODE)
@@ -779,19 +783,13 @@ gulp.step('test-functional-remote-run', () => {
     return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.remote, functionalTestConfig.browserProviderNames.remote);
 });
 
-gulp.task('test-functional-remote', gulp.series('build', 'test-functional-remote-run'));
+gulp.task('test-functional-remote', gulp.series('prepare-tests', 'test-functional-remote-run'));
 
 gulp.step('test-functional-local-legacy-run', () => {
     return testFunctional('test/functional/legacy-fixtures', functionalTestConfig.testingEnvironmentNames.legacy);
 });
 
-gulp.task('test-functional-local-legacy', gulp.series('build', 'test-functional-local-legacy-run'));
-
-gulp.step('test-functional-travis-old-browsers-run', () => {
-    return testFunctional('test/functional/fixtures', functionalTestConfig.testingEnvironmentNames.oldBrowsers, functionalTestConfig.browserProviderNames.sauceLabs);
-});
-
-gulp.task('test-functional-travis-old-browsers', gulp.series('build', 'test-functional-travis-old-browsers-run'));
+gulp.task('test-functional-local-legacy', gulp.series('prepare-tests', 'test-functional-local-legacy-run'));
 
 function getDockerEnv (machineName) {
     return childProcess

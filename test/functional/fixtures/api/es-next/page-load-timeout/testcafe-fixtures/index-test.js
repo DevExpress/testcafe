@@ -4,7 +4,7 @@ fixture `page-load-timeout`;
 
 // NOTE: For slow mobile browsers on CI machines the internal methods chain (parsing the tested web page, emitting appropriate events, calling the reporter methods)
 // can take a long time
-const expectedTimeoutForLongLoadPages = 5000;
+const expectedTimeoutForLongLoadPages = 6000;
 
 test
     .page('http://localhost:3000/fixtures/api/es-next/page-load-timeout/pages/window-load.html')

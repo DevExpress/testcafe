@@ -75,6 +75,9 @@ export function executeJsExpression (expression, testRun, options) {
 }
 
 export async function executeAsyncJsExpression (expression, testRun, callsite) {
+    if (!expression || !expression.length)
+        return Promise.resolve();
+
     const context      = getExecutionContext(testRun.controller);
     const errorOptions = createErrorFormattingOptions(expression);
 

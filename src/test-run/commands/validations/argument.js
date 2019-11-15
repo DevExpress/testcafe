@@ -47,7 +47,7 @@ export function actionOptions (name, val) {
 }
 
 
-export function nonEmptyStringArgument (argument, val, createError) {
+export function stringArgument (argument, val, createError) {
     if (!createError)
         createError = actualValue => new ActionStringArgumentError(argument, actualValue);
 
@@ -55,6 +55,13 @@ export function nonEmptyStringArgument (argument, val, createError) {
 
     if (type !== 'string')
         throw createError(type);
+}
+
+export function nonEmptyStringArgument (argument, val, createError) {
+    if (!createError)
+        createError = actualValue => new ActionStringArgumentError(argument, actualValue);
+
+    stringArgument(argument, val, createError);
 
     if (!val.length)
         throw createError('""');

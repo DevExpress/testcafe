@@ -10,6 +10,7 @@
     "allowJs": true,
     "checkJs": false,
     "inlineSourceMap": true,
-    "inlineSources": true
+    "inlineSources": true,
+    "types": ["node"]
   }
 }

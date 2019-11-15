@@ -23,8 +23,8 @@ Feature                                                                         
 Feature                                                                                           | Status
 ------------------------------------------------------------------------------------------------- | -------------------
 [Configuration File](https://github.com/DevExpress/testcafe/issues/3131)                          | **Implemented**
-[Screenshots of the Entire Page](https://github.com/DevExpress/testcafe/issues/1520)              | **In Progress**
-[Browser Information in Test Code](https://github.com/DevExpress/testcafe/issues/481)             | Planned
+[Screenshots of the Entire Page](https://github.com/DevExpress/testcafe/issues/1520)              | **Implemented**
+[Browser Information in Test Code](https://github.com/DevExpress/testcafe/issues/481)             | **In Progress**
 
 ## Debugging
 

@@ -13,6 +13,7 @@ This section describes how to integrate TestCafe into a build process on popular
 * [Azure DevOps](azure-devops.md)
 * [Bitbucket Pipelines CI](bitbucket-pipelines.md)
 * [CircleCI](circleci.md)
+* [GitHub Actions](github-actions.md)
 * [GitLab](gitlab.md)
 * [Jenkins](jenkins.md)
 * [TeamCity](teamcity.md)

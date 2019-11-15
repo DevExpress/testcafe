@@ -432,16 +432,18 @@ describe('Runner', () => {
                 .run();
         });
 
-        it('Should raise an error if the source was not set', () => {
+        it('Should use default `src` if the source was not set', () => {
+            runner._createRunnableConfiguration = () => {
+                throw new Error('stop executing runner.');
+            };
+
             return runner
                 .browsers(connection)
                 .reporter('list')
                 .run()
-                .then(() => {
-                    throw new Error('Promise rejection expected');
-                })
                 .catch(err => {
-                    expect(err.message).eql('No test file specified.');
+                    expect(err.message).eql('stop executing runner.');
+                    expect(runner.configuration.getOption('src')).eql(['tests', 'test']);
                 });
         });
 
@@ -567,7 +569,7 @@ describe('Runner', () => {
     });
 
     describe('.run()', () => {
-        it('Should not create a new remote browser connection if sources are empty', () => {
+        it('Should not create a new remote browser connection if tests are not found', () => {
             const origGenerateId   = BrowserConnection._generateId;
 
             let connectionsCount = 0;
@@ -580,7 +582,7 @@ describe('Runner', () => {
             return runner
                 .browsers(connection)
                 .reporter('list')
-                .src([])
+                .src(['non-existing-file.js'])
                 .run()
                 .then(() => {
                     BrowserConnection._generateId = origGenerateId;
@@ -590,7 +592,7 @@ describe('Runner', () => {
                 .catch(err => {
                     BrowserConnection._generateId = origGenerateId;
 
-                    expect(err.message).eql('No test file specified.');
+                    expect(err.message).eql('The specified glob pattern does not match any file or the default test directories are empty.');
 
                     expect(connectionsCount).eql(0);
                 });
@@ -821,6 +823,11 @@ describe('Runner', () => {
 
             expect(runner.configuration.getOption('debugLogger')).to.deep.equal(defaultLogger);
 
+            runner.configuration.mergeOptions({ debugLogger: null });
+            runner._validateDebugLogger();
+
+            expect(runner.configuration.getOption('debugLogger')).to.be.null;
+
             const customLogger = {
                 showBreakpoint: 'foo',
                 hideBreakpoint: () => {}
@@ -832,11 +839,6 @@ describe('Runner', () => {
             expect(runner.configuration.getOption('debugLogger')).to.deep.equal(defaultLogger);
 
             customLogger.showBreakpoint = () => {};
-
-            runner.configuration.mergeOptions({ debugLogger: null });
-
-            expect(runner.configuration.getOption('debugLogger')).is.null;
-
             runner.configuration.mergeOptions({ debugLogger: customLogger });
             runner._validateDebugLogger();
 

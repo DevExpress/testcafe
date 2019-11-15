@@ -10,7 +10,7 @@ async function findFFMPEGinPath () {
     try {
         const ffmpegPath = await exec(`${FFMPEG_SEARCH_COMMAND} ${FFMPEG_BINARY_NAME}`);
 
-        return ffmpegPath.trim();
+        return ffmpegPath.stdout.trim();
     }
     catch (e) {
         return '';

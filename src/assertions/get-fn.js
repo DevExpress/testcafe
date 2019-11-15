@@ -52,7 +52,6 @@ export default function getFn (command) {
             return () => assert.notMatch(command.actual, command.expected, command.message);
 
         default:
-            return () => {
-            };
+            return () => void 0;
     }
 }

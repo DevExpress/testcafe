@@ -1,6 +1,17 @@
-const expect = require('chai').expect;
+const expect      = require('chai').expect;
+const { resolve } = require('path');
+const { writePng, readPng, deleteFile, readPngFile } = require('../../lib/utils/promisified-functions');
 
-const { getClipInfoByCropDimensions, calculateMarkPosition, getClipInfoByMarkPosition, calculateClipInfo } = require('../../lib/screenshots/crop');
+const image          = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M/wHwAEBgIApD5fRAAAAABJRU5ErkJggg==', 'base64');
+const screenshotPath = resolve(process.cwd(), 'temp-screenshots', 'temp.png');
+
+const {
+    cropScreenshot,
+    getClipInfoByCropDimensions,
+    calculateMarkPosition,
+    getClipInfoByMarkPosition,
+    calculateClipInfo
+} = require('../../lib/screenshots/crop');
 
 const markSeed = [
     0, 0, 0, 255,
@@ -155,6 +166,31 @@ describe('Crop images', () => {
                 'Unable to locate the page area in the browser window screenshot at path, ' +
                 'because the page area mark with ID 2147483648 ' +
                 'is not found in the screenshot.');
+        }
+    });
+
+    it('Should not delete screenshot if unable to locate the page area', async () => {
+        let err   = null;
+        const png = await readPng(image);
+
+        await writePng(screenshotPath, png);
+
+        const clientAreaDimensions = { width: 1620, height: 854 };
+
+        try {
+            await cropScreenshot(png, { path: screenshotPath, markSeed: '+', clientAreaDimensions });
+        }
+        catch (e) {
+            err = e;
+        }
+        finally {
+            expect(err.message).contains('Unable to locate the page area in the browser window screenshot');
+
+            const file = await readPngFile(screenshotPath);
+
+            expect(file).is.not.null;
+
+            await deleteFile(screenshotPath);
         }
     });
 });

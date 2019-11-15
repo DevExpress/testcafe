@@ -234,7 +234,7 @@ interface SelectorAPI {
      * @param attrValue - The attribute value.You can omit this parameter to select elements that have
      * the `attrName` attribute regardless of the value.
      */
-    withAttribute(attrName: string | RegExp, attrValue?: string | RegExp): SelectorPromise;
+    withAttribute(attrName: string | RegExp, attrValue?: string | RegExp): Selector;
     /**
      * Creates a selector that filters a matching set by cssSelector.
      *

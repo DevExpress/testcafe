@@ -1181,6 +1181,46 @@ describe('Test run commands', () => {
                 }
             });
         });
+
+        it('Should create RecorderCommand from object', function () {
+            let commandObj = {
+                type:    TYPE.recorder,
+                subtype: 'test',
+
+                options: {
+                    dummy: 'yo'
+                }
+            };
+
+            let command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type:    TYPE.recorder,
+                subtype: 'test',
+
+                forceExecutionInTopWindowOnly: false
+            });
+
+            commandObj = {
+                type:    TYPE.recorder,
+                subtype: 'test',
+
+                forceExecutionInTopWindowOnly: true,
+
+                options: {
+                    dummy: 'yo'
+                }
+            };
+
+            command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type:    TYPE.recorder,
+                subtype: 'test',
+
+                forceExecutionInTopWindowOnly: true
+            });
+        });
     });
 
     describe('Validation', function () {
@@ -2958,7 +2998,7 @@ describe('Test run commands', () => {
             );
         });
 
-        it('Should validate ExecuteAsyncExpressionСommand', function () {
+        it('Should validate ExecuteAsyncExpressionCommand', function () {
             assertThrow(
                 function () {
                     return createCommand({
@@ -2970,22 +3010,6 @@ describe('Test run commands', () => {
                     code:            'E16',
                     argumentName:    'expression',
                     actualValue:     'undefined',
-                    callsite:        null
-                }
-            );
-
-            assertThrow(
-                function () {
-                    return createCommand({
-                        type:       TYPE.executeAsyncExpression,
-                        expression: ''
-                    });
-                },
-                {
-                    isTestCafeError: true,
-                    code:            'E16',
-                    argumentName:    'expression',
-                    actualValue:     '""',
                     callsite:        null
                 }
             );
@@ -3048,6 +3072,55 @@ describe('Test run commands', () => {
 
                     callsite:    null,
                     originError: null
+                }
+            );
+        });
+
+        it('Should validate RecorderCommand', function () {
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type: TYPE.recorder
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    code:            'E16',
+                    argumentName:    'subtype',
+                    actualValue:     'undefined',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:    TYPE.recorder,
+                        subtype: ''
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    code:            'E16',
+                    argumentName:    'subtype',
+                    actualValue:     '""',
+                    callsite:        null
+                }
+            );
+
+            assertThrow(
+                function () {
+                    return createCommand({
+                        type:    TYPE.recorder,
+                        subtype: 2
+                    });
+                },
+                {
+                    isTestCafeError: true,
+                    code:            'E16',
+                    argumentName:    'subtype',
+                    actualValue:     'number',
+                    callsite:        null
                 }
             );
         });

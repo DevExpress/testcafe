@@ -266,6 +266,10 @@ TestCafe developers and community members made these plugins:
   * [NUnit](https://github.com/AndreyBelym/testcafe-reporter-nunit) (by [@AndreyBelym](https://github.com/AndreyBelym))
   * [TimeCafe](https://github.com/jimthedev/timecafe) (by [@jimthedev](https://github.com/jimthedev))
 
+* **GitHub Action**<br/>
+  Run TestCafe tests in GitHub Actions workflows.
+  * [Run TestCafe](https://github.com/DevExpress/testcafe-action/)
+
 * **Test Accessibility**<br/>
   Find accessibility issues in your web app.
   * [axe-testcafe](https://github.com/helen-dikareva/axe-testcafe) (by [@helen-dikareva](https://github.com/helen-dikareva))

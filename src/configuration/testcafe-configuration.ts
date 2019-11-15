@@ -14,6 +14,7 @@ import {
     DEFAULT_CONCURRENCY_VALUE,
     DEFAULT_SPEED_VALUE,
     DEFAULT_TIMEOUT,
+    DEFAULT_SOURCE_DIRECTORIES,
     STATIC_CONTENT_CACHING_SETTINGS
 } from './default-values';
 
@@ -32,11 +33,15 @@ const OPTION_FLAG_NAMES = [
     OPTION_NAMES.skipUncaughtErrors,
     OPTION_NAMES.stopOnFirstFail,
     OPTION_NAMES.takeScreenshotsOnFails,
-    OPTION_NAMES.developmentMode,
-    OPTION_NAMES.retryTestPages,
     OPTION_NAMES.disablePageCaching,
     OPTION_NAMES.disablePageReloads,
-    OPTION_NAMES.disableScreenshots
+    OPTION_NAMES.disableScreenshots,
+    OPTION_NAMES.allowMultipleWindows
+];
+
+const OPTION_INIT_FLAG_NAMES = [
+    OPTION_NAMES.developmentMode,
+    OPTION_NAMES.retryTestPages,
 ];
 
 interface TestCafeAdditionalStartOptions {
@@ -107,16 +112,23 @@ export default class TestCafeConfiguration extends Configuration {
         return result;
     }
 
-    private _prepareFlags (): void {
-        OPTION_FLAG_NAMES.forEach(name => {
-            const option = this._ensureOption(name, void 0, OptionSource.Configuration);
+    private _prepareFlag (name: string): void {
+        const option = this._ensureOption(name, void 0, OptionSource.Configuration);
 
-            option.value = !!option.value;
-        });
+        option.value = !!option.value;
+    }
+
+    private _prepareFlags (): void {
+        OPTION_FLAG_NAMES.forEach(name => this._prepareFlag(name));
+    }
+
+    private _prepareInitFlags (): void {
+        OPTION_INIT_FLAG_NAMES.forEach(name => this._prepareFlag(name));
     }
 
     private async _normalizeOptionsAfterLoad (): Promise<void> {
         await this._prepareSslOptions();
+        this._prepareInitFlags();
         this._prepareFilterFn();
         this._ensureArrayOption(OPTION_NAMES.src);
         this._ensureArrayOption(OPTION_NAMES.browsers);
@@ -176,6 +188,7 @@ export default class TestCafeConfiguration extends Configuration {
         this._ensureOptionWithValue(OPTION_NAMES.speed, DEFAULT_SPEED_VALUE, OptionSource.Configuration);
         this._ensureOptionWithValue(OPTION_NAMES.appInitDelay, DEFAULT_APP_INIT_DELAY, OptionSource.Configuration);
         this._ensureOptionWithValue(OPTION_NAMES.concurrency, DEFAULT_CONCURRENCY_VALUE, OptionSource.Configuration);
+        this._ensureOptionWithValue(OPTION_NAMES.src, DEFAULT_SOURCE_DIRECTORIES, OptionSource.Configuration);
 
         this._ensureScreenshotPath();
     }
