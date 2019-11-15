@@ -1,9 +1,11 @@
+const nanoid      = require('nanoid');
 const expect      = require('chai').expect;
 const { resolve } = require('path');
+
 const { writePng, readPng, deleteFile, readPngFile } = require('../../lib/utils/promisified-functions');
 
 const image          = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M/wHwAEBgIApD5fRAAAAABJRU5ErkJggg==', 'base64');
-const screenshotPath = resolve(process.cwd(), 'temp-screenshots', 'temp.png');
+const screenshotPath = resolve(process.cwd(), `temp${nanoid(7)}.png`);
 
 const {
     cropScreenshot,
