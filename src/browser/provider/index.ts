@@ -306,24 +306,25 @@ export default class BrowserProvider {
     }
 
     public async takeScreenshot (browserId: string, screenshotPath: string, pageWidth: number, pageHeight: number, fullPage: boolean): Promise<void> {
-        const canUseDefaultWindowActions = await this._canUseDefaultWindowActions(browserId);
-        const customActionsInfo          = await this.hasCustomActionForBrowser(browserId);
-        const hasCustomTakeScreenshot    = customActionsInfo.hasTakeScreenshot;
+        const canUseDefaultWindowActions  = await this._canUseDefaultWindowActions(browserId);
+        const customActionsInfo           = await this.hasCustomActionForBrowser(browserId);
+        const hasCustomTakeScreenshot     = customActionsInfo.hasTakeScreenshot;
+        const connection                  = BrowserConnection.getById(browserId) as BrowserConnection;
+        const takeLocalBrowsersScreenshot = canUseDefaultWindowActions && !hasCustomTakeScreenshot;
+        const isLocalFullPageMode         = takeLocalBrowsersScreenshot && fullPage;
 
-        if (canUseDefaultWindowActions && !hasCustomTakeScreenshot) {
-            if (fullPage) {
-                const connection = BrowserConnection.getById(browserId) as BrowserConnection;
+        if (isLocalFullPageMode) {
+            connection.addWarning(WARNING_MESSAGE.screenshotsFullPageNotSupported, connection.browserInfo.alias);
 
-                connection.addWarning(WARNING_MESSAGE.screenshotsFullPageNotSupported, connection.browserInfo.alias);
-            }
-            else
-                await this._takeLocalBrowserScreenshot(browserId, screenshotPath);
+            return;
         }
-        else {
-            await makeDir(dirname(screenshotPath));
 
+        await makeDir(dirname(screenshotPath));
+
+        if (takeLocalBrowsersScreenshot)
+            await this._takeLocalBrowserScreenshot(browserId, screenshotPath);
+        else
             await this.plugin.takeScreenshot(browserId, screenshotPath, pageWidth, pageHeight, fullPage);
-        }
     }
 
     public async getVideoFrameData (browserId: string): Promise<any> {
