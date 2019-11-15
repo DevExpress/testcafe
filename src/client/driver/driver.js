@@ -638,14 +638,7 @@ export default class Driver {
 
         const customCommandHandler = this.customCommandHandlers[command.type];
 
-        if (!customCommandHandler)
-            return false;
-
-        const isHandlerExecutableInTopWindowOnly = customCommandHandler.isExecutableInTopWindowOnly;
-
-        return typeof isHandlerExecutableInTopWindowOnly === 'function' ?
-            isHandlerExecutableInTopWindowOnly(command) :
-            isHandlerExecutableInTopWindowOnly;
+        return command.forceExecutionInTopWindowOnly || customCommandHandler && customCommandHandler.isExecutableInTopWindowOnly;
     }
 
     _onCommand (command) {

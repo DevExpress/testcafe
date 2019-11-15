@@ -383,7 +383,8 @@ export class RecorderCommand extends CommandBase {
 
     _getAssignableProperties () {
         return [
-            { name: 'subtype', type: nonEmptyStringArgument, required: true }
+            { name: 'subtype', type: nonEmptyStringArgument, required: true },
+            { name: 'forceExecutionInTopWindowOnly', type: booleanArgument, defaultValue: false }
         ];
     }
 }

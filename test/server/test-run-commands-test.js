@@ -1183,7 +1183,7 @@ describe('Test run commands', () => {
         });
 
         it('Should create RecorderCommand from object', function () {
-            const commandObj = {
+            let commandObj = {
                 type:    TYPE.recorder,
                 subtype: 'test',
 
@@ -1192,11 +1192,33 @@ describe('Test run commands', () => {
                 }
             };
 
-            const command = createCommand(commandObj);
+            let command = createCommand(commandObj);
 
             expect(JSON.parse(JSON.stringify(command))).eql({
                 type:    TYPE.recorder,
-                subtype: 'test'
+                subtype: 'test',
+
+                forceExecutionInTopWindowOnly: false
+            });
+
+            commandObj = {
+                type:    TYPE.recorder,
+                subtype: 'test',
+
+                forceExecutionInTopWindowOnly: true,
+
+                options: {
+                    dummy: 'yo'
+                }
+            };
+
+            command = createCommand(commandObj);
+
+            expect(JSON.parse(JSON.stringify(command))).eql({
+                type:    TYPE.recorder,
+                subtype: 'test',
+
+                forceExecutionInTopWindowOnly: true
             });
         });
     });
