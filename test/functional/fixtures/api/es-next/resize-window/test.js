@@ -4,7 +4,7 @@ const config                     = require('../../../../config.js');
 const errorInEachBrowserContains = require('../../../../assertion-helper.js').errorInEachBrowserContains;
 
 
-describe('[API] Resize window actions', function () {
+describe.only('[API] Resize window actions', function () {
     if (config.useLocalBrowsers) {
         describe('t.resizeWindow', function () {
             it('Should resize the window', function () {
@@ -22,7 +22,7 @@ describe('[API] Resize window actions', function () {
                     });
             });
 
-            it.only('Should fail when a js-error appears during resizeWindow execution', function () {
+            it('Should fail when a js-error appears during resizeWindow execution', function () {
                 return runTests('./testcafe-fixtures/resize-window-test.js', 'Resize the window leads to js-error', { shouldFail: true, skip: 'headlesschrome' })
                     .catch(function (errs) {
                         console.log('kekeke');
