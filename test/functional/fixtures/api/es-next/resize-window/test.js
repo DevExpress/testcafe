@@ -22,9 +22,11 @@ describe('[API] Resize window actions', function () {
                     });
             });
 
-            it('Should fail when a js-error appears during resizeWindow execution', function () {
+            it.only('Should fail when a js-error appears during resizeWindow execution', function () {
                 return runTests('./testcafe-fixtures/resize-window-test.js', 'Resize the window leads to js-error', { shouldFail: true, skip: 'headlesschrome' })
                     .catch(function (errs) {
+                        console.log('kekeke');
+
                         errorInEachBrowserContains(errs, 'A JavaScript error occurred on "http://localhost:3000/fixtures/api/es-next/resize-window/pages/index.html"', 0);
                         errorInEachBrowserContains(errs, 'Resize error', 0);
                         errorInEachBrowserContains(errs, '> 70 |    await t.resizeWindow(500, 500);', 0);

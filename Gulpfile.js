@@ -44,7 +44,6 @@ gulpStep.install();
 ll
     .install()
     .tasks([
-        'lint',
         'check-licenses'
     ])
     .onlyInDebug([
@@ -382,10 +381,10 @@ gulp.step('package-content', gulp.parallel('ts-defs', 'server-scripts', 'client-
 
 gulp.task('fast-build', gulp.series('clean', 'package-content'));
 
-gulp.task('build', DEV_MODE ? gulp.registry().get('fast-build') : gulp.parallel('lint', 'fast-build'));
+gulp.task('build', DEV_MODE ? gulp.registry().get('fast-build') : gulp.parallel('fast-build'));
 
 // Test
-gulp.step('prepare-tests', gulp.registry().get(SKIP_BUILD ? 'lint' : 'build'));
+gulp.step('prepare-tests', gulp.registry().get('build'));
 
 gulp.step('test-server-run', () => {
     return gulp
