@@ -61,17 +61,17 @@ interface Browser {
      */
     platform: string;
     /**
-     * Specifies if the browser is in headless mode.
+     * `true` if the browser runs in headless mode.
      */
-    headless: string;
+    headless: boolean;
     /**
      * The name and version of the operating system.
      */
-    os: { name?: string; version?: string };
+    os: { name: string; version: string };
     /**
      * The name and version of the browser engine.
      */
-    engine: { name?: string; version?: string };
+    engine: { name: string; version: string };
     /**
      * The user agent string.
      */
