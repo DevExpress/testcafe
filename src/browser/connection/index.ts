@@ -36,7 +36,6 @@ interface InitScript {
 
 export default class BrowserConnection extends EventEmitter {
     private gateway: any;
-    public browserInfo: any;
     private permanent: any;
     private readonly allowMultipleWindows: any;
     private readonly HEARTBEAT_TIMEOUT: number;
@@ -47,12 +46,10 @@ export default class BrowserConnection extends EventEmitter {
     private browserConnectionGateway: any;
     private disconnectionPromise: DisconnectionPromise<void> | null;
     private testRunAborted: boolean;
-    private provider: any;
     private closing: boolean;
     private closed: boolean;
     private ready: boolean;
     private opened: boolean;
-    public idle: boolean;
     private heartbeatTimeout: NodeJS.Timeout | null;
     private pendingTestRunUrl: string | null;
     private readonly url: string;
@@ -66,6 +63,11 @@ export default class BrowserConnection extends EventEmitter {
     private readonly statusUrl: string;
     private statusDoneUrl: string;
     private switchingToIdle: boolean;
+
+    public idle: boolean;
+
+    public browserInfo: any;
+    public provider: any;
 
     public constructor (gateway: any, browserInfo: any, permanent: boolean, allowMultipleWindows = false) {
         super();

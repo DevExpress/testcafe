@@ -230,7 +230,7 @@ export default class BrowserProvider {
         }
     }
 
-    public async isLocalBrowser (browserId: string, browserName: string): Promise<boolean> {
+    public async isLocalBrowser (browserId?: string, browserName?: string): Promise<boolean> {
         return await this.plugin.isLocalBrowser(browserId, browserName);
     }
 

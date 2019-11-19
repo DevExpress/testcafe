@@ -1,3 +1,9 @@
+declare module 'testcafe-browser-tools/lib/errors' {
+    export class UnableToAccessScreenRecordingAPIError extends Error {
+
+    }
+}
+
 declare module 'testcafe-browser-tools' {
     export function close(windowDescriptor: string | any): Promise<void>;
     export function findWindow(pageTitle: string): any;
@@ -7,4 +13,7 @@ declare module 'testcafe-browser-tools' {
     export function maximize(windowDescriptor: string | any): Promise<void>;
     export function screenshot(windowDescriptor: string | any, screenshotPath: string): Promise<void>;
 
+    import * as errors from 'testcafe-browser-tools/lib/errors';
+
+    export { errors };
 }
