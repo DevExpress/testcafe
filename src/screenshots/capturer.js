@@ -150,7 +150,7 @@ export default class Capturer {
         const screenshot = {
             screenshotPath,
             thumbnailPath,
-            userAgent:         escapeUserAgent(this.pathPattern.data.parsedUserAgent),
+            userAgent:         escapeUserAgent(this.pathPattern.data.parsedUserAgent.prettyUserAgent),
             quarantineAttempt: this.pathPattern.data.quarantineAttempt,
             takenOnFail:       forError,
         };

@@ -1,5 +1,5 @@
 import { ClientFunction } from 'testcafe';
-import { parse } from 'useragent';
+import parseUserAgent from '../../../../../../../lib/utils/parse-user-agent';
 import { saveWindowState, restoreWindowState } from '../../../../../window-helpers';
 
 
@@ -18,7 +18,7 @@ fixture `Take a screenshot`
     .beforeEach(async t => {
         const ua = await getUserAgent();
 
-        t.ctx.parsedUA = parse(ua);
+        t.ctx.parsedUA = parseUserAgent(ua);
 
         await saveWindowState(t);
 
@@ -27,7 +27,7 @@ fixture `Take a screenshot`
     .afterEach(t => restoreWindowState(t));
 
 test('Incorrect action selector argument', async t => {
-    await t.takeElementScreenshot(1, 'custom/' + t.ctx.parsedUA.family + '.png');
+    await t.takeElementScreenshot(1, 'custom/' + t.ctx.parsedUA.name + '.png');
 });
 
 test('Incorrect action path argument', async t => {
@@ -35,23 +35,23 @@ test('Incorrect action path argument', async t => {
 });
 
 test('Invalid dimensions', async t => {
-    await t.takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.family + '.png', { crop: { left: -10, right: -50 } });
+    await t.takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.name + '.png', { crop: { left: -10, right: -50 } });
 });
 
 test('Invisible element', async t => {
     await t
         .click('#hide')
-        .takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.family + '.png');
+        .takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.name + '.png');
 });
 
 test('Non-existent element', async t => {
     await t
         .click('#remove')
-        .takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.family + '.png');
+        .takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.name + '.png');
 });
 
 test('Invalid scroll target', async t => {
-    await t.takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.family + '.png', { scrollTargetX: -2000, scrollTargetY: -3000 });
+    await t.takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.name + '.png', { scrollTargetX: -2000, scrollTargetY: -3000 });
 });
 
 test('Forbidden characters in the path argument', async t => {
@@ -62,33 +62,33 @@ test('Element', async t => {
     await enableScrollWatcher();
 
     await t
-        .takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.family + '.png')
+        .takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.name + '.png')
         .expect(getInternalScrollEventsCount()).gt(0)
         .expect(checkWindowScroll()).notOk();
 });
 
 test('Element with margins', async t => {
-    await t.takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.family + '.png', { includeMargins: true });
+    await t.takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.name + '.png', { includeMargins: true });
 });
 
 test('Default crop', async t => {
-    await t.takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.family + '.png', { crop: { right: 50, bottom: 50 } });
+    await t.takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.name + '.png', { crop: { right: 50, bottom: 50 } });
 });
 
 test('Top-left', async t => {
-    await t.takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.family + '.png', { crop: { left: 0, top: 0, right: 50, bottom: 50 } });
+    await t.takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.name + '.png', { crop: { left: 0, top: 0, right: 50, bottom: 50 } });
 });
 
 test('Top-right', async t => {
-    await t.takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.family + '.png', { crop: { left: -50, top: 0, bottom: 50 } });
+    await t.takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.name + '.png', { crop: { left: -50, top: 0, bottom: 50 } });
 });
 
 test('Bottom-left', async t => {
-    await t.takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.family + '.png', { crop: { left: 0, top: -50, right: -50 } });
+    await t.takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.name + '.png', { crop: { left: 0, top: -50, right: -50 } });
 });
 
 test('Bottom-right', async t => {
-    await t.takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.family + '.png', { crop: { left: 50, top: -50 } });
+    await t.takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.name + '.png', { crop: { left: 50, top: -50 } });
 });
 
 test
@@ -96,7 +96,7 @@ test
     ('Same-domain iframe', async t => {
         await t
             .switchToIframe('iframe')
-            .takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.family + '.png');
+            .takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.name + '.png');
     });
 
 test
@@ -105,7 +105,7 @@ test
         await t
             .switchToIframe('iframe')
             .switchToIframe('iframe')
-            .takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.family + '.png');
+            .takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.name + '.png');
     });
 
 test
@@ -114,7 +114,7 @@ test
         await t
             .switchToIframe('iframe')
             .switchToIframe('iframe')
-            .takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.family + '.png')
+            .takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.name + '.png')
             .switchToMainWindow()
             .expect(getInternalScrollEventsCount()).eql(1)
             .switchToIframe('iframe')
@@ -128,19 +128,19 @@ test
     ('Cross-domain iframe', async t => {
         await t
             .switchToIframe('iframe')
-            .takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.family + '.png');
+            .takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.name + '.png');
     });
 
 test('Scroll target', async t => {
-    await t.takeElementScreenshot('body', 'custom/' + t.ctx.parsedUA.family + '.png', { scrollTargetX: 2000, scrollTargetY: 3000 });
+    await t.takeElementScreenshot('body', 'custom/' + t.ctx.parsedUA.name + '.png', { scrollTargetX: 2000, scrollTargetY: 3000 });
 });
 
 test('Negative scroll target', async t => {
-    await t.takeElementScreenshot('body', 'custom/' + t.ctx.parsedUA.family + '.png', { scrollTargetX: -2000, scrollTargetY: -3000 });
+    await t.takeElementScreenshot('body', 'custom/' + t.ctx.parsedUA.name + '.png', { scrollTargetX: -2000, scrollTargetY: -3000 });
 });
 
 test
     .page('../pages/element-bottom-right.html')
     (`Bottom-right element`, async t => {
-        await t.takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.family + '.png');
+        await t.takeElementScreenshot('table', 'custom/' + t.ctx.parsedUA.name + '.png');
     });

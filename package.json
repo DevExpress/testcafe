@@ -66,6 +66,7 @@
     "babel-preset-stage-2": "^6.22.0",
     "babel-runtime": "^6.22.0",
     "bin-v8-flags-filter": "^1.1.2",
+    "bowser": "^2.7.0",
     "callsite": "^1.0.0",
     "callsite-record": "^4.0.0",
     "chai": "^4.1.2",
@@ -126,8 +127,7 @@
     "time-limit-promise": "^1.0.2",
     "tmp": "0.0.28",
     "tree-kill": "^1.1.0",
-    "typescript": "^3.3.3",
-    "useragent": "^2.1.7"
+    "typescript": "^3.3.3"
   },
   "devDependencies": {
     "@belym.a.2105/broken-link-checker": "^0.7.9",

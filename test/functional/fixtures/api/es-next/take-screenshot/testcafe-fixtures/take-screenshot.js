@@ -1,5 +1,5 @@
 import { ClientFunction } from 'testcafe';
-import { parse, is } from 'useragent';
+import parseUserAgent from '../../../../../../../lib/utils/parse-user-agent';
 import { saveWindowState, restoreWindowState } from '../../../../../window-helpers';
 import quarantineScope from './quarantineScope';
 import sanitizeFilename from 'sanitize-filename';
@@ -23,16 +23,16 @@ test('Take a screenshot', async t => {
 
 test('Take a screenshot with a custom path (OS separator)', async t => {
     const ua       = await getUserAgent();
-    const parsedUA = parse(ua);
+    const parsedUA = parseUserAgent(ua);
 
-    await t.takeScreenshot('custom/' + parsedUA.family + '.png');
+    await t.takeScreenshot('custom/' + parsedUA.name + '.png');
 });
 
 test('Take a screenshot with a custom path (DOS separator)', async t => {
     const ua       = await getUserAgent();
-    const parsedUA = parse(ua);
+    const parsedUA = parseUserAgent(ua);
 
-    await t.takeScreenshot('custom\\' + parsedUA.family + '.png');
+    await t.takeScreenshot('custom\\' + parsedUA.name + '.png');
 });
 
 test('Incorrect action path argument', async t => {
@@ -56,8 +56,8 @@ test('Take screenshots with same path', async t => {
 });
 
 test('Take screenshots for reporter', async t => {
-    const userAgent     = await getUserAgent();
-    const safeUserAgent = sanitizeFilename(parse(userAgent).toString()).replace(/\s+/g, '_');
+    const ua            = await getUserAgent();
+    const safeUserAgent = sanitizeFilename(parseUserAgent(ua).prettyUserAgent).replace(/\s+/g, '_');
 
     quarantineScope[safeUserAgent] = quarantineScope[safeUserAgent] || {};
 
@@ -87,9 +87,9 @@ test
     .after(t => restoreWindowState(t))
     ('Should crop screenshots', async t => {
         const ua       = await getUserAgent();
-        const parsedUA = parse(ua);
+        const parsedUA = parseUserAgent(ua);
 
-        await t.takeScreenshot('custom/' + parsedUA.family + '.png');
+        await t.takeScreenshot('custom/' + parsedUA.name + '.png');
     });
 
 test
@@ -106,8 +106,8 @@ test
         const { width, height } = t.ctx._savedWindowState;
 
         const ua             = await getUserAgent();
-        const parsedUA       = parse(ua);
-        const screenshotName = 'custom/' + parsedUA.family + '.png';
+        const parsedUA       = parseUserAgent(ua);
+        const screenshotName = 'custom/' + parsedUA.name + '.png';
 
         const scrollbarSize = await getScrollbarSize();
 
@@ -120,7 +120,7 @@ test
         const expectedHeight = height - scrollbarSize;
 
         // NOTE: IE clips screenshots not accurately
-        const accuracy        = is(ua).ie ? 1 : 0;
+        const accuracy = parseUserAgent(ua).name === 'Internet Explorer' ? 1 : 0;
 
         await t.expect(scrollbarSize).gt(0);
         await t.expect(Math.abs(png.width - expectedWidth)).lte(accuracy);

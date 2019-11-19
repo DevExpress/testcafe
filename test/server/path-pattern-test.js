@@ -1,8 +1,8 @@
-const path        = require('path');
-const expect      = require('chai').expect;
-const moment      = require('moment');
-const userAgent   = require('useragent');
-const PathPattern = require('../../lib/utils/path-pattern');
+const path           = require('path');
+const expect         = require('chai').expect;
+const moment         = require('moment');
+const parseUserAgent = require('../../lib/utils/parse-user-agent');
+const PathPattern    = require('../../lib/utils/path-pattern');
 
 
 const SCREENSHOT_EXTENSION = 'png';
@@ -17,7 +17,7 @@ describe('Screenshot path pattern', () => {
         quarantineAttempt: forQuarantine ? 2 : null,
         fixture:           'fixture',
         test:              'test',
-        parsedUserAgent:   userAgent.parse(TEST_USER_AGENT)
+        parsedUserAgent:   parseUserAgent(TEST_USER_AGENT)
     });
 
     const createPathPattern = (pattern, { forQuarantine } = {}) => {
@@ -28,13 +28,13 @@ describe('Screenshot path pattern', () => {
         it('Normal run', () => {
             const pathPattern = createPathPattern();
 
-            expect(pathPattern.getPath()).match(/2010-01-02_11-12-13[\\/]test-12[\\/]Chrome_68.0.3440_Windows_8.1.0.0[\\/]34.png/);
+            expect(pathPattern.getPath()).match(/2010-01-02_11-12-13[\\/]test-12[\\/]Chrome_68.0.3440.106_Windows_8.1[\\/]34.png/);
         });
 
         it('Quarantine mode', () => {
             const pathPattern = createPathPattern(void 0, { forQuarantine: true });
 
-            expect(pathPattern.getPath()).match(/2010-01-02_11-12-13[\\/]test-12[\\/]run-2[\\/]Chrome_68.0.3440_Windows_8.1.0.0[\\/]34.png/);
+            expect(pathPattern.getPath()).match(/2010-01-02_11-12-13[\\/]test-12[\\/]run-2[\\/]Chrome_68.0.3440.106_Windows_8.1[\\/]34.png/);
         });
     });
 
@@ -49,11 +49,11 @@ describe('Screenshot path pattern', () => {
             '2',
             'fixture',
             'test',
-            'Chrome_68.0.3440_Windows_8.1.0.0',
+            'Chrome_68.0.3440.106_Windows_8.1',
             'Chrome',
-            '68.0.3440',
+            '68.0.3440.106',
             'Windows',
-            '8.1.0.0',
+            '8.1',
             'test-12',
             'run-2'
         ].join('#') + '.png';

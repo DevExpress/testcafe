@@ -74,11 +74,11 @@ export default class PathPattern extends EventEmitter {
             [PLACEHOLDERS.FIXTURE]:            this.data.fixture,
             [PLACEHOLDERS.TEST]:               this.data.test,
             [PLACEHOLDERS.FILE_INDEX]:         forError => forError ? this.data.errorFileIndex : this.data.fileIndex,
-            [PLACEHOLDERS.USERAGENT]:          this.data.parsedUserAgent.toString(),
-            [PLACEHOLDERS.BROWSER]:            this.data.parsedUserAgent.family,
-            [PLACEHOLDERS.BROWSER_VERSION]:    this.data.parsedUserAgent.toVersion(),
-            [PLACEHOLDERS.OS]:                 this.data.parsedUserAgent.os.family,
-            [PLACEHOLDERS.OS_VERSION]:         this.data.parsedUserAgent.os.toVersion()
+            [PLACEHOLDERS.USERAGENT]:          this.data.parsedUserAgent.prettyUserAgent,
+            [PLACEHOLDERS.BROWSER]:            this.data.parsedUserAgent.name,
+            [PLACEHOLDERS.BROWSER_VERSION]:    this.data.parsedUserAgent.version,
+            [PLACEHOLDERS.OS]:                 this.data.parsedUserAgent.os.name,
+            [PLACEHOLDERS.OS_VERSION]:         this.data.parsedUserAgent.os.version
         };
     }
 

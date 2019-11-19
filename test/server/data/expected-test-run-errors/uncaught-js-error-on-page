@@ -12,7 +12,7 @@ Test error:
     at method2 (http://example.com):1:2
     at method1 (http://example.com):1:1
 
-Browser: Chrome 15.0.874 / Mac OS X 10.8.1
+Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>
 
    18 |function func1 () {

@@ -10,7 +10,7 @@ const LegacyTestRunErrorFormattableAdapter = testCafeLegacyApi.TestRunErrorForma
 
 const untestedErrorTypes = Object.keys(TEST_RUN_ERROR_TYPE).map(key => TEST_RUN_ERROR_TYPE[key]);
 
-const userAgentMock = 'Chrome 15.0.874 / Mac OS X 10.8.1';
+const userAgentMock = 'Chrome 15.0.874.120 / macOS 10.15';
 
 function assertErrorMessage (file, err, callsite) {
     const screenshotPath = '/unix/path/with/<tag>';

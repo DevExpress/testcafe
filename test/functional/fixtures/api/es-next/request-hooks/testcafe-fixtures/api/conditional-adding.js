@@ -1,5 +1,5 @@
 import { ClientFunction, RequestLogger } from 'testcafe';
-import userAgent from 'useragent';
+import parseUserAgent from '../../../../../../../../lib/utils/parse-user-agent';
 
 const pageUrl = 'http://localhost:3000/fixtures/api/es-next/request-hooks/pages/index.html';
 const logger1 = new RequestLogger(pageUrl);
@@ -12,7 +12,7 @@ test
     .requestHooks(logger1)
     ('Conditional adding', async t => {
         const userAgentStr = await ClientFunction(() => window.navigator.userAgent)();
-        const browserName  = userAgent.parse(userAgentStr).family;
+        const browserName  = parseUserAgent(userAgentStr).name;
 
         if (browserName === 'Chrome')
             await t.addRequestHooks(logger2);

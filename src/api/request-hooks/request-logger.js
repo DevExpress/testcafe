@@ -1,6 +1,6 @@
 import { ConfigureResponseEventOptions } from 'testcafe-hammerhead';
 import RequestHook from './hook';
-import { parse as parseUserAgent } from 'useragent';
+import parseUserAgent from '../../utils/parse-user-agent';
 import testRunTracker from '../test-run-tracker';
 import ReExecutablePromise from '../../utils/re-executable-promise';
 import { APIError } from '../../errors/runtime';
@@ -38,12 +38,10 @@ class RequestLoggerImplementation extends RequestHook {
     }
 
     async onRequest (event) {
-        const userAgent = parseUserAgent(event._requestInfo.userAgent).toString();
-
         const loggedReq = {
             id:        event._requestInfo.requestId,
             testRunId: event._requestInfo.sessionId,
-            userAgent,
+            userAgent: parseUserAgent(event._requestInfo.userAgent).prettyUserAgent,
             request:   {
                 url:    event._requestInfo.url,
                 method: event._requestInfo.method,

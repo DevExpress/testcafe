@@ -1,7 +1,7 @@
 Unable to scroll to the specified point because a point with the specified
 scrollTargetX property is not located inside the element's cropping region.
 
-Browser: Chrome 15.0.874 / Mac OS X 10.8.1
+Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>
 
    18 |function func1 () {

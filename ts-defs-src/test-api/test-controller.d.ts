@@ -28,19 +28,58 @@ interface BrowserConsoleMessages {
     /**
      * Messages output to the browser console by the console.log() method.
      */
-    log: string[],
+    log: string[];
     /**
      * Warning messages output to the browser console by the console.warn() method.
      */
-    warn: string[],
+    warn: string[];
     /**
      * Error messages output to the browser console by the console.error() method.
      */
-    error: string[],
+    error: string[];
     /**
      * Information messages output to the browser console by the console.info() method.
      */
-    info: string[]
+    info: string[];
+}
+
+interface Browser {
+    /**
+     * The browser alias string specified when tests were launched.
+     */
+    alias: string;
+    /**
+     * The browser name.
+     */
+    name: string;
+    /**
+     * The browser version.
+     */
+    version: string;
+    /**
+     * The platform type.
+     */
+    platform: string;
+    /**
+     * `true` if the browser runs in headless mode.
+     */
+    headless: boolean;
+    /**
+     * The name and version of the operating system.
+     */
+    os: { name: string; version: string };
+    /**
+     * The name and version of the browser engine.
+     */
+    engine: { name: string; version: string };
+    /**
+     * The user agent string.
+     */
+    userAgent: string;
+    /**
+     * Formatted string with the browser's and operating system's name and version.
+     */
+    prettyUserAgent: string;
 }
 
 interface TestController {
@@ -52,6 +91,10 @@ interface TestController {
      * Dictionary that is shared between `fixture.before` and `fixture.after`, test hook functions and test code.
      */
     readonly fixtureCtx: {[key: string]: any};
+    /**
+     * Returns an object that contains browser information.
+     */
+    readonly browser: Browser;
     /**
      * Clicks a webpage element.
      *

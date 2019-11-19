@@ -1,7 +1,7 @@
 Elements of the "array" argument are expected to be non-empty strings, but
 the element at index 1 was number.
 
-Browser: Chrome 15.0.874 / Mac OS X 10.8.1
+Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>
 
    18 |function func1 () {

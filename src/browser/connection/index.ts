@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
 import Mustache from 'mustache';
 import { pull as remove } from 'lodash';
-import { parse as parseUserAgent } from 'useragent';
+import parseUserAgent from '../../utils/parse-user-agent';
 import { readSync as read } from 'read-file-relative';
 import promisifyEvent from 'promisify-event';
 import nanoid from 'nanoid';
@@ -81,7 +81,6 @@ export default class BrowserConnection extends EventEmitter {
         this.testRunAborted           = false;
 
         this.browserInfo                           = browserInfo;
-        this.browserInfo.userAgent                 = '';
         this.browserInfo.userAgentProviderMetaInfo = '';
 
         this.provider = browserInfo.provider;
@@ -278,7 +277,7 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     public get userAgent (): string {
-        let userAgent = this.browserInfo.userAgent;
+        let userAgent = this.browserInfo.parsedUserAgent.prettyUserAgent;
 
         if (this.browserInfo.userAgentProviderMetaInfo)
             userAgent += ` (${this.browserInfo.userAgentProviderMetaInfo})`;
@@ -328,13 +327,8 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     public establish (userAgent: string): void {
-        this.ready = true;
-
-        const parsedUserAgent = parseUserAgent(userAgent);
-
-        this.browserInfo.userAgent       = parsedUserAgent.toString();
-        this.browserInfo.fullUserAgent   = userAgent;
-        this.browserInfo.parsedUserAgent = parsedUserAgent;
+        this.ready                       = true;
+        this.browserInfo.parsedUserAgent = parseUserAgent(userAgent);
 
         this._waitForHeartbeat();
         this.emit('ready');
