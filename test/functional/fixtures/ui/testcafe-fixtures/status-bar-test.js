@@ -38,7 +38,7 @@ test('Hide elements when resizing the window', async t => {
         });
 
     await t
-        .resizeWindow(1000, 500);
+        .resizeWindow(1000, 400);
 
     //If we await these properties during the assertion execution, the status will be changed to "Waiting for..."
     const getStatusBarItemsVisibility = async () => {
@@ -57,7 +57,7 @@ test('Hide elements when resizing the window', async t => {
         .expect(itemsVisibility.statusVisible).ok()
         .expect(itemsVisibility.buttonCaptionsVisible).ok()
         .expect(itemsVisibility.iconVisible).ok()
-        .resizeWindow(800, 500);
+        .resizeWindow(800, 400);
 
     itemsVisibility = await getStatusBarItemsVisibility();
 
@@ -66,7 +66,7 @@ test('Hide elements when resizing the window', async t => {
         .expect(itemsVisibility.statusVisible).ok()
         .expect(itemsVisibility.buttonCaptionsVisible).ok()
         .expect(itemsVisibility.iconVisible).ok()
-        .resizeWindow(600, 500);
+        .resizeWindow(600, 400);
 
     itemsVisibility = await getStatusBarItemsVisibility();
 
@@ -75,7 +75,7 @@ test('Hide elements when resizing the window', async t => {
         .expect(itemsVisibility.statusVisible).ok()
         .expect(itemsVisibility.buttonCaptionsVisible).notOk()
         .expect(itemsVisibility.iconVisible).notOk()
-        .resizeWindow(500, 500);
+        .resizeWindow(520, 400);
 
     itemsVisibility = await getStatusBarItemsVisibility();
 
