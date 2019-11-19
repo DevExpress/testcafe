@@ -21,7 +21,8 @@ import {
     SetTestSpeedCommand,
     SetPageLoadTimeoutCommand,
     ExecuteExpressionCommand,
-    ExecuteAsyncExpressionCommand
+    ExecuteAsyncExpressionCommand,
+    RecorderCommand
 } from './actions';
 
 import AssertionCommand from './assertion';
@@ -124,6 +125,9 @@ function getCmdCtor (type) {
 
         case TYPE.executeAsyncExpression:
             return ExecuteAsyncExpressionCommand;
+
+        case TYPE.recorder:
+            return RecorderCommand;
 
         default:
             return null;

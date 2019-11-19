@@ -45,5 +45,6 @@ export default {
     backupStorages:             'backup-storages',
     executeExpression:          'execute-expression',
     executeAsyncExpression:     'execute-async-expression',
-    unlockPage:                 'unlock-page'
+    unlockPage:                 'unlock-page',
+    recorder:                   'recorder'
 };

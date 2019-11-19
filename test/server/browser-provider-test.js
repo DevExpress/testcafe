@@ -1,10 +1,15 @@
-const expect               = require('chai').expect;
-const proxyquire           = require('proxyquire');
-const sinon                = require('sinon');
-const browserProviderPool  = require('../../lib/browser/provider/pool');
-const parseProviderName    = require('../../lib/browser/provider/parse-provider-name');
-const BrowserConnection    = require('../../lib/browser/connection');
-const WARNING_MESSAGE      = require('../../lib/notifications/warning-message');
+const expect                  = require('chai').expect;
+const { noop, stubFalse }     = require('lodash');
+const nanoid                  = require('nanoid');
+const { rmdirSync, statSync } = require('fs');
+const { join, dirname }       = require('path');
+const proxyquire              = require('proxyquire');
+const sinon                   = require('sinon');
+const browserProviderPool     = require('../../lib/browser/provider/pool');
+const parseProviderName       = require('../../lib/browser/provider/parse-provider-name');
+const BrowserConnection       = require('../../lib/browser/connection');
+const ProviderCtor            = require('../../lib/browser/provider/');
+const WARNING_MESSAGE         = require('../../lib/notifications/warning-message');
 
 class BrowserConnectionMock extends BrowserConnection {
     constructor () {
@@ -316,10 +321,12 @@ describe('Browser provider', function () {
                         expect(result).to.be.true;
                     });
             });
+        });
+    });
 
+    describe('API', () => {
+        describe('Screenshots', () => {
             it('Should add warning if provider does not support `fullPage` screenshots', () => {
-                const ProviderCtor = require('../../lib/browser/provider/');
-
                 const provider = new ProviderCtor({
                     isLocalBrowser:            () => true,
                     isHeadlessBrowser:         () => false,
@@ -331,6 +338,27 @@ describe('Browser provider', function () {
                 return provider.takeScreenshot(bc.id, '', 1, 1, true)
                     .then(() => {
                         expect(bc.message).eql(WARNING_MESSAGE.screenshotsFullPageNotSupported);
+                    });
+            });
+
+            it('Should create a directory in screenshot was made using the plugin', () => {
+                const provider = new ProviderCtor({
+                    isLocalBrowser:            stubFalse,
+                    isHeadlessBrowser:         stubFalse,
+                    hasCustomActionForBrowser: stubFalse,
+                    takeScreenshot:            noop
+                });
+
+                const dir            = `temp${nanoid(7)}`;
+                const screenshotPath = join(process.cwd(), dir, 'tmp.png');
+
+                return provider.takeScreenshot('', screenshotPath, 0, 0, false)
+                    .then(() => {
+                        const stats = statSync(dirname(screenshotPath));
+
+                        expect(stats.isDirectory()).to.be.true;
+
+                        rmdirSync(dirname(screenshotPath));
                     });
             });
         });
