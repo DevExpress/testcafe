@@ -1,4 +1,4 @@
-describe('TestCafe UI', () => {
+describe.only('TestCafe UI', () => {
     it('Should display correct status', () => {
         return runTests('./testcafe-fixtures/status-bar-test.js', 'Show status prefix', { assertionTimeout: 3000 });
     });
