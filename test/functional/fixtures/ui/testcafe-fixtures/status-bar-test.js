@@ -1,4 +1,5 @@
 import { Selector } from 'testcafe';
+import OS from 'os-family';
 import { saveWindowState, restoreWindowState } from '../../../window-helpers';
 
 fixture `Status Bar`
@@ -59,12 +60,15 @@ test('Hide elements when resizing the window', async t => {
 
     let itemsVisibility = await getStatusBarItemsVisibility();
 
-    await t
-        .expect(itemsVisibility.userAgentVisible).ok()
-        .expect(itemsVisibility.statusVisible).ok()
-        .expect(itemsVisibility.buttonCaptionsVisible).ok()
-        .expect(itemsVisibility.iconVisible).ok()
-        .resizeWindow(800, 400);
+    if (!OS.mac) {
+        await t
+            .expect(itemsVisibility.userAgentVisible).ok()
+            .expect(itemsVisibility.statusVisible).ok()
+            .expect(itemsVisibility.buttonCaptionsVisible).ok()
+            .expect(itemsVisibility.iconVisible).ok();
+    }
+
+    await t.resizeWindow(800, 400);
 
     itemsVisibility = await getStatusBarItemsVisibility();
 
