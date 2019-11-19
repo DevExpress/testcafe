@@ -1,7 +1,14 @@
 import { Selector } from 'testcafe';
+import { saveWindowState, restoreWindowState } from '../../../window-helpers';
 
 fixture `Status Bar`
-    .page `http://localhost:3000/fixtures/ui/pages/empty-page.html`;
+    .page `http://localhost:3000/fixtures/ui/pages/empty-page.html`
+    .beforeEach(async t => {
+        await saveWindowState(t);
+    })
+    .afterEach(async t => {
+        await restoreWindowState(t);
+    });
 
 test('Show status prefix', async t => {
     const statusDiv = Selector(() => window['%testCafeDriverInstance%'].statusBar.statusDiv);
