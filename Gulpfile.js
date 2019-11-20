@@ -19,7 +19,6 @@ const path                 = require('path');
 const { Transform }        = require('stream');
 const { promisify }        = require('util');
 const globby               = require('globby');
-const isCI                 = require('is-ci');
 const open                 = require('open');
 const connect              = require('connect');
 const spawn                = require('cross-spawn');
@@ -56,7 +55,7 @@ ll
 const ARGS          = minimist(process.argv.slice(2));
 const DEV_MODE      = 'dev' in ARGS;
 const QR_CODE       = 'qr-code' in ARGS;
-const SKIP_BUILD    = isCI || process.env.SKIP_BUILD || 'skip-build' in ARGS;
+const SKIP_BUILD    = process.env.SKIP_BUILD || 'skip-build' in ARGS;
 const BROWSER_ALIAS = ARGS['browser-alias'];
 
 const CLIENT_TESTS_PATH        = 'test/client/fixtures';
