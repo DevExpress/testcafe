@@ -609,7 +609,12 @@ gulp.step('prepare-website-content', gulp.series('clean-website', 'fetch-assets-
 gulp.step('prepare-website', gulp.parallel('lint-docs', 'prepare-website-content'));
 
 function buildWebsite (mode, cb) {
-    const options = mode ? { stdio: 'inherit', env: { JEKYLL_ENV: mode } } : { stdio: 'inherit' };
+    const spawnEnv = process.env;
+
+    if(mode)
+        spawnEnv.JEKYLL_ENV = mode;
+
+    const options = { stdio: 'inherit', env: spawnEnv };
 
     spawn('jekyll', ['build', '--source', 'site/src/', '--destination', 'site/deploy'], options)
         .on('exit', cb);
