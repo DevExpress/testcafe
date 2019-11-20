@@ -611,7 +611,7 @@ gulp.step('prepare-website', gulp.parallel('lint-docs', 'prepare-website-content
 function buildWebsite (mode, cb) {
     const spawnEnv = process.env;
 
-    if(mode)
+    if (mode)
         spawnEnv.JEKYLL_ENV = mode;
 
     const options = { stdio: 'inherit', env: spawnEnv };
