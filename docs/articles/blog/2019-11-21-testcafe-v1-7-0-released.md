@@ -19,15 +19,17 @@ Use the [t.browser](https://devexpress.github.io/testcafe/documentation/test-api
 
 ```js
 import { Selector } from 'testcafe';
+
 fixture `My fixture`
     .page `https://example.com`;
+
 test('My test', async t => {
     if (t.browser.name !== 'Chrome')
         await t.expect(Selector('div').withText('Browser not supported').visible).ok();
 });
 ```
 
-[t.browser](https://devexpress.github.io/testcafe/documentation/test-api/identify-the-browser-and-platform.html) exposes the following properties:
+The [t.browser](https://devexpress.github.io/testcafe/documentation/test-api/identify-the-browser-and-platform.html) object exposes the following properties:
 
 Property | Type | Description   | Example
 -------- | ---- | ------------- | -------
@@ -41,10 +43,11 @@ Property | Type | Description   | Example
 [userAgent](https://devexpress.github.io/testcafe/documentation/test-api/identify-the-browser-and-platform.html#useragent) | String | The user agent string. | `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/77.0.3865.120 Safari/537.36`
 [prettyUserAgent](https://devexpress.github.io/testcafe/documentation/test-api/identify-the-browser-and-platform.html#prettyuseragent) | String | Formatted string with the browser's and operating system's name and version. | `Chrome 77.0.3865.75 / macOS 10.14.0`
 
-The following example shows how to create a [beforeEach](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#test-hooks) hook that runs for only particular [browser engines](https://devexpress.github.io/testcafe/documentation/test-api/identify-the-browser-and-platform.html#engine).
+The following example shows how to create a [beforeEach](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#test-hooks) hook that runs for specific [browser engines](https://devexpress.github.io/testcafe/documentation/test-api/identify-the-browser-and-platform.html#engine).
 
 ```js
 import { Selector } from 'testcafe';
+
 fixture `My fixture`
     .page `https://example.com`
     .beforeEach(async t => {
@@ -58,10 +61,13 @@ You can also use [t.browser](https://devexpress.github.io/testcafe/documentation
 
 ```js
 import { Selector } from 'testcafe';
+
 fixture `My fixture`
     .page `https://example.com`;
+
 test('My test', async t => {
     const loginButton = Selector('div').withText('Login');
+
     await t.takeElementScreenshot(loginButton, `auth/${t.browser.name}/login-button.png`);
 });
 ```
