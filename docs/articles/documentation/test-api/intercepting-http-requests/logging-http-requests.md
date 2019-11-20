@@ -82,7 +82,7 @@ This object represents a request-response pair.
 
 Property | Type | Description
 -------- | ---- | -----------
-`userAgent`  | String | The user agent that sent the request.
+`userAgent`  | String | Identifies the user agent that sent the request. Contains the formatted name and version of the browser and operating system.
 `request.url`    | String | The URL where the request is sent.
 `request.method`     | String | The request's HTTP method.
 `request.headers`    | Object | Request headers in the property-value form. Logged if the `logRequestHeaders` option is set to `true`.
