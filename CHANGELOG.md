@@ -1,5 +1,82 @@
 # Changelog
 
+## v1.7.0 (2019-11-21)
+
+### Enhancements
+
+#### :gear: Identify the Browser and Platform in Test Code ([#481](https://github.com/DevExpress/testcafe/issues/481))
+
+TestCafe now allows you to obtain information about the current user agent. These data identify the operating system, platform type, browser, engine, etc.
+
+Use the [t.browser](https://devexpress.github.io/testcafe/documentation/test-api/identify-the-browser-and-platform.html) property to access user agent data.
+
+```js
+import { Selector } from 'testcafe';
+
+fixture `My fixture`
+    .page `https://example.com`;
+
+test('My test', async t => {
+    if (t.browser.name !== 'Chrome')
+        await t.expect(Selector('div').withText('Browser not supported').visible).ok();
+});
+```
+
+The [t.browser](https://devexpress.github.io/testcafe/documentation/test-api/identify-the-browser-and-platform.html) object exposes the following properties:
+
+Property | Type | Description   | Example
+-------- | ---- | ------------- | -------
+[alias](https://devexpress.github.io/testcafe/documentation/test-api/identify-the-browser-and-platform.html#alias) | String | The browser alias string specified when tests were launched. | `firefox:headless`
+[name](https://devexpress.github.io/testcafe/documentation/test-api/identify-the-browser-and-platform.html#name) | String | The browser name. | `Chrome`
+[version](https://devexpress.github.io/testcafe/documentation/test-api/identify-the-browser-and-platform.html#version) | String | The browser version. | `77.0.3865.120`
+[platform](https://devexpress.github.io/testcafe/documentation/test-api/identify-the-browser-and-platform.html#platform) | String | The platform type. | `desktop`
+[headless](https://devexpress.github.io/testcafe/documentation/test-api/identify-the-browser-and-platform.html#headless) | Boolean | `true` if the browser runs in headless mode. | `false`
+[os](https://devexpress.github.io/testcafe/documentation/test-api/identify-the-browser-and-platform.html#os) | Object | The name and version of the operating system. | `{ name: 'macOS', version: '10.15.1' }`
+[engine](https://devexpress.github.io/testcafe/documentation/test-api/identify-the-browser-and-platform.html#engine) | Object | The name and version of the browser engine. |  `{ name: 'Gecko', version: '20100101' }`
+[userAgent](https://devexpress.github.io/testcafe/documentation/test-api/identify-the-browser-and-platform.html#useragent) | String | The user agent string. | `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/77.0.3865.120 Safari/537.36`
+[prettyUserAgent](https://devexpress.github.io/testcafe/documentation/test-api/identify-the-browser-and-platform.html#prettyuseragent) | String | Formatted string with the browser's and operating system's name and version. | `Chrome 77.0.3865.75 / macOS 10.14.0`
+
+The following example shows how to create a [beforeEach](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#test-hooks) hook that runs for specific [browser engines](https://devexpress.github.io/testcafe/documentation/test-api/identify-the-browser-and-platform.html#engine).
+
+```js
+import { Selector } from 'testcafe';
+
+fixture `My fixture`
+    .page `https://example.com`
+    .beforeEach(async t => {
+        if (t.browser.engine.name === 'Blink')
+            return;
+        // ...
+    });
+```
+
+You can also use [t.browser](https://devexpress.github.io/testcafe/documentation/test-api/identify-the-browser-and-platform.html) to generate the screenshot path based on the [browser name](https://devexpress.github.io/testcafe/documentation/test-api/identify-the-browser-and-platform.html#name). This prevents screenshots taken with [t.takeElementScreenshot](https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-a-page-element) in different browsers from being overwritten.
+
+```js
+import { Selector } from 'testcafe';
+
+fixture `My fixture`
+    .page `https://example.com`;
+
+test('My test', async t => {
+    const loginButton = Selector('div').withText('Login');
+
+    await t.takeElementScreenshot(loginButton, `auth/${t.browser.name}/login-button.png`);
+});
+```
+
+For more information and examples, see [Identify the Browser and Platform](https://devexpress.github.io/testcafe/documentation/test-api/identify-the-browser-and-platform.html).
+
+### Bug Fixes
+
+* Fixed an error on pages that submit forms immediately after loading ([#4360](https://github.com/DevExpress/testcafe/issues/4360) by [@bill-looby-i](https://github.com/bill-looby-i))
+* TestCafe now scrolls to elements located inside Shadow DOM roots ([#4222](https://github.com/DevExpress/testcafe/issues/4222))
+* Fixed an error that occurred when TypeScripts tests that use Node.js globals were run with TestCafe installed globally ([#4437](https://github.com/DevExpress/testcafe/issues/4437))
+* Fixed the TypeScript definition for the `Selector.withAttribute` method's return type ([#4448](https://github.com/DevExpress/testcafe/issues/4448))
+* Fixed an issue when custom browser providers could not take screenshots ([#4477](https://github.com/DevExpress/testcafe/issues/4477))
+* Support pages that use advanced ES6 module export ([testcafe-hammerhead/#2137](https://github.com/DevExpress/testcafe-hammerhead/issues/2137))
+* Fixed compatibility issues with Salesforce Lightning Web Components ([testcafe-hammerhead/#2152](https://github.com/DevExpress/testcafe-hammerhead/issues/2152))
+
 ## v1.6.1 (2019-10-29)
 
 ### Bug Fixes
@@ -664,7 +741,7 @@ runner
 
 ##### What Has Improved
 
-This change was necessary to implement the [configuration file](../documentation/using-testcafe/configuration-file.md) in a way that is consistent with the API and command line interface.
+This change was necessary to implement the [configuration file](https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html) in a way that is consistent with the API and command line interface.
 
 #### :boom: Custom Request Hooks: Asynchronous API
 
@@ -2452,7 +2529,7 @@ test(`Test Speed`, async t => {
 
 #### :gear: Using test controller outside of test code ([#1166](https://github.com/DevExpress/testcafe/issues/1166))
 
-You may sometimes need to call test API from outside of test code. For instance, your [page model](docs/articles/documentation/recipes/extract-reusable-test-code/use-page-model.md)
+You may sometimes need to call test API from outside of test code. For instance, your [page model](https://devexpress.github.io/testcafe/documentation/recipes/extract-reusable-test-code/use-page-model.html)
 can contain methods that perform common operations used in many tests, like authentication.
 
 ```js
