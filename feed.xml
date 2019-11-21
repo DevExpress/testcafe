@@ -5,9 +5,133 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 14 Nov 2019 11:47:37 +0300</pubDate>
-    <lastBuildDate>Thu, 14 Nov 2019 11:47:37 +0300</lastBuildDate>
+    <pubDate>Thu, 21 Nov 2019 18:39:24 +0300</pubDate>
+    <lastBuildDate>Thu, 21 Nov 2019 18:39:24 +0300</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>TestCafe v1.7.0 Released</title>
+        <description>&lt;h1&gt;TestCafe v1.7.0 Released&lt;/h1&gt;
+&lt;p&gt;This release introduces access to the browser and platform information from test code.&lt;/p&gt;
+
+&lt;!--more--&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;identify-the-browser-and-platform-in-test-code-481&quot;&gt;&lt;/a&gt;⚙️ Identify the Browser and Platform in Test Code (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/481&quot;&gt;#481&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#identify-the-browser-and-platform-in-test-code-481&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;TestCafe now allows you to obtain information about the current user agent. These data identify the operating system, platform type, browser, engine, etc.&lt;/p&gt;
+
+&lt;p&gt;Use the &lt;a href=&quot;../documentation/test-api/identify-the-browser-and-platform.html&quot;&gt;t.browser&lt;/a&gt; property to access user agent data.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;testcafe&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`My fixture`&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`https://example.com`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;My test&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;browser&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!==&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Chrome&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;div&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;withText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Browser not supported&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;visible&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ok&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The &lt;a href=&quot;../documentation/test-api/identify-the-browser-and-platform.html&quot;&gt;t.browser&lt;/a&gt; object exposes the following properties:&lt;/p&gt;
+&lt;div class=&quot;table-wrapper&quot;&gt;&lt;table&gt;&lt;thead&gt;&lt;tr&gt;
+&lt;th&gt;Property&lt;/th&gt;
+&lt;th&gt;Type&lt;/th&gt;
+&lt;th&gt;Description&lt;/th&gt;
+&lt;th&gt;Example&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;
+&lt;td&gt;&lt;a href=&quot;../documentation/test-api/identify-the-browser-and-platform.html#alias&quot;&gt;alias&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;String&lt;/td&gt;
+&lt;td&gt;The browser alias string specified when tests were launched.&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;firefox:headless&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&quot;../documentation/test-api/identify-the-browser-and-platform.html#name&quot;&gt;name&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;String&lt;/td&gt;
+&lt;td&gt;The browser name.&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;Chrome&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&quot;../documentation/test-api/identify-the-browser-and-platform.html#version&quot;&gt;version&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;String&lt;/td&gt;
+&lt;td&gt;The browser version.&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;77.0.3865.120&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&quot;../documentation/test-api/identify-the-browser-and-platform.html#platform&quot;&gt;platform&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;String&lt;/td&gt;
+&lt;td&gt;The platform type.&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;desktop&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&quot;../documentation/test-api/identify-the-browser-and-platform.html#headless&quot;&gt;headless&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;Boolean&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;true&lt;/code&gt; if the browser runs in headless mode.&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;false&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&quot;../documentation/test-api/identify-the-browser-and-platform.html#os&quot;&gt;os&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;Object&lt;/td&gt;
+&lt;td&gt;The name and version of the operating system.&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;{ name: &amp;#39;macOS&amp;#39;, version: &amp;#39;10.15.1&amp;#39; }&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&quot;../documentation/test-api/identify-the-browser-and-platform.html#engine&quot;&gt;engine&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;Object&lt;/td&gt;
+&lt;td&gt;The name and version of the browser engine.&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;{ name: &amp;#39;Gecko&amp;#39;, version: &amp;#39;20100101&amp;#39; }&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&quot;../documentation/test-api/identify-the-browser-and-platform.html#useragent&quot;&gt;userAgent&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;String&lt;/td&gt;
+&lt;td&gt;The user agent string.&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/77.0.3865.120 Safari/537.36&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href=&quot;../documentation/test-api/identify-the-browser-and-platform.html#prettyuseragent&quot;&gt;prettyUserAgent&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;String&lt;/td&gt;
+&lt;td&gt;Formatted string with the browser&amp;#39;s and operating system&amp;#39;s name and version.&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;Chrome 77.0.3865.75 / macOS 10.14.0&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;
+&lt;p&gt;The following example shows how to create a &lt;a href=&quot;../documentation/test-api/test-code-structure.html#test-hooks&quot;&gt;beforeEach&lt;/a&gt; hook that runs for specific &lt;a href=&quot;../documentation/test-api/identify-the-browser-and-platform.html#engine&quot;&gt;browser engines&lt;/a&gt;.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;testcafe&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`My fixture`&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`https://example.com`&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;beforeEach&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;browser&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;engine&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Blink&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You can also use &lt;a href=&quot;../documentation/test-api/identify-the-browser-and-platform.html&quot;&gt;t.browser&lt;/a&gt; to generate the screenshot path based on the &lt;a href=&quot;../documentation/test-api/identify-the-browser-and-platform.html#name&quot;&gt;browser name&lt;/a&gt;. This prevents screenshots taken with &lt;a href=&quot;../documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-a-page-element&quot;&gt;t.takeElementScreenshot&lt;/a&gt; in different browsers from being overwritten.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;testcafe&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`My fixture`&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`https://example.com`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;My test&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;loginButton&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;div&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;withText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Login&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;takeElementScreenshot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;loginButton&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`auth/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;browser&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/login-button.png`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;For more information and examples, see &lt;a href=&quot;../documentation/test-api/identify-the-browser-and-platform.html&quot;&gt;Identify the Browser and Platform&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Fixed an error on pages that submit forms immediately after loading (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/4360&quot;&gt;#4360&lt;/a&gt; by &lt;a href=&quot;https://github.com/bill-looby-i&quot;&gt;@bill-looby-i&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;TestCafe now scrolls to elements located inside Shadow DOM roots (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/4222&quot;&gt;#4222&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Fixed an error that occurred when TypeScripts tests that use Node.js globals were run with TestCafe installed globally (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/4437&quot;&gt;#4437&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Fixed the TypeScript definition for the &lt;code&gt;Selector.withAttribute&lt;/code&gt; method&amp;#39;s return type (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/4448&quot;&gt;#4448&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Fixed an issue when custom browser providers could not take screenshots (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/4477&quot;&gt;#4477&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Support pages that use advanced ES6 module export (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2137&quot;&gt;testcafe-hammerhead/#2137&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Fixed compatibility issues with Salesforce Lightning Web Components (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2152&quot;&gt;testcafe-hammerhead/#2152&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Thu, 21 Nov 2019 00:00:00 +0300</pubDate>
+        <link>https://devexpress.github.io/testcafe/blog/testcafe-v1-7-0-released.html</link>
+        <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v1-7-0-released.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>TestCafe v1.6.0 Released</title>
@@ -697,59 +821,6 @@
         <pubDate>Wed, 07 Nov 2018 00:00:00 +0300</pubDate>
         <link>https://devexpress.github.io/testcafe/blog/testcafe-v0-23-1-released.html</link>
         <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v0-23-1-released.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>TestCafe v0.23.0 Released</title>
-        <description>&lt;h1&gt;TestCafe v0.23.0 Released&lt;/h1&gt;
-&lt;p&gt;Stop a test run after the first test fail, view JavaScript errors&amp;#39; stack trace in test run reports and let TestCafe restart browsers when they stop responding.&lt;/p&gt;
-
-&lt;!--more--&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;stop-test-run-after-the-first-test-fail-1323&quot;&gt;&lt;/a&gt;⚙ Stop Test Run After the First Test Fail (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1323&quot;&gt;#1323&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#stop-test-run-after-the-first-test-fail-1323&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;You can now configure TestCafe to stop the entire test run after the first test fail. This saves your time when you fix problems with your tests one by one.&lt;/p&gt;
-
-&lt;p&gt;Specify the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--sf---stop-on-first-fail&quot;&gt;--sf&lt;/a&gt; flag to enable this feature when you run tests from the command line.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome my-tests &lt;span class=&quot;nt&quot;&gt;--sf&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;In the API, use the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#run&quot;&gt;stopOnFirstFail&lt;/a&gt; option.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;stopOnFirstFail&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;view-the-javascript-errors-stack-traces-in-reports-2043&quot;&gt;&lt;/a&gt;⚙ View the JavaScript Errors&amp;#39; Stack Traces in Reports (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2043&quot;&gt;#2043&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#view-the-javascript-errors-stack-traces-in-reports-2043&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;Now when a JavaScript error occurs on the tested webpage, the test run report includes a stack trace for this error (only if the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-e---skip-js-errors&quot;&gt;--skip-js-errors&lt;/a&gt; option is disabled).&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../images/client-error-stack-report.png&quot; alt=&quot;A report that contains a stack trace for a client JS error&quot; title=&quot;&quot;&gt;&lt;/p&gt;
-&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;browsers-are-automatically-restarted-when-they-stop-responding-1815&quot;&gt;&lt;/a&gt;⚙ Browsers are Automatically Restarted When They Stop Responding (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1815&quot;&gt;#1815&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#browsers-are-automatically-restarted-when-they-stop-responding-1815&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;If a browser stops responding while it executes tests, TestCafe restarts the browser and reruns the current test in a new browser instance.
-If the same problem occurs with this test two more times, the test run finishes and an error is thrown.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;An error message about an unawaited call to an async function is no longer displayed when an uncaught error occurs (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2557&quot;&gt;#2557&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;A request hook is no longer added multiple times when a filter rule is used (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2650&quot;&gt;#2650&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Screenshot links in test run reports now contain paths specified by the &lt;code&gt;--screenshot-pattern&lt;/code&gt; option (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2726&quot;&gt;#2726&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Assertion chains no longer produce unhandled promise rejections (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2852&quot;&gt;#2852&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;The &lt;code&gt;moment&lt;/code&gt; loader now works correctly in the Jest environment (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2500&quot;&gt;#2500&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;TestCafe no longer hangs if the screenshot directory contains forbidden symbols (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/681&quot;&gt;#681&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;The &lt;code&gt;--ssl&lt;/code&gt; option&amp;#39;s parameters are now parsed correctly (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2924&quot;&gt;#2924&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;TestCafe now throws a meaningful error if an assertion method is missing (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1063&quot;&gt;#1063&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;TestCafe no longer hangs when it clicks a custom element (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2861&quot;&gt;#2861&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;TestCafe now performs keyboard navigation between radio buttons/groups in a way that matches the native browser behavior (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2067&quot;&gt;#2067&lt;/a&gt;, &lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2045&quot;&gt;#2045&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;The &lt;code&gt;fetch&lt;/code&gt; method can now be used with data URLs (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2865&quot;&gt;#2865&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;The &lt;code&gt;switchToIframe&lt;/code&gt; function no longer throws an error (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2956&quot;&gt;#2956&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;TestCafe can now scroll through fixed elements when the action has custom offsets (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2978&quot;&gt;#2978&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;You can now specify the current directory or its parent directories as the base path to store screenshots (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2975&quot;&gt;#2975&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Tests no longer hang up when you try to debug in headless browsers (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2846&quot;&gt;#2846&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;The &lt;code&gt;removeEventListener&lt;/code&gt; function now works correctly when an object is passed as its third argument (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1737&quot;&gt;testcafe-hammerhead/#1737&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Hammerhead no longer adds the &lt;code&gt;event&lt;/code&gt; property to a null &lt;code&gt;contentWindow&lt;/code&gt; in IE11 (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1684&quot;&gt;testcafe-hammerhead/#1684&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;The browser no longer resets connection with the server for no reason (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1647&quot;&gt;testcafe-hammerhead/#1647&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Hammerhead now stringifies values correctly before outputting them to the console (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1750&quot;&gt;testcafe-hammerhead/#1750&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;A document fragment from the top window can now be correctly appended to an iframe (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/912&quot;&gt;testcafe-hammerhead/#912&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Lifecycle callbacks that result from the &lt;code&gt;document.registerElement&lt;/code&gt; method are no longer called twice (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/695&quot;&gt;testcafe-hammerhead/#695&lt;/a&gt;)&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Thu, 25 Oct 2018 00:00:00 +0300</pubDate>
-        <link>https://devexpress.github.io/testcafe/blog/testcafe-v0-23-0-released.html</link>
-        <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v0-23-0-released.html</guid>
         
         
       </item>
