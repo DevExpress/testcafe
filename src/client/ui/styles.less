@@ -362,12 +362,13 @@
             align-items: center;
 
             .info-text-container {
-                margin: 4px 0 4px 16px;
+                margin: 7px 0 4px 16px;
                 width: 100%;
                 align-items: center;
                 display: flex;
                 justify-content: space-between;
                 white-space: nowrap;
+                flex: 1;
 
                 .status-container {
                     align-items: center;           
@@ -397,11 +398,6 @@
                 }
             }
 
-            &:before {
-                content: "";
-                flex: 1;
-            }
-
             .progress-bar {
                 width: 100%;
                 height: 3px;
@@ -410,7 +406,6 @@
                 border: 0;
                 overflow: hidden;
                 visibility: hidden;
-                flex: 1;
     
                 &.determinate .value {
                     background-color: #36B6E5;
@@ -505,7 +500,7 @@
 
         @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) { 
             .actions-container {
-                min-width: 349px;
+                min-width: 361px;
             }
         }
 

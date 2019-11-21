@@ -150,9 +150,6 @@ export default class StatusBar extends serviceUtils.EventEmitter {
         shadowUI.addClass(this.statusDiv, STATUS_DIV_CLASS);
         shadowUI.addClass(this.statusDiv, INFO_CLASS);
 
-        if (browserUtils.isMacPlatform)
-            this.statusDiv.style.marginTop = '11px';
-
         statusContainer.appendChild(this.statusDiv);
 
         const fixtureDiv = document.createElement('div');
