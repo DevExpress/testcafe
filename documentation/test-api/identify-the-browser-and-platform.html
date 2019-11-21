@@ -14,15 +14,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>Press Key | TestCafe</title>
+  <title>Identify the Browser and Platform | TestCafe</title>
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
 
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://devexpress.github.io/testcafe/documentation/test-api/actions/press-key.html" />
-  <meta property="og:title" content="Press Key | TestCafe" />
+  <meta property="og:url" content="https://devexpress.github.io/testcafe/documentation/test-api/identify-the-browser-and-platform.html" />
+  <meta property="og:title" content="Identify the Browser and Platform | TestCafe" />
 
   
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/styles/docco.min.css">
@@ -30,7 +30,7 @@
   
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
-  <link rel="canonical" href="https://devexpress.github.io/testcafe/documentation/test-api/actions/press-key.html">
+  <link rel="canonical" href="https://devexpress.github.io/testcafe/documentation/test-api/identify-the-browser-and-platform.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="https://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -876,7 +876,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/actions/press-key.html" class="active" >Press Key</a>
+<a href="/testcafe/documentation/test-api/actions/press-key.html"  >Press Key</a>
 		
     </li>
 
@@ -1071,7 +1071,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/test-api/identify-the-browser-and-platform.html"  >Identify the Browser and Platform</a>
+<a href="/testcafe/documentation/test-api/identify-the-browser-and-platform.html" class="active" >Identify the Browser and Platform</a>
 		
     </li>
 
@@ -1125,184 +1125,251 @@
 	<article class="doc">
 		<div class="post-content">
 
-			<h1>Press Key</h1>
-<p>Presses the specified keyboard keys.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">t.pressKey( keys [, options] )
-</code></pre></div><div class="table-wrapper"><table><thead><tr>
-<th>Parameter</th>
+			<h1>Identify the Browser and Platform</h1>
+<p>TestCafe allows you to obtain information about the current user agent in test code. These data identify the operating system, platform type, browser, engine, etc.</p>
+
+<p>Use the <code>t.browser</code> property to access user agent data.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://example.com`</span><span class="p">;</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">My test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">browser</span><span class="p">.</span><span class="nx">name</span> <span class="o">!==</span> <span class="dl">'</span><span class="s1">Chrome</span><span class="dl">'</span><span class="p">)</span>
+        <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">div</span><span class="dl">'</span><span class="p">).</span><span class="nx">withText</span><span class="p">(</span><span class="dl">'</span><span class="s1">Browser not supported</span><span class="dl">'</span><span class="p">).</span><span class="nx">visible</span><span class="p">).</span><span class="nx">ok</span><span class="p">();</span>
+<span class="p">});</span>
+</code></pre></div>
+<p><code>t.browser</code> exposes the following properties:</p>
+<div class="table-wrapper"><table><thead><tr>
+<th>Property</th>
 <th>Type</th>
 <th>Description</th>
-</tr>
-</thead><tbody><tr>
-<td><code>keys</code></td>
-<td>String</td>
-<td>The sequence of keys and key combinations to be pressed.</td>
-</tr>
-<tr>
-<td><code>options</code>&#160;<em>(optional)</em></td>
-<td>Object</td>
-<td>A set of options that provide additional parameters for the action. See <a href="action-options.html#basic-action-options">Basic Action Options</a>.</td>
-</tr>
-</tbody></table></div>
-<p>The following table shows how to specify keys of different types, key sequences, and combinations:</p>
-<div class="table-wrapper"><table><thead><tr>
-<th>Key Type</th>
 <th>Example</th>
 </tr>
 </thead><tbody><tr>
-<td>Alphanumeric keys</td>
-<td><code>&#39;a&#39;</code>, <code>&#39;A&#39;</code>, <code>&#39;1&#39;</code></td>
+<td><a href="#alias">alias</a></td>
+<td>String</td>
+<td>The browser alias string specified when tests were launched.</td>
+<td><code>firefox:headless</code></td>
 </tr>
 <tr>
-<td>Modifier keys</td>
-<td><code>&#39;shift&#39;</code>, <code>&#39;alt&#39;</code> (⌥ key on macOS), <code>&#39;ctrl&#39;</code>, <code>&#39;meta&#39;</code> (<em>meta</em> key on Linux and ⌘ key on macOS)</td>
+<td><a href="#name">name</a></td>
+<td>String</td>
+<td>The browser name.</td>
+<td><code>Chrome</code></td>
 </tr>
 <tr>
-<td>Navigation and action keys</td>
-<td><code>&#39;backspace&#39;</code>, <code>&#39;tab&#39;</code>, <code>&#39;enter&#39;</code></td>
+<td><a href="#version">version</a></td>
+<td>String</td>
+<td>The browser version.</td>
+<td><code>77.0.3865.120</code></td>
 </tr>
 <tr>
-<td>Key combinations</td>
-<td><code>&#39;shift+a&#39;</code>, <code>&#39;ctrl+d&#39;</code></td>
+<td><a href="#platform">platform</a></td>
+<td>String</td>
+<td>The platform type.</td>
+<td><code>desktop</code></td>
 </tr>
 <tr>
-<td>Sequential key presses</td>
-<td>Any of the above in a string separated by spaces, for example, <code>&#39;a ctrl+b&#39;</code></td>
+<td><a href="#headless">headless</a></td>
+<td>Boolean</td>
+<td><code>true</code> if the browser runs in headless mode.</td>
+<td><code>false</code></td>
 </tr>
-</tbody></table></div>
-<p>The following navigation and action keys are supported:</p>
+<tr>
+<td><a href="#os">os</a></td>
+<td>Object</td>
+<td>The name and version of the operating system.</td>
+<td><code>{ name: &#39;macOS&#39;, version: &#39;10.15.1&#39; }</code></td>
+</tr>
+<tr>
+<td><a href="#engine">engine</a></td>
+<td>Object</td>
+<td>The name and version of the browser engine.</td>
+<td><code>{ name: &#39;Gecko&#39;, version: &#39;20100101&#39; }</code></td>
+</tr>
+<tr>
+<td><a href="#useragent">userAgent</a></td>
+<td>String</td>
+<td>The user agent string.</td>
+<td><code>Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/77.0.3865.120 Safari/537.36</code></td>
+</tr>
+<tr>
+<td><a href="#prettyuseragent">prettyUserAgent</a></td>
+<td>String</td>
+<td>Formatted string with the browser&#39;s and operating system&#39;s name and version.</td>
+<td><code>Chrome 77.0.3865.75 / macOS 10.14.0</code></td>
+</tr>
+</tbody></table></div><h2><a class="anchor" id="properties"></a>Properties <a class="permalink" href="#properties">#</a></h2><h3><a class="anchor" id="alias"></a>alias <a class="permalink" href="#alias">#</a></h3>
+<p>The <a href="../using-testcafe/common-concepts/browsers/browser-support.html">browser alias</a> string specified when tests were launched.</p>
+
+<p>For <a href="../using-testcafe/common-concepts/browsers/browser-support.html#locally-installed-browsers">locally installed</a> browsers, this property contains the short browser name:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">{</span>
+    <span class="nl">alias</span><span class="p">:</span> <span class="dl">'</span><span class="s1">chrome</span><span class="dl">'</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>For <a href="../using-testcafe/common-concepts/browsers/browser-support.html#portable-browsers">portable</a> browsers, <code>alias</code> returns the <code>path:</code> prefix followed by the path to the browser executable:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">{</span>
+    <span class="nl">alias</span><span class="p">:</span> <span class="dl">'</span><span class="s1">path:C:</span><span class="se">\</span><span class="s1">Program Files (x86)</span><span class="se">\</span><span class="s1">Firefox Portable</span><span class="se">\</span><span class="s1">firefox.exe</span><span class="dl">'</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>Browser alias flags (<a href="../using-testcafe/common-concepts/browsers/testing-in-headless-mode.html">:headless</a>, <a href="../using-testcafe/common-concepts/browsers/using-chrome-device-emulation.html">:emulation</a>, etc.) and command line parameters are included in the alias string:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">{</span>
+    <span class="nl">alias</span><span class="p">:</span> <span class="dl">'</span><span class="s1">chrome:headless --no-sandbox</span><span class="dl">'</span>
+<span class="p">}</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">{</span>
+    <span class="nl">alias</span><span class="p">:</span> <span class="dl">'</span><span class="s1">firefox:headless:disableMultiprocessing=true</span><span class="dl">'</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>For <a href="../using-testcafe/common-concepts/browsers/browser-support.html#browsers-in-cloud-testing-services">cloud testing services</a> and browsers acessed through <a href="../using-testcafe/common-concepts/browsers/browser-support.html#nonconventional-browsers">browser providers</a>, the <code>alias</code> property value is a string with all the specified browser, operating system and device parameters:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">{</span>
+    <span class="nl">alias</span><span class="p">:</span> <span class="dl">'</span><span class="s1">saucelabs:Samsung Galaxy S9 Plus WQHD GoogleAPI Emulator@8.1</span><span class="dl">'</span>
+<span class="p">}</span>
+</code></pre></div><h3><a class="anchor" id="name"></a>name <a class="permalink" href="#name">#</a></h3>
+<p>The short browser name.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">{</span>
+    <span class="nl">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Safari</span><span class="dl">'</span>
+<span class="p">}</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">{</span>
+    <span class="nl">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Internet Explorer</span><span class="dl">'</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>If the browser cannot be <a href="../using-testcafe/common-concepts/browsers/browser-support.html#locally-installed-browsers">detected automatically</a>, the <code>name</code> property is set to <code>&#39;Other&#39;</code>.</p>
+<h3><a class="anchor" id="version"></a>version <a class="permalink" href="#version">#</a></h3>
+<p>The browser version.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">{</span>
+    <span class="nl">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Chrome</span><span class="dl">'</span><span class="p">,</span>
+    <span class="nx">version</span><span class="p">:</span> <span class="dl">'</span><span class="s1">77.0.3865.120</span><span class="dl">'</span>
+<span class="p">}</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">{</span>
+    <span class="nl">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Firefox</span><span class="dl">'</span><span class="p">,</span>
+    <span class="nx">version</span><span class="p">:</span> <span class="dl">'</span><span class="s1">69.0</span><span class="dl">'</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>The <code>version</code> property is set to <code>&#39;0.0&#39;</code> if the browser version cannot be determined.</p>
+<h3><a class="anchor" id="platform"></a>platform <a class="permalink" href="#platform">#</a></h3>
+<p>Identifies the platform type. This property can have the following values:</p>
 
 <ul>
-<li><code>&#39;backspace&#39;</code></li>
-<li><code>&#39;tab&#39;</code></li>
-<li><code>&#39;enter&#39;</code></li>
-<li><code>&#39;capslock&#39;</code></li>
-<li><code>&#39;esc&#39;</code></li>
-<li><code>&#39;space&#39;</code></li>
-<li><code>&#39;pageup&#39;</code></li>
-<li><code>&#39;pagedown&#39;</code></li>
-<li><code>&#39;end&#39;</code></li>
-<li><code>&#39;home&#39;</code></li>
-<li><code>&#39;left&#39;</code></li>
-<li><code>&#39;right&#39;</code></li>
-<li><code>&#39;up&#39;</code></li>
-<li><code>&#39;down&#39;</code></li>
-<li><code>&#39;ins&#39;</code></li>
-<li><code>&#39;delete&#39;</code></li>
+<li><code>desktop</code></li>
+<li><code>mobile</code></li>
+<li><code>tablet</code></li>
+<li><code>other</code> (identifies other platforms, or indicates that the platform cannot be detected)</li>
 </ul>
-<h2><a class="anchor" id="browser-processing-emulation"></a>Browser Processing Emulation <a class="permalink" href="#browser-processing-emulation">#</a></h2>
-<p>When a user presses a key or key combination, the browser dispatches an event that triggers handlers in page code. Most browsers also respond to common keystrokes with their integrated actions (for instance, they select text when you press <code>Cmd/Ctrl+A</code> or copy objects to the clipboard when you press <code>Cmd/Ctrl+C</code>).</p>
-
-<p>The <code>t.pressKey</code> action triggers only page handlers for most keystrokes.</p>
-
-<p>TestCafe Studio emulates browser processing for the following keys and key combinations:</p>
-<div class="table-wrapper"><table><thead><tr>
-<th>Shortcut</th>
-<th>Elements</th>
-</tr>
-</thead><tbody><tr>
-<td><code>&#39;ctrl+a&#39;</code></td>
-<td><a href="#text-field-based-inputs">text field-based inputs</a>, <code>&lt;textarea&gt;</code>, <code>contentEditable</code></td>
-</tr>
-<tr>
-<td><code>&#39;backspace&#39;</code></td>
-<td><a href="#text-field-based-inputs">text field-based inputs</a>, <code>&lt;textarea&gt;</code>, <code>contentEditable</code></td>
-</tr>
-<tr>
-<td><code>&#39;delete&#39;</code></td>
-<td><a href="#text-field-based-inputs">text field-based inputs</a>, <code>&lt;textarea&gt;</code>, <code>contentEditable</code></td>
-</tr>
-<tr>
-<td><code>&#39;left&#39;</code></td>
-<td><a href="#text-field-based-inputs">text field-based inputs</a>, radio button inputs, <code>&lt;textarea&gt;</code>, <code>&lt;select&gt;</code>, <code>contentEditable</code></td>
-</tr>
-<tr>
-<td><code>&#39;right&#39;</code></td>
-<td><a href="#text-field-based-inputs">text field-based inputs</a>, radio button inputs, <code>&lt;textarea&gt;</code>, <code>&lt;select&gt;</code>, <code>contentEditable</code></td>
-</tr>
-<tr>
-<td><code>&#39;up&#39;</code></td>
-<td><a href="#text-field-based-inputs">text field-based inputs</a>, radio button inputs, <code>&lt;textarea&gt;</code>, <code>&lt;select&gt;</code></td>
-</tr>
-<tr>
-<td><code>&#39;down&#39;</code></td>
-<td><a href="#text-field-based-inputs">text field-based inputs</a>, radio button inputs, <code>&lt;textarea&gt;</code>, <code>&lt;select&gt;</code></td>
-</tr>
-<tr>
-<td><code>&#39;shift+left&#39;</code></td>
-<td><a href="#text-field-based-inputs">text field-based inputs</a>, <code>&lt;textarea&gt;</code></td>
-</tr>
-<tr>
-<td><code>&#39;shift+right&#39;</code></td>
-<td><a href="#text-field-based-inputs">text field-based inputs</a>, <code>&lt;textarea&gt;</code></td>
-</tr>
-<tr>
-<td><code>&#39;shift+up&#39;</code></td>
-<td><a href="#text-field-based-inputs">text field-based inputs</a>, <code>&lt;textarea&gt;</code></td>
-</tr>
-<tr>
-<td><code>&#39;shift+down&#39;</code></td>
-<td><a href="#text-field-based-inputs">text field-based inputs</a>, <code>&lt;textarea&gt;</code></td>
-</tr>
-<tr>
-<td><code>&#39;home&#39;</code></td>
-<td><a href="#text-field-based-inputs">text field-based inputs</a>, <code>&lt;textarea&gt;</code></td>
-</tr>
-<tr>
-<td><code>&#39;end&#39;</code></td>
-<td><a href="#text-field-based-inputs">text field-based inputs</a>, <code>&lt;textarea&gt;</code></td>
-</tr>
-<tr>
-<td><code>&#39;shift+home&#39;</code></td>
-<td><a href="#text-field-based-inputs">text field-based inputs</a>, <code>&lt;textarea&gt;</code></td>
-</tr>
-<tr>
-<td><code>&#39;shift+end&#39;</code></td>
-<td><a href="#text-field-based-inputs">text field-based inputs</a>, <code>&lt;textarea&gt;</code></td>
-</tr>
-<tr>
-<td><code>&#39;enter&#39;</code></td>
-<td><a href="#text-field-based-inputs">text field-based inputs</a>, <code>&lt;textarea&gt;</code>, <code>&lt;select&gt;</code>, <code>&lt;a&gt;</code></td>
-</tr>
-<tr>
-<td><code>&#39;tab&#39;</code></td>
-<td>focusable elements</td>
-</tr>
-<tr>
-<td><code>&#39;shift+tab&#39;</code></td>
-<td>focusable elements</td>
-</tr>
-<tr>
-<td><code>&#39;esc&#39;</code></td>
-<td><code>&lt;select&gt;</code></td>
-</tr>
-</tbody></table></div><blockquote><div class="blockquote-content"><p>The <code>&#39;backspace&#39;</code>, <code>&#39;delete&#39;</code>, <code>&#39;left&#39;</code> and <code>&#39;right&#39;</code> key presses in <code>contentEditable</code> elements are processed only when text is selected.</p>
-</div></blockquote><h3><a class="anchor" id="text-field-based-inputs"></a>Text Field-Based Inputs <a class="permalink" href="#text-field-based-inputs">#</a></h3>
-<p>TestCafe supports selection and navigation with keystrokes in the following input types:</p>
-
-<ul>
-<li><code>email</code></li>
-<li><code>number</code></li>
-<li><code>password</code></li>
-<li><code>search</code></li>
-<li><code>tel</code></li>
-<li><code>text</code></li>
-<li><code>url</code></li>
-</ul>
-<h2><a class="anchor" id="example"></a>Example <a class="permalink" href="#example">#</a></h2>
-<p>The following example shows how to use the <code>t.pressKey</code> action:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">{</span>
+    <span class="nl">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Firefox</span><span class="dl">'</span><span class="p">,</span>
+    <span class="nx">platform</span><span class="p">:</span> <span class="dl">'</span><span class="s1">mobile</span><span class="dl">'</span>
+<span class="p">}</span>
+</code></pre></div><h3><a class="anchor" id="headless"></a>headless <a class="permalink" href="#headless">#</a></h3>
+<p>Specifies if the browser is in <a href="../using-testcafe/common-concepts/browsers/testing-in-headless-mode.html">headless mode</a>.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">{</span>
+    <span class="nl">alias</span><span class="p">:</span> <span class="dl">'</span><span class="s1">chrome:headless</span><span class="dl">'</span><span class="p">,</span>
+    <span class="nx">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Chrome</span><span class="dl">'</span><span class="p">,</span>
+    <span class="nx">headless</span><span class="p">:</span> <span class="kc">true</span>
+<span class="p">}</span>
+</code></pre></div><h3><a class="anchor" id="os"></a>os <a class="permalink" href="#os">#</a></h3>
+<p>Provides the operating system&#39;s <code>name</code> and <code>version</code>.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">{</span>
+    <span class="nl">os</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nl">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Windows</span><span class="dl">'</span><span class="p">,</span>
+        <span class="nx">version</span><span class="p">:</span> <span class="dl">'</span><span class="s1">10</span><span class="dl">'</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>If the operating system cannot be detected, the <code>os.name</code> property is set to <code>&#39;Other&#39;</code>. The <code>os.version</code> property defaults to <code>&#39;0.0&#39;</code> if TestCafe is unable to determine the OS version.</p>
+<h3><a class="anchor" id="engine"></a>engine <a class="permalink" href="#engine">#</a></h3>
+<p>Provides the browser engine&#39;s <code>name</code> and <code>version</code>.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">{</span>
+    <span class="nl">engine</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nl">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">WebKit</span><span class="dl">'</span><span class="p">,</span>
+        <span class="nx">version</span><span class="p">:</span> <span class="dl">'</span><span class="s1">605.1.15</span><span class="dl">'</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>If the browser engine cannot be detected, the <code>engine.name</code> property is set to <code>&#39;Other&#39;</code>. The <code>engine.version</code> property defaults to <code>&#39;0.0&#39;</code> if TestCafe is unable to determine the engine version.</p>
+<h3><a class="anchor" id="useragent"></a>userAgent <a class="permalink" href="#useragent">#</a></h3>
+<p>The user agent string.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">{</span>
+    <span class="nl">userAgent</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/77.0.3865.120 Safari/537.36</span><span class="dl">'</span>
+<span class="p">}</span>
+</code></pre></div><h3><a class="anchor" id="prettyuseragent"></a>prettyUserAgent <a class="permalink" href="#prettyuseragent">#</a></h3>
+<p>The formatted name and version of the browser and operating system. This string is displayed on the TestCafe loading screen and in the status bar.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">{</span>
+    <span class="nl">prettyUserAgent</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Firefox 69.0 / Windows 10</span><span class="dl">'</span>
+<span class="p">}</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">{</span>
+    <span class="nl">prettyUserAgent</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Chrome 77.0.3865.120 / macOS 10.15.1</span><span class="dl">'</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>The <code>prettyUserAgent</code> property is set to an empty string if TestCafe cannot parse the user agent.</p>
+<h2><a class="anchor" id="examples"></a>Examples <a class="permalink" href="#examples">#</a></h2><h3><a class="anchor" id="create-a-browser-specific-hook"></a>Create a Browser-Specific Hook <a class="permalink" href="#create-a-browser-specific-hook">#</a></h3>
+<p>The following example shows how to create a <a href="test-code-structure.html#test-hooks">beforeEach</a> hook that runs for only particular <a href="#engine">browser engines</a>.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
-<span class="kd">const</span> <span class="nx">nameInput</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#developer-name</span><span class="dl">'</span><span class="p">);</span>
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://example.com`</span>
+    <span class="p">.</span><span class="nx">beforeEach</span><span class="p">(</span><span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">browser</span><span class="p">.</span><span class="nx">engine</span><span class="p">.</span><span class="nx">name</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">Blink</span><span class="dl">'</span><span class="p">)</span>
+            <span class="k">return</span><span class="p">;</span>
+
+        <span class="c1">// ...</span>
+    <span class="p">});</span>
+</code></pre></div><h3><a class="anchor" id="generate-the-screenshot-file-path"></a>Generate the Screenshot File Path <a class="permalink" href="#generate-the-screenshot-file-path">#</a></h3>
+<p>This example shows how to generate the screenshot path based on the <a href="#name">browser name</a>. This prevents screenshots taken with <a href="actions/take-screenshot.html#take-a-screenshot-of-a-page-element">t.takeElementScreenshot</a> in different browsers from being overwritten.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="nx">fixture</span> <span class="s2">`My fixture`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://example.com`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Key Presses</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="k">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Peter Parker</span><span class="dl">'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">pressKey</span><span class="p">(</span><span class="dl">'</span><span class="s1">home right . delete delete delete delete</span><span class="dl">'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">.</span><span class="nx">value</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="dl">'</span><span class="s1">P. Parker</span><span class="dl">'</span><span class="p">);</span>
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">My test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">loginButton</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">div</span><span class="dl">'</span><span class="p">).</span><span class="nx">withText</span><span class="p">(</span><span class="dl">'</span><span class="s1">Login</span><span class="dl">'</span><span class="p">);</span>
+
+    <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">takeElementScreenshot</span><span class="p">(</span><span class="nx">loginButton</span><span class="p">,</span> <span class="s2">`auth/</span><span class="p">${</span><span class="nx">t</span><span class="p">.</span><span class="nx">browser</span><span class="p">.</span><span class="nx">name</span><span class="p">}</span><span class="s2">/login-button.png`</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div><h3><a class="anchor" id="verify-the-installer-version"></a>Verify the Installer Version <a class="permalink" href="#verify-the-installer-version">#</a></h3>
+<p>The following example verifies that the website detects the user&#39;s platform correctly and offers to download the right installer. This test uses the <a href="#os">t.browser.os.name</a> property to determine the operating system and check the installer name.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://example.com`</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">downloadButton</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">a</span><span class="dl">'</span><span class="p">).</span><span class="nx">withText</span><span class="p">(</span><span class="dl">'</span><span class="s1">Download</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Check the installer platform</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">installerName</span><span class="p">;</span>
+
+    <span class="k">switch</span> <span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">browser</span><span class="p">.</span><span class="nx">os</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="dl">'</span><span class="s1">Windows</span><span class="dl">'</span><span class="p">:</span>
+            <span class="nx">installerName</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">myapp-win.exe</span><span class="dl">'</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="dl">'</span><span class="s1">macOS</span><span class="dl">'</span><span class="p">:</span>
+            <span class="nx">installerName</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">myapp-mac.dmg</span><span class="dl">'</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="nl">default</span><span class="p">:</span>
+            <span class="nx">installerName</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">myapp-linux.tar.gz</span><span class="dl">'</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">downloadButton</span><span class="p">.</span><span class="nx">getAttribute</span><span class="p">(</span><span class="dl">'</span><span class="s1">href</span><span class="dl">'</span><span class="p">)).</span><span class="nx">contains</span><span class="p">(</span><span class="nx">installerName</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div><h3><a class="anchor" id="handle-ads-on-mobile-devices"></a>Handle Ads on Mobile Devices <a class="permalink" href="#handle-ads-on-mobile-devices">#</a></h3>
+<p>The following example uses the <a href="#platform">t.browser.platform</a> property to determine the platform and <a href="intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.html">attach</a> a <a href="intercepting-http-requests/mocking-http-requests.html">request mock</a> that blocks ad requests if the test runs on a mobile device.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">RequestMock</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">mobileAdMock</span> <span class="o">=</span> <span class="nx">RequestMock</span><span class="p">()</span>
+    <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="sr">/bannernetwork.com/</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">respond</span><span class="p">((</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="nx">res</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">404</span><span class="dl">'</span><span class="p">;</span> <span class="p">});</span>
+
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">beforeEach</span><span class="p">(</span><span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">browser</span><span class="p">.</span><span class="nx">platform</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">mobile</span><span class="dl">'</span><span class="p">)</span>
+            <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">addRequestHooks</span><span class="p">(</span><span class="nx">mobileAdMock</span><span class="p">);</span>
+
+        <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">navigateTo</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://mysite.com/tested/page/</span><span class="dl">'</span><span class="p">);</span>
+    <span class="p">});</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">My test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
 <span class="p">});</span>
 </code></pre></div>
 
