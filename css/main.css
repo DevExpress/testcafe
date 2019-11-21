@@ -165,6 +165,8 @@ pre {
  */
 table {
   border-collapse: collapse; }
+  table code {
+    white-space: pre-wrap; }
 
 table > thead > tr > th {
   border-bottom: 1px solid #cfcfcf;
