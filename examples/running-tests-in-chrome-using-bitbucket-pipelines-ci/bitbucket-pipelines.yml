@@ -1,15 +1,15 @@
 image: circleci/node:10.14-browsers
-    pipelines:
-      pull-requests:
-        '**':
-          - step:
-              script:
-                - npm ci
-                - npm test
+pipelines:
+  pull-requests:
+    '**':
+      - step:
+          script:
+            - npm ci
+            - npm test
 
-      branches:
-        master:
-          - step:
-              script:
-                - npm ci
-                - npm test
+  branches:
+    master:
+      - step:
+          script:
+            - npm ci
+            - npm test
