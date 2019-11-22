@@ -59,23 +59,23 @@ class RequestLoggerImplementation extends RequestHook {
     }
 
     async onResponse (event) {
-        const loggerReq = this._internalRequests[event.requestId];
+        const loggedReq = this._internalRequests[event.requestId];
 
         // NOTE: If the 'clear' method is called during a long running request,
         // we should not save a response part - request part has been already removed.
-        if (!loggerReq)
+        if (!loggedReq)
             return;
 
-        loggerReq.response = {
+        loggedReq.response = {
             statusCode: event.statusCode,
             timestamp:  Date.now()
         };
 
         if (this.options.logResponseHeaders)
-            loggerReq.response.headers = Object.assign({}, event.headers);
+            loggedReq.response.headers = Object.assign({}, event.headers);
 
         if (this.options.logResponseBody) {
-            loggerReq.response.body = this.options.stringifyResponseBody && event.body
+            loggedReq.response.body = this.options.stringifyResponseBody && event.body
                 ? event.body.toString()
                 : event.body;
         }
