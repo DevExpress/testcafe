@@ -256,7 +256,7 @@ describe('Reporter', () => {
             };
         }
 
-        it('Basic', function () {
+        it('Simple command', function () {
             const log = [];
 
             const runOpts = {
@@ -270,7 +270,7 @@ describe('Reporter', () => {
                 });
         });
 
-        it('Basic Error', function () {
+        it('Simple command Error', function () {
             const log = [];
 
             const runOpts = {
@@ -284,6 +284,58 @@ describe('Reporter', () => {
                         'start: click',
                         'error: E24',
                         'done: click',
+                        'start: test-done',
+                        'done: test-done'
+                    ]);
+                });
+        });
+
+        it('Complex command', function () {
+            const log = [];
+
+            const runOpts = {
+                only:     ['chrome'],
+                reporter: generateReport(log)
+            };
+
+            return runTests('testcafe-fixtures/index-test.js', 'Complex command test', runOpts)
+                .then(() => {
+                    expect(log).eql([
+                        'start: execute-client-function',
+                        'done: execute-client-function',
+                        'start: navigate-to',
+                        'done: navigate-to',
+                        'start: backup-storages',
+                        'done: backup-storages',
+                        'start: navigate-to',
+                        'done: navigate-to',
+                        'start: test-done',
+                        'done: test-done'
+                    ]);
+                });
+        });
+
+        it('Complex nested command', function () {
+            const log = [];
+
+            const runOpts = {
+                only:     ['chrome'],
+                reporter: generateReport(log)
+            };
+
+            return runTests('testcafe-fixtures/index-test.js', 'Complex nested command test', runOpts)
+                .then(() => {
+                    expect(log).eql([
+                        'start: execute-client-function',
+                        'done: execute-client-function',
+                        'start: navigate-to',
+                        'done: navigate-to',
+                        'start: click',
+                        'done: click',
+                        'start: backup-storages',
+                        'done: backup-storages',
+                        'start: navigate-to',
+                        'done: navigate-to',
                         'start: test-done',
                         'done: test-done'
                     ]);
