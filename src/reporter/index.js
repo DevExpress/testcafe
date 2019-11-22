@@ -177,6 +177,16 @@ export default class Reporter {
             await reportItem.pendingTestRunDonePromise;
         });
 
+        task.on('test-run-command-start', async ({ command }) => {
+            if (this.plugin.reportTestRunCommandStart)
+                await this.plugin.reportTestRunCommandStart({ command });
+        });
+
+        task.on('test-run-command-done', async ({ command, err }) => {
+            if (this.plugin.reportTestRunCommandDone)
+                await this.plugin.reportTestRunCommandDone({ command, err });
+        });
+
         task.once('done', async () => {
             const endTime = new Date();
 

@@ -414,13 +414,30 @@ export default class TestRun extends AsyncEventEmitter {
         if (this.pendingRequest)
             this._resolvePendingRequest(command);
 
-        return new Promise(async (resolve, reject) => {
+        const commandPromise = new Promise(async (resolve, reject) => {
             this.addingDriverTasksCount--;
             this.driverTaskQueue.push({ command, resolve, reject, callsite });
 
             if (!this.addingDriverTasksCount)
                 await this.emit(ALL_DRIVER_TASKS_ADDED_TO_QUEUE_EVENT, this.driverTaskQueue.length);
         });
+
+        return this._addCommandReporterHandlers(commandPromise, command);
+    }
+
+    async _addCommandReporterHandlers (promise, command) {
+        try {
+            const result = await promise;
+
+            await this.emit('command-done', { command });
+
+            return result;
+        }
+        catch (err) {
+            await this.emit('command-done', { command, err });
+
+            throw err;
+        }
     }
 
     get driverTaskQueueLength () {
@@ -808,7 +825,12 @@ ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
 
     return new Promise((resolve, reject) => {
         this.pendingRequest = { resolve, reject, responseTimeout };
-    });
+    })
+        .then(async command => {
+            await this.emit('command-start', command);
+
+            return command;
+        });
 };
 
 ServiceMessages[CLIENT_MESSAGES.readyForBrowserManipulation] = async function (msg) {

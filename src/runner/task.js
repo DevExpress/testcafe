@@ -63,6 +63,15 @@ export default class Task extends AsyncEventEmitter {
             if (!this.pendingBrowserJobs.length)
                 await this.emit('done');
         });
+
+        job.on('test-run-command-start', async args => {
+            await this.emit('test-run-command-start', args);
+        });
+
+        job.on('test-run-command-done', async args => {
+            await this.emit('test-run-command-done', args);
+        });
+
     }
 
     _createBrowserJobs (proxy, opts) {

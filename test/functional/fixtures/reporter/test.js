@@ -232,4 +232,62 @@ describe('Reporter', () => {
                 expect(stream.finalCalled).to.be.ok;
             });
     });
+
+    describe('Methods `test-run-command-start` and `test-run-command-done`', () => {
+        function generateReport (log) {
+            return function customReporter () {
+                return {
+                    async reportTaskStart () {},
+                    async reportFixtureStart () {},
+                    async reportTestDone () {},
+                    async reportTaskDone () {},
+
+                    async reportTestRunCommandStart ({ command }) {
+                        log.push(`start: ${command.type}`);
+                    },
+
+                    async reportTestRunCommandDone ({ command, err }) {
+                        if (err)
+                            log.push(`error: ${err.code}`);
+
+                        log.push(`done: ${command.type}`);
+                    }
+                };
+            };
+        }
+
+        it('Basic', function () {
+            const log = [];
+
+            const runOpts = {
+                only:     ['chrome'],
+                reporter: generateReport(log)
+            };
+
+            return runTests('testcafe-fixtures/index-test.js', 'Simple command test', runOpts)
+                .then(() => {
+                    expect(log).eql(['start: click', 'done: click', 'start: test-done', 'done: test-done']);
+                });
+        });
+
+        it('Basic Error', function () {
+            const log = [];
+
+            const runOpts = {
+                only:     ['chrome'],
+                reporter: generateReport(log)
+            };
+
+            return runTests('testcafe-fixtures/index-test.js', 'Simple command err test', runOpts)
+                .then(() => {
+                    expect(log).eql([
+                        'start: click',
+                        'error: E24',
+                        'done: click',
+                        'start: test-done',
+                        'done: test-done'
+                    ]);
+                });
+        });
+    });
 });
