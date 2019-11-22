@@ -43,8 +43,9 @@ class RequestLoggerImplementation extends RequestHook {
             testRunId: event._requestInfo.sessionId,
             userAgent: parseUserAgent(event._requestInfo.userAgent).prettyUserAgent,
             request:   {
-                url:    event._requestInfo.url,
-                method: event._requestInfo.method,
+                timestamp: Date.now(),
+                url:       event._requestInfo.url,
+                method:    event._requestInfo.method,
             }
         };
 
@@ -65,8 +66,10 @@ class RequestLoggerImplementation extends RequestHook {
         if (!loggerReq)
             return;
 
-        loggerReq.response            = {};
-        loggerReq.response.statusCode = event.statusCode;
+        loggerReq.response = {
+            statusCode: event.statusCode,
+            timestamp:  Date.now()
+        };
 
         if (this.options.logResponseHeaders)
             loggerReq.response.headers = Object.assign({}, event.headers);
