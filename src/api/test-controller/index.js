@@ -111,11 +111,17 @@ export default class TestController {
             }
 
             return () => {
-                return this.testRun.executeCommand(command, callsite)
-                    .catch(err => {
-                        this.executionChain = Promise.resolve();
+                return this.testRun.emit('command-start', command)
+                    .then(() => {
+                        return this.testRun.executeCommand(command, callsite)
+                            .catch(err => {
+                                this.executionChain = Promise.resolve();
 
-                        throw err;
+                                throw err;
+                            })
+                    })
+                    .then(() => {
+                        return this.testRun.emit('command-done', { command });
                     });
             };
         });

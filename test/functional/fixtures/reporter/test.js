@@ -243,14 +243,17 @@ describe('Reporter', () => {
                     async reportTaskDone () {},
 
                     async reportTestRunCommandStart ({ command }) {
-                        log.push(`start: ${command.type}`);
+                        if (command)
+                            log.push(`start: ${command.type}`);
                     },
 
                     async reportTestRunCommandDone ({ command, err }) {
                         if (err)
                             log.push(`error: ${err.code}`);
 
-                        log.push(`done: ${command.type}`);
+                        if (command) {
+                            log.push(`done: ${command.type}`);
+                        }
                     }
                 };
             };
@@ -338,6 +341,49 @@ describe('Reporter', () => {
                         'done: navigate-to',
                         'start: test-done',
                         'done: test-done'
+                    ]);
+                });
+        });
+
+        it('Complex command sequence', function () {
+            const log = [];
+
+            const runOpts = {
+                only:     ['chrome'],
+                reporter: generateReport(log)
+            };
+
+            return runTests('testcafe-fixtures/index-test.js', 'Complex command sequence', runOpts)
+                .then(() => {
+                    expect(log).eql([
+                        'start: useRole',
+                        'start: execute-client-function',
+                        'done: execute-client-function',
+                        'start: navigate-to',
+                        'done: navigate-to',
+                        'start: backup-storages',
+                        'done: backup-storages',
+                        'start: navigate-to',
+                        'done: navigate-to',
+                        'done: useRole',
+
+                        'start: useRole',
+                        'start: execute-client-function',
+                        'done: execute-client-function',
+                        // NOTE: some extra `backup` command, because of role switching
+                        'start: backup-storages',
+                        'done: backup-storages',
+                        'start: navigate-to',
+                        'done: navigate-to',
+                        'start: backup-storages',
+                        'done: backup-storages',
+                        'start: navigate-to',
+                        'done: navigate-to',
+                        'done: useRole',
+
+                        'start: test-done',
+                        'done: test-done'
+
                     ]);
                 });
         });
