@@ -110,3 +110,5 @@ TestCafe executes this command before tests are launched. After tests finish, Te
 Bitbucket Pipelines CI is now configured to trigger the build when you push commits to your repository or create a pull request.
 
 To check if the build has passed or failed, open your project's page and go to the Pipelines status page.
+
+> Important! If the build fails with the **Unable to establish one or more of the specified browser connections** error, refer to [this troubleshooting guide](../using-testcafe/using-testcafe-docker-image.md#troubleshooting).

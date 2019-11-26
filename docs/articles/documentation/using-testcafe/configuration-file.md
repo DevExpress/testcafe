@@ -567,7 +567,7 @@ Runs tests whose names match the specified `grep` pattern.
 
 ### filter.testMeta
 
-Runs tests whose [metadata](../test-api/test-code-structure.md#specifying-testing-metadata) [matches](https://lodash.com/docs/#isMatch) the specified key-value pair.
+Runs tests whose [metadata](../test-api/test-code-structure.md#specifying-testing-metadata) matches the specified key-value pair.
 
 ```json
 {
@@ -587,7 +587,7 @@ This configuration runs tests whose metadata's `device` property is set to `mobi
 
 ### filter.fixtureMeta
 
-Runs tests whose fixture's [metadata](../test-api/test-code-structure.md#specifying-testing-metadata) [matches](https://lodash.com/docs/#isMatch) the specified key-value pair.
+Runs tests whose fixture's [metadata](../test-api/test-code-structure.md#specifying-testing-metadata) matches the specified key-value pair.
 
 ```json
 {
