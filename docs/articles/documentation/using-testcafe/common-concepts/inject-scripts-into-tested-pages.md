@@ -74,7 +74,7 @@ You can also [inject scripts into specific pages](#provide-scripts-for-specific-
 
 ### Inject a JavaScript File
 
-Specify the JavaScript file path to inject the entire content of this file into the tested pages. You can pass a string or an object with the `path` property.
+Specify the JavaScript file path to inject the content of this file into the tested pages. You can pass a string or object with the `path` property.
 
 *CLI*
 
@@ -192,14 +192,11 @@ Argument  | Type   | Description
 --------- | ------ | ----------------
 `moduleName`  | String | The module name.
 
-TestCafe searches for the module's entry point with Node.js mechanisms and injects its content into the tested page.
+TestCafe uses Node.js mechanisms to search for the module's entry point and injects its content into the tested page.
 
 Note that the browser must be able to execute the injected module. For example, modules that implement the [UMD](https://github.com/umdjs/umd) API can run in most modern browsers.
 
-> If the injected module has dependencies, you should ensure that:
->
-> * The dependencies can be loaded as global variables.
-> * These variables are initialized in the page code.
+> If the injected module has dependencies, ensure that the dependencies can be loaded as global variables and these variables are initialized in the page's code.
 
 **Examples**
 
@@ -221,7 +218,7 @@ fixture `My fixture`
 
 ### Inject Script Code
 
-You can provide the injected script as a string with JavaScript code. Pass an object with the `content` property to do this.
+You can pass an object with the `content` property to provide the injected script as a string.
 
 *Programming interface*
 
@@ -374,7 +371,7 @@ test.clientScripts([
 
 Property  | Type                | Description
 --------- | ------------------- | ---------------------------------------------------------------------------
-`url`    | String &#124; RegExp | Specify a page URL to add scripts to a single page, or a regular expression to add scripts to pages whose URLs match this expression. Regular expressions are not supported in the [clientScripts](../configuration-file.md#clientscripts) configuration file property.
+`url`    | String &#124; RegExp | Specify a page URL to add scripts to a page, or a regular expression to add scripts to pages whose URLs match this expression. Regular expressions are not supported in the [clientScripts](../configuration-file.md#clientscripts) configuration file property.
 
 **Examples**
 
@@ -451,9 +448,9 @@ runner.clientScripts(scripts.map(script => {
 
 ## Access DOM in the Injected Scripts
 
-TestCafe injects scripts into the `head` tag, which means they are executed before DOM is loaded.
+Scripts are injected into the `head` tag and executed before the DOM is loaded.
 
-To access DOM in these scripts, wait until the `DOMContentLoaded` event fires:
+To access the DOM in these scripts, wait until the `DOMContentLoaded` event fires:
 
 ```js
 const scriptContent = `
