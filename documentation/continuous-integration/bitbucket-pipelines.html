@@ -751,17 +751,18 @@ However, if you already have a Docker image prepared, you can <a href="#option-2
       <span class="pi">-</span> <span class="na">step</span><span class="pi">:</span>
           <span class="na">script</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="s">npm ci</span>
-            <span class="pi">-</span> <span class="s">/opt/testcafe/docker/testcafe-docker.sh firefox:headless,chromium tests/**/*</span>
+            <span class="pi">-</span> <span class="s">/opt/testcafe/docker/testcafe-docker.sh 'firefox:headless,chromium --no-sandbox --disable-dev-shm-usage' tests/**/*</span>
 
   <span class="na">branches</span><span class="pi">:</span>
     <span class="na">master</span><span class="pi">:</span>
       <span class="pi">-</span> <span class="na">step</span><span class="pi">:</span>
           <span class="na">script</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="s">npm ci</span>
-            <span class="pi">-</span> <span class="s">/opt/testcafe/docker/testcafe-docker.sh firefox:headless,chromium tests/**/*</span>
+            <span class="pi">-</span> <span class="s">/opt/testcafe/docker/testcafe-docker.sh 'firefox:headless,chromium --no-sandbox --disable-dev-shm-usage' tests/**/*</span>
 </code></pre></div>
 <p>The custom launcher script <code>/opt/testcafe/docker/testcafe-docker.sh</code> prepares the environment to run a browser and starts TestCafe. Its arguments are standard TestCafe <a href="../using-testcafe/command-line-interface.html">command line parameters</a>.</p>
-
+<blockquote><div class="blockquote-content"><p>The <code>--no-sandbox</code> flag is required to run Chrome/Chromium in an unprivileged container. <code>--disable-dev-shm-usage</code> prevents the <code>/dev/shm</code> storage overflow.</p>
+</div></blockquote>
 <p>Commit and push this file to your repository.</p>
 <h3><a class="anchor" id="option-2---install-testcafe-on-a-docker-image"></a>Option 2 - Install TestCafe on a Docker Image <a class="permalink" href="#option-2---install-testcafe-on-a-docker-image">#</a></h3>
 <p>Use the <code>image</code> field in the <a href="https://confluence.atlassian.com/bitbucket/configure-bitbucket-pipelines-yml-792298910.html">bitbucket-pipelines.yml file</a> to specify a Docker image with Node.js and browsers installed. Then, configure a pipeline that installs the project&#39;s dependencies and runs tests when you push commits and create pull requests.</p>
@@ -787,9 +788,10 @@ However, if you already have a Docker image prepared, you can <a href="#option-2
 
 <p>The following example shows a command that runs tests in Chromium in headless mode:</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"test"</span><span class="p">:</span><span class="w">  </span><span class="s2">"testcafe 'chromium:headless --disable-setuid-sandbox --window-size=1920x1080' tests/index-test.js"</span><span class="w">
+    </span><span class="nl">"test"</span><span class="p">:</span><span class="w">  </span><span class="s2">"testcafe 'chromium:headless --no-sandbox --disable-dev-shm-usage --disable-setuid-sandbox' tests/index-test.js"</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre></div>
+</span></code></pre></div><blockquote><div class="blockquote-content"><p>The <code>--no-sandbox</code> flag is required to run Chrome/Chromium in an unprivileged container. <code>--disable-dev-shm-usage</code> prevents the <code>/dev/shm</code> storage overflow. <code>--disable-setuid-sandbox</code> allows Chromium to run from the root account. It is required for this CircleCI image because it runs all commands with root rights.</p>
+</div></blockquote>
 <p>For more information on how to configure a test run with the <code>testcafe</code> command, see <a href="../using-testcafe/command-line-interface.html">Command Line Interface</a>.</p>
 
 <p>Commit the changes and push them to your repository.</p>
@@ -797,7 +799,7 @@ However, if you already have a Docker image prepared, you can <a href="#option-2
 <p>If you need to start a custom Web server to host your application, use the <a href="../using-testcafe/command-line-interface.html#-a-command---app-command">--app</a> TestCafe option followed by a command that starts this server.
 TestCafe executes this command before tests are launched. After tests finish, TestCafe stops the server.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-  </span><span class="nl">"test"</span><span class="p">:</span><span class="w">  </span><span class="s2">"testcafe 'chromium:headless --disable-setuid-sandbox --window-size=1920x1080' tests/index-test.js --app </span><span class="se">\"</span><span class="s2">node server.js</span><span class="se">\"</span><span class="s2">"</span><span class="w">
+  </span><span class="nl">"test"</span><span class="p">:</span><span class="w">  </span><span class="s2">"testcafe firefox tests/index-test.js --app </span><span class="se">\"</span><span class="s2">node server.js</span><span class="se">\"</span><span class="s2">"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div><h2><a class="anchor" id="step-3---trigger-a-bitbucket-pipelines-ci-build"></a>Step 3 - Trigger a Bitbucket Pipelines CI Build <a class="permalink" href="#step-3---trigger-a-bitbucket-pipelines-ci-build">#</a></h2>
 <p>Bitbucket Pipelines CI is now configured to trigger the build when you push commits to your repository or create a pull request.</p>
