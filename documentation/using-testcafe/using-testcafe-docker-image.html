@@ -823,6 +823,7 @@ Therefore, you can avoid manual installation of browsers and the testing framewo
 <li><a href="#test-on-the-host-machine">Test on the Host Machine</a></li>
 <li><a href="#test-on-remote-devices">Test on Remote Devices</a></li>
 <li><a href="#proxy-settings">Proxy Settings</a></li>
+<li><a href="#troubleshooting">Troubleshooting</a></li>
 </ul>
 <h2><a class="anchor" id="install-docker-and-download-testcafe-image"></a>Install Docker and Download TestCafe Image <a class="permalink" href="#install-docker-and-download-testcafe-image">#</a></h2>
 <p>To learn how to install Docker on your system, see <a href="https://docs.docker.com/engine/installation/">Install Docker</a>.</p>
@@ -908,7 +909,12 @@ Therefore, you can avoid manual installation of browsers and the testing framewo
 <p>Use the TestCafe <a href="command-line-interface.html#--proxy-host">--proxy</a> and <a href="command-line-interface.html#--proxy-bypass-rules">--proxy-bypass</a> options to configure proxy settings.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">docker run <span class="nt">-v</span> /d/tests:/tests <span class="nt">-it</span> testcafe/testcafe remote /tests/test.js <span class="nt">--proxy</span> proxy.mycorp.com
 </code></pre></div><blockquote><div class="blockquote-content"><p>TestCafe ignores the <a href="https://docs.docker.com/network/proxy/">container&#39;s proxy settings</a> specified in the Docker configuration file (<code>httpProxy</code>, <code>httpsProxy</code> and <code>noProxy</code>) or the environment variables (<code>HTTP_PROXY</code>, <code>HTTPS_PROXY</code> and <code>NO_PROXY</code>).</p>
-</div></blockquote>
+</div></blockquote><h2><a class="anchor" id="troubleshooting"></a>Troubleshooting <a class="permalink" href="#troubleshooting">#</a></h2><h3><a class="anchor" id="unable-to-establish-one-or-more-of-the-specified-browser-connections-error-when-running-chromechromium-in-a-ci-system"></a>&#39;Unable to establish one or more of the specified browser connections&#39; error when running Chrome/Chromium in a CI system <a class="permalink" href="#unable-to-establish-one-or-more-of-the-specified-browser-connections-error-when-running-chromechromium-in-a-ci-system">#</a></h3>
+<p>Chromium cannot run in an unprivileged container without the <code>--no-sandbox</code> flag. TestCafe automatically detects if Chromium runs in Docker and adds <code>--no-sandbox</code>. Additionally, TestCafe specifies the <code>--disable-dev-shm-usage</code> flag to prevent the <code>/dev/shm</code> storage overflow.</p>
+
+<p>However, some CI systems&#39; configurations interfere with this detection logic, so that it fails to identify Docker and does not add the flags. In this instance, TestCafe throws the <strong>Unable to establish one or more of the specified browser connections</strong> error. If you see this error, try to add the flags in the <code>docker run</code> command:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">docker run <span class="nt">-v</span> /d/tests:/tests <span class="nt">-it</span> testcafe/testcafe <span class="s1">'chrome --no-sandbox --disable-dev-shm-usage'</span> /tests/test.js
+</code></pre></div>
 
 		</div>
 	</article>
