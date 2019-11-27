@@ -55,6 +55,8 @@ const SHOWING_DELAY                        = 300;
 const ANIMATION_DELAY                      = 500;
 const ANIMATION_UPDATE_INTERVAL            = 10;
 
+const LOCAL_STORAGE_STATUS_PREFIX_ITEM     = '%testCafeStatusPrefix%';
+
 export default class StatusBar extends serviceUtils.EventEmitter {
     constructor (userAgent, fixtureName, testName) {
         super();
@@ -92,7 +94,6 @@ export default class StatusBar extends serviceUtils.EventEmitter {
         };
 
         this.currentView       = null;
-        this.statusPrefixText  = '';
 
         this._createBeforeReady();
         this._initChildListening();
@@ -145,7 +146,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
 
         this.statusDiv = document.createElement('div');
 
-        nativeMethods.nodeTextContentSetter.call(this.statusDiv, LOADING_PAGE_TEXT);
+        nativeMethods.nodeTextContentSetter.call(this.statusDiv, this._getFullStatusText(LOADING_PAGE_TEXT));
 
         shadowUI.addClass(this.statusDiv, STATUS_DIV_CLASS);
         shadowUI.addClass(this.statusDiv, INFO_CLASS);
@@ -359,7 +360,8 @@ export default class StatusBar extends serviceUtils.EventEmitter {
     }
 
     _getFullStatusText (statusText) {
-        const prefix = this.statusPrefixText && `${this.statusPrefixText}. `;
+        const prefixText = localStorage.getItem(LOCAL_STORAGE_STATUS_PREFIX_ITEM);
+        const prefix     = prefixText ? `${prefixText}. ` : '';
 
         return `${prefix}${statusText}`;
     }
@@ -499,7 +501,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
     }
 
     setStatusPrefix (prefixText) {
-        this.statusPrefixText = prefixText;
+        localStorage.setItem(LOCAL_STORAGE_STATUS_PREFIX_ITEM, prefixText);
         this._resetState();
     }
 }

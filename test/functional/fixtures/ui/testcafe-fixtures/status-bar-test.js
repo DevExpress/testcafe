@@ -27,6 +27,8 @@ test('Show status prefix', async t => {
 
     await t
         .expect(statusText.trim()).eql('Status prefix.')
+        .expect(statusDiv.innerText).eql('Status prefix. Waiting for assertion execution...')
+        .navigateTo('http://localhost:3000/fixtures/ui/pages/empty-page.html')
         .expect(statusDiv.innerText).eql('Status prefix. Waiting for assertion execution...');
 });
 
