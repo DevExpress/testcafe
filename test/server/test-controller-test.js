@@ -16,6 +16,14 @@ class TestRunMock {
     executeCommand () {
         return Promise.resolve();
     }
+
+    emitCommandStart () {
+        return Promise.resolve();
+    }
+
+    emitCommandDone () {
+        return Promise.resolve();
+    }
 }
 
 describe('TestController', () => {

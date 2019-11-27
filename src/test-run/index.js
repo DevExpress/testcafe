@@ -429,12 +429,12 @@ export default class TestRun extends AsyncEventEmitter {
         try {
             const result = await promise;
 
-            await this.emit('command-done', { command });
+            await this.emitCommandDone(command, false);
 
             return result;
         }
         catch (err) {
-            await this.emit('command-done', { command, err });
+            await this.emitCommandDone(command, false, err);
 
             throw err;
         }
@@ -795,6 +795,14 @@ export default class TestRun extends AsyncEventEmitter {
 
         delete testRunTracker.activeTestRuns[this.session.id];
     }
+
+    async emitCommandStart (command, isApiMethod) {
+        await this.emit('command-start', { command, isApiMethod });
+    }
+
+    async emitCommandDone (command, isApiMethod, err) {
+        await this.emit('command-done', { command, err, isApiMethod });
+    }
 }
 
 // Service message handlers
@@ -827,7 +835,7 @@ ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
         this.pendingRequest = { resolve, reject, responseTimeout };
     })
         .then(async command => {
-            await this.emit('command-start', command);
+            await this.emitCommandStart(command);
 
             return command;
         });

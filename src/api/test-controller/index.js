@@ -111,18 +111,16 @@ export default class TestController {
             }
 
             return () => {
-                return this.testRun.emit('command-start', command)
-                    .then(() => {
-                        return this.testRun.executeCommand(command, callsite)
-                            .catch(err => {
-                                this.executionChain = Promise.resolve();
+                return this.testRun.emitCommandStart(command, true)
+                    .then(() => this.testRun.executeCommand(command, callsite))
+                    .catch(async err => {
+                        this.executionChain = Promise.resolve();
 
-                                throw err;
-                            })
+                        await this.testRun.emitCommandDone(command, true);
+
+                        throw err;
                     })
-                    .then(() => {
-                        return this.testRun.emit('command-done', { command });
-                    });
+                    .then(() => this.testRun.emitCommandDone(command, true));
             };
         });
     }
@@ -279,8 +277,15 @@ export default class TestController {
 
         const builder  = new ClientFunctionBuilder(fn, options, { instantiation: 'eval', execution: 'eval' });
         const clientFn = builder.getFunction();
+        const command  = { type: 'eval' };
 
-        return clientFn();
+        return this.testRun.emitCommandStart(command, true)
+            .then(() => clientFn())
+            .then(async res => {
+                await this.testRun.emitCommandDone(command, true);
+
+                return res;
+            });
     }
 
     _setNativeDialogHandler$ (fn, options) {
@@ -291,14 +296,20 @@ export default class TestController {
 
     _getNativeDialogHistory$ () {
         const callsite = getCallsiteForMethod('getNativeDialogHistory');
+        const command  = new GetNativeDialogHistoryCommand();
 
-        return this.testRun.executeCommand(new GetNativeDialogHistoryCommand(), callsite);
+        return this.testRun.emitCommandStart(command, true)
+            .then(() => this.testRun.executeCommand(command, callsite))
+            .then(() => this.testRun.emitCommandDone(command, true));
     }
 
     _getBrowserConsoleMessages$ () {
         const callsite = getCallsiteForMethod('getBrowserConsoleMessages');
+        const command  = new GetBrowserConsoleMessagesCommand();
 
-        return this.testRun.executeCommand(new GetBrowserConsoleMessagesCommand(), callsite);
+        return this.testRun.emitCommandStart(command, true)
+            .then(() => this.testRun.executeCommand(command, callsite))
+            .then(() => this.testRun.emitCommandDone(command, true));
     }
 
     _expect$ (actual) {

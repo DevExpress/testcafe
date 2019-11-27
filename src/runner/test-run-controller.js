@@ -213,8 +213,8 @@ export default class TestRunController extends AsyncEventEmitter {
             return null;
         }
 
-        testRun.on('command-start', async command => this._emitCommandStart({ command, testRun }));
-        testRun.on('command-done', async ({ command, err }) => this._emitCommandDone({ command, err, testRun }));
+        testRun.on('command-start', async ({ command, isApiMethod }) => this._emitCommandStart({ command, isApiMethod, testRun }));
+        testRun.on('command-done', async ({ command, isApiMethod, err }) => this._emitCommandDone({ command, isApiMethod, err, testRun }));
 
         testRun.once('start', async () => this._emitTestRunStart());
         testRun.once('ready', async () => {

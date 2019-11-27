@@ -234,7 +234,7 @@ describe('Reporter', () => {
     });
 
     describe('Methods `test-run-command-start` and `test-run-command-done`', () => {
-        function generateReport (log) {
+        function generateReport (log, onlyAPI = false) {
             return function customReporter () {
                 return {
                     async reportTaskStart () {},
@@ -242,18 +242,27 @@ describe('Reporter', () => {
                     async reportTestDone () {},
                     async reportTaskDone () {},
 
-                    async reportTestRunCommandStart ({ command }) {
-                        if (command)
-                            log.push(`start: ${command.type}`);
+                    async reportTestRunCommandStart ({ command, isApiMethod }) {
+                        if (isApiMethod) {
+                            const type = command.assertionType || command.type;
+
+                            log.push(`start action: ${type}`);
+                        }
+                        else if (!onlyAPI)
+                            log.push(`---- start command: ${command.type}`);
                     },
 
-                    async reportTestRunCommandDone ({ command, err }) {
+                    async reportTestRunCommandDone ({ command, err, isApiMethod }) {
                         if (err)
-                            log.push(`error: ${err.code}`);
+                            log.push(`ERROR: ${err.code}`);
 
-                        if (command) {
-                            log.push(`done: ${command.type}`);
+                        if (isApiMethod) {
+                            const type = command.assertionType || command.type;
+
+                            log.push(`done action: ${type}`);
                         }
+                        else if (!onlyAPI)
+                            log.push(`---- done command: ${command.type}`);
                     }
                 };
             };
@@ -269,7 +278,14 @@ describe('Reporter', () => {
 
             return runTests('testcafe-fixtures/index-test.js', 'Simple command test', runOpts)
                 .then(() => {
-                    expect(log).eql(['start: click', 'done: click', 'start: test-done', 'done: test-done']);
+                    expect(log).eql([
+                        'start action: click',
+                        '---- start command: click',
+                        '---- done command: click',
+                        'done action: click',
+                        '---- start command: test-done',
+                        '---- done command: test-done'
+                    ]);
                 });
         });
 
@@ -284,11 +300,72 @@ describe('Reporter', () => {
             return runTests('testcafe-fixtures/index-test.js', 'Simple command err test', runOpts)
                 .then(() => {
                     expect(log).eql([
-                        'start: click',
-                        'error: E24',
-                        'done: click',
-                        'start: test-done',
-                        'done: test-done'
+                        'start action: click',
+                        '---- start command: click',
+                        'ERROR: E24',
+                        '---- done command: click',
+                        'done action: click',
+                        '---- start command: test-done',
+                        '---- done command: test-done'
+                    ]);
+                });
+        });
+
+        it('Selector', function () {
+            const log = [];
+
+            const runOpts = {
+                only:     ['chrome'],
+                reporter: generateReport(log)
+            };
+
+            return runTests('testcafe-fixtures/index-test.js', 'Selector', runOpts)
+                .then(() => {
+                    expect(log).eql([
+                        '---- start command: execute-selector',
+                        '---- done command: execute-selector',
+                        '---- start command: test-done',
+                        '---- done command: test-done'
+                    ]);
+                });
+        });
+
+        it('Simple assertion', function () {
+            const log = [];
+
+            const runOpts = {
+                only:     ['chrome'],
+                reporter: generateReport(log)
+            };
+
+            return runTests('testcafe-fixtures/index-test.js', 'Simple assertion', runOpts)
+                .then(() => {
+                    expect(log).eql([
+                        'start action: eql',
+                        'done action: eql',
+                        '---- start command: test-done',
+                        '---- done command: test-done',
+                    ]);
+                });
+        });
+
+        it('Selector assertion', function () {
+            const log = [];
+
+            const runOpts = {
+                only:     ['chrome'],
+                reporter: generateReport(log)
+            };
+
+            return runTests('testcafe-fixtures/index-test.js', 'Selector assertion', runOpts)
+                .then(() => {
+                    expect(log).eql([
+                        'start action: eql',
+                        '---- start command: execute-selector',
+                        '---- done command: execute-selector',
+                        'done action: eql',
+                        '---- start command: test-done',
+                        '---- done command: test-done'
                     ]);
                 });
         });
@@ -304,16 +381,18 @@ describe('Reporter', () => {
             return runTests('testcafe-fixtures/index-test.js', 'Complex command test', runOpts)
                 .then(() => {
                     expect(log).eql([
-                        'start: execute-client-function',
-                        'done: execute-client-function',
-                        'start: navigate-to',
-                        'done: navigate-to',
-                        'start: backup-storages',
-                        'done: backup-storages',
-                        'start: navigate-to',
-                        'done: navigate-to',
-                        'start: test-done',
-                        'done: test-done'
+                        'start action: useRole',
+                        '---- start command: execute-client-function',
+                        '---- done command: execute-client-function',
+                        '---- start command: navigate-to',
+                        '---- done command: navigate-to',
+                        '---- start command: backup-storages',
+                        '---- done command: backup-storages',
+                        '---- start command: navigate-to',
+                        '---- done command: navigate-to',
+                        'done action: useRole',
+                        '---- start command: test-done',
+                        '---- done command: test-done'
                     ]);
                 });
         });
@@ -329,18 +408,22 @@ describe('Reporter', () => {
             return runTests('testcafe-fixtures/index-test.js', 'Complex nested command test', runOpts)
                 .then(() => {
                     expect(log).eql([
-                        'start: execute-client-function',
-                        'done: execute-client-function',
-                        'start: navigate-to',
-                        'done: navigate-to',
-                        'start: click',
-                        'done: click',
-                        'start: backup-storages',
-                        'done: backup-storages',
-                        'start: navigate-to',
-                        'done: navigate-to',
-                        'start: test-done',
-                        'done: test-done'
+                        'start action: useRole',
+                        '---- start command: execute-client-function',
+                        '---- done command: execute-client-function',
+                        '---- start command: navigate-to',
+                        '---- done command: navigate-to',
+                        'start action: click',
+                        '---- start command: click',
+                        '---- done command: click',
+                        'done action: click',
+                        '---- start command: backup-storages',
+                        '---- done command: backup-storages',
+                        '---- start command: navigate-to',
+                        '---- done command: navigate-to',
+                        'done action: useRole',
+                        '---- start command: test-done',
+                        '---- done command: test-done'
                     ]);
                 });
         });
@@ -356,35 +439,141 @@ describe('Reporter', () => {
             return runTests('testcafe-fixtures/index-test.js', 'Complex command sequence', runOpts)
                 .then(() => {
                     expect(log).eql([
-                        'start: useRole',
-                        'start: execute-client-function',
-                        'done: execute-client-function',
-                        'start: navigate-to',
-                        'done: navigate-to',
-                        'start: backup-storages',
-                        'done: backup-storages',
-                        'start: navigate-to',
-                        'done: navigate-to',
-                        'done: useRole',
+                        'start action: useRole',
+                        '---- start command: execute-client-function',
+                        '---- done command: execute-client-function',
+                        '---- start command: navigate-to',
+                        '---- done command: navigate-to',
+                        '---- start command: backup-storages',
+                        '---- done command: backup-storages',
+                        '---- start command: navigate-to',
+                        '---- done command: navigate-to',
+                        'done action: useRole',
 
-                        'start: useRole',
-                        'start: execute-client-function',
-                        'done: execute-client-function',
+                        'start action: useRole',
+                        '---- start command: execute-client-function',
+                        '---- done command: execute-client-function',
                         // NOTE: some extra `backup` command, because of role switching
-                        'start: backup-storages',
-                        'done: backup-storages',
-                        'start: navigate-to',
-                        'done: navigate-to',
-                        'start: backup-storages',
-                        'done: backup-storages',
-                        'start: navigate-to',
-                        'done: navigate-to',
-                        'done: useRole',
+                        '---- start command: backup-storages',
+                        '---- done command: backup-storages',
+                        '---- start command: navigate-to',
+                        '---- done command: navigate-to',
+                        '---- start command: backup-storages',
+                        '---- done command: backup-storages',
+                        '---- start command: navigate-to',
+                        '---- done command: navigate-to',
+                        'done action: useRole',
 
-                        'start: test-done',
-                        'done: test-done'
-
+                        '---- start command: test-done',
+                        '---- done command: test-done'
                     ]);
+                });
+        });
+
+        it('All actions', function () {
+            const log = [];
+
+            const runOpts = {
+                only:     ['chrome'],
+                reporter: generateReport(log, true)
+            };
+
+            return runTests('testcafe-fixtures/index-test.js', 'All actions', runOpts)
+                .then(() => {
+                    expect(log).eql(
+                        [
+                            // await t.click('#target')
+                            'start action: click',
+                            'done action: click',
+                            // await t.rightClick('#target');
+                            'start action: right-click',
+                            'done action: right-click',
+                            // await t.doubleClick('#target');
+                            'start action: double-click',
+                            'done action: double-click',
+                            // await t.hover('#target');
+                            'start action: hover',
+                            'done action: hover',
+                            // await t.drag('#target', 100, 200);
+                            'start action: drag',
+                            'done action: drag',
+                            // await t.dragToElement('#target', '#target');
+                            'start action: drag-to-element',
+                            'done action: drag-to-element',
+                            // await t.typeText('#input', 'text');
+                            'start action: type-text',
+                            'done action: type-text',
+                            // await t.selectText('#input', 1, 3);
+                            'start action: select-text',
+                            'done action: select-text',
+                            // await t.selectTextAreaContent('#textarea', 1, 1, 2, 2);
+                            'start action: select-text-area-content',
+                            'done action: select-text-area-content',
+                            // await t.selectEditableContent('#contenteditable', '#contenteditable');
+                            'start action: select-editable-content',
+                            'done action: select-editable-content',
+                            // await t.pressKey('enter');
+                            'start action: press-key',
+                            'done action: press-key',
+                            // await t.wait(1);
+                            'start action: wait',
+                            'done action: wait',
+                            // await t.navigateTo('./index.html');
+                            'start action: navigate-to',
+                            'done action: navigate-to',
+                            // await t.setFilesToUpload('#file', '../test.js');
+                            'start action: set-files-to-upload',
+                            'done action: set-files-to-upload',
+                            // await t.clearUpload('#file');
+                            'start action: clear-upload',
+                            'done action: clear-upload',
+                            // await t.takeScreenshot();
+                            'start action: take-screenshot',
+                            'done action: take-screenshot',
+                            // await t.takeElementScreenshot('#target');
+                            'start action: take-element-screenshot',
+                            'done action: take-element-screenshot',
+                            // await t.resizeWindow(200, 200);
+                            'start action: resize-window',
+                            'done action: resize-window',
+                            // await t.resizeWindowToFitDevice('Sony Xperia Z', { portraitOrientation: true });
+                            'start action: resize-window-to-fit-device',
+                            'done action: resize-window-to-fit-device',
+                            // await t.maximizeWindow();
+                            'start action: maximize-window',
+                            'done action: maximize-window',
+                            // await t.switchToIframe('#iframe');
+                            'start action: switch-to-iframe',
+                            'done action: switch-to-iframe',
+                            // await t.switchToMainWindow();
+                            'start action: switch-to-main-window',
+                            'done action: switch-to-main-window',
+                            // await t.eval(() => console.log('log'));
+                            'start action: eval',
+                            'done action: eval',
+                            // await t.setNativeDialogHandler(() => true);
+                            'start action: set-native-dialog-handler',
+                            'done action: set-native-dialog-handler',
+                            // await t.getNativeDialogHistory();
+                            'start action: get-native-dialog-history',
+                            'done action: get-native-dialog-history',
+                            // await t.getBrowserConsoleMessages();
+                            'start action: get-browser-console-messages',
+                            'done action: get-browser-console-messages',
+                            // await t.expect(true).eql(true);
+                            'start action: eql',
+                            'done action: eql',
+                            // await t.setTestSpeed(1);
+                            'start action: set-test-speed',
+                            'done action: set-test-speed',
+                            // await t.setPageLoadTimeout(1);
+                            'start action: set-page-load-timeout',
+                            'done action: set-page-load-timeout',
+                            // await t.useRole(Role.anonymous());
+                            'start action: useRole',
+                            'done action: useRole'
+                        ]
+                    );
                 });
         });
     });

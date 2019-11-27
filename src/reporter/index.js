@@ -177,14 +177,14 @@ export default class Reporter {
             await reportItem.pendingTestRunDonePromise;
         });
 
-        task.on('test-run-command-start', async ({ command }) => {
+        task.on('test-run-command-start', async ({ command, isApiMethod }) => {
             if (this.plugin.reportTestRunCommandStart)
-                await this.plugin.reportTestRunCommandStart({ command });
+                await this.plugin.reportTestRunCommandStart({ command, isApiMethod });
         });
 
-        task.on('test-run-command-done', async ({ command, err }) => {
+        task.on('test-run-command-done', async ({ command, isApiMethod, err }) => {
             if (this.plugin.reportTestRunCommandDone)
-                await this.plugin.reportTestRunCommandDone({ command, err });
+                await this.plugin.reportTestRunCommandDone({ command, isApiMethod, err });
         });
 
         task.once('done', async () => {
