@@ -92,7 +92,7 @@ The following example shows a command that runs tests in Chromium in headless mo
 }
 ```
 
-> The `--no-sandbox` flag is required to run Chrome/Chromium in an unprivileged container. `--disable-dev-shm-usage` prevents the `/dev/shm` storage overflow.
+> The `--no-sandbox` flag is required to run Chrome/Chromium in an unprivileged container. `--disable-dev-shm-usage` prevents the `/dev/shm` storage overflow. `--disable-setuid-sandbox` allows Chromium to run from the root account. It is required for this CircleCI image because it runs all commands with root rights.
 
 For more information on how to configure a test run with the `testcafe` command, see [Command Line Interface](../using-testcafe/command-line-interface.md).
 
@@ -105,7 +105,7 @@ TestCafe executes this command before tests are launched. After tests finish, Te
 
 ```json
 "scripts": {
-  "test":  "testcafe 'chromium:headless --disable-setuid-sandbox --window-size=1920x1080' tests/index-test.js --app \"node server.js\""
+  "test":  "testcafe firefox tests/index-test.js --app \"node server.js\""
 }
 ```
 
