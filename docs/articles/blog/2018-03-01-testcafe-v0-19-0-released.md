@@ -41,7 +41,7 @@ This action provides additional customization that allows you to position the ce
 
 ### ⚙ Filtering Elements by Their Visibility ([#1018](https://github.com/DevExpress/testcafe/issues/1018))
 
-You can now filter the selector's matching set to leave only visible or hidden elements. To do this, use the [filterVisible](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#filtervisible) and [filterHidden](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#filterhidden) methods.
+You can now filter the selector's matched set to leave only visible or hidden elements. To do this, use the [filterVisible](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#filtervisible) and [filterHidden](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#filterhidden) methods.
 
 ```js
 import { Selector } from 'testcafe';

@@ -139,7 +139,7 @@ If you use TestCafe API, provide the `debugMode` option to the `runner.run` meth
 runner.run({ debugMode: true });
 ```
 
-### ⚙ Filtering selector's matching set by attribute ([#1346](https://github.com/DevExpress/testcafe/issues/1346))
+### ⚙ Filtering selector's matched set by attribute ([#1346](https://github.com/DevExpress/testcafe/issues/1346))
 
 You can now use the `withAttribute` method to select elements that have a particular attribute set to a specific value.
 You can omit the attribute value to select elements that simply have the specified attribute.

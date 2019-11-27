@@ -1459,7 +1459,7 @@ This action provides additional customization that allows you to adjust the scre
 
 #### :gear: Filtering Elements by Their Visibility ([#1018](https://github.com/DevExpress/testcafe/issues/1018))
 
-You can now filter the selector's matching set to display only visible or hidden elements using the [filterVisible](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#filtervisible) and [filterHidden](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#filterhidden) methods.
+You can now filter the selector's matched set to display only visible or hidden elements using the [filterVisible](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#filtervisible) and [filterHidden](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#filterhidden) methods.
 
 ```js
 import { Selector } from 'testcafe';
@@ -2178,7 +2178,7 @@ If you use TestCafe API, provide the `debugMode` option to the `runner.run` meth
 runner.run({ debugMode: true });
 ```
 
-#### :gear: Filtering selector's matching set by attribute ([#1346](https://github.com/DevExpress/testcafe/issues/1346))
+#### :gear: Filtering selector's matched set by attribute ([#1346](https://github.com/DevExpress/testcafe/issues/1346))
 
 You can now use the `withAttribute` method to select elements that have a particular attribute set to a specific value.
 You can omit the attribute value to select elements that simply have the specified attribute.
@@ -2870,7 +2870,7 @@ Selector('ul').child(node => {
 
 #### :gear: Filtering by negative index in selectors ([#738](https://github.com/DevExpress/testcafe/issues/738))
 
-You can now pass negative `index` values to selector methods. In this instance, index is counted from the end of the matching set.
+You can now pass negative `index` values to selector methods. In this instance, index is counted from the end of the matched set.
 
 ```js
 const lastChild = Selector('.someClass').child(-1);
@@ -2966,7 +2966,7 @@ Then, for each `label` element finds a parent that matches the `div.someClass` s
 
 ------
 
-Like in jQuery, if you request a [property](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/dom-node-state.html#members-common-across-all-nodes) of the matching set or try evaluate
+Like in jQuery, if you request a [property](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/dom-node-state.html#members-common-across-all-nodes) of the matched set or try evaluate
 a [snapshot](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#dom-node-snapshot), the selector returns values for the first element in the set.
 
 ```js
@@ -3000,16 +3000,16 @@ Selector('.container').parent(1).nth(0).find('.content').withText('yo!').child('
 In this example the selector:
 
 1. finds the second parent (parent of parent) of `.container` elements;
-2. peeks the first element in the matching set;
+2. peeks the first element in the matched set;
 3. in that element, finds elements that match the `.content` selector;
 4. filters them by text `yo!`;
 5. in each filtered element, searches for a child with tag name `span`.
 
 ------
 
-##### Getting selector matching set length
+##### Getting selector matched set length
 
-Also, now you can get selector matching set length and check matching elements existence by using selector [`count` and `exists` properties](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#get-selector-matching-set-length).
+Also, now you can get selector matched set length and check matching elements existence by using selector [`count` and `exists` properties](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#get-selector-matching-set-length).
 
 ##### Unawaited parametrized selector calls now allowed outside test context
 
@@ -3063,7 +3063,7 @@ Selector('#someId', { index: 2 } ); // index is ignored and selector returns ele
 however it's not a case now:
 
 ```js
-Selector('#someId').nth(2); // returns `null`, since there is only one element in matching set with id `someId`
+Selector('#someId').nth(2); // returns `null`, since there is only one element in matched set with id `someId`
 ```
 
 ##### Deprecated API
