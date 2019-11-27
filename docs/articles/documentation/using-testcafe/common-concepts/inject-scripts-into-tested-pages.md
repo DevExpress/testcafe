@@ -121,13 +121,13 @@ Argument   | Type   | Description
 
 #### Relative Paths
 
-Relative paths resolve from the *current working directory* when you inject scripts in:
+Relative paths are resolved against the *current working directory* when you inject scripts in:
 
 * [command line interface](../command-line-interface.md#--cs-pathpath2---client-scripts-pathpath2)
 * [programming interface](../programming-interface/runner.md#clientscripts)
 * [configuration file](../configuration-file.md#clientscripts)
 
-When you use [test API methods](../../test-api/test-code-structure.md#inject-scripts-into-tested-pages), relative paths resolve from the *test file location*.
+When you use [test API methods](../../test-api/test-code-structure.md#inject-scripts-into-tested-pages), relative paths are resolved against the *test file location*.
 
 **Examples**
 
@@ -255,7 +255,7 @@ test.clientScripts([ { content: code } ])
 
 Argument  | Type   | Description
 --------- | ------ | ----------------------------------------
-`code` | String | JavaScript code that should be injected.
+`code` | String | JavaScript that should be injected.
 
 **Examples**
 
@@ -283,9 +283,7 @@ test
 
 ### Provide Scripts for Specific Pages
 
-You can also specify pages into which a script should be injected.
-
-> This is helpful when you need to mock browser API on particular pages and use the default behavior everywhere else.
+You can also specify pages into which a script should be injected. For instance, this enables you to mock browser API on particular pages and use the default behavior everywhere else.
 
 To specify target pages for a script, add the `page` property to the object you pass to `clientScripts`.
 
@@ -448,7 +446,7 @@ runner.clientScripts(scripts.map(script => {
 
 ## Access DOM in the Injected Scripts
 
-Scripts are injected into the `head` tag and executed before the DOM is loaded.
+TestCafe injects custom scripts into the `head` tag. These scripts are executed before the DOM is loaded.
 
 To access the DOM in these scripts, wait until the `DOMContentLoaded` event fires:
 

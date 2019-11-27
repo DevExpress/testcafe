@@ -757,7 +757,7 @@ Injects scripts into pages visited during the tests. Use this property to introd
 }
 ```
 
-> Relative paths resolve from the current working directory.
+> Relative paths are resolved against the current working directory.
 
 See [Provide Scripts to Inject](common-concepts/inject-scripts-into-tested-pages.md#provide-scripts-to-inject) to learn how to specify the scripts.
 
@@ -917,7 +917,7 @@ Enables TestCafe to use a custom [TypeScript configuration file](../test-api/typ
 }
 ```
 
-You can specify an absolute or relative path. Relative paths resolve from the current directory (the directory from which you run TestCafe).
+You can specify an absolute or relative path. Relative paths are resolved against the current directory (the directory from which you run TestCafe).
 
 *CLI*: [--ts-config-path](command-line-interface.md#--ts-config-path-path)  
 *API*: [runner.tsConfigPath](programming-interface/runner.md#tsconfigpath)

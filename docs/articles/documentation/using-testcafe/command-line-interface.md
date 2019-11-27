@@ -748,7 +748,7 @@ testcafe chrome my-tests --client-scripts mockDate.js,assets/react-helpers.js
 
 Pass the [path to a JavaScript file](common-concepts/inject-scripts-into-tested-pages.md#inject-a-javascript-file) to inject its content.
 
-> Relative paths resolve from the current working directory.
+> Relative paths are resolved against the current working directory.
 
 Use the [fixture.clientScripts](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) and [test.clientScripts](../test-api/test-code-structure.md#inject-scripts-into-tested-pages) methods in test code to inject scripts for an individual fixture or test.
 
@@ -897,7 +897,7 @@ Enables TestCafe to use a custom [TypeScript configuration file](../test-api/typ
 testcafe chrome my-tests --ts-config-path /Users/s.johnson/testcafe/tsconfig.json
 ```
 
-You can specify an absolute or relative path. Relative paths resolve from the current directory (the directory from which you run TestCafe).
+You can specify an absolute or relative path. Relative paths are resolved against the current directory (the directory from which you run TestCafe).
 
 *Related configuration file property*: [tsConfigPath](configuration-file.md#tsconfigpath).
 

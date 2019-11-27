@@ -592,7 +592,7 @@ Parameter | Type     | Description
 --------- | -------- | ---------------------------------------------------------------------------
 `script`, `script2`, `scriptN` | String &#124; Object &#124; Array | Scripts to inject into the tested pages. See [Provide Scripts to Inject](../using-testcafe/common-concepts/inject-scripts-into-tested-pages.md#provide-scripts-to-inject) for information on how to specify scripts.
 
-> Relative paths resolve from the test file location.
+> Relative paths are resolved against the test file location.
 
 You can use the [page](../using-testcafe/common-concepts/inject-scripts-into-tested-pages.md#provide-scripts-for-specific-pages) option to specify pages into which scripts should be injected. Otherwise, TestCafe injects scripts into all pages visited during the test or fixture.
 

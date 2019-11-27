@@ -438,7 +438,7 @@ Parameter | Type                | Description
 --------- | ------------------- | ------------
 `script`, `script2`, `scriptN`  | String &#124; Object &#124; Array | Scripts to inject into the tested pages. See [Provide Scripts to Inject](../common-concepts/inject-scripts-into-tested-pages.md#provide-scripts-to-inject) to learn how to specify them.
 
-> Relative paths resolve from the current working directory.
+> Relative paths are resolved against the current working directory.
 
 You can use the [page](../common-concepts/inject-scripts-into-tested-pages.md#provide-scripts-for-specific-pages) option to specify pages into which scripts should be injected. Otherwise, TestCafe injects scripts into all pages visited during the test run.
 
@@ -524,7 +524,7 @@ async tsConfigPath(path) → this
 
 Parameter | Type   | Description
 --------- | ------ | ---------------------
-`path`    | String | The absolute or relative path to the TypeScript configuration file. Relative paths resolve from the current directory (the directory from which you run TestCafe).
+`path`    | String | The absolute or relative path to the TypeScript configuration file. Relative paths are resolved against the current directory (the directory from which you run TestCafe).
 
 ```js
 runner.tsConfigPath('/Users/s.johnson/testcafe/tsconfig.json');
