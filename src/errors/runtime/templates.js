@@ -77,5 +77,11 @@ export default {
     [RUNTIME_ERRORS.clientScriptBasePathIsNotSpecified]:               'Specify the base path for the client script file.',
     [RUNTIME_ERRORS.clientScriptInitializerMultipleContentSources]:    'You cannot combine the file path, module name and script content when you specify a client script to inject.',
     [RUNTIME_ERRORS.cannotLoadClientScriptFromPath]:                   'Cannot load a client script from {path}',
-    [RUNTIME_ERRORS.clientScriptModuleEntryPointPathCalculationError]: 'An error occurred when trying to locate the injected client script module:\n\n{errorMessage}.'
+    [RUNTIME_ERRORS.clientScriptModuleEntryPointPathCalculationError]: 'An error occurred when trying to locate the injected client script module:\n\n{errorMessage}.',
+    [RUNTIME_ERRORS.methodIsNotAvailableForAnIPCHost]:                 'This method cannot be called on a service host',
+    [RUNTIME_ERRORS.tooLargeIPCPayload]:                               'The specified payload is too large to form an IPC packet',
+    [RUNTIME_ERRORS.malformedIPCMessage]:                              'Cannot process a malformed IPC message',
+    [RUNTIME_ERRORS.unexpectedIPCHeadPacket]:                          'Unable to create an IPC message due to an unexpected IPC head packet',
+    [RUNTIME_ERRORS.unexpectedIPCBodyPacket]:                          'Unable to create an IPC message due to an unexpected IPC body packet',
+    [RUNTIME_ERRORS.unexpectedIPCTailPacket]:                          'Unable to create an IPC message due to an unexpected IPC tail packet'
 };

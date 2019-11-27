@@ -119,5 +119,11 @@ export const RUNTIME_ERRORS = {
     clientScriptBasePathIsNotSpecified:                 'E1045',
     clientScriptInitializerMultipleContentSources:      'E1046',
     cannotLoadClientScriptFromPath:                     'E1047',
-    clientScriptModuleEntryPointPathCalculationError:   'E1048'
+    clientScriptModuleEntryPointPathCalculationError:   'E1048',
+    methodIsNotAvailableForAnIPCHost:                   'E1049',
+    tooLargeIPCPayload:                                 'E1050',
+    malformedIPCMessage:                                'E1051',
+    unexpectedIPCHeadPacket:                            'E1052',
+    unexpectedIPCBodyPacket:                            'E1053',
+    unexpectedIPCTailPacket:                            'E1054'
 };
