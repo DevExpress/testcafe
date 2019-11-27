@@ -88,7 +88,7 @@ The following example shows a command that runs tests in Chromium in headless mo
 
 ```json
 "scripts": {
-    "test":  "testcafe 'chromium:headless --no-sandbox --disable-dev-shm-usage' tests/index-test.js"
+    "test":  "testcafe 'chromium:headless --no-sandbox --disable-dev-shm-usage --disable-setuid-sandbox' tests/index-test.js"
 }
 ```
 
