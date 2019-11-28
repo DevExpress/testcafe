@@ -23,14 +23,14 @@ export class MessageParser {
             if (!packet.header.head && this.packetQueue.length === 0)
                 throw new GeneralError(RUNTIME_ERRORS.unexpectedIPCTailPacket);
 
-            const packets = this.packetQueue.slice(0, this.packetQueue.length);
+            const packets = this.packetQueue.splice(0, this.packetQueue.length);
             const data    = packet.header.head ? packet.data : MessageParser._concatPackets([...packets, packet]);
 
             return JSON.parse(data.toString());
         }
 
         if (packet.header.head && this.packetQueue.length !== 0) {
-            this.packetQueue.slice(0, this.packetQueue.length);
+            this.packetQueue.splice(0, this.packetQueue.length);
 
             throw new GeneralError(RUNTIME_ERRORS.unexpectedIPCHeadPacket);
         }

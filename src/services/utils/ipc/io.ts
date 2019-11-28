@@ -1,7 +1,7 @@
 import fs from 'fs';
 import Packet from './packet';
 import { MessageParser, MessageSerializer } from './message';
-import EventEmitter from '../../../../src/utils/async-event-emitter';
+import EventEmitter from '../../../utils/async-event-emitter';
 
 
 export class AsyncReader extends EventEmitter {
@@ -94,8 +94,8 @@ export class SyncReader {
     }
 
     private _readSync (): Buffer {
-        const buffer     = Buffer.alloc(Packet.MAX_MESSAGE_SIZE);
-        const readLength = fs.readSync(this.fd, buffer, 0, Packet.MAX_MESSAGE_SIZE, null);
+        const buffer     = Buffer.alloc(Packet.MAX_PACKET_SIZE);
+        const readLength = fs.readSync(this.fd, buffer, 0, Packet.MAX_PACKET_SIZE, null);
 
         return buffer.slice(0, readLength);
     }

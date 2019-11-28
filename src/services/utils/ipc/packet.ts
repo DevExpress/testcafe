@@ -28,9 +28,9 @@ export interface ParsedPacket {
 
 export class Packet {
     // NOTE: Max message size: 64 KiB, header size: 4 B
-    public static readonly MAX_MESSAGE_SIZE = 64 * 2 ** 10;
+    public static readonly MAX_PACKET_SIZE = 64 * 2 ** 10;
     public static readonly HEADER_SIZE = 4;
-    public static readonly MAX_PAYLOAD_SIZE = Packet.MAX_MESSAGE_SIZE - Packet.HEADER_SIZE;
+    public static readonly MAX_PAYLOAD_SIZE = Packet.MAX_PACKET_SIZE - Packet.HEADER_SIZE;
 
     private static _parseHeader (buffer: Buffer): PacketHeader {
         const dataSize = buffer[1] << BYTE_SHIFT << BYTE_SHIFT | buffer[2] << BYTE_SHIFT | buffer[3];
@@ -48,6 +48,9 @@ export class Packet {
             return void 0;
 
         const header = Packet._parseHeader(buffer);
+
+        if (header.size > this.MAX_PAYLOAD_SIZE)
+            throw new GeneralError(RUNTIME_ERRORS.tooLargeIPCPayload);
 
         if (buffer.length < header.size)
             return void 0;
@@ -69,7 +72,7 @@ export class Packet {
         buffer[3] = size & BYTE_MASK;
     }
 
-    public static serialize (data: Buffer, { head, tail }: PacketHeaderFlags): Buffer {
+    public static serialize (data: Buffer, { head = false, tail = false }: Partial<PacketHeaderFlags> = {}): Buffer {
         const size = data.length;
 
         if (size > Packet.MAX_PAYLOAD_SIZE)
