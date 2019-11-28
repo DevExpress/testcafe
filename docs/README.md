@@ -84,6 +84,7 @@
   * [Handling Native Dialogs](articles/documentation/test-api/handling-native-dialogs.md)
   * [Working with &lt;iframes&gt;](articles/documentation/test-api/working-with-iframes.md)
   * [Debugging](articles/documentation/test-api/debugging.md)
+  * [Identify the Browser and Platform](articles/documentation/test-api/identify-the-browser-and-platform.md)
   * [Accessing Console Messages](articles/documentation/test-api/accessing-console-messages.md)
   * [TypeScript Support](articles/documentation/test-api/typescript-support.md)
   * [CoffeeScript Support](articles/documentation/test-api/coffeescript-support.md)

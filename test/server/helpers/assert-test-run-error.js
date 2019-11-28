@@ -9,7 +9,7 @@ const TEST_RUN_PHASE                 = require('../../../lib/test-run/phase');
 const testCallsite                   = require('../data/test-callsite');
 
 const SCREENSHOT_PATH          = '/unix/path/with/<tag>';
-const USER_AGENT_MOCK          = 'Chrome 15.0.874 / Mac OS X 10.8.1';
+const USER_AGENT_MOCK          = 'Chrome 15.0.874.120 / macOS 10.15';
 const TESTCAFE_CALLSITE_PATH   = require.resolve('../data/test-callsite');
 const TEST_FILE_STACK_ENTRY_RE = new RegExp('\\s*\\n?\\(' + escapeRegExp(TESTCAFE_CALLSITE_PATH), 'g');
 

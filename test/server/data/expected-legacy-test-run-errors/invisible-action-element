@@ -3,7 +3,7 @@ A target element <element> of the test-action action is not visible.
 If this element should appear when you are hovering over another element,
 make sure that you properly recorded the hover action.
 
-Browser: Chrome 15.0.874 / Mac OS X 10.8.1
+Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>
 
 Code:

@@ -13,6 +13,7 @@ Therefore, you can avoid manual installation of browsers and the testing framewo
 * [Test on the Host Machine](#test-on-the-host-machine)
 * [Test on Remote Devices](#test-on-remote-devices)
 * [Proxy Settings](#proxy-settings)
+* [Troubleshooting](#troubleshooting)
 
 ## Install Docker and Download TestCafe Image
 
@@ -126,3 +127,15 @@ docker run -v /d/tests:/tests -it testcafe/testcafe remote /tests/test.js --prox
 ```
 
 > TestCafe ignores the [container's proxy settings](https://docs.docker.com/network/proxy/) specified in the Docker configuration file (`httpProxy`, `httpsProxy` and `noProxy`) or the environment variables (`HTTP_PROXY`, `HTTPS_PROXY` and `NO_PROXY`).
+
+## Troubleshooting
+
+### 'Unable to establish one or more of the specified browser connections' error when running Chrome/Chromium in a CI system
+
+Chromium cannot run in an unprivileged container without the `--no-sandbox` flag. TestCafe automatically detects if Chromium runs in Docker and adds `--no-sandbox`. Additionally, TestCafe specifies the `--disable-dev-shm-usage` flag to prevent the `/dev/shm` storage overflow.
+
+However, some CI systems' configurations interfere with this detection logic, so that it fails to identify Docker and does not add the flags. In this instance, TestCafe throws the **Unable to establish one or more of the specified browser connections** error. If you see this error, try to add the flags in the `docker run` command:
+
+```sh
+docker run -v /d/tests:/tests -it testcafe/testcafe 'chrome --no-sandbox --disable-dev-shm-usage' /tests/test.js
+```

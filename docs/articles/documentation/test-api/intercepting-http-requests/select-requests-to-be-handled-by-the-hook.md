@@ -87,7 +87,7 @@ This predicate takes the `request` parameter that provides the following propert
 
 Property | Type | Description
 -------- | ---- | --------------
-`userAgent` | String | The user agent that originated the request.
+`userAgent` | String | Identifies the user agent that originated the request. Contains the formatted name and version of the browser and operating system (`Firefox 69.0 / Windows 10.0.0`, `Chrome 77.0.3865.120 / macOS 10.15.1`).
 `url`       | String | The URL to which the request is sent.
 `method`    | String | The request method.
 `isAjax`    | Boolean | Specifies whether this is an AJAX request.

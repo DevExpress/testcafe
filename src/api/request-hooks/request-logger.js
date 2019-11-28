@@ -1,6 +1,6 @@
 import { ConfigureResponseEventOptions } from 'testcafe-hammerhead';
 import RequestHook from './hook';
-import { parse as parseUserAgent } from 'useragent';
+import parseUserAgent from '../../utils/parse-user-agent';
 import testRunTracker from '../test-run-tracker';
 import ReExecutablePromise from '../../utils/re-executable-promise';
 import { APIError } from '../../errors/runtime';
@@ -38,15 +38,14 @@ class RequestLoggerImplementation extends RequestHook {
     }
 
     async onRequest (event) {
-        const userAgent = parseUserAgent(event._requestInfo.userAgent).toString();
-
         const loggedReq = {
             id:        event._requestInfo.requestId,
             testRunId: event._requestInfo.sessionId,
-            userAgent,
+            userAgent: parseUserAgent(event._requestInfo.userAgent).prettyUserAgent,
             request:   {
-                url:    event._requestInfo.url,
-                method: event._requestInfo.method,
+                timestamp: Date.now(),
+                url:       event._requestInfo.url,
+                method:    event._requestInfo.method,
             }
         };
 
@@ -60,21 +59,23 @@ class RequestLoggerImplementation extends RequestHook {
     }
 
     async onResponse (event) {
-        const loggerReq = this._internalRequests[event.requestId];
+        const loggedReq = this._internalRequests[event.requestId];
 
         // NOTE: If the 'clear' method is called during a long running request,
         // we should not save a response part - request part has been already removed.
-        if (!loggerReq)
+        if (!loggedReq)
             return;
 
-        loggerReq.response            = {};
-        loggerReq.response.statusCode = event.statusCode;
+        loggedReq.response = {
+            statusCode: event.statusCode,
+            timestamp:  Date.now()
+        };
 
         if (this.options.logResponseHeaders)
-            loggerReq.response.headers = Object.assign({}, event.headers);
+            loggedReq.response.headers = Object.assign({}, event.headers);
 
         if (this.options.logResponseBody) {
-            loggerReq.response.body = this.options.stringifyResponseBody && event.body
+            loggedReq.response.body = this.options.stringifyResponseBody && event.body
                 ? event.body.toString()
                 : event.body;
         }

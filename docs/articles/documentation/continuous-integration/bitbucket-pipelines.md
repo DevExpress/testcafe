@@ -42,17 +42,19 @@ pipelines:
       - step:
           script:
             - npm ci
-            - /opt/testcafe/docker/testcafe-docker.sh firefox:headless,chromium tests/**/*
+            - /opt/testcafe/docker/testcafe-docker.sh 'firefox:headless,chromium --no-sandbox --disable-dev-shm-usage' tests/**/*
 
   branches:
     master:
       - step:
           script:
             - npm ci
-            - /opt/testcafe/docker/testcafe-docker.sh firefox:headless,chromium tests/**/*
+            - /opt/testcafe/docker/testcafe-docker.sh 'firefox:headless,chromium --no-sandbox --disable-dev-shm-usage' tests/**/*
 ```
 
 The custom launcher script `/opt/testcafe/docker/testcafe-docker.sh` prepares the environment to run a browser and starts TestCafe. Its arguments are standard TestCafe [command line parameters](../using-testcafe/command-line-interface.md).
+
+> The `--no-sandbox` flag is required to run Chrome/Chromium in an unprivileged container. `--disable-dev-shm-usage` prevents the `/dev/shm` storage overflow.
 
 Commit and push this file to your repository.
 
@@ -86,9 +88,11 @@ The following example shows a command that runs tests in Chromium in headless mo
 
 ```json
 "scripts": {
-    "test":  "testcafe 'chromium:headless --disable-setuid-sandbox --window-size=1920x1080' tests/index-test.js"
+    "test":  "testcafe 'chromium:headless --no-sandbox --disable-dev-shm-usage --disable-setuid-sandbox' tests/index-test.js"
 }
 ```
+
+> The `--no-sandbox` flag is required to run Chrome/Chromium in an unprivileged container. `--disable-dev-shm-usage` prevents the `/dev/shm` storage overflow. `--disable-setuid-sandbox` allows Chromium to run from the root account. It is required for this CircleCI image because it runs all commands with root rights.
 
 For more information on how to configure a test run with the `testcafe` command, see [Command Line Interface](../using-testcafe/command-line-interface.md).
 
@@ -101,7 +105,7 @@ TestCafe executes this command before tests are launched. After tests finish, Te
 
 ```json
 "scripts": {
-  "test":  "testcafe 'chromium:headless --disable-setuid-sandbox --window-size=1920x1080' tests/index-test.js --app \"node server.js\""
+  "test":  "testcafe firefox tests/index-test.js --app \"node server.js\""
 }
 ```
 
@@ -110,3 +114,5 @@ TestCafe executes this command before tests are launched. After tests finish, Te
 Bitbucket Pipelines CI is now configured to trigger the build when you push commits to your repository or create a pull request.
 
 To check if the build has passed or failed, open your project's page and go to the Pipelines status page.
+
+> Important! If the build fails with the **Unable to establish one or more of the specified browser connections** error, refer to [this troubleshooting guide](../using-testcafe/using-testcafe-docker-image.md#troubleshooting).

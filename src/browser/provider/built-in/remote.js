@@ -3,9 +3,14 @@ import WARNING_MESSAGE from '../../../notifications/warning-message';
 
 
 export default {
+    canDetectLocalBrowsers: true,
+
     localBrowsersFlags: {},
 
     async openBrowser (browserId) {
+        if (!this.canDetectLocalBrowsers)
+            return;
+
         await this.waitForConnectionReady(browserId);
 
         const localBrowserWindow = await findWindow(browserId);

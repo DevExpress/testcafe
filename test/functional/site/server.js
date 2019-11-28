@@ -7,7 +7,7 @@ const multer                = require('multer');
 const Mustache              = require('mustache');
 const readFile              = require('../../../lib/utils/promisified-functions').readFile;
 const quarantineModeTracker = require('../quarantine-mode-tracker');
-const useragent             = require('useragent');
+const parseUserAgent        = require('../../../lib/utils/parse-user-agent');
 
 const storage = multer.memoryStorage();
 const upload  = multer({ storage: storage });
@@ -64,9 +64,9 @@ Server.prototype._setupRoutes = function () {
     });
 
     this.app.get('/get-browser-name', function (req, res) {
-        const agent = useragent.parse(req.headers['user-agent']);
+        const parsedUA = parseUserAgent(req.headers['user-agent']);
 
-        res.end(agent.family);
+        res.end(parsedUA.name);
     });
 
     this.app.get('*', function (req, res) {

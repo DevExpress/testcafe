@@ -37,6 +37,8 @@ test
         t.ctx['someKey'] = [];
         t.fixtureCtx['yo'] = 'hey';
 
+        const browserInfo = t.browser;
+
         await t.click('#smth');
     })
     .skip

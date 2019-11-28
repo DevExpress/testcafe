@@ -1,10 +1,15 @@
-const expect               = require('chai').expect;
-const proxyquire           = require('proxyquire');
-const testcafeBrowserTools = require('testcafe-browser-tools');
-const browserProviderPool  = require('../../lib/browser/provider/pool');
-const parseProviderName    = require('../../lib/browser/provider/parse-provider-name');
-const BrowserConnection    = require('../../lib/browser/connection');
-const WARNING_MESSAGE      = require('../../lib/notifications/warning-message');
+const expect                  = require('chai').expect;
+const { noop, stubFalse }     = require('lodash');
+const nanoid                  = require('nanoid');
+const { rmdirSync, statSync } = require('fs');
+const { join, dirname }       = require('path');
+const proxyquire              = require('proxyquire');
+const sinon                   = require('sinon');
+const browserProviderPool     = require('../../lib/browser/provider/pool');
+const parseProviderName       = require('../../lib/browser/provider/parse-provider-name');
+const BrowserConnection       = require('../../lib/browser/connection');
+const ProviderCtor            = require('../../lib/browser/provider/');
+const WARNING_MESSAGE         = require('../../lib/notifications/warning-message');
 
 class BrowserConnectionMock extends BrowserConnection {
     constructor () {
@@ -24,76 +29,128 @@ class BrowserConnectionMock extends BrowserConnection {
 
 describe('Browser provider', function () {
     describe('Path and arguments handling', function () {
-        let processedBrowserInfo                 = null;
-        let originalBrowserToolsGetBrowserInfo   = null;
-        let originalBrowserToolsOpen             = null;
-        let originalBrowserToolsGetInstallations = null;
+        it('Should parse the path: alias with arguments', async () => {
+            const browserInfo = await browserProviderPool.getBrowserInfo('path:/usr/bin/chrome --arg1 --arg2');
 
-        function getBrowserInfo (arg) {
-            return browserProviderPool
-                .getBrowserInfo(arg)
-                .then(function (browserInfo) {
-                    return browserInfo.provider.openBrowser('id', 'test-url', browserInfo.browserName);
-                })
-                .catch(function (error) {
-                    expect(error.message).to.contain('STOP');
-                    return processedBrowserInfo;
-                });
-        }
+            expect(browserInfo).include({
+                providerName: 'path',
+                browserName:  '/usr/bin/chrome --arg1 --arg2'
+            });
+        });
 
-        before(function () {
-            originalBrowserToolsGetBrowserInfo   = testcafeBrowserTools.getBrowserInfo;
-            originalBrowserToolsOpen             = testcafeBrowserTools.open;
-            originalBrowserToolsGetInstallations = testcafeBrowserTools.getInstallations;
+        it('Should parse the path: alias with arguments with spaces', async () => {
+            const browserInfo = await browserProviderPool.getBrowserInfo('path:`/opt/Google Chrome/chrome` --arg1 --arg2');
 
-            testcafeBrowserTools.getBrowserInfo = function (path) {
-                return {
-                    path: path,
-                    cmd:  '--internal-arg'
-                };
+            expect(browserInfo).include({
+                providerName: 'path',
+                browserName:  '`/opt/Google Chrome/chrome` --arg1 --arg2'
+            });
+        });
+
+        it('Should parse the chrome: alias with arguments', async () => {
+            const builtInProviders = {
+                chrome: { isValidBrowserName: sinon.stub() }
             };
 
-            testcafeBrowserTools.open = function (browserInfo) {
-                processedBrowserInfo = browserInfo;
+            builtInProviders.chrome.isValidBrowserName
+                .withArgs('/usr/bin/chrome --arg1 --arg2').resolves(true);
 
-                throw new Error('STOP');
+            const mockedBrowserProviderPool = proxyquire('../../lib/browser/provider/pool', {
+                './built-in': builtInProviders
+            });
+
+            const browserInfo = await mockedBrowserProviderPool.getBrowserInfo('chrome:/usr/bin/chrome --arg1 --arg2');
+
+            expect(browserInfo).include({
+                providerName: 'chrome',
+                browserName:  '/usr/bin/chrome --arg1 --arg2'
+            });
+        });
+
+        it('Should parse the firefox: alias with arguments', async () => {
+            const builtInProviders = {
+                firefox: { isValidBrowserName: sinon.stub() }
             };
 
-            testcafeBrowserTools.getInstallations = function () {
-                return new Promise(function (resolve) {
-                    resolve({ chrome: {} });
-                });
-            };
+            builtInProviders.firefox.isValidBrowserName
+                .withArgs('/usr/bin/firefox -arg1 -arg2').resolves(true);
+
+            const mockedBrowserProviderPool = proxyquire('../../lib/browser/provider/pool', {
+                './built-in': builtInProviders
+            });
+
+            const browserInfo = await mockedBrowserProviderPool.getBrowserInfo('firefox:/usr/bin/firefox -arg1 -arg2');
+
+            expect(browserInfo).include({
+                providerName: 'firefox',
+                browserName:  '/usr/bin/firefox -arg1 -arg2'
+            });
         });
 
-        after(function () {
-            testcafeBrowserTools.getBrowserInfo   = originalBrowserToolsGetBrowserInfo;
-            testcafeBrowserTools.open             = originalBrowserToolsOpen;
-            testcafeBrowserTools.getInstallations = originalBrowserToolsGetInstallations;
+        it('Should parse browser parameters with arguments', async () => {
+            const open           = sinon.stub();
+            const getBrowserInfo = sinon.stub();
+
+            getBrowserInfo
+                .withArgs('/usr/bin/chrome')
+                .resolves({ path: '/usr/bin/chrome', cmd: '--internal-arg' });
+
+            open.resolves();
+
+            const pathBrowserProvider  = proxyquire('../../lib/browser/provider/built-in/path', {
+                'testcafe-browser-tools': { open, getBrowserInfo, __esModule: false }
+            });
+
+            await pathBrowserProvider.openBrowser('id', 'http://example.com', '/usr/bin/chrome --arg1 --arg2');
+
+            expect(open.callCount).equal(1);
+
+            expect(open.args[0]).deep.equal([
+                { path: '/usr/bin/chrome', cmd: '--arg1 --arg2 --internal-arg' },
+                'http://example.com'
+            ]);
         });
 
-        it('Should parse browser parameters with arguments', function () {
-            return getBrowserInfo('path:/usr/bin/chrome --arg1 --arg2')
-                .then(function (browserInfo) {
-                    expect(browserInfo.path).to.be.equal('/usr/bin/chrome');
-                    expect(browserInfo.cmd).to.be.equal('--arg1 --arg2 --internal-arg');
-                });
+        it('Should parse browser parameters with arguments if there are spaces in a file path', async () => {
+            const open           = sinon.stub();
+            const getBrowserInfo = sinon.stub();
+
+            getBrowserInfo
+                .withArgs('/opt/Google Chrome/chrome')
+                .resolves({ path: '/opt/Google Chrome/chrome', cmd: '--internal-arg' });
+
+            open.resolves();
+
+            const pathBrowserProvider  = proxyquire('../../lib/browser/provider/built-in/path', {
+                'testcafe-browser-tools': { open, getBrowserInfo, __esModule: false }
+            });
+
+            await pathBrowserProvider.openBrowser('id', 'http://example.com', '`/opt/Google Chrome/chrome` --arg1 --arg2');
+
+            expect(open.callCount).equal(1);
+
+            expect(open.args[0]).deep.equal([
+                { path: '/opt/Google Chrome/chrome', cmd: '--arg1 --arg2 --internal-arg' },
+                'http://example.com'
+            ]);
         });
 
-        it('Should parse browser parameters with arguments if there are spaces in a file path', function () {
-            return getBrowserInfo('path:`/opt/Google Chrome/chrome` --arg1 --arg2')
-                .then(function (browserInfo) {
-                    expect(browserInfo.path).to.be.equal('/opt/Google Chrome/chrome');
-                    expect(browserInfo.cmd).to.be.equal('--arg1 --arg2 --internal-arg');
-                });
+        it('Should parse path and arguments for Chrome', () => {
+            const chromeProviderConfig  = require('../../lib/browser/provider/built-in/dedicated/chrome/config');
+
+            expect(chromeProviderConfig('/usr/bin/chrome --arg1 --arg2')).include({
+                path:     '/usr/bin/chrome',
+                userArgs: '--arg1 --arg2'
+            });
         });
 
-        it('Should parse alias with arguments', function () {
-            return getBrowserInfo('chrome --arg1 --arg2')
-                .then(function (browserInfo) {
-                    expect(browserInfo.path).to.be.equal('chrome');
-                    expect(browserInfo.cmd).to.contain('--arg1 --arg2 --internal-arg');
-                });
+        it('Should parse path and arguments for Firefox', () => {
+            const firefoxProviderConfig  = require('../../lib/browser/provider/built-in/dedicated/firefox/config');
+
+            expect(firefoxProviderConfig('/usr/bin/firefox -arg1 -arg2')).include({
+                path:     '/usr/bin/firefox',
+                userArgs: '-arg1 -arg2'
+            });
         });
     });
 
@@ -264,10 +321,12 @@ describe('Browser provider', function () {
                         expect(result).to.be.true;
                     });
             });
+        });
+    });
 
+    describe('API', () => {
+        describe('Screenshots', () => {
             it('Should add warning if provider does not support `fullPage` screenshots', () => {
-                const ProviderCtor = require('../../lib/browser/provider/');
-
                 const provider = new ProviderCtor({
                     isLocalBrowser:            () => true,
                     isHeadlessBrowser:         () => false,
@@ -279,6 +338,27 @@ describe('Browser provider', function () {
                 return provider.takeScreenshot(bc.id, '', 1, 1, true)
                     .then(() => {
                         expect(bc.message).eql(WARNING_MESSAGE.screenshotsFullPageNotSupported);
+                    });
+            });
+
+            it('Should create a directory in screenshot was made using the plugin', () => {
+                const provider = new ProviderCtor({
+                    isLocalBrowser:            stubFalse,
+                    isHeadlessBrowser:         stubFalse,
+                    hasCustomActionForBrowser: stubFalse,
+                    takeScreenshot:            noop
+                });
+
+                const dir            = `temp${nanoid(7)}`;
+                const screenshotPath = join(process.cwd(), dir, 'tmp.png');
+
+                return provider.takeScreenshot('', screenshotPath, 0, 0, false)
+                    .then(() => {
+                        const stats = statSync(dirname(screenshotPath));
+
+                        expect(stats.isDirectory()).to.be.true;
+
+                        rmdirSync(dirname(screenshotPath));
                     });
             });
         });

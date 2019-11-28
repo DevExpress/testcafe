@@ -146,6 +146,14 @@ export default class TestController {
         return this.testRun.fixtureCtx;
     }
 
+    _browser$getter () {
+        return assign({}, this.testRun.browserConnection.browserInfo.parsedUserAgent,
+            {
+                alias:    this.testRun.browserConnection.browserInfo.alias,
+                headless: this.testRun.browserConnection.isHeadlessBrowser()
+            });
+    }
+
     _click$ (selector, options) {
         return this._enqueueCommand('click', ClickCommand, { selector, options });
     }

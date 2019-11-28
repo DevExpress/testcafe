@@ -1,5 +1,5 @@
 import { ClientFunction } from 'testcafe';
-import { parse } from 'useragent';
+import parseUserAgent from '../../../../../../../lib/utils/parse-user-agent';
 
 const getUserAgent = ClientFunction(() => navigator.userAgent.toString());
 
@@ -9,18 +9,18 @@ fixture `Take a full-page screenshot`
 test('API', async t => {
     const ua = await getUserAgent();
 
-    await t.takeScreenshot({ path: 'custom/' + parse(ua).family + '.png', fullPage: true });
+    await t.takeScreenshot({ path: 'custom/' + parseUserAgent(ua).name + '.png', fullPage: true });
 });
 
 test('Runner', async t => {
     const ua = await getUserAgent();
 
-    await t.takeScreenshot({ path: 'custom/' + parse(ua).family + '.png', fullPage: true });
+    await t.takeScreenshot({ path: 'custom/' + parseUserAgent(ua).name + '.png', fullPage: true });
 });
 
 test('Screenshot on fail', async () => {
     const ua = await getUserAgent();
 
-    throw new Error('screenshot on fail' + parse(ua).family);
+    throw new Error('screenshot on fail' + parseUserAgent(ua).name);
 });
 

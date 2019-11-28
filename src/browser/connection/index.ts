@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
 import Mustache from 'mustache';
 import { pull as remove } from 'lodash';
-import { parse as parseUserAgent } from 'useragent';
+import parseUserAgent from '../../utils/parse-user-agent';
 import { readSync as read } from 'read-file-relative';
 import promisifyEvent from 'promisify-event';
 import nanoid from 'nanoid';
@@ -36,7 +36,6 @@ interface InitScript {
 
 export default class BrowserConnection extends EventEmitter {
     private gateway: any;
-    public browserInfo: any;
     private permanent: any;
     private readonly allowMultipleWindows: any;
     private readonly HEARTBEAT_TIMEOUT: number;
@@ -47,12 +46,10 @@ export default class BrowserConnection extends EventEmitter {
     private browserConnectionGateway: any;
     private disconnectionPromise: DisconnectionPromise<void> | null;
     private testRunAborted: boolean;
-    private provider: any;
     private closing: boolean;
     private closed: boolean;
     private ready: boolean;
     private opened: boolean;
-    public idle: boolean;
     private heartbeatTimeout: NodeJS.Timeout | null;
     private pendingTestRunUrl: string | null;
     private readonly url: string;
@@ -66,6 +63,11 @@ export default class BrowserConnection extends EventEmitter {
     private readonly statusUrl: string;
     private statusDoneUrl: string;
     private switchingToIdle: boolean;
+
+    public idle: boolean;
+
+    public browserInfo: any;
+    public provider: any;
 
     public constructor (gateway: any, browserInfo: any, permanent: boolean, allowMultipleWindows = false) {
         super();
@@ -81,7 +83,6 @@ export default class BrowserConnection extends EventEmitter {
         this.testRunAborted           = false;
 
         this.browserInfo                           = browserInfo;
-        this.browserInfo.userAgent                 = '';
         this.browserInfo.userAgentProviderMetaInfo = '';
 
         this.provider = browserInfo.provider;
@@ -278,7 +279,7 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     public get userAgent (): string {
-        let userAgent = this.browserInfo.userAgent;
+        let userAgent = this.browserInfo.parsedUserAgent.prettyUserAgent;
 
         if (this.browserInfo.userAgentProviderMetaInfo)
             userAgent += ` (${this.browserInfo.userAgentProviderMetaInfo})`;
@@ -328,13 +329,8 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     public establish (userAgent: string): void {
-        this.ready = true;
-
-        const parsedUserAgent = parseUserAgent(userAgent);
-
-        this.browserInfo.userAgent       = parsedUserAgent.toString();
-        this.browserInfo.fullUserAgent   = userAgent;
-        this.browserInfo.parsedUserAgent = parsedUserAgent;
+        this.ready                       = true;
+        this.browserInfo.parsedUserAgent = parseUserAgent(userAgent);
 
         this._waitForHeartbeat();
         this.emit('ready');

@@ -1,5 +1,5 @@
 import { ClientFunction, Selector } from 'testcafe';
-import userAgent from 'useragent';
+import parseUserAgent from '../../../../../../lib/utils/parse-user-agent';
 
 fixture `Check the target element value when the first input event raised`
     .page('http://localhost:3000/fixtures/regression/gh-1054/pages/index.html');
@@ -22,7 +22,7 @@ test('Type text in the content editable element', async t => {
         .expect(Selector('div').textContent).eql('text');
 
     const userAgentStr = await getUserAgent();
-    const isIE         = userAgent.is(userAgentStr).ie;
+    const isIE         = parseUserAgent(userAgentStr).name === 'Internet Explorer';
 
     if (!isIE)
         await t.expect(await getFirstValue()).eql('t');

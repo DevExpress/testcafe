@@ -2,7 +2,7 @@
   "name": "testcafe",
   "description": "Automated browser testing for the modern web development stack.",
   "license": "MIT",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "author": {
     "name": "Developer Express Inc.",
     "url": "https://www.devexpress.com/"
@@ -51,7 +51,6 @@
   "scripts": {
     "test": "gulp travis",
     "publish-please": "del-cli package-lock.json node_modules && npm i && publish-please",
-    "prepare": "gulp fast-build",
     "prepublishOnly": "publish-please guard"
   },
   "dependencies": {
@@ -66,6 +65,7 @@
     "babel-preset-stage-2": "^6.22.0",
     "babel-runtime": "^6.22.0",
     "bin-v8-flags-filter": "^1.1.2",
+    "bowser": "^2.7.0",
     "callsite": "^1.0.0",
     "callsite-record": "^4.0.0",
     "chai": "^4.1.2",
@@ -115,8 +115,8 @@
     "sanitize-filename": "^1.6.0",
     "source-map-support": "^0.5.16",
     "strip-bom": "^2.0.0",
-    "testcafe-browser-tools": "1.7.1",
-    "testcafe-hammerhead": "14.11.0",
+    "testcafe-browser-tools": "2.0.5",
+    "testcafe-hammerhead": "14.11.1",
     "testcafe-legacy-api": "3.1.11",
     "testcafe-reporter-json": "^2.1.0",
     "testcafe-reporter-list": "^2.1.0",
@@ -126,8 +126,7 @@
     "time-limit-promise": "^1.0.2",
     "tmp": "0.0.28",
     "tree-kill": "^1.1.0",
-    "typescript": "^3.3.3",
-    "useragent": "^2.1.7"
+    "typescript": "^3.3.3"
   },
   "devDependencies": {
     "@belym.a.2105/broken-link-checker": "^0.7.9",

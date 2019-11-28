@@ -1,5 +1,5 @@
 import { RequestLogger, Selector, ClientFunction } from 'testcafe';
-import userAgent from 'useragent';
+import parseUserAgent from '../../../../../../../../lib/utils/parse-user-agent';
 
 const pageUrl = 'http://localhost:3000/fixtures/api/es-next/request-hooks/pages/multi-browser.html';
 
@@ -21,7 +21,7 @@ test
     ('Multi-browser', async t => {
         const buttonSelector = Selector('button');
         const userAgentStr   = await ClientFunction(() => window.navigator.userAgent)();
-        const browserName    = userAgent.parse(userAgentStr).family;
+        const browserName    = parseUserAgent(userAgentStr).name;
 
         await t
             .click(buttonSelector)

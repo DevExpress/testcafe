@@ -1,7 +1,7 @@
 The "array" argument is expected to be a non-empty string or a string array,
 but it was null.
 
-Browser: Chrome 15.0.874 / Mac OS X 10.8.1
+Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>
 
    18 |function func1 () {

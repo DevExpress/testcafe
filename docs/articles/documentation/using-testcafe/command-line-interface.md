@@ -605,7 +605,7 @@ testcafe ie my-tests -F "Page.*"
 
 ### --test-meta \<key=value\[,key2=value2,...\]\>
 
-TestCafe runs tests whose [metadata](../test-api/test-code-structure.md#specifying-testing-metadata) [matches](https://lodash.com/docs/#isMatch) the specified key-value pair.
+TestCafe runs tests whose [metadata](../test-api/test-code-structure.md#specifying-testing-metadata) matches the specified key-value pair.
 
 For example, the following command runs tests whose metadata's `device` property is set to `mobile`, and `env` property is set to `production`.
 
@@ -617,7 +617,7 @@ testcafe chrome my-tests --test-meta device=mobile,env=production
 
 ### --fixture-meta \<key=value\[,key2=value2,...\]\>
 
-TestCafe runs tests whose fixture's [metadata](../test-api/test-code-structure.md#specifying-testing-metadata) [matches](https://lodash.com/docs/#isMatch) the specified key-value pair.
+TestCafe runs tests whose fixture's [metadata](../test-api/test-code-structure.md#specifying-testing-metadata) matches the specified key-value pair.
 
 For example, the following command runs tests whose fixture's metadata has the `device` property set to the `mobile` value and the `env` property set to the `production` value.
 
