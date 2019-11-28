@@ -58,14 +58,15 @@ const ANIMATION_UPDATE_INTERVAL            = 10;
 const LOCAL_STORAGE_STATUS_PREFIX_ITEM     = '%testCafeStatusPrefix%';
 
 export default class StatusBar extends serviceUtils.EventEmitter {
-    constructor (userAgent, fixtureName, testName) {
+    constructor (userAgent, fixtureName, testName, contextStorage) {
         super();
 
         this.UNLOCK_PAGE_BTN_CLICK = 'testcafe|ui|status-bar|unlock-page-btn-click';
 
-        this.userAgent   = userAgent;
-        this.fixtureName = fixtureName;
-        this.testName    = testName;
+        this.userAgent      = userAgent;
+        this.fixtureName    = fixtureName;
+        this.testName       = testName;
+        this.contextStorage = contextStorage;
 
         this.statusBar        = null;
         this.infoContainer    = null;
@@ -360,7 +361,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
     }
 
     _getFullStatusText (statusText) {
-        const prefixText = localStorage.getItem(LOCAL_STORAGE_STATUS_PREFIX_ITEM);
+        const prefixText = this.contextStorage.getItem(LOCAL_STORAGE_STATUS_PREFIX_ITEM);
         const prefix     = prefixText ? `${prefixText}. ` : '';
 
         return `${prefix}${statusText}`;
@@ -501,7 +502,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
     }
 
     setStatusPrefix (prefixText) {
-        localStorage.setItem(LOCAL_STORAGE_STATUS_PREFIX_ITEM, prefixText);
+        this.contextStorage.setItem(LOCAL_STORAGE_STATUS_PREFIX_ITEM, prefixText);
         this._resetState();
     }
 }

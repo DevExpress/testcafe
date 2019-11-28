@@ -688,7 +688,7 @@ export default class Driver {
 
         browser.startHeartbeat(this.heartbeatUrl, hammerhead.createNativeXHR);
 
-        this.statusBar = new StatusBar(this.userAgent, this.fixtureName, this.testName);
+        this.statusBar = new StatusBar(this.userAgent, this.fixtureName, this.testName, this.contextStorage);
 
         this.statusBar.on(this.statusBar.UNLOCK_PAGE_BTN_CLICK, disableRealEventsPreventing);
 
