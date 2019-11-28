@@ -659,6 +659,6 @@ test
 
 To disable page caching during the entire test run, use either of the following options:
 
-* the [--disable-page-caching](../using-testcafe/command-line-interface.md#--disable-page-caching) command line flag
-* the `disablePageCaching` option in the [runner.run](../using-testcafe/programming-interface/runner.md#run) method
-* the [disablePageCaching](../using-testcafe/configuration-file.md#disablepagecaching) configuration file option
+* the [--disable-page-caching](../using-testcafe/command-line-interface.md#--disable-page-caching) command line flag,
+* the `disablePageCaching` option in the [runner.run](../using-testcafe/programming-interface/runner.md#run) method,
+* the [disablePageCaching](../using-testcafe/configuration-file.md#disablepagecaching) configuration file option.

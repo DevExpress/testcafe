@@ -903,7 +903,7 @@ You can specify an absolute or relative path. Relative paths are resolved agains
 
 ### --disable-page-caching
 
-Prevents the browser from caching the page content.
+Prevents the browser from caching page content.
 
 ```sh
 testcafe chrome my-tests --disable-page-caching

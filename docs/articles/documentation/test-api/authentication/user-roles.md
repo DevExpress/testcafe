@@ -188,7 +188,7 @@ In order to guarantee seamless test execution, browsers that run TestCafe tests 
 
 However, if the browser uses a cached copy of the page, automation mechanisms may be interrupted. Among other issues, this could reset authentication data in the cookies, local and session storages during navigation.
 
-If tests fail unexpectedly after authentication, try the following steps:
+If tests fail unexpectedly after authentication, try the following:
 
 * Enable the [preserveUrl](#optionspreserveurl) option to avoid automatic navigation.
 * If `preserveUrl` does not fix the issue, disable page caching. Note that this slows down test execution.
@@ -197,6 +197,6 @@ Use the [fixture.disablePageCaching](../test-code-structure.md#disable-page-cach
 
 To disable page caching during the entire test run, use either of the following options:
 
-* the [--disable-page-caching](../../using-testcafe/command-line-interface.md#--disable-page-caching) command line flag
-* the `disablePageCaching` option in the [runner.run](../../using-testcafe/programming-interface/runner.md#run) method
-* the [disablePageCaching](../../using-testcafe/configuration-file.md#disablepagecaching) configuration file property
+* the [--disable-page-caching](../../using-testcafe/command-line-interface.md#--disable-page-caching) command line flag,
+* the `disablePageCaching` option in the [runner.run](../../using-testcafe/programming-interface/runner.md#run) method,
+* the [disablePageCaching](../../using-testcafe/configuration-file.md#disablepagecaching) configuration file property.
