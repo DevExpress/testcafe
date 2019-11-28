@@ -238,14 +238,14 @@ test('My test', async t => {
 
 TestCafe selectors should use element identifiers that persist between test runs. However, many JavaScript frameworks generate dynamic IDs for page elements. To identify elements whose `id` attribute changes, use selectors based on the element's class, content, tag name, or position:
 
-* [withText](../documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.md#withtext),
-* [withExactText](../documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.md#withexacttext),
-* [withAttribute](../documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.md#withattribute),
-* [parent](../documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.md#parent),
-* [child](../documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.md#child),
-* [sibling](../documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.md#sibling),
-* [nextSibling](../documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.md#nextsibling),
-* [prevSibling](../documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.md#prevsibling).
+* [withText](selectors/functional-style-selectors.md#withtext),
+* [withExactText](selectors/functional-style-selectors.md#withexacttext),
+* [withAttribute](selectors/functional-style-selectors.md#withattribute),
+* [parent](selectors/functional-style-selectors.md#parent),
+* [child](selectors/functional-style-selectors.md#child),
+* [sibling](selectors/functional-style-selectors.md#sibling),
+* [nextSibling](selectors/functional-style-selectors.md#nextsibling),
+* [prevSibling](selectors/functional-style-selectors.md#prevsibling).
 
 **Example**
 
