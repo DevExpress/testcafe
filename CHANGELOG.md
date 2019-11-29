@@ -1217,7 +1217,7 @@ You can include placeholders in the path, for example, `${DATE}`, `${TIME}`, `${
 
 You should specify a screenshot path pattern when you run tests. Each time TestCafe takes a screenshot, it substitutes the placeholders with actual values and saves the screenshot to the resulting path.
 
-The following example shows how to specify a screenshot path pattern through the command line:
+The following example shows how to use the command line to specify a screenshot path pattern:
 
 ```sh
 testcafe all test.js -s path=screenshots,pathPattern=${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png
@@ -1455,11 +1455,11 @@ test('Take a screenshot of a fieldset', async t => {
 });
 ```
 
-This action provides additional customization that allows you to adjust the screenshot's center or crop it. Refer to the [documentation](https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-a-page-element) for more information.
+This action provides additional customization that allows you to adjust the screenshot's center or crop it. Refer to the [t.takeElementScreenshot](https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-a-page-element) description for more information.
 
 #### :gear: Filtering Elements by Their Visibility ([#1018](https://github.com/DevExpress/testcafe/issues/1018))
 
-You can now filter the selector's matched set to display only visible or hidden elements using the [filterVisible](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#filtervisible) and [filterHidden](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#filterhidden) methods.
+You can now use the [filterVisible](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#filtervisible) and [filterHidden](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#filterhidden) methods to display only visible or hidden elements.
 
 ```js
 import { Selector } from 'testcafe';

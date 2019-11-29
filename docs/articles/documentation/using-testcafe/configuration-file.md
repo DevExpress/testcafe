@@ -289,7 +289,7 @@ Prevents TestCafe from taking screenshots.
 }
 ```
 
-When this property is specified, screenshots are not taken whenever a test fails or a [screenshot action](../test-api/actions/take-screenshot.md) is executed.
+When this property is specified, screenshots are not taken when a test fails or a [screenshot action](../test-api/actions/take-screenshot.md) is executed.
 
 *CLI*: [--disable-screenshots](command-line-interface.md#--disable-screenshots)  
 *API*: [runner.run({ disableScreenshots })](programming-interface/runner.md#run)

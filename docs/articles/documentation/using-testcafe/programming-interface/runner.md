@@ -249,7 +249,7 @@ Option           | Type    | Description                                        
 
 See [Screenshots](../common-concepts/screenshots-and-videos.md#screenshots) for details.
 
-Pass the `disableScreenshots` option to the [runner.run](#run) method to disable taking screenshots:
+Pass the `disableScreenshots` option to the [runner.run](#run) method to disable screenshots:
 
 ```js
 runner.run({

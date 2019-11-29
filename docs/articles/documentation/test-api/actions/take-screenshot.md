@@ -54,7 +54,7 @@ Takes a screenshot of the specified page element.
 Parameter                | Type   | Description
 ------------------------ | ------ | -----------------------------------------------------------------------------------------------------
 `selector`               | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element whose screenshot should be taken. See [Selecting Target Elements](README.md#selecting-target-elements).
-`path`&#160;*(optional)* | String | The screenshot file's relative path and name. The path is relative to the root directory specified by using the [runner.screenshots](../../using-testcafe/programming-interface/runner.md#screenshots) API method or the [-s (--screenshots)](../../using-testcafe/command-line-interface.md#-s---screenshots-optionvalueoption2value2) command line option. This path overrides the relative path the default or custom [path patterns](../../using-testcafe/common-concepts/screenshots-and-videos.md#screenshot-and-video-directories) specify.
+`path`&#160;*(optional)* | String | The screenshot file's relative path and name. The path is relative to the root directory specified in the [runner.screenshots](../../using-testcafe/programming-interface/runner.md#screenshots) API method or the [-s (--screenshots)](../../using-testcafe/command-line-interface.md#-s---screenshots-optionvalueoption2value2) command line option. This path overrides the relative path the default or custom [path patterns](../../using-testcafe/common-concepts/screenshots-and-videos.md#screenshot-and-video-directories) specify.
 `options`&#160;*(optional)*   | Object | Options that define how the screenshot is taken. See details below.
 
 ```js

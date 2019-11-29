@@ -37,11 +37,11 @@ test('Take a screenshot of a fieldset', async t => {
 });
 ```
 
-This action provides additional customization that allows you to position the center of the screenshot or crop it. For more information, see the [documentation](https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-a-page-element).
+This action allows you to position the center of the screenshot or crop it. For more information, see the [t.takeElementScreenshot](https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-a-page-element) description.
 
 ### ⚙ Filtering Elements by Their Visibility ([#1018](https://github.com/DevExpress/testcafe/issues/1018))
 
-You can now filter the selector's matched set to leave only visible or hidden elements. To do this, use the [filterVisible](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#filtervisible) and [filterHidden](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#filterhidden) methods.
+You can now use the [filterVisible](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#filtervisible) and [filterHidden](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#filterhidden) methods to display only visible or hidden elements.
 
 ```js
 import { Selector } from 'testcafe';
