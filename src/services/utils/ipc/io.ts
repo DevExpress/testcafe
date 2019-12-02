@@ -1,13 +1,16 @@
 import fs from 'fs';
+import debug from 'debug';
 import Packet from './packet';
 import { MessageParser, MessageSerializer } from './message';
 import EventEmitter from '../../../utils/async-event-emitter';
 
 
+const debugLogger = debug('testcafe:services:utils:ipc:io');
+
 export class AsyncReader extends EventEmitter {
     private readonly parser: MessageParser;
     private readonly stream: NodeJS.ReadableStream;
-    private readonly messageIterator: AsyncGenerator<void, void, object[]>;
+    private processMessages: Promise<void>;
 
     public constructor (stream: NodeJS.ReadableStream) {
         super();
@@ -15,7 +18,7 @@ export class AsyncReader extends EventEmitter {
         this.parser = new MessageParser();
         this.stream = stream;
 
-        this.messageIterator = this._iterateMessages();
+        this.processMessages = Promise.resolve();
     }
 
     private _onData (data: Buffer): void {
@@ -24,21 +27,21 @@ export class AsyncReader extends EventEmitter {
         if (!messages.length)
             return;
 
-        this.messageIterator.next(messages);
+        this.processMessages = this.processMessages.then(() => this._processMessages(messages));
     }
 
-    private async * _iterateMessages (): AsyncGenerator<void, void, object[]> {
-        while (true) {
-            const messages = yield;
-
-            for (const message of messages)
+    private async _processMessages (messages: object[]): Promise<void> {
+        for (const message of messages) {
+            try {
                 await this.emit('data', message);
+            }
+            catch (e) {
+                debugLogger(e);
+            }
         }
     }
 
     public read (): void {
-        this.messageIterator.next();
-
         this.stream.on('data', data => this._onData(data));
     }
 }
