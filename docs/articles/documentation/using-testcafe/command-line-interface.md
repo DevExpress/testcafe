@@ -392,8 +392,6 @@ When this option is specified, screenshots are not taken whenever a test fails o
 testcafe all tests/sample-fixture.js -s screenshots
 ```
 
-This option will be deprecated in the future versions.
-
 In **v1.5.0** and newer, screenshots are enabled by default and saved to *./screenshots*.
 
 To specify a different location, pass the [path](#path) parameter:
@@ -416,8 +414,6 @@ testcafe all tests/sample-fixture.js --disable-screenshots
 testcafe all tests/sample-fixture.js -S -s screenshots
 ```
 
-This option will be deprecated in the future versions.
-
 In **v1.5.0** and newer, use the [takeOnFails](#takeonfails) parameter:
 
 ```sh
@@ -431,8 +427,6 @@ testcafe all tests/sample-fixture.js -s takeOnFails=true
 ```sh
 testcafe all tests/sample-fixture.js -s screenshots -p '${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png'
 ```
-
-This option will be deprecated in the future versions.
 
 In **v1.5.0** and newer, use the [pathPattern](#pathpattern) parameter:
 

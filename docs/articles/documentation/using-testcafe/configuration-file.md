@@ -304,8 +304,6 @@ When this property is specified, screenshots are not taken when a test fails or 
 }
 ```
 
-This property will be deprecated in the future versions.
-
 In **v1.5.0** and newer, screenshots are enabled by default and saved to *./screenshots*.
 
 To save them to a different location, specify the [screenshots.path](#screenshotspath) property:
@@ -336,8 +334,6 @@ Use the [disableScreenshots](#disablescreenshots) property to prevent TestCafe f
 }
 ```
 
-This property will be deprecated in the future versions.
-
 In **v1.5.0** and newer, use the [screenshots.takeOnFails](#screenshotstakeonfails) property:
 
 ```json
@@ -357,8 +353,6 @@ In **v1.5.0** and newer, use the [screenshots.takeOnFails](#screenshotstakeonfai
     "screenshotPathPattern": "${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png"
 }
 ```
-
-This property will be deprecated in the future versions.
 
 In **v1.5.0** and newer, use the [screenshots.pathPattern](#screenshotspathpattern) property:
 
