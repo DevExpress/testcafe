@@ -273,8 +273,9 @@ test('My test', async t => {
 });
 ```
 
-If the element's ID is partially dynamic, you can use the following CSS selectors to match the ID's static part:
+If the element's ID is partially dynamic, you can use the following selectors to match the ID's static part:
 
+* [withAttribute(RegExp)](selectors/functional-style-selectors.md#withattribute)
 * [[attribute~=value]](https://www.w3schools.com/cssref/sel_attribute_value_contains.asp),
 * [[attribute|=value]](https://www.w3schools.com/cssref/sel_attribute_value_lang.asp),
 * [[attribute^=value]](https://www.w3schools.com/cssref/sel_attr_begin.asp),
@@ -286,8 +287,10 @@ If the element's ID is partially dynamic, you can use the following CSS selector
 ```html
 <html>
     <body>
-        <div id="g99dsf99sdfg-container">
-            <div id="item-df9f9sfd9fd9">Item</div>
+        <div id="9fgk309d3-wrapper-9f">
+            <div id="g99dsf99sdfg-container">
+                <div id="item-df9f9sfd9fd9">Item</div>
+            </div>
         </div>
     </body>
 </html>
@@ -300,6 +303,7 @@ fixture `My fixture`
     .page `http://localhost/`;
 
 test('My test', async t => {
+    const wrapper   = Selector('div').withAttribute('id', /\w+-wrapper-\w+/);
     const container = Selector('[id$="container"]');
     const item      = Selector('[id|="item"]');
 });
