@@ -169,7 +169,7 @@ fixture `My fixture`
 
 test('My test', async t => {
     const myTable = <CustomSelector>Selector('#customers').addCustomMethods({
-        getExpandButtonCell: (elements, rowIndex) => {
+        getExpandButtonCell: (elements: HTMLCollection, rowIndex: number) => {
             return elements[0].querySelectorAll('.dx-group-row')[rowIndex].cells[0];
         }
         // ...
@@ -178,7 +178,7 @@ test('My test', async t => {
         returnDOMNodes: true
     })
     .addCustomMethods({
-        getCellText: (table, rowIndex, columnIndex) => {
+        getCellText: (table: HTMLTableElement, rowIndex: number, columnIndex: number) => {
             return table.rows[rowIndex].cells[columnIndex].innerText;
         }
         // ...
