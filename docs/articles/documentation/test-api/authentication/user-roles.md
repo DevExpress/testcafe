@@ -20,7 +20,7 @@ A piece of logic that logs in a particular user is called a *role*. Define a rol
 
 ## Why Use Roles
 
-Roles are more than just another way to [extract reusable test logic](../../recipes/extract-reusable-test-code/README.md). They were specially designed for login operations and provide the following dedicated features:
+Unlike other methods used to [extract reusable test logic](../../recipes/extract-reusable-test-code/README.md), roles were specially designed for login operations and provide the following dedicated features:
 
 * **Object-based API.** Authentication data and logic are stored in an object that is easy to pass around and activate when needed.
 * **Single login.** Login actions are not repeated when you switch to a previously used role within the same session. If you activate a role in the [beforeEach](../test-code-structure.md#test-hooks) hook, login actions run once before the first test. The subsequent tests reuse authentication data so that it happens instantly.
@@ -186,17 +186,17 @@ This issue can be caused by the browser's page caching.
 
 In order to guarantee seamless test execution, browsers that run TestCafe tests should always fetch the tested page from the TestCafe proxy server. This ensures that automation scripts on the page are in sync with the server side.
 
-However, if the browser uses a cached copy of the page, automation mechanisms may be interrupted. Among other issues, this could reset authentication data in the cookies, local and session storages during navigation.
+However, if the browser uses a cached copy of the page, automation mechanisms may be interrupted. Among other issues, this could reset authentication data in the cookies, local and session storage during navigation.
 
-If tests fail unexpectedly after authentication, try the following steps:
+If tests fail unexpectedly after authentication, try the following:
 
 * Enable the [preserveUrl](#optionspreserveurl) option to avoid automatic navigation.
 * If `preserveUrl` does not fix the issue, disable page caching. Note that this slows down test execution.
 
-Use the [fixture.disablePageCaching](../test-code-structure.md#disable-page-caching) and [test.disablePageCaching](../test-code-structure.md#disable-page-caching) methods to disable caching during a particular fixture or test.
+Use the [fixture.disablePageCaching](../test-code-structure.md#disable-page-caching) and [test.disablePageCaching](../test-code-structure.md#disable-page-caching) methods to disable caching during a fixture or test.
 
 To disable page caching during the entire test run, use either of the following options:
 
-* the [--disable-page-caching](../../using-testcafe/command-line-interface.md#--disable-page-caching) command line flag
-* the `disablePageCaching` option in the [runner.run](../../using-testcafe/programming-interface/runner.md#run) method
-* the [disablePageCaching](../../using-testcafe/configuration-file.md#disablepagecaching) configuration file property
+* the [--disable-page-caching](../../using-testcafe/command-line-interface.md#--disable-page-caching) command line flag,
+* the `disablePageCaching` option in the [runner.run](../../using-testcafe/programming-interface/runner.md#run) method,
+* the [disablePageCaching](../../using-testcafe/configuration-file.md#disablepagecaching) configuration file property.

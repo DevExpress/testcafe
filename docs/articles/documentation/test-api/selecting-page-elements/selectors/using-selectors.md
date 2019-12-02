@@ -96,7 +96,7 @@ test('DOM Node Snapshot', async t => {
 ```
 
 Note that if a selector initializer has several matching DOM nodes on the page,
-the selector returns the first node from the matching set.
+the selector returns the first node from the matched set.
 
 > It's not recommended to pass DOM Node Snapshot's properties
 to [built-in assertions](../../assertions/README.md) to check the state of the element.
@@ -144,7 +144,7 @@ in the DOM and become visible. If this does not happen
 within the [selector timeout](#selector-timeout), the test fails.
 
 Note that if a selector initializer has multiple matching DOM nodes on the page,
-the action will be executed only for the first node from the matching set.
+the action will be executed only for the first node from the matched set.
 
 ## Define Assertion Actual Value
 

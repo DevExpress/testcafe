@@ -289,7 +289,7 @@ Prevents TestCafe from taking screenshots.
 }
 ```
 
-When this property is specified, screenshots are not taken whenever a test fails or a [screenshot action](../test-api/actions/take-screenshot.md) is executed.
+When this property is specified, screenshots are not taken when a test fails or a [screenshot action](../test-api/actions/take-screenshot.md) is executed.
 
 *CLI*: [--disable-screenshots](command-line-interface.md#--disable-screenshots)  
 *API*: [runner.run({ disableScreenshots })](programming-interface/runner.md#run)
@@ -303,8 +303,6 @@ When this property is specified, screenshots are not taken whenever a test fails
     "screenshotPath": "/home/user/tests/screenshots/"
 }
 ```
-
-This property will be deprecated in the future versions.
 
 In **v1.5.0** and newer, screenshots are enabled by default and saved to *./screenshots*.
 
@@ -336,8 +334,6 @@ Use the [disableScreenshots](#disablescreenshots) property to prevent TestCafe f
 }
 ```
 
-This property will be deprecated in the future versions.
-
 In **v1.5.0** and newer, use the [screenshots.takeOnFails](#screenshotstakeonfails) property:
 
 ```json
@@ -357,8 +353,6 @@ In **v1.5.0** and newer, use the [screenshots.takeOnFails](#screenshotstakeonfai
     "screenshotPathPattern": "${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png"
 }
 ```
-
-This property will be deprecated in the future versions.
 
 In **v1.5.0** and newer, use the [screenshots.pathPattern](#screenshotspathpattern) property:
 
@@ -757,7 +751,7 @@ Injects scripts into pages visited during the tests. Use this property to introd
 }
 ```
 
-> Relative paths resolve from the current working directory.
+> Relative paths are resolved against the current working directory.
 
 See [Provide Scripts to Inject](common-concepts/inject-scripts-into-tested-pages.md#provide-scripts-to-inject) to learn how to specify the scripts.
 
@@ -917,14 +911,14 @@ Enables TestCafe to use a custom [TypeScript configuration file](../test-api/typ
 }
 ```
 
-You can specify an absolute or relative path. Relative paths resolve from the current directory (the directory from which you run TestCafe).
+You can specify an absolute or relative path. Relative paths are resolved against the current directory (the directory from which you run TestCafe).
 
 *CLI*: [--ts-config-path](command-line-interface.md#--ts-config-path-path)  
 *API*: [runner.tsConfigPath](programming-interface/runner.md#tsconfigpath)
 
 ## disablePageCaching
 
-Prevents the browser from caching the page content.
+Prevents the browser from caching page content.
 
 ```json
 {

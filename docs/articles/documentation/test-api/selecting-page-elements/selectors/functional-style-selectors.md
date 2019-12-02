@@ -6,7 +6,7 @@ checked: false
 ---
 # Functional-Style Selectors
 
-The selector API provides methods used to filter the selector matching set and search for nodes through the DOM tree.
+The selector API provides methods used to filter the selector matched set and search for nodes through the DOM tree.
 These methods can be used in a chain for a functional-style selection mechanism.
 
 * [Filter DOM Nodes](#filter-dom-nodes)
@@ -36,7 +36,7 @@ The selector provides methods to filter DOM nodes by their index, text, attribut
 
 Method | Return Type | Description
 ------ | ----- | -----
-`nth(index)` | Selector | Finds an element by its index in the matching set. The `index` parameter is zero-based. If `index` is negative, the index is counted from the end of the matching set.
+`nth(index)` | Selector | Finds an element by its index in the matched set. The `index` parameter is zero-based. If `index` is negative, the index is counted from the end of the matched set.
 
 ```js
 // Selects the third ul element.
@@ -50,8 +50,8 @@ Selector('div').nth(-1);
 
 Method | Type | Description
 ------ | ----- | -----
-`withText(text)` | Selector | Creates a selector that filters a matching set by the specified text. Selects elements that *contain* this text. To filter elements by *strict match*, use the `withExactText` method. The `text` parameter is case-sensitive.
-`withText(re)` | Selector | Creates a selector that filters a matching set using the specified regular expression.
+`withText(text)` | Selector | Creates a selector that filters a matched set by the specified text. Selects elements that *contain* this text. To filter elements by *strict match*, use the `withExactText` method. The `text` parameter is case-sensitive.
+`withText(re)` | Selector | Creates a selector that filters a matched set using the specified regular expression.
 
 ```js
 // Selects label elements that contain 'foo'.
@@ -64,7 +64,7 @@ Selector('label').withText('foo');
 Selector('div').withText(/a[b-e]/);
 ```
 
-Note that when `withText` filters the matching set, it leaves not only the element that immediately contains the specified text but also its ancestors.
+Note that when `withText` filters the matched set, it leaves not only the element that immediately contains the specified text but also its ancestors.
 
 Assume the following markup.
 
@@ -86,7 +86,7 @@ Selector('div').withText('some text');
 
 Method | Type | Description
 ------ | ----- | -----
-`withExactText(text)` | Selector | Creates a selector that filters a matching set by the specified text. Selects elements whose text content *strictly matches* this text. To search for elements that *contain* a specific text, use the `withText` method. The `text` parameter is case-sensitive.
+`withExactText(text)` | Selector | Creates a selector that filters a matched set by the specified text. Selects elements whose text content *strictly matches* this text. To search for elements that *contain* a specific text, use the `withText` method. The `text` parameter is case-sensitive.
 
 ```js
 // Selects elements of the 'container' class
@@ -95,7 +95,7 @@ Method | Type | Description
 Selector('.container').withExactText('foo');
 ```
 
-Note that when `withExactText` filters the matching set, it leaves not only the element that immediately contains the specified text but also its ancestors (if they do not contain any other text). See an example for [withText](#withtext).
+Note that when `withExactText` filters the matched set, it leaves not only the element that immediately contains the specified text but also its ancestors (if they do not contain any other text). See an example for [withText](#withtext).
 
 ### withAttribute
 
@@ -138,7 +138,7 @@ Selector('ul').withAttribute(/[123]z/, /a[0-9]/);
 
 Method                              | Type     | Description
 ----------------------------------- | -------- | -----------
-`filterVisible()` | Selector | Creates a selector that filters a matching set leaving only visible elements. These are elements that *do not* have `display: none` or `visibility: hidden` CSS properties and have non-zero width and height.
+`filterVisible()` | Selector | Creates a selector that filters a matched set leaving only visible elements. These are elements that *do not* have `display: none` or `visibility: hidden` CSS properties and have non-zero width and height.
 
 ```js
 // Selects all visible div elements.
@@ -149,7 +149,7 @@ Selector('div').filterVisible();
 
 Method                              | Type     | Description
 ----------------------------------- | -------- | -----------
-`filterHidden()` | Selector | Creates a selector that filters a matching set leaving only hidden elements. These are elements that have a `display: none` or `visibility: hidden` CSS property or zero width or height.
+`filterHidden()` | Selector | Creates a selector that filters a matched set leaving only hidden elements. These are elements that have a `display: none` or `visibility: hidden` CSS property or zero width or height.
 
 ```js
 // Selects all hidden label elements.
@@ -174,7 +174,7 @@ The `filterFn` predicate is executed on the client. It takes the following param
 Parameter | Description
 ------ | -----
 `node`  | The current DOM node.
-`idx` | Index of the current node among other nodes in the matching set.
+`idx` | Index of the current node among other nodes in the matched set.
 
 ```js
 Selector('ul').filter((node, idx) => {
@@ -231,8 +231,8 @@ The selector API provides methods to find elements in a DOM hierarchy in jQuery 
 
 Method | Description
 ------ | -----
-`find(cssSelector)` | Finds all descendants of all nodes in the matching set and filters them by `cssSelector`.
-`find(filterFn, dependencies)` | Finds all descendants of all nodes in the matching set and filters them using `filterFn` predicate. Use an optional `dependencies` parameter to pass functions, variables or objects to the `filterFn` function. See [Filtering DOM Elements by Predicates](#filtering-dom-elements-by-predicates).
+`find(cssSelector)` | Finds all descendants of all nodes in the matched set and filters them by `cssSelector`.
+`find(filterFn, dependencies)` | Finds all descendants of all nodes in the matched set and filters them using `filterFn` predicate. Use an optional `dependencies` parameter to pass functions, variables or objects to the `filterFn` function. See [Filtering DOM Elements by Predicates](#filtering-dom-elements-by-predicates).
 
 ```js
 // Selects input elements that are descendants
@@ -244,10 +244,10 @@ Selector('div.someClass').find('input');
 
 Method | Description
 ------ | -----
-`parent()` | Finds all parents of all nodes in the matching set (first element in the set will be the closest parent).
-`parent(index)` | Finds all parents of all nodes in the matching set and filters them by `index` (0 is the closest). If `index` is negative, the index is counted from the end of the matching set.
-`parent(cssSelector)` | Finds all parents of all nodes in the matching set and filters them by `cssSelector`.
-`parent(filterFn, dependencies)` | Finds all parents of all nodes in the matching set and filters them by the `filterFn` predicate. Use an optional `dependencies` parameter to pass functions, variables or objects to the `filterFn` function. See [Filtering DOM Elements by Predicates](#filtering-dom-elements-by-predicates).
+`parent()` | Finds all parents of all nodes in the matched set (first element in the set will be the closest parent).
+`parent(index)` | Finds all parents of all nodes in the matched set and filters them by `index` (0 is the closest). If `index` is negative, the index is counted from the end of the matched set.
+`parent(cssSelector)` | Finds all parents of all nodes in the matched set and filters them by `cssSelector`.
+`parent(filterFn, dependencies)` | Finds all parents of all nodes in the matched set and filters them by the `filterFn` predicate. Use an optional `dependencies` parameter to pass functions, variables or objects to the `filterFn` function. See [Filtering DOM Elements by Predicates](#filtering-dom-elements-by-predicates).
 
 ```js
 // Selects all ancestors of all ul elements.
@@ -267,10 +267,10 @@ Selector('a').parent('div');
 
 Method | Description
 ------ | -----
-`child()` | Finds all child elements (not [nodes](https://developer.mozilla.org/en-US/docs/Web/API/Node)) of all nodes in the matching set.
-`child(index)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `index`. The `index` parameter is zero-based. If `index` is negative, the index is counted from the end of the matching set.
-`child(cssSelector)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by `cssSelector`.
-`child(filterFn, dependencies)` | Finds all child elements (not nodes) of all nodes in the matching set and filters them by the `filterFn` predicate. Use an optional `dependencies` parameter to pass functions, variables or objects to the `filterFn` function. See [Filtering DOM Elements by Predicates](#filtering-dom-elements-by-predicates).
+`child()` | Finds all child elements (not [nodes](https://developer.mozilla.org/en-US/docs/Web/API/Node)) of all nodes in the matched set.
+`child(index)` | Finds all child elements (not nodes) of all nodes in the matched set and filters them by `index`. The `index` parameter is zero-based. If `index` is negative, the index is counted from the end of the matched set.
+`child(cssSelector)` | Finds all child elements (not nodes) of all nodes in the matched set and filters them by `cssSelector`.
+`child(filterFn, dependencies)` | Finds all child elements (not nodes) of all nodes in the matched set and filters them by the `filterFn` predicate. Use an optional `dependencies` parameter to pass functions, variables or objects to the `filterFn` function. See [Filtering DOM Elements by Predicates](#filtering-dom-elements-by-predicates).
 
 > Important! To learn how to access child nodes, see [Access Child Nodes in the DOM Hierarchy](../examples-of-working-with-dom-elements.md#access-child-nodes-in-the-dom-hierarchy).
 
@@ -292,10 +292,10 @@ Selector('nav').child('ul');
 
 Method | Description
 ------ | -----
-`sibling()` | Finds all sibling  elements (not nodes) of all nodes in the matching set.
-`sibling(index)` | Finds all sibling  elements (not nodes) of all nodes in the matching set and filters them by `index`. Elements are indexed as they appear in their parents' `childNodes` collections. The `index` parameter is zero-based. If `index` is negative, the index is counted from the end of the matching set.
-`sibling(cssSelector)` | Finds all sibling elements (not nodes) of all nodes in the matching set and filters them by `cssSelector`.
-`sibling(filterFn, dependencies)` |  Finds all sibling elements (not nodes) of all nodes in the matching set and filters them by the `filterFn` predicate. Use an optional `dependencies` parameter to pass functions, variables or objects to the `filterFn` function. See [Filtering DOM Elements by Predicates](#filtering-dom-elements-by-predicates).
+`sibling()` | Finds all sibling  elements (not nodes) of all nodes in the matched set.
+`sibling(index)` | Finds all sibling  elements (not nodes) of all nodes in the matched set and filters them by `index`. Elements are indexed as they appear in their parents' `childNodes` collections. The `index` parameter is zero-based. If `index` is negative, the index is counted from the end of the matched set.
+`sibling(cssSelector)` | Finds all sibling elements (not nodes) of all nodes in the matched set and filters them by `cssSelector`.
+`sibling(filterFn, dependencies)` |  Finds all sibling elements (not nodes) of all nodes in the matched set and filters them by the `filterFn` predicate. Use an optional `dependencies` parameter to pass functions, variables or objects to the `filterFn` function. See [Filtering DOM Elements by Predicates](#filtering-dom-elements-by-predicates).
 
 ```js
 // Selects all siblings of all td elements.
@@ -317,10 +317,10 @@ Selector('img').sibling('p');
 
 Method | Description
 ------ | -----
-`nextSibling()` | Finds all succeeding sibling elements (not nodes) of all nodes in the matching set.
-`nextSibling(index)` | Finds all succeeding sibling elements (not nodes) of all nodes in the matching set and filters them by `index`. Elements are indexed beginning from the closest sibling. The `index` parameter is zero-based. If `index` is negative, the index is counted from the end of the matching set.
-`nextSibling(cssSelector)` | Finds all succeeding sibling elements (not nodes) of all nodes in the matching set and filters them by `cssSelector`.
-`nextSibling(filterFn, dependencies)` |  Finds all succeeding sibling elements (not nodes) of all nodes in the matching set and filters them by the `filterFn` predicate. Use an optional `dependencies` parameter to pass functions, variables or objects to the `filterFn` function. See [Filtering DOM Elements by Predicates](#filtering-dom-elements-by-predicates).
+`nextSibling()` | Finds all succeeding sibling elements (not nodes) of all nodes in the matched set.
+`nextSibling(index)` | Finds all succeeding sibling elements (not nodes) of all nodes in the matched set and filters them by `index`. Elements are indexed beginning from the closest sibling. The `index` parameter is zero-based. If `index` is negative, the index is counted from the end of the matched set.
+`nextSibling(cssSelector)` | Finds all succeeding sibling elements (not nodes) of all nodes in the matched set and filters them by `cssSelector`.
+`nextSibling(filterFn, dependencies)` |  Finds all succeeding sibling elements (not nodes) of all nodes in the matched set and filters them by the `filterFn` predicate. Use an optional `dependencies` parameter to pass functions, variables or objects to the `filterFn` function. See [Filtering DOM Elements by Predicates](#filtering-dom-elements-by-predicates).
 
 ```js
 // Selects all succeeding siblings of all 'a' elements.
@@ -340,10 +340,10 @@ Selector('hr').nextSibling('p');
 
 Method | Description
 ------ | -----
-`prevSibling()` | Finds all preceding sibling elements (not nodes) of all nodes in the matching set.
-`prevSibling(index)` | Finds all preceding sibling elements (not nodes) of all nodes in the matching set and filters them by `index`. Elements are indexed beginning from the closest sibling. The `index` parameter is zero-based. If `index` is negative, the index is counted from the end of the matching set.
-`prevSibling(cssSelector)` | Finds all preceding sibling elements (not nodes) of all nodes in the matching set and filters them by `cssSelector`.
-`prevSibling(filterFn, dependencies)` |  Finds all preceding sibling elements (not nodes) of all nodes in the matching set and filters them by the `filterFn` predicate. Use an optional `dependencies` parameter to pass functions, variables or objects to the `filterFn` function. See [Filtering DOM Elements by Predicates](#filtering-dom-elements-by-predicates).
+`prevSibling()` | Finds all preceding sibling elements (not nodes) of all nodes in the matched set.
+`prevSibling(index)` | Finds all preceding sibling elements (not nodes) of all nodes in the matched set and filters them by `index`. Elements are indexed beginning from the closest sibling. The `index` parameter is zero-based. If `index` is negative, the index is counted from the end of the matched set.
+`prevSibling(cssSelector)` | Finds all preceding sibling elements (not nodes) of all nodes in the matched set and filters them by `cssSelector`.
+`prevSibling(filterFn, dependencies)` |  Finds all preceding sibling elements (not nodes) of all nodes in the matched set and filters them by the `filterFn` predicate. Use an optional `dependencies` parameter to pass functions, variables or objects to the `filterFn` function. See [Filtering DOM Elements by Predicates](#filtering-dom-elements-by-predicates).
 
 ```js
 // Selects all preceding siblings of all p elements.
@@ -361,7 +361,7 @@ Selector('blockquote').prevSibling('p');
 
 ### Filtering DOM Elements by Predicates
 
-Functions that search for elements through the DOM tree allow you to filter the matching set by a `filterFn` predicate.
+Functions that search for elements through the DOM tree allow you to filter the matched set by a `filterFn` predicate.
 
 The `filterFn` predicate is executed on the client. It takes the following parameters.
 
@@ -369,7 +369,7 @@ Parameter | Description
 ------ | -----
 `node`  | The current matching node.
 `idx` |  A zero-based index of `node` among other matching nodes.
-`originNode` | A node from the left-hand selector's matching set whose parents/siblings/children are being iterated.
+`originNode` | A node from the left-hand selector's matched set whose parents/siblings/children are being iterated.
 
 ```js
 Selector('section').prevSibling((node, idx, originNode) => {
@@ -401,7 +401,7 @@ Then, for each `label` element finds a parent that matches the `div.someClass` s
 
 ------
 
-Like in jQuery, if you request a [property](../dom-node-state.md#members-common-across-all-nodes) of the matching set or try to evaluate
+Like in jQuery, if you request a [property](../dom-node-state.md#members-common-across-all-nodes) of the matched set or try to evaluate
 a [snapshot](using-selectors.md#dom-node-snapshot), the selector returns values for the first element in the set.
 
 ```js
@@ -433,7 +433,7 @@ Selector('.container').parent(1).nth(0).find('.content').withText('yo!').child('
 In this example the selector:
 
 1. finds the second parent (parent of parent) of `.container` elements;
-2. picks the first element in the matching set;
+2. picks the first element in the matched set;
 3. in that element, finds elements that match the `.content` selector;
 4. filters them by text `yo!`;
 5. in each filtered element, searches for a child with tag name `span`.
