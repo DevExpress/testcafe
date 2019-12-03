@@ -13,6 +13,8 @@ export const SCRIPTS = [
 
 export const TESTCAFE_UI_SPRITE = '/testcafe-ui-sprite.png';
 
+export const TESTCAFE_UI_SPRITE_SVG = '/testcafe-ui-sprite.svg';
+
 export const TESTCAFE_ICON = '/favicon.ico';
 
 export const TESTCAFE_UI_STYLES = '/testcafe-ui-styles.css';
