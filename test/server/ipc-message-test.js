@@ -92,8 +92,8 @@ describe('IPC Message', () => {
         const unexpectedBodyData = Buffer.concat([head, tail, body]);
         const unexpectedTailData = Buffer.concat([head, tail, tail]);
 
-        expect(() => parser.parse(unexpectedHeadData)).throw('Unable to create an IPC message due to an unexpected IPC head packet');
-        expect(() => parser.parse(unexpectedBodyData)).throw('Unable to create an IPC message due to an unexpected IPC body packet');
-        expect(() => parser.parse(unexpectedTailData)).throw('Unable to create an IPC message due to an unexpected IPC tail packet');
+        expect(() => parser.parse(unexpectedHeadData)).throw('Cannot create an IPC message due to an unexpected IPC head packet.');
+        expect(() => parser.parse(unexpectedBodyData)).throw('Cannot create an IPC message due to an unexpected IPC body packet.');
+        expect(() => parser.parse(unexpectedTailData)).throw('Cannot create an IPC message due to an unexpected IPC tail packet.');
     });
 });
