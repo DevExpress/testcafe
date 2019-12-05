@@ -164,6 +164,8 @@ export default class Driver {
         hammerhead.on(hammerhead.EVENTS.windowClosed, e => this._onChildWindowClosed(e));
 
         this.setCustomCommandHandlers(COMMAND_TYPE.unlockPage, () => this._unlockPageAfterTestIsDone());
+
+        this.contextStorage = new ContextStorage(window, this.testRunId);
     }
 
     set speed (val) {
@@ -882,7 +884,8 @@ export default class Driver {
     }
 
     _startInternal () {
-        this.contextStorage       = new ContextStorage(window, this.testRunId);
+        this.contextStorage.loadFromStorage();
+
         this.nativeDialogsTracker = new NativeDialogTracker(this.contextStorage, this.dialogHandler);
         this.statusBar            = new StatusBar(this.userAgent, this.fixtureName, this.testName, this.contextStorage);
 

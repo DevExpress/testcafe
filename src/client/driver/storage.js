@@ -11,10 +11,10 @@ export default class Storage {
         this.storageKey = STORAGE_KEY_PREFIX + testRunId;
         this.data       = {};
 
-        this._loadFromStorage();
+        this.loadFromStorage();
     }
 
-    _loadFromStorage () {
+    loadFromStorage () {
         const savedData = this.storage.getItem(this.storageKey);
 
         if (savedData) {
