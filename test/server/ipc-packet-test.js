@@ -59,7 +59,7 @@ describe('IPC Packet', () => {
         smallPacket.MAX_PAYLOAD_SIZE = 1;
         smallPacket.MAX_PACKET_SIZE  = smallPacket.HEADER_SIZE + smallPacket.MAX_PAYLOAD_SIZE;
 
-	        expect(() => smallPacket.serialize(Buffer.from('XX'))).throw('The specified payload is too large to form an IPC packet.');
+        expect(() => smallPacket.serialize(Buffer.from('XX'))).throw('The specified payload is too large to form an IPC packet.');
 
         expect(() => smallPacket.parse(bigPacket.serialize(Buffer.from('XX')))).throw('The specified payload is too large to form an IPC packet.');
     });
