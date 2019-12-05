@@ -164,8 +164,6 @@ export default class Driver {
         hammerhead.on(hammerhead.EVENTS.windowClosed, e => this._onChildWindowClosed(e));
 
         this.setCustomCommandHandlers(COMMAND_TYPE.unlockPage, () => this._unlockPageAfterTestIsDone());
-
-        this.contextStorage = new ContextStorage(window, this.testRunId);
     }
 
     set speed (val) {
@@ -884,15 +882,6 @@ export default class Driver {
     }
 
     _startInternal () {
-        this.contextStorage.loadFromStorage();
-
-        this.nativeDialogsTracker = new NativeDialogTracker(this.contextStorage, this.dialogHandler);
-        this.statusBar            = new StatusBar(this.userAgent, this.fixtureName, this.testName, this.contextStorage);
-
-        this.statusBar.on(this.statusBar.UNLOCK_PAGE_BTN_CLICK, disableRealEventsPreventing);
-
-        this.speed = this.initialSpeed;
-
         browser.startHeartbeat(this.heartbeatUrl, hammerhead.createNativeXHR);
         this._setupAssertionRetryIndication();
         this._startCommandsProcessing();
@@ -969,7 +958,19 @@ export default class Driver {
             });
     }
 
+    _init () {
+        this.contextStorage       = new ContextStorage(window, this.testRunId);
+        this.nativeDialogsTracker = new NativeDialogTracker(this.contextStorage, this.dialogHandler);
+        this.statusBar            = new StatusBar(this.userAgent, this.fixtureName, this.testName, this.contextStorage);
+
+        this.statusBar.on(this.statusBar.UNLOCK_PAGE_BTN_CLICK, disableRealEventsPreventing);
+
+        this.speed = this.initialSpeed;
+    }
+
     start () {
+        this._init();
+
         this._getDriverRole()
             .then(isMaster => {
                 if (isMaster)
