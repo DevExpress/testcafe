@@ -3,8 +3,8 @@ import { TestRun as LegacyTestRun } from 'testcafe-legacy-api';
 import TestRun from '../test-run';
 import SessionController from '../test-run/session-controller';
 
-let QUARANTINE_THRESHOLD = 3;
-let DISCONNECT_THRESHOLD = 3;
+let QUARANTINE_THRESHOLD = 1;
+let DISCONNECT_THRESHOLD = 1;
 
 class Quarantine {
     constructor () {
