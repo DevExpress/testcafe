@@ -3,12 +3,16 @@ import { TestRun as LegacyTestRun } from 'testcafe-legacy-api';
 import TestRun from '../test-run';
 import SessionController from '../test-run/session-controller';
 
-const QUARANTINE_THRESHOLD = 3;
-const DISCONNECT_THRESHOLD = 3;
+let QUARANTINE_THRESHOLD = 3;
+let DISCONNECT_THRESHOLD = 3;
 
 class Quarantine {
     constructor () {
         this.attempts = [];
+        if (process.env.MAX_QUARANTINE_RETRIES) {
+            DISCONNECT_THRESHOLD = parseInt(process.env.MAX_QUARANTINE_RETRIES.toString(), 10);
+            QUARANTINE_THRESHOLD = parseInt(process.env.MAX_QUARANTINE_RETRIES.toString(), 10);
+        }
     }
 
     getFailedAttempts () {
