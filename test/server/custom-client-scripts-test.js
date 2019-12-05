@@ -184,7 +184,7 @@ describe('Client scripts', () => {
                 expect.fail('Should throw the error');
             })
             .catch(e => {
-                expect(e.message).eql('Cannot load a client script from /non-existing-file');
+                expect(e.message).eql('Cannot load a client script from /non-existing-file.');
             });
     });
 
