@@ -10,7 +10,7 @@ export default function executeChildWindowSelector (selector, childWindowLinks) 
         if (!foundChildWindowDriverLink) {
             const error = new ChildWindowNotFoundError();
 
-            throw error;
+            return Promise.reject(error);
         }
 
         return Promise.resolve(foundChildWindowDriverLink.driverWindow);
