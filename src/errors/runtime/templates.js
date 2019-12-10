@@ -88,7 +88,6 @@ export default {
     [RUNTIME_ERRORS.clientScriptInitializerIsNotSpecified]:              'Specify the JavaScript file path, module name or script content to inject a client script.',
     [RUNTIME_ERRORS.clientScriptBasePathIsNotSpecified]:                 'Specify the base path for the client script file.',
     [RUNTIME_ERRORS.clientScriptInitializerMultipleContentSources]:      'You cannot combine the file path, module name and script content when you specify a client script to inject.',
-    [RUNTIME_ERRORS.cannotLoadClientScriptFromPath]:                     'Cannot load a client script from {path}',
     [RUNTIME_ERRORS.clientScriptModuleEntryPointPathCalculationError]:   'An error occurred when trying to locate the injected client script module:\n\n{errorMessage}.',
     [RUNTIME_ERRORS.cannotUseAllowMultipleWindowsOptionForLegacyTests]:  'You cannot use the "allowMultipleWindows" option for tests written in Legacy API format.',
     [RUNTIME_ERRORS.cannotUseAllowMultipleWindowsOptionForSomeBrowsers]: 'You cannot use the "allowMultipleWindows" option for {browsers} browser{suffix}.'

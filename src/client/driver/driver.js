@@ -346,7 +346,7 @@ export default class Driver {
         childDriverLink.confirmMessage(id);
     }
 
-    _sendConfiramtionMessage (msgId, targetWindow) {
+    _sendConfirmationMessage (msgId, targetWindow) {
         const confirmationMsg = new ConfirmationMessage(msgId);
 
         eventSandbox.message.sendServiceMsg(confirmationMsg, targetWindow);
@@ -355,7 +355,7 @@ export default class Driver {
     _handleSetAsMasterMessage (msg, wnd) {
         Promise.resolve()
             .then(() => {
-                this._sendConfiramtionMessage(msg.id, wnd);
+                this._sendConfirmationMessage(msg.id, wnd);
 
                 const pageId = this._getCurrentPageId();
 
@@ -375,7 +375,7 @@ export default class Driver {
     _handleCloseAllWindowsMessage (msg, wnd) {
         this._closeAllChildWindows()
             .then(() => {
-                this._sendConfiramtionMessage(msg.id, wnd);
+                this._sendConfirmationMessage(msg.id, wnd);
             })
             .catch(() => {
                 this._onReady(new DriverStatus({
