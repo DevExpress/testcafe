@@ -718,12 +718,12 @@ gulp.task('publish-website', gulp.series('build-website-production', 'website-pu
 
 gulp.task('test-docs-travis', gulp.parallel('test-website-travis', 'lint'));
 
-function testFunctional (src, testingEnvironmentName, browserProviderName, allowMultipleWindow) {
+function testFunctional (src, testingEnvironmentName, browserProviderName, allowMultipleWindows) {
     process.env.TESTING_ENVIRONMENT       = testingEnvironmentName;
     process.env.BROWSER_PROVIDER          = browserProviderName;
     process.env.BROWSERSTACK_USE_AUTOMATE = 1;
 
-    if (allowMultipleWindow)
+    if (allowMultipleWindows)
         process.env.ALLOW_MULTIPLE_WINDOWS = 'true';
 
     if (!process.env.BROWSERSTACK_NO_LOCAL)

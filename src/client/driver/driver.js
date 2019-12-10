@@ -73,6 +73,7 @@ import ClientFunctionExecutor from './command-executors/client-functions/client-
 import ChildWindowDriverLink from './driver-link/child-window';
 import ParentWindowDriverLink from './driver-link/parent-window';
 import cursor from '../automation/cursor';
+import DriverRole from './role';
 
 const transport      = hammerhead.transport;
 const Promise        = hammerhead.Promise;
@@ -949,12 +950,14 @@ export default class Driver {
         const currentPageId = this._getCurrentPageId();
 
         if (!currentPageId)
-            return Promise.resolve(true);
+            return Promise.resolve(DriverRole.master);
 
         return browser
             .getActivePageId(this.browserActivePageId, hammerhead.createNativeXHR)
             .then(({ activePageId }) => {
-                return activePageId === currentPageId;
+                return activePageId === currentPageId ?
+                    DriverRole.master :
+                    DriverRole.replica;
             });
     }
 
@@ -972,8 +975,8 @@ export default class Driver {
         this._init();
 
         this._getDriverRole()
-            .then(isMaster => {
-                if (isMaster)
+            .then(role => {
+                if (role === DriverRole.master)
                     this._startInternal();
                 else
                     this._initParentWindowLink();
