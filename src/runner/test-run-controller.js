@@ -213,8 +213,8 @@ export default class TestRunController extends AsyncEventEmitter {
             return null;
         }
 
-        testRun.on('command-start', async ({ command }) => this._emitCommandStart({ command, testRun }));
-        testRun.on('command-done', async ({ command, errors }) => this._emitCommandDone({ command, errors, testRun }));
+        testRun.on('command-start', async args => this._emitCommandStart(Object.assign(args, { testRun })));
+        testRun.on('command-done', async args => this._emitCommandDone(Object.assign(args, { testRun })));
 
         testRun.once('start', async () => this._emitTestRunStart());
         testRun.once('ready', async () => {

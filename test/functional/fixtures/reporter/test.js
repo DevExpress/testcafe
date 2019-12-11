@@ -1,6 +1,8 @@
 const expect = require('chai').expect;
 const fs     = require('fs');
 
+const generateReport = require('./reporter');
+
 const {
     createSimpleTestStream,
     createAsyncTestStream,
@@ -236,56 +238,23 @@ describe('Reporter', () => {
     });
 
     describe('Methods `test-run-command-start` and `test-run-command-done`', () => {
-        function generateRunOptions (log, emitOnStart = true, emitOnDone = true) {
+        function generateRunOptions (log, emitOnStart = true, emitOnDone = true, includeBrowserInfo = false) {
             return {
                 only:               ['firefox'],
                 disableScreenshots: true,
-                reporter:           generateReport(log, emitOnStart, emitOnDone)
-            };
-        }
-
-        function generateReport (log, emitOnStart, emitOnDone) {
-            return function customReporter () {
-                return {
-                    async reportTaskStart () {
-                    },
-                    async reportFixtureStart () {
-                    },
-                    async reportTestDone () {
-                    },
-                    async reportTaskDone () {
-                    },
-
-                    async reportTestRunCommandStart () {
-                        if (!emitOnStart)
-                            return;
-
-                        log.push({ action: 'start' });
-                    },
-
-                    async reportTestRunCommandDone ({ command, errors }) {
-                        if (!emitOnDone)
-                            return;
-
-                        const item = { action: 'done', command };
-
-                        if (errors && errors.length)
-                            item.errors = errors.map(err => err.code);
-
-                        log.push(item);
-                    }
-                };
+                reporter:           generateReport(log, emitOnStart, emitOnDone, includeBrowserInfo)
             };
         }
 
         it('Simple command', function () {
             const log = [];
 
-            return runTests('testcafe-fixtures/index-test.js', 'Simple command test', generateRunOptions(log))
+            return runTests('testcafe-fixtures/index-test.js', 'Simple command test', generateRunOptions(log, true, true, true))
                 .then(() => {
                     expect(log).eql([
-                        { action: 'start' },
+                        { name: 'click', action: 'start', browser: 'firefox' },
                         {
+                            name:    'click',
                             action:  'done',
                             command: {
                                 type:     'click',
@@ -303,8 +272,12 @@ describe('Reporter', () => {
             return runTests('testcafe-fixtures/index-test.js', 'Simple command err test', generateRunOptions(log))
                 .then(() => {
                     expect(log).eql([
-                        { action: 'start' },
                         {
+                            name:   'click',
+                            action: 'start'
+                        },
+                        {
+                            name:    'click',
                             action:  'done',
                             command: {
                                 type:     'click',
@@ -323,8 +296,12 @@ describe('Reporter', () => {
             return runTests('testcafe-fixtures/index-test.js', 'Simple assertion', generateRunOptions(log))
                 .then(() => {
                     expect(log).eql([
-                        { action: 'start' },
                         {
+                            name:   'eql',
+                            action: 'start'
+                        },
+                        {
+                            name:    'eql',
                             action:  'done',
                             command: {
                                 type:          'assertion',
@@ -346,8 +323,12 @@ describe('Reporter', () => {
             return runTests('testcafe-fixtures/index-test.js', 'Selector assertion', generateRunOptions(log))
                 .then(() => {
                     expect(log).eql([
-                        { action: 'start' },
                         {
+                            name:   'eql',
+                            action: 'start'
+                        },
+                        {
+                            name:    'eql',
                             action:  'done',
                             command: {
                                 type:          'assertion',
@@ -370,9 +351,11 @@ describe('Reporter', () => {
                 .then(() => {
                     expect(log).eql([
                         {
+                            name:   'execute-selector',
                             action: 'start'
                         },
                         {
+                            name:    'execute-selector',
                             action:  'done',
                             command: {
                                 selector: 'Selector(\'#target\')',
@@ -380,9 +363,11 @@ describe('Reporter', () => {
                             }
                         },
                         {
+                            name:   'execute-selector',
                             action: 'start'
                         },
                         {
+                            name:    'execute-selector',
                             action:  'done',
                             command: {
                                 selector: 'Selector(\'body\').find(\'#target\')',
@@ -399,8 +384,9 @@ describe('Reporter', () => {
             return runTests('testcafe-fixtures/index-test.js', 'Client Function', generateRunOptions(log))
                 .then(() => {
                     expect(log).eql([
-                        { action: 'start' },
+                        { name: 'execute-client-function', action: 'start' },
                         {
+                            name:    'execute-client-function',
                             action:  'done',
                             command: {
                                 clientFn: {
@@ -423,10 +409,9 @@ describe('Reporter', () => {
             return runTests('testcafe-fixtures/index-test.js', 'Complex command test', generateRunOptions(log))
                 .then(() => {
                     expect(log).eql([
+                        { name: 'useRole', action: 'start' },
                         {
-                            action: 'start'
-                        },
-                        {
+                            name:    'useRole',
                             action:  'done',
                             command: {
                                 role: {
@@ -447,13 +432,10 @@ describe('Reporter', () => {
             return runTests('testcafe-fixtures/index-test.js', 'Complex nested command test', generateRunOptions(log))
                 .then(() => {
                     expect(log).eql([
+                        { name: 'useRole', action: 'start' },
+                        { name: 'click', action: 'start' },
                         {
-                            action: 'start'
-                        },
-                        {
-                            action: 'start'
-                        },
-                        {
+                            name:    'click',
                             action:  'done',
                             command: {
                                 options:  new ClickOptions(),
@@ -462,6 +444,7 @@ describe('Reporter', () => {
                             }
                         },
                         {
+                            name:    'useRole',
                             action:  'done',
                             command: {
                                 role: {
@@ -482,13 +465,10 @@ describe('Reporter', () => {
             return runTests('testcafe-fixtures/index-test.js', 'Complex nested command error', generateRunOptions(log))
                 .then(() => {
                     expect(log).eql([
+                        { name: 'useRole', action: 'start' },
+                        { name: 'click', action: 'start' },
                         {
-                            action: 'start'
-                        },
-                        {
-                            action: 'start'
-                        },
-                        {
+                            name:    'click',
                             action:  'done',
                             command: {
                                 options:  new ClickOptions(),
@@ -498,6 +478,7 @@ describe('Reporter', () => {
                             errors: ['E24']
                         },
                         {
+                            name:    'useRole',
                             action:  'done',
                             command: {
                                 role: {
@@ -519,8 +500,9 @@ describe('Reporter', () => {
             return runTests('testcafe-fixtures/index-test.js', 'Eval', generateRunOptions(log))
                 .then(() => {
                     expect(log).eql([
-                        { action: 'start' },
+                        { name: 'execute-client-function', action: 'start' },
                         {
+                            name:    'execute-client-function',
                             action:  'done',
                             command: {
                                 clientFn: {

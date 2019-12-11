@@ -27,6 +27,7 @@ const typeTextOptions = Object.assign({
 
 module.exports = [
     {
+        name:    'rightClick',
         action:  'done',
         command: {
             options:  clickOptions,
@@ -35,6 +36,7 @@ module.exports = [
         }
     },
     {
+        name:    'doubleClick',
         action:  'done',
         command: {
             options:  clickOptions,
@@ -43,6 +45,7 @@ module.exports = [
         }
     },
     {
+        name:    'hover',
         action:  'done',
         command: {
             options:  mouseOptions,
@@ -51,6 +54,7 @@ module.exports = [
         }
     },
     {
+        name:    'drag',
         action:  'done',
         command: {
             options:     mouseOptions,
@@ -61,6 +65,7 @@ module.exports = [
         }
     },
     {
+        name:    'dragToElement',
         action:  'done',
         command: {
             options:             dragToElementOptions,
@@ -70,6 +75,7 @@ module.exports = [
         }
     },
     {
+        name:    'typeText',
         action:  'done',
         command: {
             options:  typeTextOptions,
@@ -79,6 +85,7 @@ module.exports = [
         }
     },
     {
+        name:    'selectText',
         action:  'done',
         command: {
             options:  basicOptions,
@@ -89,6 +96,7 @@ module.exports = [
         }
     },
     {
+        name:    'selectTextAreaContent',
         action:  'done',
         command: {
             options:   basicOptions,
@@ -101,6 +109,7 @@ module.exports = [
         }
     },
     {
+        name:    'selectEditableContent',
         action:  'done',
         command: {
             options:       basicOptions,
@@ -110,6 +119,7 @@ module.exports = [
         }
     },
     {
+        name:    'pressKey',
         action:  'done',
         command: {
             options: basicOptions,
@@ -118,6 +128,7 @@ module.exports = [
         }
     },
     {
+        name:    'wait',
         action:  'done',
         command: {
             type:    'wait',
@@ -125,6 +136,7 @@ module.exports = [
         }
     },
     {
+        name:    'navigateTo',
         action:  'done',
         command: {
             type: 'navigate-to',
@@ -132,6 +144,7 @@ module.exports = [
         }
     },
     {
+        name:    'setFilesToUpload',
         action:  'done',
         command: {
             selector: 'Selector(\'#file\')',
@@ -140,6 +153,7 @@ module.exports = [
         }
     },
     {
+        name:    'clearUpload',
         action:  'done',
         command: {
             selector: 'Selector(\'#file\')',
@@ -147,6 +161,7 @@ module.exports = [
         }
     },
     {
+        name:    'takeScreenshot',
         action:  'done',
         command: {
             path:     'screenshotPath',
@@ -155,6 +170,7 @@ module.exports = [
         }
     },
     {
+        name:    'takeElementScreenshot',
         action:  'done',
         command: {
             selector: 'Selector(\'#target\')',
@@ -164,6 +180,7 @@ module.exports = [
         }
     },
     {
+        name:    'resizeWindow',
         action:  'done',
         command: {
             width:  200,
@@ -172,6 +189,7 @@ module.exports = [
         }
     },
     {
+        name:    'resizeWindowToFitDevice',
         action:  'done',
         command: {
             device:  'Sony Xperia Z',
@@ -182,12 +200,14 @@ module.exports = [
         }
     },
     {
+        name:    'maximizeWindow',
         action:  'done',
         command: {
             type: 'maximize-window'
         }
     },
     {
+        name:    'switchToIframe',
         action:  'done',
         command: {
             selector: 'Selector(\'#iframe\')',
@@ -195,12 +215,14 @@ module.exports = [
         }
     },
     {
+        name:    'switchToMainWindow',
         action:  'done',
         command: {
             type: 'switch-to-main-window'
         }
     },
     {
+        name:      'setNativeDialogHandler',
         action:    'done',
         'command': {
             dialogHandler: {
@@ -211,6 +233,7 @@ module.exports = [
         }
     },
     {
+        name:    'setTestSpeed',
         action:  'done',
         command: {
             speed: 1,
@@ -218,6 +241,7 @@ module.exports = [
         }
     },
     {
+        name:    'setPageLoadTimeout',
         action:  'done',
         command: {
             duration: 1,
@@ -225,12 +249,14 @@ module.exports = [
         }
     },
     {
+        name:    'getNativeDialogHistory',
         action:  'done',
         command: {
             type: 'get-native-dialog-history'
         }
     },
     {
+        name:    'getBrowserConsoleMessages',
         action:  'done',
         command: {
             type: 'get-browser-console-messages',

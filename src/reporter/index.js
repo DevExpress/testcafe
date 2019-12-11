@@ -179,21 +179,26 @@ export default class Reporter {
             await reportItem.pendingTestRunDonePromise;
         });
 
-        task.on('test-run-command-start', async ({ command }) => {
+        task.on('test-run-command-start', async ({ apiMethodName, command, testRun }) => {
             if (this.plugin.reportTestRunCommandStart) {
-                await this.plugin.reportTestRunCommandStart({
-                    command: new CommandReportItem(command)
+                await this.plugin.reportTestRunCommandStart(apiMethodName, {
+                    test: {
+                        name: testRun.test.name
+                    },
+                    command: new CommandReportItem(command),
+                    browser: testRun.controller.browser
                 });
             }
         });
 
-        task.on('test-run-command-done', async ({ command, errors }) => {
+        task.on('test-run-command-done', async ({ apiMethodName, command, testRun, errors }) => {
             if (errors)
                 errors = errors instanceof TestCafeErrorList ? errors.items : [errors];
 
             if (this.plugin.reportTestRunCommandDone) {
-                await this.plugin.reportTestRunCommandDone({
+                await this.plugin.reportTestRunCommandDone(apiMethodName, {
                     command: new CommandReportItem(command),
+                    browser: testRun.controller.browser,
                     errors
                 });
             }

@@ -605,11 +605,11 @@ export default class TestRun extends AsyncEventEmitter {
             await this._enqueueSetBreakpointCommand(callsite);
     }
 
-    async executeApiMethod (command, callsite) {
+    async executeApiMethod (apiMethodName, command, callsite) {
         let error  = null;
         let result = null;
 
-        await this.emitCommandStart(command);
+        await this.emitCommandStart(apiMethodName, command);
 
         try {
             result = await this.executeCommand(command, callsite);
@@ -618,7 +618,7 @@ export default class TestRun extends AsyncEventEmitter {
             error = err;
         }
 
-        await this.emitCommandDone(command, callsite, error);
+        await this.emitCommandDone(apiMethodName, command, callsite, error);
 
         if (error)
             throw error;
@@ -828,14 +828,14 @@ export default class TestRun extends AsyncEventEmitter {
         delete testRunTracker.activeTestRuns[this.session.id];
     }
 
-    async emitCommandStart (command) {
+    async emitCommandStart (apiMethodName, command) {
         if (!this.preventEmitActionEvents)
-            await this.emit('command-start', { command });
+            await this.emit('command-start', { command, apiMethodName });
     }
 
-    async emitCommandDone (command, isApiMethod, errors) {
+    async emitCommandDone (apiMethodName, command, isApiMethod, errors) {
         if (!this.preventEmitActionEvents)
-            await this.emit('command-done', { command, errors });
+            await this.emit('command-done', { command, apiMethodName, errors });
     }
 }
 
