@@ -7,6 +7,8 @@ const {
     createSyncTestStream
 } = require('../../utils/stream');
 
+const { ClickOptions, AssertionOptions } = require('../../../../lib/test-run/commands/options');
+
 describe('Reporter', () => {
     const stdoutWrite = process.stdout.write;
     const stderrWrite = process.stderr.write;
@@ -231,5 +233,314 @@ describe('Reporter', () => {
             .then(() => {
                 expect(stream.finalCalled).to.be.ok;
             });
+    });
+
+    describe('Methods `test-run-command-start` and `test-run-command-done`', () => {
+        function generateRunOptions (log, emitOnStart = true, emitOnDone = true) {
+            return {
+                only:               ['firefox'],
+                disableScreenshots: true,
+                reporter:           generateReport(log, emitOnStart, emitOnDone)
+            };
+        }
+
+        function generateReport (log, emitOnStart, emitOnDone) {
+            return function customReporter () {
+                return {
+                    async reportTaskStart () {
+                    },
+                    async reportFixtureStart () {
+                    },
+                    async reportTestDone () {
+                    },
+                    async reportTaskDone () {
+                    },
+
+                    async reportTestRunCommandStart () {
+                        if (!emitOnStart)
+                            return;
+
+                        log.push({ action: 'start' });
+                    },
+
+                    async reportTestRunCommandDone ({ command, errors }) {
+                        if (!emitOnDone)
+                            return;
+
+                        const item = { action: 'done', command };
+
+                        if (errors && errors.length)
+                            item.errors = errors.map(err => err.code);
+
+                        log.push(item);
+                    }
+                };
+            };
+        }
+
+        it('Simple command', function () {
+            const log = [];
+
+            return runTests('testcafe-fixtures/index-test.js', 'Simple command test', generateRunOptions(log))
+                .then(() => {
+                    expect(log).eql([
+                        { action: 'start' },
+                        {
+                            action:  'done',
+                            command: {
+                                type:     'click',
+                                options:  new ClickOptions(),
+                                selector: 'Selector(\'#target\')'
+                            }
+                        }
+                    ]);
+                });
+        });
+
+        it('Simple command Error', function () {
+            const log = [];
+
+            return runTests('testcafe-fixtures/index-test.js', 'Simple command err test', generateRunOptions(log))
+                .then(() => {
+                    expect(log).eql([
+                        { action: 'start' },
+                        {
+                            action:  'done',
+                            command: {
+                                type:     'click',
+                                options:  new ClickOptions(),
+                                selector: 'Selector(\'#non-existing-target\')'
+                            },
+                            errors: ['E24']
+                        }
+                    ]);
+                });
+        });
+
+        it('Simple assertion', function () {
+            const log = [];
+
+            return runTests('testcafe-fixtures/index-test.js', 'Simple assertion', generateRunOptions(log))
+                .then(() => {
+                    expect(log).eql([
+                        { action: 'start' },
+                        {
+                            action:  'done',
+                            command: {
+                                type:          'assertion',
+                                actual:        true,
+                                assertionType: 'eql',
+                                expected:      true,
+                                expected2:     void 0,
+                                message:       'assertion message',
+                                options:       new AssertionOptions({ timeout: 100 })
+                            }
+                        },
+                    ]);
+                });
+        });
+
+        it('Selector assertion', function () {
+            const log = [];
+
+            return runTests('testcafe-fixtures/index-test.js', 'Selector assertion', generateRunOptions(log))
+                .then(() => {
+                    expect(log).eql([
+                        { action: 'start' },
+                        {
+                            action:  'done',
+                            command: {
+                                type:          'assertion',
+                                actual:        'target',
+                                assertionType: 'eql',
+                                expected:      'target',
+                                expected2:     void 0,
+                                message:       null,
+                                options:       new AssertionOptions()
+                            }
+                        },
+                    ]);
+                });
+        });
+
+        it('Snapshot', function () {
+            const log = [];
+
+            return runTests('testcafe-fixtures/index-test.js', 'Snapshot', generateRunOptions(log))
+                .then(() => {
+                    expect(log).eql([
+                        {
+                            action: 'start'
+                        },
+                        {
+                            action:  'done',
+                            command: {
+                                selector: 'Selector(\'#target\')',
+                                type:     'execute-selector'
+                            }
+                        },
+                        {
+                            action: 'start'
+                        },
+                        {
+                            action:  'done',
+                            command: {
+                                selector: 'Selector(\'body\').find(\'#target\')',
+                                type:     'execute-selector'
+                            }
+                        }
+                    ]);
+                });
+        });
+
+        it('Client Function', function () {
+            const log = [];
+
+            return runTests('testcafe-fixtures/index-test.js', 'Client Function', generateRunOptions(log))
+                .then(() => {
+                    expect(log).eql([
+                        { action: 'start' },
+                        {
+                            action:  'done',
+                            command: {
+                                clientFn: {
+                                    args: [
+                                        1,
+                                        true
+                                    ],
+                                    code: '(function(){ return (function (bool) {return function () {return bool;};});})();'
+                                },
+                                type: 'execute-client-function'
+                            }
+                        }]
+                    );
+                });
+        });
+
+        it('Complex command', function () {
+            const log = [];
+
+            return runTests('testcafe-fixtures/index-test.js', 'Complex command test', generateRunOptions(log))
+                .then(() => {
+                    expect(log).eql([
+                        {
+                            action: 'start'
+                        },
+                        {
+                            action:  'done',
+                            command: {
+                                role: {
+                                    loginPage: 'http://localhost:3000/fixtures/reporter/pages/index.html',
+                                    options:   { preserveUrl: true },
+                                    phase:     'initialized'
+                                },
+                                type: 'useRole'
+                            }
+                        }
+                    ]);
+                });
+        });
+
+        it('Complex nested command', function () {
+            const log = [];
+
+            return runTests('testcafe-fixtures/index-test.js', 'Complex nested command test', generateRunOptions(log))
+                .then(() => {
+                    expect(log).eql([
+                        {
+                            action: 'start'
+                        },
+                        {
+                            action: 'start'
+                        },
+                        {
+                            action:  'done',
+                            command: {
+                                options:  new ClickOptions(),
+                                selector: 'Selector(\'#target\')',
+                                type:     'click'
+                            }
+                        },
+                        {
+                            action:  'done',
+                            command: {
+                                role: {
+                                    loginPage: 'http://localhost:3000/fixtures/reporter/pages/index.html',
+                                    options:   {},
+                                    phase:     'initialized'
+                                },
+                                type: 'useRole'
+                            }
+                        }
+                    ]);
+                });
+        });
+
+        it('Complex nested command error', function () {
+            const log = [];
+
+            return runTests('testcafe-fixtures/index-test.js', 'Complex nested command error', generateRunOptions(log))
+                .then(() => {
+                    expect(log).eql([
+                        {
+                            action: 'start'
+                        },
+                        {
+                            action: 'start'
+                        },
+                        {
+                            action:  'done',
+                            command: {
+                                options:  new ClickOptions(),
+                                selector: 'Selector(\'#non-existing-element\')',
+                                type:     'click'
+                            },
+                            errors: ['E24']
+                        },
+                        {
+                            action:  'done',
+                            command: {
+                                role: {
+                                    loginPage: 'http://localhost:3000/fixtures/reporter/pages/index.html',
+                                    options:   {},
+                                    phase:     'initialized'
+                                },
+                                type: 'useRole'
+                            },
+                            errors: ['E24']
+                        }
+                    ]);
+                });
+        });
+
+        it('Eval', function () {
+            const log = [];
+
+            return runTests('testcafe-fixtures/index-test.js', 'Eval', generateRunOptions(log))
+                .then(() => {
+                    expect(log).eql([
+                        { action: 'start' },
+                        {
+                            action:  'done',
+                            command: {
+                                clientFn: {
+                                    args: [],
+                                    code: '(function(){ return (function () {return document.getElementById(\'#target\');});})();'
+                                },
+                                type: 'execute-client-function'
+                            }
+                        }
+                    ]);
+                });
+        });
+
+        it('All actions', function () {
+            const log = [];
+
+            return runTests('testcafe-fixtures/index-test.js', 'All actions', generateRunOptions(log, false, true))
+                .then(() => {
+                    expect(log).eql(require('./expect-all-actions'));
+                });
+        });
     });
 });

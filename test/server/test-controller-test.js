@@ -16,6 +16,10 @@ class TestRunMock {
     executeCommand () {
         return Promise.resolve();
     }
+
+    executeApiMethod () {
+        return Promise.resolve();
+    }
 }
 
 describe('TestController', () => {

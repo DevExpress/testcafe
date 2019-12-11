@@ -1,6 +1,8 @@
 import { find, sortBy, union } from 'lodash';
 import { writable as isWritableStream } from 'is-stream';
 import ReporterPluginHost from './plugin-host';
+import { CommandReportItem } from './command-report-item';
+import TestCafeErrorList from '../errors/error-list';
 
 export default class Reporter {
     constructor (plugin, task, outStream) {
@@ -175,6 +177,26 @@ export default class Reporter {
                 await this._resolveReportItem(reportItem, testRun);
 
             await reportItem.pendingTestRunDonePromise;
+        });
+
+        task.on('test-run-command-start', async ({ command }) => {
+            if (this.plugin.reportTestRunCommandStart) {
+                await this.plugin.reportTestRunCommandStart({
+                    command: new CommandReportItem(command)
+                });
+            }
+        });
+
+        task.on('test-run-command-done', async ({ command, errors }) => {
+            if (errors)
+                errors = errors instanceof TestCafeErrorList ? errors.items : [errors];
+
+            if (this.plugin.reportTestRunCommandDone) {
+                await this.plugin.reportTestRunCommandDone({
+                    command: new CommandReportItem(command),
+                    errors
+                });
+            }
         });
 
         task.once('done', async () => {

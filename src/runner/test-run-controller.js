@@ -150,6 +150,14 @@ export default class TestRunController extends AsyncEventEmitter {
             await this._emitTestRunDone();
     }
 
+    async _emitCommandStart (args) {
+        await this.emit('test-run-command-start', args);
+    }
+
+    async _emitCommandDone (args) {
+        await this.emit('test-run-command-done', args);
+    }
+
     async _emitTestRunDone () {
         // NOTE: we should report test run completion in order they were completed in browser.
         // To keep a sequence after fixture hook execution we use completion queue.
@@ -204,6 +212,9 @@ export default class TestRunController extends AsyncEventEmitter {
             await this._emitTestRunDone();
             return null;
         }
+
+        testRun.on('command-start', async ({ command }) => this._emitCommandStart({ command, testRun }));
+        testRun.on('command-done', async ({ command, errors }) => this._emitCommandDone({ command, errors, testRun }));
 
         testRun.once('start', async () => this._emitTestRunStart());
         testRun.once('ready', async () => {
