@@ -9,10 +9,10 @@ const baseReport = {
     }
 };
 
-function generateReport (log, emitOnStart, emitOnDone, includeBrowserInfo) {
+function generateReport (log, emitOnStart, emitOnDone, includeBrowserInfo, includeTestInfo) {
     return function () {
         return Object.assign({}, baseReport, {
-            async reportTestRunCommandStart (name, { browser }) {
+            async reportTestRunCommandStart (name, { browser, test }) {
                 if (!emitOnStart)
                     return;
 
@@ -20,6 +20,9 @@ function generateReport (log, emitOnStart, emitOnDone, includeBrowserInfo) {
 
                 if (includeBrowserInfo)
                     item.browser = browser.alias.split(':')[0];
+
+                if (includeTestInfo)
+                    item.test = test;
 
                 log.push(item);
             },

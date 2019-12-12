@@ -238,21 +238,29 @@ describe('Reporter', () => {
     });
 
     describe('Methods `test-run-command-start` and `test-run-command-done`', () => {
-        function generateRunOptions (log, emitOnStart = true, emitOnDone = true, includeBrowserInfo = false) {
+        function generateRunOptions (log, emitOnStart = true, emitOnDone = true, includeBrowserInfo = false, includeTestInfo = false) {
             return {
                 only:               ['firefox'],
                 disableScreenshots: true,
-                reporter:           generateReport(log, emitOnStart, emitOnDone, includeBrowserInfo)
+                reporter:           generateReport(log, emitOnStart, emitOnDone, includeBrowserInfo, includeTestInfo)
             };
         }
 
-        it('Simple command', function () {
+        it.only('Simple command', function () {
             const log = [];
 
-            return runTests('testcafe-fixtures/index-test.js', 'Simple command test', generateRunOptions(log, true, true, true))
+            return runTests('testcafe-fixtures/index-test.js', 'Simple command test', generateRunOptions(log, true, true, true, true))
                 .then(() => {
                     expect(log).eql([
-                        { name: 'click', action: 'start', browser: 'firefox' },
+                        {
+                            name: 'click',
+                            action: 'start',
+                            browser: 'firefox',
+                            test: {
+                                name:  'Simple command test',
+                                phase: 'inTest'
+                            }
+                        },
                         {
                             name:    'click',
                             action:  'done',
