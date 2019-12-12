@@ -1,10 +1,9 @@
 const expect            = require('chai').expect;
-const proxyquire        = require('proxyquire');
 const AsyncEventEmitter = require('../../lib/utils/async-event-emitter');
 const TestRun           = require('../../lib/test-run');
 const TestController    = require('../../lib/api/test-controller');
-const TestRunController = require('../../lib/runner/test-run-controller');
 const Task              = require('../../lib/runner/task');
+const BrowserJob        = require('../../lib/runner/browser-job');
 const Reporter          = require('../../lib/reporter');
 const { Role }          = require('../../lib/api/exportable-lib');
 
@@ -31,19 +30,6 @@ class TestRunMock extends TestRun {
     }
 }
 
-class TestRunControllerMock extends TestRunController {
-    constructor () {
-        super(void 0, void 0, void 0, void 0, void 0, void 0, { TestRunCtor: TestRunMock });
-    }
-
-    _createTestRun () {
-        if (!this.testRun)
-            this.testRun = new TestRunMock();
-
-        return this.testRun;
-    }
-}
-
 class TestControllerMock extends TestController {
     constructor (testRun) {
         super(testRun);
@@ -65,8 +51,6 @@ class TaskMock extends AsyncEventEmitter {
         Task.prototype._assignBrowserJobEventHandlers.call(this, job);
     }
 }
-
-const BrowserJob = proxyquire('../../lib/runner/browser-job', { './test-run-controller': TestRunControllerMock });
 
 const options = {
     caretPos:  1,
@@ -123,10 +107,12 @@ describe('TestController action events', () => {
         const doneLog  = [];
 
         const task              = new TaskMock();
-        const job               = new BrowserJob([], []);
+        const job               = new BrowserJob([], [], void 0, void 0, void 0, void 0, { TestRunCtor: TestRunMock });
         const testRunController = job._createTestRunController();
-        const testRun           = testRunController._createTestRun({});
+        const testRun           = new TestRunMock();
         const testController    = new TestControllerMock(testRun);
+
+        testRunController.testRun = testRun;
 
         task._assignBrowserJobEventHandlers(job);
         testRunController._assignTestRunEvents(testRun);
