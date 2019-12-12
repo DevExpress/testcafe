@@ -246,17 +246,17 @@ describe('Reporter', () => {
             };
         }
 
-        it.only('Simple command', function () {
+        it('Simple command', function () {
             const log = [];
 
             return runTests('testcafe-fixtures/index-test.js', 'Simple command test', generateRunOptions(log, true, true, true, true))
                 .then(() => {
                     expect(log).eql([
                         {
-                            name: 'click',
-                            action: 'start',
+                            name:    'click',
+                            action:  'start',
                             browser: 'firefox',
-                            test: {
+                            test:    {
                                 name:  'Simple command test',
                                 phase: 'inTest'
                             }
@@ -268,6 +268,10 @@ describe('Reporter', () => {
                                 type:     'click',
                                 options:  new ClickOptions(),
                                 selector: 'Selector(\'#target\')'
+                            },
+                            test: {
+                                name:  'Simple command test',
+                                phase: 'inTest'
                             }
                         }
                     ]);
@@ -437,11 +441,25 @@ describe('Reporter', () => {
         it('Complex nested command', function () {
             const log = [];
 
-            return runTests('testcafe-fixtures/index-test.js', 'Complex nested command test', generateRunOptions(log))
+            return runTests('testcafe-fixtures/index-test.js', 'Complex nested command test', generateRunOptions(log, true, true, false, true))
                 .then(() => {
                     expect(log).eql([
-                        { name: 'useRole', action: 'start' },
-                        { name: 'click', action: 'start' },
+                        {
+                            name:   'useRole',
+                            action: 'start',
+                            test:   {
+                                name:  'Complex nested command test',
+                                phase: 'inTest'
+                            }
+                        },
+                        {
+                            name:   'click',
+                            action: 'start',
+                            test:   {
+                                name:  'Complex nested command test',
+                                phase: 'inRoleInitializer'
+                            }
+                        },
                         {
                             name:    'click',
                             action:  'done',
@@ -449,6 +467,10 @@ describe('Reporter', () => {
                                 options:  new ClickOptions(),
                                 selector: 'Selector(\'#target\')',
                                 type:     'click'
+                            },
+                            test: {
+                                name:  'Complex nested command test',
+                                phase: 'inRoleInitializer'
                             }
                         },
                         {
@@ -461,6 +483,10 @@ describe('Reporter', () => {
                                     phase:     'initialized'
                                 },
                                 type: 'useRole'
+                            },
+                            test: {
+                                name:  'Complex nested command test',
+                                phase: 'inTest'
                             }
                         }
                     ]);

@@ -27,7 +27,7 @@ function generateReport (log, emitOnStart, emitOnDone, includeBrowserInfo, inclu
                 log.push(item);
             },
 
-            async reportTestRunCommandDone (name, { command, errors }) {
+            async reportTestRunCommandDone (name, { command, test, errors }) {
                 if (!emitOnDone)
                     return;
 
@@ -35,6 +35,9 @@ function generateReport (log, emitOnStart, emitOnDone, includeBrowserInfo, inclu
 
                 if (errors && errors.length)
                     item.errors = errors.map(err => err.code);
+
+                if (includeTestInfo)
+                    item.test = test;
 
                 log.push(item);
             }

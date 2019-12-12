@@ -183,7 +183,7 @@ export default class Reporter {
             if (this.plugin.reportTestRunCommandStart) {
                 await this.plugin.reportTestRunCommandStart(apiMethodName, {
                     test: {
-                        name: testRun.test.name,
+                        name:  testRun.test.name,
                         phase: testRun.phase
                     },
                     command: new CommandReportItem(command),
@@ -198,6 +198,10 @@ export default class Reporter {
 
             if (this.plugin.reportTestRunCommandDone) {
                 await this.plugin.reportTestRunCommandDone(apiMethodName, {
+                    test: {
+                        name:  testRun.test.name,
+                        phase: testRun.phase
+                    },
                     command: new CommandReportItem(command),
                     browser: testRun.controller.browser,
                     errors
