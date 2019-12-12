@@ -400,15 +400,10 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     public get activePageId (): null | string {
-        const localBrowserInfo = this.provider.localBrowsersInfo[this.id];
-
-        return localBrowserInfo ? localBrowserInfo.activePageId : null;
+        return this.provider.getActivePageId(this.id);
     }
 
     public set activePageId (val) {
-        const localBrowserInfo = this.provider.localBrowsersInfo[this.id];
-
-        if (localBrowserInfo)
-            localBrowserInfo.activePageId = val;
+        this.provider.setActivePageId(this.id, val);
     }
 }

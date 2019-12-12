@@ -1,7 +1,7 @@
-import { SetAsMasterMessage } from './messages';
-import sendMessageToDriver from './send-message-to-driver';
-import { CannotSwitchToWindowError } from '../../../errors/test-run';
-import { WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT } from './timeouts';
+import { SetAsMasterMessage } from '../messages';
+import sendMessageToDriver from '../send-message-to-driver';
+import { CannotSwitchToWindowError } from '../../../../errors/test-run';
+import { WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT } from '../timeouts';
 
 export default class ParentWindowDriverLink {
     constructor (currentDriverWindow) {
@@ -17,6 +17,12 @@ export default class ParentWindowDriverLink {
         return topOpened;
     }
 
+    _setAsMaster (wnd) {
+        const msg = new SetAsMasterMessage();
+
+        return sendMessageToDriver(msg, wnd, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT, CannotSwitchToWindowError);
+    }
+
     setTopOpenedWindowAsMaster () {
         const wnd = this._getTopOpenedWindow(this.currentDriverWindow);
 
@@ -27,11 +33,5 @@ export default class ParentWindowDriverLink {
         const wnd = this.currentDriverWindow.opener;
 
         return this._setAsMaster(wnd);
-    }
-
-    _setAsMaster (wnd) {
-        const msg = new SetAsMasterMessage();
-
-        return sendMessageToDriver(msg, wnd, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT, CannotSwitchToWindowError);
     }
 }

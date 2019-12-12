@@ -90,7 +90,7 @@ export default class BrowserProvider {
     private async _calculatePageId (browserId: string): Promise<void> {
         const pageId = await this.plugin.runInitScript(browserId, GET_PAGE_ID_SCRIPT);
 
-        this.localBrowsersInfo[browserId].activePageId = pageId;
+        this.setActivePageId(browserId, pageId);
     }
 
     private async _calculateResizeCorrections (browserId: string): Promise<void> {
@@ -347,5 +347,18 @@ export default class BrowserProvider {
 
     public async reportJobResult (browserId: string, status: string, data: any): Promise<void> {
         await this.plugin.reportJobResult(browserId, status, data);
+    }
+
+    public getActivePageId (browserId: string): string | null {
+        const targetLocalBrowserInfo = this.localBrowsersInfo[browserId];
+
+        return targetLocalBrowserInfo ? targetLocalBrowserInfo.activePageId : null;
+    }
+
+    public setActivePageId (browserId: string, val: string): void {
+        const targetLocalBrowserInfo = this.localBrowsersInfo[browserId];
+
+        if (targetLocalBrowserInfo)
+            targetLocalBrowserInfo.activePageId = val;
     }
 }

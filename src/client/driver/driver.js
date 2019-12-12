@@ -4,6 +4,7 @@ import {
     pageUnloadBarrier,
     eventUtils,
     domUtils,
+    arrayUtils,
     preventRealEvents,
     disableRealEventsPreventing,
     waitFor,
@@ -51,15 +52,11 @@ import {
 import BrowserConsoleMessages from '../../test-run/browser-console-messages';
 import NativeDialogTracker from './native-dialog-tracker';
 
-import {
-    ConfirmationMessage,
-    SetNativeDialogHandlerMessage,
-    TYPE as MESSAGE_TYPE
-} from './driver-link/messages';
+import { SetNativeDialogHandlerMessage, TYPE as MESSAGE_TYPE } from './driver-link/messages';
 import ContextStorage from './storage';
 import DriverStatus from './status';
 import generateId from './generate-id';
-import ChildDriverLink from './driver-link/child';
+import ChildDriverLink from './driver-link/iframe/child';
 
 import executeActionCommand from './command-executors/execute-action';
 import executeManipulationCommand from './command-executors/browser-manipulation';
@@ -70,15 +67,15 @@ import {
 } from './command-executors/execute-selector';
 import executeChildWindowSelector from './command-executors/execute-child-window-selector';
 import ClientFunctionExecutor from './command-executors/client-functions/client-function-executor';
-import ChildWindowDriverLink from './driver-link/child-window';
-import ParentWindowDriverLink from './driver-link/parent-window';
+import ChildWindowDriverLink from './driver-link/window/child';
+import ParentWindowDriverLink from './driver-link/window/parent';
+import sendConfirmationMessage from './driver-link/send-confirmation-message';
 import cursor from '../automation/cursor';
 import DriverRole from './role';
 
 const transport      = hammerhead.transport;
 const Promise        = hammerhead.Promise;
 const messageSandbox = hammerhead.eventSandbox.message;
-const eventSandbox   = hammerhead.eventSandbox;
 const storages       = hammerhead.storages;
 const nativeMethods  = hammerhead.nativeMethods;
 const DateCtor       = nativeMethods.date;
@@ -334,7 +331,7 @@ export default class Driver {
 
     // Iframes and child windows interaction
     _addIframeChildDriverLink (id, driverWindow) {
-        let childDriverLink = this._getChildDriverLinkByWindow(driverWindow);
+        let childDriverLink = this._getChildIframeDriverLinkByWindow(driverWindow);
 
         if (!childDriverLink) {
             const driverId = `${this.testRunId}-${generateId()}`;
@@ -344,19 +341,16 @@ export default class Driver {
             this.childIframeDriverLinks.push(childDriverLink);
         }
 
-        childDriverLink.confirmMessage(id);
-    }
-
-    _sendConfirmationMessage (msgId, targetWindow) {
-        const confirmationMsg = new ConfirmationMessage(msgId);
-
-        eventSandbox.message.sendServiceMsg(confirmationMsg, targetWindow);
+        childDriverLink.sendConfirmationMessage(id);
     }
 
     _handleSetAsMasterMessage (msg, wnd) {
         Promise.resolve()
             .then(() => {
-                this._sendConfirmationMessage(msg.id, wnd);
+                sendConfirmationMessage({
+                    requestMsgId: msg.id,
+                    window:       wnd
+                });
 
                 const pageId = this._getCurrentPageId();
 
@@ -376,7 +370,10 @@ export default class Driver {
     _handleCloseAllWindowsMessage (msg, wnd) {
         this._closeAllChildWindows()
             .then(() => {
-                this._sendConfirmationMessage(msg.id, wnd);
+                sendConfirmationMessage({
+                    requestMsgId: msg.id,
+                    window:       wnd
+                });
             })
             .catch(() => {
                 this._onReady(new DriverStatus({
@@ -400,12 +397,12 @@ export default class Driver {
         });
     }
 
-    _getChildDriverLinkByWindow (driverWindow) {
-        return this.childIframeDriverLinks.filter(link => link.driverWindow === driverWindow)[0];
+    _getChildIframeDriverLinkByWindow (driverWindow) {
+        return arrayUtils.find(this.childIframeDriverLinks, link => link.driverWindow === driverWindow);
     }
 
     _getChildWindowDriverLinkByWindow (childDriverWindow) {
-        return this.childWindowDriverLinks.filter(link => link.driverWindow === childDriverWindow)[0];
+        return arrayUtils.find(this.childWindowDriverLinks, link => link.driverWindow === childDriverWindow);
     }
 
     _runInActiveIframe (command) {
@@ -434,10 +431,10 @@ export default class Driver {
         this._onReady(status);
     }
 
-    _ensureChildDriverLink (iframeWindow, ErrorCtor, selectorTimeout) {
+    _ensureChildIframeDriverLink (iframeWindow, ErrorCtor, selectorTimeout) {
         // NOTE: a child driver window should establish connection with the parent when it's loaded.
         // Here we are waiting while the appropriate child driver do this if it didn't do yet.
-        return waitFor(() => this._getChildDriverLinkByWindow(iframeWindow), CHECK_IFRAME_DRIVER_LINK_DELAY, selectorTimeout)
+        return waitFor(() => this._getChildIframeDriverLinkByWindow(iframeWindow), CHECK_IFRAME_DRIVER_LINK_DELAY, selectorTimeout)
             .catch(() => {
                 throw new ErrorCtor();
             });
@@ -462,7 +459,7 @@ export default class Driver {
                 if (!domUtils.isIframeElement(iframe))
                     throw new ActionElementNotIframeError();
 
-                return this._ensureChildDriverLink(nativeMethods.contentWindowGetter.call(iframe),
+                return this._ensureChildIframeDriverLink(nativeMethods.contentWindowGetter.call(iframe),
                     iframeErrorCtors.NotLoadedError, commandSelectorTimeout);
             })
             .then(childDriverLink => {

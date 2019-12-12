@@ -6,6 +6,6 @@ fixture `Fixture`
 test('test', async t => {
     await t
         .click('a')
-        .typeText('input', 'text')
-        .expect(Selector('input').value).eql('text');
+        .typeText('#inputOnChildPage', 'text')
+        .expect(Selector('#inputOnChildPage').value).eql('text');
 });
