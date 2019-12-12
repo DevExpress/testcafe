@@ -432,8 +432,8 @@ export default class Driver {
     }
 
     _ensureChildIframeDriverLink (iframeWindow, ErrorCtor, selectorTimeout) {
-        // NOTE: a child driver window should establish connection with the parent when it's loaded.
-        // Here we are waiting while the appropriate child driver do this if it didn't do yet.
+        // NOTE: a child iframe driver should establish connection with the parent when it's loaded.
+        // Here we are waiting while the appropriate child iframe driver do this if it didn't do yet.
         return waitFor(() => this._getChildIframeDriverLinkByWindow(iframeWindow), CHECK_IFRAME_DRIVER_LINK_DELAY, selectorTimeout)
             .catch(() => {
                 throw new ErrorCtor();
