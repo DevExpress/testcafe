@@ -19,7 +19,7 @@ function generateReport (log, emitOnStart, emitOnDone, includeBrowserInfo) {
                 const item = { action: 'start', name };
 
                 if (includeBrowserInfo)
-                    item.browser = browser.alias;
+                    item.browser = browser.alias.split(':')[0];
 
                 log.push(item);
             },
