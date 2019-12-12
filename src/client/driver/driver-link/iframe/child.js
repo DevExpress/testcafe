@@ -75,8 +75,8 @@ export default class ChildDriverLink {
     sendConfirmationMessage (requestMsgId) {
         sendConfirmationMessage({
             requestMsgId,
-            result:       { id: this.driverId },
-            driverWindow: this.driverWindow
+            result: { id: this.driverId },
+            window: this.driverWindow
         });
     }
 

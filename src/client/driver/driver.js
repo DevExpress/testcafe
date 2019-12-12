@@ -331,17 +331,17 @@ export default class Driver {
 
     // Iframes and child windows interaction
     _addIframeChildDriverLink (id, driverWindow) {
-        let childDriverLink = this._getChildIframeDriverLinkByWindow(driverWindow);
+        let childIframeDriverLink = this._getChildIframeDriverLinkByWindow(driverWindow);
 
-        if (!childDriverLink) {
+        if (!childIframeDriverLink) {
             const driverId = `${this.testRunId}-${generateId()}`;
 
-            childDriverLink = new ChildDriverLink(driverWindow, driverId);
+            childIframeDriverLink = new ChildDriverLink(driverWindow, driverId);
 
-            this.childIframeDriverLinks.push(childDriverLink);
+            this.childIframeDriverLinks.push(childIframeDriverLink);
         }
 
-        childDriverLink.sendConfirmationMessage(id);
+        childIframeDriverLink.sendConfirmationMessage(id);
     }
 
     _handleSetAsMasterMessage (msg, wnd) {
