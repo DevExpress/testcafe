@@ -198,6 +198,20 @@ export default class TestRunController extends AsyncEventEmitter {
             });
     }
 
+    _assignTestRunEvents (testRun, connection) {
+        testRun.on('command-start', async args => this._emitCommandStart(Object.assign(args, { testRun })));
+        testRun.on('command-done', async args => this._emitCommandDone(Object.assign(args, { testRun })));
+
+        testRun.once('start', async () => this._emitTestRunStart());
+        testRun.once('ready', async () => {
+            if (!this.quarantine || this._isFirstQuarantineAttempt())
+                await this.emit('test-run-ready');
+        });
+        testRun.once('before-done', () => this._testRunBeforeDone());
+        testRun.once('done', () => this._testRunDone());
+        testRun.once('disconnected', () => this._testRunDisconnected(connection));
+    }
+
     get blocked () {
         return this.fixtureHookController.isTestBlocked(this.test);
     }
@@ -213,17 +227,7 @@ export default class TestRunController extends AsyncEventEmitter {
             return null;
         }
 
-        testRun.on('command-start', async args => this._emitCommandStart(Object.assign(args, { testRun })));
-        testRun.on('command-done', async args => this._emitCommandDone(Object.assign(args, { testRun })));
-
-        testRun.once('start', async () => this._emitTestRunStart());
-        testRun.once('ready', async () => {
-            if (!this.quarantine || this._isFirstQuarantineAttempt())
-                await this.emit('test-run-ready');
-        });
-        testRun.once('before-done', () => this._testRunBeforeDone());
-        testRun.once('done', () => this._testRunDone());
-        testRun.once('disconnected', () => this._testRunDisconnected(connection));
+        this._assignTestRunEvents(testRun, connection);
 
         testRun.start();
 
