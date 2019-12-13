@@ -27,22 +27,6 @@ const typeTextOptions = Object.assign({
 
 module.exports = [
     {
-        name:    'getNativeDialogHistory',
-        command: {
-            type: 'get-native-dialog-history'
-        },
-        test:    { name: 'test-name', phase: 'initial' },
-        browser: { alias: 'test-browser', headless: false }
-    },
-    {
-        name: 'getBrowserConsoleMessages',
-        command: {
-            type: 'get-browser-console-messages',
-        },
-        test:    { name: 'test-name', phase: 'initial' },
-        browser: { alias: 'test-browser', headless: false }
-    },
-    {
         name:    'click',
         command: {
             options:  clickOptions,
@@ -281,6 +265,22 @@ module.exports = [
         },
         test:      { name: 'test-name', phase: 'initial' },
         browser:   { alias: 'test-browser', headless: false }
+    },
+    {
+        name:    'getNativeDialogHistory',
+        command: {
+            type: 'get-native-dialog-history'
+        },
+        test:    { name: 'test-name', phase: 'initial' },
+        browser: { alias: 'test-browser', headless: false }
+    },
+    {
+        name: 'getBrowserConsoleMessages',
+        command: {
+            type: 'get-browser-console-messages',
+        },
+        test:    { name: 'test-name', phase: 'initial' },
+        browser: { alias: 'test-browser', headless: false }
     },
     {
         name:    'debug',

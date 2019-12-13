@@ -110,7 +110,6 @@ const initializeReporter = (reporter) => {
 
 describe('TestController action events', () => {
     beforeEach(() => {
-
         const job               = new BrowserJob([], [], void 0, void 0, void 0, void 0, { TestRunCtor: TestRunMock });
         const testRunController = job._createTestRunController();
         const testRun           = new TestRunMock();
@@ -124,7 +123,7 @@ describe('TestController action events', () => {
         testRunController._assignTestRunEvents(testRun);
     });
 
-    it('Actions list', () => {
+    it('Actions list', async () => {
         const startLog = [];
         const doneLog  = [];
 
@@ -155,16 +154,16 @@ describe('TestController action events', () => {
                 throw new Error(`Describe the '${prop}' command`);
         });
 
-        return Promise.all(props.map(prop => testController[prop].apply(testController, commands[prop])))
-            .then(() => {
-                expect(Object.keys(commands).length).eql(startLog.length);
-                expect(Object.keys(commands).length).eql(doneLog.length);
-                expect(startLog.sort()).eql(props.sort());
+        for (let i = 0; i < props.length; i++)
+            await testController[props[i]].apply(testController, commands[props[i]]);
 
-                const expected = require('./data/test-controller-reporter-expected');
+        expect(Object.keys(commands).length).eql(startLog.length);
+        expect(Object.keys(commands).length).eql(doneLog.length);
+        expect(startLog.sort()).eql(props.sort());
 
-                expect(doneLog.sort()).eql(expected);
-            });
+        const expected = require('./data/test-controller-reporter-expected');
+
+        expect(doneLog.sort()).eql(expected);
     });
 
     it('Error action', () => {
