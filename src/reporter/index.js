@@ -198,17 +198,17 @@ export default class Reporter {
             await reportItem.pendingTestRunDonePromise;
         });
 
-        task.on('test-run-action-start', async ({ apiActionName, command, testRun, callsite }) => {
+        task.on('test-run-action-start', async ({ apiActionName, command, testRun }) => {
             if (this.plugin.reportTestRunActionStart) {
-                const args = this._prepareReportTestRunActionEventArgs({ command, testRun, callsite });
+                const args = this._prepareReportTestRunActionEventArgs({ command, testRun });
 
                 await this.plugin.reportTestRunActionStart(apiActionName, args);
             }
         });
 
-        task.on('test-run-action-done', async ({ apiActionName, command, testRun, callsite, errors }) => {
+        task.on('test-run-action-done', async ({ apiActionName, command, testRun, errors }) => {
             if (this.plugin.reportTestRunActionDone) {
-                const args = this._prepareReportTestRunActionEventArgs({ command, testRun, callsite, errors });
+                const args = this._prepareReportTestRunActionEventArgs({ command, testRun, errors });
 
                 await this.plugin.reportTestRunActionDone(apiActionName, args);
             }

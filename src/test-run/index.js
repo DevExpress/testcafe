@@ -609,7 +609,7 @@ export default class TestRun extends AsyncEventEmitter {
         let error  = null;
         let result = null;
 
-        await this.emitActionStart(actionName, command, callsite);
+        await this.emitActionStart(actionName, command);
 
         try {
             result = await this.executeCommand(command, callsite);
@@ -618,7 +618,7 @@ export default class TestRun extends AsyncEventEmitter {
             error = err;
         }
 
-        await this.emitActionDone(actionName, command, callsite, error);
+        await this.emitActionDone(actionName, command, error);
 
         if (error)
             throw error;
@@ -828,14 +828,14 @@ export default class TestRun extends AsyncEventEmitter {
         delete testRunTracker.activeTestRuns[this.session.id];
     }
 
-    async emitActionStart (apiActionName, command, callsite) {
+    async emitActionStart (apiActionName, command) {
         if (!this.preventEmitActionEvents)
-            await this.emit('action-start', { command, apiActionName, callsite });
+            await this.emit('action-start', { command, apiActionName });
     }
 
-    async emitActionDone (apiActionName, command, callsite, errors) {
+    async emitActionDone (apiActionName, command, errors) {
         if (!this.preventEmitActionEvents)
-            await this.emit('action-done', { command, apiActionName, callsite, errors });
+            await this.emit('action-done', { command, apiActionName, errors });
     }
 }
 
