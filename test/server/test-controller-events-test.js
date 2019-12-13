@@ -101,24 +101,34 @@ const commands = {
     useRole:                   [new Role('http://example.com', async () => {}, { preserveUrl: true })],
 };
 
-describe('TestController action events', () => {
-    it('TestController actions should emit reporter events', () => {
-        const startLog = [];
-        const doneLog  = [];
+let testController = null;
+let task           = null;
 
-        const task              = new TaskMock();
+const initializeReporter = (reporter) => {
+    return new Reporter(reporter, task);
+};
+
+describe('TestController action events', () => {
+    beforeEach(() => {
+
         const job               = new BrowserJob([], [], void 0, void 0, void 0, void 0, { TestRunCtor: TestRunMock });
         const testRunController = job._createTestRunController();
         const testRun           = new TestRunMock();
-        const testController    = new TestControllerMock(testRun);
 
         testRunController.testRun = testRun;
 
+        testController            = new TestControllerMock(testRun);
+        task                      = new TaskMock();
+
         task._assignBrowserJobEventHandlers(job);
         testRunController._assignTestRunEvents(testRun);
+    });
 
-        /* eslint-disable no-new */
-        new Reporter({
+    it('Actions list', () => {
+        const startLog = [];
+        const doneLog  = [];
+
+        initializeReporter({
             async reportTestRunCommandStart (name) {
                 startLog.push(name);
             },
@@ -154,6 +164,29 @@ describe('TestController action events', () => {
                 const expected = require('./data/test-controller-reporter-expected');
 
                 expect(doneLog.sort()).eql(expected);
+            });
+    });
+
+    it('Error action', () => {
+        let actionResult = null;
+
+        initializeReporter({
+            async reportTestRunCommandDone (name, { command, errors }) {
+                actionResult = { name, command: command.type, err: errors[0].message };
+            }
+        });
+
+        testController.testRun.executeCommand = () => {
+            throw new Error('test error');
+        };
+
+        return testController.click('#target')
+            .then(() => {
+                throw new Error();
+            })
+            .catch(err => {
+                expect(err.message).eql('test error');
+                expect(actionResult).eql({ name: 'click', command: 'click', err: 'test error' });
             });
     });
 });
