@@ -150,12 +150,12 @@ export default class TestRunController extends AsyncEventEmitter {
             await this._emitTestRunDone();
     }
 
-    async _emitCommandStart (args) {
-        await this.emit('test-run-command-start', args);
+    async _emitActionStart (args) {
+        await this.emit('test-run-action-start', args);
     }
 
-    async _emitCommandDone (args) {
-        await this.emit('test-run-command-done', args);
+    async _emitActionDone (args) {
+        await this.emit('test-run-action-done', args);
     }
 
     async _emitTestRunDone () {
@@ -199,8 +199,8 @@ export default class TestRunController extends AsyncEventEmitter {
     }
 
     _assignTestRunEvents (testRun, connection) {
-        testRun.on('command-start', async args => this._emitCommandStart(Object.assign(args, { testRun })));
-        testRun.on('command-done', async args => this._emitCommandDone(Object.assign(args, { testRun })));
+        testRun.on('action-start', async args => this._emitActionStart(Object.assign(args, { testRun })));
+        testRun.on('action-done', async args => this._emitActionDone(Object.assign(args, { testRun })));
 
         testRun.once('start', async () => this._emitTestRunStart());
         testRun.once('ready', async () => {

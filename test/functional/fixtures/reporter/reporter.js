@@ -12,7 +12,7 @@ const baseReport = {
 function generateReport (log, emitOnStart, emitOnDone, includeBrowserInfo, includeTestInfo) {
     return function () {
         return Object.assign({}, baseReport, {
-            async reportTestRunCommandStart (name, { browser, test }) {
+            async reportTestRunActionStart (name, { browser, test }) {
                 if (!emitOnStart)
                     return;
 
@@ -27,7 +27,7 @@ function generateReport (log, emitOnStart, emitOnDone, includeBrowserInfo, inclu
                 log.push(item);
             },
 
-            async reportTestRunCommandDone (name, { command, test, errors }) {
+            async reportTestRunActionDone (name, { command, test, errors }) {
                 if (!emitOnDone)
                     return;
 

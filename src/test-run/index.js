@@ -605,11 +605,11 @@ export default class TestRun extends AsyncEventEmitter {
             await this._enqueueSetBreakpointCommand(callsite);
     }
 
-    async executeApiMethod (apiMethodName, command, callsite) {
+    async executeAction (actionName, command, callsite) {
         let error  = null;
         let result = null;
 
-        await this.emitCommandStart(apiMethodName, command);
+        await this.emitActionStart(actionName, command, callsite);
 
         try {
             result = await this.executeCommand(command, callsite);
@@ -618,7 +618,7 @@ export default class TestRun extends AsyncEventEmitter {
             error = err;
         }
 
-        await this.emitCommandDone(apiMethodName, command, callsite, error);
+        await this.emitActionDone(actionName, command, callsite, error);
 
         if (error)
             throw error;
@@ -828,14 +828,14 @@ export default class TestRun extends AsyncEventEmitter {
         delete testRunTracker.activeTestRuns[this.session.id];
     }
 
-    async emitCommandStart (apiMethodName, command) {
+    async emitActionStart (apiActionName, command, callsite) {
         if (!this.preventEmitActionEvents)
-            await this.emit('command-start', { command, apiMethodName });
+            await this.emit('action-start', { command, apiActionName, callsite });
     }
 
-    async emitCommandDone (apiMethodName, command, isApiMethod, errors) {
+    async emitActionDone (apiActionName, command, callsite, errors) {
         if (!this.preventEmitActionEvents)
-            await this.emit('command-done', { command, apiMethodName, errors });
+            await this.emit('action-done', { command, apiActionName, callsite, errors });
     }
 }
 

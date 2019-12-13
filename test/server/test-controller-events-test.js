@@ -69,7 +69,7 @@ const options = {
     paste:              true,
 };
 
-const commands = {
+const actions = {
     click:                     ['#target', options],
     rightClick:                ['#target', options],
     doubleClick:               ['#target', options],
@@ -128,11 +128,11 @@ describe('TestController action events', () => {
         const doneLog  = [];
 
         initializeReporter({
-            async reportTestRunCommandStart (name) {
+            async reportTestRunActionStart (name) {
                 startLog.push(name);
             },
 
-            async reportTestRunCommandDone (name, { command, test, browser }) {
+            async reportTestRunActionDone (name, { command, test, browser }) {
                 const item = { name, command, test, browser };
 
                 doneLog.push(item);
@@ -150,18 +150,18 @@ describe('TestController action events', () => {
             .filter(prop => typeof testController[prop] === 'function');
 
         props.forEach(prop => {
-            if (!commands[prop])
+            if (!actions[prop])
                 throw new Error(`Describe the '${prop}' command`);
         });
 
-        const commandKeys = Object.keys(commands);
+        const actionsKeys = Object.keys(actions);
 
-        for (let i = 0; i < commandKeys.length; i++)
-            await testController[commandKeys[i]].apply(testController, commands[commandKeys[i]]);
+        for (let i = 0; i < actionsKeys.length; i++)
+            await testController[actionsKeys[i]].apply(testController, actions[actionsKeys[i]]);
 
-        expect(commandKeys.length).eql(startLog.length);
-        expect(commandKeys.length).eql(doneLog.length);
-        expect(startLog).eql(commandKeys);
+        expect(actionsKeys.length).eql(startLog.length);
+        expect(actionsKeys.length).eql(doneLog.length);
+        expect(startLog).eql(actionsKeys);
 
         const expected = require('./data/test-controller-reporter-expected');
 
@@ -172,7 +172,7 @@ describe('TestController action events', () => {
         let actionResult = null;
 
         initializeReporter({
-            async reportTestRunCommandDone (name, { command, errors }) {
+            async reportTestRunActionDone (name, { command, errors }) {
                 actionResult = { name, command: command.type, err: errors[0].message };
             }
         });

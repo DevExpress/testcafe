@@ -134,7 +134,7 @@ export default class Reporter {
         reportItem.pendingTestRunDonePromise.resolve();
     }
 
-    _prepareReportTestRunCommandEventArgs ({ command, testRun, errors }) {
+    _prepareReportTestRunActionEventArgs ({ command, testRun, errors }) {
         const args = {};
 
         if (errors) {
@@ -198,19 +198,19 @@ export default class Reporter {
             await reportItem.pendingTestRunDonePromise;
         });
 
-        task.on('test-run-command-start', async ({ apiMethodName, command, testRun }) => {
-            if (this.plugin.reportTestRunCommandStart) {
-                const args = this._prepareReportTestRunCommandEventArgs({ command, testRun });
+        task.on('test-run-action-start', async ({ apiActionName, command, testRun, callsite }) => {
+            if (this.plugin.reportTestRunActionStart) {
+                const args = this._prepareReportTestRunActionEventArgs({ command, testRun, callsite });
 
-                await this.plugin.reportTestRunCommandStart(apiMethodName, args);
+                await this.plugin.reportTestRunActionStart(apiActionName, args);
             }
         });
 
-        task.on('test-run-command-done', async ({ apiMethodName, command, testRun, errors }) => {
-            if (this.plugin.reportTestRunCommandDone) {
-                const args = this._prepareReportTestRunCommandEventArgs({ command, testRun, errors });
+        task.on('test-run-action-done', async ({ apiActionName, command, testRun, callsite, errors }) => {
+            if (this.plugin.reportTestRunActionDone) {
+                const args = this._prepareReportTestRunActionEventArgs({ command, testRun, callsite, errors });
 
-                await this.plugin.reportTestRunCommandDone(apiMethodName, args);
+                await this.plugin.reportTestRunActionDone(apiActionName, args);
             }
         });
 

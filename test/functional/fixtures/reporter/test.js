@@ -237,7 +237,7 @@ describe('Reporter', () => {
             });
     });
 
-    describe('Methods `test-run-command-start` and `test-run-command-done`', () => {
+    describe('Test actions', () => {
         function generateRunOptions (log, emitOnStart = true, emitOnDone = true, includeBrowserInfo = false, includeTestInfo = false) {
             return {
                 only:               ['chrome'],
