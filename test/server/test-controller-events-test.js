@@ -154,11 +154,13 @@ describe('TestController action events', () => {
                 throw new Error(`Describe the '${prop}' command`);
         });
 
-        for (let i = 0; i < props.length; i++)
-            await testController[props[i]].apply(testController, commands[props[i]]);
+        const commandKeys = Object.keys(commands);
 
-        expect(Object.keys(commands).length).eql(startLog.length);
-        expect(Object.keys(commands).length).eql(doneLog.length);
+        for (let i = 0; i < commandKeys.length; i++)
+            await testController[commandKeys[i]].apply(testController, commands[commandKeys[i]]);
+
+        expect(commandKeys.length).eql(startLog.length);
+        expect(commandKeys.length).eql(doneLog.length);
         expect(startLog.sort()).eql(props.sort());
 
         const expected = require('./data/test-controller-reporter-expected');
