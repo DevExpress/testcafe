@@ -161,11 +161,11 @@ describe('TestController action events', () => {
 
         expect(commandKeys.length).eql(startLog.length);
         expect(commandKeys.length).eql(doneLog.length);
-        expect(startLog.sort()).eql(props.sort());
+        expect(startLog).eql(commandKeys);
 
         const expected = require('./data/test-controller-reporter-expected');
 
-        expect(doneLog.sort()).eql(expected);
+        expect(doneLog).eql(expected);
     });
 
     it('Error action', () => {
