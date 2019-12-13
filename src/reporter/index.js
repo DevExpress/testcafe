@@ -134,6 +134,25 @@ export default class Reporter {
         reportItem.pendingTestRunDonePromise.resolve();
     }
 
+    _prepareReportTestRunCommandEventArgs ({ command, testRun, errors }) {
+        const args = {};
+
+        if (errors) {
+            errors = errors instanceof TestCafeErrorList ? errors.items : [errors];
+
+            args.errors = errors;
+        }
+
+        return Object.assign(args, {
+            test: {
+                name:  testRun.test.name,
+                phase: testRun.phase
+            },
+            command: new CommandReportItem(command),
+            browser: testRun.controller.browser,
+        });
+    }
+
     _assignTaskEventHandlers () {
         const task = this.task;
 
@@ -181,31 +200,17 @@ export default class Reporter {
 
         task.on('test-run-command-start', async ({ apiMethodName, command, testRun }) => {
             if (this.plugin.reportTestRunCommandStart) {
-                await this.plugin.reportTestRunCommandStart(apiMethodName, {
-                    test: {
-                        name:  testRun.test.name,
-                        phase: testRun.phase
-                    },
-                    command: new CommandReportItem(command),
-                    browser: testRun.controller.browser
-                });
+                const args = this._prepareReportTestRunCommandEventArgs({ command, testRun });
+
+                await this.plugin.reportTestRunCommandStart(apiMethodName, args);
             }
         });
 
         task.on('test-run-command-done', async ({ apiMethodName, command, testRun, errors }) => {
-            if (errors)
-                errors = errors instanceof TestCafeErrorList ? errors.items : [errors];
-
             if (this.plugin.reportTestRunCommandDone) {
-                await this.plugin.reportTestRunCommandDone(apiMethodName, {
-                    test: {
-                        name:  testRun.test.name,
-                        phase: testRun.phase
-                    },
-                    command: new CommandReportItem(command),
-                    browser: testRun.controller.browser,
-                    errors
-                });
+                const args = this._prepareReportTestRunCommandEventArgs({ command, testRun, errors });
+
+                await this.plugin.reportTestRunCommandDone(apiMethodName, args);
             }
         });
 
