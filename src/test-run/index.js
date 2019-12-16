@@ -561,7 +561,7 @@ export default class TestRun extends AsyncEventEmitter {
         executor.once('start-assertion-retries', timeout => this.executeCommand(new serviceCommands.ShowAssertionRetriesStatusCommand(timeout)));
         executor.once('end-assertion-retries', success => this.executeCommand(new serviceCommands.HideAssertionRetriesStatusCommand(success)));
 
-        const executeFn = this.decoratePreventEmitActionEvents(() => executor.run());
+        const executeFn = this.decoratePreventEmitActionEvents(() => executor.run(), { prevent: true });
 
         return await executeFn();
     }
@@ -668,8 +668,8 @@ export default class TestRun extends AsyncEventEmitter {
         if (command.type === COMMAND_TYPE.useRole) {
             let fn = () => this._useRole(command.role, callsite);
 
-            fn = this.decoratePreventEmitActionEvents(fn);
-            fn = this.decorateDisableDebugBreakpoints(fn);
+            fn = this.decoratePreventEmitActionEvents(fn, { prevent: true });
+            fn = this.decorateDisableDebugBreakpoints(fn, { disable: true });
 
             return await fn();
         }
@@ -714,11 +714,11 @@ export default class TestRun extends AsyncEventEmitter {
         };
     }
 
-    decoratePreventEmitActionEvents (fn, prevent = true) {
+    decoratePreventEmitActionEvents (fn, { prevent }) {
         return this._decorateWithFlag(fn, 'preventEmitActionEvents', prevent);
     }
 
-    decorateDisableDebugBreakpoints (fn, disable = true) {
+    decorateDisableDebugBreakpoints (fn, { disable }) {
         return this._decorateWithFlag(fn, 'disableDebugBreakpoints', disable);
     }
 

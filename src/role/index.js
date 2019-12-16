@@ -36,8 +36,8 @@ class Role extends EventEmitter {
         try {
             let fn = () => this.initFn(testRun);
 
-            fn = testRun.decoratePreventEmitActionEvents(fn, false);
-            fn = testRun.decorateDisableDebugBreakpoints(fn, false);
+            fn = testRun.decoratePreventEmitActionEvents(fn, { prevent: false });
+            fn = testRun.decorateDisableDebugBreakpoints(fn, { disable: false });
 
             await fn();
         }
