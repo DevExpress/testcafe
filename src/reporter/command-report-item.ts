@@ -1,16 +1,17 @@
-import { Dictionary } from '../configuration/interfaces';
 import { ExecuteSelectorCommand, ExecuteClientFunctionCommand } from '../test-run/commands/observation';
 import { NavigateToCommand, SetNativeDialogHandlerCommand, UseRoleCommand } from '../test-run/commands/actions';
 
 interface Command {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    [key: string]: any;
     type: string;
     _getAssignableProperties(): { name: string }[];
 }
 
-export class CommandReportItem implements Dictionary<any> {
-    [key: string]: any;
+export class CommandReportItem {
+    [key: string]: object|string;
 
-    public constructor (command: Command & Dictionary<any>) {
+    public constructor (command: Command) {
         this.type = command.type;
 
         if (command instanceof ExecuteSelectorCommand)
@@ -27,35 +28,35 @@ export class CommandReportItem implements Dictionary<any> {
             this._prepareProperties(command);
     }
 
-    private _prepareSelector (selector: ExecuteSelectorCommand): string {
-        const selectorChain = (selector as any).apiFnChain as string[];
+    private _prepareSelector (selector: Command): string {
+        const selectorChain = selector.apiFnChain as string[];
 
         return selectorChain.join('');
     }
 
-    private _prepareClientFunction (fn: ExecuteClientFunctionCommand & Dictionary<any>): any {
+    private _prepareClientFunction (fn: Command): object {
         return {
             code: fn.fnCode,
             args: fn.args[0]
         };
     }
 
-    private _prepareDialogHandler (command: Dictionary<any>): any {
+    private _prepareDialogHandler (command: Command): object {
         return this._prepareClientFunction(command.dialogHandler);
     }
 
-    private _prepareRole (roleCommand: UseRoleCommand & Dictionary<any>): any {
+    private _prepareRole (roleCommand: Command): object {
         const { loginPage, opts, phase } = roleCommand.role;
 
         return { loginPage, options: opts, phase };
     }
 
-    private _prepareUrl (navigateCommand: NavigateToCommand & Dictionary<any>): any {
+    private _prepareUrl (navigateCommand: Command): string {
         return navigateCommand.url;
     }
 
 
-    private _prepareProperties (command: Command & Dictionary<any>): void {
+    private _prepareProperties (command: Command): void {
         if (!command._getAssignableProperties)
             return;
 
