@@ -64,12 +64,12 @@ export default class Task extends AsyncEventEmitter {
                 await this.emit('done');
         });
 
-        job.on('test-run-action-start', async args => {
-            await this.emit('test-run-action-start', args);
+        job.on('test-action-start', async args => {
+            await this.emit('test-action-start', args);
         });
 
-        job.on('test-run-action-done', async args => {
-            await this.emit('test-run-action-done', args);
+        job.on('test-action-done', async args => {
+            await this.emit('test-action-done', args);
         });
 
     }

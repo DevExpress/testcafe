@@ -128,11 +128,11 @@ describe('TestController action events', () => {
         const doneLog  = [];
 
         initializeReporter({
-            async reportTestRunActionStart (name) {
+            async reportTestActionStart (name) {
                 startLog.push(name);
             },
 
-            async reportTestRunActionDone (name, { command, test, browser }) {
+            async reportTestActionDone (name, { command, test, browser }) {
                 const item = { name, command, test, browser };
 
                 doneLog.push(item);
@@ -172,7 +172,7 @@ describe('TestController action events', () => {
         let actionResult = null;
 
         initializeReporter({
-            async reportTestRunActionDone (name, { command, errors }) {
+            async reportTestActionDone (name, { command, errors }) {
                 actionResult = { name, command: command.type, err: errors[0].message };
             }
         });

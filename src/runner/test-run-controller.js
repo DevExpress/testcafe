@@ -151,11 +151,11 @@ export default class TestRunController extends AsyncEventEmitter {
     }
 
     async _emitActionStart (args) {
-        await this.emit('test-run-action-start', args);
+        await this.emit('test-action-start', args);
     }
 
     async _emitActionDone (args) {
-        await this.emit('test-run-action-done', args);
+        await this.emit('test-action-done', args);
     }
 
     async _emitTestRunDone () {
