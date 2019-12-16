@@ -317,18 +317,18 @@ export default {
     `,
 
     [TEST_RUN_ERRORS.childWindowIsNotLoadedError]: () => `
-        Child browser window is not loaded.
+        The page in the child window is not loaded.
     `,
 
     [TEST_RUN_ERRORS.childWindowNotFoundError]: () => `
-        The queried child browser window is not found.
+        The child window is not found.
     `,
 
     [TEST_RUN_ERRORS.cannotSwitchToWindowError]: () => `
-        Cannot switch to the browser window.
+        Cannot switch to the window.
     `,
 
     [TEST_RUN_ERRORS.closeChildWindowError]: () => `
-        An unhandled error has occurred during close child windows.
+        An error occurred while closing child windows.
     `
 };

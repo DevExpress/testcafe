@@ -20,7 +20,7 @@ import FlagList from '../utils/flag-list';
 import prepareReporters from '../utils/prepare-reporters';
 import loadClientScripts from '../custom-client-scripts/load';
 import { setUniqueUrls } from '../custom-client-scripts/utils';
-import { getConcatenatedValuesString, getPluralSuffix } from '../utils/string';
+import { getConcatenatedValuesString } from '../utils/string';
 
 const DEBUG_LOGGER = debug('testcafe:runner');
 
@@ -326,9 +326,8 @@ export default class Runner extends EventEmitter {
 
         const unsupportedBrowserAliases = unsupportedBrowserConnections.map(browserConnection => browserConnection.browserInfo.alias);
         const browserAliases            = getConcatenatedValuesString(unsupportedBrowserAliases);
-        const browserSuffix             = getPluralSuffix(unsupportedBrowserAliases);
 
-        throw new GeneralError(RUNTIME_ERRORS.cannotUseAllowMultipleWindowsOptionForSomeBrowsers, browserAliases, browserSuffix);
+        throw new GeneralError(RUNTIME_ERRORS.cannotUseAllowMultipleWindowsOptionForSomeBrowsers, browserAliases);
     }
 
     _validateAllowMultipleWindowsOption (tests, browserSet) {

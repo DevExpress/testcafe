@@ -853,7 +853,7 @@ describe('Runner', () => {
                 .src('test/server/data/test-suites/legacy/test.test.js')
                 .run({ allowMultipleWindows: true })
                 .catch(err => {
-                    expect(err.message).eql('You cannot use the "allowMultipleWindows" option for tests written in Legacy API format.');
+                    expect(err.message).eql('You cannot run Legacy API tests in multi-window mode.');
                 });
         });
 
@@ -863,7 +863,7 @@ describe('Runner', () => {
                 .src('test/server/data/test-suites/basic/testfile1.js')
                 .run({ allowMultipleWindows: true })
                 .catch(err => {
-                    expect(err.message).eql('You cannot use the "allowMultipleWindows" option for "remote" browser.');
+                    expect(err.message).eql('You cannot use multi-window mode in "remote".');
                 });
         });
     });

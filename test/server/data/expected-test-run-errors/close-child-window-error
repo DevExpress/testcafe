@@ -1,4 +1,4 @@
-An unhandled error has occurred during close child windows.
+An error occurred while closing child windows.
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>
