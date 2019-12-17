@@ -139,7 +139,8 @@ export default class Driver {
         this.parentWindowDriverLink = null;
 
         this.statusBar = null;
-        this.pageId    = null;
+
+        this.pageId = this._getCurrentPageId();
 
         if (options.retryTestPages)
             browser.enableRetryingTestPages();
@@ -179,6 +180,13 @@ export default class Driver {
 
     set consoleMessages (messages) {
         return this.contextStorage.setItem(CONSOLE_MESSAGES, messages ? messages.getCopy() : null);
+    }
+
+    _getCurrentPageId () {
+        const currentUrl     = window.location.toString();
+        const parsedProxyUrl = hammerhead.utils.url.parseProxyUrl(currentUrl);
+
+        return parsedProxyUrl.pageId || null;
     }
 
     // Error handling
@@ -865,13 +873,6 @@ export default class Driver {
             });
     }
 
-    _getCurrentPageId () {
-        const currentUrl     = window.location.toString();
-        const parsedProxyUrl = hammerhead.utils.url.parseProxyUrl(currentUrl);
-
-        return parsedProxyUrl.pageId || null;
-    }
-
     // API
     setCustomCommandHandlers (command, handler, executeInTopWindowOnly) {
         this.customCommandHandlers[command] = {
@@ -965,7 +966,6 @@ export default class Driver {
         this.statusBar.on(this.statusBar.UNLOCK_PAGE_BTN_CLICK, disableRealEventsPreventing);
 
         this.speed  = this.initialSpeed;
-        this.pageId = this._getCurrentPageId();
     }
 
     start () {
