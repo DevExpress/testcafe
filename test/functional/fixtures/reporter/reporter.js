@@ -9,7 +9,14 @@ const baseReport = {
     }
 };
 
-function generateReport (log, emitOnStart, emitOnDone, includeBrowserInfo, includeTestInfo) {
+function generateReporter (log, options = {}) {
+    const {
+        emitOnStart        = true,
+        emitOnDone         = true,
+        includeBrowserInfo = false,
+        includeTestInfo    = false
+    } = options;
+
     return function () {
         return Object.assign({}, baseReport, {
             async reportTestActionStart (name, { browser, test }) {
@@ -45,4 +52,4 @@ function generateReport (log, emitOnStart, emitOnDone, includeBrowserInfo, inclu
     };
 }
 
-module.exports = generateReport;
+module.exports = generateReporter;

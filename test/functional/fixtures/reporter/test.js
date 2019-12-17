@@ -1,7 +1,6 @@
-const expect = require('chai').expect;
-const fs     = require('fs');
-
-const generateReport = require('./reporter');
+const expect           = require('chai').expect;
+const fs               = require('fs');
+const generateReporter = require('./reporter');
 
 const {
     createSimpleTestStream,
@@ -238,18 +237,18 @@ describe('Reporter', () => {
     });
 
     describe('Test actions', () => {
-        function generateRunOptions (log, emitOnStart = true, emitOnDone = true, includeBrowserInfo = false, includeTestInfo = false) {
+        function generateRunOptions (log, options) {
             return {
                 only:               ['chrome'],
                 disableScreenshots: true,
-                reporter:           generateReport(log, emitOnStart, emitOnDone, includeBrowserInfo, includeTestInfo)
+                reporter:           generateReporter(log, options)
             };
         }
 
         it('Simple command', function () {
             const log = [];
 
-            return runTests('testcafe-fixtures/index-test.js', 'Simple command test', generateRunOptions(log, true, true, true, true))
+            return runTests('testcafe-fixtures/index-test.js', 'Simple command test', generateRunOptions(log, { includeBrowserInfo: true, includeTestInfo: true }))
                 .then(() => {
                     expect(log).eql([
                         {
@@ -441,7 +440,7 @@ describe('Reporter', () => {
         it('Complex nested command', function () {
             const log = [];
 
-            return runTests('testcafe-fixtures/index-test.js', 'Complex nested command test', generateRunOptions(log, true, true, false, true))
+            return runTests('testcafe-fixtures/index-test.js', 'Complex nested command test', generateRunOptions(log, { includeTestInfo: true }))
                 .then(() => {
                     expect(log).eql([
                         {
