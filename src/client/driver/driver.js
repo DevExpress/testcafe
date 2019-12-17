@@ -65,7 +65,7 @@ import {
     getResult as getExecuteSelectorResult,
     getResultDriverStatus as getExecuteSelectorResultDriverStatus
 } from './command-executors/execute-selector';
-import executeChildWindowSelector from './command-executors/execute-child-window-selector';
+import executeChildWindowDriverLinkSelector from './command-executors/execute-child-window-driver-link-selector';
 import ClientFunctionExecutor from './command-executors/client-functions/client-function-executor';
 import ChildWindowDriverLink from './driver-link/window/child';
 import ParentWindowDriverLink from './driver-link/window/parent';
@@ -478,9 +478,9 @@ export default class Driver {
     _switchToChildWindow (selector) {
         this.contextStorage.setItem(this.PENDING_WINDOW_SWITCHING_FLAG, true);
 
-        return executeChildWindowSelector(selector, this.childWindowDriverLinks)
-            .then(driverWindow => {
-                return this._ensureChildWindowDriverLink(driverWindow, ChildWindowIsNotLoadedError, this.childWindowReadyTimeout);
+        return executeChildWindowDriverLinkSelector(selector, this.childWindowDriverLinks)
+            .then(childWindowDriverLink => {
+                return this._ensureChildWindowDriverLink(childWindowDriverLink.driverWindow, ChildWindowIsNotLoadedError, this.childWindowReadyTimeout);
             })
             .then(childWindowDriverLink => {
                 this.activeChildWindowDriverLink = childWindowDriverLink;
@@ -759,7 +759,7 @@ export default class Driver {
         // NOTE: Block the next command execution until the master driver instance will be changed
         const thereIsPendingSwitchToChildWindow = this.contextStorage.getItem(this.PENDING_WINDOW_SWITCHING_FLAG);
 
-        if (thereIsPendingSwitchToChildWindow)
+        if (thereIsPendingSwitchToChildWindow && !status.isCommandResult)
             return;
 
         this._sendStatus(status)

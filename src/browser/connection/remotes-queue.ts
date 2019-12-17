@@ -1,19 +1,29 @@
 import { EventEmitter } from 'events';
 import promisifyEvent from 'promisify-event';
 import getTimeLimitedPromise from 'time-limit-promise';
-
+import { Dictionary } from '../../configuration/interfaces';
+import BrowserConnection from './index';
 
 const REMOTE_REDIRECT_TIMEOUT           = 10000;
 const ADDING_CONNECTION_WAITING_TIMEOUT = 10000;
 
+interface PendingConnection {
+    connection: BrowserConnection;
+    readyPromise: Promise<void>;
+}
+
 export default class RemotesQueue {
-    constructor () {
+    private readonly events: EventEmitter;
+    private shiftingTimeout: Promise<void>;
+    private readonly pendingConnections: Dictionary<PendingConnection>;
+
+    public constructor () {
         this.events             = new EventEmitter();
         this.shiftingTimeout    = Promise.resolve();
         this.pendingConnections = {};
     }
 
-    add (remoteConnection) {
+    public add (remoteConnection: BrowserConnection): void {
         const connectionReadyPromise = promisifyEvent(remoteConnection, 'ready')
             .then(() => this.remove(remoteConnection));
 
@@ -25,11 +35,11 @@ export default class RemotesQueue {
         this.events.emit('connection-added', remoteConnection.id);
     }
 
-    remove (remoteConnection) {
+    public remove (remoteConnection: BrowserConnection): void {
         delete this.pendingConnections[remoteConnection.id];
     }
 
-    shift () {
+    public shift (): Promise<BrowserConnection | null> {
         const shiftingPromise = this.shiftingTimeout
             .then(async () => {
                 let headId = Object.keys(this.pendingConnections)[0];
