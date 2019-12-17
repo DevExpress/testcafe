@@ -139,6 +139,7 @@ export default class Driver {
         this.parentWindowDriverLink = null;
 
         this.statusBar = null;
+        this.pageId    = null;
 
         if (options.retryTestPages)
             browser.enableRetryingTestPages();
@@ -253,7 +254,7 @@ export default class Driver {
     _onConsoleMessage ({ meth, line }) {
         const messages = this.consoleMessages;
 
-        messages.addMessage(meth, line);
+        messages.addMessage(meth, line, this.pageId);
 
         this.consoleMessages = messages;
     }
@@ -868,7 +869,7 @@ export default class Driver {
         const currentUrl     = window.location.toString();
         const parsedProxyUrl = hammerhead.utils.url.parseProxyUrl(currentUrl);
 
-        return parsedProxyUrl.pageId;
+        return parsedProxyUrl.pageId || null;
     }
 
     // API
@@ -944,15 +945,13 @@ export default class Driver {
     }
 
     _getDriverRole () {
-        const currentPageId = this._getCurrentPageId();
-
-        if (!currentPageId)
+        if (!this.pageId)
             return Promise.resolve(DriverRole.master);
 
         return browser
             .getActivePageId(this.browserActivePageId, hammerhead.createNativeXHR)
             .then(({ activePageId }) => {
-                return activePageId === currentPageId ?
+                return activePageId === this.pageId ?
                     DriverRole.master :
                     DriverRole.replica;
             });
@@ -965,7 +964,8 @@ export default class Driver {
 
         this.statusBar.on(this.statusBar.UNLOCK_PAGE_BTN_CLICK, disableRealEventsPreventing);
 
-        this.speed = this.initialSpeed;
+        this.speed  = this.initialSpeed;
+        this.pageId = this._getCurrentPageId();
     }
 
     start () {

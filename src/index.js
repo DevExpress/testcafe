@@ -38,7 +38,7 @@ async function getValidPort (port) {
 }
 
 // API
-async function createTestCafe (hostname, port1, port2, sslOptions, developmentMode, retryTestPages) {
+async function createTestCafe (hostname, port1, port2, sslOptions, developmentMode = false, retryTestPages = false) {
     const configuration = new TestCafeConfiguration();
 
     await configuration.init({

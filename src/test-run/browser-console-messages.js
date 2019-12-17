@@ -2,47 +2,57 @@
 // WARNING: this file is used by both the client and the server.
 // Do not use any browser or node-specific API!
 // -------------------------------------------------------------
-import Assignable from '../utils/assignable';
 
-
-export default class BrowserConsoleMessages extends Assignable {
-    constructor (obj) {
-        super();
-
-        this.log   = [];
-        this.info  = [];
-        this.warn  = [];
-        this.error = [];
-
-        this._assignFrom(obj);
+export default class BrowserConsoleMessages {
+    constructor (data) {
+        this.concat(data);
     }
 
-    _getAssignableProperties () {
-        return [
-            { name: 'log' },
-            { name: 'info' },
-            { name: 'warn' },
-            { name: 'error' }
-        ];
+    _ensurePageIdMessageContainer (pageId) {
+        if (this[pageId])
+            return;
+
+        this[pageId] = {
+            log:   [],
+            info:  [],
+            warn:  [],
+            error: []
+        };
     }
 
     concat (consoleMessages) {
-        this.log   = this.log.concat(consoleMessages.log);
-        this.info  = this.info.concat(consoleMessages.info);
-        this.warn  = this.warn.concat(consoleMessages.warn);
-        this.error = this.error.concat(consoleMessages.error);
+        if (!consoleMessages)
+            return this;
+
+        Object.keys(consoleMessages).forEach(pageId => {
+            this._ensurePageIdMessageContainer(pageId);
+
+            this[pageId].log   = this[pageId].log.concat(consoleMessages[pageId].log);
+            this[pageId].info  = this[pageId].info.concat(consoleMessages[pageId].info);
+            this[pageId].warn  = this[pageId].warn.concat(consoleMessages[pageId].warn);
+            this[pageId].error = this[pageId].error.concat(consoleMessages[pageId].error);
+        });
+
+        return this;
     }
 
-    addMessage (type, msg) {
-        this[type].push(msg);
+    addMessage (type, msg, pageId) {
+        this._ensurePageIdMessageContainer(pageId);
+
+        this[pageId][type].push(msg);
     }
 
     getCopy () {
         const copy = {};
-        const properties = this._getAssignableProperties();
 
-        for (const property of properties)
-            copy[property.name] = this[property.name].slice();
+        Object.keys(this).forEach(pageId => {
+            copy[pageId] = {
+                log:   this[pageId].log.slice(),
+                info:  this[pageId].info.slice(),
+                warn:  this[pageId].warn.slice(),
+                error: this[pageId].error.slice()
+            };
+        });
 
         return copy;
     }

@@ -24,6 +24,10 @@ describe('Allow multiple windows', () => {
         return runTests('testcafe-fixtures/switching-to-parent/window-close-call.js', null, { allowMultipleWindows: true });
     });
 
+    it('Console messages', () => {
+        return runTests('testcafe-fixtures/console/console-test.js', null, { allowMultipleWindows: true });
+    });
+
     it('Unhandled JavaScript errors', () => {
         return runTests('testcafe-fixtures/handle-errors/handle-js-errors.js', null, {
             allowMultipleWindows: true,

@@ -40,7 +40,7 @@ export default class BrowserConnection extends EventEmitter {
     private readonly allowMultipleWindows: any;
     private readonly HEARTBEAT_TIMEOUT: number;
     private readonly BROWSER_RESTART_TIMEOUT: number;
-    private readonly id: string;
+    public readonly id: string;
     private readonly jobQueue: any[];
     private readonly initScriptsQueue: any[];
     private browserConnectionGateway: any;
@@ -48,12 +48,12 @@ export default class BrowserConnection extends EventEmitter {
     private testRunAborted: boolean;
     private closing: boolean;
     private closed: boolean;
-    private ready: boolean;
+    public ready: boolean;
     private opened: boolean;
     private heartbeatTimeout: NodeJS.Timeout | null;
     private pendingTestRunUrl: string | null;
     private readonly url: string;
-    private readonly idleUrl: string;
+    public readonly idleUrl: string;
     private forcedIdleUrl: string;
     private readonly initScriptUrl: string;
     private readonly heartbeatRelativeUrl: string;
