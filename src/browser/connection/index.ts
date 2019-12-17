@@ -35,15 +35,19 @@ interface InitScript {
     code: string | null;
 }
 
+interface InitScriptTask extends InitScript {
+    resolve: Function;
+}
+
 export default class BrowserConnection extends EventEmitter {
-    private permanent: any;
-    private readonly allowMultipleWindows: any;
+    private permanent: boolean;
+    private readonly allowMultipleWindows: boolean;
     private readonly HEARTBEAT_TIMEOUT: number;
     private readonly BROWSER_RESTART_TIMEOUT: number;
     public readonly id: string;
     private readonly jobQueue: any[];
-    private readonly initScriptsQueue: any[];
-    private browserConnectionGateway: any;
+    private readonly initScriptsQueue: InitScriptTask[];
+    private browserConnectionGateway: BrowserConnectionGateway;
     private disconnectionPromise: DisconnectionPromise<void> | null;
     private testRunAborted: boolean;
     private closing: boolean;

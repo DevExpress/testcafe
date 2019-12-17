@@ -15,12 +15,14 @@ export default class BrowserConnectionGateway {
     private _remotesQueue: RemotesQueue;
     public readonly domain: string;
     private _connectUrl: string;
+    public retryTestPages: boolean;
 
-    public constructor (proxy: Proxy) {
+    public constructor (proxy: Proxy, options: { retryTestPages: boolean }) {
         this._remotesQueue   = new RemotesQueue();
         // @ts-ignore Need to improve typings of the 'testcafe-hammerhead' module
         this.domain          = (proxy as any).server1Info.domain;
         this._connectUrl     = `${this.domain}/browser/connect`;
+        this.retryTestPages  = options.retryTestPages;
 
         this._registerRoutes(proxy);
     }
