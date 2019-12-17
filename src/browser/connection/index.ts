@@ -11,6 +11,7 @@ import { GeneralError } from '../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../errors/types';
 import { HEARTBEAT_TIMEOUT, BROWSER_RESTART_TIMEOUT } from '../../utils/browser-connection-timeouts';
 import { Dictionary } from '../../configuration/interfaces';
+import BrowserConnectionGateway from './gateway';
 
 const IDLE_PAGE_TEMPLATE                         = read('../../client/browser/idle-page/index.html.mustache');
 const connections: Dictionary<BrowserConnection> = {};
@@ -35,7 +36,6 @@ interface InitScript {
 }
 
 export default class BrowserConnection extends EventEmitter {
-    private gateway: any;
     private permanent: any;
     private readonly allowMultipleWindows: any;
     private readonly HEARTBEAT_TIMEOUT: number;
@@ -70,7 +70,7 @@ export default class BrowserConnection extends EventEmitter {
     public browserInfo: any;
     public provider: any;
 
-    public constructor (gateway: any, browserInfo: any, permanent: boolean, allowMultipleWindows = false) {
+    public constructor (gateway: BrowserConnectionGateway, browserInfo: any, permanent: boolean, allowMultipleWindows = false) {
         super();
 
         this.HEARTBEAT_TIMEOUT       = HEARTBEAT_TIMEOUT;

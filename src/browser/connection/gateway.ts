@@ -11,26 +11,24 @@ const IDLE_PAGE_STYLE  = read('../../client/browser/idle-page/styles.css');
 const IDLE_PAGE_LOGO   = read('../../client/browser/idle-page/logo.svg', true);
 
 export default class BrowserConnectionGateway {
-    private connections: Dictionary<BrowserConnection> = {};
-    private remotesQueue: RemotesQueue;
-    private readonly domain: string;
-    private connectUrl: string;
-    private retryTestPages: boolean;
+    private _connections: Dictionary<BrowserConnection> = {};
+    private _remotesQueue: RemotesQueue;
+    public readonly domain: string;
+    private _connectUrl: string;
 
-    public constructor (proxy: Proxy, options: { retryTestPages: boolean }) {
-        this.remotesQueue   = new RemotesQueue();
-        // @ts-ignore
-        this.domain         = (proxy as any).server1Info.domain;
-        this.connectUrl     = `${this.domain}/browser/connect`;
-        this.retryTestPages = options.retryTestPages;
+    public constructor (proxy: Proxy) {
+        this._remotesQueue   = new RemotesQueue();
+        // @ts-ignore Need to improve typings of the 'testcafe-hammerhead' module
+        this.domain          = (proxy as any).server1Info.domain;
+        this._connectUrl     = `${this.domain}/browser/connect`;
 
         this._registerRoutes(proxy);
     }
 
     private _dispatch (url: string, proxy: Proxy, handler: Function, method = 'GET'): void {
-        // @ts-ignore
-        proxy[method](url, (req: IncomingMessage, res: ServerResponse, serverInfo, params) => {
-            const connection = this.connections[params.id];
+        // @ts-ignore Need to improve typings of the 'testcafe-hammerhead' module
+        proxy[method](url, (req: IncomingMessage, res: ServerResponse, serverInfo, params: Dictionary<string>) => {
+            const connection = this._connections[params.id];
 
             preventCaching(res);
 
@@ -174,31 +172,31 @@ export default class BrowserConnectionGateway {
     private async _connectNextRemoteBrowser (req: IncomingMessage, res: ServerResponse): Promise<void> {
         preventCaching(res);
 
-        const remoteConnection = await this.remotesQueue.shift();
+        const remoteConnection = await this._remotesQueue.shift();
 
         if (remoteConnection)
             redirect(res, remoteConnection.url);
         else
-            respond500(res, 'There are no available connections to establish.');
+            respond500(res, 'There are no available _connections to establish.');
     }
 
     // API
     public startServingConnection (connection: BrowserConnection): void {
-        this.connections[connection.id] = connection;
+        this._connections[connection.id] = connection;
 
         if (connection.browserInfo.providerName === 'remote')
-            this.remotesQueue.add(connection);
+            this._remotesQueue.add(connection);
     }
 
     public stopServingConnection (connection: BrowserConnection): void {
-        delete this.connections[connection.id];
+        delete this._connections[connection.id];
 
         if (connection.browserInfo.providerName === 'remote')
-            this.remotesQueue.remove(connection);
+            this._remotesQueue.remove(connection);
     }
 
     public close (): void {
-        Object.keys(this.connections).forEach(id => this.connections[id].close());
+        Object.keys(this._connections).forEach(id => this._connections[id].close());
     }
 }
 

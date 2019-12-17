@@ -1,7 +1,6 @@
 import { GeneralError } from './errors/runtime';
 import { RUNTIME_ERRORS } from './errors/types';
 import CONTENT_TYPES from './assets/content-types';
-import OPTION_NAMES from './configuration/option-names';
 import * as INJECTABLES from './assets/injectables';
 
 const lazyRequire              = require('import-lazy')(require);
@@ -27,7 +26,7 @@ export default class TestCafe {
 
         this.closed                   = false;
         this.proxy                    = new hammerhead.Proxy(hostname, port1, port2, options);
-        this.browserConnectionGateway = new BrowserConnectionGateway(this.proxy, { retryTestPages: configuration.getOption(OPTION_NAMES.retryTestPages) });
+        this.browserConnectionGateway = new BrowserConnectionGateway(this.proxy);
         this.runners                  = [];
         this.configuration            = configuration;
 

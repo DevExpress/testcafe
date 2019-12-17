@@ -22,8 +22,7 @@ import { Writable as WritableStream } from 'stream';
 import ClientScript from '../custom-client-scripts/client-script';
 import ClientScriptInit from '../custom-client-scripts/client-script-init';
 import BrowserProvider from '../browser/provider';
-
-type BrowserConnectionGateway = unknown;
+import BrowserConnectionGateway from '../browser/connection/gateway';
 
 type TestSource = unknown;
 
