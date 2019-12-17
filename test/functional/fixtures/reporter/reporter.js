@@ -11,10 +11,10 @@ const baseReport = {
 
 function generateReporter (log, options = {}) {
     const {
-        emitOnStart        = true,
-        emitOnDone         = true,
+        emitOnStart = true,
+        emitOnDone = true,
         includeBrowserInfo = false,
-        includeTestInfo    = false
+        includeTestInfo = false
     } = options;
 
     return function () {
