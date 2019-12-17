@@ -2,15 +2,13 @@ import { Promise, eventSandbox, nativeMethods } from '../deps/hammerhead';
 import { delay } from '../deps/testcafe-core';
 import { TYPE as MESSAGE_TYPE } from './messages';
 
-
 const MIN_RESPONSE_WAITING_TIMEOUT = 2500;
 const RESEND_MESSAGE_INTERVAL      = 1000;
 
-
 export default function sendMessageToDriver (msg, driverWindow, timeout, NotLoadedErrorCtor) {
-    let sendMsgInterval = null;
-    const sendMsgTimeout  = null;
-    let onResponse      = null;
+    let sendMsgInterval  = null;
+    const sendMsgTimeout = null;
+    let onResponse       = null;
 
     timeout = Math.max(timeout || 0, MIN_RESPONSE_WAITING_TIMEOUT);
 

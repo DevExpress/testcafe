@@ -8,6 +8,7 @@ import { HEARTBEAT_INTERVAL } from '../../utils/browser-connection-timeouts';
 
 let allowInitScriptExecution = false;
 let retryTestPages           = false;
+let heartbeatIntervalId      = null;
 
 const noop  = () => void 0;
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -67,9 +68,13 @@ export function startHeartbeat (heartbeatUrl, createXHR) {
             });
     }
 
-    window.setInterval(heartbeat, HEARTBEAT_INTERVAL);
+    heartbeatIntervalId = window.setInterval(heartbeat, HEARTBEAT_INTERVAL);
 
     heartbeat();
+}
+
+export function stopHeartbeat () {
+    window.clearInterval(heartbeatIntervalId);
 }
 
 function executeInitScript (initScriptUrl, createXHR) {
@@ -149,4 +154,15 @@ export function disableRetryingTestPages () {
 
 export function isRetryingTestPagesEnabled () {
     return retryTestPages;
+}
+
+export function getActivePageId (activePageIdUrl, createXHR) {
+    return sendXHR(activePageIdUrl, createXHR);
+}
+
+export function setActivePageId (activePageIdUrl, createXHR, pageId) {
+    return sendXHR(activePageIdUrl, createXHR, {
+        method: 'POST',
+        data:   JSON.stringify({ pageId }) //eslint-disable-line no-restricted-globals
+    });
 }

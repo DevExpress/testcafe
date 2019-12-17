@@ -61,6 +61,7 @@ export default class BrowserConnection extends EventEmitter {
     private readonly statusDoneRelativeUrl: string;
     private readonly heartbeatUrl: string;
     private readonly statusUrl: string;
+    private readonly activePageIdUrl: string;
     private statusDoneUrl: string;
     private switchingToIdle: boolean;
 
@@ -106,6 +107,7 @@ export default class BrowserConnection extends EventEmitter {
         this.heartbeatRelativeUrl  = `/browser/heartbeat/${this.id}`;
         this.statusRelativeUrl     = `/browser/status/${this.id}`;
         this.statusDoneRelativeUrl = `/browser/status-done/${this.id}`;
+        this.activePageIdUrl       = `/browser/active-page-id/${this.id}`;
 
         this.heartbeatUrl  = `${gateway.domain}${this.heartbeatRelativeUrl}`;
         this.statusUrl     = `${gateway.domain}${this.statusRelativeUrl}`;
@@ -395,5 +397,13 @@ export default class BrowserConnection extends EventEmitter {
         }
 
         return { cmd: COMMAND.idle, url: this.idleUrl };
+    }
+
+    public get activePageId (): null | string {
+        return this.provider.getActivePageId(this.id);
+    }
+
+    public set activePageId (val) {
+        this.provider.setActivePageId(this.id, val);
     }
 }

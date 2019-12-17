@@ -1,19 +1,15 @@
-import { Promise, eventSandbox, nativeMethods } from '../deps/hammerhead';
-import { domUtils, delay, waitFor, positionUtils } from '../deps/testcafe-core';
+import { Promise, eventSandbox, nativeMethods } from '../../deps/hammerhead';
+import { domUtils, delay, waitFor, positionUtils } from '../../deps/testcafe-core';
 import {
     CurrentIframeIsNotLoadedError,
     CurrentIframeNotFoundError,
     CurrentIframeIsInvisibleError
-} from '../../../errors/test-run';
-import sendMessageToDriver from './send-message-to-driver';
-import { ExecuteCommandMessage, ConfirmationMessage, TYPE as MESSAGE_TYPE } from './messages';
-import DriverStatus from '../status';
-
-
-const CHECK_IFRAME_EXISTENCE_INTERVAL = 1000;
-const CHECK_IFRAME_VISIBLE_INTERVAL   = 200;
-const WAIT_IFRAME_RESPONSE_DELAY      = 500;
-
+} from '../../../../errors/test-run';
+import sendMessageToDriver from '../send-message-to-driver';
+import { ExecuteCommandMessage, TYPE as MESSAGE_TYPE } from '../messages';
+import DriverStatus from '../../status';
+import { CHECK_IFRAME_EXISTENCE_INTERVAL, CHECK_IFRAME_VISIBLE_INTERVAL, WAIT_IFRAME_RESPONSE_DELAY } from '../timeouts';
+import sendConfirmationMessage from '../send-confirmation-message';
 
 export default class ChildDriverLink {
     constructor (driverWindow, driverId) {
@@ -76,10 +72,12 @@ export default class ChildDriverLink {
             });
     }
 
-    confirmConnectionEstablished (requestMsgId) {
-        const msg = new ConfirmationMessage(requestMsgId, { id: this.driverId });
-
-        eventSandbox.message.sendServiceMsg(msg, this.driverWindow);
+    sendConfirmationMessage (requestMsgId) {
+        sendConfirmationMessage({
+            requestMsgId,
+            result: { id: this.driverId },
+            window: this.driverWindow
+        });
     }
 
     executeCommand (command, testSpeed) {
