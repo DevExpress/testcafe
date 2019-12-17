@@ -237,7 +237,7 @@ Thank you to all the people who already contributed to TestCafe!
 [Marketionist](https://github.com/Marketionist) |[Dmitry-Ostashev](https://github.com/Dmitry-Ostashev) |[alexey-lin](https://github.com/alexey-lin) |[cgfarmer4](https://github.com/cgfarmer4) |[bill-looby-i](https://github.com/bill-looby-i) |[rbardini](https://github.com/rbardini) |
 
 [<img alt="macdonaldr93" src="https://avatars2.githubusercontent.com/u/5184848?v=4&s=117" width="117">](https://github.com/macdonaldr93) |[<img alt="alexwybraniec" src="https://avatars3.githubusercontent.com/u/521536?v=4&s=117" width="117">](https://github.com/alexwybraniec) |
-:---: |:---: |:---: |:---: |:---: |:---: |
+:---: |:---: |
 [macdonaldr93](https://github.com/macdonaldr93) |[alexwybraniec](https://github.com/alexwybraniec) |
 
 ## Plugins
