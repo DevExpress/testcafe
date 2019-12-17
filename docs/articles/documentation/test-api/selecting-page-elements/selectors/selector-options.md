@@ -97,10 +97,9 @@ This option is in effect when TestCafe waits for the selector to return a page e
 
 If the target element is not visible, the selector throws an exception in all these cases.
 
-Note that when a selector is passed to a [test action](../../actions/README.md) as an identifier for the target element,
-TestCafe [requires](../../built-in-waiting-mechanisms.md#wait-mechanism-for-actions) that the target element is visible regardless of the `visibilityCheck` option.
+Note that when a selector is passed to a [test action](../../actions/README.md) as the target element's identifier, the target element should be visible regardless of the `visibilityCheck` option.
 
-Unlike filter functions, the `visibilityCheck` option does not change the matching set of the selector.
+Unlike filter functions, the `visibilityCheck` option does not change the selector's matched set.
 
 Consider the following page:
 
@@ -121,7 +120,7 @@ or the number of matching elements, invisible elements also count.
 const count = await Selector('div', { visibilityCheck: true }).count;
 
 // returns 3 since the visibilityCheck option
-// does not affect the selector's matching set
+// does not affect the selector's matched set
 ```
 
 In case you need to filter page elements by their visibility,

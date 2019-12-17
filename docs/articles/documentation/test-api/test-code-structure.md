@@ -590,13 +590,13 @@ test.clientScripts( script[, script2[, ...[, scriptN]]] )
 
 Parameter | Type     | Description
 --------- | -------- | ---------------------------------------------------------------------------
-`script`, `script2`, `scriptN` | String &#124; Object &#124; Array | Scripts to inject into the tested pages. See [Provide Scripts to Inject](../using-testcafe/common-concepts/inject-scripts-into-tested-pages.md#provide-scripts-to-inject) to learn how to specify them.
+`script`, `script2`, `scriptN` | String &#124; Object &#124; Array | Scripts to inject into the tested pages. See [Provide Scripts to Inject](../using-testcafe/common-concepts/inject-scripts-into-tested-pages.md#provide-scripts-to-inject) for information on how to specify scripts.
 
-> Relative paths resolve from the test file location.
+> Relative paths are resolved against the test file location.
 
 You can use the [page](../using-testcafe/common-concepts/inject-scripts-into-tested-pages.md#provide-scripts-for-specific-pages) option to specify pages into which scripts should be injected. Otherwise, TestCafe injects scripts into all pages visited during the test or fixture.
 
-> If you add client scripts to both the fixture and test, scripts added to the fixture run first.
+> Hooks attached to the fixture run first when you attach request hooks to the fixture and test.
 
 **Examples**
 
@@ -659,6 +659,6 @@ test
 
 To disable page caching during the entire test run, use either of the following options:
 
-* the [--disable-page-caching](../using-testcafe/command-line-interface.md#--disable-page-caching) command line flag
-* the `disablePageCaching` option in the [runner.run](../using-testcafe/programming-interface/runner.md#run) method
-* the [disablePageCaching](../using-testcafe/configuration-file.md#disablepagecaching) configuration file option
+* the [--disable-page-caching](../using-testcafe/command-line-interface.md#--disable-page-caching) command line flag,
+* the `disablePageCaching` option in the [runner.run](../using-testcafe/programming-interface/runner.md#run) method,
+* the [disablePageCaching](../using-testcafe/configuration-file.md#disablepagecaching) configuration file option.

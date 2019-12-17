@@ -249,7 +249,7 @@ Option           | Type    | Description                                        
 
 See [Screenshots](../common-concepts/screenshots-and-videos.md#screenshots) for details.
 
-Pass the `disableScreenshots` option to the [runner.run](#run) method to disable taking screenshots:
+Pass the `disableScreenshots` option to the [runner.run](#run) method to disable screenshots:
 
 ```js
 runner.run({
@@ -438,7 +438,7 @@ Parameter | Type                | Description
 --------- | ------------------- | ------------
 `script`, `script2`, `scriptN`  | String &#124; Object &#124; Array | Scripts to inject into the tested pages. See [Provide Scripts to Inject](../common-concepts/inject-scripts-into-tested-pages.md#provide-scripts-to-inject) to learn how to specify them.
 
-> Relative paths resolve from the current working directory.
+> Relative paths are resolved against the current working directory.
 
 You can use the [page](../common-concepts/inject-scripts-into-tested-pages.md#provide-scripts-for-specific-pages) option to specify pages into which scripts should be injected. Otherwise, TestCafe injects scripts into all pages visited during the test run.
 
@@ -524,7 +524,7 @@ async tsConfigPath(path) → this
 
 Parameter | Type   | Description
 --------- | ------ | ---------------------
-`path`    | String | The absolute or relative path to the TypeScript configuration file. Relative paths resolve from the current directory (the directory from which you run TestCafe).
+`path`    | String | The absolute or relative path to the TypeScript configuration file. Relative paths are resolved against the current directory (the directory from which you run TestCafe).
 
 ```js
 runner.tsConfigPath('/Users/s.johnson/testcafe/tsconfig.json');
@@ -560,7 +560,7 @@ Parameter         | Type    | Description                                       
 `pageLoadTimeout` | Number  |  Specifies the time (in milliseconds) TestCafe waits for the `window.load` event to fire after the `DOMContentLoaded` event. After the timeout passes or the `window.load` event is raised (whichever happens first), TestCafe starts the test. You can set this timeout to `0` to skip waiting for `window.load`. | `3000`
 `speed`           | Number  | Specifies the test execution speed. A number between `1` (fastest) and `0.01` (slowest). If an [individual action's](../../test-api/actions/action-options.md#basic-action-options) speed is also specified, the action speed setting overrides the test speed. | `1`
 `stopOnFirstFail`    | Boolean | Defines whether to stop a test run if a test fails. You do not need to wait for all the tests to finish to focus on the first error. | `false`
-`disablePageCaching` | Boolean | Prevents the browser from caching the page content. When navigation to a cached page occurs in [role code](../../test-api/authentication/user-roles.md), local and session storage content is not preserved. Set `disablePageCaching` to `true` to retain the storage items after navigation. For more information, see [Troubleshooting: Test Actions Fail After Authentication](../../test-api/authentication/user-roles.md#test-actions-fail-after-authentication). You can also disable page caching [for an individual fixture or test](../../test-api/test-code-structure.md#disable-page-caching).
+`disablePageCaching` | Boolean | Prevents the browser from caching page content. When navigation to a cached page occurs in [role code](../../test-api/authentication/user-roles.md), local and session storage content is not preserved. Set `disablePageCaching` to `true` to retain the storage items after navigation. For more information, see [Troubleshooting: Test Actions Fail After Authentication](../../test-api/authentication/user-roles.md#test-actions-fail-after-authentication). You can also disable page caching [for an individual fixture or test](../../test-api/test-code-structure.md#disable-page-caching).
 `disableScreenshots` | Boolean | Prevents TestCafe from taking screenshots. When this option is specified, screenshots are not taken whenever a test fails or a [screenshot action](../../test-api/actions/take-screenshot.md) is executed.
 
 After all tests are finished, call the [testcafe.close](testcafe.md#close) function to stop the TestCafe server.

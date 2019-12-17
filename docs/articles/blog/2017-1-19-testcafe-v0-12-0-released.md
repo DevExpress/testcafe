@@ -228,7 +228,7 @@ Selector('ul').child(node => {
 
 ### ⚙ Filtering by negative index in selectors ([#738](https://github.com/DevExpress/testcafe/issues/738))
 
-You can now pass negative `index` values to selector methods. In this instance, index is counted from the end of the matching set.
+You can now pass negative `index` values to selector methods. In this instance, index is counted from the end of the matched set.
 
 ```js
 const lastChild = Selector('.someClass').child(-1);

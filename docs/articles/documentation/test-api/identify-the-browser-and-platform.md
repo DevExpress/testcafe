@@ -6,7 +6,7 @@ checked: true
 ---
 # Identify the Browser and Platform
 
-TestCafe allows you to obtain information about the current user agent in test code. These data identify the operating system, platform type, browser, engine, etc.
+TestCafe allows you to obtain information about the current user agent in test code. This data identify the operating system, platform type, browser, engine, etc.
 
 Use the `t.browser` property to access user agent data.
 
@@ -208,7 +208,7 @@ The `prettyUserAgent` property is set to an empty string if TestCafe cannot pars
 
 ### Create a Browser-Specific Hook
 
-The following example shows how to create a [beforeEach](test-code-structure.md#test-hooks) hook that runs for only particular [browser engines](#engine).
+The following example shows how to create a [beforeEach](test-code-structure.md#test-hooks) hook that runs for particular [browser engines](#engine) only:
 
 ```js
 import { Selector } from 'testcafe';
@@ -242,7 +242,7 @@ test('My test', async t => {
 
 ### Verify the Installer Version
 
-The following example verifies that the website detects the user's platform correctly and offers to download the right installer. This test uses the [t.browser.os.name](#os) property to determine the operating system and check the installer name.
+The following example verifies that the website detects the user's platform and offers to download the right installer. This test uses the [t.browser.os.name](#os) property to determine the operating system and check the installer name.
 
 ```js
 import { Selector } from 'testcafe';

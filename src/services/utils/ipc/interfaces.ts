@@ -69,3 +69,7 @@ export function isTestCafeErrorList (err: ExternalError): err is TestCafeErrorLi
 export function isIPCErrorResponse (response: IPCSuccessfulResponse | IPCErrorResponse): response is IPCErrorResponse {
     return !!(response as IPCErrorResponse).error;
 }
+
+export function isIPCResponsePacket (message: object): message is IPCResponsePacket {
+    return ['id', 'type', 'sync', 'data'].every(prop => prop in message);
+}

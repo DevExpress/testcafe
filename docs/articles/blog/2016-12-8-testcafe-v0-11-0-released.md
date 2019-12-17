@@ -29,7 +29,7 @@ Then, for each `label` element finds a parent that matches the `div.someClass` s
 
 ------
 
-Like in jQuery, if you request a [property](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/dom-node-state.html#members-common-across-all-nodes) of the matching set or try evaluate
+Like in jQuery, if you request a [property](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/dom-node-state.html#members-common-across-all-nodes) of the matched set or try evaluate
 a [snapshot](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/using-selectors.html#dom-node-snapshot), the selector returns values for the first element in the set.
 
 ```js
@@ -63,16 +63,16 @@ Selector('.container').parent(1).nth(0).find('.content').withText('yo!').child('
 In this example the selector:
 
 1. finds the second parent (parent of parent) of `.container` elements;
-2. peeks the first element in the matching set;
+2. peeks the first element in the matched set;
 3. in that element, finds elements that match the `.content` selector;
 4. filters them by text `yo!`;
 5. in each filtered element, searches for a child with tag name `span`.
 
 ------
 
-#### Getting selector matching set length
+#### Getting selector matched set length
 
-Also, now you can get selector matching set length and check matching elements existence by using selector [`count` and `exists` properties](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/using-selectors.html#check-if-an-element-exists).
+Also, now you can get selector matched set length and check matching elements existence by using selector [`count` and `exists` properties](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/using-selectors.html#check-if-an-element-exists).
 
 #### Unawaited parametrized selector calls now allowed outside test context
 
@@ -126,7 +126,7 @@ Selector('#someId', { index: 2 } ); // index is ignored and selector returns ele
 however it's not a case now:
 
 ```js
-Selector('#someId').nth(2); // returns `null`, since there is only one element in matching set with id `someId`
+Selector('#someId').nth(2); // returns `null`, since there is only one element in matched set with id `someId`
 ```
 
 #### Deprecated API

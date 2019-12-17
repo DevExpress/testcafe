@@ -52,7 +52,7 @@ function getBrowserInfo (settings) {
 
             return browserProviderPool
                 .getBrowserInfo(settings.browserName)
-                .then(browserInfo => new BrowserConnection(testCafe.browserConnectionGateway, browserInfo, true));
+                .then(browserInfo => new BrowserConnection(testCafe.browserConnectionGateway, browserInfo, true, process.env.ALLOW_MULTIPLE_WINDOWS));
         })
         .then(connection => {
             return {
@@ -306,7 +306,7 @@ after(function () {
 });
 
 // TODO: Run takeScreenshot tests first because other tests heavily impact them
-if (config.useLocalBrowsers && !config.isLegacyEnvironment) {
+if (config.useLocalBrowsers && !config.isLegacyEnvironment && !process.env.ALLOW_MULTIPLE_WINDOWS) {
     require('./fixtures/api/es-next/take-screenshot/test');
     require('./fixtures/screenshots-on-fails/test');
 }

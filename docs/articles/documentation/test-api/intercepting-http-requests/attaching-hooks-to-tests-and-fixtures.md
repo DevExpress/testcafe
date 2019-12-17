@@ -13,9 +13,9 @@ fixture.requestHooks(...hooks)
 test.requestHooks(...hooks)
 ```
 
-> If you attach request hooks to both the fixture and test, hooks attached to the fixture run first.
+> Hooks attached to the fixture run first when you attach request hooks to the fixture and test.
 
-You can also attach and detach hooks during test run using the `t.addRequestHooks` and `t.removeRequestHooks` methods.
+You can use the `t.addRequestHooks` and `t.removeRequestHooks` methods to attach and detach hooks during the test.
 
 ```text
 t.addRequestHooks(...hooks)

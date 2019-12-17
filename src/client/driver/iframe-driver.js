@@ -4,10 +4,9 @@ import { IframeStatusBar } from './deps/testcafe-ui';
 import Driver from './driver';
 import ContextStorage from './storage';
 import DriverStatus from './status';
-import ParentDriverLink from './driver-link/parent';
+import ParentDriverLink from './driver-link/iframe/parent';
 import { TYPE as MESSAGE_TYPE } from './driver-link/messages';
 import IframeNativeDialogTracker from './native-dialog-tracker/iframe';
-
 
 export default class IframeDriver extends Driver {
     constructor (testRunId, options) {
@@ -47,7 +46,7 @@ export default class IframeDriver extends Driver {
                         this.readyPromise.then(() => {
                             this.speed = msg.testSpeed;
 
-                            this.parentDriverLink.confirmMessageReceived(msg.id);
+                            this.parentDriverLink.sendConfirmationMessage(msg.id);
                             this._onCommand(msg.command);
                         });
                     }

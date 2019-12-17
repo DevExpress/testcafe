@@ -36,7 +36,7 @@ export default class TestCafe {
 
     _registerAssets (developmentMode) {
         const { favIcon, coreScript, driverScript, uiScript,
-            uiStyle, uiSprite, automationScript, legacyRunnerScript } = loadAssets(developmentMode);
+            uiStyle, uiSprite, uiSpriteSvg, automationScript, legacyRunnerScript } = loadAssets(developmentMode);
 
         this.proxy.GET(INJECTABLES.TESTCAFE_CORE, { content: coreScript, contentType: CONTENT_TYPES.javascript });
         this.proxy.GET(INJECTABLES.TESTCAFE_DRIVER, { content: driverScript, contentType: CONTENT_TYPES.javascript });
@@ -49,6 +49,7 @@ export default class TestCafe {
         this.proxy.GET(INJECTABLES.TESTCAFE_AUTOMATION, { content: automationScript, contentType: CONTENT_TYPES.javascript });
         this.proxy.GET(INJECTABLES.TESTCAFE_UI, { content: uiScript, contentType: CONTENT_TYPES.javascript });
         this.proxy.GET(INJECTABLES.TESTCAFE_UI_SPRITE, { content: uiSprite, contentType: CONTENT_TYPES.png });
+        this.proxy.GET(INJECTABLES.TESTCAFE_UI_SPRITE_SVG, { content: uiSpriteSvg, contentType: CONTENT_TYPES.svg });
         this.proxy.GET(INJECTABLES.TESTCAFE_ICON, { content: favIcon, contentType: CONTENT_TYPES.icon });
 
         this.proxy.GET(INJECTABLES.TESTCAFE_UI_STYLES, {

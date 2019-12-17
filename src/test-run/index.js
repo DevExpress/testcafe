@@ -59,6 +59,7 @@ const TEST_RUN_TEMPLATE               = read('../client/test-run/index.js.mustac
 const IFRAME_TEST_RUN_TEMPLATE        = read('../client/test-run/iframe.js.mustache');
 const TEST_DONE_CONFIRMATION_RESPONSE = 'test-done-confirmation';
 const MAX_RESPONSE_DELAY              = 3000;
+const CHILD_WINDOW_READY_TIMEOUT      = 30 * 1000;
 
 const ALL_DRIVER_TASKS_ADDED_TO_QUEUE_EVENT = 'all-driver-tasks-added-to-queue';
 
@@ -235,11 +236,13 @@ export default class TestRun extends AsyncEventEmitter {
             browserHeartbeatRelativeUrl:  JSON.stringify(this.browserConnection.heartbeatRelativeUrl),
             browserStatusRelativeUrl:     JSON.stringify(this.browserConnection.statusRelativeUrl),
             browserStatusDoneRelativeUrl: JSON.stringify(this.browserConnection.statusDoneRelativeUrl),
+            browserActivePageIdUrl:       JSON.stringify(this.browserConnection.activePageIdUrl),
             userAgent:                    JSON.stringify(this.browserConnection.userAgent),
             testName:                     JSON.stringify(this.test.name),
             fixtureName:                  JSON.stringify(this.test.fixture.name),
             selectorTimeout:              this.opts.selectorTimeout,
             pageLoadTimeout:              this.pageLoadTimeout,
+            childWindowReadyTimeout:      CHILD_WINDOW_READY_TIMEOUT,
             skipJsErrors:                 this.opts.skipJsErrors,
             retryTestPages:               !!this.opts.retryTestPages,
             speed:                        this.speed,
