@@ -232,6 +232,14 @@ Thank you to all the people who already contributed to TestCafe!
 :---: |:---: |:---: |:---: |:---: |:---: |
 [pietrovich](https://github.com/pietrovich) |[superroma](https://github.com/superroma) |[caseyWebb](https://github.com/caseyWebb) |[intermike](https://github.com/intermike) |[DevSide](https://github.com/DevSide) |[b12031106](https://github.com/b12031106) |
 
+[<img alt="Marketionist" src="https://avatars2.githubusercontent.com/u/534603?v=4&s=117" width="117">](https://github.com/Marketionist) |[<img alt="Dmitry-Ostashev" src="https://avatars3.githubusercontent.com/u/24777868?v=4&s=117" width="117">](https://github.com/Dmitry-Ostashev) |[<img alt="alexey-lin" src="https://avatars0.githubusercontent.com/u/13483856?v=4&s=117" width="117">](https://github.com/alexey-lin) |[<img alt="cgfarmer4" src="https://avatars3.githubusercontent.com/u/336449?v=4&s=117" width="117">](https://github.com/cgfarmer4) |[<img alt="bill-looby-i" src="https://avatars0.githubusercontent.com/u/51128939?v=4&s=117" width="117">](https://github.com/bill-looby-i) |[<img alt="rbardini" src="https://avatars2.githubusercontent.com/u/874370?v=4&s=117" width="117">](https://github.com/rbardini) |
+:---: |:---: |:---: |:---: |:---: |:---: |
+[Marketionist](https://github.com/Marketionist) |[Dmitry-Ostashev](https://github.com/Dmitry-Ostashev) |[alexey-lin](https://github.com/alexey-lin) |[cgfarmer4](https://github.com/cgfarmer4) |[bill-looby-i](https://github.com/bill-looby-i) |[rbardini](https://github.com/rbardini) |
+
+[<img alt="macdonaldr93" src="https://avatars2.githubusercontent.com/u/5184848?v=4&s=117" width="117">](https://github.com/macdonaldr93) |[<img alt="alexwybraniec" src="https://avatars3.githubusercontent.com/u/521536?v=4&s=117" width="117">](https://github.com/alexwybraniec) |
+:---: |:---: |
+[macdonaldr93](https://github.com/macdonaldr93) |[alexwybraniec](https://github.com/alexwybraniec) |
+
 ## Plugins
 
 TestCafe developers and community members made these plugins:
