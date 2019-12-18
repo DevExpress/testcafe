@@ -8,6 +8,7 @@ interface Command {
     _getAssignableProperties(): { name: string }[];
 }
 
+//
 export class CommandReportItem {
     [key: string]: object|string;
 
