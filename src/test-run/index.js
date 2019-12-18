@@ -564,7 +564,9 @@ export default class TestRun extends AsyncEventEmitter {
         executor.once('start-assertion-retries', timeout => this.executeCommand(new serviceCommands.ShowAssertionRetriesStatusCommand(timeout)));
         executor.once('end-assertion-retries', success => this.executeCommand(new serviceCommands.HideAssertionRetriesStatusCommand(success)));
 
-        return executor.run();
+        const executeFn = this.decoratePreventEmitActionEvents(() => executor.run(), { prevent: true });
+
+        return await executeFn();
     }
 
     _adjustConfigurationWithCommand (command) {
@@ -606,6 +608,27 @@ export default class TestRun extends AsyncEventEmitter {
             await this._enqueueSetBreakpointCommand(callsite);
     }
 
+    async executeAction (actionName, command, callsite) {
+        let error  = null;
+        let result = null;
+
+        await this.emitActionStart(actionName, command);
+
+        try {
+            result = await this.executeCommand(command, callsite);
+        }
+        catch (err) {
+            error = err;
+        }
+
+        await this.emitActionDone(actionName, command, error);
+
+        if (error)
+            throw error;
+
+        return result;
+    }
+
     async executeCommand (command, callsite) {
         this.debugLog.command(command);
 
@@ -645,8 +668,14 @@ export default class TestRun extends AsyncEventEmitter {
         if (command.type === COMMAND_TYPE.debug)
             return await this._enqueueSetBreakpointCommand(callsite);
 
-        if (command.type === COMMAND_TYPE.useRole)
-            return await this._useRole(command.role, callsite);
+        if (command.type === COMMAND_TYPE.useRole) {
+            let fn = () => this._useRole(command.role, callsite);
+
+            fn = this.decoratePreventEmitActionEvents(fn, { prevent: true });
+            fn = this.decorateDisableDebugBreakpoints(fn, { disable: true });
+
+            return await fn();
+        }
 
         if (command.type === COMMAND_TYPE.assertion)
             return this._executeAssertion(command, callsite);
@@ -670,6 +699,30 @@ export default class TestRun extends AsyncEventEmitter {
         this.pendingPageError = null;
 
         return Promise.reject(err);
+    }
+
+    _decorateWithFlag (fn, flagName, value) {
+        return async () => {
+            this[flagName] = value;
+
+            try {
+                return await fn();
+            }
+            catch (err) {
+                throw err;
+            }
+            finally {
+                this[flagName] = !value;
+            }
+        };
+    }
+
+    decoratePreventEmitActionEvents (fn, { prevent }) {
+        return this._decorateWithFlag(fn, 'preventEmitActionEvents', prevent);
+    }
+
+    decorateDisableDebugBreakpoints (fn, { disable }) {
+        return this._decorateWithFlag(fn, 'disableDebugBreakpoints', disable);
     }
 
     // Role management
@@ -738,8 +791,6 @@ export default class TestRun extends AsyncEventEmitter {
         if (this.phase === PHASE.inRoleInitializer)
             throw new RoleSwitchInRoleInitializerError(callsite);
 
-        this.disableDebugBreakpoints = true;
-
         const bookmark = new TestRunBookmark(this, role);
 
         await bookmark.init();
@@ -754,8 +805,6 @@ export default class TestRun extends AsyncEventEmitter {
         this.currentRoleId = role.id;
 
         await bookmark.restore(callsite, stateSnapshot);
-
-        this.disableDebugBreakpoints = false;
     }
 
     // Get current URL
@@ -780,6 +829,16 @@ export default class TestRun extends AsyncEventEmitter {
         this.emit('disconnected', err);
 
         delete testRunTracker.activeTestRuns[this.session.id];
+    }
+
+    async emitActionStart (apiActionName, command) {
+        if (!this.preventEmitActionEvents)
+            await this.emit('action-start', { command, apiActionName });
+    }
+
+    async emitActionDone (apiActionName, command, errors) {
+        if (!this.preventEmitActionEvents)
+            await this.emit('action-done', { command, apiActionName, errors });
     }
 }
 

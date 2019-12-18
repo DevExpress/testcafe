@@ -1,6 +1,8 @@
 import { find, sortBy, union } from 'lodash';
 import { writable as isWritableStream } from 'is-stream';
 import ReporterPluginHost from './plugin-host';
+import { CommandReportItem } from './command-report-item';
+import TestCafeErrorList from '../errors/error-list';
 
 export default class Reporter {
     constructor (plugin, task, outStream) {
@@ -132,6 +134,25 @@ export default class Reporter {
         reportItem.pendingTestRunDonePromise.resolve();
     }
 
+    _prepareReportTestActionEventArgs ({ command, testRun, errors }) {
+        const args = {};
+
+        if (errors) {
+            errors = errors instanceof TestCafeErrorList ? errors.items : [errors];
+
+            args.errors = errors;
+        }
+
+        return Object.assign(args, {
+            test: {
+                name:  testRun.test.name,
+                phase: testRun.phase
+            },
+            command: new CommandReportItem(command),
+            browser: testRun.controller.browser,
+        });
+    }
+
     _assignTaskEventHandlers () {
         const task = this.task;
 
@@ -175,6 +196,22 @@ export default class Reporter {
                 await this._resolveReportItem(reportItem, testRun);
 
             await reportItem.pendingTestRunDonePromise;
+        });
+
+        task.on('test-action-start', async ({ apiActionName, command, testRun }) => {
+            if (this.plugin.reportTestActionStart) {
+                const args = this._prepareReportTestActionEventArgs({ command, testRun });
+
+                await this.plugin.reportTestActionStart(apiActionName, args);
+            }
+        });
+
+        task.on('test-action-done', async ({ apiActionName, command, testRun, errors }) => {
+            if (this.plugin.reportTestActionDone) {
+                const args = this._prepareReportTestActionEventArgs({ command, testRun, errors });
+
+                await this.plugin.reportTestActionDone(apiActionName, args);
+            }
         });
 
         task.once('done', async () => {
