@@ -721,23 +721,25 @@
 <p>This topic describes how to integrate TestCafe tests into an <a href="https://azure.microsoft.com/en-us/services/devops/server/">Azure DevOps Server</a> and an <a href="https://azure.microsoft.com/en-us/services/devops/pipelines/">Azure Pipelines</a> project&#39;s build process.</p>
 <h2><a class="anchor" id="step-1---add-testcafe-dependency-to-the-project"></a>Step 1 - Add TestCafe Dependency to the Project <a class="permalink" href="#step-1---add-testcafe-dependency-to-the-project">#</a></h2>
 <p>Open the repository&#39;s root directory and execute the following command:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm <span class="nb">install</span> <span class="nt">--save-dev</span> testcafe
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm <span class="nb">install</span> <span class="nt">--save-dev</span> testcafe testcafe-reporter-xunit
 </code></pre></div>
-<p>This command installs the latest TestCafe version locally and adds it to the <code>devDependencies</code> section in the <code>package.json</code> file.</p>
+<p>This command installs the latest TestCafe and xUnit reporter versions locally and adds them to the <code>devDependencies</code> section in the <code>package.json</code> file.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
     </span><span class="nl">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nl">"testcafe"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="w">
+        </span><span class="nl">"testcafe"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"testcafe-reporter-xunit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div><h2><a class="anchor" id="step-2---provide-a-command-to-run-tests"></a>Step 2 - Provide a Command to Run Tests <a class="permalink" href="#step-2---provide-a-command-to-run-tests">#</a></h2>
 <p>The test run command that uses TestCafe should be also added to <code>package.json</code> to the <code>scripts</code> section because TestCafe is installed locally.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
     </span><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nl">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testcafe chrome:headless tests/**/*"</span><span class="w">
+        </span><span class="nl">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testcafe chrome:headless tests/**/* --reporter spec,xunit:report.xml"</span><span class="w">
     </span><span class="p">},</span><span class="w">
 
     </span><span class="nl">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="nl">"testcafe"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="w">
+        </span><span class="nl">"testcafe"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"testcafe-reporter-xunit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
@@ -760,20 +762,63 @@
     <span class="na">displayName</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Install</span><span class="nv"> </span><span class="s">TestCafe'</span>
   <span class="pi">-</span> <span class="na">script</span><span class="pi">:</span> <span class="s">npm test</span>
     <span class="na">displayName</span><span class="pi">:</span> <span class="s1">'</span><span class="s">Run</span><span class="nv"> </span><span class="s">TestCafe</span><span class="nv"> </span><span class="s">Tests'</span>
-</code></pre></div>
-<ul>
-<li><code>jobs</code> - the list of <a href="https://docs.microsoft.com/en-us/azure/devops/pipelines/process/phases?view=vsts&tabs=yaml">jobs</a>.</li>
-<li><code>job</code> - the job name.</li>
-<li><code>pool</code> - the <a href="https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/pools-queues?view=vsts">agent pool</a> that executes this build job.</li>
-<li><code>vmImage</code> - the <a href="https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/agents?view=vsts">agent&#39;s</a> virtual machine image name. This tutorial uses a <a href="https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=vsts&tabs=yaml">Microsoft-hosted agent</a> that runs on an Ubuntu 16.04 machine. You can find the list of software installed on this machine in the <a href="https://github.com/actions/virtual-environments/blob/master/images/linux/Ubuntu1604-README.md">Azure Pipelines GitHub repository</a>.</li>
-<li><code>steps</code> - the list of steps performed when executing a job.</li>
-<li><code>task</code> - adds a <a href="https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/tool/node-js?view=vsts">Node.js installer task</a>  to the job. This task installs Node.js and adds it to the <code>PATH</code> variable.</li>
-<li><code>inputs</code> - specifies input variables for the task.</li>
-<li><code>versionSpec</code> - the Node.js version to install. The latest LTS version number is available on the <a href="https://nodejs.org/en/">Node.js website</a>.</li>
-<li><code>displayName</code> - a step name displayed in build results.</li>
-<li><code>script</code> - a console command executed at this step.</li>
-</ul>
-
+  <span class="pi">-</span> <span class="na">task</span><span class="pi">:</span> <span class="s">PublishTestResults@2</span>
+    <span class="na">inputs</span><span class="pi">:</span>
+      <span class="na">testResultsFiles</span><span class="pi">:</span> <span class="s1">'</span><span class="s">**/report.xml'</span>
+      <span class="na">testResultsFormat</span><span class="pi">:</span> <span class="s1">'</span><span class="s">JUnit'</span>
+</code></pre></div><div class="table-wrapper"><table><thead><tr>
+<th>Property</th>
+<th>Description</th>
+</tr>
+</thead><tbody><tr>
+<td><code>jobs</code></td>
+<td>The list of <a href="https://docs.microsoft.com/en-us/azure/devops/pipelines/process/phases?view=vsts&tabs=yaml">jobs</a>.</td>
+</tr>
+<tr>
+<td><code>job</code></td>
+<td>The job name.</td>
+</tr>
+<tr>
+<td><code>pool</code></td>
+<td>The <a href="https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/pools-queues?view=vsts">agent pool</a> that executes this build job.</td>
+</tr>
+<tr>
+<td><code>vmImage</code></td>
+<td>The <a href="https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/agents?view=vsts">agent&#39;s</a> virtual machine image name. This tutorial uses a <a href="https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=vsts&tabs=yaml">Microsoft-hosted agent</a> that runs on an Ubuntu 16.04 machine. You can find the list of software installed on this machine in the <a href="https://github.com/actions/virtual-environments/blob/master/images/linux/Ubuntu1604-README.md">Azure Pipelines GitHub repository</a>.</td>
+</tr>
+<tr>
+<td><code>steps</code></td>
+<td>The list of steps performed when executing a job.</td>
+</tr>
+<tr>
+<td><code>task</code></td>
+<td>Adds a <a href="https://docs.microsoft.com/en-us/azure/devops/pipelines/process/tasks?view=azure-devops&tabs=yaml">task</a> to the pipeline. The <a href="https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/tool/node-js?view=vsts">NodeTool</a> task installs Node.js and adds it to the <code>PATH</code> variable. The <a href="https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/test/publish-test-results?view=azure-devops&tabs=yaml">PublishTestResults</a> task publishes the TestCafe report to the server.</td>
+</tr>
+<tr>
+<td><code>inputs</code></td>
+<td>Specifies input variables for the task.</td>
+</tr>
+<tr>
+<td><code>versionSpec</code></td>
+<td>The Node.js version to install. The latest LTS version number is available on the <a href="https://nodejs.org/en/">Node.js website</a>.</td>
+</tr>
+<tr>
+<td><code>displayName</code></td>
+<td>A step name displayed in build results.</td>
+</tr>
+<tr>
+<td><code>script</code></td>
+<td>A console command executed at this step.</td>
+</tr>
+<tr>
+<td><code>testResultsFiles</code></td>
+<td>The path to the report file to publish.</td>
+</tr>
+<tr>
+<td><code>testResultsFormat</code></td>
+<td>The report format.</td>
+</tr>
+</tbody></table></div>
 <p>The first step in this task installs TestCafe with <code>npm install</code> and the second step runs TestCafe tests using <code>npm test</code>.</p>
 
 <p>Commit your changes and push them to the repository.</p>
@@ -827,7 +872,19 @@
 </code></pre></div>
 <p><img src="../../images/azure/npm-test.png" alt="Run TestCafe Tests" title=""></p>
 
-<p>Save the changes and run this task using the <strong>Save &amp; queue</strong> button.</p>
+<p>Add a task that publishes test results to the server. Click the <strong>+</strong> button and select <strong>Publish Test Results</strong> from the task list.</p>
+
+<p><img src="../../images/azure/add-publish-test-results.png" alt="Add the Publish Test Results Task" title=""></p>
+
+<p>In task options, set <strong>Test result format</strong> to <em>JUnit</em> and specify the report file name (<code>**/report.xml</code>) in the <strong>Test results files</strong> field.</p>
+
+<p><img src="../../images/azure/publish-test-results.png" alt="Publish Test Results" title=""></p>
+
+<p>You must also specify that the <strong>Publish Test Results</strong> task should run if TestCafe tests fail. Expand the <strong>Control Options</strong> section and select <em>Even if a previous task has failed, unless the build was canceled</em> in the <strong>Run this task</strong> dropdown list.</p>
+
+<p><img src="../../images/azure/publish-test-results-run-when-failed.png" alt="Publish Test Results - Run After Error" title=""></p>
+
+<p>Click <strong>Save &amp; queue</strong> to save the changes and run this task.</p>
 
 <p><img src="../../images/azure/save-pipeline.png" alt="Save Pipeline" title=""></p>
 
@@ -868,7 +925,19 @@
 <p>This opens the <strong>Queue build</strong> window. Specify the branch and commit that should be built. You can leave the <strong>Commit</strong> field blank to use the latest commit. On Azure DevOps Server, specify the agent pool that should run the task. Click <strong>Queue</strong>.</p>
 
 <p><img src="../../images/azure/queue-task-parameters.png" alt="Queue Task - Parameters" title=""></p>
-<h3><a class="anchor" id="view-test-results"></a>View Test Results <a class="permalink" href="#view-test-results">#</a></h3>
+<h3><a class="anchor" id="view-test-results"></a>View Test Results <a class="permalink" href="#view-test-results">#</a></h3><h4><a class="anchor" id="option-1---view-the-published-report"></a>Option 1 - View the Published Report <a class="permalink" href="#option-1---view-the-published-report">#</a></h4>
+<p>Hover over the <strong>Test Plans</strong> section and click <strong>Runs</strong> in the pop-up menu.</p>
+
+<p><img src="../../images/azure/open-test-runs.png" alt="Open Test Runs" title=""></p>
+
+<p>Double-click a test run to view the report.</p>
+
+<p><img src="../../images/azure/test-runs-click-run.png" alt="Test Runs - Open a Run" title=""></p>
+
+<p>This opens the <strong>Run summary</strong> view that displays test run results.</p>
+
+<p><img src="../../images/azure/test-run-summary.png" alt="Test Run Summary" title=""></p>
+<h4><a class="anchor" id="option-2---view-the-build-log"></a>Option 2 - View the Build Log <a class="permalink" href="#option-2---view-the-build-log">#</a></h4>
 <p>Select the build and click the commit whose results you want to view.</p>
 
 <p><img src="../../images/azure/view-results-select-commit.png" alt="View Results - Select Commit" title=""></p>
