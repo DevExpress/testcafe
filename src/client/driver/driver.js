@@ -186,7 +186,7 @@ export default class Driver {
         const currentUrl     = window.location.toString();
         const parsedProxyUrl = hammerhead.utils.url.parseProxyUrl(currentUrl);
 
-        return parsedProxyUrl.pageId || null;
+        return parsedProxyUrl && parsedProxyUrl.pageId || null;
     }
 
     // Error handling
