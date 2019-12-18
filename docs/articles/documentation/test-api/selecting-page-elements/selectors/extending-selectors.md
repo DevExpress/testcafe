@@ -113,6 +113,8 @@ Option           | Type     | Description     | Default
 
 Enable `returnDOMNodes` to use custom method results as selectors to define [action targets](using-selectors.md#define-action-targets) or [assertion's actual values](using-selectors.md#define-assertion-actual-value), obtain the [element state](using-selectors.md#obtain-element-state), etc.
 
+**Example**
+
 The following example shows how to add both types of methods to a selector. `addCustomMethods` is called twice: the first call adds a method that returns a DOM node (`returnDOMNodes` is set to `true`), the second call defines a method that returns a string.
 
 ```js
