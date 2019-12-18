@@ -1640,12 +1640,12 @@ Use the <code>fixture.skip</code> and <code>test.skip</code> methods for this.</
 </thead><tbody><tr>
 <td><code>script</code>, <code>script2</code>, <code>scriptN</code></td>
 <td>String &#124; Object &#124; Array</td>
-<td>Scripts to inject into the tested pages. See <a href="../using-testcafe/common-concepts/inject-scripts-into-tested-pages.html#provide-scripts-to-inject">Provide Scripts to Inject</a> to learn how to specify them.</td>
+<td>Scripts to inject into the tested pages. See <a href="../using-testcafe/common-concepts/inject-scripts-into-tested-pages.html#provide-scripts-to-inject">Provide Scripts to Inject</a> for information on how to specify scripts.</td>
 </tr>
-</tbody></table></div><blockquote><div class="blockquote-content"><p>Relative paths resolve from the test file location.</p>
+</tbody></table></div><blockquote><div class="blockquote-content"><p>Relative paths are resolved against the test file location.</p>
 </div></blockquote>
 <p>You can use the <a href="../using-testcafe/common-concepts/inject-scripts-into-tested-pages.html#provide-scripts-for-specific-pages">page</a> option to specify pages into which scripts should be injected. Otherwise, TestCafe injects scripts into all pages visited during the test or fixture.</p>
-<blockquote><div class="blockquote-content"><p>If you add client scripts to both the fixture and test, scripts added to the fixture run first.</p>
+<blockquote><div class="blockquote-content"><p>Hooks attached to the fixture run first when you attach request hooks to the fixture and test.</p>
 </div></blockquote>
 <p><strong>Examples</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
@@ -1688,9 +1688,9 @@ Use the <code>fixture.skip</code> and <code>test.skip</code> methods for this.</
 <p>To disable page caching during the entire test run, use either of the following options:</p>
 
 <ul>
-<li>the <a href="../using-testcafe/command-line-interface.html#--disable-page-caching">--disable-page-caching</a> command line flag</li>
-<li>the <code>disablePageCaching</code> option in the <a href="../using-testcafe/programming-interface/runner.html#run">runner.run</a> method</li>
-<li>the <a href="../using-testcafe/configuration-file.html#disablepagecaching">disablePageCaching</a> configuration file option</li>
+<li>the <a href="../using-testcafe/command-line-interface.html#--disable-page-caching">--disable-page-caching</a> command line flag,</li>
+<li>the <code>disablePageCaching</code> option in the <a href="../using-testcafe/programming-interface/runner.html#run">runner.run</a> method,</li>
+<li>the <a href="../using-testcafe/configuration-file.html#disablepagecaching">disablePageCaching</a> configuration file option.</li>
 </ul>
 
 

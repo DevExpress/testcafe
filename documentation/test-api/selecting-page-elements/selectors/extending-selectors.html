@@ -1208,7 +1208,7 @@ ok for TypeScript code highlighting so we'll use it until we are not fixed the p
     method1: fn1,
     method2: fn2,
     /* ... */
-});
+}, options);
 </code></pre></div><div class="table-wrapper"><table><thead><tr>
 <th>Parameter</th>
 <th>Type</th>
@@ -1224,6 +1224,11 @@ ok for TypeScript code highlighting so we'll use it until we are not fixed the p
 <td>Function</td>
 <td>Functions that contain method code. Executed on the client side in the browser.</td>
 </tr>
+<tr>
+<td><code>options</code></td>
+<td>Object</td>
+<td>Custom method <a href="#options">options</a>.</td>
+</tr>
 </tbody></table></div>
 <p>Functions that contain method code (<code>fn1</code>, <code>fn2</code>, ...) take the following parameters.</p>
 <div class="table-wrapper"><table><thead><tr>
@@ -1233,8 +1238,8 @@ ok for TypeScript code highlighting so we'll use it until we are not fixed the p
 </tr>
 </thead><tbody><tr>
 <td><code>node</code></td>
-<td>Object</td>
-<td>The DOM node.</td>
+<td>Object &#124; Array</td>
+<td>The DOM node if the <a href="#options">returnDOMNodes</a> option is set to <code>false</code>; an array of DOM nodes if <a href="#options">returnDOMNodes</a> is set to <code>true</code>.</td>
 </tr>
 <tr>
 <td><code>param1</code>, <code>param2</code>, ...</td>
@@ -1243,15 +1248,52 @@ ok for TypeScript code highlighting so we'll use it until we are not fixed the p
 </tr>
 </tbody></table></div>
 <p>The <code>addCustomMethods</code> function also adds the specified methods to the <a href="using-selectors.html#obtain-element-state">element state</a> returned by the selector.</p>
+<h3><a class="anchor" id="options"></a>Options <a class="permalink" href="#options">#</a></h3><div class="table-wrapper"><table><thead><tr>
+<th>Option</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead><tbody><tr>
+<td><code>returnDOMNodes</code></td>
+<td>Boolean</td>
+<td><code>true</code> if custom methods return DOM nodes; <code>false</code> if they return serializable objects.</td>
+<td><code>false</code></td>
+</tr>
+</tbody></table></div>
+<p>Enable <code>returnDOMNodes</code> to use custom method results as selectors to define <a href="using-selectors.html#define-action-targets">action targets</a> or <a href="using-selectors.html#define-assertion-actual-value">assertion&#39;s actual values</a>, obtain the <a href="using-selectors.html#obtain-element-state">element state</a>, etc.</p>
 
-<p><strong>Example</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">myTable</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">.my-table</span><span class="dl">'</span><span class="p">).</span><span class="nx">addCustomMethods</span><span class="p">({</span>
-    <span class="na">getCellText</span><span class="p">:</span> <span class="p">(</span><span class="nx">table</span><span class="p">,</span> <span class="nx">rowIndex</span><span class="p">,</span> <span class="nx">columnIndex</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">table</span><span class="p">.</span><span class="nx">rows</span><span class="p">[</span><span class="nx">rowIndex</span><span class="p">].</span><span class="nx">cells</span><span class="p">[</span><span class="nx">columnIndex</span><span class="p">].</span><span class="nx">innerText</span><span class="p">;</span>
-    <span class="p">};</span>
+<p>The following example shows how to add both types of methods to a selector. <code>addCustomMethods</code> is called twice: the first call adds a method that returns a DOM node (<code>returnDOMNodes</code> is set to <code>true</code>), the second call defines a method that returns a string.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://js.devexpress.com/`</span><span class="p">;</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">My test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">myTable</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">.dx-datagrid-table</span><span class="dl">'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">nth</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">addCustomMethods</span><span class="p">({</span>
+            <span class="na">getExpandButtonCell</span><span class="p">:</span> <span class="p">(</span><span class="nx">elements</span><span class="p">,</span> <span class="nx">rowIndex</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nx">elements</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">querySelectorAll</span><span class="p">(</span><span class="dl">'</span><span class="s1">.dx-group-row</span><span class="dl">'</span><span class="p">)[</span><span class="nx">rowIndex</span><span class="p">].</span><span class="nx">cells</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+            <span class="p">}</span>
+            <span class="c1">// ...</span>
+            <span class="c1">// Other methods that return DOM nodes.</span>
+        <span class="p">},</span> <span class="p">{</span>
+            <span class="na">returnDOMNodes</span><span class="p">:</span> <span class="kc">true</span>
+        <span class="p">})</span>
+        <span class="p">.</span><span class="nx">addCustomMethods</span><span class="p">({</span>
+            <span class="na">getCellText</span><span class="p">:</span> <span class="p">(</span><span class="nx">table</span><span class="p">,</span> <span class="nx">rowIndex</span><span class="p">,</span> <span class="nx">columnIndex</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nx">table</span><span class="p">.</span><span class="nx">rows</span><span class="p">[</span><span class="nx">rowIndex</span><span class="p">].</span><span class="nx">cells</span><span class="p">[</span><span class="nx">columnIndex</span><span class="p">].</span><span class="nx">innerText</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="c1">// ...</span>
+            <span class="c1">// Other methods that return serializable objects.</span>
+        <span class="p">});</span>
+
+    <span class="k">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">myTable</span><span class="p">.</span><span class="nx">getCellText</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)).</span><span class="nx">contains</span><span class="p">(</span><span class="dl">'</span><span class="s1">Europe</span><span class="dl">'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">myTable</span><span class="p">.</span><span class="nx">getExpandButtonCell</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">myTable</span><span class="p">.</span><span class="nx">getCellText</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)).</span><span class="nx">contains</span><span class="p">(</span><span class="dl">'</span><span class="s1">North America</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
-
-<span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">myTable</span><span class="p">.</span><span class="nx">getCellText</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)).</span><span class="nx">contains</span><span class="p">(</span><span class="dl">'</span><span class="s1">hey!</span><span class="dl">'</span><span class="p">);</span>
 </code></pre></div>
 <p>If you use TypeScript, declare a Selector interface extension with your custom methods:</p>
 
@@ -1260,17 +1302,39 @@ The `redcarpet` library ignores `ts` code and renders it as a plain text without
 We can't use `js` here too. It's rendered wrong because of the type casting syntax. `csharp` looks
 ok for TypeScript code highlighting so we'll use it until we are not fixed the problem with `redcarpet`.
 -->
-<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">interface</span> <span class="nc">CustomSelector</span> <span class="n">extends</span> <span class="n">Selector</span> <span class="p">{</span>
+<div class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="n">import</span> <span class="p">{</span> <span class="n">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="err">'</span><span class="n">testcafe</span><span class="err">'</span><span class="p">;</span>
+
+<span class="k">interface</span> <span class="nc">CustomSelector</span> <span class="n">extends</span> <span class="n">Selector</span> <span class="p">{</span>
     <span class="nf">getCellText</span><span class="p">(</span><span class="n">rowIndex</span><span class="p">:</span> <span class="n">number</span><span class="p">,</span> <span class="n">columnIndex</span><span class="p">:</span> <span class="n">number</span><span class="p">):</span> <span class="n">Promise</span><span class="p">&lt;</span><span class="n">any</span><span class="p">&gt;;</span>
+    <span class="nf">getExpandButtonCell</span><span class="p">(</span><span class="n">rowIndex</span><span class="p">:</span> <span class="n">number</span><span class="p">):</span> <span class="n">Promise</span><span class="p">&lt;</span><span class="n">any</span><span class="p">&gt;;</span>
 <span class="p">}</span>
 
-<span class="k">const</span> <span class="n">myTable</span> <span class="p">=</span> <span class="p">&lt;</span><span class="n">CustomSelector</span><span class="p">&gt;</span><span class="nf">Selector</span><span class="p">(</span><span class="err">'#</span><span class="n">customers</span><span class="err">'</span><span class="p">).</span><span class="nf">addCustomMethods</span><span class="p">({</span>
-    <span class="n">getCellText</span><span class="p">:</span> <span class="p">(</span><span class="n">table</span><span class="p">:</span> <span class="n">HTMLTableElement</span><span class="p">,</span> <span class="n">rowIndex</span><span class="p">:</span> <span class="n">number</span><span class="p">,</span> <span class="n">columnIndex</span><span class="p">:</span> <span class="n">number</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="n">table</span><span class="p">.</span><span class="n">rows</span><span class="p">[</span><span class="n">rowIndex</span><span class="p">].</span><span class="n">cells</span><span class="p">[</span><span class="n">columnIndex</span><span class="p">].</span><span class="n">innerText</span><span class="p">;</span>
-    <span class="p">}</span>
-<span class="p">});</span>
+<span class="n">fixture</span> <span class="err">`</span><span class="n">My</span> <span class="n">fixture</span><span class="err">`</span>
+    <span class="p">.</span><span class="n">page</span> <span class="err">`</span><span class="n">https</span><span class="p">:</span><span class="c1">//js.devexpress.com/`;</span>
 
-<span class="k">await</span> <span class="n">t</span><span class="p">.</span><span class="nf">expect</span><span class="p">(</span><span class="n">myTable</span><span class="p">.</span><span class="nf">getCellText</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">1</span><span class="p">)).</span><span class="nf">contains</span><span class="p">(</span><span class="err">'</span><span class="n">hey</span><span class="p">!</span><span class="err">'</span><span class="p">);</span>
+<span class="nf">test</span><span class="p">(</span><span class="err">'</span><span class="n">My</span> <span class="n">test</span><span class="err">'</span><span class="p">,</span> <span class="k">async</span> <span class="n">t</span> <span class="p">=&gt;</span> <span class="p">{</span>
+    <span class="k">const</span> <span class="n">myTable</span> <span class="p">=</span> <span class="p">&lt;</span><span class="n">CustomSelector</span><span class="p">&gt;</span><span class="nf">Selector</span><span class="p">(</span><span class="err">'#</span><span class="n">customers</span><span class="err">'</span><span class="p">).</span><span class="nf">addCustomMethods</span><span class="p">({</span>
+        <span class="n">getExpandButtonCell</span><span class="p">:</span> <span class="p">(</span><span class="n">elements</span><span class="p">:</span> <span class="n">HTMLCollection</span><span class="p">,</span> <span class="n">rowIndex</span><span class="p">:</span> <span class="n">number</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="n">elements</span><span class="p">[</span><span class="m">0</span><span class="p">].</span><span class="nf">querySelectorAll</span><span class="p">(</span><span class="err">'</span><span class="p">.</span><span class="n">dx</span><span class="p">-</span><span class="k">group</span><span class="p">-</span><span class="n">row</span><span class="err">'</span><span class="p">)[</span><span class="n">rowIndex</span><span class="p">].</span><span class="n">cells</span><span class="p">[</span><span class="m">0</span><span class="p">];</span>
+        <span class="p">}</span>
+        <span class="c1">// ...</span>
+        <span class="c1">// Other methods that return DOM nodes.</span>
+    <span class="p">},</span> <span class="p">{</span>
+        <span class="n">returnDOMNodes</span><span class="p">:</span> <span class="k">true</span>
+    <span class="p">})</span>
+    <span class="p">.</span><span class="nf">addCustomMethods</span><span class="p">({</span>
+        <span class="n">getCellText</span><span class="p">:</span> <span class="p">(</span><span class="n">table</span><span class="p">:</span> <span class="n">HTMLTableElement</span><span class="p">,</span> <span class="n">rowIndex</span><span class="p">:</span> <span class="n">number</span><span class="p">,</span> <span class="n">columnIndex</span><span class="p">:</span> <span class="n">number</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="n">table</span><span class="p">.</span><span class="n">rows</span><span class="p">[</span><span class="n">rowIndex</span><span class="p">].</span><span class="n">cells</span><span class="p">[</span><span class="n">columnIndex</span><span class="p">].</span><span class="n">innerText</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="c1">// ...</span>
+        <span class="c1">// Other methods that return serializable objects.</span>
+    <span class="p">});</span>
+
+    <span class="k">await</span> <span class="n">t</span>
+        <span class="p">.</span><span class="nf">expect</span><span class="p">(</span><span class="n">myTable</span><span class="p">.</span><span class="nf">getCellText</span><span class="p">(</span><span class="m">3</span><span class="p">,</span> <span class="m">1</span><span class="p">)).</span><span class="nf">contains</span><span class="p">(</span><span class="err">'</span><span class="n">Europe</span><span class="err">'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nf">click</span><span class="p">(</span><span class="n">myTable</span><span class="p">.</span><span class="nf">getExpandButtonCell</span><span class="p">(</span><span class="m">0</span><span class="p">))</span>
+        <span class="p">.</span><span class="nf">expect</span><span class="p">(</span><span class="n">myTable</span><span class="p">.</span><span class="nf">getCellText</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">1</span><span class="p">)).</span><span class="nf">contains</span><span class="p">(</span><span class="err">'</span><span class="n">North</span> <span class="n">America</span><span class="err">'</span><span class="p">);</span>
+<span class="p">});</span>
 </code></pre></div>
 
 		</div>

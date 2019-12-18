@@ -1286,6 +1286,11 @@
 <td>The request body. A <a href="https://nodejs.org/api/buffer.html">Buffer</a> or string depending on the <code>stringifyRequestBody</code> option. Logged if the <code>logRequestBody</code> option is set to <code>true</code>.</td>
 </tr>
 <tr>
+<td><code>request.timestamp</code></td>
+<td>Number</td>
+<td>The timestamp that specifies when the request was intercepted.</td>
+</tr>
+<tr>
 <td><code>response.statusCode</code></td>
 <td>Number</td>
 <td>The status code received in the response.</td>
@@ -1299,6 +1304,11 @@
 <td><code>response.body</code></td>
 <td><a href="https://nodejs.org/api/buffer.html">Buffer</a> &#124; String</td>
 <td>The response body. A <a href="https://nodejs.org/api/buffer.html">Buffer</a> or string depending on the <code>stringifyResponseBody</code> option. Logged if the <code>logResponseBody</code> option is set to <code>true</code>.</td>
+</tr>
+<tr>
+<td><code>response.timestamp</code></td>
+<td>Number</td>
+<td>The timestamp that specifies when the response was intercepted.</td>
 </tr>
 </tbody></table></div>
 <p><strong>Example</strong></p>

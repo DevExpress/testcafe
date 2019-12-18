@@ -1126,7 +1126,7 @@
 		<div class="post-content">
 
 			<h1>Identify the Browser and Platform</h1>
-<p>TestCafe allows you to obtain information about the current user agent in test code. These data identify the operating system, platform type, browser, engine, etc.</p>
+<p>TestCafe allows you to obtain information about the current user agent in test code. This data identify the operating system, platform type, browser, engine, etc.</p>
 
 <p>Use the <code>t.browser</code> property to access user agent data.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
@@ -1303,7 +1303,7 @@
 </code></pre></div>
 <p>The <code>prettyUserAgent</code> property is set to an empty string if TestCafe cannot parse the user agent.</p>
 <h2><a class="anchor" id="examples"></a>Examples <a class="permalink" href="#examples">#</a></h2><h3><a class="anchor" id="create-a-browser-specific-hook"></a>Create a Browser-Specific Hook <a class="permalink" href="#create-a-browser-specific-hook">#</a></h3>
-<p>The following example shows how to create a <a href="test-code-structure.html#test-hooks">beforeEach</a> hook that runs for only particular <a href="#engine">browser engines</a>.</p>
+<p>The following example shows how to create a <a href="test-code-structure.html#test-hooks">beforeEach</a> hook that runs for particular <a href="#engine">browser engines</a> only:</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="nx">fixture</span> <span class="s2">`My fixture`</span>
@@ -1327,7 +1327,7 @@
     <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">takeElementScreenshot</span><span class="p">(</span><span class="nx">loginButton</span><span class="p">,</span> <span class="s2">`auth/</span><span class="p">${</span><span class="nx">t</span><span class="p">.</span><span class="nx">browser</span><span class="p">.</span><span class="nx">name</span><span class="p">}</span><span class="s2">/login-button.png`</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div><h3><a class="anchor" id="verify-the-installer-version"></a>Verify the Installer Version <a class="permalink" href="#verify-the-installer-version">#</a></h3>
-<p>The following example verifies that the website detects the user&#39;s platform correctly and offers to download the right installer. This test uses the <a href="#os">t.browser.os.name</a> property to determine the operating system and check the installer name.</p>
+<p>The following example verifies that the website detects the user&#39;s platform and offers to download the right installer. This test uses the <a href="#os">t.browser.os.name</a> property to determine the operating system and check the installer name.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="nx">fixture</span> <span class="s2">`My fixture`</span>

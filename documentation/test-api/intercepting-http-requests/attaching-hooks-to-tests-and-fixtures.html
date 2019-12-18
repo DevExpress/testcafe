@@ -1129,9 +1129,9 @@
 <p>To attach a hook to a test or fixture, use the <code>fixture.requestHooks</code> and <code>test.requestHooks</code> methods. A hook attached to a fixture handles requests from all tests in the fixture.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">fixture.requestHooks(...hooks)
 test.requestHooks(...hooks)
-</code></pre></div><blockquote><div class="blockquote-content"><p>If you attach request hooks to both the fixture and test, hooks attached to the fixture run first.</p>
+</code></pre></div><blockquote><div class="blockquote-content"><p>Hooks attached to the fixture run first when you attach request hooks to the fixture and test.</p>
 </div></blockquote>
-<p>You can also attach and detach hooks during test run using the <code>t.addRequestHooks</code> and <code>t.removeRequestHooks</code> methods.</p>
+<p>You can use the <code>t.addRequestHooks</code> and <code>t.removeRequestHooks</code> methods to attach and detach hooks during the test.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">t.addRequestHooks(...hooks)
 t.removeRequestHooks(...hooks)
 </code></pre></div><div class="table-wrapper"><table><thead><tr>

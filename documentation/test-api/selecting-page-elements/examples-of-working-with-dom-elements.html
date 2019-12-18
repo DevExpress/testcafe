@@ -1135,6 +1135,7 @@
 <li><a href="#access-shadow-dom">Access Shadow DOM</a></li>
 <li><a href="#check-if-an-element-is-available">Check if an Element is Available</a></li>
 <li><a href="#enumerate-elements-identified-by-a-selector">Enumerate Elements Identified by a Selector</a></li>
+<li><a href="#select-elements-with-dynamic-ids">Select Elements With Dynamic IDs</a></li>
 </ul>
 <h2><a class="anchor" id="access-page-element-properties"></a>Access Page Element Properties <a class="permalink" href="#access-page-element-properties">#</a></h2>
 <p>To work with page elements, use TestCafe <a href="selectors/">selectors</a>. Import the <code>Selector</code> function, call it and pass a CSS selector inside. This function creates a selector object <a href="dom-node-state.html">whose API</a> exposes the most used members of HTML element API.</p>
@@ -1325,6 +1326,71 @@ In this instance, it may be a good idea to check the element availability before
 
     <span class="k">for</span><span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">checkboxCount</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span>
         <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">checkboxes</span><span class="p">.</span><span class="nx">nth</span><span class="p">(</span><span class="nx">i</span><span class="p">));</span>
+<span class="p">});</span>
+</code></pre></div><h2><a class="anchor" id="select-elements-with-dynamic-ids"></a>Select Elements With Dynamic IDs <a class="permalink" href="#select-elements-with-dynamic-ids">#</a></h2>
+<p>TestCafe selectors should use element identifiers that persist between test runs. However, many JavaScript frameworks generate dynamic IDs for page elements. To identify elements whose <code>id</code> attribute changes, use selectors based on the element&#39;s class, content, tag name, or position:</p>
+
+<ul>
+<li><a href="selectors/functional-style-selectors.html#withtext">withText</a>,</li>
+<li><a href="selectors/functional-style-selectors.html#withexacttext">withExactText</a>,</li>
+<li><a href="selectors/functional-style-selectors.html#withattribute">withAttribute</a>,</li>
+<li><a href="selectors/functional-style-selectors.html#parent">parent</a>,</li>
+<li><a href="selectors/functional-style-selectors.html#child">child</a>,</li>
+<li><a href="selectors/functional-style-selectors.html#sibling">sibling</a>,</li>
+<li><a href="selectors/functional-style-selectors.html#nextsibling">nextSibling</a>,</li>
+<li><a href="selectors/functional-style-selectors.html#prevsibling">prevSibling</a>.</li>
+</ul>
+
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;html&gt;</span>
+    <span class="nt">&lt;body&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"j9dk399sd304"</span> <span class="na">class=</span><span class="s">"container"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"dsf054k45o3e"</span><span class="nt">&gt;</span>Item 1<span class="nt">&lt;/div&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"lk94km904wfv"</span><span class="nt">&gt;</span>Item 2<span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://localhost/`</span><span class="p">;</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">My test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">container</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">div</span><span class="dl">'</span><span class="p">).</span><span class="nx">withAttribute</span><span class="p">(</span><span class="dl">'</span><span class="s1">class</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">container</span><span class="dl">'</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">item1</span>     <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">div</span><span class="dl">'</span><span class="p">).</span><span class="nx">withText</span><span class="p">(</span><span class="dl">'</span><span class="s1">Item 1</span><span class="dl">'</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">item2</span>     <span class="o">=</span> <span class="nx">container</span><span class="p">.</span><span class="nx">child</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>If the element&#39;s ID is partially dynamic, you can use the following selectors to match the ID&#39;s static part:</p>
+
+<ul>
+<li><a href="selectors/functional-style-selectors.html#withattribute">withAttribute(RegExp)</a></li>
+<li><a href="https://www.w3schools.com/cssref/sel_attribute_value_contains.asp">[attribute~=value]</a>,</li>
+<li><a href="https://www.w3schools.com/cssref/sel_attribute_value_lang.asp">[attribute|=value]</a>,</li>
+<li><a href="https://www.w3schools.com/cssref/sel_attr_begin.asp">[attribute^=value]</a>,</li>
+<li><a href="https://www.w3schools.com/cssref/sel_attr_end.asp">[attribute$=value]</a>,</li>
+<li><a href="https://www.w3schools.com/cssref/sel_attr_contain.asp">[attribute*=value]</a>.</li>
+</ul>
+
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;html&gt;</span>
+    <span class="nt">&lt;body&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"9fgk309d3-wrapper-9f"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"g99dsf99sdfg-container"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"item-df9f9sfd9fd9"</span><span class="nt">&gt;</span>Item<span class="nt">&lt;/div&gt;</span>
+            <span class="nt">&lt;/div&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://localhost/`</span><span class="p">;</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">My test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">wrapper</span>   <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">div</span><span class="dl">'</span><span class="p">).</span><span class="nx">withAttribute</span><span class="p">(</span><span class="dl">'</span><span class="s1">id</span><span class="dl">'</span><span class="p">,</span> <span class="sr">/</span><span class="se">\w</span><span class="sr">+-wrapper-</span><span class="se">\w</span><span class="sr">+/</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">container</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">[id$="container"]</span><span class="dl">'</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">item</span>      <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">[id|="item"]</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" id="more-examples"></a>More Examples <a class="permalink" href="#more-examples">#</a></h2>
 <p>If you encounter a difficult situation while working with DOM elements,

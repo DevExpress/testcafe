@@ -1147,7 +1147,7 @@ to isolate authentication test actions and apply them easily whenever you need t
 </ul></li>
 </ul>
 <h2><a class="anchor" id="why-use-roles"></a>Why Use Roles <a class="permalink" href="#why-use-roles">#</a></h2>
-<p>Roles are more than just another way to <a href="../../recipes/extract-reusable-test-code/">extract reusable test logic</a>. They were specially designed for login operations and provide the following dedicated features:</p>
+<p>Unlike other methods used to <a href="../../recipes/extract-reusable-test-code/">extract reusable test logic</a>, roles were specially designed for login operations and provide the following dedicated features:</p>
 
 <ul>
 <li><strong>Object-based API.</strong> Authentication data and logic are stored in an object that is easy to pass around and activate when needed.</li>
@@ -1243,7 +1243,7 @@ to isolate authentication test actions and apply them easily whenever you need t
         <span class="p">.</span><span class="nx">useRole</span><span class="p">(</span><span class="nx">admin</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">removeButton</span><span class="p">.</span><span class="nx">visible</span><span class="p">).</span><span class="nx">ok</span><span class="p">()</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">removeButton</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">entry</span><span class="p">.</span><span class="nx">exists</span><span class="p">).</span><span class="nx">notOk</span><span class="p">()</span>
+        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">entry</span><span class="p">.</span><span class="nx">exists</span><span class="p">).</span><span class="nx">notOk</span><span class="p">();</span>
 <span class="p">});</span>
 </code></pre></div>
 <p>Roles can be shared across tests and fixtures. You can create roles in a separate helper file and use them in any test fixture that references this file.</p>
@@ -1267,7 +1267,7 @@ to isolate authentication test actions and apply them easily whenever you need t
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="dl">'</span><span class="s1">#submit</span><span class="dl">'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">useRole</span><span class="p">(</span><span class="nx">Role</span><span class="p">.</span><span class="nx">anonymous</span><span class="p">());</span>
 
-        <span class="kd">var</span> <span class="nx">comment</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#comment-data</span><span class="dl">'</span><span class="p">);</span>
+        <span class="kd">const</span> <span class="nx">comment</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#comment-data</span><span class="dl">'</span><span class="p">);</span>
 
         <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">comment</span><span class="p">.</span><span class="nx">innerText</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="dl">'</span><span class="s1">Hey ya!</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
@@ -1307,23 +1307,23 @@ TestCafe will navigate to the saved URL each time after you switch to this role.
 
 <p>In order to guarantee seamless test execution, browsers that run TestCafe tests should always fetch the tested page from the TestCafe proxy server. This ensures that automation scripts on the page are in sync with the server side.</p>
 
-<p>However, if the browser uses a cached copy of the page, automation mechanisms may be interrupted. Among other issues, this could reset authentication data in the cookies, local and session storages during navigation.</p>
+<p>However, if the browser uses a cached copy of the page, automation mechanisms may be interrupted. Among other issues, this could reset authentication data in the cookies, local and session storage during navigation.</p>
 
-<p>If tests fail unexpectedly after authentication, try the following steps:</p>
+<p>If tests fail unexpectedly after authentication, try the following:</p>
 
 <ul>
 <li>Enable the <a href="#optionspreserveurl">preserveUrl</a> option to avoid automatic navigation.</li>
 <li>If <code>preserveUrl</code> does not fix the issue, disable page caching. Note that this slows down test execution.</li>
 </ul>
 
-<p>Use the <a href="../test-code-structure.html#disable-page-caching">fixture.disablePageCaching</a> and <a href="../test-code-structure.html#disable-page-caching">test.disablePageCaching</a> methods to disable caching during a particular fixture or test.</p>
+<p>Use the <a href="../test-code-structure.html#disable-page-caching">fixture.disablePageCaching</a> and <a href="../test-code-structure.html#disable-page-caching">test.disablePageCaching</a> methods to disable caching during a fixture or test.</p>
 
 <p>To disable page caching during the entire test run, use either of the following options:</p>
 
 <ul>
-<li>the <a href="../../using-testcafe/command-line-interface.html#--disable-page-caching">--disable-page-caching</a> command line flag</li>
-<li>the <code>disablePageCaching</code> option in the <a href="../../using-testcafe/programming-interface/runner.html#run">runner.run</a> method</li>
-<li>the <a href="../../using-testcafe/configuration-file.html#disablepagecaching">disablePageCaching</a> configuration file property</li>
+<li>the <a href="../../using-testcafe/command-line-interface.html#--disable-page-caching">--disable-page-caching</a> command line flag,</li>
+<li>the <code>disablePageCaching</code> option in the <a href="../../using-testcafe/programming-interface/runner.html#run">runner.run</a> method,</li>
+<li>the <a href="../../using-testcafe/configuration-file.html#disablepagecaching">disablePageCaching</a> configuration file property.</li>
 </ul>
 
 

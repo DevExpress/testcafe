@@ -1202,10 +1202,9 @@ or the <a href="../../../using-testcafe/command-line-interface.html#--selector-t
 
 <p>If the target element is not visible, the selector throws an exception in all these cases.</p>
 
-<p>Note that when a selector is passed to a <a href="../../actions/">test action</a> as an identifier for the target element,
-TestCafe <a href="../../built-in-waiting-mechanisms.html#wait-mechanism-for-actions">requires</a> that the target element is visible regardless of the <code>visibilityCheck</code> option.</p>
+<p>Note that when a selector is passed to a <a href="../../actions/">test action</a> as the target element&#39;s identifier, the target element should be visible regardless of the <code>visibilityCheck</code> option.</p>
 
-<p>Unlike filter functions, the <code>visibilityCheck</code> option does not change the matching set of the selector.</p>
+<p>Unlike filter functions, the <code>visibilityCheck</code> option does not change the selector&#39;s matched set.</p>
 
 <p>Consider the following page:</p>
 <div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;html&gt;</span>
@@ -1221,7 +1220,7 @@ or the number of matching elements, invisible elements also count.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">count</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">div</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span> <span class="na">visibilityCheck</span><span class="p">:</span> <span class="kc">true</span> <span class="p">}).</span><span class="nx">count</span><span class="p">;</span>
 
 <span class="c1">// returns 3 since the visibilityCheck option</span>
-<span class="c1">// does not affect the selector's matching set</span>
+<span class="c1">// does not affect the selector's matched set</span>
 </code></pre></div>
 <p>In case you need to filter page elements by their visibility,
 use <a href="functional-style-selectors.html#filtervisible">filterVisible</a> and

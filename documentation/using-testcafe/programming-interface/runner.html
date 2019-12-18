@@ -1079,7 +1079,7 @@ obsolete: screenshots(path [, takeOnFails] [, pathPattern] ) → this
 </tbody></table></div>
 <p>See <a href="../common-concepts/screenshots-and-videos.html#screenshots">Screenshots</a> for details.</p>
 
-<p>Pass the <code>disableScreenshots</code> option to the <a href="#run">runner.run</a> method to disable taking screenshots:</p>
+<p>Pass the <code>disableScreenshots</code> option to the <a href="#run">runner.run</a> method to disable screenshots:</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">run</span><span class="p">({</span>
     <span class="na">disableScreenshots</span><span class="p">:</span> <span class="kc">true</span>
 <span class="p">});</span>
@@ -1261,7 +1261,7 @@ Tests are run concurrently against this pool, that is, each test is run in the f
 <td>String &#124; Object &#124; Array</td>
 <td>Scripts to inject into the tested pages. See <a href="../common-concepts/inject-scripts-into-tested-pages.html#provide-scripts-to-inject">Provide Scripts to Inject</a> to learn how to specify them.</td>
 </tr>
-</tbody></table></div><blockquote><div class="blockquote-content"><p>Relative paths resolve from the current working directory.</p>
+</tbody></table></div><blockquote><div class="blockquote-content"><p>Relative paths are resolved against the current working directory.</p>
 </div></blockquote>
 <p>You can use the <a href="../common-concepts/inject-scripts-into-tested-pages.html#provide-scripts-for-specific-pages">page</a> option to specify pages into which scripts should be injected. Otherwise, TestCafe injects scripts into all pages visited during the test run.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">clientScripts</span><span class="p">(</span><span class="dl">'</span><span class="s1">assets/jquery.js</span><span class="dl">'</span><span class="p">);</span>
@@ -1336,7 +1336,7 @@ Tests are run concurrently against this pool, that is, each test is run in the f
 </thead><tbody><tr>
 <td><code>path</code></td>
 <td>String</td>
-<td>The absolute or relative path to the TypeScript configuration file. Relative paths resolve from the current directory (the directory from which you run TestCafe).</td>
+<td>The absolute or relative path to the TypeScript configuration file. Relative paths are resolved against the current directory (the directory from which you run TestCafe).</td>
 </tr>
 </tbody></table></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">tsConfigPath</span><span class="p">(</span><span class="dl">'</span><span class="s1">/Users/s.johnson/testcafe/tsconfig.json</span><span class="dl">'</span><span class="p">);</span>
 </code></pre></div>
@@ -1420,7 +1420,7 @@ where tests are not guaranteed to execute correctly.</p>
 <tr>
 <td><code>disablePageCaching</code></td>
 <td>Boolean</td>
-<td>Prevents the browser from caching the page content. When navigation to a cached page occurs in <a href="../../test-api/authentication/user-roles.html">role code</a>, local and session storage content is not preserved. Set <code>disablePageCaching</code> to <code>true</code> to retain the storage items after navigation. For more information, see <a href="../../test-api/authentication/user-roles.html#test-actions-fail-after-authentication">Troubleshooting: Test Actions Fail After Authentication</a>. You can also disable page caching <a href="../../test-api/test-code-structure.html#disable-page-caching">for an individual fixture or test</a>.</td>
+<td>Prevents the browser from caching page content. When navigation to a cached page occurs in <a href="../../test-api/authentication/user-roles.html">role code</a>, local and session storage content is not preserved. Set <code>disablePageCaching</code> to <code>true</code> to retain the storage items after navigation. For more information, see <a href="../../test-api/authentication/user-roles.html#test-actions-fail-after-authentication">Troubleshooting: Test Actions Fail After Authentication</a>. You can also disable page caching <a href="../../test-api/test-code-structure.html#disable-page-caching">for an individual fixture or test</a>.</td>
 <td></td>
 </tr>
 <tr>

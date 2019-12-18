@@ -869,7 +869,7 @@
 <p>You can also <a href="#provide-scripts-for-specific-pages">inject scripts into specific pages</a> and <a href="#inject-scripts-into-iframes">iframes</a>.</p>
 <blockquote><div class="blockquote-content"><p>Note that the API methods and configuration option support <a href="#specify-multiple-scripts">multiple arguments</a>.</p>
 </div></blockquote><h3><a class="anchor" id="inject-a-javascript-file"></a>Inject a JavaScript File <a class="permalink" href="#inject-a-javascript-file">#</a></h3>
-<p>Specify the JavaScript file path to inject the entire content of this file into the tested pages. You can pass a string or an object with the <code>path</code> property.</p>
+<p>Specify the JavaScript file path to inject the content of this file into the tested pages. You can pass a string or object with the <code>path</code> property.</p>
 
 <p><em>CLI</em></p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">testcafe &lt;browser&gt; &lt;tests&gt; --cs &lt;filePath&gt;[,&lt;filePath2&gt;,...&lt;filePathN&gt;]
@@ -905,7 +905,7 @@ test.clientScripts([ filePath | { path: filePath } ])
 <td>The path to the JavaScript file whose content should be injected.</td>
 </tr>
 </tbody></table></div><h4><a class="anchor" id="relative-paths"></a>Relative Paths <a class="permalink" href="#relative-paths">#</a></h4>
-<p>Relative paths resolve from the <em>current working directory</em> when you inject scripts in:</p>
+<p>Relative paths are resolved against the <em>current working directory</em> when you inject scripts in:</p>
 
 <ul>
 <li><a href="../command-line-interface.html#--cs-pathpath2---client-scripts-pathpath2">command line interface</a></li>
@@ -913,7 +913,7 @@ test.clientScripts([ filePath | { path: filePath } ])
 <li><a href="../configuration-file.html#clientscripts">configuration file</a></li>
 </ul>
 
-<p>When you use <a href="../../test-api/test-code-structure.html#inject-scripts-into-tested-pages">test API methods</a>, relative paths resolve from the <em>test file location</em>.</p>
+<p>When you use <a href="../../test-api/test-code-structure.html#inject-scripts-into-tested-pages">test API methods</a>, relative paths are resolved against the <em>test file location</em>.</p>
 
 <p><strong>Examples</strong></p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests <span class="nt">--cs</span> assets/jquery.js
@@ -960,15 +960,10 @@ test.clientScripts([ { module: moduleName } ])
 <td>The module name.</td>
 </tr>
 </tbody></table></div>
-<p>TestCafe searches for the module&#39;s entry point with Node.js mechanisms and injects its content into the tested page.</p>
+<p>TestCafe uses Node.js mechanisms to search for the module&#39;s entry point and injects its content into the tested page.</p>
 
 <p>Note that the browser must be able to execute the injected module. For example, modules that implement the <a href="https://github.com/umdjs/umd">UMD</a> API can run in most modern browsers.</p>
-<blockquote><div class="blockquote-content"><p>If the injected module has dependencies, you should ensure that:</p>
-
-<ul>
-<li>The dependencies can be loaded as global variables.</li>
-<li>These variables are initialized in the page code.</li>
-</ul>
+<blockquote><div class="blockquote-content"><p>If the injected module has dependencies, ensure that the dependencies can be loaded as global variables and these variables are initialized in the page&#39;s code.</p>
 </div></blockquote>
 <p><strong>Examples</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
@@ -981,7 +976,7 @@ test.clientScripts([ { module: moduleName } ])
 <span class="p">}</span>
 </code></pre></div><blockquote><div class="blockquote-content"><p>You cannot combine the <code>module</code>, <a href="#inject-a-javascript-file">path</a> and <a href="#inject-script-code">content</a> properties in a single object. To inject multiple items, pass several arguments or an array.</p>
 </div></blockquote><h3><a class="anchor" id="inject-script-code"></a>Inject Script Code <a class="permalink" href="#inject-script-code">#</a></h3>
-<p>You can provide the injected script as a string with JavaScript code. Pass an object with the <code>content</code> property to do this.</p>
+<p>You can pass an object with the <code>content</code> property to provide the injected script as a string.</p>
 
 <p><em>Programming interface</em></p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">runner.clientScripts({ content: code })
@@ -1011,7 +1006,7 @@ test.clientScripts([ { content: code } ])
 </thead><tbody><tr>
 <td><code>code</code></td>
 <td>String</td>
-<td>JavaScript code that should be injected.</td>
+<td>JavaScript that should be injected.</td>
 </tr>
 </tbody></table></div>
 <p><strong>Examples</strong></p>
@@ -1031,9 +1026,8 @@ test.clientScripts([ { content: code } ])
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div><blockquote><div class="blockquote-content"><p>You cannot combine the <code>content</code>, <a href="#inject-a-javascript-file">path</a> and <a href="#inject-a-module">module</a> properties in a single object. To inject multiple items, pass several arguments or an array.</p>
 </div></blockquote><h3><a class="anchor" id="provide-scripts-for-specific-pages"></a>Provide Scripts for Specific Pages <a class="permalink" href="#provide-scripts-for-specific-pages">#</a></h3>
-<p>You can also specify pages into which a script should be injected.</p>
-<blockquote><div class="blockquote-content"><p>This is helpful when you need to mock browser API on particular pages and use the default behavior everywhere else.</p>
-</div></blockquote>
+<p>You can also specify pages into which a script should be injected. For instance, this enables you to mock browser API on particular pages and use the default behavior everywhere else.</p>
+
 <p>To specify target pages for a script, add the <code>page</code> property to the object you pass to <code>clientScripts</code>.</p>
 
 <p><em>Programming interface</em></p>
@@ -1111,7 +1105,7 @@ test.clientScripts([
 </thead><tbody><tr>
 <td><code>url</code></td>
 <td>String &#124; RegExp</td>
-<td>Specify a page URL to add scripts to a single page, or a regular expression to add scripts to pages whose URLs match this expression. Regular expressions are not supported in the <a href="../configuration-file.html#clientscripts">clientScripts</a> configuration file property.</td>
+<td>Specify a page URL to add scripts to a page, or a regular expression to add scripts to pages whose URLs match this expression. Regular expressions are not supported in the <a href="../configuration-file.html#clientscripts">clientScripts</a> configuration file property.</td>
 </tr>
 </tbody></table></div>
 <p><strong>Examples</strong></p>
@@ -1158,9 +1152,9 @@ test.clientScripts([
     <span class="na">page</span><span class="p">:</span> <span class="dl">'</span><span class="s1">http://example.com</span><span class="dl">'</span>
 <span class="p">}));</span>
 </code></pre></div><h2><a class="anchor" id="access-dom-in-the-injected-scripts"></a>Access DOM in the Injected Scripts <a class="permalink" href="#access-dom-in-the-injected-scripts">#</a></h2>
-<p>TestCafe injects scripts into the <code>head</code> tag, which means they are executed before DOM is loaded.</p>
+<p>TestCafe injects custom scripts into the <code>head</code> tag. These scripts are executed before the DOM is loaded.</p>
 
-<p>To access DOM in these scripts, wait until the <code>DOMContentLoaded</code> event fires:</p>
+<p>To access the DOM in these scripts, wait until the <code>DOMContentLoaded</code> event fires:</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">scriptContent</span> <span class="o">=</span> <span class="s2">`
 window.addEventListener('DOMContentLoaded', function () {
     document.body.style.backgroundColor = 'green';

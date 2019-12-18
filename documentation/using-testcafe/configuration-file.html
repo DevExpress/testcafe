@@ -1033,7 +1033,7 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
     </span><span class="nl">"disableScreenshots"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
-<p>When this property is specified, screenshots are not taken whenever a test fails or a <a href="../test-api/actions/take-screenshot.html">screenshot action</a> is executed.</p>
+<p>When this property is specified, screenshots are not taken when a test fails or a <a href="../test-api/actions/take-screenshot.html">screenshot action</a> is executed.</p>
 
 <p><em>CLI</em>: <a href="command-line-interface.html#--disable-screenshots">--disable-screenshots</a><br>
 <em>API</em>: <a href="programming-interface/runner.html#run">runner.run({ disableScreenshots })</a></p>
@@ -1043,8 +1043,6 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
     </span><span class="nl">"screenshotPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/home/user/tests/screenshots/"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
-<p>This property will be deprecated in the future versions.</p>
-
 <p>In <strong>v1.5.0</strong> and newer, screenshots are enabled by default and saved to <em>./screenshots</em>.</p>
 
 <p>To save them to a different location, specify the <a href="#screenshotspath">screenshots.path</a> property:</p>
@@ -1064,8 +1062,6 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
     </span><span class="nl">"takeScreenshotsOnFails"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
-<p>This property will be deprecated in the future versions.</p>
-
 <p>In <strong>v1.5.0</strong> and newer, use the <a href="#screenshotstakeonfails">screenshots.takeOnFails</a> property:</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
     </span><span class="nl">"screenshots"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
@@ -1078,8 +1074,6 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
     </span><span class="nl">"screenshotPathPattern"</span><span class="p">:</span><span class="w"> </span><span class="s2">"${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
-<p>This property will be deprecated in the future versions.</p>
-
 <p>In <strong>v1.5.0</strong> and newer, use the <a href="#screenshotspathpattern">screenshots.pathPattern</a> property:</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
     </span><span class="nl">"screenshots"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
@@ -1355,7 +1349,7 @@ to slow the test down.</p>
         </span><span class="p">}</span><span class="w">
     </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre></div><blockquote><div class="blockquote-content"><p>Relative paths resolve from the current working directory.</p>
+</span></code></pre></div><blockquote><div class="blockquote-content"><p>Relative paths are resolved against the current working directory.</p>
 </div></blockquote>
 <p>See <a href="common-concepts/inject-scripts-into-tested-pages.html#provide-scripts-to-inject">Provide Scripts to Inject</a> to learn how to specify the scripts.</p>
 
@@ -1460,12 +1454,12 @@ to slow the test down.</p>
     </span><span class="nl">"tsConfigPath"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/Users/s.johnson/testcafe/tsconfig.json"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
-<p>You can specify an absolute or relative path. Relative paths resolve from the current directory (the directory from which you run TestCafe).</p>
+<p>You can specify an absolute or relative path. Relative paths are resolved against the current directory (the directory from which you run TestCafe).</p>
 
 <p><em>CLI</em>: <a href="command-line-interface.html#--ts-config-path-path">--ts-config-path</a><br>
 <em>API</em>: <a href="programming-interface/runner.html#tsconfigpath">runner.tsConfigPath</a></p>
 <h2><a class="anchor" id="disablepagecaching"></a>disablePageCaching <a class="permalink" href="#disablepagecaching">#</a></h2>
-<p>Prevents the browser from caching the page content.</p>
+<p>Prevents the browser from caching page content.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
     </span><span class="nl">"disablePageCaching"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
 </span><span class="p">}</span><span class="w">
