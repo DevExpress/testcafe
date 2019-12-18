@@ -965,7 +965,7 @@ export default class Driver {
 
         this.statusBar.on(this.statusBar.UNLOCK_PAGE_BTN_CLICK, disableRealEventsPreventing);
 
-        this.speed  = this.initialSpeed;
+        this.speed = this.initialSpeed;
     }
 
     start () {
