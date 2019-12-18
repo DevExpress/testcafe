@@ -2,6 +2,7 @@ trigger:
   branches:
     exclude:
     - build-bot-temp-*
+    - (testbot-only)*
     - new-docs
 
   paths:
