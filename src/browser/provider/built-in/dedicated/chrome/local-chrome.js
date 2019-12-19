@@ -11,6 +11,8 @@ export async function start (pageUrl, { browserName, config, cdpPort, tempProfil
 
     chromeOpenParameters.cmd = buildChromeArgs({ config, cdpPort, platformArgs: chromeOpenParameters.cmd, tempProfileDir, inDocker });
 
+    debugger;
+
     await browserStarter.startBrowser(chromeOpenParameters, pageUrl);
 }
 
