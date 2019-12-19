@@ -439,7 +439,7 @@ Then, for each <code>label</code> element finds a parent that matches the <code>
 
 <hr>
 
-<p>Like in jQuery, if you request a <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/dom-node-state.html#members-common-across-all-nodes">property</a> of the matching set or try evaluate
+<p>Like in jQuery, if you request a <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/dom-node-state.html#members-common-across-all-nodes">property</a> of the matched set or try evaluate
 a <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/using-selectors.html#dom-node-snapshot">snapshot</a>, the selector returns values for the first element in the set.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// Returns id of the first element in the set</span>
 <span class="kd">const</span> <span class="nx">id</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">ul</span><span class="dl">'</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="dl">'</span><span class="s1">label</span><span class="dl">'</span><span class="p">).</span><span class="nx">parent</span><span class="p">(</span><span class="dl">'</span><span class="s1">div.someClass</span><span class="dl">'</span><span class="p">).</span><span class="nx">id</span><span class="p">;</span>
@@ -465,15 +465,15 @@ a <a href="https://devexpress.github.io/testcafe/documentation/test-api/selectin
 
 <ol>
 <li>finds the second parent (parent of parent) of <code>.container</code> elements;</li>
-<li>peeks the first element in the matching set;</li>
+<li>peeks the first element in the matched set;</li>
 <li>in that element, finds elements that match the <code>.content</code> selector;</li>
 <li>filters them by text <code>yo!</code>;</li>
 <li>in each filtered element, searches for a child with tag name <code>span</code>.</li>
 </ol>
 
 <hr>
-<h4><a class="anchor" id="getting-selector-matching-set-length"></a>Getting selector matching set length <a class="permalink" href="#getting-selector-matching-set-length">#</a></h4>
-<p>Also, now you can get selector matching set length and check matching elements existence by using selector <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/using-selectors.html#check-if-an-element-exists"><code>count</code> and <code>exists</code> properties</a>.</p>
+<h4><a class="anchor" id="getting-selector-matched-set-length"></a>Getting selector matched set length <a class="permalink" href="#getting-selector-matched-set-length">#</a></h4>
+<p>Also, now you can get selector matched set length and check matching elements existence by using selector <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/using-selectors.html#check-if-an-element-exists"><code>count</code> and <code>exists</code> properties</a>.</p>
 <h4><a class="anchor" id="unawaited-parametrized-selector-calls-now-allowed-outside-test-context"></a>Unawaited parametrized selector calls now allowed outside test context <a class="permalink" href="#unawaited-parametrized-selector-calls-now-allowed-outside-test-context">#</a></h4>
 <p>Previously selector call outside of text context thrown an error:</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">selector</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">arg</span> <span class="o">=&gt;</span> <span class="cm">/* selector code */</span><span class="p">);</span>
@@ -509,7 +509,7 @@ a <a href="https://devexpress.github.io/testcafe/documentation/test-api/selectin
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#someId</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span> <span class="na">index</span><span class="p">:</span> <span class="mi">2</span> <span class="p">}</span> <span class="p">);</span> <span class="c1">// index is ignored and selector returns element with id `someId`</span>
 </code></pre></div>
 <p>however it&#39;s not a case now:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#someId</span><span class="dl">'</span><span class="p">).</span><span class="nx">nth</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span> <span class="c1">// returns `null`, since there is only one element in matching set with id `someId`</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#someId</span><span class="dl">'</span><span class="p">).</span><span class="nx">nth</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span> <span class="c1">// returns `null`, since there is only one element in matched set with id `someId`</span>
 </code></pre></div><h4><a class="anchor" id="deprecated-api"></a>Deprecated API <a class="permalink" href="#deprecated-api">#</a></h4>
 <ul>
 <li><code>t.select</code> method - use <code>Selector</code> instead:</li>

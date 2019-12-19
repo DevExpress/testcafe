@@ -1063,8 +1063,6 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
 <p><strong>Obsolete.</strong> Enables screenshots and specifies the base directory where they are saved.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js <span class="nt">-s</span> screenshots
 </code></pre></div>
-<p>This option will be deprecated in the future versions.</p>
-
 <p>In <strong>v1.5.0</strong> and newer, screenshots are enabled by default and saved to <em>./screenshots</em>.</p>
 
 <p>To specify a different location, pass the <a href="#path">path</a> parameter:</p>
@@ -1076,16 +1074,12 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
 <p><strong>Obsolete.</strong> Takes a screenshot whenever a test fails.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js <span class="nt">-S</span> <span class="nt">-s</span> screenshots
 </code></pre></div>
-<p>This option will be deprecated in the future versions.</p>
-
 <p>In <strong>v1.5.0</strong> and newer, use the <a href="#takeonfails">takeOnFails</a> parameter:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js <span class="nt">-s</span> <span class="nv">takeOnFails</span><span class="o">=</span><span class="nb">true</span>
 </code></pre></div><h3><a class="anchor" id="-p-pattern---screenshot-path-pattern-pattern"></a>-p &lt;pattern&gt;, --screenshot-path-pattern &lt;pattern&gt; <a class="permalink" href="#-p-pattern---screenshot-path-pattern-pattern">#</a></h3>
 <p><strong>Obsolete.</strong> Specifies a custom pattern to compose screenshot files&#39; relative path and name.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js <span class="nt">-s</span> screenshots <span class="nt">-p</span> <span class="s1">'${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png'</span>
 </code></pre></div>
-<p>This option will be deprecated in the future versions.</p>
-
 <p>In <strong>v1.5.0</strong> and newer, use the <a href="#pathpattern">pathPattern</a> parameter:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js <span class="nt">-s</span> <span class="nv">pathPattern</span><span class="o">=</span><span class="k">${</span><span class="nv">DATE</span><span class="k">}</span>_<span class="k">${</span><span class="nv">TIME</span><span class="k">}</span>/test-<span class="k">${</span><span class="nv">TEST_INDEX</span><span class="k">}</span>/<span class="k">${</span><span class="nv">USERAGENT</span><span class="k">}</span>/<span class="k">${</span><span class="nv">FILE_INDEX</span><span class="k">}</span>.png
 </code></pre></div><h3><a class="anchor" id="--video-basepath"></a>--video &lt;basePath&gt; <a class="permalink" href="#--video-basepath">#</a></h3>
@@ -1278,7 +1272,7 @@ to slow the test down.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests <span class="nt">--client-scripts</span> mockDate.js,assets/react-helpers.js
 </code></pre></div>
 <p>Pass the <a href="common-concepts/inject-scripts-into-tested-pages.html#inject-a-javascript-file">path to a JavaScript file</a> to inject its content.</p>
-<blockquote><div class="blockquote-content"><p>Relative paths resolve from the current working directory.</p>
+<blockquote><div class="blockquote-content"><p>Relative paths are resolved against the current working directory.</p>
 </div></blockquote>
 <p>Use the <a href="../test-api/test-code-structure.html#inject-scripts-into-tested-pages">fixture.clientScripts</a> and <a href="../test-api/test-code-structure.html#inject-scripts-into-tested-pages">test.clientScripts</a> methods in test code to inject scripts for an individual fixture or test.</p>
 
@@ -1370,11 +1364,11 @@ See <a href="common-concepts/test-https-and-http2-websites.html">Test HTTPS and 
 <p>Enables TestCafe to use a custom <a href="../test-api/typescript-support.html#customize-compiler-options">TypeScript configuration file</a> and specifies its location.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests <span class="nt">--ts-config-path</span> /Users/s.johnson/testcafe/tsconfig.json
 </code></pre></div>
-<p>You can specify an absolute or relative path. Relative paths resolve from the current directory (the directory from which you run TestCafe).</p>
+<p>You can specify an absolute or relative path. Relative paths are resolved against the current directory (the directory from which you run TestCafe).</p>
 
 <p><em>Related configuration file property</em>: <a href="configuration-file.html#tsconfigpath">tsConfigPath</a>.</p>
 <h3><a class="anchor" id="--disable-page-caching"></a>--disable-page-caching <a class="permalink" href="#--disable-page-caching">#</a></h3>
-<p>Prevents the browser from caching the page content.</p>
+<p>Prevents the browser from caching page content.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests <span class="nt">--disable-page-caching</span>
 </code></pre></div>
 <p>When navigation to a cached page occurs in <a href="../test-api/authentication/user-roles.html">role code</a>, local and session storage content is not preserved. Use the <code>--disable-page-caching</code> flag to retain the storage items after navigation. For more information, see <a href="../test-api/authentication/user-roles.html#test-actions-fail-after-authentication">Troubleshooting: Test Actions Fail After Authentication</a>.</p>

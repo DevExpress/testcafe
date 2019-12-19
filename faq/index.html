@@ -432,6 +432,7 @@
 <li><a href="#which-browsers-does-testcafe-support-what-are-the-exact-supported-versions">Which browsers does TestCafe support? What are the exact supported versions?</a></li>
 <li><a href="#can-i-use-third-party-modules-in-tests">Can I use third-party modules in tests?</a></li>
 <li><a href="#how-do-i-work-with-configuration-files-and-environment-variables">How do I work with configuration files and environment variables?</a></li>
+<li><a href="#how-do-i-identify-elements-with-dynamic-ids">How do I identify elements with dynamic IDs?</a></li>
 </ul></li>
 <li><a href="#troubleshooting">Troubleshooting</a>
 
@@ -601,6 +602,10 @@ which means it should work with any browser with HTML5 support released in the l
     <span class="p">.</span><span class="nx">page</span> <span class="s2">`</span><span class="p">${</span><span class="nx">config</span><span class="p">.</span><span class="nx">baseUrl</span><span class="p">}</span><span class="s2">/test1/index.html`</span><span class="p">;</span>
 </code></pre></div>
 <p>Alternatively, you can use <a href="../documentation/recipes/access-environment-variables-in-tests.html">environment variables</a>.</p>
+<h3><a class="anchor" id="how-do-i-identify-elements-with-dynamic-ids"></a>How do I identify elements with dynamic IDs? <a class="permalink" href="#how-do-i-identify-elements-with-dynamic-ids">#</a></h3>
+<p>TestCafe selectors should use element identifiers that persist between test runs. However, many JavaScript frameworks generate dynamic IDs for page elements. To identify elements whose <code>id</code> attribute changes, use selectors based on the element&#39;s class, content, tag name, or position.</p>
+
+<p>See the <a href="../documentation/test-api/selecting-page-elements/examples-of-working-with-dom-elements.html#select-elements-with-dynamic-ids">Select Elements With Dynamic IDs</a> example for details.</p>
 <h2><a class="anchor" id="troubleshooting"></a>Troubleshooting <a class="permalink" href="#troubleshooting">#</a></h2><h3><a class="anchor" id="i-have-installed-testcafe-but-i-cannot-run-it-what-should-i-do"></a>I have installed TestCafe but I cannot run it. What should I do? <a class="permalink" href="#i-have-installed-testcafe-but-i-cannot-run-it-what-should-i-do">#</a></h3>
 <p><strong>Check your firewall.</strong> First, make sure that your firewall does not block the ports TestCafe uses.
 TestCafe chooses free ports automatically by default. Use the
@@ -608,7 +613,7 @@ TestCafe chooses free ports automatically by default. Use the
 or the <a href="../documentation/using-testcafe/programming-interface/createtestcafe.html">createTestCafe</a>
 API factory function to specify custom ports. After that, check that the firewall does not block these specific ports.</p>
 
-<p><strong>Check your proxy server</strong>. Another reason for this problem can be the proxy server you use to access the Internet.
+<p><strong>Check your proxy server.</strong> Another reason for this problem can be the proxy server you use to access the Internet.
 If your network is connected to the Web via a proxy, use the
 <a href="../documentation/using-testcafe/command-line-interface.html#--proxy-host">--proxy</a> command line option
 or the <a href="../documentation/using-testcafe/programming-interface/runner.html#useproxy">useProxy</a> API method
