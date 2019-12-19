@@ -27,7 +27,7 @@ fixture `My fixture`
     .page `https://devexpress.github.io/testcafe/example`;
 
 test('My test', async t => {
-    debugger;
+    
     await t
         .setNativeDialogHandler(() => true);
         .click('#populate')

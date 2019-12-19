@@ -27,7 +27,7 @@ export default {
     },
 
     async openBrowser (browserId, pageUrl, configString, allowMultipleWindows) {
-        debugger;
+
 
         const parsedPageUrl = parseUrl(pageUrl);
         const runtimeInfo   = await this._createRunTimeInfo(parsedPageUrl.hostname, configString, allowMultipleWindows);

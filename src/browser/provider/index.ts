@@ -249,7 +249,7 @@ export default class BrowserProvider {
     }
 
     public async openBrowser (browserId: string, pageUrl: string, browserName: string, allowMultipleWindows: boolean): Promise<void> {
-        debugger;
+
 
         await this.plugin.openBrowser(browserId, pageUrl, browserName, allowMultipleWindows);
 

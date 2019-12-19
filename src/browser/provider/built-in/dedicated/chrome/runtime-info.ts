@@ -26,9 +26,7 @@ export default class ChromeRuntimeInfo {
     }
 
     public static async create (proxyHostName: string, configString: string, allowMultipleWindows: boolean): Promise<ChromeRuntimeInfo> {
-        debugger;
-
-        const runtimeInfo = new this(proxyHostName);
+        const runtimeInfo = new this(configString);
 
         if (!runtimeInfo.config.userProfile)
             runtimeInfo.tempProfileDir = await runtimeInfo.createTempProfile(proxyHostName, allowMultipleWindows);
