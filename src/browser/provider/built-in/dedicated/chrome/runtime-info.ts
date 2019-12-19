@@ -26,6 +26,8 @@ export default class ChromeRuntimeInfo {
     }
 
     public static async create (proxyHostName: string, configString: string, allowMultipleWindows: boolean): Promise<ChromeRuntimeInfo> {
+        debugger;
+
         const runtimeInfo = new this(proxyHostName);
 
         if (!runtimeInfo.config.userProfile)

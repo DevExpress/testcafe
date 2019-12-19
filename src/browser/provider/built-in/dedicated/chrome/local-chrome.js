@@ -6,6 +6,8 @@ import { buildChromeArgs } from './build-chrome-args';
 const browserStarter = new BrowserStarter();
 
 export async function start (pageUrl, { browserName, config, cdpPort, tempProfileDir, inDocker }) {
+    debugger;
+
     const chromeInfo           = await browserTools.getBrowserInfo(config.path || browserName);
     const chromeOpenParameters = Object.assign({}, chromeInfo);
 
