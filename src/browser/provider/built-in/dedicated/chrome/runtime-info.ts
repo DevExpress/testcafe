@@ -6,13 +6,13 @@ import TempDirectory from '../../../../../utils/temp-directory';
 import { Dictionary } from '../../../../../configuration/interfaces';
 
 export default class ChromeRuntimeInfo {
-    config: any;
-    tempProfileDir: null | TempDirectory;
-    cdpPort: null | number;
-    inDocker: boolean;
-    browserName?: string;
-    browserId?: string;
-    providerMethods?: Dictionary<Function>;
+    public config: any;
+    public tempProfileDir: null | TempDirectory;
+    public cdpPort: null | number;
+    public inDocker: boolean;
+    public browserName?: string;
+    public browserId?: string;
+    public providerMethods?: Dictionary<Function>;
 
     protected constructor (configString: string) {
         this.config         = getConfig(configString);
@@ -21,7 +21,7 @@ export default class ChromeRuntimeInfo {
         this.inDocker       = isDocker();
     }
 
-    protected async createTempProfile (proxyHostName: string, allowMultipleWindows: boolean) {
+    protected async createTempProfile (proxyHostName: string, allowMultipleWindows: boolean): Promise<TempDirectory> {
         return await createTempProfile(proxyHostName, allowMultipleWindows);
     }
 
