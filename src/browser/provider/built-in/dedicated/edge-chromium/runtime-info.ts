@@ -7,97 +7,19 @@ export default class EdgeChromiumRuntimeInfo extends ChromeRuntimeInfo {
     async createTempProfile (proxyHostName: string, allowMultipleWindows: boolean) {
         const tempDir = await super.createTempProfile(proxyHostName, allowMultipleWindows);
 
-        debugger;
-
         const preferences = {
             "fre": {
-                "has_user_completed_fre": true,
-                "has_user_imported_during_fre": true,
-                "has_user_seen_fre": true,
-            }
+                "has_user_seen_fre": true
+            },
+            "profiles": {
+                "edge_implicitly_signed_in": [{
+                    "edge_account_type": 3,
+                    "id": ""
+                }]
+            },
         };
 
         await writeFile(path.join(tempDir.path, 'Local State'), JSON.stringify(preferences));
-
-        return tempDir;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         return tempDir;
     }
