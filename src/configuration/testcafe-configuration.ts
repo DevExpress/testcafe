@@ -99,7 +99,8 @@ export default class TestCafeConfiguration extends Configuration {
             hostname: this.getOption('hostname') as string,
             port1:    this.getOption('port1') as number,
             port2:    this.getOption('port2') as number,
-            options:  {
+
+            options: {
                 ssl:             this.getOption('ssl') as string,
                 developmentMode: this.getOption('developmentMode') as boolean,
                 retryTestPages:  this.getOption('retryTestPages') as boolean
