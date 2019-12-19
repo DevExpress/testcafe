@@ -126,6 +126,8 @@ export default {
     },
 
     async getProvider (providerName) {
+        debugger;
+
         const parsedProviderName = parseProviderName(providerName);
         const moduleName         = parsedProviderName.moduleName;
 

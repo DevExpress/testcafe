@@ -1,8 +1,10 @@
 import pathBrowserProvider from './path';
 import locallyInstalledBrowserProvider from './locally-installed';
 import remoteBrowserProvider from './remote';
+
 import firefoxProvider from './dedicated/firefox';
 import chromeProvider from './dedicated/chrome';
+import edgeChromiumProvider from './dedicated/edge-chromium';
 
 export default Object.assign(
     {
@@ -12,6 +14,7 @@ export default Object.assign(
         'firefox':           firefoxProvider,
         'chrome':            chromeProvider,
         'chromium':          chromeProvider,
-        'chrome-canary':     chromeProvider
+        'chrome-canary':     chromeProvider,
+        'edge-chromium':     edgeChromiumProvider
     }
 );

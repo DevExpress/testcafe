@@ -13,6 +13,7 @@ const MIN_AVAILABLE_DIMENSION = 50;
 export default {
     ...dedicatedProviderBase,
 
+
     _getConfig (name) {
         return getConfig(name);
     },
@@ -22,6 +23,8 @@ export default {
     },
 
     async openBrowser (browserId, pageUrl, configString, allowMultipleWindows) {
+        debugger;
+
         const parsedPageUrl = parseUrl(pageUrl);
         const runtimeInfo   = await getRuntimeInfo(parsedPageUrl.hostname, configString, allowMultipleWindows);
 

@@ -767,11 +767,25 @@ gulp.step('test-functional-local-ie-run', () => {
     return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localBrowsersIE);
 });
 
-gulp.task('test-functional-local-ie', gulp.series('prepare-tests', 'test-functional-local-ie-run'));
+gulp.task('test-functional-local-ie', gulp.series('test-functional-local-ie-run'));
 
 gulp.step('test-functional-local-chrome-firefox-run', () => {
     return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localBrowsersChromeFirefox);
 });
+
+
+gulp.step('test-functional-local-edge-chromium-run', () => {
+    return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localEdgeChromium);
+});
+
+gulp.task('test-functional-local-edge-chromium', gulp.series('test-functional-local-edge-chromium-run'));
+
+
+
+
+
+
+
 
 gulp.task('test-functional-local-chrome-firefox', gulp.series('prepare-tests', 'test-functional-local-chrome-firefox-run'));
 
@@ -833,6 +847,7 @@ function isDockerMachineRunning (machineName) {
         return childProcess.execSync('docker-machine status ' + machineName).toString().match(/Running/);
     }
     catch (e) {
+        return false;
         return false;
     }
 }

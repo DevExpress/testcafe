@@ -137,7 +137,7 @@ function closeLocalBrowsers () {
 before(function () {
     const mocha = this;
 
-    mocha.timeout(60000);
+    mocha.timeout(6000000);
 
     const { devMode, retryTestPages } = config;
 

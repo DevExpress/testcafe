@@ -16,6 +16,7 @@ const testingEnvironmentNames = {
     localBrowsersChromeFirefox:  'local-browsers-chrome-firefox',
     localBrowsers:               'local-browsers',
     localChrome:                 'local-chrome',
+    localEdgeChromium:           'local-edge-chromium',
     localHeadlessChrome:         'local-headless-chrome',
     localHeadlessFirefox:        'local-headless-firefox',
     remote:                      'remote',
@@ -103,6 +104,18 @@ testingEnvironments[testingEnvironmentNames.localChrome] = {
             platform:    'Windows 10',
             browserName: 'chrome',
             alias:       'chrome'
+        }
+    ]
+};
+
+testingEnvironments[testingEnvironmentNames.localEdgeChromium] = {
+    isLocalBrowsers: true,
+
+    browsers: [
+        {
+            platform:    'Windows 10',
+            browserName: 'edge-chromium',
+            alias:       'edge-chromium'
         }
     ]
 };
