@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.7.1 (2019-12-19)
+
+### Bug Fixes
+
+* Status bar has been redesigned to fit the debug panel into small screens and emulated mobile devices ([#2510](https://github.com/DevExpress/testcafe/issues/2510))
+* Added timestamp to requests logged with `RequestLogger` ([#3738](https://github.com/DevExpress/testcafe/issues/3738))
+* `t.typeText` now fires the `beforeInput` event ([#4486](https://github.com/DevExpress/testcafe/issues/4486))
+* The `t.hover` action can now be detected with the jQuery `:hover` pseudoselector ([#4493](https://github.com/DevExpress/testcafe/issues/4493))
+* `Object.assign` now merges `Symbol` properties on tested pages correctly ([testcafe-hammerhead/#2189](https://github.com/DevExpress/testcafe-hammerhead/issues/2189))
+
 ## v1.7.0 (2019-11-21)
 
 ### Enhancements
