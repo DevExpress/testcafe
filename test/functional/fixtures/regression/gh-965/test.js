@@ -5,7 +5,7 @@ describe('[Regression](GH-965)', function () {
     describe('Should throw an error if test page url protocol matches /http.*/', function () {
         it('in navigateTo', function () {
             return runTests('testcafe-fixtures/navigate-to-test.js', 'navigateTo', {
-                only:       'chrome',
+                only:       'edge-chromium',
                 shouldFail: true
             })
                 .catch(function (errs) {
@@ -16,7 +16,7 @@ describe('[Regression](GH-965)', function () {
 
         it('in test page', function () {
             return runTests('testcafe-fixtures/test-page.js', 'test.page', {
-                only:       'chrome',
+                only:       'edge-chromium',
                 shouldFail: true
             })
                 .catch(function (err) {

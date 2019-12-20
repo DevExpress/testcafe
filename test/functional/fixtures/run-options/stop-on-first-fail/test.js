@@ -20,7 +20,7 @@ describe('Stop test task on first failed test', () => {
         return runTests('./testcafe-fixtures/stop-on-first-fail-test.js', void 0, {
             shouldFail:      true,
             stopOnFirstFail: true,
-            only:            'chrome'
+            only:            'edge-chromium'
         }).catch(() => {
             expect(getTestRunCount()).eql(2);
             expect(testReport.failedCount).eql(1);

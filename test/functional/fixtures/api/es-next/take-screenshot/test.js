@@ -47,7 +47,7 @@ const getReporter = function (scope) {
     };
 };
 
-describe.only('[API] t.takeScreenshot()', function () {
+describe('[API] t.takeScreenshot()', function () {
     afterEach(assertionHelper.removeScreenshotDir);
 
     if (config.useLocalBrowsers && config.currentEnvironmentName !== config.testingEnvironmentNames.localBrowsersIE) {
@@ -184,7 +184,7 @@ describe.only('[API] t.takeScreenshot()', function () {
             });
         });
 
-        it.only('Should crop screenshots to a page viewport area', function () {
+        it('Should crop screenshots to a page viewport area', function () {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Should crop screenshots',
                 { setScreenshotPath: true, only: 'chrome' })
                 .then(function () {

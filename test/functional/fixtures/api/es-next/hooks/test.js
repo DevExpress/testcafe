@@ -7,11 +7,11 @@ describe('[API] fixture.beforeEach/fixture.afterEach hooks', () => {
     it('Should run hooks for all tests', () => {
         let test1Err = null;
 
-        return runTests('./testcafe-fixtures/run-all.js', 'Test1', { shouldFail: true, only: 'chrome' })
+        return runTests('./testcafe-fixtures/run-all.js', 'Test1', { shouldFail: true, only: 'edge-chromium' })
             .catch(errs => {
                 test1Err = errs[0];
 
-                return runTests('./testcafe-fixtures/run-all.js', 'Test2', { shouldFail: true, only: 'chrome' });
+                return runTests('./testcafe-fixtures/run-all.js', 'Test2', { shouldFail: true, only: 'edge-chromium' });
             })
             .catch(errs => {
                 expect(errs[0]).eql(test1Err);
@@ -24,7 +24,7 @@ describe('[API] fixture.beforeEach/fixture.afterEach hooks', () => {
     });
 
     it('Should not run test and afterEach if fails in beforeEach', () => {
-        return runTests('./testcafe-fixtures/fail-in-before-each.js', 'Test', { shouldFail: true, only: 'chrome' })
+        return runTests('./testcafe-fixtures/fail-in-before-each.js', 'Test', { shouldFail: true, only: 'edge-chromium' })
             .catch(errs => {
                 expect(errs[0].indexOf(
                     '- Error in fixture.beforeEach hook - ' +
@@ -35,7 +35,7 @@ describe('[API] fixture.beforeEach/fixture.afterEach hooks', () => {
     });
 
     it('Should run test and afterEach and beforeEach if test fails', () => {
-        return runTests('./testcafe-fixtures/fail-in-test.js', 'Test', { shouldFail: true, only: 'chrome' })
+        return runTests('./testcafe-fixtures/fail-in-test.js', 'Test', { shouldFail: true, only: 'edge-chromium' })
             .catch(errs => {
                 expect(errs[0].indexOf(
                     'A JavaScript error occurred on "http://localhost:3000/fixtures/api/es-next/hooks/pages/index.html"')).eql(0);
@@ -52,7 +52,7 @@ describe('[API] fixture.beforeEach/fixture.afterEach hooks', () => {
 
 describe('[API] test.before/test.after hooks', () => {
     it('Should run hooks before and after test and override fixture hooks', () => {
-        return runTests('./testcafe-fixtures/run-all.js', 'Test3', { shouldFail: true, only: 'chrome' })
+        return runTests('./testcafe-fixtures/run-all.js', 'Test3', { shouldFail: true, only: 'edge-chromium' })
             .catch(errs => {
                 expect(errs[0]).contains('- Error in test.after hook - ');
                 expect(errs[0]).contains('[testBefore][test][testAfter]');
@@ -99,7 +99,7 @@ describe('[API] fixture.before/fixture.after hooks', () => {
     it('Should keep sequential reports with long executing hooks', () => {
         return runTests('./testcafe-fixtures/fixture-hooks-seq.js', null, {
             shouldFail: true,
-            only:       'chrome'
+            only:       'edge-chromium'
         }).catch(errs => {
             expect(errs[0]).contains('$$test1$$');
             expect(errs[1]).contains('$$afterhook1$$');
@@ -114,7 +114,7 @@ describe('[API] fixture.before/fixture.after hooks', () => {
             shouldFail: true,
             only:       'chrome, firefox'
         }).catch(errs => {
-            const allErrors = config.currentEnvironment.browsers.length === 1 ? errs : errs['chrome'].concat(errs['firefox']);
+            const allErrors = config.currentEnvironment.browsers.length === 1 ? errs : errs['edge-chromium'].concat(errs['firefox']);
 
             expect(allErrors.length).eql(config.currentEnvironment.browsers.length * 3);
 

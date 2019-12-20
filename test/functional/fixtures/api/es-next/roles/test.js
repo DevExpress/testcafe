@@ -41,11 +41,11 @@ if (config.currentEnvironmentName !== config.testingEnvironmentNames.osXDesktopA
 
         describe('Should allways reload role`s login url', () => {
             it('Hash-based navigation', () => {
-                return runTests('./testcafe-fixtures/hash-based-navigation-test.js', null, { only: 'chrome' });
+                return runTests('./testcafe-fixtures/hash-based-navigation-test.js', null, { only: 'edge-chromium' });
             });
 
             it('Test run url and roles`s login url are same', () => {
-                return runTests('./testcafe-fixtures/same-url-test.js', null, { only: 'chrome' });
+                return runTests('./testcafe-fixtures/same-url-test.js', null, { only: 'edge-chromium' });
             });
         });
 

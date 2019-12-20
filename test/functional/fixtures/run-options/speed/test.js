@@ -1,15 +1,15 @@
 describe('[API] Speed', function () {
     it('Should not add an additional delay after action by default', function () {
-        return runTests('./testcafe-fixtures/speed-test.js', 'Default speed', { only: 'chrome' });
+        return runTests('./testcafe-fixtures/speed-test.js', 'Default speed', { only: 'edge-chromium' });
     });
 
     it('Should add an additional delay after action if speed is decreased', function () {
-        return runTests('./testcafe-fixtures/speed-test.js', 'Decrease speed', { only: 'chrome', speed: 0.4 });
+        return runTests('./testcafe-fixtures/speed-test.js', 'Decrease speed', { only: 'edge-chromium', speed: 0.4 });
     });
 
     it('Should add an additional delay after action if speed is decreased in iframe', function () {
         return runTests('./testcafe-fixtures/speed-test.js', 'Decrease speed in iframe', {
-            only:            'chrome',
+            only:            'edge-chromium',
             speed:           0.4,
             selectorTimeout: 10000
         });

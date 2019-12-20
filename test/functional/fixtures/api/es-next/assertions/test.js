@@ -4,7 +4,7 @@ describe('[API] Assertions', function () {
     it('Should perform .eql() assertion', function () {
         return runTests('./testcafe-fixtures/assertions-test.js', '.eql() assertion', {
             shouldFail: true,
-            only:       'chrome'
+            only:       'edge-chromium'
         })
             .catch(function (errs) {
                 expect(errs[0]).contains("AssertionError: testMessage: expected 'hey' to deeply equal 'yo'");
@@ -15,7 +15,7 @@ describe('[API] Assertions', function () {
     it('Should perform .notEql() assertion', function () {
         return runTests('./testcafe-fixtures/assertions-test.js', '.notEql() assertion', {
             shouldFail: true,
-            only:       'chrome'
+            only:       'edge-chromium'
         })
             .catch(function (errs) {
                 expect(errs[0]).contains('AssertionError: expected 2 to not deeply equal 2');
@@ -26,7 +26,7 @@ describe('[API] Assertions', function () {
     it('Should perform .ok() assertion', function () {
         return runTests('./testcafe-fixtures/assertions-test.js', '.ok() assertion', {
             shouldFail: true,
-            only:       'chrome'
+            only:       'edge-chromium'
         })
             .catch(function (errs) {
                 expect(errs[0]).contains('AssertionError: expected false to be truthy');
@@ -37,7 +37,7 @@ describe('[API] Assertions', function () {
     it('Should perform .notOk() assertion', function () {
         return runTests('./testcafe-fixtures/assertions-test.js', '.notOk() assertion', {
             shouldFail: true,
-            only:       'chrome'
+            only:       'edge-chromium'
         })
             .catch(function (errs) {
                 expect(errs[0]).contains('AssertionError: expected 1 to be falsy ');
@@ -48,7 +48,7 @@ describe('[API] Assertions', function () {
     it('Should perform .contains() assertion', function () {
         return runTests('./testcafe-fixtures/assertions-test.js', '.contains() assertion', {
             shouldFail: true,
-            only:       'chrome'
+            only:       'edge-chromium'
         })
             .catch(function (errs) {
                 expect(errs[0]).contains('AssertionError: expected [ 1, 2, 3 ] to include 4');
@@ -59,7 +59,7 @@ describe('[API] Assertions', function () {
     it('Should perform .notContains() assertion', function () {
         return runTests('./testcafe-fixtures/assertions-test.js', '.notContains() assertion', {
             shouldFail: true,
-            only:       'chrome'
+            only:       'edge-chromium'
         })
             .catch(function (errs) {
                 expect(errs[0]).contains("AssertionError: expected 'answer42' to not include '42'");
@@ -70,7 +70,7 @@ describe('[API] Assertions', function () {
     it('Should perform .typeOf() assertion', function () {
         return runTests('./testcafe-fixtures/assertions-test.js', '.typeOf() assertion', {
             shouldFail: true,
-            only:       'chrome'
+            only:       'edge-chromium'
         })
             .catch(function (errs) {
                 expect(errs[0]).contains('AssertionError: expected 42 to be a function');
@@ -81,7 +81,7 @@ describe('[API] Assertions', function () {
     it('Should perform .notTypeOf() assertion', function () {
         return runTests('./testcafe-fixtures/assertions-test.js', '.notTypeOf() assertion', {
             shouldFail: true,
-            only:       'chrome'
+            only:       'edge-chromium'
         })
             .catch(function (errs) {
                 expect(errs[0]).contains('AssertionError: expected 42 not to be a number');
@@ -92,7 +92,7 @@ describe('[API] Assertions', function () {
     it('Should perform .gt() assertion', function () {
         return runTests('./testcafe-fixtures/assertions-test.js', '.gt() assertion', {
             shouldFail: true,
-            only:       'chrome'
+            only:       'edge-chromium'
         })
             .catch(function (errs) {
                 expect(errs[0]).contains('AssertionError: expected 42 to be above 42');
@@ -103,7 +103,7 @@ describe('[API] Assertions', function () {
     it('Should perform .gte() assertion', function () {
         return runTests('./testcafe-fixtures/assertions-test.js', '.gte() assertion', {
             shouldFail: true,
-            only:       'chrome'
+            only:       'edge-chromium'
         })
             .catch(function (errs) {
                 expect(errs[0]).contains('AssertionError: expected 42 to be at least 53');
@@ -114,7 +114,7 @@ describe('[API] Assertions', function () {
     it('Should perform .lt() assertion', function () {
         return runTests('./testcafe-fixtures/assertions-test.js', '.lt() assertion', {
             shouldFail: true,
-            only:       'chrome'
+            only:       'edge-chromium'
         })
             .catch(function (errs) {
                 expect(errs[0]).contains('AssertionError: expected 42 to be below 42');
@@ -125,7 +125,7 @@ describe('[API] Assertions', function () {
     it('Should perform .lte() assertion', function () {
         return runTests('./testcafe-fixtures/assertions-test.js', '.lte() assertion', {
             shouldFail: true,
-            only:       'chrome'
+            only:       'edge-chromium'
         })
             .catch(function (errs) {
                 expect(errs[0]).contains('AssertionError: expected 42 to be at most 12');
@@ -136,7 +136,7 @@ describe('[API] Assertions', function () {
     it('Should perform .within() assertion', function () {
         return runTests('./testcafe-fixtures/assertions-test.js', '.within() assertion', {
             shouldFail: true,
-            only:       'chrome'
+            only:       'edge-chromium'
         })
             .catch(function (errs) {
                 expect(errs[0]).contains('AssertionError: expected 4.5 to be within 4.6..7');
@@ -147,7 +147,7 @@ describe('[API] Assertions', function () {
     it('Should perform .notWithin() assertion', function () {
         return runTests('./testcafe-fixtures/assertions-test.js', '.notWithin() assertion', {
             shouldFail: true,
-            only:       'chrome'
+            only:       'edge-chromium'
         })
             .catch(function (errs) {
                 expect(errs[0]).contains('AssertionError: expected 2.3 to not be within 2..3');
@@ -158,7 +158,7 @@ describe('[API] Assertions', function () {
     it('Should perform .match() assertion', function () {
         return runTests('./testcafe-fixtures/assertions-test.js', '.match() assertion', {
             shouldFail: true,
-            only:       'chrome'
+            only:       'edge-chromium'
         })
             .catch(function (errs) {
                 expect(errs[0]).contains("AssertionError: expected 'yo' to match /[x,z]o/");
@@ -169,7 +169,7 @@ describe('[API] Assertions', function () {
     it('Should perform .notMatch() assertion', function () {
         return runTests('./testcafe-fixtures/assertions-test.js', '.notMatch() assertion', {
             shouldFail: true,
-            only:       'chrome'
+            only:       'edge-chromium'
         })
             .catch(function (errs) {
                 expect(errs[0]).contains("AssertionError: expected '42 hey' not to match /\\d+ hey/");
@@ -178,14 +178,14 @@ describe('[API] Assertions', function () {
     });
 
     it('Should retry assertion for selector results', function () {
-        return runTests('./testcafe-fixtures/assertions-test.js', 'Selector result assertion', { only: 'chrome' });
+        return runTests('./testcafe-fixtures/assertions-test.js', 'Selector result assertion', { only: 'edge-chromium' });
     });
 
     it('Should raise error assertion for selector results assertion on timeout', function () {
         return runTests('./testcafe-fixtures/assertions-test.js', 'Selector result assertion timeout', {
             shouldFail:       true,
             assertionTimeout: 20,
-            only:             'chrome'
+            only:             'edge-chromium'
         })
             .catch(function (errs) {
                 expect(errs[0]).contains("AssertionError: expected 'none' to deeply equal 'left'");
@@ -196,7 +196,7 @@ describe('[API] Assertions', function () {
     it('Should raise error when expecting an unawaited Promise that cannot be retried', () => {
         return runTests('./testcafe-fixtures/assertions-test.js', 'Unawaited Promise assertion', {
             shouldFail: true,
-            only:       'chrome'
+            only:       'edge-chromium'
         })
             .catch(function (errs) {
                 expect(errs[0]).contains(`Attempted to run assertions on a Promise object. Did you forget to await it? If not, pass "{ allowUnawaitedPromise: true }" to the assertion options.`);
@@ -204,13 +204,13 @@ describe('[API] Assertions', function () {
     });
 
     it('Should allow an unawaited Promise with override option', function () {
-        return runTests('./testcafe-fixtures/assertions-test.js', 'Unawaited Promise assertion override', { only: 'chrome' });
+        return runTests('./testcafe-fixtures/assertions-test.js', 'Unawaited Promise assertion override', { only: 'edge-chromium' });
     });
 
     it('Should raise error if `await` is missing', () => {
         return runTests('./testcafe-fixtures/assertions-test.js', 'Missing await', {
             shouldFail: true,
-            only:       'chrome'
+            only:       'edge-chromium'
         })
             .catch(function (errs) {
                 expect(errs[1]).contains('A call to an async function is not awaited.');
@@ -221,7 +221,7 @@ describe('[API] Assertions', function () {
     it('Should raise error if "timeout" option is not a number', () => {
         return runTests('./testcafe-fixtures/assertions-test.js', '"timeout" is not a number', {
             shouldFail: true,
-            only:       'chrome'
+            only:       'edge-chromium'
         })
             .catch(function (errs) {
                 expect(errs[0]).contains('The "timeout" option is expected to be a positive integer, but it was string.');
@@ -231,18 +231,18 @@ describe('[API] Assertions', function () {
 
     it('Should provide "timeout" option', function () {
         return runTests('./testcafe-fixtures/assertions-test.js', '"timeout" option', {
-            only:             'chrome',
+            only:             'edge-chromium',
             assertionTimeout: 0
         });
     });
 
     it('Should retry assertion for ClientFunction results', function () {
-        return runTests('./testcafe-fixtures/assertions-test.js', 'ClientFunction result assertion', { only: 'chrome' });
+        return runTests('./testcafe-fixtures/assertions-test.js', 'ClientFunction result assertion', { only: 'edge-chromium' });
     });
 
     it('Should raise an error if assertion was called without method', () => {
         return runTests('./testcafe-fixtures/assertions-test.js', 'Assertion without method call',
-            { shouldFail: true, only: 'chrome' })
+            { shouldFail: true, only: 'edge-chromium' })
             .catch(errs => {
                 expect(errs.length).eql(1);
                 expect(errs[0]).to.contains('An assertion method is not specified.');

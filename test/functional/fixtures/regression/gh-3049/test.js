@@ -2,7 +2,7 @@ const path           = require('path');
 const createTestCafe = require('../../../../../lib');
 const config         = require('../../../config.js');
 
-const isLocalChrome = config.useLocalBrowsers && config.browsers.some(browser => browser.alias.indexOf('chrome') > -1);
+const isLocalChrome = config.useLocalBrowsers && config.browsers.some(browser => browser.alias.indexOf('edge-chromium') > -1);
 
 if (isLocalChrome) {
     describe('[Regression](GH-3049) - Should increase small browser window', function () {

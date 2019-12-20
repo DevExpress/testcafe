@@ -3,11 +3,11 @@ const { expect } = require('chai');
 describe('Request Hooks', () => {
     describe('RequestMock', () => {
         it('Basic', () => {
-            return runTests('./testcafe-fixtures/request-mock/basic.js', 'Basic', { only: 'chrome' });
+            return runTests('./testcafe-fixtures/request-mock/basic.js', 'Basic', { only: 'edge-chromium' });
         });
 
         it('Request failed the CORS validation', () => {
-            return runTests('./testcafe-fixtures/request-mock/failed-cors-validation.js', 'Failed CORS validation', { only: 'chrome' })
+            return runTests('./testcafe-fixtures/request-mock/failed-cors-validation.js', 'Failed CORS validation', { only: 'edge-chromium' })
                 .then(() => {
                     expect(testReport.warnings).eql([
                         'RequestMock: CORS validation failed for a request specified as { url: "http://dummy-url.com/get" }'
@@ -18,11 +18,11 @@ describe('Request Hooks', () => {
 
     describe('RequestLogger', () => {
         it('API', () => {
-            return runTests('./testcafe-fixtures/request-logger/api.js', 'API', { only: 'chrome' });
+            return runTests('./testcafe-fixtures/request-logger/api.js', 'API', { only: 'edge-chromium' });
         });
 
         it('Log options', () => {
-            return runTests('./testcafe-fixtures/request-logger/log-options.js', 'Log options', { only: 'chrome' });
+            return runTests('./testcafe-fixtures/request-logger/log-options.js', 'Log options', { only: 'edge-chromium' });
         });
 
         it('Multi-browser', () => {
@@ -32,7 +32,7 @@ describe('Request Hooks', () => {
 
     describe('API', () => {
         it('Add/remove request hooks', () => {
-            return runTests('./testcafe-fixtures/api/add-remove-request-hook.js', 'Test', { only: 'chrome' });
+            return runTests('./testcafe-fixtures/api/add-remove-request-hook.js', 'Test', { only: 'edge-chromium' });
         });
 
         it('Conditional adding', () => {
@@ -40,7 +40,7 @@ describe('Request Hooks', () => {
         });
 
         it('Should handle errors inside the overridden methods', () => {
-            return runTests('./testcafe-fixtures/api/handle-errors.js', null, { only: 'chrome', shouldFail: true })
+            return runTests('./testcafe-fixtures/api/handle-errors.js', null, { only: 'edge-chromium', shouldFail: true })
                 .catch(() => {
                     expect(testReport.errs.length).eql(5);
                     expect(testReport.errs[0]).contains('You should implement the "onRequest" method in the "Hook1" class.');
