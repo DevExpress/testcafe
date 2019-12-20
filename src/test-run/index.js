@@ -244,7 +244,7 @@ export default class TestRun extends AsyncEventEmitter {
             pageLoadTimeout:              this.pageLoadTimeout,
             childWindowReadyTimeout:      CHILD_WINDOW_READY_TIMEOUT,
             skipJsErrors:                 this.opts.skipJsErrors,
-            retryTestPages:               !!this.opts.retryTestPages,
+            retryTestPages:               this.opts.retryTestPages,
             speed:                        this.speed,
             dialogHandler:                JSON.stringify(this.activeDialogHandler)
         });
@@ -433,7 +433,9 @@ export default class TestRun extends AsyncEventEmitter {
     async _enqueueBrowserConsoleMessagesCommand (command, callsite) {
         await this._enqueueCommand(command, callsite);
 
-        return this.consoleMessages.getCopy();
+        const consoleMessageCopy = this.consoleMessages.getCopy();
+
+        return consoleMessageCopy[this.browserConnection.activePageId];
     }
 
     async _enqueueSetBreakpointCommand (callsite, error) {

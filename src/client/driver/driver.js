@@ -140,6 +140,8 @@ export default class Driver {
 
         this.statusBar = null;
 
+        this.pageId = this._getCurrentPageId();
+
         if (options.retryTestPages)
             browser.enableRetryingTestPages();
 
@@ -178,6 +180,13 @@ export default class Driver {
 
     set consoleMessages (messages) {
         return this.contextStorage.setItem(CONSOLE_MESSAGES, messages ? messages.getCopy() : null);
+    }
+
+    _getCurrentPageId () {
+        const currentUrl     = window.location.toString();
+        const parsedProxyUrl = hammerhead.utils.url.parseProxyUrl(currentUrl);
+
+        return parsedProxyUrl && parsedProxyUrl.pageId || null;
     }
 
     // Error handling
@@ -253,7 +262,7 @@ export default class Driver {
     _onConsoleMessage ({ meth, line }) {
         const messages = this.consoleMessages;
 
-        messages.addMessage(meth, line);
+        messages.addMessage(meth, line, this.pageId);
 
         this.consoleMessages = messages;
     }
@@ -864,13 +873,6 @@ export default class Driver {
             });
     }
 
-    _getCurrentPageId () {
-        const currentUrl     = window.location.toString();
-        const parsedProxyUrl = hammerhead.utils.url.parseProxyUrl(currentUrl);
-
-        return parsedProxyUrl.pageId;
-    }
-
     // API
     setCustomCommandHandlers (command, handler, executeInTopWindowOnly) {
         this.customCommandHandlers[command] = {
@@ -944,15 +946,13 @@ export default class Driver {
     }
 
     _getDriverRole () {
-        const currentPageId = this._getCurrentPageId();
-
-        if (!currentPageId)
+        if (!this.pageId)
             return Promise.resolve(DriverRole.master);
 
         return browser
             .getActivePageId(this.browserActivePageId, hammerhead.createNativeXHR)
             .then(({ activePageId }) => {
-                return activePageId === currentPageId ?
+                return activePageId === this.pageId ?
                     DriverRole.master :
                     DriverRole.replica;
             });

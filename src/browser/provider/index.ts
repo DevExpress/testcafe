@@ -150,7 +150,7 @@ export default class BrowserProvider {
             this.localBrowsersInfo[browserId].windowDescriptor = await browserTools.findWindow(browserId);
     }
 
-    private async _ensureBrowserWindowParameters (browserId: string): Promise<void> {
+    private async _ensureBrowserWindowParameters (browserId: string, allowMultipleWindows: boolean): Promise<void> {
         await this._ensureBrowserWindowDescriptor(browserId);
 
         if (OS.win && !this._getResizeCorrections(browserId))
@@ -158,7 +158,8 @@ export default class BrowserProvider {
         else if (OS.mac && !this._getMaxScreenSize(browserId))
             await this._calculateMacSizeLimits(browserId);
 
-        await this._calculatePageId(browserId);
+        if (allowMultipleWindows)
+            await this._calculatePageId(browserId);
     }
 
     private async _closeLocalBrowser (browserId: string): Promise<void> {
@@ -252,7 +253,7 @@ export default class BrowserProvider {
         await this.plugin.openBrowser(browserId, pageUrl, browserName, allowMultipleWindows);
 
         if (await this._canUseDefaultWindowActions(browserId))
-            await this._ensureBrowserWindowParameters(browserId);
+            await this._ensureBrowserWindowParameters(browserId, allowMultipleWindows);
     }
 
     public async closeBrowser (browserId: string): Promise<void> {
