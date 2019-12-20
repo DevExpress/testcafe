@@ -12,7 +12,7 @@ import getFilterFn from '../utils/get-filter-fn';
 import SCREENSHOT_OPTION_NAMES from '../configuration/screenshot-option-names';
 import RUN_OPTION_NAMES from '../configuration/run-option-names';
 import { Dictionary, ReporterOption, RunnerRunOptions } from '../configuration/interfaces';
-import * as ALLOW_MULTIPLE_WINDOWS_OPTION from '../configuration/allow-multiple-windows-option';
+
 
 const REMOTE_ALIAS_RE = /^remote(?::(\d*))?$/;
 
@@ -58,18 +58,20 @@ interface CommandLineOptions {
 }
 
 export default class CLIArgumentParser {
-    private program: Command;
+    private readonly program: Command;
+    private readonly experimental: Command;
     private cwd: string;
     private remoteCount: number;
     public opts: CommandLineOptions;
     public args: string[];
 
     public constructor (cwd: string) {
-        this.program     = new Command('testcafe');
-        this.cwd         = cwd || process.cwd();
-        this.remoteCount = 0;
-        this.opts        = {};
-        this.args        = [];
+        this.program      = new Command('testcafe');
+        this.experimental = new Command('testcafe-experimental');
+        this.cwd          = cwd || process.cwd();
+        this.remoteCount  = 0;
+        this.opts         = {};
+        this.args         = [];
 
         this._describeProgram();
     }
@@ -134,14 +136,16 @@ export default class CLIArgumentParser {
             .option('--disable-page-reloads', 'disable page reloads between tests')
             .option('--disable-screenshots', 'disable screenshots')
             .option('--screenshots-full-page', 'enable full-page screenshots')
-            .option(ALLOW_MULTIPLE_WINDOWS_OPTION.FLAGS, ALLOW_MULTIPLE_WINDOWS_OPTION.DESCRIPTION)
 
             // NOTE: these options will be handled by chalk internally
             .option('--color', 'force colors in command line')
             .option('--no-color', 'disable colors in command line');
 
-        // NOTE: temporary hide '--allow-multiple-windows' option from --help command
-        ALLOW_MULTIPLE_WINDOWS_OPTION.removeOptionDescriptionFromHelp(this.program);
+        // NOTE: temporary hide experimental options from --help command
+        this.experimental
+            .allowUnknownOption()
+            .option('-m, --allow-multiple-windows', 'run TestCafe in the multiple windows mode')
+            .option('--experimental-compiler-service', 'run compiler in a separate process');
     }
 
     private _parseList (val: string): string[] {
@@ -297,14 +301,15 @@ export default class CLIArgumentParser {
 
     public async parse (argv: string[]): Promise<void> {
         this.program.parse(argv);
+        this.experimental.parse(argv);
 
         this.args = this.program.args;
 
-        this.opts = this.program.opts();
+        this.opts = { ...this.experimental.opts(), ...this.program.opts() };
 
         this._parseListBrowsers();
 
-        // NOTE: the '-list-browsers' option only lists browsers and immediately exits the app.
+        // NOTE: the '--list-browsers' option only lists browsers and immediately exits the app.
         // Therefore, we don't need to process other arguments.
         if (this.opts.listBrowsers)
             return;

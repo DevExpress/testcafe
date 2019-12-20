@@ -1,7 +1,11 @@
 const expect         = require('chai').expect;
+const proxyquire     = require('proxyquire');
+const sinon          = require('sinon');
 const resolve        = require('path').resolve;
 const assertAPIError = require('./helpers/assert-runtime-error').assertAPIError;
 const compile        = require('./helpers/compile');
+const OPTION_NAMES   = require('../../lib/configuration/option-names');
+
 
 describe('API', function () {
     this.timeout(20000);
@@ -1618,6 +1622,70 @@ describe('API', function () {
                         });
                     });
             });
+        });
+    });
+
+    describe('createTestCafe', () => {
+        it('Should accept configuration as an arguments array', async () => {
+            const TestCafe = sinon.stub().returns({});
+
+            const createTestCafe = proxyquire('../..', {
+                './testcafe':      TestCafe,
+                'async-exit-hook': () => {},
+
+                'endpoint-utils': {
+                    isMyHostname: sinon.stub().resolves(true),
+                    isFreePort:   sinon.stub().resolves(true)
+                }
+            });
+
+            await createTestCafe('my-host', 1337, 1338, { test: 42 }, true, true);
+
+            const configuration = TestCafe.firstCall.args[0];
+
+            expect(configuration.getOption(OPTION_NAMES.hostname)).equal('my-host');
+            expect(configuration.getOption(OPTION_NAMES.port1)).equal(1337);
+            expect(configuration.getOption(OPTION_NAMES.port2)).equal(1338);
+            expect(configuration.getOption(OPTION_NAMES.ssl)).deep.equal({ test: 42 });
+            expect(configuration.getOption(OPTION_NAMES.developmentMode)).be.true;
+            expect(configuration.getOption(OPTION_NAMES.retryTestPages)).be.true;
+
+        });
+
+        it('Should accept configuration as an object', async () => {
+            const TestCafe = sinon.stub().returns({});
+
+            const createTestCafe = proxyquire('../..', {
+                './testcafe':      TestCafe,
+                'async-exit-hook': () => {},
+
+                'endpoint-utils': {
+                    isMyHostname: sinon.stub().resolves(true),
+                    isFreePort:   sinon.stub().resolves(true)
+                }
+            });
+
+            await createTestCafe({
+                hostname: 'my-host',
+                port1:    1337,
+                port2:    1338,
+
+                ssl: {
+                    test: 42
+                },
+
+                developmentMode: true,
+                retryTestPages:  true
+            });
+
+            const configuration = TestCafe.firstCall.args[0];
+
+            expect(configuration.getOption(OPTION_NAMES.hostname)).equal('my-host');
+            expect(configuration.getOption(OPTION_NAMES.port1)).equal(1337);
+            expect(configuration.getOption(OPTION_NAMES.port2)).equal(1338);
+            expect(configuration.getOption(OPTION_NAMES.ssl)).deep.equal({ test: 42 });
+            expect(configuration.getOption(OPTION_NAMES.developmentMode)).be.true;
+            expect(configuration.getOption(OPTION_NAMES.retryTestPages)).be.true;
         });
     });
 });
