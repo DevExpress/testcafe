@@ -25,6 +25,8 @@ matrix:
   - node_js: "10"
     env: GULP_TASK="test-functional-local-legacy"
   - node_js: "10"
+    env: GULP_TASK="test-functional-local-compiler-service"
+  - node_js: "10"
     env: GULP_TASK="test-functional-local-multiple-windows"
     services:
       - xvfb
