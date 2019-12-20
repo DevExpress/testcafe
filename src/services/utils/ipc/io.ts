@@ -63,7 +63,7 @@ export class AsyncWriter {
         if (this.stream.write(buffer))
             return Promise.resolve();
 
-        return new Promise(r => this.stream.on('drain', r));
+        return new Promise(r => this.stream.once('drain', r));
     }
 
     private _writeBuffers (buffers: Buffer[]): Promise<void> {
