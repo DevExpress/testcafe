@@ -74,17 +74,17 @@ if (config.useLocalBrowsers) {
         }
 
         before(function () {
-            browserProviderPool.addProvider('chrome', mockProviderPlugin);
+            browserProviderPool.addProvider('edge-chromium', mockProviderPlugin);
 
             return browserProviderPool
-                .getProvider('chrome')
+                .getProvider('edge-chromium')
                 .then(function (provider) {
                     mockProvider = provider;
                 });
         });
 
         after(function () {
-            browserProviderPool.addProvider('chrome', chromeBrowserProvider);
+            browserProviderPool.addProvider('edge-chromium', chromeBrowserProvider);
         });
 
         beforeEach(function () {
@@ -92,8 +92,8 @@ if (config.useLocalBrowsers) {
             mockProvider.plugin.idNameMap = {};
         });
 
-        it('Should report job results to the providers', function () {
-            return run(['chrome:id-1', 'chrome:id-2'], './testcafe-fixtures/index-test.js')
+        it.only('Should report job results to the providers', function () {
+            return run(['edge-chromium:id-1', 'edge-chromium:id-2'], './testcafe-fixtures/index-test.js')
                 .then(function () {
                     expect(mockProvider.plugin.state['id-1'].result).eql(mockProvider.plugin.JOB_RESULT.done);
                     expect(mockProvider.plugin.state['id-1'].data).eql({ total: 2, passed: 1 });
@@ -102,8 +102,8 @@ if (config.useLocalBrowsers) {
                 });
         });
 
-        it('Should report job error to the providers', function () {
-            return run(['chrome:failed-1', 'chrome:id-2'], './testcafe-fixtures/long-test.js')
+        it.only('Should report job error to the providers', function () {
+            return run(['edge-chromium:failed-1', 'edge-chromium:id-2'], './testcafe-fixtures/long-test.js')
                 .then(function () {
                     throw new Error('Promise rejection expected');
                 })
@@ -115,8 +115,8 @@ if (config.useLocalBrowsers) {
                 });
         });
 
-        it('Should report job cancellation to the providers', function () {
-            return run(['chrome:id-1', 'chrome:id-2'], './testcafe-fixtures/long-test.js')
+        it.only('Should report job cancellation to the providers', function () {
+            return run(['edge-chromium:id-1', 'edge-chromium:id-2'], './testcafe-fixtures/long-test.js')
                 .cancel()
                 .then(function () {
                     expect(mockProvider.plugin.state['id-1'].result).eql(mockProvider.plugin.JOB_RESULT.aborted);

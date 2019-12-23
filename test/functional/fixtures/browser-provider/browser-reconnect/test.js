@@ -52,14 +52,14 @@ function run (pathToTest, filter) {
 describe('Browser reconnect', function () {
     if (config.useLocalBrowsers) {
         it('Should restart browser when it does not respond', function () {
-            return run('./testcafe-fixtures/index-test.js', 'Should restart browser when it does not respond', { only: 'chrome' })
+            return run('./testcafe-fixtures/index-test.js', 'Should restart browser when it does not respond', { only: 'edge-chromium' })
                 .then(() => {
                     expect(errors.length).eql(0);
                 });
         });
 
         it('Should fail on 3 disconnects in one browser', function () {
-            return run('./testcafe-fixtures/index-test.js', 'Should fail on 3 disconnects in one browser', { only: 'chrome' })
+            return run('./testcafe-fixtures/index-test.js', 'Should fail on 3 disconnects in one browser', { only: 'edge-chromium' })
                 .then(() => {
                     throw new Error('Test should have failed but it succeeded');
                 })

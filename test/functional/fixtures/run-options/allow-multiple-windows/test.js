@@ -20,7 +20,7 @@ describe('Allow multiple windows', () => {
     });
 
     // TODO: Work in progress
-    it.skip('Switching to the parent window after the "window.close" method call', () => {
+    it('Switching to the parent window after the "window.close" method call', () => {
         return runTests('testcafe-fixtures/switching-to-parent/window-close-call.js', null, { allowMultipleWindows: true });
     });
 

@@ -127,7 +127,7 @@ describe('[API] t.takeScreenshot()', function () {
         it('Should validate path argument', function () {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Incorrect action path argument', {
                 shouldFail: true,
-                only:       'chrome'
+                only:       'edge-chromium'
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('The "path" argument is expected to be a non-empty string, but it was number.');
@@ -142,7 +142,7 @@ describe('[API] t.takeScreenshot()', function () {
         it('Should check the path argument for forbidden characters', function () {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Forbidden characters in the path argument', {
                 shouldFail: true,
-                only:       'chrome'
+                only:       'edge-chromium'
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('There are forbidden characters in the "path:with*forbidden|chars" screenshot path: ":" at index 4 "*" at index 9 "|" at index 19');
@@ -186,7 +186,7 @@ describe('[API] t.takeScreenshot()', function () {
 
         it('Should crop screenshots to a page viewport area', function () {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Should crop screenshots',
-                { setScreenshotPath: true, only: 'chrome' })
+                { setScreenshotPath: true, only: 'edge-chromium' })
                 .then(function () {
                     return assertionHelper.checkScreenshotsCropped(false, 'custom');
                 })
@@ -251,7 +251,7 @@ describe('[API] t.takeScreenshot()', function () {
                 {
                     setScreenshotPath:     true,
                     screenshotPathPattern: '${TEST}-${FILE_INDEX}',
-                    only:                  'chrome'
+                    only:                  'edge-chromium'
                 })
                 .then(() => {
                     expect(testReport.screenshotPath).eql(SCREENSHOTS_PATH);
@@ -271,7 +271,7 @@ describe('[API] t.takeScreenshot()', function () {
     else if (!config.useLocalBrowsers) {
         it('Should show a warning on an attempt to capture a screenshot for a remote browser', () => {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot',
-                { only: 'chrome', setScreenshotPath: true })
+                { only: 'edge-chromium', setScreenshotPath: true })
                 .then(() => {
                     expect(testReport.warnings).eql([
                         'The screenshot and window resize functionalities are not supported in a remote browser. ' +
@@ -321,7 +321,7 @@ describe('[API] t.takeElementScreenshot()', function () {
         it('Should validate selector argument', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Incorrect action selector argument', {
                 shouldFail: true,
-                only:       'chrome'
+                only:       'edge-chromium'
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains(
@@ -341,7 +341,7 @@ describe('[API] t.takeElementScreenshot()', function () {
         it('Should validate path argument', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Incorrect action path argument', {
                 shouldFail: true,
-                only:       'chrome'
+                only:       'edge-chromium'
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('The "path" argument is expected to be a non-empty string, but it was number.');
@@ -356,7 +356,7 @@ describe('[API] t.takeElementScreenshot()', function () {
         it('Should check the path argument for forbidden characters', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Forbidden characters in the path argument', {
                 shouldFail: true,
-                only:       'chrome'
+                only:       'edge-chromium'
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('There are forbidden characters in the "path:with*forbidden|chars" screenshot path: ":" at index 4 "*" at index 9 "|" at index 19');
@@ -440,7 +440,7 @@ describe('[API] t.takeElementScreenshot()', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Invalid dimensions', {
                 setScreenshotPath: true,
                 shouldFail:        true,
-                only:              'chrome'
+                only:              'edge-chromium'
             })
                 .catch(function (errs) {
                     const screenshotsCheckingOptions = { forError: false, screenshotsCount: 2, customPath: 'custom' };
@@ -459,7 +459,7 @@ describe('[API] t.takeElementScreenshot()', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Invisible element', {
                 setScreenshotPath: true,
                 shouldFail:        true,
-                only:              'chrome'
+                only:              'edge-chromium'
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('The element that matches the specified selector is not visible.');
@@ -475,7 +475,7 @@ describe('[API] t.takeElementScreenshot()', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Non-existent element', {
                 setScreenshotPath: true,
                 shouldFail:        true,
-                only:              'chrome'
+                only:              'edge-chromium'
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains(
@@ -494,7 +494,7 @@ describe('[API] t.takeElementScreenshot()', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Invalid scroll target', {
                 setScreenshotPath: true,
                 shouldFail:        true,
-                only:              'chrome'
+                only:              'edge-chromium'
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('Unable to scroll to the specified point because a point ' +
@@ -574,12 +574,14 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
-        it('Should remove screenshot mark from an element screenshot when the element is in bottom right corner', function () {
+        it.only('Should remove screenshot mark from an element screenshot when the element is in bottom right corner', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Bottom-right element',
                 { setScreenshotPath: true })
                 .then(function () {
                     function referenceImagePathGetter (screenshotPath) {
-                        const referenceImageName = screenshotPath.match(/chrome|firefox/i) ? 'element' : 'element-bottom-right';
+                        debugger;
+
+                        const referenceImageName = screenshotPath.match(/Microsoft Edge|firefox/i) ? 'element' : 'element-bottom-right';
 
                         return path.join(__dirname, `./data/${referenceImageName}.png`);
                     }
@@ -594,7 +596,7 @@ describe('[API] t.takeElementScreenshot()', function () {
     else if (!config.useLocalBrowsers) {
         it('Should show a warning on an attempt to capture an element screenshot for a remote browser', () => {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Element',
-                { only: 'chrome', setScreenshotPath: true })
+                { only: 'edge-chromium', setScreenshotPath: true })
                 .then(() => {
                     expect(testReport.warnings).eql([
                         'The screenshot and window resize functionalities are not supported in a remote browser. ' +

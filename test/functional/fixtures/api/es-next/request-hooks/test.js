@@ -52,11 +52,11 @@ describe('Request Hooks', () => {
         });
 
         it('Execution order', () => {
-            return runTests('./testcafe-fixtures/api/execution-order.js', null, { only: 'chrome' });
+            return runTests('./testcafe-fixtures/api/execution-order.js', null, { only: 'edge-chromium' });
         });
     });
 
     it("Test's request hooks should not override the fixture's request hooks (GH-4122)", () => {
-        return runTests('./testcafe-fixtures/i4122.js', null, { only: 'chrome' });
+        return runTests('./testcafe-fixtures/i4122.js', null, { only: 'edge-chromium' });
     });
 });

@@ -19,12 +19,12 @@ describe('Reporter', () => {
         process.stderr.write = stdoutWrite;
     });
 
-    it('Should support several different reporters for a test run', function () {
+    it.only('Should support several different reporters for a test run', function () {
         const stream1 = createSimpleTestStream();
         const stream2 = createSimpleTestStream();
 
         return runTests('testcafe-fixtures/index-test.js', 'Simple test', {
-            only:     ['chrome'],
+            only:     ['edge-chromium'],
             reporter: [
                 {
                     name:   'json',
@@ -37,10 +37,10 @@ describe('Reporter', () => {
             ]
         })
             .then(() => {
-                expect(stream1.data).to.contains('Chrome');
+                expect(stream1.data).to.contains('Microsoft Edge');
                 expect(stream1.data).to.contains('Reporter');
                 expect(stream1.data).to.contains('Simple test');
-                expect(stream2.data).to.contains('Chrome');
+                expect(stream2.data).to.contains('Microsoft Edge');
                 expect(stream2.data).to.contains('Reporter');
                 expect(stream2.data).to.contains('Simple test');
             });
@@ -50,7 +50,7 @@ describe('Reporter', () => {
         const stream = createAsyncTestStream();
 
         const runOpts = {
-            only:     ['chrome'],
+            only:     ['edge-chromium'],
             reporter: [
                 {
                     name:   'json',
@@ -69,7 +69,7 @@ describe('Reporter', () => {
         const stream = createAsyncTestStream({ shouldFail: true });
 
         const runOpts = {
-            only:     ['chrome'],
+            only:     ['edge-chromium'],
             reporter: [
                 {
                     name:   'json',
@@ -96,7 +96,7 @@ describe('Reporter', () => {
         });
 
         const runOpts = {
-            only:     ['chrome'],
+            only:     ['edge-chromium'],
             reporter: [
                 {
                     name:   'json',
@@ -125,7 +125,7 @@ describe('Reporter', () => {
         });
 
         const runOpts = {
-            only:     ['chrome'],
+            only:     ['edge-chromium'],
             reporter: [
                 {
                     name:   'json',
@@ -154,7 +154,7 @@ describe('Reporter', () => {
         });
 
         const runOpts = {
-            only:     ['chrome'],
+            only:     ['edge-chromium'],
             reporter: [
                 {
                     name:   'json',
@@ -175,7 +175,7 @@ describe('Reporter', () => {
         stream.isTTY = true;
 
         const runOpts = {
-            only:     ['chrome'],
+            only:     ['edge-chromium'],
             reporter: [
                 {
                     name:   'json',
@@ -195,7 +195,7 @@ describe('Reporter', () => {
         const reportFileName = 'list.report';
 
         return runTests('testcafe-fixtures/index-test.js', 'Simple test', {
-            only:     ['chrome'],
+            only:     ['edge-chromium'],
             reporter: [
                 {
                     name:   'list',
@@ -220,7 +220,7 @@ describe('Reporter', () => {
         const stream = createSyncTestStream();
 
         const runOpts = {
-            only: ['chrome'],
+            only: ['edge-chromium'],
 
             reporter: [
                 {
@@ -239,7 +239,7 @@ describe('Reporter', () => {
     describe('Test actions', () => {
         function generateRunOptions (log, options) {
             return {
-                only:               ['chrome'],
+                only:               ['edge-chromium'],
                 disableScreenshots: true,
                 reporter:           generateReporter(log, options)
             };
@@ -254,7 +254,7 @@ describe('Reporter', () => {
                         {
                             name:    'click',
                             action:  'start',
-                            browser: 'chrome',
+                            browser: 'edge-chromium',
                             test:    {
                                 name:  'Simple command test',
                                 phase: 'inTest'

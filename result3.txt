@@ -1,0 +1,128 @@
+[[90m18:50:54[39m] Using gulpfile D:\Projects\testcafe\gulpfile.js
+[[90m18:50:54[39m] Starting 'test-functional-local-edge-chromium'...
+[[90m18:50:54[39m] Starting 'test-functional-local-edge-chromium-run'...
+
+
+Running tests in browsers: edge-chromium
+Connected Microsoft Edge 79.0.309.54 / Windows 10
+  [API] t.takeScreenshot()
+    √ Should take a screenshot (4216ms)
+    √ Should take a screenshot with a custom path (OS separator) (2654ms)
+    √ Should take a screenshot with a custom path (DOS separator) (2710ms)
+    √ Should save screenshots to default dir if screenshotPath is not specified (4315ms)
+    √ Should save screenshots to default dir with custom path specified (2726ms)
+    √ Should create warning if screenshots are disabled (1156ms)
+    √ Should create warning if screenshots are disabled when a custom path is specified (1184ms)
+    √ Should validate path argument (1215ms)
+    √ Should check the path argument for forbidden characters (1194ms)
+    √ Should take a screenshot in quarantine mode (8635ms)
+    √ Should throw warning when taking screenshots with same path (4279ms)
+    √ Should crop screenshots to a page viewport area (4833ms)
+    √ Should crop scrollbars (3411ms)
+    √ Should provide screenshot log to a reporter (18730ms)
+    √ Should allow to use a custom path pattern (4894ms)
+
+  Reporter
+    1) Should support several different reporters for a test run
+
+  Video Recording
+    √ Should record video without options (11758ms)
+    √ Should record video in a single file (11873ms)
+    √ Should record only failed tests (11466ms)
+    √ Should record only failed tests in a single file (11550ms)
+
+  [Regression](GH-1999)
+    2) Shouldn't raise an error if an iframe has html in src
+
+  [Regression](GH-973) 
+    Should leave an extra distance between the target and parent small container while performing an action
+      √ Scroll small container to the upper left corner element (2190ms)
+
+  [API] t.click()
+    √ Should click at the center of the target if offset options are not specified (1429ms)
+
+  [API] ClientFunction
+    3) Should be correctly dispatched to test run
+
+  [API] Drag actions
+    t.dragToElement
+      √ Should take into account destination offsets (3594ms)
+
+  [API] t.eval
+    4) Should execute an anonymous client function
+
+  [API] t.ctx
+    √ Should pass context object to tests and hooks (1398ms)
+
+  [API] fixture.before/fixture.after hooks
+    √ Should fail all tests in fixture if fixture.before hooks fails (1038ms)
+    √ Fixture context (1537ms)
+
+  [API] Resize window actions
+    t.resizeWindow
+      √ Should resize the window (2889ms)
+    t.resizeWindowToFitDevice
+      √ Should resize the window to fit a device (2927ms)
+      √ Should resize the window to fit a device with portrait orientation (2924ms)
+
+  [API] t.useRole()
+    √ Should initialize and switch roles (6045ms)
+
+  [API] Selector
+    √ Should provide basic properties in HTMLElement snapshots (1361ms)
+    √ Should provide basic properties in SVGElement snapshots (1385ms)
+    √ Should provide snapshot property shorthands on selector (2494ms)
+
+
+  32 passing (3m)
+  4 failing
+
+  1) Reporter
+       Should support several different reporters for a test run:
+     AssertionError: expected '{\n  "startTime": "2019-12-20T15:52:07.695Z",\n  "endTime": "2019-12-20T15:52:07.920Z",\n  "userAgents": [\n    "Microsoft Edge 79.0.309.54 / Windows 10"\n  ],\n  "passed": 1,\n  "total": 1,\n  "skipped": 0,\n  "fixtures": [\n    {\n      "name": "Reporter",\n      "path": "D:\\\\Projects\\\\testcafe\\\\test\\\\functional\\\\fixtures\\\\reporter\\\\testcafe-fixtures\\\\index-test.js",\n      "meta": {},\n      "tests": [\n        {\n          "name": "Simple test",\n          "meta": {},\n          "errs": [],\n          "durationMs": 219,\n          "screenshotPath": null,\n          "skipped": false\n        }\n      ]\n    }\n  ],\n  "warnings": []\n}' to include 'edge-chromium'
+      at runTests.then (test\functional\fixtures\reporter\test.js:40:41)
+      at <anonymous>
+      at process._tickDomainCallback (internal/process/next_tick.js:228:7)
+
+  2) [Regression](GH-1999)
+       Shouldn't raise an error if an iframe has html in src:
+     Error: the array [
+  "Content of the iframe in which the test is currently operating did not load.  [[user-agent]]  2 |    .page `http://localhost:3000/fixtures/regression/gh-1999/pages/index.html`; 3 | 4 |test('Click in iframe', async t => { 5 |    await t 6 |        .switchToIframe('#iframe') > 7 |        .click('body'); 8 |}); 9 |  at <anonymous> (D:\\Projects\\testcafe\\test\\functional\\fixtures\\regression\\gh-1999\\testcafe-fixtures\\index.js:7:10) at test (D:\\Projects\\testcafe\\test\\functional\\fixtures\\regression\\gh-1999\\testcafe-fixtures\\index.js:4:1) at <anonymous> (D:\\Projects\\testcafe\\src\\api\\wrap-test-function.js:17:28) at TestRun._executeTestFn (D:\\Projects\\testcafe\\src\\test-run\\index.js:294:19) at TestRun.start (D:\\Projects\\testcafe\\src\\test-run\\index.js:345:24)"
+] was thrown, throw an Error :)
+      at <anonymous>
+      at process._tickDomainCallback (internal/process/next_tick.js:228:7)
+
+  3) [API] ClientFunction
+       Should be correctly dispatched to test run:
+
+      microsoft edge 79.0.309.54 / windows 10 doesn't start with "edge-chromium"
+      + expected - actual
+
+      --1
+      +0
+      
+      at exports.checkUserAgent (test\functional\assertion-helper.js:364:51)
+      at D:\Projects\testcafe\test\functional\fixtures\api\es-next\client-function\test.js:16:25
+      at Array.forEach (<anonymous>)
+      at D:\Projects\testcafe\test\functional\fixtures\api\es-next\client-function\test.js:15:22
+      at <anonymous>
+      at process._tickDomainCallback (internal/process/next_tick.js:228:7)
+
+  4) [API] t.eval
+       Should execute an anonymous client function:
+
+      microsoft edge 79.0.309.54 / windows 10 doesn't start with "edge-chromium"
+      + expected - actual
+
+      --1
+      +0
+      
+      at exports.checkUserAgent (test\functional\assertion-helper.js:364:51)
+      at D:\Projects\testcafe\test\functional\fixtures\api\es-next\eval\test.js:16:25
+      at Array.forEach (<anonymous>)
+      at D:\Projects\testcafe\test\functional\fixtures\api\es-next\eval\test.js:15:22
+      at <anonymous>
+      at process._tickDomainCallback (internal/process/next_tick.js:228:7)
+
+
+

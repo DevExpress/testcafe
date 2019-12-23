@@ -14,14 +14,14 @@ test
         const userAgentStr = await ClientFunction(() => window.navigator.userAgent)();
         const browserName  = parseUserAgent(userAgentStr).name;
 
-        if (browserName === 'Chrome')
+        if (browserName === 'edge-chromium')
             await t.addRequestHooks(logger2);
 
         await t
             .navigateTo(pageUrl)
             .expect(logger1.contains(r => r.request.url === pageUrl)).ok();
 
-        if (browserName === 'Chrome')
+        if (browserName === 'edge-chromium')
             await t.expect(logger2.contains(r => r.request.url === pageUrl)).ok();
         else
             await t.expect(logger2.contains(r => r.request.url === pageUrl)).notOk();

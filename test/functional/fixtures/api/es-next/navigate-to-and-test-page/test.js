@@ -19,56 +19,56 @@ describe('[API] t.navigateTo', function () {
     });
 
     it('Should navigate to a scheme-less http url', function () {
-        return runTests('./testcafe-fixtures/navigate-to-test.js', 'Navigate to scheme-less http page', { only: 'chrome' });
+        return runTests('./testcafe-fixtures/navigate-to-test.js', 'Navigate to scheme-less http page', { only: 'edge-chromium' });
     });
 
     it('Should navigate to a relative file url', function () {
-        return runTests('./testcafe-fixtures/navigate-to-test.js', 'Navigate to relative file page', { only: 'chrome' });
+        return runTests('./testcafe-fixtures/navigate-to-test.js', 'Navigate to relative file page', { only: 'edge-chromium' });
     });
 
     it('Should navigate to an absolute file url', function () {
-        return runTests('./testcafe-fixtures/navigate-to-test.js', 'Navigate to absolute file page', { only: 'chrome' });
+        return runTests('./testcafe-fixtures/navigate-to-test.js', 'Navigate to absolute file page', { only: 'edge-chromium' });
     });
 
     it('Should navigate to a scheme-less file url', function () {
-        return runTests('./testcafe-fixtures/navigate-to-test.js', 'Navigate to scheme-less file page', { only: 'chrome' });
+        return runTests('./testcafe-fixtures/navigate-to-test.js', 'Navigate to scheme-less file page', { only: 'edge-chromium' });
     });
 
     it('Should navigate to an absolute file url with scheme', function () {
-        return runTests('./testcafe-fixtures/navigate-to-test.js', 'Navigate to absolute file page with scheme', { only: 'chrome' });
+        return runTests('./testcafe-fixtures/navigate-to-test.js', 'Navigate to absolute file page with scheme', { only: 'edge-chromium' });
     });
 
     it('Should navigate to about:blank', function () {
-        return runTests('./testcafe-fixtures/navigate-to-test.js', 'Navigate to about:blank', { only: 'chrome' });
+        return runTests('./testcafe-fixtures/navigate-to-test.js', 'Navigate to about:blank', { only: 'edge-chromium' });
     });
 });
 
 describe('[API] test.page', function () {
     it('Should navigate to an absolute http url', function () {
-        return runTests('./testcafe-fixtures/navigate-to-test.js', 'Absolute http page', { only: 'chrome' });
+        return runTests('./testcafe-fixtures/navigate-to-test.js', 'Absolute http page', { only: 'edge-chromium' });
     });
 
     it('Should navigate to a relative file url', function () {
-        return runTests('./testcafe-fixtures/navigate-to-test.js', 'Relative file page', { only: 'chrome' });
+        return runTests('./testcafe-fixtures/navigate-to-test.js', 'Relative file page', { only: 'edge-chromium' });
     });
 
     it('Should navigate to an absolute file url', function () {
-        return runTests('./testcafe-fixtures/navigate-to-test.js', 'Absolute file page', { only: 'chrome' });
+        return runTests('./testcafe-fixtures/navigate-to-test.js', 'Absolute file page', { only: 'edge-chromium' });
     });
 
     it('Should navigate to a scheme-less http url', function () {
-        return runTests('./testcafe-fixtures/navigate-to-test.js', 'Scheme-less http page 1', { only: 'chrome' });
+        return runTests('./testcafe-fixtures/navigate-to-test.js', 'Scheme-less http page 1', { only: 'edge-chromium' });
     });
 
     it('Should navigate to a scheme-less http url with double slashes', function () {
-        return runTests('./testcafe-fixtures/navigate-to-test.js', 'Scheme-less http page 2', { only: 'chrome' });
+        return runTests('./testcafe-fixtures/navigate-to-test.js', 'Scheme-less http page 2', { only: 'edge-chromium' });
     });
 
     it('Should navigate to an absolute file url with scheme', function () {
-        return runTests('./testcafe-fixtures/navigate-to-test.js', 'Absolute file page with scheme', { only: 'chrome' });
+        return runTests('./testcafe-fixtures/navigate-to-test.js', 'Absolute file page with scheme', { only: 'edge-chromium' });
     });
 
     it('Should navigate to about:blank', function () {
-        return runTests('./testcafe-fixtures/navigate-to-test.js', 'about:blank', { only: 'chrome' });
+        return runTests('./testcafe-fixtures/navigate-to-test.js', 'about:blank', { only: 'edge-chromium' });
     });
 });

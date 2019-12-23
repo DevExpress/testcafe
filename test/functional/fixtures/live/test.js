@@ -5,7 +5,7 @@ const path           = require('path');
 const { expect }     = require('chai');
 const helper         = require('./test-helper');
 
-const DEFAULT_BROWSERS = ['chrome', 'firefox'];
+const DEFAULT_BROWSERS = ['edge-chromium', 'firefox'];
 let cafe               = null;
 
 const LiveModeController            = require('../../../../lib/live/controller');
@@ -127,7 +127,7 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
                     cafe = tc;
                 })
                 .then(() => {
-                    const runner = createLiveModeRunner(cafe, '/testcafe-fixtures/client-scripts.js', ['chrome']);
+                    const runner = createLiveModeRunner(cafe, '/testcafe-fixtures/client-scripts.js', ['edge-chromium']);
 
                     helper.emitter.once('tests-completed', () => {
                         setTimeout(() => {
@@ -160,7 +160,7 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
             createTestCafe('localhost', 1337, 1338)
                 .then(tc => {
                     cafe         = tc;
-                    const runner = createLiveModeRunner(cafe, '/testcafe-fixtures/test-1.js', ['chrome']);
+                    const runner = createLiveModeRunner(cafe, '/testcafe-fixtures/test-1.js', ['edge-chromium']);
 
                     setTimeout(() => {
                         return runner.stop()

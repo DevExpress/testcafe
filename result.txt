@@ -1,0 +1,1444 @@
+[[90m17:37:32[39m] Using gulpfile D:\Projects\testcafe\gulpfile.js
+[[90m17:37:32[39m] Starting 'test-functional-local-edge-chromium'...
+[[90m17:37:32[39m] Starting 'test-functional-local-edge-chromium-run'...
+
+
+Running tests in browsers: edge-chromium
+Connected Microsoft Edge 79.0.309.54 / Windows 10
+  [API] t.takeScreenshot()
+    √ Should take a screenshot (4340ms)
+    √ Should take a screenshot with a custom path (OS separator) (2696ms)
+    √ Should take a screenshot with a custom path (DOS separator) (2569ms)
+    √ Should save screenshots to default dir if screenshotPath is not specified (4133ms)
+    √ Should save screenshots to default dir with custom path specified (2917ms)
+    √ Should create warning if screenshots are disabled (1212ms)
+    √ Should create warning if screenshots are disabled when a custom path is specified (1246ms)
+    - Should validate path argument
+    - Should check the path argument for forbidden characters
+    √ Should take a screenshot in quarantine mode (8543ms)
+    √ Should throw warning when taking screenshots with same path (4409ms)
+    - Should crop screenshots to a page viewport area
+    1) Should crop scrollbars
+    √ Should provide screenshot log to a reporter (17052ms)
+    - Should allow to use a custom path pattern
+
+  [API] t.takeElementScreenshot()
+    2) Should take screenshot of an element
+    √ Should save screenshots to default dir with custom path specified (4916ms)
+    √ Should create warning if screenshots are disabled (3012ms)
+    - Should validate selector argument
+    - Should validate path argument
+    - Should check the path argument for forbidden characters
+    3) Should take screenshot of an element with margins
+    4) Should perform top-left crop
+    5) Should perform top-left crop by default
+    6) Should perform top-right crop
+    7) Should perform bottom-left crop
+    8) Should perform bottom-right crop
+    - Should throw an error if element dimensions are invalid
+    - Should throw an error if the element is invisible
+    - Should throw an error if the element doesn't exist
+    - Should throw an error if the specified scroll target is out of the cropping region
+    9) Should capture screenshot of the element inside a same-domain iframe
+    10) Should capture screenshot of the element inside a nested iframe
+    11) Should capture screenshot of the element inside a cross-domain iframe
+    12) Shouldn't scroll parent frames multiple times
+    13) Should scroll to the scroll target when positive scrollTargetX/Y are specified
+    14) Should scroll to the scroll target when negative scrollTargetX/Y are specified
+    15) Should remove screenshot mark from an element screenshot when the element is in bottom right corner
+
+  Screenshots on fails
+    √ Should take a screenshot if the ensureElement method fails (4010ms)
+    √ Should take a screenshot if an error on the page is raised (3414ms)
+    √ Should take a screenshot if an error in test code is raised (2974ms)
+    √ Should take a screenshot if an assertion fails (2977ms)
+    √ Should take a screenshot if beforeEach raises an error (3070ms)
+    √ Should take screenshots if a test error occurs and if afterEach raises an error (4695ms)
+    √ Should take a screenshot several times if test runs in quarantine mode (9043ms)
+    √ Should not take a screenshot if the ensureElement method fails with no screenshotsOnFails flag set (1936ms)
+    √ Should save a screenshot to default dir if the ensureElement method fails without screenshotPath specified (3757ms)
+    √ Should create warning if screenshots are disabled (1921ms)
+    16) Should crop screenshots to a page viewport area
+
+  App command
+    √ Should fail task if app fails (3567ms)
+    √ Should run app and close it once the tests complete (3601ms)
+
+  Concurrency
+    √ Should run tests sequentially if concurrency = 1 (13324ms)
+    √ Should run tests concurrently if concurrency > 1 (12323ms)
+    √ Should run tests concurrently in different browser kinds (13021ms)
+    √ Should report fixture start correctly if second fixture finishes before first (7402ms)
+    √ Should fail if number of remotes is not divisible by concurrency
+
+  TestRun - Driver protocol
+    √ TestRun should not process the same driver status twice (3989ms)
+    √ Driver should prevent a real action (1225ms)
+    Regression
+      √ Should allow mixed execution order (GH-564) (1476ms)
+      √ Should clear out the localStorage and sessionStorage after test (GH-1546) (1732ms)
+
+  Live Mode
+    √ Smoke (17525ms)
+The "quarantineMode" option from the configuration file will be ignored.
+    √ Quarantine (11895ms)
+    √ Client scripts (11712ms)
+    √ Same runner stops and then runs again with other settings (29854ms)
+
+  Handle page error
+    √ Should fail if the error is not caught in the test (1348ms)
+
+  Test should fail after js-error on the page
+    √ if an error is raised before test done (1284ms)
+    √ if an error is raised before a command (1197ms)
+    √ if an error is raised after a command (1375ms)
+    √ if an error is raised after a command after the page reloaded (1472ms)
+    √ if an error is raised after a command before the page reloaded (1441ms)
+    √ if unhandled promise rejection is raised (1382ms)
+
+  Should ignore an js-error on the page if the skipJsErrors option is set to true
+    √ uncaught JavaScript error (1366ms)
+    √ unhandled Promise rejection (1363ms)
+
+  Using external proxy server
+    √ Should open page via proxy server (1258ms)
+    √ Should open restricted page via trusted proxy server (1287ms)
+
+  Using proxy-bypass
+    √ Should bypass using proxy by one rule (1379ms)
+    √ Should bypass using proxy by comma-separated string of rules (1271ms)
+    √ Should bypass using proxy by array of rules (1233ms)
+    √ Should bypass using proxy by array of comma-separated strings (1245ms)
+    √ Should fail using proxy-bypass which is set by incorrect argument
+    √ Should open page without proxy but get resource with proxy (1251ms)
+
+  Reporter
+    - Should support several different reporters for a test run
+    - Should wait until reporter stream is finished (GH-2502)
+    - Should wait until reporter stream failed to finish (GH-2502)
+    - Should not close stderr when it is specified as a reporter stream (GH-3114)
+    - Should not close tty streams (GH-3114)
+    - Should support filename as reporter output
+    - Should work with streams that emit the "finish" event synchronously (GH-3209)
+    Test actions
+      - Simple command
+      - Simple command Error
+      - Simple assertion
+      - Selector assertion
+      - Snapshot
+      - Client Function
+      - Complex command
+      - Complex nested command
+      - Complex nested command error
+      - Eval
+
+  Driver task queue
+    √ Should return real queue length after all client commands are added (1855ms)
+    √ Should return real queue length after all server commands are added (1186ms)
+    √ Should return real queue length after execute-expression commands are added (1682ms)
+
+  TestCafe UI
+    √ Should display correct status (6187ms)
+    √ Hide elements when resizing the window (6669ms)
+
+  Video Recording
+    - Should record video without options
+    - Should record video in a single file
+    - Should record only failed tests
+    - Should record only failed tests in a single file
+    √ Should record video with quarantine mode enabled (8579ms)
+    √ Should display the warning if there is the not suitable placeholder for the "pathPattern" option was specified (11207ms)
+
+  Browser reconnect
+    √ Should restart browser when it does not respond (30433ms)
+    √ Should fail on 3 disconnects in one browser (34546ms)
+
+  Browser Provider - Chrome Emulation Mode
+    √ Should emulate touch event handlers (2480ms)
+
+  Browser Provider - Custom User Profile
+    √ Should run tests in userProfile mode (11573ms)
+    17) Should run tests with the explicitly specified profile
+
+  Browser Provider - Job Results Reporting
+    √ Should report job results to the providers (2698ms)
+    √ Should report job error to the providers (4225ms)
+    √ Should report job cancellation to the providers (1066ms)
+
+  Script execution barrier
+    √ Should wait while new scripts are executed after an action (2158ms)
+    √ Should not wait long loading scripts (3395ms)
+    √ Should not wait if scripts are added repetitively (4441ms)
+
+  [Regression](GH-1054)
+    Target element should contain the first symbol of text input when the input event raised at the first time
+      √ Typing in the input element with "replace" option (1532ms)
+      √ Typing in the content editable element with "replace" option (1538ms)
+
+  [Regression](GH-1057) - hidden by fixed parent
+    √ The target element should not be under the element with position:fixed after scroll (1582ms)
+    √ The target element should not be under the element with position:fixed after scroll when using custom offsets (1618ms)
+
+  [Regression](GH-1057) - hidden by fixed ancestor
+    √ Should scroll to element if it is hidden by fixed ancestor (1790ms)
+
+  [Regression](GH-1136)
+    √ Test should not hang when target element width/height is fractional (1373ms)
+
+  [Regression](GH-1138)
+    √ Test should click on target that has moved during the action (1418ms)
+
+  [Regression](GH-1140)
+    √ Test should not hang while iframe is reloaded and it is not under cursor (1913ms)
+
+  [Regression](GH-1161)
+    - Test should not hang while top element dissapears during move automation
+
+  [Regression](GH-1240)
+    √ Test should not raise an error when try to get a non-existent child (1132ms)
+
+  [Regression](GH-1267)
+    √ Incorrect callsite stack for failed assertion in a method of some class (GH-1267) (1221ms)
+
+  [Regression](GH-1275)
+    - Blur event should not raise too late when an input became hidden in IE
+
+  [Regression](GH-1311)
+    √ Should raise "input" event while changing value in select input (2086ms)
+    - Should not raise "input" event in IE while changing value in select input
+
+  [Regression](GH-1312)
+    √ Should preform a click action on the element inside shadow DOM (1419ms)
+    √ Should preform a typeText action on the element inside shadow DOM (1602ms)
+
+  [Regression](GH-1327)
+    Typing in non-text input elements
+      √ Should type value (3041ms)
+      √ Should type value with caret position (3089ms)
+      √ Should type value with "replace" true (2884ms)
+
+  [Regression](GH-1353)
+    √ Document should be scrolled if body has "position: absolute" (1465ms)
+
+  [Regression](GH-1366)
+    √ Should update select element value before emitting input event (1552ms)
+
+  [Regression](GH-1385)
+    √ Should be able to get elements under cursor via "...fromPoint" functions (1394ms)
+
+  [Regression](GH-1388)
+    √ Should raise "input" event when selection is updated (1723ms)
+
+  [Regression](GH-1424)
+    √ Should raise click event on a button after "enter" key is pressed (1609ms)
+
+  [Regression](GH-1486)
+    √ DoubleClick - Delay between clicks should not depend on action speed (3542ms)
+
+  [Regression](GH-1521)
+    √ Should wait for a timeout if an element is not in the viewport temporary (11373ms)
+    √ Should reevaluate selector during waiting for element since it can be changed (3275ms)
+    √ Should fail if an element is not in the viewport constantly (4055ms)
+    √ Should wait for a timeout if an element is overlapped (2630ms)
+    √ Should click on an overlapping element after some timeout (3692ms)
+    √ Should wait while element is moving (2146ms)
+    √ Should not wait for a timeout when clicks on a child of svg element (1463ms)
+    √ Should not wait if the offset position of a fixed element is changing (1429ms)
+    √ Should raise mouseover/mousemove if hovered element was overlapped (2665ms)
+
+  [Regression](GH-1679)
+    √ Should be able to hover an element that became hidden on mouseover (1374ms)
+
+  [Regression](GH-1842)
+    √ Should wait if an iframe reloads during the switchToIframe command execution (4125ms)
+    √ Should take into account iframe selector's timeout option (2886ms)
+
+  [Regression](GH-1846)
+    √ Should be able to click on an element under the TestCafe panel (2186ms)
+
+  [Regression](GH-1874)
+    √ Should not throw an error when RequireJS module was loaded (1478ms)
+
+  [Regression](GH-1875)
+    √ Should listen console messages in an iframe before it is loaded completely (1405ms)
+
+  [Regression](GH-1907)
+    √ Base selector should pass the boundTestRun option to derivative selectors (1654ms)
+    √ Base selector should pass timeout and visibilityCheck options to derivative selectors (3177ms)
+
+  [Regression](GH-1940)
+    √ Should scroll page when body has scroll (9611ms)
+
+  Should support TextInput event[Regression](GH-1956)
+    √ Prevent Input event on TextInput when type to input element (1525ms)
+    - Prevent Input event on TextInput when type to input element IE11/Firefox
+    √ Prevent Input event on TextInput when type to ContentEditable div (1502ms)
+    - Prevent Input event on TextInput when type to ContentEditable div IE11
+    - Prevent Input event on TextInput when type to ContentEditable div Firefox
+    √ Modify text node of ContentEditable div on TextInput event and prevent Input event (1524ms)
+    √ Type to ContentEditable div when selected node was replaced on TextInput event (1533ms)
+    √ Prevent Input event on TextInput when type to element node (1570ms)
+
+  [Regression](GH-1994)
+
+----
+Microsoft Edge 79.0.309.54 / Windows 10
+DEBUGGER PAUSE:
+6 |
+> 7 |    await t.debug();
+8 |});
+----
+
+[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[1A[2K[G    √ Click on hidden element recreated on timeout (93022ms)
+    18) Click on hidden element removed on timeout
+
+  [Regression](GH-1999)
+    - Shouldn't raise an error if an iframe has html in src
+
+  [Regression](GH-2015)
+    √ Should restore local storage correctly on UseRole with PreserveUrl (2227ms)
+
+  [Regression](GH-2020)
+    √ Should click on element with height/width of 1px (1562ms)
+
+  [Regression](GH-2067) - Radio button navigation by keyboard
+    √ named (6223ms)
+    √ nonamed - chrome (6065ms)
+    - nonamed - ie, firefox
+    √ Should select the checked radio button by pressing the tab key (2193ms)
+
+  [Regression](GH-2074)
+    √ Should execute test located in external module (1185ms)
+
+  [Regression](GH-2080)
+    √ Should find element with not-integer offset (1909ms)
+
+  [Regression](GH-2153)
+    √ Shadow element should not appear in user event handler (1487ms)
+
+  [Regression](GH-2205)
+    √ Should type in div if it has an invisible child with contententeditable=false (2694ms)
+
+  [Regression] (GH-2264)
+    √ Smart assertions should work for RAW API tests (2852ms)
+
+  [Regression](GH-2271)
+    √ Drag events should contain relatedTarget property (5831ms)
+
+  [Regression](GH-2282)
+    √ Cookies should be restored correctly when User Roles with the preserveUrl option are used (2140ms)
+
+  [Regression](GH-2546)
+    √ Should fail on uncaught promise rejection when skipUncaughtErrors is false (1192ms)
+    √ Should not fail on uncaught exception when skipUncaughtErrors is true (1195ms)
+    √ Should fail on uncaught exception when skipUncaughtErrors is false (10885ms)
+    √ Should not fail on uncaught promise rejection when skipUncaughtErrors is true (8282ms)
+    √ Should handle errors in the exception handler (8011ms)
+
+  [Regression](GH-2568)
+    √ nested selector (1086ms)
+    √ client function selector (1991ms)
+    √ nested client function selector (1943ms)
+    √ nth (1953ms)
+    √ nth in collectionMode (1979ms)
+    √ filterVisible (1943ms)
+    √ filterHidden (1960ms)
+    √ withAttribute (2049ms)
+    √ root (1942ms)
+    √ parent (1965ms)
+    √ snapshot (1994ms)
+    √ custom DOM properties (1945ms)
+    √ custom methods (1957ms)
+    √ with - failed before (1951ms)
+    √ with - failed after (1946ms)
+
+  [Regression](GH-2601) - Scroll to element when page has elements with negative margin
+    √ Scroll to element when page has elements with negative margin (1389ms)
+
+  [Regression](GH-2861) - Should not hang on custom element click
+    √ Click on custom element (1843ms)
+
+  [Regression](GH-2969) - Should handle beforeunload dialog on role initializing
+    √ Handle beforeunload dialog (1545ms)
+
+  [Regression](GH-3021) - Should not wait for selector timeout if element has border-radius
+    √ Should not wait for selector timeout (1433ms)
+
+  [Regression](GH-3049) - Should increase small browser window
+ Running tests in:
+ - Chrome 79.0.3945.88 / Windows 10
+
+ GH-3049 - Should increase small browser window
+ √ Run browser with minimal window size
+
+
+ 1 passed (0s)
+    √ Run browser with minimal window size (9304ms)
+
+  [Regression](GH-3127, GH-2741) Should download files
+    √ JSON (1659ms)
+    √ Download ZIP (16343ms)
+    √ Download PDF (35041ms)
+
+  [Regression](GH-3298) - Fixture hooks of subsequent tests should not overlap each other
+    √ Run two tests with fixture hooks in sequence (2686ms)
+
+  [Regression](GH-3343) - Should not raise an error when an iframe is rewritten
+    √ Rewrite an iframe (2777ms)
+
+  [Regression](GH-3456) Should process --window-size arg in Headless mode 
+ Running tests in:
+ - Chrome 79.0.3945.88 / Windows 10
+ - Chrome 79.0.3945.88 / Windows 10
+
+ '--window-size' arg in Headless mode (GH-3456)
+ √ '--window-size' arg (screenshots:
+ D:\Projects\testcafe\___test-screenshots___\custom)
+
+
+ 1 passed (2s)
+    √ :headless (4146ms)
+
+  [Regression](GH-3501) - Should focus label if it is bound to element and has tabIndex attribute
+    √ Click label bound to radio (1409ms)
+    √ Click label bound to checkbox (1395ms)
+
+  [Regression](GH-3684) - SVG elements do not break searching by text
+    √ SVG elements do not break searching by text (1226ms)
+
+  [Regression](GH-3724)
+    √ Should correctly type text in an editable iframe (1952ms)
+
+  [Regression](GH-3835) - Should not stop while async report methods are executiing
+    √ Click on hidden element recreated on timeout (2161ms)
+
+  [Regression](GH-3887)
+    √ Should correctly return childNodes.length after typing in an iframe (1531ms)
+
+  [Regression](GH-3924) - Should scroll to element overlapped by TestCafe panel
+    √ Should scroll to element overlapped by TestCafe panel (1392ms)
+
+  [Regression](GH-3929) - Should reconnect with bad network conditions
+ Running tests in:
+ - Chrome 79.0.3945.88 / Windows 10
+
+ Should reconnect with bad network conditions (GH-3929)
+ √ Click action with bad network conditions
+
+
+ 1 passed (2s)
+    √ Should reconnect with bad network conditions (14052ms)
+
+  [Regression](GH-4222) - Should scroll to element that is inside a template/slot
+    √ Should scroll to element that is inside a template/slot (794ms)
+
+  [Regression](GH-423)
+    √ Should raise click event except in Firefox if target element appends child after mousedown (1422ms)
+    - Shouldn't raise click event in Firefox if target element appends child after mousedown
+    √ Shouldn't not raise click if target is overlapped (1389ms)
+    - Should raise click event in Firefox if target's parent has been changed after mousedown
+    √ Shouldn't raise click event except in Firefox if target's parent has been changed  after mousedown (1388ms)
+    √ Shouldn't raise click if target appends editable form element (1389ms)
+
+  [Regression](GH-4360) - Should not throw 'contextStorage is undefined' error
+    √ Submit form in iframe immediately after load (1831ms)
+
+  [Regression](GH-608)
+    √ Shouldn't wait for page unload if a link with javascript that doesn't lead to unload is clicked (1428ms)
+
+  [Regression](GH-632)
+    √ Should not fail if window.self is overriden (1360ms)
+
+  [Regression](GH-637)
+    - Should let test file locate babel-runtime if it's not installed on global or test file node_modules lookup scope
+
+  [Regression](GH-664)
+    - Should not hang if page redirect was cancelled
+
+  [Regression](GH-711) Should pass if typing executed in contentEditable body
+    √ Should pass for typing in contentEditable body (1543ms)
+    √ Should pass for typing in contentEditable body with not-contentEditable children (1609ms)
+
+  [Regression](GH-743)
+    - Should not start the next test if the previous one is not finished
+
+  [Regression](GH-751) Should not add unnecessary timeouts between actions
+    - Should be a delay between mouseup, click and dblclick events
+    - Should not add an additional delay before mouseup if mousedown handlers worked for a long time
+
+  [Regression](GH-754) Should run tests if fixture name or test name contains several singlequotes
+    - gh-754
+
+  [Regression](GH-770)
+    √ Shouldn't focus on non-focusable element while clicking (1371ms)
+    - The element should remain active in IE if it has been focused while mousedown executed
+
+  [Regression](GH-814) Should run tests if fixture name or test name contains new line symbols
+    - gh-814
+
+  [Regression](GH-822) Should execute selectors with escapable symbols
+    - gh-822
+
+  [Regression](GH-845) Should execute click on a download link
+    √ gh-845 (1895ms)
+    - gh-845 in iframe
+
+  [Regression](GH-847) Move automation should not perform scrolling twice
+    - gh-847
+
+  [Regression](GH-850)
+    √ Should resume the test if the cursor is moving from reloaded iframe to top window (1989ms)
+
+  [Regression](GH-851)
+    √ Should raise click for common parent element except in Firefox (1389ms)
+    √ Should raise click for a top element except in Firefox (1415ms)
+    √ Should raise dblclick for common parent element except in Firefox (1605ms)
+    √ Should raise dblclick for a top element except in Firefox (1648ms)
+    - Shouldn't raise click for common parent element in Firefox
+    - Shouldn't raise click for a top element in Firefox
+    - Shouldn't raise dblclick for common parent element in Firefox
+    - Shouldn't raise dblclick for a top element in Firefox
+
+  [Regression](GH-856) Test should not hang when redirect occurs after the page is loaded
+    √ gh-856 (2540ms)
+    √ gh-856 (iframe) (2757ms)
+
+  [Regression](GH-882) Test should not hang when content is scaled or in Hi-DPI mode
+    √ gh-882 (1354ms)
+
+  [Regression](GH-883) Test should not throw "Element is not visible" error
+    √ gh-883 (1337ms)
+
+  [Regression](GH-889)
+    √ Should not call blur for table (1600ms)
+    - Should not call blur for table (for IE)
+
+  [Regression](GH-913)
+    √ Shouldn't scroll to the focusable parent while performing click on non-focusable element (3328ms)
+
+  [Regression](GH-963)
+    √ Should be possible to call setFilesToUpload and clearUpload for a hidden input (1754ms)
+
+  [Regression](GH-965)
+    Should throw an error if test page url protocol matches /http.*/
+      √ in navigateTo (1177ms)
+      √ in test page
+
+  [Regression](GH-973) 
+    Should leave an extra distance between the target and browser window while performing an action
+      √ Scroll to the upper left corner element in the document body (1564ms)
+      √ Scroll to the lower right corner element in the document body (1793ms)
+      - Scroll to the lower right corner element in the document body (mobile)
+    Should leave an extra distance between the target and parent container while performing an action
+      √ Scroll container to the upper left corner element (2216ms)
+      √ Scroll container to the lower right corner element (1766ms)
+    Should leave an extra distance between the target and parent small container while performing an action
+      19) Scroll small container to the upper left corner element
+      √ Scroll small container to the lower right corner element (1790ms)
+
+  [Regression](GH-987)
+    Should fully show the target element on performing an action
+      √ Click on the bottom element in the vertical container (1697ms)
+      √ Click on the top element in the vertical container (1744ms)
+      √ Click on the left element in the horizontal container (1733ms)
+      √ Click on the right element in the horizontal container (1699ms)
+
+  [Regression](GH-993)
+    √ Key events should have the 'key' or 'keyIdentifier' property when t.pressKey('enter') is performed (1563ms)
+
+  Disable page caching
+    √ Test run (2191ms)
+    √ Fixture (1343ms)
+    √ Single test (1641ms)
+
+  Selector timeout
+    √ Should pass if selector timeout exceeds time required for the element to appear (1523ms)
+    √ Should fail if selector timeout is less than time required for the element to appear (2520ms)
+
+  [API] Speed
+    √ Should not add an additional delay after action by default (1515ms)
+    √ Should add an additional delay after action if speed is decreased (5262ms)
+    √ Should add an additional delay after action if speed is decreased in iframe (5528ms)
+
+  Stop test task on first failed test
+    √ Basic (1402ms)
+    √ Reporting (1359ms)
+
+  [CoffeeScript] Smoke tests
+    √ Should run non-trivial tests (3827ms)
+    √ Should produce correct callsites on error (1953ms)
+
+  [API] Assertions
+    - Should perform .eql() assertion
+    - Should perform .notEql() assertion
+    - Should perform .ok() assertion
+    - Should perform .notOk() assertion
+    - Should perform .contains() assertion
+    - Should perform .notContains() assertion
+    - Should perform .typeOf() assertion
+    - Should perform .notTypeOf() assertion
+    - Should perform .gt() assertion
+    - Should perform .gte() assertion
+    - Should perform .lt() assertion
+    - Should perform .lte() assertion
+    - Should perform .within() assertion
+    - Should perform .notWithin() assertion
+    - Should perform .match() assertion
+    - Should perform .notMatch() assertion
+    - Should retry assertion for selector results
+    - Should raise error assertion for selector results assertion on timeout
+    - Should raise error when expecting an unawaited Promise that cannot be retried
+    - Should allow an unawaited Promise with override option
+    - Should raise error if `await` is missing
+    - Should raise error if "timeout" option is not a number
+    - Should provide "timeout" option
+    - Should retry assertion for ClientFunction results
+    - Should raise an error if assertion was called without method
+
+  Basic and NTLM authentications
+    √ Should not authenticate on a "basic" server with wrong credentials (1219ms)
+    √ Should authenticate on a "basic" server with correct credentials (1253ms)
+    √ Should authenticate on a "NTLM" server with correct credentials (1250ms)
+    √ Should override credentials with test.httpAuth (1239ms)
+    Using external proxy server
+      √ Should not authenticate on a "basic" server with wrong credentials (1259ms)
+      √ Should authenticate on a "basic" server with correct credentials (1240ms)
+      √ Should authenticate on a "NTLM" server with correct credentials (1250ms)
+      √ Should override credentials with test.httpAuth (1256ms)
+
+  [API] t.click()
+    √ Should make click on a button (1416ms)
+    √ Should validate options (1193ms)
+    √ Should validate selector (1220ms)
+    20) Should click at the center of the target if offset options are not specified
+    √ Should accept function as selector (1375ms)
+    √ Should accept Selector function as selector (1909ms)
+    √ Should accept node snapshot as selector (1482ms)
+    √ Should accept Promise returned by selector as selector (2210ms)
+    √ Should handle error in selector (1993ms)
+    √ Should validate node type of element that selector returns (2043ms)
+    [Regression](GH-628)
+      √ Should click on an "option" element (1657ms)
+      √ Should fail if try to click on an "option" element in a closed "select" element (1940ms)
+
+  [API] ClientFunction
+    - Should be correctly dispatched to test run
+    √ Should accept arguments (1225ms)
+    √ Should perform Hammerhead code instrumentation on function code (1340ms)
+    - Should be able to bind a test run using the "boundTestRun" option
+    √ Should support Promises as a result (1366ms)
+    √ Should polyfill Babel artifacts (1229ms)
+    √ Should execute ClientFunction with dependencies (1249ms)
+    √ Should accept complex argument types (1211ms)
+    √ Should accept complex return types (1242ms)
+    √ Should accept a function as an argument (1307ms)
+    √ Should accept a ClientFunction as an argument (1209ms)
+    Errors
+      √ Should handle errors in ClientFunction code (1218ms)
+      √ Should handle error in a Promise in ClientFunction code (1240ms)
+      - Should raise an error if ClientFunction argument is not a function
+      - Should raise an error if ClientFunction not able to resolve test run
+      - Should raise an error if ClientFunction contains async/await syntax
+      - Should raise an error if ClientFunction contains generator
+      - Should raise an error if ClientFunction bound to a non-TestController object
+      √ Should raise an error if ClientFunction execution was interrupted by page unload (1373ms)
+      - Should raise an error if a function argument contains `async/await` syntax
+      √ Should raise an error if a DOM node is returned (1257ms)
+    Regression
+      √ Should successfully pass if ClientFunction missing `await` (GH-564) (1199ms)
+
+  [API] t.getBrowserConsoleMessages()
+    √ Should return messages from the console (1679ms)
+    √ Should format messages if several args were passed (1293ms)
+
+  Custom client scripts
+    √ Runner (1236ms)
+    √ Custom client script should be proxied (1222ms)
+    √ Test API (1239ms)
+    √ Mixed (1149ms)
+    √ Specified page (1376ms)
+    √ Warnings (1251ms)
+    √ Test file and an injected script are located in the same folder (1226ms)
+    √ Execution order (1226ms)
+    √ Test's client scripts should not override the fixture's client scripts (GH-4122) (1232ms)
+    Should handle errors of the injected scripts
+      - Script loaded from file
+      - Script loaded from module
+      √ Wrong module name
+
+  [API] .disableReloading/.enableReloading
+    √ Should reload test pages by default (1352ms)
+    √ Shouldn't reload test pages when the Runner's disablePageReloads option is specified (1307ms)
+    √ Shouldn't reload test pages when the fixture.disablePageReloads option is specified (1279ms)
+    √ Shouldn't reload test pages when the test.disablePageReloads option is specified (1279ms)
+    √ Should reload test pages when the fixture.enablePageReloads option is specified (1366ms)
+    √ Should reload test pages when the test.enablePageReloads option is specified (1393ms)
+    √ Shouldn't reload test pages when the fixture.enablePageReloads and the test.disablePageReloads options are specified (1272ms)
+
+  [API] t.doubleClick()
+    - Should make double click on a button
+    - Should validate options
+    - Should validate selector
+
+  [API] Drag actions
+    t.drag
+      √ Should drag an element by an offset (1574ms)
+      √ Should validate selector (1200ms)
+      √ Should validate dragOffsetX (1193ms)
+      √ Should validate dragOffsetY (1223ms)
+      √ Should validate action options (1209ms)
+    t.dragToElement
+      √ Should drag an element to another element (1470ms)
+      √ Should validate selector (1206ms)
+      √ Should validate destinationSelector (1207ms)
+      √ Should validate action options (1209ms)
+      √ Should validate node type of element that destinationElement's selector returns (1948ms)
+      21) Should take into account destination offsets
+    html5 drag and drop
+      √ Should raise drag and drop events (5092ms)
+      √ Should check is element draggable (1897ms)
+      √ Should check is element droppable (1546ms)
+      √ Should reproduce native browser behavior (1900ms)
+      √ Should not raise the drag and drop events if the mousedown event was prevented (1878ms)
+
+  [API] t.eval
+    - Should execute an anonymous client function
+    √ Should execute an anonymous client function with dependencies (1216ms)
+    √ Should have the correct callsite if an error occurs on instantiation (1213ms)
+    √ Should have the correct callsite if an error occurs during execution (1241ms)
+
+  [API] Generic errors
+    Error in test code
+      - Should handle unsupported protocol in a test page
+      - Should handle error thrown by test code
+      - Should handle non-Error object thrown by test code
+      - Should handle null thrown by test code
+      - Should handle error thrown by helper code
+    External assertion library error
+      - Should handle Node built-in assertion lib error
+      - Should handle Chai assertion error
+      - Should handle assertion errors in helper code
+
+  [API] fixture.beforeEach/fixture.afterEach hooks
+    √ Should run hooks for all tests (3703ms)
+    √ Should not run test and afterEach if fails in beforeEach (1522ms)
+    √ Should run test and afterEach and beforeEach if test fails (1885ms)
+
+  [API] test.before/test.after hooks
+    √ Should run hooks before and after test and override fixture hooks (1872ms)
+
+  [API] t.ctx
+    - Should pass context object to tests and hooks
+
+  [API] fixture.before/fixture.after hooks
+    √ Should run hooks before and after fixture (2689ms)
+    √ Should keep sequential reports with long executing hooks (2568ms)
+    - Should fail all tests in fixture if fixture.before hooks fails
+    - Fixture context
+
+  [API] Hover action
+    - Should run hover over elements
+    - Should validate options
+    - Should validate selector
+
+  [API] t.switchToIframe(), t.switchToMainWindow()
+    √ Should switch context between an iframe and the main window (2850ms)
+    √ Should switch context between a nested iframe and the main window (3643ms)
+    √ Should wait while a target iframe is loaded (3245ms)
+    √ Should resume execution if an iframe is removed as a result of an action (3225ms)
+    √ Should execute an action in an iframe with redirect (3930ms)
+    √ Should keep context if the page was reloaded (2953ms)
+    √ Should correctly switch to the main window context if an iframe was removed from the nested one (3466ms)
+    √ Should work in an iframe without src (2704ms)
+    √ Should work in a cross-domain iframe (3530ms)
+    Unavailable iframe errors
+      √ Should ensure the iframe element exists before switching to it (2295ms)
+      √ Should ensure the iframe element is visible before switching to it (1998ms)
+      √ Should raise an error is the switchContext argument is not an iframe (1569ms)
+      √ Should raise an error if a switchToIframe target is not loaded (1971ms)
+      √ Should raise an error when trying to execute an action in an unavailable iframe (3653ms)
+      √ Should raise an error when trying to execute an action in an invisible iframe (7538ms)
+      √ Should raise an error when trying to execute an action in an iframe that is not loaded (10299ms)
+    Page errors handling
+      √ Should fail if an error occurs in a same-domain iframe while an action is being executed (2057ms)
+      √ Should fail if an error occurs in a same-domain iframe while an action is being executed in the main window (1546ms)
+      √ Should fail if an error occurs in the main window while an action is being executed in a cross-domain iframe (2694ms)
+      √ Should fail if an error occurs in a same-domain iframe while an action is being executed in another iframe (2063ms)
+
+  [API] t.maximizeWindow
+    √ Should maximize the window to the maximum available size (3892ms)
+
+  Native dialogs handling
+    √ Should remove dialog handler if `null` specified (1548ms)
+    Errors during dialogs handling
+      √ Should fail if an unexpected confirm dialog appears after an action (1398ms)
+      √ Should pass if the expected confirm dialog appears after an action (1413ms)
+      √ Should pass if the expected confirm dialog appears after an action (with dependencies) (1410ms)
+      √ Should pass if the expected confirm dialog appears after an action (client function) (1410ms)
+      √ Should pass if different dialogs appear after actions (1681ms)
+      √ Should fail if confirm dialog appears with wrong text (1397ms)
+      √ Should fail if the expected confirm dialog doesn't appear after an action (1414ms)
+      √ Should pass if the expected beforeUnload dialog appears after an action (1600ms)
+    Dialogs appear after page load
+      √ Should pass if the expected confirm dialog appears after page load (1511ms)
+      √ Should fail when an unexpected alert dialog appears after page load (1263ms)
+    Dialogs appear after redirect
+      √ Should handle prompt dialogs (1480ms)
+      √ Should fail when an unexpected prompt dialog appears after redirect (1464ms)
+    Dialog appears during a wait action
+      √ Should pass if expected alert dialog appears during a wait action (3423ms)
+      √ Should fail if the expected alert dialog doesn't appear during a wait action (1450ms)
+      √ Should fail when an unexpected alert dialog appears during a wait action (3384ms)
+    Set dialog handler errors
+      √ Should fail if dialog handler has wrong type (1206ms)
+      √ Should fail if client function argument has wrong type (1198ms)
+      √ Should fail if Selector send as dialog handler (1196ms)
+
+  [API] t.navigateTo
+    √ Should validate the url argument (1201ms)
+    √ Should navigate to an absolute http url (1512ms)
+    √ Should navigate to a relative http url (1503ms)
+    - Should navigate to a scheme-less http url
+    - Should navigate to a relative file url
+    - Should navigate to an absolute file url
+    - Should navigate to a scheme-less file url
+    - Should navigate to an absolute file url with scheme
+    - Should navigate to about:blank
+
+  [API] test.page
+    - Should navigate to an absolute http url
+    - Should navigate to a relative file url
+    - Should navigate to an absolute file url
+    - Should navigate to a scheme-less http url
+    - Should navigate to a scheme-less http url with double slashes
+    - Should navigate to an absolute file url with scheme
+    - Should navigate to about:blank
+
+  Should wait for the window.load event if necessary
+    √ Should wait for the window.load event if there are user event handlers for it (set timeout via an option) (2194ms)
+    √ Should wait for the window.load event if there are user event handlers for it (set timeout via `t`) (1366ms)
+    √ Should wait for the window.load event in iframe (1967ms)
+    √ Shouldn't wait for the window.load event more than timeout (1222ms)
+    √ Shouldn't wait for the window.load event if there are no user event handlers for it (1220ms)
+
+  [API] t.pressKey
+    - Should press keys
+    - Should validate keys argument
+    - Should raise event in different windows if focus was changed during action execution
+
+  Request Hooks
+    - Test's request hooks should not override the fixture's request hooks (GH-4122)
+    RequestMock
+      √ Basic (1723ms)
+      √ Request failed the CORS validation (1402ms)
+    RequestLogger
+      √ API (1429ms)
+      √ Log options (1194ms)
+      √ Multi-browser (1477ms)
+    API
+      √ Add/remove request hooks (2011ms)
+      √ Conditional adding (1410ms)
+      √ Should handle errors inside the overridden methods (1348ms)
+      - Execution order
+
+  [API] Resize window actions
+    t.resizeWindow
+      22) Should resize the window
+      - Should validate height argument
+      √ Should fail when a js-error appears during resizeWindow execution (3038ms)
+    t.resizeWindowToFitDevice
+      23) Should resize the window to fit a device
+      24) Should resize the window to fit a device with portrait orientation
+      - Should validate device argument
+      √ Should fail when a js-error appears during resizeWindowToFitDevice execution (3021ms)
+
+  [API] t.rightClick()
+    - Should make right click on a button
+    - Should validate options
+    - Should validate selector
+
+  [API] t.useRole()
+    - Should initialize and switch roles
+    √ Should switch to Role.anonymous() (2443ms)
+    √ Should have clean configuration in role initializer (2009ms)
+    √ Should restore configuration after role initializer (2644ms)
+    √ Should preserve URL if option specified (2693ms)
+    Should allways reload role`s login url
+      √ Hash-based navigation (2543ms)
+      √ Test run url and roles`s login url are same (2509ms)
+    Errors
+      - Should fail all tests that use role with the initiliazer error
+      √ Should fail if role switched within initializer (1356ms)
+      √ Should throw error if useRole argument is not a Role (1215ms)
+      √ Should fail if there error occurred while restoring configuration (7187ms)
+
+  Scroll
+    √ Should raise events for scroll (1633ms)
+    √ Events initiated by scroll should have valid properties (2683ms)
+
+  [API] Select text
+    t.selectText
+      - Should select text in input
+      - Should validate selector argument
+      - Should validate startPos argument
+      - Should validate endPos argument
+    t.selectTextAreaContent
+      - Should select content in textarea
+      - Should validate selector argument
+      - Should validate startLine argument
+      - Should validate startPos argument
+      - Should validate endLine argument
+      - Should validate endPos argument
+    t.selectEditableContent
+      - Should select editable content
+      √ Should create simple inverse selection in editable content (1478ms)
+      √ Should create difficult inverse selection in editable content (1450ms)
+      - Should validate startSelector argument
+      - Should validate endSelector argument
+      √ Should validate node type of element that startElement's selector returns (1987ms)
+      √ Should validate node type of element that endElement's selector returns (1995ms)
+
+  [API] Selector
+    25) Should provide basic properties in HTMLElement snapshots
+    26) Should provide basic properties in SVGElement snapshots
+    √ Should provide input-specific properties in element snapshots (2288ms)
+    √ Should provide `innerText` property in element snapshots (1274ms)
+    √ Should provide node snapshots for non-element nodes (1588ms)
+    √ Should accept string as constructor argument (1375ms)
+    √ Should wait for element to appear in DOM (2542ms)
+    √ Should return `null` if element does not appear within given time (2169ms)
+    √ Should check element visibility if option is enabled (6230ms)
+    √ Should use timeout specified via property (2176ms)
+    √ Should provide "selector" method in node snapshot (1299ms)
+    √ Should provide "hasClass" method in node snapshot (1307ms)
+    √ Should provide "addCustomDOMProperties" method in node snapshot (5300ms)
+    √ Should provide "addCustomMethods" method in node snapshot (5480ms)
+    √ Selector `addCustomMethods` method - Selector mode (5573ms)
+    √ Should wait for element to appear on new page (2503ms)
+    - Should provide snapshot property shorthands on selector
+    - Should filter results with `nth()` method
+    - Should filter results with `withText()` method
+    - Should filter results with `withExactText()` method
+    - Should filter results with `withAttribute()` method
+    - Should filter results with `filter()` method
+    - Should filter using combination of filter methods
+    √ Should provide methods for filtering by visibility for plain structure of HTML elements (1367ms)
+    √ Should provide methods for filtering by visibility for hierarchical structure of HTML elements (1526ms)
+    √ Should provide .find() method (1874ms)
+    √ Should provide .parent() method (1942ms)
+    √ Should provide .child() method (2025ms)
+    √ Should provide .sibling() method (1633ms)
+    √ Should provide .nextSibling() method (1670ms)
+    √ Should provide .prevSibling() method (1636ms)
+    √ Should provide "exists" and "count" properties (1741ms)
+    - Should provide dependencies and index argument to selector filter
+    - Should provide filter origin argument
+    √ Should provide hasAttribute method (1682ms)
+    Errors
+      √ Should handle errors in Selector code (1755ms)
+      √ Should raise error if non-DOM node returned (1748ms)
+      - Should raise an error if Selector ctor argument is not a function or string
+      - Should raise error if snapshot property shorthand can't find element in DOM tree
+      - Should raise error if snapshot shorthand method can't find element in DOM tree
+      - Should raise error if error occurs in selector during shorthand property evaluation
+      - Should raise error if error occurs in selector during shorthand method evaluation
+      - Should raise error if error occurs in selector during "count" property evaluation
+      - Should raise error if error occurs in selector during "exists" property evaluation
+      - Should raise error if custom DOM property throws an error
+      - Should raise error if custom method throws an error
+      - Should raise error if custom method throws an error - Selector mode
+    Regression
+      - Should execute successfully if derivative selector doesn't have options (GH-716)
+      - Should select <option> element by text in Firefox (GH-861)
+
+  [API] .skip/.only
+    - Should filter out tests without "only" directive
+    - Should filter out tests without "skip" directive
+
+  [API] Test Speed
+    √ Should run test with different speed (14949ms)
+    √ Should run test with different speed in iframe (17042ms)
+
+  [API] TestController
+    - Should support chaining
+    - Should produce correct callsites for chained calls
+    Proxy object
+      √ Should provide importable proxy object (1463ms)
+    Missing `await` tracking
+      - Should track missing `await`
+      - Should track missing `await` in chain
+      - Should track missing `await` in the end of test
+      - Should track missing `await` for actions with error
+      - Should track missing `await` with disrupted chain
+      - Should track missing `await` in helper
+      - Should not track missing `await` when uncaught error is occurred (GH-2557)
+      Regression
+        - Should allow chains within chain (GH-1285)
+
+  [API] t.typeText()
+    √ Should type text in input (1423ms)
+    √ Should validate options (1198ms)
+    √ Should validate text (1199ms)
+    √ Should validate selector (1214ms)
+
+  [API] Upload
+    t.setFilesToUpload
+      - Should upload the specified file
+      - Should validate the selector argument
+      - Should validate the filePath argument
+    t.clearUpload
+      - Should clear the upload
+      - Should validate the selector argument
+
+  [API] Wait
+    t.wait
+      √ Should wait for the specified time (3537ms)
+      √ Should validate the timeout argument (1201ms)
+
+  [Raw API] Assertions
+    √ Should perform eql assertion (1204ms)
+    √ Should perform notEql assertion (1191ms)
+    √ Should perform ok assertion (1320ms)
+    √ Should perform notOk assertion (1210ms)
+    √ Should perform within assertion (1203ms)
+    √ Should perform notWithin assertion (1217ms)
+    √ Should raise error if "timeout" option is not a number (1245ms)
+    √ Should process js expression (1239ms)
+
+  [Raw API] Click action
+    √ Should make click on a button (1922ms)
+    √ Should perform click on a submit button and wait for page redirect (1959ms)
+    √ Should wait for the page load barrier to finish after an action (1711ms)
+    √ Should fail when a js-error appears on page load (1324ms)
+    √ Should fail when a js-error appears during click execution (1640ms)
+    √ Should wait for xhr-requests after an action (2541ms)
+    √ Should wait for the next action element to appear (3669ms)
+    √ Should fail if an action target doesn't exist (1953ms)
+    √ Should fail if an action target is invisible (1991ms)
+    √ Should fail if an action target is out of the visible area (2051ms)
+    √ Should fail if action has incorrect selector (1209ms)
+    √ Should fail if action has an incorrect option (1201ms)
+
+  [Raw API] Code steps
+    √ Selectors (1389ms)
+    √ Shared context (1241ms)
+    √ Require (1201ms)
+    √ Error (1200ms)
+    √ Selector not found error (1929ms)
+    √ Errors on page (1369ms)
+
+  [API] .disableReloading/.enableReloading
+    √ Shouldn't reload test pages when the fixture.disableReloading option is specified (1293ms)
+    √ Shouldn't reload test pages when the test.disableReloading option is specified (1279ms)
+
+  [Raw API] Double click action
+    √ Should make double click on a button (1866ms)
+
+  [Raw API] Drag actions
+    drag
+      √ Should drag an element by an offset (1451ms)
+    drag-to-element
+      √ Should drag an element to another element (1454ms)
+      √ Should fail if a dragged element doesn't exist (1987ms)
+      √ Should fail if a dragged element is invisible (2024ms)
+      √ Should fail if a destination element doesn't exist (2093ms)
+      √ Should fail if a destination element is invisible (1994ms)
+
+  [Raw API] Execute expression action
+    √ Should execute async expressions (1226ms)
+    √ Should execute simple sync expressions (1254ms)
+    √ Should share global variables between different command calls (1250ms)
+
+  [Raw API] fixture.beforeEach/fixture.afterEach hooks
+    √ Should run hooks for all tests (3728ms)
+    √ Should not run test and afterEach if fails in beforeEach (1600ms)
+    √ Should run test and afterEach and beforeEach if test fails (1832ms)
+    √ Variables defined in beforeEach hook or in test should not be available in afterEach hook (1219ms)
+    √ Variables defined in beforeEach hook should not be available in afterEach hook (1208ms)
+    √ Variables defined in beforeEach hook should not be available in test (1185ms)
+
+  [Raw API] test.before/test.after hooks
+    √ Should run hooks before and after test and override fixture hooks (1846ms)
+
+  [Raw API] Hover action
+    √ Should make hover on a buttons (1484ms)
+    √ Should fail if an action target is out of the visible area (2031ms)
+
+  [RAW] t.switchToIframe(), t.switchToMainWindow()
+    √ Should switch context between a nested iframe and the main window (3489ms)
+
+  Native dialogs handling
+    √ Should pass if the expected confirm dialog appears after an action (1496ms)
+    √ Should pass if the expected confirm dialog appears after an action (client function) (1494ms)
+    √ Should fail if Selector send as dialog handler (1273ms)
+    √ Should fail if dialog handler has wrong type (1249ms)
+    √ Should remove dialog handler if `null` specified (1579ms)
+
+  [Raw API] Navigate to action
+    √ Should navigate to a page using a url that contains a protocol (1556ms)
+    √ Should navigate to a page using a protocol-relative url (1514ms)
+    √ Should navigate to a page using a relative url (1493ms)
+    √ Should navigate to the 404-page using a non-existent url (1345ms)
+    √ Should navigate to the 404-page using an incorrect url (1317ms)
+
+  [Raw API] Press action
+    √ Clear input value with shortcuts (1477ms)
+    √ Should fail if keys command is incorrect (1218ms)
+
+  [Raw API] Right click action
+    √ Should make right click on a button (1394ms)
+
+  [Raw API] Select editable content
+    √ Should select editable content in div (1391ms)
+    √ Should fail if a start element doesn't exist (1933ms)
+    √ Should fail if any element is invisible (1951ms)
+    √ Should fail if any element isn't content-editable (1987ms)
+    √ Should fail if elements don't have a common ancestor (1984ms)
+
+  [Raw API] Select text
+    √ Should select text in input (1771ms)
+    √ Should select text in textarea (2218ms)
+    √ Should select editable content in div (1433ms)
+    √ Should fail if an action's target isn't editable (2011ms)
+
+  [Raw API] Select textarea content
+    √ Should select text in textarea (1451ms)
+    √ Should fail if an action target isn't textarea (1994ms)
+
+  [Raw API] Selector
+    √ Should work with different type of selectors (4714ms)
+    √ Should raise an error is selector fails (1304ms)
+
+  [Raw API] Type action
+    √ Should type in an input (5432ms)
+    √ Should type all text in one keystroke if using 'paste' option (1448ms)
+    √ Should fail if a 'text' argument does not have string type (1203ms)
+    √ Should fail if a 'text' argument is empty (1198ms)
+
+  [Raw API] Upload
+    √ Should upload a file (1702ms)
+    √ Should fail if the action element is not a file input (2022ms)
+    √ Should fail if the specified file does not exist (1992ms)
+    √ Should upload files (1893ms)
+    √ Should fail if the specified file does not exist when multiple files are specified (2009ms)
+    √ Should clear the upload (2338ms)
+    √ Should fail if the action element is not a file input when clearing upload (1993ms)
+
+  [Raw API] Wait action
+    √ Should pass if the wait command is called before an action with an invisible element is performed and the timeout exceeds time required for the element to appear (6545ms)
+
+  [TypeScript] Smoke tests
+    √ Should run non-trivial tests (4603ms)
+    √ Should produce correct callsites on error (1943ms)
+
+  Native dialogs handling in iframe
+    Actions in iframe, dialogs in iframe
+      √ Should fail if an unexpected confirm dialog appears after an action (2036ms)
+      √ Should pass if the expected alert dialog appears after an action (2071ms)
+      √ Should fail if confirm dialog appears with wrong text (2045ms)
+      √ Should fail if the expected alert dialog doesn't appear after an action (2059ms)
+    Actions in top window, dialogs in iframe
+      √ Should pass if the expected alert dialog appears after an action (1516ms)
+      √ Should fail when an unexpected alert dialog appears after an action (1476ms)
+    Actions in iframe, dialogs in top window
+      √ Should pass if the expected alert dialog appears after an action (2063ms)
+      √ Should fail when an unexpected alert dialog appears after an action (2019ms)
+    Actions in nested iframes
+      √ Should pass if the expected alert dialog appears in parent iframe after an action (2142ms)
+      √ Should pass if the expected alert dialog appears in child iframe after an action (2204ms)
+    Dialogs appear after page load
+      √ Should pass if the expected confirm dialog appears after page load (1429ms)
+      √ Should fail when an unexpected alert dialog appears after page load (1219ms)
+
+
+  500 passing (28m)
+  190 pending
+  26 failing
+
+  1) [API] t.takeScreenshot()
+       Should crop scrollbars:
+     Error: the array [
+  "AssertionError: expected 81 to be at most 0  [[user-agent]]  121 | 122 |        // NOTE: IE clips screenshots not accurately 123 |        const accuracy = parseUserAgent(ua).name === 'Internet Explorer' ? 1 : 0; 124 | 125 |        await t.expect(scrollbarSize).gt(0); > 126 |        await t.expect(Math.abs(png.width - expectedWidth)).lte(accuracy); 127 |        await t.expect(Math.abs(png.height - expectedHeight)).lte(accuracy); 128 |    }); 129 |  at <anonymous> (D:\\Projects\\testcafe\\test\\functional\\fixtures\\api\\es-next\\take-screenshot\\testcafe-fixtures\\take-screenshot.js:126:61)"
+] was thrown, throw an Error :)
+      at <anonymous>
+      at process._tickDomainCallback (internal/process/next_tick.js:228:7)
+
+  2) [API] t.takeElementScreenshot()
+       Should take screenshot of an element:
+
+      AssertionError: expected false to deeply equal true
+      + expected - actual
+
+      -false
+      +true
+      
+      at D:\Projects\testcafe\test\functional\fixtures\api\es-next\take-screenshot\test.js:297:36
+      at <anonymous>
+      at process._tickDomainCallback (internal/process/next_tick.js:228:7)
+
+  3) [API] t.takeElementScreenshot()
+       Should take screenshot of an element with margins:
+
+      AssertionError: expected false to deeply equal true
+      + expected - actual
+
+      -false
+      +true
+      
+      at D:\Projects\testcafe\test\functional\fixtures\api\es-next\take-screenshot\test.js:378:36
+      at <anonymous>
+      at process._tickDomainCallback (internal/process/next_tick.js:228:7)
+
+  4) [API] t.takeElementScreenshot()
+       Should perform top-left crop:
+
+      AssertionError: expected false to deeply equal true
+      + expected - actual
+
+      -false
+      +true
+      
+      at D:\Projects\testcafe\test\functional\fixtures\api\es-next\take-screenshot\test.js:389:36
+      at <anonymous>
+      at process._tickDomainCallback (internal/process/next_tick.js:228:7)
+
+  5) [API] t.takeElementScreenshot()
+       Should perform top-left crop by default:
+
+      AssertionError: expected false to deeply equal true
+      + expected - actual
+
+      -false
+      +true
+      
+      at D:\Projects\testcafe\test\functional\fixtures\api\es-next\take-screenshot\test.js:400:36
+      at <anonymous>
+      at process._tickDomainCallback (internal/process/next_tick.js:228:7)
+
+  6) [API] t.takeElementScreenshot()
+       Should perform top-right crop:
+
+      AssertionError: expected false to deeply equal true
+      + expected - actual
+
+      -false
+      +true
+      
+      at D:\Projects\testcafe\test\functional\fixtures\api\es-next\take-screenshot\test.js:411:36
+      at <anonymous>
+      at process._tickDomainCallback (internal/process/next_tick.js:228:7)
+
+  7) [API] t.takeElementScreenshot()
+       Should perform bottom-left crop:
+
+      AssertionError: expected false to deeply equal true
+      + expected - actual
+
+      -false
+      +true
+      
+      at D:\Projects\testcafe\test\functional\fixtures\api\es-next\take-screenshot\test.js:423:36
+      at <anonymous>
+      at process._tickDomainCallback (internal/process/next_tick.js:228:7)
+
+  8) [API] t.takeElementScreenshot()
+       Should perform bottom-right crop:
+
+      AssertionError: expected false to deeply equal true
+      + expected - actual
+
+      -false
+      +true
+      
+      at D:\Projects\testcafe\test\functional\fixtures\api\es-next\take-screenshot\test.js:435:36
+      at <anonymous>
+      at process._tickDomainCallback (internal/process/next_tick.js:228:7)
+
+  9) [API] t.takeElementScreenshot()
+       Should capture screenshot of the element inside a same-domain iframe:
+
+      AssertionError: expected false to deeply equal true
+      + expected - actual
+
+      -false
+      +true
+      
+      at D:\Projects\testcafe\test\functional\fixtures\api\es-next\take-screenshot\test.js:518:36
+      at <anonymous>
+      at process._tickDomainCallback (internal/process/next_tick.js:228:7)
+
+  10) [API] t.takeElementScreenshot()
+       Should capture screenshot of the element inside a nested iframe:
+
+      AssertionError: expected false to deeply equal true
+      + expected - actual
+
+      -false
+      +true
+      
+      at D:\Projects\testcafe\test\functional\fixtures\api\es-next\take-screenshot\test.js:529:36
+      at <anonymous>
+      at process._tickDomainCallback (internal/process/next_tick.js:228:7)
+
+  11) [API] t.takeElementScreenshot()
+       Should capture screenshot of the element inside a cross-domain iframe:
+
+      AssertionError: expected false to deeply equal true
+      + expected - actual
+
+      -false
+      +true
+      
+      at D:\Projects\testcafe\test\functional\fixtures\api\es-next\take-screenshot\test.js:540:36
+      at <anonymous>
+      at process._tickDomainCallback (internal/process/next_tick.js:228:7)
+
+  12) [API] t.takeElementScreenshot()
+       Shouldn't scroll parent frames multiple times:
+
+      AssertionError: expected false to deeply equal true
+      + expected - actual
+
+      -false
+      +true
+      
+      at D:\Projects\testcafe\test\functional\fixtures\api\es-next\take-screenshot\test.js:551:36
+      at <anonymous>
+      at process._tickDomainCallback (internal/process/next_tick.js:228:7)
+
+  13) [API] t.takeElementScreenshot()
+       Should scroll to the scroll target when positive scrollTargetX/Y are specified:
+
+      AssertionError: expected false to deeply equal true
+      + expected - actual
+
+      -false
+      +true
+      
+      at D:\Projects\testcafe\test\functional\fixtures\api\es-next\take-screenshot\test.js:562:36
+      at <anonymous>
+      at process._tickDomainCallback (internal/process/next_tick.js:228:7)
+
+  14) [API] t.takeElementScreenshot()
+       Should scroll to the scroll target when negative scrollTargetX/Y are specified:
+
+      AssertionError: expected false to deeply equal true
+      + expected - actual
+
+      -false
+      +true
+      
+      at D:\Projects\testcafe\test\functional\fixtures\api\es-next\take-screenshot\test.js:573:36
+      at <anonymous>
+      at process._tickDomainCallback (internal/process/next_tick.js:228:7)
+
+  15) [API] t.takeElementScreenshot()
+       Should remove screenshot mark from an element screenshot when the element is in bottom right corner:
+
+      AssertionError: expected false to deeply equal true
+      + expected - actual
+
+      -false
+      +true
+      
+      at D:\Projects\testcafe\test\functional\fixtures\api\es-next\take-screenshot\test.js:590:36
+      at <anonymous>
+      at process._tickDomainCallback (internal/process/next_tick.js:228:7)
+
+  16) Screenshots on fails
+       Should crop screenshots to a page viewport area:
+
+      AssertionError: expected false to deeply equal true
+      + expected - actual
+
+      -false
+      +true
+      
+      at D:\Projects\testcafe\test\functional\fixtures\screenshots-on-fails\test.js:140:36
+      at <anonymous>
+      at process._tickDomainCallback (internal/process/next_tick.js:228:7)
+
+  17) Browser Provider - Custom User Profile
+       Should run tests with the explicitly specified profile:
+     Error: Unable to establish one or more of the specified browser connections. This can be caused by network issues or remote device failure.
+      at BrowserSet._waitConnectionsOpened (src\runner\browser-set.js:83:30)
+      at Promise.resolve.then (src\runner\browser-set.js:106:35)
+      at <anonymous>
+
+  18) [Regression](GH-1994)
+       Click on hidden element removed on timeout:
+     AssertionError: object tested must be an array, a map, an object, a set, a string, or a weakset, but undefined given
+      at D:\Projects\testcafe\test\functional\fixtures\regression\gh-1994\test.js:11:33
+      at <anonymous>
+
+  19) [Regression](GH-973) 
+       Should leave an extra distance between the target and parent small container while performing an action
+         Scroll small container to the upper left corner element:
+     Error: the array [
+  "AssertionError: expected 25.454559326171875 to be at most 25  [[user-agent]]  69 |    const leftIndent = targetUpperLeftSmallSnapshot.getBoundingClientRectProperty('left') - 70 |                       parentSnapshot.getBoundingClientRectProperty('left'); 71 |    const topIndent  = targetUpperLeftSmallSnapshot.getBoundingClientRectProperty('top') - 72 |                       parentSnapshot.getBoundingClientRectProperty('top'); 73 | > 74 |    expect(leftIndent).to.be.above(0).and.to.be.most(25); 75 |    expect(topIndent).to.be.above(0).and.to.be.most(25); 76 |}); 77 |  at <anonymous> (D:\\Projects\\testcafe\\test\\functional\\fixtures\\regression\\gh-973\\testcafe-fixtures\\container.test.js:74:49) at $$testcafe_test_run$$VrYL9JjtM$$ (D:\\Projects\\testcafe\\src\\api\\test-run-tracker.js:76:16) at $$testcafe_test_run$$VrYL9JjtM$$ (D:\\Projects\\testcafe\\src\\api\\test-run-tracker.js:76:16)"
+] was thrown, throw an Error :)
+      at <anonymous>
+      at process._tickDomainCallback (internal/process/next_tick.js:228:7)
+
+  20) [API] t.click()
+       Should click at the center of the target if offset options are not specified:
+     Error: the array [
+  "AssertionError: expected 50.002840995788574 to deeply equal 50  [[user-agent]]  24 |    await t.click('#div'); 25 | 26 |    const expectedClickOffset = { x: 50, y: 50 }; 27 |    const actualClickOffset   = await getClickOffset(); 28 | > 29 |    expect(actualClickOffset.x).eql(expectedClickOffset.x); 30 |    expect(actualClickOffset.y).eql(expectedClickOffset.y); 31 |}); 32 | 33 |test('Error in selector', async t => { 34 |    await t.click(() => {  at <anonymous> (D:\\Projects\\testcafe\\test\\functional\\fixtures\\api\\es-next\\click\\testcafe-fixtures\\click-test.js:29:33) at $$testcafe_test_run$$uQueGoinp$$ (D:\\Projects\\testcafe\\src\\api\\test-run-tracker.js:76:16) at $$testcafe_test_run$$uQueGoinp$$ (D:\\Projects\\testcafe\\src\\api\\test-run-tracker.js:76:16)"
+] was thrown, throw an Error :)
+      at <anonymous>
+      at process._tickDomainCallback (internal/process/next_tick.js:228:7)
+
+  21) [API] Drag actions
+       t.dragToElement
+         Should take into account destination offsets:
+     Error: the array [
+  "AssertionError: expected 298.991455078125 to deeply equal 299  [[user-agent]]  84 |                offsetX:            0, 85 |                offsetY:            0, 86 |                destinationOffsetX: -1, 87 |                destinationOffsetY: -1 88 |            }) > 89 |            .expect(draggable.getBoundingClientRectProperty('left')).eql(destRect.left + destRect.width - 1) 90 |            .expect(draggable.getBoundingClientRectProperty('top')).eql(destRect.top + destRect.height - 1); 91 |    }); 92 |  at <anonymous> (D:\\Projects\\testcafe\\test\\functional\\fixtures\\api\\es-next\\drag\\testcafe-fixtures\\drag-test.js:89:70)"
+] was thrown, throw an Error :)
+      at <anonymous>
+      at process._tickDomainCallback (internal/process/next_tick.js:228:7)
+
+  22) [API] Resize window actions
+       t.resizeWindow
+         Should resize the window:
+     Error: the array [
+  "AssertionError: expected 584 to equal 500  [[user-agent]]  35 |    const newWidth  = 500; 36 |    const newHeight = 500; 37 | 38 |    await t.resizeWindow(newWidth, newHeight); 39 | > 40 |    expect(await getWindowWidth()).equals(newWidth); 41 |    expect(await getWindowHeight()).equals(newHeight); 42 |}); 43 | 44 |test('Incorrect action height argument', async t => { 45 |    await t.resizeWindow(500, -5);  at <anonymous> (D:\\Projects\\testcafe\\test\\functional\\fixtures\\api\\es-next\\resize-window\\testcafe-fixtures\\resize-window-test.js:40:36) at $$testcafe_test_run$$sspCst19Y$$ (D:\\Projects\\testcafe\\src\\api\\test-run-tracker.js:76:16) at $$testcafe_test_run$$sspCst19Y$$ (D:\\Projects\\testcafe\\src\\api\\test-run-tracker.js:76:16)"
+] was thrown, throw an Error :)
+      at <anonymous>
+      at process._tickDomainCallback (internal/process/next_tick.js:228:7)
+
+  23) [API] Resize window actions
+       t.resizeWindowToFitDevice
+         Should resize the window to fit a device:
+     Error: the array [
+  "AssertionError: expected 552 to equal 480  [[user-agent]]  46 |}); 47 | 48 |test('Resize the window to fit a device', async t => { 49 |    await t.resizeWindowToFitDevice('iPhone'); 50 | > 51 |    expect(await getWindowWidth()).equals(iPhoneSize.width); 52 |    expect(await getWindowHeight()).equals(iPhoneSize.height); 53 |}); 54 | 55 |test('Resize the window to fit a device with portrait orientation', async t => { 56 |    await t.resizeWindowToFitDevice('iPhone', { portraitOrientation: true });  at <anonymous> (D:\\Projects\\testcafe\\test\\functional\\fixtures\\api\\es-next\\resize-window\\testcafe-fixtures\\resize-window-test.js:51:36) at $$testcafe_test_run$$8lOCJEmwm$$ (D:\\Projects\\testcafe\\src\\api\\test-run-tracker.js:76:16) at $$testcafe_test_run$$8lOCJEmwm$$ (D:\\Projects\\testcafe\\src\\api\\test-run-tracker.js:76:16)"
+] was thrown, throw an Error :)
+      at <anonymous>
+      at process._tickDomainCallback (internal/process/next_tick.js:228:7)
+
+  24) [API] Resize window actions
+       t.resizeWindowToFitDevice
+         Should resize the window to fit a device with portrait orientation:
+     Error: the array [
+  "AssertionError: expected 400 to equal 320  [[user-agent]]  53 |}); 54 | 55 |test('Resize the window to fit a device with portrait orientation', async t => { 56 |    await t.resizeWindowToFitDevice('iPhone', { portraitOrientation: true }); 57 | > 58 |    expect(await getWindowWidth()).equals(iPhoneSize.height); 59 |    expect(await getWindowHeight()).equals(iPhoneSize.width); 60 |}); 61 | 62 | 63 |test('Incorrect action device argument', async t => {  at <anonymous> (D:\\Projects\\testcafe\\test\\functional\\fixtures\\api\\es-next\\resize-window\\testcafe-fixtures\\resize-window-test.js:58:36) at $$testcafe_test_run$$C_aEDm4cY$$ (D:\\Projects\\testcafe\\src\\api\\test-run-tracker.js:76:16) at $$testcafe_test_run$$C_aEDm4cY$$ (D:\\Projects\\testcafe\\src\\api\\test-run-tracker.js:76:16)"
+] was thrown, throw an Error :)
+      at <anonymous>
+      at process._tickDomainCallback (internal/process/next_tick.js:228:7)
+
+  25) [API] Selector
+       Should provide basic properties in HTMLElement snapshots:
+     Error: the array [
+  "AssertionError: expected 42.98295211791992 to deeply equal 43  [[user-agent]]  60 |        .expect(el.focused).notOk() 61 |        .expect(el.value).eql(void 0) 62 |        .expect(el.checked).eql(void 0) 63 |        .expect(el.selected).eql(void 0) 64 | > 65 |        .expect(el.boundingClientRect.width).eql(43) 66 |        .expect(el.boundingClientRect.left).eql(0) 67 |        .expect(el.getBoundingClientRectProperty('left')).eql(0) 68 | 69 |        .expect(el.textContent).eql('\\n    \\n        42\\n    \\n    Yo\\n') 70 |        .expect(el.classNames).eql(['yo', 'hey', 'cool']);  at <anonymous> (D:\\Projects\\testcafe\\test\\functional\\fixtures\\api\\es-next\\selector\\testcafe-fixtures\\selector-test.js:65:46)"
+] was thrown, throw an Error :)
+      at <anonymous>
+      at process._tickDomainCallback (internal/process/next_tick.js:228:7)
+
+  26) [API] Selector
+       Should provide basic properties in SVGElement snapshots:
+     Error: the array [
+  "AssertionError: expected 31.988636016845703 to deeply equal 32  [[user-agent]]  99 |        .expect(el.clientTop).eql(0) 100 |        .expect(el.clientLeft).eql(0) 101 | 102 |        .expect(el.boundingClientRect.width).eql(300) 103 |        .expect(el.boundingClientRect.height).eql(100) > 104 |        .expect(el.boundingClientRect.top).eql(32) 105 |        .expect(el.boundingClientRect.left).eql(0) 106 | 107 |        .expect(el.focused).notOk() 108 |        .expect(el.value).eql(void 0) 109 |        .expect(el.checked).eql(void 0)  at <anonymous> (D:\\Projects\\testcafe\\test\\functional\\fixtures\\api\\es-next\\selector\\testcafe-fixtures\\selector-test.js:104:44)"
+] was thrown, throw an Error :)
+      at <anonymous>
+      at process._tickDomainCallback (internal/process/next_tick.js:228:7)
+
+
+

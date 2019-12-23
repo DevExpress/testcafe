@@ -12,7 +12,7 @@ describe('[Regression](GH-637)', function () {
         return copy(srcDir, tmpDir).then(function () {
             const testFile = path.join(tmpDir, './testfile.js');
 
-            return runTests(testFile, 'Some test', { only: 'chrome' });
+            return runTests(testFile, 'Some test', { only: 'edge-chromium' });
         });
     });
 });

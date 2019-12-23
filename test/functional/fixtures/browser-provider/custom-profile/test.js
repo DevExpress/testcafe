@@ -28,7 +28,7 @@ if (config.useLocalBrowsers && !config.isTravisEnvironment) {
                         .createRunner()
                         .src(path.join(__dirname, './testcafe-fixtures/index-test.js'))
                         .reporter('minimal', createNullStream())
-                        .browsers(`chrome --user-data-dir=${chromeProfile.name}`, `firefox -profile ${firefoxProfile.name}`)
+                        .browsers(`edge-chromium --user-data-dir=${chromeProfile.name}`, `firefox -profile ${firefoxProfile.name}`)
                         .run();
                 })
                 .then(failedCount => {

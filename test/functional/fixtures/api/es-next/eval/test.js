@@ -4,7 +4,7 @@ const { checkUserAgent } = require('../../../../assertion-helper');
 
 describe('[API] t.eval', function () {
     it('Should execute an anonymous client function', function () {
-        const browsers = 'chrome,firefox,ie';
+        const browsers = 'edge-chromium,firefox,ie';
 
         return runTests('./testcafe-fixtures/eval-test.js', 'Get UA', { shouldFail: true, only: browsers })
             .catch(function (errs) {
@@ -13,6 +13,8 @@ describe('[API] t.eval', function () {
                         return browsers.indexOf(browser.alias) > -1;
                     })
                     .forEach(function (browser) {
+                        debugger;
+
                         checkUserAgent(errs, browser.alias);
                     });
             });
