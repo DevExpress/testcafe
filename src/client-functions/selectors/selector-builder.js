@@ -12,6 +12,8 @@ import { addAPI, addCustomMethods } from './add-api';
 import createSnapshotMethods from './create-snapshot-methods';
 import prepareApiFnArgs from './prepare-api-args';
 import returnSinglePropMode from '../return-single-prop-mode';
+import modeSwitcher from '../mode-switcher';
+
 
 export default class SelectorBuilder extends ClientFunctionBuilder {
     constructor (fn, options, callsiteNames) {
@@ -205,6 +207,9 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
 
             if (this.options.customMethods)
                 addCustomMethods(snapshot, () => snapshot.selector, SelectorBuilder, this.options.customMethods);
+
+            if (modeSwitcher.syncMode)
+                addAPI(snapshot, () => snapshot.selector, SelectorBuilder, this.options.customDOMProperties, this.options.customMethods, true);
         }
 
         return snapshot;

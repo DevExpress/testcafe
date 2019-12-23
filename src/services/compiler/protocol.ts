@@ -33,6 +33,7 @@ export interface ExecuteCommandArguments {
 
 export interface TestRunDispatcherProtocol {
     executeAction ({ id, apiMethodName, command, callsite }: ExecuteCommandArguments): Promise<unknown>;
+    executeActionSync ({ id, apiMethodName, command, callsite }: ExecuteCommandArguments): unknown;
 }
 
 export interface CompilerProtocol extends TestRunDispatcherProtocol {

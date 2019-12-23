@@ -35,4 +35,8 @@ describe('Compiler service', () => {
             ]);
         }
     });
+
+    it('Should execute Selectors in sync mode', async () => {
+        await runTests('testcafe-fixtures/selector-test.js', 'Selector API');
+    });
 });

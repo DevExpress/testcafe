@@ -21,6 +21,8 @@ import {
     RunTestArguments
 } from './protocol';
 import { CompilerArguments } from '../../compiler/interfaces';
+import modeSwitcher from '../../client-functions/mode-switcher';
+
 
 sourceMapSupport.install({
     hookRequire:              true,
@@ -94,6 +96,8 @@ class CompilerService implements CompilerProtocol {
     }
 
     public async ready (): Promise<void> {
+        modeSwitcher.forcedSyncMode = void 0;
+
         this.proxy.call(this.ready);
     }
 
@@ -128,6 +132,10 @@ class CompilerService implements CompilerProtocol {
 
     public async executeAction ({ id, apiMethodName, command, callsite }: ExecuteCommandArguments): Promise<unknown> {
         return this.proxy.call(this.executeAction, { id, apiMethodName, command, callsite });
+    }
+
+    public executeActionSync ({ id, apiMethodName, command, callsite }: ExecuteCommandArguments): unknown {
+        return this.proxy.callSync(this.executeAction, { id, apiMethodName, command, callsite });
     }
 }
 

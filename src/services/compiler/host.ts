@@ -108,9 +108,13 @@ export default class CompilerHost extends EventEmitter implements CompilerProtoc
         if (!testRunTracker.activeTestRuns[data.id])
             return void 0;
 
-        return testRunTracker
+        return await testRunTracker
             .activeTestRuns[data.id]
             .executeAction(data.apiMethodName, data.command, data.callsite);
+    }
+
+    public executeActionSync (): never {
+        throw new Error();
     }
 
     public async getTests ({ sourceList, compilerOptions }: CompilerArguments): Promise<Test[]> {

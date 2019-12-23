@@ -28,6 +28,13 @@ class TestRunMock {
 
         return await this.dispatcher.executeAction({ apiMethodName, command, callsite, id: this.id });
     }
+
+    public executeActionSync (apiMethodName: string, command: unknown, callsite: unknown): unknown {
+        if (callsite)
+            callsite = prerenderCallsite(callsite);
+
+        return this.dispatcher.executeActionSync({ apiMethodName, command, callsite, id: this.id });
+    }
 }
 
 export default TestRunMock;
