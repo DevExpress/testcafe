@@ -92,7 +92,7 @@ if (config.useLocalBrowsers) {
             mockProvider.plugin.idNameMap = {};
         });
 
-        it.only('Should report job results to the providers', function () {
+        it('Should report job results to the providers', function () {
             return run(['edge-chromium:id-1', 'edge-chromium:id-2'], './testcafe-fixtures/index-test.js')
                 .then(function () {
                     expect(mockProvider.plugin.state['id-1'].result).eql(mockProvider.plugin.JOB_RESULT.done);
@@ -102,7 +102,7 @@ if (config.useLocalBrowsers) {
                 });
         });
 
-        it.only('Should report job error to the providers', function () {
+        it('Should report job error to the providers', function () {
             return run(['edge-chromium:failed-1', 'edge-chromium:id-2'], './testcafe-fixtures/long-test.js')
                 .then(function () {
                     throw new Error('Promise rejection expected');
@@ -115,7 +115,7 @@ if (config.useLocalBrowsers) {
                 });
         });
 
-        it.only('Should report job cancellation to the providers', function () {
+        it('Should report job cancellation to the providers', function () {
             return run(['edge-chromium:id-1', 'edge-chromium:id-2'], './testcafe-fixtures/long-test.js')
                 .cancel()
                 .then(function () {

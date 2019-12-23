@@ -19,7 +19,7 @@ describe('Reporter', () => {
         process.stderr.write = stdoutWrite;
     });
 
-    it.only('Should support several different reporters for a test run', function () {
+    it('Should support several different reporters for a test run', function () {
         const stream1 = createSimpleTestStream();
         const stream2 = createSimpleTestStream();
 

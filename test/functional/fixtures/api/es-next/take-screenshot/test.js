@@ -574,7 +574,7 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
-        it.only('Should remove screenshot mark from an element screenshot when the element is in bottom right corner', function () {
+        it('Should remove screenshot mark from an element screenshot when the element is in bottom right corner', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Bottom-right element',
                 { setScreenshotPath: true })
                 .then(function () {
