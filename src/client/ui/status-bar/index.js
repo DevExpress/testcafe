@@ -361,10 +361,16 @@ export default class StatusBar extends serviceUtils.EventEmitter {
     }
 
     _getFullStatusText (statusText) {
+        const fullStatus = [];
         const prefixText = this.contextStorage.getItem(LOCAL_STORAGE_STATUS_PREFIX_ITEM);
-        const prefix     = prefixText ? `${prefixText}. ` : '';
 
-        return `${prefix}${statusText}`;
+        if (prefixText)
+            fullStatus.push(prefixText);
+
+        if (statusText)
+            fullStatus.push(statusText);
+
+        return fullStatus.join('. ');
     }
 
     _showWaitingStatus () {
@@ -503,6 +509,5 @@ export default class StatusBar extends serviceUtils.EventEmitter {
 
     setStatusPrefix (prefixText) {
         this.contextStorage.setItem(LOCAL_STORAGE_STATUS_PREFIX_ITEM, prefixText);
-        this._resetState();
     }
 }
