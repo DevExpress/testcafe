@@ -1,4 +1,4 @@
-if: NOT (commit_message =~ /^\[docs\]/ OR branch = 'new-docs')
+if: NOT (commit_message =~ /^\[docs\]/)
 
 addons:
  chrome:  stable
@@ -39,6 +39,8 @@ install: travis_retry npm install
 branches:
   except:
     - /^build-bot-temp-.*$/
+    - /^\(testbot-only\)/
+    - new-docs
 
 notifications:
  email: false

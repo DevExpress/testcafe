@@ -38,19 +38,32 @@ async function getValidPort (port) {
 }
 
 // API
-async function createTestCafe (hostname, port1, port2, sslOptions, developmentMode, retryTestPages) {
+async function getConfiguration (args) {
     const configuration = new TestCafeConfiguration();
 
-    await configuration.init({
-        hostname,
-        port1,
-        port2,
-        ssl: sslOptions,
-        developmentMode,
-        retryTestPages
-    });
+    if (args.length === 1 && typeof args[0] === 'object')
+        await configuration.init(args[0]);
+    else {
+        const [hostname, port1, port2, ssl, developmentMode, retryTestPages] = args;
 
-    [hostname, port1, port2] = await Promise.all([
+        await configuration.init({
+            hostname,
+            port1,
+            port2,
+            ssl,
+            developmentMode,
+            retryTestPages
+        });
+    }
+
+    return configuration;
+}
+
+// API
+async function createTestCafe (...args) {
+    const configuration = await getConfiguration(args);
+
+    const [hostname, port1, port2] = await Promise.all([
         getValidHostname(configuration.getOption(OPTION_NAMES.hostname)),
         getValidPort(configuration.getOption(OPTION_NAMES.port1)),
         getValidPort(configuration.getOption(OPTION_NAMES.port2))

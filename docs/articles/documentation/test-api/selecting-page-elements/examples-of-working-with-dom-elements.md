@@ -13,6 +13,7 @@ This document shows how to work with DOM elements in frequent real-world situati
 * [Access Shadow DOM](#access-shadow-dom)
 * [Check if an Element is Available](#check-if-an-element-is-available)
 * [Enumerate Elements Identified by a Selector](#enumerate-elements-identified-by-a-selector)
+* [Select Elements With Dynamic IDs](#select-elements-with-dynamic-ids)
 
 ## Access Page Element Properties
 
@@ -230,6 +231,81 @@ test('My test', async t => {
 
     for(let i = 0; i < checkboxCount; i++)
         await t.click(checkboxes.nth(i));
+});
+```
+
+## Select Elements With Dynamic IDs
+
+TestCafe selectors should use element identifiers that persist between test runs. However, many JavaScript frameworks generate dynamic IDs for page elements. To identify elements whose `id` attribute changes, use selectors based on the element's class, content, tag name, or position:
+
+* [withText](selectors/functional-style-selectors.md#withtext),
+* [withExactText](selectors/functional-style-selectors.md#withexacttext),
+* [withAttribute](selectors/functional-style-selectors.md#withattribute),
+* [parent](selectors/functional-style-selectors.md#parent),
+* [child](selectors/functional-style-selectors.md#child),
+* [sibling](selectors/functional-style-selectors.md#sibling),
+* [nextSibling](selectors/functional-style-selectors.md#nextsibling),
+* [prevSibling](selectors/functional-style-selectors.md#prevsibling).
+
+**Example**
+
+```html
+<html>
+    <body>
+        <div id="j9dk399sd304" class="container">
+            <div id="dsf054k45o3e">Item 1</div>
+            <div id="lk94km904wfv">Item 2</div>
+        </div>
+    </body>
+</html>
+```
+
+```js
+import { Selector } from 'testcafe';
+
+fixture `My fixture`
+    .page `http://localhost/`;
+
+test('My test', async t => {
+    const container = Selector('div').withAttribute('class', 'container');
+    const item1     = Selector('div').withText('Item 1');
+    const item2     = container.child(1);
+});
+```
+
+If the element's ID is partially dynamic, you can use the following selectors to match the ID's static part:
+
+* [withAttribute(RegExp)](selectors/functional-style-selectors.md#withattribute)
+* [[attribute~=value]](https://www.w3schools.com/cssref/sel_attribute_value_contains.asp),
+* [[attribute|=value]](https://www.w3schools.com/cssref/sel_attribute_value_lang.asp),
+* [[attribute^=value]](https://www.w3schools.com/cssref/sel_attr_begin.asp),
+* [[attribute$=value]](https://www.w3schools.com/cssref/sel_attr_end.asp),
+* [[attribute*=value]](https://www.w3schools.com/cssref/sel_attr_contain.asp).
+
+**Example**
+
+```html
+<html>
+    <body>
+        <div id="9fgk309d3-wrapper-9f">
+            <div id="g99dsf99sdfg-container">
+                <div id="item-df9f9sfd9fd9">Item</div>
+            </div>
+        </div>
+    </body>
+</html>
+```
+
+```js
+import { Selector } from 'testcafe';
+
+fixture `My fixture`
+    .page `http://localhost/`;
+
+test('My test', async t => {
+    const wrapper   = Selector('div').withAttribute('id', /\w+-wrapper-\w+/);
+    const container = Selector('[id$="container"]');
+    const item      = Selector('[id|="item"]');
 });
 ```
 

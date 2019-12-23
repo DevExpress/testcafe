@@ -1,5 +1,5 @@
 export default {
-    uninitialized:         'unitialized',
+    uninitialized:         'uninitialized',
     pendingInitialization: 'pendingInitialization',
     initialized:           'initialized'
 };

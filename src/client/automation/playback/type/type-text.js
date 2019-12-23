@@ -221,10 +221,24 @@ function _typeTextToContentEditable (element, text) {
 function _typeTextToTextEditable (element, text) {
     const elementValue      = domUtils.getElementValue(element);
     const textLength        = text.length;
-    let startSelection    = textSelection.getSelectionStart(element);
-    let endSelection      = textSelection.getSelectionEnd(element);
+    let startSelection      = textSelection.getSelectionStart(element);
+    let endSelection        = textSelection.getSelectionEnd(element);
     const isInputTypeNumber = domUtils.isInputElement(element) && element.type === 'number';
-    const needProcessInput  = simulateTextInput(element, text);
+
+    // NOTE: https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/beforeinput_event
+    // The `beforeInput` event is supported only in Chrome-based browsers and Safari
+    // The order of events differs in Chrome and Safari:
+    // In Chrome: `beforeinput` occurs before `textInput`
+    // In Safari: `beforeinput` occurs after `textInput`
+    const needProcessTextInput = !browserUtils.isChrome || eventSimulator.beforeInput(element, text);
+
+    if (!needProcessTextInput)
+        return;
+
+    let needProcessInput = simulateTextInput(element, text);
+
+    if (needProcessInput && browserUtils.isSafari)
+        needProcessInput = eventSimulator.beforeInput(element, text);
 
     if (!needProcessInput)
         return;
