@@ -530,6 +530,9 @@ export default class TestRun extends AsyncEventEmitter {
             }
 
             this._fulfillCurrentDriverTask(driverStatus);
+
+            if (driverStatus.isPendingWindowSwitching)
+                return new serviceCommands.DoNothingCommand();
         }
 
         return this._getCurrentDriverTaskCommand();

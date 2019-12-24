@@ -46,5 +46,6 @@ export default {
     executeExpression:          'execute-expression',
     executeAsyncExpression:     'execute-async-expression',
     unlockPage:                 'unlock-page',
-    recorder:                   'recorder'
+    recorder:                   'recorder',
+    doNothing:                  'do-nothing',
 };

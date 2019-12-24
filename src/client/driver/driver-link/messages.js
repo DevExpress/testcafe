@@ -68,3 +68,4 @@ export class CloseAllChildWindowsMessage extends InterDriverMessage {
         super(TYPE.closeAllChildWindows);
     }
 }
+
