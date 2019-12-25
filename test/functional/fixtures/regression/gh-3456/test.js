@@ -8,7 +8,7 @@ const SCREENSHOTS_PATH = path.resolve(assertionHelper.SCREENSHOTS_PATH);
 
 if (config.useLocalBrowsers) {
     describe('[Regression](GH-3456) Should process --window-size arg in Headless mode ', function () {
-        it(':headless', () => {
+        it.only(':headless', () => {
             const browsers = [
                 'chrome:headless --window-size=501,602',
                 'chrome --headless --window-size=501,602'

@@ -7,7 +7,7 @@ describe('Basic and NTLM authentications', function () {
         return runTests('./testcafe-fixtures/basic-auth-with-wrong-credentials-test.js');
     });
 
-    it('Should authenticate on a "basic" server with correct credentials', function () {
+    it.only('Should authenticate on a "basic" server with correct credentials', function () {
         return runTests('./testcafe-fixtures/basic-auth-with-correct-credentials-test.js');
     });
 
@@ -15,7 +15,7 @@ describe('Basic and NTLM authentications', function () {
         return runTests('./testcafe-fixtures/ntlm-auth-check-username-test.js');
     });
 
-    it('Should override credentials with test.httpAuth', function () {
+    it.only('Should override credentials with test.httpAuth', function () {
         return runTests('./testcafe-fixtures/override-credentials-test.js');
     });
 

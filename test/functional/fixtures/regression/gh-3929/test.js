@@ -6,7 +6,7 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
     describe('[Regression](GH-3929) - Should reconnect with bad network conditions', function () {
         this.timeout(60000);
 
-        it('Should reconnect with bad network conditions', function () {
+        it.only('Should reconnect with bad network conditions', function () {
             return createTestCafe('127.0.0.1', 1335, 1336)
                 .then(tc => {
                     testCafe = tc;

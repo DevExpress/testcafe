@@ -63,7 +63,7 @@ function createLiveModeRunner (tc, src, browsers = DEFAULT_BROWSERS) {
 }
 
 if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
-    describe('Live Mode', () => {
+    describe.skip('Live Mode', () => {
         afterEach (() => {
             helper.clean();
         });

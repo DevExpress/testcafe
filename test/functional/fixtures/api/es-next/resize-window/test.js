@@ -63,7 +63,7 @@ describe('[API] Resize window actions', function () {
         });
 
         if (OS.mac) {
-            it('Should fail when the requested size exceeds the maximum available size', function () {
+            it.only('Should fail when the requested size exceeds the maximum available size', function () {
                 return runTests('./testcafe-fixtures/resize-window-test.js', 'Too big size', { shouldFail: true })
                     .catch(function (errs) {
                         errorInEachBrowserContains(errs, 'Unable to resize the window because the specified size exceeds the screen size. On macOS, a window cannot be larger than the screen.', 0);

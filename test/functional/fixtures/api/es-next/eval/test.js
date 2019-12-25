@@ -3,7 +3,7 @@ const config             = require('../../../../config');
 const { checkUserAgent } = require('../../../../assertion-helper');
 
 describe('[API] t.eval', function () {
-    it('Should execute an anonymous client function', function () {
+    it.only('Should execute an anonymous client function', function () {
         const browsers = 'edge-chromium,firefox,ie';
 
         return runTests('./testcafe-fixtures/eval-test.js', 'Get UA', { shouldFail: true, only: browsers })

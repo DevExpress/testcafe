@@ -1,0 +1,631 @@
+shots (4573ms)
+    ✓ Should provide input-specific properties in element snapshots (5396ms)
+    ✓ Should provide `innerText` property in element snapshots (4418ms)
+    ✓ Should provide node snapshots for non-element nodes (4859ms)
+    ✓ Should accept string as constructor argument (4383ms)
+    ✓ Should wait for element to appear in DOM (5749ms)
+    ✓ Should return `null` if element does not appear within given time (5313ms)
+    ✓ Should check element visibility if option is enabled (9407ms)
+    ✓ Should use timeout specified via property (5299ms)
+    ✓ Should provide "selector" method in node snapshot (4476ms)
+    ✓ Should provide "hasClass" method in node snapshot (4482ms)
+    ✓ Should provide "addCustomDOMProperties" method in node snapshot (8456ms)
+    ✓ Should provide "addCustomMethods" method in node snapshot (8636ms)
+    ✓ Selector `addCustomMethods` method - Selector mode (8704ms)
+    ✓ Should wait for element to appear on new page (5705ms)
+    ✓ Should provide snapshot property shorthands on selector (5597ms)
+    ✓ Should filter results with `nth()` method (8253ms)
+    ✓ Should filter results with `withText()` method (4999ms)
+    ✓ Should filter results with `withExactText()` method (4616ms)
+    ✓ Should filter results with `withAttribute()` method (4960ms)
+    ✓ Should filter results with `filter()` method (4856ms)
+    ✓ Should filter using combination of filter methods (4519ms)
+    ✓ Should provide methods for filtering by visibility for plain structure of HTML elements (4495ms)
+    ✓ Should provide methods for filtering by visibility for hierarchical structure of HTML elements (4676ms)
+    ✓ Should provide .find() method (5013ms)
+    ✓ Should provide .parent() method (5153ms)
+    ✓ Should provide .child() method (5083ms)
+    ✓ Should provide .sibling() method (4787ms)
+    ✓ Should provide .nextSibling() method (4752ms)
+    ✓ Should provide .prevSibling() method (4822ms)
+    ✓ Should provide "exists" and "count" properties (4881ms)
+    ✓ Should provide dependencies and index argument to selector filter (4637ms)
+    ✓ Should provide filter origin argument (4643ms)
+    ✓ Should provide hasAttribute method (4866ms)
+    Errors
+      ✓ Should handle errors in Selector code (4927ms)
+      ✓ Should raise error if non-DOM node returned (4859ms)
+      ✓ Should raise an error if Selector ctor argument is not a function or string (4331ms)
+      ✓ Should raise error if snapshot property shorthand can't find element in DOM tree (5145ms)
+      ✓ Should raise error if snapshot shorthand method can't find element in DOM tree (5180ms)
+      ✓ Should raise error if error occurs in selector during shorthand property evaluation (4961ms)
+      ✓ Should raise error if error occurs in selector during shorthand method evaluation (4956ms)
+      ✓ Should raise error if error occurs in selector during "count" property evaluation (4912ms)
+      ✓ Should raise error if error occurs in selector during "exists" property evaluation (4883ms)
+      ✓ Should raise error if custom DOM property throws an error (4902ms)
+      ✓ Should raise error if custom method throws an error (4412ms)
+      ✓ Should raise error if custom method throws an error - Selector mode (5017ms)
+    Regression
+      ✓ Should execute successfully if derivative selector doesn't have options (GH-716) (4403ms)
+      - Should select <option> element by text in Firefox (GH-861)
+
+  [API] .skip/.only
+    ✓ Should filter out tests without "only" directive (5449ms)
+    ✓ Should filter out tests without "skip" directive (4999ms)
+
+  [API] Test Speed
+    ✓ Should run test with different speed (17980ms)
+    ✓ Should run test with different speed in iframe (20743ms)
+
+  [API] TestController
+    ✓ Should support chaining (5374ms)
+    ✓ Should produce correct callsites for chained calls (4879ms)
+    Proxy object
+      ✓ Should provide importable proxy object (4685ms)
+    Missing `await` tracking
+      ✓ Should track missing `await` (5046ms)
+      ✓ Should track missing `await` in chain (5016ms)
+      ✓ Should track missing `await` in the end of test (4351ms)
+      ✓ Should track missing `await` for actions with error (4558ms)
+      ✓ Should track missing `await` with disrupted chain (5060ms)
+      ✓ Should track missing `await` in helper (4379ms)
+      ✓ Should not track missing `await` when uncaught error is occurred (GH-2557) (4362ms)
+      Regression
+        ✓ Should allow chains within chain (GH-1285) (4903ms)
+
+  [API] t.typeText()
+    ✓ Should type text in input (4616ms)
+    ✓ Should validate options (4421ms)
+    ✓ Should validate text (4392ms)
+    ✓ Should validate selector (4405ms)
+
+  [API] Upload
+    t.setFilesToUpload
+      ✓ Should upload the specified file (4825ms)
+      ✓ Should validate the selector argument (4406ms)
+      ✓ Should validate the filePath argument (4337ms)
+    t.clearUpload
+      ✓ Should clear the upload (4876ms)
+      ✓ Should validate the selector argument (4379ms)
+
+  [API] Wait
+    t.wait
+      ✓ Should wait for the specified time (6766ms)
+      ✓ Should validate the timeout argument (4352ms)
+
+  [TypeScript] Smoke tests
+    ✓ Should run non-trivial tests (9010ms)
+    ✓ Should produce correct callsites on error (5261ms)
+
+  [Raw API] Assertions
+    ✓ Should perform eql assertion (4357ms)
+    ✓ Should perform notEql assertion (4401ms)
+    ✓ Should perform ok assertion (4345ms)
+    ✓ Should perform notOk assertion (4321ms)
+    ✓ Should perform within assertion (4442ms)
+    ✓ Should perform notWithin assertion (4395ms)
+    ✓ Should raise error if "timeout" option is not a number (4378ms)
+    ✓ Should process js expression (4399ms)
+
+  [Raw API] Click action
+    ✓ Should make click on a button (4631ms)
+    ✓ Should perform click on a submit button and wait for page redirect (4704ms)
+    ✓ Should wait for the page load barrier to finish after an action (4638ms)
+    ✓ Should fail when a js-error appears on page load (4422ms)
+    ✓ Should fail when a js-error appears during click execution (4606ms)
+    ✓ Should wait for xhr-requests after an action (5756ms)
+    ✓ Should wait for the next action element to appear (6756ms)
+    ✓ Should fail if an action target doesn't exist (5092ms)
+    ✓ Should fail if an action target is invisible (5102ms)
+    ✓ Should fail if an action target is out of the visible area (5209ms)
+    ✓ Should fail if action has incorrect selector (4371ms)
+    ✓ Should fail if action has an incorrect option (4464ms)
+
+  [Raw API] Code steps
+    ✓ Selectors (4604ms)
+    ✓ Shared context (4424ms)
+    ✓ Require (4410ms)
+    ✓ Error (4373ms)
+    ✓ Selector not found error (5135ms)
+    ✓ Errors on page (4580ms)
+
+  [API] .disableReloading/.enableReloading
+    ✓ Shouldn't reload test pages when the fixture.disableReloading option is specified (4485ms)
+    ✓ Shouldn't reload test pages when the test.disableReloading option is specified (4415ms)
+
+  [Raw API] Double click action
+    ✓ Should make double click on a button (4773ms)
+
+  [Raw API] Drag actions
+    drag
+      ✓ Should drag an element by an offset (4661ms)
+    drag-to-element
+      ✓ Should drag an element to another element (4691ms)
+      ✓ Should fail if a dragged element doesn't exist (5141ms)
+      ✓ Should fail if a dragged element is invisible (5086ms)
+      30) Should fail if a destination element doesn't exist
+      ✓ Should fail if a destination element is invisible (5183ms)
+
+  [Raw API] Execute expression action
+    ✓ Should execute async expressions (4427ms)
+    ✓ Should execute simple sync expressions (4431ms)
+    ✓ Should share global variables between different command calls (4421ms)
+
+  [Raw API] fixture.beforeEach/fixture.afterEach hooks
+    ✓ Should run hooks for all tests (10024ms)
+    ✓ Should not run test and afterEach if fails in beforeEach (4681ms)
+    ✓ Should run test and afterEach and beforeEach if test fails (5014ms)
+    ✓ Variables defined in beforeEach hook or in test should not be available in afterEach hook (4433ms)
+    ✓ Variables defined in beforeEach hook should not be available in afterEach hook (4364ms)
+    ✓ Variables defined in beforeEach hook should not be available in test (4466ms)
+
+  [Raw API] test.before/test.after hooks
+    ✓ Should run hooks before and after test and override fixture hooks (5106ms)
+
+  [Raw API] Hover action
+    ✓ Should make hover on a buttons (4694ms)
+    ✓ Should fail if an action target is out of the visible area (5246ms)
+
+  [RAW] t.switchToIframe(), t.switchToMainWindow()
+    ✓ Should switch context between a nested iframe and the main window (6852ms)
+
+  Native dialogs handling
+    ✓ Should pass if the expected confirm dialog appears after an action (4645ms)
+    ✓ Should pass if the expected confirm dialog appears after an action (client function) (4621ms)
+    ✓ Should fail if Selector send as dialog handler (4418ms)
+    ✓ Should fail if dialog handler has wrong type (4339ms)
+    ✓ Should remove dialog handler if `null` specified (4750ms)
+
+  [Raw API] Navigate to action
+    ✓ Should navigate to a page using a url that contains a protocol (4737ms)
+    ✓ Should navigate to a page using a protocol-relative url (5750ms)
+    ✓ Should navigate to a page using a relative url (4742ms)
+    ✓ Should navigate to the 404-page using a non-existent url (4568ms)
+    ✓ Should navigate to the 404-page using an incorrect url (4625ms)
+
+  [Raw API] Press action
+    ✓ Clear input value with shortcuts (4668ms)
+    ✓ Should fail if keys command is incorrect (4419ms)
+
+  [Raw API] Right click action
+    ✓ Should make right click on a button (4629ms)
+
+  [Raw API] Select editable content
+    ✓ Should select editable content in div (4596ms)
+    ✓ Should fail if a start element doesn't exist (5094ms)
+    ✓ Should fail if any element is invisible (5100ms)
+    ✓ Should fail if any element isn't content-editable (5170ms)
+    ✓ Should fail if elements don't have a common ancestor (5162ms)
+
+  [Raw API] Select text
+    ✓ Should select text in input (4669ms)
+    ✓ Should select text in textarea (4680ms)
+    ✓ Should select editable content in div (4713ms)
+    ✓ Should fail if an action's target isn't editable (5183ms)
+
+  [Raw API] Select textarea content
+    ✓ Should select text in textarea (4626ms)
+    ✓ Should fail if an action target isn't textarea (5191ms)
+
+  [Raw API] Selector
+    ✓ Should work with different type of selectors (7856ms)
+    ✓ Should raise an error is selector fails (4443ms)
+
+  [Raw API] Type action
+    ✓ Should type in an input (8471ms)
+    ✓ Should type all text in one keystroke if using 'paste' option (4615ms)
+    ✓ Should fail if a 'text' argument does not have string type (4477ms)
+    ✓ Should fail if a 'text' argument is empty (4420ms)
+
+  [Raw API] Upload
+    ✓ Should upload a file (4939ms)
+    ✓ Should fail if the action element is not a file input (5161ms)
+    ✓ Should fail if the specified file does not exist (5188ms)
+    ✓ Should upload files (5056ms)
+    ✓ Should fail if the specified file does not exist when multiple files are specified (5144ms)
+    ✓ Should clear the upload (5592ms)
+    ✓ Should fail if the action element is not a file input when clearing upload (5134ms)
+
+  [Raw API] Wait action
+    ✓ Should pass if the wait command is called before an action with an invisible element is performed and the timeout exceeds time required for the element to appear (10098ms)
+
+  Native dialogs handling in iframe
+    Actions in iframe, dialogs in iframe
+      ✓ Should fail if an unexpected confirm dialog appears after an action (5831ms)
+      ✓ Should pass if the expected alert dialog appears after an action (5395ms)
+      ✓ Should fail if confirm dialog appears with wrong text (5401ms)
+      ✓ Should fail if the expected alert dialog doesn't appear after an action (5360ms)
+    Actions in top window, dialogs in iframe
+      ✓ Should pass if the expected alert dialog appears after an action (4794ms)
+      ✓ Should fail when an unexpected alert dialog appears after an action (4859ms)
+    Actions in iframe, dialogs in top window
+      ✓ Should pass if the expected alert dialog appears after an action (5409ms)
+      ✓ Should fail when an unexpected alert dialog appears after an action (5372ms)
+    Actions in nested iframes
+      ✓ Should pass if the expected alert dialog appears in parent iframe after an action (5460ms)
+      ✓ Should pass if the expected alert dialog appears in child iframe after an action (5534ms)
+    Dialogs appear after page load
+      ✓ Should pass if the expected confirm dialog appears after page load (4787ms)
+      ✓ Should fail when an unexpected alert dialog appears after page load (4556ms)
+
+
+  655 passing (1h)
+  32 pending
+  30 failing
+
+  1) [API] t.takeScreenshot()
+       Should crop screenshots to a page viewport area:
+
+      AssertionError: expected false to deeply equal true
+      + expected - actual
+
+      -false
+      +true
+      
+      at /Users/alexkamaev/testcafe/test/functional/fixtures/api/es-next/take-screenshot/test.js:194:36
+      at runMicrotasks (<anonymous>)
+      at processTicksAndRejections (internal/process/task_queues.js:93:5)
+
+  2) [API] t.takeScreenshot()
+       Should crop scrollbars:
+     Error: the array [
+  "AssertionError: expected 0 to be above 0  [[user-agent]]  120 |        const expectedHeight = height - scrollbarSize; 121 | 122 |        // NOTE: IE clips screenshots not accurately 123 |        const accuracy = parseUserAgent(ua).name === 'Internet Explorer' ? 1 : 0; 124 | > 125 |        await t.expect(scrollbarSize).gt(0); 126 |        await t.expect(Math.abs(png.width - expectedWidth)).lte(accuracy); 127 |        await t.expect(Math.abs(png.height - expectedHeight)).lte(accuracy); 128 |    }); 129 |  at <anonymous> (/Users/alexkamaev/testcafe/test/functional/fixtures/api/es-next/take-screenshot/testcafe-fixtures/take-screenshot.js:125:39)"
+] was thrown, throw an Error :)
+      at runMicrotasks (<anonymous>)
+      at processTicksAndRejections (internal/process/task_queues.js:93:5)
+
+  3) [API] t.takeElementScreenshot()
+       Should take screenshot of an element:
+
+      AssertionError: expected false to deeply equal true
+      + expected - actual
+
+      -false
+      +true
+      
+      at /Users/alexkamaev/testcafe/test/functional/fixtures/api/es-next/take-screenshot/test.js:297:36
+      at runMicrotasks (<anonymous>)
+      at processTicksAndRejections (internal/process/task_queues.js:93:5)
+
+  4) [API] t.takeElementScreenshot()
+       Should take screenshot of an element with margins:
+
+      AssertionError: expected false to deeply equal true
+      + expected - actual
+
+      -false
+      +true
+      
+      at /Users/alexkamaev/testcafe/test/functional/fixtures/api/es-next/take-screenshot/test.js:378:36
+      at runMicrotasks (<anonymous>)
+      at processTicksAndRejections (internal/process/task_queues.js:93:5)
+
+  5) [API] t.takeElementScreenshot()
+       Should perform top-left crop:
+
+      AssertionError: expected false to deeply equal true
+      + expected - actual
+
+      -false
+      +true
+      
+      at /Users/alexkamaev/testcafe/test/functional/fixtures/api/es-next/take-screenshot/test.js:389:36
+      at runMicrotasks (<anonymous>)
+      at processTicksAndRejections (internal/process/task_queues.js:93:5)
+
+  6) [API] t.takeElementScreenshot()
+       Should perform top-left crop by default:
+
+      AssertionError: expected false to deeply equal true
+      + expected - actual
+
+      -false
+      +true
+      
+      at /Users/alexkamaev/testcafe/test/functional/fixtures/api/es-next/take-screenshot/test.js:400:36
+      at runMicrotasks (<anonymous>)
+      at processTicksAndRejections (internal/process/task_queues.js:93:5)
+
+  7) [API] t.takeElementScreenshot()
+       Should perform top-right crop:
+
+      AssertionError: expected false to deeply equal true
+      + expected - actual
+
+      -false
+      +true
+      
+      at /Users/alexkamaev/testcafe/test/functional/fixtures/api/es-next/take-screenshot/test.js:411:36
+      at runMicrotasks (<anonymous>)
+      at processTicksAndRejections (internal/process/task_queues.js:93:5)
+
+  8) [API] t.takeElementScreenshot()
+       Should capture screenshot of the element inside a same-domain iframe:
+
+      AssertionError: expected false to deeply equal true
+      + expected - actual
+
+      -false
+      +true
+      
+      at /Users/alexkamaev/testcafe/test/functional/fixtures/api/es-next/take-screenshot/test.js:518:36
+      at runMicrotasks (<anonymous>)
+      at processTicksAndRejections (internal/process/task_queues.js:93:5)
+
+  9) [API] t.takeElementScreenshot()
+       Should capture screenshot of the element inside a nested iframe:
+
+      AssertionError: expected false to deeply equal true
+      + expected - actual
+
+      -false
+      +true
+      
+      at /Users/alexkamaev/testcafe/test/functional/fixtures/api/es-next/take-screenshot/test.js:529:36
+      at runMicrotasks (<anonymous>)
+      at processTicksAndRejections (internal/process/task_queues.js:93:5)
+
+  10) [API] t.takeElementScreenshot()
+       Should capture screenshot of the element inside a cross-domain iframe:
+
+      AssertionError: expected false to deeply equal true
+      + expected - actual
+
+      -false
+      +true
+      
+      at /Users/alexkamaev/testcafe/test/functional/fixtures/api/es-next/take-screenshot/test.js:540:36
+      at runMicrotasks (<anonymous>)
+      at processTicksAndRejections (internal/process/task_queues.js:93:5)
+
+  11) [API] t.takeElementScreenshot()
+       Shouldn't scroll parent frames multiple times:
+
+      AssertionError: expected false to deeply equal true
+      + expected - actual
+
+      -false
+      +true
+      
+      at /Users/alexkamaev/testcafe/test/functional/fixtures/api/es-next/take-screenshot/test.js:551:36
+      at runMicrotasks (<anonymous>)
+      at processTicksAndRejections (internal/process/task_queues.js:93:5)
+
+  12) [API] t.takeElementScreenshot()
+       Should scroll to the scroll target when positive scrollTargetX/Y are specified:
+
+      AssertionError: expected false to deeply equal true
+      + expected - actual
+
+      -false
+      +true
+      
+      at /Users/alexkamaev/testcafe/test/functional/fixtures/api/es-next/take-screenshot/test.js:562:36
+      at runMicrotasks (<anonymous>)
+      at processTicksAndRejections (internal/process/task_queues.js:93:5)
+
+  13) [API] t.takeElementScreenshot()
+       Should scroll to the scroll target when negative scrollTargetX/Y are specified:
+
+      AssertionError: expected false to deeply equal true
+      + expected - actual
+
+      -false
+      +true
+      
+      at /Users/alexkamaev/testcafe/test/functional/fixtures/api/es-next/take-screenshot/test.js:573:36
+      at runMicrotasks (<anonymous>)
+      at processTicksAndRejections (internal/process/task_queues.js:93:5)
+
+  14) [API] t.takeElementScreenshot()
+       Should remove screenshot mark from an element screenshot when the element is in bottom right corner:
+
+      AssertionError: expected false to deeply equal true
+      + expected - actual
+
+      -false
+      +true
+      
+      at /Users/alexkamaev/testcafe/test/functional/fixtures/api/es-next/take-screenshot/test.js:592:36
+      at runMicrotasks (<anonymous>)
+      at processTicksAndRejections (internal/process/task_queues.js:93:5)
+
+  15) Screenshots on fails
+       Should crop screenshots to a page viewport area:
+
+      AssertionError: expected false to deeply equal true
+      + expected - actual
+
+      -false
+      +true
+      
+      at /Users/alexkamaev/testcafe/test/functional/fixtures/screenshots-on-fails/test.js:140:36
+      at runMicrotasks (<anonymous>)
+      at processTicksAndRejections (internal/process/task_queues.js:93:5)
+
+  16) Using external proxy server
+       Should open page via proxy server:
+     Error: the array [
+  "Cannot obtain information about the node because the specified selector does not match any node in the DOM tree.  > | Selector('#result')  [[user-agent]]  2 | 3 |fixture `Open page via proxy` 4 |    .page `http://localhost:3000/fixtures/proxy/pages/index.html`; 5 | 6 |test('Should open page via proxy', async t => { > 7 |    await t.expect(Selector('#result').innerText).eql('It works !'); 8 |}); 9 |  at <anonymous> (/Users/alexkamaev/testcafe/test/functional/fixtures/proxy/testcafe-fixtures/index.test.js:7:51) at <anonymous> (/Users/alexkamaev/testcafe/test/functional/fixtures/proxy/testcafe-fixtures/index.test.js:6:1) at <anonymous> (/Users/alexkamaev/testcafe/src/api/wrap-test-function.js:17:28) at TestRun._executeTestFn (/Users/alexkamaev/testcafe/src/test-run/index.js:294:19) at TestRun.start (/Users/alexkamaev/testcafe/src/test-run/index.js:345:24)"
+  "A request to \"http://localhost:3000/fixtures/proxy/pages/index.html\" has failed. Use quarantine mode to perform additional attempts to execute this test. You can find troubleshooting information for this issue at \"https://go.devexpress.com/TestCafe_FAQ_ARequestHasFailed.aspx\".  Error details: Failed to connect to the proxy host at \"testcafe-macbook.local:3005\".  [[user-agent]]"
+] was thrown, throw an Error :)
+      at processTicksAndRejections (internal/process/task_queues.js:93:5)
+
+  17) Using external proxy server
+       Should open restricted page via trusted proxy server:
+     Error: the array [
+  "Cannot obtain information about the node because the specified selector does not match any node in the DOM tree.  > | Selector('#result')  [[user-agent]]  2 | 3 |fixture `Open restricted page via proxy` 4 |    .page `http://localhost:3002`; 5 | 6 |test('Authenticate via proxy server', async t => { > 7 |    await t.expect(Selector('#result').innerText).eql('authorized'); 8 |}); 9 |  at <anonymous> (/Users/alexkamaev/testcafe/test/functional/fixtures/proxy/testcafe-fixtures/restricted-page.test.js:7:51) at <anonymous> (/Users/alexkamaev/testcafe/test/functional/fixtures/proxy/testcafe-fixtures/restricted-page.test.js:6:1) at <anonymous> (/Users/alexkamaev/testcafe/src/api/wrap-test-function.js:17:28) at TestRun._executeTestFn (/Users/alexkamaev/testcafe/src/test-run/index.js:294:19) at TestRun.start (/Users/alexkamaev/testcafe/src/test-run/index.js:345:24)"
+  "A request to \"http://localhost:3002/\" has failed. Use quarantine mode to perform additional attempts to execute this test. You can find troubleshooting information for this issue at \"https://go.devexpress.com/TestCafe_FAQ_ARequestHasFailed.aspx\".  Error details: Failed to connect to the proxy host at \"testcafe-macbook.local:3004\".  [[user-agent]]"
+] was thrown, throw an Error :)
+      at runMicrotasks (<anonymous>)
+      at processTicksAndRejections (internal/process/task_queues.js:93:5)
+
+  18) [Regression](GH-1994)
+       Click on hidden element removed on timeout:
+     AssertionError: object tested must be an array, a map, an object, a set, a string, or a weakset, but undefined given
+      at /Users/alexkamaev/testcafe/test/functional/fixtures/regression/gh-1994/test.js:11:33
+
+  19) [Regression](GH-3456) Should process --window-size arg in Headless mode 
+       :headless:
+
+      AssertionError: expected 1 to deeply equal 0
+      + expected - actual
+
+      -1
+      +0
+      
+      at /Users/alexkamaev/testcafe/test/functional/fixtures/regression/gh-3456/test.js:32:41
+      at runMicrotasks (<anonymous>)
+      at processTicksAndRejections (internal/process/task_queues.js:93:5)
+
+  20) [Regression](GH-3929) - Should reconnect with bad network conditions
+       Should reconnect with bad network conditions:
+     Error: The specified 1335 port is already in use by another program.
+      at getValidPort (src/index.js:32:19)
+      at runMicrotasks (<anonymous>)
+      at processTicksAndRejections (internal/process/task_queues.js:93:5)
+      at async Promise.all (index 1)
+      at createTestCafe (src/index.js:53:32)
+
+  21) Basic and NTLM authentications
+       Using external proxy server
+         Should not authenticate on a "basic" server with wrong credentials:
+     Error: the array [
+  "Cannot obtain information about the node because the specified selector does not match any node in the DOM tree.  > | Selector('#result')  [[user-agent]]  3 |fixture `Basic authentication - wrong credentials` 4 |    .page `http://localhost:3002` 5 |    .httpAuth({ username: 'invalid', password: 'invalid' }); 6 | 7 |test('Authenticate with wrong credentials', async t => { >  8 |    await t.expect(Selector('#result').innerText).eql('not authorized'); 9 |}); 10 |  at <anonymous> (/Users/alexkamaev/testcafe/test/functional/fixtures/api/es-next/auth/testcafe-fixtures/basic-auth-with-wrong-credentials-test.js:8:51) at <anonymous> (/Users/alexkamaev/testcafe/test/functional/fixtures/api/es-next/auth/testcafe-fixtures/basic-auth-with-wrong-credentials-test.js:7:1) at <anonymous> (/Users/alexkamaev/testcafe/src/api/wrap-test-function.js:17:28) at TestRun._executeTestFn (/Users/alexkamaev/testcafe/src/test-run/index.js:294:19) at TestRun.start (/Users/alexkamaev/testcafe/src/test-run/index.js:345:24)"
+  "A request to \"http://localhost:3002/\" has failed. Use quarantine mode to perform additional attempts to execute this test. You can find troubleshooting information for this issue at \"https://go.devexpress.com/TestCafe_FAQ_ARequestHasFailed.aspx\".  Error details: Failed to connect to the proxy host at \"testcafe-macbook.local:3005\".  [[user-agent]]"
+] was thrown, throw an Error :)
+      at processTicksAndRejections (internal/process/task_queues.js:93:5)
+
+  22) Basic and NTLM authentications
+       Using external proxy server
+         Should authenticate on a "basic" server with correct credentials:
+     Error: the array [
+  "Cannot obtain information about the node because the specified selector does not match any node in the DOM tree.  > | Selector('#result')  [[user-agent]]  3 |fixture `Basic authentication - correct credentials` 4 |    .page `http://localhost:3002` 5 |    .httpAuth({ username: 'username', password: 'password' }); 6 | 7 |test('Authenticate with correct credintials', async t => { >  8 |    await t.expect(Selector('#result').innerText).eql('authorized'); 9 |}); 10 |  at <anonymous> (/Users/alexkamaev/testcafe/test/functional/fixtures/api/es-next/auth/testcafe-fixtures/basic-auth-with-correct-credentials-test.js:8:51) at <anonymous> (/Users/alexkamaev/testcafe/test/functional/fixtures/api/es-next/auth/testcafe-fixtures/basic-auth-with-correct-credentials-test.js:7:1) at <anonymous> (/Users/alexkamaev/testcafe/src/api/wrap-test-function.js:17:28) at TestRun._executeTestFn (/Users/alexkamaev/testcafe/src/test-run/index.js:294:19) at TestRun.start (/Users/alexkamaev/testcafe/src/test-run/index.js:345:24)"
+  "A request to \"http://localhost:3002/\" has failed. Use quarantine mode to perform additional attempts to execute this test. You can find troubleshooting information for this issue at \"https://go.devexpress.com/TestCafe_FAQ_ARequestHasFailed.aspx\".  Error details: Failed to connect to the proxy host at \"testcafe-macbook.local:3005\".  [[user-agent]]"
+] was thrown, throw an Error :)
+      at processTicksAndRejections (internal/process/task_queues.js:93:5)
+
+  23) Basic and NTLM authentications
+       Using external proxy server
+         Should authenticate on a "NTLM" server with correct credentials:
+     Error: the array [
+  "Cannot obtain information about the node because the specified selector does not match any node in the DOM tree.  > | Selector('#result')  [[user-agent]]  3 |fixture `NTLM authentication` 4 |    .page `http://localhost:3003/` 5 |    .httpAuth({ username: 'username', password: 'password' }); 6 | 7 |test('Check the authenticated user name', async t => { >  8 |    const text        = await Selector('#result').innerText; 9 |    const credentials = JSON.parse(text); 10 | 11 |    await t.expect(credentials.UserName).eql('username'); 12 |}); 13 |  at <anonymous> (/Users/alexkamaev/testcafe/test/functional/fixtures/api/es-next/auth/testcafe-fixtures/ntlm-auth-check-username-test.js:8:31) at <anonymous> (/Users/alexkamaev/testcafe/test/functional/fixtures/api/es-next/auth/testcafe-fixtures/ntlm-auth-check-username-test.js:7:1) at <anonymous> (/Users/alexkamaev/testcafe/src/api/wrap-test-function.js:17:28) at TestRun._executeTestFn (/Users/alexkamaev/testcafe/src/test-run/index.js:294:19) at TestRun.start (/Users/alexkamaev/testcafe/src/test-run/index.js:345:24)"
+  "A request to \"http://localhost:3003/\" has failed. Use quarantine mode to perform additional attempts to execute this test. You can find troubleshooting information for this issue at \"https://go.devexpress.com/TestCafe_FAQ_ARequestHasFailed.aspx\".  Error details: Failed to connect to the proxy host at \"testcafe-macbook.local:3005\".  [[user-agent]]"
+] was thrown, throw an Error :)
+      at processTicksAndRejections (internal/process/task_queues.js:93:5)
+
+  24) Basic and NTLM authentications
+       Using external proxy server
+         Should override credentials with test.httpAuth:
+     Error: the array [
+  "Cannot obtain information about the node because the specified selector does not match any node in the DOM tree.  > | Selector('#result')  [[user-agent]]  6 | 7 |test.httpAuth({ 8 |    username: 'username', 9 |    password: 'password' 10 |})('Authenticate with correct credintials', async t => { > 11 |    await t.expect(Selector('#result').innerText).eql('authorized'); 12 |}); 13 |  at <anonymous> (/Users/alexkamaev/testcafe/test/functional/fixtures/api/es-next/auth/testcafe-fixtures/override-credentials-test.js:11:51) at <anonymous> (/Users/alexkamaev/testcafe/test/functional/fixtures/api/es-next/auth/testcafe-fixtures/override-credentials-test.js:7:1) at <anonymous> (/Users/alexkamaev/testcafe/src/api/wrap-test-function.js:17:28) at TestRun._executeTestFn (/Users/alexkamaev/testcafe/src/test-run/index.js:294:19) at TestRun.start (/Users/alexkamaev/testcafe/src/test-run/index.js:345:24)"
+  "A request to \"http://localhost:3002/\" has failed. Use quarantine mode to perform additional attempts to execute this test. You can find troubleshooting information for this issue at \"https://go.devexpress.com/TestCafe_FAQ_ARequestHasFailed.aspx\".  Error details: Failed to connect to the proxy host at \"testcafe-macbook.local:3005\".  [[user-agent]]"
+] was thrown, throw an Error :)
+      at processTicksAndRejections (internal/process/task_queues.js:93:5)
+
+  25) [API] ClientFunction
+       Should be correctly dispatched to test run:
+
+      microsoft edge 79.0.309.15 / macos 10.15.2 doesn't start with "edge-chromium"
+      + expected - actual
+
+      --1
+      +0
+      
+      at exports.checkUserAgent (test/functional/assertion-helper.js:364:51)
+      at /Users/alexkamaev/testcafe/test/functional/fixtures/api/es-next/client-function/test.js:16:25
+      at Array.forEach (<anonymous>)
+      at /Users/alexkamaev/testcafe/test/functional/fixtures/api/es-next/client-function/test.js:15:22
+      at runMicrotasks (<anonymous>)
+      at processTicksAndRejections (internal/process/task_queues.js:93:5)
+
+  26) Custom client scripts
+       Should handle errors of the injected scripts
+         Wrong module name:
+
+      expected 'An error occurred when trying to locate the injected client script module:\n\nCannot find module \'wrong-module-name\'\nRequire stack:\n- /Users/alexkamaev/testcafe/lib/custom-client-scripts/client-script.js\n- /Users/alexkamaev/testcafe/lib/custom-client-scripts/utils.js\n- /Users/alexkamaev/testcafe/lib/test-run/index.js\n- /Users/alexkamaev/testcafe/lib/live/test-run.js\n- /Users/alexkamaev/testcafe/lib/live/test-run-controller.js\n- /Users/alexkamaev/testcafe/lib/live/test-runner.js\n- /Users/alexkamaev/testcafe/test/functional/fixtures/live/test.js\n- /Users/alexkamaev/testcafe/node_modules/gulp-mocha-simple/node_modules/mocha/lib/mocha.js\n- /Users/alexkamaev/testcafe/node_modules/gulp-mocha-simple/node_modules/mocha/index.js\n- /Users/alexkamaev/testcafe/node_modules/gulp-mocha-simple/index.js\n- /Users/alexkamaev/testcafe/gulpfile.js\n- /usr/local/lib/node_modules/gulp-cli/lib/versioned/^4.0.0/index.js\n- /usr/local/lib/node_modules/gulp-cli/index.js\n- /usr/local/lib/node_modules/gulp-cli/bin/gulp.js.' to deeply equal 'An error occurred when trying to locate the injected client script module:\n\nCannot find module \'wrong-module-name\'.'
+      + expected - actual
+
+       An error occurred when trying to locate the injected client script module:
+       
+      -Cannot find module 'wrong-module-name'
+      -Require stack:
+      -- /Users/alexkamaev/testcafe/lib/custom-client-scripts/client-script.js
+      -- /Users/alexkamaev/testcafe/lib/custom-client-scripts/utils.js
+      -- /Users/alexkamaev/testcafe/lib/test-run/index.js
+      -- /Users/alexkamaev/testcafe/lib/live/test-run.js
+      -- /Users/alexkamaev/testcafe/lib/live/test-run-controller.js
+      -- /Users/alexkamaev/testcafe/lib/live/test-runner.js
+      -- /Users/alexkamaev/testcafe/test/functional/fixtures/live/test.js
+      -- /Users/alexkamaev/testcafe/node_modules/gulp-mocha-simple/node_modules/mocha/lib/mocha.js
+      -- /Users/alexkamaev/testcafe/node_modules/gulp-mocha-simple/node_modules/mocha/index.js
+      -- /Users/alexkamaev/testcafe/node_modules/gulp-mocha-simple/index.js
+      -- /Users/alexkamaev/testcafe/gulpfile.js
+      -- /usr/local/lib/node_modules/gulp-cli/lib/versioned/^4.0.0/index.js
+      -- /usr/local/lib/node_modules/gulp-cli/index.js
+      -- /usr/local/lib/node_modules/gulp-cli/bin/gulp.js.
+      +Cannot find module 'wrong-module-name'.
+      
+      at /Users/alexkamaev/testcafe/test/functional/fixtures/api/es-next/custom-client-scripts/test.js:78:41
+
+  27) [API] t.eval
+       Should execute an anonymous client function:
+
+      microsoft edge 79.0.309.15 / macos 10.15.2 doesn't start with "edge-chromium"
+      + expected - actual
+
+      --1
+      +0
+      
+      at exports.checkUserAgent (test/functional/assertion-helper.js:364:51)
+      at /Users/alexkamaev/testcafe/test/functional/fixtures/api/es-next/eval/test.js:18:25
+      at Array.forEach (<anonymous>)
+      at /Users/alexkamaev/testcafe/test/functional/fixtures/api/es-next/eval/test.js:15:22
+      at runMicrotasks (<anonymous>)
+      at processTicksAndRejections (internal/process/task_queues.js:93:5)
+
+  28) [API] Generic errors
+       External assertion library error
+         Should handle Node built-in assertion lib error:
+     AssertionError: expected 'AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:  \'answer\' !== \'42\'  [[user-agent]]  8 | 9 |fixture `External assertion library errors` 10 |    .page(`http://localhost:3000/fixtures/api/es-next/generic-errors/pages/index.html`); 11 | 12 |test(\'Built-in assertion lib error\', () => { > 13 |    assert.strictEqual(\'answer\', \'42\'); 14 |}); 15 | 16 |test(\'Chai assertion error\', () => { 17 |    expect(\'answer\').eql(\'42\'); 18 |});  at <anonymous> (/Users/alexkamaev/testcafe/test/functional/fixtures/api/es-next/generic-errors/testcafe-fixtures/external-assertion-lib-errors-test.js:13:12) at $$testcafe_test_run$$KvtTeyCrA$$ (/Users/alexkamaev/testcafe/src/api/test-run-tracker.js:76:16) at <anonymous> (/Users/alexkamaev/testcafe/src/api/wrap-test-function.js:17:28) at TestRun._executeTestFn (/Users/alexkamaev/testcafe/src/test-run/index.js:294:19) at TestRun.start (/Users/alexkamaev/testcafe/src/test-run/index.js:345:24)' to include 'AssertionError [ERR_ASSERTION]: Expected values to be strictly equal: + actual - expected  + \'answer\' - \'42\''
+      at Proxy.include (node_modules/chai/lib/chai/core/assertions.js:579:10)
+      at Proxy.chainableMethodWrapper (node_modules/chai/lib/chai/utils/addChainableMethod.js:113:49)
+      at /Users/alexkamaev/testcafe/test/functional/fixtures/api/es-next/generic-errors/test.js:77:44
+      at processTicksAndRejections (internal/process/task_queues.js:93:5)
+
+  29) [API] Resize window actions
+       Should fail when the requested size exceeds the maximum available size:
+     AssertionError: expected 'Unable to resize the window because the specified size exceeds the screen size. On macOS, a window cannot be larger than the screen.  [[user-agent]]  78 | 79 |test(\'Too big size\', async t => { 80 |    const hugeWidth  = 100000; 81 |    const hugeHeight = 100000; 82 | > 83 |    await t.resizeWindow(hugeWidth, hugeHeight); 84 |}); 85 |  at <anonymous> (/Users/alexkamaev/testcafe/test/functional/fixtures/api/es-next/resize-window/testcafe-fixtures/resize-window-test.js:83:13) at <anonymous> (/Users/alexkamaev/testcafe/test/functional/fixtures/api/es-next/resize-window/testcafe-fixtures/resize-window-test.js:79:1) at <anonymous> (/Users/alexkamaev/testcafe/src/api/wrap-test-function.js:17:28) at TestRun._executeTestFn (/Users/alexkamaev/testcafe/src/test-run/index.js:294:19) at TestRun.start (/Users/alexkamaev/testcafe/src/test-run/index.js:345:24)' to include '> 84 |    await t.resizeWindow(hugeWidth, hugeHeight);'
+      at Proxy.include (node_modules/chai/lib/chai/core/assertions.js:579:10)
+      at Proxy.chainableMethodWrapper (node_modules/chai/lib/chai/utils/addChainableMethod.js:113:49)
+      at errorInEachBrowserContains (test/functional/assertion-helper.js:193:40)
+      at /Users/alexkamaev/testcafe/test/functional/fixtures/api/es-next/resize-window/test.js:70:25
+      at runMicrotasks (<anonymous>)
+      at processTicksAndRejections (internal/process/task_queues.js:93:5)
+
+  30) [Raw API] Drag actions
+       drag-to-element
+         Should fail if a destination element doesn't exist:
+     AssertionError: expected 'A request to "http://localhost:3000/fixtures/api/raw/drag/pages/index.html" has failed. Use quarantine mode to perform additional attempts to execute this test. You can find troubleshooting information for this issue at "https://go.devexpress.com/TestCafe_FAQ_ARequestHasFailed.aspx".  Error details: Failed to find a DNS-record for the resource at "http://localhost:3000/fixtures/api/raw/drag/pages/index.html".  [[user-agent]]  [[Drag to non-existent element callsite]]' to include 'The specified "destinationSelector" does not match any element in the DOM tree.  > | Selector(\'#non-existent\')'
+      at Proxy.include (node_modules/chai/lib/chai/core/assertions.js:579:10)
+      at Proxy.chainableMethodWrapper (node_modules/chai/lib/chai/utils/addChainableMethod.js:113:49)
+      at /Users/alexkamaev/testcafe/test/functional/fixtures/api/raw/drag/test.js:44:37
+      at runMicrotasks (<anonymous>)
+      at processTicksAndRejections (internal/process/task_queues.js:93:5)
+
+
+
+[19:33:19] 'test-functional-local-edge-chromium-run' errored after 1.15 h
+[19:33:19] Error: 30
+    at formatError (/usr/local/lib/node_modules/gulp-cli/lib/versioned/^4.0.0/format-error.js:20:10)
+    at Gulp.<anonymous> (/usr/local/lib/node_modules/gulp-cli/lib/versioned/^4.0.0/log/events.js:31:15)
+    at Gulp.emit (events.js:215:7)
+    at Gulp.EventEmitter.emit (domain.js:475:20)
+    at Object.error (/Users/alexkamaev/testcafe/node_modules/undertaker/lib/helpers/createExtensions.js:61:10)
+    at handler (/Users/alexkamaev/testcafe/node_modules/now-and-later/lib/mapSeries.js:47:14)
+    at f (/Users/alexkamaev/testcafe/node_modules/once/once.js:25:25)
+    at f (/Users/alexkamaev/testcafe/node_modules/once/once.js:25:25)
+    at tryCatch (/Users/alexkamaev/testcafe/node_modules/async-done/index.js:24:15)
+    at done (/Users/alexkamaev/testcafe/node_modules/async-done/index.js:40:12)
+[19:33:19] 'test-functional-local-edge-chromium' errored after 1.15 h
+TestCafe-MacBook:testcafe alexkamaev$ 

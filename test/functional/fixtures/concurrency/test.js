@@ -5,7 +5,7 @@ const config  = require('../../config');
 
 
 if (config.useLocalBrowsers) {
-    describe('Concurrency', function () {
+    describe.skip('Concurrency', function () {
         let data = '';
 
         function resolvePath (file) {

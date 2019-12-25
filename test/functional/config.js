@@ -114,7 +114,7 @@ testingEnvironments[testingEnvironmentNames.localEdgeChromium] = {
     browsers: [
         {
             platform:    'Windows 10',
-            browserName: 'edge-chromium:headless',
+            browserName: 'edge-chromium',
             alias:       'edge-chromium'
         }
     ]

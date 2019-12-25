@@ -7,7 +7,7 @@ const BrowserConnection     = require('../../../../../lib/browser/connection');
 
 
 if (config.useLocalBrowsers) {
-    describe('Browser Provider - Job Results Reporting', function () {
+    describe.skip('Browser Provider - Job Results Reporting', function () {
         const BROWSER_OPENING_DELAY = 3000;
 
         let mockProvider = null;

@@ -38,7 +38,7 @@ describe('[Raw API] Drag actions', function () {
                 });
         });
 
-        it("Should fail if a destination element doesn't exist", function () {
+        it.only("Should fail if a destination element doesn't exist", function () {
             return runTests('./testcafe-fixtures/drag.testcafe', 'Drag to non-existent element', { shouldFail: true })
                 .catch(function (errs) {
                     expect(errs[0]).contains(

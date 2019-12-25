@@ -7,7 +7,7 @@ const createFirefoxProfile = require('../../../../../lib/browser/provider/built-
 
 
 if (config.useLocalBrowsers && !config.isTravisEnvironment) {
-    describe('Browser Provider - Custom User Profile', () => {
+    describe.skip('Browser Provider - Custom User Profile', () => {
         it('Should run tests in userProfile mode', () => {
             return testCafe
                 .createRunner()

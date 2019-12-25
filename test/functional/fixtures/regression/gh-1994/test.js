@@ -5,7 +5,7 @@ describe('[Regression](GH-1994)', function () {
         return runTests('testcafe-fixtures/index.js', 'Recreate invisible element and click', { selectorTimeout: 1000 });
     });
 
-    it('Click on hidden element removed on timeout', function () {
+    it.only('Click on hidden element removed on timeout', function () {
         return runTests('./testcafe-fixtures/index.js', 'Remove invisible element and click', { shouldFail: true, selectorTimeout: 1000 })
             .catch(function (errs) {
                 expect(errs[0]).contains(
