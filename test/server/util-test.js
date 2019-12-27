@@ -72,10 +72,10 @@ describe('Utils', () => {
                 expected: {
                     name:            'Other',
                     version:         '0.0',
-                    platform:        'desktop',
-                    os:              { name: 'Windows', version: '0.0' },
+                    platform:        'other',
+                    os:              { name: 'Other', version: '0.0' },
                     engine:          { name: 'Other', version: '0.0' },
-                    prettyUserAgent: 'Other 0.0 / Windows 0.0',
+                    prettyUserAgent: 'Other 0.0 / Other 0.0',
                     userAgent:       'Windows'
                 }
             },
