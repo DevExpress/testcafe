@@ -8,7 +8,7 @@ import sendMessageToDriver from '../send-message-to-driver';
 import { WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT } from '../timeouts';
 import sendConfirmationMessage from '../send-confirmation-message';
 
-export default class ParentDriverLink {
+export default class ParentIframeDriverLink {
     constructor (parentDriverWindow) {
         this.driverWindow = parentDriverWindow;
     }
