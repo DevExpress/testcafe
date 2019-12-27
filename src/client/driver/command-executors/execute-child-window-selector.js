@@ -5,7 +5,7 @@ const Promise = hammerhead.Promise;
 
 export default function executeChildWindowSelector (selector, childWindowLinks) {
     if (typeof selector === 'string') {
-        const foundChildWindowDriverLink = childWindowLinks.filter(link => link.pageId === selector)[0];
+        const foundChildWindowDriverLink = childWindowLinks.filter(link => link.windowId === selector)[0];
 
         if (!foundChildWindowDriverLink) {
             const error = new ChildWindowNotFoundError();

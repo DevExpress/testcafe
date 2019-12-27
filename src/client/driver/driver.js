@@ -364,9 +364,9 @@ export default class Driver {
                     window:       wnd
                 });
 
-                const pageId = this._getCurrentWindowId();
+                const windowId = this._getCurrentWindowId();
 
-                return browser.setActivePageId(this.browserActiveWindowId, hammerhead.createNativeXHR, pageId);
+                return browser.setActiveWindowId(this.browserActiveWindowId, hammerhead.createNativeXHR, windowId);
             })
             .then(() => {
                 this._startInternal();
@@ -502,7 +502,7 @@ export default class Driver {
             .then(() => {
                 this._stopInternal();
 
-                return browser.setActivePageId(this.browserActiveWindowId, hammerhead.createNativeXHR, this.activeChildWindowDriverLink.pageId);
+                return browser.setActiveWindowId(this.browserActiveWindowId, hammerhead.createNativeXHR, this.activeChildWindowDriverLink.windowId);
             })
             .then(() => {
                 return this.activeChildWindowDriverLink.setAsMaster();
