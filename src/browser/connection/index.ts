@@ -56,7 +56,7 @@ export default class BrowserConnection extends EventEmitter {
     private opened: boolean;
     private heartbeatTimeout: NodeJS.Timeout | null;
     private pendingTestRunUrl: string | null;
-    private readonly url: string;
+    public readonly url: string;
     public readonly idleUrl: string;
     private forcedIdleUrl: string;
     private readonly initScriptUrl: string;
