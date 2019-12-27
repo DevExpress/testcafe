@@ -153,7 +153,7 @@ Method                              | Type     | Description
 
 ```js
 // Selects all hidden label elements.
-Selector('label').filterVisible();
+Selector('label').filterHidden();
 ```
 
 ### filter
