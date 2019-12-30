@@ -56,7 +56,7 @@ import { SetNativeDialogHandlerMessage, TYPE as MESSAGE_TYPE } from './driver-li
 import ContextStorage from './storage';
 import DriverStatus from './status';
 import generateId from './generate-id';
-import ChildDriverLink from './driver-link/iframe/child';
+import ChildIframeDriverLink from './driver-link/iframe/child';
 
 import executeActionCommand from './command-executors/execute-action';
 import executeManipulationCommand from './command-executors/browser-manipulation';
@@ -116,7 +116,7 @@ export default class Driver {
         this.heartbeatUrl            = communicationUrls.heartbeat;
         this.browserStatusUrl        = communicationUrls.status;
         this.browserStatusDoneUrl    = communicationUrls.statusDone;
-        this.browserActivePageId     = communicationUrls.activePageId;
+        this.browserActiveWindowId   = communicationUrls.activeWindowId;
         this.userAgent               = runInfo.userAgent;
         this.fixtureName             = runInfo.fixtureName;
         this.testName                = runInfo.testName;
@@ -140,7 +140,7 @@ export default class Driver {
 
         this.statusBar = null;
 
-        this.pageId = this._getCurrentPageId();
+        this.windowId = this._getCurrentWindowId();
 
         if (options.retryTestPages)
             browser.enableRetryingTestPages();
@@ -182,11 +182,11 @@ export default class Driver {
         return this.contextStorage.setItem(CONSOLE_MESSAGES, messages ? messages.getCopy() : null);
     }
 
-    _getCurrentPageId () {
+    _getCurrentWindowId () {
         const currentUrl     = window.location.toString();
         const parsedProxyUrl = hammerhead.utils.url.parseProxyUrl(currentUrl);
 
-        return parsedProxyUrl && parsedProxyUrl.pageId || null;
+        return parsedProxyUrl && parsedProxyUrl.windowId || null;
     }
 
     // Error handling
@@ -236,12 +236,15 @@ export default class Driver {
             this.contextStorage.setItem(PENDING_PAGE_ERROR, error);
     }
 
-    _onChildWindowOpened (e) {
-        const childWindowDriverLink = new ChildWindowDriverLink(e.window, e.pageId);
+    _addChildWindowDriverLink (e) {
+        const childWindowDriverLink = new ChildWindowDriverLink(e.window, e.windowId);
 
         this.childWindowDriverLinks.push(childWindowDriverLink);
+    }
 
-        this._switchToChildWindow(e.pageId);
+    _onChildWindowOpened (e) {
+        this._addChildWindowDriverLink(e);
+        this._switchToChildWindow(e.windowId);
     }
 
     _onChildWindowClosed () {
@@ -262,7 +265,7 @@ export default class Driver {
     _onConsoleMessage ({ meth, line }) {
         const messages = this.consoleMessages;
 
-        messages.addMessage(meth, line, this.pageId);
+        messages.addMessage(meth, line, this.windowId);
 
         this.consoleMessages = messages;
     }
@@ -339,13 +342,13 @@ export default class Driver {
 
 
     // Iframes and child windows interaction
-    _addIframeChildDriverLink (id, driverWindow) {
+    _addChildIframeDriverLink (id, driverWindow) {
         let childIframeDriverLink = this._getChildIframeDriverLinkByWindow(driverWindow);
 
         if (!childIframeDriverLink) {
             const driverId = `${this.testRunId}-${generateId()}`;
 
-            childIframeDriverLink = new ChildDriverLink(driverWindow, driverId);
+            childIframeDriverLink = new ChildIframeDriverLink(driverWindow, driverId);
 
             this.childIframeDriverLinks.push(childIframeDriverLink);
         }
@@ -361,9 +364,9 @@ export default class Driver {
                     window:       wnd
                 });
 
-                const pageId = this._getCurrentPageId();
+                const windowId = this._getCurrentWindowId();
 
-                return browser.setActivePageId(this.browserActivePageId, hammerhead.createNativeXHR, pageId);
+                return browser.setActiveWindowId(this.browserActiveWindowId, hammerhead.createNativeXHR, windowId);
             })
             .then(() => {
                 this._startInternal();
@@ -398,7 +401,7 @@ export default class Driver {
             const window = e.source;
 
             if (msg.type === MESSAGE_TYPE.establishConnection)
-                this._addIframeChildDriverLink(msg.id, window);
+                this._addChildIframeDriverLink(msg.id, window);
             else if (msg.type === MESSAGE_TYPE.setAsMaster)
                 this._handleSetAsMasterMessage(msg, window);
             else if (msg.type === MESSAGE_TYPE.closeAllChildWindows)
@@ -499,7 +502,7 @@ export default class Driver {
             .then(() => {
                 this._stopInternal();
 
-                return browser.setActivePageId(this.browserActivePageId, hammerhead.createNativeXHR, this.activeChildWindowDriverLink.pageId);
+                return browser.setActiveWindowId(this.browserActiveWindowId, hammerhead.createNativeXHR, this.activeChildWindowDriverLink.windowId);
             })
             .then(() => {
                 return this.activeChildWindowDriverLink.setAsMaster();
@@ -946,13 +949,13 @@ export default class Driver {
     }
 
     _getDriverRole () {
-        if (!this.pageId)
+        if (!this.windowId)
             return Promise.resolve(DriverRole.master);
 
         return browser
-            .getActivePageId(this.browserActivePageId, hammerhead.createNativeXHR)
-            .then(({ activePageId }) => {
-                return activePageId === this.pageId ?
+            .getActiveWindowId(this.browserActiveWindowId, hammerhead.createNativeXHR)
+            .then(({ activeWindowId }) => {
+                return activeWindowId === this.windowId ?
                     DriverRole.master :
                     DriverRole.replica;
             });

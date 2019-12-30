@@ -50,8 +50,8 @@ export default class BrowserConnectionGateway {
         this._dispatch('/browser/status-done/{id}', proxy, BrowserConnectionGateway._onStatusRequestOnTestDone);
         this._dispatch('/browser/init-script/{id}', proxy, BrowserConnectionGateway._onInitScriptRequest);
         this._dispatch('/browser/init-script/{id}', proxy, BrowserConnectionGateway._onInitScriptResponse, 'POST');
-        this._dispatch('/browser/active-page-id/{id}', proxy, BrowserConnectionGateway._onGetActivePageIdRequest);
-        this._dispatch('/browser/active-page-id/{id}', proxy, BrowserConnectionGateway._onSetActivePageIdRequest, 'POST');
+        this._dispatch('/browser/active-window-id/{id}', proxy, BrowserConnectionGateway._onGetActiveWindowIdRequest);
+        this._dispatch('/browser/active-window-id/{id}', proxy, BrowserConnectionGateway._onSetActiveWindowIdRequest, 'POST');
 
         proxy.GET('/browser/connect', (req: IncomingMessage, res: ServerResponse) => this._connectNextRemoteBrowser(req, res));
         proxy.GET('/browser/connect/', (req: IncomingMessage, res: ServerResponse) => this._connectNextRemoteBrowser(req, res));
@@ -151,20 +151,20 @@ export default class BrowserConnectionGateway {
         }
     }
 
-    private static _onGetActivePageIdRequest (req: IncomingMessage, res: ServerResponse, connection: BrowserConnection): void {
+    private static _onGetActiveWindowIdRequest (req: IncomingMessage, res: ServerResponse, connection: BrowserConnection): void {
         if (BrowserConnectionGateway._ensureConnectionReady(res, connection)) {
             respondWithJSON(res, {
-                activePageId: connection.activePageId
+                activeWindowId: connection.activeWindowId
             });
         }
     }
 
-    private static _onSetActivePageIdRequest (req: IncomingMessage, res: ServerResponse, connection: BrowserConnection): void {
+    private static _onSetActiveWindowIdRequest (req: IncomingMessage, res: ServerResponse, connection: BrowserConnection): void {
         if (BrowserConnectionGateway._ensureConnectionReady(res, connection)) {
             BrowserConnectionGateway._fetchRequestData(req, data => {
                 const parsedData = JSON.parse(data);
 
-                connection.activePageId = parsedData.pageId;
+                connection.activeWindowId = parsedData.windowId;
 
                 respondWithJSON(res);
             });

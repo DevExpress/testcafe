@@ -4,9 +4,9 @@ import { CannotSwitchToWindowError, CloseChildWindowError } from '../../../../er
 import { WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT } from '../timeouts';
 
 export default class ChildWindowDriverLink {
-    constructor (driverWindow, pageId) {
+    constructor (driverWindow, windowId) {
         this.driverWindow = driverWindow;
-        this.pageId       = pageId;
+        this.windowId     = windowId;
     }
 
     setAsMaster () {

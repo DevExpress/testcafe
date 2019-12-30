@@ -14,7 +14,7 @@ function getWindowDimensionsInfo () {
     };
 }
 
-function getPageId () {
+function getWindowId () {
     var array  = new Uint16Array(1);
     var crypto = window.crypto || window.msCrypto;
 
@@ -26,4 +26,4 @@ function getPageId () {
 
 export const GET_TITLE_SCRIPT                  = getTitle.toString();
 export const GET_WINDOW_DIMENSIONS_INFO_SCRIPT = getWindowDimensionsInfo.toString();
-export const GET_PAGE_ID_SCRIPT                = getPageId.toString();
+export const GET_WINDOW_ID_SCRIPT              = getWindowId.toString();

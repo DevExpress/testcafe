@@ -4,7 +4,7 @@ import { IframeStatusBar } from './deps/testcafe-ui';
 import Driver from './driver';
 import ContextStorage from './storage';
 import DriverStatus from './status';
-import ParentDriverLink from './driver-link/iframe/parent';
+import ParentIframeDriverLink from './driver-link/iframe/parent';
 import { TYPE as MESSAGE_TYPE } from './driver-link/messages';
 import IframeNativeDialogTracker from './native-dialog-tracker/iframe';
 
@@ -13,7 +13,7 @@ export default class IframeDriver extends Driver {
         super(testRunId, {}, {}, options);
 
         this.lastParentDriverMessageId = null;
-        this.parentDriverLink          = new ParentDriverLink(window.parent);
+        this.parentDriverLink          = new ParentIframeDriverLink(window.parent);
         this._initParentDriverListening();
     }
 
