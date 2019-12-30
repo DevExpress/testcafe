@@ -348,11 +348,15 @@ $(document).ready(function () {
             .attr('src', 'http://www.cross.domain.com')
             .addClass(TEST_ELEMENT_CLASS);
 
+        const nativeAddEventListener = browserUtils.isIE11
+            ? nativeMethods.addEventListener
+            : nativeMethods.eventTargetAddEventListener;
+
         window.QUnitGlobals.waitForIframe($iframe[0]).then(function () {
             try {
                 const iframeDocument = $iframe[0].contentWindow.document;
 
-                nativeMethods.addEventListener.call(iframeDocument, 'click', function () {
+                nativeAddEventListener.call(iframeDocument, 'click', function () {
                     throw new Error('Click handler on an iframe should not be called');
                 });
 

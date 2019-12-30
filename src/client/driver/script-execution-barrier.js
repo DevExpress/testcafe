@@ -3,8 +3,16 @@ import { delay } from './deps/testcafe-core';
 
 const Promise       = hammerhead.Promise;
 const nativeMethods = hammerhead.nativeMethods;
+const browserUtils  = hammerhead.utils.browser;
 
 const WAIT_FOR_NEW_SCRIPTS_DELAY = 25;
+
+const nativeAddEventListener    = browserUtils.isIE11
+    ? nativeMethods.addEventListener
+    : nativeMethods.eventTargetAddEventListener;
+const nativeRemoveEventListener = browserUtils.isIE11
+    ? nativeMethods.removeEventListener
+    : nativeMethods.eventTargetRemoveEventListener;
 
 
 export default class ScriptExecutionBarrier {
@@ -33,16 +41,16 @@ export default class ScriptExecutionBarrier {
         let loadingTimeout = null;
 
         const done = () => {
-            nativeMethods.removeEventListener.call(el, 'load', done);
-            nativeMethods.removeEventListener.call(el, 'error', done);
+            nativeRemoveEventListener.call(el, 'load', done);
+            nativeRemoveEventListener.call(el, 'error', done);
 
             nativeMethods.clearTimeout.call(window, loadingTimeout);
 
             this._onScriptLoadedOrFailed();
         };
 
-        nativeMethods.addEventListener.call(el, 'load', done);
-        nativeMethods.addEventListener.call(el, 'error', done);
+        nativeAddEventListener.call(el, 'load', done);
+        nativeAddEventListener.call(el, 'error', done);
 
         loadingTimeout = nativeMethods.setTimeout.call(window, done, this.SCRIPT_LOADING_TIMEOUT);
     }
