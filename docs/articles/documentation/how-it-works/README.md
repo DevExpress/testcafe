@@ -141,7 +141,7 @@ TestCafe isolates each test run from subsequent tests and tests that run in para
 After a test is completed, TestCafe resets the browser state:
 
 * deletes cookies
-* clears local and session storages (IndexedDB is preserved)
+* clears local and session storages
 * switches to an empty profile
 * reloads the tested page
 
