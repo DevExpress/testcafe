@@ -17,7 +17,10 @@ export default class Storage {
     _createStorageKey (testRunId, windowId) {
         const storageKey = STORAGE_KEY_PREFIX + testRunId;
 
-        return windowId ? storageKey + '|' + windowId : '';
+        if (windowId)
+            return storageKey + '|' + windowId;
+
+        return storageKey;
     }
 
     _loadFromStorage () {
