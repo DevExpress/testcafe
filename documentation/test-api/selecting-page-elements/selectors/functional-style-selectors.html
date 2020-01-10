@@ -581,6 +581,10 @@
           <a href="/testcafe/documentation/recipes/">Recipes</a>      
         </div>
       
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/how-it-works/">How It Works</a>      
+        </div>
+      
     </div>
   </div>
 </div>
@@ -608,6 +612,8 @@
 				
 					
 						Test API
+					
+				
 					
 				
 					
@@ -1294,7 +1300,7 @@ The selector provides methods to filter DOM nodes by their index, text, attribut
 <td>Creates a selector that filters a matched set leaving only hidden elements. These are elements that have a <code>display: none</code> or <code>visibility: hidden</code> CSS property or zero width or height.</td>
 </tr>
 </tbody></table></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// Selects all hidden label elements.</span>
-<span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">label</span><span class="dl">'</span><span class="p">).</span><span class="nx">filterVisible</span><span class="p">();</span>
+<span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">label</span><span class="dl">'</span><span class="p">).</span><span class="nx">filterHidden</span><span class="p">();</span>
 </code></pre></div><h3><a class="anchor" id="filter"></a>filter <a class="permalink" href="#filter">#</a></h3><div class="table-wrapper"><table><thead><tr>
 <th>Method</th>
 <th>Return Type</th>
@@ -1629,6 +1635,7 @@ a <a href="using-selectors.html#dom-node-snapshot">snapshot</a>, the selector re
 
 		</div>
 	</article>
+
 </main>
 </div>
 
@@ -1639,7 +1646,7 @@ a <a href="using-selectors.html#dom-node-snapshot">snapshot</a>, the selector re
         <div class="footer-col-1">
             <p><strong>TestCafe</strong>: A node.js tool to automate end-to-end web testing<br/>
             Use of this site constitutes acceptance of our <a href="https://www.devexpress.com/aboutus/privacy-policy.xml"  target="_blank">Privacy Policy</a><br/>
-            Copyright © 2012-2019 Developer Express Inc.</p>
+            Copyright © 2012-2020 Developer Express Inc.</p>
         </div>
     </div>
 </footer>
