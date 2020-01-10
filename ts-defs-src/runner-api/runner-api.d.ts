@@ -24,6 +24,38 @@ interface ScreenshotsOptions extends TakeScreenshotOptions {
     pathPattern?: string;
 }
 
+interface VideoOptions {
+    /**
+     * Specifies video compose files' into single file or not.
+     */
+    singleFile?: boolean;
+    /**
+     * Specifies video recoring for failing tests only or not.
+     */
+    failedOnly?: boolean;
+    /**
+     * Specifies a ffmpeg path that will be called
+     */
+    ffmpegPath?: string;
+    /**
+     * Specifies a custom pattern to compose video files' relative path and name.
+     */
+    pathPattern?: string;
+}
+
+interface VideoEncodingOptions {
+    /**
+     * Specifies a custom frame rate(FPS).
+     */
+    r?: number;
+    /**
+     * Specifies video custom aspect ratio.
+     *
+     * May be 4:3, 16:9, etc.
+     */
+    aspect?: string;
+}
+
 interface TestCafe {
     /**
      * Creates the test runner that is used to configure and launch test tasks.
@@ -111,6 +143,17 @@ interface Runner {
      * @param options - Screenshots options
      */
     screenshots(options: ScreenshotsOptions): this;
+
+    /**
+     * https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html#basic-video-options
+     *
+     * Enables TestCafe to take videos of the tested webpages.
+     *
+     * @param path - Output directory
+     * @param option - Video options
+     * @param encodingOptions - Video encoding options
+     */
+    video(path: string, options?: VideoOptions, encodingOptions?: VideoEncodingOptions): this;
 
     /**
      * Configures TestCafe's reporting feature.
