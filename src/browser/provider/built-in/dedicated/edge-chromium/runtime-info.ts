@@ -7,6 +7,8 @@ export default class EdgeChromiumRuntimeInfo extends ChromeRuntimeInfo {
     protected async createTempProfile (proxyHostName: string, allowMultipleWindows: boolean): Promise<TempDirectory> {
         const tempDir = await super.createTempProfile(proxyHostName, allowMultipleWindows);
 
+        // NOTE: prevents Edge from automatically logging under system credentials
+        // and showing the welcome screen
         const preferences = {
             'fre': {
                 'has_user_seen_fre': true

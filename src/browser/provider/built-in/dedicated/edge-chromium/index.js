@@ -5,6 +5,6 @@ export default {
     ...dedicatedProviderChrome,
 
     async _createRunTimeInfo (hostName, configString, allowMultipleWindows) {
-        return await EdgeChromiumRunTimeInfo.create(hostName, configString, allowMultipleWindows);
+        return EdgeChromiumRunTimeInfo.create(hostName, configString, allowMultipleWindows);
     },
 };

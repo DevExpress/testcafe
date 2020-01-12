@@ -22,7 +22,7 @@ export default {
     },
 
     async _createRunTimeInfo (hostName, configString, allowMultipleWindows) {
-        return await ChromeRunTimeInfo.create(hostName, configString, allowMultipleWindows);
+        return ChromeRunTimeInfo.create(hostName, configString, allowMultipleWindows);
     },
 
     async openBrowser (browserId, pageUrl, configString, allowMultipleWindows) {
