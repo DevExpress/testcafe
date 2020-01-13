@@ -901,8 +901,6 @@ export default class Driver extends serviceUtils.EventEmitter {
         else if (command.type === COMMAND_TYPE.backupStorages)
             this._onBackupStoragesCommand();
 
-        else if (command.type === COMMAND_TYPE.doNothing)
-            return;
         else
             this._onActionCommand(command);
     }
