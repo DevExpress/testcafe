@@ -40,8 +40,3 @@ export class UnlockPageCommand {
     }
 }
 
-export class DoNothingCommand {
-    constructor () {
-        this.type = TYPE.doNothing;
-    }
-}

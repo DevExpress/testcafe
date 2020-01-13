@@ -532,7 +532,7 @@ export default class TestRun extends AsyncEventEmitter {
             this._fulfillCurrentDriverTask(driverStatus);
 
             if (driverStatus.isPendingWindowSwitching)
-                return new serviceCommands.DoNothingCommand();
+                return null;
         }
 
         return this._getCurrentDriverTaskCommand();
@@ -866,7 +866,7 @@ ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
     this.lastDriverStatusId       = msg.status.id;
     this.lastDriverStatusResponse = this._handleDriverRequest(msg.status);
 
-    if (this.lastDriverStatusResponse)
+    if (this.lastDriverStatusResponse || msg.status.isPendingWindowSwitching)
         return this.lastDriverStatusResponse;
 
     // NOTE: we send an empty response after the MAX_RESPONSE_DELAY timeout is exceeded to keep connection

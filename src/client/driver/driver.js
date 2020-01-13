@@ -104,9 +104,11 @@ const CURRENT_IFRAME_ERROR_CTORS = {
     IsInvisibleError: CurrentIframeIsInvisibleError
 };
 
-const COMMAND_EXECUTION_MAX_TIMEOUT = Math.pow(2, 31) - 1;
+const COMMAND_EXECUTION_MAX_TIMEOUT    = Math.pow(2, 31) - 1;
+const EMPTY_COMMAND_EVENT_WAIT_TIMEOUT = 30 * 1000;
 
 const STATUS_WITH_COMMAND_RESULT_EVENT = 'status-with-command-result-event';
+const EMPTY_COMMAND_EVENT              = 'empty-command-event';
 
 export default class Driver extends serviceUtils.EventEmitter {
     constructor (testRunId, communicationUrls, runInfo, options) {
@@ -500,31 +502,39 @@ export default class Driver extends serviceUtils.EventEmitter {
             });
     }
 
-    _waitForCommandCompletion () {
-        if (!this.contextStorage.getItem(this.COMMAND_EXECUTING_FLAG))
-            return Promise.resolve();
-
-        let onStatusWithCommandResultHandler = null;
+    _createWaitForEventPromise (eventName, timeout) {
+        let eventHandler = null;
 
         const timeoutPromise = new Promise(resolve => {
             nativeMethods.setTimeout.call(window, () => {
-                this.off(STATUS_WITH_COMMAND_RESULT_EVENT, onStatusWithCommandResultHandler);
+                this.off(eventName, eventHandler);
 
                 resolve();
-            }, COMMAND_EXECUTION_MAX_TIMEOUT);
+            }, timeout);
         });
 
         const resultPromise = new Promise(resolve => {
-            onStatusWithCommandResultHandler = function () {
-                this.off(STATUS_WITH_COMMAND_RESULT_EVENT, onStatusWithCommandResultHandler);
+            eventHandler = function () {
+                this.off(eventName, eventHandler);
 
                 resolve();
             };
 
-            this.on(STATUS_WITH_COMMAND_RESULT_EVENT, onStatusWithCommandResultHandler);
+            this.on(eventName, eventHandler);
         });
 
         return Promise.race([timeoutPromise, resultPromise]);
+    }
+
+    _waitForCurrentCommandCompletion () {
+        if (!this.contextStorage.getItem(this.COMMAND_EXECUTING_FLAG))
+            return Promise.resolve();
+
+        return this._createWaitForEventPromise(STATUS_WITH_COMMAND_RESULT_EVENT, COMMAND_EXECUTION_MAX_TIMEOUT);
+    }
+
+    _waitForEmptyCommand () {
+        return this._createWaitForEventPromise(EMPTY_COMMAND_EVENT, EMPTY_COMMAND_EVENT_WAIT_TIMEOUT);
     }
 
     _switchToChildWindow (selector) {
@@ -537,7 +547,10 @@ export default class Driver extends serviceUtils.EventEmitter {
             .then(childWindowDriverLink => {
                 this.activeChildWindowDriverLink = childWindowDriverLink;
 
-                return this._waitForCommandCompletion();
+                return this._waitForCurrentCommandCompletion();
+            })
+            .then(() => {
+                return this._waitForEmptyCommand();
             })
             .then(() => {
                 this._stopInternal();
@@ -812,6 +825,10 @@ export default class Driver extends serviceUtils.EventEmitter {
         return status.isCommandResult && !!this.contextStorage.getItem(this.PENDING_WINDOW_SWITCHING_FLAG);
     }
 
+    _isEmptyCommandInPendingWindowSwitchingMode (command) {
+        return !command && !!this.contextStorage.getItem(this.PENDING_WINDOW_SWITCHING_FLAG);
+    }
+
     // Routing
     _onReady (status) {
         if (this._isStatusWithCommandResultInPendingWindowSwitchingMode(status))
@@ -822,9 +839,16 @@ export default class Driver extends serviceUtils.EventEmitter {
                 if (command)
                     this._onCommand(command);
 
-                // NOTE: the driver gets an empty response if TestRun doesn't get a new command within 2 minutes
-                else
+                else {
+                    if (this._isEmptyCommandInPendingWindowSwitchingMode(command)) {
+                        this.emit(EMPTY_COMMAND_EVENT);
+
+                        return;
+                    }
+
+                    // NOTE: the driver gets an empty response if TestRun doesn't get a new command within 2 minutes
                     this._onReady(new DriverStatus());
+                }
             });
     }
 
