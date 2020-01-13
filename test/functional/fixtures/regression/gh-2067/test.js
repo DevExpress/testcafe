@@ -4,11 +4,11 @@ describe('[Regression](GH-2067) - Radio button navigation by keyboard', function
     });
 
     it('nonamed - chrome', function () {
-        return runTests('testcafe-fixtures/index.js', 'nonamed - chrome', { only: ['chrome', 'chrome-osx'] });
+        return runTests('testcafe-fixtures/index.js', 'nonamed - chrome', { only: ['chrome', 'chrome-osx', 'edge-chromium'] });
     });
 
     it('nonamed - ie, firefox', function () {
-        return runTests('testcafe-fixtures/index.js', 'nonamed - ie, firefox', { skip: ['chrome', 'chrome-osx', 'android'] });
+        return runTests('testcafe-fixtures/index.js', 'nonamed - ie, firefox', { skip: ['chrome', 'chrome-osx', 'android', 'edge-chromium'] });
     });
 
     it('Should select the checked radio button by pressing the tab key', function () {
