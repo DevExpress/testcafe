@@ -11,7 +11,7 @@ import DriverStatus from '../../status';
 import { CHECK_IFRAME_EXISTENCE_INTERVAL, CHECK_IFRAME_VISIBLE_INTERVAL, WAIT_IFRAME_RESPONSE_DELAY } from '../timeouts';
 import sendConfirmationMessage from '../send-confirmation-message';
 
-export default class ChildDriverLink {
+export default class ChildIframeDriverLink {
     constructor (driverWindow, driverId) {
         this.driverWindow              = driverWindow;
         this.driverIframe              = domUtils.findIframeByWindow(driverWindow);

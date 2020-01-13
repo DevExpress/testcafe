@@ -130,7 +130,7 @@ const emptyLabel = Selector('p').withText('No Data').with({ visibilityCheck: tru
 await t.click('#fetch-data');
 
 // Wait with an assertion.
-await t.expect(emptyLabel.exists, '', { timeout: 10000 });
+await t.expect(emptyLabel.exists).ok('', { timeout: 10000 });
 
 // Wait with a selector.
 const labelSnapshot = await emptyLabel.with({ timeout: 10000 });

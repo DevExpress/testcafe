@@ -12,7 +12,8 @@ fixture `Status Bar`
     });
 
 test('Show status prefix', async t => {
-    const statusDiv = Selector(() => window['%testCafeDriverInstance%'].statusBar.statusDiv);
+    const statusDiv   = Selector(() => window['%testCafeDriverInstance%'].statusBar.statusDiv);
+    const progressBar = Selector(() => window['%testCafeDriverInstance%'].statusBar.progressBar.progressBar);
 
     let statusText = await statusDiv.innerText;
 
@@ -21,12 +22,20 @@ test('Show status prefix', async t => {
         .expect(statusDiv.innerText).eql('Waiting for assertion execution...');
 
     await t
-        .eval(() => window['%testCafeDriverInstance%'].statusBar.setStatusPrefix('Status prefix'));
+        .eval(() => {
+            const statusBar = window['%testCafeDriverInstance%'].statusBar;
+
+            statusBar.progressBar.show();
+            statusBar.setStatusPrefix('Status prefix');
+        });
+
+    const progressBarVisible = await progressBar.visible;
 
     statusText = await statusDiv.innerText;
 
     await t
-        .expect(statusText.trim()).eql('Status prefix.')
+        .expect(statusText.trim()).eql('Status prefix')
+        .expect(progressBarVisible).ok()
         .expect(statusDiv.innerText).eql('Status prefix. Waiting for assertion execution...')
         .navigateTo('about:blank')
         .expect(statusDiv.innerText).eql('Status prefix. Waiting for assertion execution...');

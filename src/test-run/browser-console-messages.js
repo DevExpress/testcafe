@@ -8,11 +8,11 @@ export default class BrowserConsoleMessages {
         this.concat(data);
     }
 
-    _ensurePageIdMessageContainer (pageId) {
-        if (this[pageId])
+    _ensureWindowIdMessageContainer (windowId) {
+        if (this[windowId])
             return;
 
-        this[pageId] = {
+        this[windowId] = {
             log:   [],
             info:  [],
             warn:  [],
@@ -24,33 +24,33 @@ export default class BrowserConsoleMessages {
         if (!consoleMessages)
             return this;
 
-        Object.keys(consoleMessages).forEach(pageId => {
-            this._ensurePageIdMessageContainer(pageId);
+        Object.keys(consoleMessages).forEach(windowId => {
+            this._ensureWindowIdMessageContainer(windowId);
 
-            this[pageId].log   = this[pageId].log.concat(consoleMessages[pageId].log);
-            this[pageId].info  = this[pageId].info.concat(consoleMessages[pageId].info);
-            this[pageId].warn  = this[pageId].warn.concat(consoleMessages[pageId].warn);
-            this[pageId].error = this[pageId].error.concat(consoleMessages[pageId].error);
+            this[windowId].log   = this[windowId].log.concat(consoleMessages[windowId].log);
+            this[windowId].info  = this[windowId].info.concat(consoleMessages[windowId].info);
+            this[windowId].warn  = this[windowId].warn.concat(consoleMessages[windowId].warn);
+            this[windowId].error = this[windowId].error.concat(consoleMessages[windowId].error);
         });
 
         return this;
     }
 
-    addMessage (type, msg, pageId) {
-        this._ensurePageIdMessageContainer(pageId);
+    addMessage (type, msg, windowId) {
+        this._ensureWindowIdMessageContainer(windowId);
 
-        this[pageId][type].push(msg);
+        this[windowId][type].push(msg);
     }
 
     getCopy () {
         const copy = {};
 
-        Object.keys(this).forEach(pageId => {
-            copy[pageId] = {
-                log:   this[pageId].log.slice(),
-                info:  this[pageId].info.slice(),
-                warn:  this[pageId].warn.slice(),
-                error: this[pageId].error.slice()
+        Object.keys(this).forEach(windowId => {
+            copy[windowId] = {
+                log:   this[windowId].log.slice(),
+                info:  this[windowId].info.slice(),
+                warn:  this[windowId].warn.slice(),
+                error: this[windowId].error.slice()
             };
         });
 

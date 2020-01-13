@@ -1,3 +1,6 @@
+import { renderers } from 'callsite-record';
+
+
 export default function renderCallsiteSync (callsite, options) {
     if (!callsite)
         return '';
@@ -5,6 +8,18 @@ export default function renderCallsiteSync (callsite, options) {
     // NOTE: for raw API callsites
     if (typeof callsite === 'string')
         return callsite;
+
+    if (callsite.prerendered) {
+        const renderer = options && options.renderer;
+
+        if (renderer === renderers.html)
+            return callsite.html;
+
+        if (renderer === renderers.noColor)
+            return callsite.noColor;
+
+        return callsite.default || '';
+    }
 
     if (!callsite.renderSync)
         return '';

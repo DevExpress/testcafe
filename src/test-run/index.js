@@ -236,7 +236,7 @@ export default class TestRun extends AsyncEventEmitter {
             browserHeartbeatRelativeUrl:  JSON.stringify(this.browserConnection.heartbeatRelativeUrl),
             browserStatusRelativeUrl:     JSON.stringify(this.browserConnection.statusRelativeUrl),
             browserStatusDoneRelativeUrl: JSON.stringify(this.browserConnection.statusDoneRelativeUrl),
-            browserActivePageIdUrl:       JSON.stringify(this.browserConnection.activePageIdUrl),
+            browserActiveWindowIdUrl:     JSON.stringify(this.browserConnection.activeWindowIdUrl),
             userAgent:                    JSON.stringify(this.browserConnection.userAgent),
             testName:                     JSON.stringify(this.test.name),
             fixtureName:                  JSON.stringify(this.test.fixture.name),
@@ -435,7 +435,7 @@ export default class TestRun extends AsyncEventEmitter {
 
         const consoleMessageCopy = this.consoleMessages.getCopy();
 
-        return consoleMessageCopy[this.browserConnection.activePageId];
+        return consoleMessageCopy[this.browserConnection.activeWindowId];
     }
 
     async _enqueueSetBreakpointCommand (callsite, error) {

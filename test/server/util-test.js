@@ -56,42 +56,6 @@ describe('Utils', () => {
                 expected: expectedEmptyParsedUA
             },
             {
-                sourceUA: 'Chrome',
-                expected: {
-                    name:            'Chrome',
-                    version:         '0.0',
-                    platform:        'other',
-                    os:              { name: 'Other', version: '0.0' },
-                    engine:          { name: 'Other', version: '0.0' },
-                    prettyUserAgent: 'Chrome 0.0 / Other 0.0',
-                    userAgent:       'Chrome'
-                }
-            },
-            {
-                sourceUA: 'Windows',
-                expected: {
-                    name:            'Other',
-                    version:         '0.0',
-                    platform:        'desktop',
-                    os:              { name: 'Windows', version: '0.0' },
-                    engine:          { name: 'Other', version: '0.0' },
-                    prettyUserAgent: 'Other 0.0 / Windows 0.0',
-                    userAgent:       'Windows'
-                }
-            },
-            {
-                sourceUA: 'AppleWebKit',
-                expected: {
-                    name:            'Safari',
-                    version:         '0.0',
-                    platform:        'other',
-                    os:              { name: 'Other', version: '0.0' },
-                    engine:          { name: 'WebKit', version: '0.0' },
-                    prettyUserAgent: 'Safari 0.0 / Other 0.0',
-                    userAgent:       'AppleWebKit'
-                }
-            },
-            {
                 sourceUA: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36',
                 expected: {
                     name:            'Chrome',
@@ -125,6 +89,18 @@ describe('Utils', () => {
                     engine:          { name: 'Blink', version: '0.0' },
                     prettyUserAgent: 'Chrome 67.0.3396.87 / Android 8.1.0',
                     userAgent:       'Mozilla/5.0 (Linux; Android 8.1.0; Android SDK built for x86 Build/OSM1.180201.026) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.87 Mobile Safari/537.36'
+                }
+            },
+            {
+                sourceUA: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.130 Electron/7.1.7 Safari/537.36',
+                expected: {
+                    name:            'Electron',
+                    version:         '7.1.7',
+                    platform:        'desktop',
+                    os:              { name: 'Windows', version: '10' },
+                    engine:          { name: 'Blink', version: '0.0' },
+                    prettyUserAgent: 'Electron 7.1.7 / Windows 10',
+                    userAgent:       'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.130 Electron/7.1.7 Safari/537.36'
                 }
             }
         ];

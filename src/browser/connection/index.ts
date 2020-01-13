@@ -56,7 +56,7 @@ export default class BrowserConnection extends EventEmitter {
     private opened: boolean;
     private heartbeatTimeout: NodeJS.Timeout | null;
     private pendingTestRunUrl: string | null;
-    private readonly url: string;
+    public readonly url: string;
     public readonly idleUrl: string;
     private forcedIdleUrl: string;
     private readonly initScriptUrl: string;
@@ -65,7 +65,7 @@ export default class BrowserConnection extends EventEmitter {
     private readonly statusDoneRelativeUrl: string;
     private readonly heartbeatUrl: string;
     private readonly statusUrl: string;
-    private readonly activePageIdUrl: string;
+    private readonly activeWindowIdUrl: string;
     private statusDoneUrl: string;
     private switchingToIdle: boolean;
 
@@ -111,7 +111,7 @@ export default class BrowserConnection extends EventEmitter {
         this.heartbeatRelativeUrl  = `/browser/heartbeat/${this.id}`;
         this.statusRelativeUrl     = `/browser/status/${this.id}`;
         this.statusDoneRelativeUrl = `/browser/status-done/${this.id}`;
-        this.activePageIdUrl       = `/browser/active-page-id/${this.id}`;
+        this.activeWindowIdUrl     = `/browser/active-window-id/${this.id}`;
 
         this.heartbeatUrl  = `${gateway.domain}${this.heartbeatRelativeUrl}`;
         this.statusUrl     = `${gateway.domain}${this.statusRelativeUrl}`;
@@ -403,11 +403,11 @@ export default class BrowserConnection extends EventEmitter {
         return { cmd: COMMAND.idle, url: this.idleUrl };
     }
 
-    public get activePageId (): null | string {
-        return this.provider.getActivePageId(this.id);
+    public get activeWindowId (): null | string {
+        return this.provider.getActiveWindowId(this.id);
     }
 
-    public set activePageId (val) {
-        this.provider.setActivePageId(this.id, val);
+    public set activeWindowId (val) {
+        this.provider.setActiveWindowId(this.id, val);
     }
 }

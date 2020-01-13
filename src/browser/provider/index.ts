@@ -4,7 +4,7 @@ import { dirname } from 'path';
 import makeDir from 'make-dir';
 import BrowserConnection from '../connection';
 import delay from '../../utils/delay';
-import { GET_TITLE_SCRIPT, GET_WINDOW_DIMENSIONS_INFO_SCRIPT, GET_PAGE_ID_SCRIPT } from './utils/client-functions';
+import { GET_TITLE_SCRIPT, GET_WINDOW_DIMENSIONS_INFO_SCRIPT, GET_WINDOW_ID_SCRIPT } from './utils/client-functions';
 import WARNING_MESSAGE from '../../notifications/warning-message';
 import { Dictionary } from '../../configuration/interfaces';
 
@@ -24,7 +24,7 @@ interface LocalBrowserInfo {
     windowDescriptor: null | string;
     maxScreenSize: null | Size;
     resizeCorrections: null | Size;
-    activePageId: null | string;
+    activeWindowId: null | string;
 }
 
 function sumSizes (sizeA: Size, sizeB: Size): Size {
@@ -65,7 +65,7 @@ export default class BrowserProvider {
             windowDescriptor:  null,
             maxScreenSize:     null,
             resizeCorrections: null,
-            activePageId:      null
+            activeWindowId:    null
         };
     }
 
@@ -87,10 +87,10 @@ export default class BrowserProvider {
         return connection.idle;
     }
 
-    private async _calculatePageId (browserId: string): Promise<void> {
-        const pageId = await this.plugin.runInitScript(browserId, GET_PAGE_ID_SCRIPT);
+    private async _calculateWindowId (browserId: string): Promise<void> {
+        const windowId = await this.plugin.runInitScript(browserId, GET_WINDOW_ID_SCRIPT);
 
-        this.setActivePageId(browserId, pageId);
+        this.setActiveWindowId(browserId, windowId);
     }
 
     private async _calculateResizeCorrections (browserId: string): Promise<void> {
@@ -159,7 +159,7 @@ export default class BrowserProvider {
             await this._calculateMacSizeLimits(browserId);
 
         if (allowMultipleWindows)
-            await this._calculatePageId(browserId);
+            await this._calculateWindowId(browserId);
     }
 
     private async _closeLocalBrowser (browserId: string): Promise<void> {
@@ -350,16 +350,16 @@ export default class BrowserProvider {
         await this.plugin.reportJobResult(browserId, status, data);
     }
 
-    public getActivePageId (browserId: string): string | null {
+    public getActiveWindowId (browserId: string): string | null {
         const targetLocalBrowserInfo = this.localBrowsersInfo[browserId];
 
-        return targetLocalBrowserInfo ? targetLocalBrowserInfo.activePageId : null;
+        return targetLocalBrowserInfo ? targetLocalBrowserInfo.activeWindowId : null;
     }
 
-    public setActivePageId (browserId: string, val: string): void {
+    public setActiveWindowId (browserId: string, val: string): void {
         const targetLocalBrowserInfo = this.localBrowsersInfo[browserId];
 
         if (targetLocalBrowserInfo)
-            targetLocalBrowserInfo.activePageId = val;
+            targetLocalBrowserInfo.activeWindowId = val;
     }
 }

@@ -79,7 +79,7 @@ export default class SessionController extends Session {
             session.allowMultipleWindows = testRun.allowMultipleWindows;
 
             if (session.allowMultipleWindows)
-                session.pageId = testRun.browserConnection.activePageId;
+                session.windowId = testRun.browserConnection.activeWindowId;
 
             sessionInfo = {
                 session: session,

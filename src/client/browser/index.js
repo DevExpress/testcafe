@@ -156,13 +156,13 @@ export function isRetryingTestPagesEnabled () {
     return retryTestPages;
 }
 
-export function getActivePageId (activePageIdUrl, createXHR) {
-    return sendXHR(activePageIdUrl, createXHR);
+export function getActiveWindowId (activeWindowIdUrl, createXHR) {
+    return sendXHR(activeWindowIdUrl, createXHR);
 }
 
-export function setActivePageId (activePageIdUrl, createXHR, pageId) {
-    return sendXHR(activePageIdUrl, createXHR, {
+export function setActiveWindowId (activeWindowIdUrl, createXHR, windowId) {
+    return sendXHR(activeWindowIdUrl, createXHR, {
         method: 'POST',
-        data:   JSON.stringify({ pageId }) //eslint-disable-line no-restricted-globals
+        data:   JSON.stringify({ windowId }) //eslint-disable-line no-restricted-globals
     });
 }

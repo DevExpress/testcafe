@@ -319,7 +319,7 @@ export default class Runner extends EventEmitter {
 
     _validateBrowsersForAllowMultipleWindowsOption (browserSet) {
         const browserConnections            = browserSet.browserConnectionGroups.map(browserConnectionGroup => browserConnectionGroup[0]);
-        const unsupportedBrowserConnections = browserConnections.filter(browserConnection => !browserConnection.activePageId);
+        const unsupportedBrowserConnections = browserConnections.filter(browserConnection => !browserConnection.activeWindowId);
 
         if (!unsupportedBrowserConnections.length)
             return;
