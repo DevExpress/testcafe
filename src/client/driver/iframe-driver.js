@@ -79,7 +79,7 @@ export default class IframeDriver extends Driver {
         const initializePromise = this.parentDriverLink
             .establishConnection()
             .then(id => {
-                this.contextStorage = new ContextStorage(window, id);
+                this.contextStorage = new ContextStorage(window, id, this.windowId);
 
                 if (this._failIfClientCodeExecutionIsInterrupted())
                     return;

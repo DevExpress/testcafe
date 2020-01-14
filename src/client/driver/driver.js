@@ -5,6 +5,7 @@ import {
     eventUtils,
     domUtils,
     arrayUtils,
+    serviceUtils,
     preventRealEvents,
     disableRealEventsPreventing,
     waitFor,
@@ -65,7 +66,7 @@ import {
     getResult as getExecuteSelectorResult,
     getResultDriverStatus as getExecuteSelectorResultDriverStatus
 } from './command-executors/execute-selector';
-import executeChildWindowSelector from './command-executors/execute-child-window-selector';
+import executeChildWindowDriverLinkSelector from './command-executors/execute-child-window-driver-link-selector';
 import ClientFunctionExecutor from './command-executors/client-functions/client-function-executor';
 import ChildWindowDriverLink from './driver-link/window/child';
 import ParentWindowDriverLink from './driver-link/window/parent';
@@ -103,11 +104,16 @@ const CURRENT_IFRAME_ERROR_CTORS = {
     IsInvisibleError: CurrentIframeIsInvisibleError
 };
 
-const COMMAND_EXECUTION_CHECK_DELAY = 1000;
-const COMMAND_EXECUTION_MAX_TIMEOUT = Math.pow(2, 31) - 1;
+const COMMAND_EXECUTION_MAX_TIMEOUT    = Math.pow(2, 31) - 1;
+const EMPTY_COMMAND_EVENT_WAIT_TIMEOUT = 30 * 1000;
 
-export default class Driver {
+const STATUS_WITH_COMMAND_RESULT_EVENT = 'status-with-command-result-event';
+const EMPTY_COMMAND_EVENT              = 'empty-command-event';
+
+export default class Driver extends serviceUtils.EventEmitter {
     constructor (testRunId, communicationUrls, runInfo, options) {
+        super();
+
         this.COMMAND_EXECUTING_FLAG        = 'testcafe|driver|command-executing-flag';
         this.EXECUTING_IN_IFRAME_FLAG      = 'testcafe|driver|executing-in-iframe-flag';
         this.PENDING_WINDOW_SWITCHING_FLAG = 'testcafe|driver|pending-window-switching-flag';
@@ -140,7 +146,9 @@ export default class Driver {
 
         this.statusBar = null;
 
-        this.windowId = this._getCurrentWindowId();
+        this.windowId                   = this._getCurrentWindowId();
+        this.role                       = DriverRole.replica;
+        this.setAsMasterMessageReceived = false;
 
         if (options.retryTestPages)
             browser.enableRetryingTestPages();
@@ -291,6 +299,10 @@ export default class Driver {
         this.consoleMessages   = null;
     }
 
+    _addPendingWindowSwitchingStateToStatus (status) {
+        status.isPendingWindowSwitching = !!this.contextStorage.getItem(this.PENDING_WINDOW_SWITCHING_FLAG);
+    }
+
     _sendStatusRequest (status) {
         const statusRequestOptions = {
             cmd:              TEST_RUN_MESSAGES.ready,
@@ -317,6 +329,7 @@ export default class Driver {
             this._addPendingErrorToStatus(status);
             this._addUnexpectedDialogErrorToStatus(status);
             this._addConsoleMessagesToStatus(status);
+            this._addPendingWindowSwitchingStateToStatus(status);
         }
 
         this.contextStorage.setItem(PENDING_STATUS, status);
@@ -357,19 +370,27 @@ export default class Driver {
     }
 
     _handleSetAsMasterMessage (msg, wnd) {
+        // NOTE: The 'setAsMaster' message can be send a few times because
+        // the 'sendMessageToDriver' function resend messages if the message confirmation is not received in 1 sec.
+        // This message can be send even after driver is started.
+        if (this.setAsMasterMessageReceived || this.role === DriverRole.master)
+            return;
+
+        this.setAsMasterMessageReceived = true;
+
+        sendConfirmationMessage({
+            requestMsgId: msg.id,
+            window:       wnd
+        });
+
         Promise.resolve()
             .then(() => {
-                sendConfirmationMessage({
-                    requestMsgId: msg.id,
-                    window:       wnd
-                });
-
-                const windowId = this._getCurrentWindowId();
-
-                return browser.setActiveWindowId(this.browserActiveWindowId, hammerhead.createNativeXHR, windowId);
+                return browser.setActiveWindowId(this.browserActiveWindowId, hammerhead.createNativeXHR, this.windowId);
             })
             .then(() => {
                 this._startInternal();
+
+                this.setAsMasterMessageReceived = false;
             })
             .catch(() => {
                 this._onReady(new DriverStatus({
@@ -481,30 +502,59 @@ export default class Driver {
             });
     }
 
-    _waitForCommandCompletion () {
-        return waitFor(() => {
-            return !this.contextStorage.getItem(this.COMMAND_EXECUTING_FLAG);
-        }, COMMAND_EXECUTION_CHECK_DELAY, COMMAND_EXECUTION_MAX_TIMEOUT);
+    _createWaitForEventPromise (eventName, timeout) {
+        let eventHandler = null;
+
+        const timeoutPromise = new Promise(resolve => {
+            nativeMethods.setTimeout.call(window, () => {
+                this.off(eventName, eventHandler);
+
+                resolve();
+            }, timeout);
+        });
+
+        const resultPromise = new Promise(resolve => {
+            eventHandler = function () {
+                this.off(eventName, eventHandler);
+
+                resolve();
+            };
+
+            this.on(eventName, eventHandler);
+        });
+
+        return Promise.race([timeoutPromise, resultPromise]);
+    }
+
+    _waitForCurrentCommandCompletion () {
+        if (!this.contextStorage.getItem(this.COMMAND_EXECUTING_FLAG))
+            return Promise.resolve();
+
+        return this._createWaitForEventPromise(STATUS_WITH_COMMAND_RESULT_EVENT, COMMAND_EXECUTION_MAX_TIMEOUT);
+    }
+
+    _waitForEmptyCommand () {
+        return this._createWaitForEventPromise(EMPTY_COMMAND_EVENT, EMPTY_COMMAND_EVENT_WAIT_TIMEOUT);
     }
 
     _switchToChildWindow (selector) {
         this.contextStorage.setItem(this.PENDING_WINDOW_SWITCHING_FLAG, true);
 
-        return executeChildWindowSelector(selector, this.childWindowDriverLinks)
-            .then(driverWindow => {
-                return this._ensureChildWindowDriverLink(driverWindow, ChildWindowIsNotLoadedError, this.childWindowReadyTimeout);
+        return executeChildWindowDriverLinkSelector(selector, this.childWindowDriverLinks)
+            .then(childWindowDriverLink => {
+                return this._ensureChildWindowDriverLink(childWindowDriverLink.driverWindow, ChildWindowIsNotLoadedError, this.childWindowReadyTimeout);
             })
             .then(childWindowDriverLink => {
                 this.activeChildWindowDriverLink = childWindowDriverLink;
 
-                return this._waitForCommandCompletion();
+                return this._waitForCurrentCommandCompletion();
+            })
+            .then(() => {
+                return this._waitForEmptyCommand();
             })
             .then(() => {
                 this._stopInternal();
 
-                return browser.setActiveWindowId(this.browserActiveWindowId, hammerhead.createNativeXHR, this.activeChildWindowDriverLink.windowId);
-            })
-            .then(() => {
                 return this.activeChildWindowDriverLink.setAsMaster();
             })
             .then(() => {
@@ -737,7 +787,7 @@ export default class Driver {
         }))
             .then(() => {
                 nativeMethods.arrayForEach.call(this.childWindowDriverLinks, childWindowDriverLink => {
-                    nativeMethods.windowClose.call(childWindowDriverLink.driverWindow);
+                    childWindowDriverLink.driverWindow.close();
                 });
             });
     }
@@ -754,6 +804,12 @@ export default class Driver {
                 })
                 .then(() => {
                     this._checkStatus();
+                })
+                .catch(() => {
+                    this._onReady(new DriverStatus({
+                        isCommandResult: true,
+                        executionError:  CloseChildWindowError
+                    }));
                 });
         }
     }
@@ -765,23 +821,34 @@ export default class Driver {
         }));
     }
 
+    _isStatusWithCommandResultInPendingWindowSwitchingMode (status) {
+        return status.isCommandResult && !!this.contextStorage.getItem(this.PENDING_WINDOW_SWITCHING_FLAG);
+    }
+
+    _isEmptyCommandInPendingWindowSwitchingMode (command) {
+        return !command && !!this.contextStorage.getItem(this.PENDING_WINDOW_SWITCHING_FLAG);
+    }
 
     // Routing
     _onReady (status) {
-        // NOTE: Block the next command execution until the master driver instance will be changed
-        const thereIsPendingSwitchToChildWindow = this.contextStorage.getItem(this.PENDING_WINDOW_SWITCHING_FLAG);
-
-        if (thereIsPendingSwitchToChildWindow)
-            return;
+        if (this._isStatusWithCommandResultInPendingWindowSwitchingMode(status))
+            this.emit(STATUS_WITH_COMMAND_RESULT_EVENT);
 
         this._sendStatus(status)
             .then(command => {
                 if (command)
                     this._onCommand(command);
 
-                // NOTE: the driver gets an empty response if TestRun doesn't get a new command within 2 minutes
-                else
+                else {
+                    if (this._isEmptyCommandInPendingWindowSwitchingMode(command)) {
+                        this.emit(EMPTY_COMMAND_EVENT);
+
+                        return;
+                    }
+
+                    // NOTE: the driver gets an empty response if TestRun doesn't get a new command within 2 minutes
                     this._onReady(new DriverStatus());
+                }
             });
     }
 
@@ -885,12 +952,16 @@ export default class Driver {
     }
 
     _startInternal () {
+        this.role = DriverRole.master;
+
         browser.startHeartbeat(this.heartbeatUrl, hammerhead.createNativeXHR);
         this._setupAssertionRetryIndication();
         this._startCommandsProcessing();
     }
 
     _stopInternal () {
+        this.role = DriverRole.replica;
+
         browser.stopHeartbeat();
         cursor.hide();
     }
@@ -962,7 +1033,7 @@ export default class Driver {
     }
 
     _init () {
-        this.contextStorage       = new ContextStorage(window, this.testRunId);
+        this.contextStorage       = new ContextStorage(window, this.testRunId, this.windowId);
         this.nativeDialogsTracker = new NativeDialogTracker(this.contextStorage, this.dialogHandler);
         this.statusBar            = new StatusBar(this.userAgent, this.fixtureName, this.testName, this.contextStorage);
 
