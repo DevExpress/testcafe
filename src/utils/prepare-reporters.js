@@ -18,13 +18,13 @@ function validateReporterOutput (obj) {
         throw new GeneralError(RUNTIME_ERRORS.invalidReporterOutput);
 }
 
-export default function (name, output) {
+export default function (name, output, options) {
     let reporters = [];
 
     if (name instanceof Array)
         reporters = name.map(r => typeof r === 'string' || typeof r === 'function' ? { name: r } : r);
     else {
-        const reporter = { name, output };
+        const reporter = { name, output, options };
 
         reporters.push(reporter);
     }

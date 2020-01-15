@@ -39,9 +39,15 @@ interface Metadata {
 
 type BrowserSource = BrowserConnection | string;
 
+type JSONPrimitive = string | number | boolean | null;
+type JSONValue = JSONPrimitive | JSONObject | JSONArray;
+type JSONArray = JSONValue[];
+interface JSONObject { [key: string]: JSONValue }
+
 interface ReporterSource {
     name: string;
     output?: string | WritableStream;
+    options?: JSONObject;
 }
 
 interface ReporterPluginSource {
@@ -311,13 +317,14 @@ export default class Bootstrapper {
         if (!this.reporters.length)
             Bootstrapper._addDefaultReporter(this.reporters);
 
-        return Promise.all(this.reporters.map(async ({ name, output }) => {
+        return Promise.all(this.reporters.map(async ({ name, output, options }) => {
             const pluginFactory = this._getPluginFactory(name);
             const outStream     = output ? await this._ensureOutStream(output) : void 0;
 
             return {
                 plugin: pluginFactory(),
-                outStream
+                outStream,
+                options
             };
         }));
     }

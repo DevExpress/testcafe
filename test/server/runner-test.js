@@ -1116,6 +1116,6 @@ describe('Runner', () => {
 
         expect(runner.configuration.getOption('src')).eql(['/path-to-test']);
         expect(runner.configuration.getOption('browsers')).eql(['ie']);
-        expect(runner.configuration.getOption('reporter')).eql([ { name: 'json', output: void 0 } ]);
+        expect(runner.configuration.getOption('reporter')).eql([ { name: 'json', output: void 0, options: void 0 } ]);
     });
 });

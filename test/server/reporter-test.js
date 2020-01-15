@@ -343,6 +343,11 @@ describe('Reporter', () => {
 
     function createReporter (taskMock) {
         return new Reporter({
+            init: function (...args) {
+                return delay(1000)
+                    .then(() => log.push({ method: 'init', args: args }));
+            },
+
             reportTaskStart: function (...args) {
                 expect(args[0]).to.be.a('date');
 
@@ -384,7 +389,15 @@ describe('Reporter', () => {
                 return delay(1000)
                     .then(() => log.push({ method: 'reportTaskDone', args: args }));
             }
-        }, taskMock);
+        },
+        taskMock,
+        null,
+        {
+            foo: 'bar',
+            baz: {
+                foo: 'bar'
+            }
+        });
     }
 
     beforeEach(() => {
@@ -397,6 +410,17 @@ describe('Reporter', () => {
         const taskMock = new TaskMock();
 
         const expectedLog = [
+            {
+                method: 'init',
+                args:   [
+                    {
+                        foo: 'bar',
+                        baz: {
+                            foo: 'bar',
+                        }
+                    },
+                ]
+            },
             {
                 method: 'reportTaskStart',
                 args:   [

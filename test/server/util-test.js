@@ -427,23 +427,26 @@ describe('Utils', () => {
             expect(result[1].name).eql(fn2);
         });
 
-        it('Name and output stream', () => {
-            const result = prepareReporters('minimal', 'path/to/file');
+        it('Name, output stream and options', () => {
+            const result = prepareReporters('minimal', 'path/to/file', { foo: 'bar' });
 
             expect(result.length).eql(1);
             expect(result[0].name).eql('minimal');
             expect(result[0].output).eql('path/to/file');
+            expect(result[0].options).eql({ foo: 'bar' });
         });
 
-        it('Array of names and output streams', () => {
+        it('Array of names, output streams and options', () => {
             const data = [
                 {
                     name:      'minimal',
-                    outStream: 'path/to/file/1'
+                    outStream: 'path/to/file/1',
+                    options:   { foo: 'bar' }
                 },
                 {
                     name:      'json',
-                    outStream: 'path/to/file/2'
+                    outStream: 'path/to/file/2',
+                    options:   { bar: 'baz' }
                 }
             ];
 

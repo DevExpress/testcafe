@@ -5,7 +5,7 @@ import { CommandReportItem } from './command-report-item';
 import TestCafeErrorList from '../errors/error-list';
 
 export default class Reporter {
-    constructor (plugin, task, outStream) {
+    constructor (plugin, task, outStream, options) {
         this.plugin = new ReporterPluginHost(plugin, outStream);
         this.task   = task;
 
@@ -21,6 +21,9 @@ export default class Reporter {
         this.pendingTaskDonePromise = Reporter._createPendingPromise();
 
         this._assignTaskEventHandlers();
+
+        if (this.plugin.init)
+            this.plugin.init(options);
     }
 
     static _isSpecialStream (stream) {

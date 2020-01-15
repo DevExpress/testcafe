@@ -151,7 +151,7 @@ export default class Runner extends EventEmitter {
     _runTask (reporterPlugins, browserSet, tests, testedApp) {
         let completed           = false;
         const task              = this._createTask(tests, browserSet.browserConnectionGroups, this.proxy, this.configuration.getOptions());
-        const reporters         = reporterPlugins.map(reporter => new Reporter(reporter.plugin, task, reporter.outStream));
+        const reporters         = reporterPlugins.map(reporter => new Reporter(reporter.plugin, task, reporter.outStream, reporter.options));
         const completionPromise = this._getTaskResult(task, browserSet, reporters, testedApp);
 
         task.on('start', startHandlingTestErrors);
@@ -413,11 +413,11 @@ export default class Runner extends EventEmitter {
         return this;
     }
 
-    reporter (name, output) {
+    reporter (name, output, options) {
         if (this.apiMethodWasCalled.reporter)
             throw new GeneralError(RUNTIME_ERRORS.multipleAPIMethodCallForbidden, OPTION_NAMES.reporter);
 
-        let reporters = prepareReporters(name, output);
+        let reporters = prepareReporters(name, output, options);
 
         reporters = this._prepareArrayParameter(reporters);
 

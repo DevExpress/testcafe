@@ -135,6 +135,12 @@ export default class ReporterPluginHost {
 
 
     // Abstract methods implemented in plugin
+
+    // NOTE: It's an optional method
+    // init (/* options */) {
+    //     throw new Error('Not implemented');
+    // }
+
     async reportTaskStart (/* startTime, userAgents, testCount */) {
         throw new Error('Not implemented');
     }
