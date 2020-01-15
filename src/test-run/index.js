@@ -522,9 +522,7 @@ export default class TestRun extends AsyncEventEmitter {
 
         this.consoleMessages.concat(driverStatus.consoleMessages);
 
-        const shouldFinalizePendingCommand = driverStatus.finalizePendingCommand && !!this.currentDriverTask;
-
-        if (!currentTaskRejectedByError && driverStatus.isCommandResult || shouldFinalizePendingCommand) {
+        if (!currentTaskRejectedByError && driverStatus.isCommandResult) {
             if (isTestDone) {
                 this._resolveCurrentDriverTask();
 

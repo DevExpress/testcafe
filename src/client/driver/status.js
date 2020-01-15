@@ -14,7 +14,6 @@ export default class DriverStatus extends Assignable {
         this.result                   = null;
         this.consoleMessages          = null;
         this.isPendingWindowSwitching = false;
-        this.finalizePendingCommand   = false;
 
         this._assignFrom(obj, true);
     }
@@ -26,8 +25,7 @@ export default class DriverStatus extends Assignable {
             { name: 'pageError' },
             { name: 'result' },
             { name: 'consoleMessages' },
-            { name: 'isPendingWindowSwitching' },
-            { name: 'finalizePendingCommand' }
+            { name: 'isPendingWindowSwitching' }
         ];
     }
 }
