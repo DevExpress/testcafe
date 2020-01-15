@@ -254,10 +254,10 @@ export default class Driver extends serviceUtils.EventEmitter {
         const childWindowDriverLink = new ChildWindowDriverLink(e.window, e.windowId);
 
         this.childWindowDriverLinks.push(childWindowDriverLink);
-        this._ensureChildWindowClosedTimer();
+        this._ensureChildWindowClosedWatcher();
     }
 
-    _ensureChildWindowClosedTimer () {
+    _ensureChildWindowClosedWatcher () {
         if (this.checkChildWindowClosedIntervalId)
             return;
 
@@ -266,7 +266,8 @@ export default class Driver extends serviceUtils.EventEmitter {
                 if (childWindowDriverLink.driverWindow.closed) {
                     arrayUtils.remove(this.childWindowDriverLinks, childWindowDriverLink);
 
-                    this._setCurrentWindowAsMaster();
+                    if (this.role === DriverRole.replica)
+                        this._setCurrentWindowAsMaster();
 
                     if (!this.childWindowDriverLinks.length)
                         nativeMethods.clearInterval.call(window, this.checkChildWindowClosedIntervalId);
