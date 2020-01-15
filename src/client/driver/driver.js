@@ -149,8 +149,8 @@ export default class Driver extends serviceUtils.EventEmitter {
 
         this.windowId                         = this._getCurrentWindowId();
         this.role                             = DriverRole.replica;
-        this.setAsMasterMessageReceived       = false;
-        this.checkChildWindowClosedIntervalId = null;
+        this.setAsMasterInProgress            = false;
+        this.checkClosedChildWindowIntervalId = null;
 
         if (options.retryTestPages)
             browser.enableRetryingTestPages();
@@ -254,38 +254,41 @@ export default class Driver extends serviceUtils.EventEmitter {
         const childWindowDriverLink = new ChildWindowDriverLink(e.window, e.windowId);
 
         this.childWindowDriverLinks.push(childWindowDriverLink);
-        this._ensureChildWindowClosedWatcher();
+        this._ensureClosedChildWindowWatcher();
     }
 
-    _ensureChildWindowClosedWatcher () {
-        if (this.checkChildWindowClosedIntervalId)
+    _ensureClosedChildWindowWatcher () {
+        if (this.checkClosedChildWindowIntervalId)
             return;
 
-        this.checkChildWindowClosedIntervalId = nativeMethods.setInterval.call(window, () => {
-            for (const childWindowDriverLink of this.childWindowDriverLinks) {
-                if (childWindowDriverLink.driverWindow.closed) {
-                    arrayUtils.remove(this.childWindowDriverLinks, childWindowDriverLink);
+        this.checkClosedChildWindowIntervalId = nativeMethods.setInterval.call(window, () => {
+            const firstClosedChildWindowDriverLink = arrayUtils.find(this.childWindowDriverLinks, childWindowDriverLink => childWindowDriverLink.driverWindow.closed);
 
-                    if (this.role === DriverRole.replica)
-                        this._setCurrentWindowAsMaster();
+            if (!firstClosedChildWindowDriverLink)
+                return;
 
-                    if (!this.childWindowDriverLinks.length)
-                        nativeMethods.clearInterval.call(window, this.checkChildWindowClosedIntervalId);
+            arrayUtils.remove(this.childWindowDriverLinks, firstClosedChildWindowDriverLink);
+            this._setCurrentWindowAsMaster();
 
-                    else
-                        return;
-                }
-            }
+            if (!this.childWindowDriverLinks.length)
+                nativeMethods.clearInterval.call(window, this.checkClosedChildWindowIntervalId);
         }, CHECK_CHILD_WINDOW_CLOSED_INTERVAL);
     }
 
     _setCurrentWindowAsMaster () {
+        if (this.setAsMasterInProgress || this.role === DriverRole.master)
+            return;
+
+        this.setAsMasterInProgress = true;
+
         Promise.resolve()
             .then(() => {
                 return browser.setActiveWindowId(this.browserActiveWindowId, hammerhead.createNativeXHR, this.windowId);
             })
             .then(() => {
                 this._startInternal({ finalizePendingCommand: true });
+
+                this.setAsMasterInProgress = false;
             })
             .catch(() => {
                 this._onReady(new DriverStatus({
@@ -414,10 +417,10 @@ export default class Driver extends serviceUtils.EventEmitter {
         // NOTE: The 'setAsMaster' message can be send a few times because
         // the 'sendMessageToDriver' function resend messages if the message confirmation is not received in 1 sec.
         // This message can be send even after driver is started.
-        if (this.setAsMasterMessageReceived || this.role === DriverRole.master)
+        if (this.setAsMasterInProgress || this.role === DriverRole.master)
             return;
 
-        this.setAsMasterMessageReceived = true;
+        this.setAsMasterInProgress = true;
 
         sendConfirmationMessage({
             requestMsgId: msg.id,
