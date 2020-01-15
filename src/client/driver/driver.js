@@ -1044,10 +1044,9 @@ export default class Driver extends serviceUtils.EventEmitter {
         if (this._failIfClientCodeExecutionIsInterrupted())
             return;
 
-        const status = pendingStatus || new DriverStatus({
-            isCommandResult: this._hasPendingActionFlags(this.contextStorage),
-            finalizePendingCommand
-        });
+        finalizePendingCommand = finalizePendingCommand || this._hasPendingActionFlags(this.contextStorage);
+
+        const status = pendingStatus || new DriverStatus({ finalizePendingCommand });
 
         this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, false);
         this.contextStorage.setItem(this.EXECUTING_IN_IFRAME_FLAG, false);
