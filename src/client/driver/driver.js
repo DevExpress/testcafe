@@ -1090,8 +1090,8 @@ export default class Driver extends serviceUtils.EventEmitter {
             .then(role => {
                 if (role === DriverRole.master)
                     this._startInternal();
-
-                this._initParentWindowLink();
+                else
+                    this._initParentWindowLink();
             });
     }
 }
