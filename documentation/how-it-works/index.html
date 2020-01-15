@@ -14,15 +14,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>Pausing the Test | TestCafe</title>
+  <title>How It Works | TestCafe</title>
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
 
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://devexpress.github.io/testcafe/documentation/test-api/pausing-the-test.html" />
-  <meta property="og:title" content="Pausing the Test | TestCafe" />
+  <meta property="og:url" content="https://devexpress.github.io/testcafe/documentation/how-it-works/" />
+  <meta property="og:title" content="How It Works | TestCafe" />
 
   
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/styles/docco.min.css">
@@ -30,7 +30,7 @@
   
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
-  <link rel="canonical" href="https://devexpress.github.io/testcafe/documentation/test-api/pausing-the-test.html">
+  <link rel="canonical" href="https://devexpress.github.io/testcafe/documentation/how-it-works/">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="https://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -278,7 +278,7 @@
         if (isMobileDevice) {
             linkCss('/testcafe/css/docs.mobile.css');           
             
-            if (false == false) {
+            if (true == false) {
                 document.addEventListener('DOMContentLoaded', function (e) {
                     var docNavPanel = document.querySelector('.doc-nav-panel');
                     var docNav      = document.querySelector('.doc-nav');
@@ -362,51 +362,6 @@
     <div class="page-content-wrapper">
 
       
-<div class="survey-banner hidden">
-  <div class="survey-banner-message">
-      <span>How do you like TestCafe? </span><span class="desktop-text">Please take 3 minutes to fill out our survey. </span><a href="https://dxpr.es/2WYA3X4" target="_blank"><span class="desktop-text">Take the survey</span><span class="mobile-text">Take a 3-minute survey.</span></a>
-  </div>
-  <div class="survey-banner-close-button"></div>
-</div>
-<script>
-  var SURVEY_BANNER_DISPLAY_SETBACK_DAYS = 7;
-
-  function getDaysBetween(fromTime, toTime) {
-      var dayDurationMs = 24*60*60*1000;
-
-      return Math.round(Math.abs((fromTime - toTime)/(dayDurationMs)));
-  }
-
-  var wasSurveyBannerDismissed = window.localStorage.getItem(SUMMER_2019_SURVEY_BANNER_DISMISSED_FLAG);
-  var wasSurveyCompleted       = window.localStorage.getItem(SUMMER_2019_SURVEY_COMPLETED_FLAG);
-  var surveyOpenDate           = window.localStorage.getItem(SUMMER_2019_SURVEY_PAGE_OPEN_DATE_FLAG);
-  var surveySetbackExpired     = !surveyOpenDate || (getDaysBetween(surveyOpenDate, Date.now()) > SURVEY_BANNER_DISPLAY_SETBACK_DAYS);
-
-  if(!wasSurveyBannerDismissed && !wasSurveyCompleted && surveySetbackExpired) {
-      var surveyBanner      = document.querySelector('.survey-banner');
-      var surveyLink        = document.querySelector('.survey-banner a');
-      var surveyBannerClose = document.querySelector('.survey-banner-close-button');
-
-      function hideSurveyBanner() {
-          surveyBanner.className = surveyBanner.className += ' hidden';
-
-          if (!isMobileDevice)
-              updateNavMenuPosition();
-      }
-
-      surveyBanner.className = surveyBanner.className.replace(/hidden/,'');
-
-      surveyBannerClose.addEventListener('click', function () {
-          hideSurveyBanner();
-          window.localStorage.setItem(SUMMER_2019_SURVEY_BANNER_DISMISSED_FLAG, true);
-      });
-
-      surveyLink.addEventListener('click', function () {
-          hideSurveyBanner();
-      });
-  }
-</script>
-
 <header class="site-header fixed">
   <div class="site-header-content">
     <a class="site-logo" href="/testcafe/"></a>
@@ -565,7 +520,7 @@
           <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
         </div>
       
-        <div class="doc-top-nav-tab active" >
+        <div class="doc-top-nav-tab " >
           <a href="/testcafe/documentation/test-api/">Test API</a>      
         </div>
       
@@ -581,7 +536,7 @@
           <a href="/testcafe/documentation/recipes/">Recipes</a>      
         </div>
       
-        <div class="doc-top-nav-tab " >
+        <div class="doc-top-nav-tab active" >
           <a href="/testcafe/documentation/how-it-works/">How It Works</a>      
         </div>
       
@@ -600,521 +555,6 @@
 
 	
 	
-	<div class="doc-nav-panel">
-		<div class="toggle-nav-button"></div>
-		<div class="doc-nav-panel-header">
-			<div class="doc-nav-panel-heading">Documentation</div>
-			<div class="doc-nav-panel-title">
-				
-					
-				
-					
-				
-					
-						Test API
-					
-				
-					
-				
-					
-				
-					
-				
-					
-				
-			</div>
-		</div>
-	</div>
-	<nav class="doc-nav">	
-		<div class="doc-nav-content">
-			<ul>
-				<li>
-				<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/test-code-structure.html"  >Test Code Structure</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#fixtures"  >Fixtures</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#tests"  >Tests</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#test-controller"  >Test Controller</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#setting-test-speed"  >Setting Test Speed</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#specifying-the-start-webpage"  >Specifying the Start Webpage</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#specifying-testing-metadata"  >Specifying Testing Metadata</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#run-tests-by-metadata"  >Run Tests by Metadata</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#using-metadata-in-reports"  >Using Metadata in Reports</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up"  >Initialization and Clean-Up</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#test-hooks"  >Test Hooks</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#fixture-hooks"  >Fixture Hooks</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/test-code-structure.html#skipping-tests"  >Skipping Tests</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/"  >Selecting Page Elements</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/"  >Selectors</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/creating-selectors.html"  >Creating Selectors</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/using-selectors.html"  >Using Selectors</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html"  >Functional-Style Selectors</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/selector-options.html"  >Selector Options</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/extending-selectors.html"  >Extending Selectors</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/edge-cases-and-limitations.html"  >Edge Cases and Limitations</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/dom-node-state.html"  >DOM Node State</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/framework-specific-selectors.html"  >Framework-Specific Selectors</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/selecting-page-elements/examples-of-working-with-dom-elements.html"  >Examples of Working with DOM Elements</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/"  >Actions</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/click.html"  >Click</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/double-click.html"  >Double Click</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/right-click.html"  >Right Click</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/drag-element.html"  >Drag Element</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/hover.html"  >Hover</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/select-text.html"  >Select Text</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/type-text.html"  >Type Text</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/press-key.html"  >Press Key</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/navigate.html"  >Navigate</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/take-screenshot.html"  >Take Screenshot</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/upload.html"  >Upload</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/resize-window.html"  >Resize Window</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/actions/action-options.html"  >Action Options</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/assertions/"  >Assertions</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/assertions/assertion-api.html"  >Assertion API</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/obtaining-data-from-the-client/"  >Obtaining Data from the Client</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/obtaining-data-from-the-client/examples-of-using-client-functions.html"  >Examples of Using Client Functions</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/intercepting-http-requests/"  >Intercepting HTTP Requests</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/intercepting-http-requests/logging-http-requests.html"  >Log HTTP Requests</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/intercepting-http-requests/mocking-http-requests.html"  >Mock HTTP Requests</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html"  >Create a Custom HTTP Request Hook</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/intercepting-http-requests/select-requests-to-be-handled-by-the-hook.html"  >Select Requests to be Handled by the Hook</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.html"  >Attach Hooks to Tests and Fixtures</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/intercepting-http-requests/requestoptions-object.html"  >requestOptions Object</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/built-in-waiting-mechanisms.html"  >Built-In Waiting Mechanisms</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/authentication/"  >Authentication</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/authentication/user-roles.html"  >User Roles</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/authentication/http-authentication.html"  >HTTP Authentication</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/pausing-the-test.html" class="active" >Pausing the Test</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/handling-native-dialogs.html"  >Handling Native Dialogs</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/working-with-iframes.html"  >Working with &lt;iframes&gt;</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/debugging.html"  >Debugging</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/identify-the-browser-and-platform.html"  >Identify the Browser and Platform</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/accessing-console-messages.html"  >Accessing Console Messages</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/typescript-support.html"  >TypeScript Support</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/coffeescript-support.html"  >CoffeeScript Support</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/test-api/a-z.html"  >A-Z Index</a>
-		
-    </li>
-
-</ul>
-				</li>
-			</ul>
-		</div>
-	</nav>
-	
 
 	
 	
@@ -1128,38 +568,125 @@
 
 
 <main>
-	<article class="doc">
+	<article class="post gs">
 		<div class="post-content">
 
-			<h1>Pausing the Test</h1>
-<p>Use the <a href="test-code-structure.html#test-controller">test controller&#39;s</a> <code>wait</code> function to pause a test for a specified period of time.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">t.wait( timeout )
-</code></pre></div><div class="table-wrapper"><table><thead><tr>
-<th>Parameter</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody><tr>
-<td><code>timeout</code></td>
-<td>Number</td>
-<td>The pause duration, in milliseconds.</td>
-</tr>
-</tbody></table></div>
-<p>The following example uses the <code>t.wait</code> function to pause the test while animation is playing.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
+			<h1>How It Works</h1>
+<p>Before TestCafe, end-to-end web testing tools that worked with real browsers relied on driving these browsers from the outside to emulate user actions. This approach, however, had serious drawbacks.</p>
 
-<span class="kd">const</span> <span class="nx">header</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#article-header</span><span class="dl">'</span><span class="p">);</span>
+<ul>
+<li><strong>Dependency on third-party tools.</strong> This required you to install, configure, and maintain additional drivers, SDKs and/or libraries in every test environment.</li>
+<li><strong>Limited browser support.</strong> The range of available browsers and platforms was restricted to those supported by the driver.</li>
+<li><strong>Boilerplate code.</strong> These testing tools functioned with the same browser instance during the entire test run, so the tested web app state (cookies, storages, etc.) persisted from test to test. As a result, end-to-end tests contain a large amount of boilerplate code that clears the state to avoid interference between tests.</li>
+<li><strong>Low automation.</strong> Legacy tools were unable to interact directly with the tested page. Although the fact that the user’s test code did not intervene in the app code was an advantage, the testing tool itself could benefit from operating inside the page. This would enable the tool to automate many routine tasks.</li>
+</ul>
+<h2><a class="anchor" id="testcafe-is-different"></a>TestCafe is Different <a class="permalink" href="#testcafe-is-different">#</a></h2>
+<p>The idea that defined TestCafe architecture was that you don&#39;t really need an external driver to run end-to-end tests in the browser. Instead, the page can run all the test scripts that emulate user actions. This would allow for true cross-browser and cross-platform tests that run on any device that has a modern browser. This vision eventually developed into the following design concepts.</p>
+<h3><a class="anchor" id="client-server-architecture"></a>Client-server architecture <a class="permalink" href="#client-server-architecture">#</a></h3>
+<p>TestCafe runs test code written by the user in the Node.js environment on the &quot;server side&quot;. Scripts that emulate user activity (e.g., <em>automation scripts</em>) run inside the tested page in the browser on the same or on a different device. This is the &quot;client side&quot;.</p>
 
-<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
+<p>With this hybrid approach, TestCafe tests combine advantages of the browser scripts (built-in waiting, mobile testing) and standalone server-side code (access to the app&#39;s server and testing environment, better control over test execution).</p>
+<h3><a class="anchor" id="nodejs-api"></a>Node.js API <a class="permalink" href="#nodejs-api">#</a></h3>
+<p>Test code uses compact API that consists of just a few dozen methods that eventually transform to user actions on the page. Since this server-side code runs in Node.js, tests should be written in JavaScript or a language TestCafe can compile to JavaScript (like TypeScript or CoffeeScript).</p>
 
-<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Wait Example</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="k">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="dl">'</span><span class="s1">#play-1-sec-animation</span><span class="dl">'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">wait</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
- <span class="err"> </span> <span class="err"> </span> <span class="err"> </span> <span class="err"> </span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">header</span><span class="p">.</span><span class="nx">getStyleProperty</span><span class="p">(</span><span class="dl">'</span><span class="s1">opacity</span><span class="dl">'</span><span class="p">)).</span><span class="nx">eql</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<p>The concise API makes tests easy to write, read, and maintain. Support for popular web languages allows most users to use their existing skills and minimizes the learning curve for new users.</p>
+<h3><a class="anchor" id="page-proxying"></a>Page proxying <a class="permalink" href="#page-proxying">#</a></h3>
+<p>To provide automation scripts (client-side code) to the browser, TestCafe runs a reverse proxy under the hood. It proxies the tested page on the server and injects the scripts into its code.</p>
+
+<p>Script injection enables TestCafe key features like mobile testing, automatic waiting, or user roles for smart authentication out of the box.</p>
+<h3><a class="anchor" id="isolated-tests"></a>Isolated tests <a class="permalink" href="#isolated-tests">#</a></h3>
+<p>Each test starts with a clean browser state. Cookies and storages are reset, an empty user profile is used, and the tested page is reloaded. This helps prevent interference between tests without extra boilerplate code.</p>
+
+<p><img src="../../images/how-it-works.svg" alt="How It Works" title=""></p>
+<h2><a class="anchor" id="client-server-model"></a>Client-Server Model <a class="permalink" href="#client-server-model">#</a></h2>
+<p>The client-server design comes from our own experience. An early version of TestCafe injected users&#39; test code directly into the page. This seemed to be the easiest way to break free from web drivers. Later, we realized that this architecture restricted test code capabilities, so we decided to decouple the test engine. We exposed Node.js API for all test actions and implemented a test runner that executes test scripts in a server process. TestCafe, on its end, generates automation scripts (client code) and runs them in the browser.</p>
+<h3><a class="anchor" id="why-server-side-test-code"></a>Why Server-Side Test Code <a class="permalink" href="#why-server-side-test-code">#</a></h3>
+<p>Node.js test code gives you more control over the testing environment.</p>
+
+<ul>
+<li>You can prepare a database or launch a web service from the tests.</li>
+<li>You can access the server&#39;s file system to read data samples or check the uploaded files.</li>
+<li>Tests can use all Node.js features and external Node.js modules.</li>
+<li>Tests became faster and more stable as test logic is now separated from automation scripts.</li>
+<li>Test code cannot interrupt page execution, because TestCafe doesn&#39;t inject user-written code &#39;as is&#39;.</li>
+<li>Latest syntax features like async/await are supported.</li>
+</ul>
+
+<p>Since Node.js code executes on the server, it doesn&#39;t have immediate access to the DOM, browser API, etc. We compensated for this trade-off with support for custom client-side functions.</p>
+<h3><a class="anchor" id="testcafe-api"></a>TestCafe API <a class="permalink" href="#testcafe-api">#</a></h3>
+<p>Test code uses TestCafe API methods to interact with the tested page. The following are three main types of interaction:</p>
+
+<ul>
+<li><p>Perform <strong><em>actions</em></strong> on the page. TestCafe can emulate all end-user actions: click, double click, type, hover, drag-and-drop, select text, upload, etc. API provides a single simple method for each action.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">await</span> <span class="nx">t</span>
+    <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="dl">'</span><span class="s1">#input</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Hello world!</span><span class="dl">'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="dl">'</span><span class="s1">#submit-button</span><span class="dl">'</span><span class="p">);</span>
+</code></pre></div></li>
+<li><p>Execute <strong><em>assertions</em></strong>. Assertions allow you to verify element properties and other page parameters. You can use conditions like &#39;equals&#39;, &#39;contains&#39;, &#39;greater&#39;, &#39;less&#39;, &#39;match&#39;, &#39;type of&#39;, etc.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">await</span> <span class="nx">t</span>
+    <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">input</span><span class="p">.</span><span class="nx">exists</span><span class="p">).</span><span class="nx">ok</span><span class="p">()</span>
+    <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">input</span><span class="p">.</span><span class="nx">value</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="dl">'</span><span class="s1">Hello world!</span><span class="dl">'</span><span class="p">);</span>
+</code></pre></div></li>
+<li><p><strong><em>Select</em></strong> elements. TestCafe uses an advanced mechanism to locate target elements for an action or assertion. From the user&#39;s point of view, this task is as easy as specifying a standard CSS selector. You can additionally chain methods for more complex queries (like select &#39;class name&#39;, then proceed to its second sibling and take its third child). Under the hood, TestCafe utilizes a powerful <em>selector</em> mechanism with built-in waiting adapted to asynchronous page events.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">downloadSection</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">.download-section</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">downloadButton</span>  <span class="o">=</span> <span class="nx">downloadSection</span><span class="p">.</span><span class="nx">child</span><span class="p">().</span><span class="nx">withText</span><span class="p">(</span><span class="dl">'</span><span class="s1">Download</span><span class="dl">'</span><span class="p">);</span>
+</code></pre></div></li>
+</ul>
+
+<p>Other capabilities available in TestCafe API are request mocking, user roles for quick authentication, dialog handling, debugging, and more.</p>
+<h3><a class="anchor" id="custom-client-side-code"></a>Custom Client-Side Code <a class="permalink" href="#custom-client-side-code">#</a></h3>
+<p>In advanced scenarios, TestCafe allows you to write code to be executed on the tested page. You can use custom client-side code to perform the following tasks:</p>
+
+<ul>
+<li><p><em>Identify page elements.</em> Even complex CSS selectors are not always powerful enough to identify a page element in a real-world web app. TestCafe allows you to create selectors based on client-side code that returns DOM elements or nodes – you can write this code right inside the server-side test. Apparently, this doesn&#39;t bring live DOM objects to the Node.js environment. TestCafe will execute these functions in the browser when it needs to locate a page element.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">element</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">.class-name</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div>
+
+<span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">element</span><span class="p">);</span>
+</code></pre></div></li>
+<li><p><em>Obtain data.</em> You can write a client function that returns any serializable object from the client side (this includes all objects that can be converted to JSON). Unlike with selectors, test code can access the object this client function returns. You can use data obtained from client functions to verify different parameters of the page state.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">getUrl</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="p">;</span>
+<span class="p">});</span>
+
+<span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">getUrl</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://example.com</span><span class="dl">'</span><span class="p">);</span>
+</code></pre></div></li>
+<li><p><em>Inject scripts.</em> TestCafe also allows you to inject custom code into the tested page. You can use the injected scripts to add helper functions or mock browser API.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My Fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://example.com`</span>
+    <span class="p">.</span><span class="nx">clientScripts</span><span class="p">(</span><span class="dl">'</span><span class="s1">assets/jquery.js</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">scripts/location-mock.js</span><span class="dl">'</span><span class="p">);</span>
+</code></pre></div></li>
+</ul>
+
+<p>Note that a best practice rule is to avoid page modifications in custom client-side code. Actions that change DOM should be performed through server-side API only because there&#39;s no reliable way to perform them manually without interfering with TestCafe internal mechanisms. The rule is to use client-side code only to explore the page, find, and return information to the server.</p>
+<h2><a class="anchor" id="reverse-proxy"></a>Reverse Proxy <a class="permalink" href="#reverse-proxy">#</a></h2>
+<p>You may notice that when you run TestCafe tests, the browser&#39;s address bar shows a URL that does not belong to your website. This is because TestCafe proxies the tested pages.</p>
+
+<p>TestCafe reverse proxy (<a href="https://github.com/DevExpress/testcafe-hammerhead">testcafe-hammerhead</a>) runs locally on your computer. It enables TestCafe to add automation scripts in a way that neither the existing page code nor the resources it communicates with can tell that the page has been modified.</p>
+
+<p>When TestCafe proxies the tested page, it injects automation scripts and rewrites all URLs inside (in the markup, scripts, etc.) to point to the proxy. When the browser refers to these new URLs, the original resources are also proxied and modified in the same way to let automation continue seamlessly. TestCafe also mocks the browser API to conceal automation scripts from the rest of the page code.</p>
+
+<p>The proxying mechanism ensures that the page appears to be hosted at the original URL even to the test code. This is why you can use your website&#39;s URLs in tests, and disregard the URL you see in the browser&#39;s address bar.</p>
+<h2><a class="anchor" id="automation-scripts"></a>Automation Scripts <a class="permalink" href="#automation-scripts">#</a></h2>
+<p>TestCafe automation scripts emulate end-user actions on the tested page. They are designed to imitate the behavior of different browsers in every detail. Automation scripts dispatch events, focus elements or process attributes the way the browser that runs them would do. They abstract out browser specifics and enable you to write cross-browser high-level test code.</p>
+<h2><a class="anchor" id="isolated-test-runs"></a>Isolated Test Runs <a class="permalink" href="#isolated-test-runs">#</a></h2>
+<p>TestCafe isolates each test run from subsequent tests and tests that run in parallel.</p>
+
+<p>After a test is completed, TestCafe resets the browser state:</p>
+
+<ul>
+<li>deletes cookies</li>
+<li>clears local and session storages</li>
+<li>reloads the tested page</li>
+</ul>
+
+<p>This saves you from having to write code you to reset the app state and take care of the changes your tests make. As a result, your tests are stable, easy to write and read, and free from boilerplate code.</p>
+
+<p>If you run several tests in parallel, each test run obtains an independent server-side context. This prevents server-side collisions as well.</p>
+<h2><a class="anchor" id="conclusion"></a>Conclusion <a class="permalink" href="#conclusion">#</a></h2>
+<p>TestCafe is a self-sufficient end-to-end testing solution that combines unmatched ease-of-use with advanced automation and robust built-in stability mechanisms. TestCafe officially supports all major browsers and platforms and it is designed to run in most modern browsers beyond officially supported.</p>
+
 
 		</div>
 	</article>

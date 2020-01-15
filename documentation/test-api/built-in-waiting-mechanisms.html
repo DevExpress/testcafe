@@ -581,6 +581,10 @@
           <a href="/testcafe/documentation/recipes/">Recipes</a>      
         </div>
       
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/how-it-works/">How It Works</a>      
+        </div>
+      
     </div>
   </div>
 </div>
@@ -608,6 +612,8 @@
 				
 					
 						Test API
+					
+				
 					
 				
 					
@@ -1229,7 +1235,7 @@ or <a href="selecting-page-elements/selectors/using-selectors.html#check-if-an-e
 <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="dl">'</span><span class="s1">#fetch-data</span><span class="dl">'</span><span class="p">);</span>
 
 <span class="c1">// Wait with an assertion.</span>
-<span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">emptyLabel</span><span class="p">.</span><span class="nx">exists</span><span class="p">,</span> <span class="dl">''</span><span class="p">,</span> <span class="p">{</span> <span class="na">timeout</span><span class="p">:</span> <span class="mi">10000</span> <span class="p">});</span>
+<span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">emptyLabel</span><span class="p">.</span><span class="nx">exists</span><span class="p">).</span><span class="nx">ok</span><span class="p">(</span><span class="dl">''</span><span class="p">,</span> <span class="p">{</span> <span class="na">timeout</span><span class="p">:</span> <span class="mi">10000</span> <span class="p">});</span>
 
 <span class="c1">// Wait with a selector.</span>
 <span class="kd">const</span> <span class="nx">labelSnapshot</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">emptyLabel</span><span class="p">.</span><span class="kd">with</span><span class="p">({</span> <span class="na">timeout</span><span class="p">:</span> <span class="mi">10000</span> <span class="p">});</span>
@@ -1240,6 +1246,7 @@ The test continues if the server does not respond within <strong>15</strong> sec
 
 		</div>
 	</article>
+
 </main>
 </div>
 
@@ -1250,7 +1257,7 @@ The test continues if the server does not respond within <strong>15</strong> sec
         <div class="footer-col-1">
             <p><strong>TestCafe</strong>: A node.js tool to automate end-to-end web testing<br/>
             Use of this site constitutes acceptance of our <a href="https://www.devexpress.com/aboutus/privacy-policy.xml"  target="_blank">Privacy Policy</a><br/>
-            Copyright © 2012-2019 Developer Express Inc.</p>
+            Copyright © 2012-2020 Developer Express Inc.</p>
         </div>
     </div>
 </footer>
