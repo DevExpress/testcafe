@@ -1,5 +1,27 @@
 # Changelog
 
+## v1.8.0 (2019-1-16)
+
+### :star2: Support for the New Microsoft Edge
+
+TestCafe v1.8.0 supports the new Microsoft Edge based on Chromium. The new Edge is available under the same [alias](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/browser-support.html#locally-installed-browsers): `edge`.
+
+```sh
+testcafe edge test.js
+```
+
+```js
+await runner
+    .src('test.js')
+    .browsers('edge')
+    .run();
+```
+
+### Bug Fixes
+
+* Fixed an error thrown when the webpage creates a `Proxy` ([testcafe-hammerhead/#2206](https://github.com/DevExpress/testcafe-hammerhead/issues/2206)) by [@link89](https://github.com/link89)
+* Event handlers are no longer cleared after the `document.open` function call ([testcafe-hammerhead/#1881](https://github.com/DevExpress/testcafe-hammerhead/issues/1881))
+
 ## v1.7.1 (2019-12-19)
 
 ### Bug Fixes
