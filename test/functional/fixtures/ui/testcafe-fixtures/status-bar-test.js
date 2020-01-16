@@ -1,4 +1,4 @@
-import { Selector } from 'testcafe';
+import { Selector, ClientFunction } from 'testcafe';
 import OS from 'os-family';
 import { saveWindowState, restoreWindowState } from '../../../window-helpers';
 
@@ -14,6 +14,12 @@ fixture `Status Bar`
 test('Show status prefix', async t => {
     const statusDiv   = Selector(() => window['%testCafeDriverInstance%'].statusBar.statusDiv);
     const progressBar = Selector(() => window['%testCafeDriverInstance%'].statusBar.progressBar.progressBar);
+    const setStatusPrefix = ClientFunction(statusPrefix => {
+        const statusBar = window['%testCafeDriverInstance%'].statusBar;
+
+        statusBar.progressBar.show();
+        statusBar.setStatusPrefix(statusPrefix);
+    });
 
     let statusText = await statusDiv.innerText;
 
@@ -21,13 +27,7 @@ test('Show status prefix', async t => {
         .expect(statusText).notOk()
         .expect(statusDiv.innerText).eql('Waiting for assertion execution...');
 
-    await t
-        .eval(() => {
-            const statusBar = window['%testCafeDriverInstance%'].statusBar;
-
-            statusBar.progressBar.show();
-            statusBar.setStatusPrefix('Status prefix');
-        });
+    await setStatusPrefix('Status prefix');
 
     const progressBarVisible = await progressBar.visible;
 
@@ -39,6 +39,13 @@ test('Show status prefix', async t => {
         .expect(statusDiv.innerText).eql('Status prefix. Waiting for assertion execution...')
         .navigateTo('about:blank')
         .expect(statusDiv.innerText).eql('Status prefix. Waiting for assertion execution...');
+
+    await setStatusPrefix('Modified status prefix');
+
+    statusText = await statusDiv.innerText;
+
+    await t
+        .expect(statusText.trim()).eql('Modified status prefix');
 });
 
 test('Hide elements when resizing the window', async t => {

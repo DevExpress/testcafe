@@ -503,5 +503,6 @@ export default class StatusBar extends serviceUtils.EventEmitter {
 
     setStatusPrefix (prefixText) {
         this.contextStorage.setItem(LOCAL_STORAGE_STATUS_PREFIX_ITEM, prefixText);
+        nativeMethods.nodeTextContentSetter.call(this.statusDiv, this._getFullStatusText(''));
     }
 }
