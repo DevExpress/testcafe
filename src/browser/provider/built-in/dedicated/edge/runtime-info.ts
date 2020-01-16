@@ -3,7 +3,7 @@ import ChromeRuntimeInfo from '../chrome/runtime-info';
 import TempDirectory from '../../../../../utils/temp-directory';
 import { writeFile } from '../../../../../utils/promisified-functions';
 
-export default class EdgeChromiumRuntimeInfo extends ChromeRuntimeInfo {
+export default class EdgeRuntimeInfo extends ChromeRuntimeInfo {
     protected async createTempProfile (proxyHostName: string, allowMultipleWindows: boolean): Promise<TempDirectory> {
         const tempDir = await super.createTempProfile(proxyHostName, allowMultipleWindows);
 
