@@ -39,3 +39,4 @@ export class UnlockPageCommand {
         this.type = TYPE.unlockPage;
     }
 }
+

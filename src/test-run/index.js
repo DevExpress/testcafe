@@ -492,6 +492,9 @@ export default class TestRun extends AsyncEventEmitter {
 
     // Handle driver request
     _fulfillCurrentDriverTask (driverStatus) {
+        if (!this.currentDriverTask)
+            return;
+
         if (driverStatus.executionError)
             this._rejectCurrentDriverTask(driverStatus.executionError);
         else
@@ -530,6 +533,9 @@ export default class TestRun extends AsyncEventEmitter {
             }
 
             this._fulfillCurrentDriverTask(driverStatus);
+
+            if (driverStatus.isPendingWindowSwitching)
+                return null;
         }
 
         return this._getCurrentDriverTaskCommand();
@@ -863,7 +869,7 @@ ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
     this.lastDriverStatusId       = msg.status.id;
     this.lastDriverStatusResponse = this._handleDriverRequest(msg.status);
 
-    if (this.lastDriverStatusResponse)
+    if (this.lastDriverStatusResponse || msg.status.isPendingWindowSwitching)
         return this.lastDriverStatusResponse;
 
     // NOTE: we send an empty response after the MAX_RESPONSE_DELAY timeout is exceeded to keep connection

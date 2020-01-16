@@ -1,7 +1,7 @@
 import OS from 'os-family';
 import { parse as parseUrl } from 'url';
 import dedicatedProviderBase from '../base';
-import getRuntimeInfo from './runtime-info';
+import ChromeRunTimeInfo from './runtime-info';
 import getConfig from './config';
 import { start as startLocalChrome, stop as stopLocalChrome } from './local-chrome';
 import * as cdp from './cdp';
@@ -21,9 +21,13 @@ export default {
         return cdp;
     },
 
+    async _createRunTimeInfo (hostName, configString, allowMultipleWindows) {
+        return ChromeRunTimeInfo.create(hostName, configString, allowMultipleWindows);
+    },
+
     async openBrowser (browserId, pageUrl, configString, allowMultipleWindows) {
         const parsedPageUrl = parseUrl(pageUrl);
-        const runtimeInfo   = await getRuntimeInfo(parsedPageUrl.hostname, configString, allowMultipleWindows);
+        const runtimeInfo   = await this._createRunTimeInfo(parsedPageUrl.hostname, configString, allowMultipleWindows);
 
         runtimeInfo.browserName = this._getBrowserName();
         runtimeInfo.browserId   = browserId;
