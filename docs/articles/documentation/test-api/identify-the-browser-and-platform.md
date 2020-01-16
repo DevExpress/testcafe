@@ -58,7 +58,7 @@ For [portable](../using-testcafe/common-concepts/browsers/browser-support.md#por
 }
 ```
 
-Browser alias flags ([:headless](../using-testcafe/common-concepts/browsers/testing-in-headless-mode.md), [:emulation](../using-testcafe/common-concepts/browsers/using-chrome-device-emulation.md), etc.) and command line parameters are included in the alias string:
+Browser alias flags ([:headless](../using-testcafe/common-concepts/browsers/testing-in-headless-mode.md), [:emulation](../using-testcafe/common-concepts/browsers/using-chromium-device-emulation.md), etc.) and command line parameters are included in the alias string:
 
 ```js
 {

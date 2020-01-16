@@ -183,7 +183,7 @@ runner.browsers({
 
 #### Headless Mode, Device Emulation and User Profiles
 
-You can add postfixes to browser aliases to run tests in the [headless mode](../common-concepts/browsers/testing-in-headless-mode.md), use [Chrome device emulation](../common-concepts/browsers/using-chrome-device-emulation.md) or [user profiles](../common-concepts/browsers/user-profiles.md).
+You can add postfixes to browser aliases to run tests in the [headless mode](../common-concepts/browsers/testing-in-headless-mode.md), use [Chrome device emulation](../common-concepts/browsers/using-chromium-device-emulation.md) or [user profiles](../common-concepts/browsers/user-profiles.md).
 
 ```js
 runner.browsers('chrome:headless');
