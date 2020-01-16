@@ -106,9 +106,9 @@ You can skip these steps if you use [headless browsers](../using-testcafe/common
 
 ## Step 1 - Install Node.js Plugin
 
-1. Follow the [instructions from Jenkins documentation](https://jenkins.io/doc/book/managing/plugins/#installing-a-plugin) to install a [Node.js plugin](https://plugins.jenkins.io/nodejs).
+1. Follow the [instructions from Jenkins documentation](https://jenkins.io/doc/book/managing/plugins/#installing-a-plugin) to install a [Node.js plugin](https://plugins.jenkins.io/nodejs/).
 
-2. Configure this plugin as described in the [Usage section](https://plugins.jenkins.io/nodejs#NodeJSPlugin-Usage) on the plugin page. Ensure that you have added a Node.js installation on the **Global Tool Configuration** page and checked the **Provide Node & npm bin/ folder to PATH** checkbox in your build configuration.
+2. Configure this plugin as described in the [Usage section](https://plugins.jenkins.io/nodejs/#NodeJSPlugin-Usage) on the plugin page. Ensure that you have added a Node.js installation on the **Global Tool Configuration** page and checked the **Provide Node & npm bin/ folder to PATH** checkbox in your build configuration.
 
 ## Step 2 - Fetch Test Code From a Repository
 
