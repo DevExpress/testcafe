@@ -9,5 +9,5 @@ This section lists browsers supported by TestCafe and describes how to use vario
 
 * [Browser Support](browser-support.md)
 * [Testing in Headless Mode](testing-in-headless-mode.md)
-* [Using Chrome Device Emulation](using-chrome-device-emulation.md)
+* [Using Chromium Device Emulation](using-chromium-device-emulation.md)
 * [User Profiles](user-profiles.md)

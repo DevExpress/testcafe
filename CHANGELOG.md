@@ -17,6 +17,8 @@ await runner
     .run();
 ```
 
+Supported Edge's features include [headless mode](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/testing-in-headless-mode.html), [mobile device emulation](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/using-chromium-device-emulation.html), and [video recording](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html#record-videos).
+
 ### Bug Fixes
 
 * Fixed an error thrown when the webpage creates a `Proxy` ([testcafe-hammerhead/#2206](https://github.com/DevExpress/testcafe-hammerhead/issues/2206)) by [@link89](https://github.com/link89)

@@ -18,7 +18,7 @@
     * [Browsers](articles/documentation/using-testcafe/common-concepts/browsers/README.md)
       * [Browser Support](articles/documentation/using-testcafe/common-concepts/browsers/browser-support.md)
       * [Testing in Headless Mode](articles/documentation/using-testcafe/common-concepts/browsers/testing-in-headless-mode.md)
-      * [Using Chrome Device Emulation](articles/documentation/using-testcafe/common-concepts/browsers/using-chrome-device-emulation.md)
+      * [Using Chromium Device Emulation](articles/documentation/using-testcafe/common-concepts/browsers/using-chromium-device-emulation.md)
       * [User Profiles](articles/documentation/using-testcafe/common-concepts/browsers/user-profiles.md)
     * [Concurrent Test Execution](articles/documentation/using-testcafe/common-concepts/concurrent-test-execution.md)
     * [Live Mode](articles/documentation/using-testcafe/common-concepts/live-mode.md)

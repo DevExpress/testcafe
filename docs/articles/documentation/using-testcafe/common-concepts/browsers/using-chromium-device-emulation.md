@@ -1,11 +1,13 @@
 ---
 layout: docs
 title: Using Chrome Device Emulation
-permalink: /documentation/using-testcafe/common-concepts/browsers/using-chrome-device-emulation.html
+permalink: /documentation/using-testcafe/common-concepts/browsers/using-chromium-device-emulation.html
+redirect_from:
+  - /documentation/using-testcafe/common-concepts/browsers/using-chrome-device-emulation.html
 ---
-# Using Chrome Device Emulation
+# Using Chromium Device Emulation
 
-You can run test in Chrome's built-in [device emulator](https://developers.google.com/web/tools/chrome-devtools/device-mode/). To do this, use the `emulation` browser parameter.
+You can run test with Chromium's built-in [device emulator](https://developers.google.com/web/tools/chrome-devtools/device-mode/) in Google Chrome, Chromium and Chromium-based Microsoft Edge. To do this, use the `emulation` browser parameter.
 
 ## Emulate a Device
 
