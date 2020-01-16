@@ -275,8 +275,12 @@ export default class Driver extends serviceUtils.EventEmitter {
         }, CHECK_CHILD_WINDOW_CLOSED_INTERVAL);
     }
 
+    _setAsMasterInProgressOrCompleted () {
+        return this.setAsMasterInProgress || this.role === DriverRole.master;
+    }
+
     _setCurrentWindowAsMaster () {
-        if (this.setAsMasterInProgress || this.role === DriverRole.master)
+        if (this._setAsMasterInProgressOrCompleted())
             return;
 
         this.setAsMasterInProgress = true;
@@ -417,7 +421,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         // NOTE: The 'setAsMaster' message can be send a few times because
         // the 'sendMessageToDriver' function resend messages if the message confirmation is not received in 1 sec.
         // This message can be send even after driver is started.
-        if (this.setAsMasterInProgress || this.role === DriverRole.master)
+        if (this._setAsMasterInProgressOrCompleted())
             return;
 
         this.setAsMasterInProgress = true;
