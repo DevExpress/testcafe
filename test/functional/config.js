@@ -49,7 +49,7 @@ testingEnvironments[testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers] = {
         },
         {
             browserName: 'browserstack:edge:OS X High Sierra',
-            alias:       'edge-chromium'
+            alias:       'edge'
         }
     ]
 };
