@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 
 describe('Allow multiple windows', () => {
-    describe('Switch to the opened window', () => {
+    describe('Switch to the child window', () => {
         it('Click on link', () => {
             return runTests('testcafe-fixtures/switching-to-child/click-on-link.js', null, { allowMultipleWindows: true });
         });
@@ -23,9 +23,10 @@ describe('Allow multiple windows', () => {
         });
     });
 
-    // TODO: Work in progress
-    it.skip('Switching to the parent window after the "window.close" method call', () => {
-        return runTests('testcafe-fixtures/switching-to-parent/window-close-call.js', null, { allowMultipleWindows: true });
+    describe('Switch to the parent window', () => {
+        it('"window.close" method call', () => {
+            return runTests('testcafe-fixtures/switching-to-parent/window-close-call.js', null, { allowMultipleWindows: true });
+        });
     });
 
     it('Console messages', () => {

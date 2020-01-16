@@ -492,6 +492,9 @@ export default class TestRun extends AsyncEventEmitter {
 
     // Handle driver request
     _fulfillCurrentDriverTask (driverStatus) {
+        if (!this.currentDriverTask)
+            return;
+
         if (driverStatus.executionError)
             this._rejectCurrentDriverTask(driverStatus.executionError);
         else
