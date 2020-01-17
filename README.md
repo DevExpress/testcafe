@@ -245,7 +245,7 @@ Thank you to all the people who already contributed to TestCafe!
 TestCafe developers and community members made these plugins:
 
 * **Browser Providers**<br/>
-  Allow you to use TestCafe with cloud browser providers and emulators.
+  Use TestCafe with cloud browser providers and emulators.
   * [SauceLabs provider](https://github.com/DevExpress/testcafe-browser-provider-saucelabs) (by [@AndreyBelym](https://github.com/AndreyBelym))
   * [BrowserStack provider](https://github.com/DevExpress/testcafe-browser-provider-browserstack) (by [@AndreyBelym](https://github.com/AndreyBelym))
   * [CrossBrowserTesting provider](https://github.com/sijosyn/testcafe-browser-provider-crossbrowsertesting) (by [@sijosyn](https://github.com/sijosyn))

@@ -156,7 +156,7 @@ You can prevent TestCafe from taking screenshots whenever a test fails or a [scr
 
 TestCafe allows you to record videos of test runs.
 
-> Important! Video recording is supported in Google Chrome and Mozilla Firefox only. TestCafe cannot record videos when you run tests in [remote browsers](browsers/browser-support.md#browsers-on-remote-devices).
+> Important! Video recording is supported in Google Chrome, Mozilla Firefox, and Microsoft Edge (Chromium-based). TestCafe cannot record videos when you run tests in [remote browsers](browsers/browser-support.md#browsers-on-remote-devices).
 
 ### Prerequisites for Video Recording
 
