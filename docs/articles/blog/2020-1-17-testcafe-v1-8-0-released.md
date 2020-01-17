@@ -5,7 +5,7 @@ permalink: /blog/:title.html
 ---
 # TestCafe v1.8.0 Released
 
-In this release, we have added support for the New Chromium-based Microsoft Edge.
+In this release, we have added support for the new Chromium-based Microsoft Edge.
 
 <!--more-->
 
