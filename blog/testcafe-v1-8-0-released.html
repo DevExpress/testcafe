@@ -14,15 +14,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>Concurrent Test Execution | TestCafe</title>
+  <title>TestCafe v1.8.0 Released | TestCafe</title>
 
-  <meta name="description" content="">
+  <meta name="description" content="TestCafe v1.8.0 ReleasedIn this release, we have added support for the new Chromium-based Microsoft Edge.">
   <meta name="viewport" content="width=device-width">
 
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/concurrent-test-execution.html" />
-  <meta property="og:title" content="Concurrent Test Execution | TestCafe" />
+  <meta property="og:url" content="https://devexpress.github.io/testcafe/blog/testcafe-v1-8-0-released.html" />
+  <meta property="og:title" content="TestCafe v1.8.0 Released | TestCafe" />
 
   
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/styles/docco.min.css">
@@ -30,7 +30,7 @@
   
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
-  <link rel="canonical" href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/concurrent-test-execution.html">
+  <link rel="canonical" href="https://devexpress.github.io/testcafe/blog/testcafe-v1-8-0-released.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="https://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -78,15 +78,6 @@
 
   
 
-  
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
-  <link rel="stylesheet" href="/testcafe/css/docs.css">
-  <style>
-      .ps-container > .ps-scrollbar-x-rail,
-      .ps-container > .ps-scrollbar-y-rail {
-          opacity: 0.6;
-      }
-  </style>
   
 
   
@@ -151,9 +142,6 @@
                 docMenuItem.appendChild(docMenuItemIcon);
 
                 
-                    docMenuItem.className += ' expanded';
-                    docTopNav.className += ' expanded';
-                
 
                 docMenuItem.addEventListener('click', function (e) {
                     if (docTopNav.className.indexOf('expanded') !== -1) {
@@ -179,124 +167,11 @@
     
 
   
-    <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/js/perfect-scrollbar.min.js"></script>
-    <script defer type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"></script>
-
-    <script>
-        var MIN_BODY_WIDTH = 1230;
-        var FOOTER_HEIGHT  = 113;
-
-        var nav     = null;
-        var article = null;
-
-        function getHeaderHeight () {
-            var DOCS_HEADER_HEIGHT   = 126;
-            var SURVEY_HEADER_HEIGHT = 32;
-
-            var surveyBanner          = document.querySelector('.survey-banner');
-            var isSurveyBannerVisible = surveyBanner.className.indexOf('hidden') === -1;
-
-            return isSurveyBannerVisible ? DOCS_HEADER_HEIGHT + SURVEY_HEADER_HEIGHT : DOCS_HEADER_HEIGHT;
-        }
-
-        function setNavTopPosition () {
-            var headerHeight = getHeaderHeight();
-            var top          = null;
-
-            if (document.body.clientWidth > MIN_BODY_WIDTH) {
-                if (nav.style.top !== headerHeight + 'px') {
-                    nav.style.top = headerHeight + 'px';
-                    Ps.update(nav);
-                }
-            }
-            else {
-                top = window.pageYOffset <= headerHeight ? headerHeight - window.pageYOffset + 'px' : '0';
-
-                if (nav.style.top !== top) {
-                    nav.style.top = top;
-                    Ps.update(nav);
-                }
-            }
-        }
-
-        function setNavBottomPosition () {
-            var footerVisibleHeight = FOOTER_HEIGHT - document.body.scrollHeight + window.pageYOffset +
-                                      document.body.clientHeight;
-
-            if (footerVisibleHeight > 0) {
-                if (nav.style.bottom !== footerVisibleHeight + 'px') {
-                    nav.style.bottom = footerVisibleHeight + 'px';
-                    Ps.update(nav);
-                }
-            }
-            else if (nav.style.bottom !== '0') {
-                nav.style.bottom = '0';
-                Ps.update(nav);
-            }
-        }
-
-        function updateNavMenuPosition () {
-            nav.style.marginLeft = '-' + window.pageXOffset + 'px';
-
-            setNavBottomPosition();
-            setNavTopPosition();
-        }
-
-        function changeBodyHeight () {
-            if (document.body.style.height !== window.innerHeight + 'px')
-                document.body.style.height = window.innerHeight + 'px';
-        }
-
-        function initScrollBar() {
-            Ps.initialize(nav);
-
-            window.addEventListener('resize', function () {
-                Ps.update(nav);
-            });
-        }
-
-        function initNav() {
-            initScrollBar();
-            updateNavMenuPosition();
-            window.addEventListener('scroll', updateNavMenuPosition);
-            window.addEventListener('resize', updateNavMenuPosition);
-        }
-
-        document.addEventListener('DOMContentLoaded', function (e) {
-            if (isMobileDevice)
-                return;
-
-            nav     = document.querySelector('.doc-nav');
-            article = document.querySelector('.doc');
-
-            if (nav)
-                initNav(nav);
-        });
-    </script>
     
     <script>
-        if (isMobileDevice) {
-            linkCss('/testcafe/css/docs.mobile.css');           
-            
-            if (false == false) {
-                document.addEventListener('DOMContentLoaded', function (e) {
-                    var docNavPanel = document.querySelector('.doc-nav-panel');
-                    var docNav      = document.querySelector('.doc-nav');
-
-                    docNavPanel.addEventListener('click', function (e) {
-                        if (docNav.className.indexOf('active') !== -1) {
-                            docNav.className = docNav.className.replace(' active', '');
-                            document.documentElement.style.overflowY = 'scroll';
-                            document.body.style.overflowY = 'initial';
-                        }
-                        else {
-                            docNav.className += ' active';
-                            document.documentElement.style.overflowY = 'hidden';
-                            document.body.style.overflowY = 'hidden';
-                        }
-                    });
-                });
-            }
+        if (document.images) {
+            img1 = new Image();
+            img1.src = '/testcafe/images/test-cafe-logo.png';
         }
     </script>
   
@@ -362,51 +237,6 @@
     <div class="page-content-wrapper">
 
       
-<div class="survey-banner hidden">
-  <div class="survey-banner-message">
-      <span>How do you like TestCafe? </span><span class="desktop-text">Please take 3 minutes to fill out our survey. </span><a href="https://dxpr.es/2WYA3X4" target="_blank"><span class="desktop-text">Take the survey</span><span class="mobile-text">Take a 3-minute survey.</span></a>
-  </div>
-  <div class="survey-banner-close-button"></div>
-</div>
-<script>
-  var SURVEY_BANNER_DISPLAY_SETBACK_DAYS = 7;
-
-  function getDaysBetween(fromTime, toTime) {
-      var dayDurationMs = 24*60*60*1000;
-
-      return Math.round(Math.abs((fromTime - toTime)/(dayDurationMs)));
-  }
-
-  var wasSurveyBannerDismissed = window.localStorage.getItem(SUMMER_2019_SURVEY_BANNER_DISMISSED_FLAG);
-  var wasSurveyCompleted       = window.localStorage.getItem(SUMMER_2019_SURVEY_COMPLETED_FLAG);
-  var surveyOpenDate           = window.localStorage.getItem(SUMMER_2019_SURVEY_PAGE_OPEN_DATE_FLAG);
-  var surveySetbackExpired     = !surveyOpenDate || (getDaysBetween(surveyOpenDate, Date.now()) > SURVEY_BANNER_DISPLAY_SETBACK_DAYS);
-
-  if(!wasSurveyBannerDismissed && !wasSurveyCompleted && surveySetbackExpired) {
-      var surveyBanner      = document.querySelector('.survey-banner');
-      var surveyLink        = document.querySelector('.survey-banner a');
-      var surveyBannerClose = document.querySelector('.survey-banner-close-button');
-
-      function hideSurveyBanner() {
-          surveyBanner.className = surveyBanner.className += ' hidden';
-
-          if (!isMobileDevice)
-              updateNavMenuPosition();
-      }
-
-      surveyBanner.className = surveyBanner.className.replace(/hidden/,'');
-
-      surveyBannerClose.addEventListener('click', function () {
-          hideSurveyBanner();
-          window.localStorage.setItem(SUMMER_2019_SURVEY_BANNER_DISMISSED_FLAG, true);
-      });
-
-      surveyLink.addEventListener('click', function () {
-          hideSurveyBanner();
-      });
-  }
-</script>
-
 <header class="site-header fixed">
   <div class="site-header-content">
     <a class="site-logo" href="/testcafe/"></a>
@@ -416,7 +246,7 @@
     <nav class="site-nav">
         
           
-          <div class="site-nav-tab active">
+          <div class="site-nav-tab">
             <a class="page-link" href="/testcafe/documentation/getting-started/"><span>Docs</span></a>
           </div>
         
@@ -436,7 +266,7 @@
           </div>
         
           
-          <div class="site-nav-tab">
+          <div class="site-nav-tab active">
             <a class="page-link" href="/testcafe/blog/"><span>Release Notes</span></a>
           </div>
         
@@ -561,7 +391,7 @@
           <a href="/testcafe/documentation/getting-started/">Getting Started</a>      
         </div>
       
-        <div class="doc-top-nav-tab active" >
+        <div class="doc-top-nav-tab " >
           <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
         </div>
       
@@ -591,281 +421,56 @@
 
 
       <div class="container">
-    
-	
-	
+    <main>
+    <div class="post">
+        <div class="post-date">
+            JAN 17, 2020
+        </div>
+        <article class="post-content">
+            <h1>TestCafe v1.8.0 Released</h1>
+<p>In this release, we have added support for the new Chromium-based Microsoft Edge.</p>
 
-	
-	
-	<div class="doc-nav-panel">
-		<div class="toggle-nav-button"></div>
-		<div class="doc-nav-panel-header">
-			<div class="doc-nav-panel-heading">Documentation</div>
-			<div class="doc-nav-panel-title">
-				
-					
-				
-					
-						Using TestCafe
-					
-				
-					
-				
-					
-				
-					
-				
-					
-				
-					
-				
-			</div>
-		</div>
-	</div>
-	<nav class="doc-nav">	
-		<div class="doc-nav-content">
-			<ul>
-				<li>
-				<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/installing-testcafe.html"  >Installing TestCafe</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/command-line-interface.html"  >Command Line Interface</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/programming-interface/"  >Programming Interface</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/programming-interface/testcafe.html"  >TestCafe Class</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/programming-interface/browserconnection.html"  >BrowserConnection Class</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/programming-interface/runner.html"  >Runner Class</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/programming-interface/livemoderunner.html"  >LiveModeRunner Class</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/programming-interface/createtestcafe.html"  >createTestCafe Factory</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/configuration-file.html"  >Configuration File</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/using-testcafe-docker-image.html"  >Using TestCafe Docker Image</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/common-concepts/"  >Common Concepts</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/common-concepts/browsers/"  >Browsers</a>
-		
-			<ul>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/common-concepts/browsers/browser-support.html"  >Browser Support</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/common-concepts/browsers/testing-in-headless-mode.html"  >Testing in Headless Mode</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/common-concepts/browsers/using-chromium-device-emulation.html"  >Using Chromium Device Emulation</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/common-concepts/browsers/user-profiles.html"  >User Profiles</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/common-concepts/concurrent-test-execution.html" class="active" >Concurrent Test Execution</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/common-concepts/live-mode.html"  >Live Mode</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html"  >Screenshots and Videos</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html"  >Inject Scripts into Tested Pages</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/common-concepts/reporters.html"  >Reporters</a>
-		
-    </li>
-
-    <li>
-		    
-		
-<a href="/testcafe/documentation/using-testcafe/common-concepts/test-https-and-http2-websites.html"  >Test HTTPS and HTTP/2 Websites</a>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-</ul>
-				</li>
-			</ul>
-		</div>
-	</nav>
-	
-
-	
-	
-
-	
-	
-
-	
-	
-
-	
-	
-	
-
-
-<main>
-	<article class="doc">
-		<div class="post-content">
-
-			<h1>Concurrent Test Execution</h1>
-<p>To save time spent on testing, TestCafe allows you to execute tests <em>concurrently</em>.</p>
-
-<p>Normally, you run tests with a command similar to the following one.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome tests/test.js
-</code></pre></div>
-<p>When this command is executed, TestCafe invokes an instance of the specified browser and runs tests in it.</p>
-
-<p><em>Concurrency</em> is an optional mode that allows you to invoke multiple instances of the same browser.
-These instances constitute the pool of browsers against which tests run concurrently, i.e. each test runs in the first free instance.</p>
-
-<p>To enable concurrency, use the <a href="../command-line-interface.html#-c-n---concurrency-n">-c or --concurrency</a>
-command line option or the <a href="../programming-interface/runner.html#concurrency">runner.concurrency</a> method of the programming interface.</p>
-<blockquote class="important"><div class="blockquote-content"><p>Concurrent test execution is not supported in Microsoft Edge. This is because there is no known way to start Edge in a new window and make it open a particular URL.</p>
-</div></blockquote>
-<p>The following command invokes three Chrome instances and runs tests concurrently.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="nt">-c</span> 3 chrome tests/test.js
-</code></pre></div>
-<p>This is how the same thing can be done through the API.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">testRunPromise</span> <span class="o">=</span> <span class="nx">runner</span>
-    <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="dl">'</span><span class="s1">tests/test.js</span><span class="dl">'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="dl">'</span><span class="s1">chrome</span><span class="dl">'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">concurrency</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<!--more-->
+<h2><a class="anchor" id="support-for-the-new-microsoft-edge"></a>🌟 Support for the New Microsoft Edge <a class="permalink" href="#support-for-the-new-microsoft-edge">#</a></h2>
+<p>TestCafe v1.8.0 supports the new Microsoft Edge based on Chromium. The new Edge is available under the same <a href="../documentation/using-testcafe/common-concepts/browsers/browser-support.html#locally-installed-browsers">alias</a>: <code>edge</code>.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe edge test.js
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">await</span> <span class="nx">runner</span>
+    <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="dl">'</span><span class="s1">test.js</span><span class="dl">'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="dl">'</span><span class="s1">edge</span><span class="dl">'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
 </code></pre></div>
-<p>Note that you can also use concurrency when testing against multiple browsers.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="nt">-c</span> 4 safari,firefox tests/test.js
-</code></pre></div>
-<p>In this case, tests are distributed across four Safari instances and the same tests are also run in four Firefox instances.</p>
-<blockquote><div class="blockquote-content"><p>If an uncaught error or unhandled promise rejection occurs on the server during test execution, all tests running concurrently will fail.</p>
-</div></blockquote>
-<p>When you run tests on <a href="../command-line-interface.html#remote-browsers">remote devices</a>,
-create connections for each instance of each browser you test against. When using
-the command line interface, specify this number after the <code>remote:</code> keyword. In API, create
-a <a href="../programming-interface/browserconnection.html">browser connection</a> for each instance.</p>
+<p>Supported Edge&#39;s features include <a href="../documentation/using-testcafe/common-concepts/browsers/testing-in-headless-mode.html">headless mode</a>, <a href="../documentation/using-testcafe/common-concepts/browsers/using-chromium-device-emulation.html">mobile device emulation</a>, and <a href="../documentation/using-testcafe/common-concepts/screenshots-and-videos.html#record-videos">video recording</a>.</p>
+<h2><a class="anchor" id="bug-fixes"></a>Bug Fixes <a class="permalink" href="#bug-fixes">#</a></h2>
+<ul>
+<li>Fixed an error thrown when the webpage creates a <code>Proxy</code> (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/2206">testcafe-hammerhead/#2206</a>) by <a href="https://github.com/link89">@link89</a></li>
+<li>Event handlers are no longer cleared after the <code>document.open</code> function call (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/1881">testcafe-hammerhead/#1881</a>)</li>
+</ul>
 
-<p>On a remote device, invoke all the required instances manually. The total number of instances
-should divide by the concurrency parameter <code>n</code>. Otherwise, an exception will be thrown.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="nt">-c</span> 2 remote:4 tests/test.js
-</code></pre></div>
-<p>If you test against multiple remote browsers, open and connect all instances of one browser before connecting the next browser.</p>
-
-
-		</div>
-	</article>
-
+        </article>
+        <div id="back-to-posts-link">
+            <p><a href="./">Back to Post List</a></p>
+        </div>
+        <!-- <div id="disqus_thread"></div> -->
+    </div>
 </main>
+
+<!-- 
+<script>
+    var disqus_config = function () {
+        this.page.url = 'https://devexpress.github.io/testcafe/blog/testcafe-v1-8-0-released.html';
+        this.page.identifier = '/blog/testcafe-v1-8-0-released';
+    };
+    (function() {
+        var d = document, s = d.createElement('script');
+        
+        s.src = '//testcafe-blog.disqus.com/embed.js';
+        
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+ -->
 </div>
 
     </div>
