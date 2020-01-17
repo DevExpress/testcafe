@@ -73,11 +73,12 @@ async function runTests (argParser) {
     const { hostname, ssl, dev, experimentalCompilerService } = opts;
 
     const testCafe = await createTestCafe({
+        developmentMode: dev,
+
         hostname,
         port1,
         port2,
         ssl,
-        dev,
         experimentalCompilerService
     });
 

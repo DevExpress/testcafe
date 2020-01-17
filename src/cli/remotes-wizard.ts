@@ -3,9 +3,16 @@ import chalk from 'chalk';
 import log from './log';
 import promisifyEvent from 'promisify-event';
 import dedent from 'dedent';
-import BrowserConnection from '../browser/connection';
 
-export default async function (testCafe: any, remoteCount: number, showQRCode: boolean): Promise<BrowserConnection[]> {
+import BrowserConnection from '../browser/connection';
+import BrowserConnectionGateway from '../browser/connection/gateway';
+
+interface TestCafe {
+    browserConnectionGateway: BrowserConnectionGateway;
+    createBrowserConnection(): Promise<BrowserConnection>;
+}
+
+export default async function (testCafe: TestCafe, remoteCount: number, showQRCode: boolean): Promise<BrowserConnection[]> {
     const connectionPromises = [];
 
     if (remoteCount) {
