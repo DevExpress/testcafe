@@ -5,14 +5,14 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 17 Jan 2020 18:12:48 +0300</pubDate>
-    <lastBuildDate>Fri, 17 Jan 2020 18:12:48 +0300</lastBuildDate>
+    <pubDate>Fri, 17 Jan 2020 18:16:57 +0300</pubDate>
+    <lastBuildDate>Fri, 17 Jan 2020 18:16:57 +0300</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
         <title>TestCafe v1.8.0 Released</title>
         <description>&lt;h1&gt;TestCafe v1.8.0 Released&lt;/h1&gt;
-&lt;p&gt;In this release, we have added support for the New Chromium-based Microsoft Edge.&lt;/p&gt;
+&lt;p&gt;In this release, we have added support for the new Chromium-based Microsoft Edge.&lt;/p&gt;
 
 &lt;!--more--&gt;
 &lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;support-for-the-new-microsoft-edge&quot;&gt;&lt;/a&gt;🌟 Support for the New Microsoft Edge &lt;a class=&quot;permalink&quot; href=&quot;#support-for-the-new-microsoft-edge&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
