@@ -5,9 +5,37 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 10 Jan 2020 18:52:25 +0300</pubDate>
-    <lastBuildDate>Fri, 10 Jan 2020 18:52:25 +0300</lastBuildDate>
+    <pubDate>Fri, 17 Jan 2020 18:12:48 +0300</pubDate>
+    <lastBuildDate>Fri, 17 Jan 2020 18:12:48 +0300</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>TestCafe v1.8.0 Released</title>
+        <description>&lt;h1&gt;TestCafe v1.8.0 Released&lt;/h1&gt;
+&lt;p&gt;In this release, we have added support for the New Chromium-based Microsoft Edge.&lt;/p&gt;
+
+&lt;!--more--&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;support-for-the-new-microsoft-edge&quot;&gt;&lt;/a&gt;🌟 Support for the New Microsoft Edge &lt;a class=&quot;permalink&quot; href=&quot;#support-for-the-new-microsoft-edge&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;TestCafe v1.8.0 supports the new Microsoft Edge based on Chromium. The new Edge is available under the same &lt;a href=&quot;../documentation/using-testcafe/common-concepts/browsers/browser-support.html#locally-installed-browsers&quot;&gt;alias&lt;/a&gt;: &lt;code&gt;edge&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe edge test.js
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;test.js&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;browsers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;edge&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Supported Edge&amp;#39;s features include &lt;a href=&quot;../documentation/using-testcafe/common-concepts/browsers/testing-in-headless-mode.html&quot;&gt;headless mode&lt;/a&gt;, &lt;a href=&quot;../documentation/using-testcafe/common-concepts/browsers/using-chromium-device-emulation.html&quot;&gt;mobile device emulation&lt;/a&gt;, and &lt;a href=&quot;../documentation/using-testcafe/common-concepts/screenshots-and-videos.html#record-videos&quot;&gt;video recording&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Fixed an error thrown when the webpage creates a &lt;code&gt;Proxy&lt;/code&gt; (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2206&quot;&gt;testcafe-hammerhead/#2206&lt;/a&gt;) by &lt;a href=&quot;https://github.com/link89&quot;&gt;@link89&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Event handlers are no longer cleared after the &lt;code&gt;document.open&lt;/code&gt; function call (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1881&quot;&gt;testcafe-hammerhead/#1881&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Fri, 17 Jan 2020 00:00:00 +0300</pubDate>
+        <link>https://devexpress.github.io/testcafe/blog/testcafe-v1-8-0-released.html</link>
+        <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v1-8-0-released.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>TestCafe v1.7.0 Released</title>
@@ -781,46 +809,6 @@
         <pubDate>Thu, 07 Feb 2019 00:00:00 +0300</pubDate>
         <link>https://devexpress.github.io/testcafe/blog/migration-from-testcafe-v0-x-y-to-v1-0-0.html</link>
         <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/migration-from-testcafe-v0-x-y-to-v1-0-0.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>TestCafe v0.23.1 Released</title>
-        <description>&lt;h1&gt;TestCafe v0.23.1 Released&lt;/h1&gt;
-&lt;p&gt;Use metadata to select and run tests and fixtures, and load tests dynamically.&lt;/p&gt;
-
-&lt;!--more--&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;select-tests-and-fixtures-to-run-by-their-metadata-2527-by-nickcis&quot;&gt;&lt;/a&gt;⚙ Select Tests and Fixtures to Run by Their Metadata (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2527&quot;&gt;#2527&lt;/a&gt;) by &lt;a href=&quot;https://github.com/NickCis&quot;&gt;@NickCis&lt;/a&gt; &lt;a class=&quot;permalink&quot; href=&quot;#select-tests-and-fixtures-to-run-by-their-metadata-2527-by-nickcis&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;You can now run only those tests or fixtures whose &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#specifying-testing-metadata&quot;&gt;metadata&lt;/a&gt; contains a specific set of values. Use the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--test-meta-keyvaluekey2value2&quot;&gt;--test-meta&lt;/a&gt; and &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--fixture-meta-keyvaluekey2value2&quot;&gt;--fixture-meta&lt;/a&gt; flags to specify these values.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome my-tests &lt;span class=&quot;nt&quot;&gt;--test-meta&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;device&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;mobile,env&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;production
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome my-tests &lt;span class=&quot;nt&quot;&gt;--fixture-meta&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;subsystem&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;payments,type&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;regression
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;In the API, test and fixture metadata is now passed to the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#filter&quot;&gt;runner.filter&lt;/a&gt; method in the &lt;code&gt;testMeta&lt;/code&gt; and &lt;code&gt;fixtureMeta&lt;/code&gt; parameters. Use this metadata to build a logic that determines whether to run the current test.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;filter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;testName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fixtureName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fixturePath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;testMeta&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;fixtureMeta&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;testMeta&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;mobile&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;fixtureMeta&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;env&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;staging&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;run-dynamically-loaded-tests-2074&quot;&gt;&lt;/a&gt;⚙ Run Dynamically Loaded Tests (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2074&quot;&gt;#2074&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#run-dynamically-loaded-tests-2074&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;You can now run tests imported from external libraries or generated dynamically even if the &lt;code&gt;.js&lt;/code&gt; file does not contain any tests.&lt;/p&gt;
-
-&lt;p&gt;Previously, test files had to contain the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#fixtures&quot;&gt;fixture&lt;/a&gt; and &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#tests&quot;&gt;test&lt;/a&gt; directives. You can now add the &lt;code&gt;--disable-test-syntax-validation&lt;/code&gt; command line flag to bypass this check.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe safari test.js &lt;span class=&quot;nt&quot;&gt;--disable-test-syntax-validation&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;In the API, use the &lt;code&gt;disableTestSyntaxValidation&lt;/code&gt; option.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;disableTestSyntaxValidation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Touch events are now simulated with correct touch properties (&lt;code&gt;touches&lt;/code&gt;, &lt;code&gt;targetTouches&lt;/code&gt;, &lt;code&gt;changedTouches&lt;/code&gt;) (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2856&quot;&gt;#2856&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Google Chrome now closes correctly on macOS after tests are finished (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2860&quot;&gt;#2860&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Internal attribute and node changes no longer trigger &lt;code&gt;MutationObserver&lt;/code&gt; notifications (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1769&quot;&gt;testcafe-hammerhead/#1769&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;The &lt;code&gt;ECONNABORTED&lt;/code&gt; error is no longer raised (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1744&quot;&gt;testcafe-hammerhead/#1744&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Websites that use &lt;code&gt;Location.ancestorOrigins&lt;/code&gt; are now proxied correctly (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1342&quot;&gt;testcafe-hammerhead/#1342&lt;/a&gt;)&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Wed, 07 Nov 2018 00:00:00 +0300</pubDate>
-        <link>https://devexpress.github.io/testcafe/blog/testcafe-v0-23-1-released.html</link>
-        <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v0-23-1-released.html</guid>
         
         
       </item>

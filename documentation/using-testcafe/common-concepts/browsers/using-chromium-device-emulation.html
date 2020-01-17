@@ -14,15 +14,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>Concurrent Test Execution | TestCafe</title>
+  <title>Using Chrome Device Emulation | TestCafe</title>
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
 
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/concurrent-test-execution.html" />
-  <meta property="og:title" content="Concurrent Test Execution | TestCafe" />
+  <meta property="og:url" content="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/using-chromium-device-emulation.html" />
+  <meta property="og:title" content="Using Chrome Device Emulation | TestCafe" />
 
   
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/styles/docco.min.css">
@@ -30,7 +30,7 @@
   
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
-  <link rel="canonical" href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/concurrent-test-execution.html">
+  <link rel="canonical" href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/using-chromium-device-emulation.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="https://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -733,7 +733,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/using-testcafe/common-concepts/browsers/using-chromium-device-emulation.html"  >Using Chromium Device Emulation</a>
+<a href="/testcafe/documentation/using-testcafe/common-concepts/browsers/using-chromium-device-emulation.html" class="active" >Using Chromium Device Emulation</a>
 		
     </li>
 
@@ -751,7 +751,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/using-testcafe/common-concepts/concurrent-test-execution.html" class="active" >Concurrent Test Execution</a>
+<a href="/testcafe/documentation/using-testcafe/common-concepts/concurrent-test-execution.html"  >Concurrent Test Execution</a>
 		
     </li>
 
@@ -819,48 +819,123 @@
 	<article class="doc">
 		<div class="post-content">
 
-			<h1>Concurrent Test Execution</h1>
-<p>To save time spent on testing, TestCafe allows you to execute tests <em>concurrently</em>.</p>
-
-<p>Normally, you run tests with a command similar to the following one.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome tests/test.js
-</code></pre></div>
-<p>When this command is executed, TestCafe invokes an instance of the specified browser and runs tests in it.</p>
-
-<p><em>Concurrency</em> is an optional mode that allows you to invoke multiple instances of the same browser.
-These instances constitute the pool of browsers against which tests run concurrently, i.e. each test runs in the first free instance.</p>
-
-<p>To enable concurrency, use the <a href="../command-line-interface.html#-c-n---concurrency-n">-c or --concurrency</a>
-command line option or the <a href="../programming-interface/runner.html#concurrency">runner.concurrency</a> method of the programming interface.</p>
-<blockquote class="important"><div class="blockquote-content"><p>Concurrent test execution is not supported in Microsoft Edge. This is because there is no known way to start Edge in a new window and make it open a particular URL.</p>
-</div></blockquote>
-<p>The following command invokes three Chrome instances and runs tests concurrently.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="nt">-c</span> 3 chrome tests/test.js
-</code></pre></div>
-<p>This is how the same thing can be done through the API.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">testRunPromise</span> <span class="o">=</span> <span class="nx">runner</span>
-    <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="dl">'</span><span class="s1">tests/test.js</span><span class="dl">'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="dl">'</span><span class="s1">chrome</span><span class="dl">'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">concurrency</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+			<h1>Using Chromium Device Emulation</h1>
+<p>You can run test with Chromium&#39;s built-in <a href="https://developers.google.com/web/tools/chrome-devtools/device-mode/">device emulator</a> in Google Chrome, Chromium and Chromium-based Microsoft Edge. To do this, use the <code>emulation</code> browser parameter.</p>
+<h2><a class="anchor" id="emulate-a-device"></a>Emulate a Device <a class="permalink" href="#emulate-a-device">#</a></h2>
+<p>Specify the target device with the <code>device</code> parameter.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome:emulation:device=iphone X"</span> tests/sample-fixture.js
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span>
+    <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="dl">'</span><span class="s1">tests/sample-fixture.js</span><span class="dl">'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="dl">'</span><span class="s1">chrome:emulation:device=iphone X</span><span class="dl">'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
-</code></pre></div>
-<p>Note that you can also use concurrency when testing against multiple browsers.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="nt">-c</span> 4 safari,firefox tests/test.js
-</code></pre></div>
-<p>In this case, tests are distributed across four Safari instances and the same tests are also run in four Firefox instances.</p>
-<blockquote><div class="blockquote-content"><p>If an uncaught error or unhandled promise rejection occurs on the server during test execution, all tests running concurrently will fail.</p>
+</code></pre></div><h2><a class="anchor" id="emulate-a-screen-size"></a>Emulate a Screen Size <a class="permalink" href="#emulate-a-screen-size">#</a></h2>
+<p>You can configure the device emulator by providing <code>width</code>, <code>height</code>, <code>orientation</code>, etc.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome:emulation:width=100;height=200;mobile=true;orientation=vertical;touch=true"</span> tests/sample-fixture.js
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span>
+    <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="dl">'</span><span class="s1">tests/sample-fixture.js</span><span class="dl">'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="dl">'</span><span class="s1">chrome:emulation:width=100;height=200;mobile=true;orientation=vertical;touch=true</span><span class="dl">'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
+</code></pre></div><h2><a class="anchor" id="use-emulation-in-headless-mode"></a>Use Emulation in Headless Mode <a class="permalink" href="#use-emulation-in-headless-mode">#</a></h2>
+<p>You can combine both device emulation and headless mode.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome:headless:emulation:device=iphone X;cdpPort=9223"</span> tests/sample-fixture.js
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span>
+    <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="dl">'</span><span class="s1">tests/sample-fixture.js</span><span class="dl">'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="dl">'</span><span class="s1">chrome:headless:emulation:device=iphone X;cdpPort=9223</span><span class="dl">'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
+</code></pre></div><h2><a class="anchor" id="use-emulation-in-portable-chrome"></a>Use Emulation in Portable Chrome <a class="permalink" href="#use-emulation-in-portable-chrome">#</a></h2>
+<p>To enable device emulation in a portable Chrome, use the <a href="browser-support.html#locally-installed-browsers">browser alias</a>. The <code>path:</code> prefix does not work in this case.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome:d:</span><span class="se">\c</span><span class="s2">hrome_portable</span><span class="se">\c</span><span class="s2">hrome.exe:emulation:device=iphone X"</span> tests/test.js
+</code></pre></div><h2><a class="anchor" id="substitute-a-user-agent"></a>Substitute a User Agent <a class="permalink" href="#substitute-a-user-agent">#</a></h2>
+<p>Use the <code>userAgent</code> parameter to substitute a user agent string.</p>
+<blockquote class="important"><div class="blockquote-content"><p>TestCafe relies on the user agent string to emulate the browser behavior. Tests are not guaranteed to run correctly if you provide a user agent that is invalid or <a href="browser-support.html">not supported by TestCafe</a>.</p>
 </div></blockquote>
-<p>When you run tests on <a href="../command-line-interface.html#remote-browsers">remote devices</a>,
-create connections for each instance of each browser you test against. When using
-the command line interface, specify this number after the <code>remote:</code> keyword. In API, create
-a <a href="../programming-interface/browserconnection.html">browser connection</a> for each instance.</p>
+<p>You need to escape special characters in the user agent string when you specify it in the command line. These characters include:</p>
 
-<p>On a remote device, invoke all the required instances manually. The total number of instances
-should divide by the concurrency parameter <code>n</code>. Otherwise, an exception will be thrown.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="nt">-c</span> 2 remote:4 tests/test.js
+<ul>
+<li><code>\</code> (backslash)</li>
+<li><code>&#39;</code> (single quote)</li>
+<li><code>&quot;</code> (double quote)</li>
+<li><code>,</code> (comma)</li>
+<li><code>;</code> (semicolon)</li>
+<li><code>:</code> (colon)</li>
+</ul>
+
+<p>The way to escape special characters depends on the shell you use. You also need to escape semicolons from the TestCafe argument parser with an additional backslash.</p>
+
+<p>The following examples show user agent strings escaped for <code>bash</code> and <code>PowerShell</code>.</p>
+
+<p><strong>bash</strong></p>
+
+<p>In <code>bash</code>, put a dollar sign before the argument to allow single quotes. Escape special characters with a backslash and use a double backslash for semicolons to escape them from the TestCafe argument parser:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s1">$'chrome:emulation:userAgent=</span><span class="se">\'</span><span class="s1">Mozilla/5.0 (Windows NT 10.0</span><span class="se">\\</span><span class="s1">; Win64</span><span class="se">\\</span><span class="s1">; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36</span><span class="se">\'</span><span class="s1">'</span> test.js
 </code></pre></div>
-<p>If you test against multiple remote browsers, open and connect all instances of one browser before connecting the next browser.</p>
+<p><strong>PowerShell</strong></p>
 
+<p>In <code>PowerShell</code>, escape special characters with a single quote and use a backslash for semicolons to escape them from the TestCafe argument parser:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s1">'chrome:emulation:userAgent=''Mozilla/5.0 (Windows NT 10.0\; Win64\; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36'''</span> test.js
+</code></pre></div><h2><a class="anchor" id="emulator-parameters"></a>Emulator Parameters <a class="permalink" href="#emulator-parameters">#</a></h2>
+<p>Use the following parameters to configure Chrome device emulator. Specify them after the <code>emulation</code> parameter as in the examples above.</p>
+<div class="table-wrapper"><table><thead><tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead><tbody><tr>
+<td><code>device</code> <em>(optional)</em></td>
+<td>String</td>
+<td>The emulated device name (see the full list of supported devices in DevTools -&gt; ⠇-&gt; Settings -&gt; Devices).</td>
+<td>No default value.</td>
+</tr>
+<tr>
+<td><code>width</code> <em>(optional)</em></td>
+<td>Number</td>
+<td>The device screen width in pixels.</td>
+<td>The chosen device&#39;s width. If the <code>device</code> parameter is not set, the default browser&#39;s width.</td>
+</tr>
+<tr>
+<td><code>height</code> <em>(optional)</em></td>
+<td>Number</td>
+<td>The device screen height in pixels.</td>
+<td>The chosen device&#39;s height. If the <code>device</code> parameter is not set, the default browser&#39;s height.</td>
+</tr>
+<tr>
+<td><code>scaleFactor</code> <em>(optional)</em></td>
+<td>Number</td>
+<td>Device scale factor value.</td>
+<td>Depends on a chosen <code>device</code> or your system parameters.</td>
+</tr>
+<tr>
+<td><code>mobile</code> <em>(optional)</em></td>
+<td>Boolean</td>
+<td>Whether to emulate a mobile device. This includes the viewport meta tag, overlay scrollbars, text autosizing and more.</td>
+<td><code>true</code> if a mobile device is set via the <code>device</code> property. Otherwise <code>false</code>.</td>
+</tr>
+<tr>
+<td><code>orientation</code> <em>(optional)</em></td>
+<td><code>vertical</code> &#124; <code>horizontal</code></td>
+<td>The device orientation</td>
+<td><code>vertical</code></td>
+</tr>
+<tr>
+<td><code>userAgent</code> <em>(optional)</em></td>
+<td>String</td>
+<td>The user agent string</td>
+<td>The user agent string of the selected <code>device</code> or the browser.</td>
+</tr>
+<tr>
+<td><code>touch</code> <em>(optional)</em></td>
+<td>Boolean</td>
+<td>Enables or disables the touch event emulation.</td>
+<td><code>true</code> if a touch-supported device is set via the <code>device</code> property or your system supports touch events. Otherwise <code>false</code>.</td>
+</tr>
+<tr>
+<td><code>cdpPort</code> <em>(optional)</em></td>
+<td>Number</td>
+<td>A port (0-65535) used for the Chrome Debugging Protocol.</td>
+<td><code>9222</code> if you load a user profile with the <a href="user-profiles.html">:userProfile</a> or <code>--user-data-dir</code> flag. Otherwise, TestCafe automatically assigns a free port.</td>
+</tr>
+</tbody></table></div>
 
 		</div>
 	</article>

@@ -733,7 +733,7 @@
     <li>
 		    
 		
-<a href="/testcafe/documentation/using-testcafe/common-concepts/browsers/using-chrome-device-emulation.html"  >Using Chrome Device Emulation</a>
+<a href="/testcafe/documentation/using-testcafe/common-concepts/browsers/using-chromium-device-emulation.html"  >Using Chromium Device Emulation</a>
 		
     </li>
 
@@ -922,17 +922,17 @@ The browsers are specified differently: one using an alias, the other using a pa
 </code></pre></div>
 <p>In <code>Unix</code> shells like <code>bash</code>, <code>zsh</code>, <code>csh</code> (macOS, Linux, Windows Subsystem for Linux) and Windows PowerShell, use single quotation marks:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s1">'path:`C:\Program Files (x86)\Firefox Portable\firefox.exe`'</span> tests/sample-fixture.js
-</code></pre></div><blockquote><div class="blockquote-content"><p>Do not use the <code>path:</code> prefix if you need to run a browser in the <a href="common-concepts/browsers/testing-in-headless-mode.html">headless mode</a>, use <a href="common-concepts/browsers/using-chrome-device-emulation.html">device emulation</a> or <a href="common-concepts/browsers/user-profiles.html">user profiles</a>. Specify the <a href="common-concepts/browsers/browser-support.html#locally-installed-browsers">browser alias</a> in these cases.</p>
+</code></pre></div><blockquote><div class="blockquote-content"><p>Do not use the <code>path:</code> prefix if you need to run a browser in the <a href="common-concepts/browsers/testing-in-headless-mode.html">headless mode</a>, use <a href="common-concepts/browsers/using-chromium-device-emulation.html">device emulation</a> or <a href="common-concepts/browsers/user-profiles.html">user profiles</a>. Specify the <a href="common-concepts/browsers/browser-support.html#locally-installed-browsers">browser alias</a> in these cases.</p>
 </div></blockquote><h3><a class="anchor" id="testing-in-headless-mode"></a>Testing in Headless Mode <a class="permalink" href="#testing-in-headless-mode">#</a></h3>
 <p>To run tests in the headless mode in Google Chrome or Firefox, use the <code>:headless</code> postfix:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"firefox:headless"</span> tests/sample-fixture.js
 </code></pre></div>
 <p>See <a href="common-concepts/browsers/testing-in-headless-mode.html">Testing in Headless Mode</a> for more information.</p>
 <h3><a class="anchor" id="using-chrome-device-emulation"></a>Using Chrome Device Emulation <a class="permalink" href="#using-chrome-device-emulation">#</a></h3>
-<p>To run tests in Chrome&#39;s device emulation mode, specify <code>:emulation</code> and <a href="common-concepts/browsers/using-chrome-device-emulation.html#emulator-parameters">device parameters</a>.</p>
+<p>To run tests in Chrome&#39;s device emulation mode, specify <code>:emulation</code> and <a href="common-concepts/browsers/using-chromium-device-emulation.html#emulator-parameters">device parameters</a>.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome:emulation:device=iphone X"</span> tests/sample-fixture.js
 </code></pre></div>
-<p>See <a href="common-concepts/browsers/using-chrome-device-emulation.html">Using Chrome Device Emulation</a> for more details.</p>
+<p>See <a href="common-concepts/browsers/using-chromium-device-emulation.html">Using Chrome Device Emulation</a> for more details.</p>
 <h3><a class="anchor" id="remote-browsers"></a>Remote Browsers <a class="permalink" href="#remote-browsers">#</a></h3>
 <p>To run tests in a <a href="common-concepts/browsers/browser-support.html#browsers-on-remote-devices">browser on a remote device</a>, specify <code>remote</code> as a browser alias.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe remote tests/sample-fixture.js

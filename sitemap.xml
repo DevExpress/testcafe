@@ -105,6 +105,10 @@
 <lastmod>2019-11-21T00:00:00+03:00</lastmod>
 </url>
 <url>
+<loc>https://devexpress.github.io/testcafe/blog/testcafe-v1-8-0-released.html</loc>
+<lastmod>2020-01-17T00:00:00+03:00</lastmod>
+</url>
+<url>
 <loc>https://devexpress.github.io/testcafe/documentation/extending-testcafe/browser-provider-plugin/</loc>
 </url>
 <url>
@@ -444,7 +448,7 @@
 <loc>https://devexpress.github.io/testcafe/documentation/test-api/authentication/user-roles.html</loc>
 </url>
 <url>
-<loc>https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/using-chrome-device-emulation.html</loc>
+<loc>https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/using-chromium-device-emulation.html</loc>
 </url>
 <url>
 <loc>https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/using-selectors.html</loc>
@@ -463,10 +467,10 @@
 </url>
 <url>
 <loc>https://devexpress.github.io/testcafe/example/</loc>
-<lastmod>2020-01-10T18:52:20+03:00</lastmod>
+<lastmod>2020-01-17T18:12:36+03:00</lastmod>
 </url>
 <url>
 <loc>https://devexpress.github.io/testcafe/example/thank-you.html</loc>
-<lastmod>2020-01-10T18:52:20+03:00</lastmod>
+<lastmod>2020-01-17T18:12:36+03:00</lastmod>
 </url>
 </urlset>
