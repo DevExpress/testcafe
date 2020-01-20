@@ -1067,6 +1067,14 @@ export default class Driver extends serviceUtils.EventEmitter {
             this.parentWindowDriverLink = new ParentWindowDriverLink(window);
     }
 
+    _initConsoleMessages () {
+        const messages = this.consoleMessages;
+
+        messages.ensureMessageContainer(this.windowId);
+
+        this.consoleMessages = messages;
+    }
+
     _getDriverRole () {
         if (!this.windowId)
             return Promise.resolve(DriverRole.master);
@@ -1088,6 +1096,8 @@ export default class Driver extends serviceUtils.EventEmitter {
         this.statusBar.on(this.statusBar.UNLOCK_PAGE_BTN_CLICK, disableRealEventsPreventing);
 
         this.speed = this.initialSpeed;
+
+        this._initConsoleMessages();
     }
 
     start () {

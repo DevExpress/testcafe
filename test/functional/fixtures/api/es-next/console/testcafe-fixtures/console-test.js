@@ -41,3 +41,14 @@ test
 
     await t.expect(log[0]).eql('a 1 null undefined b,2 [object Object]');
 });
+
+test
+    .page `http://localhost:3000/fixtures/api/es-next/console/pages/empty.html`
+('empty collections (GH-4662)', async t => {
+    const { log, warn, info } = await t.getBrowserConsoleMessages();
+
+    await t
+        .expect(log).eql([])
+        .expect(warn).eql([])
+        .expect(info).eql([]);
+});

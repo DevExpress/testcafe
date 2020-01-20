@@ -8,7 +8,7 @@ export default class BrowserConsoleMessages {
         this.concat(data);
     }
 
-    _ensureWindowIdMessageContainer (windowId) {
+    ensureMessageContainer (windowId) {
         if (this[windowId])
             return;
 
@@ -25,7 +25,7 @@ export default class BrowserConsoleMessages {
             return this;
 
         Object.keys(consoleMessages).forEach(windowId => {
-            this._ensureWindowIdMessageContainer(windowId);
+            this.ensureMessageContainer(windowId);
 
             this[windowId].log   = this[windowId].log.concat(consoleMessages[windowId].log);
             this[windowId].info  = this[windowId].info.concat(consoleMessages[windowId].info);
@@ -37,7 +37,7 @@ export default class BrowserConsoleMessages {
     }
 
     addMessage (type, msg, windowId) {
-        this._ensureWindowIdMessageContainer(windowId);
+        this.ensureMessageContainer(windowId);
 
         this[windowId][type].push(msg);
     }
