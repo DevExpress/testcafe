@@ -116,7 +116,7 @@
     "source-map-support": "^0.5.16",
     "strip-bom": "^2.0.0",
     "testcafe-browser-tools": "2.0.8",
-    "testcafe-hammerhead": "https://github.com/DevExpress/testcafe-hammerhead/files/4071443/testcafe-hammerhead-16.0.0.zip",
+    "testcafe-hammerhead": "https://github.com/DevExpress/testcafe-hammerhead/files/4096454/testcafe-hammerhead-16.0.0.zip",
     "testcafe-legacy-api": "3.1.11",
     "testcafe-reporter-json": "^2.1.0",
     "testcafe-reporter-list": "^2.1.0",
