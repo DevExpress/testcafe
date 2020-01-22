@@ -173,7 +173,7 @@ export default class TestRun extends AsyncEventEmitter {
         if (this.requestHooks.indexOf(hook) !== -1)
             return;
 
-        this.requestHooks.push(hook);
+        this.requestHooks.unshift(hook);
         this._initRequestHook(hook);
     }
 
