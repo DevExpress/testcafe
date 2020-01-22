@@ -4,8 +4,8 @@
 
 ### Bug Fixes
 
-* Fixed TestCafe to start correctly when unsupported browsers are installed in the system ([#4661](https://github.com/DevExpress/testcafe/issues/4661))
-* Fixed `t.getBrowserConsoleMessages` to return a list of recorded console messages instead of `undefined` ([#4662](https://github.com/DevExpress/testcafe/issues/4662))
+* TestCafe now starts correctly when unsupported browsers are installed in the system ([#4661](https://github.com/DevExpress/testcafe/issues/4661))
+* `t.getBrowserConsoleMessages` now returns a list of recorded console messages instead of `undefined` ([#4662](https://github.com/DevExpress/testcafe/issues/4662))
 
 ## v1.8.0 (2020-1-17)
 
