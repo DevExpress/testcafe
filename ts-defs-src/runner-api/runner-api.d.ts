@@ -45,6 +45,12 @@ interface VideoOptions {
 
 interface VideoEncodingOptions {
     /**
+     * https://ffmpeg.org/ffmpeg.html#Options
+     *
+     * custom option
+     */
+    [option: string]: unknown;
+    /**
      * Specifies a custom frame rate(FPS).
      */
     r?: number;
