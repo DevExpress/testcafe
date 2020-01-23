@@ -62,7 +62,7 @@ interface DefaultEncodingOptions {
      */
     i: string;
     /**
-     * NOTE: use the H.264 video codec
+     * **NOTE:** use the H.264 video codec
      * @default 'libx264'
      */
     'c:v': string;
@@ -73,12 +73,12 @@ interface DefaultEncodingOptions {
     preset: string;
 
     /**
-     * NOTE: use the yuv420p pixel format (the most widely supported)
+     * **NOTE:** use the yuv420p pixel format (the most widely supported)
      * @default 'yuv420p'
      */
     'pix_fmt': string;
     /**
-     * NOTE: scale input frames to make the frame height divisible by 2 (yuv420p's requirement)
+     * **NOTE:** scale input frames to make the frame height divisible by 2 (yuv420p's requirement)
      * @default 'scale=trunc(iw/2)*2:trunc(ih/2)*2'
      */
     vf: string;
@@ -199,7 +199,7 @@ interface Runner {
      * Enables TestCafe to take videos of the tested webpages.
      *
      * @param path - Output directory
-     * @param option - Video options
+     * @param options - Video options
      * @param encodingOptions - Video encoding options
      */
     video(path: string, options?: VideoOptions, encodingOptions?: VideoEncodingOptions): this;

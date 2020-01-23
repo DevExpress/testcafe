@@ -8,7 +8,7 @@ test('Starts and terminates runner', async () => {
     const remoteConnection = await t.createBrowserConnection();
     const runner = t.createRunner();
 
-    runner.browsers(remoteConnection);
+    runner.browsers(remoteConnection).video('artifacts/videos');
 
     return t.close();
 });
