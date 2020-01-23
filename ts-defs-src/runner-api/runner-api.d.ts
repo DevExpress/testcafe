@@ -43,17 +43,60 @@ interface VideoOptions {
     pathPattern?: string;
 }
 
-interface VideoEncodingOptions {
+interface DefaultEncodingOptions {
+    /**
+     * **NOTE:** don't ask confirmation for rewriting the output file
+     * @default true
+     */
+    y: boolean;
+    /**
+     * **NOTE:** use the time when a frame is read from the source as its timestamp
+     *
+     * **IMPORTANT:** must be specified before configuring the source
+     * @default 1
+     */
+    'use_wallclock_as_timestamps': number;
+    /**
+     * **NOTE:** use stdin as a source
+     * @default 'pipe:0'
+     */
+    i: string;
+    /**
+     * NOTE: use the H.264 video codec
+     * @default 'libx264'
+     */
+    'c:v': string;
+    /**
+     * **NOTE:** use the `ultrafast` compression preset
+     * @default 'ultrafast'
+     */
+    preset: string;
+
+    /**
+     * NOTE: use the yuv420p pixel format (the most widely supported)
+     * @default 'yuv420p'
+     */
+    'pix_fmt': string;
+    /**
+     * NOTE: scale input frames to make the frame height divisible by 2 (yuv420p's requirement)
+     * @default 'scale=trunc(iw/2)*2:trunc(ih/2)*2'
+     */
+    vf: string;
+    /**
+     * Specifies a custom frame rate(FPS).
+     * @default 30
+     */
+    r: number;
+}
+
+interface VideoEncodingOptions extends Partial<DefaultEncodingOptions> {
     /**
      * https://ffmpeg.org/ffmpeg.html#Options
      *
      * custom option
      */
     [option: string]: unknown;
-    /**
-     * Specifies a custom frame rate(FPS).
-     */
-    r?: number;
+
     /**
      * Specifies video custom aspect ratio.
      *
