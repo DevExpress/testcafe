@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.8.1 (2020-1-23)
+
+### Bug Fixes
+
+* TestCafe now starts correctly when unsupported browsers are installed in the system ([#4661](https://github.com/DevExpress/testcafe/issues/4661))
+* `t.getBrowserConsoleMessages` now returns a list of recorded console messages instead of `undefined` ([#4662](https://github.com/DevExpress/testcafe/issues/4662))
+
 ## v1.8.0 (2020-1-17)
 
 ### :star2: Support for the New Microsoft Edge
