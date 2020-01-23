@@ -1,6 +1,5 @@
 const hammerhead    = window.getTestCafeModule('hammerhead');
 const nativeMethods = hammerhead.nativeMethods;
-const browserUtils  = hammerhead.utils.browser;
 
 const testCafeCore = window.getTestCafeModule('testCafeCore');
 
@@ -43,11 +42,7 @@ $(document).ready(function () {
 
         let documentClickCount = 0;
 
-        const nativeAddEventListener = browserUtils.isIE11
-            ? nativeMethods.addEventListener
-            : nativeMethods.eventTargetAddEventListener;
-
-        nativeAddEventListener.call(document, 'click', function () {
+        nativeMethods.addEventListener.call(document, 'click', function () {
             documentClickCount++;
         }, true);
 
