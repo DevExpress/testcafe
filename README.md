@@ -294,6 +294,10 @@ TestCafe developers and community members made these plugins:
   Use ESLint when writing and editing TestCafe tests.
   * [ESLint plugin](https://github.com/miherlosev/eslint-plugin-testcafe) (by [@miherlosev](https://github.com/miherlosev))
 
+* **TestCafe Cucumber steps**<br/>
+  Run tests with Cucumber steps (set of predefined step definitions) written with TestCafe.
+  * [testcafe-cucumber-steps](https://github.com/Marketionist/testcafe-cucumber-steps) (by [@Marketionist](https://github.com/Marketionist))
+
 ## Different Versions of TestCafe
 
 | &nbsp; | [TestCafe](https://devexpress.github.io/testcafe) | [TestCafe Studio](https://www.devexpress.com/products/testcafestudio/?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-diff)  |
