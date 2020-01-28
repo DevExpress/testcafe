@@ -26,26 +26,26 @@ interface ScreenshotsOptions extends TakeScreenshotOptions {
 
 interface VideoOptions {
     /**
-     * Specifies video compose files' into single file or not.
+     * Specifies whether to save the entire recording as a single file.
      */
     singleFile?: boolean;
     /**
-     * Specifies video recoring for failing tests only or not.
+     * Specifies whether to record only failed tests.
      */
     failedOnly?: boolean;
     /**
-     * Specifies a ffmpeg path that will be called
+     * Specifies the path to the FFmpeg codec executable.
      */
     ffmpegPath?: string;
     /**
-     * Specifies a custom pattern to compose video files' relative path and name.
+     * Specifies a custom pattern that defines how TestCafe composes the relative path to a video file.
      */
     pathPattern?: string;
 }
 
 interface DefaultEncodingOptions {
     /**
-     * **NOTE:** don't ask confirmation for rewriting the output file
+     * **NOTE:** overwrite output files without asking for a confirmation
      * @default true
      */
     y: boolean;
@@ -83,7 +83,7 @@ interface DefaultEncodingOptions {
      */
     vf: string;
     /**
-     * Specifies a custom frame rate(FPS).
+     * Specifies a custom frame rate (FPS).
      * @default 30
      */
     r: number;
@@ -93,14 +93,14 @@ interface VideoEncodingOptions extends Partial<DefaultEncodingOptions> {
     /**
      * https://ffmpeg.org/ffmpeg.html#Options
      *
-     * custom option
+     * custom ffmpeg options
      */
     [option: string]: unknown;
 
     /**
-     * Specifies video custom aspect ratio.
+     * Specifies the video's aspect ratio.
      *
-     * May be 4:3, 16:9, etc.
+     * Can be set to '4:3', '16:9', etc.
      */
     aspect?: string;
 }
