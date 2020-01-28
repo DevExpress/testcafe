@@ -177,7 +177,7 @@
     "gulp-webmake": "0.0.4",
     "js-yaml": "^3.6.1",
     "license-checker": "^20.0.0",
-    "markdownlint": ">=0.0.8",
+    "markdownlint": "^0.19.0",
     "merge-stream": "^1.0.1",
     "minimist": "^1.2.0",
     "multer": "^1.1.0",
