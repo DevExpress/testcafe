@@ -15,15 +15,15 @@ test('Starts and terminates runner', async () => {
             {
                 singleFile:  true,
                 failedOnly:  false,
-                ffmpegPath:  '/usr/bin/ffmpeg'
+                ffmpegPath:  '/usr/bin/ffmpeg',
                 pathPattern: '${DATE}-${TIME}'
             },
             {
-                'c:v':    'libx264',
-                'preset': 'ultrafast',
-                'pix_fmt: 'yuv420p',
-                'r':      60,
-                'aspect': '16:9'
+                'c:v':     'libx264',
+                'preset':  'ultrafast',
+                'pix_fmt': 'yuv420p',
+                'r':       60,
+                'aspect':  '16:9'
             }
         );
 
