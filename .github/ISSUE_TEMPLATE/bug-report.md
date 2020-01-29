@@ -24,7 +24,11 @@ Before submitting an issue, please check CONTRIBUTING.md and existing issues 
 ### What is your web application and your TestCafe test code?
 <!-- Share a public accessible link to your application or provide a simple app which we can run. -->
  
-Your website URL (or attach your complete example):
+<details>
+<summary>Your website URL (or attach your complete example):</summary>
+
+<!-- Provide your website URL or attach a sample. Note: if your website requires any additional access procedures like authentication, please ask the website owner to send us a written confirmation at [support@devexpress.com](mailto:support@devexpress.com) in a free text form. It will allow the DevExpress staff to remotely access the website and its internal resources for research, testing, and debugging purposes. -->
+</details>
 
 <details>
 <summary>Your complete test code (or attach your test files):</summary>
