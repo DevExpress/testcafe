@@ -5,6 +5,7 @@ import moment from '../utils/moment-loader';
 import OS from 'os-family';
 import { wordWrap, removeTTYColors } from '../utils/string';
 import getViewportWidth from '../utils/get-viewport-width';
+import reporterStreamController from '../runner/reporter-stream-controller';
 
 // NOTE: we should not expose internal state to
 // the plugin, to avoid accidental rewrites.
@@ -17,7 +18,8 @@ const indent          = Symbol();
 const errorDecorator  = Symbol();
 
 export default class ReporterPluginHost {
-    constructor (plugin, outStream) {
+    constructor (plugin, outStream, name) {
+        this.name             = name;
         this[stream]          = outStream || process.stdout;
         this[wordWrapEnabled] = false;
         this[indent]          = 0;
@@ -105,7 +107,7 @@ export default class ReporterPluginHost {
 
     // Writing helpers
     newline () {
-        this[stream].write('\n');
+        this._writeUniqueStream('\n');
 
         return this;
     }
@@ -116,7 +118,7 @@ export default class ReporterPluginHost {
         else
             text = this.indentString(text, this[indent]);
 
-        this[stream].write(text);
+        this._writeUniqueStream(text);
 
         return this;
     }
@@ -131,6 +133,11 @@ export default class ReporterPluginHost {
         this[indent] = val;
 
         return this;
+    }
+
+    _writeUniqueStream (text) {
+        if (reporterStreamController.ensureUniqueStream(this[stream], this))
+            this[stream].write(text);
     }
 
 

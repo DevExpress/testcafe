@@ -145,21 +145,6 @@ describe('Runner', () => {
                 });
         });
 
-        it('Should raise an error if several reporters are going to write to the stdout', () => {
-            return runner
-                .browsers(connection)
-                .reporter(['json', 'xunit'])
-                .src('test/server/data/test-suites/basic/testfile2.js')
-                .run()
-                .then(() => {
-                    throw new Error('Promise rejection expected');
-                })
-                .catch(err => {
-                    expect(err.message).eql('Multiple reporters attempting to write to stdout: "json, xunit". ' +
-                                            'Only one reporter can write to stdout.');
-                });
-        });
-
         it('Should fallback to the default reporter if reporter was not set', () => {
             const storedRunTaskFn = runner._runTask;
 

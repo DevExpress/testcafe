@@ -21,6 +21,7 @@ import prepareReporters from '../utils/prepare-reporters';
 import loadClientScripts from '../custom-client-scripts/load';
 import { setUniqueUrls } from '../custom-client-scripts/utils';
 import { getConcatenatedValuesString } from '../utils/string';
+import reporterStreamController from './reporter-stream-controller';
 
 const DEBUG_LOGGER = debug('testcafe:runner');
 
@@ -149,10 +150,10 @@ export default class Runner extends EventEmitter {
     }
 
     _runTask (reporterPlugins, browserSet, tests, testedApp) {
-        let completed           = false;
-        const task              = this._createTask(tests, browserSet.browserConnectionGroups, this.proxy, this.configuration.getOptions());
-        const reporters         = reporterPlugins.map(reporter => new Reporter(reporter.plugin, task, reporter.outStream));
-        const completionPromise = this._getTaskResult(task, browserSet, reporters, testedApp);
+        const task            = this._createTask(tests, browserSet.browserConnectionGroups, this.proxy, this.configuration.getOptions());
+        const reporters       = reporterPlugins.map(reporter => new Reporter(reporter.plugin, task, reporter.outStream, reporter.name));
+        let completionPromise = this._getTaskResult(task, browserSet, reporters, testedApp);
+        let completed         = false;
 
         task.on('start', startHandlingTestErrors);
 
@@ -168,6 +169,22 @@ export default class Runner extends EventEmitter {
 
             completed = true;
         };
+
+        let multipleReportersError = null;
+
+        reporterStreamController.once('multiple-reporters-error', error => {
+            multipleReportersError = new GeneralError(RUNTIME_ERRORS.multipleStdoutReporters, error);
+
+            task.emit('done');
+        });
+
+        completionPromise = completionPromise
+            .then(result => {
+                if (multipleReportersError)
+                    throw multipleReportersError;
+
+                return result;
+            });
 
         completionPromise
             .then(onTaskCompleted)
