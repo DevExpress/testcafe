@@ -1,21 +1,31 @@
 import { EventEmitter } from 'events';
 import { Writable } from 'stream';
+import { GeneralError } from '../errors/runtime';
+import { RUNTIME_ERRORS } from '../errors/types';
 
 interface Plugin {
     name: string;
+    streamController: ReporterStreamController;
 }
+
 interface PluginInfo {
     stream: Writable;
     plugin: Plugin;
 }
 
-class ReporterStreamController extends EventEmitter {
+class ReporterStreamController {
+    public multipleStreamError: GeneralError | null;
     private _pluginInfos: PluginInfo[];
+    private _task: EventEmitter;
 
-    public constructor () {
-        super();
-
+    public constructor (task: EventEmitter, reporters: any[]) {
         this._pluginInfos = [];
+        this._task = task;
+        this.multipleStreamError = null;
+
+        reporters.forEach(({ plugin }) => {
+            plugin.streamController = this;
+        });
     }
 
     public ensureUniqueStream (stream: Writable, plugin: Plugin): boolean {
@@ -24,7 +34,11 @@ class ReporterStreamController extends EventEmitter {
         if (!pluginInfo)
             this._pluginInfos.push({ stream: stream, plugin: plugin });
         else if (pluginInfo.plugin !== plugin) {
-            this.emit('multiple-reporters-error', [plugin.name, pluginInfo.plugin.name].join(', '));
+            const message = [plugin.name, pluginInfo.plugin.name].join(', ');
+
+            this.multipleStreamError = new GeneralError(RUNTIME_ERRORS.multipleStdoutReporters, message);
+
+            this._task.emit('done');
 
             return false;
         }
@@ -33,4 +47,4 @@ class ReporterStreamController extends EventEmitter {
     }
 }
 
-export default new ReporterStreamController();
+export default ReporterStreamController;
