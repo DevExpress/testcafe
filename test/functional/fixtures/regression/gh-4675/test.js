@@ -41,7 +41,7 @@ if (config.useLocalBrowsers) {
                     return testCafe.close();
                 })
                 .finally(() => {
-                    expect(error.message).eql('Multiple reporters attempting to write to stdout: "custom, custom". Only one reporter can write to stdout.');
+                    expect(error.message).eql('The following reporters attempted to write to the same output stream: "custom, custom". Only one reporter can write to a stream.');
                 });
         });
     });

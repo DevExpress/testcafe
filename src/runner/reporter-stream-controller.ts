@@ -36,7 +36,7 @@ class ReporterStreamController {
         else if (pluginInfo.plugin !== plugin) {
             const message = [plugin.name, pluginInfo.plugin.name].join(', ');
 
-            this.multipleStreamError = new GeneralError(RUNTIME_ERRORS.multipleStdoutReporters, message);
+            this.multipleStreamError = new GeneralError(RUNTIME_ERRORS.multipleSameStreamReporters, message);
 
             this._task.emit('done');
 
