@@ -30,7 +30,7 @@ if (config.useLocalBrowsers) {
                 })
                 .then(() => {
                     return testCafe.createRunner()
-                        .browsers(`chrome`)
+                        .browsers(`chrome:headless`)
                         .src(path.join(__dirname, './testcafe-fixtures/index.js'))
                         .reporter([customReporter('custom1'), customReporter('custom2')])
                         .run();
