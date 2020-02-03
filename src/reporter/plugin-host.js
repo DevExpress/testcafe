@@ -137,7 +137,7 @@ export default class ReporterPluginHost {
     }
 
     _writeToUniqueStream (text) {
-        if (this.streamController.ensureUniqueStream(this[stream], this))
+        if (!this.streamController || this.streamController.ensureUniqueStream(this[stream], this))
             this[stream].write(text);
     }
 
