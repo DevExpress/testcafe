@@ -1,4 +1,4 @@
-import { isValidDeviceName } from 'testcafe-browser-tools';
+import { isValidDeviceName } from 'device-specs';
 import roleMarkerSymbol from '../../../role/marker-symbol';
 
 import {
