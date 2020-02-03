@@ -3,18 +3,18 @@ const expect         = require('chai').expect;
 const createTestCafe = require('../../../../../lib');
 const config         = require('../../../config.js');
 
-const reporter = {
-    name: 'custom',
-    reportTestDone () { },
-    reportFixtureStart () { },
-    reportTaskStart () {
-        this.write('');
-    },
-    reportTaskDone () { }
-};
-
-function customReporter () {
-    return reporter;
+function customReporter (name) {
+    return () => {
+        return {
+            name: name,
+            reportTestDone () { },
+            reportFixtureStart () { },
+            reportTaskStart () {
+                this.write('');
+            },
+            reportTaskDone () { }
+        };
+    };
 }
 
 let testCafe = null;
@@ -32,7 +32,7 @@ if (config.useLocalBrowsers) {
                     return testCafe.createRunner()
                         .browsers(`chrome`)
                         .src(path.join(__dirname, './testcafe-fixtures/index.js'))
-                        .reporter([customReporter, customReporter])
+                        .reporter([customReporter('custom1'), customReporter('custom2')])
                         .run();
                 })
                 .catch(err => {
@@ -41,7 +41,7 @@ if (config.useLocalBrowsers) {
                     return testCafe.close();
                 })
                 .finally(() => {
-                    expect(error.message).eql('The following reporters attempted to write to the same output stream: "custom, custom". Only one reporter can write to a stream.');
+                    expect(error.message).eql('The following reporters attempted to write to the same output stream: "custom1, custom2". Only one reporter can write to a stream.');
                 });
         });
     });
