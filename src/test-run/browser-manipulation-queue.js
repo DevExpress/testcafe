@@ -1,4 +1,4 @@
-import { getViewportSize } from 'testcafe-browser-tools';
+import { getViewportSize } from 'device-specs';
 import { isServiceCommand } from './commands/utils';
 import COMMAND_TYPE from './commands/type';
 import WARNING_MESSAGE from '../notifications/warning-message';

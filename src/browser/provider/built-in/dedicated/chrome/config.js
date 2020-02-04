@@ -1,4 +1,4 @@
-import emulatedDevices from 'chrome-emulated-devices-list';
+import { emulatedDevices } from 'device-specs';
 import { pickBy as filterProperties, camelCase } from 'lodash';
 import {
     hasMatch, findMatch, isMatchTrue, getModes, splitEscaped, getPathFromParsedModes, parseConfig
