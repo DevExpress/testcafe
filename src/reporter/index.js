@@ -5,8 +5,8 @@ import { CommandReportItem } from './command-report-item';
 import TestCafeErrorList from '../errors/error-list';
 
 export default class Reporter {
-    constructor (plugin, task, outStream) {
-        this.plugin = new ReporterPluginHost(plugin, outStream);
+    constructor (plugin, task, outStream, name) {
+        this.plugin = new ReporterPluginHost(plugin, outStream, name);
         this.task   = task;
 
         this.disposed        = false;

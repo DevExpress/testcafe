@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import isCI from 'is-ci';
-import { isUndefined, filter, flatten, chunk, times } from 'lodash';
+import { flatten, chunk, times } from 'lodash';
 import makeDir from 'make-dir';
 import OS from 'os-family';
 import { errors, findWindow } from 'testcafe-browser-tools';
@@ -303,11 +303,6 @@ export default class Bootstrapper {
     }
 
     private async _getReporterPlugins (): Promise<ReporterPluginSource[]> {
-        const stdoutReporters = filter(this.reporters, r => isUndefined(r.output) || r.output === process.stdout);
-
-        if (stdoutReporters.length > 1)
-            throw new GeneralError(RUNTIME_ERRORS.multipleStdoutReporters, stdoutReporters.map(r => r.name).join(', '));
-
         if (!this.reporters.length)
             Bootstrapper._addDefaultReporter(this.reporters);
 
@@ -317,7 +312,8 @@ export default class Bootstrapper {
 
             return {
                 plugin: pluginFactory(),
-                outStream
+                outStream,
+                name
             };
         }));
     }

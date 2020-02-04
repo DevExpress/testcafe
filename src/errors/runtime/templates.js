@@ -17,7 +17,7 @@ export default {
     [RUNTIME_ERRORS.testFilesNotFound]:                                  'The specified glob pattern does not match any file or the default test directories are empty.',
     [RUNTIME_ERRORS.noTestsToRun]:                                       'No tests to run. Either the test files contain no tests or the filter function is too restrictive.',
     [RUNTIME_ERRORS.cannotFindReporterForAlias]:                         'The provided "{name}" reporter does not exist. Check that you have specified the report format correctly.',
-    [RUNTIME_ERRORS.multipleStdoutReporters]:                            'Multiple reporters attempting to write to stdout: "{reporters}". Only one reporter can write to stdout.',
+    [RUNTIME_ERRORS.multipleSameStreamReporters]:                        'The following reporters attempted to write to the same output stream: "{reporters}". Only one reporter can write to a stream.',
     [RUNTIME_ERRORS.optionValueIsNotValidRegExp]:                        'The "{optionName}" option value is not a valid regular expression.',
     [RUNTIME_ERRORS.optionValueIsNotValidKeyValue]:                      'The "{optionName}" option value is not a valid key-value pair.',
     [RUNTIME_ERRORS.invalidSpeedValue]:                                  'Speed should be a number between 0.01 and 1.',

@@ -87,7 +87,7 @@ export const RUNTIME_ERRORS = {
     testFilesNotFound:                                  'E1008',
     noTestsToRun:                                       'E1009',
     cannotFindReporterForAlias:                         'E1010',
-    multipleStdoutReporters:                            'E1011',
+    multipleSameStreamReporters:                        'E1011',
     optionValueIsNotValidRegExp:                        'E1012',
     optionValueIsNotValidKeyValue:                      'E1013',
     invalidSpeedValue:                                  'E1014',
