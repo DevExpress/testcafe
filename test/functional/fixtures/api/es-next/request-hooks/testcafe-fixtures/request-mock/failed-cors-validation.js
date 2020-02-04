@@ -5,7 +5,7 @@ const mock = RequestMock()
     .respond({ prop: 'value' }, 200, { 'not-specify-cors-headers': true });
 
 fixture `Failed CORS validation`
-    .page('http://localhost:3000/fixtures/api/es-next/request-hooks/pages/failed-cors-validation.html')
+    .page('http://localhost:3000/fixtures/api/es-next/request-hooks/pages/request-mock/failed-cors-validation.html')
     .requestHooks(mock);
 
 test('Failed CORS validation', async t => {

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <button id="sendRequest">Send request</button>
+    <div>
+        <span id="result"></span>
+    </div>
+    <script>
+        var sendRequestBtn = document.getElementById('sendRequest');
+        var resultSpan     = document.getElementById('result');
+
+        sendRequestBtn.addEventListener('click', function () {
+            fetch('http://dummy-url.com/route')
+                .then(res => res.text())
+                .then(text => {
+                    resultSpan.textContent = text;
+                })
+                .catch(err => {
+                   resultSpan.textContent = err.toString();
+                });
+        });
+    </script>
+</body>
+</html>
