@@ -97,7 +97,7 @@ var mock = RequestMock()
 var mock = RequestMock()
     .onRequestTo(/*...*/)
     .respond((req, res) => {
-        // ...
+        // a sync or async function
     });
 ```
 
@@ -120,6 +120,18 @@ Property | Type | Description
 Method | Description
 ------ | ---------------
 `setBody(value)` | Sets the response body. Accepts a string as a parameter.
+
+The response function can be asynchronous:
+
+```js
+var mock = RequestMock()
+    .onRequestTo(/*...*/)
+    .respond(async (req, res) => {
+        const body = await fetch('https://web-site.com/route/data');
+
+        res.setBody(body);
+    });
+```
 
 ## Examples
 
