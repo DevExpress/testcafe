@@ -48,5 +48,6 @@ test
             .removeRequestHooks(mock)
             .expect(logger1.contains((t: any) => t.request.statusCode === 200)).ok()
             .expect(logger1.count((t: any) => t.request.statusCode === 200)).eql(1)
-            .expect(logger1.requests[0].request.body === 'test').ok();
+            .expect(logger1.requests[0].request.body === 'test').ok()
+            .expect(logger1.requests[0].response.timestamp - logger1.requests[0].request.timestamp).gt(0);
     });
