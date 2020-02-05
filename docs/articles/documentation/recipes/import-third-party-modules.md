@@ -33,3 +33,5 @@ test(`My Test`, async t => {
     // ...
 });
 ```
+
+[Full Example Code](https://github.com/DevExpress/testcafe-examples/tree/master/examples/import-third-party-modules)
