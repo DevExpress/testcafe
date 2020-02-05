@@ -1,35 +1,36 @@
-const AsyncEventEmitter = require('../../../../../lib/utils/async-event-emitter');
+const expect = require('chai').expect;
 
-const on = AsyncEventEmitter.prototype.on;
+const log = [];
 
-const MAX_LISTENERS = {
-    'Task': {
-        'done':           3,
-        'start':          2,
-        'test-run-start': 2,
-        'test-run-done':  2
-    }
-};
+function customReporter () {
+    return {
+        reportTestStart (name) {
+            log.push(`start: ${name}`);
+        },
+        reportTestDone (name) {
+            log.push(`done: ${name}`);
+        },
+        reportFixtureStart () {
+        },
+        reportTaskStart () {
+        },
+        reportTaskDone () {
+        }
+    };
+}
+
+const expectedLog = [
+    `start: test 0`,
+    `done: test 0`,
+    `start: test 1`,
+    `done: test 1`
+];
 
 describe('[Regression](GH-4725)', function () {
-    it('Should ensure AsyncEventEmitter from additional event subscriptions', function () {
-        AsyncEventEmitter.prototype.on = function (eventName, listener) {
-            let maxListenerCount = 1;
-
-            if (MAX_LISTENERS[this.constructor.name])
-                maxListenerCount = MAX_LISTENERS[this.constructor.name][eventName] || maxListenerCount;
-
-            const result = on.call(this, eventName, listener);
-
-            if (this.listenerCount(eventName) > maxListenerCount)
-                throw new Error(`Check listeners for ${this.constructor.name}.${eventName}`);
-
-            return result;
-        };
-
-        return runTests('testcafe-fixtures/index.js')
+    it('Should respect test start/done event order', function () {
+        return runTests('testcafe-fixtures/index.js', null, { reporter: customReporter })
             .then(() => {
-                AsyncEventEmitter.prototype.on = on;
+                expect(log).eql(expectedLog);
             });
     });
 });
