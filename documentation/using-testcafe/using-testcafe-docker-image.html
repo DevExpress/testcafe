@@ -854,7 +854,7 @@ Therefore, you can avoid manual installation of browsers and the testing framewo
 
 <p>If you are running a Windows machine with Docker Toolbox, note that Docker containers can only access the <code>C:\Users</code> directory by default. If you need to run tests from other directories, share these directories as described in the <a href="https://docs.docker.com/toolbox/toolbox_install_windows/#optional-add-shared-directories">Docker documentation</a>.</p>
 
-<p>In modern Docker for Windows, you also need to share a drive to reach it from Docker containers. For more information, see <a href="https://docs.docker.com/docker-for-windows/#shared-drives">Docker for Windows documentation</a>.</p></li>
+<p>In modern Docker for Windows, you also need to share a drive to reach it from Docker containers. For more information, see <a href="https://docs.docker.com/docker-for-windows/#file-sharing">Docker for Windows documentation</a>.</p></li>
 <li><p><code>-it testcafe/testcafe</code> - runs TestCafe in the interactive mode with the console enabled;</p></li>
 <li><p><code>${TESTCAFE_ARGS}</code> - arguments passed to the <code>testcafe</code> command. You can use any arguments from the TestCafe <a href="command-line-interface.html">command line interface</a>;</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh"><span class="nt">-it</span> testcafe/testcafe chromium,firefox /tests/test.js
