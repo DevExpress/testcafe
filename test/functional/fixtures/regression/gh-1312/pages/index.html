@@ -7,7 +7,7 @@
   <div id="host">Shadow DOM</div>
   <script>
     const host   = document.querySelector('#host');
-    const root   = host.createShadowRoot();
+    const root   = host.attachShadow({ mode: 'open' });
     const header = document.createElement('h1');
     const input  = document.createElement('input');
 
