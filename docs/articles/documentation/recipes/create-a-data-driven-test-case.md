@@ -5,7 +5,9 @@ permalink: /documentation/recipes/create-data-driven-tests.html
 ---
 # Create Data-Driven Tests
 
-[Data-driven testing](https://en.wikipedia.org/wiki/Data-driven_testing) is a procedure when you repeat the same test scenario with different input parameters and then verify the result with the given output values.
+[Data-driven testing](https://en.wikipedia.org/wiki/Data-driven_testing) is a procedure when you repeat the same test scenario with different input parameters and then verify the result with the given output values. This example shows how to create a data-driven test case.
+
+[Full Example Code](https://github.com/DevExpress/testcafe-examples/tree/master/examples/create-data-driven-tests)
 
 Assume you have a `data.json` file with data objects (*test cases*) that consist of two input values (`name` and `comment`) and a value that specifies the expected result (`resultText`).
 
