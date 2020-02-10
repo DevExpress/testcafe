@@ -9,7 +9,8 @@ const { Role }          = require('../../lib/api/exportable-lib');
 
 class TestRunMock extends TestRun {
     constructor () {
-        super({ name: 'test-name', fixture: { path: 'dummy' } }, {}, {}, {}, {});
+        super({ name: 'test-name', fixture: { path: 'dummy', id: 'fixture-id', name: 'fixture-name' } }, {}, {}, {}, {});
+
 
         this.browserConnection = {
             browserInfo: {
@@ -23,6 +24,10 @@ class TestRunMock extends TestRun {
     }
 
     _initRequestHooks () {
+    }
+
+    get id () {
+        return 'test-run-id';
     }
 
     executeCommand () {
@@ -132,8 +137,8 @@ describe('TestController action events', () => {
                 startLog.push(name);
             },
 
-            async reportTestActionDone (name, { command, test, browser }) {
-                const item = { name, command, test, browser };
+            async reportTestActionDone (name, { id, command, test, browser }) {
+                const item = { id, name, command, test, browser };
 
                 doneLog.push(item);
             }
