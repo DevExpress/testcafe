@@ -256,8 +256,9 @@ describe('Reporter', () => {
                             action:  'start',
                             browser: 'chrome',
                             test:    {
-                                name:  'Simple command test',
-                                phase: 'inTest'
+                                name:    'Simple command test',
+                                phase:   'inTest',
+                                fixture: 'Reporter'
                             }
                         },
                         {
@@ -269,8 +270,9 @@ describe('Reporter', () => {
                                 selector: 'Selector(\'#target\')'
                             },
                             test: {
-                                name:  'Simple command test',
-                                phase: 'inTest'
+                                name:    'Simple command test',
+                                phase:   'inTest',
+                                fixture: 'Reporter'
                             }
                         }
                     ]);
@@ -447,16 +449,18 @@ describe('Reporter', () => {
                             name:   'useRole',
                             action: 'start',
                             test:   {
-                                name:  'Complex nested command test',
-                                phase: 'inTest'
+                                name:    'Complex nested command test',
+                                phase:   'inTest',
+                                fixture: 'Reporter'
                             }
                         },
                         {
                             name:   'click',
                             action: 'start',
                             test:   {
-                                name:  'Complex nested command test',
-                                phase: 'inRoleInitializer'
+                                name:    'Complex nested command test',
+                                phase:   'inRoleInitializer',
+                                fixture: 'Reporter'
                             }
                         },
                         {
@@ -468,8 +472,9 @@ describe('Reporter', () => {
                                 type:     'click'
                             },
                             test: {
-                                name:  'Complex nested command test',
-                                phase: 'inRoleInitializer'
+                                name:    'Complex nested command test',
+                                phase:   'inRoleInitializer',
+                                fixture: 'Reporter'
                             }
                         },
                         {
@@ -484,8 +489,9 @@ describe('Reporter', () => {
                                 type: 'useRole'
                             },
                             test: {
-                                name:  'Complex nested command test',
-                                phase: 'inTest'
+                                name:    'Complex nested command test',
+                                phase:   'inTest',
+                                fixture: 'Reporter'
                             }
                         }
                     ]);

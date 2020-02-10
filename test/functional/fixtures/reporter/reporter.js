@@ -28,8 +28,13 @@ function generateReporter (log, options = {}) {
                 if (includeBrowserInfo)
                     item.browser = browser.alias.split(':')[0];
 
-                if (includeTestInfo)
-                    item.test = test;
+                if (includeTestInfo) {
+                    item.test = {
+                        name:    test.name,
+                        phase:   test.phase,
+                        fixture: test.fixture.name
+                    };
+                }
 
                 log.push(item);
             },
@@ -43,8 +48,13 @@ function generateReporter (log, options = {}) {
                 if (errors && errors.length)
                     item.errors = errors.map(err => err.code);
 
-                if (includeTestInfo)
-                    item.test = test;
+                if (includeTestInfo) {
+                    item.test = {
+                        name:    test.name,
+                        phase:   test.phase,
+                        fixture: test.fixture.name
+                    };
+                }
 
                 log.push(item);
             }
