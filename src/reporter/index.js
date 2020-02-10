@@ -144,9 +144,14 @@ export default class Reporter {
         }
 
         return Object.assign(args, {
+            id:   testRun.id,
             test: {
-                name:  testRun.test.name,
-                phase: testRun.phase
+                name:    testRun.test.name,
+                phase:   testRun.phase,
+                fixture: {
+                    name: testRun.test.fixture.name,
+                    id:   testRun.test.fixture.id
+                },
             },
             command: new CommandReportItem(command),
             browser: testRun.controller.browser,
