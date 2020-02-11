@@ -19,7 +19,7 @@ function generateReporter (log, options = {}) {
 
     return function () {
         return Object.assign({}, baseReport, {
-            async reportTestActionStart (name, { browser, test }) {
+            async reportTestActionStart (name, { browser, test, fixture }) {
                 if (!emitOnStart)
                     return;
 
@@ -29,17 +29,20 @@ function generateReporter (log, options = {}) {
                     item.browser = browser.alias.split(':')[0];
 
                 if (includeTestInfo) {
-                    item.test = {
-                        name:    test.name,
-                        phase:   test.phase,
-                        fixture: test.fixture.name
-                    };
+                    item.test = test;
+
+                    if (fixture.id) {
+                        item.fixture = {
+                            id:   'fixture-id',
+                            name: fixture.name
+                        };
+                    }
                 }
 
                 log.push(item);
             },
 
-            async reportTestActionDone (name, { command, test, errors }) {
+            async reportTestActionDone (name, { command, test, fixture, errors }) {
                 if (!emitOnDone)
                     return;
 
@@ -49,11 +52,14 @@ function generateReporter (log, options = {}) {
                     item.errors = errors.map(err => err.code);
 
                 if (includeTestInfo) {
-                    item.test = {
-                        name:    test.name,
-                        phase:   test.phase,
-                        fixture: test.fixture.name
-                    };
+                    item.test = test;
+
+                    if (fixture.id) {
+                        item.fixture = {
+                            id:   'fixture-id',
+                            name: fixture.name
+                        };
+                    }
                 }
 
                 log.push(item);

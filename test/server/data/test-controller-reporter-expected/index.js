@@ -35,12 +35,12 @@ module.exports = [
             type:     'click'
         },
         test:    {
-            name:    'test-name',
-            phase:   'initial',
-            fixture: {
-                id:   'fixture-id',
-                name: 'fixture-name',
-            }
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
         },
         browser: { alias: 'test-browser', headless: false }
     },
@@ -53,12 +53,12 @@ module.exports = [
             type:     'right-click'
         },
         test:    {
-            name:    'test-name',
-            phase:   'initial',
-            fixture: {
-                id:   'fixture-id',
-                name: 'fixture-name',
-            }
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
         },
         browser: { alias: 'test-browser', headless: false }
     },
@@ -71,12 +71,12 @@ module.exports = [
             type:     'double-click'
         },
         test:    {
-            name:    'test-name',
-            phase:   'initial',
-            fixture: {
-                id:   'fixture-id',
-                name: 'fixture-name',
-            }
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
         },
         browser: { alias: 'test-browser', headless: false }
     },
@@ -89,12 +89,12 @@ module.exports = [
             type:     'hover'
         },
         test:    {
-            name:    'test-name',
-            phase:   'initial',
-            fixture: {
-                id:   'fixture-id',
-                name: 'fixture-name',
-            }
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
         },
         browser: { alias: 'test-browser', headless: false }
     },
@@ -109,12 +109,12 @@ module.exports = [
             type:        'drag'
         },
         test:    {
-            name:    'test-name',
-            phase:   'initial',
-            fixture: {
-                id:   'fixture-id',
-                name: 'fixture-name',
-            }
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
         },
         browser: { alias: 'test-browser', headless: false }
     },
@@ -128,12 +128,12 @@ module.exports = [
             type:                'drag-to-element'
         },
         test:    {
-            name:    'test-name',
-            phase:   'initial',
-            fixture: {
-                id:   'fixture-id',
-                name: 'fixture-name',
-            }
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
         },
         browser: { alias: 'test-browser', headless: false }
     },
@@ -147,12 +147,12 @@ module.exports = [
             type:     'type-text'
         },
         test:    {
-            name:    'test-name',
-            phase:   'initial',
-            fixture: {
-                id:   'fixture-id',
-                name: 'fixture-name',
-            }
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
         },
         browser: { alias: 'test-browser', headless: false }
     },
@@ -167,12 +167,12 @@ module.exports = [
             type:     'select-text'
         },
         test:    {
-            name:    'test-name',
-            phase:   'initial',
-            fixture: {
-                id:   'fixture-id',
-                name: 'fixture-name',
-            }
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
         },
         browser: { alias: 'test-browser', headless: false }
     },
@@ -190,12 +190,12 @@ module.exports = [
             type:      'select-text-area-content'
         },
         test:    {
-            name:    'test-name',
-            phase:   'initial',
-            fixture: {
-                id:   'fixture-id',
-                name: 'fixture-name',
-            }
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
         },
         browser: { alias: 'test-browser', headless: false }
     },
@@ -209,12 +209,12 @@ module.exports = [
             type:          'select-editable-content'
         },
         test:    {
-            name:    'test-name',
-            phase:   'initial',
-            fixture: {
-                id:   'fixture-id',
-                name: 'fixture-name',
-            }
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
         },
         browser: { alias: 'test-browser', headless: false }
     },
@@ -227,12 +227,12 @@ module.exports = [
             type:    'press-key'
         },
         test:    {
-            name:    'test-name',
-            phase:   'initial',
-            fixture: {
-                id:   'fixture-id',
-                name: 'fixture-name',
-            }
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
         },
         browser: { alias: 'test-browser', headless: false }
     },
@@ -245,12 +245,12 @@ module.exports = [
             timeout: 1
         },
         test:    {
-            name:    'test-name',
-            phase:   'initial',
-            fixture: {
-                id:   'fixture-id',
-                name: 'fixture-name',
-            }
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
         },
         browser: { alias: 'test-browser', headless: false }
     },
@@ -262,12 +262,12 @@ module.exports = [
             url:  './index.html'
         },
         test:    {
-            name:    'test-name',
-            phase:   'initial',
-            fixture: {
-                id:   'fixture-id',
-                name: 'fixture-name',
-            }
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
         },
         browser: { alias: 'test-browser', headless: false }
     },
@@ -280,12 +280,12 @@ module.exports = [
             filePath: '../test.js'
         },
         test:    {
-            name:    'test-name',
-            phase:   'initial',
-            fixture: {
-                id:   'fixture-id',
-                name: 'fixture-name',
-            }
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
         },
         browser: { alias: 'test-browser', headless: false }
     },
@@ -297,12 +297,12 @@ module.exports = [
             type:     'clear-upload',
         },
         test:    {
-            name:    'test-name',
-            phase:   'initial',
-            fixture: {
-                id:   'fixture-id',
-                name: 'fixture-name',
-            }
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
         },
         browser: { alias: 'test-browser', headless: false }
     },
@@ -315,12 +315,12 @@ module.exports = [
             type:     'take-screenshot',
         },
         test:    {
-            name:    'test-name',
-            phase:   'initial',
-            fixture: {
-                id:   'fixture-id',
-                name: 'fixture-name',
-            }
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
         },
         browser: { alias: 'test-browser', headless: false }
     },
@@ -334,12 +334,12 @@ module.exports = [
             options:  new ElementScreenshotOptions()
         },
         test:    {
-            name:    'test-name',
-            phase:   'initial',
-            fixture: {
-                id:   'fixture-id',
-                name: 'fixture-name',
-            }
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
         },
         browser: { alias: 'test-browser', headless: false }
     },
@@ -352,12 +352,12 @@ module.exports = [
             type:   'resize-window'
         },
         test:    {
-            name:    'test-name',
-            phase:   'initial',
-            fixture: {
-                id:   'fixture-id',
-                name: 'fixture-name',
-            }
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
         },
         browser: { alias: 'test-browser', headless: false }
     },
@@ -372,12 +372,12 @@ module.exports = [
             type:    'resize-window-to-fit-device'
         },
         test:    {
-            name:    'test-name',
-            phase:   'initial',
-            fixture: {
-                id:   'fixture-id',
-                name: 'fixture-name',
-            }
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
         },
         browser: { alias: 'test-browser', headless: false }
     },
@@ -388,12 +388,12 @@ module.exports = [
             type: 'maximize-window'
         },
         test:    {
-            name:    'test-name',
-            phase:   'initial',
-            fixture: {
-                id:   'fixture-id',
-                name: 'fixture-name',
-            }
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
         },
         browser: { alias: 'test-browser', headless: false }
     },
@@ -405,12 +405,12 @@ module.exports = [
             type:     'switch-to-iframe'
         },
         test:    {
-            name:    'test-name',
-            phase:   'initial',
-            fixture: {
-                id:   'fixture-id',
-                name: 'fixture-name',
-            }
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
         },
         browser: { alias: 'test-browser', headless: false }
     },
@@ -421,12 +421,12 @@ module.exports = [
             type: 'switch-to-main-window'
         },
         test:    {
-            name:    'test-name',
-            phase:   'initial',
-            fixture: {
-                id:   'fixture-id',
-                name: 'fixture-name',
-            }
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
         },
         browser: { alias: 'test-browser', headless: false }
     },
@@ -438,15 +438,15 @@ module.exports = [
                 args: [],
                 code: '(function(){ return (function () {return true;});})();'
             },
-            type:          'set-native-dialog-handler'
+            type: 'set-native-dialog-handler'
         },
         test:    {
-            name:    'test-name',
-            phase:   'initial',
-            fixture: {
-                id:   'fixture-id',
-                name: 'fixture-name',
-            }
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
         },
         browser: { alias: 'test-browser', headless: false }
     },
@@ -457,12 +457,12 @@ module.exports = [
             type: 'get-native-dialog-history'
         },
         test:    {
-            name:    'test-name',
-            phase:   'initial',
-            fixture: {
-                id:   'fixture-id',
-                name: 'fixture-name',
-            }
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
         },
         browser: { alias: 'test-browser', headless: false }
     },
@@ -473,12 +473,12 @@ module.exports = [
             type: 'get-browser-console-messages',
         },
         test:    {
-            name:    'test-name',
-            phase:   'initial',
-            fixture: {
-                id:   'fixture-id',
-                name: 'fixture-name',
-            }
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
         },
         browser: { alias: 'test-browser', headless: false }
     },
@@ -489,15 +489,14 @@ module.exports = [
             type: 'debug'
         },
         test:    {
-            name:    'test-name',
-            phase:   'initial',
-            fixture: {
-                id:   'fixture-id',
-                name: 'fixture-name',
-            }
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
         },
         browser: { alias: 'test-browser', headless: false }
-
     },
     {
         id:      'test-run-id',
@@ -507,12 +506,12 @@ module.exports = [
             type:  'set-test-speed'
         },
         test:    {
-            name:    'test-name',
-            phase:   'initial',
-            fixture: {
-                id:   'fixture-id',
-                name: 'fixture-name',
-            }
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
         },
         browser: { alias: 'test-browser', headless: false }
     },
@@ -524,12 +523,12 @@ module.exports = [
             type:     'set-page-load-timeout'
         },
         test:    {
-            name:    'test-name',
-            phase:   'initial',
-            fixture: {
-                id:   'fixture-id',
-                name: 'fixture-name',
-            }
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
         },
         browser: { alias: 'test-browser', headless: false }
     },
@@ -545,12 +544,12 @@ module.exports = [
             type: 'useRole'
         },
         test:    {
-            name:    'test-name',
-            phase:   'initial',
-            fixture: {
-                id:   'fixture-id',
-                name: 'fixture-name',
-            }
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
         },
         browser: { alias: 'test-browser', headless: false }
     }
