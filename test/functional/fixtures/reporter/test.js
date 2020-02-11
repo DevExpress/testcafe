@@ -259,6 +259,7 @@ describe('Reporter', () => {
                             action:  'start',
                             browser: 'chrome',
                             test:    {
+                                id:    'test-id',
                                 name:  'Simple command test',
                                 phase: 'inTest'
                             },
@@ -276,6 +277,7 @@ describe('Reporter', () => {
                                 selector: 'Selector(\'#target\')'
                             },
                             test: {
+                                id:    'test-id',
                                 name:  'Simple command test',
                                 phase: 'inTest'
                             },
@@ -458,6 +460,7 @@ describe('Reporter', () => {
                             name:   'useRole',
                             action: 'start',
                             test:   {
+                                id:    'test-id',
                                 name:  'Complex nested command test',
                                 phase: 'inTest'
                             },
@@ -470,6 +473,7 @@ describe('Reporter', () => {
                             name:   'click',
                             action: 'start',
                             test:   {
+                                id:    'test-id',
                                 name:  'Complex nested command test',
                                 phase: 'inRoleInitializer'
                             },
@@ -487,6 +491,7 @@ describe('Reporter', () => {
                                 type:     'click'
                             },
                             test: {
+                                id:    'test-id',
                                 name:  'Complex nested command test',
                                 phase: 'inRoleInitializer'
                             },
@@ -507,6 +512,7 @@ describe('Reporter', () => {
                                 type: 'useRole'
                             },
                             test: {
+                                id:    'test-id',
                                 name:  'Complex nested command test',
                                 phase: 'inTest'
                             },

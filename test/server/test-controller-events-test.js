@@ -9,7 +9,7 @@ const { Role }          = require('../../lib/api/exportable-lib');
 
 class TestRunMock extends TestRun {
     constructor () {
-        super({ name: 'test-name', fixture: { path: 'dummy', id: 'fixture-id', name: 'fixture-name' } }, {}, {}, {}, {});
+        super({ id: 'test-id', name: 'test-name', fixture: { path: 'dummy', id: 'fixture-id', name: 'fixture-name' } }, {}, {}, {}, {});
 
 
         this.browserConnection = {

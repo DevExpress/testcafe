@@ -4,9 +4,11 @@ import { delegateAPI, getDelegatedAPIList } from '../../utils/delegated-api';
 import { assertType, is } from '../../errors/runtime/type-assertions';
 import FlagList from '../../utils/flag-list';
 import OPTION_NAMES from '../../configuration/option-names';
+import { generateUniqueId } from 'testcafe-hammerhead';
 
 export default class TestingUnit {
     constructor (testFile, unitTypeName) {
+        this.id           = generateUniqueId(7);
         this.testFile     = testFile;
         this.unitTypeName = unitTypeName;
 

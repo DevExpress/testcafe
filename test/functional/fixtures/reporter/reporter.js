@@ -29,7 +29,13 @@ function generateReporter (log, options = {}) {
                     item.browser = browser.alias.split(':')[0];
 
                 if (includeTestInfo) {
-                    item.test = test;
+                    if (test.id) {
+                        item.test = {
+                            id:    'test-id',
+                            name:  test.name,
+                            phase: test.phase
+                        };
+                    }
 
                     if (fixture.id) {
                         item.fixture = {
@@ -52,7 +58,13 @@ function generateReporter (log, options = {}) {
                     item.errors = errors.map(err => err.code);
 
                 if (includeTestInfo) {
-                    item.test = test;
+                    if (test.id) {
+                        item.test = {
+                            id:    'test-id',
+                            name:  test.name,
+                            phase: test.phase
+                        };
+                    }
 
                     if (fixture.id) {
                         item.fixture = {

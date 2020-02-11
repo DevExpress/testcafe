@@ -146,6 +146,7 @@ export default class Reporter {
         return Object.assign(args, {
             id:   testRun.id,
             test: {
+                id:    testRun.test.id,
                 name:  testRun.test.name,
                 phase: testRun.phase,
             },

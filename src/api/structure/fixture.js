@@ -1,4 +1,3 @@
-import nanoid from 'nanoid';
 import { assertType, is } from '../../errors/runtime/type-assertions';
 import handleTagArgs from '../../utils/handle-tag-args';
 import TestingUnit from './testing-unit';
@@ -15,7 +14,6 @@ export default class Fixture extends TestingUnit {
     constructor (testFile) {
         super(testFile, 'fixture');
 
-        this.id   = nanoid(7);
         this.path = testFile.filename;
 
         this.pageUrl = SPECIAL_BLANK_PAGE;

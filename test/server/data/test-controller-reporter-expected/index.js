@@ -35,6 +35,7 @@ module.exports = [
             type:     'click'
         },
         test:    {
+            id:    'test-id',
             name:  'test-name',
             phase: 'initial'
         },
@@ -53,6 +54,7 @@ module.exports = [
             type:     'right-click'
         },
         test:    {
+            id:    'test-id',
             name:  'test-name',
             phase: 'initial'
         },
@@ -71,6 +73,7 @@ module.exports = [
             type:     'double-click'
         },
         test:    {
+            id:    'test-id',
             name:  'test-name',
             phase: 'initial'
         },
@@ -89,6 +92,7 @@ module.exports = [
             type:     'hover'
         },
         test:    {
+            id:    'test-id',
             name:  'test-name',
             phase: 'initial'
         },
@@ -109,6 +113,7 @@ module.exports = [
             type:        'drag'
         },
         test:    {
+            id:    'test-id',
             name:  'test-name',
             phase: 'initial'
         },
@@ -128,6 +133,7 @@ module.exports = [
             type:                'drag-to-element'
         },
         test:    {
+            id:    'test-id',
             name:  'test-name',
             phase: 'initial'
         },
@@ -147,6 +153,7 @@ module.exports = [
             type:     'type-text'
         },
         test:    {
+            id:    'test-id',
             name:  'test-name',
             phase: 'initial'
         },
@@ -167,6 +174,7 @@ module.exports = [
             type:     'select-text'
         },
         test:    {
+            id:    'test-id',
             name:  'test-name',
             phase: 'initial'
         },
@@ -190,6 +198,7 @@ module.exports = [
             type:      'select-text-area-content'
         },
         test:    {
+            id:    'test-id',
             name:  'test-name',
             phase: 'initial'
         },
@@ -209,6 +218,7 @@ module.exports = [
             type:          'select-editable-content'
         },
         test:    {
+            id:    'test-id',
             name:  'test-name',
             phase: 'initial'
         },
@@ -227,6 +237,7 @@ module.exports = [
             type:    'press-key'
         },
         test:    {
+            id:    'test-id',
             name:  'test-name',
             phase: 'initial'
         },
@@ -245,6 +256,7 @@ module.exports = [
             timeout: 1
         },
         test:    {
+            id:    'test-id',
             name:  'test-name',
             phase: 'initial'
         },
@@ -262,6 +274,7 @@ module.exports = [
             url:  './index.html'
         },
         test:    {
+            id:    'test-id',
             name:  'test-name',
             phase: 'initial'
         },
@@ -280,6 +293,7 @@ module.exports = [
             filePath: '../test.js'
         },
         test:    {
+            id:    'test-id',
             name:  'test-name',
             phase: 'initial'
         },
@@ -297,6 +311,7 @@ module.exports = [
             type:     'clear-upload',
         },
         test:    {
+            id:    'test-id',
             name:  'test-name',
             phase: 'initial'
         },
@@ -315,6 +330,7 @@ module.exports = [
             type:     'take-screenshot',
         },
         test:    {
+            id:    'test-id',
             name:  'test-name',
             phase: 'initial'
         },
@@ -334,6 +350,7 @@ module.exports = [
             options:  new ElementScreenshotOptions()
         },
         test:    {
+            id:    'test-id',
             name:  'test-name',
             phase: 'initial'
         },
@@ -352,6 +369,7 @@ module.exports = [
             type:   'resize-window'
         },
         test:    {
+            id:    'test-id',
             name:  'test-name',
             phase: 'initial'
         },
@@ -372,6 +390,7 @@ module.exports = [
             type:    'resize-window-to-fit-device'
         },
         test:    {
+            id:    'test-id',
             name:  'test-name',
             phase: 'initial'
         },
@@ -388,6 +407,7 @@ module.exports = [
             type: 'maximize-window'
         },
         test:    {
+            id:    'test-id',
             name:  'test-name',
             phase: 'initial'
         },
@@ -405,6 +425,7 @@ module.exports = [
             type:     'switch-to-iframe'
         },
         test:    {
+            id:    'test-id',
             name:  'test-name',
             phase: 'initial'
         },
@@ -421,6 +442,7 @@ module.exports = [
             type: 'switch-to-main-window'
         },
         test:    {
+            id:    'test-id',
             name:  'test-name',
             phase: 'initial'
         },
@@ -441,6 +463,7 @@ module.exports = [
             type: 'set-native-dialog-handler'
         },
         test:    {
+            id:    'test-id',
             name:  'test-name',
             phase: 'initial'
         },
@@ -457,6 +480,7 @@ module.exports = [
             type: 'get-native-dialog-history'
         },
         test:    {
+            id:    'test-id',
             name:  'test-name',
             phase: 'initial'
         },
@@ -473,6 +497,7 @@ module.exports = [
             type: 'get-browser-console-messages',
         },
         test:    {
+            id:    'test-id',
             name:  'test-name',
             phase: 'initial'
         },
@@ -489,6 +514,7 @@ module.exports = [
             type: 'debug'
         },
         test:    {
+            id:    'test-id',
             name:  'test-name',
             phase: 'initial'
         },
@@ -506,6 +532,7 @@ module.exports = [
             type:  'set-test-speed'
         },
         test:    {
+            id:    'test-id',
             name:  'test-name',
             phase: 'initial'
         },
@@ -523,6 +550,7 @@ module.exports = [
             type:     'set-page-load-timeout'
         },
         test:    {
+            id:    'test-id',
             name:  'test-name',
             phase: 'initial'
         },
@@ -544,6 +572,7 @@ module.exports = [
             type: 'useRole'
         },
         test:    {
+            id:    'test-id',
             name:  'test-name',
             phase: 'initial'
         },
