@@ -82,6 +82,14 @@ interface FixtureFn {
      */
     only: this;
     /**
+     * disabled page caching for this fixture.
+     */
+    disablePageCaching: this;
+    /**
+     * disables page reloading which would happen right before this fixture.
+     */
+    disablePageReloads: this;
+    /**
      * Specifies the additional information for all tests in the fixture. This information can be used in reports.
      *
      * @param key - The name of the metadata entry
@@ -152,6 +160,14 @@ interface TestFn {
      * Skips execution of all tests, except this one.
      */
     only: this;
+    /**
+     * disabled page caching for this test.
+     */
+    disablePageCaching: this;
+    /**
+     * disables page reloading which would happen right before this test.
+     */
+    disablePageReloads: this;
     /**
      * Specifies the additional information for the test. This information can be used in reports.
      *
