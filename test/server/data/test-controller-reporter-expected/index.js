@@ -27,7 +27,7 @@ const typeTextOptions = Object.assign({
 
 module.exports = [
     {
-        id:      'test-run-id',
+        testRunId: 'test-run-id',
         name:    'click',
         command: {
             options:  clickOptions,
@@ -46,7 +46,7 @@ module.exports = [
         browser: { alias: 'test-browser', headless: false }
     },
     {
-        id:      'test-run-id',
+        testRunId: 'test-run-id',
         name:    'rightClick',
         command: {
             options:  clickOptions,
@@ -65,7 +65,7 @@ module.exports = [
         browser: { alias: 'test-browser', headless: false }
     },
     {
-        id:      'test-run-id',
+        testRunId: 'test-run-id',
         name:    'doubleClick',
         command: {
             options:  clickOptions,
@@ -84,7 +84,7 @@ module.exports = [
         browser: { alias: 'test-browser', headless: false }
     },
     {
-        id:      'test-run-id',
+        testRunId: 'test-run-id',
         name:    'hover',
         command: {
             options:  mouseOptions,
@@ -103,7 +103,7 @@ module.exports = [
         browser: { alias: 'test-browser', headless: false }
     },
     {
-        id:      'test-run-id',
+        testRunId: 'test-run-id',
         name:    'drag',
         command: {
             options:     mouseOptions,
@@ -124,7 +124,7 @@ module.exports = [
         browser: { alias: 'test-browser', headless: false }
     },
     {
-        id:      'test-run-id',
+        testRunId: 'test-run-id',
         name:    'dragToElement',
         command: {
             options:             dragToElementOptions,
@@ -144,7 +144,7 @@ module.exports = [
         browser: { alias: 'test-browser', headless: false }
     },
     {
-        id:      'test-run-id',
+        testRunId: 'test-run-id',
         name:    'typeText',
         command: {
             options:  typeTextOptions,
@@ -164,7 +164,7 @@ module.exports = [
         browser: { alias: 'test-browser', headless: false }
     },
     {
-        id:      'test-run-id',
+        testRunId: 'test-run-id',
         name:    'selectText',
         command: {
             options:  basicOptions,
@@ -185,7 +185,7 @@ module.exports = [
         browser: { alias: 'test-browser', headless: false }
     },
     {
-        id:   'test-run-id',
+        testRunId:   'test-run-id',
         name: 'selectTextAreaContent',
 
         command: {
@@ -209,7 +209,7 @@ module.exports = [
         browser: { alias: 'test-browser', headless: false }
     },
     {
-        id:      'test-run-id',
+        testRunId: 'test-run-id',
         name:    'selectEditableContent',
         command: {
             options:       basicOptions,
@@ -229,7 +229,7 @@ module.exports = [
         browser: { alias: 'test-browser', headless: false }
     },
     {
-        id:      'test-run-id',
+        testRunId: 'test-run-id',
         name:    'pressKey',
         command: {
             options: basicOptions,
@@ -248,7 +248,7 @@ module.exports = [
         browser: { alias: 'test-browser', headless: false }
     },
     {
-        id:   'test-run-id',
+        testRunId:   'test-run-id',
         name: 'wait',
 
         command: {
@@ -267,7 +267,7 @@ module.exports = [
         browser: { alias: 'test-browser', headless: false }
     },
     {
-        id:      'test-run-id',
+        testRunId: 'test-run-id',
         name:    'navigateTo',
         command: {
             type: 'navigate-to',
@@ -285,7 +285,7 @@ module.exports = [
         browser: { alias: 'test-browser', headless: false }
     },
     {
-        id:      'test-run-id',
+        testRunId: 'test-run-id',
         name:    'setFilesToUpload',
         command: {
             selector: 'Selector(\'#file\')',
@@ -304,7 +304,7 @@ module.exports = [
         browser: { alias: 'test-browser', headless: false }
     },
     {
-        id:      'test-run-id',
+        testRunId: 'test-run-id',
         name:    'clearUpload',
         command: {
             selector: 'Selector(\'#file\')',
@@ -322,7 +322,7 @@ module.exports = [
         browser: { alias: 'test-browser', headless: false }
     },
     {
-        id:      'test-run-id',
+        testRunId: 'test-run-id',
         name:    'takeScreenshot',
         command: {
             path:     'screenshotPath',
@@ -341,7 +341,7 @@ module.exports = [
         browser: { alias: 'test-browser', headless: false }
     },
     {
-        id:      'test-run-id',
+        testRunId: 'test-run-id',
         name:    'takeElementScreenshot',
         command: {
             selector: 'Selector(\'#target\')',
@@ -361,7 +361,7 @@ module.exports = [
         browser: { alias: 'test-browser', headless: false }
     },
     {
-        id:      'test-run-id',
+        testRunId: 'test-run-id',
         name:    'resizeWindow',
         command: {
             width:  200,
@@ -380,7 +380,7 @@ module.exports = [
         browser: { alias: 'test-browser', headless: false }
     },
     {
-        id:      'test-run-id',
+        testRunId: 'test-run-id',
         name:    'resizeWindowToFitDevice',
         command: {
             device:  'Sony Xperia Z',
@@ -401,7 +401,7 @@ module.exports = [
         browser: { alias: 'test-browser', headless: false }
     },
     {
-        id:      'test-run-id',
+        testRunId: 'test-run-id',
         name:    'maximizeWindow',
         command: {
             type: 'maximize-window'
@@ -418,7 +418,7 @@ module.exports = [
         browser: { alias: 'test-browser', headless: false }
     },
     {
-        id:      'test-run-id',
+        testRunId: 'test-run-id',
         name:    'switchToIframe',
         command: {
             selector: 'Selector(\'#iframe\')',
@@ -436,7 +436,7 @@ module.exports = [
         browser: { alias: 'test-browser', headless: false }
     },
     {
-        id:      'test-run-id',
+        testRunId: 'test-run-id',
         name:    'switchToMainWindow',
         command: {
             type: 'switch-to-main-window'
@@ -453,7 +453,7 @@ module.exports = [
         browser: { alias: 'test-browser', headless: false }
     },
     {
-        id:      'test-run-id',
+        testRunId: 'test-run-id',
         name:    'setNativeDialogHandler',
         command: {
             dialogHandler: {
@@ -474,7 +474,7 @@ module.exports = [
         browser: { alias: 'test-browser', headless: false }
     },
     {
-        id:      'test-run-id',
+        testRunId: 'test-run-id',
         name:    'getNativeDialogHistory',
         command: {
             type: 'get-native-dialog-history'
@@ -491,7 +491,7 @@ module.exports = [
         browser: { alias: 'test-browser', headless: false }
     },
     {
-        id:      'test-run-id',
+        testRunId: 'test-run-id',
         name:    'getBrowserConsoleMessages',
         command: {
             type: 'get-browser-console-messages',
@@ -508,7 +508,7 @@ module.exports = [
         browser: { alias: 'test-browser', headless: false }
     },
     {
-        id:      'test-run-id',
+        testRunId: 'test-run-id',
         name:    'debug',
         command: {
             type: 'debug'
@@ -525,7 +525,7 @@ module.exports = [
         browser: { alias: 'test-browser', headless: false }
     },
     {
-        id:      'test-run-id',
+        testRunId: 'test-run-id',
         name:    'setTestSpeed',
         command: {
             speed: 1,
@@ -543,7 +543,7 @@ module.exports = [
         browser: { alias: 'test-browser', headless: false }
     },
     {
-        id:      'test-run-id',
+        testRunId: 'test-run-id',
         name:    'setPageLoadTimeout',
         command: {
             duration: 1,
@@ -561,7 +561,7 @@ module.exports = [
         browser: { alias: 'test-browser', headless: false }
     },
     {
-        id:      'test-run-id',
+        testRunId: 'test-run-id',
         name:    'useRole',
         command: {
             role: {

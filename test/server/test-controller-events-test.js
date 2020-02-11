@@ -137,8 +137,8 @@ describe('TestController action events', () => {
                 startLog.push(name);
             },
 
-            async reportTestActionDone (name, { id, command, test, fixture, browser }) {
-                const item = { id, name, command, test, fixture, browser };
+            async reportTestActionDone (name, { testRunId, command, test, fixture, browser }) {
+                const item = { testRunId, name, command, test, fixture, browser };
 
                 doneLog.push(item);
             }
