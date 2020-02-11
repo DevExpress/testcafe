@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <script>
+        var intervalId = window.setInterval(function () {
+            if (document.cookie.indexOf('token') !== -1) {
+                window.clearInterval(intervalId);
+
+                window.parent.postMessage(JSON.stringify( { message: 'Cookie set in cross-domain iframe.' }), '*');
+            };
+        }, 100);
+    </script>
+</body>
+</html>

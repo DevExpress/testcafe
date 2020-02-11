@@ -31,6 +31,12 @@ describe('Allow multiple windows', () => {
         });
     });
 
+    describe('Cookie synchonization', () => {
+        it('cross-domain', () => {
+            return runTests('testcafe-fixtures/cookie-synchronization/cross-domain.js', null, { allowMultipleWindows: true });
+        });
+    });
+
     it('Console messages', () => {
         return runTests('testcafe-fixtures/console/console-test.js', null, { allowMultipleWindows: true });
     });
