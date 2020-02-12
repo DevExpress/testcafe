@@ -40,11 +40,11 @@ testingEnvironments[testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers] = {
             alias:       'safari'
         },
         {
-            browserName: 'browserstack:chrome@71:OS X High Sierra',
+            browserName: 'browserstack:chrome@80:OS X High Sierra',
             alias:       'chrome-osx'
         },
         {
-            browserName: 'browserstack:firefox@64:OS X High Sierra',
+            browserName: 'browserstack:firefox@72:OS X High Sierra',
             alias:       'firefox-osx'
         },
         {
