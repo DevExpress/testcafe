@@ -19,7 +19,7 @@ function generateReporter (log, options = {}) {
 
     return function () {
         return Object.assign({}, baseReport, {
-            async reportTestActionStart (name, { browser, test }) {
+            async reportTestActionStart (name, { browser, test, fixture }) {
                 if (!emitOnStart)
                     return;
 
@@ -28,13 +28,27 @@ function generateReporter (log, options = {}) {
                 if (includeBrowserInfo)
                     item.browser = browser.alias.split(':')[0];
 
-                if (includeTestInfo)
-                    item.test = test;
+                if (includeTestInfo) {
+                    if (test.id) {
+                        item.test = {
+                            id:    'test-id',
+                            name:  test.name,
+                            phase: test.phase
+                        };
+                    }
+
+                    if (fixture.id) {
+                        item.fixture = {
+                            id:   'fixture-id',
+                            name: fixture.name
+                        };
+                    }
+                }
 
                 log.push(item);
             },
 
-            async reportTestActionDone (name, { command, test, errors }) {
+            async reportTestActionDone (name, { command, test, fixture, errors }) {
                 if (!emitOnDone)
                     return;
 
@@ -43,8 +57,22 @@ function generateReporter (log, options = {}) {
                 if (errors && errors.length)
                     item.errors = errors.map(err => err.code);
 
-                if (includeTestInfo)
-                    item.test = test;
+                if (includeTestInfo) {
+                    if (test.id) {
+                        item.test = {
+                            id:    'test-id',
+                            name:  test.name,
+                            phase: test.phase
+                        };
+                    }
+
+                    if (fixture.id) {
+                        item.fixture = {
+                            id:   'fixture-id',
+                            name: fixture.name
+                        };
+                    }
+                }
 
                 log.push(item);
             }
