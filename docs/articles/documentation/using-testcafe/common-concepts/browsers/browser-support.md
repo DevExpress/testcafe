@@ -104,7 +104,7 @@ To do this, open **Default apps** in **Windows Settings** and scroll down to sel
 
 ## Nonconventional Browsers
 
-To use a web browser of a different type, you will need a [browser provider plugin](../../../extending-testcafe/browser-provider-plugin/README.md).
+To use a different type of browser, use a [browser provider plugin](../../../extending-testcafe/browser-provider-plugin/README.md).
 
 You can search npm for plugins developed by the community. Their names begin with the `testcafe-browser-provider-` prefix: [https://www.npmjs.com/search?q=testcafe-browser-provider](https://www.npmjs.com/search?q=testcafe-browser-provider).
 
