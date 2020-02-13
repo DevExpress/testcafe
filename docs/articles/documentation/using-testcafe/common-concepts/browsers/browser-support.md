@@ -10,7 +10,7 @@ permalink: /documentation/using-testcafe/common-concepts/browsers/browser-suppor
 * [Portable Browsers](#portable-browsers)
 * [Browsers on Remote Devices](#browsers-on-remote-devices)
 * [Browsers in Cloud Testing Services](#browsers-in-cloud-testing-services)
-* [Microsoft Edge Legacy Support](#microsoft-edge-legacy-support)
+* [Microsoft Edge Legacy Support](#edge-legacy)
 * [Nonconventional Browsers](#nonconventional-browsers)
 
 ## Officially Supported Browsers
