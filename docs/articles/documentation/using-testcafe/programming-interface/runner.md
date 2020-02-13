@@ -314,13 +314,15 @@ Configures TestCafe's reporting feature.
 
 ```text
 reporter(name, output) → this
-reporter([ name | { name, output }]) → this
+reporter(fn) → this
+reporter([ name | { name, output } | fn ]) → this
 ```
 
 Parameter                | Type                        | Description                                     | Default
 ------------------------ | --------------------------- | ----------------------------------------------- | --------
-`name`                   | String &#124; Function      | The name of the [reporter](../common-concepts/reporters.md) or a function that [returns a custom reporter object](#specifying-a-custom-reporter).
+`name`                   | String      | The name of the [reporter](../common-concepts/reporters.md).
 `output`&#160;*(optional)* | String &#124; Writable Stream implementer | The file path where the report is written or the output stream. | `stdout`
+`fn` | A function that [returns a custom reporter object](#specifying-a-custom-reporter).
 
 To use a single reporter, specify a reporter name and, optionally, an output target as the second parameter.
 
