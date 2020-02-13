@@ -21,6 +21,8 @@ To create a reporter plugin, go through the following steps.
 * [Using the Reporter Development Version](#using-the-reporter-development-version)
 * [Publishing the Reporter to npm](#publishing-the-reporter-to-npm)
 
+> You can also specify a reporter object in the [TestCafe programming interface](../../using-testcafe/programming-interface/runner.md#specifying-a-custom-reporter). However, a reporter plugin is easier to reuse and maintain.
+
 ## Generating a Reporter Project
 
 First, install [Yeoman](http://yeoman.io) and `generator-testcafe-reporter` using [npm](https://www.npmjs.com/).
