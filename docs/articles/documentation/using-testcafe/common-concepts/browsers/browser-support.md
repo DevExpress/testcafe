@@ -96,7 +96,7 @@ You can also create your own plugin. See [Browser Provider Plugin](../../../exte
 
 ## Microsoft Edge Legacy Support
 
-Tests run in Microsoft Edge Legacy if it is the only Edge version installed on the machine.
+Tests are run in Microsoft Edge Legacy if it is the only version of Edge installed on the machine.
 
 In a case where both Chromium-based and Legacy versions are available, you can change the default Edge application in **System Settings** to enable testing in the Legacy version.
 
