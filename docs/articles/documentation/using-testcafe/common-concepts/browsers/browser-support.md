@@ -100,7 +100,7 @@ Tests are run in Microsoft Edge Legacy if it is the only version of Edge install
 
 If Chromium-based and Legacy versions are available, you can change the default Edge application in **System Settings** to enable testing in the Legacy version.
 
-To achieve this, open **Default apps** in **Windows Settings** and scroll down to select the option **Default Apps by Protocol**. Locate `MICROSOFT-EDGE:` protocol and select Legacy Edge.
+To do this, open **Default apps** in **Windows Settings** and scroll down to select the option **Default Apps by Protocol**. Set the `MICROSOFT-EDGE:` protocol to Legacy Edge.
 
 ## Nonconventional Browsers
 
