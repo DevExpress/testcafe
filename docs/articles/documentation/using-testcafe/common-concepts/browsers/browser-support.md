@@ -10,6 +10,7 @@ permalink: /documentation/using-testcafe/common-concepts/browsers/browser-suppor
 * [Portable Browsers](#portable-browsers)
 * [Browsers on Remote Devices](#browsers-on-remote-devices)
 * [Browsers in Cloud Testing Services](#browsers-in-cloud-testing-services)
+* [Microsoft Edge Legacy Support](#edge-legacy)
 * [Nonconventional Browsers](#nonconventional-browsers)
 
 ## Officially Supported Browsers
@@ -49,6 +50,8 @@ The list of all the available browsers can be obtained by calling the `testcafe`
 with the [--list-browsers](../../command-line-interface.md#-b---list-browsers) flag.
 
 To run tests in a different local browser, specify the path to the browser executable file.
+
+> To test in both Microsoft Edge Chromium and Legacy on the same machine, you can [install them side by side](https://docs.microsoft.com/en-us/DeployEdge/microsoft-edge-sysupdate-access-old-edge#how-to-enable-a-side-by-side-experience-with-both-versions-of-microsoft-edge). Once they are both installed, see the [Microsoft Edge Legacy Support](#edge-legacy) section below for information on how to enable testing in the older version.
 
 For more information and examples, see:
 
@@ -90,6 +93,14 @@ Service                              | Plugin
 You can search npm for plugins developed by the community. Their names begin with the `testcafe-browser-provider-` prefix: [https://www.npmjs.com/search?q=testcafe-browser-provider](https://www.npmjs.com/search?q=testcafe-browser-provider).
 
 You can also create your own plugin. See [Browser Provider Plugin](../../../extending-testcafe/browser-provider-plugin/README.md) for instructions.
+
+## Microsoft Edge Legacy Support
+
+Tests run in Microsoft Edge Legacy if it is the only Edge version installed on the machine.
+
+In a case where both Chromium-based and Legacy versions are available, you can change the default Edge application in **System Settings** to enable testing in the Legacy version.
+
+To achieve this, open **Default apps** in **Windows Settings** and scroll down to select the option **Default Apps by Protocol**. Locate `MICROSOFT-EDGE:` protocol and select Legacy Edge.
 
 ## Nonconventional Browsers
 
