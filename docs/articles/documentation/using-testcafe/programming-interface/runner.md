@@ -319,7 +319,7 @@ reporter([ name | { name, output }]) → this
 
 Parameter                | Type                        | Description                                     | Default
 ------------------------ | --------------------------- | ----------------------------------------------- | --------
-`name`                   | String &#124; Object &#124; Function      | The name of the [reporter](../common-concepts/reporters.md), a custom reporter object, or a function that returns this object.
+`name`                   | String &#124; Function      | The name of the [reporter](../common-concepts/reporters.md) or a function that [returns a custom reporter object](#specifying-a-custom-reporter).
 `output`&#160;*(optional)* | String &#124; Writable Stream implementer | The file path where the report is written or the output stream. | `stdout`
 
 To use a single reporter, specify a reporter name and, optionally, an output target as the second parameter.
@@ -355,7 +355,7 @@ runner.reporter(['spec', {
 
 You can implement a [custom reporter](../../extending-testcafe/reporter-plugin/README.md) in the code that launches tests. Use this approach if you do not want to publish a reporter plugin.
 
-Pass a *function* that returns the custom reporter object in the `name` property.
+Pass a *function* that returns the custom reporter object to the `runner.reporter` method.
 
 ```js
 import { createTestCafe } from 'testcafe';
@@ -372,10 +372,7 @@ const customReporter = () => {
 const testcafe = await createTestCafe(/* [...] */);
 const runner   = testcafe.createRunner();
 
-await runner.reporter({
-    name: customReporter,
-    output: "./path/to/report.file"
-});
+await runner.reporter(customReporter);
 ```
 
 #### Implementing a Custom Stream
