@@ -355,7 +355,7 @@ runner.reporter(['spec', {
 
 #### Specifying a Custom Reporter
 
-You can implement a [custom reporter](../../extending-testcafe/reporter-plugin/README.md) in the code that launches tests. Use this approach if you do not want to publish a reporter plugin.
+You can implement a [custom reporter](../../extending-testcafe/reporter-plugin/README.md) in the code that launches tests. This approach allows you to implement your reporter faster if you need it for a single project or do not want to publish a reporter plugin.
 
 Pass a *function* that returns the custom reporter object to the `runner.reporter` method.
 
