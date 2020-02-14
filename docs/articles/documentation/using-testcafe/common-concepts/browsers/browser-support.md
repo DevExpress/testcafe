@@ -51,7 +51,7 @@ with the [--list-browsers](../../command-line-interface.md#-b---list-browsers) f
 
 To run tests in a different local browser, specify the path to the browser executable file.
 
-> To test in Microsoft Edge Chromium and Legacy on the same machine, [install them side-by-side](https://docs.microsoft.com/en-us/DeployEdge/microsoft-edge-sysupdate-access-old-edge#how-to-enable-a-side-by-side-experience-with-both-versions-of-microsoft-edge). Once they are installed, see the [Microsoft Edge Legacy Support](#edge-legacy) section below for information on how to enable testing in older versions.
+> To test in Microsoft Edge Chromium and Legacy on the same machine, [install them side-by-side](https://docs.microsoft.com/en-us/DeployEdge/microsoft-edge-sysupdate-access-old-edge#how-to-enable-a-side-by-side-experience-with-both-versions-of-microsoft-edge). Once they are installed, see the [Microsoft Edge Legacy Support](#microsoft-edge-legacy-support) section below for information on how to enable testing in older versions.
 
 For more information and examples, see:
 
