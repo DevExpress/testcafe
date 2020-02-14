@@ -311,5 +311,5 @@ test('My test', async t => {
 
 ## Have a different use case?
 
-If none of the examples fit your requirements and you encounter any difficulties, let us know on StackOverflow.
+If none of the examples fit your requirements and you encounter difficulties, let us know on StackOverflow.
 We review and answer questions with the [TestCafe](https://stackoverflow.com/questions/tagged/testcafe) tag.
