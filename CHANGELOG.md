@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.8.2 (2020-2-13)
+## v1.8.2 (2020-2-17)
 
 * Added new device names to the `t.resizeWindowToFitDevice` action ([#3767](https://github.com/DevExpress/testcafe/issues/3767))
 * You can now use several reporters with no output stream specified if only one reporter writes to `stdout` ([#3765](https://github.com/DevExpress/testcafe/issues/3765), [#4675](https://github.com/DevExpress/testcafe/issues/4675))
