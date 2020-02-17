@@ -1,5 +1,20 @@
 # Changelog
 
+## v1.8.2 (2020-2-13)
+
+* Added new device names to the `t.resizeWindowToFitDevice` action ([#3767](https://github.com/DevExpress/testcafe/issues/3767))
+* You can now use several reporters with no output stream specified if only one reporter writes to `stdout` ([#3765](https://github.com/DevExpress/testcafe/issues/3765), [#4675](https://github.com/DevExpress/testcafe/issues/4675))
+* Added TypeScript definitions for the `timestamp` property in request and response data objects ([#4718](https://github.com/DevExpress/testcafe/issues/4718))
+* You can now execute asynchronous code in the custom response function ([#4467](https://github.com/DevExpress/testcafe/issues/4467))
+* TestCafe now emits the `beforeInput` event for `contentEditable` elements ([#4644](https://github.com/DevExpress/testcafe/issues/4644))
+* Added TypeScript definitions for the `runner.video` method ([PR#4636](https://github.com/DevExpress/testcafe/pull/4636))
+* Hammerhead now overrides the `EventTarget` class methods ([testcafe-hammerhead/#1902](https://github.com/DevExpress/testcafe-hammerhead/issues/1902))
+* A proxied request no longer hangs if the request to the original site emits an error ([testcafe-hammerhead/#1961](https://github.com/DevExpress/testcafe-hammerhead/issues/1961))
+* Fixed a memory leak that occurred due to unclosed sockets ([testcafe-hammerhead/#2149](https://github.com/DevExpress/testcafe-hammerhead/issues/2149))
+* Pages that iterate through large element collections before `DOMContentLoaded` no longer hang ([testcafe-hammerhead/#2198](https://github.com/DevExpress/testcafe-hammerhead/issues/2198))
+* Hammerhead no longer throws a JavaScript error when it proxies pages with the YouTube player ([testcafe-hammerhead/#2220](https://github.com/DevExpress/testcafe-hammerhead/issues/2220))
+* Fixed a wrong code instrumentation ([testcafe-hammerhead/#2212](https://github.com/DevExpress/testcafe-hammerhead/issues/2212))
+
 ## v1.8.1 (2020-1-23)
 
 ### Bug Fixes
