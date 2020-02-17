@@ -248,7 +248,10 @@ describe('Reporter', () => {
         it('Simple command', function () {
             const log = [];
 
-            return runTests('testcafe-fixtures/index-test.js', 'Simple command test', generateRunOptions(log, { includeBrowserInfo: true, includeTestInfo: true }))
+            return runTests('testcafe-fixtures/index-test.js', 'Simple command test', generateRunOptions(log, {
+                includeBrowserInfo: true,
+                includeTestInfo:    true
+            }))
                 .then(() => {
                     expect(log).eql([
                         {
@@ -256,8 +259,13 @@ describe('Reporter', () => {
                             action:  'start',
                             browser: 'chrome',
                             test:    {
+                                id:    'test-id',
                                 name:  'Simple command test',
                                 phase: 'inTest'
+                            },
+                            fixture: {
+                                id:   'fixture-id',
+                                name: 'Reporter'
                             }
                         },
                         {
@@ -269,8 +277,13 @@ describe('Reporter', () => {
                                 selector: 'Selector(\'#target\')'
                             },
                             test: {
+                                id:    'test-id',
                                 name:  'Simple command test',
                                 phase: 'inTest'
+                            },
+                            fixture: {
+                                id:   'fixture-id',
+                                name: 'Reporter'
                             }
                         }
                     ]);
@@ -447,16 +460,26 @@ describe('Reporter', () => {
                             name:   'useRole',
                             action: 'start',
                             test:   {
+                                id:    'test-id',
                                 name:  'Complex nested command test',
                                 phase: 'inTest'
+                            },
+                            fixture: {
+                                id:   'fixture-id',
+                                name: 'Reporter'
                             }
                         },
                         {
                             name:   'click',
                             action: 'start',
                             test:   {
+                                id:    'test-id',
                                 name:  'Complex nested command test',
                                 phase: 'inRoleInitializer'
+                            },
+                            fixture: {
+                                id:   'fixture-id',
+                                name: 'Reporter'
                             }
                         },
                         {
@@ -468,8 +491,13 @@ describe('Reporter', () => {
                                 type:     'click'
                             },
                             test: {
+                                id:    'test-id',
                                 name:  'Complex nested command test',
                                 phase: 'inRoleInitializer'
+                            },
+                            fixture: {
+                                id:   'fixture-id',
+                                name: 'Reporter'
                             }
                         },
                         {
@@ -484,8 +512,13 @@ describe('Reporter', () => {
                                 type: 'useRole'
                             },
                             test: {
+                                id:    'test-id',
                                 name:  'Complex nested command test',
                                 phase: 'inTest'
+                            },
+                            fixture: {
+                                id:   'fixture-id',
+                                name: 'Reporter'
                             }
                         }
                     ]);

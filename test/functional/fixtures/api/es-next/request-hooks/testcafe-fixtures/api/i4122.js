@@ -1,6 +1,6 @@
 import { RequestHook } from 'testcafe';
 import path from 'path';
-import config from '../../../../../config';
+import config from '../../../../../../config';
 
 const ReExecutablePromise = require(path.resolve('./lib/utils/re-executable-promise'));
 const pageUrl             = 'http://localhost:3000/fixtures/api/es-next/request-hooks/pages/index.html';

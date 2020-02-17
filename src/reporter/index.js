@@ -5,8 +5,8 @@ import { CommandReportItem } from './command-report-item';
 import TestCafeErrorList from '../errors/error-list';
 
 export default class Reporter {
-    constructor (plugin, task, outStream) {
-        this.plugin = new ReporterPluginHost(plugin, outStream);
+    constructor (plugin, task, outStream, name) {
+        this.plugin = new ReporterPluginHost(plugin, outStream, name);
         this.task   = task;
 
         this.disposed        = false;
@@ -144,9 +144,15 @@ export default class Reporter {
         }
 
         return Object.assign(args, {
-            test: {
+            testRunId: testRun.id,
+            test:      {
+                id:    testRun.test.id,
                 name:  testRun.test.name,
-                phase: testRun.phase
+                phase: testRun.phase,
+            },
+            fixture: {
+                name: testRun.test.fixture.name,
+                id:   testRun.test.fixture.id
             },
             command: new CommandReportItem(command),
             browser: testRun.controller.browser,

@@ -309,9 +309,7 @@ test('My test', async t => {
 });
 ```
 
-## More Examples
+## Have a different use case?
 
-If you encounter a difficult situation while working with DOM elements,
-let us know by posting on StackOverflow. We review and answer questions
-with the [TestCafe](https://stackoverflow.com/questions/tagged/testcafe) tag.
-If you are not alone we will add an example to this topic.
+If none of the examples fit your requirements and you encounter difficulties, let us know on StackOverflow.
+We review and answer questions with the [TestCafe](https://stackoverflow.com/questions/tagged/testcafe) tag.

@@ -121,6 +121,21 @@ Method | Description
 ------ | ---------------
 `setBody(value)` | Sets the response body. Accepts a string as a parameter.
 
+The response function can be synchronous or asynchronous:
+
+```js
+var mock = RequestMock()
+   .onRequestTo(/*...*/)
+   .respond((req, res) => {
+        res.setBody('<html><body><h1>This is a page</h1></body></html>');
+    })
+    .onRequestTo(/*...*/)
+    .respond(async (req, res) => {
+        const body = await fetch('https://web-site.com/route/data');
+        res.setBody(body);
+    });
+```
+
 ## Examples
 
 ### Mocking Cross-Domain Requests

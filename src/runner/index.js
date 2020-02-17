@@ -21,6 +21,7 @@ import prepareReporters from '../utils/prepare-reporters';
 import loadClientScripts from '../custom-client-scripts/load';
 import { setUniqueUrls } from '../custom-client-scripts/utils';
 import { getConcatenatedValuesString } from '../utils/string';
+import ReporterStreamController from './reporter-stream-controller';
 
 const DEBUG_LOGGER = debug('testcafe:runner');
 
@@ -114,13 +115,13 @@ export default class Runner extends EventEmitter {
         task.on('browser-job-done', job => browserSet.releaseConnection(job.browserConnection));
 
         const browserSetErrorPromise = promisifyEvent(browserSet, 'error');
+        const streamController       = new ReporterStreamController(task, reporters);
 
         const taskDonePromise = task.once('done')
             .then(() => browserSetErrorPromise.cancel())
             .then(() => {
                 return Promise.all(reporters.map(reporter => reporter.pendingTaskDonePromise));
             });
-
 
         const promises = [
             taskDonePromise,
@@ -141,6 +142,9 @@ export default class Runner extends EventEmitter {
 
         await this._disposeAssets(browserSet, reporters, testedApp);
 
+        if (streamController.multipleStreamError)
+            throw streamController.multipleStreamError;
+
         return this._getFailedTestCount(task, reporters[0]);
     }
 
@@ -149,10 +153,10 @@ export default class Runner extends EventEmitter {
     }
 
     _runTask (reporterPlugins, browserSet, tests, testedApp) {
-        let completed           = false;
         const task              = this._createTask(tests, browserSet.browserConnectionGroups, this.proxy, this.configuration.getOptions());
-        const reporters         = reporterPlugins.map(reporter => new Reporter(reporter.plugin, task, reporter.outStream));
+        const reporters         = reporterPlugins.map(reporter => new Reporter(reporter.plugin, task, reporter.outStream, reporter.name));
         const completionPromise = this._getTaskResult(task, browserSet, reporters, testedApp);
+        let completed           = false;
 
         task.on('start', startHandlingTestErrors);
 

@@ -9,6 +9,8 @@ redirect_from:
 
 This recipe shows how to test `<select>` elements and pick options from the drop-down list.
 
+[Full Example Code](https://github.com/DevExpress/testcafe-examples/tree/master/examples/test-select-elements)
+
 Assume the following `<select>` element.
 
 ```html
