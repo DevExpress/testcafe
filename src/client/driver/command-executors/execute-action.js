@@ -139,8 +139,12 @@ class ActionExecutor {
             elementDescriptors.push(createAdditionalElementDescriptor(this.command.endSelector || this.command.startSelector, 'endSelector'));
         }
 
+        debugger;
+
         return ensureElements(elementDescriptors, this.globalSelectorTimeout)
             .then(elements => {
+                debugger;
+
                 this.elements = elements;
             });
     }
@@ -304,7 +308,7 @@ class ActionExecutor {
                     this._delayAfterExecution(),
                     barriersPromise
                 ]))
-                .then(() => resolve(new DriverStatus({ isCommandResult: true })))
+                .then(() => resolve(new DriverStatus({ isCommandResult: true, result: this.elements })))
                 .catch(err => {
                     return this.statusBar.hideWaitingElementStatus(false)
                         .then(() => resolve(new DriverStatus({ isCommandResult: true, executionError: err })));

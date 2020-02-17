@@ -21,10 +21,13 @@ export function getResult (command, globalTimeout, startTime, createNotFoundErro
 export function getResultDriverStatus (command, globalTimeout, startTime, createNotFoundError, createIsInvisibleError, statusBar) {
     const selectorExecutor = new SelectorExecutor(command, globalTimeout, startTime, createNotFoundError, createIsInvisibleError);
 
+    debugger;
+
     statusBar.showWaitingElementStatus(selectorExecutor.timeout);
 
     return selectorExecutor.getResultDriverStatus()
         .then(status => {
+            debugger;
             return statusBar.hideWaitingElementStatus(!!status.result)
                 .then(() => status);
         });

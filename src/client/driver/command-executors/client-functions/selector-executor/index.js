@@ -48,6 +48,8 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
         return Promise.resolve()
             .then(() => this.fn.apply(window, args))
             .then(el => {
+                debugger;
+
                 const isElementExists    = exists(el);
                 const isElementVisible   = !this.command.visibilityCheck || visible(el);
                 const createTimeoutError = !isElementExists ? this.createNotFoundError : this.createIsInvisibleError;
@@ -67,6 +69,8 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
     }
 
     _executeFn (args) {
+        debugger;
+
         if (this.counterMode)
             return super._executeFn(args);
 
@@ -80,6 +84,8 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
                 error = err;
             })
             .then(el => {
+                debugger;
+
                 if (error)
                     throw error;
 

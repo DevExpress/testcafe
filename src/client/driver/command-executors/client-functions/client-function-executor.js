@@ -18,14 +18,21 @@ export default class ClientFunctionExecutor {
             .then(() => {
                 const args = this.replicator.decode(this.command.args);
 
+                debugger;
+
                 return this._executeFn(args);
+            })
+            .then(res => {
+                debugger;
+
+                return res;
             })
             .catch(err => {
                 if (!err.isTestCafeError)
                     err = new UncaughtErrorInClientFunctionCode(this.command.instantiationCallsiteName, err);
 
                 throw err;
-            });
+            })
     }
 
     getResultDriverStatus () {

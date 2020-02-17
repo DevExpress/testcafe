@@ -678,6 +678,8 @@ export default class Driver extends serviceUtils.EventEmitter {
             .then(driverStatus => {
                 this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, false);
 
+                debugger;
+
                 return this._onReady(driverStatus);
             });
     }
@@ -716,6 +718,8 @@ export default class Driver extends serviceUtils.EventEmitter {
 
         const executor = new ClientFunctionExecutor(command);
 
+        debugger;
+
         executor.getResultDriverStatus()
             .then(driverStatus => {
                 this.contextStorage.setItem(EXECUTING_CLIENT_FUNCTION_DESCRIPTOR, null);
@@ -736,6 +740,9 @@ export default class Driver extends serviceUtils.EventEmitter {
             this.statusBar)
             .then(driverStatus => {
                 this.contextStorage.setItem(SELECTOR_EXECUTION_START_TIME, null);
+
+                debugger;
+
                 this._onReady(driverStatus);
             });
     }
@@ -901,6 +908,8 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     _executeCommand (command) {
+        debugger;
+
         if (this.customCommandHandlers[command.type])
             this._onCustomCommand(command);
 

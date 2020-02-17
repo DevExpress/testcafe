@@ -29,6 +29,8 @@ export class CommandReportItem {
     }
 
     private _prepareSelector (selector: Command): string {
+        debugger;
+
         const selectorChain = selector.apiFnChain as string[];
 
         return selectorChain.join('');

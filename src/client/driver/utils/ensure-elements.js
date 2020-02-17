@@ -44,6 +44,10 @@ class ElementsRetriever {
         return this.ensureElementsPromise
             .then(() => this.elements);
     }
+
+    getEncodedElements () {
+
+    }
 }
 
 export function ensureElements (elementDescriptors, globalSelectorTimeout) {

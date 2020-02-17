@@ -1,12 +1,12 @@
-fixture `GH-1994 - The element that matches the specified selector is not visible`
-    .page `http://localhost:3000/fixtures/regression/gh-1994/pages/index.html`;
+import { Selector } from 'testcafe';
 
-test(`Recreate invisible element and click`, async t => {
-    await t
-        .click('#targetRecreate');
-});
+fixture `fixture`
+    .page `http://example.com`;
 
-test(`Remove invisible element and click`, async t => {
-    await t
-        .click('#targetRemove');
+test(`test`, async t => {
+    // const sel = await Selector('h1')();
+
+    await t.click('h1');
+
+    // console.log(sel);
 });
