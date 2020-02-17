@@ -177,6 +177,38 @@ $(document).ready(function () {
 
     module('regression');
 
+    asyncTest('gh-2640 - Do not simulate a click event at the end of a drag action if the touchend was cancelled.', function () {
+        const $draggable  = createTarget(10, 10);
+        const dragOffsetX = 3;
+        const dragOffsetY = 3;
+
+        let clickCalled = false;
+
+        $draggable
+            .bind(isTouchDevice ? 'touchstart' : 'mousedown', function (event) {
+                // prevent to skip the native drag behavior
+                event.preventDefault();
+            })
+            .bind(isTouchDevice ? 'touchend' : 'mouseup', function (event) {
+                event.preventDefault();
+            })
+            .bind('click', function () {
+                clickCalled = true;
+            });
+
+        const drag = new DragToOffsetAutomation($draggable[0], dragOffsetX, dragOffsetY, new MouseOptions({
+        }));
+
+        drag
+            .run()
+            .then(function () {
+                // for touch devices, cancelling the touchend stops the mouse events from being fired. For mouse devices, the click is always fired.
+                equal(clickCalled, !featureDetection.isTouchDevice, 'The onclick event was fired even though the touchend event was cancelled.');
+
+                start();
+            });
+    });
+
     asyncTest('B253930 - Wrong playback of drag action on http://jqueryui.com/droppable/ in IE9', function () {
         const $draggable  = createDraggable(10, 10, true);
         const center      = getCenter($draggable[0]);

@@ -93,6 +93,8 @@ export default class DragAutomationBase extends VisibleElementAutomation {
     }
 
     _mouseup () {
+        let upEventCancelled = false;
+
         return cursor
             .buttonUp()
             .then(() => {
@@ -120,13 +122,15 @@ export default class DragAutomationBase extends VisibleElementAutomation {
                             this.dragAndDropState.dataStore.setProtectedMode();
                         }
                         else
-                            eventSimulator[this.upEvent](topElement, options);
+                            upEventCancelled = !eventSimulator[this.upEvent](topElement, options);
 
                         return getElementFromPoint(point.x, point.y);
                     })
                     .then(({ element }) => {
+                        const isTouchendCancelled = featureDetection.isTouchDevice && upEventCancelled;
                         //B231323
-                        if (topElement && element === topElement && !this.dragAndDropState.enabled)
+
+                        if (topElement && element === topElement && !this.dragAndDropState.enabled && !isTouchendCancelled)
                             eventSimulator.click(topElement, options);
                     });
             });
