@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index page</title>
+</head>
+<body>
+    <button id="openPopUp">Open pop-up window</button>
+    <div>
+        <span id="openWndResult"></span>
+    </div>
+    <script>
+        var openPopUpBtn      = document.getElementById('openPopUp');
+        var openWndResultSpan = document.getElementById('openWndResult');
+
+        openPopUpBtn.addEventListener('click', function () {
+            var wnd = window.open('about:blank', '', "left=9999, top=9999, height=100,width=100");
+
+            wnd.focus();
+            wnd.blur();
+            wnd.close();
+
+            openWndResultSpan.textContent = 'The window was closed.';
+        });
+    </script>
+</body>
+</html>
