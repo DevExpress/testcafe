@@ -1274,7 +1274,19 @@
 <td><code>setBody(value)</code></td>
 <td>Sets the response body. Accepts a string as a parameter.</td>
 </tr>
-</tbody></table></div><h2><a class="anchor" id="examples"></a>Examples <a class="permalink" href="#examples">#</a></h2><h3><a class="anchor" id="mocking-cross-domain-requests"></a>Mocking Cross-Domain Requests <a class="permalink" href="#mocking-cross-domain-requests">#</a></h3>
+</tbody></table></div>
+<p>The response function can be synchronous or asynchronous:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">mock</span> <span class="o">=</span> <span class="nx">RequestMock</span><span class="p">()</span>
+   <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="cm">/*...*/</span><span class="p">)</span>
+   <span class="p">.</span><span class="nx">respond</span><span class="p">((</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">setBody</span><span class="p">(</span><span class="dl">'</span><span class="s1">&lt;html&gt;&lt;body&gt;&lt;h1&gt;This is a page&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;</span><span class="dl">'</span><span class="p">);</span>
+    <span class="p">})</span>
+    <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="cm">/*...*/</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">respond</span><span class="p">(</span><span class="k">async</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">body</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">fetch</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://web-site.com/route/data</span><span class="dl">'</span><span class="p">);</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">setBody</span><span class="p">(</span><span class="nx">body</span><span class="p">);</span>
+    <span class="p">});</span>
+</code></pre></div><h2><a class="anchor" id="examples"></a>Examples <a class="permalink" href="#examples">#</a></h2><h3><a class="anchor" id="mocking-cross-domain-requests"></a>Mocking Cross-Domain Requests <a class="permalink" href="#mocking-cross-domain-requests">#</a></h3>
 <p>When you mock a cross-domain request, specify the allowed origin in the response&#39;s <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin">access-control-allow-origin</a> header to pass <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS">CORS</a> validation.</p>
 
 <p>If you specify the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Credentials">access-control-allow-credentials</a> header in the response, provide the tested site&#39;s domain in the <code>access-control-allow-origin</code> header.</p>

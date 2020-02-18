@@ -1150,7 +1150,8 @@ obsolete: screenshots(path [, takeOnFails] [, pathPattern] ) → this
 </code></pre></div><h3><a class="anchor" id="reporter"></a>reporter <a class="permalink" href="#reporter">#</a></h3>
 <p>Configures TestCafe&#39;s reporting feature.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">reporter(name, output) → this
-reporter([ name | { name, output }]) → this
+reporter(fn) → this
+reporter([ name | { name, output } | fn ]) → this
 </code></pre></div><div class="table-wrapper"><table><thead><tr>
 <th>Parameter</th>
 <th>Type</th>
@@ -1160,7 +1161,7 @@ reporter([ name | { name, output }]) → this
 </thead><tbody><tr>
 <td><code>name</code></td>
 <td>String</td>
-<td>The name of the <a href="../common-concepts/reporters.html">reporter</a> to use.</td>
+<td>The name of the <a href="../common-concepts/reporters.html">reporter</a>.</td>
 <td></td>
 </tr>
 <tr>
@@ -1168,6 +1169,12 @@ reporter([ name | { name, output }]) → this
 <td>String &#124; Writable Stream implementer</td>
 <td>The file path where the report is written or the output stream.</td>
 <td><code>stdout</code></td>
+</tr>
+<tr>
+<td><code>fn</code></td>
+<td>A function that <a href="#specifying-a-custom-reporter">returns a custom reporter object</a>.</td>
+<td></td>
+<td></td>
 </tr>
 </tbody></table></div>
 <p>To use a single reporter, specify a reporter name and, optionally, an output target as the second parameter.</p>
@@ -1183,6 +1190,25 @@ reporter([ name | { name, output }]) → this
     <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">json</span><span class="dl">'</span><span class="p">,</span>
     <span class="na">output</span><span class="p">:</span> <span class="dl">'</span><span class="s1">reports/report.json</span><span class="dl">'</span>
 <span class="p">}]);</span>
+</code></pre></div><h4><a class="anchor" id="specifying-a-custom-reporter"></a>Specifying a Custom Reporter <a class="permalink" href="#specifying-a-custom-reporter">#</a></h4>
+<p>You can implement a <a href="../../extending-testcafe/reporter-plugin/">custom reporter</a> in the code that launches tests. This approach allows you to implement your reporter faster if you need it for a single project or do not want to publish a reporter plugin.</p>
+
+<p>Pass a <em>function</em> that returns the custom reporter object to the <code>runner.reporter</code> method.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">createTestCafe</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">customReporter</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="k">async</span> <span class="nx">reportTaskStart</span> <span class="p">(</span><span class="nx">startTime</span><span class="p">,</span> <span class="nx">userAgents</span><span class="p">,</span> <span class="nx">testCount</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">},</span>
+        <span class="k">async</span> <span class="nx">reportFixtureStart</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">path</span><span class="p">,</span> <span class="nx">meta</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">},</span>
+        <span class="k">async</span> <span class="nx">reportTestDone</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">testRunInfo</span><span class="p">,</span> <span class="nx">meta</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">},</span>
+        <span class="k">async</span> <span class="nx">reportTaskDone</span> <span class="p">(</span><span class="nx">endTime</span><span class="p">,</span> <span class="nx">passed</span><span class="p">,</span> <span class="nx">warnings</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">}</span>
+    <span class="p">};</span>
+<span class="p">};</span>
+
+<span class="kd">const</span> <span class="nx">testcafe</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">createTestCafe</span><span class="p">(</span><span class="cm">/* [...] */</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">runner</span>   <span class="o">=</span> <span class="nx">testcafe</span><span class="p">.</span><span class="nx">createRunner</span><span class="p">();</span>
+
+<span class="k">await</span> <span class="nx">runner</span><span class="p">.</span><span class="nx">reporter</span><span class="p">(</span><span class="nx">customReporter</span><span class="p">);</span>
 </code></pre></div><h4><a class="anchor" id="implementing-a-custom-stream"></a>Implementing a Custom Stream <a class="permalink" href="#implementing-a-custom-stream">#</a></h4><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">class</span> <span class="nx">MyStream</span> <span class="kd">extends</span> <span class="nx">stream</span><span class="p">.</span><span class="nx">Writable</span> <span class="p">{</span>
     <span class="nx">_write</span><span class="p">(</span><span class="nx">chunk</span><span class="p">,</span> <span class="nx">encoding</span><span class="p">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
         <span class="nx">doSomething</span><span class="p">(</span><span class="nx">chunk</span><span class="p">);</span>
