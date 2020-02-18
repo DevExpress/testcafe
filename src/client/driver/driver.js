@@ -438,7 +438,7 @@ export default class Driver extends serviceUtils.EventEmitter {
             .then(() => {
                 this._startInternal();
 
-                this.setAsMasterMessageReceived = false;
+                this.setAsMasterInProgress = false;
             })
             .catch(() => {
                 this._onReady(new DriverStatus({
