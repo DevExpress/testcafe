@@ -742,7 +742,7 @@
 <h2><a class="anchor" id="step-1---create-a-workflow"></a>Step 1 - Create a Workflow <a class="permalink" href="#step-1---create-a-workflow">#</a></h2>
 <p>Create a YAML file (for instance, <code>testcafe-workflow.yml</code>) in the <code>.github/workflows</code> directory in your repository.</p>
 
-<p>Specify the <a href="https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#name">workflow name</a> and the <a href="https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#on">event</a> that triggers this workflow.</p>
+<p>Specify the <a href="https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#name">workflow name</a> and the <a href="https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#on">event</a> that triggers this workflow.</p>
 <div class="highlight"><pre><code class="language-yml" data-lang="yml"><span class="na">name</span><span class="pi">:</span> <span class="s">End-to-End Tests</span>
 <span class="na">on</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">push</span><span class="pi">]</span>
 </code></pre></div>
@@ -750,7 +750,7 @@
 <h2><a class="anchor" id="step-2---create-a-job"></a>Step 2 - Create a Job <a class="permalink" href="#step-2---create-a-job">#</a></h2>
 <p>Create a job that runs the TestCafe tests.</p>
 
-<p>Provide the <a href="https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idname">job name</a> and specify the <a href="https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idruns-on">type of machine</a> that should run the job.</p>
+<p>Provide the <a href="https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idname">job name</a> and specify the <a href="https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on">type of machine</a> that should run the job.</p>
 <div class="highlight"><pre><code class="language-yml" data-lang="yml"><span class="na">name</span><span class="pi">:</span> <span class="s">End-to-End Tests</span>
 <span class="na">on</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">push</span><span class="pi">]</span>
 
@@ -759,9 +759,9 @@
     <span class="na">name</span><span class="pi">:</span> <span class="s">Run TestCafe Tests</span>
     <span class="na">runs-on</span><span class="pi">:</span> <span class="s">windows-latest</span>
 </code></pre></div>
-<p>This job runs on a GitHub-hosted virtual machine with the latest Windows version. <code>test</code> is the <a href="https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_id">job ID</a> that must be unique to the <code>jobs</code> object.</p>
+<p>This job runs on a GitHub-hosted virtual machine with the latest Windows version. <code>test</code> is the <a href="https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_id">job ID</a> that must be unique to the <code>jobs</code> object.</p>
 <h2><a class="anchor" id="step-3---add-a-step-that-fetches-the-repository"></a>Step 3 - Add a Step That Fetches The Repository <a class="permalink" href="#step-3---add-a-step-that-fetches-the-repository">#</a></h2>
-<p>Add a <a href="https://help.github.com/en/actions/automating-your-workflow-with-github-actions/workflow-syntax-for-github-actions#jobsjob_idsteps">step</a> that uses the <a href="https://github.com/actions/checkout">checkout</a> action to fetch your repository content.</p>
+<p>Add a <a href="https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idsteps">step</a> that uses the <a href="https://github.com/actions/checkout">checkout</a> action to fetch your repository content.</p>
 <div class="highlight"><pre><code class="language-yml" data-lang="yml"><span class="na">name</span><span class="pi">:</span> <span class="s">End-to-End Tests</span>
 <span class="na">on</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">push</span><span class="pi">]</span>
 

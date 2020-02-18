@@ -792,8 +792,7 @@
 		<div class="post-content">
 
 			<h1>Use Page Model</h1>
-<p><a href="http://martinfowler.com/bliki/PageObject.html">Page Model</a> is a test automation pattern that allows you to create an abstraction of the tested page
-and use it in test code to refer to page elements.</p>
+<p><a href="http://martinfowler.com/bliki/PageObject.html">Page Model</a> is a test automation pattern that allows you to create an abstraction of the tested page and use it in test code to refer to page elements.</p>
 
 <ul>
 <li><a href="#why-use-page-model">Why Use Page Model</a></li>
@@ -1024,6 +1023,8 @@ introduce a new class <code>Feature</code> with two properties: <code>label</cod
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 </code></pre></div><h2><a class="anchor" id="page-model-example"></a>Page Model Example <a class="permalink" href="#page-model-example">#</a></h2>
 <p>This sample shows a page model for the example page at <a href="https://devexpress.github.io/testcafe/example/">https://devexpress.github.io/testcafe/example/</a>.</p>
+
+<p><a href="https://github.com/DevExpress/testcafe-examples/tree/master/examples/use-page-model">Full Example Code</a></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span><span class="p">,</span> <span class="nx">t</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="kd">const</span> <span class="nx">label</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">label</span><span class="dl">'</span><span class="p">);</span>

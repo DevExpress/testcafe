@@ -6,3 +6,4 @@ site
 lib
 package-lock.json
 Gemfile.lock
+.DS_Store
