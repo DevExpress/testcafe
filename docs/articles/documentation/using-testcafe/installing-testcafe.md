@@ -81,3 +81,13 @@ Use `npx testcafe` if you need to quickly run TestCafe from a directory outside 
 ```sh
 npx testcafe chrome tests/
 ```
+
+## Screen Recording Permission
+
+TestCafe requires screen recording permission on macOS (v10.15 Catalina and newer) to perform test actions, take screenshots and record videos. When TestCafe starts the first time, macOS asks you to allow screen recording for *TestCafe Browser Tools*.
+
+![Screen Recording Permissions](../../images/recording-permissions.png)
+
+Click **Open System Preferences** and check **TestCafe Browser Tools** to grant the permission.
+
+When you update TestCafe, macOS resets the security permissions and repeats the request the next time you launch TestCafe.
