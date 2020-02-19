@@ -76,7 +76,7 @@ $(document).ready(function () {
         return $draggable;
     };
 
-    const createTarget = function (left, top) {
+    const createTarget = function (left, top, appendTo) {
         return $('<div></div>')
             .css({
                 width:           '120px',
@@ -87,7 +87,7 @@ $(document).ready(function () {
                 top:             top + 'px'
             })
             .addClass(TEST_ELEMENT_CLASS)
-            .appendTo('body');
+            .appendTo(appendTo ? appendTo : 'body');
     };
 
     const getCenter = function (element) {
@@ -204,6 +204,44 @@ $(document).ready(function () {
             .then(function () {
                 // for touch devices, cancelling the touchend stops the mouse events from being fired. For mouse devices, the click is always fired.
                 equal(clickCalled, !featureDetection.isTouchDevice, 'The onclick event was fired even though the touchend event was cancelled.');
+
+                start();
+            });
+    });
+
+    asyncTest('gh-2640 - Do not simulate a click event if source and target differ.', function () {
+        const $parent  = createTarget(10, 10);
+        const $draggable  = createTarget(10, 10, $parent[0]);
+        const $target  = createTarget(200, 200, $parent[0]);
+
+        let clickCalled = false;
+        let parentClickCalled = false;
+
+        $draggable
+            .bind('click', function () {
+                clickCalled = true;
+            });
+        $target
+            .bind('click', function () {
+                clickCalled = true;
+            });
+        $parent
+            .bind('click', function () {
+                parentClickCalled = true;
+            });
+
+        const drag = new DragToElementAutomation($draggable[0], $target[0], new MouseOptions({
+        }));
+
+        drag
+            .run()
+            .then(function () {
+                // if source and target differ, it should not fire the click event on the source/target
+                equal(clickCalled, false, 'The click event on the element should not be called.');
+                // the following browsers do not raise a click event on the first common ancerstor
+                const browsersWithoutClickOnAncestor = browserUtils.isFirefox || browserUtils.isIE || browserUtils.isMSEdge;
+
+                equal(parentClickCalled, !browsersWithoutClickOnAncestor, 'The first common ancestor click must be called for Chrome/Safari/Chromium Edge.');
 
                 start();
             });

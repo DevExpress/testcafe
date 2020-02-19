@@ -14,10 +14,12 @@ import cursor from '../../cursor';
 const MIN_MOVING_TIME = 25;
 
 const Promise          = hammerhead.Promise;
+const browserUtils     = hammerhead.utils.browser;
 const extend           = hammerhead.utils.extend;
 const featureDetection = hammerhead.utils.featureDetection;
 const eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 const focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
+const nativeMethods    = hammerhead.nativeMethods;
 
 
 export default class DragAutomationBase extends VisibleElementAutomation {
@@ -29,6 +31,7 @@ export default class DragAutomationBase extends VisibleElementAutomation {
         this.offsetX   = mouseOptions.offsetX;
         this.offsetY   = mouseOptions.offsetY;
 
+        this.sourceElement           = null;
         this.endPoint                = null;
         this.simulateDefaultBehavior = true;
 
@@ -47,6 +50,7 @@ export default class DragAutomationBase extends VisibleElementAutomation {
             .leftButtonDown()
             .then(() => {
                 this.simulateDefaultBehavior = eventSimulator[this.downEvent](eventArgs.element, eventArgs.options);
+                this.sourceElement = eventArgs.element;
 
                 return this._focus(eventArgs);
             });
@@ -130,10 +134,46 @@ export default class DragAutomationBase extends VisibleElementAutomation {
                         const isTouchendCancelled = featureDetection.isTouchDevice && upEventCancelled;
                         //B231323
 
-                        if (topElement && element === topElement && !this.dragAndDropState.enabled && !isTouchendCancelled)
-                            eventSimulator.click(topElement, options);
+                        if (topElement && element === topElement && !this.dragAndDropState.enabled && !isTouchendCancelled) {
+                            if (browserUtils.isFirefox || browserUtils.isIE || browserUtils.isMSEdge) {
+                                // Firefox, IE and legacy edge trigger a click event if and only if start and end event were triggered on the same target
+                                if (this.sourceElement === topElement)
+                                    eventSimulator.click(topElement, options);
+
+                            }
+                            else {
+                                // Chrome, Safari and Chromium Edge trigger a click event on the first common ancestor.
+                                const commonAncestor = this._firstCommonAncestor(this.sourceElement, topElement);
+
+                                if (commonAncestor)
+                                    eventSimulator.click(commonAncestor, options);
+
+                            }
+                        }
                     });
             });
+    }
+
+    _firstCommonAncestor (source, target) {
+        const sourceParents = this._parents(source);
+        const targetParents = this._parents(target);
+
+        if (sourceParents[0] !== targetParents[0]) throw 'The root for source and target is not the same.';
+
+        for (let i = 1; i < sourceParents.length; i++)
+            if (sourceParents[i] !== targetParents[i]) return sourceParents[i - 1];
+
+        return sourceParents[sourceParents.length - 1];
+    }
+
+    _parents (node) {
+        const nodes = [node];
+
+        while (node) {
+            nodes.unshift(node);
+            node = nativeMethods.nodeParentNodeGetter.call(node);
+        }
+        return nodes;
     }
 
     run (useStrictElementCheck) {
