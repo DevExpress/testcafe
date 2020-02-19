@@ -218,15 +218,15 @@ export default class Bootstrapper {
     }
 
     private async _compileTests ({ sourceList, compilerOptions }: CompilerArguments): Promise<Test[]> {
-        if (!this.compilerService) {
-            const compiler = new Compiler(sourceList, compilerOptions);
+        if (this.compilerService) {
+            await this.compilerService.init();
 
-            return compiler.getTests();
+            return this.compilerService.getTests({ sourceList, compilerOptions });
         }
 
-        await this.compilerService.init();
+        const compiler = new Compiler(sourceList, compilerOptions);
 
-        return await this.compilerService.getTests({ sourceList, compilerOptions });
+        return compiler.getTests();
     }
 
     private async _getTests (): Promise<Test[]> {

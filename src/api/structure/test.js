@@ -1,16 +1,17 @@
+import { flattenDeep as flatten, union } from 'lodash';
 import TestingUnit from './testing-unit';
+import { TEST as TEST_TYPE } from './unit-types';
 import { assertType, is } from '../../errors/runtime/type-assertions';
 import wrapTestFunction from '../wrap-test-function';
 import assertRequestHookType from '../request-hooks/assert-type';
 import assertClientScriptType from '../../custom-client-scripts/assert-type';
-import { flattenDeep as flatten, union } from 'lodash';
 import { RUNTIME_ERRORS } from '../../errors/types';
 import { APIError } from '../../errors/runtime';
 import OPTION_NAMES from '../../configuration/option-names';
 
 export default class Test extends TestingUnit {
     constructor (testFile) {
-        super(testFile, 'test');
+        super(testFile, TEST_TYPE);
 
         this.fixture = testFile.currentFixture;
 

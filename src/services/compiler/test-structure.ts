@@ -1,8 +1,9 @@
-import nanoid from 'nanoid';
-import { uniq } from 'lodash';
+import { uniq, keyBy } from 'lodash';
 import { TEST_FUNCTION_PROPERTIES } from './protocol';
 
 import { Fixture, Test, TestFile } from '../../api/structure/interfaces';
+import * as unitTypes from '../../api/structure/unit-types';
+
 
 const RECURSIVE_PROPERTIES = ['testFile', 'fixture', 'currentFixture', 'collectedTests'] as const;
 
@@ -20,32 +21,7 @@ interface Mapper<T, P> {
     ({ item, property, object }: MapperArguments<T, P>): any;
 }
 
-interface TestData {
-    tests: Test[];
-    fixtures: Fixture[];
-    testFiles: TestFile[];
-}
-
-interface ExtendedProperties {
-    id: string;
-    group: keyof TestData;
-}
-
-interface ExtendedTest extends Test, ExtendedProperties {
-    fixture: ExtendedFixture;
-    testFile: ExtendedTestFile;
-}
-
-interface ExtendedFixture extends Fixture, ExtendedProperties {
-    testFile: ExtendedTestFile;
-}
-
-interface ExtendedTestFile extends TestFile, ExtendedProperties {
-    collectedTests: ExtendedTest[];
-    currentFixture: ExtendedFixture;
-}
-
-export type Unit = ExtendedTest | ExtendedFixture | ExtendedTestFile;
+export type Unit = Test | Fixture | TestFile;
 
 export interface Units {
     [id: string]: Unit;
@@ -55,12 +31,12 @@ function isProperty<T extends object> (object: T, property: string): property is
     return object.hasOwnProperty(property);
 }
 
-export function isTest (value: ExtendedProperties): value is ExtendedTest {
-    return value.group === 'tests';
+export function isTest (value: Unit): value is Test {
+    return value.unitTypeName === unitTypes.TEST;
 }
 
-export function isFixture (value: ExtendedProperties): value is ExtendedFixture {
-    return value.group === 'fixtures';
+export function isFixture (value: Unit): value is Fixture {
+    return value.unitTypeName === unitTypes.FIXTURE;
 }
 
 function mapProperties<T extends Readonly<object>, P extends Readonly<string[]>> (object: T, properties: P, mapper: Mapper<T, P[number]>): void {
@@ -96,24 +72,8 @@ function restoreRecursiveProperties (unit: Unit, units: Units): void {
 export function flatten (tests: Test[]): Units {
     const testFiles = uniq(tests.map(test => test.testFile));
     const fixtures  = uniq(tests.map(test => test.fixture));
-    const testData  = { tests, testFiles, fixtures };
-    const units: Units = {};
 
-    for (const group in testData) {
-        if (!isProperty(testData, group))
-            continue;
-
-        for (const unit of testData[group]) {
-            const extendedProperties = {
-                id:    nanoid(),
-                group: group
-            };
-
-            units[extendedProperties.id] = Object.assign(unit, extendedProperties) as Unit;
-        }
-    }
-
-    return units;
+    return keyBy([...tests, ...fixtures, ...testFiles], unit => unit.id);
 }
 
 export function serialize (units: Units): Units {
