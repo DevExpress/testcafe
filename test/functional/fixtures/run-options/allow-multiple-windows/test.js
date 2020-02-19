@@ -1,4 +1,6 @@
-const { expect } = require('chai');
+const { expect }     = require('chai');
+const createTestCafe = require('../../../../../lib');
+const path           = require('path');
 
 describe('Allow multiple windows', () => {
     describe('Switch to the child window', () => {
@@ -45,5 +47,23 @@ describe('Allow multiple windows', () => {
 
     it('Close the window immediately after opening (GH-3762)', () => {
         return runTests('testcafe-fixtures/close-window-immediately-after-opeping.js', null, { allowMultipleWindows: true });
+    });
+
+    it('headless', () => {
+        return createTestCafe('127.0.0.1', 1335, 1336)
+            .then(tc => {
+                testCafe = tc;
+            })
+            .then(() => {
+                const fullTestPath = path.join(__dirname, './testcafe-fixtures/headless.js');
+
+                return testCafe.createRunner()
+                    .browsers(`chrome:headless`)
+                    .src(fullTestPath)
+                    .run({ allowMultipleWindows: true });
+            })
+            .then(() => {
+                return testCafe.close();
+            });
     });
 });

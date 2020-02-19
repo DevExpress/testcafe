@@ -4,7 +4,7 @@ import promisifyEvent from 'promisify-event';
 import BROWSER_JOB_RESULT from '../../runner/browser-job-result';
 import BrowserConnection from '../connection';
 import WARNING_MESSAGE from '../../notifications/warning-message';
-
+import { GET_WINDOW_ID_SCRIPT } from '../provider/utils/client-functions';
 
 const name = Symbol();
 
@@ -23,10 +23,14 @@ export default class BrowserProviderPluginHost {
         return this[name];
     }
 
-    runInitScript (browserId, code) {
+    async runInitScript (browserId, code) {
         const connection = BrowserConnection.getById(browserId);
 
         return connection.runInitScript(`(${code})()`);
+    }
+
+    async calculateWindowId (browserId) {
+        return this.runInitScript(browserId, GET_WINDOW_ID_SCRIPT);
     }
 
     waitForConnectionReady (browserId) {

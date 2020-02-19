@@ -24,7 +24,6 @@ interface LocalBrowserInfo {
     windowDescriptor: null | string;
     maxScreenSize: null | Size;
     resizeCorrections: null | Size;
-    activeWindowId: null | string;
 }
 
 function sumSizes (sizeA: Size, sizeB: Size): Size {
@@ -64,8 +63,7 @@ export default class BrowserProvider {
         this.localBrowsersInfo[browserId] = {
             windowDescriptor:  null,
             maxScreenSize:     null,
-            resizeCorrections: null,
-            activeWindowId:    null
+            resizeCorrections: null
         };
     }
 
@@ -150,20 +148,22 @@ export default class BrowserProvider {
             this.localBrowsersInfo[browserId].windowDescriptor = await browserTools.findWindow(browserId);
     }
 
-    private async _ensureBrowserWindowParameters (browserId: string, allowMultipleWindows: boolean): Promise<void> {
+    private async _ensureBrowserWindowParameters (browserId: string): Promise<void> {
         await this._ensureBrowserWindowDescriptor(browserId);
 
         if (OS.win && !this._getResizeCorrections(browserId))
             await this._calculateResizeCorrections(browserId);
         else if (OS.mac && !this._getMaxScreenSize(browserId))
             await this._calculateMacSizeLimits(browserId);
-
-        if (allowMultipleWindows)
-            await this._calculateWindowId(browserId);
     }
 
     private async _closeLocalBrowser (browserId: string): Promise<void> {
-        await browserTools.close(this._getWindowDescriptor(browserId));
+        if (this.plugin.needCleanUpBrowserInfo)
+            this.plugin.cleanUpBrowserInfo(browserId);
+
+        const windowDescriptor = this._getWindowDescriptor(browserId);
+
+        await browserTools.close(windowDescriptor);
     }
 
     private async _resizeLocalBrowserWindow (browserId: string, width: number, height: number, currentWidth: number, currentHeight: number): Promise<void> {
@@ -253,7 +253,7 @@ export default class BrowserProvider {
         await this.plugin.openBrowser(browserId, pageUrl, browserName, allowMultipleWindows);
 
         if (await this._canUseDefaultWindowActions(browserId))
-            await this._ensureBrowserWindowParameters(browserId, allowMultipleWindows);
+            await this._ensureBrowserWindowParameters(browserId);
     }
 
     public async closeBrowser (browserId: string): Promise<void> {
@@ -351,15 +351,13 @@ export default class BrowserProvider {
     }
 
     public getActiveWindowId (browserId: string): string | null {
-        const targetLocalBrowserInfo = this.localBrowsersInfo[browserId];
+        if (!this.plugin.supportMultipleWindows)
+            return null;
 
-        return targetLocalBrowserInfo ? targetLocalBrowserInfo.activeWindowId : null;
+        return this.plugin.getActiveWindowId(browserId);
     }
 
     public setActiveWindowId (browserId: string, val: string): void {
-        const targetLocalBrowserInfo = this.localBrowsersInfo[browserId];
-
-        if (targetLocalBrowserInfo)
-            targetLocalBrowserInfo.activeWindowId = val;
+        this.plugin.setActiveWindowId(browserId, val);
     }
 }

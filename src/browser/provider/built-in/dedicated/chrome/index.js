@@ -7,7 +7,6 @@ import { start as startLocalChrome, stop as stopLocalChrome } from './local-chro
 import * as cdp from './cdp';
 import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../../utils/client-functions';
 
-
 const MIN_AVAILABLE_DIMENSION = 50;
 
 export default {
@@ -40,7 +39,11 @@ export default {
 
         await this.waitForConnectionReady(browserId);
 
-        runtimeInfo.viewportSize = await this.runInitScript(browserId, GET_WINDOW_DIMENSIONS_INFO_SCRIPT);
+        runtimeInfo.viewportSize   = await this.runInitScript(browserId, GET_WINDOW_DIMENSIONS_INFO_SCRIPT);
+        runtimeInfo.activeWindowId = null;
+
+        if (allowMultipleWindows)
+            runtimeInfo.activeWindowId = await this.calculateWindowId(browserId);
 
         await cdp.createClient(runtimeInfo);
 

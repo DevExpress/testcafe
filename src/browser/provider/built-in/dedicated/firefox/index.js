@@ -30,7 +30,7 @@ export default {
         }
     },
 
-    async openBrowser (browserId, pageUrl, configString) {
+    async openBrowser (browserId, pageUrl, configString, allowMultipleWindows) {
         const runtimeInfo = await getRuntimeInfo(configString);
 
         runtimeInfo.browserName = this._getBrowserName();
@@ -39,6 +39,11 @@ export default {
         await startLocalFirefox(pageUrl, runtimeInfo);
 
         await this.waitForConnectionReady(runtimeInfo.browserId);
+
+        runtimeInfo.activeWindowId = null;
+
+        if (allowMultipleWindows)
+            runtimeInfo.activeWindowId = await this.calculateWindowId(browserId);
 
         if (runtimeInfo.marionettePort)
             runtimeInfo.marionetteClient = await this._createMarionetteClient(runtimeInfo);
