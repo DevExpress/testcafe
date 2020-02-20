@@ -53,7 +53,7 @@ function generateReporter (log, options = {}) {
                     return;
 
                 if (command.selector)
-                    command.selector = command.selector.query;
+                    command.selector = command.selector.expression;
 
                 const item = { name, action: 'done', command };
 

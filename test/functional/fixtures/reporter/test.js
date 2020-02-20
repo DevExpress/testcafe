@@ -586,12 +586,12 @@ describe('Reporter', () => {
     describe('Action snapshots', () => {
         it('Basic', () => {
             const expected = [
-                { query: 'Selector(\'#input\')', element: { tagName: 'input', attributes: { value: '100', type: 'text', id: 'input' } } },
-                { query: 'Selector(\'#obscuredInput\')', element: { tagName: 'div', attributes: { id: 'fixed' } } },
-                { query: 'Selector(\'#obscuredInput\')', element: { tagName: 'div', attributes: { id: 'fixed' } } },
-                { query: 'Selector(\'#obscuredDiv\')', element: { tagName: 'div', attributes: { id: 'obscuredDiv' } } },
-                { query: 'Selector(\'#p1\')', element: { attributes: { id: 'p1' }, tagName: 'p' } },
-                { query: 'Selector(\'#p2\')', element: { attributes: { id: 'p2' }, tagName: 'p' } }
+                { expression: 'Selector(\'#input\')', element: { tagName: 'input', attributes: { value: '100', type: 'text', id: 'input' } } },
+                { expression: 'Selector(\'#obscuredInput\')', element: { tagName: 'div', attributes: { id: 'fixed' } } },
+                { expression: 'Selector(\'#obscuredInput\')', element: { tagName: 'div', attributes: { id: 'fixed' } } },
+                { expression: 'Selector(\'#obscuredDiv\')', element: { tagName: 'div', attributes: { id: 'obscuredDiv' } } },
+                { expression: 'Selector(\'#p1\')', element: { attributes: { id: 'p1' }, tagName: 'p' } },
+                { expression: 'Selector(\'#p2\')', element: { attributes: { id: 'p2' }, tagName: 'p' } }
             ];
 
             function customReporter (log) {

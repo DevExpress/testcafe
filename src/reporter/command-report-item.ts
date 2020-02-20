@@ -9,7 +9,7 @@ interface Command {
 }
 
 interface SelectorInfo {
-    query: string;
+    expression: string;
     element?: HTMLElement;
 }
 
@@ -49,7 +49,7 @@ export class CommandReportItem {
     private _prepareSelector (propertyName: string, selector: Command, elements: HTMLElement[]): SelectorInfo {
         const selectorChain = selector.apiFnChain as string[];
 
-        const query = selectorChain.join('');
+        const expression = selectorChain.join('');
 
         let element = null;
 
@@ -57,9 +57,9 @@ export class CommandReportItem {
             element = this._getElementByPropertyName(propertyName, elements);
 
         if (element)
-            return { query, element };
+            return { expression, element };
 
-        return { query };
+        return { expression };
     }
 
     private _prepareClientFunction (fn: Command): object {
