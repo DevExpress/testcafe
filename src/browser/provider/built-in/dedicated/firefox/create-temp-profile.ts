@@ -46,7 +46,9 @@ async function generatePreferences (profileDir: string, { marionettePort, config
         'user_pref("extensions.shield-recipe-client.startupExperimentPrefs.browser.newtabpage.activity-stream.enabled", false);',
         'user_pref("devtools.toolbox.host", "window");',
         'user_pref("devtools.toolbox.previousHost", "bottom");',
-        'user_pref("signon.rememberSignons", false);'
+        'user_pref("signon.rememberSignons", false);',
+        'user_pref("dom.min_background_timeout_value", 4);',
+        'user_pref("dom.timeout.throttling_delay", 4);'
     ];
 
     if (marionettePort) {
