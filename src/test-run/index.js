@@ -43,8 +43,6 @@ import {
 
 import { TEST_RUN_ERRORS } from '../errors/types';
 
-import { createReplicator, SelectorNodeTransform } from '../client-functions/replicator';
-
 const lazyRequire                 = require('import-lazy')(require);
 const SessionController           = lazyRequire('./session-controller');
 const ClientFunctionBuilder       = lazyRequire('../client-functions/client-function-builder');
@@ -847,17 +845,8 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     async emitActionDone (apiActionName, command, result, errors) {
-        if (this.preventEmitActionEvents)
-            return;
-
-        let targetElements = null;
-
-        if (command.type === COMMAND_TYPE.executeSelector) {
-            targetElements = createReplicator(new SelectorNodeTransform()).decode(result);
-            targetElements = Array.isArray(targetElements) ? targetElements : [targetElements];
-        }
-
-        await this.emit('action-done', { command, apiActionName, targetElements, errors });
+        if (!this.preventEmitActionEvents)
+            await this.emit('action-done', { command, apiActionName, result, errors });
     }
 }
 

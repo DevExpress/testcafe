@@ -667,7 +667,7 @@ describe('Reporter', () => {
                     expect(logs.length).gt(0);
 
                     logs.forEach(browserLog => {
-                        expect(browserLog[0].query).eql('Selector(\'#input\')');
+                        expect(browserLog[0].expression).eql('Selector(\'#input\')');
                         expect(browserLog[0].element.tagName).eql('input');
                         expect(browserLog[0].element.attributes.type).eql('text');
                     });
