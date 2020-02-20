@@ -582,4 +582,98 @@ describe('Reporter', () => {
                 });
         });
     });
+
+    describe('Action snapshots', () => {
+        it('Basic', () => {
+            const expected = [
+                { query: 'Selector(\'#input\')', element: { tagName: 'input', attributes: { value: '100', type: 'text', id: 'input' } } },
+                { query: 'Selector(\'#obscuredInput\')', element: { tagName: 'div', attributes: { id: 'fixed' } } },
+                { query: 'Selector(\'#obscuredInput\')', element: { tagName: 'div', attributes: { id: 'fixed' } } },
+                { query: 'Selector(\'#obscuredDiv\')', element: { tagName: 'div', attributes: { id: 'obscuredDiv' } } },
+                { query: 'Selector(\'#p1\')', element: { attributes: { id: 'p1' }, tagName: 'p' } },
+                { query: 'Selector(\'#p2\')', element: { attributes: { id: 'p2' }, tagName: 'p' } }
+            ];
+
+            function customReporter (log) {
+                return () => {
+                    return {
+                        async reportTestActionDone (name, { command, browser }) {
+                            log[browser.alias] = log[browser.alias] || [];
+
+                            if (command.selector)
+                                log[browser.alias].push(command.selector);
+
+                            if (command.startSelector)
+                                log[browser.alias].push(command.startSelector);
+
+                            if (command.endSelector)
+                                log[browser.alias].push(command.endSelector);
+
+                            if (command.destinationSelector)
+                                log[browser.alias].push(command.destinationSelector);
+                        },
+                        async reportTaskStart () {
+                        },
+                        async reportFixtureStart () {
+                        },
+                        async reportTestDone () {
+                        },
+                        async reportTaskDone () {
+                        }
+                    };
+                };
+            }
+
+            const log = {};
+
+            return runTests('testcafe-fixtures/snapshots-test.js', 'Basic', { reporter: customReporter(log) })
+                .then(() => {
+                    const logs = Object.values(log);
+
+                    expect(logs.length).gt(0);
+
+                    logs.forEach(browserLog => expect(browserLog).eql(expected));
+                });
+        });
+
+        it('Full snapshot', () => {
+            function customReporter (log) {
+                return () => {
+                    return {
+                        async reportTestActionDone (name, { command, browser }) {
+                            log[browser.alias] = log[browser.alias] || [];
+
+                            if (command.selector)
+                                log[browser.alias].push(command.selector);
+                        },
+                        async reportTaskStart () {
+                        },
+                        async reportFixtureStart () {
+                        },
+                        async reportTestDone () {
+                        },
+                        async reportTaskDone () {
+                        }
+                    };
+                };
+            }
+
+            const log = {};
+
+            return runTests('testcafe-fixtures/snapshots-test.js', 'Full snapshot', { reporter: customReporter(log) })
+                .then(() => {
+                    const logs = Object.values(log);
+
+                    expect(logs.length).gt(0);
+
+                    logs.forEach(browserLog => {
+                        expect(browserLog[0].query).eql('Selector(\'#input\')');
+                        expect(browserLog[0].element.tagName).eql('input');
+                        expect(browserLog[0].element.attributes.type).eql('text');
+                    });
+                });
+        });
+    });
+
+
 });

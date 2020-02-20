@@ -1,6 +1,6 @@
 import Replicator from 'replicator';
 import evalFunction from './eval-function';
-import { NodeSnapshot, ElementSnapshot } from './selector-executor/node-snapshots';
+import { NodeSnapshot, ElementSnapshot, ElementActionSnapshot } from './selector-executor/node-snapshots';
 import { DomNodeClientFunctionResultError, UncaughtErrorInCustomDOMPropertyCode } from '../../../../errors/test-run';
 import hammerhead from '../../deps/hammerhead';
 
@@ -36,6 +36,20 @@ export class FunctionTransform {
 
     fromSerializable ({ fnCode, dependencies }) {
         return evalFunction(fnCode, dependencies);
+    }
+}
+
+export class SelectorElementActionTransform {
+    constructor () {
+        this.type = 'Node';
+    }
+
+    shouldTransform (type, val) {
+        return val instanceof Node;
+    }
+
+    toSerializable (node) {
+        return new ElementActionSnapshot(node);
     }
 }
 

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reporter</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #fixed {
+            position: fixed;
+            background-color: red;
+            opacity: 0.5;
+            left: 0;
+            right: 0;
+            top: 0;
+            height: 30px;
+        }
+
+        #input {
+            position: absolute;
+            top: 40px;
+            left: 0;
+        }
+
+        #obscuredDiv {
+            position: absolute;
+            top: 10px;
+            right: 0;
+            width: 10px;
+            height: 10px;
+            background-color: yellow;
+        }
+    </style>
+</head>
+<body>
+    <div id="div"></div>
+    <div id="fixed"></div>
+    <input id="obscuredInput" type="text" value="10" />
+    <div id="obscuredDiv"></div>
+    <input id="input" type="text" value="100" />
+    <div id="edit" contenteditable="true"><p id="p1">p1</p><p id="p2">p2</p></div>
+
+</body>
+</html>

@@ -8,14 +8,19 @@ interface Command {
     _getAssignableProperties(): { name: string }[];
 }
 
+interface SelectorInfo {
+    query: string;
+    element?: HTMLElement;
+}
+
 export class CommandReportItem {
     [key: string]: object|string;
 
-    public constructor (command: Command) {
+    public constructor (command: Command, elements: HTMLElement[]) {
         this.type = command.type;
 
         if (command instanceof ExecuteSelectorCommand)
-            this.selector = this._prepareSelector(command);
+            this.selector = this._prepareSelector('selector', command, elements);
         else if (command instanceof ExecuteClientFunctionCommand)
             this.clientFn = this._prepareClientFunction(command);
         else if (command instanceof UseRoleCommand)
@@ -25,13 +30,36 @@ export class CommandReportItem {
         else if (command instanceof SetNativeDialogHandlerCommand)
             this.dialogHandler = this._prepareDialogHandler(command);
         else
-            this._prepareProperties(command);
+            this._prepareProperties(command, elements);
     }
 
-    private _prepareSelector (selector: Command): string {
+    private _getElementByPropertyName (propertyName: string, elements: HTMLElement[]): HTMLElement {
+        switch (propertyName) {
+            case 'selector':
+            case 'startSelector':
+                return elements[0];
+            case 'endSelector':
+            case 'destinationSelector':
+                return elements[1];
+        }
+
+        return elements[0];
+    }
+
+    private _prepareSelector (propertyName: string, selector: Command, elements: HTMLElement[]): SelectorInfo {
         const selectorChain = selector.apiFnChain as string[];
 
-        return selectorChain.join('');
+        const query = selectorChain.join('');
+
+        let element = null;
+
+        if (elements)
+            element = this._getElementByPropertyName(propertyName, elements);
+
+        if (element)
+            return { query, element };
+
+        return { query };
     }
 
     private _prepareClientFunction (fn: Command): object {
@@ -55,8 +83,7 @@ export class CommandReportItem {
         return navigateCommand.url;
     }
 
-
-    private _prepareProperties (command: Command): void {
+    private _prepareProperties (command: Command, elements: HTMLElement[]): void {
         if (!command._getAssignableProperties)
             return;
 
@@ -66,7 +93,7 @@ export class CommandReportItem {
             const prop = command[key];
 
             if (prop instanceof ExecuteSelectorCommand)
-                this[key] = this._prepareSelector(prop);
+                this[key] = this._prepareSelector(key, prop, elements);
             else
                 this[key] = prop;
         });
