@@ -619,25 +619,19 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     async executeAction (actionName, command, callsite) {
-        let error         = null;
-        let result        = null;
-        let targetElements = null;
+        let error  = null;
+        let result = null;
 
         await this.emitActionStart(actionName, command);
 
         try {
             result = await this.executeCommand(command, callsite);
-
-            if (result) {
-                targetElements = createReplicator(new SelectorNodeTransform()).decode(result);
-                targetElements = Array.isArray(targetElements) ? targetElements : [targetElements];
-            }
         }
         catch (err) {
             error = err;
         }
 
-        await this.emitActionDone(actionName, command, targetElements, error);
+        await this.emitActionDone(actionName, command, result, error);
 
         if (error)
             throw error;
@@ -852,9 +846,18 @@ export default class TestRun extends AsyncEventEmitter {
             await this.emit('action-start', { command, apiActionName });
     }
 
-    async emitActionDone (apiActionName, command, elements, errors) {
-        if (!this.preventEmitActionEvents)
-            await this.emit('action-done', { command, apiActionName, elements, errors });
+    async emitActionDone (apiActionName, command, result, errors) {
+        if (this.preventEmitActionEvents)
+            return;
+
+        let targetElements = null;
+
+        if (command.type === COMMAND_TYPE.executeSelector) {
+            targetElements = createReplicator(new SelectorNodeTransform()).decode(result);
+            targetElements = Array.isArray(targetElements) ? targetElements : [targetElements];
+        }
+
+        await this.emit('action-done', { command, apiActionName, targetElements, errors });
     }
 }
 
