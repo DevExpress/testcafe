@@ -72,7 +72,8 @@ export const TEST_RUN_ERRORS = {
     childWindowIsNotLoadedError:                           'E68',
     childWindowNotFoundError:                              'E69',
     cannotSwitchToWindowError:                             'E70',
-    closeChildWindowError:                                 'E71'
+    closeChildWindowError:                                 'E71',
+    childWindowClosedBeforeSwitchingError:                 'E72'
 };
 
 export const RUNTIME_ERRORS = {

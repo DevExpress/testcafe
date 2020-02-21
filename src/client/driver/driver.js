@@ -47,7 +47,8 @@ import {
     UncaughtErrorInCustomClientScriptLoadedFromModule,
     ChildWindowIsNotLoadedError,
     CannotSwitchToWindowError,
-    CloseChildWindowError
+    CloseChildWindowError,
+    ChildWindowClosedBeforeSwitchingError
 } from '../../errors/test-run';
 
 import BrowserConsoleMessages from '../../test-run/browser-console-messages';
@@ -74,7 +75,6 @@ import sendConfirmationMessage from './driver-link/send-confirmation-message';
 import cursor from '../automation/cursor';
 import DriverRole from './role';
 import { CHECK_CHILD_WINDOW_CLOSED_INTERVAL } from './driver-link/timeouts';
-import ChildWindowClosedBeforeSwitchingError from './driver-link/window/child-window-closed-before-switching-error';
 
 const transport      = hammerhead.transport;
 const Promise        = hammerhead.Promise;
