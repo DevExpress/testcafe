@@ -1,7 +1,7 @@
 import { find, sortBy, union } from 'lodash';
 import { writable as isWritableStream } from 'is-stream';
 import ReporterPluginHost from './plugin-host';
-import { CommandReportItem } from './command-report-item';
+import formatCommand from './format-command';
 import TestCafeErrorList from '../errors/error-list';
 
 export default class Reporter {
@@ -154,7 +154,7 @@ export default class Reporter {
                 name: testRun.test.fixture.name,
                 id:   testRun.test.fixture.id
             },
-            command: new CommandReportItem(command, result),
+            command: formatCommand(command, result),
             browser: testRun.controller.browser,
         });
     }
