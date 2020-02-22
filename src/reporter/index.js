@@ -1,7 +1,7 @@
 import { find, sortBy, union } from 'lodash';
 import { writable as isWritableStream } from 'is-stream';
 import ReporterPluginHost from './plugin-host';
-import formatCommand from './format-command';
+import formatCommand from './command/format-command';
 import TestCafeErrorList from '../errors/error-list';
 
 export default class Reporter {

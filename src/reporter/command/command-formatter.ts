@@ -1,25 +1,9 @@
-import { ExecuteSelectorCommand, ExecuteClientFunctionCommand } from '../test-run/commands/observation';
-import { NavigateToCommand, SetNativeDialogHandlerCommand, UseRoleCommand } from '../test-run/commands/actions';
-import { createReplicator, SelectorNodeTransform } from '../client-functions/replicator';
+import { ExecuteSelectorCommand, ExecuteClientFunctionCommand } from '../../test-run/commands/observation';
+import { NavigateToCommand, SetNativeDialogHandlerCommand, UseRoleCommand } from '../../test-run/commands/actions';
+import { createReplicator, SelectorNodeTransform } from '../../client-functions/replicator';
+import { Command, FormattedCommand, SelectorInfo } from './interfaces';
 
-interface Command {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    [key: string]: any;
-    type: string;
-    _getAssignableProperties(): { name: string }[];
-}
-
-interface FormattedCommand {
-    [key: string]: unknown;
-    type: string;
-}
-
-interface SelectorInfo {
-    expression: string;
-    element?: HTMLElement;
-}
-
-class CommandReportItem {
+export class CommandFormatter {
     private _elements: HTMLElement[] = [];
     private readonly _command: Command;
     private readonly _result: unknown;
@@ -124,10 +108,4 @@ class CommandReportItem {
 
         this._elements = Array.isArray(decoded) ? decoded : [decoded];
     }
-}
-
-export default function formatCommand (command: Command, result: unknown): FormattedCommand {
-    const commandReportItem = new CommandReportItem(command, result);
-
-    return commandReportItem.format();
 }
