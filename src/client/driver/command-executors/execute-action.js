@@ -1,4 +1,5 @@
 import { Promise } from '../deps/hammerhead';
+import { SelectorElementActionTransform, createReplicator } from './client-functions/replicator';
 
 import {
     domUtils,
@@ -91,6 +92,7 @@ class ActionExecutor {
         this.statusBar              = statusBar;
         this.testSpeed              = testSpeed;
 
+        this.targetElement           = null;
         this.elements                = [];
         this.ensureElementsPromise   = null;
         this.ensureElementsStartTime = null;
@@ -230,7 +232,9 @@ class ActionExecutor {
                 const automation = this._createAutomation();
 
                 if (automation.TARGET_ELEMENT_FOUND_EVENT) {
-                    automation.on(automation.TARGET_ELEMENT_FOUND_EVENT, () => {
+                    automation.on(automation.TARGET_ELEMENT_FOUND_EVENT, e => {
+                        this.targetElement = e.element;
+
                         this.statusBar.hideWaitingElementStatus(true);
                         this.executionStartedHandler();
                     });
@@ -304,7 +308,17 @@ class ActionExecutor {
                     this._delayAfterExecution(),
                     barriersPromise
                 ]))
-                .then(() => resolve(new DriverStatus({ isCommandResult: true })))
+                .then(() => {
+                    const status   = { isCommandResult: true };
+                    const elements = [...this.elements];
+
+                    if (this.targetElement)
+                        elements[0] = this.targetElement;
+
+                    status.result = createReplicator(new SelectorElementActionTransform()).encode(elements);
+
+                    resolve(new DriverStatus(status));
+                })
                 .catch(err => {
                     return this.statusBar.hideWaitingElementStatus(false)
                         .then(() => resolve(new DriverStatus({ isCommandResult: true, executionError: err })));

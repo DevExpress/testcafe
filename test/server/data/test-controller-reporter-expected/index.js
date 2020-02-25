@@ -31,7 +31,7 @@ module.exports = [
         name:    'click',
         command: {
             options:  clickOptions,
-            selector: 'Selector(\'#target\')',
+            selector: { expression: 'Selector(\'#target\')' },
             type:     'click'
         },
         test:    {
@@ -50,7 +50,7 @@ module.exports = [
         name:    'rightClick',
         command: {
             options:  clickOptions,
-            selector: 'Selector(\'#target\')',
+            selector: { expression:'Selector(\'#target\')' },
             type:     'right-click'
         },
         test:    {
@@ -69,7 +69,7 @@ module.exports = [
         name:    'doubleClick',
         command: {
             options:  clickOptions,
-            selector: 'Selector(\'#target\')',
+            selector: { expression:'Selector(\'#target\')' },
             type:     'double-click'
         },
         test:    {
@@ -88,7 +88,7 @@ module.exports = [
         name:    'hover',
         command: {
             options:  mouseOptions,
-            selector: 'Selector(\'#target\')',
+            selector: { expression:'Selector(\'#target\')' },
             type:     'hover'
         },
         test:    {
@@ -107,7 +107,7 @@ module.exports = [
         name:    'drag',
         command: {
             options:     mouseOptions,
-            selector:    'Selector(\'#target\')',
+            selector: { expression: 'Selector(\'#target\')' },
             dragOffsetX: 100,
             dragOffsetY: 200,
             type:        'drag'
@@ -128,8 +128,8 @@ module.exports = [
         name:    'dragToElement',
         command: {
             options:             dragToElementOptions,
-            selector:            'Selector(\'#target\')',
-            destinationSelector: 'Selector(\'#target\')',
+            selector: { expression: 'Selector(\'#target\')' },
+            destinationSelector: { expression: 'Selector(\'#target\')' },
             type:                'drag-to-element'
         },
         test:    {
@@ -148,7 +148,7 @@ module.exports = [
         name:    'typeText',
         command: {
             options:  typeTextOptions,
-            selector: 'Selector(\'#input\')',
+            selector: { expression:'Selector(\'#input\')' },
             text:     'test',
             type:     'type-text'
         },
@@ -168,7 +168,7 @@ module.exports = [
         name:    'selectText',
         command: {
             options:  basicOptions,
-            selector: 'Selector(\'#input\')',
+            selector: { expression:'Selector(\'#input\')' },
             startPos: 1,
             endPos:   3,
             type:     'select-text'
@@ -190,7 +190,7 @@ module.exports = [
 
         command: {
             options:   basicOptions,
-            selector:  'Selector(\'#textarea\')',
+            selector: { expression: 'Selector(\'#textarea\')' },
             startLine: 1,
             startPos:  2,
             endLine:   3,
@@ -213,8 +213,8 @@ module.exports = [
         name:    'selectEditableContent',
         command: {
             options:       basicOptions,
-            startSelector: 'Selector(\'#contenteditable\')',
-            endSelector:   'Selector(\'#contenteditable\')',
+            startSelector: { expression:'Selector(\'#contenteditable\')' },
+            endSelector:   { expression:  'Selector(\'#contenteditable\')' },
             type:          'select-editable-content'
         },
         test:    {
@@ -288,7 +288,7 @@ module.exports = [
         testRunId: 'test-run-id',
         name:    'setFilesToUpload',
         command: {
-            selector: 'Selector(\'#file\')',
+            selector: { expression:'Selector(\'#file\')' },
             type:     'set-files-to-upload',
             filePath: '../test.js'
         },
@@ -307,7 +307,7 @@ module.exports = [
         testRunId: 'test-run-id',
         name:    'clearUpload',
         command: {
-            selector: 'Selector(\'#file\')',
+            selector: { expression:'Selector(\'#file\')' },
             type:     'clear-upload',
         },
         test:    {
@@ -344,7 +344,7 @@ module.exports = [
         testRunId: 'test-run-id',
         name:    'takeElementScreenshot',
         command: {
-            selector: 'Selector(\'#target\')',
+            selector: { expression:'Selector(\'#target\')' },
             path:     'screenshotPath',
             type:     'take-element-screenshot',
             options:  new ElementScreenshotOptions()
@@ -421,7 +421,7 @@ module.exports = [
         testRunId: 'test-run-id',
         name:    'switchToIframe',
         command: {
-            selector: 'Selector(\'#iframe\')',
+            selector: { expression:'Selector(\'#iframe\')' },
             type:     'switch-to-iframe'
         },
         test:    {

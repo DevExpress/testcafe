@@ -52,6 +52,9 @@ function generateReporter (log, options = {}) {
                 if (!emitOnDone)
                     return;
 
+                if (command.selector)
+                    command.selector = command.selector.expression;
+
                 const item = { name, action: 'done', command };
 
                 if (errors && errors.length)

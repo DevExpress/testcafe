@@ -1,7 +1,7 @@
 import { find, sortBy, union } from 'lodash';
 import { writable as isWritableStream } from 'is-stream';
 import ReporterPluginHost from './plugin-host';
-import { CommandReportItem } from './command-report-item';
+import formatCommand from './command/format-command';
 import TestCafeErrorList from '../errors/error-list';
 
 export default class Reporter {
@@ -134,7 +134,7 @@ export default class Reporter {
         reportItem.pendingTestRunDonePromise.resolve();
     }
 
-    _prepareReportTestActionEventArgs ({ command, testRun, errors }) {
+    _prepareReportTestActionEventArgs ({ command, result, testRun, errors }) {
         const args = {};
 
         if (errors) {
@@ -154,7 +154,7 @@ export default class Reporter {
                 name: testRun.test.fixture.name,
                 id:   testRun.test.fixture.id
             },
-            command: new CommandReportItem(command),
+            command: formatCommand(command, result),
             browser: testRun.controller.browser,
         });
     }
@@ -212,9 +212,9 @@ export default class Reporter {
             }
         });
 
-        task.on('test-action-done', async ({ apiActionName, command, testRun, errors }) => {
+        task.on('test-action-done', async ({ apiActionName, command, result, testRun, errors }) => {
             if (this.plugin.reportTestActionDone) {
-                const args = this._prepareReportTestActionEventArgs({ command, testRun, errors });
+                const args = this._prepareReportTestActionEventArgs({ command, result, testRun, errors });
 
                 await this.plugin.reportTestActionDone(apiActionName, args);
             }

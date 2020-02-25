@@ -186,7 +186,7 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
                 return state;
             })
             .then(state => {
-                this.emit(this.TARGET_ELEMENT_FOUND_EVENT, {});
+                this.emit(this.TARGET_ELEMENT_FOUND_EVENT, { element: state.element });
 
                 return {
                     element:     state.element,

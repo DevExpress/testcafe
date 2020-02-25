@@ -629,7 +629,7 @@ export default class TestRun extends AsyncEventEmitter {
             error = err;
         }
 
-        await this.emitActionDone(actionName, command, error);
+        await this.emitActionDone(actionName, command, result, error);
 
         if (error)
             throw error;
@@ -844,9 +844,9 @@ export default class TestRun extends AsyncEventEmitter {
             await this.emit('action-start', { command, apiActionName });
     }
 
-    async emitActionDone (apiActionName, command, errors) {
+    async emitActionDone (apiActionName, command, result, errors) {
         if (!this.preventEmitActionEvents)
-            await this.emit('action-done', { command, apiActionName, errors });
+            await this.emit('action-done', { command, apiActionName, result, errors });
     }
 }
 
