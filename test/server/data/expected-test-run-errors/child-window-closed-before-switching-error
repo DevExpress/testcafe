@@ -1,4 +1,4 @@
-The child window was closed before switching to it.
+The child window was closed before TestCafe could switch to it.
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>
