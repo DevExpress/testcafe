@@ -23,7 +23,8 @@ import ClientScript from '../custom-client-scripts/client-script';
 import ClientScriptInit from '../custom-client-scripts/client-script-init';
 import BrowserProvider from '../browser/provider';
 import BrowserConnectionGateway from '../browser/connection/gateway';
-import { CompilerArguments, CompilerProvider } from '../compiler/interfaces';
+import { CompilerArguments } from '../compiler/interfaces';
+import CompilerService from '../services/compiler/host';
 import { Metadata, Test } from '../api/structure/interfaces';
 
 type TestSource = unknown;
@@ -112,9 +113,9 @@ export default class Bootstrapper {
     public clientScripts: ClientScriptInit[];
     public allowMultipleWindows: boolean;
 
-    private readonly compilerService?: CompilerProvider;
+    private readonly compilerService?: CompilerService;
 
-    public constructor (browserConnectionGateway: BrowserConnectionGateway, compilerService?: CompilerProvider) {
+    public constructor (browserConnectionGateway: BrowserConnectionGateway, compilerService?: CompilerService) {
         this.browserConnectionGateway = browserConnectionGateway;
         this.concurrency              = 1;
         this.sources                  = [];
