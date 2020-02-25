@@ -42,4 +42,8 @@ describe('Allow multiple windows', () => {
                 expect(errs[0]).to.contain('A JavaScript error occurred on "http://localhost:3000/fixtures/run-options/allow-multiple-windows/pages/handle-errors/page-with-js-error.html"');
             });
     });
+
+    it('Close the window immediately after opening (GH-3762)', () => {
+        return runTests('testcafe-fixtures/close-window-immediately-after-opeping.js', null, { allowMultipleWindows: true });
+    });
 });

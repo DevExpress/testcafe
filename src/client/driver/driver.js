@@ -47,7 +47,8 @@ import {
     UncaughtErrorInCustomClientScriptLoadedFromModule,
     ChildWindowIsNotLoadedError,
     CannotSwitchToWindowError,
-    CloseChildWindowError
+    CloseChildWindowError,
+    ChildWindowClosedBeforeSwitchingError
 } from '../../errors/test-run';
 
 import BrowserConsoleMessages from '../../test-run/browser-console-messages';
@@ -585,6 +586,16 @@ export default class Driver extends serviceUtils.EventEmitter {
         return this._createWaitForEventPromise(EMPTY_COMMAND_EVENT, EMPTY_COMMAND_EVENT_WAIT_TIMEOUT);
     }
 
+    _abortSwitchingToChildWindowIfItClosed () {
+        if (!this.activeChildWindowDriverLink.driverWindow.closed)
+            return;
+
+        arrayUtils.remove(this.childWindowDriverLinks, this.activeChildWindowDriverLink);
+        this.activeChildWindowDriverLink = null;
+
+        throw new ChildWindowClosedBeforeSwitchingError();
+    }
+
     _switchToChildWindow (selector) {
         this.contextStorage.setItem(this.PENDING_WINDOW_SWITCHING_FLAG, true);
 
@@ -601,6 +612,7 @@ export default class Driver extends serviceUtils.EventEmitter {
                 return this._waitForEmptyCommand();
             })
             .then(() => {
+                this._abortSwitchingToChildWindowIfItClosed();
                 this._stopInternal();
 
                 return this.activeChildWindowDriverLink.setAsMaster();
@@ -608,8 +620,14 @@ export default class Driver extends serviceUtils.EventEmitter {
             .then(() => {
                 this.contextStorage.setItem(this.PENDING_WINDOW_SWITCHING_FLAG, false);
             })
-            .catch(() => {
+            .catch(err => {
                 this.contextStorage.setItem(this.PENDING_WINDOW_SWITCHING_FLAG, false);
+
+                if (err instanceof ChildWindowClosedBeforeSwitchingError) {
+                    this._onReady(new DriverStatus());
+
+                    return;
+                }
 
                 this._onReady(new DriverStatus({
                     isCommandResult: true,

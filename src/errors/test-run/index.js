@@ -618,3 +618,9 @@ export class RequestHookNotImplementedMethodError extends TestRunErrorBase {
     }
 }
 
+export class ChildWindowClosedBeforeSwitchingError extends TestRunErrorBase {
+    constructor () {
+        super(TEST_RUN_ERRORS.childWindowClosedBeforeSwitchingError);
+    }
+}
+

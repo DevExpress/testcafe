@@ -75,7 +75,8 @@ const {
     ChildWindowIsNotLoadedError,
     ChildWindowNotFoundError,
     CannotSwitchToWindowError,
-    CloseChildWindowError
+    CloseChildWindowError,
+    ChildWindowClosedBeforeSwitchingError
 } = require('../../lib/errors/test-run');
 
 const untestedErrorTypes = Object.keys(TEST_RUN_ERRORS).map(key => TEST_RUN_ERRORS[key]);
@@ -413,6 +414,10 @@ describe('Error formatting', () => {
 
         it('Should format "closeChildWindowError"', () => {
             assertErrorMessage('close-child-window-error', new CloseChildWindowError());
+        });
+
+        it('Should format "childWindowClosedBeforeSwitchingError"', () => {
+            assertErrorMessage('child-window-closed-before-switching-error', new ChildWindowClosedBeforeSwitchingError());
         });
     });
 

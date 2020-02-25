@@ -330,5 +330,9 @@ export default {
 
     [TEST_RUN_ERRORS.closeChildWindowError]: () => `
         An error occurred while closing child windows.
+    `,
+
+    [TEST_RUN_ERRORS.childWindowClosedBeforeSwitchingError]: () => `
+        The child window was closed before TestCafe could switch to it.
     `
 };
