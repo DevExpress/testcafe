@@ -26,11 +26,11 @@ import ReporterStreamController from './reporter-stream-controller';
 const DEBUG_LOGGER = debug('testcafe:runner');
 
 export default class Runner extends EventEmitter {
-    constructor (proxy, browserConnectionGateway, configuration) {
+    constructor (proxy, browserConnectionGateway, configuration, compilerService) {
         super();
 
         this.proxy               = proxy;
-        this.bootstrapper        = this._createBootstrapper(browserConnectionGateway);
+        this.bootstrapper        = this._createBootstrapper(browserConnectionGateway, compilerService);
         this.pendingTaskPromises = [];
         this.configuration       = configuration;
         this.isCli               = false;
@@ -43,8 +43,8 @@ export default class Runner extends EventEmitter {
         ]);
     }
 
-    _createBootstrapper (browserConnectionGateway) {
-        return new Bootstrapper(browserConnectionGateway);
+    _createBootstrapper (browserConnectionGateway, compilerService) {
+        return new Bootstrapper(browserConnectionGateway, compilerService);
     }
 
     _disposeBrowserSet (browserSet) {
@@ -374,7 +374,7 @@ export default class Runner extends EventEmitter {
         this.bootstrapper.reporters            = this.configuration.getOption(OPTION_NAMES.reporter) || this.bootstrapper.reporters;
         this.bootstrapper.tsConfigPath         = this.configuration.getOption(OPTION_NAMES.tsConfigPath);
         this.bootstrapper.clientScripts        = this.configuration.getOption(OPTION_NAMES.clientScripts) || this.bootstrapper.clientScripts;
-        this.bootstrapper.allowMultipleWindows = this.configuration.getOption(OPTION_NAMES.allowMultipleWindows) || this.bootstrapper.allowMultipleWindows;
+        this.bootstrapper.allowMultipleWindows = this.configuration.getOption(OPTION_NAMES.allowMultipleWindows);
     }
 
     // API

@@ -152,9 +152,21 @@ const NODE_MODULE_BINS = path.join(__dirname, 'node_modules/.bin');
 
 process.env.PATH = NODE_MODULE_BINS + path.delimiter + process.env.PATH + path.delimiter + NODE_MODULE_BINS;
 
+const SETUP_TESTS_GLOB            = 'test/functional/setup.js';
 const MULTIPLE_WINDOWS_TESTS_GLOB = 'test/functional/fixtures/run-options/allow-multiple-windows/test.js';
-const TESTS_GLOB                  = [ 'test/functional/fixtures/**/test.js', '!' + MULTIPLE_WINDOWS_TESTS_GLOB ];
+const COMPILER_SERVICE_TESTS_GLOB = 'test/functional/fixtures/compiler-service/test.js';
 const LEGACY_TESTS_GLOB           = 'test/functional/legacy-fixtures/**/test.js';
+
+const SCREENSHOT_TESTS_GLOB = [
+    'test/functional/fixtures/api/es-next/take-screenshot/test.js',
+    'test/functional/fixtures/screenshots-on-fails/test.js'
+];
+
+const TESTS_GLOB = [
+    'test/functional/fixtures/**/test.js',
+    `!${MULTIPLE_WINDOWS_TESTS_GLOB}`,
+    `!${COMPILER_SERVICE_TESTS_GLOB}`
+];
 
 let websiteServer = null;
 
@@ -718,13 +730,15 @@ gulp.task('publish-website', gulp.series('build-website-production', 'website-pu
 
 gulp.task('test-docs-travis', gulp.parallel('test-website-travis', 'lint'));
 
-function testFunctional (src, testingEnvironmentName, browserProviderName, allowMultipleWindows) {
+function testFunctional (src, testingEnvironmentName, { allowMultipleWindows, experimentalCompilerService } = {}) {
     process.env.TESTING_ENVIRONMENT       = testingEnvironmentName;
-    process.env.BROWSER_PROVIDER          = browserProviderName;
     process.env.BROWSERSTACK_USE_AUTOMATE = 1;
 
     if (allowMultipleWindows)
         process.env.ALLOW_MULTIPLE_WINDOWS = 'true';
+
+    if (experimentalCompilerService)
+        process.env.EXPERIMENTAL_COMPILER_SERVICE = 'true';
 
     if (!process.env.BROWSERSTACK_NO_LOCAL)
         process.env.BROWSERSTACK_NO_LOCAL = 1;
@@ -732,12 +746,16 @@ function testFunctional (src, testingEnvironmentName, browserProviderName, allow
     if (DEV_MODE)
         process.env.DEV_MODE = 'true';
 
-    src = castArray(src);
+    let tests = castArray(src);
 
-    src.unshift('test/functional/setup.js');
+    // TODO: Run takeScreenshot tests first because other tests heavily impact them
+    if (src === TESTS_GLOB)
+        tests = SCREENSHOT_TESTS_GLOB.concat(tests);
+
+    tests.unshift(SETUP_TESTS_GLOB);
 
     return gulp
-        .src(src)
+        .src(tests)
         .pipe(mocha({
             ui:       'bdd',
             reporter: 'spec',
@@ -746,13 +764,13 @@ function testFunctional (src, testingEnvironmentName, browserProviderName, allow
 }
 
 gulp.step('test-functional-travis-desktop-osx-and-ms-edge-run', () => {
-    return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers, functionalTestConfig.browserProviderNames.browserstack);
+    return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers);
 });
 
 gulp.task('test-functional-travis-desktop-osx-and-ms-edge', gulp.series('prepare-tests', 'test-functional-travis-desktop-osx-and-ms-edge-run'));
 
 gulp.step('test-functional-travis-mobile-run', () => {
-    return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.mobileBrowsers, functionalTestConfig.browserProviderNames.browserstack);
+    return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.mobileBrowsers);
 });
 
 gulp.task('test-functional-travis-mobile', gulp.series('prepare-tests', 'test-functional-travis-mobile-run'));
@@ -794,7 +812,7 @@ gulp.step('test-functional-remote-run', () => {
     if (BROWSER_ALIAS)
         process.env.BROWSER_ALIAS = BROWSER_ALIAS;
 
-    return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.remote, functionalTestConfig.browserProviderNames.remote);
+    return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.remote);
 });
 
 gulp.task('test-functional-remote', gulp.series('prepare-tests', 'test-functional-remote-run'));
@@ -806,10 +824,16 @@ gulp.step('test-functional-local-legacy-run', () => {
 gulp.task('test-functional-local-legacy', gulp.series('prepare-tests', 'test-functional-local-legacy-run'));
 
 gulp.step('test-functional-local-multiple-windows-run', () => {
-    return testFunctional(MULTIPLE_WINDOWS_TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localChrome, null, true);
+    return testFunctional(MULTIPLE_WINDOWS_TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localChrome, { allowMultipleWindows: true });
 });
 
 gulp.task('test-functional-local-multiple-windows', gulp.series('prepare-tests', 'test-functional-local-multiple-windows-run'));
+
+gulp.step('test-functional-local-compiler-service-run', () => {
+    return testFunctional(COMPILER_SERVICE_TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localHeadlessChrome, { experimentalCompilerService: true });
+});
+
+gulp.task('test-functional-local-compiler-service', gulp.series('prepare-tests', 'test-functional-local-compiler-service-run'));
 
 function getDockerEnv (machineName) {
     return childProcess

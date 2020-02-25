@@ -1,7 +1,13 @@
+import BaseUnit from './base-unit';
+import { TEST_FILE as TEST_FILE_TYPE } from './unit-types';
+
+
 const BORROWED_TEST_PROPERTIES = ['skip', 'only', 'pageUrl', 'authCredentials'];
 
-export default class TestFile {
+export default class TestFile extends BaseUnit {
     constructor (filename) {
+        super(TEST_FILE_TYPE);
+
         this.filename       = filename;
         this.currentFixture = null;
         this.collectedTests = [];

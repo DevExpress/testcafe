@@ -25,7 +25,8 @@ const testingEnvironmentNames = {
 const testingEnvironments = {};
 
 testingEnvironments[testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers] = {
-    jobName: 'functional tests - OS X desktop and MS edge browsers',
+    jobName:  'functional tests - OS X desktop and MS edge browsers',
+    provider: browserProviderNames.browserstack,
 
     browserstack: {
         username:  process.env.BROWSER_STACK_USERNAME,
@@ -55,7 +56,8 @@ testingEnvironments[testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers] = {
 };
 
 testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
-    jobName: 'functional tests - mobile browsers',
+    jobName:  'functional tests - mobile browsers',
+    provider: browserProviderNames.browserstack,
 
     browserstack: {
         username:  process.env.BROWSER_STACK_USERNAME,
@@ -175,7 +177,8 @@ testingEnvironments[testingEnvironmentNames.localHeadlessFirefox] = {
 };
 
 testingEnvironments[testingEnvironmentNames.remote] = {
-    remote: true,
+    remote:   true,
+    provider: browserProviderNames.remote,
 
     browsers: [{
         get qrCode () {
