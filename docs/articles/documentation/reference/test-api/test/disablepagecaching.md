@@ -1,0 +1,22 @@
+---
+layout: docs
+title: Test.disablePageCaching Method
+permalink: /documentation/reference/test-api/test/disablepagecaching.html
+---
+# Test.disablePageCaching Method
+
+Disables page caching to keep content in the browser storages after navigation to a cached page. See [Troubleshooting: Test Actions Fail After Authentication](../../../guides/advanced-guides/authentication.md#fixture-hooks#test-actions-fail-after-authentication) for more information.
+
+```text
+test.disablePageCaching
+```
+
+**Example**
+
+```js
+test
+    .disablePageCaching
+    ('My test', async t => { /* ... */ });
+```
+
+You can also disable page caching during all test in a fixture with the [fixture.disablePageCaching](../fixture/disablepagecaching.md) method.
