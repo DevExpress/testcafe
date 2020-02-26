@@ -82,11 +82,13 @@ interface FixtureFn {
      */
     only: this;
     /**
-     * disabled page caching for this fixture.
+     * Disables page caching for this fixture.
      */
     disablePageCaching: this;
     /**
-     * disables page reloading which would happen right before this fixture.
+     * WARNING: This feature is experimental and is not recommended for everyday use. It can be removed in the future TestCafe versions.
+     *
+     * Disables page reloading which would happen right before this fixture.
      */
     disablePageReloads: this;
     /**
@@ -161,11 +163,13 @@ interface TestFn {
      */
     only: this;
     /**
-     * disabled page caching for this test.
+     * Disables page caching for this test.
      */
     disablePageCaching: this;
     /**
-     * disables page reloading which would happen right before this test.
+     * WARNING: This feature is experimental and is not recommended for everyday use. It can be removed in the future TestCafe versions.
+     *
+     * Disables page reloading which would happen right before this test.
      */
     disablePageReloads: this;
     /**
