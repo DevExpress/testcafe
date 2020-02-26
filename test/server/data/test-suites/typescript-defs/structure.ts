@@ -4,6 +4,7 @@ import 'testcafe';
 fixture
     .skip
     .only
+    .disablePageCaching
     ('Fixture1')
     .page('http://example.com')
     .httpAuth({
@@ -43,6 +44,7 @@ test
     })
     .skip
     .only
+    .disablePageCaching
     .page('http://example.com')
     .httpAuth({
         username: 'user',
