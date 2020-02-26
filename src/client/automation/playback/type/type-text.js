@@ -109,6 +109,18 @@ function _excludeInvisibleSymbolsFromSelection (selection) {
     return selection;
 }
 
+// NOTE: https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/beforeinput_event
+// The `beforeInput` event is supported only in Chrome-based browsers and Safari
+// The order of events differs in Chrome and Safari:
+// In Chrome: `beforeinput` occurs before `textInput`
+// In Safari: `beforeinput` occurs after `textInput`
+function simulateBeforeInput (element, text, needSimulate) {
+    if (needSimulate)
+        return eventSimulator.beforeInput(element, text);
+
+    return true;
+}
+
 // NOTE: Typing can be prevented in Chrome/Edge but can not be prevented in IE11 or Firefox
 // Firefox does not support TextInput event
 // Safari supports the TextInput event but has a bug: e.data is added to the node value.
@@ -205,7 +217,13 @@ function _typeTextToContentEditable (element, text) {
     if (!startNode || !domUtils.isContentEditableElement(startNode) || !domUtils.isRenderedNode(startNode))
         return;
 
+    if (!simulateBeforeInput(element, text, browserUtils.isChrome))
+        return;
+
     beforeContentChanged();
+
+    if (needProcessInput)
+        needProcessInput = simulateBeforeInput(element, text, browserUtils.isSafari);
 
     if (needProcessInput) {
         // NOTE: we can type only to the text nodes; for nodes with the 'element-node' type, we use a special behavior
@@ -221,10 +239,17 @@ function _typeTextToContentEditable (element, text) {
 function _typeTextToTextEditable (element, text) {
     const elementValue      = domUtils.getElementValue(element);
     const textLength        = text.length;
-    let startSelection    = textSelection.getSelectionStart(element);
-    let endSelection      = textSelection.getSelectionEnd(element);
+    let startSelection      = textSelection.getSelectionStart(element);
+    let endSelection        = textSelection.getSelectionEnd(element);
     const isInputTypeNumber = domUtils.isInputElement(element) && element.type === 'number';
-    const needProcessInput  = simulateTextInput(element, text);
+
+    if (!simulateBeforeInput(element, text, browserUtils.isChrome))
+        return;
+
+    let needProcessInput = simulateTextInput(element, text);
+
+    if (needProcessInput)
+        needProcessInput = simulateBeforeInput(element, text, browserUtils.isSafari);
 
     if (!needProcessInput)
         return;

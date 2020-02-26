@@ -5,6 +5,10 @@ permalink: /documentation/recipes/import-third-party-modules.html
 ---
 # Import Third-Party Modules
 
+This example shows how to import a Node.js module to TestCafe tests.
+
+[Full Example Code](https://github.com/DevExpress/testcafe-examples/tree/master/examples/import-third-party-modules)
+
 You can import a module to a test file with the [import](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import) statement or [require](https://nodejs.org/api/modules.html#modules_require_id) function:
 
 ```js

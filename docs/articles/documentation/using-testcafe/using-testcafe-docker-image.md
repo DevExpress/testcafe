@@ -55,7 +55,7 @@ This command takes the following parameters:
 
     If you are running a Windows machine with Docker Toolbox, note that Docker containers can only access the `C:\Users` directory by default. If you need to run tests from other directories, share these directories as described in the [Docker documentation](https://docs.docker.com/toolbox/toolbox_install_windows/#optional-add-shared-directories).
 
-    In modern Docker for Windows, you also need to share a drive to reach it from Docker containers. For more information, see [Docker for Windows documentation](https://docs.docker.com/docker-for-windows/#shared-drives).
+    In modern Docker for Windows, you also need to share a drive to reach it from Docker containers. For more information, see [Docker for Windows documentation](https://docs.docker.com/docker-for-windows/#file-sharing).
 
 * `-it testcafe/testcafe` - runs TestCafe in the interactive mode with the console enabled;
 * `${TESTCAFE_ARGS}` - arguments passed to the `testcafe` command. You can use any arguments from the TestCafe [command line interface](command-line-interface.md);

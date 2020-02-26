@@ -28,7 +28,7 @@ const FUNCTIONAL_TESTS_ASSERTION_TIMEOUT = 1000;
 const FUNCTIONAL_TESTS_PAGE_LOAD_TIMEOUT = 0;
 
 const environment     = config.currentEnvironment;
-const browserProvider = process.env.BROWSER_PROVIDER;
+const browserProvider = config.currentEnvironment.provider;
 const isBrowserStack  = browserProvider === config.browserProviderNames.browserstack;
 
 config.browsers = environment.browsers;
@@ -52,7 +52,7 @@ function getBrowserInfo (settings) {
 
             return browserProviderPool
                 .getBrowserInfo(settings.browserName)
-                .then(browserInfo => new BrowserConnection(testCafe.browserConnectionGateway, browserInfo, true));
+                .then(browserInfo => new BrowserConnection(testCafe.browserConnectionGateway, browserInfo, true, process.env.ALLOW_MULTIPLE_WINDOWS));
         })
         .then(connection => {
             return {
@@ -141,7 +141,19 @@ before(function () {
 
     const { devMode, retryTestPages } = config;
 
-    return createTestCafe(config.testCafe.hostname, config.testCafe.port1, config.testCafe.port2, null, devMode, retryTestPages)
+    const testCafeOptions = {
+        hostname: config.testCafe.hostname,
+        port1:    config.testCafe.port1,
+        port2:    config.testCafe.port2,
+
+        developmentMode: devMode,
+
+        retryTestPages,
+
+        experimentalCompilerService: !!process.env.EXPERIMENTAL_COMPILER_SERVICE
+    };
+
+    return createTestCafe(testCafeOptions)
         .then(function (tc) {
             testCafe = tc;
 
@@ -304,10 +316,4 @@ after(function () {
 
     return closeLocalBrowsers();
 });
-
-// TODO: Run takeScreenshot tests first because other tests heavily impact them
-if (config.useLocalBrowsers && !config.isLegacyEnvironment) {
-    require('./fixtures/api/es-next/take-screenshot/test');
-    require('./fixtures/screenshots-on-fails/test');
-}
 

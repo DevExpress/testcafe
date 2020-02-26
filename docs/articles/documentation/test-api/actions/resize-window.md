@@ -54,7 +54,7 @@ Resizes the window so that it fits on the screen of the specified mobile device.
 
 Parameter              | Type   | Description
 ---------------------- | ------ | -------------------------------------------------------------------------------------------
-`deviceName`           | String | The name of the device as listed at [http://viewportsizes.com/](http://viewportsizes.com/).
+`deviceName`           | String | The name of the device. See the list of supported devices in [this repository](https://github.com/DevExpress/device-specs/blob/master/viewport-sizes.json).
 `options`&#160;*(optional)* | Object | Provide additional information about the device.
 
 The `options` object can contain the following properties.

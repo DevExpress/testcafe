@@ -97,7 +97,7 @@ The following web page is an example:
 <script>
 var btn = document.getElementById('btn');
 
-btn.addEventListener(function() {
+btn.addEventListener('click', function() {
     window.setTimeout(function() {
         btn.innerText = 'Loading...';
     }, 100);

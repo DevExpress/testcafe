@@ -105,7 +105,7 @@ test('test that involves two users', async t => {
         .useRole(admin)
         .expect(removeButton.visible).ok()
         .click(removeButton)
-        .expect(entry.exists).notOk()
+        .expect(entry.exists).notOk();
 });
 ```
 
@@ -134,7 +134,7 @@ test('Anonymous users can see newly created comments', async t => {
         .click('#submit')
         .useRole(Role.anonymous());
 
-        var comment = await Selector('#comment-data');
+        const comment = await Selector('#comment-data');
 
         await t.expect(comment.innerText).eql('Hey ya!');
 });

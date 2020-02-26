@@ -88,6 +88,10 @@ interface RequestData {
      * A [Buffer](https://nodejs.org/api/buffer.html) or string depending on the `stringifyResponseBody` option.
      */
     body: string | any;
+    /**
+     * The timestamp that specifies when the request was intercepted.
+     */
+    timestamp: number;
 }
 
 interface ResponseData {
@@ -105,6 +109,10 @@ interface ResponseData {
      * A Buffer or string depending on the `stringifyResponseBody` option.
      */
     body: string | any;
+    /**
+     * The timestamp that specifies when the response was intercepted.
+     */
+    timestamp: number;
 }
 
 interface RequestLogger extends RequestHook {

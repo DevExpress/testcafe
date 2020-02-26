@@ -654,11 +654,12 @@ describe('CLI argument parser', function () {
             { long: '--disable-page-reloads' },
             { long: '--disable-screenshots' },
             { long: '--screenshots-full-page' },
-            { long: '--allow-multiple-windows', short: '-m' }
+            { long: '--allow-multiple-windows', short: '-m' },
+            { long: '--experimental-compiler-service' }
         ];
 
         const parser  = new CliArgumentParser('');
-        const options = parser.program.options;
+        const options = [ ...parser.program.options, ...parser.experimental.options];
 
         expect(options.length).eql(EXPECTED_OPTIONS.length, WARNING);
 
@@ -707,6 +708,7 @@ describe('CLI argument parser', function () {
                 expect(runOpts.disablePageCaching).eql(true);
                 expect(runOpts.disablePageReloads).eql(true);
                 expect(runOpts.disableScreenshots).eql(true);
+                expect(runOpts.allowMultipleWindows).eql(true);
                 expect(runOpts.browsers).to.be.undefined;
             });
     });

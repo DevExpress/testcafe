@@ -2,7 +2,8 @@ import { positionUtils, domUtils } from '../../../deps/testcafe-core';
 
 import {
     NODE_SNAPSHOT_PROPERTIES,
-    ELEMENT_SNAPSHOT_PROPERTIES
+    ELEMENT_SNAPSHOT_PROPERTIES,
+    ELEMENT_ACTION_SNAPSHOT_PROPERTIES
 } from '../../../../../client-functions/selectors/snapshot-properties';
 
 
@@ -38,11 +39,7 @@ const nodeSnapshotPropertyInitializers = {
     /*eslint-enable no-restricted-properties*/
 };
 
-export class NodeSnapshot {
-    constructor (node) {
-        this._initializeProperties(node, NODE_SNAPSHOT_PROPERTIES, nodeSnapshotPropertyInitializers);
-    }
-
+class BaseSnapshot {
     _initializeProperties (node, properties, initializers) {
         for (let i = 0; i < properties.length; i++) {
             const property    = properties[i];
@@ -50,6 +47,14 @@ export class NodeSnapshot {
 
             this[property] = initializer ? initializer(node) : node[property];
         }
+    }
+}
+
+export class NodeSnapshot extends BaseSnapshot {
+    constructor (node) {
+        super();
+
+        this._initializeProperties(node, NODE_SNAPSHOT_PROPERTIES, nodeSnapshotPropertyInitializers);
     }
 }
 
@@ -111,6 +116,14 @@ const elementSnapshotPropertyInitializers = {
     // eslint-disable-next-line no-restricted-properties
     innerText: element => element.innerText
 };
+
+export class ElementActionSnapshot extends BaseSnapshot {
+    constructor (element) {
+        super(element);
+
+        this._initializeProperties(element, ELEMENT_ACTION_SNAPSHOT_PROPERTIES, elementSnapshotPropertyInitializers);
+    }
+}
 
 export class ElementSnapshot extends NodeSnapshot {
     constructor (element) {

@@ -6,12 +6,21 @@ const nativeMethods = hammerhead.nativeMethods;
 const STORAGE_KEY_PREFIX = 'testcafe|driver|';
 
 export default class Storage {
-    constructor (window, testRunId) {
+    constructor (window, testRunId, windowId) {
         this.storage    = nativeMethods.winSessionStorageGetter.call(window);
-        this.storageKey = STORAGE_KEY_PREFIX + testRunId;
+        this.storageKey = this._createStorageKey(testRunId, windowId);
         this.data       = {};
 
         this._loadFromStorage();
+    }
+
+    _createStorageKey (testRunId, windowId) {
+        const storageKey = STORAGE_KEY_PREFIX + testRunId;
+
+        if (windowId)
+            return storageKey + '|' + windowId;
+
+        return storageKey;
     }
 
     _loadFromStorage () {

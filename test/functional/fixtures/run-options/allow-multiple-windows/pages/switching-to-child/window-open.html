@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>window.open</title>
+</head>
+<body>
+    <h1>window.open</h1>
+    <button id="openWindowBtn">Open window</button>
+    <script>
+        var openWindowBtn = document.getElementById('openWindowBtn');
+
+        openWindowBtn.addEventListener('click', function () {
+           window.open('child-page.html', 'child-page-window', 'width=600,height=400');
+        });
+    </script>
+</body>
+</html>

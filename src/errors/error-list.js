@@ -4,6 +4,7 @@ import { UncaughtErrorInTestCode } from './test-run';
 export default class TestCafeErrorList {
     constructor () {
         this.items = [];
+        this.name  = TestCafeErrorList.name;
     }
 
     get hasErrors () {

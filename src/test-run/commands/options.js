@@ -23,7 +23,7 @@ export const booleanOption         = createBooleanValidator(ActionBooleanOptionE
 export const speedOption           = createSpeedValidator(ActionSpeedOptionError);
 
 
-// Acitons
+// Actions
 export class ActionOptions extends Assignable {
     constructor (obj, validate) {
         super();

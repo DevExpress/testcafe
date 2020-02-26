@@ -71,7 +71,12 @@ const {
     UncaughtErrorInCustomClientScriptCode,
     UncaughtErrorInCustomClientScriptLoadedFromModule,
     UncaughtErrorInCustomScript,
-    UncaughtTestCafeErrorInCustomScript
+    UncaughtTestCafeErrorInCustomScript,
+    ChildWindowIsNotLoadedError,
+    ChildWindowNotFoundError,
+    CannotSwitchToWindowError,
+    CloseChildWindowError,
+    ChildWindowClosedBeforeSwitchingError
 } = require('../../lib/errors/test-run');
 
 const untestedErrorTypes = Object.keys(TEST_RUN_ERRORS).map(key => TEST_RUN_ERRORS[key]);
@@ -393,6 +398,26 @@ describe('Error formatting', () => {
             const originError = getErrorAdapter(new UncaughtNonErrorObjectInTestCode(expression));
 
             assertErrorMessage('uncaught-test-cafe-error-in-custom-script', new UncaughtTestCafeErrorInCustomScript(originError, expression, void 0, void 0, 'RAW API callsite'));
+        });
+
+        it('Should format "childWindowIsNotLoadedError"', () => {
+            assertErrorMessage('child-window-is-not-loaded-error', new ChildWindowIsNotLoadedError());
+        });
+
+        it('Should format "childWindowNotFoundError"', () => {
+            assertErrorMessage('child-window-not-found-error', new ChildWindowNotFoundError());
+        });
+
+        it('Should format "cannotSwitchToWindowError"', () => {
+            assertErrorMessage('cannot-switch-to-child-window-error', new CannotSwitchToWindowError());
+        });
+
+        it('Should format "closeChildWindowError"', () => {
+            assertErrorMessage('close-child-window-error', new CloseChildWindowError());
+        });
+
+        it('Should format "childWindowClosedBeforeSwitchingError"', () => {
+            assertErrorMessage('child-window-closed-before-switching-error', new ChildWindowClosedBeforeSwitchingError());
         });
     });
 

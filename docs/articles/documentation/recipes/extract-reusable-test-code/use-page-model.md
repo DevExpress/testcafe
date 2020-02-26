@@ -8,8 +8,7 @@ redirect_from:
 ---
 # Use Page Model
 
-[Page Model](http://martinfowler.com/bliki/PageObject.html) is a test automation pattern that allows you to create an abstraction of the tested page
-and use it in test code to refer to page elements.
+[Page Model](http://martinfowler.com/bliki/PageObject.html) is a test automation pattern that allows you to create an abstraction of the tested page and use it in test code to refer to page elements.
 
 * [Why Use Page Model](#why-use-page-model)
 * [Create a Page Model](#create-a-page-model)
@@ -293,6 +292,8 @@ import { Selector } from 'testcafe';
 ## Page Model Example
 
 This sample shows a page model for the example page at [https://devexpress.github.io/testcafe/example/](https://devexpress.github.io/testcafe/example/).
+
+[Full Example Code](https://github.com/DevExpress/testcafe-examples/tree/master/examples/use-page-model)
 
 ```js
 import { Selector, t } from 'testcafe';

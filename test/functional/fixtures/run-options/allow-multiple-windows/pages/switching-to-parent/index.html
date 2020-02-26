@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>Switch to parent window</h1>
+    <button id="openWindowBtn">Open a new window</button>
+    <input id="indexPageInput">
+    <script>
+        var openWindowBtn = document.getElementById('openWindowBtn');
+        var openedWindow  = null;
+
+        openWindowBtn.addEventListener('click', function () {
+            openedWindow = window.open('child.html', 'child-page-window', 'width=600,height=400');
+        });
+
+        window.closeOpenedWindow = function () {
+            openedWindow.close();
+        }
+    </script>
+</body>
+</html>

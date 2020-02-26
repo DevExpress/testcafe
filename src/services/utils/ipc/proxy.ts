@@ -1,3 +1,4 @@
+import TestCafeErrorList from '../../../errors/error-list';
 import EventEmitter from '../../../utils/async-event-emitter';
 
 import {
@@ -14,6 +15,8 @@ import {
     IPCTransportEvents,
     IPCTransport,
 } from './interfaces';
+
+import prerenderCallsite from '../../../utils/prerender-callsite';
 
 
 interface RequestOptions {
@@ -41,14 +44,15 @@ export class IPCProxy extends EventEmitter {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private _saveError (error: ExternalError): any {
         if (isTestCafeErrorList(error)) {
-            const errorData = { ...error };
+            for (const item of error.items) {
+                if (item.callsite)
+                    item.callsite = prerenderCallsite(item.callsite);
+            }
 
-            errorData.items = errorData.items.map(err => this._saveError(err));
-
-            return errorData;
+            return error;
         }
 
-        return { message: error.message, stack: error.stack, ...error };
+        return { name: error.name, message: error.message, stack: error.stack, ...error };
     }
 
     private async _onRead (packet: IPCPacket): Promise<void> {
@@ -65,7 +69,7 @@ export class IPCProxy extends EventEmitter {
             resultData = { result: await this._handlers[requestPacket.data.name](...requestPacket.data.args) };
         }
         catch (error) {
-            resultData = this._saveError(error);
+            resultData = { error: this._saveError(error) };
         }
 
         const responsePacket: IPCResponsePacket = {
@@ -98,9 +102,11 @@ export class IPCProxy extends EventEmitter {
 
     private _createError (errorData: ExternalError): ExternalError {
         if (isTestCafeErrorList(errorData)) {
-            errorData.items = errorData.items.map(err => this._createPlainError(err));
+            const errorList = new TestCafeErrorList();
 
-            return errorData;
+            errorList.items = errorData.items;
+
+            return errorList;
         }
 
         return this._createPlainError(errorData);
@@ -115,7 +121,8 @@ export class IPCProxy extends EventEmitter {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public async call (name: string, ...args: any[]): Promise<any> {
+    public async call (target: string|Function, ...args: any[]): Promise<any> {
+        const name            = typeof target === 'string' ? target : target.name;
         const packet          = this._createPacket({ data: { name, args }, sync: false });
         const responsePromise = this.once(`response-${packet.id}`);
 
@@ -130,7 +137,8 @@ export class IPCProxy extends EventEmitter {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public callSync (name: string, ...args: any[]): any {
+    public callSync (target: string|Function, ...args: any[]): any {
+        const name          = typeof target === 'string' ? target : target.name;
         const requestPacket = this._createPacket({ data: { name, args }, sync: true });
 
         this._transport.writeSync(requestPacket);

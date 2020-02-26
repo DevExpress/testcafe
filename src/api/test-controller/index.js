@@ -111,7 +111,7 @@ export default class TestController {
             }
 
             return () => {
-                return this.testRun.executeCommand(command, callsite)
+                return this.testRun.executeAction(apiMethodName, command, callsite)
                     .catch(err => {
                         this.executionChain = Promise.resolve();
 
@@ -284,15 +284,17 @@ export default class TestController {
     }
 
     _getNativeDialogHistory$ () {
-        const callsite = getCallsiteForMethod('getNativeDialogHistory');
+        const name     = 'getNativeDialogHistory';
+        const callsite = getCallsiteForMethod(name);
 
-        return this.testRun.executeCommand(new GetNativeDialogHistoryCommand(), callsite);
+        return this.testRun.executeAction(name, new GetNativeDialogHistoryCommand(), callsite);
     }
 
     _getBrowserConsoleMessages$ () {
-        const callsite = getCallsiteForMethod('getBrowserConsoleMessages');
+        const name     = 'getBrowserConsoleMessages';
+        const callsite = getCallsiteForMethod(name);
 
-        return this.testRun.executeCommand(new GetBrowserConsoleMessagesCommand(), callsite);
+        return this.testRun.executeAction(name, new GetBrowserConsoleMessagesCommand(), callsite);
     }
 
     _expect$ (actual) {

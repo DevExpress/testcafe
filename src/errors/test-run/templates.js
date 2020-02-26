@@ -32,8 +32,8 @@ export default {
     `,
 
     [TEST_RUN_ERRORS.pageLoadError]: err => `
-        A request to ${formatUrl(err.url)} has failed. 
-        Use quarantine mode to perform additional attempts to execute this test. 
+        A request to ${formatUrl(err.url)} has failed.
+        Use quarantine mode to perform additional attempts to execute this test.
         You can find troubleshooting information for this issue at ${formatUrl(EXTERNAL_LINKS.troubleshootNetwork)}.
 
         Error details:
@@ -291,14 +291,14 @@ export default {
 
     [TEST_RUN_ERRORS.requestHookUnhandledError]: err => `
         An unhandled error occurred in the "${err.methodName}" method of the "${err.hookClassName}" class:
-        
+
         ${escapeHtml(err.errMsg)}
     `,
 
     [TEST_RUN_ERRORS.uncaughtErrorInCustomClientScriptCode]: err => `
         An error occurred in a script injected into the tested page:
 
-        ${escapeHtml(err.errMsg)}   
+        ${escapeHtml(err.errMsg)}
     `,
 
     [TEST_RUN_ERRORS.uncaughtErrorInCustomClientScriptCodeLoadedFromModule]: err => `
@@ -310,9 +310,29 @@ export default {
 
     [TEST_RUN_ERRORS.uncaughtErrorInCustomScript]: err => `
         An unhandled error occurred in the custom script:
-        
+
         Error details: ${escapeHtml(err.errMsg)}
-        
+
         ${formatExpressionMessage(err.expression, err.line, err.column)}
+    `,
+
+    [TEST_RUN_ERRORS.childWindowIsNotLoadedError]: () => `
+        The page in the child window is not loaded.
+    `,
+
+    [TEST_RUN_ERRORS.childWindowNotFoundError]: () => `
+        The child window is not found.
+    `,
+
+    [TEST_RUN_ERRORS.cannotSwitchToWindowError]: () => `
+        Cannot switch to the window.
+    `,
+
+    [TEST_RUN_ERRORS.closeChildWindowError]: () => `
+        An error occurred while closing child windows.
+    `,
+
+    [TEST_RUN_ERRORS.childWindowClosedBeforeSwitchingError]: () => `
+        The child window was closed before TestCafe could switch to it.
     `
 };

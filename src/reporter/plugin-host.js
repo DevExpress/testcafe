@@ -17,7 +17,10 @@ const indent          = Symbol();
 const errorDecorator  = Symbol();
 
 export default class ReporterPluginHost {
-    constructor (plugin, outStream) {
+    constructor (plugin, outStream, name) {
+        this.name             = name;
+        this.streamController = null;
+
         this[stream]          = outStream || process.stdout;
         this[wordWrapEnabled] = false;
         this[indent]          = 0;
@@ -105,7 +108,7 @@ export default class ReporterPluginHost {
 
     // Writing helpers
     newline () {
-        this[stream].write('\n');
+        this._writeToUniqueStream('\n');
 
         return this;
     }
@@ -116,7 +119,7 @@ export default class ReporterPluginHost {
         else
             text = this.indentString(text, this[indent]);
 
-        this[stream].write(text);
+        this._writeToUniqueStream(text);
 
         return this;
     }
@@ -131,6 +134,11 @@ export default class ReporterPluginHost {
         this[indent] = val;
 
         return this;
+    }
+
+    _writeToUniqueStream (text) {
+        if (!this.streamController || this.streamController.ensureUniqueStream(this[stream], this))
+            this[stream].write(text);
     }
 
 

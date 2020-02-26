@@ -1,14 +1,9 @@
 import { UnsubscribeFn } from 'emittery';
 import EventEmitter from '../../../utils/async-event-emitter';
+import TestCafeErrorList from '../../../errors/error-list';
 
 
 export type ExternalError = Error | TestCafeErrorList;
-
-export interface TestCafeErrorList {
-    isTestCafeErrorList: boolean;
-
-    items: Error[];
-}
 
 /* eslint-disable @typescript-eslint/interface-name-prefix */
 export enum IPCPacketType {
@@ -63,9 +58,13 @@ export interface IPCTransport extends EventEmitter {
 
 
 export function isTestCafeErrorList (err: ExternalError): err is TestCafeErrorList {
-    return (err as TestCafeErrorList).isTestCafeErrorList;
+    return (err as TestCafeErrorList).name === TestCafeErrorList.name;
 }
 
 export function isIPCErrorResponse (response: IPCSuccessfulResponse | IPCErrorResponse): response is IPCErrorResponse {
     return !!(response as IPCErrorResponse).error;
+}
+
+export function isIPCResponsePacket (message: object): message is IPCResponsePacket {
+    return ['id', 'type', 'sync', 'data'].every(prop => prop in message);
 }

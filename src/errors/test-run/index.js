@@ -535,6 +535,30 @@ export class CurrentIframeIsNotLoadedError extends TestRunErrorBase {
     }
 }
 
+export class ChildWindowNotFoundError extends TestRunErrorBase {
+    constructor () {
+        super(TEST_RUN_ERRORS.childWindowNotFoundError);
+    }
+}
+
+export class ChildWindowIsNotLoadedError extends TestRunErrorBase {
+    constructor () {
+        super(TEST_RUN_ERRORS.childWindowIsNotLoadedError);
+    }
+}
+
+export class CannotSwitchToWindowError extends TestRunErrorBase {
+    constructor () {
+        super(TEST_RUN_ERRORS.cannotSwitchToWindowError);
+    }
+}
+
+export class CloseChildWindowError extends TestRunErrorBase {
+    constructor () {
+        super(TEST_RUN_ERRORS.closeChildWindowError);
+    }
+}
+
 export class CurrentIframeNotFoundError extends TestRunErrorBase {
     constructor () {
         super(TEST_RUN_ERRORS.currentIframeNotFoundError);
@@ -591,6 +615,12 @@ export class RequestHookNotImplementedMethodError extends TestRunErrorBase {
 
         this.methodName    = methodName;
         this.hookClassName = hookClassName;
+    }
+}
+
+export class ChildWindowClosedBeforeSwitchingError extends TestRunErrorBase {
+    constructor () {
+        super(TEST_RUN_ERRORS.childWindowClosedBeforeSwitchingError);
     }
 }
 

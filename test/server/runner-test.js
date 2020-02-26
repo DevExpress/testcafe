@@ -145,21 +145,6 @@ describe('Runner', () => {
                 });
         });
 
-        it('Should raise an error if several reporters are going to write to the stdout', () => {
-            return runner
-                .browsers(connection)
-                .reporter(['json', 'xunit'])
-                .src('test/server/data/test-suites/basic/testfile2.js')
-                .run()
-                .then(() => {
-                    throw new Error('Promise rejection expected');
-                })
-                .catch(err => {
-                    expect(err.message).eql('Multiple reporters attempting to write to stdout: "json, xunit". ' +
-                                            'Only one reporter can write to stdout.');
-                });
-        });
-
         it('Should fallback to the default reporter if reporter was not set', () => {
             const storedRunTaskFn = runner._runTask;
 
@@ -720,6 +705,8 @@ describe('Runner', () => {
                                     brokenConnection.emit('error', new Error('I have failed :('));
                                 else
                                     check();
+                            }).catch(err => {
+                                throw err;
                             });
                         }, 200);
                     }
@@ -802,7 +789,7 @@ describe('Runner', () => {
                 });
         });
 
-        it('Should not display a message about "overriden options" after call "run" method with flags with undefined value', () => {
+        it('Should not display a message about "overridden options" after call "run" method with flags with undefined value', () => {
             const savedConsoleLog = console.log;
 
             console.log = consoleWrapper.log;
@@ -843,6 +830,26 @@ describe('Runner', () => {
             runner._validateDebugLogger();
 
             expect(runner.configuration.getOption('debugLogger')).to.deep.equal(customLogger);
+        });
+
+        it('Should raise an error if "allowMultipleWindows" option is used for legacy tests', () => {
+            return runner
+                .browsers(connection)
+                .src('test/server/data/test-suites/legacy/test.test.js')
+                .run({ allowMultipleWindows: true })
+                .catch(err => {
+                    expect(err.message).eql('You cannot run Legacy API tests in multi-window mode.');
+                });
+        });
+
+        it('Should raise an error if "allowMultipleWindows" option is used non-local browsers', () => {
+            return runner
+                .browsers(connection)
+                .src('test/server/data/test-suites/basic/testfile1.js')
+                .run({ allowMultipleWindows: true })
+                .catch(err => {
+                    expect(err.message).eql('You cannot use multi-window mode in "remote".');
+                });
         });
     });
 

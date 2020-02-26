@@ -39,7 +39,7 @@ Now TestCafe allows you to run your tests in Google Chrome in headless and devic
 testcafe "chrome:headless" tests/sample-fixture.js
 ```
 
-Device emulation mode allows you to check how your tests works on mobile devices via Chrome's built-in [device emulator](https://developers.google.com/web/tools/chrome-devtools/device-mode/). To run tests in device emulation mode, specify `emulation:` and [device parameters](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/using-chrome-device-emulation.html#emulator-parameters):
+Device emulation mode allows you to check how your tests works on mobile devices via Chrome's built-in [device emulator](https://developers.google.com/web/tools/chrome-devtools/device-mode/). To run tests in device emulation mode, specify `emulation:` and [device parameters](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/using-chromium-device-emulation.html#emulator-parameters):
 
 ```sh
 testcafe "chrome:emulation:device=iphone 6" tests/sample-fixture.js

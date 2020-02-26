@@ -183,7 +183,7 @@ runner.browsers({
 
 #### Headless Mode, Device Emulation and User Profiles
 
-You can add postfixes to browser aliases to run tests in the [headless mode](../common-concepts/browsers/testing-in-headless-mode.md), use [Chrome device emulation](../common-concepts/browsers/using-chrome-device-emulation.md) or [user profiles](../common-concepts/browsers/user-profiles.md).
+You can add postfixes to browser aliases to run tests in the [headless mode](../common-concepts/browsers/testing-in-headless-mode.md), use [Chrome device emulation](../common-concepts/browsers/using-chromium-device-emulation.md) or [user profiles](../common-concepts/browsers/user-profiles.md).
 
 ```js
 runner.browsers('chrome:headless');
@@ -314,13 +314,15 @@ Configures TestCafe's reporting feature.
 
 ```text
 reporter(name, output) → this
-reporter([ name | { name, output }]) → this
+reporter(fn) → this
+reporter([ name | { name, output } | fn ]) → this
 ```
 
 Parameter                | Type                        | Description                                     | Default
 ------------------------ | --------------------------- | ----------------------------------------------- | --------
-`name`                   | String              | The name of the [reporter](../common-concepts/reporters.md) to use.
+`name`                   | String      | The name of the [reporter](../common-concepts/reporters.md).
 `output`&#160;*(optional)* | String &#124; Writable Stream implementer | The file path where the report is written or the output stream. | `stdout`
+`fn` | A function that [returns a custom reporter object](#specifying-a-custom-reporter).
 
 To use a single reporter, specify a reporter name and, optionally, an output target as the second parameter.
 
@@ -349,6 +351,30 @@ runner.reporter(['spec', {
     name: 'json',
     output: 'reports/report.json'
 }]);
+```
+
+#### Specifying a Custom Reporter
+
+You can implement a [custom reporter](../../extending-testcafe/reporter-plugin/README.md) in the code that launches tests. This approach allows you to implement your reporter faster if you need it for a single project or do not want to publish a reporter plugin.
+
+Pass a *function* that returns the custom reporter object to the `runner.reporter` method.
+
+```js
+import { createTestCafe } from 'testcafe';
+
+const customReporter = () => {
+    return {
+        async reportTaskStart (startTime, userAgents, testCount) { /* ... */ },
+        async reportFixtureStart (name, path, meta) { /* ... */ },
+        async reportTestDone (name, testRunInfo, meta) { /* ... */ },
+        async reportTaskDone (endTime, passed, warnings, result) { /* ... */ }
+    };
+};
+
+const testcafe = await createTestCafe(/* [...] */);
+const runner   = testcafe.createRunner();
+
+await runner.reporter(customReporter);
 ```
 
 #### Implementing a Custom Stream

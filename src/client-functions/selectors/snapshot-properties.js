@@ -12,6 +12,11 @@ export const NODE_SNAPSHOT_PROPERTIES = [
     'hasChildElements'
 ];
 
+export const ELEMENT_ACTION_SNAPSHOT_PROPERTIES = [
+    'tagName',
+    'attributes'
+];
+
 export const ELEMENT_SNAPSHOT_PROPERTIES = [
     'tagName',
     'visible',

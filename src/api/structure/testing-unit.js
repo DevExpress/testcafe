@@ -1,3 +1,4 @@
+import BaseUnit from './base-unit';
 import { assertUrl, resolvePageUrl } from '../test-page-url';
 import handleTagArgs from '../../utils/handle-tag-args';
 import { delegateAPI, getDelegatedAPIList } from '../../utils/delegated-api';
@@ -5,10 +6,12 @@ import { assertType, is } from '../../errors/runtime/type-assertions';
 import FlagList from '../../utils/flag-list';
 import OPTION_NAMES from '../../configuration/option-names';
 
-export default class TestingUnit {
+
+export default class TestingUnit extends BaseUnit {
     constructor (testFile, unitTypeName) {
-        this.testFile     = testFile;
-        this.unitTypeName = unitTypeName;
+        super(unitTypeName);
+
+        this.testFile = testFile;
 
         this.name            = null;
         this.pageUrl         = null;

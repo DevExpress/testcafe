@@ -59,6 +59,7 @@ const TEST_RUN_TEMPLATE               = read('../client/test-run/index.js.mustac
 const IFRAME_TEST_RUN_TEMPLATE        = read('../client/test-run/iframe.js.mustache');
 const TEST_DONE_CONFIRMATION_RESPONSE = 'test-done-confirmation';
 const MAX_RESPONSE_DELAY              = 3000;
+const CHILD_WINDOW_READY_TIMEOUT      = 30 * 1000;
 
 const ALL_DRIVER_TASKS_ADDED_TO_QUEUE_EVENT = 'all-driver-tasks-added-to-queue';
 
@@ -235,13 +236,15 @@ export default class TestRun extends AsyncEventEmitter {
             browserHeartbeatRelativeUrl:  JSON.stringify(this.browserConnection.heartbeatRelativeUrl),
             browserStatusRelativeUrl:     JSON.stringify(this.browserConnection.statusRelativeUrl),
             browserStatusDoneRelativeUrl: JSON.stringify(this.browserConnection.statusDoneRelativeUrl),
+            browserActiveWindowIdUrl:     JSON.stringify(this.browserConnection.activeWindowIdUrl),
             userAgent:                    JSON.stringify(this.browserConnection.userAgent),
             testName:                     JSON.stringify(this.test.name),
             fixtureName:                  JSON.stringify(this.test.fixture.name),
             selectorTimeout:              this.opts.selectorTimeout,
             pageLoadTimeout:              this.pageLoadTimeout,
+            childWindowReadyTimeout:      CHILD_WINDOW_READY_TIMEOUT,
             skipJsErrors:                 this.opts.skipJsErrors,
-            retryTestPages:               !!this.opts.retryTestPages,
+            retryTestPages:               this.opts.retryTestPages,
             speed:                        this.speed,
             dialogHandler:                JSON.stringify(this.activeDialogHandler)
         });
@@ -430,7 +433,9 @@ export default class TestRun extends AsyncEventEmitter {
     async _enqueueBrowserConsoleMessagesCommand (command, callsite) {
         await this._enqueueCommand(command, callsite);
 
-        return this.consoleMessages.getCopy();
+        const consoleMessageCopy = this.consoleMessages.getCopy();
+
+        return consoleMessageCopy[this.browserConnection.activeWindowId];
     }
 
     async _enqueueSetBreakpointCommand (callsite, error) {
@@ -487,6 +492,9 @@ export default class TestRun extends AsyncEventEmitter {
 
     // Handle driver request
     _fulfillCurrentDriverTask (driverStatus) {
+        if (!this.currentDriverTask)
+            return;
+
         if (driverStatus.executionError)
             this._rejectCurrentDriverTask(driverStatus.executionError);
         else
@@ -525,6 +533,9 @@ export default class TestRun extends AsyncEventEmitter {
             }
 
             this._fulfillCurrentDriverTask(driverStatus);
+
+            if (driverStatus.isPendingWindowSwitching)
+                return null;
         }
 
         return this._getCurrentDriverTaskCommand();
@@ -561,7 +572,9 @@ export default class TestRun extends AsyncEventEmitter {
         executor.once('start-assertion-retries', timeout => this.executeCommand(new serviceCommands.ShowAssertionRetriesStatusCommand(timeout)));
         executor.once('end-assertion-retries', success => this.executeCommand(new serviceCommands.HideAssertionRetriesStatusCommand(success)));
 
-        return executor.run();
+        const executeFn = this.decoratePreventEmitActionEvents(() => executor.run(), { prevent: true });
+
+        return await executeFn();
     }
 
     _adjustConfigurationWithCommand (command) {
@@ -603,6 +616,27 @@ export default class TestRun extends AsyncEventEmitter {
             await this._enqueueSetBreakpointCommand(callsite);
     }
 
+    async executeAction (actionName, command, callsite) {
+        let error  = null;
+        let result = null;
+
+        await this.emitActionStart(actionName, command);
+
+        try {
+            result = await this.executeCommand(command, callsite);
+        }
+        catch (err) {
+            error = err;
+        }
+
+        await this.emitActionDone(actionName, command, result, error);
+
+        if (error)
+            throw error;
+
+        return result;
+    }
+
     async executeCommand (command, callsite) {
         this.debugLog.command(command);
 
@@ -642,8 +676,14 @@ export default class TestRun extends AsyncEventEmitter {
         if (command.type === COMMAND_TYPE.debug)
             return await this._enqueueSetBreakpointCommand(callsite);
 
-        if (command.type === COMMAND_TYPE.useRole)
-            return await this._useRole(command.role, callsite);
+        if (command.type === COMMAND_TYPE.useRole) {
+            let fn = () => this._useRole(command.role, callsite);
+
+            fn = this.decoratePreventEmitActionEvents(fn, { prevent: true });
+            fn = this.decorateDisableDebugBreakpoints(fn, { disable: true });
+
+            return await fn();
+        }
 
         if (command.type === COMMAND_TYPE.assertion)
             return this._executeAssertion(command, callsite);
@@ -667,6 +707,30 @@ export default class TestRun extends AsyncEventEmitter {
         this.pendingPageError = null;
 
         return Promise.reject(err);
+    }
+
+    _decorateWithFlag (fn, flagName, value) {
+        return async () => {
+            this[flagName] = value;
+
+            try {
+                return await fn();
+            }
+            catch (err) {
+                throw err;
+            }
+            finally {
+                this[flagName] = !value;
+            }
+        };
+    }
+
+    decoratePreventEmitActionEvents (fn, { prevent }) {
+        return this._decorateWithFlag(fn, 'preventEmitActionEvents', prevent);
+    }
+
+    decorateDisableDebugBreakpoints (fn, { disable }) {
+        return this._decorateWithFlag(fn, 'disableDebugBreakpoints', disable);
     }
 
     // Role management
@@ -735,8 +799,6 @@ export default class TestRun extends AsyncEventEmitter {
         if (this.phase === PHASE.inRoleInitializer)
             throw new RoleSwitchInRoleInitializerError(callsite);
 
-        this.disableDebugBreakpoints = true;
-
         const bookmark = new TestRunBookmark(this, role);
 
         await bookmark.init();
@@ -751,8 +813,6 @@ export default class TestRun extends AsyncEventEmitter {
         this.currentRoleId = role.id;
 
         await bookmark.restore(callsite, stateSnapshot);
-
-        this.disableDebugBreakpoints = false;
     }
 
     // Get current URL
@@ -778,6 +838,16 @@ export default class TestRun extends AsyncEventEmitter {
 
         delete testRunTracker.activeTestRuns[this.session.id];
     }
+
+    async emitActionStart (apiActionName, command) {
+        if (!this.preventEmitActionEvents)
+            await this.emit('action-start', { command, apiActionName });
+    }
+
+    async emitActionDone (apiActionName, command, result, errors) {
+        if (!this.preventEmitActionEvents)
+            await this.emit('action-done', { command, apiActionName, result, errors });
+    }
 }
 
 // Service message handlers
@@ -799,7 +869,7 @@ ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
     this.lastDriverStatusId       = msg.status.id;
     this.lastDriverStatusResponse = this._handleDriverRequest(msg.status);
 
-    if (this.lastDriverStatusResponse)
+    if (this.lastDriverStatusResponse || msg.status.isPendingWindowSwitching)
         return this.lastDriverStatusResponse;
 
     // NOTE: we send an empty response after the MAX_RESPONSE_DELAY timeout is exceeded to keep connection

@@ -1,10 +1,12 @@
 import { find, sortBy, union } from 'lodash';
 import { writable as isWritableStream } from 'is-stream';
 import ReporterPluginHost from './plugin-host';
+import formatCommand from './command/format-command';
+import TestCafeErrorList from '../errors/error-list';
 
 export default class Reporter {
-    constructor (plugin, task, outStream) {
-        this.plugin = new ReporterPluginHost(plugin, outStream);
+    constructor (plugin, task, outStream, name) {
+        this.plugin = new ReporterPluginHost(plugin, outStream, name);
         this.task   = task;
 
         this.disposed        = false;
@@ -132,6 +134,31 @@ export default class Reporter {
         reportItem.pendingTestRunDonePromise.resolve();
     }
 
+    _prepareReportTestActionEventArgs ({ command, result, testRun, errors }) {
+        const args = {};
+
+        if (errors) {
+            errors = errors instanceof TestCafeErrorList ? errors.items : [errors];
+
+            args.errors = errors;
+        }
+
+        return Object.assign(args, {
+            testRunId: testRun.id,
+            test:      {
+                id:    testRun.test.id,
+                name:  testRun.test.name,
+                phase: testRun.phase,
+            },
+            fixture: {
+                name: testRun.test.fixture.name,
+                id:   testRun.test.fixture.id
+            },
+            command: formatCommand(command, result),
+            browser: testRun.controller.browser,
+        });
+    }
+
     _assignTaskEventHandlers () {
         const task = this.task;
 
@@ -175,6 +202,22 @@ export default class Reporter {
                 await this._resolveReportItem(reportItem, testRun);
 
             await reportItem.pendingTestRunDonePromise;
+        });
+
+        task.on('test-action-start', async ({ apiActionName, command, testRun }) => {
+            if (this.plugin.reportTestActionStart) {
+                const args = this._prepareReportTestActionEventArgs({ command, testRun });
+
+                await this.plugin.reportTestActionStart(apiActionName, args);
+            }
+        });
+
+        task.on('test-action-done', async ({ apiActionName, command, result, testRun, errors }) => {
+            if (this.plugin.reportTestActionDone) {
+                const args = this._prepareReportTestActionEventArgs({ command, result, testRun, errors });
+
+                await this.plugin.reportTestActionDone(apiActionName, args);
+            }
         });
 
         task.once('done', async () => {

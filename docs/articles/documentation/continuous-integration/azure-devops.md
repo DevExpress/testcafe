@@ -12,15 +12,16 @@ This topic describes how to integrate TestCafe tests into an [Azure DevOps Serve
 Open the repository's root directory and execute the following command:
 
 ```sh
-npm install --save-dev testcafe
+npm install --save-dev testcafe testcafe-reporter-xunit
 ```
 
-This command installs the latest TestCafe version locally and adds it to the `devDependencies` section in the `package.json` file.
+This command installs the latest TestCafe and xUnit reporter versions locally and adds them to the `devDependencies` section in the `package.json` file.
 
 ```json
 {
     "devDependencies": {
-        "testcafe": "*"
+        "testcafe": "*",
+        "testcafe-reporter-xunit": "*"
     }
 }
 ```
@@ -32,11 +33,12 @@ The test run command that uses TestCafe should be also added to `package.json` t
 ```json
 {
     "scripts": {
-        "test": "testcafe chrome:headless tests/**/*"
+        "test": "testcafe chrome:headless tests/**/* --reporter spec,xunit:report.xml"
     },
 
     "devDependencies": {
-        "testcafe": "*"
+        "testcafe": "*",
+        "testcafe-reporter-xunit": "*"
     }
 }
 ```
@@ -66,18 +68,26 @@ jobs:
     displayName: 'Install TestCafe'
   - script: npm test
     displayName: 'Run TestCafe Tests'
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFiles: '**/report.xml'
+      testResultsFormat: 'JUnit'
 ```
 
-* `jobs` - the list of [jobs](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/phases?view=vsts&tabs=yaml).
-* `job` - the job name.
-* `pool` - the [agent pool](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/pools-queues?view=vsts) that executes this build job.
-* `vmImage` - the [agent's](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/agents?view=vsts) virtual machine image name. This tutorial uses a [Microsoft-hosted agent](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=vsts&tabs=yaml) that runs on an Ubuntu 16.04 machine. You can find the list of software installed on this machine in the [Azure Pipelines GitHub repository](https://github.com/Microsoft/azure-pipelines-image-generation/blob/master/images/linux/Ubuntu1604-README.md).
-* `steps` - the list of steps performed when executing a job.
-* `task` - adds a [Node.js installer task](https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/tool/node-js?view=vsts)  to the job. This task installs Node.js and adds it to the `PATH` variable.
-* `inputs` - specifies input variables for the task.
-* `versionSpec` - the Node.js version to install. The latest LTS version number is available on the [Node.js website](https://nodejs.org/en/).
-* `displayName` - a step name displayed in build results.
-* `script` - a console command executed at this step.
+Property | Description
+-------- | -------------
+`jobs` | The list of [jobs](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/phases?view=vsts&tabs=yaml).
+`job` | The job name.
+`pool` | The [agent pool](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/pools-queues?view=vsts) that executes this build job.
+`vmImage` | The [agent's](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/agents?view=vsts) virtual machine image name. This tutorial uses a [Microsoft-hosted agent](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=vsts&tabs=yaml) that runs on an Ubuntu 16.04 machine. You can find the list of software installed on this machine in the [Azure Pipelines GitHub repository](https://github.com/actions/virtual-environments/blob/master/images/linux/Ubuntu1604-README.md).
+`steps` | The list of steps performed when executing a job.
+`task` | Adds a [task](https://docs.microsoft.com/en-us/azure/devops/pipelines/process/tasks?view=azure-devops&tabs=yaml) to the pipeline. The [NodeTool](https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/tool/node-js?view=vsts) task installs Node.js and adds it to the `PATH` variable. The [PublishTestResults](https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/test/publish-test-results?view=azure-devops&tabs=yaml) task publishes the TestCafe report to the server.
+`inputs` | Specifies input variables for the task.
+`versionSpec` | The Node.js version to install. The latest LTS version number is available on the [Node.js website](https://nodejs.org/en/).
+`displayName` | A step name displayed in build results.
+`script` | A console command executed at this step.
+`testResultsFiles` | The path to the report file to publish.
+`testResultsFormat` | The report format.
 
 The first step in this task installs TestCafe with `npm install` and the second step runs TestCafe tests using `npm test`.
 
@@ -141,7 +151,19 @@ npm test
 
 ![Run TestCafe Tests](../../images/azure/npm-test.png)
 
-Save the changes and run this task using the **Save & queue** button.
+Add a task that publishes test results to the server. Click the **+** button and select **Publish Test Results** from the task list.
+
+![Add the Publish Test Results Task](../../images/azure/add-publish-test-results.png)
+
+In task options, set **Test result format** to *JUnit* and specify the report file name (`**/report.xml`) in the **Test results files** field.
+
+![Publish Test Results](../../images/azure/publish-test-results.png)
+
+You must also specify that the **Publish Test Results** task should run if TestCafe tests fail. Expand the **Control Options** section and select *Even if a previous task has failed, unless the build was canceled* in the **Run this task** dropdown list.
+
+![Publish Test Results - Run After Error](../../images/azure/publish-test-results-run-when-failed.png)
+
+Click **Save & queue** to save the changes and run this task.
 
 ![Save Pipeline](../../images/azure/save-pipeline.png)
 
@@ -190,6 +212,22 @@ This opens the **Queue build** window. Specify the branch and commit that should
 ![Queue Task - Parameters](../../images/azure/queue-task-parameters.png)
 
 ### View Test Results
+
+#### Option 1 - View the Published Report
+
+Hover over the **Test Plans** section and click **Runs** in the pop-up menu.
+
+![Open Test Runs](../../images/azure/open-test-runs.png)
+
+Double-click a test run to view the report.
+
+![Test Runs - Open a Run](../../images/azure/test-runs-click-run.png)
+
+This opens the **Run summary** view that displays test run results.
+
+![Test Run Summary](../../images/azure/test-run-summary.png)
+
+#### Option 2 - View the Build Log
 
 Select the build and click the commit whose results you want to view.
 

@@ -1,4 +1,4 @@
-if: NOT (commit_message =~ /^\[docs\]/ OR branch = 'new-docs')
+if: NOT (commit_message =~ /^\[docs\]/)
 
 addons:
  chrome:  stable
@@ -24,6 +24,12 @@ matrix:
     env: GULP_TASK="test-functional-local-headless-firefox"
   - node_js: "10"
     env: GULP_TASK="test-functional-local-legacy"
+  - node_js: "10"
+    env: GULP_TASK="test-functional-local-compiler-service"
+  - node_js: "10"
+    env: GULP_TASK="test-functional-local-multiple-windows"
+    services:
+      - xvfb
  fast_finish: true
 
 cache:
@@ -35,6 +41,8 @@ install: travis_retry npm install
 branches:
   except:
     - /^build-bot-temp-.*$/
+    - /^\(testbot-only\)/
+    - new-docs
 
 notifications:
  email: false

@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import isCI from 'is-ci';
-import { isUndefined, filter, flatten, chunk, times } from 'lodash';
+import { flatten, chunk, times } from 'lodash';
 import makeDir from 'make-dir';
 import OS from 'os-family';
 import { errors, findWindow } from 'testcafe-browser-tools';
@@ -22,21 +22,14 @@ import { Writable as WritableStream } from 'stream';
 import ClientScript from '../custom-client-scripts/client-script';
 import ClientScriptInit from '../custom-client-scripts/client-script-init';
 import BrowserProvider from '../browser/provider';
-
-type BrowserConnectionGateway = unknown;
+import BrowserConnectionGateway from '../browser/connection/gateway';
+import { CompilerArguments } from '../compiler/interfaces';
+import CompilerService from '../services/compiler/host';
+import { Metadata, Test } from '../api/structure/interfaces';
 
 type TestSource = unknown;
 
 type ReporterPlugin = unknown;
-
-interface CompilerArguments {
-    parsedFileList: string[];
-    compilerOptions: object;
-}
-
-interface Metadata {
-    [key: string]: string;
-}
 
 type BrowserSource = BrowserConnection | string;
 
@@ -69,19 +62,6 @@ interface BrowserInfo {
 }
 
 type BrowserInfoSource = BrowserInfo | BrowserConnection;
-
-
-interface Fixture {
-    name: string;
-    path: string;
-    meta: Metadata;
-}
-
-interface Test {
-    name: string;
-    fixture: Fixture;
-    meta: Metadata;
-}
 
 interface PromiseSuccess<T> {
     result: T;
@@ -133,7 +113,9 @@ export default class Bootstrapper {
     public clientScripts: ClientScriptInit[];
     public allowMultipleWindows: boolean;
 
-    public constructor (browserConnectionGateway: BrowserConnectionGateway) {
+    private readonly compilerService?: CompilerService;
+
+    public constructor (browserConnectionGateway: BrowserConnectionGateway, compilerService?: CompilerService) {
         this.browserConnectionGateway = browserConnectionGateway;
         this.concurrency              = 1;
         this.sources                  = [];
@@ -145,6 +127,8 @@ export default class Bootstrapper {
         this.tsConfigPath             = void 0;
         this.clientScripts            = [];
         this.allowMultipleWindows     = false;
+
+        this.compilerService = compilerService;
     }
 
     private static _getBrowserName (browser: BrowserInfoSource): string {
@@ -234,14 +218,25 @@ export default class Bootstrapper {
         return tests.filter(test => predicate(test.name, test.fixture.name, test.fixture.path, test.meta, test.fixture.meta));
     }
 
-    private async _getTests (): Promise<Test[]> {
-        const { parsedFileList, compilerOptions } = await this._getCompilerArguments();
+    private async _compileTests ({ sourceList, compilerOptions }: CompilerArguments): Promise<Test[]> {
+        if (this.compilerService) {
+            await this.compilerService.init();
 
-        if (!parsedFileList.length)
+            return this.compilerService.getTests({ sourceList, compilerOptions });
+        }
+
+        const compiler = new Compiler(sourceList, compilerOptions);
+
+        return compiler.getTests();
+    }
+
+    private async _getTests (): Promise<Test[]> {
+        const { sourceList, compilerOptions } = await this._getCompilerArguments();
+
+        if (!sourceList.length)
             throw new GeneralError(RUNTIME_ERRORS.testFilesNotFound);
 
-        const compiler = new Compiler(parsedFileList, compilerOptions);
-        let tests      = await compiler.getTests();
+        let tests = await this._compileTests({ sourceList, compilerOptions });
 
         const testsWithOnlyFlag = tests.filter(test => test.only);
 
@@ -258,7 +253,7 @@ export default class Bootstrapper {
     }
 
     private async _getCompilerArguments (): Promise<CompilerArguments> {
-        const parsedFileList = await parseFileList(this.sources, process.cwd());
+        const sourceList = await parseFileList(this.sources, process.cwd());
 
         const compilerOptions = {
             typeScriptOptions: {
@@ -266,7 +261,7 @@ export default class Bootstrapper {
             }
         };
 
-        return { parsedFileList, compilerOptions };
+        return { sourceList, compilerOptions };
     }
 
     private async _ensureOutStream (outStream: string | WritableStream): Promise<WritableStream> {
@@ -304,11 +299,6 @@ export default class Bootstrapper {
     }
 
     private async _getReporterPlugins (): Promise<ReporterPluginSource[]> {
-        const stdoutReporters = filter(this.reporters, r => isUndefined(r.output) || r.output === process.stdout);
-
-        if (stdoutReporters.length > 1)
-            throw new GeneralError(RUNTIME_ERRORS.multipleStdoutReporters, stdoutReporters.map(r => r.name).join(', '));
-
         if (!this.reporters.length)
             Bootstrapper._addDefaultReporter(this.reporters);
 
@@ -318,7 +308,8 @@ export default class Bootstrapper {
 
             return {
                 plugin: pluginFactory(),
-                outStream
+                outStream,
+                name
             };
         }));
     }

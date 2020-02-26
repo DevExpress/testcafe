@@ -11,6 +11,7 @@ import { GeneralError } from '../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../errors/types';
 import { HEARTBEAT_TIMEOUT, BROWSER_RESTART_TIMEOUT } from '../../utils/browser-connection-timeouts';
 import { Dictionary } from '../../configuration/interfaces';
+import BrowserConnectionGateway from './gateway';
 
 const IDLE_PAGE_TEMPLATE                         = read('../../client/browser/idle-page/index.html.mustache');
 const connections: Dictionary<BrowserConnection> = {};
@@ -34,26 +35,29 @@ interface InitScript {
     code: string | null;
 }
 
+interface InitScriptTask extends InitScript {
+    resolve: Function;
+}
+
 export default class BrowserConnection extends EventEmitter {
-    private gateway: any;
-    private permanent: any;
-    private readonly allowMultipleWindows: any;
+    private permanent: boolean;
+    private readonly allowMultipleWindows: boolean;
     private readonly HEARTBEAT_TIMEOUT: number;
     private readonly BROWSER_RESTART_TIMEOUT: number;
-    private readonly id: string;
+    public readonly id: string;
     private readonly jobQueue: any[];
-    private readonly initScriptsQueue: any[];
-    private browserConnectionGateway: any;
+    private readonly initScriptsQueue: InitScriptTask[];
+    private browserConnectionGateway: BrowserConnectionGateway;
     private disconnectionPromise: DisconnectionPromise<void> | null;
     private testRunAborted: boolean;
     private closing: boolean;
     private closed: boolean;
-    private ready: boolean;
+    public ready: boolean;
     private opened: boolean;
     private heartbeatTimeout: NodeJS.Timeout | null;
     private pendingTestRunUrl: string | null;
-    private readonly url: string;
-    private readonly idleUrl: string;
+    public readonly url: string;
+    public readonly idleUrl: string;
     private forcedIdleUrl: string;
     private readonly initScriptUrl: string;
     private readonly heartbeatRelativeUrl: string;
@@ -61,6 +65,7 @@ export default class BrowserConnection extends EventEmitter {
     private readonly statusDoneRelativeUrl: string;
     private readonly heartbeatUrl: string;
     private readonly statusUrl: string;
+    private readonly activeWindowIdUrl: string;
     private statusDoneUrl: string;
     private switchingToIdle: boolean;
 
@@ -69,7 +74,7 @@ export default class BrowserConnection extends EventEmitter {
     public browserInfo: any;
     public provider: any;
 
-    public constructor (gateway: any, browserInfo: any, permanent: boolean, allowMultipleWindows = false) {
+    public constructor (gateway: BrowserConnectionGateway, browserInfo: any, permanent: boolean, allowMultipleWindows = false) {
         super();
 
         this.HEARTBEAT_TIMEOUT       = HEARTBEAT_TIMEOUT;
@@ -106,6 +111,7 @@ export default class BrowserConnection extends EventEmitter {
         this.heartbeatRelativeUrl  = `/browser/heartbeat/${this.id}`;
         this.statusRelativeUrl     = `/browser/status/${this.id}`;
         this.statusDoneRelativeUrl = `/browser/status-done/${this.id}`;
+        this.activeWindowIdUrl     = `/browser/active-window-id/${this.id}`;
 
         this.heartbeatUrl  = `${gateway.domain}${this.heartbeatRelativeUrl}`;
         this.statusUrl     = `${gateway.domain}${this.statusRelativeUrl}`;
@@ -395,5 +401,13 @@ export default class BrowserConnection extends EventEmitter {
         }
 
         return { cmd: COMMAND.idle, url: this.idleUrl };
+    }
+
+    public get activeWindowId (): null | string {
+        return this.provider.getActiveWindowId(this.id);
+    }
+
+    public set activeWindowId (val) {
+        this.provider.setActiveWindowId(this.id, val);
     }
 }

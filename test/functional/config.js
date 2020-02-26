@@ -15,6 +15,7 @@ const testingEnvironmentNames = {
     localBrowsersIE:             'local-browsers-ie',
     localBrowsersChromeFirefox:  'local-browsers-chrome-firefox',
     localBrowsers:               'local-browsers',
+    localChrome:                 'local-chrome',
     localHeadlessChrome:         'local-headless-chrome',
     localHeadlessFirefox:        'local-headless-firefox',
     remote:                      'remote',
@@ -24,7 +25,8 @@ const testingEnvironmentNames = {
 const testingEnvironments = {};
 
 testingEnvironments[testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers] = {
-    jobName: 'functional tests - OS X desktop and MS edge browsers',
+    jobName:  'functional tests - OS X desktop and MS edge browsers',
+    provider: browserProviderNames.browserstack,
 
     browserstack: {
         username:  process.env.BROWSER_STACK_USERNAME,
@@ -39,18 +41,23 @@ testingEnvironments[testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers] = {
             alias:       'safari'
         },
         {
-            browserName: 'browserstack:chrome@71:OS X High Sierra',
+            browserName: 'browserstack:chrome@80:OS X High Sierra',
             alias:       'chrome-osx'
         },
         {
-            browserName: 'browserstack:firefox@64:OS X High Sierra',
+            browserName: 'browserstack:firefox@72:OS X High Sierra',
             alias:       'firefox-osx'
+        },
+        {
+            browserName: 'browserstack:edge:OS X High Sierra',
+            alias:       'edge'
         }
     ]
 };
 
 testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
-    jobName: 'functional tests - mobile browsers',
+    jobName:  'functional tests - mobile browsers',
+    provider: browserProviderNames.browserstack,
 
     browserstack: {
         username:  process.env.BROWSER_STACK_USERNAME,
@@ -90,6 +97,18 @@ testingEnvironments[testingEnvironmentNames.localBrowsers] = {
             platform:    'Windows 10',
             browserName: 'firefox',
             alias:       'firefox'
+        }
+    ]
+};
+
+testingEnvironments[testingEnvironmentNames.localChrome] = {
+    isLocalBrowsers: true,
+
+    browsers: [
+        {
+            platform:    'Windows 10',
+            browserName: 'chrome',
+            alias:       'chrome'
         }
     ]
 };
@@ -158,7 +177,8 @@ testingEnvironments[testingEnvironmentNames.localHeadlessFirefox] = {
 };
 
 testingEnvironments[testingEnvironmentNames.remote] = {
-    remote: true,
+    remote:   true,
+    provider: browserProviderNames.remote,
 
     browsers: [{
         get qrCode () {

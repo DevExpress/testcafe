@@ -12,6 +12,7 @@ permalink: /faq/
   * [Which browsers does TestCafe support? What are the exact supported versions?](#which-browsers-does-testcafe-support-what-are-the-exact-supported-versions)
   * [Can I use third-party modules in tests?](#can-i-use-third-party-modules-in-tests)
   * [How do I work with configuration files and environment variables?](#how-do-i-work-with-configuration-files-and-environment-variables)
+  * [How do I identify elements with dynamic IDs?](#how-do-i-identify-elements-with-dynamic-ids)
 * [Troubleshooting](#troubleshooting)
   * [I have installed TestCafe, but I cannot run it. What should I do?](#i-have-installed-testcafe-but-i-cannot-run-it-what-should-i-do)
   * [When I run a TestCafe test, I get an unexpected error. What can cause that?](#when-i-run-a-testcafe-test-i-get-an-unexpected-error-what-can-cause-that)
@@ -142,6 +143,12 @@ fixture `Fixture`
 
 Alternatively, you can use [environment variables](../documentation/recipes/access-environment-variables-in-tests.md).
 
+### How do I identify elements with dynamic IDs?
+
+TestCafe selectors should use element identifiers that persist between test runs. However, many JavaScript frameworks generate dynamic IDs for page elements. To identify elements whose `id` attribute changes, use selectors based on the element's class, content, tag name, or position.
+
+See the [Select Elements With Dynamic IDs](../documentation/test-api/selecting-page-elements/examples-of-working-with-dom-elements.md#select-elements-with-dynamic-ids) example for details.
+
 ## Troubleshooting
 
 ### I have installed TestCafe but I cannot run it. What should I do?
@@ -152,7 +159,7 @@ TestCafe chooses free ports automatically by default. Use the
 or the [createTestCafe](../documentation/using-testcafe/programming-interface/createtestcafe.md)
 API factory function to specify custom ports. After that, check that the firewall does not block these specific ports.
 
-**Check your proxy server**. Another reason for this problem can be the proxy server you use to access the Internet.
+**Check your proxy server.** Another reason for this problem can be the proxy server you use to access the Internet.
 If your network is connected to the Web via a proxy, use the
 [--proxy](../documentation/using-testcafe/command-line-interface.md#--proxy-host) command line option
 or the [useProxy](../documentation/using-testcafe/programming-interface/runner.md#useproxy) API method

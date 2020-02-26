@@ -9,6 +9,8 @@ We recommend that you follow the [page model pattern](use-page-model.md) to extr
 
 If you need to extract only the helper functions, however, you can export them from a separate script file.
 
+[Full Example Code](https://github.com/DevExpress/testcafe-examples/tree/master/examples/extract-code-to-helpers)
+
 The following example shows a `helper.js` file that exports the `enterName`, `typeComment`, and `submitForm` asynchronous functions:
 
 ```js

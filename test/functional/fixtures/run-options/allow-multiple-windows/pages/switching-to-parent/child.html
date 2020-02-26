@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Child page</title>
+</head>
+<body>
+    <input id="childPageInput">
+    <button id="closeWindowBtn">Close window</button>
+    <script>
+        var closeWindowBtn = document.getElementById('closeWindowBtn');
+
+        closeWindowBtn.addEventListener('click', function () {
+            window.opener.closeOpenedWindow();
+        });
+    </script>
+</body>
+</html>

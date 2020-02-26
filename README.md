@@ -232,12 +232,20 @@ Thank you to all the people who already contributed to TestCafe!
 :---: |:---: |:---: |:---: |:---: |:---: |
 [pietrovich](https://github.com/pietrovich) |[superroma](https://github.com/superroma) |[caseyWebb](https://github.com/caseyWebb) |[intermike](https://github.com/intermike) |[DevSide](https://github.com/DevSide) |[b12031106](https://github.com/b12031106) |
 
+[<img alt="Marketionist" src="https://avatars2.githubusercontent.com/u/534603?v=4&s=117" width="117">](https://github.com/Marketionist) |[<img alt="Dmitry-Ostashev" src="https://avatars3.githubusercontent.com/u/24777868?v=4&s=117" width="117">](https://github.com/Dmitry-Ostashev) |[<img alt="alexey-lin" src="https://avatars0.githubusercontent.com/u/13483856?v=4&s=117" width="117">](https://github.com/alexey-lin) |[<img alt="cgfarmer4" src="https://avatars3.githubusercontent.com/u/336449?v=4&s=117" width="117">](https://github.com/cgfarmer4) |[<img alt="bill-looby-i" src="https://avatars0.githubusercontent.com/u/51128939?v=4&s=117" width="117">](https://github.com/bill-looby-i) |[<img alt="rbardini" src="https://avatars2.githubusercontent.com/u/874370?v=4&s=117" width="117">](https://github.com/rbardini) |
+:---: |:---: |:---: |:---: |:---: |:---: |
+[Marketionist](https://github.com/Marketionist) |[Dmitry-Ostashev](https://github.com/Dmitry-Ostashev) |[alexey-lin](https://github.com/alexey-lin) |[cgfarmer4](https://github.com/cgfarmer4) |[bill-looby-i](https://github.com/bill-looby-i) |[rbardini](https://github.com/rbardini) |
+
+[<img alt="macdonaldr93" src="https://avatars2.githubusercontent.com/u/5184848?v=4&s=117" width="117">](https://github.com/macdonaldr93) |[<img alt="alexwybraniec" src="https://avatars3.githubusercontent.com/u/521536?v=4&s=117" width="117">](https://github.com/alexwybraniec) |
+:---: |:---: |
+[macdonaldr93](https://github.com/macdonaldr93) |[alexwybraniec](https://github.com/alexwybraniec) |
+
 ## Plugins
 
 TestCafe developers and community members made these plugins:
 
 * **Browser Providers**<br/>
-  Allow you to use TestCafe with cloud browser providers and emulators.
+  Use TestCafe with cloud browser providers and emulators.
   * [SauceLabs provider](https://github.com/DevExpress/testcafe-browser-provider-saucelabs) (by [@AndreyBelym](https://github.com/AndreyBelym))
   * [BrowserStack provider](https://github.com/DevExpress/testcafe-browser-provider-browserstack) (by [@AndreyBelym](https://github.com/AndreyBelym))
   * [CrossBrowserTesting provider](https://github.com/sijosyn/testcafe-browser-provider-crossbrowsertesting) (by [@sijosyn](https://github.com/sijosyn))
@@ -246,6 +254,7 @@ TestCafe developers and community members made these plugins:
   * [fbsimctl iOS emulator](https://github.com/Ents24/testcafe-browser-provider-fbsimctl) (by [@ents24](https://github.com/Ents24))
   * [Electron](https://github.com/DevExpress/testcafe-browser-provider-electron) (by [@AndreyBelym](https://github.com/AndreyBelym))
   * [Puppeteer](https://github.com/jdobosz/testcafe-browser-provider-puppeteer) (by [@jdobosz](https://github.com/jdobosz))
+  * [Puppeteer Chromium](https://github.com/stefanschenk/testcafe-browser-provider-puppeteer-chromium) (by [@stefanschenk](https://github.com/stefanschenk))
 
 * **Framework-Specific Selectors**<br/>
   Work with page elements in a way that is native to your framework.
@@ -285,6 +294,11 @@ TestCafe developers and community members made these plugins:
 * **ESLint**<br/>
   Use ESLint when writing and editing TestCafe tests.
   * [ESLint plugin](https://github.com/miherlosev/eslint-plugin-testcafe) (by [@miherlosev](https://github.com/miherlosev))
+
+* **Cucumber Support**<br/>
+  Create and run tests that use the Cucumber syntax.
+  * [gherkin-testcafe](https://github.com/kiwigrid/gherkin-testcafe) (by [@kiwigrid](https://github.com/kiwigrid)) - run your Cucumber tests with TestCafe as a backend. Requires [CucumberJS](https://github.com/cucumber/cucumber-js).
+  * [testcafe-cucumber-steps](https://github.com/Marketionist/testcafe-cucumber-steps) (by [@Marketionist](https://github.com/Marketionist)) - provides predefined Cucumber steps for [gherkin-testcafe](https://github.com/kiwigrid/gherkin-testcafe).
 
 ## Different Versions of TestCafe
 

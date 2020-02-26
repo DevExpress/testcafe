@@ -68,7 +68,12 @@ export const TEST_RUN_ERRORS = {
     uncaughtErrorInCustomClientScriptCode:                 'E64',
     uncaughtErrorInCustomClientScriptCodeLoadedFromModule: 'E65',
     uncaughtErrorInCustomScript:                           'E66',
-    uncaughtTestCafeErrorInCustomScript:                   'E67'
+    uncaughtTestCafeErrorInCustomScript:                   'E67',
+    childWindowIsNotLoadedError:                           'E68',
+    childWindowNotFoundError:                              'E69',
+    cannotSwitchToWindowError:                             'E70',
+    closeChildWindowError:                                 'E71',
+    childWindowClosedBeforeSwitchingError:                 'E72'
 };
 
 export const RUNTIME_ERRORS = {
@@ -83,7 +88,7 @@ export const RUNTIME_ERRORS = {
     testFilesNotFound:                                  'E1008',
     noTestsToRun:                                       'E1009',
     cannotFindReporterForAlias:                         'E1010',
-    multipleStdoutReporters:                            'E1011',
+    multipleSameStreamReporters:                        'E1011',
     optionValueIsNotValidRegExp:                        'E1012',
     optionValueIsNotValidKeyValue:                      'E1013',
     invalidSpeedValue:                                  'E1014',
@@ -119,5 +124,13 @@ export const RUNTIME_ERRORS = {
     clientScriptBasePathIsNotSpecified:                 'E1045',
     clientScriptInitializerMultipleContentSources:      'E1046',
     cannotLoadClientScriptFromPath:                     'E1047',
-    clientScriptModuleEntryPointPathCalculationError:   'E1048'
+    clientScriptModuleEntryPointPathCalculationError:   'E1048',
+    methodIsNotAvailableForAnIPCHost:                   'E1049',
+    tooLargeIPCPayload:                                 'E1050',
+    malformedIPCMessage:                                'E1051',
+    unexpectedIPCHeadPacket:                            'E1052',
+    unexpectedIPCBodyPacket:                            'E1053',
+    unexpectedIPCTailPacket:                            'E1054',
+    cannotUseAllowMultipleWindowsOptionForLegacyTests:  'E1055',
+    cannotUseAllowMultipleWindowsOptionForSomeBrowsers: 'E1056'
 };

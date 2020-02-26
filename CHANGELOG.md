@@ -1,5 +1,61 @@
 # Changelog
 
+## v1.8.2 (2020-2-17)
+
+* Added new device names to the `t.resizeWindowToFitDevice` action ([#3767](https://github.com/DevExpress/testcafe/issues/3767))
+* You can now use several reporters with no output stream specified if only one reporter writes to `stdout` ([#3765](https://github.com/DevExpress/testcafe/issues/3765), [#4675](https://github.com/DevExpress/testcafe/issues/4675))
+* Added TypeScript definitions for the `timestamp` property in request and response data objects ([#4718](https://github.com/DevExpress/testcafe/issues/4718))
+* You can now execute asynchronous code in the custom response function ([#4467](https://github.com/DevExpress/testcafe/issues/4467))
+* TestCafe now emits the `beforeInput` event for `contentEditable` elements ([#4644](https://github.com/DevExpress/testcafe/issues/4644))
+* Added TypeScript definitions for the `runner.video` method ([PR#4636](https://github.com/DevExpress/testcafe/pull/4636))
+* Hammerhead now overrides the `EventTarget` class methods ([testcafe-hammerhead/#1902](https://github.com/DevExpress/testcafe-hammerhead/issues/1902))
+* A proxied request no longer hangs if the request to the original site emits an error ([testcafe-hammerhead/#1961](https://github.com/DevExpress/testcafe-hammerhead/issues/1961))
+* Fixed a memory leak that occurred due to unclosed sockets ([testcafe-hammerhead/#2149](https://github.com/DevExpress/testcafe-hammerhead/issues/2149))
+* Pages that iterate through large element collections before `DOMContentLoaded` no longer hang ([testcafe-hammerhead/#2198](https://github.com/DevExpress/testcafe-hammerhead/issues/2198))
+* Hammerhead no longer throws a JavaScript error when it proxies pages with the YouTube player ([testcafe-hammerhead/#2220](https://github.com/DevExpress/testcafe-hammerhead/issues/2220))
+* Fixed a wrong code instrumentation ([testcafe-hammerhead/#2212](https://github.com/DevExpress/testcafe-hammerhead/issues/2212))
+
+## v1.8.1 (2020-1-23)
+
+### Bug Fixes
+
+* TestCafe now starts correctly when unsupported browsers are installed in the system ([#4661](https://github.com/DevExpress/testcafe/issues/4661))
+* `t.getBrowserConsoleMessages` now returns a list of recorded console messages instead of `undefined` ([#4662](https://github.com/DevExpress/testcafe/issues/4662))
+
+## v1.8.0 (2020-1-17)
+
+### :star2: Support for the New Microsoft Edge
+
+TestCafe v1.8.0 supports the new Microsoft Edge based on Chromium. The new Edge is available under the same [alias](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/browser-support.html#locally-installed-browsers): `edge`.
+
+```sh
+testcafe edge test.js
+```
+
+```js
+await runner
+    .src('test.js')
+    .browsers('edge')
+    .run();
+```
+
+Supported Edge's features include [headless mode](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/testing-in-headless-mode.html), [mobile device emulation](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/using-chrome-device-emulation.html), and [video recording](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html#record-videos).
+
+### Bug Fixes
+
+* Fixed an error thrown when the webpage creates a `Proxy` ([testcafe-hammerhead/#2206](https://github.com/DevExpress/testcafe-hammerhead/issues/2206)) by [@link89](https://github.com/link89)
+* Event handlers are no longer cleared after the `document.open` function call ([testcafe-hammerhead/#1881](https://github.com/DevExpress/testcafe-hammerhead/issues/1881))
+
+## v1.7.1 (2019-12-19)
+
+### Bug Fixes
+
+* Status bar has been redesigned to fit the debug panel into small screens and emulated mobile devices ([#2510](https://github.com/DevExpress/testcafe/issues/2510))
+* Added timestamp to requests logged with `RequestLogger` ([#3738](https://github.com/DevExpress/testcafe/issues/3738))
+* `t.typeText` now fires the `beforeInput` event ([#4486](https://github.com/DevExpress/testcafe/issues/4486))
+* The `t.hover` action can now be detected with the jQuery `:hover` pseudoselector ([#4493](https://github.com/DevExpress/testcafe/issues/4493))
+* `Object.assign` now merges `Symbol` properties on tested pages correctly ([testcafe-hammerhead/#2189](https://github.com/DevExpress/testcafe-hammerhead/issues/2189))
+
 ## v1.7.0 (2019-11-21)
 
 ### Enhancements

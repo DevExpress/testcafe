@@ -20,15 +20,17 @@ import FlagList from '../utils/flag-list';
 import prepareReporters from '../utils/prepare-reporters';
 import loadClientScripts from '../custom-client-scripts/load';
 import { setUniqueUrls } from '../custom-client-scripts/utils';
+import { getConcatenatedValuesString } from '../utils/string';
+import ReporterStreamController from './reporter-stream-controller';
 
 const DEBUG_LOGGER = debug('testcafe:runner');
 
 export default class Runner extends EventEmitter {
-    constructor (proxy, browserConnectionGateway, configuration) {
+    constructor (proxy, browserConnectionGateway, configuration, compilerService) {
         super();
 
         this.proxy               = proxy;
-        this.bootstrapper        = this._createBootstrapper(browserConnectionGateway);
+        this.bootstrapper        = this._createBootstrapper(browserConnectionGateway, compilerService);
         this.pendingTaskPromises = [];
         this.configuration       = configuration;
         this.isCli               = false;
@@ -41,8 +43,8 @@ export default class Runner extends EventEmitter {
         ]);
     }
 
-    _createBootstrapper (browserConnectionGateway) {
-        return new Bootstrapper(browserConnectionGateway);
+    _createBootstrapper (browserConnectionGateway, compilerService) {
+        return new Bootstrapper(browserConnectionGateway, compilerService);
     }
 
     _disposeBrowserSet (browserSet) {
@@ -113,13 +115,13 @@ export default class Runner extends EventEmitter {
         task.on('browser-job-done', job => browserSet.releaseConnection(job.browserConnection));
 
         const browserSetErrorPromise = promisifyEvent(browserSet, 'error');
+        const streamController       = new ReporterStreamController(task, reporters);
 
         const taskDonePromise = task.once('done')
             .then(() => browserSetErrorPromise.cancel())
             .then(() => {
                 return Promise.all(reporters.map(reporter => reporter.pendingTaskDonePromise));
             });
-
 
         const promises = [
             taskDonePromise,
@@ -140,6 +142,9 @@ export default class Runner extends EventEmitter {
 
         await this._disposeAssets(browserSet, reporters, testedApp);
 
+        if (streamController.multipleStreamError)
+            throw streamController.multipleStreamError;
+
         return this._getFailedTestCount(task, reporters[0]);
     }
 
@@ -148,10 +153,10 @@ export default class Runner extends EventEmitter {
     }
 
     _runTask (reporterPlugins, browserSet, tests, testedApp) {
-        let completed           = false;
         const task              = this._createTask(tests, browserSet.browserConnectionGroups, this.proxy, this.configuration.getOptions());
-        const reporters         = reporterPlugins.map(reporter => new Reporter(reporter.plugin, task, reporter.outStream));
+        const reporters         = reporterPlugins.map(reporter => new Reporter(reporter.plugin, task, reporter.outStream, reporter.name));
         const completionPromise = this._getTaskResult(task, browserSet, reporters, testedApp);
+        let completed           = false;
 
         task.on('start', startHandlingTestErrors);
 
@@ -311,6 +316,34 @@ export default class Runner extends EventEmitter {
         this._validateProxyBypassOption();
     }
 
+    _validateTestForAllowMultipleWindowsOption (tests) {
+        if (tests.some(test => test.isLegacy))
+            throw new GeneralError(RUNTIME_ERRORS.cannotUseAllowMultipleWindowsOptionForLegacyTests);
+    }
+
+    _validateBrowsersForAllowMultipleWindowsOption (browserSet) {
+        const browserConnections            = browserSet.browserConnectionGroups.map(browserConnectionGroup => browserConnectionGroup[0]);
+        const unsupportedBrowserConnections = browserConnections.filter(browserConnection => !browserConnection.activeWindowId);
+
+        if (!unsupportedBrowserConnections.length)
+            return;
+
+        const unsupportedBrowserAliases = unsupportedBrowserConnections.map(browserConnection => browserConnection.browserInfo.alias);
+        const browserAliases            = getConcatenatedValuesString(unsupportedBrowserAliases);
+
+        throw new GeneralError(RUNTIME_ERRORS.cannotUseAllowMultipleWindowsOptionForSomeBrowsers, browserAliases);
+    }
+
+    _validateAllowMultipleWindowsOption (tests, browserSet) {
+        const allowMultipleWindows = this.configuration.getOption(OPTION_NAMES.allowMultipleWindows);
+
+        if (!allowMultipleWindows)
+            return;
+
+        this._validateTestForAllowMultipleWindowsOption(tests);
+        this._validateBrowsersForAllowMultipleWindowsOption(browserSet);
+    }
+
     _createRunnableConfiguration () {
         return this.bootstrapper
             .createRunnableConfiguration()
@@ -341,7 +374,7 @@ export default class Runner extends EventEmitter {
         this.bootstrapper.reporters            = this.configuration.getOption(OPTION_NAMES.reporter) || this.bootstrapper.reporters;
         this.bootstrapper.tsConfigPath         = this.configuration.getOption(OPTION_NAMES.tsConfigPath);
         this.bootstrapper.clientScripts        = this.configuration.getOption(OPTION_NAMES.clientScripts) || this.bootstrapper.clientScripts;
-        this.bootstrapper.allowMultipleWindows = this.configuration.getOption(OPTION_NAMES.allowMultipleWindows) || this.bootstrapper.allowMultipleWindows;
+        this.bootstrapper.allowMultipleWindows = this.configuration.getOption(OPTION_NAMES.allowMultipleWindows);
     }
 
     // API
@@ -486,6 +519,8 @@ export default class Runner extends EventEmitter {
             .then(() => this._createRunnableConfiguration())
             .then(async ({ reporterPlugins, browserSet, tests, testedApp, commonClientScripts }) => {
                 await this._prepareClientScripts(tests, commonClientScripts);
+
+                this._validateAllowMultipleWindowsOption(tests, browserSet);
 
                 return this._runTask(reporterPlugins, browserSet, tests, testedApp);
             });

@@ -150,6 +150,14 @@ export default class TestRunController extends AsyncEventEmitter {
             await this._emitTestRunDone();
     }
 
+    async _emitActionStart (args) {
+        await this.emit('test-action-start', args);
+    }
+
+    async _emitActionDone (args) {
+        await this.emit('test-action-done', args);
+    }
+
     async _emitTestRunDone () {
         // NOTE: we should report test run completion in order they were completed in browser.
         // To keep a sequence after fixture hook execution we use completion queue.
@@ -190,6 +198,20 @@ export default class TestRunController extends AsyncEventEmitter {
             });
     }
 
+    _assignTestRunEvents (testRun, connection) {
+        testRun.on('action-start', async args => this._emitActionStart(Object.assign(args, { testRun })));
+        testRun.on('action-done', async args => this._emitActionDone(Object.assign(args, { testRun })));
+
+        testRun.once('start', async () => this._emitTestRunStart());
+        testRun.once('ready', async () => {
+            if (!this.quarantine || this._isFirstQuarantineAttempt())
+                await this.emit('test-run-ready');
+        });
+        testRun.once('before-done', () => this._testRunBeforeDone());
+        testRun.once('done', () => this._testRunDone());
+        testRun.once('disconnected', () => this._testRunDisconnected(connection));
+    }
+
     get blocked () {
         return this.fixtureHookController.isTestBlocked(this.test);
     }
@@ -205,14 +227,7 @@ export default class TestRunController extends AsyncEventEmitter {
             return null;
         }
 
-        testRun.once('start', async () => this._emitTestRunStart());
-        testRun.once('ready', async () => {
-            if (!this.quarantine || this._isFirstQuarantineAttempt())
-                await this.emit('test-run-ready');
-        });
-        testRun.once('before-done', () => this._testRunBeforeDone());
-        testRun.once('done', () => this._testRunDone());
-        testRun.once('disconnected', () => this._testRunDisconnected(connection));
+        this._assignTestRunEvents(testRun, connection);
 
         testRun.start();
 
