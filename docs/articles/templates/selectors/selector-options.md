@@ -73,7 +73,7 @@ This option is in effect when TestCafe waits for the selector to return a page e
     const snapshot = await Selector('#element', { visibilityCheck: true })();
     ```
 
-If the target element is not visible, the selector throws an exception in all these cases.
+If the target element is not visible, the selector throws an exception.
 
 Note that when a selector is passed to a [test action](../../actions/README.md) as the target element's identifier, the target element should be visible regardless of the `visibilityCheck` option.
 
@@ -91,7 +91,7 @@ Consider the following page:
 </html>
 ```
 
-When a selector with `visibilitycheck` enabled is tested for an element existance or the number of matching elements, invisible elements also count.
+When a selector with `visibilitycheck` enabled is tested for an element existence or the number of matching elements, invisible elements also count.
 
 ```js
 const count = await Selector('div', { visibilityCheck: true }).count;

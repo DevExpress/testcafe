@@ -11,7 +11,7 @@ Selects visible elements only.
 Selector().filterVisible() → Selector
 ```
 
-Visible are elements that *do not* have `display: none` or `visibility: hidden` CSS properties and have non-zero width and height.
+The elements that *do not* have `display: none` or `visibility: hidden` CSS properties and have non-zero width and height are considered visible.
 
 ## Example
 

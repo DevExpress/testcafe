@@ -34,7 +34,7 @@ Argument                         | Type     | Description
 `filterFn`                       | Function | The predicate used to filter the elements.
 `dependencies`&#160;*(optional)* | Object   | Functions, variables, or objects passed to the `filterFn` function.
 
-The `filterFn` predicate is executed on the client. It takes the following parameters.
+The `filterFn` predicate is executed on the client side. It takes the following parameters.
 
 Parameter | Description
 ------ | -----

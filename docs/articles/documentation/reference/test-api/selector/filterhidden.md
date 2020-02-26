@@ -11,7 +11,7 @@ Selects hidden elements only.
 Selector().filterHidden() → Selector
 ```
 
-Hidden are elements that have a `display: none` or `visibility: hidden` CSS property or zero width or height.
+The elements that have a `display: none` or `visibility: hidden` CSS property or zero width or height are considered hidden.
 
 ## Example
 

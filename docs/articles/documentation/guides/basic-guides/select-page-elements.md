@@ -19,7 +19,7 @@ For more complex queries, however, CSS selectors get longer and difficult to rea
 await t.click('div > .my-class > div:nth-child(2) > span > a[href="https://my-site.com/page"]');
 ```
 
-CSS selectors are also not capable of quering parent elements:
+CSS selectors are also not capable of querying parent elements:
 
 ```html
 <html>
@@ -36,9 +36,9 @@ CSS selectors are also not capable of quering parent elements:
 </html>
 ```
 
-To address these limitations, TestCafe introduces selector functions (or simply *selectors*).
+To address these limitations, use the TestCafe [Selector](../../reference/test-api/selector/README.md) functions.
 
-TestCafe selectors lay out in method chains and provide API to traverse through the DOM tree in jQuery style:
+TestCafe selectors are chainable and they provide API to traverse through the DOM tree in jQuery style:
 
 ```js
 const link = Selector('div')
@@ -138,7 +138,7 @@ Method                                                              | Descriptio
 [filterHidden](../../reference/test-api/selector/filterhidden.md)   | Selects hidden elements.
 [filter](../../reference/test-api/selector/filter.md)               | Finds elements that match the specified CSS selector or predicate.
 
-Methods that search for DOM elements relatively to the selected element:
+Methods that search for DOM elements relative to the selected element:
 
 Method                                                              | Description
 ------------------------------------------------------------------- | -------------
@@ -153,7 +153,7 @@ Method                                                              | Descriptio
 
 ### Check if an Element Exists
 
-Selectors can match a single DOM element on the page, multiple elements or nothing. Use the following properties to check whether matching elements exist and determine their number.
+Selectors can match a single DOM element on the page, multiple elements, or nothing. Use the following properties to check whether matching elements exist and to determine their number.
 
 Property | Type | Description
 ------ | ----- | -----
@@ -299,7 +299,7 @@ When a selector is executed, TestCafe waits for the target node to appear in the
 
 Use the [timeout](../../reference/selector.md#optionstimeout) option to specify the selector timeout in test code. To set the timeout when you launch tests, pass it to the [runner.run](../../reference/testcafe-api/runner.md#run) API method or the [--selector-timeout](../../reference/command-line-interface.md#--selector-timeout-ms) command line option.
 
-During the timeout, the selector is re-executed until it returns a DOM node or the timeout exceeds. If TestCafe cannot find the corresponding node in the DOM, the test fails.
+During the timeout, the selector is re-executed until it returns a DOM node or the timeout is exceeded. If TestCafe cannot find the corresponding node in the DOM, the test fails.
 
 > Note that you can specify that the node returned by the selector should also be visible. To do this, use the [visibilityCheck](../../reference/selector.md#optionsvisibilitycheck) option.
 

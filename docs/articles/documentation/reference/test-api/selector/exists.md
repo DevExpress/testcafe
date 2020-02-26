@@ -11,7 +11,7 @@ Determines if at least one matching element exists.
 Selector().exists → Promise<Boolean>
 ```
 
-Selector can return a single matching DOM element on the page, multiple elements or nothing. Use the `exists` property to check whether matching elements exist.
+Selector can return a single matching DOM element on the page, multiple elements, or nothing. Use the `exists` property to check whether matching elements exist.
 
 ```js
 import { Selector } from 'testcafe';
