@@ -5,7 +5,7 @@ The `filterFn` predicate is executed on the client side. It takes the following 
 Parameter | Description
 ------ | -----
 `node`  | The current matching node.
-`idx` |  A zero-based index of `node` among other matching nodes.
+`idx` |  A matching node's zero-based index.
 `originNode` | A node from the left-hand selector's matched set whose parents/siblings/children are being iterated.
 
 ```js
