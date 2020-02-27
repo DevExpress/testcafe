@@ -15,7 +15,7 @@ Selects sibling ***elements***.
 Selector().sibling() → Selector
 ```
 
-Finds all sibling ***elements*** of all nodes in the matched set.
+Finds the sibling ***elements*** of all nodes in the matched set.
 
 ### sibling(index)
 
