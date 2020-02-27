@@ -100,6 +100,6 @@ const count = await Selector('div', { visibilityCheck: true }).count;
 // does not affect the selector's matched set
 ```
 
-In case you need to filter page elements by their visibility, use [filterVisible](functional-style-selectors.md#filtervisible) and [filterHidden](functional-style-selectors.md#filterhidden) methods.
+To filter page elements by their visibility, use [filterVisible](functional-style-selectors.md#filtervisible) and [filterHidden](functional-style-selectors.md#filterhidden) methods.
 
 **Default value**: `false`
