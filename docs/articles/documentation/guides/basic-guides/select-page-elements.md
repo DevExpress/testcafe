@@ -73,7 +73,7 @@ const article = Selector(() => {
 
 In this example, the `article` selector identifies an element with the `article-content` ID.
 
-You can continue the selector chain to filter elements returned by the previous selector or traverse through the DOM tree:
+You can continue the selector chain to filter elements from the previous selector or traverse through the DOM tree:
 
 ```js
 import { Selector } from 'testcafe';
