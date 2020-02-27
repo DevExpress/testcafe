@@ -41,7 +41,7 @@ test('My Test', async t => {
 
 **Type**: Number
 
-The amount of time, in milliseconds, allowed for an element returned by the selector to appear in the DOM before the test fails.
+The time (in milliseconds) allowed for an element returned by the selector to appear in the DOM before the test fails.
 
 If the [visibilityCheck](#optionsvisibilitycheck) option is enabled, the element then must become visible within the `timeout`.
 
