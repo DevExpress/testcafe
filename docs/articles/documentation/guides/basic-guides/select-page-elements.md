@@ -5,7 +5,7 @@ permalink: /documentation/guides/basic-guides/select-page-elements.html
 ---
 # Select Page Elements
 
-TestCafe requires that you identify the target page element to perform an [action](interact-with-the-page.md) with it (click, drag, etc.) or check its state in an [assertion](assert.md).
+You should identify the target page element to perform an [action](interact-with-the-page.md) with it (click, drag, etc.) or check its state in an [assertion](assert.md).
 
 You can pass a CSS selector to an action function to specify the target element:
 
