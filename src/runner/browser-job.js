@@ -1,4 +1,4 @@
-import { remove } from 'lodash';
+import { pull as remove } from 'lodash';
 import AsyncEventEmitter from '../utils/async-event-emitter';
 import TestRunController from './test-run-controller';
 import SessionController from '../test-run/session-controller';
@@ -25,6 +25,7 @@ export default class BrowserJob extends AsyncEventEmitter {
         this.testRunControllerQueue = tests.map((test, index) => this._createTestRunController(test, index));
 
         this.completionQueue = [];
+        this.reportsPending  = [];
 
         this.connectionErrorListener = error => this._setResult(RESULT.errored, error);
 
@@ -95,6 +96,8 @@ export default class BrowserJob extends AsyncEventEmitter {
             testRunController = this.completionQueue.shift();
 
             await this.emit('test-run-done', testRunController.testRun);
+
+            remove(this.reportsPending, testRunController);
         }
 
         if (!this.completionQueue.length && !this.hasQueuedTestRuns) {
@@ -116,15 +119,17 @@ export default class BrowserJob extends AsyncEventEmitter {
         while (this.testRunControllerQueue.length) {
             // NOTE: before hook for test run fixture is currently
             // executing, so test run is temporary blocked
-            const isBlocked             = this.testRunControllerQueue[0].blocked;
-            const isConcurrency         = this.opts.concurrency > 1;
-            const hasIncompleteTestRuns = this.completionQueue.some(controller => !controller.done);
+            const testRunController         = this.testRunControllerQueue[0];
+            const isBlocked                 = testRunController.blocked;
+            const isConcurrency             = this.opts.concurrency > 1;
+            const hasIncompleteTestRuns     = this.completionQueue.some(controller => !controller.done);
+            const needWaitLastTestInFixture = this.reportsPending.some(controller => controller.test.fixture !== testRunController.test.fixture);
 
-            if (isBlocked || hasIncompleteTestRuns && !isConcurrency)
+            if (isBlocked || needWaitLastTestInFixture || hasIncompleteTestRuns && !isConcurrency)
                 break;
 
-            const testRunController = this.testRunControllerQueue.shift();
-
+            this.reportsPending.push(testRunController);
+            this.testRunControllerQueue.shift();
             this._addToCompletionQueue(testRunController);
 
             if (!this.started) {
