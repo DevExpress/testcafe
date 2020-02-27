@@ -16,7 +16,7 @@ Parameter              | Type     | Description
 `init`                 | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies a DOM node to be selected. See [Initialize Selectors](#initialize-selectors).
 `options`&#160;*(optional)* | Object   | See [Selector Options](#options).
 
-The following example creates a selector from a CSS string for an element with ID `username`.
+The following example creates a selector from a CSS string for an element with ID `username`:
 
 ```js
 import { Selector } from 'testcafe';
