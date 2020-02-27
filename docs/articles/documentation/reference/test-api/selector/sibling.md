@@ -47,7 +47,7 @@ Argument      | Type   | Description
 Selector().sibling(filterFn [, dependencies]) → Selector
 ```
 
-Finds all sibling ***elements*** of all nodes in the matched set and filters them by a predicate.
+Finds the sibling ***elements*** of all nodes in the matched set uses a predicate to filter them.
 
 Argument                         | Type     | Description
 -------------------------------- | -------- | --------------
