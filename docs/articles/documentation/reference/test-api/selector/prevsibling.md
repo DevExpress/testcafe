@@ -47,7 +47,7 @@ Argument      | Type   | Description
 Selector().prevSibling(filterFn [, dependencies]) → Selector
 ```
 
-Finds all preceding sibling ***elements*** of all nodes in the matched set and filters them by a predicate.
+Finds all preceding sibling ***elements*** of all nodes in the matched set and uses a predicate to filter them.
 
 Argument                         | Type     | Description
 -------------------------------- | -------- | --------------
