@@ -6,7 +6,7 @@
 
 If you need to call a selector from a Node.js callback, assign the current [test controller](../../test-code-structure.md#test-controller) to the `boundTestRun` option.
 
-For details, see [Calling Selectors from Node.js Callbacks](edge-cases-and-limitations.md#calling-selectors-from-nodejs-callbacks).
+For more information, see [Calling Selectors from Node.js Callbacks](edge-cases-and-limitations.md#calling-selectors-from-nodejs-callbacks).
 
 ### options.dependencies
 
