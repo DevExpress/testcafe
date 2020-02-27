@@ -19,7 +19,7 @@ For more complex queries, however, CSS selectors get longer and difficult to rea
 await t.click('div > .my-class > div:nth-child(2) > span > a[href="https://my-site.com/page"]');
 ```
 
-CSS selectors are also not capable of querying parent elements:
+CSS selectors cannot querying parent elements:
 
 ```html
 <html>
