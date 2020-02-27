@@ -35,7 +35,7 @@ Argument | Type   | Description
 Selector().sibling(cssSelector) → Selector
 ```
 
-Finds all sibling ***elements*** of all nodes in the matched set and filters them by a CSS selector.
+Finds all sibling ***elements*** of all nodes in the matched set and uses a CSS selector to filter them.
 
 Argument      | Type   | Description
 ------------- | ------ | --------------
