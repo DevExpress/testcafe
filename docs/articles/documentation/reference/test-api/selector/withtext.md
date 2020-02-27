@@ -60,7 +60,7 @@ Consider the following markup.
 </div>
 ```
 
-A selector that targets `div` elements with text `foo` matches both elements (first, the parent and then, the child).
+A selector that targets `div` elements with the text `foo` matches both elements (the parent followed by the child).
 
 ```js
 // This selector matches the parent div (.container)
