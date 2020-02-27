@@ -1,4 +1,4 @@
-Functions that search for elements through the DOM tree allow you to filter the matched set by a `filterFn` predicate.
+Functions that search for elements in the DOM tree allow you to use a `filterFn` predicate to filter the matched set.
 
 The `filterFn` predicate is executed on the client side. It takes the following parameters.
 
