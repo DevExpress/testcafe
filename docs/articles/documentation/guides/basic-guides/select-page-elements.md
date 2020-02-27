@@ -209,7 +209,7 @@ test('Obtain Element State', async t => {
 
 #### DOM Node Snapshot
 
-If you need to use an object's state multiple times in the test, you may want to get the object that contains [all the data](../../reference/test-api/domnodestate.md) in one turnaround to the client. To obtain this object (*DOM Node Snapshot*), call the selector with the `await` keyword:
+To use an object's state multiple times in the test, get the object that contains [all the data](../../reference/test-api/domnodestate.md) in one turnaround to the client. To obtain this object (*DOM Node Snapshot*), call the selector with the `await` keyword:
 
 ```js
 import { Selector } from 'testcafe';
