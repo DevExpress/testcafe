@@ -48,7 +48,7 @@ test('Check Label HTML', async t => {
 If you use TypeScript, declare a Selector interface extension with your custom properties:
 
 <!--
-The `redcarpet` library ignores `ts` code and renders it as a plain text without code highligting.
+The `redcarpet` library ignores `ts` code and renders it as a plain text without highlighting code.
 We can't use `js` here too. It's rendered wrong because of the type casting syntax. `csharp` looks
 ok for TypeScript code highlighting so we'll use it until we are not fixed the problem with `redcarpet`.
 -->
