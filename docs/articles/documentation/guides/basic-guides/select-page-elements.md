@@ -126,7 +126,7 @@ const sel = Selector('div').child();
 
 ### Member Tables
 
-Methods that filter elements returned by the selector:
+The following methods filter elements from the selector:
 
 Method                                                              | Description
 ------------------------------------------------------------------- | -------------
