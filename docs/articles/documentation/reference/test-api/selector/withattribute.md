@@ -16,7 +16,7 @@ Argument                     | Type                 | Description
 `attrName`                    | String &#124; RegExp | The attribute name. This parameter is case-sensitive.
 `attrValue`&#160;*(optional)* | String &#124; RegExp | The attribute value. This parameter is case-sensitive. You can omit it to select elements that have the `attrName` attribute regardless of the value.
 
-If `attrName` or `attrValue` is a string, `withAttribute` selects an element by strict match.
+If `attrName` or `attrValue` is a string, `withAttribute` uses **strict match** to select an element.
 
 ## Examples
 
