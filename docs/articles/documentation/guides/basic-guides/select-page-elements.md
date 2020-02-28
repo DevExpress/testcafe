@@ -368,7 +368,7 @@ test('My Test', async t => {
 
 ## Framework-Specific Selectors
 
-TestCafe selector functions are based on CSS selectors or client JS code, which suit for any HTML5 website. However, if you use a front-end framework, you may want your tests to leverage the framework architecture specifics to locate elements more precisely. For instance, you could use the component tree for React or element bindings for Aurelia.
+TestCafe selector functions are based on CSS selectors or client JS code, which is suitable for HTML5 websites. However, if you use a front-end framework, selectors based on framework-specific entities can improve locating elements. For instance, use the component tree for React or element bindings for Aurelia.
 
 For this purpose, the TestCafe team and community have developed libraries of dedicated selectors for the most popular frameworks.
 
