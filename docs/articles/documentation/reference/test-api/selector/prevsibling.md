@@ -15,7 +15,7 @@ Selects preceding sibling ***elements***.
 Selector().prevSibling() → Selector
 ```
 
-Finds all preceding sibling ***elements*** of all nodes in the matched set.
+Finds the preceding sibling ***elements*** of all nodes in the matched set.
 
 ### prevSibling(index)
 
@@ -23,7 +23,7 @@ Finds all preceding sibling ***elements*** of all nodes in the matched set.
 Selector().prevSibling(index) → Selector
 ```
 
-Finds all preceding sibling ***elements*** of all nodes in the matched set and filters them by index.
+Finds the preceding sibling ***elements*** of all nodes in the matched set and filters them by index.
 
 Argument | Type   | Description
 -------- | ------ | --------------
@@ -35,7 +35,7 @@ Argument | Type   | Description
 Selector().prevSibling(cssSelector) → Selector
 ```
 
-Finds all preceding sibling ***elements*** of all nodes in the matched set and filters them by a CSS selector.
+Finds the preceding sibling ***elements*** of all nodes in the matched set and uses a CSS selector to filter them.
 
 Argument      | Type   | Description
 ------------- | ------ | --------------
@@ -47,7 +47,7 @@ Argument      | Type   | Description
 Selector().prevSibling(filterFn [, dependencies]) → Selector
 ```
 
-Finds all preceding sibling ***elements*** of all nodes in the matched set and uses a predicate to filter them.
+Finds the preceding sibling ***elements*** of all nodes in the matched set and uses a predicate to filter them.
 
 Argument                         | Type     | Description
 -------------------------------- | -------- | --------------

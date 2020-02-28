@@ -17,7 +17,7 @@ Finds child ***elements*** for nodes in the matched set.
 Selector().child() → Selector
 ```
 
-Finds all child ***elements*** of all nodes in the matched set.
+Finds the child ***elements*** of all nodes in the matched set.
 
 ### child(index)
 
@@ -25,7 +25,7 @@ Finds all child ***elements*** of all nodes in the matched set.
 Selector().child(index) → Selector
 ```
 
-Finds all child ***elements*** of all nodes in the matched set and filters them by index.
+Finds the child ***elements*** of all nodes in the matched set and filters them by index.
 
 Argument | Type   | Description
 -------- | ------ | --------------
@@ -37,7 +37,7 @@ Argument | Type   | Description
 Selector().child(cssSelector) → Selector
 ```
 
-Finds all child ***elements*** of all nodes in the matched set and filters them with a CSS selector.
+Finds the child ***elements*** of all nodes in the matched set and filters them with a CSS selector.
 
 Argument      | Type   | Description
 ------------- | ------ | --------------
@@ -49,7 +49,7 @@ Argument      | Type   | Description
 Selector().child(filterFn [, dependencies]) → Selector
 ```
 
-Finds all child ***elements*** of all nodes in the matched set and filters them by a predicate.
+Finds the child ***elements*** of all nodes in the matched set and uses a predicate to filter them.
 
 Argument                         | Type     | Description
 -------------------------------- | -------- | --------------

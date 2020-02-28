@@ -23,7 +23,7 @@ Finds the sibling ***elements*** of all nodes in the matched set.
 Selector().sibling(index) → Selector
 ```
 
-Finds all sibling ***elements*** of all nodes in the matched set and filters them by index.
+Finds the sibling ***elements*** of all nodes in the matched set and filters them by index.
 
 Argument | Type   | Description
 -------- | ------ | --------------
@@ -35,7 +35,7 @@ Argument | Type   | Description
 Selector().sibling(cssSelector) → Selector
 ```
 
-Finds all sibling ***elements*** of all nodes in the matched set and uses a CSS selector to filter them.
+Finds the sibling ***elements*** of all nodes in the matched set and uses a CSS selector to filter them.
 
 Argument      | Type   | Description
 ------------- | ------ | --------------
