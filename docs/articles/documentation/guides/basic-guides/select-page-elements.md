@@ -180,7 +180,7 @@ Note that selector property getters are asynchronous.
 
 ### Obtain Element State
 
-Selectors and promises returned by selectors expose API that allows you to obtain the state (size, position, classes, etc.) of the matching element.
+Selectors and promises (returned by selectors) expose API that allows you to obtain the matching element's state (size, position, classes, etc.).
 
 ```js
 const headerText = await Selector('#header').textContent;
