@@ -153,7 +153,7 @@ Method                                                              | Descriptio
 
 ### Check if an Element Exists
 
-Selectors can match a single DOM element on the page, multiple elements, or nothing. Use the following properties to check if elements match and and the number of matching elements:
+Selectors can match a single DOM element on the page, multiple elements, or nothing. Use the following properties to check if elements match and the number of matching elements:
 
 Property | Type | Description
 ------ | ----- | -----
