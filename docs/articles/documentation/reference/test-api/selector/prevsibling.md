@@ -27,7 +27,7 @@ Finds all preceding sibling ***elements*** of all nodes in the matched set and f
 
 Argument | Type   | Description
 -------- | ------ | --------------
-`index`  | Number | The zero-based index (`0` is the closest parent). If `index` is negative, the index is counted from the end of the matched set.
+`index`  | Number | The zero-based index (`0` is the closest node). If `index` is negative, the index is counted from the end of the matched set.
 
 ### prevSibling(cssSelector)
 

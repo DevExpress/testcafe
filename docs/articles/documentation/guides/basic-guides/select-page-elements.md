@@ -7,7 +7,7 @@ permalink: /documentation/guides/basic-guides/select-page-elements.html
 
 You should identify the target page element to perform an [action](interact-with-the-page.md) with it (click, drag, etc.) or check its state in an [assertion](assert.md).
 
-You can pass a CSS selector to an action function to specify the target element:
+You can pass a CSS selector to an action to specify the target element:
 
 ```js
 await t.click('#my-button');
