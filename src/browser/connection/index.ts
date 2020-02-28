@@ -302,7 +302,7 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     // API
-    public async runInitScript (code: string): Promise<string | unknown> {
+    public runInitScript (code: string): Promise<string | unknown> {
         return new Promise(resolve => this.initScriptsQueue.push({ code, resolve }));
     }
 
