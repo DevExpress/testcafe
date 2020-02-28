@@ -6,6 +6,8 @@ import TestCafeErrorList from '../errors/error-list';
 
 export default class Reporter {
     constructor (plugin, task, outStream, name) {
+        const testsToRun = task.tests.filter(test => !test.skip);
+
         this.plugin = new ReporterPluginHost(plugin, outStream, name);
         this.task   = task;
 
@@ -13,13 +15,15 @@ export default class Reporter {
         this.passed          = 0;
         this.failed          = 0;
         this.skipped         = 0;
-        this.testCount       = task.tests.filter(test => !test.skip).length;
         this.reportQueue     = Reporter._createReportQueue(task);
         this.stopOnFirstFail = task.opts.stopOnFirstFail;
         this.outStream       = outStream;
 
         this.pendingTaskDonePromise = Reporter._createPendingPromise();
 
+        this.testCount = testsToRun.length;
+
+        this._markTestsAsFirstInFixture(testsToRun);
         this._assignTaskEventHandlers();
     }
 
@@ -82,22 +86,10 @@ export default class Reporter {
     }
 
     async _shiftReportQueue (reportItem) {
-        let currentFixture = null;
-        let nextReportItem = null;
-
         while (this.reportQueue.length && this.reportQueue[0].testRunInfo) {
-            reportItem     = this.reportQueue.shift();
-            currentFixture = reportItem.fixture;
+            reportItem = this.reportQueue.shift();
 
             await this.plugin.reportTestDone(reportItem.test.name, reportItem.testRunInfo, reportItem.test.meta);
-
-            // NOTE: here we assume that tests are sorted by fixture.
-            // Therefore, if the next report item has a different
-            // fixture, we can report this fixture start.
-            nextReportItem = this.reportQueue[0];
-
-            if (nextReportItem && nextReportItem.fixture !== currentFixture)
-                await this.plugin.reportFixtureStart(nextReportItem.fixture.name, nextReportItem.fixture.path, nextReportItem.fixture.meta);
         }
     }
 
@@ -159,16 +151,25 @@ export default class Reporter {
         });
     }
 
+    _markTestsAsFirstInFixture (tests) {
+        tests[0].isFirstTestInFixture = true;
+
+        for (let i = 1; i < tests.length; i++) {
+            const previousTest = tests[i - 1];
+            const test         = tests[i];
+
+            test.isFirstTestInFixture = test.fixture !== previousTest.fixture;
+        }
+    }
+
     _assignTaskEventHandlers () {
         const task = this.task;
 
         task.once('start', async () => {
             const startTime  = new Date();
             const userAgents = task.browserConnectionGroups.map(group => group[0].userAgent);
-            const first      = this.reportQueue[0];
 
             await this.plugin.reportTaskStart(startTime, userAgents, this.testCount);
-            await this.plugin.reportFixtureStart(first.fixture.name, first.fixture.path, first.fixture.meta);
         });
 
         task.on('test-run-start', async testRun => {
@@ -180,6 +181,9 @@ export default class Reporter {
             reportItem.pendingStarts--;
 
             if (!reportItem.pendingStarts) {
+                if (reportItem.test.isFirstTestInFixture)
+                    await this.plugin.reportFixtureStart(reportItem.fixture.name, reportItem.fixture.path, reportItem.fixture.meta);
+
                 if (this.plugin.reportTestStart)
                     await this.plugin.reportTestStart(reportItem.test.name, reportItem.test.meta);
 
