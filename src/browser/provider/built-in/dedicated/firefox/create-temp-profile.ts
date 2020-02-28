@@ -47,9 +47,13 @@ async function generatePreferences (profileDir: string, { marionettePort, config
         'user_pref("devtools.toolbox.host", "window");',
         'user_pref("devtools.toolbox.previousHost", "bottom");',
         'user_pref("signon.rememberSignons", false);',
-        'user_pref("dom.min_timeout_value", 0);',
-        'user_pref("dom.min_background_timeout_value", 0);',
-        'user_pref("dom.timeout.throttling_delay", 0);'
+        // NOTE: dom.min_background_timeout_value should be equal to dom.min_timeout_value
+        'user_pref("dom.min_background_timeout_value", 4);',
+        'user_pref("dom.timeout.throttling_delay", 0);',
+        'user_pref("dom.timeout.budget_throttling_max_delay", 0);',
+        // NOTE: We set the foreground configuration for the background budget throttling parameters
+        'user_pref("dom.timeout.background_throttling_max_budget", -1);',
+        'user_pref("dom.timeout.background_budget_regeneration_rate", 1);'
     ];
 
     if (marionettePort) {
