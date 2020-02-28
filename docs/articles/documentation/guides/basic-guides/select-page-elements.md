@@ -290,7 +290,7 @@ test('Assertion with Selector', async t => {
 });
 ```
 
-When you pass selector properties instead of values, TestCafe enables [Smart Assertion Query Mechanism](assert.md#smart-assertion-query-mechanism) to avoid accidental errors and unstable tests. In this example, the assertion does not fail immediately if the condition does not match. TestCafe recalculates the `developerNameInput.value` property value until the assertion passes or the timeout expires.
+When you pass selector properties instead of values, TestCafe enables [Smart Assertion Query Mechanism](assert.md#smart-assertion-query-mechanism) to avoid errors and unstable tests. In this example, the assertion does not fail immediately if the condition does not match - TestCafe recalculates the `developerNameInput.value` property value until the assertion passes or the timeout expires.
 
 ## Selector Timeout
 
