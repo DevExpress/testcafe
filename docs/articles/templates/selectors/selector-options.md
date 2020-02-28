@@ -91,7 +91,7 @@ Consider the following page:
 </html>
 ```
 
-When a selector with `visibilitycheck` enabled is tested for an element existence or the number of matching elements, invisible elements also count.
+When you use a selector with `visibilityCheck` enabled to determine if an element exists or to count matching elements, TestCafe also takes into account invisible elements.
 
 ```js
 const count = await Selector('div', { visibilityCheck: true }).count;

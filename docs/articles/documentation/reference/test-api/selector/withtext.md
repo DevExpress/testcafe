@@ -50,7 +50,7 @@ Selector('div').withText(/a[b-e]/);
 
 ## Notes
 
-`withText` selects the element that immediately contains the specified text and its ancestors.
+`withText` selects the element that contains the specified text and its ancestors.
 
 Consider the following markup.
 

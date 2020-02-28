@@ -249,7 +249,7 @@ test('My Test', async t => {
 
 If the selector matches multiple DOM nodes, the action is executed for the first node.
 
-Before an action is performed, TestCafe waits for the target element to appear in the DOM and become visible. If this does not happen within the [selector timeout](#selector-timeout), the test fails.
+Before an action is performed, TestCafe waits for the target element to be in the DOM and become visible. If this does not happen within the [selector timeout](#selector-timeout), the test fails.
 
 You can also pass DOM element snapshots to test actions.
 
@@ -308,7 +308,7 @@ TestCafe outputs information about failed selectors to test run reports.
 
 When you try to use a selector that does not match any DOM element, the test fails and an error is thrown. The error message indicates which selector has failed.
 
-An error can also occur when you call [selector's methods](#member-tables) in a chain. These methods are applied to the selector one by one. TestCafe detects a method after which the selector no longer matches any DOM element. This method is highlighted in the error message.
+An error can also occur when you call a [selector's methods](#member-tables) in a chain. These methods are applied to the selector one by one. TestCafe detects the first method that returns no elements and highlights it in the error message.
 
 ![Selector methods in a report](../../../../images/failed-selector-report.png)
 
