@@ -1,4 +1,4 @@
-import { pull as remove } from 'lodash';
+import { pull as remove, groupBy } from 'lodash';
 import moment from 'moment';
 import AsyncEventEmitter from '../utils/async-event-emitter';
 import BrowserJob from './browser-job';
@@ -29,6 +29,7 @@ export default class Task extends AsyncEventEmitter {
         this.fixtureHookController = new FixtureHookController(tests, browserConnectionGroups.length);
         this.pendingBrowserJobs    = this._createBrowserJobs(proxy, this.opts);
         this.clientScriptRoutes    = clientScriptsRouting.register(proxy, tests);
+        this.testStructure         = this._prepareTestStructure(tests);
 
         if (this.opts.videoPath)
             this.videoRecorders = this._createVideoRecorders(this.pendingBrowserJobs);
@@ -72,6 +73,32 @@ export default class Task extends AsyncEventEmitter {
             await this.emit('test-action-done', args);
         });
 
+    }
+
+    _prepareTestStructure (tests) {
+        const groups = groupBy(tests, 'fixture.id');
+
+        return Object.keys(groups).map(fixtureId => {
+            const testsByGroup = groups[fixtureId];
+            const fixture      = testsByGroup[0].fixture;
+
+            return {
+                fixture: {
+                    id:      fixture.id,
+                    name:    fixture.name,
+                    pageUrl: fixture.pageUrl,
+                    path:    fixture.path,
+                    tests:   testsByGroup.map(test => {
+                        return {
+                            id:      test.id,
+                            name:    test.name,
+                            pageUrl: test.pageUrl,
+                            skip:    test.skip
+                        };
+                    })
+                }
+            };
+        });
     }
 
     _createBrowserJobs (proxy, opts) {

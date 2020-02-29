@@ -1,6 +1,7 @@
 const { expect }        = require('chai');
 const { chunk, random } = require('lodash');
 const Reporter          = require('../../lib/reporter');
+const Task              = require('../../lib/runner/task');
 const AsyncEventEmitter = require('../../lib/utils/async-event-emitter');
 const delay             = require('../../lib/utils/delay');
 
@@ -319,6 +320,8 @@ describe('Reporter', () => {
                     'warning3'
                 ]
             };
+
+            this.testStructure = Task.prototype._prepareTestStructure.call(this, testMocks);
         }
     }
 
