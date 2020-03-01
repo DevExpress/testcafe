@@ -144,7 +144,7 @@ After a test is completed, TestCafe resets the browser state:
 * clears local and session storages
 * reloads the tested page
 
-This saves you from having to write code you to reset the app state and take care of the changes your tests make. As a result, your tests are stable, easy to write and read, and free from boilerplate code.
+This saves you from having to write code to reset the app state and take care of the changes your tests make. As a result, your tests are stable, easy to write and read, and free from boilerplate code.
 
 If you run several tests in parallel, each test run obtains an independent server-side context. This prevents server-side collisions as well.
 
