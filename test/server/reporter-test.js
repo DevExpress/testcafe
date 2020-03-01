@@ -2,7 +2,6 @@ const { expect }        = require('chai');
 const { chunk, random } = require('lodash');
 const Reporter          = require('../../lib/reporter');
 const Task              = require('../../lib/runner/task');
-const AsyncEventEmitter = require('../../lib/utils/async-event-emitter');
 const delay             = require('../../lib/utils/delay');
 
 describe('Reporter', () => {
@@ -16,29 +15,37 @@ describe('Reporter', () => {
 
     const fixtureMocks = [
         {
-            name: 'fixture1',
-            path: './file1.js',
-            meta: {
+            id:      'fid1',
+            pageUrl: 'furl1',
+            name:    'fixture1',
+            path:    './file1.js',
+            meta:    {
                 run: 'run-001'
             }
         },
         {
-            name: 'fixture2',
-            path: './file1.js',
-            meta: {
+            id:      'fid2',
+            pageUrl: 'furl2',
+            name:    'fixture2',
+            path:    './file1.js',
+            meta:    {
                 run: 'run-002'
             }
         },
         {
-            name: 'fixture3',
-            path: './file2.js',
-            meta: null
+            id:      'fid3',
+            pageUrl: 'furl3',
+            name:    'fixture3',
+            path:    './file2.js',
+            meta:    null
         }
     ];
 
     const testMocks = [
         {
+            id:          'idf1t1',
             name:        'fixture1test1',
+            pageUrl:     'urlf1t1',
             fixture:     fixtureMocks[0],
             skip:        false,
             screenshots: [{
@@ -48,12 +55,15 @@ describe('Reporter', () => {
                 takenOnFail:       false,
                 quarantineAttempt: 2
             }],
-            meta: {
+            clientScripts: [],
+            meta:          {
                 run: 'run-001'
             }
         },
         {
+            id:          'idf1t2',
             name:        'fixture1test2',
+            pageUrl:     'urlf1t2',
             fixture:     fixtureMocks[0],
             skip:        false,
             screenshots: [{
@@ -69,55 +79,74 @@ describe('Reporter', () => {
                 takenOnFail:       true,
                 quarantineAttempt: null
             }],
-            meta: {
+            clientScripts: [],
+            meta:          {
                 run: 'run-001'
             }
         },
         {
-            name:    'fixture1test3',
-            skip:    false,
-            fixture: fixtureMocks[0],
-            meta:    {
+            id:            'idf1t3',
+            name:          'fixture1test3',
+            pageUrl:       'urlf1t3',
+            skip:          false,
+            fixture:       fixtureMocks[0],
+            clientScripts: [],
+            meta:          {
                 run: 'run-001'
             }
         },
         {
-            name:    'fixture2test1',
-            skip:    false,
-            fixture: fixtureMocks[1],
-            meta:    {
+            id:            'idf2t1',
+            name:          'fixture2test1',
+            pageUrl:       'urlf2t1',
+            skip:          false,
+            fixture:       fixtureMocks[1],
+            clientScripts: [],
+            meta:          {
                 run: 'run-001'
             }
         },
         {
-            name:    'fixture2test2',
-            skip:    false,
-            fixture: fixtureMocks[1],
-            meta:    {
+            id:            'idf2t2',
+            name:          'fixture2test2',
+            pageUrl:       'urlf2t2',
+            skip:          false,
+            fixture:       fixtureMocks[1],
+            clientScripts: [],
+            meta:          {
                 run: 'run-001'
             }
         },
         {
-            name:    'fixture3test1',
-            skip:    false,
-            fixture: fixtureMocks[2],
-            meta:    {
+            id:            'idf3t1',
+            name:          'fixture3test1',
+            pageUrl:       'urlf3t1',
+            skip:          false,
+            fixture:       fixtureMocks[2],
+            clientScripts: [],
+            meta:          {
                 run: 'run-001'
             }
         },
         {
-            name:    'fixture3test2',
-            skip:    true,
-            fixture: fixtureMocks[2],
-            meta:    {
+            id:            'idf3t2',
+            name:          'fixture3test2',
+            pageUrl:       'urlf3t2',
+            skip:          true,
+            fixture:       fixtureMocks[2],
+            clientScripts: [],
+            meta:          {
                 run: 'run-001'
             }
         },
         {
-            name:    'fixture3test3',
-            skip:    false,
-            fixture: fixtureMocks[2],
-            meta:    {
+            id:            'idf3t3',
+            name:          'fixture3test3',
+            pageUrl:       'urlf3t3',
+            skip:          false,
+            fixture:       fixtureMocks[2],
+            clientScripts: [],
+            meta:          {
                 run: 'run-001'
             }
         }
@@ -304,14 +333,11 @@ describe('Reporter', () => {
         }
     }
 
-    class TaskMock extends AsyncEventEmitter {
+    class TaskMock extends Task {
         constructor () {
-            super();
+            super(testMocks, chunk(browserConnectionMocks, 1), {}, { stopOnFirstFail: false });
 
-            this.tests                   = testMocks;
-            this.opts                    = { stopOnFirstFail: false };
-            this.browserConnectionGroups = chunk(browserConnectionMocks, 1);
-            this.screenshots             = new ScreenshotsMock();
+            this.screenshots = new ScreenshotsMock();
 
             this.warningLog = {
                 messages: [
@@ -320,8 +346,9 @@ describe('Reporter', () => {
                     'warning3'
                 ]
             };
+        }
 
-            this.testStructure = Task.prototype._prepareTestStructure.call(this, testMocks);
+        _createBrowserJobs () {
         }
     }
 
@@ -408,7 +435,87 @@ describe('Reporter', () => {
                         'Chrome',
                         'Firefox'
                     ],
-                    7
+                    7,
+                    [
+                        {
+                            fixture: {
+                                id:      'fid1',
+                                name:    'fixture1',
+                                pageUrl: 'furl1',
+                                path:    './file1.js',
+                                tests:   [
+                                    {
+                                        id:      'idf1t1',
+                                        name:    'fixture1test1',
+                                        pageUrl: 'urlf1t1',
+                                        skip:    false
+                                    },
+                                    {
+                                        id:      'idf1t2',
+                                        name:    'fixture1test2',
+                                        pageUrl: 'urlf1t2',
+                                        skip:    false,
+                                    },
+                                    {
+                                        id:      'idf1t3',
+                                        name:    'fixture1test3',
+                                        pageUrl: 'urlf1t3',
+                                        skip:    false
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            fixture: {
+                                id:      'fid2',
+                                name:    'fixture2',
+                                pageUrl: 'furl2',
+                                path:    './file1.js',
+                                tests:   [
+                                    {
+                                        id:      'idf2t1',
+                                        name:    'fixture2test1',
+                                        pageUrl: 'urlf2t1',
+                                        skip:    false
+                                    },
+                                    {
+                                        id:      'idf2t2',
+                                        name:    'fixture2test2',
+                                        pageUrl: 'urlf2t2',
+                                        skip:    false
+                                    }
+                                ]
+                            },
+                        },
+                        {
+                            fixture: {
+                                id:      'fid3',
+                                name:    'fixture3',
+                                pageUrl: 'furl3',
+                                path:    './file2.js',
+                                tests:   [
+                                    {
+                                        id:      'idf3t1',
+                                        name:    'fixture3test1',
+                                        pageUrl: 'urlf3t1',
+                                        skip:    false
+                                    },
+                                    {
+                                        id:      'idf3t2',
+                                        name:    'fixture3test2',
+                                        pageUrl: 'urlf3t2',
+                                        skip:    true
+                                    },
+                                    {
+                                        id:      'idf3t3',
+                                        name:    'fixture3test3',
+                                        pageUrl: 'urlf3t3',
+                                        skip:    false
+                                    }
+                                ]
+                            }
+                        }
+                    ]
                 ]
             },
             {
