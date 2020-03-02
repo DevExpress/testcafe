@@ -1,194 +1,110 @@
 - name: GETTING STARTED
   url: /documentation/getting-started/README.md
-- name: USING TESTCAFE
-  url: /documentation/using-testcafe/README.md
+- name: GUIDES
+  url: /documentation/guides/README.md
   content:
-  - name: Installing TestCafe
-    url: /documentation/using-testcafe/installing-testcafe.md
-  - name: Command Line Interface
-    url: /documentation/using-testcafe/command-line-interface.md
-  - name: Programming Interface
-    url: /documentation/using-testcafe/programming-interface/README.md
+  - name: Basic Guides
+    url: /documentation/guides/basic-guides/README.md
     content:
-    - name: TestCafe Class
-      url: /documentation/using-testcafe/programming-interface/testcafe.md
-    - name: BrowserConnection Class
-      url: /documentation/using-testcafe/programming-interface/browserconnection.md
-    - name: Runner Class
-      url: /documentation/using-testcafe/programming-interface/runner.md
-    - name: LiveModeRunner Class
-      url: /documentation/using-testcafe/programming-interface/livemoderunner.md
-    - name: createTestCafe Factory
-      url: /documentation/using-testcafe/programming-interface/createtestcafe.md
-  - name: Configuration File
-    url: /documentation/using-testcafe/configuration-file.md
-  - name: Using TestCafe Docker Image
-    url: /documentation/using-testcafe/using-testcafe-docker-image.md
-  - name: Common Concepts
-    url: /documentation/using-testcafe/common-concepts/README.md
+    - name: Install TestCafe
+      url: /documentation/guides/basic-guides/install-testcafe.md
+    - name: Organize Tests
+      url: /documentation/guides/basic-guides/organize-tests.md
+    - name: Select Page Elements
+      url: /documentation/guides/basic-guides/select-page-elements.md
+    - name: Interact with the Page
+      url: /documentation/guides/basic-guides/interact-with-the-page.md
+    - name: Assert
+      url: /documentation/guides/basic-guides/assert.md
+    - name: Obtain Client-Side Info
+      url: /documentation/guides/basic-guides/obtain-client-side-info.md
+    - name: Run Tests
+      url: /documentation/guides/basic-guides/run-tests.md
+    - name: Debug
+      url: /documentation/guides/basic-guides/debug.md
+  - name: Advanced Guides
+    url: /documentation/guides/advanced-guides/README.md
+    content:
+    - name: Authentication
+      url: /documentation/guides/advanced-guides/authentication.md
+    - name: Screenshots and Videos
+      url: /documentation/guides/advanced-guides/screenshots-and-videos.md
+    - name: Intercept HTTP Requests
+      url: /documentation/guides/advanced-guides/intercept-http-requests.md
+    - name: Inject Client Scripts
+      url: /documentation/guides/advanced-guides/inject-client-scripts.md
+    - name: Test HTTPS Features and HTTP/2 Websites
+      url: /documentation/guides/advanced-guides/test-https-features-and-http2-websites.md
+    - name: Identify the Browser and Platform
+      url: /documentation/guides/advanced-guides/identify-the-browser-and-platform.md
+    - name: Use Docker Image
+      url: /documentation/guides/advanced-guides/use-docker-image.md
+  - name: Concepts
+    url: /documentation/guides/concepts/README.md
     content:
     - name: Browsers
-      url: /documentation/using-testcafe/common-concepts/browsers/README.md
-      content:
-      - name: Browser Support
-        url: /documentation/using-testcafe/common-concepts/browsers/browser-support.md
-      - name: Testing in Headless Mode
-        url: /documentation/using-testcafe/common-concepts/browsers/testing-in-headless-mode.md
-      - name: Using Chromium Device Emulation
-        url: /documentation/using-testcafe/common-concepts/browsers/using-chromium-device-emulation.md
-      - name: User Profiles
-        url: /documentation/using-testcafe/common-concepts/browsers/user-profiles.md
-    - name: Concurrent Test Execution
-      url: /documentation/using-testcafe/common-concepts/concurrent-test-execution.md
-    - name: Live Mode
-      url: /documentation/using-testcafe/common-concepts/live-mode.md
-    - name: Screenshots and Videos
-      url: /documentation/using-testcafe/common-concepts/screenshots-and-videos.md
-    - name: Inject Scripts into Tested Pages
-      url: /documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.md
+      url: /documentation/guides/concepts/browsers.md
     - name: Reporters
-      url: /documentation/using-testcafe/common-concepts/reporters.md
-    - name: Test HTTPS and HTTP/2 Websites
-      url: /documentation/using-testcafe/common-concepts/test-https-and-http2-websites.md
-- name: TEST API
-  url: /documentation/test-api/README.md
+      url: /documentation/guides/concepts/reporters.md
+    - name: Supported Languages
+      url: /documentation/guides/concepts/supported-languages.md
+    - name: Built-in Waiting Mechanisms
+      url: /documentation/guides/concepts/built-in-waiting-mechanisms.md
+- name: REFERENCE
+  url: /documentation/reference/README.md
   content:
-  - name: Test Code Structure
-    url: /documentation/test-api/test-code-structure.md
+  - name: Test API
+    url: /documentation/reference/test-api/README.md
     content:
-    - name: Fixtures
-      url: /documentation/test-api/test-code-structure.md#fixtures
+    - name: Selector
+      url: /documentation/reference/test-api/selector/README.md
       content:
-    - name: Tests
-      url: /documentation/test-api/test-code-structure.md#tests
-      content:
-      - name: Test Controller
-        url: /documentation/test-api/test-code-structure.md#test-controller
-      - name: Setting Test Speed
-        url: /documentation/test-api/test-code-structure.md#setting-test-speed
-    - name: Specifying the Start Webpage
-      url: /documentation/test-api/test-code-structure.md#specifying-the-start-webpage
-    - name: Specifying Testing Metadata
-      url: /documentation/test-api/test-code-structure.md#specifying-testing-metadata
-      content:
-      - name: Run Tests by Metadata
-        url: /documentation/test-api/test-code-structure.md#run-tests-by-metadata
-      - name: Using Metadata in Reports
-        url: /documentation/test-api/test-code-structure.md#using-metadata-in-reports
-    - name: Initialization and Clean-Up
-      url: /documentation/test-api/test-code-structure.md#initialization-and-clean-up
-      content:
-      - name: Test Hooks
-        url: /documentation/test-api/test-code-structure.md#test-hooks
-      - name: Fixture Hooks
-        url: /documentation/test-api/test-code-structure.md#fixture-hooks
-    - name: Skipping Tests
-      url: /documentation/test-api/test-code-structure.md#skipping-tests
-  - name: Selecting Page Elements
-    url: /documentation/test-api/selecting-page-elements/README.md
-    content:
-    - name: Selectors
-      url: /documentation/test-api/selecting-page-elements/selectors/README.md
-      content:
-      - name: Creating Selectors
-        url: /documentation/test-api/selecting-page-elements/selectors/creating-selectors.md
-      - name: Using Selectors
-        url: /documentation/test-api/selecting-page-elements/selectors/using-selectors.md
-      - name: Functional-Style Selectors
-        url: /documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.md
-      - name: Selector Options
-        url: /documentation/test-api/selecting-page-elements/selectors/selector-options.md
-      - name: Extending Selectors
-        url: /documentation/test-api/selecting-page-elements/selectors/extending-selectors.md
-      - name: Edge Cases and Limitations
-        url: /documentation/test-api/selecting-page-elements/selectors/edge-cases-and-limitations.md
-    - name: DOM Node State
-      url: /documentation/test-api/selecting-page-elements/dom-node-state.md
-    - name: Framework-Specific Selectors
-      url: /documentation/test-api/selecting-page-elements/framework-specific-selectors.md
-    - name: Examples of Working with DOM Elements
-      url: /documentation/test-api/selecting-page-elements/examples-of-working-with-dom-elements.md
-  - name: Actions
-    url: /documentation/test-api/actions/README.md
-    content:
-    - name: Click
-      url: /documentation/test-api/actions/click.md
-    - name: Double Click
-      url: /documentation/test-api/actions/double-click.md
-    - name: Right Click
-      url: /documentation/test-api/actions/right-click.md
-    - name: Drag Element
-      url: /documentation/test-api/actions/drag-element.md
-    - name: Hover
-      url: /documentation/test-api/actions/hover.md
-    - name: Select Text
-      url: /documentation/test-api/actions/select-text.md
-    - name: Type Text
-      url: /documentation/test-api/actions/type-text.md
-    - name: Press Key
-      url: /documentation/test-api/actions/press-key.md
-    - name: Navigate
-      url: /documentation/test-api/actions/navigate.md
-    - name: Take Screenshot
-      url: /documentation/test-api/actions/take-screenshot.md
-    - name: Upload
-      url: /documentation/test-api/actions/upload.md
-    - name: Resize Window
-      url: /documentation/test-api/actions/resize-window.md
-    - name: Action Options
-      url: /documentation/test-api/actions/action-options.md
-  - name: Assertions
-    url: /documentation/test-api/assertions/README.md
-    content:
-    - name: Assertion API
-      url: /documentation/test-api/assertions/assertion-api.md
-  - name: Obtaining Data from the Client
-    url: /documentation/test-api/obtaining-data-from-the-client/README.md
-    content:
-    - name: Examples of Using Client Functions
-      url: /documentation/test-api/obtaining-data-from-the-client/examples-of-using-client-functions.md
-  - name: Intercepting HTTP Requests
-    url: /documentation/test-api/intercepting-http-requests/README.md
-    content:
-    - name: Log HTTP Requests
-      url: /documentation/test-api/intercepting-http-requests/logging-http-requests.md
-    - name: Mock HTTP Requests
-      url: /documentation/test-api/intercepting-http-requests/mocking-http-requests.md
-    - name: Create a Custom HTTP Request Hook
-      url: /documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.md
-    - name: Select Requests to be Handled by the Hook
-      url: /documentation/test-api/intercepting-http-requests/select-requests-to-be-handled-by-the-hook.md
-    - name: Attach Hooks to Tests and Fixtures
-      url: /documentation/test-api/intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.md
-    - name: requestOptions Object
-      url: /documentation/test-api/intercepting-http-requests/requestoptions-object.md
-  - name: Built-In Waiting Mechanisms
-    url: /documentation/test-api/built-in-waiting-mechanisms.md
-  - name: Authentication
-    url: /documentation/test-api/authentication/README.md
-    content:
-    - name: User Roles
-      url: /documentation/test-api/authentication/user-roles.md
-    - name: HTTP Authentication
-      url: /documentation/test-api/authentication/http-authentication.md
-  - name: Pausing the Test
-    url: /documentation/test-api/pausing-the-test.md
-  - name: Handling Native Dialogs
-    url: /documentation/test-api/handling-native-dialogs.md
-  - name: Working with &lt;iframes&gt;
-    url: /documentation/test-api/working-with-iframes.md
-  - name: Debugging
-    url: /documentation/test-api/debugging.md
-  - name: Identify the Browser and Platform
-    url: /documentation/test-api/identify-the-browser-and-platform.md
-  - name: Accessing Console Messages
-    url: /documentation/test-api/accessing-console-messages.md
-  - name: TypeScript Support
-    url: /documentation/test-api/typescript-support.md
-  - name: CoffeeScript Support
-    url: /documentation/test-api/coffeescript-support.md
-  - name: A-Z Index
-    url: /documentation/test-api/a-z.md
+      - name: addCustomDOMProperties Method
+        url: /documentation/reference/test-api/selector/addcustomdomproperties.md
+      - name: addCustomMethods Method
+        url: /documentation/reference/test-api/selector/addcustommethods.md
+      - name: child Method
+        url: /documentation/reference/test-api/selector/child.md
+      - name: count Property
+        url: /documentation/reference/test-api/selector/count.md
+      - name: exists Property
+        url: /documentation/reference/test-api/selector/exists.md
+      - name: filter Method
+        url: /documentation/reference/test-api/selector/filter.md
+      - name: filterHidden Method
+        url: /documentation/reference/test-api/selector/filterhidden.md
+      - name: filterVisible Method
+        url: /documentation/reference/test-api/selector/filtervisible.md
+      - name: find Method
+        url: /documentation/reference/test-api/selector/find.md
+      - name: nextSibling Method
+        url: /documentation/reference/test-api/selector/nextsibling.md
+      - name: nth Method
+        url: /documentation/reference/test-api/selector/nth.md
+      - name: parent Method
+        url: /documentation/reference/test-api/selector/parent.md
+      - name: prevSibling Method
+        url: /documentation/reference/test-api/selector/prevsibling.md
+      - name: Selector constructor
+        url: /documentation/reference/test-api/selector/selector.md
+      - name: sibling Method
+        url: /documentation/reference/test-api/selector/sibling.md
+      - name: with Method
+        url: /documentation/reference/test-api/selector/with.md
+      - name: withAttribute Method
+        url: /documentation/reference/test-api/selector/withattribute.md
+      - name: withExactText Method
+        url: /documentation/reference/test-api/selector/withexacttext.md
+      - name: withText Method
+        url: /documentation/reference/test-api/selector/withtext.md
+    - name: DOMNodeState
+      url: /documentation/reference/test-api/domnodestate.md
+  - name: Command Line Interface
+    url: /documentation/reference/command-line-interface.md
+  - name: TestCafe API
+    url: /documentation/reference/testcafe-api/README.md
+  - name: Configuration File
+    url: /documentation/reference/configuration-file.md
 - name: EXTENDING TESTCAFE
   url: /documentation/extending-testcafe/README.md
   content:
