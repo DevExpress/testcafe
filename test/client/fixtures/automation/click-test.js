@@ -773,13 +773,14 @@ $(document).ready(function () {
             clicked = true;
         });
 
-        const click = new ClickAutomation(svg, { offsetX: 40, offsetY: 40, speed: 1 });
+        const clickBody = new ClickAutomation(document.body, {});
+        const clickSvg  = new ClickAutomation(svg, { offsetX: 40, offsetY: 40, speed: 1 });
 
-        // NOTE: we need to execute the `run` method twice to satisfy required conditions in code
-        click
+        // NOTE: we need to move cursor to any element before the clicking on svg to reproduce the issue
+        clickBody
             .run()
             .then(function () {
-                return click.run();
+                return clickSvg.run();
             })
             .then(function () {
                 equal(clicked, true);
