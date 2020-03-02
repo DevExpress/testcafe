@@ -1,15 +1,24 @@
 ---
 layout: docs
-title: DOM Node State
-permalink: /documentation/test-api/selecting-page-elements/dom-node-state.html
-checked: false
+title: DOMNodeState Object
+permalink: /documentation/reference/test-api/domnodestate.html
 ---
-# DOM Node State
+# DOMNodeState Object
 
-Selectors allow you to get a server-side representation of a DOM node's state.
-This representation exposes API that is similar to DOM objects.
+Selectors allow you to get a server-side representation of a DOM node's state. This state object exposes API that is similar to DOM objects.
 
-See how to obtain element state in the [Obtain Element State](./selectors/using-selectors.md#obtain-element-state) article.
+To obtain the state, execute the selector as an asynchronous function. Promises returned by selectors also expose the state's API:
+
+```js
+const element = Selector('#my-element');
+
+const state = await element();
+console.log(state.textContent); // > ABC
+// or
+console.log(await element.textContent); // > ABC
+```
+
+See the [Obtain Element State](../../guides/basic-guides/select-page-elements.md) section for more information.
 
 ## Members Common Across All Nodes
 

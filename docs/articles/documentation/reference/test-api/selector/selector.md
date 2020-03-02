@@ -1,12 +1,11 @@
 ---
 layout: docs
-title: Creating Selectors
-permalink: /documentation/test-api/selecting-page-elements/selectors/creating-selectors.html
-checked: false
+title: Selector constructor
+permalink: /documentation/reference/test-api/selector/selector.html
 ---
-# Creating Selectors
+# Selector constructor
 
-Use the `Selector` constructor to create a selector.
+Creates a [selector](../../../guides/basic-guides/select-page-elements.md).
 
 ```text
 Selector( init [, options] )
@@ -15,9 +14,9 @@ Selector( init [, options] )
 Parameter              | Type     | Description
 ---------------------- | -------- | -------------------------------------------------------------------------------
 `init`                 | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies a DOM node to be selected. See [Initialize Selectors](#initialize-selectors).
-`options`&#160;*(optional)* | Object   | See [Selector Options](selector-options.md).
+`options`&#160;*(optional)* | Object   | See [Selector Options](#options).
 
-The following example creates a selector from a CSS string for an element with ID `username`.
+The following example creates a selector from a CSS string for an element with ID `username`:
 
 ```js
 import { Selector } from 'testcafe';
@@ -128,3 +127,5 @@ You can initialize a selector with any of these objects.
         const submitButton = Selector(elementWithIdOrClassName('main-element'));
     });
     ```
+
+{% include selectors/selector-options.md %}
