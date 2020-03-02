@@ -76,7 +76,7 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
             })
             .then(getElementUnderCursor)
             .then(currentElement => {
-                const elementUnderCursorContainsTarget = !!currentElement && this.element.contains(currentElement);
+                const elementUnderCursorContainsTarget = !!currentElement && domUtils.contains(this.element, currentElement);
 
                 if (!elementUnderCursorContainsTarget || !wasScrolled)
                     return null;

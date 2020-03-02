@@ -503,3 +503,13 @@ export function setElementValue (element, value) {
 export function isShadowElement (element) {
     return element && element.getRootNode && findDocument(element) !== element.getRootNode();
 }
+
+export function contains (element, target) {
+    if (!element || !target)
+        return false;
+
+    if (element.contains)
+        return element.contains(target);
+
+    return !!findParent(target, true, node => node === element);
+}
