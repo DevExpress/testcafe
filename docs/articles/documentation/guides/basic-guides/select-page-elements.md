@@ -36,9 +36,7 @@ CSS selectors cannot query parent elements:
 </html>
 ```
 
-To address these limitations, use the TestCafe [Selector](../../reference/test-api/selector/README.md) functions.
-
-TestCafe selectors are chainable and they provide API to traverse through the DOM tree in jQuery style:
+TestCafe's chainable [Selector](../../reference/test-api/selector/README.md) functions expose methods used to traverse through the DOM tree in jQuery style. The following example illustrates how to overcome CSS limitations with TestCafe selectors:
 
 ```js
 const link = Selector('div')
