@@ -82,10 +82,6 @@ export default class Reporter {
         return find(this.reportQueue, i => i.test === testRun.test);
     }
 
-    _updateReportItem (reportItem, testRun) {
-        reportItem.testRunIds.push(testRun.id);
-    }
-
     async _shiftReportQueue (reportItem) {
         let currentFixture = null;
         let nextReportItem = null;
@@ -179,7 +175,7 @@ export default class Reporter {
         task.on('test-run-start', async testRun => {
             const reportItem = this._getReportItemForTestRun(testRun);
 
-            this._updateReportItem(reportItem, testRun);
+            reportItem.testRunIds.push(testRun.id);
 
             if (!reportItem.startTime)
                 reportItem.startTime = new Date();
