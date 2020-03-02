@@ -15,7 +15,7 @@ Selects parent ***elements***.
 Selector().parent() → Selector
 ```
 
-Finds the parents of all nodes in the matched set (first element in the set will be the closest parent).
+Finds the parents of all nodes in the matched set (first element in the set is the closest parent).
 
 ### parent(index)
 
