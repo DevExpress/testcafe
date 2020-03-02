@@ -773,8 +773,8 @@ $(document).ready(function () {
             clicked = true;
         });
 
-        const clickBody = new ClickAutomation(document.body, {});
-        const clickSvg  = new ClickAutomation(svg, { offsetX: 40, offsetY: 40, speed: 1 });
+        const clickBody = new ClickAutomation(document.body, { offsetX: 1, offsetY: 1 });
+        const clickSvg  = new ClickAutomation(svg, { offsetX: 40, offsetY: 40 });
 
         // NOTE: we need to move cursor to any element before the clicking on svg to reproduce the issue
         clickBody
