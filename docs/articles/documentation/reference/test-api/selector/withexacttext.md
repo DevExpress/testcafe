@@ -28,4 +28,4 @@ Selector('.container').withExactText('foo');
 
 ## Notes
 
-`withExactText` selects the element that immediately contains the specified text and its ancestors (if they do not contain any other text). See an example for [withText](withtext.md#notes).
+`withExactText` selects the element that contains the specified text and its ancestors (if they do not contain any other text). See an example for [withText](withtext.md#notes).
