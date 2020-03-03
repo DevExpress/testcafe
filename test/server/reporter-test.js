@@ -440,13 +440,13 @@ describe('Reporter', () => {
                 args:   [
                     'fixture1test1',
                     {
+                        run: 'run-001'
+                    },
+                    {
                         testRunIds: [
                             'f1t1',
                             'f1t1'
                         ]
-                    },
-                    {
-                        run: 'run-001'
                     }
                 ]
             },
@@ -487,13 +487,13 @@ describe('Reporter', () => {
                 args:   [
                     'fixture1test2',
                     {
+                        run: 'run-001'
+                    },
+                    {
                         testRunIds: [
                             'f1t2',
                             'f1t2'
                         ]
-                    },
-                    {
-                        run: 'run-001'
                     }
                 ]
             },
@@ -551,13 +551,13 @@ describe('Reporter', () => {
                 args:   [
                     'fixture1test3',
                     {
+                        run: 'run-001'
+                    },
+                    {
                         testRunIds: [
                             'f1t3',
                             'f1t3'
                         ]
-                    },
-                    {
-                        run: 'run-001'
                     }
                 ]
             },
@@ -599,13 +599,13 @@ describe('Reporter', () => {
                 args:   [
                     'fixture2test1',
                     {
+                        run: 'run-001'
+                    },
+                    {
                         testRunIds: [
                             'f2t1',
                             'f2t1'
                         ]
-                    },
-                    {
-                        run: 'run-001'
                     }
                 ]
             },
@@ -637,13 +637,13 @@ describe('Reporter', () => {
                 args:   [
                     'fixture2test2',
                     {
+                        run: 'run-001'
+                    },
+                    {
                         testRunIds: [
                             'f2t2',
                             'f2t2'
                         ]
-                    },
-                    {
-                        run: 'run-001'
                     }
                 ]
             },
@@ -683,13 +683,13 @@ describe('Reporter', () => {
                 args:   [
                     'fixture3test1',
                     {
+                        run: 'run-001'
+                    },
+                    {
                         testRunIds: [
                             'f3t1',
                             'f3t1'
                         ]
-                    },
-                    {
-                        run: 'run-001'
                     }
                 ]
             },
@@ -727,13 +727,13 @@ describe('Reporter', () => {
                 args:   [
                     'fixture3test2',
                     {
+                        run: 'run-001'
+                    },
+                    {
                         testRunIds: [
                             'f3t2',
                             'f3t2'
                         ]
-                    },
-                    {
-                        run: 'run-001'
                     }
                 ]
             },
@@ -765,13 +765,13 @@ describe('Reporter', () => {
                 args:   [
                     'fixture3test3',
                     {
+                        run: 'run-001'
+                    },
+                    {
                         testRunIds: [
                             'f3t3',
                             'f3t3'
                         ]
-                    },
-                    {
-                        run: 'run-001'
                     }
                 ]
             },

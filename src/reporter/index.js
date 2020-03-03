@@ -186,7 +186,7 @@ export default class Reporter {
                 if (this.plugin.reportTestStart) {
                     const testStartInfo = { testRunIds: reportItem.testRunIds };
 
-                    await this.plugin.reportTestStart(reportItem.test.name, testStartInfo, reportItem.test.meta);
+                    await this.plugin.reportTestStart(reportItem.test.name, reportItem.test.meta, testStartInfo);
                 }
 
                 reportItem.pendingTestRunStartPromise.resolve();
