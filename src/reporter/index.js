@@ -89,12 +89,12 @@ export default class Reporter {
             reportItem     = this.reportQueue.shift();
             currentFixture = reportItem.fixture;
 
-            await this.plugin.reportTestDone(reportItem.test.name, reportItem.testRunInfo, reportItem.test.meta);
-
             // NOTE: here we assume that tests are sorted by fixture.
             // Therefore, if the next report item has a different
             // fixture, we can report this fixture start.
             nextReportItem = this.reportQueue[0];
+
+            await this.plugin.reportTestDone(reportItem.test.name, reportItem.testRunInfo, reportItem.test.meta);
 
             if (nextReportItem && nextReportItem.fixture !== currentFixture)
                 await this.plugin.reportFixtureStart(nextReportItem.fixture.name, nextReportItem.fixture.path, nextReportItem.fixture.meta);
