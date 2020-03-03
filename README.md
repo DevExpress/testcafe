@@ -75,7 +75,7 @@ TestCafe reports JS errors that it finds on the webpage.
 Tests automatically fail because of that.
 However, you can disable this.
 
-**Concurrent tests launch**<br/>
+**Concurrent test launch**<br/>
 TestCafe can open multiple instances of the same browser to run parallel
 tests which decreases test execution time.
 
