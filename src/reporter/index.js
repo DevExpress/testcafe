@@ -43,6 +43,7 @@ export default class Reporter {
         return {
             fixture:                    test.fixture,
             test:                       test,
+            testRunIds:                 [],
             screenshotPath:             null,
             screenshots:                [],
             quarantine:                 null,
@@ -174,14 +175,19 @@ export default class Reporter {
         task.on('test-run-start', async testRun => {
             const reportItem = this._getReportItemForTestRun(testRun);
 
+            reportItem.testRunIds.push(testRun.id);
+
             if (!reportItem.startTime)
                 reportItem.startTime = new Date();
 
             reportItem.pendingStarts--;
 
             if (!reportItem.pendingStarts) {
-                if (this.plugin.reportTestStart)
-                    await this.plugin.reportTestStart(reportItem.test.name, reportItem.test.meta);
+                if (this.plugin.reportTestStart) {
+                    const testStartInfo = { testRunIds: reportItem.testRunIds };
+
+                    await this.plugin.reportTestStart(reportItem.test.name, reportItem.test.meta, testStartInfo);
+                }
 
                 reportItem.pendingTestRunStartPromise.resolve();
             }
