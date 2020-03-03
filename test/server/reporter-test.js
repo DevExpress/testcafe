@@ -347,9 +347,6 @@ describe('Reporter', () => {
 
         _createBrowserJobs () {
         }
-
-        _createBrowserJobs () {
-        }
     }
 
     let log = [];
