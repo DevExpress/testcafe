@@ -1,10 +1,9 @@
 ---
 layout: docs
-title: Navigate
-permalink: /documentation/test-api/actions/navigate.html
-checked: true
+title: t.navigateTo Method
+permalink: /documentation/reference/test-api/testcontroller/navigateto.html
 ---
-# Navigate
+# t.navigateTo Method
 
 Navigates to the specified URL.
 

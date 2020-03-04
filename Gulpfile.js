@@ -538,6 +538,7 @@ gulp.task('lint-docs', () => {
         'docs/articles/**/*.md',
         '!docs/articles/faq/**/*.md',
         '!docs/articles/documentation/recipes/**/*.md',
+        '!docs/articles/templates/**/*.md',
         '!docs/articles/blog/**/*.md',
         'examples/**/*.md'
     ]).then(files => {
@@ -562,10 +563,16 @@ gulp.task('lint-docs', () => {
         return lintFiles(files, require('./.md-lint/recipes.json'));
     });
 
+    const lintTemplates = globby([
+        'docs/articles/templates/**/*.md'
+    ]).then(files => {
+        return lintFiles(files, require('./.md-lint/templates.json'));
+    });
+
     const lintReadme    = lintFiles('README.md', require('./.md-lint/readme.json'));
     const lintChangelog = lintFiles('CHANGELOG.md', require('./.md-lint/changelog.json'));
 
-    return Promise.all([lintDocsAndExamples, lintReadme, lintChangelog, lintRecipes, lintFaq, lintBlog]);
+    return Promise.all([lintDocsAndExamples, lintReadme, lintChangelog, lintRecipes, lintFaq, lintBlog, lintTemplates]);
 });
 
 gulp.task('clean-website', () => {
@@ -607,6 +614,15 @@ gulp.step('put-in-tweets', () => {
 });
 
 gulp.step('put-in-website-content', gulp.parallel('put-in-articles', 'put-in-navigation', 'put-in-posts', 'put-in-publications', 'put-in-tweets'));
+gulp.step('prepare-website-content', gulp.series('clean-website', 'fetch-assets-repo', 'put-in-website-content'));
+
+gulp.step('put-in-templates', () => {
+    return gulp
+        .src('docs/articles/templates/**/*')
+        .pipe(gulp.dest('site/src/_includes'));
+});
+
+gulp.step('put-in-website-content', gulp.parallel('put-in-articles', 'put-in-navigation', 'put-in-posts', 'put-in-publications', 'put-in-tweets', 'put-in-templates'));
 gulp.step('prepare-website-content', gulp.series('clean-website', 'fetch-assets-repo', 'put-in-website-content'));
 
 gulp.step('prepare-website', gulp.parallel('lint-docs', 'prepare-website-content'));

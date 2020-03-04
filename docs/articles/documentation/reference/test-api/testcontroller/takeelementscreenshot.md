@@ -1,61 +1,23 @@
 ---
 layout: docs
-title: Take Screenshot
-permalink: /documentation/test-api/actions/take-screenshot.html
-checked: true
+title: t.takeElementScreenshot Method
+permalink: /documentation/reference/test-api/testcontroller/takeelementscreenshot.html
 ---
-# Take Screenshot
+# t.takeElementScreenshot Method
 
-This topic describes test actions that take screenshots of the tested page.
-
-## Take a Screenshot of the Entire Page
-
-```text
-t.takeScreenshot( [options] )
-obsolete: t.takeScreenshot( [path] )
-```
-
-The `options` object can include the following properties:
-
-Parameter           | Type   | Description | Default Value
-------------------- | ------ | ----------- | ----------
-`path`&#160;*(optional)* | String | The screenshot file's relative path and name. The path is relative to the root directory specified in the [runner.screenshots](../../using-testcafe/programming-interface/runner.md#screenshots) API method or the [-s (--screenshots)](../../using-testcafe/command-line-interface.md#-s---screenshots-optionvalueoption2value2) command line option. This property overrides the relative path specified with the default or custom [path patterns](../../using-testcafe/common-concepts/screenshots-and-videos.md#screenshot-and-video-directories).
-`fullPage`&#160;*(optional)* | Boolean | Specifies that the full page should be captured, including content that is not visible due to overflow. | `false`
-
-The following example shows how to use the `t.takeScreenshot` action:
-
-```js
-import { Selector } from 'testcafe';
-
-fixture `My fixture`
-    .page `http://devexpress.github.io/testcafe/example/`;
-
-test('Take a screenshot of a fieldset', async t => {
-    await t
-        .typeText('#developer-name', 'Peter Parker')
-        .click('#submit-button')
-        .takeScreenshot({
-            path:     'my-fixture/thank-you-page.png',
-            fullPage: true
-        });
-});
-```
-
-See [Screenshots and Videos](../../using-testcafe/common-concepts/screenshots-and-videos.md) for more information.
-
-## Take a Screenshot of a Page Element
+Takes a screenshot of the specified page element.
 
 ```text
 t.takeElementScreenshot(selector[, path][, options])
 ```
 
-Takes a screenshot of the specified page element.
-
 Parameter                | Type   | Description
 ------------------------ | ------ | -----------------------------------------------------------------------------------------------------
-`selector`               | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element whose screenshot should be taken. See [Selecting Target Elements](README.md#selecting-target-elements).
+`selector`               | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element whose screenshot should be taken. See [Selecting Target Elements](#selecting-target-elements).
 `path`&#160;*(optional)* | String | The screenshot file's relative path and name. The path is relative to the root directory specified in the [runner.screenshots](../../using-testcafe/programming-interface/runner.md#screenshots) API method or the [-s (--screenshots)](../../using-testcafe/command-line-interface.md#-s---screenshots-optionvalueoption2value2) command line option. This path overrides the relative path the default or custom [path patterns](../../using-testcafe/common-concepts/screenshots-and-videos.md#screenshot-and-video-directories) specify.
 `options`&#160;*(optional)*   | Object | Options that define how the screenshot is taken. See details below.
+
+The example below demonstrates how to use `t.takeElementScreenshot` action.
 
 ```js
 import { Selector } from 'testcafe';
@@ -116,3 +78,7 @@ test('Take a screenshot of my new avatar', async t => {
 ```
 
 See [Screenshots and Videos](../../using-testcafe/common-concepts/screenshots-and-videos.md) for more information.
+
+## Selecting Target Elements
+
+{% include actions/selector-options.md %}
