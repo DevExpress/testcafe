@@ -15,29 +15,26 @@ describe('Reporter', () => {
 
     const fixtureMocks = [
         {
-            id:      'fid1',
-            pageUrl: 'furl1',
-            name:    'fixture1',
-            path:    './file1.js',
-            meta:    {
+            id:   'fid1',
+            name: 'fixture1',
+            path: './file1.js',
+            meta: {
                 run: 'run-001'
             }
         },
         {
-            id:      'fid2',
-            pageUrl: 'furl2',
-            name:    'fixture2',
-            path:    './file1.js',
-            meta:    {
+            id:   'fid2',
+            name: 'fixture2',
+            path: './file1.js',
+            meta: {
                 run: 'run-002'
             }
         },
         {
-            id:      'fid3',
-            pageUrl: 'furl3',
-            name:    'fixture3',
-            path:    './file2.js',
-            meta:    null
+            id:   'fid3',
+            name: 'fixture3',
+            path: './file2.js',
+            meta: null
         }
     ];
 
@@ -455,78 +452,64 @@ describe('Reporter', () => {
                     [
                         {
                             fixture: {
-                                id:      'fid1',
-                                name:    'fixture1',
-                                pageUrl: 'furl1',
-                                path:    './file1.js',
-                                tests:   [
+                                id:    'fid1',
+                                name:  'fixture1',
+                                tests: [
                                     {
-                                        id:      'idf1t1',
-                                        name:    'fixture1test1',
-                                        pageUrl: 'urlf1t1',
-                                        skip:    false
+                                        id:   'idf1t1',
+                                        name: 'fixture1test1',
+                                        skip: false
                                     },
                                     {
-                                        id:      'idf1t2',
-                                        name:    'fixture1test2',
-                                        pageUrl: 'urlf1t2',
-                                        skip:    false,
+                                        id:   'idf1t2',
+                                        name: 'fixture1test2',
+                                        skip: false,
                                     },
                                     {
-                                        id:      'idf1t3',
-                                        name:    'fixture1test3',
-                                        pageUrl: 'urlf1t3',
-                                        skip:    false
+                                        id:   'idf1t3',
+                                        name: 'fixture1test3',
+                                        skip: false
                                     }
                                 ]
                             }
                         },
                         {
                             fixture: {
-                                id:      'fid2',
-                                name:    'fixture2',
-                                pageUrl: 'furl2',
-                                path:    './file1.js',
-                                tests:   [
+                                id:    'fid2',
+                                name:  'fixture2',
+                                tests: [
                                     {
-                                        id:      'idf2t1',
-                                        name:    'fixture2test1',
-                                        pageUrl: 'urlf2t1',
-                                        skip:    false
+                                        id:   'idf2t1',
+                                        name: 'fixture2test1',
+                                        skip: false
                                     },
                                     {
-                                        id:      'idf2t2',
-                                        name:    'fixture2test2',
-                                        pageUrl: 'urlf2t2',
-                                        skip:    false
+                                        id:   'idf2t2',
+                                        name: 'fixture2test2',
+                                        skip: false
                                     }
                                 ]
                             },
                         },
                         {
                             fixture: {
-                                id:      'fid3',
-                                name:    'fixture3',
-                                pageUrl: 'furl3',
-                                path:    './file2.js',
-                                tests:   [
+                                id:    'fid3',
+                                name:  'fixture3',
+                                tests: [
                                     {
-                                        id:      'idf3t1',
-                                        name:    'fixture3test1',
-                                        pageUrl: 'urlf3t1',
-                                        skip:    false
+                                        id:   'idf3t1',
+                                        name: 'fixture3test1',
+                                        skip: false
                                     },
                                     {
-                                        id:      'idf3t2',
-                                        name:    'fixture3test2',
-                                        pageUrl: 'urlf3t2',
-                                        skip:    true
+                                        id:   'idf3t2',
+                                        name: 'fixture3test2',
+                                        skip: true
                                     },
                                     {
-                                        id:      'idf3t3',
-                                        name:    'fixture3test3',
-                                        pageUrl: 'urlf3t3',
-                                        skip:    false
+                                        id:   'idf3t3',
+                                        name: 'fixture3test3',
+                                        skip: false
                                     }
                                 ]
                             }
