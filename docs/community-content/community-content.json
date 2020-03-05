@@ -1,0 +1,42 @@
+[
+    {
+        "type": "article",
+        "date": "2020-02-09",
+        "title": "Improving our End-to-End Testing Culture with TestCafe",
+        "url": "https://example.com",
+        "author": "Deepu Roy",
+        "excerpt": "E2e testing is where validation has been carried out for the entire application end-to-end by simulating as an end user. Before, knowing how the Testcafe core has been implemented without selenium webdriver, let us understand few things about selenium webdriver and what it is lacking to compete in the race in the modern web technology testing tools."
+    },
+    {
+        "type": "article",
+        "date": "2020-02-09",
+        "title": "TestCafe, new kid on the block!",
+        "url": "https://example.com",
+        "author": "Deepu Roy",
+        "excerpt": "If you’re a QA it’s unlikely that you’ve never come across Selenium. It’s such a popular tool that it’s almost a synonym for Test Automation. Or it was until recently. It’s a tool with great community support, great language support, and a number of frameworks built on it with more features and flexibility (WebdriverIO, Protractor, CasperJS to name some)."
+    },
+    {
+        "type": "webinar",
+        "date": "2020-02-09",
+        "title": "Why we fancied Testcafe over Webdriver for a modern web app?",
+        "url": "https://example.com",
+        "author": "Balaji Sreenivasan",
+        "excerpt": "This document expresses about the Testcafe’s strength and implementation for an E2E web testing based on the analysis done by our QA team. And of course, let’s discuss the similarities and dissimilarities between webdriver and Testcafe’s testing framework."
+    },
+    {
+        "type": "podcast",
+        "date": "2020-02-09",
+        "title": "End-to-end web testing with TestCafe",
+        "url": "https://example.com",
+        "author": "Jennifer Proust",
+        "excerpt": "Write a real test using a sample project: this will show you how to query elements, observe page state, interact with elements, use assertions. We’ll also learn how to organize our files with the page object pattern and using hooks."
+    },
+    {
+        "type": "article",
+        "date": "2020-02-09",
+        "title": "Run integration tests with GitHub Actions (React+TestCafe)",
+        "url": "https://example.com",
+        "author": "Gaurav Chikhale",
+        "excerpt": "A while ago I was setting up integration testing at work for a react app, since we were using GitHub actions to run unit tests it make sense to use the same setup for Integration tests as well. We decided to use the TestCafe to write those tests."
+    }
+]

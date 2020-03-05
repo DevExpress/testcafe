@@ -600,13 +600,19 @@ gulp.step('put-in-publications', () => {
         .pipe(gulp.dest('site/src/_data'));
 });
 
+gulp.step('put-in-community-content', () => {
+    return gulp
+        .src('docs/community-content/**/*')
+        .pipe(gulp.dest('site/src/_data'));
+});
+
 gulp.step('put-in-tweets', () => {
     return gulp
         .src('docs/tweets/**/*')
         .pipe(gulp.dest('site/src/_data'));
 });
 
-gulp.step('put-in-website-content', gulp.parallel('put-in-articles', 'put-in-navigation', 'put-in-posts', 'put-in-publications', 'put-in-tweets'));
+gulp.step('put-in-website-content', gulp.parallel('put-in-articles', 'put-in-navigation', 'put-in-posts', 'put-in-publications', 'put-in-tweets', 'put-in-community-content'));
 gulp.step('prepare-website-content', gulp.series('clean-website', 'fetch-assets-repo', 'put-in-website-content'));
 
 gulp.step('prepare-website', gulp.parallel('lint-docs', 'prepare-website-content'));
