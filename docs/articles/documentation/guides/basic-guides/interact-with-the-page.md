@@ -13,7 +13,7 @@ Below you can find the available actions with reproducible usage examples and li
 
 ## Click
 
-Test Cafe offers three actions that allow you to click an element on the web page.
+Test Cafe has three actions that allow you to click an element on the web page.
 
 * [Click](../../reference/test-api/testcontroller/click.md)
 * [Double-Click](../../reference/test-api/testcontroller/doubleclick.md)
@@ -52,7 +52,7 @@ test('Press Key test', async t => {
         .click('#tried-test-cafe')
         // pressing 'Space' imitates clicking the checkbox again
         .pressKey('space')
-})
+});
 ```
 
 ## Navigate
@@ -140,7 +140,7 @@ test('Hover test', async t => {
 * [Drag an Element by an Offset](../../reference/test-api/testcontroller/drag.md)
 * [Drag an Element onto Another One](../../reference/test-api/testcontroller/dragtoelement.md)
 
-> The **drag** actions will not invoke integrated browser actions such as selecting text.
+> The **drag** actions do not invoke integrated browser actions such as selecting text.
 > Use them to perform drag-and-drop actions that are processed by webpage elements, not the browser.
 > To select text, use [t.selectText](../../reference/test-api/testcontroller/selecttext.md).
 
@@ -182,7 +182,7 @@ test('Upload Files test', async t => {
     await t
         .switchToIframe('.demo-frame')
         .setFilesToUpload('.dx-fileuploader-input', [
-            // substitute the following string with the path to a local file or a set of files you wish to upload
+            // substitute the following string with the path to a local file or multiple files you wish to upload
             'path/to/file'
         ]);
 });
@@ -217,7 +217,7 @@ limited to either the main window or an `<iframe>`. To use an `<iframe>` in your
 you need to switch the context from the main window to this `<iframe>` (and then probably back).
 Likewise, if several `<iframes>` are involved in your test, you will have to switch between them.
 
-To do this, use the `switchToIframe` and `switchToMainWindow` methods of the [test controller](../../reference/test-api/testcontroller/README.md).
+You can use the following methods to achieve this.
 
 * [Switch To \<iframe\>](../../reference/test-api/testcontroller/switchtoiframe.md)
 * [Switch To Main Window](../../reference/test-api/testcontroller/switchtomainwindow.md)
@@ -241,6 +241,7 @@ test('Working With iframe test', async t => {
 ## Handle Native Dialogs
 
 TestCafe allows you to handle native browser dialogs whenever they are invoked during the test run.
+
 You can close [alert](https://developer.mozilla.org/en-US/docs/Web/API/Window/alert) and
 [beforeunload](https://developer.mozilla.org/en-US/docs/Web/Events/beforeunload) dialogs,
 choose either option in [confirm](https://developer.mozilla.org/en-US/docs/Web/API/Window/confirm) dialogs
