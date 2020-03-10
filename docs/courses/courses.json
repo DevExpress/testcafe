@@ -1,0 +1,18 @@
+[
+    {
+        "title": "Learn TestCafe Quickly",
+        "source": "Coursera",
+        "date": "2020-02-09",
+        "url": "https://example.com",
+        "author": "QA Guru",
+        "profileUrl": "https://facebook.com/qaguru"
+    },
+    {
+        "title": "Learn TestCafe 2 Times Faster",
+        "source": "PluralSight",
+        "date": "2020-02-09",
+        "url": "https://example.com",
+        "author": "TestCafe Team",
+        "profileUrl": "https://devexpress.github.io/testcafe/"
+    }
+]

@@ -3,6 +3,7 @@ layout: docs
 title: Welcome to the TestCafe Team Blog!
 permalink: /team-blog/:title.html
 isTeamBlog: true
+author: Vasily Strelyaev
 nav: blog-nav
 ---
 # Welcome to the TestCafe Team Blog
