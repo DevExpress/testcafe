@@ -25,7 +25,7 @@ Parameter                      | Type    | Description                          
 `caretPos`                     | Number  | The initial caret position. A zero-based integer.                                                                                        | The length of the input field content.
 `replace`                      | Boolean | `true` to remove the current text in the target element, and `false` to leave the text as it is.                                                         | `false`
 `paste`                        | Boolean | `true` to insert the entire block of current text in a single keystroke (similar to a copy & paste function), and `false` to insert the current text character by character.                         | `false`
-`speed`   | Number | The speed of action emulation. Defines how fast TestCafe performs the action when running tests. A value between `1` (the maximum speed) and `0.01` (the minimum speed). If test speed is also specified in the [CLI](../../using-testcafe/command-line-interface.md#--speed-factor) or [programmatically](../../using-testcafe/programming-interface/runner.md#run), the action speed setting overrides test speed. | `1`
+`speed`   | Number | The speed of action emulation. Defines how fast TestCafe performs the action when running tests. A number between `1` (the maximum speed) and `0.01` (the minimum speed). If test speed is also specified in the [CLI](../../command-line-interface.md#--speed-factor), [API](../../api/runner.md#run) or in [test code](../testcontroller/settestspeed.md), the action speed setting overrides test speed. | `1`
 
 **Example**
 

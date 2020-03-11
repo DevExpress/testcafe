@@ -16,7 +16,7 @@ The `options` object can include the following properties:
 
 Parameter           | Type   | Description | Default Value
 ------------------- | ------ | ----------- | ----------
-`path`&#160;*(optional)* | String | The screenshot file's relative path and name. The path is relative to the root directory specified in the [runner.screenshots](../../../using-testcafe/programming-interface/runner.md#screenshots) API method or the [-s (--screenshots)](../../../using-testcafe/command-line-interface.md#-s---screenshots-optionvalueoption2value2) command line option. This property overrides the relative path specified with the default or custom [path patterns](../../../using-testcafe/common-concepts/screenshots-and-videos.md#screenshot-and-video-directories).
+`path`&#160;*(optional)* | String | The screenshot file's relative path and name. The path is relative to the root directory specified in the [runner.screenshots](../../api/runner.md#screenshots) API method or the [-s (--screenshots)](../../command-line-interface.md#-s---screenshots-optionvalueoption2value2) command line option. This property overrides the relative path specified with the default or custom [path patterns](../../../guides/advanced-guides/screenshots-and-videos.md#screenshot-and-video-directories).
 `fullPage`&#160;*(optional)* | Boolean | Specifies that the full page should be captured, including content that is not visible due to overflow. | `false`
 
 The following example shows how to use the `t.takeScreenshot` action.
@@ -40,4 +40,4 @@ test('Take a screenshot of a fieldset', async t => {
 
 You can also take a screenshot of a specified element with the [t.takeElementScreenshot](takeelementscreenshot.md) method.
 
-See [Screenshots and Videos](../../../using-testcafe/common-concepts/screenshots-and-videos.md) for more information on taking screenshots.
+See [Screenshots and Videos](../../../guides/advanced-guides/screenshots-and-videos.md) for more information on taking screenshots.
