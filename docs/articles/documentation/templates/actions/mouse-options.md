@@ -1,4 +1,4 @@
-# Mouse Action Options
+## Options
 
 Mouse action options are used in `t.drag` and `t.hover` actions.
 

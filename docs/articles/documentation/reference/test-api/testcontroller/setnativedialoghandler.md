@@ -92,3 +92,4 @@ test('My test', async t => {
         .click('#confirm-account-deletion');
 });
 ```
+You can get the native dialog history with the [t.getNativeDialogHistory](getnativedialoghistory.md) method.

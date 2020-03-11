@@ -1,4 +1,4 @@
-# Selecting Target Elements
+## Select Target Elements
 
 For actions that target DOM elements, use the `selector` parameter to identify the desired element.
 
@@ -15,7 +15,7 @@ You can pass any of the following objects as a `selector`.
     });
     ```
 
-* A [selector](select-page-elements.md).
+* A [selector](../../guides/basic-guides/select-page-elements.md).
 
     ```js
     import { Selector } from 'testcafe';
@@ -44,7 +44,7 @@ You can pass any of the following objects as a `selector`.
     });
     ```
 
-* A [DOM node snapshot](select-page-elements.md#dom-node-snapshot).
+* A [DOM node snapshot](../../guides/basic-guides/select-page-elements.md#dom-node-snapshot).
 
     ```js
     import { Selector } from 'testcafe';
@@ -61,7 +61,7 @@ You can pass any of the following objects as a `selector`.
     });
     ```
 
-* A Promise returned by a [selector](select-page-elements.md).
+* A Promise returned by a [selector](../../guides/basic-guides/select-page-elements.md).
 
     ```js
     import { Selector } from 'testcafe';
@@ -81,7 +81,7 @@ You can pass any of the following objects as a `selector`.
 
 Before executing an action, TestCafe waits for the target element to appear
 in the DOM and become visible. If this does not happen
-within the [selector timeout](select-page-elements.md#selector-timeout), the test fails.
+within the [selector timeout](../../guides/basic-guides/select-page-elements.md#selector-timeout), the test fails.
 
 Note that TestCafe cannot interact with page elements overlaid by a different element.
 If the target element is not on top when an action is triggered, TestCafe waits for this element to appear in the foreground.

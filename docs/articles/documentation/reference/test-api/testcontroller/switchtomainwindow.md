@@ -25,3 +25,5 @@ test('switching back to main window', async t => {
         .click('#button-in-main-window');
 });
 ```
+
+You can switch from the main window to a specified `<iframe>` with the [t.switchToIframe](switchtoiframe.md) method.

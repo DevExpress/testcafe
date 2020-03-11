@@ -32,3 +32,4 @@ test('Side menu disappears on small screens', async t => {
         .expect(menu.getStyleProperty('display')).eql('none');
 });
 ```
+You can also resize window to fit a specified type of device with [t.resizeWindowToFitDevice](resizewindowtofitdevice.md) method and maximize window with [t.maximizeWindow](maximizewindow.md).

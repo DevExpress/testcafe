@@ -15,7 +15,7 @@ Switches the test's browsing context to the specified `<iframe>`.
 
 Parameter  | Type                                              | Description
 ---------- | ------------------------------------------------- | -----------------------------------------------------------------------------------------------------------
-`selector` | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies an `<iframe>` on the tested page. See [Selecting Target Elements](#selecting-target-elements).
+`selector` | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies an `<iframe>` on the tested page. See [Select Target Elements](#select-target-elements).
 
 ```js
 import { ClientFunction } from 'testcafe';
@@ -39,6 +39,8 @@ test('switching to an iframe', async t => {
 });
 ```
 
-## Selecting Target Elements
+You can switch to the main window from the `<iframe>` with the [t.switchToMainWindow](switchtomainwindow.md) method.
+
+## Select Target Elements
 
 {% include actions/selector-options.md %}

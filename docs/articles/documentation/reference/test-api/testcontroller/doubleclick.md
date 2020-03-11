@@ -5,7 +5,7 @@ permalink: /documentation/reference/test-api/testcontroller/doubleclick.html
 ---
 # t.doubleClick Method
 
-Double-clicks an element on a web page.
+Double-clicks an element on a page.
 
 ```text
 t.doubleClick( selector [, options] )
@@ -13,8 +13,8 @@ t.doubleClick( selector [, options] )
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------
-`selector`             | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element being double-clicked. See [Selecting Target Elements](#selecting-target-elements).
-`options`&#160;*(optional)* | Object                                            | A set of options that provide additional parameters for the action. See [Click Action Options](#click-action-options).
+`selector`             | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element being double-clicked. See [Select Target Elements](#select-target-elements).
+`options`&#160;*(optional)* | Object                                            | A set of options that provide additional parameters for the action. See [Options](#options).
 
 The following example shows how to use the `t.doubleClick` action to invoke a dialog.
 
@@ -38,10 +38,10 @@ test('Invoke Image Options Dialog', async t => {
 > To select text, use the [t.selectText](selecttext.md) action or
 > [emulate a key shortcut](presskey.md) with `t.pressKey('ctrl+a')`.
 
-## Selecting Target Elements
+## Select Target Elements
 
 {% include actions/selector-options.md %}
 
-## Click Action Options
+## Options
 
 {% include actions/click-options.md %}

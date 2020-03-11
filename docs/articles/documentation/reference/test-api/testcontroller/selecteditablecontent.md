@@ -13,9 +13,9 @@ t.selectEditableContent( startSelector, endSelector [, options] )
 
 Parameter       | Type                                              | Description
 --------------- | ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-`startSelector` | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies a webpage element from which selection starts. The start position of selection is the first character of the element's text. See [Selecting Target Elements](#selecting-target-elements).
-`endSelector`   | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies a webpage element at which selection ends. The end position of selection is the last character of the element's text. See [Selecting Target Elements](#selecting-target-elements).
-`options`&#160;*(optional)*  | Object                                            | A set of options that provide additional parameters for the action. See [Basic Action Options](#basic-action-options).
+`startSelector` | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies a webpage element from which selection starts. The start position of selection is the first character of the element's text. See [Select Target Elements](#select-target-elements).
+`endSelector`   | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies a webpage element at which selection ends. The end position of selection is the last character of the element's text. See [Select Target Elements](#select-target-elements).
+`options`&#160;*(optional)*  | Object                                            | A set of options that provide additional parameters for the action. See [Options](#options).
 
 This function works for HTML elements that have the `contentEditable` attribute enabled.
 
@@ -42,10 +42,13 @@ test('Delete text within a contentEditable element', async t => {
 > If the HTML element defined by `endSelector` is located on a higher level of the page hierarchy
 > than the one defined by `startSelector`, the action will perform a backward selection.
 
-## Selecting Target Elements
+
+You can also select `<textarea>` content with the [t.selectTextareaContent](selecttextareacontent.md) method and editable content with the [t.selectEditableContent](selecteditablecontent.md) method.
+
+## Select Target Elements
 
 {% include actions/selector-options.md %}
 
-## Basic Action Options
+## Options
 
 {% include actions/basic-action-options.md %}

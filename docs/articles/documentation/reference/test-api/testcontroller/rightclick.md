@@ -6,7 +6,7 @@ checked: true
 ---
 # t.rightClick Method
 
-Right-clicks a web page element.
+Right-clicks an element on a page.
 
 ```text
 t.rightClick( selector [, options] )
@@ -14,8 +14,8 @@ t.rightClick( selector [, options] )
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------
-`selector`             | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element being right-clicked. See [Selecting Target Elements](#selecting-target-elements).
-`options`&#160;*(optional)* | Object                                            | A set of options that provide additional parameters for the action. See [Click Action Options](#click-action-options).
+`selector`             | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element being right-clicked. See [Select Target Elements](#select-target-elements).
+`options`&#160;*(optional)* | Object                                            | A set of options that provide additional parameters for the action. See [Options](#options).
 
 The following example shows how to use the `t.rightClick` action to invoke a grid's popup menu.
 
@@ -35,10 +35,10 @@ test('Popup Menu', async t => {
 > The `t.rightClick` action will not invoke integrated browser context menus, native editor menus, etc.
 > Use it to perform right clicks that are processed by webpage elements, not the browser.
 
-## Selecting Target Elements
+## Select Target Elements
 
 {% include actions/selector-options.md %}
 
-## Click Action Options
+## Options
 
 {% include actions/click-options.md %}

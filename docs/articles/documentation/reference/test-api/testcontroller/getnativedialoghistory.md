@@ -47,3 +47,5 @@ test('My test', async t => {
         .expect(history[2].type).eql('alert');
 });
 ```
+
+You can set the native dialog handler with the [t.setNativeDialogHandler](setnativedialoghandler.md) method.

@@ -5,7 +5,7 @@ permalink: /documentation/reference/test-api/testcontroller/takescreenshot.html
 ---
 # t.takeScreenshot Method
 
-Takes screenshot of the entire web page.
+Takes screenshot of the entire page.
 
 ```text
 t.takeScreenshot( [options] )
@@ -38,4 +38,6 @@ test('Take a screenshot of a fieldset', async t => {
 });
 ```
 
-See [Screenshots and Videos](../../../using-testcafe/common-concepts/screenshots-and-videos.md) for more information.
+You can also take a screenshot of a specified element with the [t.takeElementScreenshot](takeelementscreenshot.md) method.
+
+See [Screenshots and Videos](../../../using-testcafe/common-concepts/screenshots-and-videos.md) for more information on taking screenshots.

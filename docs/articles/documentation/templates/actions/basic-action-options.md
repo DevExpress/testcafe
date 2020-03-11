@@ -1,4 +1,4 @@
-# Basic Action Options
+## Options
 
 Basic action options provide additional parameters for the `t.pressKey`, `t.selectText`, `t.selectTextAreaContent` and `t.selectEditableContent` actions.
 

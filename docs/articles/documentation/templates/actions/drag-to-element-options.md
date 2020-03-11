@@ -1,4 +1,4 @@
-# dragToElement Action Options
+## Options
 
 ```js
 {

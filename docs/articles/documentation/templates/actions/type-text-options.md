@@ -1,4 +1,4 @@
-# typeText Action Options
+## Options
 
 ```js
 {

@@ -13,7 +13,7 @@ Below you can find the available actions with reproducible usage examples and li
 
 ## Click
 
-Test Cafe has three actions that allow you to click an element on the web page.
+Click actions allow you to click an element on a page.
 
 * [Click](../../reference/test-api/testcontroller/click.md)
 * [Double-Click](../../reference/test-api/testcontroller/doubleclick.md)
@@ -192,8 +192,8 @@ test('Upload Files test', async t => {
 
 Actions that allow you to take screenshots of the tested page.
 
-* [Take Screen Shot](../../reference/test-api/testcontroller/takescreenshot.md)
-* [Take Element Screen Shot](../../reference/test-api/testcontroller/takeelementscreenshot.md)
+* [Take Screenshot](../../reference/test-api/testcontroller/takescreenshot.md)
+* [Take Element Screenshot](../../reference/test-api/testcontroller/takeelementscreenshot.md)
 
 **Example**
 
@@ -252,7 +252,7 @@ or provide text to type into [prompt](https://developer.mozilla.org/en-US/docs/W
 
 ## Resize Window
 
-There are three actions that allow you to resize a browser window.
+Resize window actions allow you to maximize a browser window or resize it to fit specified width and height or a type of device.
 
 * [Resize Window](../../reference/test-api/testcontroller/resizewindow.md)
 * [Resize Window to Fit Device](../../reference/test-api/testcontroller/resizewindowtofitdevice.md)

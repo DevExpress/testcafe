@@ -27,3 +27,5 @@ test('Side menu is displayed in full screen', async t => {
         .expect(menu.visible).ok();
 });
 ```
+
+You can also resize the window to fit specified dimensions with [t.resizeWindow](resizewindow.md) method and to fit specified type of device with [t.resizeWindowToFitDevice](resizewindowtofitdevice.md)

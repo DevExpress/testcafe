@@ -5,7 +5,7 @@ permalink: /documentation/reference/test-api/testcontroller/click.html
 ---
 # t.click Method
 
-Clicks an element on a web page.
+Clicks an element on a page.
 
 ```text
 t.click( selector [, options] )
@@ -13,8 +13,8 @@ t.click( selector [, options] )
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | -----------------------------------------------------------------------------------------------------------------------
-`selector`             | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element being clicked. See [Selecting Target Elements](#selecting-target-elements).
-`options`&#160;*(optional)* | Object                                            | A set of options that provide additional parameters for the action. See [Click Action Options](#click-action-options).
+`selector`             | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element being clicked. See [Select Target Elements](#select-target-elements).
+`options`&#160;*(optional)* | Object                                            | A set of options that provide additional parameters for the action. See [Options](#options).
 
 The following example shows how to use the `t.click` action to check a checkbox element.
 
@@ -33,10 +33,10 @@ test('Click a check box and check its state', async t => {
 });
 ```
 
-## Selecting Target Elements
+## Select Target Elements
 
 {% include actions/selector-options.md %}
 
-## Click Action Options
+## Options
 
 {% include actions/click-options.md %}

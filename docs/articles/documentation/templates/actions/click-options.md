@@ -1,4 +1,4 @@
-# Click Action Options
+## Options
 
 Click action options provide additional parameters for `t.click`, `t.doubleClick` and `t.rightClick` actions.
 

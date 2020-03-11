@@ -13,8 +13,8 @@ t.hover( selector [, options] )
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | -----------------------------------------------------------------------------------------------------------------------
-`selector`             | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element being hovered over. See [Selecting Target Elements](#selecting-target-elements).
-`options`&#160;*(optional)* | Object                                            | A set of options that provide additional parameters for the action. See [Mouse Action Options](#mouse-action-options).
+`selector`             | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element being hovered over. See [Select Target Elements](#select-target-elements).
+`options`&#160;*(optional)* | Object                                            | A set of options that provide additional parameters for the action. See [Options](#options).
 
 Use this action to invoke popup elements such as hint windows, popup menus or dropdown lists that appear when hovering over other elements.
 
@@ -37,10 +37,10 @@ test('Select combo box value', async t => {
 });
 ```
 
-## Selecting Target Elements
+## Select Target Elements
 
 {% include actions/selector-options.md %}
 
-## Mouse Action Options
+## Options
 
 {% include actions/mouse-options.md %}

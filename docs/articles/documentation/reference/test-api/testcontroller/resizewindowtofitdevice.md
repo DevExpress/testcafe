@@ -40,3 +40,5 @@ test('Header is displayed on Xperia Z in portrait', async t => {
         .expect(header.getStyleProperty('display')).notEql('none');
 });
 ```
+
+You can resize window to specified dimensions with [t.resizeWindow](resizewindow.md) method and maximize window with [t.maximizeWindow](maximizewindow.md) method.
