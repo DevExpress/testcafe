@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>i4855 - Index page</title>
+</head>
+<body>
+    <!--
+        // NOTE: The problem is reproduced only for the following unstable scenario:
+        // - 'ExecuteSelectorCommand' is queried on the child page.
+        // - the child page is closed. At that moment, the result of the 'ExecuteSelectorCommand' was not sent to the server.
+        // - the parent page became a 'master' page and starts processing commands.
+        // - the initial command processing request on the new 'master' is interpreted as the 'ExecuteSelectorCommand'.
+        // This causes the crash down in the 'replicator' module.
+        // To create a stable reproducible example I am forced to guarantee that the result of the 'ExecuteSelectorCommand' isn't sent to the server.
+    -->
+    <a target="_blank" href="child.html">Open a new window</a><br/>
+    <span>Checked text</span>
+</body>
+</html>

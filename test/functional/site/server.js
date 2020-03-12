@@ -69,6 +69,24 @@ Server.prototype._setupRoutes = function () {
         res.end(parsedUA.name);
     });
 
+    this.app.get('/i4855', (req, res) => {
+        res.send(`
+            <html>
+                <body>
+                    <script>
+                        var driver = window['%testCafeDriverInstance%'];
+
+                        driver._onExecuteSelectorCommand = function () {
+                            window.setTimeout(() =>{
+                                window.close();
+                            }, 1000);
+                        };
+                    </script>
+                </body>
+            </html>
+        `);
+    });
+
     this.app.get('*', function (req, res) {
         const reqPath      = req.params[0] || '';
         const resourcePath = path.join(server.basePath, reqPath);

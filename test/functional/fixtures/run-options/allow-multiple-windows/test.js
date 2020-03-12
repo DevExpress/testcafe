@@ -72,4 +72,8 @@ describe('Allow multiple windows', () => {
                 return testCafe.close();
             });
     });
+
+    it("Should not finalize the 'ExecuteSelectorCommand' command on driver starting (GH-4855)", () => {
+        return runTests('testcafe-fixtures/i4855.js', null, { allowMultipleWindows: true });
+    });
 });
