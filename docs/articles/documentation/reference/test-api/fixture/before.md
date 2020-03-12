@@ -5,7 +5,7 @@ permalink: /documentation/reference/test-api/fixture/before.html
 ---
 # Fixture.before Method
 
-Executes the code before this fixture starts (the *before* fixture hook).
+Executes the code before the fixture starts (the *before* fixture hook).
 
 ```text
 fixture.before( fn(ctx) )

@@ -29,4 +29,4 @@ test('Type something', async t => {
 });
 ```
 
-Use the [fixture](fixture.md) global function to delcare fixtures.
+Use the [fixture](fixture.md) global function to declare fixtures.

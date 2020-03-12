@@ -5,7 +5,7 @@ permalink: /documentation/reference/test-api/test/skip.html
 ---
 # Test.skip Method
 
-Specifies that TestCafe should not run this test.
+Specifies that TestCafe should not run the test.
 
 ```text
 test.skip

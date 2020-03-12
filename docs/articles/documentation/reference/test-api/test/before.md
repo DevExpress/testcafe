@@ -5,7 +5,7 @@ permalink: /documentation/reference/test-api/test/before.html
 ---
 # Test.before Method
 
-Executes the specified code before this test starts (the *before* test hook).
+Executes the specified code before the test starts (the *before* test hook).
 
 ```text
 test.before( fn(t) )
@@ -18,7 +18,7 @@ Parameter | Type     | Description
 
 If a test runs in several browsers, the hook is executed in each browser.
 
-When the hook runs, the tested webpage has been loaded, so that you can use [test actions](../../../guides/basic-guides/interact-with-the-page.md) and other test run API inside the hook.
+When the hook runs, the tested webpage is loaded, so that you can use [test actions](../../../guides/basic-guides/interact-with-the-page.md) and other test run API inside the hook.
 
 > If `test.before` is specified, it overrides the corresponding
 > [fixture.before](../fixture/before.md), so that the latter is not executed.
@@ -36,4 +36,4 @@ test
     ('MyTest', async t => { /* ... */ });
 ```
 
-To specify code executed after this test, use the [test.after](after.md) method.
+To specify code executed after the test, use the [test.after](after.md) method.

@@ -18,7 +18,7 @@ Parameter | Type     | Description
 
 If a test runs in several browsers, the hook is executed in each browser.
 
-When the hook runs, the tested webpage has already been loaded, and you can use [test actions](../../../guides/basic-guides/interact-with-the-page.md) and other test run API inside the hook.
+When the hook runs, the tested webpage is already loaded, and you can use [test actions](../../../guides/basic-guides/interact-with-the-page.md) and other test run API inside the hook.
 
 > If [test.after](../test/after.md) is specified, it overrides the corresponding
 > `fixture.afterEach`, and the latter is not executed.

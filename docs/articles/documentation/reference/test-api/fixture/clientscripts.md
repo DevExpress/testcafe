@@ -29,6 +29,6 @@ fixture
     });
 ```
 
-> Relative paths are resolved against the test file location.
+> Relative paths resolve against the test file location.
 
-You can use the [page](../../../guides/advanced-guides/inject-client-scripts.md#provide-scripts-for-specific-pages) option to specify pages into which scripts should be injected. Otherwise, TestCafe injects scripts into all pages visited during the test.
+You can use the [page](../../../guides/advanced-guides/inject-client-scripts.md#provide-scripts-for-specific-pages) option to specify pages into which scripts should be injected. If this option is missing, TestCafe injects scripts into all pages visited during the test.

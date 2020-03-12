@@ -17,7 +17,7 @@ Parameter  | Type      | Description
 
 Tests are run at the maximum speed by default.
 
-If the speed is also specified for an [individual action](actions/action-options.md#basic-action-options), the action's speed setting overrides the test speed.
+If the speed is also specified for an individual action, the action's speed setting overrides the test speed.
 
 **Example**
 

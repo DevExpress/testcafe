@@ -17,7 +17,7 @@ Parameter  | Type      | Description
 
 After the timeout passes or the `window.load` event is raised (whichever happens first), TestCafe starts the test.
 
-You can also set the page load timeout when you launch tests from the [command line](../../command-line-interface.md#--page-load-timeout-ms) or [API](../../programming-interface/runner.md#run).
+You can also set the page load timeout when you launch tests from the [command line](../../command-line-interface.md#--page-load-timeout-ms) or [the API](../../programming-interface/runner.md#run).
 
 **Example**
 
@@ -32,4 +32,4 @@ test(`Page load timeout`, async t => {
 });
 ```
 
-> Note that the `DOMContentLoaded` event is raised after the HTML document is loaded and parsed, while `window.load` is raised after all stylesheets, images and subframes are loaded. That is why `window.load` is fired after the `DOMContentLoaded` event with a certain delay.
+> Note that browsers raise the `DOMContentLoaded` event after they load and parse the HTML document, while `window.load` is raised after the browser loads all stylesheets, images and subframes. This is why `window.load` fires after the `DOMContentLoaded` event with a certain delay.

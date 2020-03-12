@@ -18,7 +18,7 @@ Parameter  | Type   | Description
 `value`    | String | The value of the metadata entry.
 `metadata` | Object | Key-value pairs.
 
-Metadata is additional information assigned to tests and fixtures. It can be used to filter tests or displayed in the reports. Metadata is specified as key-value pairs.
+Metadata is additional information assigned to tests and fixtures. You can display it in the reports or use it to filter tests. Metadata is specified as key-value pairs.
 
 ```js
 fixture.meta('key1', 'value1');

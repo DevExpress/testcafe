@@ -53,7 +53,7 @@ export default new Page();
 
 In this example, the page model's `login` method uses the test controller to perform authentication actions.
 
-TestCafe can implicitly resolve the test context when you import the test controller so you do not have to pass the test controller object explicitly.
+TestCafe can implicitly resolve the test context when you import the test controller, so you do not have to pass the test controller object explicitly.
 
 ```js
 import { Selector, t } from 'testcafe';

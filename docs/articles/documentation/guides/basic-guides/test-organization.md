@@ -36,7 +36,7 @@ fixture `Authentication tests`;
 
 ## Tests
 
-To introduce a test, call the [test](../../reference/test-api/global/test.md) function and pass a function with test code inside.
+To create a test, call the [test](../../reference/test-api/global/test.md) function and pass a function with test code inside.
 
 ```js
 fixture `MyFixture`;
@@ -50,7 +50,7 @@ test('Test2', async t => {
 });
 ```
 
-The test code function accepts the [test controller](../../reference/test-api/testcontroller/README.md) object as a parameter. The test controller provides access to TestCafe test API.
+The test code function accepts the [test controller](../../reference/test-api/testcontroller/README.md) object as a parameter. The test controller provides access to the TestCafe test API.
 
 You can arrange test code in any manner and reference any modules or libraries.
 
@@ -117,13 +117,13 @@ You can include test's metadata to reports in [custom reporters](../../extending
 
 ## Initialization and Clean-Up
 
-TestCafe allows you to specify functions that are executed before a fixture or test is started and after it is finished. These functions are called *hooks*.
+You can specify functions to execute before a fixture or test starts and after it finishes. These functions are called *hooks*.
 
 ### Test Hooks
 
-Test hooks are executed in each test run before a test is started and after it is finished. If a test runs in several browsers, test hooks are executed in each browser.
+Test hooks run before a test starts and after it finishes. If a test runs in several browsers, test hooks are executed in each browser.
 
-When test hooks run, the tested webpage has already been loaded, and you can use [test actions](interact-with-the-page.md) and other test run API inside test hooks.
+When test hooks run, the tested webpage is already loaded, and you can use [test actions](interact-with-the-page.md) and other test run API inside test hooks.
 
 You can specify a hook for each test in a fixture with the [fixture.beforeEach](../../reference/test-api/fixture/beforeeach.md) and [fixture.afterEach](../../reference/test-api/fixture/aftereach.md) methods.
 
@@ -202,7 +202,7 @@ fixture `My fixture`
 
 #### Share Variables Between Fixture Hooks and Test Code
 
-Hook functions passed to `fixture.before` and `fixture.after` methods accept the `ctx` parameter that contains *fixture context*. You can add properties to this parameter to share the value or object with test code.
+Hook functions passed to `fixture.before` and `fixture.after` methods accept the `ctx` parameter that contains *fixture context*. You can add properties to this parameter to share the value or object with the test code.
 
 ```js
 fixture `Fixture1`
@@ -236,8 +236,7 @@ test('Test2', async t => {
 
 ## Skip Tests
 
-TestCafe allows you to specify that a particular test or fixture should be skipped when running tests.
-Use the [fixture.skip](../../reference/test-api/fixture/skip.md) and [test.skip](../../reference/test-api/test/skip.md) methods for this.
+TestCafe allows you to specify a test or a fixture to skip when tests run. Use the [fixture.skip](../../reference/test-api/fixture/skip.md) and [test.skip](../../reference/test-api/test/skip.md) methods for this.
 
 ```js
 fixture.skip `Fixture 1`; // All tests in this fixture are skipped

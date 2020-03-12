@@ -5,7 +5,7 @@ permalink: /documentation/reference/test-api/fixture/skip.html
 ---
 # Fixture.skip Method
 
-Specifies that TestCafe should not run this fixture.
+Indicates that TestCafe should not run the fixture.
 
 ```text
 fixture.skip
