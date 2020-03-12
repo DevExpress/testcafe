@@ -118,11 +118,15 @@ function createStatusRequestOptions (status) {
     return function () {
         counter++;
 
-        status.counter = counter;
+        var obj = Object.assign({}, status);
+
+        obj.counter = counter;
+
+        console.log('counter: ' + counter);
 
         return {
             cmd:              TEST_RUN_MESSAGES.ready,
-            status:           status,
+            status:           obj,
             disableResending: true,
             allowRejecting:   true
         };

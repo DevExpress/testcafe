@@ -515,8 +515,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     _handleDriverRequest (driverStatus) {
-        if (driverStatus.counter > 1)
-            console.log(`counter: ${driverStatus.counter}`);
+        console.log(`counter: ${driverStatus.counter} command: ${this.currentDriverTask.command.type}`);
 
         const isTestDone                 = this.currentDriverTask && this.currentDriverTask.command.type ===
                                            COMMAND_TYPE.testDone;
@@ -870,6 +869,7 @@ ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
         return this.lastDriverStatusResponse;
 
     this.lastDriverStatusId       = msg.status.id;
+
     this.lastDriverStatusResponse = this._handleDriverRequest(msg.status);
 
     if (this.lastDriverStatusResponse || msg.status.isPendingWindowSwitching)
