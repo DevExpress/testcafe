@@ -397,10 +397,10 @@ gulp.step('package-content', gulp.parallel('ts-defs', 'server-scripts', 'client-
 
 gulp.task('fast-build', gulp.series('clean', 'package-content'));
 
-gulp.task('build', DEV_MODE ? gulp.registry().get('fast-build') : gulp.parallel('lint', 'fast-build'));
+gulp.task('build', DEV_MODE ? gulp.registry().get('fast-build') : gulp.parallel('fast-build'));
 
 // Test
-gulp.step('prepare-tests', gulp.registry().get(SKIP_BUILD ? 'lint' : 'build'));
+gulp.step('prepare-tests', gulp.registry().get(SKIP_BUILD ? 'build' : 'build'));
 
 gulp.step('test-server-run', () => {
     return gulp
@@ -728,7 +728,7 @@ gulp.step('website-publish-run', () => {
 
 gulp.task('publish-website', gulp.series('build-website-production', 'website-publish-run'));
 
-gulp.task('test-docs-travis', gulp.parallel('test-website-travis', 'lint'));
+gulp.task('test-docs-travis', gulp.parallel('test-website-travis'));
 
 function testFunctional (src, testingEnvironmentName, { allowMultipleWindows, experimentalCompilerService } = {}) {
     process.env.TESTING_ENVIRONMENT       = testingEnvironmentName;

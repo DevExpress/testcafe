@@ -112,6 +112,23 @@ const EMPTY_COMMAND_EVENT_WAIT_TIMEOUT = 30 * 1000;
 const STATUS_WITH_COMMAND_RESULT_EVENT = 'status-with-command-result-event';
 const EMPTY_COMMAND_EVENT              = 'empty-command-event';
 
+function createStatusRequestOptions (status) {
+    var counter = 0;
+
+    return function () {
+        counter++;
+
+        status.counter = counter;
+
+        return {
+            cmd:              TEST_RUN_MESSAGES.ready,
+            status:           status,
+            disableResending: true,
+            allowRejecting:   true
+        };
+    };
+}
+
 export default class Driver extends serviceUtils.EventEmitter {
     constructor (testRunId, communicationUrls, runInfo, options) {
         super();
@@ -353,20 +370,16 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     _sendStatusRequest (status) {
-        const statusRequestOptions = {
-            cmd:              TEST_RUN_MESSAGES.ready,
-            status:           status,
-            disableResending: true,
-            allowRejecting:   true
-        };
+        var foo = createStatusRequestOptions(status);
 
-        const requestAttempt = () => getTimeLimitedPromise(transport.asyncServiceMsg(statusRequestOptions), SEND_STATUS_REQUEST_TIME_LIMIT);
+        const requestAttempt = () => getTimeLimitedPromise(transport.asyncServiceMsg(foo()), SEND_STATUS_REQUEST_TIME_LIMIT);
         const retryRequest   = () => delay(SEND_STATUS_REQUEST_RETRY_DELAY).then(requestAttempt);
 
         let statusPromise = requestAttempt();
 
-        for (let i = 0; i < SEND_STATUS_REQUEST_RETRY_COUNT; i++)
+        for (let i = 0; i < SEND_STATUS_REQUEST_RETRY_COUNT; i++) {
             statusPromise = statusPromise.catch(retryRequest);
+        }
 
         return statusPromise;
     }
