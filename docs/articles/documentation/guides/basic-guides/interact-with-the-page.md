@@ -37,7 +37,7 @@ test('Click test', async t => {
 
 ## Press Key
 
-[Press Key](../../reference/test-api/testcontroller/presskey.md) action allows you to press a key or a combination of keys.
+[Press Key](../../reference/test-api/testcontroller/presskey.md) action allows you to press a key or key combination.
 
 **Example**
 
