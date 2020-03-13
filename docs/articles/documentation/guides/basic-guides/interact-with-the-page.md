@@ -9,7 +9,7 @@ Test API provides a set of **actions** that enable you to interact with the webp
 
 They are implemented as methods in the [test controller](../../reference/test-api/testcontroller/README.md) object. You can call them in a chained fashion.
 
-Below you can find the available actions with reproducible usage examples and links to their detailed descriptions.
+The available actions with reproducible usage examples and links to their detailed descriptions are listed below.
 
 ## Click
 
