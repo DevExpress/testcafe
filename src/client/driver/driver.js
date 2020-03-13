@@ -376,13 +376,31 @@ export default class Driver extends serviceUtils.EventEmitter {
     _sendStatusRequest (status) {
         var foo = createStatusRequestOptions(status);
 
-        const requestAttempt = () => getTimeLimitedPromise(transport.asyncServiceMsg(foo()), SEND_STATUS_REQUEST_TIME_LIMIT);
-        const retryRequest   = () => delay(SEND_STATUS_REQUEST_RETRY_DELAY).then(requestAttempt);
+        const requestAttempt = (counter) => {
 
-        let statusPromise = requestAttempt();
+            var s = {
+                cmd:              TEST_RUN_MESSAGES.ready,
+                status:           Object.assign({}, status),
+                disableResending: true,
+                allowRejecting:   true,
+                counter: counter
+            };
+
+            s.status.counter = counter;
+
+            return getTimeLimitedPromise(transport.asyncServiceMsg(s), SEND_STATUS_REQUEST_TIME_LIMIT);
+        };
+
+        const retryRequest   = (counter) => delay(SEND_STATUS_REQUEST_RETRY_DELAY).then(function () {
+            return requestAttempt(counter);
+        });
+
+        let statusPromise = requestAttempt(0);
 
         for (let i = 0; i < SEND_STATUS_REQUEST_RETRY_COUNT; i++) {
-            statusPromise = statusPromise.catch(retryRequest);
+            statusPromise = statusPromise.catch(function () {
+                return retryRequest(i+1)
+            });
         }
 
         return statusPromise;
