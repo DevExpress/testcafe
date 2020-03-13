@@ -93,7 +93,7 @@ test('Type Text test', async t => {
 
 ## Select Text
 
-Actions that allow you to select text within inputs, `<textarea>` and `contentEditable` elements.
+Actions that allow you to select text in inputs, `<textarea>`, and `contentEditable` elements.
 
 * [Select Text in Input Elements](../../reference/test-api/testcontroller/selecttext.md)
 * [Select \<textarea\> Content](../../reference/test-api/testcontroller/selecttextareacontent.md)
