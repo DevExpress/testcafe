@@ -1,4 +1,4 @@
-describe('Scroll', () => {
+describe.only('Scroll', () => {
     it('Should raise events for scroll', () => {
         return runTests('./testcafe-fixtures/raise-events.js', null);
     });

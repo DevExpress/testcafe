@@ -115,7 +115,7 @@ describe('[API] Select text', function () {
             return runTests('./testcafe-fixtures/select-text-test.js', 'Select editable content', { only: 'chrome' });
         });
 
-        it('Should create simple inverse selection in editable content', function () {
+        it.only('Should create simple inverse selection in editable content', function () {
             return runTests('./testcafe-fixtures/select-text-test.js', 'simple inverse selection in contenteditable');
         });
 
