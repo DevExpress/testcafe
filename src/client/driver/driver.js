@@ -397,11 +397,11 @@ export default class Driver extends serviceUtils.EventEmitter {
 
         let statusPromise = requestAttempt(0);
 
-        for (let i = 0; i < SEND_STATUS_REQUEST_RETRY_COUNT; i++) {
-            statusPromise = statusPromise.catch(function () {
-                return retryRequest(i+1)
-            });
-        }
+        // for (let i = 0; i < SEND_STATUS_REQUEST_RETRY_COUNT; i++) {
+        //     statusPromise = statusPromise.catch(function () {
+        //         return retryRequest(i+1)
+        //     });
+        // }
 
         return statusPromise;
     }

@@ -515,7 +515,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     _handleDriverRequest (driverStatus) {
-        console.log(`counter: ${driverStatus.counter} command: ${this.currentDriverTask.command.type}`);
+        // console.log(`counter: ${driverStatus.counter} command: ${this.currentDriverTask.command.type}`);
 
         const isTestDone                 = this.currentDriverTask && this.currentDriverTask.command.type ===
                                            COMMAND_TYPE.testDone;
