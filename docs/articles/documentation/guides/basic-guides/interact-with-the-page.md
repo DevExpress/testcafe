@@ -117,7 +117,7 @@ test('Select Text test', async t => {
 
 ## Hover
 
-[Hover](../../reference/test-api/testcontroller/hover.md) action allows to hover over the tested page.
+[Hover](../../reference/test-api/testcontroller/hover.md) action allows you to hover the mouse pointer over the tested page.
 
 **Example**
 
