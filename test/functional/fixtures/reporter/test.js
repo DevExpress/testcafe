@@ -528,11 +528,35 @@ describe('Reporter', () => {
         it('Complex nested command error', function () {
             const log = [];
 
-            return runTests('testcafe-fixtures/index-test.js', 'Complex nested command error', generateRunOptions(log))
+            return runTests('testcafe-fixtures/index-test.js', 'Complex nested command error', generateRunOptions(log, { includeTestInfo: true }))
                 .then(() => {
                     expect(log).eql([
-                        { name: 'useRole', action: 'start' },
-                        { name: 'click', action: 'start' },
+                        {
+                            name:    'useRole',
+                            action:  'start',
+                            fixture: {
+                                id:   'fixture-id',
+                                name: 'Reporter'
+                            },
+                            test: {
+                                id:    'test-id',
+                                name:  'Complex nested command error',
+                                phase: 'inTest'
+                            }
+                        },
+                        {
+                            name:    'click',
+                            action:  'start',
+                            fixture: {
+                                id:   'fixture-id',
+                                name: 'Reporter'
+                            },
+                            test: {
+                                id:    'test-id',
+                                name:  'Complex nested command error',
+                                phase: 'inRoleInitializer'
+                            }
+                        },
                         {
                             name:    'click',
                             action:  'done',
@@ -541,18 +565,14 @@ describe('Reporter', () => {
                                 selector: 'Selector(\'#non-existing-element\')',
                                 type:     'click'
                             },
-                            errors: ['E24']
-                        },
-                        {
-                            name:    'useRole',
-                            action:  'done',
-                            command: {
-                                role: {
-                                    loginPage: 'http://localhost:3000/fixtures/reporter/pages/index.html',
-                                    options:   {},
-                                    phase:     'initialized'
-                                },
-                                type: 'useRole'
+                            fixture: {
+                                id:   'fixture-id',
+                                name: 'Reporter'
+                            },
+                            test: {
+                                id:    'test-id',
+                                name:  'Complex nested command error',
+                                phase: 'inRoleInitializer'
                             },
                             errors: ['E24']
                         }

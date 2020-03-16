@@ -60,6 +60,7 @@ const IFRAME_TEST_RUN_TEMPLATE        = read('../client/test-run/iframe.js.musta
 const TEST_DONE_CONFIRMATION_RESPONSE = 'test-done-confirmation';
 const MAX_RESPONSE_DELAY              = 3000;
 const CHILD_WINDOW_READY_TIMEOUT      = 30 * 1000;
+const EXECUTION_ERROR_EVENT_NAME      = 'execution-error';
 
 const ALL_DRIVER_TASKS_ADDED_TO_QUEUE_EVENT = 'all-driver-tasks-added-to-queue';
 
@@ -294,18 +295,28 @@ export default class TestRun extends AsyncEventEmitter {
             await fn(this);
         }
         catch (err) {
-            let screenshotPath = null;
-
-            const { screenshots } = this.opts;
-
-            if (screenshots && screenshots.takeOnFails)
-                screenshotPath = await this.executeCommand(new browserManipulationCommands.TakeScreenshotOnFailCommand());
-
-            this.addError(err, screenshotPath);
-            return false;
+            await this._processExecutionError(err);
         }
 
+        if (this.errs.length)
+            return false;
+
         return !this._addPendingPageErrorIfAny();
+    }
+
+    async _processExecutionError (error) {
+        let screenshotPath = null;
+
+        const { screenshots } = this.opts;
+
+        if (screenshots && screenshots.takeOnFails)
+            screenshotPath = await this.executeCommand(new browserManipulationCommands.TakeScreenshotOnFailCommand());
+
+        const adapters = this._createErrorAdapters(error, screenshotPath);
+
+        await this.emit(EXECUTION_ERROR_EVENT_NAME, adapters);
+
+        this._addError(adapters, screenshotPath);
     }
 
     async _runBeforeHook () {
@@ -386,12 +397,20 @@ export default class TestRun extends AsyncEventEmitter {
         });
     }
 
-    addError (err, screenshotPath) {
+    _createErrorAdapters (err, screenshotPath) {
         const errList = err instanceof TestCafeErrorList ? err.items : [err];
 
-        errList.forEach(item => {
-            const adapter = this._createErrorAdapter(item, screenshotPath);
+        return errList.map(item => this._createErrorAdapter(item, screenshotPath));
+    }
 
+    addError (err, screenshotPath) {
+        const adapters = this._createErrorAdapters(err, screenshotPath);
+
+        this._addError(adapters, screenshotPath);
+    }
+
+    _addError (adapters) {
+        adapters.forEach(adapter => {
             this.errs.push(adapter);
         });
     }
@@ -617,22 +636,19 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     async executeAction (actionName, command, callsite) {
-        let error  = null;
         let result = null;
 
         await this.emitActionStart(actionName, command);
 
-        try {
-            result = await this.executeCommand(command, callsite);
-        }
-        catch (err) {
-            error = err;
-        }
+        this.once(EXECUTION_ERROR_EVENT_NAME, async errs => {
+            await this.emitActionDone(actionName, command, void 0, errs);
+        });
 
-        await this.emitActionDone(actionName, command, result, error);
+        result = await this.executeCommand(command, callsite);
 
-        if (error)
-            throw error;
+        this.clearListeners(EXECUTION_ERROR_EVENT_NAME);
+
+        await this.emitActionDone(actionName, command, result);
 
         return result;
     }

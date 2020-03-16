@@ -2,7 +2,6 @@ import { find, sortBy, union } from 'lodash';
 import { writable as isWritableStream } from 'is-stream';
 import ReporterPluginHost from './plugin-host';
 import formatCommand from './command/format-command';
-import TestCafeErrorList from '../errors/error-list';
 
 export default class Reporter {
     constructor (plugin, task, outStream, name) {
@@ -138,11 +137,8 @@ export default class Reporter {
     _prepareReportTestActionEventArgs ({ command, result, testRun, errors }) {
         const args = {};
 
-        if (errors) {
-            errors = errors instanceof TestCafeErrorList ? errors.items : [errors];
-
+        if (errors)
             args.errors = errors;
-        }
 
         return Object.assign(args, {
             testRunId: testRun.id,

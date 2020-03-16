@@ -20,6 +20,8 @@ function createTestRunMock () {
         this.controller      = new TestController(this);
         this.driverTaskQueue = [];
         this.emit            = noop;
+        this.once            = noop;
+        this.clearListeners  = noop;
         this.debugLogger     = debugLogger;
 
         this[markerSymbol] = true;

@@ -1,20 +1,22 @@
-const expect            = require('chai').expect;
-const AsyncEventEmitter = require('../../lib/utils/async-event-emitter');
-const TestRun           = require('../../lib/test-run');
-const TestController    = require('../../lib/api/test-controller');
-const Task              = require('../../lib/runner/task');
-const BrowserJob        = require('../../lib/runner/browser-job');
-const Reporter          = require('../../lib/reporter');
-const { Role }          = require('../../lib/api/exportable-lib');
+const expect                         = require('chai').expect;
+const AsyncEventEmitter              = require('../../lib/utils/async-event-emitter');
+const TestRun                        = require('../../lib/test-run');
+const TestController                 = require('../../lib/api/test-controller');
+const Task                           = require('../../lib/runner/task');
+const BrowserJob                     = require('../../lib/runner/browser-job');
+const Reporter                       = require('../../lib/reporter');
+const { Role }                       = require('../../lib/api/exportable-lib');
+const wrapTestFunction               = require('../../lib/api/wrap-test-function');
+const TestRunErrorFormattableAdapter = require('../../lib/errors/test-run/formattable-adapter');
 
 class TestRunMock extends TestRun {
     constructor () {
-        super({ id: 'test-id', name: 'test-name', fixture: { path: 'dummy', id: 'fixture-id', name: 'fixture-name' } }, {}, {}, {}, {});
+        super({ id: 'test_id', name: 'test_name', fixture: { path: 'dummy', id: 'fixture_id', name: 'fixture_name' } }, {}, {}, {}, {});
 
 
         this.browserConnection = {
             browserInfo: {
-                alias: 'test-browser'
+                alias: 'test_browser'
             },
             isHeadlessBrowser: () => false
         };
@@ -27,7 +29,7 @@ class TestRunMock extends TestRun {
     }
 
     get id () {
-        return 'test-run-id';
+        return 'test_run_id';
     }
 
     executeCommand () {
@@ -175,24 +177,30 @@ describe('TestController action events', () => {
 
     it('Error action', () => {
         let actionResult = null;
+        let err          = null;
 
         initializeReporter({
             async reportTestActionDone (name, { command, errors }) {
-                actionResult = { name, command: command.type, err: errors[0].message };
+                err = errors[0];
+
+                actionResult = { name, command: command.type, err: errors[0].errMsg };
             }
+        });
+
+        const fn = wrapTestFunction(async t => {
+            await t.click('#target');
         });
 
         testController.testRun.executeCommand = () => {
             throw new Error('test error');
         };
 
-        return testController.click('#target')
+        return testController.testRun._executeTestFn('', fn)
             .then(() => {
-                throw new Error();
-            })
-            .catch(err => {
-                expect(err.message).eql('test error');
-                expect(actionResult).eql({ name: 'click', command: 'click', err: 'test error' });
+                const isAdapter = err instanceof TestRunErrorFormattableAdapter;
+
+                expect(isAdapter).to.be.true;
+                expect(actionResult).eql({ name: 'click', command: 'click', err: 'Error: test error' });
             });
     });
 });
