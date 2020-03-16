@@ -182,7 +182,7 @@ test('Upload Files test', async t => {
     await t
         .switchToIframe('.demo-frame')
         .setFilesToUpload('.dx-fileuploader-input', [
-            // substitute the following string with the path to a local file or multiple files you wish to upload
+            // substitute the following string with the path to a local file or multiple files you want to upload
             'path/to/file'
         ]);
 });
