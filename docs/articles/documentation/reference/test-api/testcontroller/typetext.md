@@ -15,7 +15,7 @@ Parameter              | Type                                              | Des
 ---------------------- | ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------
 `selector`             | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element that will receive input focus. See [Select Target Elements](#select-target-elements).
 `text`                 | String                                            | The text to be typed into the specified webpage element.
-`options`&#160;*(optional)* | Object                                            | A set of options that provide additional parameters for the action. See [Options](#options). If this parameter is omitted, TestCafe sets the cursor to the end of the text before typing, thus preserving the text that is already in the input box.
+`options`&#160;*(optional)* | Object                                            | A set of options that provide additional parameters for the action. See [Options](#options). If this parameter is omitted, TestCafe sets the cursor to the end of the text before typing. This preserves the text that is already in the input box.
 
 The `t.typeText` action [clicks](click.md) the specified element before text is typed if this element is not focused. If the target element is not focused after the click, `t.typeText` does not type text.
 
