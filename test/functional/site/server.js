@@ -109,6 +109,19 @@ Server.prototype._setupRoutes = function () {
         res.redirect(req.headers['referer']);
     });
 
+    this.app.post('/set-token-and-close', (req, res) => {
+        res.setHeader('set-cookie', 'token=' + req.body.token);
+        res.send(`
+            <html>
+                <body>
+                    <script>
+                        window.close();
+                    </script>
+                </body>
+            </html>
+        `);
+    });
+
     this.app.post('/file-upload', upload.any(), function (req, res) {
         const filesData = req.files.map(function (file) {
             return file.buffer.toString();
