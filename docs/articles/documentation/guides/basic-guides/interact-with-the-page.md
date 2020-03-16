@@ -190,7 +190,7 @@ test('Upload Files test', async t => {
 
 ## Take Screenshot
 
-Actions that allow you to take screenshots of the tested page.
+These actions allow you to take screenshots of the tested page.
 
 * [Take Screenshot](../../reference/test-api/testcontroller/takescreenshot.md)
 * [Take Element Screenshot](../../reference/test-api/testcontroller/takeelementscreenshot.md)
