@@ -75,7 +75,7 @@ test('Navigate To URL test', async t => {
 
 ## Type Text
 
-[Type Text](../../reference/test-api/testcontroller/typetext.md) action types the specified text into the selected input element.
+[Type Text](../../reference/test-api/testcontroller/typetext.md) action types the specified text in the selected input element.
 
 **Example**
 
