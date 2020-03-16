@@ -212,7 +212,9 @@ test('Take Screenshot test', async t => {
 
 ## Work with iframes
 
-At any moment, a TestCafe test has its [browsing context](https://html.spec.whatwg.org/multipage/browsers.html#windows)
+A TestCafe test's [browsing context](https://html.spec.whatwg.org/multipage/browsers.html#windows) is limited to the main window or an `<iframe>`. To use an `<iframe>` in your test,
+switch the context from the main window to this `<iframe>`.
+If several `<iframes>` are used in your test, you need to switch between them.
 limited to either the main window or an `<iframe>`. To use an `<iframe>` in your test,
 you need to switch the context from the main window to this `<iframe>` (and then probably back).
 Likewise, if several `<iframes>` are involved in your test, you will have to switch between them.
