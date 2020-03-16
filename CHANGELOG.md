@@ -1,6 +1,20 @@
 # Changelog
 
+## v1.8.3 (2020-3-16)
+
+### Bug Fixes
+
+* Added TypeScript definitions for the `disablePageCaching` and `disablePageReload` methods ([PR #4751](https://github.com/DevExpress/testcafe/pull/4751) by [@jaypea](https://github.com/jaypea))
+* Fixed hangs during concurrent test runs ([#4530](https://github.com/DevExpress/testcafe/issues/4530))
+* Fixed a bug that led to crashes when TestCafe clicked an SVG element in IE11 ([#4709](https://github.com/DevExpress/testcafe/issues/4709))
+* Tests can now click buttons whose `disabled` property is set to `true` ([testcafe-hammerhead/#2234](https://github.com/DevExpress/testcafe-hammerhead/issues/2234))
+* TestCafe now emits the `change` event in Chrome when an input's `disabled` property is set to `true` ([testcafe-hammerhead/#2240](https://github.com/DevExpress/testcafe-hammerhead/issues/2240))
+* TestCafe Hammerhead now processed `await` keywords with a parenthesis in client scripts correctly ([testcafe-hammerhead/#2255](https://github.com/DevExpress/testcafe-hammerhead/issues/2255))
+* The `t.click` action now works with Web Components ([testcafe-hammerhead/#2272](https://github.com/DevExpress/testcafe-hammerhead/issues/2272))
+
 ## v1.8.2 (2020-2-17)
+
+### Bug Fixes
 
 * Added new device names to the `t.resizeWindowToFitDevice` action ([#3767](https://github.com/DevExpress/testcafe/issues/3767))
 * You can now use several reporters with no output stream specified if only one reporter writes to `stdout` ([#3765](https://github.com/DevExpress/testcafe/issues/3765), [#4675](https://github.com/DevExpress/testcafe/issues/4675))
