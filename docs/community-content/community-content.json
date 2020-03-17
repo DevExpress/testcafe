@@ -1,52 +1,310 @@
 [
     {
         "type": "article",
-        "source": "Medium",
-        "date": "2020-02-09",
-        "title": "Improving our End-to-End Testing Culture with TestCafe",
-        "url": "https://example.com",
-        "author": "Deepu Roy",
-        "profileUrl": "https://facebook.com/deepu.roy",
-        "excerpt": "E2e testing is where validation has been carried out for the entire application end-to-end by simulating as an end user. Before, knowing how the Testcafe core has been implemented without selenium webdriver, let us understand few things about selenium webdriver and what it is lacking to compete in the race in the modern web technology testing tools."
+        "source": "Marie Drake's Blog",
+        "date": "2020-03-16",
+        "title": "Creating Your First Test With TestCafe",
+        "url": "https://www.mariedrake.com/post/creating-your-first-test-with-testcafe",
+        "author": "Marie Drake"
+    },
+    {
+        "type": "article",
+        "source": "PSYENCE:MEDIA",
+        "date": "2020-03-06",
+        "title": "TestCafe で E2E テストを始めよう #1 - 概要説明 と Hello World",
+        "url": "https://tech.recruit-mp.co.jp/front-end/post-20193/",
+        "author": "wakamsha",
+        "profileUrl": "https://twitter.com/wakamsha",
+        "lang": "Japanese"
+    },
+    {
+        "type": "article",
+        "source": "Dev Tester",
+        "date": "2020-03-03",
+        "title": "5 Ways TestCafe Helps Your Tests Run Fast",
+        "url": "https://dev-tester.com/5-ways-testcafe-helps-your-tests-run-fast/",
+        "author": "Dennis Martinez",
+        "profileUrl": "https://twitter.com/dennmart",
+        "excerpt": "End-to-end tests tend to be slower than other tests. Still, slow tests suck. Here are 5 tips to keep your tests fast if you're using TestCafe."
+    },
+    {
+        "type": "article",
+        "source": "LogRocket",
+        "date": "2020-02-27",
+        "title": "Writing Reusable End-to-End Tests With TestCafe",
+        "url": "https://blog.logrocket.com/writing-reusable-end-to-end-tests-with-testcafe/",
+        "author": "Gbolahan Olagunju",
+        "profileUrl": "https://twitter.com/iamgbols"
+    },
+    {
+        "type": "article",
+        "source": "Dev Tester",
+        "date": "2020-02-25",
+        "title": "Handle API Responses With Ease Using Mocks in TestCafe",
+        "url": "https://dev-tester.com/handle-api-responses-with-ease-using-mocks-in-testcafe/",
+        "author": "Dennis Martinez",
+        "profileUrl": "https://twitter.com/dennmart",
+        "excerpt": "How can you test external services that you have no control over? Learn how to use mocks in TestCafe to build reliable tests when using third-party APIs."
+    },
+    {
+        "type": "article",
+        "source": "Dev Tester",
+        "date": "2020-02-18",
+        "title": "TestCafe Studio: Is It Better Than Writing Your Own Tests?",
+        "url": "https://dev-tester.com/testcafe-studio-is-it-better-than-writing-your-own-tests/",
+        "author": "Dennis Martinez",
+        "profileUrl": "https://twitter.com/dennmart",
+        "excerpt": "How does TestCafe Studio fare when creating end-to-end tests for your web app without having to code? Find out in this introduction to the tool."
+    },
+    {
+        "type": "article",
+        "source": "dev.to",
+        "date": "2020-02-15",
+        "title": "Using the 'After' Hook in TestCafe to Clean Up Data",
+        "url": "https://dev.to/pluralsight/cleaning-up-after-tests-m80",
+        "author": "Marques Woodson",
+        "profileUrl": "https://twitter.com/mwq27",
+        "excerpt": "Here's a quick tutorial on how to use the \"after\" hook on a TestCafe test."
+    },
+    {
+        "type": "article",
+        "source": "Celestial Systems Blog",
+        "date": "2020-02-14",
+        "title": "TestCafe: A Perfect Automation Tool for Web-Based Applications",
+        "url": "https://celestialsys.com/blog/testcafe-a-perfect-automation-tool-for-web-based-applications/",
+        "author": "Sumana Ramesh",
+        "excerpt": "If you are looking for an alternative product like Selenium here’s another new cool web testing tool, TestCafe. With TestCafe, you can write tests in JavaScript and TypeScript and it is easy to use, free and has enhanced features, which helps the testers in overcoming the efforts of setting up plugins."
+    },
+    {
+        "type": "article",
+        "source": "Dev Tester",
+        "date": "2020-02-04",
+        "title": "Test Your Website's Responsive Design With TestCafe",
+        "url": "https://dev-tester.com/test-your-websites-responsive-design-with-testcafe/",
+        "author": "Dennis Martinez",
+        "profileUrl": "https://twitter.com/dennmart",
+        "excerpt": "Mobile Internet usage is on the rise. You need to ensure your website works no matter the screen size. TestCafe helps you automate these tests easily."
+    },
+    {
+        "type": "article",
+        "source": "Dev Tester",
+        "date": "2020-01-28",
+        "title": "Percy and TestCafe: Stop Letting Visual Bugs Slip by You",
+        "url": "https://dev-tester.com/percy-and-testcafe-stop-letting-visual-bugs-slip-by-you/",
+        "author": "Dennis Martinez",
+        "profileUrl": "https://twitter.com/dennmart",
+        "excerpt": "Visual testing can be tedious and error-prone work. Learn how to easily automate visual testing with Percy and TestCafe."
     },
     {
         "type": "article",
         "source": "Medium",
-        "date": "2020-02-09",
-        "title": "TestCafe, new kid on the block!",
-        "url": "https://example.com",
-        "author": "Deepu Roy",
-        "profileUrl": "https://facebook.com/deepu.roy",
-        "excerpt": "If you’re a QA it’s unlikely that you’ve never come across Selenium. It’s such a popular tool that it’s almost a synonym for Test Automation. Or it was until recently. It’s a tool with great community support, great language support, and a number of frameworks built on it with more features and flexibility (WebdriverIO, Protractor, CasperJS to name some)."
-    },
-    {
-        "type": "webinar",
-        "source": "Webinars Inc",
-        "date": "2020-02-09",
-        "title": "Why we fancied Testcafe over Webdriver for a modern web app?",
-        "url": "https://example.com",
-        "author": "Balaji Sreenivasan",
-        "profileUrl": "https://facebook.com/balaji.sreenivasan",
-        "excerpt": "This document expresses about the Testcafe’s strength and implementation for an E2E web testing based on the analysis done by our QA team. And of course, let’s discuss the similarities and dissimilarities between webdriver and Testcafe’s testing framework."
-    },
-    {
-        "type": "podcast",
-        "source": "Apple Podcasts",
-        "date": "2020-02-09",
-        "title": "End-to-end web testing with TestCafe",
-        "url": "https://example.com",
-        "author": "Jennifer Proust",
-        "profileUrl": "https://facebook.com/jennifer.proust",
-        "excerpt": "Write a real test using a sample project: this will show you how to query elements, observe page state, interact with elements, use assertions. We’ll also learn how to organize our files with the page object pattern and using hooks."
+        "date": "2020-01-20",
+        "title": "JavaScript: the Future of End-to-End Testing",
+        "url": "https://medium.com/@davert/javascript-the-future-of-end-to-end-testing-bfc00e23110b",
+        "author": "Michael Bodnarchuk",
+        "excerpt": "End-to-end testing used to follow a very conservative approach. Everyone was using Java/Python/Ruby with Selenium and it really felt that there is no good alternative to this setup. Selenium was everywhere and at some point, it even transformed its protocol to W3C standard. Ok, we have a W3C standard now, so why do we need alternatives?"
     },
     {
         "type": "article",
-        "source": "Dev.to",
-        "date": "2020-02-09",
-        "title": "Run integration tests with GitHub Actions (React+TestCafe)",
-        "url": "https://example.com",
+        "source": "Dev Tester",
+        "date": "2020-01-20",
+        "title": "Make Your Website Accessible With axe and TestCafe",
+        "url": "https://dev-tester.com/make-your-website-accessible-with-axe-and-testcafe/",
+        "author": "Dennis Martinez",
+        "profileUrl": "https://twitter.com/dennmart",
+        "excerpt": "Making websites accessible to people with disabilities is often omitted. Tools like axe and TestCafe can easily automate accessibility testing for you."
+    },
+    {
+        "type": "article",
+        "source": "Dev Tester",
+        "date": "2020-01-14",
+        "title": "Run Your Tests on the Cloud With TestCafe and BrowserStack",
+        "url": "https://dev-tester.com/run-your-tests-on-the-cloud-with-testcafe-and-browserstack/",
+        "author": "Dennis Martinez",
+        "profileUrl": "https://twitter.com/dennmart",
+        "excerpt": "TestCafe has excellent browser support for testing your web application. Learn how to combine TestCafe with BrowserStack to cover all your testing needs."
+    },
+    {
+        "type": "article",
+        "source": "Dev Tester",
+        "date": "2020-01-07",
+        "title": "Fix Your Flaky End-To-End Tests With Testing Library",
+        "url": "https://dev-tester.com/fix-your-flaky-end-to-end-tests-with-testing-library/",
+        "author": "Dennis Martinez",
+        "profileUrl": "https://twitter.com/dennmart",
+        "excerpt": "It's not uncommon for end-to-end tests to fail when the UI changes. Learn how to minimize the risk of failures in your tests with Testing Library."
+    },
+    {
+        "type": "article",
+        "source": "Medium",
+        "date": "2019-12-31",
+        "title": "End-to-End Testing for Vue.js Applications Using TestCafe",
+        "url": "https://medium.com/@rawal.hardik7/end-to-end-e2e-testing-for-vue-js-application-using-testcafe-adfd73bc15bd",
+        "author": "Hardik Raval",
+        "profileUrl": "https://twitter.com/RawalHardik"
+    },
+    {
+        "type": "article",
+        "source": "Dev Tester",
+        "date": "2019-12-31",
+        "title": "Email Testing Made Simple With TestCafe and Mailosaur",
+        "url": "https://dev-tester.com/email-testing-made-simple-with-testcafe-and-mailosaur/",
+        "author": "Dennis Martinez",
+        "profileUrl": "https://twitter.com/dennmart",
+        "excerpt": "Testing emails in a web application is often a tedious, error-prone manual process. Automate this testing easily and quickly using TestCafe and Mailosaur."
+    },
+    {
+        "type": "article",
+        "source": "Dev Tester",
+        "date": "2019-12-24",
+        "title": "How to Get Started With TestCafe",
+        "url": "https://dev-tester.com/how-to-get-started-with-testcafe/",
+        "author": "Dennis Martinez",
+        "profileUrl": "https://twitter.com/dennmart",
+        "excerpt": "TestCafe is a powerful tool for creating a robust end-to-end test suite for your web application. Learn how simple it is to start using this tool."
+    },
+    {
+        "type": "article",
+        "source": "Engineering Quality",
+        "date": "2019-09-04",
+        "title": "How to Automate Web Analytics Testing",
+        "url": "https://www.engineeringquality.tech/articles/how-to-automate-web-analytics-testing",
+        "author": "Tushara",
+        "profileUrl": "https://twitter.com/janhesters"
+    },
+    {
+        "type": "article",
+        "source": "Jan Hesters' Blog",
+        "date": "2019-08-27",
+        "title": "End-To-End Testing Amplify Apps",
+        "url": "https://janhesters.com/e2e-testing-amplify-apps/",
+        "author": "Jan Hesters",
+        "profileUrl": "https://twitter.com/janhesters",
+        "excerpt": "How do you write E2E tests for Amplify apps? In this tutorial, you will see an example using TestCafe. It is easier than you might think."
+    },
+    {
+        "type": "article",
+        "source": "Jan Hesters' Blog",
+        "date": "2019-08-20",
+        "title": "Setting Up a Project With CI/CD Using Amplify",
+        "url": "https://janhesters.com/setting-up-a-project-with-ci-cd-using-amplify/",
+        "author": "Jan Hesters",
+        "profileUrl": "https://twitter.com/janhesters",
+        "excerpt": "In this tutorial, you are going to learn how to set up a project with CI/CD. We are going to use the Amplify console to automate our deployment."
+    },
+    {
+        "type": "article",
+        "source": "Engineering Quality",
+        "date": "2019-08-11",
+        "title": "How to Iterate Links and Skip an Item in TestCafe",
+        "url": "https://www.engineeringquality.tech/articles/how-to-iterate-links-and-skip-an-item-in-testcafe",
+        "author": "Tushara"
+    },
+    {
+        "type": "article",
+        "source": "Medium",
+        "date": "2019-08-05",
+        "title": "Run Integration Tests With GitHub Actions (React + TestCafe)",
+        "url": "https://medium.com/@gauravchl/run-integration-tests-with-github-actions-react-testcafe-48022552051c",
         "author": "Gaurav Chikhale",
-        "profileUrl": "https://facebook.com/gaurav.chikhale",
-        "excerpt": "A while ago I was setting up integration testing at work for a react app, since we were using GitHub actions to run unit tests it make sense to use the same setup for Integration tests as well. We decided to use the TestCafe to write those tests."
+        "profileUrl": "https://twitter.com/gauravchl",
+        "excerpt": "A while ago I was setting up integration testing at work for a react app, since we were using GitHub actions to run unit tests it make sense to use the same setup for Integration tests as well. We decided to use the TestCafe to write those tests. This is going to be a very short article about how to run Integration tests for ReactApp with GitHub Actions."
+    },
+    {
+        "type": "article",
+        "source": "Engineering Quality",
+        "date": "2019-07-28",
+        "title": "Differences Between WebdriverIO and TestCafe",
+        "url": "https://www.engineeringquality.tech/articles/differences-between-webdriverio-and-testcafe"
+    },
+    {
+        "type": "article",
+        "source": "Rafaela Azevedo's Blog",
+        "date": "2019-07-24",
+        "title": "Injecting Cookies in Your TestCafe Automation",
+        "url": "https://azevedorafaela.com/2019/07/24/inject-cookies-in-your-testcafe-automation/",
+        "author": "Rafaela Azevedo",
+        "profileUrl": "https://www.linkedin.com/in/azevedorafaela/"
+    },
+    {
+        "type": "article",
+        "source": "LinkedIn",
+        "date": "2019-07-07",
+        "title": "Selenium is Dead. Long Live TestCafe!",
+        "url": "https://www.linkedin.com/pulse/selenium-dead-long-live-testcafe-robert-dzikowski",
+        "author": "Robert Dzikowski"
+    },
+    {
+        "type": "article",
+        "source": "dev.to",
+        "date": "2019-06-26",
+        "title": "Concurrency and Test Data in TestCafe",
+        "url": "https://dev.to/mwoodson/concurrency-and-test-data-in-testcafe-13nh",
+        "author": "Marques Woodson",
+        "profileUrl": "https://twitter.com/mwq27",
+        "excerpt": "TestCafe is great. It makes it super simple to add e2e testing to your repertoire, making you not only the front-end engineer but the QA engineer too. In my time using TestCafe I have run into situations that I think are common to most test suites. Doing something like creating/deleting user data before and after tests while using concurrency can give you some trouble. I'll show you how I've setup a project to handle this situation."
+    },
+    {
+        "type": "article",
+        "source": "Engineering Quality",
+        "date": "2020-05-31",
+        "title": "The Ease of Executing Scripts in TestCafe",
+        "url": "https://www.engineeringquality.tech/articles/executing-scripts-in-testcafe",
+        "author": "Tushara",
+        "excerpt": "We often focus on the amount of work it takes for an automation engineer to build and maintain a test framework. While all that is true I would like to take a minute or two to talk about the grey box testers or manual testers or anyone on the team like project managers, who may not develop the test framework but run the automated tests."
+    },
+    {
+        "type": "article",
+        "source": "Engineering Quality",
+        "date": "2019-05-21",
+        "title": "End-to-End Web Testing With TestCafe",
+        "url": "https://www.engineeringquality.tech/articles/what-is-testcafe",
+        "author": "Tushara",
+        "excerpt": "Before we get into what is TestCafe, let's see why I started looking into JavaScript end to end testing frameworks."
+    },
+    {
+        "type": "article",
+        "source": "Medium",
+        "date": "2019-04-29",
+        "title": "Creating a Visual Regression Tool for Your Web App",
+        "url": "https://blog.usejournal.com/creating-a-visual-regression-tool-for-your-web-app-f4920974e2ec",
+        "author": "Greg Byrne",
+        "profileUrl": "https://twitter.com/gauravchl",
+        "excerpt": "Automating \"spot the difference\" using TestCafe and ResembleJS."
+    },
+    {
+        "type": "article",
+        "source": "Medium",
+        "date": "2019-03-07",
+        "title": "End-to-End Web Testing With TestCafe",
+        "url": "https://medium.com/xebia-france/end-to-end-web-testing-with-testcafe-766ddbd74924",
+        "author": "Jennifer Proust",
+        "profileUrl": "https://twitter.com/proustibat"
+    },
+    {
+        "type": "article",
+        "source": "ndz-dev",
+        "date": "2019-01-08",
+        "title": "Découverte de TestCafé & Installation",
+        "url": "https://blog.ndz-dev.com/decouverte-de-test-cafe/",
+        "author": "Neplaz Dimitri",
+        "lang": "French"
+    },
+    {
+        "type": "article",
+        "source": "Imaginea",
+        "date": "2018-12-03",
+        "title": "Why we Fancied TestCafe Over WebDriver for a Modern Web App?",
+        "url": "https://blog.imaginea.com/why-we-fancied-testcafe-over-webdriver/",
+        "author": "Balaji Sreenivasan"
+    },
+    {
+        "type": "article",
+        "source": "Medium",
+        "date": "2018-03-29",
+        "title": "Evaluating Cypress and TestCafe for End-to-End Testing",
+        "url": "https://medium.com/yld-blog/evaluating-cypress-and-testcafe-for-end-to-end-testing-fcd0303d2103",
+        "author": "Tamlyn Rhodes",
+        "excerpt": "Two frameworks have appeared on the scene recently eschewing the long held belief that end to end testing of web applications means building upon Selenium. Cypress and TestCafe are similar in many ways but have some important differences."
     }
 ]
