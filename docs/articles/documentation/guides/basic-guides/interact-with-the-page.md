@@ -242,7 +242,7 @@ test('Working With iframe test', async t => {
 
 ## Handle Native Dialogs
 
-TestCafe allows you to handle native browser dialogs whenever they are invoked during the test run.
+TestCafe allows you to handle native browser dialogs that are invoked during the test run.
 
 You can close [alert](https://developer.mozilla.org/en-US/docs/Web/API/Window/alert) and
 [beforeunload](https://developer.mozilla.org/en-US/docs/Web/Events/beforeunload) dialogs,
