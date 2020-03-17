@@ -13,7 +13,7 @@ t.clearUpload( selector )
 
 Parameter  | Type                                              | Description
 ---------- | ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------
-`selector` | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the input field that needs to be cleared. See [Select Target Elements](#select-target-elements).
+`selector` | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the input field that should be cleared. See [Select Target Elements](#select-target-elements).
 
 The example below shows how to use the `t.clearUpload` action.
 
