@@ -33,7 +33,7 @@ test('Invoke Image Options Dialog', async t => {
 });
 ```
 
-> The `t.doubleClick` action will not invoke integrated browser actions such as text selection.
+> The `t.doubleClick` action does not invoke integrated browser actions such as text selection.
 > Use it to perform double clicks that are processed by webpage elements, not the browser.
 > To select text, use the [t.selectText](selecttext.md) action or
 > [emulate a key shortcut](presskey.md) with `t.pressKey('ctrl+a')`.

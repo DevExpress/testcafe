@@ -11,8 +11,8 @@ Provides a history of the invoked native dialogs.
 t.getNativeDialogHistory() → Promise<[{type, text, url}]>
 ```
 
-`t.getNativeDialogHistory` returns a stack of history entries (i.e., an array in which the latest dialog has an index of `0`).
-Each entry corresponds to a certain native dialog that appears in the main window or in an `<iframe>`.
+`t.getNativeDialogHistory` returns a stack of history entries (that is, an array in which the latest dialog has an index of `0`).
+Each entry corresponds to a native dialog that appears in the main window or in an `<iframe>`.
 
 A history entry contains the following properties.
 

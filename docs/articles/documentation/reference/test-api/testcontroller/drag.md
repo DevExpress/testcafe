@@ -18,7 +18,7 @@ Parameter              | Type                                              | Des
 `dragOffsetY`          | Number                                            | An Y-offset of the drop coordinates from the mouse pointer's initial position.
 `options`&#160;*(optional)* | Object                                            | A set of options that provide additional parameters for the action. See [Options](#options).
 
-The following example demonstrates how to use the `t.drag` action with a slider.
+The following example demonstrates how to use the `t.drag` action with a slider:
 
 ```js
 import { Selector } from 'testcafe';
@@ -37,7 +37,7 @@ test('Drag slider', async t => {
 });
 ```
 
-You can drag an element onto another element on the page with the [t.dragToElement](dragtoelement.md) method.
+You can use the [t.dragToElement](dragtoelement.md) method to drag an element onto another element on the page.
 
 ## Select Target Elements
 

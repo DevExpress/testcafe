@@ -20,7 +20,7 @@
 
 Parameter                      | Type    | Description                                                                                                                                           | Default
 ------------------------------ | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------
-`ctrl`, `alt`, `shift`, `meta` | Boolean | Indicate which modifier keys are to be pressed while typing.                                                                                          | `false`
+`ctrl`, `alt`, `shift`, `meta` | Boolean | Indicates which modifier keys should be pressed while typing.                                                                                          | `false`
 `offsetX`, `offsetY`           | Number  | Mouse pointer coordinates that define a point where the action is performed or started. If an offset is a positive integer, coordinates are calculated relative to the top-left corner of the target element. If an offset is a negative integer, they are calculated relative to the bottom-right corner. | The center of the target element.
 `caretPos`                     | Number  | The initial caret position. A zero-based integer.                                                                                        | The length of the input field content.
 `replace`                      | Boolean | `true` to remove the text in the target element, and `false` to leave the text as it is.                                                         | `false`
