@@ -246,7 +246,7 @@ TestCafe allows you to handle native browser dialogs that are invoked during the
 
 You can close [alert](https://developer.mozilla.org/en-US/docs/Web/API/Window/alert) and
 [beforeunload](https://developer.mozilla.org/en-US/docs/Web/Events/beforeunload) dialogs,
-choose either option in [confirm](https://developer.mozilla.org/en-US/docs/Web/API/Window/confirm) dialogs
+choose an option in [confirm](https://developer.mozilla.org/en-US/docs/Web/API/Window/confirm) dialogs
 or provide text to type into [prompt](https://developer.mozilla.org/en-US/docs/Web/API/Window/prompt) dialogs.
 
 * [Set Native Dialog Handler](../../reference/test-api/testcontroller/setnativedialoghandler.md)
