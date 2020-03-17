@@ -16,7 +16,7 @@ Parameter              | Type                                              | Des
 `selector`             | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element being double-clicked. See [Select Target Elements](#select-target-elements).
 `options`&#160;*(optional)* | Object                                            | A set of options that provide additional parameters for the action. See [Options](#options).
 
-The following example shows how to use the `t.doubleClick` action to invoke a dialog.
+The following example shows how to use the `t.doubleClick` action to invoke a dialog:
 
 ```js
 import { Selector } from 'testcafe';
