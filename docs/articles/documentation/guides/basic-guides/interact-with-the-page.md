@@ -254,7 +254,7 @@ or provide text for [prompt](https://developer.mozilla.org/en-US/docs/Web/API/Wi
 
 ## Resize Window
 
-Resize window actions allow you to maximize a browser window or resize it to fit specified width and height or a type of device.
+Use resize window actions to maximize a browser window or resize it to fit a specified width and height or type of device.
 
 * [Resize Window](../../reference/test-api/testcontroller/resizewindow.md)
 * [Resize Window to Fit Device](../../reference/test-api/testcontroller/resizewindowtofitdevice.md)
