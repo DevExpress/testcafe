@@ -219,7 +219,7 @@ limited to either the main window or an `<iframe>`. To use an `<iframe>` in your
 you need to switch the context from the main window to this `<iframe>` (and then probably back).
 Likewise, if several `<iframes>` are involved in your test, you will have to switch between them.
 
-You can use the following methods to achieve this.
+Use the following methods to switch between windows and iframes:
 
 * [Switch To \<iframe\>](../../reference/test-api/testcontroller/switchtoiframe.md)
 * [Switch To Main Window](../../reference/test-api/testcontroller/switchtomainwindow.md)
