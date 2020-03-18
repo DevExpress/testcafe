@@ -5,7 +5,7 @@ permalink: /documentation/guides/basic-guides/interact-with-the-page.html
 ---
 # Interact With The Page
 
-Test API provides a set of **actions** that enable you to interact with the webpage.
+Test API provides a set of **actions** you can use to interact with the page.
 
 They are implemented as methods in the [test controller](../../reference/test-api/testcontroller/README.md) object. You can call them in a chained fashion.
 
@@ -140,8 +140,8 @@ test('Hover test', async t => {
 * [Drag an Element by an Offset](../../reference/test-api/testcontroller/drag.md)
 * [Drag an Element onto Another One](../../reference/test-api/testcontroller/dragtoelement.md)
 
-> The **drag** actions do not invoke integrated browser actions such as selecting text.
-> Use them to perform drag-and-drop actions that are processed by webpage elements, not the browser.
+> The **drag** actions do not invoke integrated browser actions such as text selection.
+> Use them to perform drag-and-drop actions that page elements process.
 > To select text, use [t.selectText](../../reference/test-api/testcontroller/selecttext.md).
 
 **Example**
@@ -163,12 +163,12 @@ test('Drag test', async t => {
 
 ## Upload Files
 
-Actions that allow you to work with file upload input elements.
+Actions that allow you to interact with file upload input elements.
 
 * [Populate File Upload Input](../../reference/test-api/testcontroller/setfilestoupload.md)
 * [Clear File Upload Input](../../reference/test-api/testcontroller/clearupload.md)
 
-> The file upload actions only allow you to manage the list of files to upload. These files are uploaded to the server after you initiate upload, for example, when you [click](../../reference/test-api/testcontroller/click.md) the **Upload** or **Submit** button on a webpage.
+> The file upload actions only allow you to manage the list of files you want to upload. These files are uploaded to the server after you initiate upload, for example, when you [click](../../reference/test-api/testcontroller/click.md) the **Upload** or **Submit** button on a page.
 
 **Example**
 

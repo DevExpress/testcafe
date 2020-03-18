@@ -89,5 +89,5 @@ If this does not happen within the [selector timeout](select-page-elements.md#se
 the action is performed with an overlaying element. For information on why the target element can be overlaid,
 see the *stacking* description in the [z-index](https://developer.mozilla.org/en-US/docs/Web/CSS/z-index) topic.
 
-> An exception is the [Upload action](../../reference/test-api/testcontroller/upload.md). It does not require the target `input` to be visible.
+> [Upload action](../../reference/test-api/testcontroller/upload.md) is the only method that does not require the target `input` to be visible.
 > You can also perform the upload action when the `input` is overlaid.
