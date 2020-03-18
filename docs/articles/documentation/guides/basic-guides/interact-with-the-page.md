@@ -9,7 +9,7 @@ Test API provides a set of **actions** you can use to interact with the page.
 
 They are implemented as methods in the [test controller](../../reference/test-api/testcontroller/README.md) object. You can call them in a chained fashion.
 
-The available actions with reproducible usage examples and links to their detailed descriptions are listed below.
+The available actions with reproducible usage examples and links to their descriptions are listed below.
 
 ## Click
 
