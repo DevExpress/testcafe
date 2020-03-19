@@ -1,10 +1,9 @@
 ---
 layout: docs
-title: Type Text
-permalink: /documentation/test-api/actions/type-text.html
-checked: true
+title: t.typeText Method
+permalink: /documentation/reference/test-api/testcontroller/typetext.html
 ---
-# Type Text
+# t.typeText Method
 
 Types the specified text into an input element.
 
@@ -14,13 +13,13 @@ t.typeText( selector, text [, options] )
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------
-`selector`             | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element that will receive input focus. See [Selecting Target Elements](README.md#selecting-target-elements).
+`selector`             | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element that will receive input focus. See [Select Target Elements](#select-target-elements).
 `text`                 | String                                            | The text to be typed into the specified webpage element.
-`options`&#160;*(optional)* | Object                                            | A set of options that provide additional parameters for the action. See [Typing Action Options](action-options.md#typing-action-options). If this parameter is omitted, TestCafe sets the cursor to the end of the text before typing, thus preserving the text that is already in the input box.
+`options`&#160;*(optional)* | Object                                            | A set of options that provide additional parameters for the action. See [Options](#options). If this parameter is omitted, TestCafe sets the cursor to the end of the text before typing. This preserves the text that is already in the input box.
 
 The `t.typeText` action [clicks](click.md) the specified element before text is typed if this element is not focused. If the target element is not focused after the click, `t.typeText` does not type text.
 
-> Use the [t.selectText](select-text.md) and [t.pressKey](press-key.md) actions to implement operations such as selecting or deleting text.
+> Use the [t.selectText](selecttext.md) and [t.pressKey](presskey.md) actions to implement operations such as selecting or deleting text.
 
 The following example shows how to use `t.typeText` with and without options.
 
@@ -56,3 +55,11 @@ DateTime   | `yyyy-mm-ddThh:mm` | `'2017-11-03T05:00'`
 Time       | `hh:mm`            | `'15:30'`
 Color      | `#rrggbb`          | `'#003000'`
 Range      | `n`                | `'45'`
+
+## Select Target Elements
+
+{% include actions/selector-options.md %}
+
+## Options
+
+{% include actions/type-text-options.md %}
