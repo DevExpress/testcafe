@@ -25,7 +25,7 @@ test('My Test', async t => {
 });
 ```
 
-The test runner also uses the test controller to access the internal context required for the test API to operate. When you call [selectors](select-page-elements.md) and [client functions](obtain-client-side-info.md) from Node.js callbacks, pass the test controller explicitly because the API cannot retrieve it from the context.
+The test runner also uses the test controller to access the internal context required for the test API to operate. When you call [selectors](select-page-elements.md) and [client functions](obtain-client-side-info.md) from Node.js callbacks, pass the test controller explicitly, because the API cannot retrieve it from the context.
 
 ## Implicit Test Controller Usage
 
