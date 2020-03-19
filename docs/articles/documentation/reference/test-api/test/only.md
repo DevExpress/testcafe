@@ -5,7 +5,7 @@ permalink: /documentation/reference/test-api/test/only.html
 ---
 # Test.only Method
 
-Specifies that TestCafe should run only this test and skip all other tests.
+Specifies that TestCafe should skip all other tests and run only this test.
 
 ```text
 test.only
