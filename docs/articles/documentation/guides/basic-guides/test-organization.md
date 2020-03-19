@@ -121,7 +121,7 @@ You can specify functions to be executed before a fixture or test starts and aft
 
 ### Test Hooks
 
-Test hooks run before a test starts and after it finishes. If a test runs in several browsers, test hooks are executed in each browser.
+Test hooks run before a test starts and after it is completed. If a test runs in several browsers, test hooks are executed in each browser.
 
 When test hooks run, the tested webpage is already loaded, and you can use [test actions](interact-with-the-page.md) and other test run API inside test hooks.
 
