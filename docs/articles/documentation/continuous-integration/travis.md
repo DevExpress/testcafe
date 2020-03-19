@@ -56,22 +56,21 @@ Travis CI uses Ubuntu Server virtual machines that do not have regular graphical
 The following sections are required in your `.travis.yml` to start `Xvfb`:
 
 ```yaml
-dist: trusty
-sudo: required
+dist: bionic
 
 addons:
   firefox: latest
-  apt:
-    sources:
-     - google-chrome
-    packages:
-     - google-chrome-stable fluxbox
+  chrome: stable
+
+services:
+  - xvfb
+
+language: node_js
+node_js: 'stable'
 
 before_script:
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
-  - sleep 3
   - fluxbox >/dev/null 2>&1 &
+  - sleep 3
 ```
 
 You can find more information about Travis and Xvfb in [this article](https://docs.travis-ci.com/user/gui-and-headless-browsers/#Using-xvfb-to-Run-Tests-That-Require-a-GUI).
