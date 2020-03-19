@@ -1,29 +1,13 @@
 ---
 layout: docs
-title: Handling Native Dialogs
-permalink: /documentation/test-api/handling-native-dialogs.html
-checked: true
+title: t.setNativeDialogueHandler Method
+permalink: /documentation/reference/test-api/testcontroller/setnativedialoghandler.html
 ---
-# Handling Native Dialogs
-
-TestCafe allows you to handle native browser dialogs whenever they are invoked during the test run.
-You can close [alert](https://developer.mozilla.org/en-US/docs/Web/API/Window/alert) and
-[beforeunload](https://developer.mozilla.org/en-US/docs/Web/Events/beforeunload) dialogs,
-choose either option in [confirm](https://developer.mozilla.org/en-US/docs/Web/API/Window/confirm) dialogs
-or provide text to type into [prompt](https://developer.mozilla.org/en-US/docs/Web/API/Window/prompt) dialogs.
-
-You can also access the history of the invoked native dialogs, so that you can determine if a certain dialog appeared or not.
-
-This topic contains the following sections.
-
-* [Dialog Handler](#dialog-handler)
-* [Dialog History](#dialog-history)
-
-## Dialog Handler
+# t.setNativeDialogueHandler Method
 
 To handle native dialogs invoked during the test run, specify a handler function
 using the `setNativeDialogHandler` method of the
-[test controller](test-code-structure.md#test-controller).
+[test controller](README.md).
 
 ```text
 t.setNativeDialogHandler( fn(type, text, url) [, options] )
@@ -31,8 +15,8 @@ t.setNativeDialogHandler( fn(type, text, url) [, options] )
 
 Parameter  | Type                           | Description
 ---------- | ------------------------------ | -------------
-`fn`       | Function &#124; ClientFunction | A regular or [client function](obtaining-data-from-the-client/README.md) that will be triggered whenever a native dialog is invoked. `null` to remove the native dialog handler.
-`options`&#160;*(optional)*  | Object                         | See [Client Function Options](obtaining-data-from-the-client/README.md#options).
+`fn`       | Function &#124; ClientFunction | A regular or [client function](../../../guides/basic-guides/obtaining-client-side-info.md) that will be triggered whenever a native dialog is invoked. `null` to remove the native dialog handler.
+`options`&#160;*(optional)*  | Object                         | See [Client Function Options](../../../guides/basic-guides/obtaining-client-side-info.md#options).
 
 The handler function has the following arguments.
 
@@ -108,50 +92,4 @@ test('My test', async t => {
         .click('#confirm-account-deletion');
 });
 ```
-
-## Dialog History
-
-You can get the history of the invoked native dialogs to check if a certain dialog appeared or not.
-
-Use the [test controller's](test-code-structure.md#test-controller) `getNativeDialogHistory` method for this.
-
-```text
-t.getNativeDialogHistory() → Promise<[{type, text, url}]>
-```
-
-`t.getNativeDialogHistory` returns a stack of history entries (i.e., an array in which the latest dialog has an index of `0`).
-Each entry corresponds to a certain native dialog that appears in the main window or in an `<iframe>`.
-
-A history entry contains the following properties.
-
-Property | Type   | Description
--------- | ------ | -------------
-`type`   | String | The type of the native dialog. `'alert'` &#124; `'confirm'` &#124; `'beforeunload'` &#124; `'prompt'`.
-`text`   | String | Text of the dialog message.
-`url`    | String | The URL of the page that invoked the dialog. Use it to determine if the dialog originated from the main window or an `<iframe>`.
-
-```js
-fixture `My fixture`
-    .page `http://www.example.com/`;
-
-test('My test', async t => {
-    await t
-        .setNativeDialogHandler((type, text, url) => {
-            if (type === 'confirm')
-                return true;
-            else if (type === 'prompt')
-                return 'Hello!';
-        })
-        .click('#show-alert')
-        .click('#show-confirm')
-        .click('#show-prompt');
-
-    const history = await t.getNativeDialogHistory();
-
-    await t
-        .expect(history[0].type).eql('prompt')
-        .expect(history[0].text).eql('say hello')
-        .expect(history[1].type).eql('confirm')
-        .expect(history[2].type).eql('alert');
-});
-```
+You can get the native dialog history with the [t.getNativeDialogHistory](getnativedialoghistory.md) method.

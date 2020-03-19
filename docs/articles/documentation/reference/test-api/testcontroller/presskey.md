@@ -1,10 +1,9 @@
 ---
 layout: docs
-title: Press Key
-permalink: /documentation/test-api/actions/press-key.html
-checked: true
+title: t.pressKey Method
+permalink: /documentation/reference/test-api/testcontroller/presskey.html
 ---
-# Press Key
+# t.pressKey Method
 
 Presses the specified keyboard keys.
 
@@ -15,7 +14,7 @@ t.pressKey( keys [, options] )
 Parameter | Type   | Description
 --------- | ------ | --------------------------------------------------------
 `keys`    | String | The sequence of keys and key combinations to be pressed.
-`options`&#160;*(optional)*  | Object | A set of options that provide additional parameters for the action. See [Basic Action Options](action-options.md#basic-action-options).
+`options`&#160;*(optional)*  | Object | A set of options that provide additional parameters for the action. See [Options](#options).
 
 The following table shows how to specify keys of different types, key sequences, and combinations:
 
@@ -109,3 +108,7 @@ test('Key Presses', async t => {
         .expect(nameInput.value).eql('P. Parker');
 });
 ```
+
+## Options
+
+{% include actions/basic-actions.md %}
