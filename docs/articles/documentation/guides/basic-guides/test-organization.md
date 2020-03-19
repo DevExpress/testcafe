@@ -60,7 +60,7 @@ To check if the page state matches the expected one, use [assertions](assert.md)
 
 ## Specify the Start Webpage
 
-You can specify the web page where all tests in a fixture start with the [fixture.page](../../reference/test-api/fixture/page.md) function.
+You can specify the web page where all tests in a fixture begin with the [fixture.page](../../reference/test-api/fixture/page.md) function.
 
 ```js
 fixture `MyFixture`
