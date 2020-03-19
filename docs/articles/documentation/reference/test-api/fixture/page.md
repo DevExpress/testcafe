@@ -25,7 +25,7 @@ test('Test1', async t => {
 });
 ```
 
-You can also specify a start page for individual tests with the [test.page](../test/page.md) function that overrides `fixture.page`.
+You can also specify a start page for individual tests with the [test.page](../test/page.md) function that overrides the `fixture.page`.
 
 If the start page is not specified, the default URL is `about:blank`.
 
