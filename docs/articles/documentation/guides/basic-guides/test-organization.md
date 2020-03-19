@@ -162,7 +162,7 @@ test
 
 You can share variables between test hook functions and test code in the *test context* object.
 
-Use the [t.ctx](../../reference/test-api/testcontroller/ctx.md) property to access the test context.
+Use the [t.ctx](../../reference/test-api/testcontroller/ctx.md) property to access test context.
 
 ```js
 fixture `Fixture1`
