@@ -117,7 +117,7 @@ You can include test's metadata to reports in [custom reporters](../../extending
 
 ## Initialization and Clean-Up
 
-You can specify functions to execute before a fixture or test starts and after it finishes. These functions are called *hooks*.
+You can specify functions to be executed before a fixture or test starts and after it is completed. These functions are called *hooks*.
 
 ### Test Hooks
 
