@@ -2,6 +2,8 @@ import TestController from './test-controller';
 import testRunTracker from './test-run-tracker';
 import TestCafeErrorList from '../errors/error-list';
 import { MissingAwaitError } from '../errors/test-run';
+import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
+
 
 export default function wrapTestFunction (fn) {
     return async testRun => {
@@ -13,22 +15,24 @@ export default function wrapTestFunction (fn) {
 
         testRunTracker.ensureEnabled();
 
-        try {
-            result = await markeredfn(testRun.controller);
-        }
-        catch (err) {
-            errList.addError(err);
-        }
+        return await markeredfn(testRun.controller);
 
-        if (!errList.hasUncaughtErrorsInTestCode) {
-            testRun.controller.callsitesWithoutAwait.forEach(callsite => {
-                errList.addError(new MissingAwaitError(callsite));
-            });
-        }
-
-        if (errList.hasErrors)
-            throw errList;
-
-        return result;
+        // try {
+        //     result = await markeredfn(testRun.controller);
+        // }
+        // catch (err) {
+        //     errList.addError(err);
+        // }
+        //
+        // if (!errList.hasUncaughtErrorsInTestCode) {
+        //     testRun.controller.callsitesWithoutAwait.forEach(callsite => {
+        //         errList.addError(new MissingAwaitError(callsite));
+        //     });
+        // }
+        //
+        // if (errList.hasErrors)
+        //     throw errList;
+        //
+        // return result;
     };
 }

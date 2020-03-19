@@ -10,7 +10,7 @@ import {
     RequestHookUnhandledError,
     PageLoadError,
     RequestHookNotImplementedMethodError,
-    RoleSwitchInRoleInitializerError
+    RoleSwitchInRoleInitializerError, MissingAwaitError
 } from '../errors/test-run/';
 import PHASE from './phase';
 import CLIENT_MESSAGES from './client-messages';
@@ -291,12 +291,27 @@ export default class TestRun extends AsyncEventEmitter {
     async _executeTestFn (phase, fn) {
         this.phase = phase;
 
+        const errList      = new TestCafeErrorList();
+        let screenshotPath = null;
+
         try {
             await fn(this);
         }
         catch (err) {
-            await this._processExecutionError(err);
+            if (err instanceof TestRunErrorFormattableAdapter)
+                screenshotPath = err.screenshotPath;
+            else
+                errList.addError(err);
         }
+
+        if (!errList.hasUncaughtErrorsInTestCode) {
+            this.controller.callsitesWithoutAwait.forEach(callsite => {
+                errList.addError(new MissingAwaitError(callsite));
+            });
+        }
+
+        if (errList.hasErrors)
+            await this._processExecutionError(errList, screenshotPath);
 
         if (this.errs.length)
             return false;
@@ -304,19 +319,15 @@ export default class TestRun extends AsyncEventEmitter {
         return !this._addPendingPageErrorIfAny();
     }
 
-    async _processExecutionError (error) {
-        let screenshotPath = null;
+    async _processExecutionError (error, screenshotPath) {
+        if (!screenshotPath) {
+            const { screenshots } = this.opts;
 
-        const { screenshots } = this.opts;
+            if (screenshots && screenshots.takeOnFails)
+                screenshotPath = await this.executeCommand(new browserManipulationCommands.TakeScreenshotOnFailCommand());
+        }
 
-        if (screenshots && screenshots.takeOnFails)
-            screenshotPath = await this.executeCommand(new browserManipulationCommands.TakeScreenshotOnFailCommand());
-
-        const adapters = this._createErrorAdapters(error, screenshotPath);
-
-        await this.emit(EXECUTION_ERROR_EVENT_NAME, adapters);
-
-        this._addError(adapters, screenshotPath);
+        this.addError(error, screenshotPath);
     }
 
     async _runBeforeHook () {
@@ -640,13 +651,16 @@ export default class TestRun extends AsyncEventEmitter {
 
         await this.emitActionStart(actionName, command);
 
-        this.once(EXECUTION_ERROR_EVENT_NAME, async errs => {
-            await this.emitActionDone(actionName, command, void 0, errs);
-        });
+        try {
+            result = await this.executeCommand(command, callsite);
+        }
+        catch (err) {
+            await this._processExecutionError(err);
 
-        result = await this.executeCommand(command, callsite);
+            await this.emitActionDone(actionName, command, void 0, this.errs[0]);
 
-        this.clearListeners(EXECUTION_ERROR_EVENT_NAME);
+            throw this.errs[0];
+        }
 
         await this.emitActionDone(actionName, command, result);
 

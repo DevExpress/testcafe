@@ -13,7 +13,6 @@ const exportableLib       = require('../../lib/api/exportable-lib');
 const createStackFilter   = require('../../lib/errors/create-stack-filter.js');
 const assertError         = require('./helpers/assert-runtime-error').assertError;
 const compile             = require('./helpers/compile');
-const TestRun             = require('../../lib/test-run');
 
 
 const copy   = promisify(fs.copyFile);
@@ -21,44 +20,6 @@ const remove = promisify(fs.unlink);
 
 
 require('source-map-support').install();
-
-
-class TestRunMock1 extends TestRun {
-    constructor (expectedError) {
-        super({ id:  'test_id',
-            name:    'test_name',
-            fixture: { path: 'dummy', id: 'fixture_id', name: 'fixture_name' }
-        }, {}, {}, {}, {});
-
-        this.commands      = [];
-        this.expectedError = expectedError;
-
-        this.browserConnection = {
-            browserInfo:       {
-                alias: 'test_browser'
-            },
-            isHeadlessBrowser: () => false
-        };
-    }
-
-    _addInjectables () {
-    }
-
-    _initRequestHooks () {
-    }
-
-    get id () {
-        return 'PPBqWA9';
-    }
-
-    executeCommand () {
-        debugger;
-
-        this.commands.push(command);
-
-        return this.expectedError ? Promise.reject(new Error(this.expectedError)) : Promise.resolve();
-    }
-}
 
 describe('Compiler', function () {
     const testRunMock = { id: 'yo' };
@@ -607,20 +568,20 @@ describe('Compiler', function () {
             it.only('Should be rejected if the test failed', function () {
                 const sources       = ['test/server/data/test-suites/raw/test.testcafe'];
                 const expectedError = 'test-error';
-                const testRun       = new TestRunMock1(expectedError);
-
+                const testRun       = new TestRunMock(expectedError);
 
                 return compile(sources)
                     .then(function (compiled) {
-                        return testRun._executeTestFn('', compiled.tests[0].fn);
+                        return compiled.tests[0].fn(testRun);
                     })
                     .then(function () {
                         throw new Error('Promise rejection is expected');
                     })
-                    .catch(function (err) {
-                        debugger;
-                        expect(err.code).eql(TEST_RUN_ERRORS.uncaughtErrorInTestCode);
-                        expect(err.errMsg).contains('test-error');
+                    .catch(function (errList) {
+                        frbu
+
+                        expect(errList.items[0].code).eql(TEST_RUN_ERRORS.uncaughtErrorInTestCode);
+                        expect(errList.items[0].errMsg).contains('test-error');
                         expect(testRun.commands.length).eql(1);
                     });
             });
