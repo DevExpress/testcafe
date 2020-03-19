@@ -202,7 +202,7 @@ fixture `My fixture`
 
 #### Share Variables Between Fixture Hooks and Test Code
 
-Hook functions passed to `fixture.before` and `fixture.after` methods accept the `ctx` parameter that contains *fixture context*. You can add properties to this parameter to share the value or object with the test code.
+Hook functions passed to `fixture.before` and `fixture.after` methods accept the `ctx` parameter that contains *fixture context*. You can add properties to this parameter to share the value or object with test code.
 
 ```js
 fixture `Fixture1`
