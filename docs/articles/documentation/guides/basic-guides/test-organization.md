@@ -71,7 +71,7 @@ test('Test1', async t => {
 });
 ```
 
-Similarly, you can specify a start page for individual tests with the [test.page](../../reference/test-api/test/page.md) function that overrides [fixture.page](../../reference/test-api/fixture/page.md).
+Similarly, you can specify a start page for individual tests with the [test.page](../../reference/test-api/test/page.md) function that overrides the [fixture.page](../../reference/test-api/fixture/page.md).
 
 ```js
 fixture `MyFixture`
