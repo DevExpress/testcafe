@@ -56,7 +56,7 @@ You can arrange test code in any manner and reference any modules or libraries.
 
 TestCafe tests are executed server side. You can use [test actions](interact-with-the-page.md) to manipulate the tested webpage. To determine page element states or obtain other data from the client side, use the [selectors](select-page-elements.md) and [client functions](obtain-client-side-info.md).
 
-To check if the page state matches the expected one, use [assertions](assert.md).
+To check if page elements have the expected parameters, use [assertions](assert.md).
 
 ## Specify the Start Webpage
 
@@ -86,7 +86,7 @@ test
 
 ## Specify Test Metadata
 
-TestCafe allows you to specify additional information for tests in the form of *key-value metadata* and use it to filter tests or display in the reports.
+TestCafe allows you to specify additional information for tests in the form of *key-value metadata*. You can display this information in the reports and use it to filter tests.
 
 To define metadata, use the [fixture.meta](../../reference/test-api/fixture/meta.md) and [test.meta](../../reference/test-api/test/meta.md) methods.
 

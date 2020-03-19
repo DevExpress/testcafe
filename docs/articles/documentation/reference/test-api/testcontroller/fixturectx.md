@@ -23,7 +23,7 @@ fixture `Fixture1`
     });
 ```
 
-Test code can read the fixture context from `t.fixtureCtx`, assign to its properties or add new ones, but it cannot overwrite the entire `t.fixtureCtx` object.
+Test code can read the fixture context from `t.fixtureCtx`, assign values to its properties or add new properties, but it cannot overwrite the entire `t.fixtureCtx` object.
 
 ```js
 fixture `Fixture1`
