@@ -54,7 +54,7 @@ The test code function accepts the [test controller](../../reference/test-api/te
 
 You can arrange test code in any manner and reference any modules or libraries.
 
-TestCafe tests are executed on the server side. You can use [test actions](interact-with-the-page.md) to manipulate the tested webpage. To determine page elements' state or obtain any other data from the client side, use the [selectors](select-page-elements.md) and [client functions](obtain-client-side-info.md).
+TestCafe tests are executed server side. You can use [test actions](interact-with-the-page.md) to manipulate the tested webpage. To determine page element states or obtain other data from the client side, use the [selectors](select-page-elements.md) and [client functions](obtain-client-side-info.md).
 
 To check if the page state matches the expected one, use [assertions](assert.md).
 
