@@ -53,7 +53,7 @@ Install TestCafe [locally](../using-testcafe/installing-testcafe.md#local-instal
 
 Travis CI uses Ubuntu Server virtual machines that do not have regular graphical environment like Unity, GNOME or KDE installed, so you have to setup and use [Xvfb](https://www.x.org/archive/X11R7.6/doc/man/man1/Xvfb.1.xhtml) to run browsers headlessly.
 
-The following `.travis.yml` will run your `npm` tests using `Xvfb`:
+The following sections are required in your `.travis.yml` to start `Xvfb`:
 
 ```yaml
 dist: bionic
@@ -68,8 +68,9 @@ services:
 language: node_js
 node_js: 'stable'
 
-script:
-  - xvfb-run --auto-servernum --server-args="-screen 0 1024x768x24" npm run test
+before_script:
+  - fluxbox >/dev/null 2>&1 &
+  - sleep 3
 ```
 
 You can find more information about Travis and Xvfb in [this article](https://docs.travis-ci.com/user/gui-and-headless-browsers/#Using-xvfb-to-Run-Tests-That-Require-a-GUI).
