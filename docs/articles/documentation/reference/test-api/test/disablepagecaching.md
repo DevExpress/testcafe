@@ -19,4 +19,4 @@ test
     ('My test', async t => { /* ... */ });
 ```
 
-You can also disable page caching during all test in a fixture with the [fixture.disablePageCaching](../fixture/disablepagecaching.md) method.
+You can also disable page caching during all tests in a fixture with the [fixture.disablePageCaching](../fixture/disablepagecaching.md) method.
