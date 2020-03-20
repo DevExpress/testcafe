@@ -5,6 +5,10 @@
   
   
   
+
+  
+  
+  
   
   
 
@@ -180,7 +184,16 @@
             var MIN_BODY_WIDTH = 1230;
 
             function updateHeader() {
-                var bodyMinimized = document.body.clientWidth === MIN_BODY_WIDTH;
+                var CONTENT_MARGIN_WITH_DOC_MENU     = '72px';
+                var CONTENT_MARGIN_WITHOUT_DOC_MENU  = '21px';
+                var CONTENT_MARGIN_COMMUNITY_DESKTOP = '27px';
+                var CONTENT_MARGIN_COMMUNITY_MOBILE  = '48px';
+
+                var bodyMinimized          = document.body.clientWidth === MIN_BODY_WIDTH;
+                var docContentMargin       = bodyMinimized ? CONTENT_MARGIN_WITHOUT_DOC_MENU : CONTENT_MARGIN_WITH_DOC_MENU;
+                var isCommunitySection     = false;
+                var contentMarginCommunity = isMobileDevice ? CONTENT_MARGIN_COMMUNITY_MOBILE : CONTENT_MARGIN_COMMUNITY_DESKTOP;
+                var contentMargin          = isCommunitySection ? contentMarginCommunity : docContentMargin;
 
                 
 
@@ -196,9 +209,9 @@
                     contentWrapper.style.paddingTop = bodyMinimized ? '0' : '';
 
                 if(article && !isMobileDevice)
-                    article.style.marginTop = bodyMinimized ? '21px' : '72px';
+                    article.style.marginTop = contentMargin;
                 if(gs && !isMobileDevice)
-                    gs.style.paddingTop = bodyMinimized ? '21px' : '72px';
+                    gs.style.paddingTop = contentMargin;
             }
 
             updateHeader();
@@ -244,42 +257,29 @@
         <div class="hamburger-icon"></div>
     </div>
     <nav class="site-nav">
+      
         
-          
-          <div class="site-nav-tab">
-            <a class="page-link" href="/testcafe/documentation/getting-started/"><span>Docs</span></a>
-          </div>
+        <div class="site-nav-tab">
+          <a class="page-link" href="/testcafe/documentation/getting-started/"><span>Docs</span></a>
+        </div>
+      
         
-          
-          <div class="site-nav-tab">
-            <a class="page-link" href="https://github.com/DevExpress/testcafe" target="_blank"><span>GitHub</span></a>
-          </div>
+        <div class="site-nav-tab">
+          <a class="page-link" href="/testcafe/faq/"><span>FAQ</span></a>
+        </div>
+      
         
-          
-          <div class="site-nav-tab">
-            <a class="page-link" href="/testcafe/faq/"><span>FAQ</span></a>
-          </div>
+        <div class="site-nav-tab">
+          <a class="page-link" href="/testcafe/support/"><span>Support</span></a>
+        </div>
+      
         
-          
-          <div class="site-nav-tab">
-            <a class="page-link" href="/testcafe/roadmap/"><span>Roadmap</span></a>
-          </div>
-        
-          
-          <div class="site-nav-tab">
-            <a class="page-link" href="/testcafe/blog/"><span>Release Notes</span></a>
-          </div>
-        
-          
-          <div class="site-nav-tab">
-            <a class="page-link" href="/testcafe/support/"><span>Support</span></a>
-          </div>
-        
-          
-          <div class="site-nav-tab" id="studio-link-tab">
-            <a class="page-link" id="studio-link" href="https://www.devexpress.com/products/testcafestudio/" target="_blank"><span>TestCafe Studio</span></a>
-          </div>
-        
+        <div class="site-nav-tab" id="studio-link-tab">
+          <a class="page-link" id="studio-link" href="https://www.devexpress.com/products/testcafestudio/" target="_blank"><span>TestCafe Studio</span></a>
+        </div>
+      
+    </nav>
+    <div class="site-header-buttons">
       <a id="twitter-button" href="https://twitter.com/dxtestcafe" target="_blank"></a>
       <div id="search-icon"></div>
       <div class="star-button">
@@ -289,7 +289,7 @@
           <input type="text" placeholder="Search documentation" id="search"/>
           <div id="close-search"></div>
       </div>
-    </nav>
+    </div>
   </div>
 </header>
 
@@ -865,10 +865,25 @@
 
     <footer class="site-footer">
     <div class="site-footer-content">
-        <div class="footer-col-1">
-            <p><strong>TestCafe</strong>: A node.js tool to automate end-to-end web testing<br/>
+        <div class="footer-links">
+            <div class="footer-link-content">
+                <div class="link"><a href="/testcafe/documentation/">Docs</a></div>
+                <!--div class="link"><a href="/testcafe/team-blog/">Blog</a></div-->
+                <div class="link"><a href="/testcafe/community/">Media</a></div>
+                <div class="link"><a href="/testcafe/faq/">FAQ</a></div>
+                <div class="link"><a href="/testcafe/roadmap/">Roadmap</a></div>
+                <div class="link"><a href="/testcafe/release-notes/">Release Notes</a></div>
+                <div class="link"><a href="/testcafe/support/">Support</a></div>
+                <div class="link"><a href="https://devexpress.com/products/testcafestudio">TestCafe Studio</a></div>
+            </div>
+        </div>
+        <div class="footer-icons">
+            <div class="icon"><a href="https://twitter.com/DXTestCafe"><img src="/testcafe/images/twitter-footer.svg"/></a></div>
+            <div class="icon"><a href="https://github.com/DevExpress/testcafe"><img src="/testcafe/images/github-footer.svg"/></a></div>
+        </div>
+        <div class="footer-legal">
             Use of this site constitutes acceptance of our <a href="https://www.devexpress.com/aboutus/privacy-policy.xml"  target="_blank">Privacy Policy</a><br/>
-            Copyright © 2012-2020 Developer Express Inc.</p>
+            Copyright © 2012–2020 Developer Express Inc.</p>
         </div>
     </div>
 </footer>

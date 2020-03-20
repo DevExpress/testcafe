@@ -5,6 +5,10 @@
   
   
   
+
+  
+  
+  
   
   
 
@@ -81,6 +85,7 @@
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
   <link rel="stylesheet" href="/testcafe/css/docs.css">
+    
   <style>
       .ps-container > .ps-scrollbar-x-rail,
       .ps-container > .ps-scrollbar-y-rail {
@@ -184,7 +189,7 @@
 
     <script>
         var MIN_BODY_WIDTH = 1230;
-        var FOOTER_HEIGHT  = 113;
+        var FOOTER_HEIGHT  = 225;
 
         var nav     = null;
         var article = null;
@@ -305,7 +310,16 @@
             var MIN_BODY_WIDTH = 1230;
 
             function updateHeader() {
-                var bodyMinimized = document.body.clientWidth === MIN_BODY_WIDTH;
+                var CONTENT_MARGIN_WITH_DOC_MENU     = '72px';
+                var CONTENT_MARGIN_WITHOUT_DOC_MENU  = '21px';
+                var CONTENT_MARGIN_COMMUNITY_DESKTOP = '27px';
+                var CONTENT_MARGIN_COMMUNITY_MOBILE  = '48px';
+
+                var bodyMinimized          = document.body.clientWidth === MIN_BODY_WIDTH;
+                var docContentMargin       = bodyMinimized ? CONTENT_MARGIN_WITHOUT_DOC_MENU : CONTENT_MARGIN_WITH_DOC_MENU;
+                var isCommunitySection     = false;
+                var contentMarginCommunity = isMobileDevice ? CONTENT_MARGIN_COMMUNITY_MOBILE : CONTENT_MARGIN_COMMUNITY_DESKTOP;
+                var contentMargin          = isCommunitySection ? contentMarginCommunity : docContentMargin;
 
                 
 
@@ -321,9 +335,9 @@
                     contentWrapper.style.paddingTop = bodyMinimized ? '0' : '';
 
                 if(article && !isMobileDevice)
-                    article.style.marginTop = bodyMinimized ? '21px' : '72px';
+                    article.style.marginTop = contentMargin;
                 if(gs && !isMobileDevice)
-                    gs.style.paddingTop = bodyMinimized ? '21px' : '72px';
+                    gs.style.paddingTop = contentMargin;
             }
 
             updateHeader();
@@ -414,42 +428,29 @@
         <div class="hamburger-icon"></div>
     </div>
     <nav class="site-nav">
+      
         
-          
-          <div class="site-nav-tab active">
-            <a class="page-link" href="/testcafe/documentation/getting-started/"><span>Docs</span></a>
-          </div>
+        <div class="site-nav-tab active">
+          <a class="page-link" href="/testcafe/documentation/getting-started/"><span>Docs</span></a>
+        </div>
+      
         
-          
-          <div class="site-nav-tab">
-            <a class="page-link" href="https://github.com/DevExpress/testcafe" target="_blank"><span>GitHub</span></a>
-          </div>
+        <div class="site-nav-tab">
+          <a class="page-link" href="/testcafe/faq/"><span>FAQ</span></a>
+        </div>
+      
         
-          
-          <div class="site-nav-tab">
-            <a class="page-link" href="/testcafe/faq/"><span>FAQ</span></a>
-          </div>
+        <div class="site-nav-tab">
+          <a class="page-link" href="/testcafe/support/"><span>Support</span></a>
+        </div>
+      
         
-          
-          <div class="site-nav-tab">
-            <a class="page-link" href="/testcafe/roadmap/"><span>Roadmap</span></a>
-          </div>
-        
-          
-          <div class="site-nav-tab">
-            <a class="page-link" href="/testcafe/blog/"><span>Release Notes</span></a>
-          </div>
-        
-          
-          <div class="site-nav-tab">
-            <a class="page-link" href="/testcafe/support/"><span>Support</span></a>
-          </div>
-        
-          
-          <div class="site-nav-tab" id="studio-link-tab">
-            <a class="page-link" id="studio-link" href="https://www.devexpress.com/products/testcafestudio/" target="_blank"><span>TestCafe Studio</span></a>
-          </div>
-        
+        <div class="site-nav-tab" id="studio-link-tab">
+          <a class="page-link" id="studio-link" href="https://www.devexpress.com/products/testcafestudio/" target="_blank"><span>TestCafe Studio</span></a>
+        </div>
+      
+    </nav>
+    <div class="site-header-buttons">
       <a id="twitter-button" href="https://twitter.com/dxtestcafe" target="_blank"></a>
       <div id="search-icon"></div>
       <div class="star-button">
@@ -459,7 +460,7 @@
           <input type="text" placeholder="Search documentation" id="search"/>
           <div id="close-search"></div>
       </div>
-    </nav>
+    </div>
   </div>
 </header>
 
@@ -592,6 +593,7 @@
 
       <div class="container">
     
+
 	
 	
 
@@ -601,25 +603,7 @@
 		<div class="toggle-nav-button"></div>
 		<div class="doc-nav-panel-header">
 			<div class="doc-nav-panel-heading">Documentation</div>
-			<div class="doc-nav-panel-title">
-				
-					
-				
-					
-						Using TestCafe
-					
-				
-					
-				
-					
-				
-					
-				
-					
-				
-					
-				
-			</div>
+			<div class="doc-nav-panel-title">Using TestCafe</div>
 		</div>
 	</div>
 	<nav class="doc-nav">	
@@ -631,56 +615,72 @@
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/using-testcafe/installing-testcafe.html"  >Installing TestCafe</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/using-testcafe/command-line-interface.html"  >Command Line Interface</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/using-testcafe/programming-interface/"  >Programming Interface</a>
+
 		
 			<ul>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/using-testcafe/programming-interface/testcafe.html"  >TestCafe Class</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/using-testcafe/programming-interface/browserconnection.html"  >BrowserConnection Class</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/using-testcafe/programming-interface/runner.html"  >Runner Class</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/using-testcafe/programming-interface/livemoderunner.html"  >LiveModeRunner Class</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/using-testcafe/programming-interface/createtestcafe.html"  >createTestCafe Factory</a>
+
 		
     </li>
 
@@ -691,56 +691,72 @@
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/using-testcafe/configuration-file.html"  >Configuration File</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/using-testcafe/using-testcafe-docker-image.html"  >Using TestCafe Docker Image</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/using-testcafe/common-concepts/"  >Common Concepts</a>
+
 		
 			<ul>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/using-testcafe/common-concepts/browsers/"  >Browsers</a>
+
 		
 			<ul>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/using-testcafe/common-concepts/browsers/browser-support.html" class="active" >Browser Support</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/using-testcafe/common-concepts/browsers/testing-in-headless-mode.html"  >Testing in Headless Mode</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/using-testcafe/common-concepts/browsers/using-chromium-device-emulation.html"  >Using Chromium Device Emulation</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/using-testcafe/common-concepts/browsers/user-profiles.html"  >User Profiles</a>
+
 		
     </li>
 
@@ -751,42 +767,54 @@
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/using-testcafe/common-concepts/concurrent-test-execution.html"  >Concurrent Test Execution</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/using-testcafe/common-concepts/live-mode.html"  >Live Mode</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html"  >Screenshots and Videos</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html"  >Inject Scripts into Tested Pages</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/using-testcafe/common-concepts/reporters.html"  >Reporters</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/using-testcafe/common-concepts/test-https-and-http2-websites.html"  >Test HTTPS and HTTP/2 Websites</a>
+
 		
     </li>
 
@@ -826,6 +854,7 @@
 <li><a href="#portable-browsers">Portable Browsers</a></li>
 <li><a href="#browsers-on-remote-devices">Browsers on Remote Devices</a></li>
 <li><a href="#browsers-in-cloud-testing-services">Browsers in Cloud Testing Services</a></li>
+<li><a href="#microsoft-edge-legacy-support">Microsoft Edge Legacy Support</a></li>
 <li><a href="#nonconventional-browsers">Nonconventional Browsers</a></li>
 </ul>
 <h2><a class="anchor" id="officially-supported-browsers"></a>Officially Supported Browsers <a class="permalink" href="#officially-supported-browsers">#</a></h2>
@@ -888,7 +917,8 @@ You can use a short name - <em>browser alias</em> - to identify these browsers w
 with the <a href="../../command-line-interface.html#-b---list-browsers">--list-browsers</a> flag.</p>
 
 <p>To run tests in a different local browser, specify the path to the browser executable file.</p>
-
+<blockquote><div class="blockquote-content"><p>To test in Microsoft Edge Chromium and Legacy on the same machine, <a href="https://docs.microsoft.com/en-us/DeployEdge/microsoft-edge-sysupdate-access-old-edge">install them side-by-side</a>. Once they are installed, see the <a href="#microsoft-edge-legacy-support">Microsoft Edge Legacy Support</a> section below for information on how to enable testing in older versions.</p>
+</div></blockquote>
 <p>For more information and examples, see:</p>
 
 <ul>
@@ -935,8 +965,14 @@ As you open this URL, the browser connects to the TestCafe server and starts tes
 <p>You can search npm for plugins developed by the community. Their names begin with the <code>testcafe-browser-provider-</code> prefix: <a href="https://www.npmjs.com/search?q=testcafe-browser-provider">https://www.npmjs.com/search?q=testcafe-browser-provider</a>.</p>
 
 <p>You can also create your own plugin. See <a href="../../../extending-testcafe/browser-provider-plugin/">Browser Provider Plugin</a> for instructions.</p>
+<h2><a class="anchor" id="microsoft-edge-legacy-support"></a>Microsoft Edge Legacy Support <a class="permalink" href="#microsoft-edge-legacy-support">#</a></h2>
+<p>Tests are run in Microsoft Edge Legacy if it is the only version of Edge installed on the machine.</p>
+
+<p>If Chromium-based and Legacy versions are available, you can change the default Edge application in <strong>System Settings</strong> to enable testing in the Legacy version.</p>
+
+<p>To do this, open <strong>Default apps</strong> in <strong>Windows Settings</strong> and scroll down to select the option <strong>Default Apps by Protocol</strong>. Set the <code>MICROSOFT-EDGE:</code> protocol to Legacy Edge.</p>
 <h2><a class="anchor" id="nonconventional-browsers"></a>Nonconventional Browsers <a class="permalink" href="#nonconventional-browsers">#</a></h2>
-<p>To use a web browser of a different type, you will need a <a href="../../../extending-testcafe/browser-provider-plugin/">browser provider plugin</a>.</p>
+<p>To use a different type of browser, use a <a href="../../../extending-testcafe/browser-provider-plugin/">browser provider plugin</a>.</p>
 
 <p>You can search npm for plugins developed by the community. Their names begin with the <code>testcafe-browser-provider-</code> prefix: <a href="https://www.npmjs.com/search?q=testcafe-browser-provider">https://www.npmjs.com/search?q=testcafe-browser-provider</a>.</p>
 
@@ -953,10 +989,25 @@ As you open this URL, the browser connects to the TestCafe server and starts tes
 
     <footer class="site-footer">
     <div class="site-footer-content">
-        <div class="footer-col-1">
-            <p><strong>TestCafe</strong>: A node.js tool to automate end-to-end web testing<br/>
+        <div class="footer-links">
+            <div class="footer-link-content">
+                <div class="link"><a href="/testcafe/documentation/">Docs</a></div>
+                <!--div class="link"><a href="/testcafe/team-blog/">Blog</a></div-->
+                <div class="link"><a href="/testcafe/community/">Media</a></div>
+                <div class="link"><a href="/testcafe/faq/">FAQ</a></div>
+                <div class="link"><a href="/testcafe/roadmap/">Roadmap</a></div>
+                <div class="link"><a href="/testcafe/release-notes/">Release Notes</a></div>
+                <div class="link"><a href="/testcafe/support/">Support</a></div>
+                <div class="link"><a href="https://devexpress.com/products/testcafestudio">TestCafe Studio</a></div>
+            </div>
+        </div>
+        <div class="footer-icons">
+            <div class="icon"><a href="https://twitter.com/DXTestCafe"><img src="/testcafe/images/twitter-footer.svg"/></a></div>
+            <div class="icon"><a href="https://github.com/DevExpress/testcafe"><img src="/testcafe/images/github-footer.svg"/></a></div>
+        </div>
+        <div class="footer-legal">
             Use of this site constitutes acceptance of our <a href="https://www.devexpress.com/aboutus/privacy-policy.xml"  target="_blank">Privacy Policy</a><br/>
-            Copyright © 2012-2020 Developer Express Inc.</p>
+            Copyright © 2012–2020 Developer Express Inc.</p>
         </div>
     </div>
 </footer>
