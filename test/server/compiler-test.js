@@ -13,6 +13,7 @@ const exportableLib       = require('../../lib/api/exportable-lib');
 const createStackFilter   = require('../../lib/errors/create-stack-filter.js');
 const assertError         = require('./helpers/assert-runtime-error').assertError;
 const compile             = require('./helpers/compile');
+const TestRunMockCtor     = require('./helpers/test-run-mock');
 
 
 const copy   = promisify(fs.copyFile);
@@ -22,7 +23,7 @@ const remove = promisify(fs.unlink);
 require('source-map-support').install();
 
 describe('Compiler', function () {
-    const testRunMock = { id: 'yo' };
+    const testRunMock = { id: 'yo', errs: [] };
 
     const tsCompilerPath     = path.resolve('src/compiler/test-file/formats/typescript/compiler.ts');
     const apiBasedPath       = path.resolve('src/compiler/test-file/api-based.js');
@@ -541,6 +542,11 @@ describe('Compiler', function () {
                 this.id            = 'PPBqWA9';
                 this.commands      = [];
                 this.expectedError = expectedError;
+                this.errs          = null;
+            };
+
+            TestRunMock.prototype.addErrorWithScreenshot = function (errList) {
+                this.errs = errList;
             };
 
             TestRunMock.prototype.executeCommand = function (command) {
@@ -552,7 +558,7 @@ describe('Compiler', function () {
             it('Should be resolved if the test passed', function () {
                 const sources = ['test/server/data/test-suites/raw/test.testcafe'];
                 let test      = null;
-                const testRun = new TestRunMock();
+                const testRun = new TestRunMockCtor();
 
                 return compile(sources)
                     .then(function (compiled) {
@@ -568,7 +574,7 @@ describe('Compiler', function () {
             it('Should be rejected if the test failed', function () {
                 const sources       = ['test/server/data/test-suites/raw/test.testcafe'];
                 const expectedError = 'test-error';
-                const testRun       = new TestRunMock(expectedError);
+                const testRun       = new TestRunMockCtor(expectedError);
 
                 return compile(sources)
                     .then(function (compiled) {
@@ -577,9 +583,9 @@ describe('Compiler', function () {
                     .then(function () {
                         throw new Error('Promise rejection is expected');
                     })
-                    .catch(function (errList) {
-                        expect(errList.items[0].code).eql(TEST_RUN_ERRORS.uncaughtErrorInTestCode);
-                        expect(errList.items[0].errMsg).contains('test-error');
+                    .catch(function (errs) {
+                        expect(errs[0].code).eql(TEST_RUN_ERRORS.uncaughtErrorInTestCode);
+                        expect(errs[0].errMsg).contains('test-error');
                         expect(testRun.commands.length).eql(1);
                     });
             });
@@ -606,7 +612,7 @@ describe('Compiler', function () {
 
             return compile(src)
                 .then(function (compiled) {
-                    return compiled.tests[0].fn({ id: 'test' });
+                    return compiled.tests[0].fn({ id: 'test', errs: [] });
                 })
                 .then(function (compiledClientFn) {
                     expect(normalizeCode(compiledClientFn)).eql(normalizeCode(expected));
@@ -851,14 +857,14 @@ describe('Compiler', function () {
         it('Incorrect callsite stack in error report if "import" is used (GH-1226)', function () {
             return compile('test/server/data/test-suites/regression-gh-1226/testfile.js')
                 .then(function (compiled) {
-                    return compiled.tests[0].fn(testRunMock);
+                    return compiled.tests[0].fn(new TestRunMockCtor('err'));
                 })
                 .then(function () {
                     throw 'Promise rejection expected';
                 })
-                .catch(function (errList) {
+                .catch(function (errs) {
                     const stackTraceLimit = 200;
-                    const err             = errList.items[0];
+                    const err             = errs[0];
                     const stack           = err.callsite.stackFrames.filter(createStackFilter(stackTraceLimit));
 
                     expect(stack.length).eql(3);

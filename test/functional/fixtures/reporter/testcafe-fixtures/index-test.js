@@ -63,3 +63,9 @@ test('Client Function', async () => {
 test('Eval', async t => {
     await t.eval(() => document.getElementById('#target'));
 });
+
+test('Screenshot on action error', async t => {
+    t.click('body');
+
+    await t.click('#unexisting-element');
+});

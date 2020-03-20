@@ -134,11 +134,11 @@ export default class Reporter {
         reportItem.pendingTestRunDonePromise.resolve();
     }
 
-    _prepareReportTestActionEventArgs ({ command, result, testRun, errors }) {
+    _prepareReportTestActionEventArgs ({ command, result, testRun, err }) {
         const args = {};
 
-        if (errors)
-            args.errors = errors;
+        if (err)
+            args.err = err;
 
         return Object.assign(args, {
             testRunId: testRun.id,
@@ -214,9 +214,9 @@ export default class Reporter {
             }
         });
 
-        task.on('test-action-done', async ({ apiActionName, command, result, testRun, errors }) => {
+        task.on('test-action-done', async ({ apiActionName, command, result, testRun, err }) => {
             if (this.plugin.reportTestActionDone) {
-                const args = this._prepareReportTestActionEventArgs({ command, result, testRun, errors });
+                const args = this._prepareReportTestActionEventArgs({ command, result, testRun, err });
 
                 await this.plugin.reportTestActionDone(apiActionName, args);
             }

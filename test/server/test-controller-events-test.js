@@ -1,6 +1,5 @@
 const expect                         = require('chai').expect;
 const AsyncEventEmitter              = require('../../lib/utils/async-event-emitter');
-const TestRun                        = require('../../lib/test-run');
 const TestController                 = require('../../lib/api/test-controller');
 const Task                           = require('../../lib/runner/task');
 const BrowserJob                     = require('../../lib/runner/browser-job');
@@ -8,34 +7,8 @@ const Reporter                       = require('../../lib/reporter');
 const { Role }                       = require('../../lib/api/exportable-lib');
 const wrapTestFunction               = require('../../lib/api/wrap-test-function');
 const TestRunErrorFormattableAdapter = require('../../lib/errors/test-run/formattable-adapter');
+const TestRunMock                    = require('./helpers/test-run-mock');
 
-class TestRunMock extends TestRun {
-    constructor () {
-        super({ id: 'test_id', name: 'test_name', fixture: { path: 'dummy', id: 'fixture_id', name: 'fixture_name' } }, {}, {}, {}, {});
-
-
-        this.browserConnection = {
-            browserInfo: {
-                alias: 'test_browser'
-            },
-            isHeadlessBrowser: () => false
-        };
-    }
-
-    _addInjectables () {
-    }
-
-    _initRequestHooks () {
-    }
-
-    get id () {
-        return 'test_run_id';
-    }
-
-    executeCommand () {
-        return Promise.resolve();
-    }
-}
 
 class TestControllerMock extends TestController {
     constructor (testRun) {
@@ -177,13 +150,13 @@ describe('TestController action events', () => {
 
     it('Error action', () => {
         let actionResult = null;
-        let err          = null;
+        let error        = null;
 
         initializeReporter({
-            async reportTestActionDone (name, { command, errors }) {
-                err = errors[0];
+            async reportTestActionDone (name, { command, err }) {
+                error = err;
 
-                actionResult = { name, command: command.type, err: errors[0].errMsg };
+                actionResult = { name, command: command.type, err: err.errMsg };
             }
         });
 
@@ -197,7 +170,7 @@ describe('TestController action events', () => {
 
         return testController.testRun._executeTestFn('', fn)
             .then(() => {
-                const isAdapter = err instanceof TestRunErrorFormattableAdapter;
+                const isAdapter = error instanceof TestRunErrorFormattableAdapter;
 
                 expect(isAdapter).to.be.true;
                 expect(actionResult).eql({ name: 'click', command: 'click', err: 'Error: test error' });

@@ -30,6 +30,7 @@ import * as INJECTABLES from '../assets/injectables';
 import { findProblematicScripts } from '../custom-client-scripts/utils';
 import getCustomClientScriptUrl from '../custom-client-scripts/get-url';
 import { getPluralSuffix, getConcatenatedValuesString } from '../utils/string';
+import processTestFnError from '../errors/process-test-fn-error';
 
 import {
     isCommandRejectableByPageError,
@@ -60,7 +61,6 @@ const IFRAME_TEST_RUN_TEMPLATE        = read('../client/test-run/iframe.js.musta
 const TEST_DONE_CONFIRMATION_RESPONSE = 'test-done-confirmation';
 const MAX_RESPONSE_DELAY              = 3000;
 const CHILD_WINDOW_READY_TIMEOUT      = 30 * 1000;
-const EXECUTION_ERROR_EVENT_NAME      = 'execution-error';
 
 const ALL_DRIVER_TASKS_ADDED_TO_QUEUE_EVENT = 'all-driver-tasks-added-to-queue';
 
@@ -295,28 +295,21 @@ export default class TestRun extends AsyncEventEmitter {
             await fn(this);
         }
         catch (err) {
-            await this._processExecutionError(err);
-        }
-
-        if (this.errs.length)
             return false;
+        }
 
         return !this._addPendingPageErrorIfAny();
     }
 
-    async _processExecutionError (error) {
-        let screenshotPath = null;
+    async addErrorWithScreenshot (error, screenshotPath) {
+        if (!screenshotPath) {
+            const { screenshots } = this.opts;
 
-        const { screenshots } = this.opts;
+            if (screenshots && screenshots.takeOnFails)
+                screenshotPath = await this.executeCommand(new browserManipulationCommands.TakeScreenshotOnFailCommand());
+        }
 
-        if (screenshots && screenshots.takeOnFails)
-            screenshotPath = await this.executeCommand(new browserManipulationCommands.TakeScreenshotOnFailCommand());
-
-        const adapters = this._createErrorAdapters(error, screenshotPath);
-
-        await this.emit(EXECUTION_ERROR_EVENT_NAME, adapters);
-
-        this._addError(adapters, screenshotPath);
+        this.addError(error, screenshotPath);
     }
 
     async _runBeforeHook () {
@@ -404,15 +397,9 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     addError (err, screenshotPath) {
-        const adapters = this._createErrorAdapters(err, screenshotPath);
+        const errList = err instanceof TestCafeErrorList ? err.items : [err];
 
-        this._addError(adapters, screenshotPath);
-    }
-
-    _addError (adapters) {
-        adapters.forEach(adapter => {
-            this.errs.push(adapter);
-        });
+        errList.map(item => this.errs.push(this._createErrorAdapter(item, screenshotPath)));
     }
 
     normalizeRequestHookErrors () {
@@ -640,13 +627,18 @@ export default class TestRun extends AsyncEventEmitter {
 
         await this.emitActionStart(actionName, command);
 
-        this.once(EXECUTION_ERROR_EVENT_NAME, async errs => {
-            await this.emitActionDone(actionName, command, void 0, errs);
-        });
+        try {
+            result = await this.executeCommand(command, callsite);
+        }
+        catch (err) {
+            const testFnError = processTestFnError(err);
 
-        result = await this.executeCommand(command, callsite);
+            await this.addErrorWithScreenshot(testFnError);
 
-        this.clearListeners(EXECUTION_ERROR_EVENT_NAME);
+            await this.emitActionDone(actionName, command, void 0, this.errs[0]);
+
+            throw this.errs[0];
+        }
 
         await this.emitActionDone(actionName, command, result);
 
@@ -860,9 +852,9 @@ export default class TestRun extends AsyncEventEmitter {
             await this.emit('action-start', { command, apiActionName });
     }
 
-    async emitActionDone (apiActionName, command, result, errors) {
+    async emitActionDone (apiActionName, command, result, err) {
         if (!this.preventEmitActionEvents)
-            await this.emit('action-done', { command, apiActionName, result, errors });
+            await this.emit('action-done', { command, apiActionName, result, err });
     }
 }
 

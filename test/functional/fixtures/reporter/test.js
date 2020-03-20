@@ -695,5 +695,37 @@ describe('Reporter', () => {
         });
     });
 
+    it('Screenshot on action error', () => {
+        let testDoneErrors  = null;
+        let actionDoneError = null;
 
+        function screenshotReporter () {
+            return {
+                async reportTestActionDone (name, { err }) {
+                    actionDoneError = err;
+                },
+                async reportTaskStart () {
+                },
+                async reportFixtureStart () {
+                },
+                async reportTestDone (name, testRunInfo) {
+                    testDoneErrors = testRunInfo.errs;
+                },
+                async reportTaskDone () {
+                }
+            };
+        }
+
+        return runTests('testcafe-fixtures/index-test.js', 'Screenshot on action error', {
+            only:               'chrome',
+            reporter:           screenshotReporter,
+            screenshotsOnFails: true
+        })
+            .then(() => {
+                expect(actionDoneError.code).eql('E24');
+                expect(testDoneErrors.map(err => err.code)).eql(['E24', 'E8']);
+                expect(testDoneErrors[0].screenshotPath).is.not.empty;
+                expect(testDoneErrors[0].screenshotPath).eql(testDoneErrors[1].screenshotPath);
+            });
+    });
 });
