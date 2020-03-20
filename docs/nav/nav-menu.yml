@@ -1,6 +1,6 @@
-- name: GETTING STARTED
+- name: Getting Started
   url: /documentation/getting-started/README.md
-- name: USING TESTCAFE
+- name: Using TestCafe
   url: /documentation/using-testcafe/README.md
   content:
   - name: Installing TestCafe
@@ -50,7 +50,7 @@
       url: /documentation/using-testcafe/common-concepts/reporters.md
     - name: Test HTTPS and HTTP/2 Websites
       url: /documentation/using-testcafe/common-concepts/test-https-and-http2-websites.md
-- name: TEST API
+- name: Test API
   url: /documentation/test-api/README.md
   content:
   - name: Test Code Structure
@@ -189,7 +189,7 @@
     url: /documentation/test-api/coffeescript-support.md
   - name: A-Z Index
     url: /documentation/test-api/a-z.md
-- name: EXTENDING TESTCAFE
+- name: Extending TestCafe
   url: /documentation/extending-testcafe/README.md
   content:
   - name: Reporter Plugin
@@ -204,7 +204,7 @@
     content:
     - name: Browser Provider Methods
       url: /documentation/extending-testcafe/browser-provider-plugin/browser-provider-methods.md
-- name: CONTINUOUS INTEGRATION
+- name: Continuous Integration
   url: /documentation/continuous-integration/README.md
   content:
   - name: AppVeyor
@@ -227,7 +227,7 @@
     url: /documentation/continuous-integration/travis.md
   - name: Travis + Sauce Labs
     url: /documentation/continuous-integration/travis-and-sauce-labs.md
-- name: RECIPES
+- name: Recipes
   url: /documentation/recipes/README.md
   content:
     - name: Access Environment Variables in Tests

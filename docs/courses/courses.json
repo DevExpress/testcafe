@@ -1,0 +1,24 @@
+[
+    {
+        "title": "Automated Software Testing with TestCafe",
+        "source": "Udemy",
+        "date": "2020-03-01",
+        "url": "https://www.udemy.com/course/automated-testing-with-testcafe/",
+        "author": "Kaniel Outis"
+    },
+    {
+        "title": "End-to-End Web Testing With TestCafe: Getting Started",
+        "source": "Pluralsight",
+        "date": "2019-06-13",
+        "url": "https://www.pluralsight.com/courses/testcafe-end-to-end-web-testing-getting-started",
+        "author": "Marques Woodson",
+        "profileUrl": "https://twitter.com/mwq27"
+    },
+    {
+        "title": "Build an End-to-End Software Testing Framework with TestCafe",
+        "source": "Coursinator",
+        "url": "https://coursinator.com/course/build-an-end-to-end-software-testing-framework-with-testcafe",
+        "author": "Bogdan Vazzolla",
+        "profileUrl": "https://twitter.com/bogdanvazzolla"
+    }
+]
