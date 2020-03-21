@@ -42,6 +42,7 @@ import {
 } from './commands/utils';
 
 import { TEST_RUN_ERRORS } from '../errors/types';
+import processTestFnError from '../errors/process-test-fn-error';
 
 const lazyRequire                 = require('import-lazy')(require);
 const SessionController           = lazyRequire('./session-controller');
@@ -294,11 +295,11 @@ export default class TestRun extends AsyncEventEmitter {
             await fn(this);
         }
         catch (err) {
-            let screenshotPath = null;
+            let screenshotPath = this.errScreenshotPath;
 
             const { screenshots } = this.opts;
 
-            if (screenshots && screenshots.takeOnFails)
+            if (!screenshotPath && screenshots && screenshots.takeOnFails)
                 screenshotPath = await this.executeCommand(new browserManipulationCommands.TakeScreenshotOnFailCommand());
 
             this.addError(err, screenshotPath);
@@ -617,6 +618,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     async executeAction (actionName, command, callsite) {
+        let adapter = null;
         let error  = null;
         let result = null;
 
@@ -627,9 +629,16 @@ export default class TestRun extends AsyncEventEmitter {
         }
         catch (err) {
             error = err;
+
+            const { screenshots } = this.opts;
+
+            if (!this.errScreenshotPath && screenshots && screenshots.takeOnFails)
+                this.errScreenshotPath = await this.executeCommand(new browserManipulationCommands.TakeScreenshotOnFailCommand());
+
+            adapter = this._createErrorAdapter(processTestFnError(error), this.errScreenshotPath);
         }
 
-        await this.emitActionDone(actionName, command, result, error);
+        await this.emitActionDone(actionName, command, result, adapter);
 
         if (error)
             throw error;

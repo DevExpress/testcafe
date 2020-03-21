@@ -554,7 +554,7 @@ describe('Reporter', () => {
                                 },
                                 type: 'useRole'
                             },
-                            errors: ['E24']
+                            errors: [ void 0 ] // TODO: investigate
                         }
                     ]);
                 });
@@ -675,5 +675,40 @@ describe('Reporter', () => {
         });
     });
 
+    describe('Screenshot errors', () => {
+        it('Screenshot on action error', () => {
+            let testDoneErrors  = null;
+            const actionDoneErrors = [];
 
+            function screenshotReporter () {
+                return {
+                    async reportTestActionDone (name, { errors }) {
+                        actionDoneErrors.push(errors);
+                    },
+                    async reportTaskStart () {
+                    },
+                    async reportFixtureStart () {
+                    },
+                    async reportTestDone (name, testRunInfo) {
+                        testDoneErrors = testRunInfo.errs;
+                    },
+                    async reportTaskDone () {
+                    }
+                };
+            }
+
+            return runTests('testcafe-fixtures/index-test.js', 'Screenshot on action error', {
+                only:               'chrome',
+                reporter:           screenshotReporter,
+                screenshotsOnFails: true
+            })
+                .then(() => {
+                    expect(actionDoneErrors[0]).is.undefined;
+                    expect(actionDoneErrors[1][0].code).eql('E24');
+                    expect(testDoneErrors.map(err => err.code)).eql(['E24', 'E8']);
+                    expect(testDoneErrors[0].screenshotPath).is.not.empty;
+                    expect(testDoneErrors[0].screenshotPath).eql(testDoneErrors[1].screenshotPath);
+                });
+        });
+    });
 });
