@@ -301,6 +301,9 @@ export default class TestRun extends AsyncEventEmitter {
 
             return false;
         }
+        finally {
+            this.errScreenshotPath = null;
+        }
 
         return !this._addPendingPageErrorIfAny();
     }
