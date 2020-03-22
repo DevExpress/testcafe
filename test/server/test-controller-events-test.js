@@ -1,11 +1,12 @@
-const expect            = require('chai').expect;
-const AsyncEventEmitter = require('../../lib/utils/async-event-emitter');
-const TestRun           = require('../../lib/test-run');
-const TestController    = require('../../lib/api/test-controller');
-const Task              = require('../../lib/runner/task');
-const BrowserJob        = require('../../lib/runner/browser-job');
-const Reporter          = require('../../lib/reporter');
-const { Role }          = require('../../lib/api/exportable-lib');
+const expect                         = require('chai').expect;
+const AsyncEventEmitter              = require('../../lib/utils/async-event-emitter');
+const TestRun                        = require('../../lib/test-run');
+const TestController                 = require('../../lib/api/test-controller');
+const Task                           = require('../../lib/runner/task');
+const BrowserJob                     = require('../../lib/runner/browser-job');
+const Reporter                       = require('../../lib/reporter');
+const { Role }                       = require('../../lib/api/exportable-lib');
+const TestRunErrorFormattableAdapter = require('../../lib/errors/test-run/formattable-adapter');
 
 class TestRunMock extends TestRun {
     constructor () {
@@ -175,10 +176,12 @@ describe('TestController action events', () => {
 
     it('Error action', () => {
         let actionResult = null;
+        let errorAdapter = null;
 
         initializeReporter({
             async reportTestActionDone (name, { command, errors }) {
-                actionResult = { name, command: command.type, err: errors[0].message };
+                errorAdapter = errors[0];
+                actionResult = { name, command: command.type, err: errors[0].errMsg };
             }
         });
 
@@ -191,8 +194,9 @@ describe('TestController action events', () => {
                 throw new Error();
             })
             .catch(err => {
+                expect(errorAdapter).instanceOf(TestRunErrorFormattableAdapter);
                 expect(err.message).eql('test error');
-                expect(actionResult).eql({ name: 'click', command: 'click', err: 'test error' });
+                expect(actionResult).eql({ name: 'click', command: 'click', err: 'Error: test error' });
             });
     });
 });

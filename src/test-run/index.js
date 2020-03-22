@@ -295,14 +295,10 @@ export default class TestRun extends AsyncEventEmitter {
             await fn(this);
         }
         catch (err) {
-            let screenshotPath = this.errScreenshotPath;
+            await this._makeScreenshotOnFail();
 
-            const { screenshots } = this.opts;
+            this.addError(err);
 
-            if (!screenshotPath && screenshots && screenshots.takeOnFails)
-                screenshotPath = await this.executeCommand(new browserManipulationCommands.TakeScreenshotOnFailCommand());
-
-            this.addError(err, screenshotPath);
             return false;
         }
 
@@ -379,19 +375,19 @@ export default class TestRun extends AsyncEventEmitter {
         return false;
     }
 
-    _createErrorAdapter (err, screenshotPath) {
+    _createErrorAdapter (err) {
         return new TestRunErrorFormattableAdapter(err, {
             userAgent:      this.browserConnection.userAgent,
-            screenshotPath: screenshotPath || '',
+            screenshotPath: this.errScreenshotPath || '',
             testRunPhase:   this.phase
         });
     }
 
-    addError (err, screenshotPath) {
+    addError (err) {
         const errList = err instanceof TestCafeErrorList ? err.items : [err];
 
         errList.forEach(item => {
-            const adapter = this._createErrorAdapter(item, screenshotPath);
+            const adapter = this._createErrorAdapter(item);
 
             this.errs.push(adapter);
         });
@@ -618,9 +614,9 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     async executeAction (actionName, command, callsite) {
-        let adapter = null;
-        let error  = null;
-        let result = null;
+        let errorAdapter = null;
+        let error        = null;
+        let result       = null;
 
         await this.emitActionStart(actionName, command);
 
@@ -630,15 +626,17 @@ export default class TestRun extends AsyncEventEmitter {
         catch (err) {
             error = err;
 
-            const { screenshots } = this.opts;
+            // NOTE: check if error is TestCafeErrorList is specific for the `useRole` action
+            // if error is TestCafeErrorList we do not need to create an adapter,
+            // since error is already was processed in role initializer
+            if (!(err instanceof TestCafeErrorList)) {
+                await this._makeScreenshotOnFail();
 
-            if (!this.errScreenshotPath && screenshots && screenshots.takeOnFails)
-                this.errScreenshotPath = await this.executeCommand(new browserManipulationCommands.TakeScreenshotOnFailCommand());
-
-            adapter = this._createErrorAdapter(processTestFnError(error), this.errScreenshotPath);
+                errorAdapter = this._createErrorAdapter(processTestFnError(err));
+            }
         }
 
-        await this.emitActionDone(actionName, command, result, adapter);
+        await this.emitActionDone(actionName, command, result, errorAdapter);
 
         if (error)
             throw error;
@@ -716,6 +714,13 @@ export default class TestRun extends AsyncEventEmitter {
         this.pendingPageError = null;
 
         return Promise.reject(err);
+    }
+
+    async _makeScreenshotOnFail () {
+        const { screenshots } = this.opts;
+
+        if (!this.errScreenshotPath && screenshots && screenshots.takeOnFails)
+            this.errScreenshotPath = await this.executeCommand(new browserManipulationCommands.TakeScreenshotOnFailCommand());
     }
 
     _decorateWithFlag (fn, flagName, value) {

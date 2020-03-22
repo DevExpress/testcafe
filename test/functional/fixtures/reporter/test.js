@@ -553,8 +553,7 @@ describe('Reporter', () => {
                                     phase:     'initialized'
                                 },
                                 type: 'useRole'
-                            },
-                            errors: [ void 0 ] // TODO: investigate
+                            }
                         }
                     ]);
                 });
