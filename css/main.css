@@ -195,7 +195,8 @@ table > tbody > tr > td {
     max-width: 1500px;
     margin: auto;
     display: flex;
-    justify-content: space-between; }
+    justify-content: space-between;
+    align-items: center; }
     .site-header .site-header-content .hamburger-button {
       display: none; }
   .site-header.fixed {
@@ -203,8 +204,9 @@ table > tbody > tr > td {
   .site-header .star-button {
     display: inline-block;
     height: 28px;
-    margin: 0 0 2px 26px;
-    vertical-align: text-bottom; }
+    margin-left: 26px;
+    vertical-align: text-bottom;
+    min-width: 120px; }
   .site-header .site-logo {
     background-image: url("/testcafe/images/site-header-logo.svg");
     background-repeat: no-repeat;
@@ -214,7 +216,7 @@ table > tbody > tr > td {
     float: left;
     height: 29px;
     width: 147px;
-    margin: 23px 0; }
+    margin-bottom: 10px; }
   .site-header .site-header-buttons {
     display: flex;
     align-items: center; }
@@ -290,7 +292,7 @@ table > tbody > tr > td {
   .site-nav .site-nav-tab {
     display: inline-block;
     vertical-align: super;
-    padding: 5px 15px 7px;
+    padding: 3px 15px;
     margin-right: 20px; }
     @media (max-width: 1310px) {
       .site-nav .site-nav-tab {
@@ -304,10 +306,12 @@ table > tbody > tr > td {
       font-weight: bold;
       color: #404142;
       padding-top: 0; }
+      .site-nav .site-nav-tab .page-link:hover {
+        text-decoration: none; }
 
 #studio-link-tab {
   margin: 0 10px;
-  padding: 0px 10px 2px;
+  padding: 2px 10px;
   background: linear-gradient(260.4deg, #389ACE 0%, #5CACE8 100%);
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.08);
   transform: skewX(-20deg);

@@ -198,7 +198,7 @@
             var SURVEY_HEADER_HEIGHT = 32;
 
             var surveyBanner          = document.querySelector('.survey-banner');
-            var isSurveyBannerVisible = surveyBanner.className.indexOf('hidden') === -1;
+            var isSurveyBannerVisible = surveyBanner && surveyBanner.className.indexOf('hidden') === -1;
 
             return isSurveyBannerVisible ? DOCS_HEADER_HEIGHT + SURVEY_HEADER_HEIGHT : DOCS_HEADER_HEIGHT;
         }
