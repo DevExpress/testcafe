@@ -179,9 +179,9 @@ describe('TestController action events', () => {
         let errorAdapter = null;
 
         initializeReporter({
-            async reportTestActionDone (name, { command, errors }) {
-                errorAdapter = errors[0];
-                actionResult = { name, command: command.type, err: errors[0].errMsg };
+            async reportTestActionDone (name, { command, err }) {
+                errorAdapter = err;
+                actionResult = { name, command: command.type, err: err.errMsg };
             }
         });
 

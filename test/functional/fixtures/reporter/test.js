@@ -308,7 +308,7 @@ describe('Reporter', () => {
                                 options:  new ClickOptions(),
                                 selector: 'Selector(\'#non-existing-target\')'
                             },
-                            errors: ['E24']
+                            err: 'E24'
                         }
                     ]);
                 });
@@ -541,7 +541,7 @@ describe('Reporter', () => {
                                 selector: 'Selector(\'#non-existing-element\')',
                                 type:     'click'
                             },
-                            errors: ['E24']
+                            err: 'E24'
                         },
                         {
                             name:    'useRole',
@@ -676,13 +676,13 @@ describe('Reporter', () => {
 
     describe('Screenshot errors', () => {
         it('Screenshot on action error', () => {
-            let testDoneErrors  = null;
+            let testDoneErrors     = null;
             const actionDoneErrors = [];
 
             function screenshotReporter () {
                 return {
-                    async reportTestActionDone (name, { errors }) {
-                        actionDoneErrors.push(errors);
+                    async reportTestActionDone (name, { err }) {
+                        actionDoneErrors.push(err);
                     },
                     async reportTaskStart () {
                     },
@@ -703,7 +703,7 @@ describe('Reporter', () => {
             })
                 .then(() => {
                     expect(actionDoneErrors[0]).is.undefined;
-                    expect(actionDoneErrors[1][0].code).eql('E24');
+                    expect(actionDoneErrors[1].code).eql('E24');
                     expect(testDoneErrors.map(err => err.code)).eql(['E24', 'E8']);
                     expect(testDoneErrors[0].screenshotPath).is.not.empty;
                     expect(testDoneErrors[0].screenshotPath).eql(testDoneErrors[1].screenshotPath);

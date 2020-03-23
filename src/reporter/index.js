@@ -2,7 +2,6 @@ import { find, sortBy, union } from 'lodash';
 import { writable as isWritableStream } from 'is-stream';
 import ReporterPluginHost from './plugin-host';
 import formatCommand from './command/format-command';
-import TestCafeErrorList from '../errors/error-list';
 
 export default class Reporter {
     constructor (plugin, task, outStream, name) {
@@ -135,14 +134,11 @@ export default class Reporter {
         reportItem.pendingTestRunDonePromise.resolve();
     }
 
-    _prepareReportTestActionEventArgs ({ command, result, testRun, errors }) {
+    _prepareReportTestActionEventArgs ({ command, result, testRun, err }) {
         const args = {};
 
-        if (errors) {
-            errors = errors instanceof TestCafeErrorList ? errors.items : [errors];
-
-            args.errors = errors;
-        }
+        if (err)
+            args.err = err;
 
         return Object.assign(args, {
             testRunId: testRun.id,
@@ -218,9 +214,9 @@ export default class Reporter {
             }
         });
 
-        task.on('test-action-done', async ({ apiActionName, command, result, testRun, errors }) => {
+        task.on('test-action-done', async ({ apiActionName, command, result, testRun, err }) => {
             if (this.plugin.reportTestActionDone) {
-                const args = this._prepareReportTestActionEventArgs({ command, result, testRun, errors });
+                const args = this._prepareReportTestActionEventArgs({ command, result, testRun, err });
 
                 await this.plugin.reportTestActionDone(apiActionName, args);
             }

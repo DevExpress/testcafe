@@ -861,9 +861,9 @@ export default class TestRun extends AsyncEventEmitter {
             await this.emit('action-start', { command, apiActionName });
     }
 
-    async emitActionDone (apiActionName, command, result, errors) {
+    async emitActionDone (apiActionName, command, result, err) {
         if (!this.preventEmitActionEvents)
-            await this.emit('action-done', { command, apiActionName, result, errors });
+            await this.emit('action-done', { command, apiActionName, result, err });
     }
 }
 
