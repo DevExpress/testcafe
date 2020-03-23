@@ -72,7 +72,7 @@ testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
             alias:       'ipad'
         },
         {
-            browserName: 'browserstack:iPhone XS@12.0',
+            browserName: 'browserstack:iPhone 7 Plus@10',
             alias:       'iphone'
         }
     ]
