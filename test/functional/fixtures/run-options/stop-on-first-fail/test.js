@@ -13,7 +13,17 @@ const getTestRunCount = () => {
 
 describe('Stop test task on first failed test', () => {
     afterEach(() => {
-        fs.unlinkSync(TEST_RUN_COUNT_FILENAME);
+        try {
+            // NOTE: after mocha is updated to `^7.1.1` the `afterEach` hook is called if the test is skipped/pending
+            // before the update the `afterEach` hook was not called.
+            // When we run the test not in `chrome` the file will not exist, since we have the { only: 'chrome' } option,
+            // so we cannot unlink it.
+            fs.unlinkSync(TEST_RUN_COUNT_FILENAME);
+        }
+        /*eslint-disable no-empty */
+        catch (err) {
+        }
+        /*eslint-disable no-empty */
     });
 
     it('Basic', () => {
