@@ -42,6 +42,7 @@ import {
 } from './commands/utils';
 
 import { TEST_RUN_ERRORS } from '../errors/types';
+import processTestFnError from '../errors/process-test-fn-error';
 
 const lazyRequire                 = require('import-lazy')(require);
 const SessionController           = lazyRequire('./session-controller');
@@ -294,15 +295,14 @@ export default class TestRun extends AsyncEventEmitter {
             await fn(this);
         }
         catch (err) {
-            let screenshotPath = null;
+            await this._makeScreenshotOnFail();
 
-            const { screenshots } = this.opts;
+            this.addError(err);
 
-            if (screenshots && screenshots.takeOnFails)
-                screenshotPath = await this.executeCommand(new browserManipulationCommands.TakeScreenshotOnFailCommand());
-
-            this.addError(err, screenshotPath);
             return false;
+        }
+        finally {
+            this.errScreenshotPath = null;
         }
 
         return !this._addPendingPageErrorIfAny();
@@ -378,19 +378,19 @@ export default class TestRun extends AsyncEventEmitter {
         return false;
     }
 
-    _createErrorAdapter (err, screenshotPath) {
+    _createErrorAdapter (err) {
         return new TestRunErrorFormattableAdapter(err, {
             userAgent:      this.browserConnection.userAgent,
-            screenshotPath: screenshotPath || '',
+            screenshotPath: this.errScreenshotPath || '',
             testRunPhase:   this.phase
         });
     }
 
-    addError (err, screenshotPath) {
+    addError (err) {
         const errList = err instanceof TestCafeErrorList ? err.items : [err];
 
         errList.forEach(item => {
-            const adapter = this._createErrorAdapter(item, screenshotPath);
+            const adapter = this._createErrorAdapter(item);
 
             this.errs.push(adapter);
         });
@@ -617,8 +617,9 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     async executeAction (actionName, command, callsite) {
-        let error  = null;
-        let result = null;
+        let errorAdapter = null;
+        let error        = null;
+        let result       = null;
 
         await this.emitActionStart(actionName, command);
 
@@ -627,9 +628,18 @@ export default class TestRun extends AsyncEventEmitter {
         }
         catch (err) {
             error = err;
+
+            // NOTE: check if error is TestCafeErrorList is specific for the `useRole` action
+            // if error is TestCafeErrorList we do not need to create an adapter,
+            // since error is already was processed in role initializer
+            if (!(err instanceof TestCafeErrorList)) {
+                await this._makeScreenshotOnFail();
+
+                errorAdapter = this._createErrorAdapter(processTestFnError(err));
+            }
         }
 
-        await this.emitActionDone(actionName, command, result, error);
+        await this.emitActionDone(actionName, command, result, errorAdapter);
 
         if (error)
             throw error;
@@ -707,6 +717,13 @@ export default class TestRun extends AsyncEventEmitter {
         this.pendingPageError = null;
 
         return Promise.reject(err);
+    }
+
+    async _makeScreenshotOnFail () {
+        const { screenshots } = this.opts;
+
+        if (!this.errScreenshotPath && screenshots && screenshots.takeOnFails)
+            this.errScreenshotPath = await this.executeCommand(new browserManipulationCommands.TakeScreenshotOnFailCommand());
     }
 
     _decorateWithFlag (fn, flagName, value) {
@@ -844,9 +861,9 @@ export default class TestRun extends AsyncEventEmitter {
             await this.emit('action-start', { command, apiActionName });
     }
 
-    async emitActionDone (apiActionName, command, result, errors) {
+    async emitActionDone (apiActionName, command, result, err) {
         if (!this.preventEmitActionEvents)
-            await this.emit('action-done', { command, apiActionName, result, errors });
+            await this.emit('action-done', { command, apiActionName, result, err });
     }
 }
 
