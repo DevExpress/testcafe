@@ -230,7 +230,8 @@ before(function () {
                 });
 
                 if (!actualBrowsers.length) {
-                    mocha.test.skip();
+                    global.currentTest.skip();
+
                     return Promise.resolve();
                 }
 
@@ -299,6 +300,10 @@ before(function () {
                     .catch(handleError);
             };
         });
+});
+
+beforeEach(function () {
+    global.currentTest = this.currentTest;
 });
 
 after(function () {
