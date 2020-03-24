@@ -3,7 +3,7 @@
 // Do not use any browser or node-specific API!
 // -------------------------------------------------------------
 
-export const HEARTBEAT_TIMEOUT       = 2000 * 60 * 1000;
+export const HEARTBEAT_TIMEOUT       = 2 * 60 * 1000;
 export const BROWSER_RESTART_TIMEOUT = 60 * 1000;
 
 export const HEARTBEAT_INTERVAL = 2 * 1000;
