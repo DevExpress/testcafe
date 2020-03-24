@@ -13,8 +13,8 @@ export default function evalFunction (fnCode, __dependencies$) {
     // NOTE: `eval` in strict mode will not override context variables
     'use strict';
 
-    /* eslint-disable no-eval */
-    return eval(fnCode);
-    /* eslint-enable no-eval */
+    fnCode = hammerhead.processScript(fnCode);
+
+    return hammerhead.nativeMethods.eval(fnCode);
 }
 /* eslint-enable @typescript-eslint/no-unused-vars */

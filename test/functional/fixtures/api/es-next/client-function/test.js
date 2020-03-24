@@ -58,6 +58,10 @@ describe('[API] ClientFunction', function () {
         return runTests('./testcafe-fixtures/client-fn-test.js', 'ClientFunction with ClientFunction argument');
     });
 
+    it('Should not hung if "window.eval" function is overridden (GH-4693)', () => {
+        return runTests('testcafe-fixtures/overridden-window-eval.js');
+    });
+
     describe('Errors', function () {
         it('Should handle errors in ClientFunction code', function () {
             return runTests('./testcafe-fixtures/client-fn-test.js', 'Error in code', { shouldFail: true })

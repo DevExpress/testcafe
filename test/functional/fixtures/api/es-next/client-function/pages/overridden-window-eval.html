@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>GH-4693</title>
+</head>
+<body>
+<script>
+    window.eval = function () {
+        throw new Error('You cannot use the "window.eval" function');
+    }
+</script>
+</body>
+</html>
