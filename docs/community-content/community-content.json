@@ -17,7 +17,8 @@
         "url": "https://tech.recruit-mp.co.jp/front-end/post-20193/",
         "author": "wakamsha",
         "profileUrl": "https://twitter.com/wakamsha",
-        "lang": "Japanese"
+        "lang": "Japanese",
+        "langCode": "jp"
     },
     {
         "type": "article",
@@ -318,7 +319,8 @@
         "title": "Découverte de TestCafé & Installation",
         "url": "https://blog.ndz-dev.com/decouverte-de-test-cafe/",
         "author": "Neplaz Dimitri",
-        "lang": "French"
+        "lang": "French",
+        "langCode": "fr"
     },
     {
         "type": "article",
