@@ -45,6 +45,7 @@ export default class Reporter {
             testRunIds:                 [],
             screenshotPath:             null,
             screenshots:                [],
+            videos:                     [],
             quarantine:                 null,
             errs:                       [],
             warnings:                   [],
@@ -72,6 +73,7 @@ export default class Reporter {
             unstable:       reportItem.unstable,
             screenshotPath: reportItem.screenshotPath,
             screenshots:    reportItem.screenshots,
+            videos:         reportItem.videos,
             quarantine:     reportItem.quarantine,
             skipped:        reportItem.test.skip
         };
@@ -106,6 +108,9 @@ export default class Reporter {
             reportItem.screenshotPath = this.task.screenshots.getPathFor(testRun.test);
             reportItem.screenshots    = this.task.screenshots.getScreenshotsInfo(testRun.test);
         }
+
+        if (this.task.videos)
+            reportItem.videos = this.task.videos.getTestVideos(reportItem.test);
 
         if (testRun.quarantine) {
             reportItem.quarantine = testRun.quarantine.attempts.reduce((result, errors, index) => {

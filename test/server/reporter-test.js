@@ -2,6 +2,7 @@ const { expect }        = require('chai');
 const { chunk, random } = require('lodash');
 const Reporter          = require('../../lib/reporter');
 const Task              = require('../../lib/runner/task');
+const Videos            = require('../../lib/video-recorder/videos');
 const delay             = require('../../lib/utils/delay');
 
 describe('Reporter', () => {
@@ -346,6 +347,16 @@ describe('Reporter', () => {
         }
     }
 
+    class VideosMock extends Videos {
+        constructor (recordings) {
+            super([], { videoPath: '' });
+
+
+            this.recordings = recordings;
+        }
+    }
+
+
     class TaskMock extends Task {
         constructor () {
             super(testMocks, chunk(browserConnectionMocks, 1), {}, { stopOnFirstFail: false });
@@ -362,6 +373,7 @@ describe('Reporter', () => {
         }
 
         _createBrowserJobs () {
+            return [];
         }
     }
 
@@ -384,52 +396,6 @@ describe('Reporter', () => {
         }, randomDelay());
     }
 
-    function createReporter (taskMock) {
-        return new Reporter({
-            reportTaskStart: function (...args) {
-                expect(args[0]).to.be.a('date');
-
-                // NOTE: replace startTime
-                args[0] = new Date('Thu Jan 01 1970 00:00:00 UTC');
-
-                return delay(1000)
-                    .then(() => log.push({ method: 'reportTaskStart', args: args }));
-            },
-
-            reportFixtureStart: function () {
-                return delay(1000)
-                    .then(() => log.push({ method: 'reportFixtureStart', args: Array.prototype.slice.call(arguments) }));
-            },
-
-            reportTestStart: function (...args) {
-                expect(args[0]).to.be.an('string');
-
-                return delay(1000)
-                    .then(() => log.push({ method: 'reportTestStart', args: args }));
-            },
-
-            reportTestDone: function (...args) {
-                expect(args[1].durationMs).to.be.an('number');
-
-                // NOTE: replace durationMs
-                args[1].durationMs = 74000;
-
-                return delay(1000)
-                    .then(() => log.push({ method: 'reportTestDone', args: args }));
-            },
-
-            reportTaskDone: function (...args) {
-                expect(args[0]).to.be.a('date');
-
-                // NOTE: replace endTime
-                args[0] = new Date('Thu Jan 01 1970 00:15:25 UTC');
-
-                return delay(1000)
-                    .then(() => log.push({ method: 'reportTaskDone', args: args }));
-            }
-        }, taskMock);
-    }
-
     beforeEach(() => {
         log = [];
     });
@@ -438,6 +404,52 @@ describe('Reporter', () => {
         this.timeout(30000);
 
         const taskMock = new TaskMock();
+
+        function createReporter () {
+            return new Reporter({
+                reportTaskStart: function (...args) {
+                    expect(args[0]).to.be.a('date');
+
+                    // NOTE: replace startTime
+                    args[0] = new Date('Thu Jan 01 1970 00:00:00 UTC');
+
+                    return delay(1000)
+                        .then(() => log.push({ method: 'reportTaskStart', args: args }));
+                },
+
+                reportFixtureStart: function () {
+                    return delay(1000)
+                        .then(() => log.push({ method: 'reportFixtureStart', args: Array.prototype.slice.call(arguments) }));
+                },
+
+                reportTestStart: function (...args) {
+                    expect(args[0]).to.be.an('string');
+
+                    return delay(1000)
+                        .then(() => log.push({ method: 'reportTestStart', args: args }));
+                },
+
+                reportTestDone: function (...args) {
+                    expect(args[1].durationMs).to.be.an('number');
+
+                    // NOTE: replace durationMs
+                    args[1].durationMs = 74000;
+
+                    return delay(1000)
+                        .then(() => log.push({ method: 'reportTestDone', args: args }));
+                },
+
+                reportTaskDone: function (...args) {
+                    expect(args[0]).to.be.a('date');
+
+                    // NOTE: replace endTime
+                    args[0] = new Date('Thu Jan 01 1970 00:15:25 UTC');
+
+                    return delay(1000)
+                        .then(() => log.push({ method: 'reportTaskDone', args: args }));
+                }
+            }, taskMock);
+        }
 
         const expectedLog = [
             {
@@ -566,7 +578,8 @@ describe('Reporter', () => {
                             userAgent:         'chrome',
                             takenOnFail:       false,
                             quarantineAttempt: 2
-                        }]
+                        }],
+                        videos: []
                     },
                     {
                         run: 'run-001'
@@ -630,7 +643,8 @@ describe('Reporter', () => {
                             userAgent:         'chrome',
                             takenOnFail:       true,
                             quarantineAttempt: null
-                        }]
+                        }],
+                        videos: []
                     },
                     {
                         run: 'run-001'
@@ -668,7 +682,8 @@ describe('Reporter', () => {
                         skipped:        false,
                         quarantine:     null,
                         screenshotPath: null,
-                        screenshots:    []
+                        screenshots:    [],
+                        videos:         []
                     },
                     {
                         run: 'run-001'
@@ -716,7 +731,8 @@ describe('Reporter', () => {
                         skipped:        false,
                         quarantine:     null,
                         screenshotPath: null,
-                        screenshots:    []
+                        screenshots:    [],
+                        videos:         []
                     },
                     {
                         run: 'run-001'
@@ -754,7 +770,8 @@ describe('Reporter', () => {
                         skipped:        false,
                         quarantine:     null,
                         screenshotPath: null,
-                        screenshots:    []
+                        screenshots:    [],
+                        videos:         []
                     },
                     {
                         run: 'run-001'
@@ -806,7 +823,8 @@ describe('Reporter', () => {
                         skipped:        false,
                         quarantine:     null,
                         screenshotPath: null,
-                        screenshots:    []
+                        screenshots:    [],
+                        videos:         []
                     },
                     {
                         run: 'run-001'
@@ -844,7 +862,8 @@ describe('Reporter', () => {
                         skipped:        true,
                         quarantine:     null,
                         screenshotPath: null,
-                        screenshots:    []
+                        screenshots:    [],
+                        videos:         []
                     },
                     {
                         run: 'run-001'
@@ -882,7 +901,8 @@ describe('Reporter', () => {
                         skipped:        false,
                         quarantine:     null,
                         screenshotPath: null,
-                        screenshots:    []
+                        screenshots:    [],
+                        videos:         []
                     },
                     {
                         run: 'run-001'
@@ -927,5 +947,66 @@ describe('Reporter', () => {
         const reporter = new Reporter({ noColors: true }, taskMock);
 
         expect(reporter.plugin.chalk.enabled).to.be.false;
+    });
+
+    it('Should provide videos info to the reporter', () => {
+        const videoLog = [];
+        const taskMock = new TaskMock();
+
+        taskMock.videos = new VideosMock({
+            'idf1t1': {
+                runs: [{
+                    testRunId: 'f1t1-id1',
+                    videoPath: 'f1t1-path1'
+                }, {
+                    testRunId: 'f1t1-id2',
+                    videoPath: 'f1t1-path2'
+                }]
+            },
+            'idf1t2': {
+                runs: [{
+                    testRunId: 'f1t2-id1',
+                    videoPath: 'f1t2-path1'
+                }, {
+                    testRunId: 'f1t2-id2',
+                    videoPath: 'f1t2-path2'
+                }]
+            }
+        });
+
+        function createReporter () {
+            return new Reporter({
+                reportTaskStart: function () {
+                },
+                reportTaskDone: function () {
+                },
+                reportFixtureStart: function () {
+                },
+                reportTestStart: function () {
+                },
+                reportTestDone: function (name, testRunInfo) {
+                    videoLog.push(testRunInfo.videos);
+                }
+            }, taskMock);
+        }
+
+        createReporter();
+
+        return Promise.all([
+            emulateBrowserJob(taskMock, chromeTestRunMocks.slice(0, 2)),
+            emulateBrowserJob(taskMock, firefoxTestRunMocks.slice(0, 2))
+        ])
+            .then(() => {
+                expect(videoLog).eql([
+                    [
+                        { testRunId: 'f1t1-id1', videoPath: 'f1t1-path1' },
+                        { testRunId: 'f1t1-id2', videoPath: 'f1t1-path2' }
+                    ],
+                    [
+                        { testRunId: 'f1t2-id1', videoPath: 'f1t2-path1' },
+                        { testRunId: 'f1t2-id2', videoPath: 'f1t2-path2' }
+                    ]]
+                );
+            });
     });
 });
