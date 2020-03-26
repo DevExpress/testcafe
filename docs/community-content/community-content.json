@@ -2,6 +2,7 @@
     {
         "type": "article",
         "source": "Marie Drake's Blog",
+        "sourceHomePage": "https://www.mariedrake.com/",
         "date": "2020-03-16",
         "title": "Creating Your First Test With TestCafe",
         "url": "https://www.mariedrake.com/post/creating-your-first-test-with-testcafe",
@@ -10,16 +11,19 @@
     {
         "type": "article",
         "source": "PSYENCE:MEDIA",
+        "sourceHomePage": "https://tech.recruit-mp.co.jp/",
         "date": "2020-03-06",
         "title": "TestCafe で E2E テストを始めよう #1 - 概要説明 と Hello World",
         "url": "https://tech.recruit-mp.co.jp/front-end/post-20193/",
         "author": "wakamsha",
         "profileUrl": "https://twitter.com/wakamsha",
-        "lang": "Japanese"
+        "lang": "Japanese",
+        "langCode": "jp"
     },
     {
         "type": "article",
         "source": "Dev Tester",
+        "sourceHomePage": "https://dev-tester.com",
         "date": "2020-03-03",
         "title": "5 Ways TestCafe Helps Your Tests Run Fast",
         "url": "https://dev-tester.com/5-ways-testcafe-helps-your-tests-run-fast/",
@@ -30,6 +34,7 @@
     {
         "type": "article",
         "source": "LogRocket",
+        "sourceHomePage": "https://blog.logrocket.com",
         "date": "2020-02-27",
         "title": "Writing Reusable End-to-End Tests With TestCafe",
         "url": "https://blog.logrocket.com/writing-reusable-end-to-end-tests-with-testcafe/",
@@ -39,6 +44,7 @@
     {
         "type": "article",
         "source": "Dev Tester",
+        "sourceHomePage": "https://dev-tester.com",
         "date": "2020-02-25",
         "title": "Handle API Responses With Ease Using Mocks in TestCafe",
         "url": "https://dev-tester.com/handle-api-responses-with-ease-using-mocks-in-testcafe/",
@@ -49,6 +55,7 @@
     {
         "type": "article",
         "source": "Dev Tester",
+        "sourceHomePage": "https://dev-tester.com",
         "date": "2020-02-18",
         "title": "TestCafe Studio: Is It Better Than Writing Your Own Tests?",
         "url": "https://dev-tester.com/testcafe-studio-is-it-better-than-writing-your-own-tests/",
@@ -59,6 +66,7 @@
     {
         "type": "article",
         "source": "dev.to",
+        "sourceHomePage": "https://dev.to",
         "date": "2020-02-15",
         "title": "Using the 'After' Hook in TestCafe to Clean Up Data",
         "url": "https://dev.to/pluralsight/cleaning-up-after-tests-m80",
@@ -69,6 +77,7 @@
     {
         "type": "article",
         "source": "Celestial Systems Blog",
+        "sourceHomePage": "https://celestialsys.com",
         "date": "2020-02-14",
         "title": "TestCafe: A Perfect Automation Tool for Web-Based Applications",
         "url": "https://celestialsys.com/blog/testcafe-a-perfect-automation-tool-for-web-based-applications/",
@@ -78,6 +87,7 @@
     {
         "type": "article",
         "source": "Dev Tester",
+        "sourceHomePage": "https://dev-tester.com",
         "date": "2020-02-04",
         "title": "Test Your Website's Responsive Design With TestCafe",
         "url": "https://dev-tester.com/test-your-websites-responsive-design-with-testcafe/",
@@ -88,6 +98,7 @@
     {
         "type": "article",
         "source": "Dev Tester",
+        "sourceHomePage": "https://dev-tester.com",
         "date": "2020-01-28",
         "title": "Percy and TestCafe: Stop Letting Visual Bugs Slip by You",
         "url": "https://dev-tester.com/percy-and-testcafe-stop-letting-visual-bugs-slip-by-you/",
@@ -98,6 +109,7 @@
     {
         "type": "article",
         "source": "Medium",
+        "sourceHomePage": "https://medium.com",
         "date": "2020-01-20",
         "title": "JavaScript: the Future of End-to-End Testing",
         "url": "https://medium.com/@davert/javascript-the-future-of-end-to-end-testing-bfc00e23110b",
@@ -107,6 +119,7 @@
     {
         "type": "article",
         "source": "Dev Tester",
+        "sourceHomePage": "https://dev-tester.com",
         "date": "2020-01-20",
         "title": "Make Your Website Accessible With axe and TestCafe",
         "url": "https://dev-tester.com/make-your-website-accessible-with-axe-and-testcafe/",
@@ -117,6 +130,7 @@
     {
         "type": "article",
         "source": "Dev Tester",
+        "sourceHomePage": "https://dev-tester.com",
         "date": "2020-01-14",
         "title": "Run Your Tests on the Cloud With TestCafe and BrowserStack",
         "url": "https://dev-tester.com/run-your-tests-on-the-cloud-with-testcafe-and-browserstack/",
@@ -127,6 +141,7 @@
     {
         "type": "article",
         "source": "Dev Tester",
+        "sourceHomePage": "https://dev-tester.com",
         "date": "2020-01-07",
         "title": "Fix Your Flaky End-To-End Tests With Testing Library",
         "url": "https://dev-tester.com/fix-your-flaky-end-to-end-tests-with-testing-library/",
@@ -137,6 +152,7 @@
     {
         "type": "article",
         "source": "Medium",
+        "sourceHomePage": "https://medium.com",
         "date": "2019-12-31",
         "title": "End-to-End Testing for Vue.js Applications Using TestCafe",
         "url": "https://medium.com/@rawal.hardik7/end-to-end-e2e-testing-for-vue-js-application-using-testcafe-adfd73bc15bd",
@@ -146,6 +162,7 @@
     {
         "type": "article",
         "source": "Dev Tester",
+        "sourceHomePage": "https://dev-tester.com",
         "date": "2019-12-31",
         "title": "Email Testing Made Simple With TestCafe and Mailosaur",
         "url": "https://dev-tester.com/email-testing-made-simple-with-testcafe-and-mailosaur/",
@@ -156,6 +173,7 @@
     {
         "type": "article",
         "source": "Dev Tester",
+        "sourceHomePage": "https://dev-tester.com",
         "date": "2019-12-24",
         "title": "How to Get Started With TestCafe",
         "url": "https://dev-tester.com/how-to-get-started-with-testcafe/",
@@ -166,15 +184,16 @@
     {
         "type": "article",
         "source": "Engineering Quality",
+        "sourceHomePage": "https://www.engineeringquality.tech",
         "date": "2019-09-04",
         "title": "How to Automate Web Analytics Testing",
         "url": "https://www.engineeringquality.tech/articles/how-to-automate-web-analytics-testing",
-        "author": "Tushara",
-        "profileUrl": "https://twitter.com/janhesters"
+        "author": "Tushara"
     },
     {
         "type": "article",
         "source": "Jan Hesters' Blog",
+        "sourceHomePage": "https://janhesters.com",
         "date": "2019-08-27",
         "title": "End-To-End Testing Amplify Apps",
         "url": "https://janhesters.com/e2e-testing-amplify-apps/",
@@ -185,6 +204,7 @@
     {
         "type": "article",
         "source": "Jan Hesters' Blog",
+        "sourceHomePage": "https://janhesters.com",
         "date": "2019-08-20",
         "title": "Setting Up a Project With CI/CD Using Amplify",
         "url": "https://janhesters.com/setting-up-a-project-with-ci-cd-using-amplify/",
@@ -195,6 +215,7 @@
     {
         "type": "article",
         "source": "Engineering Quality",
+        "sourceHomePage": "https://www.engineeringquality.tech",
         "date": "2019-08-11",
         "title": "How to Iterate Links and Skip an Item in TestCafe",
         "url": "https://www.engineeringquality.tech/articles/how-to-iterate-links-and-skip-an-item-in-testcafe",
@@ -203,6 +224,7 @@
     {
         "type": "article",
         "source": "Medium",
+        "sourceHomePage": "https://medium.com",
         "date": "2019-08-05",
         "title": "Run Integration Tests With GitHub Actions (React + TestCafe)",
         "url": "https://medium.com/@gauravchl/run-integration-tests-with-github-actions-react-testcafe-48022552051c",
@@ -213,6 +235,7 @@
     {
         "type": "article",
         "source": "Engineering Quality",
+        "sourceHomePage": "https://www.engineeringquality.tech",
         "date": "2019-07-28",
         "title": "Differences Between WebdriverIO and TestCafe",
         "url": "https://www.engineeringquality.tech/articles/differences-between-webdriverio-and-testcafe"
@@ -220,6 +243,7 @@
     {
         "type": "article",
         "source": "Rafaela Azevedo's Blog",
+        "sourceHomePage": "https://azevedorafaela.com",
         "date": "2019-07-24",
         "title": "Injecting Cookies in Your TestCafe Automation",
         "url": "https://azevedorafaela.com/2019/07/24/inject-cookies-in-your-testcafe-automation/",
@@ -229,6 +253,7 @@
     {
         "type": "article",
         "source": "LinkedIn",
+        "sourceHomePage": "https://www.linkedin.com",
         "date": "2019-07-07",
         "title": "Selenium is Dead. Long Live TestCafe!",
         "url": "https://www.linkedin.com/pulse/selenium-dead-long-live-testcafe-robert-dzikowski",
@@ -237,6 +262,7 @@
     {
         "type": "article",
         "source": "dev.to",
+        "sourceHomePage": "https://dev.to",
         "date": "2019-06-26",
         "title": "Concurrency and Test Data in TestCafe",
         "url": "https://dev.to/mwoodson/concurrency-and-test-data-in-testcafe-13nh",
@@ -247,6 +273,7 @@
     {
         "type": "article",
         "source": "Engineering Quality",
+        "sourceHomePage": "https://www.engineeringquality.tech",
         "date": "2020-05-31",
         "title": "The Ease of Executing Scripts in TestCafe",
         "url": "https://www.engineeringquality.tech/articles/executing-scripts-in-testcafe",
@@ -256,6 +283,7 @@
     {
         "type": "article",
         "source": "Engineering Quality",
+        "sourceHomePage": "https://www.engineeringquality.tech",
         "date": "2019-05-21",
         "title": "End-to-End Web Testing With TestCafe",
         "url": "https://www.engineeringquality.tech/articles/what-is-testcafe",
@@ -265,6 +293,7 @@
     {
         "type": "article",
         "source": "Medium",
+        "sourceHomePage": "https://medium.com",
         "date": "2019-04-29",
         "title": "Creating a Visual Regression Tool for Your Web App",
         "url": "https://blog.usejournal.com/creating-a-visual-regression-tool-for-your-web-app-f4920974e2ec",
@@ -275,6 +304,7 @@
     {
         "type": "article",
         "source": "Medium",
+        "sourceHomePage": "https://medium.com",
         "date": "2019-03-07",
         "title": "End-to-End Web Testing With TestCafe",
         "url": "https://medium.com/xebia-france/end-to-end-web-testing-with-testcafe-766ddbd74924",
@@ -284,15 +314,18 @@
     {
         "type": "article",
         "source": "ndz-dev",
+        "sourceHomePage": "https://blog.ndz-dev.com",
         "date": "2019-01-08",
         "title": "Découverte de TestCafé & Installation",
         "url": "https://blog.ndz-dev.com/decouverte-de-test-cafe/",
         "author": "Neplaz Dimitri",
-        "lang": "French"
+        "lang": "French",
+        "langCode": "fr"
     },
     {
         "type": "article",
         "source": "Imaginea",
+        "sourceHomePage": "https://blog.imaginea.com",
         "date": "2018-12-03",
         "title": "Why we Fancied TestCafe Over WebDriver for a Modern Web App?",
         "url": "https://blog.imaginea.com/why-we-fancied-testcafe-over-webdriver/",
@@ -301,6 +334,7 @@
     {
         "type": "article",
         "source": "Medium",
+        "sourceHomePage": "https://medium.com",
         "date": "2018-03-29",
         "title": "Evaluating Cypress and TestCafe for End-to-End Testing",
         "url": "https://medium.com/yld-blog/evaluating-cypress-and-testcafe-for-end-to-end-testing-fcd0303d2103",
