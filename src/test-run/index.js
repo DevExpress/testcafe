@@ -25,7 +25,6 @@ import { UNSTABLE_NETWORK_MODE_HEADER } from '../browser/connection/unstable-net
 import WarningLog from '../notifications/warning-log';
 import WARNING_MESSAGE from '../notifications/warning-message';
 import { StateSnapshot, SPECIAL_ERROR_PAGE } from 'testcafe-hammerhead';
-import { NavigateToCommand } from './commands/actions';
 import * as INJECTABLES from '../assets/injectables';
 import { findProblematicScripts } from '../custom-client-scripts/utils';
 import getCustomClientScriptUrl from '../custom-client-scripts/get-url';
@@ -53,6 +52,7 @@ const AssertionExecutor           = lazyRequire('../assertions/executor');
 const actionCommands              = lazyRequire('./commands/actions');
 const browserManipulationCommands = lazyRequire('./commands/browser-manipulation');
 const serviceCommands             = lazyRequire('./commands/service');
+const observationCommands         = lazyRequire('./commands/observation');
 
 const { executeJsExpression, executeAsyncJsExpression } = lazyRequire('./execute-js-expression');
 
@@ -491,13 +491,21 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     // Handle driver request
+    _shouldResolveCurrentDriverTask (driverStatus) {
+        const isFirstExecuteSelectorCommandAfterWindowSwitching =
+            driverStatus.isFirstRequestAfterWindowSwitching &&
+            this.currentDriverTask.command instanceof observationCommands.ExecuteSelectorCommand;
+
+        return !isFirstExecuteSelectorCommandAfterWindowSwitching;
+    }
+
     _fulfillCurrentDriverTask (driverStatus) {
         if (!this.currentDriverTask)
             return;
 
         if (driverStatus.executionError)
             this._rejectCurrentDriverTask(driverStatus.executionError);
-        else
+        else if (this._shouldResolveCurrentDriverTask(driverStatus))
             this._resolveCurrentDriverTask(driverStatus.result);
     }
 
@@ -788,7 +796,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     async navigateToUrl (url, forceReload, stateSnapshot) {
-        const navigateCommand = new NavigateToCommand({ url, forceReload, stateSnapshot });
+        const navigateCommand = new actionCommands.NavigateToCommand({ url, forceReload, stateSnapshot });
 
         await this.executeCommand(navigateCommand);
     }

@@ -291,7 +291,10 @@ export default class Driver extends serviceUtils.EventEmitter {
                 return browser.setActiveWindowId(this.browserActiveWindowId, hammerhead.createNativeXHR, this.windowId);
             })
             .then(() => {
-                this._startInternal({ finalizePendingCommand: true });
+                this._startInternal({
+                    finalizePendingCommand:             true,
+                    isFirstRequestAfterWindowSwitching: true
+                });
 
                 this.setAsMasterInProgress = false;
             })
@@ -1017,12 +1020,12 @@ export default class Driver extends serviceUtils.EventEmitter {
         };
     }
 
-    _startInternal (opts = { finalizePendingCommand: false }) {
+    _startInternal (opts) {
         this.role = DriverRole.master;
 
         browser.startHeartbeat(this.heartbeatUrl, hammerhead.createNativeXHR);
         this._setupAssertionRetryIndication();
-        this._startCommandsProcessing(opts.finalizePendingCommand);
+        this._startCommandsProcessing(opts);
     }
 
     _stopInternal () {
@@ -1049,7 +1052,7 @@ export default class Driver extends serviceUtils.EventEmitter {
 
     }
 
-    _startCommandsProcessing (finalizePendingCommand) {
+    _startCommandsProcessing (opts = { finalizePendingCommand: false, isFirstRequestAfterWindowSwitching: false }) {
         const pendingStatus = this.contextStorage.getItem(PENDING_STATUS);
 
         if (pendingStatus)
@@ -1069,9 +1072,12 @@ export default class Driver extends serviceUtils.EventEmitter {
         if (this._failIfClientCodeExecutionIsInterrupted())
             return;
 
-        finalizePendingCommand = finalizePendingCommand || this._hasPendingActionFlags(this.contextStorage);
+        const finalizePendingCommand = opts.finalizePendingCommand || this._hasPendingActionFlags(this.contextStorage);
 
-        const status = pendingStatus || new DriverStatus({ isCommandResult: finalizePendingCommand });
+        const status = pendingStatus || new DriverStatus({
+            isCommandResult:                    finalizePendingCommand,
+            isFirstRequestAfterWindowSwitching: opts.isFirstRequestAfterWindowSwitching
+        });
 
         this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, false);
         this.contextStorage.setItem(this.EXECUTING_IN_IFRAME_FLAG, false);
