@@ -16,15 +16,16 @@
 .post-extract {
   font-size: 15px;
   line-height: 20px;
-  padding: 5px 0 10px;
+  padding: 5px 0;
   border: none;
   color: #000000; }
-  .post-extract .read-more {
-    padding-top: 5px;
-    font-weight: normal;
-    font-size: 15px;
-    line-height: 20px;
-    text-decoration-line: underline; }
+
+.read-more {
+  padding-top: 0;
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 20px;
+  text-decoration-line: underline; }
 
 .post-title a, .post-subtitle a, .read-more a {
   color: #2fa4cf; }
