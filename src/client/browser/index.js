@@ -13,6 +13,8 @@ let heartbeatIntervalId      = null;
 const noop  = () => void 0;
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
+const evaluate = eval; // eslint-disable-line no-eval
+
 const FETCH_PAGE_TO_CACHE_RETRY_DELAY = 300;
 const FETCH_PAGE_TO_CACHE_RETRY_COUNT = 5;
 
@@ -86,9 +88,7 @@ function executeInitScript (initScriptUrl, createXHR) {
             if (!res.code)
                 return null;
 
-            /* eslint-disable no-eval,  no-restricted-globals*/
-            return sendXHR(initScriptUrl, createXHR, { method: 'POST', data: JSON.stringify(eval(res.code)) });
-            /* eslint-enable no-eval, no-restricted-globals */
+            return sendXHR(initScriptUrl, createXHR, { method: 'POST', data: JSON.stringify(evaluate(res.code)) }); //eslint-disable-line no-restricted-globals
         })
         .then(() => {
             window.setTimeout(() => executeInitScript(initScriptUrl, createXHR), 1000);

@@ -1,1 +1,2 @@
-export default window['%testCafeUI%'];
+export * from 'testcafe-ui';
+export { default } from 'testcafe-ui';

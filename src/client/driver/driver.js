@@ -14,6 +14,10 @@ import {
     browser
 } from './deps/testcafe-core';
 
+import { cursor } from './deps/testcafe-automation';
+
+import { StatusBar } from './deps/testcafe-ui';
+
 import {
     CHECK_IFRAME_DRIVER_LINK_DELAY,
     SEND_STATUS_REQUEST_TIME_LIMIT,
@@ -22,8 +26,6 @@ import {
     CHECK_STATUS_RETRY_DELAY,
     CHECK_CHILD_WINDOW_DRIVER_LINK_DELAY
 } from '../../utils/browser-connection-timeouts';
-
-import { StatusBar } from './deps/testcafe-ui';
 
 import TEST_RUN_MESSAGES from '../../test-run/client-messages';
 import COMMAND_TYPE from '../../test-run/commands/type';
@@ -72,7 +74,6 @@ import ClientFunctionExecutor from './command-executors/client-functions/client-
 import ChildWindowDriverLink from './driver-link/window/child';
 import ParentWindowDriverLink from './driver-link/window/parent';
 import sendConfirmationMessage from './driver-link/send-confirmation-message';
-import cursor from '../automation/cursor';
 import DriverRole from './role';
 import { CHECK_CHILD_WINDOW_CLOSED_INTERVAL } from './driver-link/timeouts';
 

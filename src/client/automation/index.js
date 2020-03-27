@@ -27,6 +27,8 @@ import ERROR_TYPES from './errors';
 import cursor from './cursor';
 
 
+const exports = {};
+
 exports.Scroll                = ScrollAutomation;
 exports.Click                 = ClickAutomation;
 exports.SelectChildClick      = SelectChildClickAutomation;
