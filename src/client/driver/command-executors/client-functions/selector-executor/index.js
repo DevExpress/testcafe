@@ -4,9 +4,9 @@ import ClientFunctionExecutor from '../client-function-executor';
 import { exists, visible } from '../../../utils/element-utils';
 import { createReplicator, FunctionTransform, SelectorNodeTransform } from '../replicator';
 import './filter';
+import returnSinglePropMode from '../../../../../client-functions/return-single-prop-mode';
 
 const CHECK_ELEMENT_DELAY = 200;
-
 
 export default class SelectorExecutor extends ClientFunctionExecutor {
     constructor (command, globalTimeout, startTime, createNotFoundError, createIsInvisibleError) {
@@ -15,7 +15,7 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
         this.createNotFoundError    = createNotFoundError;
         this.createIsInvisibleError = createIsInvisibleError;
         this.timeout                = typeof command.timeout === 'number' ? command.timeout : globalTimeout;
-        this.counterMode            = this.dependencies.filterOptions.counterMode;
+        this.returnSinglePropMode   = returnSinglePropMode(this.dependencies.filterOptions);
 
         if (startTime) {
             const elapsed = new Date() - startTime;
@@ -67,7 +67,7 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
     }
 
     _executeFn (args) {
-        if (this.counterMode)
+        if (this.returnSinglePropMode)
             return super._executeFn(args);
 
         const startTime = new Date();

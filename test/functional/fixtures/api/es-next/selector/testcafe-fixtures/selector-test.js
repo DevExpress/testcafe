@@ -1084,4 +1084,3 @@ test('Selector `addCustomMethods` method - Selector mode', async t => {
 
     await t.expect(await nonExistingElement()).eql(null);
 });
-

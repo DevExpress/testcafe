@@ -1,4 +1,4 @@
-import { assign } from 'lodash';
+import { assign, pull as remove } from 'lodash';
 import clientFunctionBuilderSymbol from '../builder-symbol';
 import { SNAPSHOT_PROPERTIES } from './snapshot-properties';
 import { getCallsiteForMethod } from '../../errors/get-callsite';
@@ -9,6 +9,8 @@ import makeRegExp from '../../utils/make-reg-exp';
 import selectorTextFilter from './selector-text-filter';
 import selectorAttributeFilter from './selector-attribute-filter';
 import prepareApiFnArgs from './prepare-api-args';
+
+const VISIBLE_PROP_NAME = 'visible';
 
 const filterNodes = (new ClientFunctionBuilder((nodes, filter, querySelectorRoot, originNode, ...filterArgs) => {
     if (typeof filter === 'number') {
@@ -121,6 +123,19 @@ function addSnapshotProperties (obj, getSelector, SelectorBuilder, properties) {
     });
 }
 
+function addVisibleProperty ({ obj, getSelector, SelectorBuilder }) {
+    Object.defineProperty(obj, VISIBLE_PROP_NAME, {
+        get: () => {
+            return ReExecutablePromise.fromFn(async () => {
+                const builder  = new SelectorBuilder(getSelector(), { getVisibleValueMode: true }, { instantiation: 'Selector' });
+                const resultFn = builder.getFunction();
+
+                return resultFn();
+            });
+        }
+    });
+}
+
 export function addCustomMethods (obj, getSelector, SelectorBuilder, customMethods) {
     const customMethodProps = customMethods ? Object.keys(customMethods) : [];
 
@@ -167,11 +182,20 @@ export function addCustomMethods (obj, getSelector, SelectorBuilder, customMetho
     });
 }
 
-function addSnapshotPropertyShorthands ({ obj, getSelector, SelectorBuilder, customDOMProperties, customMethods }) {
-    let properties = SNAPSHOT_PROPERTIES;
+function prepareSnapshotPropertyList (customDOMProperties) {
+    let properties = [...SNAPSHOT_PROPERTIES];
+
+    // NOTE: The 'visible' snapshot property has a separate handler.
+    remove(properties, VISIBLE_PROP_NAME);
 
     if (customDOMProperties)
         properties = properties.concat(Object.keys(customDOMProperties));
+
+    return properties;
+}
+
+function addSnapshotPropertyShorthands ({ obj, getSelector, SelectorBuilder, customDOMProperties, customMethods }) {
+    const properties = prepareSnapshotPropertyList(customDOMProperties);
 
     addSnapshotProperties(obj, getSelector, SelectorBuilder, properties);
     addCustomMethods(obj, getSelector, SelectorBuilder, customMethods);
@@ -702,4 +726,5 @@ export function addAPI (selector, getSelector, SelectorBuilder, customDOMPropert
     addCustomDOMPropertiesMethod(options);
     addCustomMethodsMethod(options);
     addCounterProperties(options);
+    addVisibleProperty(options);
 }
