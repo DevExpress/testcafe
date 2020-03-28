@@ -382,6 +382,7 @@ export default class TestRun extends AsyncEventEmitter {
         return new TestRunErrorFormattableAdapter(err, {
             userAgent:      this.browserConnection.userAgent,
             screenshotPath: this.errScreenshotPath || '',
+            testRunId:      this.id,
             testRunPhase:   this.phase
         });
     }

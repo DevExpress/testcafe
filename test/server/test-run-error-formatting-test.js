@@ -1,5 +1,6 @@
 const expect                              = require('chai').expect;
 const { pull: remove, chain, values }     = require('lodash');
+const TestRun                             = require('../../lib/test-run');
 const TEST_RUN_PHASE                      = require('../../lib/test-run/phase');
 const { TEST_RUN_ERRORS, RUNTIME_ERRORS } = require('../../lib/errors/types');
 const TestRunErrorFormattableAdapter      = require('../../lib/errors/test-run/formattable-adapter');
@@ -118,6 +119,34 @@ function assertErrorMessage (file, err) {
 
 describe('Error formatting', () => {
     describe('Errors', () => {
+        it('Base error formattable adapter properties', () => {
+            const testRunMock = TestRun.prototype;
+
+            Object.assign(testRunMock, {
+                session:           { id: 'test-run-id' },
+                browserConnection: { userAgent: 'chrome' },
+                errScreenshotPath: 'screenshot-path',
+                phase:             'test-run-phase',
+                callsite:          'callsite',
+                errs:              []
+            });
+
+            TestRun.prototype.addError.call(testRunMock, { callsite: 'callsite' });
+
+            const err = testRunMock.errs[0];
+
+            expect(err).instanceOf(TestRunErrorFormattableAdapter);
+
+            expect(err).eql({
+                userAgent:      'chrome',
+                screenshotPath: 'screenshot-path',
+                testRunId:      'test-run-id',
+                testRunPhase:   'test-run-phase',
+                callsite:       'callsite'
+            });
+        });
+
+
         it('Should format "actionIntegerOptionError" message', () => {
             assertErrorMessage('action-integer-option-error', new ActionIntegerOptionError('offsetX', '1.01'));
         });
