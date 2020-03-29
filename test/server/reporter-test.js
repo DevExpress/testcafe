@@ -348,11 +348,11 @@ describe('Reporter', () => {
     }
 
     class VideosMock extends Videos {
-        constructor (recordings) {
+        constructor (testVideoInfos) {
             super([], { videoPath: '' });
 
 
-            this.recordings = recordings;
+            this.testVideoInfos = testVideoInfos;
         }
     }
 

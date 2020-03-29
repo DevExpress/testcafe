@@ -110,7 +110,7 @@ export default class Reporter {
         }
 
         if (this.task.videos)
-            reportItem.videos = this.task.videos.getTestVideos(reportItem.test);
+            reportItem.videos = this.task.videos.getTestVideos(reportItem.test.id);
 
         if (testRun.quarantine) {
             reportItem.quarantine = testRun.quarantine.attempts.reduce((result, errors, index) => {

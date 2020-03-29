@@ -3,7 +3,7 @@
 const { expect }           = require('chai');
 const { noop }             = require('lodash');
 const TestRun              = require('../../lib/test-run/index');
-const VideoRecorder        = require('../../lib/video-recorder');
+const VideoRecorder        = require('../../lib/video-recorder/recorder');
 const Videos               = require('../../lib/video-recorder/videos');
 const TestRunVideoRecorder = require('../../lib/video-recorder/test-run-video-recorder');
 const AsyncEmitter         = require('../../lib/utils/async-event-emitter');
