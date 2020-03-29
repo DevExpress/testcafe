@@ -955,7 +955,7 @@ describe('Reporter', () => {
 
         taskMock.videos = new VideosMock({
             'idf1t1': {
-                runs: [{
+                recordings: [{
                     testRunId: 'f1t1-id1',
                     videoPath: 'f1t1-path1'
                 }, {
@@ -964,7 +964,7 @@ describe('Reporter', () => {
                 }]
             },
             'idf1t2': {
-                runs: [{
+                recordings: [{
                     testRunId: 'f1t2-id1',
                     videoPath: 'f1t2-path1'
                 }, {

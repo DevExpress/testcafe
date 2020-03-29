@@ -16,6 +16,6 @@ export interface TestRunVideoSavedEventArgs {
 
 export interface VideoOptions {
     videoPath: string;
-    videoOptions: unknown;
-    videoEncodingOptions: unknown;
+    videoOptions: object;
+    videoEncodingOptions: object;
 }

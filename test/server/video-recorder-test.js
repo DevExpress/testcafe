@@ -234,9 +234,9 @@ describe('Video Recorder', () => {
         testRunMock4.index = 3;
 
         const expectedLog1 = {
-            recordings: {
+            testVideoInfos: {
                 'test-1': {
-                    runs: [{
+                    recordings: [{
                         testRunId:  'test-run-1',
                         videoPath:  'path-test-run-1',
                         singleFile: true
@@ -247,7 +247,7 @@ describe('Video Recorder', () => {
                     }]
                 },
                 'test-2': {
-                    runs: [{
+                    recordings: [{
                         testRunId:  'test-run-3',
                         videoPath:  'path-test-run-3',
                         singleFile: true
@@ -261,9 +261,9 @@ describe('Video Recorder', () => {
         };
 
         const expectedLog2 = {
-            recordings: {
+            testVideoInfos: {
                 'test-1': {
-                    runs: [{
+                    recordings: [{
                         testRunId:  'test-run-1',
                         videoPath:  'path-test-run-1',
                         singleFile: false
@@ -274,7 +274,7 @@ describe('Video Recorder', () => {
                     }]
                 },
                 'test-2': {
-                    runs: [{
+                    recordings: [{
                         testRunId:  'test-run-3',
                         videoPath:  'path-test-run-3',
                         singleFile: false
