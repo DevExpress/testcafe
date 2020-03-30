@@ -90,6 +90,8 @@ export default class TestRunController extends AsyncEventEmitter {
 
         this.testRun = new TestRunCtor(this.test, connection, screenshotCapturer, this.warningLog, this.opts);
 
+        this.screenshots.watchForTestRun(this.test, this.testRun, connection);
+
         if (this.testRun.addQuarantineInfo)
             this.testRun.addQuarantineInfo(this.quarantine);
 
