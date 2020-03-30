@@ -1,5 +1,6 @@
 const expect                         = require('chai').expect;
 const AsyncEventEmitter              = require('../../lib/utils/async-event-emitter');
+const delay                          = require('../../lib/utils/delay');
 const TestRun                        = require('../../lib/test-run');
 const TestController                 = require('../../lib/api/test-controller');
 const Task                           = require('../../lib/runner/task');
@@ -32,7 +33,7 @@ class TestRunMock extends TestRun {
     }
 
     executeCommand () {
-        return Promise.resolve();
+        return delay(10);
     }
 }
 
@@ -175,18 +176,23 @@ describe('TestController action events', () => {
     });
 
     it('Error action', () => {
-        let actionResult = null;
-        let errorAdapter = null;
+        let actionResult   = null;
+        let errorAdapter   = null;
+        let resultDuration = null;
 
         initializeReporter({
-            async reportTestActionDone (name, { command, err }) {
-                errorAdapter = err;
-                actionResult = { name, command: command.type, err: err.errMsg };
+            async reportTestActionDone (name, { command, duration, err }) {
+                errorAdapter   = err;
+                resultDuration = duration;
+                actionResult   = { name, command: command.type, err: err.errMsg };
             }
         });
 
         testController.testRun.executeCommand = () => {
-            throw new Error('test error');
+            return delay(10)
+                .then(() => {
+                    throw new Error('test error');
+                });
         };
 
         return testController.click('#target')
@@ -196,7 +202,27 @@ describe('TestController action events', () => {
             .catch(err => {
                 expect(errorAdapter).instanceOf(TestRunErrorFormattableAdapter);
                 expect(err.message).eql('test error');
+                expect(resultDuration).to.be.a('number').with.above(0);
                 expect(actionResult).eql({ name: 'click', command: 'click', err: 'Error: test error' });
+            });
+    });
+
+    it('Duration', () => {
+        let resultDuration = null;
+
+        initializeReporter({
+            async reportTestActionDone (name, { duration }) {
+                resultDuration = duration;
+            }
+        });
+
+        testController.testRun.executeCommand = () => {
+            return delay(10);
+        };
+
+        return testController.click('#target')
+            .then(() => {
+                expect(resultDuration).to.be.a('number').with.above(0);
             });
     });
 });

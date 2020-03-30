@@ -624,30 +624,44 @@ export default class TestRun extends AsyncEventEmitter {
             await this._enqueueSetBreakpointCommand(callsite);
     }
 
-    async executeAction (actionName, command, callsite) {
+    async executeAction (apiActionName, command, callsite) {
+        const actionArgs = { apiActionName, command };
+
         let errorAdapter = null;
         let error        = null;
         let result       = null;
 
-        await this.emitActionStart(actionName, command);
+        await this.emitActionEvent('action-start', actionArgs);
+
+        const start = new Date();
 
         try {
             result = await this.executeCommand(command, callsite);
         }
         catch (err) {
             error = err;
+        }
 
+        const duration = new Date() - start;
+
+        if (error) {
             // NOTE: check if error is TestCafeErrorList is specific for the `useRole` action
             // if error is TestCafeErrorList we do not need to create an adapter,
             // since error is already was processed in role initializer
-            if (!(err instanceof TestCafeErrorList)) {
+            if (!(error instanceof TestCafeErrorList)) {
                 await this._makeScreenshotOnFail();
 
-                errorAdapter = this._createErrorAdapter(processTestFnError(err));
+                errorAdapter = this._createErrorAdapter(processTestFnError(error));
             }
         }
 
-        await this.emitActionDone(actionName, command, result, errorAdapter);
+        Object.assign(actionArgs, {
+            result,
+            duration,
+            err: errorAdapter
+        });
+
+        await this.emitActionEvent('action-done', actionArgs);
 
         if (error)
             throw error;
@@ -864,14 +878,9 @@ export default class TestRun extends AsyncEventEmitter {
         delete testRunTracker.activeTestRuns[this.session.id];
     }
 
-    async emitActionStart (apiActionName, command) {
+    async emitActionEvent (eventName, args) {
         if (!this.preventEmitActionEvents)
-            await this.emit('action-start', { command, apiActionName });
-    }
-
-    async emitActionDone (apiActionName, command, result, err) {
-        if (!this.preventEmitActionEvents)
-            await this.emit('action-done', { command, apiActionName, result, err });
+            await this.emit(eventName, args);
     }
 }
 

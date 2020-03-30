@@ -134,11 +134,14 @@ export default class Reporter {
         reportItem.pendingTestRunDonePromise.resolve();
     }
 
-    _prepareReportTestActionEventArgs ({ command, result, testRun, err }) {
+    _prepareReportTestActionEventArgs ({ command, duration, result, testRun, err }) {
         const args = {};
 
         if (err)
             args.err = err;
+
+        if (typeof duration === 'number')
+            args.duration = duration;
 
         return Object.assign(args, {
             testRunId: testRun.id,
@@ -206,17 +209,17 @@ export default class Reporter {
             await reportItem.pendingTestRunDonePromise;
         });
 
-        task.on('test-action-start', async ({ apiActionName, command, testRun }) => {
+        task.on('test-action-start', async ({ apiActionName, ...args }) => {
             if (this.plugin.reportTestActionStart) {
-                const args = this._prepareReportTestActionEventArgs({ command, testRun });
+                args = this._prepareReportTestActionEventArgs(args);
 
                 await this.plugin.reportTestActionStart(apiActionName, args);
             }
         });
 
-        task.on('test-action-done', async ({ apiActionName, command, result, testRun, err }) => {
+        task.on('test-action-done', async ({ apiActionName, ...args }) => {
             if (this.plugin.reportTestActionDone) {
-                const args = this._prepareReportTestActionEventArgs({ command, result, testRun, err });
+                args = this._prepareReportTestActionEventArgs(args);
 
                 await this.plugin.reportTestActionDone(apiActionName, args);
             }
