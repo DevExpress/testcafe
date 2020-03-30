@@ -2,6 +2,8 @@ import { ExecuteSelectorCommand, ExecuteClientFunctionCommand } from '../../test
 import { NavigateToCommand, SetNativeDialogHandlerCommand, UseRoleCommand } from '../../test-run/commands/actions';
 import { createReplicator, SelectorNodeTransform } from '../../client-functions/replicator';
 import { Command, FormattedCommand, SelectorInfo } from './interfaces';
+import { ActionOptions } from '../../test-run/commands/options';
+import diff from '../../utils/diff';
 
 export class CommandFormatter {
     private _elements: HTMLElement[] = [];
@@ -95,6 +97,12 @@ export class CommandFormatter {
 
             if (prop instanceof ExecuteSelectorCommand)
                 formattedCommand[key] = this._prepareSelector(prop, key);
+            else if (prop instanceof ActionOptions) {
+                // @ts-ignore
+                const props = new prop.constructor();
+
+                formattedCommand[key] = diff(props, prop);
+            }
             else
                 formattedCommand[key] = prop;
         });
