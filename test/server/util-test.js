@@ -42,15 +42,15 @@ describe('Utils', () => {
     });
 
     it('Diff', () => {
-        expect(diff({ a: 1 }, { a: 1 })).eql({});
+        expect(diff({ a: 1 }, { a: 1 })).is.null;
         expect(diff({ a: 1 }, { a: 2 })).eql({ a: 2 });
-        expect(diff({ a: 1, b: 1 }, { a: 1, b: 1 })).eql({});
+        expect(diff({ a: 1, b: 1 }, { a: 1, b: 1 })).is.null;
         expect(diff({ a: 1, b: 1 }, { a: 1, b: 2 })).eql({ b: 2 });
-        expect(diff({ a: 1, b: {} }, { a: 1, b: {} })).eql({});
-        expect(diff({ a: 1, b: { c: 3 } }, { a: 1, b: { c: 3 } })).eql({});
+        expect(diff({ a: 1, b: {} }, { a: 1, b: {} })).is.null;
+        expect(diff({ a: 1, b: { c: 3 } }, { a: 1, b: { c: 3 } })).is.null;
         expect(diff({ a: 1, b: { c: 3 } }, { a: 1, b: { c: 4 } })).eql({ b: { c: 4 } });
         expect(diff({ a: 1, b: { c: 3 } }, { a: 2, b: { c: 4 } })).eql({ a: 2, b: { c: 4 } });
-        expect(diff({ a: 1, b: { c: { d: 4 } } }, { a: 1, b: { c: { d: 4 } } })).eql({});
+        expect(diff({ a: 1, b: { c: { d: 4 } } }, { a: 1, b: { c: { d: 4 } } })).is.null;
         expect(diff({ a: 1, b: { c: { d: 4 } } }, { a: 1, b: { c: { d: 5 } } })).eql({ b: { c: { d: 5 } } });
     });
 

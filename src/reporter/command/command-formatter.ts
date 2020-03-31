@@ -1,4 +1,3 @@
-import { isEmpty } from 'lodash';
 import { ExecuteSelectorCommand, ExecuteClientFunctionCommand } from '../../test-run/commands/observation';
 import { NavigateToCommand, SetNativeDialogHandlerCommand, UseRoleCommand } from '../../test-run/commands/actions';
 import { createReplicator, SelectorNodeTransform } from '../../client-functions/replicator';
@@ -115,10 +114,10 @@ export class CommandFormatter {
             else if (isCommandOptions(prop)) {
                 // @ts-ignore
                 const props = new prop.constructor();
-                const dif  = diff(props, prop);
+                const customOptions  = diff(props, prop);
 
-                if (!isEmpty(dif))
-                    formattedCommand[key] = dif;
+                if (customOptions)
+                    formattedCommand[key] = customOptions;
             }
             else
                 formattedCommand[key] = prop;

@@ -1,4 +1,4 @@
-import { set } from 'lodash';
+import { set, isEmpty } from 'lodash';
 import { Dictionary } from '../configuration/interfaces';
 
 function getFullPropertyPath (property: string, parentProperty: string): string {
@@ -8,23 +8,29 @@ function getFullPropertyPath (property: string, parentProperty: string): string 
     return property;
 }
 
-function diff (object1: Dictionary<any>, object2: Dictionary<any>, result: Dictionary<any> = {}, parentProperty: string = ''): Dictionary<any> {
-    for (const prop in object1) {
-        const fullPropertyPath = getFullPropertyPath(prop, parentProperty);
-        const value1 = object1[prop];
-        const value2 = object2[prop];
+function diff (source: Dictionary<object>, modified: Dictionary<object>, result: Dictionary<object>, parentProperty: string = ''): void {
+    for (const property in source) {
+        const fullPropertyPath = getFullPropertyPath(property, parentProperty);
 
-        if (value1 !== value2) {
-            if (typeof value1 === 'object' && typeof value2 === 'object')
-                diff(value1 as Dictionary<object>, value2 as Dictionary<object>, result, fullPropertyPath);
+        const sourceValue   = source[property] as Dictionary<object>;
+        const modifiedValue = modified[property] as Dictionary<object>;
+
+        if (sourceValue !== modifiedValue) {
+            if (typeof sourceValue === 'object' && typeof modifiedValue === 'object')
+                diff(sourceValue, modifiedValue, result, fullPropertyPath);
             else
-                set(result, fullPropertyPath, value2);
+                set(result, fullPropertyPath, modifiedValue);
         }
     }
-
-    return result;
 }
 
-export default (object1: Dictionary<any>, object2: Dictionary<any>) => {
-    return diff(object1, object2, {});
+export default (source: Dictionary<object>, modified: Dictionary<object>) => {
+    const result = {};
+
+    diff(source, modified, result);
+
+    if (isEmpty(result))
+        return null;
+
+    return result;
 };
