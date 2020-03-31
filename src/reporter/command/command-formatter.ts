@@ -2,6 +2,7 @@ import { ExecuteSelectorCommand, ExecuteClientFunctionCommand } from '../../test
 import { NavigateToCommand, SetNativeDialogHandlerCommand, UseRoleCommand } from '../../test-run/commands/actions';
 import { createReplicator, SelectorNodeTransform } from '../../client-functions/replicator';
 import { Command, FormattedCommand, SelectorInfo } from './interfaces';
+import { Dictionary } from '../../configuration/interfaces';
 import diff from '../../utils/diff';
 
 import {
@@ -107,20 +108,18 @@ export class CommandFormatter {
         const sourceProperties = this._command._getAssignableProperties().map(prop => prop.name);
 
         sourceProperties.forEach((key: string) => {
-            const prop = this._command[key];
+            const property = this._command[key];
 
-            if (prop instanceof ExecuteSelectorCommand)
-                formattedCommand[key] = this._prepareSelector(prop, key);
-            else if (isCommandOptions(prop)) {
-                // @ts-ignore
-                const props = new prop.constructor();
-                const customOptions  = diff(props, prop);
+            if (property instanceof ExecuteSelectorCommand)
+                formattedCommand[key] = this._prepareSelector(property, key);
+            else if (isCommandOptions(property)) {
+                const modifiedOptions = CommandFormatter._getModifiedOptions(property);
 
-                if (customOptions)
-                    formattedCommand[key] = customOptions;
+                if (modifiedOptions)
+                    formattedCommand[key] = modifiedOptions;
             }
             else
-                formattedCommand[key] = prop;
+                formattedCommand[key] = property;
         });
     }
 
@@ -131,5 +130,12 @@ export class CommandFormatter {
         const decoded = createReplicator(new SelectorNodeTransform()).decode(this._result);
 
         this._elements = Array.isArray(decoded) ? decoded : [decoded];
+    }
+
+    private static _getModifiedOptions (commandOptions: object): Dictionary<object> | null {
+        const constructor    = commandOptions.constructor as ObjectConstructor;
+        const defaultOptions = new constructor();
+
+        return diff(defaultOptions as Dictionary<object>, commandOptions as Dictionary<object>);
     }
 }
