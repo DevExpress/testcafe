@@ -6,7 +6,6 @@ const mouseOptions = Object.assign({
     modifiers: {
         alt:   true,
         ctrl:  true,
-        meta:  true,
         shift: true,
     },
     offsetX:   1,
@@ -16,8 +15,7 @@ const mouseOptions = Object.assign({
 const clickOptions = Object.assign({ caretPos: 1 }, mouseOptions);
 
 const dragToElementOptions = Object.assign({
-    destinationOffsetX: 3,
-    destinationOffsetY: 4
+    destinationOffsetX: 3
 }, mouseOptions);
 
 const typeTextOptions = Object.assign({
@@ -347,7 +345,12 @@ module.exports = [
             selector: { expression:'Selector(\'#target\')' },
             path:     'screenshotPath',
             type:     'take-element-screenshot',
-            options:  new ElementScreenshotOptions()
+            options:  {
+                includeMargins: true,
+                crop: {
+                    top: -100
+                }
+            }
         },
         test:    {
             id:    'test-id',

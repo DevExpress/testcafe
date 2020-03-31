@@ -2,8 +2,17 @@ import { ExecuteSelectorCommand, ExecuteClientFunctionCommand } from '../../test
 import { NavigateToCommand, SetNativeDialogHandlerCommand, UseRoleCommand } from '../../test-run/commands/actions';
 import { createReplicator, SelectorNodeTransform } from '../../client-functions/replicator';
 import { Command, FormattedCommand, SelectorInfo } from './interfaces';
-import { ActionOptions } from '../../test-run/commands/options';
+import {
+    ActionOptions,
+    ResizeToFitDeviceOptions,
+    AssertionOptions
+} from '../../test-run/commands/options';
+import { isEmpty } from 'lodash';
 import diff from '../../utils/diff';
+
+function isCommandOptions (obj: object): boolean {
+    return obj instanceof ActionOptions || obj instanceof ResizeToFitDeviceOptions || obj instanceof AssertionOptions;
+}
 
 export class CommandFormatter {
     private _elements: HTMLElement[] = [];
@@ -97,11 +106,13 @@ export class CommandFormatter {
 
             if (prop instanceof ExecuteSelectorCommand)
                 formattedCommand[key] = this._prepareSelector(prop, key);
-            else if (prop instanceof ActionOptions) {
+            else if (isCommandOptions(prop)) {
                 // @ts-ignore
                 const props = new prop.constructor();
+                const dif  = diff(props, prop);
 
-                formattedCommand[key] = diff(props, prop);
+                if (!isEmpty(dif))
+                    formattedCommand[key] = dif;
             }
             else
                 formattedCommand[key] = prop;
