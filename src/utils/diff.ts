@@ -8,7 +8,7 @@ function getFullPropertyPath (property: string, parentProperty: string): string 
     return property;
 }
 
-function diff (object1: Dictionary<any>, object2: Dictionary<any>, result: Dictionary<any> = {}, parentProperty: string): Dictionary<any> {
+function diff (object1: Dictionary<any>, object2: Dictionary<any>, result: Dictionary<any> = {}, parentProperty: string = ''): Dictionary<any> {
     for (const prop in object1) {
         const fullPropertyPath = getFullPropertyPath(prop, parentProperty);
         const value1 = object1[prop];
@@ -26,7 +26,5 @@ function diff (object1: Dictionary<any>, object2: Dictionary<any>, result: Dicti
 }
 
 export default (object1: Dictionary<any>, object2: Dictionary<any>) => {
-    const result = {};
-
-    return diff(object1, object2, result, '');
+    return diff(object1, object2, {});
 };
