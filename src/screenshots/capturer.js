@@ -147,12 +147,18 @@ export default class Capturer {
             await generateThumbnail(screenshotPath, thumbnailPath);
         });
 
+        const testRunId         = this.testEntry.testRuns[this.browserId].id;
+        const userAgent         = escapeUserAgent(this.pathPattern.data.parsedUserAgent.prettyUserAgent);
+        const quarantineAttempt = this.pathPattern.data.quarantineAttempt;
+        const takenOnFail       = forError;
+
         const screenshot = {
+            testRunId,
             screenshotPath,
             thumbnailPath,
-            userAgent:         escapeUserAgent(this.pathPattern.data.parsedUserAgent.prettyUserAgent),
-            quarantineAttempt: this.pathPattern.data.quarantineAttempt,
-            takenOnFail:       forError,
+            userAgent,
+            quarantineAttempt,
+            takenOnFail
         };
 
         this.testEntry.screenshots.push(screenshot);

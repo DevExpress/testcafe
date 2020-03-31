@@ -20,6 +20,7 @@ export default class Screenshots {
     _addTestEntry (test) {
         const testEntry = {
             test:        test,
+            testRuns:    {},
             screenshots: []
         };
 
@@ -68,5 +69,11 @@ export default class Screenshots {
         });
 
         return new Capturer(this.screenshotsPath, testEntry, connection, pathPattern, this.fullPage, warningLog);
+    }
+
+    addTestRun (test, testRun) {
+        const testEntry = this._getTestEntry(test);
+
+        testEntry.testRuns[testRun.browserConnection.id] = testRun;
     }
 }

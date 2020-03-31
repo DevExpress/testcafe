@@ -24,6 +24,7 @@ const getReporter = function (scope) {
         screenshot.screenshotPath  = patchScreenshotPath(screenshot.screenshotPath);
         screenshot.thumbnailPath   = patchScreenshotPath(screenshot.thumbnailPath);
         screenshot.isPassedAttempt = quarantine[screenshot.quarantineAttempt].passed;
+        screenshot.testRunId       = scope.testRunIds.includes(screenshot.testRunId);
 
         userAgents[screenshot.userAgent] = true;
     }
@@ -36,6 +37,9 @@ const getReporter = function (scope) {
                 scope.screenshots = testRunInfo.screenshots;
                 scope.userAgents  = Object.keys(userAgents);
                 scope.unstable    = testRunInfo.unstable;
+            },
+            reportTestStart: (name, meta, { testRunIds }) => {
+                scope.testRunIds = testRunIds;
             },
             reportFixtureStart: () => {
             },
@@ -218,6 +222,7 @@ describe('[API] t.takeScreenshot()', function () {
                         }
 
                         return {
+                            testRunId:         true,
                             screenshotPath,
                             thumbnailPath,
                             takenOnFail,

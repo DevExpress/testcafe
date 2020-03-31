@@ -46,6 +46,7 @@ describe('Reporter', () => {
             fixture:     fixtureMocks[0],
             skip:        false,
             screenshots: [{
+                testRunId:         'idf1t1-1',
                 screenshotPath:    'screenshot1.png',
                 thumbnailPath:     'thumbnail1.png',
                 userAgent:         'chrome',
@@ -64,12 +65,14 @@ describe('Reporter', () => {
             fixture:     fixtureMocks[0],
             skip:        false,
             screenshots: [{
+                testRunId:         'idf1t2-1',
                 screenshotPath:    'screenshot1.png',
                 thumbnailPath:     'thumbnail1.png',
                 userAgent:         'chrome',
                 takenOnFail:       false,
                 quarantineAttempt: null
             }, {
+                testRunId:         'idf1t2-2',
                 screenshotPath:    'screenshot2.png',
                 thumbnailPath:     'thumbnail2.png',
                 userAgent:         'chrome',
@@ -561,6 +564,7 @@ describe('Reporter', () => {
                         },
                         screenshotPath: '/screenshots/1445437598847',
                         screenshots:    [{
+                            testRunId:         'idf1t1-1',
                             screenshotPath:    'screenshot1.png',
                             thumbnailPath:     'thumbnail1.png',
                             userAgent:         'chrome',
@@ -619,12 +623,14 @@ describe('Reporter', () => {
                         quarantine:     null,
                         screenshotPath: '/screenshots/1445437598847',
                         screenshots:    [{
+                            testRunId:         'idf1t2-1',
                             screenshotPath:    'screenshot1.png',
                             thumbnailPath:     'thumbnail1.png',
                             userAgent:         'chrome',
                             takenOnFail:       false,
                             quarantineAttempt: null
                         }, {
+                            testRunId:         'idf1t2-2',
                             screenshotPath:    'screenshot2.png',
                             thumbnailPath:     'thumbnail2.png',
                             userAgent:         'chrome',
