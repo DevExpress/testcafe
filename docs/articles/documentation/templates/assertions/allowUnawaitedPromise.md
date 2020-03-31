@@ -1,5 +1,3 @@
-## options.allowUnawaitedPromise
-
 By default, only promises the [selectors](../../guides/basic-guides/select-page-elements.md#define-assertion-actual-value)
 and [client functions](../../guides/basic-guides/obtain-data-from-the-client.md) return can be passed as the assertion's actual value. If you pass a regular unawaited promise, TestCafe throws an error.
 

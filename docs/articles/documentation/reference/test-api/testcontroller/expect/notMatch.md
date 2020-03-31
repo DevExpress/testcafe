@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: t.expect.notMatch Method
-permalink: /documentation/reference/test-api/testcontroller/expect/notMatch.html
+permalink: /documentation/reference/test-api/testcontroller/expect/notmatch.html
 ---
 # t.expect.notMatch Method
 
@@ -15,7 +15,7 @@ Parameter              | Type                                              | Des
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
 `actual`             | String | A comparison value. See [`actual` parameter value](#actual-parameter-value).
 `re`             | RegExp | A regular expression that is expected not to match `actual`.
-`message`&#160;*(optional)* | String   | An assertion message that is displayed in the report if the test fails.
+`message`&#160;*(optional)* | String   | An assertion message displayed in the report if the test fails.
 `options`&#160;*(optional)* | Object   | See [Options](#options).
 
 **Example:**
@@ -42,10 +42,10 @@ test('My test', async t => {
 
 ## Options
 
-* options.timeout
+### options.timeout
 
 {% include assertions/timeout.md %}
 
-* options.allowUnawaitedPromise
+### options.allowUnawaitedPromise
 
-{% include assertions/allowUnawaitedPromise.md %}
+{% include assertions/allowunawaitedpromise.md %}

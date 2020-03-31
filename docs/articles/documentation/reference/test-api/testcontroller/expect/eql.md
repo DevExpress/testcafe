@@ -15,7 +15,7 @@ Parameter              | Type                                              | Des
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
 `actual`             | Any type | A comparison value. See [`actual` parameter value](#actual-parameter-value).
 `expected`             | Any type | An expected value.
-`message`&#160;*(optional)* | String   | An assertion message that is displayed in the report if the test fails.
+`message`&#160;*(optional)* | String   | An assertion message displayed in the report if the test fails.
 `options`&#160;*(optional)* | Object   | See [Options](#options).
 
 **Examples:**
@@ -42,10 +42,10 @@ test('My test', async t => {
 
 ## Options
 
-* options.timeout
+### options.timeout
 
 {% include assertions/timeout.md %}
 
-* options.allowUnawaitedPromise
+### options.allowUnawaitedPromise
 
-{% include assertions/allowUnawaitedPromise.md %}
+{% include assertions/allowunawaitedpromise.md %}

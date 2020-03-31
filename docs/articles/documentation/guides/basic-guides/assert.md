@@ -16,7 +16,7 @@ This topic consists of the following sections:
 
 ## Assertion Structure
 
-To construct assertions, use the [test controller](../../reference/test-api/testcontroller/README.md)'s `expect` method.
+To construct assertions, use the test controller's [`expect`](../../reference/test-api/testcontroller/expect/README.md) method.
 
 The `expect` method is followed by an assertion method that accepts an expected value
 and optional arguments.
@@ -50,21 +50,21 @@ test('Check property of element', async t => {
 The following assertion methods are available:
 
 * [Deep Equal](../../reference/test-api/testcontroller/expect/eql.md)
-* [Not Deep Equal](../../reference/test-api/testcontroller/expect/notEql.md)
+* [Not Deep Equal](../../reference/test-api/testcontroller/expect/noteql.md)
 * [Ok](../../reference/test-api/testcontroller/expect/ok.md)
-* [Not Ok](../../reference/test-api/testcontroller/expect/notOk.md)
+* [Not Ok](../../reference/test-api/testcontroller/expect/notok.md)
 * [Contains](../../reference/test-api/testcontroller/expect/contains.md)
-* [Not Contains](../../reference/test-api/testcontroller/expect/notContains.md)
-* [Type of](../../reference/test-api/testcontroller/expect/typeOf.md)
-* [Not Type of](../../reference/test-api/testcontroller/expect/notTypeOf.md)
+* [Not Contains](../../reference/test-api/testcontroller/expect/notcontains.md)
+* [Type of](../../reference/test-api/testcontroller/expect/typeof.md)
+* [Not Type of](../../reference/test-api/testcontroller/expect/nottypeof.md)
 * [Greater than](../../reference/test-api/testcontroller/expect/gt.md)
 * [Greater than or Equal to](../../reference/test-api/testcontroller/expect/gte.md)
 * [Less than](../../reference/test-api/testcontroller/expect/lt.md)
 * [Less than or Equal to](../../reference/test-api/testcontroller/expect/lte.md)
 * [Within](../../reference/test-api/testcontroller/expect/within.md)
-* [Not Within](../../reference/test-api/testcontroller/expect/notWithin.md)
+* [Not Within](../../reference/test-api/testcontroller/expect/notwithin.md)
 * [Match](../../reference/test-api/testcontroller/expect/match.md)
-* [Not Match](../../reference/test-api/testcontroller/expect/notMatch.md)
+* [Not Match](../../reference/test-api/testcontroller/expect/notmatch.md)
 
 ## Smart Assertion Query Mechanism
 
@@ -129,17 +129,17 @@ test('Button click', async t => {
 
 The approach described above allows you to create stable tests with fast runtime and reduces the risk of errors.
 
-You can specify the assertion query timeout in test code by using the [options.timeout](#options) option.
-To set the timeout when launching tests, pass the timeout value to the [runner.run](../../using-testcafe/programming-interface/runner.md#run)
+You can specify the assertion query timeout in test code with the [options.timeout](#options) option.
+To set the timeout when you launch tests, pass the timeout value to the [runner.run](../../using-testcafe/programming-interface/runner.md#run)
 method if you use an API or specify the [assertion-timeout](../../using-testcafe/command-line-interface.md#--assertion-timeout-ms) option
 if you run TestCafe from the command line.
 
 ## Options
 
-* options.timeout
+### options.timeout
 
 {% include assertions/timeout.md %}
 
-* options.allowUnawaitedPromise
+### options.allowUnawaitedPromise
 
-{% include assertions/allowUnawaitedPromise.md %}
+{% include assertions/allowunawaitedpromise.md %}

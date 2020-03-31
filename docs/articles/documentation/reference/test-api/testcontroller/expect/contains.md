@@ -13,9 +13,9 @@ await t.expect( actual ).contains( expected, message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | String &#124; Array &#124; Object | A value we expect to contain the `expected`. See [`actual` parameter value](#actual-parameter-value).
+`actual`             | String &#124; Array &#124; Object | A value tested in the assertion. The assertion passes if the `actual` value contains the `expected`. See [`actual` parameter value](#actual-parameter-value).
 `expected`             | Any type | The expected value.
-`message`&#160;*(optional)* | String   | An assertion message that is displayed in the report if the test fails.
+`message`&#160;*(optional)* | String   | An assertion message displayed in the report if the test fails.
 `options`&#160;*(optional)* | Object   | See [Options](#options).
 
 **Examples:**
@@ -45,10 +45,10 @@ test('My test', async t => {
 
 ## Options
 
-* options.timeout
+### options.timeout
 
 {% include assertions/timeout.md %}
 
-* options.allowUnawaitedPromise
+### options.allowUnawaitedPromise
 
-{% include assertions/allowUnawaitedPromise.md %}
+{% include assertions/allowunawaitedpromise.md %}

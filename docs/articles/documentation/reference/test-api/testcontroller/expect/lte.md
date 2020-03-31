@@ -13,9 +13,9 @@ await t.expect( actual ).lte( expected, message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | Number |  A value that we expect to be less than or equal to `expected`. See [`actual` parameter value](#actual-parameter-value).
+`actual`             | Number | A value tested in the assertion. The assertion passes if the `actual` value is less than or equal to the `expected`. See [`actual` parameter value](#actual-parameter-value).
 `expected`             | Any type | A comparison value.
-`message`&#160;*(optional)* | String   | An assertion message that is displayed in the report if the test fails.
+`message`&#160;*(optional)* | String   | An assertion message displayed in the report if the test fails.
 `options`&#160;*(optional)* | Object   | See [Options](#options).
 
 **Examples:**
@@ -42,10 +42,10 @@ test('My test', async t => {
 
 ## Options
 
-* options.timeout
+### options.timeout
 
 {% include assertions/timeout.md %}
 
-* options.allowUnawaitedPromise
+### options.allowUnawaitedPromise
 
-{% include assertions/allowUnawaitedPromise.md %}
+{% include assertions/allowunawaitedpromise.md %}

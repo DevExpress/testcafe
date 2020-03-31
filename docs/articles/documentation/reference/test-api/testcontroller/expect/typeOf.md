@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: t.expect.typeOf Method
-permalink: /documentation/reference/test-api/testcontroller/expect/typeOf.html
+permalink: /documentation/reference/test-api/testcontroller/expect/typeof.html
 ---
 # t.expect.typeOf Method
 
@@ -15,7 +15,7 @@ Parameter              | Type                                              | Des
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
 `actual`             | Any type | A comparison value. See [`actual` parameter value](#actual-parameter-value).
 `typeName`             | String | The expected type of an `actual` value.
-`message`&#160;*(optional)* | String   | An assertion message that is displayed in the report if the test fails.
+`message`&#160;*(optional)* | String   | An assertion message displayed in the report if the test fails.
 `options`&#160;*(optional)* | Object   | See [Options](#options).
 
 **Examples:**
@@ -43,10 +43,10 @@ test('My test', async t => {
 
 ## Options
 
-* options.timeout
+### options.timeout
 
 {% include assertions/timeout.md %}
 
-* options.allowUnawaitedPromise
+### options.allowUnawaitedPromise
 
-{% include assertions/allowUnawaitedPromise.md %}
+{% include assertions/allowunawaitedpromise.md %}

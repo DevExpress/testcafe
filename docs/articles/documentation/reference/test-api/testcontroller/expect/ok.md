@@ -13,8 +13,8 @@ await t.expect( actual ).ok( message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | Any type | A value that we expect to be truthy. See [`actual` parameter value](#actual-parameter-value).
-`message`&#160;*(optional)* | String   | An assertion message that is displayed in the report if the test fails.
+`actual`             | Any type | A value tested in the assertion. The assertion passes if the `actual` value is truthy. See [`actual` parameter value](#actual-parameter-value).
+`message`&#160;*(optional)* | String   | An assertion message displayed in the report if the test fails.
 `options`&#160;*(optional)* | Object   | See [Options](#options).
 
 **Examples:**
@@ -41,10 +41,10 @@ test('My test', async t => {
 
 ## Options
 
-* options.timeout
+### options.timeout
 
 {% include assertions/timeout.md %}
 
-* options.allowUnawaitedPromise
+### options.allowUnawaitedPromise
 
-{% include assertions/allowUnawaitedPromise.md %}
+{% include assertions/allowunawaitedpromise.md %}

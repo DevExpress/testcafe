@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: t.expect.notTypeOf Method
-permalink: /documentation/reference/test-api/testcontroller/expect/notTypeOf.html
+permalink: /documentation/reference/test-api/testcontroller/expect/nottypeof.html
 ---
 # t.expect.notTypeOf Method
 
@@ -14,8 +14,8 @@ await t.expect( actual ).notTypeOf( typeName, message, options );
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
 `actual`             | Any type | A comparison value. See [`actual` parameter value](#actual-parameter-value).
-`typeName`             | String | An unexpected type of `actual` value.
-`message`&#160;*(optional)* | String   | An assertion message that is displayed in the report if the test fails.
+`typeName`             | String | The type of `actual` value that causes an assertion to fail.
+`message`&#160;*(optional)* | String   | An assertion message displayed in the report if the test fails.
 `options`&#160;*(optional)* | Object   | See [Options](#options).
 
 **Example:**
@@ -40,10 +40,10 @@ test('My test', async t => {
 
 ## Options
 
-* options.timeout
+### options.timeout
 
 {% include assertions/timeout.md %}
 
-* options.allowUnawaitedPromise
+### options.allowUnawaitedPromise
 
-{% include assertions/allowUnawaitedPromise.md %}
+{% include assertions/allowunawaitedpromise.md %}

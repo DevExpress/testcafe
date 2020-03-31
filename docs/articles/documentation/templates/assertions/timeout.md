@@ -1,5 +1,3 @@
-## options.timeout
-
 **Type**: Number
 
 The time (in milliseconds) an assertion can take to pass before the test fails if

@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: t.expect.notWithin Method
-permalink: /documentation/reference/test-api/testcontroller/expect/notWithin.html
+permalink: /documentation/reference/test-api/testcontroller/expect/notwithin.html
 ---
 # t.expect.notWithin Method
 
@@ -16,7 +16,7 @@ Parameter              | Type                                              | Des
 `actual`             | Number | A comparison value. See [`actual` parameter value](#actual-parameter-value).
 `start`             | Number | A lower bound of range (included).
 `finish`             | Number | An upper bound of range (included).
-`message`&#160;*(optional)* | String   | An assertion message that is displayed in the report if the test fails.
+`message`&#160;*(optional)* | String   | An assertion message displayed in the report if the test fails.
 `options`&#160;*(optional)* | Object   | See [Options](#options).
 
 **Example:**
@@ -41,10 +41,10 @@ test('My test', async t => {
 
 ## Options
 
-* options.timeout
+### options.timeout
 
 {% include assertions/timeout.md %}
 
-* options.allowUnawaitedPromise
+### options.allowUnawaitedPromise
 
-{% include assertions/allowUnawaitedPromise.md %}
+{% include assertions/allowunawaitedpromise.md %}

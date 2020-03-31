@@ -1,5 +1,3 @@
-## `actual` Parameter Value 
-
 `actual` is a parameter that defines the value that TestCafe checks with assertion methods.
 
 You can pass a [selector's property](../../../../guides/basic-guides/select-page-elements.md#define-assertion-actual-value) or a [client function](../../../../guides/basic-guides/obtain-data-from-the-client.md) promise as the value of this parameter. This activates the [Smart Assertion Query Mechanism](../../../../guides/basic-guides/assert.md#smart-assertion-query-mechanism) and the assertion will automatically wait until it can obtain the `actual` value.

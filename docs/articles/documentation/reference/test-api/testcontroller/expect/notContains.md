@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: t.expect.notContains Method
-permalink: /documentation/reference/test-api/testcontroller/expect/notContains.html
+permalink: /documentation/reference/test-api/testcontroller/expect/notсontains.html
 ---
 # t.expect.notContains Method
 
@@ -13,9 +13,9 @@ await t.expect( actual ).notContains( expected, message, options );
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
-`actual`             | String &#124; Array &#124; Object | A value we expect not to contain the `expected`. See [`actual` parameter value](#actual-parameter-value).
-`expected`             | Any type | The expected value.
-`message`&#160;*(optional)* | String   | An assertion message that is displayed in the report if the test fails.
+`actual`             | String &#124; Array &#124; Object | A value tested in assertion. The assertion passes if the `actual` value does not contain the `expected`. See [`actual` parameter value](#actual-parameter-value).
+`expected`             | Any type | The value expected not to contain the `actual`.
+`message`&#160;*(optional)* | String   | An assertion message displayed in the report if the test fails.
 `options`&#160;*(optional)* | Object   | See [Options](#options).
 
 **Examples:**
@@ -45,10 +45,10 @@ test('My test', async t => {
 
 ## Options
 
-* options.timeout
+### options.timeout
 
 {% include assertions/timeout.md %}
 
-* options.allowUnawaitedPromise
+### options.allowUnawaitedPromise
 
-{% include assertions/allowUnawaitedPromise.md %}
+{% include assertions/allowunawaitedpromise.md %}
