@@ -1,6 +1,9 @@
 - text: Docs
   url: /documentation/getting-started/
   highlightUrl: /documentation
+- text: Media
+  url: /media/community/
+  highlightUrl: /media
 - text: FAQ
   url: /faq/
 - text: Support
