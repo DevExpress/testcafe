@@ -9,14 +9,17 @@ import WARNING_MESSAGES from '../notifications/warning-message';
 import { getPluralSuffix, getConcatenatedValuesString, getToBeInPastTense } from '../utils/string';
 
 import TestRunVideoRecorder from './test-run-video-recorder';
+import { EventEmitter } from 'events';
 
 const DEBUG_LOGGER = debug('testcafe:video-recorder');
 
 const VIDEO_EXTENSION = 'mp4';
 const TEMP_DIR_PREFIX = 'video';
 
-export default class VideoRecorder {
+export default class VideoRecorder extends EventEmitter {
     constructor (browserJob, basePath, opts, encodingOpts, warningLog) {
+        super();
+
         this.browserJob        = browserJob;
         this.basePath          = basePath;
         this.failedOnly        = opts.failedOnly;
@@ -160,12 +163,14 @@ export default class VideoRecorder {
         if (this.failedOnly && !testRunRecorder.hasErrors)
             return;
 
-        await this._saveFiles(testRunRecorder);
-    }
-
-    async _saveFiles (testRunRecorder) {
         const videoPath = this._getTargetVideoPath(testRunRecorder);
 
+        await this._saveFiles(testRunRecorder, videoPath);
+
+        this.emit('test-run-video-saved', { testRun: testRunRecorder.testRun, videoPath, singleFile: !!this.singleFile });
+    }
+
+    async _saveFiles (testRunRecorder, videoPath) {
         await makeDir(dirname(videoPath));
 
         if (this.singleFile)

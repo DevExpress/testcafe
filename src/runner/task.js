@@ -3,10 +3,10 @@ import moment from 'moment';
 import AsyncEventEmitter from '../utils/async-event-emitter';
 import BrowserJob from './browser-job';
 import Screenshots from '../screenshots';
-import VideoRecorder from '../video-recorder';
 import WarningLog from '../notifications/warning-log';
 import FixtureHookController from './fixture-hook-controller';
 import * as clientScriptsRouting from '../custom-client-scripts/routing';
+import Videos from '../video-recorder/videos';
 
 export default class Task extends AsyncEventEmitter {
     constructor (tests, browserConnectionGroups, proxy, opts) {
@@ -32,7 +32,7 @@ export default class Task extends AsyncEventEmitter {
         this.testStructure         = this._prepareTestStructure(tests);
 
         if (this.opts.videoPath)
-            this.videoRecorders = this._createVideoRecorders(this.pendingBrowserJobs);
+            this.videos = new Videos(this.pendingBrowserJobs, this.opts, this.warningLog, this.timeStamp);
     }
 
     _assignBrowserJobEventHandlers (job) {
@@ -107,12 +107,6 @@ export default class Task extends AsyncEventEmitter {
 
             return job;
         });
-    }
-
-    _createVideoRecorders (browserJobs) {
-        const videoOptions = { timeStamp: this.timeStamp, ...this.opts.videoOptions };
-
-        return browserJobs.map(browserJob => new VideoRecorder(browserJob, this.opts.videoPath, videoOptions, this.opts.videoEncodingOptions, this.warningLog));
     }
 
     unRegisterClientScriptRouting () {
