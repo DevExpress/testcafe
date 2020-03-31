@@ -60,7 +60,7 @@ html body .page-content-wrapper .container .doc-nav {
       font-weight: bold;
       list-style-type: none;
       margin-left: -8px; }
-      html body .page-content-wrapper .container .doc-nav .doc-nav-content ul li ul li a {
+      html body .page-content-wrapper .container .doc-nav .doc-nav-content ul li ul li a, html body .page-content-wrapper .container .doc-nav .doc-nav-content ul li ul li span {
         display: block;
         margin-left: -15px;
         padding-top: 8px;
@@ -69,7 +69,7 @@ html body .page-content-wrapper .container .doc-nav {
         font-size: 16px;
         font-weight: normal;
         list-style-type: inherit; }
-        html body .page-content-wrapper .container .doc-nav .doc-nav-content ul li ul li ul li a {
+        html body .page-content-wrapper .container .doc-nav .doc-nav-content ul li ul li ul li a, html body .page-content-wrapper .container .doc-nav .doc-nav-content ul li ul li ul li span {
           margin-left: 0; }
   html body .page-content-wrapper .container .doc-nav.active {
     left: 0px; }

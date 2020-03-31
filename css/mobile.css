@@ -30,6 +30,8 @@ html {
               html body .page-content-wrapper .site-header .site-header-content .hamburger-button.active .hamburger-icon {
                 background-image: url("/testcafe/images/hamburger-menu-active.png"); }
           html body .page-content-wrapper .site-header .site-header-content .site-nav {
+            flex-direction: column;
+            align-items: end;
             overflow-y: scroll;
             width: 100%;
             height: auto;
@@ -44,7 +46,8 @@ html {
             z-index: 1; }
             html body .page-content-wrapper .site-header .site-header-content .site-nav .site-nav-tab {
               display: block;
-              padding: 0; }
+              padding: 0;
+              margin-right: 0; }
               html body .page-content-wrapper .site-header .site-header-content .site-nav .site-nav-tab .page-link {
                 display: block;
                 padding: 9px 7px 9px 30px;
@@ -95,37 +98,40 @@ html {
               html body .page-content-wrapper .site-header .site-header-content .site-nav .doc-top-nav.expanded {
                 display: block;
                 height: auto; }
-            html body .page-content-wrapper .site-header .site-header-content .site-nav .star-button, html body .page-content-wrapper .site-header .site-header-content .site-nav #search-icon, html body .page-content-wrapper .site-header .site-header-content .site-nav #twitter-button {
-              display: none; }
-            html body .page-content-wrapper .site-header .site-header-content .site-nav #search-panel {
-              display: block;
-              opacity: 1;
-              background-color: #fff;
-              padding: 20px 30px 9px 30px;
-              top: 0; }
-              html body .page-content-wrapper .site-header .site-header-content .site-nav #search-panel .algolia-autocomplete {
-                width: 100%; }
-                html body .page-content-wrapper .site-header .site-header-content .site-nav #search-panel .algolia-autocomplete #search {
-                  font-size: 16px;
-                  width: calc(100% - 42px);
-                  border: 1px solid rgba(0, 0, 0, 0.2);
-                  border-radius: 4px; }
-                html body .page-content-wrapper .site-header .site-header-content .site-nav #search-panel .algolia-autocomplete .ds-dropdown-menu {
-                  min-width: 0; }
-              html body .page-content-wrapper .site-header .site-header-content .site-nav #search-panel #close-search {
-                display: none; }
             html body .page-content-wrapper .site-header .site-header-content .site-nav .hamburger-button {
               display: block; }
             html body .page-content-wrapper .site-header .site-header-content .site-nav.active {
               right: 0px; }
+          html body .page-content-wrapper .site-header .site-header-content .site-header-buttons {
+            display: none; }
+          html body .page-content-wrapper .site-header .site-header-content #search-panel {
+            display: block;
+            box-sizing: border-box;
+            opacity: 1;
+            background-color: #fff;
+            padding: 20px 30px 9px 30px;
+            top: 0;
+            width: 100%; }
+            html body .page-content-wrapper .site-header .site-header-content #search-panel .algolia-autocomplete {
+              width: 100%; }
+              html body .page-content-wrapper .site-header .site-header-content #search-panel .algolia-autocomplete #search {
+                font-size: 16px;
+                width: 100%;
+                border: 1px solid rgba(0, 0, 0, 0.2);
+                border-radius: 4px;
+                box-sizing: border-box; }
+              html body .page-content-wrapper .site-header .site-header-content #search-panel .algolia-autocomplete .ds-dropdown-menu {
+                min-width: 0; }
+            html body .page-content-wrapper .site-header .site-header-content #search-panel #close-search {
+              display: none; }
       html body .page-content-wrapper .container {
         padding-left: 0;
         padding-top: 0; }
         html body .page-content-wrapper .container .post {
           padding: 70px 30px 0px;
           min-width: 0; }
-          html body .page-content-wrapper .container .post .blog-title {
-            margin-top: 0; }
+        html body .page-content-wrapper .container .blog-title {
+          margin-top: 0; }
         html body .page-content-wrapper .container main .faq {
           min-width: 0;
           margin: 0;
@@ -169,6 +175,8 @@ html {
         margin-bottom: 20px; }
 
 #studio-link-tab {
+  width: calc(100% - 40px);
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: center;

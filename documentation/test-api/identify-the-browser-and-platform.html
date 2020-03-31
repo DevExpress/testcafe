@@ -7,6 +7,7 @@
   
   
   
+  
 
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -81,6 +82,7 @@
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
   <link rel="stylesheet" href="/testcafe/css/docs.css">
+    
   <style>
       .ps-container > .ps-scrollbar-x-rail,
       .ps-container > .ps-scrollbar-y-rail {
@@ -184,7 +186,7 @@
 
     <script>
         var MIN_BODY_WIDTH = 1230;
-        var FOOTER_HEIGHT  = 113;
+        var FOOTER_HEIGHT  = 225;
 
         var nav     = null;
         var article = null;
@@ -194,7 +196,7 @@
             var SURVEY_HEADER_HEIGHT = 32;
 
             var surveyBanner          = document.querySelector('.survey-banner');
-            var isSurveyBannerVisible = surveyBanner.className.indexOf('hidden') === -1;
+            var isSurveyBannerVisible = surveyBanner && surveyBanner.className.indexOf('hidden') === -1;
 
             return isSurveyBannerVisible ? DOCS_HEADER_HEIGHT + SURVEY_HEADER_HEIGHT : DOCS_HEADER_HEIGHT;
         }
@@ -305,7 +307,16 @@
             var MIN_BODY_WIDTH = 1230;
 
             function updateHeader() {
-                var bodyMinimized = document.body.clientWidth === MIN_BODY_WIDTH;
+                var CONTENT_MARGIN_WITH_DOC_MENU     = '72px';
+                var CONTENT_MARGIN_WITHOUT_DOC_MENU  = '21px';
+                var CONTENT_MARGIN_COMMUNITY_DESKTOP = '27px';
+                var CONTENT_MARGIN_COMMUNITY_MOBILE  = '48px';
+
+                var bodyMinimized          = document.body.clientWidth === MIN_BODY_WIDTH;
+                var docContentMargin       = bodyMinimized ? CONTENT_MARGIN_WITHOUT_DOC_MENU : CONTENT_MARGIN_WITH_DOC_MENU;
+                var isCommunitySection     = false;
+                var contentMarginCommunity = isMobileDevice ? CONTENT_MARGIN_COMMUNITY_MOBILE : CONTENT_MARGIN_COMMUNITY_DESKTOP;
+                var contentMargin          = isCommunitySection ? contentMarginCommunity : docContentMargin;
 
                 
 
@@ -321,9 +332,9 @@
                     contentWrapper.style.paddingTop = bodyMinimized ? '0' : '';
 
                 if(article && !isMobileDevice)
-                    article.style.marginTop = bodyMinimized ? '21px' : '72px';
+                    article.style.marginTop = contentMargin;
                 if(gs && !isMobileDevice)
-                    gs.style.paddingTop = bodyMinimized ? '21px' : '72px';
+                    gs.style.paddingTop = contentMargin;
             }
 
             updateHeader();
@@ -414,42 +425,34 @@
         <div class="hamburger-icon"></div>
     </div>
     <nav class="site-nav">
+      
         
-          
-          <div class="site-nav-tab active">
-            <a class="page-link" href="/testcafe/documentation/getting-started/"><span>Docs</span></a>
-          </div>
+        <div class="site-nav-tab active">
+          <a class="page-link" href="/testcafe/documentation/getting-started/"><span>Docs</span></a>
+        </div>
+      
         
-          
-          <div class="site-nav-tab">
-            <a class="page-link" href="https://github.com/DevExpress/testcafe" target="_blank"><span>GitHub</span></a>
-          </div>
+        <div class="site-nav-tab">
+          <a class="page-link" href="/testcafe/media/community/"><span>Media</span></a>
+        </div>
+      
         
-          
-          <div class="site-nav-tab">
-            <a class="page-link" href="/testcafe/faq/"><span>FAQ</span></a>
-          </div>
+        <div class="site-nav-tab">
+          <a class="page-link" href="/testcafe/faq/"><span>FAQ</span></a>
+        </div>
+      
         
-          
-          <div class="site-nav-tab">
-            <a class="page-link" href="/testcafe/roadmap/"><span>Roadmap</span></a>
-          </div>
+        <div class="site-nav-tab">
+          <a class="page-link" href="/testcafe/support/"><span>Support</span></a>
+        </div>
+      
         
-          
-          <div class="site-nav-tab">
-            <a class="page-link" href="/testcafe/blog/"><span>Release Notes</span></a>
-          </div>
-        
-          
-          <div class="site-nav-tab">
-            <a class="page-link" href="/testcafe/support/"><span>Support</span></a>
-          </div>
-        
-          
-          <div class="site-nav-tab" id="studio-link-tab">
-            <a class="page-link" id="studio-link" href="https://www.devexpress.com/products/testcafestudio/" target="_blank"><span>TestCafe Studio</span></a>
-          </div>
-        
+        <div class="site-nav-tab" id="studio-link-tab">
+          <a class="page-link" id="studio-link" href="https://www.devexpress.com/products/testcafestudio/" target="_blank"><span>TestCafe Studio</span></a>
+        </div>
+      
+    </nav>
+    <div class="site-header-buttons">
       <a id="twitter-button" href="https://twitter.com/dxtestcafe" target="_blank"></a>
       <div id="search-icon"></div>
       <div class="star-button">
@@ -459,7 +462,7 @@
           <input type="text" placeholder="Search documentation" id="search"/>
           <div id="close-search"></div>
       </div>
-    </nav>
+    </div>
   </div>
 </header>
 
@@ -592,6 +595,7 @@
 
       <div class="container">
     
+
 	
 	
 
@@ -604,25 +608,7 @@
 		<div class="toggle-nav-button"></div>
 		<div class="doc-nav-panel-header">
 			<div class="doc-nav-panel-heading">Documentation</div>
-			<div class="doc-nav-panel-title">
-				
-					
-				
-					
-				
-					
-						Test API
-					
-				
-					
-				
-					
-				
-					
-				
-					
-				
-			</div>
+			<div class="doc-nav-panel-title">Test API</div>
 		</div>
 	</div>
 	<nav class="doc-nav">	
@@ -634,35 +620,45 @@
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/test-code-structure.html"  >Test Code Structure</a>
+
 		
 			<ul>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/test-code-structure.html#fixtures"  >Fixtures</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/test-code-structure.html#tests"  >Tests</a>
+
 		
 			<ul>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/test-code-structure.html#test-controller"  >Test Controller</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/test-code-structure.html#setting-test-speed"  >Setting Test Speed</a>
+
 		
     </li>
 
@@ -673,28 +669,36 @@
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/test-code-structure.html#specifying-the-start-webpage"  >Specifying the Start Webpage</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/test-code-structure.html#specifying-testing-metadata"  >Specifying Testing Metadata</a>
+
 		
 			<ul>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/test-code-structure.html#run-tests-by-metadata"  >Run Tests by Metadata</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/test-code-structure.html#using-metadata-in-reports"  >Using Metadata in Reports</a>
+
 		
     </li>
 
@@ -705,21 +709,27 @@
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up"  >Initialization and Clean-Up</a>
+
 		
 			<ul>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/test-code-structure.html#test-hooks"  >Test Hooks</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/test-code-structure.html#fixture-hooks"  >Fixture Hooks</a>
+
 		
     </li>
 
@@ -730,7 +740,9 @@
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/test-code-structure.html#skipping-tests"  >Skipping Tests</a>
+
 		
     </li>
 
@@ -741,56 +753,72 @@
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/selecting-page-elements/"  >Selecting Page Elements</a>
+
 		
 			<ul>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/"  >Selectors</a>
+
 		
 			<ul>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/creating-selectors.html"  >Creating Selectors</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/using-selectors.html"  >Using Selectors</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html"  >Functional-Style Selectors</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/selector-options.html"  >Selector Options</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/extending-selectors.html"  >Extending Selectors</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/selecting-page-elements/selectors/edge-cases-and-limitations.html"  >Edge Cases and Limitations</a>
+
 		
     </li>
 
@@ -801,21 +829,27 @@
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/selecting-page-elements/dom-node-state.html"  >DOM Node State</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/selecting-page-elements/framework-specific-selectors.html"  >Framework-Specific Selectors</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/selecting-page-elements/examples-of-working-with-dom-elements.html"  >Examples of Working with DOM Elements</a>
+
 		
     </li>
 
@@ -826,98 +860,126 @@
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/actions/"  >Actions</a>
+
 		
 			<ul>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/actions/click.html"  >Click</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/actions/double-click.html"  >Double Click</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/actions/right-click.html"  >Right Click</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/actions/drag-element.html"  >Drag Element</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/actions/hover.html"  >Hover</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/actions/select-text.html"  >Select Text</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/actions/type-text.html"  >Type Text</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/actions/press-key.html"  >Press Key</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/actions/navigate.html"  >Navigate</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/actions/take-screenshot.html"  >Take Screenshot</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/actions/upload.html"  >Upload</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/actions/resize-window.html"  >Resize Window</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/actions/action-options.html"  >Action Options</a>
+
 		
     </li>
 
@@ -928,14 +990,18 @@
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/assertions/"  >Assertions</a>
+
 		
 			<ul>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/assertions/assertion-api.html"  >Assertion API</a>
+
 		
     </li>
 
@@ -946,14 +1012,18 @@
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/obtaining-data-from-the-client/"  >Obtaining Data from the Client</a>
+
 		
 			<ul>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/obtaining-data-from-the-client/examples-of-using-client-functions.html"  >Examples of Using Client Functions</a>
+
 		
     </li>
 
@@ -964,49 +1034,63 @@
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/intercepting-http-requests/"  >Intercepting HTTP Requests</a>
+
 		
 			<ul>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/intercepting-http-requests/logging-http-requests.html"  >Log HTTP Requests</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/intercepting-http-requests/mocking-http-requests.html"  >Mock HTTP Requests</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html"  >Create a Custom HTTP Request Hook</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/intercepting-http-requests/select-requests-to-be-handled-by-the-hook.html"  >Select Requests to be Handled by the Hook</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.html"  >Attach Hooks to Tests and Fixtures</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/intercepting-http-requests/requestoptions-object.html"  >requestOptions Object</a>
+
 		
     </li>
 
@@ -1017,28 +1101,36 @@
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/built-in-waiting-mechanisms.html"  >Built-In Waiting Mechanisms</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/authentication/"  >Authentication</a>
+
 		
 			<ul>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/authentication/user-roles.html"  >User Roles</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/authentication/http-authentication.html"  >HTTP Authentication</a>
+
 		
     </li>
 
@@ -1049,63 +1141,81 @@
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/pausing-the-test.html"  >Pausing the Test</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/handling-native-dialogs.html"  >Handling Native Dialogs</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/working-with-iframes.html"  >Working with &lt;iframes&gt;</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/debugging.html"  >Debugging</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/identify-the-browser-and-platform.html" class="active" >Identify the Browser and Platform</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/accessing-console-messages.html"  >Accessing Console Messages</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/typescript-support.html"  >TypeScript Support</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/coffeescript-support.html"  >CoffeeScript Support</a>
+
 		
     </li>
 
     <li>
 		    
 		
+
 <a href="/testcafe/documentation/test-api/a-z.html"  >A-Z Index</a>
+
 		
     </li>
 
@@ -1389,10 +1499,25 @@
 
     <footer class="site-footer">
     <div class="site-footer-content">
-        <div class="footer-col-1">
-            <p><strong>TestCafe</strong>: A node.js tool to automate end-to-end web testing<br/>
+        <div class="footer-links">
+            <div class="footer-link-content">
+                <div class="link"><a href="/testcafe/documentation/">Docs</a></div>
+                <!--div class="link"><a href="/testcafe/media/team-blog/">Blog</a></div-->
+                <div class="link"><a href="/testcafe/media/community/">Media</a></div>
+                <div class="link"><a href="/testcafe/faq/">FAQ</a></div>
+                <div class="link"><a href="/testcafe/roadmap/">Roadmap</a></div>
+                <div class="link"><a href="/testcafe/release-notes/">Release Notes</a></div>
+                <div class="link"><a href="/testcafe/support/">Support</a></div>
+                <div class="link"><a href="https://devexpress.com/products/testcafestudio">TestCafe Studio</a></div>
+            </div>
+        </div>
+        <div class="footer-icons">
+            <div class="icon"><a href="https://twitter.com/DXTestCafe"><img src="/testcafe/images/twitter-footer.svg"/></a></div>
+            <div class="icon"><a href="https://github.com/DevExpress/testcafe"><img src="/testcafe/images/github-footer.svg"/></a></div>
+        </div>
+        <div class="footer-legal">
             Use of this site constitutes acceptance of our <a href="https://www.devexpress.com/aboutus/privacy-policy.xml"  target="_blank">Privacy Policy</a><br/>
-            Copyright © 2012-2020 Developer Express Inc.</p>
+            Copyright © 2012–2020 Developer Express Inc.</p>
         </div>
     </div>
 </footer>
