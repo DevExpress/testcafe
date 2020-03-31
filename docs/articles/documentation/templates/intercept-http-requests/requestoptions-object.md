@@ -1,11 +1,3 @@
----
-layout: docs
-title: requestOptions Object
-permalink: /documentation/test-api/intercepting-http-requests/requestoptions-object.html
-checked: true
----
-# RequestOptions Object
-
 The `RequestOptions` object contains the request parameters.
 
 Property | Type | Description

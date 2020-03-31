@@ -1,25 +1,8 @@
----
-layout: docs
-title: Select Requests to be Handled by the Hook
-permalink: /documentation/test-api/intercepting-http-requests/select-requests-to-be-handled-by-the-hook.html
-redirect_from:
-  - /documentation/test-api/intercepting-http-requests/specifying-which-requests-are-handled-by-the-hook.html
----
-# Select Requests to be Handled by the Hook
+## Select Requests to be Handled by the Hook
 
-When you create a request logger, mock or custom request hook, you should specify which requests they should handle and skip.
+### Filter by URL
 
-To do this, specify a *request filter*, or an array of them.
-
-* [Filter by URL](#filter-by-url)
-  * [Specify the Exact URL](#specify-the-exact-url)
-  * [Use a Regular Expression to Specify the URL](#use-a-regular-expression-to-specify-the-url)
-* [Filter by Parameters](#filter-by-parameters)
-* [Filter with a Predicate](#filter-with-a-predicate)
-
-## Filter by URL
-
-### Specify the Exact URL
+#### Specify the Exact URL
 
 Pass a string with a URL to intercept all requests sent to this exact URL.
 
@@ -33,7 +16,7 @@ const mock = RequestMock()
     .respond(/*...*/);
 ```
 
-### Use a Regular Expression to Specify the URL
+#### Use a Regular Expression to Specify the URL
 
 You can also specify a regular expression that matches the desired URLs.
 
@@ -47,7 +30,7 @@ const mock = RequestMock()
     .respond(/*...*/);
 ```
 
-## Filter by Parameters
+### Filter by Parameters
 
 You can filter requests by combining the URL and the request method.
 
@@ -69,7 +52,7 @@ const mock = RequestMock()
     .respond(/*...*/);
 ```
 
-## Filter with a Predicate
+### Filter with a Predicate
 
 You can get more request parameters using a predicate function and use them to determine whether to handle the request.
 
