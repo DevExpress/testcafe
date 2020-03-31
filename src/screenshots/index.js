@@ -71,9 +71,9 @@ export default class Screenshots {
         return new Capturer(this.screenshotsPath, testEntry, connection, pathPattern, this.fullPage, warningLog);
     }
 
-    watchForTestRun (test, testRun, connection) {
-        const testEntry = this._ensureTestEntry(test);
+    addTestRun (test, testRun) {
+        const testEntry = this._getTestEntry(test);
 
-        testEntry.testRuns[connection.id] = testRun;
+        testEntry.testRuns[testRun.browserConnection.id] = testRun;
     }
 }

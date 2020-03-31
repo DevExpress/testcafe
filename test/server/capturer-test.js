@@ -69,8 +69,9 @@ describe('Capturer', () => {
             test: { fixture: {} },
             emit: () => {
             },
-            TestRunCtor: function () {
-                this.id = 'test-run-id';
+            TestRunCtor: function (test, connection) {
+                this.id                = 'test-run-id';
+                this.browserConnection = connection;
             }
         };
 
