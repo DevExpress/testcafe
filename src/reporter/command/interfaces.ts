@@ -12,5 +12,6 @@ export interface FormattedCommand {
 
 export interface SelectorInfo {
     expression: string;
+    timeout?: number;
     element?: HTMLElement;
 }

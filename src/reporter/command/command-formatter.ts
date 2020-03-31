@@ -1,14 +1,16 @@
+import { isEmpty } from 'lodash';
 import { ExecuteSelectorCommand, ExecuteClientFunctionCommand } from '../../test-run/commands/observation';
 import { NavigateToCommand, SetNativeDialogHandlerCommand, UseRoleCommand } from '../../test-run/commands/actions';
 import { createReplicator, SelectorNodeTransform } from '../../client-functions/replicator';
 import { Command, FormattedCommand, SelectorInfo } from './interfaces';
+import diff from '../../utils/diff';
+
 import {
     ActionOptions,
     ResizeToFitDeviceOptions,
     AssertionOptions
 } from '../../test-run/commands/options';
-import { isEmpty } from 'lodash';
-import diff from '../../utils/diff';
+
 
 function isCommandOptions (obj: object): boolean {
     return obj instanceof ActionOptions || obj instanceof ResizeToFitDeviceOptions || obj instanceof AssertionOptions;
@@ -60,8 +62,9 @@ export class CommandFormatter {
 
     private _prepareSelector (command: Command, propertyName: string): SelectorInfo {
         const selectorChain = command.apiFnChain as string[];
+        const expression    = selectorChain.join('');
 
-        const expression = selectorChain.join('');
+        const result: SelectorInfo = { expression };
 
         let element = null;
 
@@ -69,9 +72,12 @@ export class CommandFormatter {
             element = this._getElementByPropertyName(propertyName);
 
         if (element)
-            return { expression, element };
+            result.element = element;
 
-        return { expression };
+        if (command.timeout)
+            result.timeout = command.timeout;
+
+        return result;
     }
 
     private _prepareClientFunction (command: Command): object {
