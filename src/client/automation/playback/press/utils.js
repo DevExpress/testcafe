@@ -1,7 +1,7 @@
 import hammerhead from '../../deps/hammerhead';
 import { KEY_MAPS, domUtils } from '../../deps/testcafe-core';
 import isLetter from '../../utils/is-letter';
-import { findDocument, isRadioButtonElement } from '../../../core/utils/dom';
+import { findDocument, isRadioButtonElement, getActiveElement } from '../../../core/utils/dom';
 import * as arrayUtils from '../../../core/utils/array';
 
 const nativeMethods    = hammerhead.nativeMethods;
@@ -62,11 +62,9 @@ export function getChar (key, shiftModified) {
 
 export function getDeepActiveElement (currentDocument) {
     const doc                 = currentDocument || document;
+    const activeElement       = getActiveElement(doc);
     let activeElementInIframe = null;
-    let activeElement         = nativeMethods.documentActiveElementGetter.call(doc);
 
-    if (!activeElement || !domUtils.isDomElement(activeElement))
-        activeElement = doc.body;
 
     if (activeElement && domUtils.isIframeElement(activeElement) &&
         nativeMethods.contentDocumentGetter.call(activeElement)) {
