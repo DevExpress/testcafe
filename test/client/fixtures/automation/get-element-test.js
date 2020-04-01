@@ -1,4 +1,4 @@
-const testCafeUIRoot = window.getTestCafeModule('testCafeUI').get('./ui-root');
+const testCafeUIRoot = window.getTestCafeModule('testCafeUI').uiRoot;
 
 let $rootDiv      = null;
 let $underRootDiv = null;
@@ -7,7 +7,7 @@ let $iframe       = null;
 function getElementFromPointMethod (window) {
     const testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 
-    return testCafeAutomation.get('./get-element').fromPoint;
+    return testCafeAutomation.getElementFromPoint;
 }
 
 function createRoot () {

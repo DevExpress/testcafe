@@ -20,6 +20,8 @@ import {
 import AutomationSettings from './settings';
 import { getOffsetOptions } from './utils/offsets';
 import { getNextFocusableElement } from './playback/press/utils';
+import { getSelectionCoordinatesByPosition } from './playback/select/utils';
+import { fromPoint as getElementFromPoint } from './get-element';
 import calculateSelectTextArguments from './playback/select/calculate-select-text-arguments';
 import ERROR_TYPES from './errors';
 import cursor from './cursor';
@@ -49,7 +51,9 @@ exports.calculateSelectTextArguments = calculateSelectTextArguments;
 exports.cursor                       = cursor;
 exports.getNextFocusableElement      = getNextFocusableElement;
 
-exports.get = require;
+exports.getSelectionCoordinatesByPosition = getSelectionCoordinatesByPosition;
+
+exports.getElementFromPoint = getElementFromPoint;
 
 const nativeMethods    = hammerhead.nativeMethods;
 const evalIframeScript = hammerhead.EVENTS.evalIframeScript;

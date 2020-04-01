@@ -8,13 +8,13 @@ const DblClickAutomation   = testCafeAutomation.DblClick;
 const SelectTextAutomation = testCafeAutomation.SelectText;
 const PressAutomation      = testCafeAutomation.Press;
 const TypeAutomation       = testCafeAutomation.Type;
-const ClickOptions         = testCafeAutomation.get('../../test-run/commands/options').ClickOptions;
-const TypeOptions          = testCafeAutomation.get('../../test-run/commands/options').TypeOptions;
+const ClickOptions         = testCafeAutomation.ClickOptions;
+const TypeOptions          = testCafeAutomation.TypeOptions;
 
 const testCafeCore      = window.getTestCafeModule('testCafeCore');
-const domUtils          = testCafeCore.get('./utils/dom');
-const textSelection     = testCafeCore.get('./utils/text-selection');
-const parseKeySequence  = testCafeCore.get('./utils/parse-key-sequence');
+const domUtils          = testCafeCore.domUtils;
+const textSelection     = testCafeCore.textSelection;
+const parseKeySequence  = testCafeCore.parseKeySequence;
 
 
 testCafeCore.preventRealEvents();

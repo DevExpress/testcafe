@@ -2,10 +2,10 @@ const hammerhead   = window.getTestCafeModule('hammerhead');
 const browserUtils = hammerhead.utils.browser;
 
 const testCafeCore = window.getTestCafeModule('testCafeCore');
-const domUtils     = testCafeCore.get('./utils/dom');
+const domUtils     = testCafeCore.domUtils;
 
 const testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
-const TypeOptions        = testCafeAutomation.get('../../test-run/commands/options').TypeOptions;
+const TypeOptions        = testCafeAutomation.TypeOptions;
 const TypeAutomation     = testCafeAutomation.Type;
 
 testCafeCore.preventRealEvents();

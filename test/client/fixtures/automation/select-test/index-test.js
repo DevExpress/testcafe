@@ -6,13 +6,13 @@ const testCafeCore = window.getTestCafeModule('testCafeCore');
 
 const testCafeAutomation                = window.getTestCafeModule('testCafeAutomation');
 const SelectTextAutomation              = testCafeAutomation.SelectText;
-const getSelectionCoordinatesByPosition = testCafeAutomation.get('./playback/select/utils').getSelectionCoordinatesByPosition;
+const getSelectionCoordinatesByPosition = testCafeAutomation.getSelectionCoordinatesByPosition;
 
 testCafeCore.preventRealEvents();
 
-const domUtils      = testCafeCore.get('./utils/dom');
-const style         = testCafeCore.get('./utils/style');
-const textSelection = testCafeCore.get('./utils/text-selection');
+const domUtils      = testCafeCore.domUtils;
+const style         = testCafeCore.styleUtils;
+const textSelection = testCafeCore.textSelection;
 
 
 $(document).ready(function () {

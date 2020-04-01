@@ -1,7 +1,7 @@
 const hammerhead    = window.getTestCafeModule('hammerhead');
 const browserUtils  = hammerhead.utils.browser;
 const testCafeCore  = window.getTestCafeModule('testCafeCore');
-const domUtils      = testCafeCore.get('./utils/dom');
+const domUtils      = testCafeCore.domUtils;
 
 asyncTest('isIFrameWindowInDOM', function () {
     expect(browserUtils.isIE ? 2 : 1);

@@ -5,16 +5,16 @@ const nativeMethods    = hammerhead.nativeMethods;
 const Promise          = hammerhead.Promise;
 
 const testCafeCore     = window.getTestCafeModule('testCafeCore');
-const eventUtils       = testCafeCore.get('./utils/event');
-const positionUtils    = testCafeCore.get('./utils/position');
-const textSelection    = testCafeCore.get('./utils/text-selection');
-const parseKeySequence = testCafeCore.get('./utils/parse-key-sequence');
+const eventUtils       = testCafeCore.eventUtils;
+const positionUtils    = testCafeCore.positionUtils;
+const textSelection    = testCafeCore.textSelection;
+const parseKeySequence = testCafeCore.parseKeySequence;
 
 const testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 
-const ClickOptions = testCafeAutomation.get('../../test-run/commands/options').ClickOptions;
-const TypeOptions  = testCafeAutomation.get('../../test-run/commands/options').TypeOptions;
-const MouseOptions = testCafeAutomation.get('../../test-run/commands/options').MouseOptions;
+const ClickOptions = testCafeAutomation.ClickOptions;
+const TypeOptions  = testCafeAutomation.TypeOptions;
+const MouseOptions = testCafeAutomation.MouseOptions;
 
 const ClickAutomation      = testCafeAutomation.Click;
 const RClickAutomation     = testCafeAutomation.RClick;

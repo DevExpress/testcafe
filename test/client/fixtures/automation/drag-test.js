@@ -1,10 +1,10 @@
 const testCafeAutomation      = window.getTestCafeModule('testCafeAutomation');
 const DragToOffsetAutomation  = testCafeAutomation.DragToOffset;
 const DragToElementAutomation = testCafeAutomation.DragToElement;
-const MouseOptions            = testCafeAutomation.get('../../test-run/commands/options').MouseOptions;
+const MouseOptions            = testCafeAutomation.MouseOptions;
 
 const testCafeCore = window.getTestCafeModule('testCafeCore');
-const position     = testCafeCore.get('./utils/position');
+const position     = testCafeCore.positionUtils;
 
 testCafeCore.preventRealEvents();
 

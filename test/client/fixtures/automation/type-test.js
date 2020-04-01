@@ -3,12 +3,12 @@ const browserUtils  = hammerhead.utils.browser;
 const nativeMethods = hammerhead.nativeMethods;
 
 const testCafeCore      = window.getTestCafeModule('testCafeCore');
-const parseKeySequence  = testCafeCore.get('./utils/parse-key-sequence');
+const parseKeySequence  = testCafeCore.parseKeySequence;
 
 const testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 const TypeAutomation     = testCafeAutomation.Type;
 const PressAutomation    = testCafeAutomation.Press;
-const TypeOptions        = testCafeAutomation.get('../../test-run/commands/options').TypeOptions;
+const TypeOptions        = testCafeAutomation.TypeOptions;
 
 testCafeCore.preventRealEvents();
 
