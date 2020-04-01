@@ -2,9 +2,9 @@ const hammerhead   = window.getTestCafeModule('hammerhead');
 const browserUtils = hammerhead.utils.browser;
 
 const testCafeCore      = window.getTestCafeModule('testCafeCore');
-const eventUtils        = testCafeCore.get('./utils/event');
-const parseKeySequence  = testCafeCore.get('./utils/parse-key-sequence');
-const KEY_MAPS          = testCafeCore.get('./utils/key-maps');
+const eventUtils        = testCafeCore.eventUtils;
+const parseKeySequence  = testCafeCore.parseKeySequence;
+const KEY_MAPS          = testCafeCore.KEY_MAPS;
 
 testCafeCore.preventRealEvents();
 

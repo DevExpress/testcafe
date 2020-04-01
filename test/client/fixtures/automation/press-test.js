@@ -1,7 +1,7 @@
 const testCafeCore      = window.getTestCafeModule('testCafeCore');
-const parseKeySequence  = testCafeCore.get('./utils/parse-key-sequence');
-const domUtils          = testCafeCore.get('./utils/dom');
-const textSelection     = testCafeCore.get('./utils/text-selection');
+const parseKeySequence  = testCafeCore.parseKeySequence;
+const domUtils          = testCafeCore.domUtils;
+const textSelection     = testCafeCore.textSelection;
 
 const testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 const PressAutomation    = testCafeAutomation.Press;

@@ -1,5 +1,5 @@
 const testCafeCore = window.getTestCafeModule('testCafeCore');
-const styleUtils   = testCafeCore.get('./utils/style');
+const styleUtils   = testCafeCore.styleUtils;
 
 test('hasScroll (GH-2511)', function () {
     const div      = document.createElement('div');

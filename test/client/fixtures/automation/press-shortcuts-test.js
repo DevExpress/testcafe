@@ -2,9 +2,9 @@ const hammerhead   = window.getTestCafeModule('hammerhead');
 const browserUtils = hammerhead.utils.browser;
 
 const testCafeCore     = window.getTestCafeModule('testCafeCore');
-const textSelection    = testCafeCore.get('./utils/text-selection');
-const domUtils         = testCafeCore.get('./utils/dom');
-const parseKeySequence = testCafeCore.get('./utils/parse-key-sequence');
+const textSelection    = testCafeCore.textSelection;
+const domUtils         = testCafeCore.domUtils;
+const parseKeySequence = testCafeCore.parseKeySequence;
 
 const testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 const PressAutomation    = testCafeAutomation.Press;

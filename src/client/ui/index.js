@@ -34,6 +34,8 @@ messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
     }
 });
 
+
+exports.uiRoot          = uiRoot;
 exports.cursorUI        = cursorUI;
 exports.iframeCursorUI  = iframeCursorUI;
 exports.selectElement   = selectElement;

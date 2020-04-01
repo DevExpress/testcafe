@@ -4,10 +4,10 @@ const featureDetection = hammerhead.utils.featureDetection;
 
 const testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 const HoverAutomation    = testCafeAutomation.Hover;
-const MouseOptions       = testCafeAutomation.get('../../test-run/commands/options').MouseOptions;
+const MouseOptions       = testCafeAutomation.MouseOptions;
 
 const testCafeCore = window.getTestCafeModule('testCafeCore');
-const position     = testCafeCore.get('./utils/position');
+const position     = testCafeCore.positionUtils;
 
 testCafeCore.preventRealEvents();
 

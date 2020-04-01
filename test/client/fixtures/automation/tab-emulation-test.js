@@ -2,11 +2,11 @@ const hammerhead   = window.getTestCafeModule('hammerhead');
 const browserUtils = hammerhead.utils.browser;
 
 const testCafeCore = window.getTestCafeModule('testCafeCore');
-const domUtils     = testCafeCore.get('./utils/dom');
+const domUtils     = testCafeCore.domUtils;
 
 const testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 const PressAutomation    = testCafeAutomation.Press;
-const parseKeySequence   = testCafeCore.get('./utils/parse-key-sequence');
+const parseKeySequence   = testCafeCore.parseKeySequence;
 
 testCafeCore.preventRealEvents();
 

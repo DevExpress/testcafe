@@ -3,12 +3,12 @@ const browserUtils     = hammerhead.utils.browser;
 const featureDetection = hammerhead.utils.featureDetection;
 
 const testCafeCore = window.getTestCafeModule('testCafeCore');
-const styleUtils   = testCafeCore.get('./utils/style');
+const styleUtils   = testCafeCore.styleUtils;
 
 const testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 const getOffsetOptions   = testCafeAutomation.getOffsetOptions;
 const ClickAutomation    = testCafeAutomation.Click;
-const ClickOptions       = testCafeAutomation.get('../../test-run/commands/options').ClickOptions;
+const ClickOptions       = testCafeAutomation.ClickOptions;
 
 testCafeCore.preventRealEvents();
 
