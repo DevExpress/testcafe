@@ -5,6 +5,7 @@ const textSelection     = testCafeCore.textSelection;
 
 const testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 const PressAutomation    = testCafeAutomation.Press;
+const ClickAutomation    = testCafeAutomation.Click;
 
 testCafeCore.preventRealEvents();
 
@@ -202,6 +203,34 @@ $(document).ready(function () {
                 start();
             });
     });
+
+    if (!browserUtils.isIE) {
+        asyncTest('GH-2432 - Incorrect active element detection inside shadow dom (press)', function () {
+            const shadowContainer = document.createElement('div');
+            const input           = document.createElement('input');
+
+            shadowContainer.className = TEST_ELEMENT_CLASS;
+            input.type                = 'text';
+            input.value               = '123';
+
+            document.body.appendChild(shadowContainer);
+            shadowContainer.attachShadow({ mode: 'open' }).appendChild(input);
+            input.focus();
+
+            const click = new ClickAutomation(input, {});
+            const press = new PressAutomation(parseKeySequence('backspace').combinations, {});
+
+            click.run()
+                .then(function () {
+                    return press.run();
+                })
+                .then(function () {
+                    equal(input.value, '12');
+
+                    start();
+                });
+        });
+    }
 
     if (browserUtils.isSafari) {
         asyncTest('T334620 - Wrong "keyIdentifier" property in keyEvent objects (press)', function () {
