@@ -125,7 +125,7 @@ export default class BrowserJob extends AsyncEventEmitter {
             const hasIncompleteTestRuns     = this.completionQueue.some(controller => !controller.done);
             const needWaitLastTestInFixture = this.reportsPending.some(controller => controller.test.fixture !== testRunController.test.fixture);
 
-            if (isBlocked || needWaitLastTestInFixture || hasIncompleteTestRuns && !isConcurrency)
+            if (isBlocked || (hasIncompleteTestRuns || needWaitLastTestInFixture) && !isConcurrency)
                 break;
 
             this.reportsPending.push(testRunController);

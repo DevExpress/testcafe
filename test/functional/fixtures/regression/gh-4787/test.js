@@ -58,7 +58,6 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
                         .src(path.join(__dirname, './testcafe-fixtures/index.js'))
                         .browsers(['chrome', 'firefox'])
                         .reporter(customReporter)
-                        .concurrency(2)
                         .run();
                 })
                 .then(() => {
