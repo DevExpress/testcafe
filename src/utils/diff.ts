@@ -1,8 +1,8 @@
 import { set, isEmpty, isEqual, isNil as isNullOrUndefined } from 'lodash';
 import { Dictionary } from '../configuration/interfaces';
 
-const OBJECTS_EMPTY_ERROR                = 'objects should be not empty';
-const OBJECTS_DIFFERENT_PROPERTIES_ERROR = 'objects should contain the same properties';
+const OBJECTS_EMPTY_ERROR                = 'Objects should be not empty';
+const OBJECTS_DIFFERENT_PROPERTIES_ERROR = 'Objects should contain the same properties';
 
 function getFullPropertyPath (property: string, parentProperty: string): string {
     if (parentProperty)

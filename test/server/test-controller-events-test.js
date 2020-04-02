@@ -242,14 +242,14 @@ describe('TestController action events', () => {
     });
 
     it('Default command options should not be passed to the `reportTestActionDone` method', async () => {
-        const doneLog  = [];
+        const log  = [];
 
         initializeReporter({
             async reportTestActionDone (name, { command }) {
-                doneLog.push(name);
+                log.push(name);
 
                 if (command.options)
-                    doneLog.push(command.options);
+                    log.push(command.options);
             }
         }, task);
 
@@ -258,7 +258,7 @@ describe('TestController action events', () => {
         for (let i = 0; i < actionsKeys.length; i++)
             await testController[actionsKeys[i]].apply(testController, actionsWithoutOptions[actionsKeys[i]]);
 
-        expect(doneLog).eql(actionsKeys);
+        expect(log).eql(actionsKeys);
     });
 
     it('Show only modified action options', async () => {
