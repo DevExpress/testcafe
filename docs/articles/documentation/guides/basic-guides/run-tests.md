@@ -24,11 +24,11 @@ await runner
 testCafe.close();
 ```
 
-TestCafe also allows you to create a [configuration file](../../reference/configuration-file.md) where you can define test run settings. You can then omit these parameters in the command line or API to use values from the configuration file.
+TestCafe also allows you to create a [configuration file](../../reference/configuration-file.md) where you can define test run settings. You can then omit these settings in the command line or API to use values from the configuration file.
 
 ## Specify Tests to Run
 
-Specify the file or directory you want to run in the [second command line argument](../../reference/command-line-interface.md#file-pathglob-pattern):
+You must provide a file path or a path to a directory with tests you want to run in the [second command line argument](../../reference/command-line-interface.md#file-pathglob-pattern):
 
 ```sh
 testcafe chrome ./tests/
@@ -62,7 +62,7 @@ await runner
 
 ### Use Glob Patterns
 
-TestCafe also supports [glob patterns](https://github.com/isaacs/node-glob#glob-primer) to specify a set of files:
+TestCafe also supports [glob patterns](https://github.com/isaacs/node-glob#glob-primer) to run a set of files that match a specified pattern:
 
 ```sh
 testcafe firefox ./tests/*mobile*
@@ -192,13 +192,13 @@ await runner
 
 ### Use Multiple Browsers
 
-You can run tests in several browsers. In the command line, specify a comma-separated list:
+You can run tests in several browsers. In the command line, specify a comma-separated browser list:
 
 ```sh
 testcafe safari,chrome ./tests/
 ```
 
-In the API, pass an array:
+In the API, pass an array of browser identifiers to [runner.browsers](../../reference/api/runner/browsers.md):
 
 ```js
 await runner
@@ -271,7 +271,7 @@ await runner
 
 ### Test in Cloud Testing Services
 
-TestCafe can also run tests in cloud testing services like BrowserStack or SauceLabs. Install the [browser provider](../../concepts/browsers.md#browser-providers) for your service and specify the browser alias as described in the browser provider documentation.
+TestCafe can also run tests in cloud testing services such as BrowserStack or SauceLabs. Install the [browser provider](../../concepts/browsers.md#browser-providers) for your service and specify the browser alias as described in the browser provider documentation.
 
 For instance, to use SauceLabs, install the [testcafe-browser-provider-saucelabs](https://github.com/DevExpress/testcafe-browser-provider-saucelabs) module from `npm` and run tests as follows:
 
@@ -294,9 +294,9 @@ To run tests [remotely on a mobile device](../../concepts/browsers.md#remote-tes
 testcafe remote ./tests/sample-fixture.js
 ```
 
-TestCafe generates a URL and prints it in the console. When you visit this URL from the remote device, TestCafe runs tests in this browser. To run tests in several remote browser, specify their number after the `remote` keyword: `remote:2` or `remote:4`.
+TestCafe generates a URL and prints it in the console. When you visit this URL from the remote device, TestCafe runs tests in this browser. To run tests in several remote browsers, specify their number after the `remote` keyword: `remote:2` or `remote:4`.
 
-In the API, create a remote browser connection with [testcafe.createBrowserConnection](../../reference/api/testcafe/createbrowserconnection.md), visit the generated URL and run tests once the connection is initialized:
+In the API, create a remote browser connection with the [testcafe.createBrowserConnection](../../reference/api/testcafe/createbrowserconnection.md) method, visit the generated URL and run tests once the connection is initialized:
 
 ```js
 const createTestCafe   = require('testcafe');
@@ -428,7 +428,7 @@ await runner
 
 ## Run Tests Concurrently
 
-To save time spent on testing, TestCafe allows you to execute tests *concurrently*. In concurrent mode, TestCafe invokes multiple instances of each browser. These instances constitute the pool of browsers against which tests run concurrently, i.e. each test runs in the first free instance.
+To save time spent on testing, TestCafe allows you to execute tests *concurrently*. In concurrent mode, TestCafe invokes multiple instances of each browser. These instances constitute the pool of browsers against which tests run concurrently, i.e. each test runs in the first available instance.
 
 To enable concurrency, use the [-c (--concurrency)](../../reference/command-line-interface.md#-c-n---concurrency-n) command line option or the [runner.concurrency](../../reference/api/runner/concurrency.md) API method.
 
@@ -548,11 +548,11 @@ await runner
 
 ## Live Mode
 
-Live mode ensures the TestCafe process and browsers remain active while you work on tests. You can see test results instantly because the tests are restarted when you make changes.
+Live mode ensures TestCafe and the browsers remain active while you work on tests. You can see test results instantly because the tests are restarted when you make changes.
 
 ![Live mode demonstrated in action](../../../images/testcafe-live.gif)
 
-> This feature replaces the `testcafe-live` module. This module is now deprecated.
+> This feature replaces the deprecated `testcafe-live` module.
 
 ### How to Enable Live Mode
 
@@ -589,7 +589,7 @@ When you run tests with live mode enabled, TestCafe opens the browsers, runs the
 
 Then TestCafe starts watching for changes in the test files and all files referenced in them (like page objects or helper modules). Once you make changes in any of those files and save them, TestCafe immediately reruns the tests.
 
-When the tests are done, browsers stay on the last opened page so you can work with it and explore it with the browser's developer tools.
+When the tests are done, the browsers stay on the last opened page so you can work with it and explore it with the browser's developer tools.
 
 You can use live mode with any browsers: local, remote, mobile or headless.
 
@@ -628,6 +628,6 @@ await runner
     .run({ quarantineMode: true });
 ```
 
-> Note that quarantine mode increases the test task's duration if you enable it on your test machine because failed tests are executed three to five times.
+> Note that quarantine mode increases the test task's duration because failed tests are executed three to five times.
 
 See Martin Fowler's [Eradicating Non-Determinism in Tests](http://martinfowler.com/articles/nonDeterminism.html) article for more information about non-deterministic tests.
