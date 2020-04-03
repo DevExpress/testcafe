@@ -57,7 +57,7 @@ You can create your own request hook to handle HTTP requests. This topic describ
 
 * The `onRequest` asynchronous method is called before the request is sent. Use this method to handle sending the request. You can change the request parameters before it is sent.
 
-    This method is abstract in the base class and needs to be overriden in the subclass.
+    This method is abstract in the base class and needs to be overridden in the subclass.
 
     ```js
     async onRequest (/*RequestEvent event*/) {
