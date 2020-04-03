@@ -1,4 +1,4 @@
-import { set, isPlainObject } from 'lodash';
+import { set, isObjectLike } from 'lodash';
 import { Dictionary } from '../configuration/interfaces';
 
 function getFullPropertyPath (property: string, parentProperty: string): string {
@@ -19,7 +19,7 @@ function diff (source: Dictionary<object>, modified: Dictionary<object>, result:
         const modifiedValue = modified[property] as Dictionary<object>;
 
         if (sourceValue !== modifiedValue) {
-            if (isPlainObject(sourceValue) && isPlainObject(modifiedValue))
+            if (isObjectLike(sourceValue) && isObjectLike(modifiedValue))
                 diff(sourceValue, modifiedValue, result, fullPropertyPath);
             else
                 set(result, fullPropertyPath, modifiedValue);
@@ -30,7 +30,7 @@ function diff (source: Dictionary<object>, modified: Dictionary<object>, result:
 export default (source: Dictionary<object>, modified: Dictionary<object>) => {
     const result = {};
 
-    if (isPlainObject(source) && isPlainObject(modified))
+    if (isObjectLike(source) && isObjectLike(modified))
         diff(source, modified, result);
 
     return result;

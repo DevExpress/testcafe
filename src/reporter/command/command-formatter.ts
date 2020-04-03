@@ -1,3 +1,4 @@
+import { isEmpty } from 'lodash';
 import { ExecuteSelectorCommand, ExecuteClientFunctionCommand } from '../../test-run/commands/observation';
 import { NavigateToCommand, SetNativeDialogHandlerCommand, UseRoleCommand } from '../../test-run/commands/actions';
 import { createReplicator, SelectorNodeTransform } from '../../client-functions/replicator';
@@ -115,7 +116,7 @@ export class CommandFormatter {
             else if (isCommandOptions(property)) {
                 const modifiedOptions = CommandFormatter._getModifiedOptions(property);
 
-                if (modifiedOptions)
+                if (!isEmpty(modifiedOptions))
                     formattedCommand[key] = modifiedOptions;
             }
             else
