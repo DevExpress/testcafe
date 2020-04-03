@@ -2,7 +2,7 @@
 
 The time (in milliseconds) an assertion can take to pass before the test fails if
 [a selector property](../../guides/basic-guides/select-page-elements.md#define-assertion-actual-value)
-or [client function](../../guides/basic-guides/obtain-data-from-the-client.md) promise was used in assertion.
+or [client function](../../guides/basic-guides/obtain-data-from-the-client.md) promise is used.
 
 **Default value**: The timeout is specified with the [runner.run](../../using-testcafe/programming-interface/runner.md#run) API method
 or the [assertion-timeout](../../using-testcafe/command-line-interface.md#--assertion-timeout-ms) command line option.

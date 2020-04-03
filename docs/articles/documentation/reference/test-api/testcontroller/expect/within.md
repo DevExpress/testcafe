@@ -14,8 +14,8 @@ await t.expect( actual ).within( start, finish, message, options );
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
 `actual`             | Number | A comparison value. See [`actual` parameter value](#actual-parameter-value).
-`start`             | Number | A lower bound of range (included).
-`finish`             | Number | An upper bound of range (included).
+`start`             | Number | The lower range (included).
+`finish`             | Number | The upper range (included).
 `message`&#160;*(optional)* | String   | An assertion message displayed in the report if the test fails.
 `options`&#160;*(optional)* | Object   | See [Options](#options).
 

@@ -72,8 +72,8 @@ In synchronous functional testing, you can execute assertions immediately after 
 
 ![Synchronous Functional Testing](../../../images/assertions/synchronous-testing.png)
 
-Functional tests are asynchronous on the web. This means that we cannot get the expected changes immediately after an end user's actions.
-For example, it can take time for the tested page to send a request to the server for the required data, or an end user's action launches an animation after which the page reaches its final state.
+Functional tests are asynchronous on the web. This means that we cannot get the expected changes immediately after a user's actions.
+For example, it can take time for the tested page to send a request to the server for the required data or a user's action to invoke an animation after which the page reaches its final state.
 All these intervals cannot be pre-calculated because they depend on various factors: computer performance,
 network connection speed, etc. In this case, if we perform assertions immediately after the test action, we can get an inconclusive result.
 
@@ -83,7 +83,7 @@ An additional timeout is usually added when performing asynchronous functional t
 
 ![Asynchronous Functional Testing with Extra Waiting](../../../images/assertions/extra-waiting.png)
 
-To stabilize asynchronous functional tests, you need to add a timeout that enables the required changes to be applied successfully.
+To stabilize asynchronous functional tests, you need to add a timeout that allows changes to be applied.
 Note that adding a timeout can increase the test's duration.
 
 TestCafe uses the smart assertion query mechanism if the assertion receives a [Selector's DOM node state property](select-page-elements.md#define-assertion-actual-value)
@@ -131,7 +131,7 @@ The approach described above allows you to create stable tests with fast runtime
 
 You can specify the assertion query timeout in test code with the [options.timeout](#options) option.
 To set the timeout when you launch tests, pass the timeout value to the [runner.run](../../using-testcafe/programming-interface/runner.md#run)
-method if you use an API or specify the [assertion-timeout](../../using-testcafe/command-line-interface.md#--assertion-timeout-ms) option
+method if you use API or specify the [assertion-timeout](../../using-testcafe/command-line-interface.md#--assertion-timeout-ms) option
 if you run TestCafe from the command line.
 
 ## Options

@@ -14,7 +14,7 @@ await t.expect( actual ).notTypeOf( typeName, message, options );
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
 `actual`             | Any type | A comparison value. See [`actual` parameter value](#actual-parameter-value).
-`typeName`             | String | The type of `actual` value that causes an assertion to fail.
+`typeName`             | String | The type of the `actual` value that causes an assertion to fail.
 `message`&#160;*(optional)* | String   | An assertion message displayed in the report if the test fails.
 `options`&#160;*(optional)* | Object   | See [Options](#options).
 
