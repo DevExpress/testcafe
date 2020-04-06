@@ -11,7 +11,7 @@ You can pass a value, a [Selector's DOM node state property](../../../../guides/
 or a [client function](../../../../guides/basic-guides/obtain-data-from-the-client.md) promise.
 TestCafe automatically waits for node state properties to obtain a value and for client functions to execute. See [Smart Assertion Query Mechanism](../../../../guides/basic-guides/assert.md#smart-assertion-query-mechanism) for details.
 
-The value passed as the `actual` parameter needs to be of the data type supported by the assertion method.
+The value passed as the `actual` parameter should be a data type the assertion method accepts.
 
 > You cannot pass a regular promise to the `expect` method unless the options.allowUnawaitedPromise option is enabled.
 
