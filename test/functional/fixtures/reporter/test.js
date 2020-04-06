@@ -8,8 +8,6 @@ const {
     createSyncTestStream
 } = require('../../utils/stream');
 
-const { ClickOptions, AssertionOptions } = require('../../../../lib/test-run/commands/options');
-
 describe('Reporter', () => {
     const stdoutWrite = process.stdout.write;
     const stderrWrite = process.stderr.write;
@@ -273,8 +271,10 @@ describe('Reporter', () => {
                             action:  'done',
                             command: {
                                 type:     'click',
-                                options:  new ClickOptions(),
-                                selector: 'Selector(\'#target\')'
+                                selector: 'Selector(\'#target\')',
+                                options:  {
+                                    offsetX: 10
+                                }
                             },
                             test: {
                                 id:    'test-id',
@@ -305,7 +305,6 @@ describe('Reporter', () => {
                             action:  'done',
                             command: {
                                 type:     'click',
-                                options:  new ClickOptions(),
                                 selector: 'Selector(\'#non-existing-target\')'
                             },
                             err: 'E24'
@@ -334,7 +333,9 @@ describe('Reporter', () => {
                                 expected:      true,
                                 expected2:     void 0,
                                 message:       'assertion message',
-                                options:       new AssertionOptions({ timeout: 100 })
+                                options:       {
+                                    timeout: 100
+                                }
                             }
                         },
                     ]);
@@ -360,8 +361,7 @@ describe('Reporter', () => {
                                 assertionType: 'eql',
                                 expected:      'target',
                                 expected2:     void 0,
-                                message:       null,
-                                options:       new AssertionOptions()
+                                message:       null
                             }
                         },
                     ]);
@@ -486,7 +486,6 @@ describe('Reporter', () => {
                             name:    'click',
                             action:  'done',
                             command: {
-                                options:  new ClickOptions(),
                                 selector: 'Selector(\'#target\')',
                                 type:     'click'
                             },
@@ -537,7 +536,6 @@ describe('Reporter', () => {
                             name:    'click',
                             action:  'done',
                             command: {
-                                options:  new ClickOptions(),
                                 selector: 'Selector(\'#non-existing-element\')',
                                 type:     'click'
                             },
@@ -585,7 +583,7 @@ describe('Reporter', () => {
     describe('Action snapshots', () => {
         it('Basic', () => {
             const expected = [
-                { expression: 'Selector(\'#input\')', element: { tagName: 'input', attributes: { value: '100', type: 'text', id: 'input' } } },
+                { expression: 'Selector(\'#input\')', timeout: 11000, element: { tagName: 'input', attributes: { value: '100', type: 'text', id: 'input' } } },
                 { expression: 'Selector(\'#obscuredInput\')', element: { tagName: 'div', attributes: { id: 'fixed' } } },
                 { expression: 'Selector(\'#obscuredInput\')', element: { tagName: 'div', attributes: { id: 'fixed' } } },
                 { expression: 'Selector(\'#obscuredDiv\')', element: { tagName: 'div', attributes: { id: 'obscuredDiv' } } },

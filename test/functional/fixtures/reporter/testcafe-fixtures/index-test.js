@@ -23,7 +23,7 @@ test('Simple test', async t => {
 });
 
 test('Simple command test', async t => {
-    await t.click(Selector('#target'));
+    await t.click(Selector('#target'), { offsetX: 10 });
 });
 
 test('Simple command err test', async t => {
