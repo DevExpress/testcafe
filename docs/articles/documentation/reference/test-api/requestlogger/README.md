@@ -27,6 +27,6 @@ fixture `My fixture`
 test('My test', async t => {
     await t
         .expect(logger.contains(record => record.response.statusCode === 200)).ok()
-        .expect(logRecord.requests[0].method).eql('get');
+        .expect(logger.requests[0].method).eql('get');
 });
 ```
