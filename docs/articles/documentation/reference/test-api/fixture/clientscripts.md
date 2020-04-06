@@ -32,3 +32,97 @@ fixture
 > Relative paths resolve against the test file location.
 
 You can use the [page](../../../guides/advanced-guides/inject-client-scripts.md#provide-scripts-for-specific-pages) option to specify pages into which scripts should be injected. If this option is missing, TestCafe injects scripts into all pages visited during the test.
+
+## Inject a JavaScript File
+
+{% capture syntax %}
+```text
+fixture.clientScripts(filePath | { path: filePath })
+fixture.clientScripts(filePath | { path: filePath }, ...)
+fixture.clientScripts([ filePath | { path: filePath } ])
+```
+{% endcapture %}
+{% inlcude client-scripts/inject-javascript-file.md syntax=syntax relativePaths="local" %}
+**Example**
+
+```js
+fixture `My fixture`
+    .page `https://example.com`
+    .clientScripts('assets/jquery.js');
+```
+
+## Inject a Module
+
+{% capture syntax %}
+```text
+fixture.clientScripts( { module: moduleName } )
+fixture.clientScripts( { module: moduleName }, ... )
+fixture.clientScripts([ { module: moduleName } ])
+```
+{% endcapture %}
+{% inlcude client-scripts/inject-javascript-file.md syntax=syntax %}
+**Example**
+
+```js
+fixture `My fixture`
+    .page `https://example.com`
+    .clientScripts({ module: 'lodash' });
+```
+
+## Inject Script Code
+
+{% capture syntax %}
+```text
+fixture.clientScripts({ content: code })
+fixture.clientScripts({ content: code }, ...)
+fixture.clientScripts([ { content: code } ])
+```
+{% endcapture %}
+{% inlcude client-scripts/inject-javascript-file.md syntax=syntax %}
+**Example**
+
+```js
+const mockDate = `
+    Date.prototype.getTime = function () {
+        return 42;
+    };
+`;
+
+fixture `My fixture`
+    .page `https://example.com`
+    .clientScripts({ content: mockDate });
+```
+
+## Provide Scripts for Specific Pages
+
+{% capture syntax %}
+```text
+fixture.clientScripts({
+    page: url,
+    path: filePath | module: moduleName | content: code
+})
+
+fixture.clientScripts({
+    page: url,
+    path: filePath | module: moduleName | content: code
+}, ...)
+
+fixture.clientScripts([
+    {
+        page: url,
+        path: filePath | module: moduleName | content: code
+    }
+])
+```
+{% endcapture %}
+{% inlcude client-scripts/inject-javascript-file.md syntax=syntax regexp=true %}
+**Example**
+
+```js
+fixture `My fixture`
+    .page `https://example.com`
+    .clientScripts({
+        page: /\/user\/profile\//,
+        path: 'dist/jquery.js'
+    });
+```
