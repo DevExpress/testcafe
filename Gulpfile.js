@@ -1,4 +1,3 @@
-const babel                   = require('babel-core');
 const gulp                    = require('gulp');
 const gulpStep                = require('gulp-step');
 const data                    = require('gulp-data');
@@ -8,7 +7,6 @@ const git                     = require('gulp-git');
 const mocha                   = require('gulp-mocha-simple');
 const mustache                = require('gulp-mustache');
 const rename                  = require('gulp-rename');
-const webmake                 = require('gulp-webmake');
 const uglify                  = require('gulp-uglify');
 const ll                      = require('gulp-ll-next');
 const clone                   = require('gulp-clone');
@@ -263,35 +261,8 @@ gulp.step('ts-defs', async () => {
 });
 
 gulp.step('client-scripts-bundle', () => {
-    return gulp
-        .src([
-            'src/client/core/index.js',
-            'src/client/driver/index.js',
-            'src/client/ui/index.js',
-            'src/client/automation/index.js',
-            'src/client/browser/idle-page/index.js'
-        ], { base: 'src' })
-        .pipe(webmake({
-            sourceMap: false,
-            transform: (filename, code) => {
-                const transformed = babel.transform(code, {
-                    sourceMap: false,
-                    ast:       false,
-                    filename:  filename,
-
-                    // NOTE: force usage of client .babelrc for all
-                    // files, regardless of their location
-                    babelrc: false,
-                    extends: path.join(__dirname, './src/client/.babelrc')
-                });
-
-                // HACK: babel-plugin-transform-es2015-modules-commonjs forces
-                // 'use strict' insertion. We need to remove it manually because
-                // of https://github.com/DevExpress/testcafe/issues/258
-                return { code: transformed.code.replace(/^('|")use strict('|");?/, '') };
-            }
-        }))
-        .pipe(gulp.dest('lib'));
+    return childProcess
+        .spawn('rollup -c', { shell: true, stdio: 'inherit', cwd: path.join(__dirname, 'src/client') });
 });
 
 gulp.step('client-scripts-templates-render', () => {

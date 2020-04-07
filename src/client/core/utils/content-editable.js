@@ -1,7 +1,7 @@
 import * as domUtils from './dom';
 import * as arrayUtils from './array';
 import * as styleUtils from './style';
-import { nativeMethods } from '../../driver/deps/hammerhead';
+import { nativeMethods } from '../deps/hammerhead';
 
 //nodes utils
 function getOwnFirstVisibleTextNode (el) {

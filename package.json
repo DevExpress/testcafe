@@ -131,6 +131,8 @@
   "devDependencies": {
     "@belym.a.2105/broken-link-checker": "^0.7.9",
     "@ffmpeg-installer/ffmpeg": "^1.0.17",
+    "@rollup/plugin-commonjs": "^11.0.2",
+    "@rollup/plugin-node-resolve": "^7.1.1",
     "@types/chai": "^3.5.2",
     "@types/debug": "^4.1.5",
     "@types/dedent": "^0.7.0",
@@ -165,17 +167,14 @@
     "gulp-git": "^2.4.2",
     "gulp-less": "^4.0.0",
     "gulp-ll-next": "^2.1.0",
-    "gulp-mocha": "^5.0.0",
     "gulp-mocha-simple": "^1.0.0",
     "gulp-mustache": "^3.0.1",
     "gulp-prompt": "^1.0.1",
     "gulp-qunit-harness": "^1.0.2",
     "gulp-rename": "^1.3.0",
-    "gulp-sourcemaps": "^2.6.4",
     "gulp-step": "^1.0.1",
     "gulp-uglify": "^3.0.0",
     "gulp-util": "^3.0.7",
-    "gulp-webmake": "0.0.4",
     "js-yaml": "^3.6.1",
     "license-checker": "^20.0.0",
     "markdownlint": "^0.19.0",
@@ -189,6 +188,8 @@
     "publish-please": "^5.5.1",
     "recursive-copy": "^2.0.5",
     "request": "^2.58.0",
+    "rollup": "^2.2.0",
+    "rollup-plugin-typescript2": "^0.26.0",
     "run-sequence": "^1.2.2",
     "saucelabs-connector": "^0.2.0",
     "semver": "^5.6.0",
@@ -197,6 +198,6 @@
     "stack-chain": "^2.0.0",
     "strip-ansi": "^3.0.0",
     "testcafe-browser-provider-browserstack": "1.13.0-alpha.1",
-    "webmake": "0.3.42"
+    "tslib": "^1.11.1"
   }
 }

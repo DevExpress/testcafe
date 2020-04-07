@@ -1,13 +1,14 @@
 import hammerhead from '../../deps/hammerhead';
-import { KEY_MAPS, domUtils } from '../../deps/testcafe-core';
+import { KEY_MAPS, domUtils, arrayUtils } from '../../deps/testcafe-core';
 import isLetter from '../../utils/is-letter';
-import { findDocument, isRadioButtonElement, getActiveElement } from '../../../core/utils/dom';
-import * as arrayUtils from '../../../core/utils/array';
+
 
 const nativeMethods    = hammerhead.nativeMethods;
 const browserUtils     = hammerhead.utils.browser;
 const focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
 const Promise          = hammerhead.Promise;
+
+const { findDocument, isRadioButtonElement, getActiveElement } = domUtils;
 
 export function changeLetterCase (letter) {
     const isLowCase = letter === letter.toLowerCase();

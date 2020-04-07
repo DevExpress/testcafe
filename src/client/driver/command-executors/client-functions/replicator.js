@@ -34,7 +34,12 @@ export class FunctionTransform {
         return '';
     }
 
-    fromSerializable ({ fnCode, dependencies }) {
+    // HACK: UglifyJS + TypeScript + argument destructuring can generate incorrect code.
+    // So we have to use plain assignments here.
+    fromSerializable (opts) {
+        const fnCode       = opts.fnCode;
+        const dependencies = opts.dependencies;
+
         return evalFunction(fnCode, dependencies);
     }
 }

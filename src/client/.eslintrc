@@ -15,9 +15,5 @@
   },
   "plugins": [
     "hammerhead"
-  ],
-  "globals": {
-    "exports": true,
-    "require": true
-  }
+  ]
 }

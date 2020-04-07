@@ -1,1 +1,2 @@
-export default window['%hammerhead%'];
+export * from 'hammerhead';
+export { default } from 'hammerhead';
