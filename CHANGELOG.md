@@ -1,5 +1,14 @@
 # Changelog
 
+## v1.8.4 (2020-4-7)
+
+### Bug Fixes
+
+* TestCafe no longer throws an error when you access the `visible` selector property for a non-existing element ([#2386](https://github.com/DevExpress/testcafe/issues/2386))
+* `t.pressKey` now works if the active element is inside the Shadow DOM ([#2432](https://github.com/DevExpress/testcafe/issues/2432))
+* An original Node.js error is displayed if a browser provider was unable to load ([#4522](https://github.com/DevExpress/testcafe/issues/4522))
+* Custom hooks that use `responseEventConfigureOpts` now trigger the `onResponse` handler for AJAX requests ([testcafe-hammerhead/#2190](https://github.com/DevExpress/testcafe-hammerhead/issues/2190))
+
 ## v1.8.3 (2020-3-17)
 
 ### Bug Fixes
