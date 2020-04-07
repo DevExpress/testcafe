@@ -73,7 +73,13 @@ describe('Allow multiple windows', () => {
             });
     });
 
-    it("Should not finalize the 'ExecuteSelectorCommand' command on driver starting (GH-4855)", () => {
-        return runTests('testcafe-fixtures/i4855.js', null, { allowMultipleWindows: true });
+    describe('Should not finalize some commands on driver starting (GH-4855)', () => {
+        it('ExecuteSelectorCommand', () => {
+            return runTests('testcafe-fixtures/i4855.js', 'ExecuteSelectorCommand', { allowMultipleWindows: true });
+        });
+
+        it('ExecuteClientFunctionCommand', () => {
+            return runTests('testcafe-fixtures/i4855.js', 'ExecuteClientFunctionCommand', { allowMultipleWindows: true });
+        });
     });
 });

@@ -493,11 +493,12 @@ export default class TestRun extends AsyncEventEmitter {
 
     // Handle driver request
     _shouldResolveCurrentDriverTask (driverStatus) {
-        const isFirstExecuteSelectorCommandAfterWindowSwitching =
+        const isFirstReturnResultCommandAfterWindowSwitching =
             driverStatus.isFirstRequestAfterWindowSwitching &&
-            this.currentDriverTask.command instanceof observationCommands.ExecuteSelectorCommand;
+            (this.currentDriverTask.command instanceof observationCommands.ExecuteSelectorCommand ||
+            this.currentDriverTask.command instanceof observationCommands.ExecuteClientFunctionCommand);
 
-        return !isFirstExecuteSelectorCommandAfterWindowSwitching;
+        return !isFirstReturnResultCommandAfterWindowSwitching;
     }
 
     _fulfillCurrentDriverTask (driverStatus) {
