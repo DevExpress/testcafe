@@ -22,7 +22,7 @@ Method                  | Description
 ----------------------- | ---------------------
 [clientScripts](clientscripts.md) | Injects scripts into pages visited during the tests.
 [concurency](concurrency.md)      | Specifies that tests should run concurrently.
-[filter](filter.md)               | Allows you to select which tests should be run.
+[filter](filter.md)               | Allows you to select the tests to run.
 [reporter](reporter.md)           | Configures how TestCafe generates test run reports.
 [screenshots](screenshots.md)     | Specifies how TestCafe should take screenshots of the tested pages.
 [startApp](startapp.md)           | Specifies a shell command that is executed before TestCafe runs tests.

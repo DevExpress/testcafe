@@ -12,7 +12,7 @@ concurrency(n) → this
 ```
 
 TestCafe opens `n` instances of the same browser and creates a pool of browser instances.
-Tests are run concurrently against this pool, that is, each test is run in the first available instance.
+Tests run concurrently against this pool, that is, each test runs in the first available instance.
 
 The `concurrency` function takes the following parameters:
 

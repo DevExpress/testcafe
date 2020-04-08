@@ -5,7 +5,7 @@ permalink: /documentation/reference/api/runner/filter.html
 ---
 # Runner.filter Method
 
-Allows you to select which tests should be run.
+Allows you to select the tests to run.
 
 ```text
 filter(callback) → this
@@ -15,9 +15,7 @@ Parameter  | Type                                                               
 ---------- | --------------------------------------------------------------------- | ----------------------------------------------------------------
 `callback` | `function(testName, fixtureName, fixturePath, testMeta, fixtureMeta)` | The callback that determines if a particular test should be run.
 
-The callback function is called for each test in the files the [src](src.md) method specifies.
-
-Return `true` from the callback to include the current test or `false` to exclude it.
+The callback function is called for each test in the source files. Return `true` from the callback to include the current test or `false` to exclude it.
 
 The callback function accepts the following arguments:
 
@@ -28,6 +26,8 @@ Parameter     | Type   | Description
 `fixturePath` | String | The path to the test fixture file.
 `testMeta`    | Object | The test metadata.
 `fixtureMeta` | Object | The fixture metadata.
+
+> Use the [src](src.md) method to specify the source files.
 
 *Related configuration file property*: [filter](../../configuration-file.md#filter)
 

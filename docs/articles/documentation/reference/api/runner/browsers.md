@@ -25,13 +25,13 @@ You do not need to call this function if you specify the [browsers](../../config
 
 ## Use Browser Aliases
 
-* running local browsers
+You can identify locally installed browsers with predefined [browser aliases](../../../concepts/browsers.md#locally-installed-browsers):
 
 ```js
 runner.browsers(['safari', 'chrome']);
 ```
 
-* running browsers accessed through browser provider plugins
+You can also use aliases to run browsers accessed with provider plugins, such as browsers in [cloud testing services](../../../concepts/browsers.md#browsers-in-cloud-testing-services):
 
 ```js
 runner.browsers('saucelabs:Chrome@52.0:Windows 8.1');
@@ -39,7 +39,7 @@ runner.browsers('saucelabs:Chrome@52.0:Windows 8.1');
 
 ## Specify the Path to the Browser Executable
 
-Use the `path:` prefix. Enclose the path in backticks if it contains spaces.
+To specify the path to the browser executable, use the `path:` prefix. Enclose the path in backticks if it contains spaces:
 
 ```js
 runner.browsers('path:`C:\\Program Files\\Internet Explorer\\iexplore.exe`');
@@ -56,13 +56,13 @@ runner.browsers({
 
 ## Headless Mode, Device Emulation and User Profiles
 
-You can add postfixes to browser aliases to run tests in the [headless mode](../../../concepts/browsers.md#testing-in-headless-mode), use [Chrome device emulation](../../../concepts/browsers.md#using-chromium-device-emulation) or [user profiles](../../../concepts/browsers.md#user-profiles).
+You can add postfixes to browser aliases to run tests in the [headless mode](../../../concepts/browsers.md#testing-in-headless-mode), use [Chrome device emulation](../../../concepts/browsers.md#using-chromium-device-emulation) or [user profiles](../../../concepts/browsers.md#user-profiles):
 
 ```js
 runner.browsers('chrome:headless');
 ```
 
-For portable browsers, use the browser alias followed by the path to an executable.
+For portable browsers, use the browser alias followed by the path to an executable:
 
 ```js
 runner.browsers('firefox:/home/user/apps/firefox.app:userProfile');

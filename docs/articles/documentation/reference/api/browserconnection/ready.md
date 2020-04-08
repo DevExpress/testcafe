@@ -11,4 +11,4 @@ Fires when a remote browser connects to the TestCafe server.
 browserConnection.once('ready', callback)
 ```
 
-Typically, you can run tests without waiting for the `ready` event to fire. The [runner.run](../runner/run.md) method automatically waits for all browser connections to be established. If remote browsers do not connect within **30** seconds, an error is thrown. Thus, you need to wait for the `ready` event only if there is a chance that any of your remote connections take more than 30 seconds to establish.
+You can run tests without waiting for the `ready` event to fire. The [runner.run](../runner/run.md) method automatically waits for all browser connections to be established. If remote browsers do not connect within **30** seconds, TestCafe throws an error. Wait for the `ready` event only when there is a chance that a remote connection takes longer than **30** seconds to be established.

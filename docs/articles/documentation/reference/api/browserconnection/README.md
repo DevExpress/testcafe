@@ -7,7 +7,7 @@ permalink: /documentation/reference/api/browserconnection/
 
 A connection to a [remote browser](../../../concepts/browsers.md#remote-testing).
 
-Use this object to run tests on a remote or mobile device.
+Use this object to run tests on a remote or a mobile device.
 
 `BrowserConnection` is created with the [testCafe.createBrowserConnection](../testcafe/createbrowserconnection.md) function.
 
