@@ -869,7 +869,7 @@ describe('Compiler', function () {
         });
 
         it('getTests method should not raise an error for typescript declaration files', function () {
-            return compile('test/server/data/test-suites/type-script-decription/fs.d.ts')
+            return compile('test/server/data/test-suites/typescript-description-file/fs.d.ts')
                 .then(res => {
                     expect(res).eql({ tests: [], fixtures: [] });
                 });
