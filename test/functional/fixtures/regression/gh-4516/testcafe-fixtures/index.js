@@ -1,4 +1,4 @@
-import { RequestHook } from 'testcafe';
+import { RequestHook, Selector } from 'testcafe';
 
 export default class CustomHook extends RequestHook {
     constructor (config) {
@@ -29,18 +29,21 @@ fixture `GH-4516`
 
 test.requestHooks(hook1)('Without config', async t => {
     await t
+        .expect(Selector('#result').visible).ok()
         .expect(hook1.hasAjaxRequests).ok()
         .expect(hook1.pendingAjaxRequestIds.size).eql(0);
 });
 
 test.requestHooks(hook2)('With empty config', async t => {
     await t
+        .expect(Selector('#result').visible).ok()
         .expect(hook2.hasAjaxRequests).ok()
         .expect(hook2.pendingAjaxRequestIds.size).eql(0);
 });
 
 test.requestHooks(hook3)('With includeHeaders', async t => {
     await t
+        .expect(Selector('#result').visible).ok()
         .expect(hook3.hasAjaxRequests).ok()
         .expect(hook3.pendingAjaxRequestIds.size).eql(0);
 });
