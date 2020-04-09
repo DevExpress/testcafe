@@ -25,6 +25,10 @@
   <meta property="og:url" content="https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html" />
   <meta property="og:title" content="Creating a Custom HTTP Request Hook | TestCafe" />
 
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-twitter-card-icon.png" />
+  <meta name="twitter:site" content="@DXTestCafe" />
+  
   
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.16.2/build/styles/docco.min.css">
   
@@ -1288,7 +1292,7 @@
 </code></pre></div></li>
 <li><p>The <code>onRequest</code> asynchronous method is called before the request is sent. Use this method to handle sending the request. You can change the request parameters before it is sent.</p>
 
-<p>This method is abstract in the base class and needs to be overriden in the subclass.</p>
+<p>This method is abstract in the base class and needs to be overridden in the subclass.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">async</span> <span class="nx">onRequest</span> <span class="p">(</span><span class="cm">/*RequestEvent event*/</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="dl">'</span><span class="s1">Not implemented</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">}</span>
