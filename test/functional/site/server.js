@@ -76,10 +76,18 @@ Server.prototype._setupRoutes = function () {
                     <script>
                         var driver = window['%testCafeDriverInstance%'];
 
-                        driver._onExecuteSelectorCommand = function () {
+                        function closeWindowAfter1Sec () {
                             window.setTimeout(() =>{
                                 window.close();
                             }, 1000);
+                        }
+
+                        driver._onExecuteSelectorCommand = function () {
+                            closeWindowAfter1Sec();
+                        };
+
+                        driver._onExecuteClientFunctionCommand = function() {
+                            closeWindowAfter1Sec();
                         };
                     </script>
                 </body>
