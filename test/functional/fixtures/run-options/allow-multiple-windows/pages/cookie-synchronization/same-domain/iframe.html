@@ -1,0 +1,11 @@
+<div id="cookie"></div>
+<script>
+    var cookieDiv  = document.querySelector('#cookie');
+    var intervalId = setInterval(function () {
+        if (!document.cookie)
+            return;
+
+        cookieDiv.textContent = document.cookie;
+        clearInterval(intervalId);
+    }, 50);
+</script>
