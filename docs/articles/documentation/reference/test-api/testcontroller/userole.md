@@ -13,7 +13,7 @@ t.useRole( role )
 
 Parameter | Type   | Description
 --------- | ------ | ---------------------------------------------
-`role`    | Object | The role you need to use further in the test.
+`role`    | Object | The role to use in the test.
 
 ```js
 import { Role, Selector } from 'testcafe';
