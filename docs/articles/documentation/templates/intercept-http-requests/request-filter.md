@@ -54,7 +54,7 @@ const mock = RequestMock()
 
 ### Filter with a Predicate
 
-You can get more request parameters using a predicate function and use them to determine whether to handle the request.
+You can get more request parameters and determine whether to handle the request with the predicate functions.
 
 ```js
 const logger = RequestLogger(request => {
