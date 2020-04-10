@@ -221,7 +221,7 @@ test('basic', async t => {
 
 To attach a hook to a test or fixture, use the [fixture.requestHooks](../../reference/test-api/fixture/requesthooks.md) and [test.requestHooks](../../reference/test-api/test/requesthooks.md) methods. A hook attached to a fixture handles requests from all tests in the fixture.
 
-> Hooks attached to a fixture are invoked before hooks attached to its tests.
+> Hooks attached to a fixture are invoked before the hooks attached to individual tests.
 
 You can use the [t.addRequestHooks](../../reference/test-api/testcontroller/addrequesthooks.md) and [t.removeRequestHooks](../../reference/test-api/testcontroller/removerequesthooks.md) methods to attach and detach hooks during the test.
 
