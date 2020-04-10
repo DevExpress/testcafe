@@ -89,10 +89,7 @@ test('My Test', async t => {
 });
 ```
 
-## Call Selectors and Client Functions from Client-Side Code
-
-
-### Import Functions to be Used as Client Function Dependencies
+## Import Functions to be Used as Client Function Dependencies
 
 Assume you have a JS file `utils.js` with a function you need to use as a client function dependency in your test file.
 
