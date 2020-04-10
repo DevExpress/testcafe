@@ -12,4 +12,4 @@ Parameter                       | Type   | Description
 `workstation`&#160;*(optional)* | String | The workstation's ID in the local network.
 
 The `credentials` parameter requires `username` and `password`.
-For NTLM authentication, the server may need additional information - the workstation ID and the domain name.
+For NTLM authentication, the server may require additional information, such as the workstation ID and the domain name.
