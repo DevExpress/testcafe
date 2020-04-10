@@ -21,4 +21,4 @@ Once a request hook is attached, it intercepts HTTP requests sent during the sub
 
 You can also use the [test.requestHooks](../test/requesthooks.md) and [fixture.requestHooks](../fixture/requesthooks.md) methods to attach request hooks to an individual test or a fixture. These methods attach hooks before test code starts, so they can handle all HTTP requests the page sends.
 
-To remove attached request hooks, use the [t.removeRequestHooks](removerequesthooks.md) method.
+Use the [t.removeRequestHooks](removerequesthooks.md) method to remove attached request hooks.
