@@ -5,7 +5,7 @@ permalink: /documentation/reference/test-api/requesthook/onrequest.html
 ---
 # RequestHook.onRequest Method
 
-Handles request sending.
+Handles the request before it is sent.
 
 ```js
 class MyRequestHook extends RequestHook {

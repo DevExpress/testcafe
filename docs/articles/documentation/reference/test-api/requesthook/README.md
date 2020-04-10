@@ -36,7 +36,7 @@ class JwtBearerAuthorization extends RequestHook {
 
 ## Filter Rules
 
-The `RequestHook` [constructor](constructor.md) receives an array of [filter rules](constructor.md#select-requests-to-be-handled-by-the-hook) as the first parameter to determine which requests the hook handles. It handles all requests if no rules are passed.
+The `RequestHook` [constructor](constructor.md) receives an array of [filter rules](constructor.md#select-requests-to-be-handled-by-the-hook) as the first parameter to determine which requests the hook handles. The hook processes all requests if no rules are passed.
 
 ```js
 class MyHook extends RequestHook {
@@ -96,7 +96,7 @@ class MyHook extends RequestHook {
 
 ## Response Handler
 
-Finally, the [onResponse](onresponse.md) asynchronous method is called. This is an abstract method in the base class. Override it in the descendant to handle the response.
+At the last step, the [onResponse](onresponse.md) asynchronous method is called. This is an abstract method in the base class. Override it in the descendant to handle the response.
 
 ```js
 async onResponse (event) {

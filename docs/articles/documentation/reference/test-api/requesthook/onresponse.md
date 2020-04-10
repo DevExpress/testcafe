@@ -5,7 +5,7 @@ permalink: /documentation/reference/test-api/requesthook/onresponse.html
 ---
 # RequestHook.onResponse Method
 
-Handles response receiving.
+Handles the response after it is received.
 
 ```js
 class MyRequestHook extends RequestHook {
