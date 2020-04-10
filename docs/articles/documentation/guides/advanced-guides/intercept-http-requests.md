@@ -92,7 +92,7 @@ Use the [RequestMock](../../reference/test-api/global/requestmock.md) constructo
 var mock = RequestMock();
 ```
 
-Then call the [onRequestTo](../../reference/test-api/requestmock/onrequestto.md) and [respond](../../reference/test-api/requestmock/respond.md) methods in a chain. The [onRequestTo](../../reference/test-api/requestmock/onrequestto.md) method specifies a request to intercept, while the [respond](../../reference/test-api/requestmock/respond.md) method specifies the mocked response for this request. Call these methods repeatedly to provide a mock for every request you need.
+Then call the [onRequestTo](../../reference/test-api/requestmock/onrequestto.md) and [respond](../../reference/test-api/requestmock/respond.md) methods in a chained fashion. The [onRequestTo](../../reference/test-api/requestmock/onrequestto.md) method specifies a request to intercept, while the [respond](../../reference/test-api/requestmock/respond.md) method specifies the mocked response for this request. Call these methods repeatedly to provide a mock for every request you need.
 
 ```js
 var mock = RequestMock()
