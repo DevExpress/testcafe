@@ -34,7 +34,7 @@ test('My Test', async t => {
         .expect(Selector('#avatar').visible).ok();
 ```
 
-To log out, switch to [Role.anonymous()](../role/anonymous.md):
+Switch to [Role.anonymous()](../role/anonymous.md) to log out:
 
 ```js
 import { Role, Selector } from 'testcafe';
