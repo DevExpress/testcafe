@@ -5,7 +5,7 @@ permalink: /documentation/reference/test-api/clientfunction/with.html
 ---
 # ClientFunction.with Method
 
-You can overwrite [client function options](../global/clientfunction.md#options) by using the ClientFunction's `with` method.
+Overwrites [client function options](../global/clientfunction.md#options).
 
 ```text
 clientFunction.with( options ) → ClientFunction
