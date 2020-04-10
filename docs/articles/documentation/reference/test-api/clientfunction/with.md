@@ -1,11 +1,11 @@
 ---
 layout: docs
-title: with Method
+title: ClientFunction.with Method
 permalink: /documentation/reference/test-api/clientfunction/with.html
 ---
-# with Method
+# ClientFunction.with Method
 
-You can overwrite client function options by using the ClientFunction's `with` method.
+You can overwrite [client function options](../global/clientfunction.md#options) by using the ClientFunction's `with` method.
 
 ```text
 clientFunction.with( options ) → ClientFunction

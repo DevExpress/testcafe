@@ -3,7 +3,7 @@ layout: docs
 title: Obtain Client-Side Info
 permalink: /documentation/guides/basic-guides/obtain-client-side-info.html
 ---
-# Obtain Data from the Client
+# Obtain Client-Side Info
 
 TestCafe allows you to create [*Client Functions*](../../reference/test-api/global/clientfunction.md) that can return any serializable value from the client side, such as the current URL or custom data calculated by a client script.
 
@@ -17,8 +17,9 @@ This topic contains the following sections.
 * [Execute Client Functions](#execute-client-functions)
 * [Overwrite Client Function Options](#overwrite-client-function-options)
 * [One-Time Client Code Execution](#one-time-client-code-execution)
-* [Import Functions to be Used as Client Function Dependencies](#import-functions-to-be-used-as-client-function-dependencies)
-* [Calling Client Functions from Node.js Callbacks](#calling-client-functions-from-nodejs-callbacks)
+* [Call Selectors and Client Functions from Client-Side Code](#call-selectors-and-client-functions-from-client-side-code)
+    * [Import Functions to be Used as Client Function Dependencies](#import-functions-to-be-used-as-client-function-dependencies)
+* [Call Client Functions from Node.js Callbacks](#call-client-functions-from-nodejs-callbacks)
 * [Client Function Limitations](#client-function-limitations)
 
 ## Client Function Constructor
@@ -67,7 +68,7 @@ test('My Test', async t => {
 
 ## Overwrite Client Function Option
 
-You can overwrite client function options with the ClientFunction's [`with`](../../reference/test-api/clientfunction/with.md) method.
+You can overwrite client function options with the ClientFunction's [with method](../../reference/test-api/clientfunction/with.md).
 
 ```js
 const cfWithDependency = cfWithoutDependency.with({
@@ -77,7 +78,7 @@ const cfWithDependency = cfWithoutDependency.with({
 
 ## One-Time Client Code Execution
 
-You can use the [`eval`](../../reference/test-api/testcontroller/eval.md) method of the [test controller](../../reference/test-api/testcontroller/README.md) to create a client function and execute it immediately without saving it.
+You can use the [eval method](../../reference/test-api/testcontroller/eval.md) of the [test controller](../../reference/test-api/testcontroller/README.md) to create a client function and execute it immediately without saving it.
 
 ```js
 fixture `My fixture`
@@ -88,7 +89,10 @@ test('My Test', async t => {
 });
 ```
 
-## Import Functions to be Used as Client Function Dependencies
+## Call Selectors and Client Functions from Client-Side Code
+
+
+### Import Functions to be Used as Client Function Dependencies
 
 Assume you have a JS file `utils.js` with a function you need to use as a client function dependency in your test file.
 
