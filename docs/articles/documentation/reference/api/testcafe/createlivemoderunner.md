@@ -5,7 +5,7 @@ permalink: /documentation/reference/api/testcafe/createlivemoderunner.html
 ---
 # TestCafe.createLiveModeRunner Method
 
-Creates a [test runner](../livemoderunner.md) that runs TestCafe in [live mode](../../../guides/basic-guides/run-tests.md#live-mode). In this mode, TestCafe watches for changes you make in the test files and all files referenced in them (like page objects or helper modules). These changes immediately restart the tests so that you can see the effect.
+Creates a [test runner](../livemoderunner.md) that runs TestCafe in [live mode](../../../guides/basic-guides/run-tests.md#live-mode). In this mode, TestCafe watches for changes you make in the test files and all files referenced in them (like page objects or helper modules). The tests restart immediately after these changes, so you get real-time updates.
 
 ```text
 createLiveModeRunner() → LiveModeRunner
