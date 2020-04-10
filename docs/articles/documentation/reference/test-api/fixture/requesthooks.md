@@ -21,7 +21,7 @@ Request hooks attached to a fixture intercept requests from all tests in this fi
 
 You can also use the [test.requestHooks](../test/requesthooks.md) method to attach request hooks to an individual test.
 
-> Request hooks attached to a fixture are invoked before hooks attached to its tests.
+> Request hooks attached to a fixture are invoked before the hooks attached to individual tests.
 
 The [t.attachRequestHooks](../testcontroller/attachrequesthooks.md) method allows you to attach request hooks throughout test execution.
 
