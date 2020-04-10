@@ -96,7 +96,7 @@ For instance, assume that you switch to a role that logs you in on **website A**
 
 ### Anonymous Role
 
-You can switch back to an unregistered user by using an anonymous role. This role is returned by the static [Role.anonymous()](../../reference/test-api/role/anonymous.md) function.
+You can use an anonymous role to switch back to an unregistered user. This role is returned by the static [Role.anonymous()](../../reference/test-api/role/anonymous.md) function.
 
 ```js
 import { Selector, Role } from 'testcafe';
