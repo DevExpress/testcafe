@@ -29,7 +29,7 @@ const registeredUser = Role('http://example.com/login', async t => {
 });
 ```
 
-The [t.useRole](../testcontroller/userole.md) method switches the user account to the specified role. To log out, switch to [Role.anonymous()](../role/anonymous.md).
+The [t.useRole](../testcontroller/userole.md) method switches the user account to the specified role. Switch to [Role.anonymous()](../role/anonymous.md) to log out.
 
 ## Options
 
