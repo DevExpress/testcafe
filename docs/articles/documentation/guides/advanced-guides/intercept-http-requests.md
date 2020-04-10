@@ -84,7 +84,7 @@ test('export to csv', async t => {
 
 ## Mock HTTP Requests
 
-Use TestCafe [request mocker](../../reference/test-api/requestmock/README.md) to substitute infrastructure that is difficult to deploy or that you do not want to use for test purposes. This can be a third-party service that charges you per pageview or an analytics service that should not log page views tests generate. The mocker can intercept requests to this resource and emulate the response as needed.
+Use TestCafe [request mocker](../../reference/test-api/requestmock/README.md) to substitute infrastructure that is difficult to deploy or that you do not want to use for test purposes. This can be a third-party service that charges you per pageview or an analytics service that should not log page views that tests generate. The mocker can intercept requests to this resource and emulate the response as needed.
 
 Use the [RequestMock](../../reference/test-api/global/requestmock.md) constructor to create a request mocker.
 
