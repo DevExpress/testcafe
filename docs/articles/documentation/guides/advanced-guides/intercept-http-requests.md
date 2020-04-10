@@ -78,7 +78,7 @@ test('export to csv', async t => {
 
     // Here you can use 3rd party modules to
     // unpack the archive, parse CSV and check the data.
-    // Or you can just manually verify the file.
+    // Or you can just verify the file manually.
 });
 ```
 
