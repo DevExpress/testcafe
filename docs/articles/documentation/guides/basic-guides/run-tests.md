@@ -171,7 +171,7 @@ await runner
 
 ## Specify Target Browsers
 
-You must specify the browsers where you wish to run tests in the first command line parameter.
+You should specify the browsers where you want to run tests in the first command line parameter.
 
 TestCafe automatically detects the supported browsers installed on the local machine. Use [browser aliases](../../concepts/browsers.md) to identify the target browser:
 
