@@ -113,14 +113,14 @@ import { Selector, RequestMock } from 'testcafe';
 const collectDataGoogleAnalyticsRegExp = new RegExp('https://www.google-analytics.com/collect');
 
 // Technically, Google Analytics sends an XHR request for a GIF image.
-// So, we prepare a mocked response with binary data.
+// So, the mocked response should contain binary data.
 const mockedResponse = Buffer.from([0x47, 0x49, 0x46, 0x38, 0x39, 0x61, 0x01, 0x00, 0x01]);
 
 const mock = RequestMock()
     .onRequestTo(collectDataGoogleAnalyticsRegExp)
 
-    // We respond to Analytics requests with the prepared data
-    // represented as a GIF image and change the status code to 202.
+    // The hook responds to Analytics requests with the prepared data
+    // represented as a GIF image and changes the status code to 202.
     .respond(mockedResponse, 202, {
         'content-length': mockedResponse.length,
         'content-type': 'image/gif'
