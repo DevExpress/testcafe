@@ -14,7 +14,7 @@ RequestLogger([filter] [, options])
 Parameter    | Type | Description | Default
 ------------ | ---- | ----------- | --------
 `filter`&#160;*(optional)*  | String &#124; RegExp &#124; Object &#124; Predicate &#124; Array | Specifies which requests the logger should track. See [Select Requests to be Handled by the Hook](#select-requests-to-be-handled-by-the-hook). | All requests are tracked
-`options`&#160;*(optional)* | Object | Options that define how the requests and responses are logged. | See below
+`options`&#160;*(optional)* | Object | Options that define how requests and responses are logged. | See below
 
 The `options` parameter contains the following options:
 
