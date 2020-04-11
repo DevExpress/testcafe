@@ -15,7 +15,7 @@ Parameter | Type | Description
 --------- | ---- | ------------
 `hooks`    | RequestHook subclass | A [RequestLogger](../requestlogger/README.md), [RequestMock](../requestmock/README.md) or custom user-defined hook.
 
-> The `fixture.requestHooks` method uses the rest operator which allows you to pass multiple hooks as parameters or arrays of hooks.
+> The `fixture.requestHooks` method uses the rest operator, which allows you to pass multiple hooks as parameters or arrays of hooks.
 
 Request hooks attached to a fixture intercept requests from all tests in this fixture.
 
