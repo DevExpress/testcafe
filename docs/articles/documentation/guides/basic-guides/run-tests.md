@@ -5,7 +5,7 @@ permalink: /documentation/guides/basic-guides/run-tests.html
 ---
 # Run Tests
 
-You can run TestCafe tests from the [command line](../../reference/command-line-interface.md) or the [JavaScript/TypeScript API](../../reference/api/README.md).
+You can run TestCafe tests from the [command line](../../reference/command-line-interface.md) or [JavaScript/TypeScript API](../../reference/api/README.md).
 
 ```sh
 testcafe safari ./tests/my-fixture.js
