@@ -15,7 +15,7 @@ Parameter | Type | Description
 --------- | ---- | ------------
 `hooks`    | RequestHook subclass | A [RequestLogger](../requestlogger/README.md), [RequestMock](../requestmock/README.md) or custom user-defined hook.
 
-> The `t.addRequestHooks` method uses the rest operator which allows you to pass multiple hooks as parameters or arrays of hooks.
+> The `t.addRequestHooks` method uses the rest operator that allows you to pass multiple hooks as parameters or arrays of hooks.
 
 Once a request hook is attached, it intercepts HTTP requests sent during the subsequent test actions.
 
