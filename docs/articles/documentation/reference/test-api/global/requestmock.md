@@ -11,7 +11,7 @@ Creates a [request mocker](../requestmock/README.md).
 RequestMock()
 ```
 
-Use the [requestMock.onRequestTo](../requestmock/onrequestto.md) method followed by [respond](../requestmock/respond.md) to define which request should be mocked and specify the responses. Then [attach the mock](../../../guides/advanced-guides/intercept-http-requests.md#attach-hooks-to-tests-and-fixtures) to a test or fixture.
+Use the [requestMock.onRequestTo](../requestmock/onrequestto.md) method followed by [respond](../requestmock/respond.md) to define which request should be mocked and specify the responses. Then, [attach the mock](../../../guides/advanced-guides/intercept-http-requests.md#attach-hooks-to-tests-and-fixtures) to a test or fixture.
 
 ```js
 var mock = RequestMock()
