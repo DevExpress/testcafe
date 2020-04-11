@@ -59,7 +59,7 @@ Parameter | Type | Description
 `req`     | [RequestOptions](#requestoptions) | A request to be mocked.
 `res`     | Object | A mocked response.
 
-Use information about the request the `req` parameter provides to configure the response via the `res` parameter.
+Use information provided by the `req` parameter about the request to configure the response using the `res` parameter.
 
 The `res` exposes the following members:
 
