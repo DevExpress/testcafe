@@ -101,7 +101,7 @@ testcafe chrome ./my-tests/ -T "Click.*"
 
 *Related configuration file property:* [filter.testGrep](../../reference/configuration-file.md#filtertestgrep)
 
-To run a fixture by its name, use the [-f (--fixture)](../../reference/command-line-interface.md#-f-name---fixture-name) argument:
+To run a fixture by name, use the [-f (--fixture)](../../reference/command-line-interface.md#-f-name---fixture-name) argument:
 
 ```sh
 testcafe firefox ./my-tests/ -f "Sample fixture"
