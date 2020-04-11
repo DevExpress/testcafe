@@ -7,7 +7,7 @@ permalink: /documentation/guides/advanced-guides/authentication.html
 
 TestCafe ships with the [user roles](#user-roles) mechanism that covers most authentication types that require user actions on the page.
 
-You can also test websites that use [HTTP Basic](https://en.wikipedia.org/wiki/Basic_access_authentication) and [NTLM](https://en.wikipedia.org/wiki/NT_LAN_Manager) authentication. See [HTTP/NTLM Authentication](#http-authentication) for more information on how to provide the credentials.
+You can also test websites that use [HTTP Basic](https://en.wikipedia.org/wiki/Basic_access_authentication) and [NTLM](https://en.wikipedia.org/wiki/NT_LAN_Manager) authentication. See [HTTP/NTLM Authentication](#http-authentication) for more information on how to provide credentials.
 
 ## User Roles
 
@@ -18,14 +18,14 @@ A piece of logic that logs in a particular user is called a *role*. Define a rol
 
 ### Why Use Roles
 
-Unlike other methods used to [extract reusable test logic](../../recipes/extract-reusable-test-code/README.md), roles were specially designed for login operations and provide the following dedicated features:
+Unlike other methods used to [extract reusable test logic](../../recipes/extract-reusable-test-code/README.md), roles are designed for login operations and provide the following dedicated features:
 
 * **Object-based API.** Authentication data and logic are stored in an object that is easy to pass around and activate when needed.
-* **Single login.** Login actions are not repeated when you switch to a previously used role within the same session. If you activate a role in the [beforeEach](../basic-guides/test-organization.md#test-hooks) hook, login actions run once before the first test. The subsequent tests reuse authentication data so that it happens instantly.
-* **Automatic return.** The browser automatically navigates back to the page that was opened when you switched the role (you can disable this behavior if it doesn't suit your scenario).
+* **Single login.** Login actions are not repeated when you switch to a previously used role within the same session. If you activate a role in the [beforeEach](../basic-guides/test-organization.md#test-hooks) hook, login actions run once before the first test. Subsequent tests reuse authentication data so that it happens instantly.
+* **Automatic return.** The browser automatically navigates back to the page where you switched roles. (You can disable this behavior if required.)
 * **No logout needed.** Authentication data is automatically cleared when you switch between roles.
-* **Multiple authentication support.** If you log in to different services/websites during a test, authentication data from cookies and browser storages is accumulated in the active role. When you switch back to this role within the same test, you are automatically logged in to all the websites.
-* **Anonymous role.** A built-in role that quilckly logs you out of all the accounts.
+* **Multiple authentication support.** If you log in to different services/websites during a test, authentication data from cookies and browser storages is accumulated in the active role. When you switch back to this role within the same test, you are automatically logged in to all websites.
+* **Anonymous role.** A built-in role that logs out of all accounts.
 
 > Roles work with authentication data in cookies and browser storages. If your authentication system stores data elsewhere, you may not be able to use roles.
 
@@ -61,9 +61,9 @@ const admin = Role('http://example.com/login', async t => {
 
 > Role initialization code is executed only once when the role is used for the first time.
 
-After you create the roles, you can switch between users at any moment except for the role initialization code.
+After you create roles, you can switch between users at any time except role initialization.
 
-If you switch to a role for the first time in test run, the browser will be navigated from the original page to a login page where the role initialization code will be executed. Then the original page will be reloaded with new credentials (you can use the [preserveUrl](../../reference/test-api/role/constructor.md#optionspreserveurl) option to disable redirect to the original page). If you switch to a role that has already been initialized, TestCafe simply reloads the current page with the appropriate credentials.
+If you switch to a role for the first time in a test run, the browser navigates from the original page to a login page where role initialization code is executed. Then, the original page is reloaded with new credentials. (Use the [preserveUrl](../../reference/test-api/role/constructor.md#optionspreserveurl) option to disable the redirect to that page.) If you switch to a role that was already initialized, TestCafe simply reloads the current page with corresponding credentials.
 
 To switch to a role, use the [t.useRole](../../reference/test-api/testcontroller/userole.md) function.
 
@@ -92,7 +92,7 @@ Roles can be shared across tests and fixtures. You can create roles in a separat
 
 When you switch to a role for the first time, TestCafe internally creates a *branch* of this role for this particular test run. All cookies set by your further actions will be appended to this branch. This branch will be used whenever you switch back to this role from the same test run.
 
-For instance, assume that you switch to a role that logs you in on **website A**. After you switch to this role, you log in to **website B** in test code. TestCafe adds the new cookie to the role branch. If you switch to a different role and then back to the initial role in the same test run, you will be logged to **both website A and B**. If you switch to this role in a different test, you will be logged in to **website A** only.
+For instance, assume that you switch to a role that logs you in on **website A**. After you switch to this role, you log in to **website B** in test code. TestCafe adds a new cookie to the role branch. If you switch to a different role and then back to the initial role in the same test run, you will be logged to **both website A and B**. If you switch to this role in a different test, you will be logged in to **website A** only.
 
 ### Anonymous Role
 
@@ -119,7 +119,7 @@ test('Anonymous users can see newly created comments', async t => {
 
 ## HTTP Authentication
 
-TestCafe allows you to test web pages that are protected with HTTP [Basic](https://en.wikipedia.org/wiki/Basic_access_authentication) or [Windows (NTLM)](https://en.wikipedia.org/wiki/Integrated_Windows_Authentication) authentication. Use the [test.httpAuth](../../reference/test-api/test/httpauth.md) method to specify the credentials to be used by an individual test and the [fixture.httpAuth](../../reference/test-api/fixture/httpauth.md) method to specify the credentials for the entire fixture.
+TestCafe allows you to test web pages that are protected with HTTP [Basic](https://en.wikipedia.org/wiki/Basic_access_authentication) or [Windows (NTLM)](https://en.wikipedia.org/wiki/Integrated_Windows_Authentication) authentication. Use the [test.httpAuth](../../reference/test-api/test/httpauth.md) method to specify individual test credentials and the [fixture.httpAuth](../../reference/test-api/fixture/httpauth.md) method to define credentials for the entire fixture.
 
 ```js
 fixture `My fixture`
@@ -128,7 +128,7 @@ fixture `My fixture`
         username: 'username',
         password: 'Pa$$word',
 
-        // Optional parameters, can be required for the NTLM authentication.
+        // Optional parameters; can be required for NTLM authentication.
         domain:      'CORP-DOMAIN',
         workstation: 'machine-win10'
     });
@@ -155,7 +155,7 @@ However, if the browser uses a cached copy of the page, automation mechanisms ma
 
 If tests fail unexpectedly after authentication, try the following:
 
-* Enable the [preserveUrl](../../reference/test-api/role/constructor.md#optionspreserveurl) option to avoid automatic navigation.
+* Enable the [preserveUrl](../../reference/test-api/role/constructor.md#optionspreserveurl) option to disable automatic navigation.
 * If `preserveUrl` does not fix the issue, disable page caching. Note that this slows down test execution.
 
 Use the [fixture.disablePageCaching](../../reference/test-api/fixture/disablepagecaching.md) and [test.disablePageCaching](../../reference/test-api/test/disablepagecaching.md) methods to disable caching during a fixture or test:

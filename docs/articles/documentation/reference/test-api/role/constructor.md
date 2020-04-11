@@ -14,7 +14,7 @@ Role( url, func( t ) [, options] )
 Parameter | Type     | Description
 --------- | -------- | --------------------------------------------------------------------------------
 `url`     | String   | The URL of the login page.
-`func`    | Function | An asynchronous function that contains logic that authenticates the user.
+`func`    | Function | An asynchronous function that authenticates the user.
 `t`       | Object   | The [test controller](../testcontroller/README.md) used to access test run API.
 `options` | Object   | See [Options](#options).
 

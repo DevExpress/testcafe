@@ -11,7 +11,7 @@ Returns an anonymous role that logs out the user when activated.
 Role.anonymous()
 ```
 
-Call the [t.useRole](../testcontroller/userole.md) method to activate the anonymous role:
+Call the [t.useRole](../testcontroller/userole.md) method to activate an anonymous role:
 
 ```js
 import { Role, Selector } from 'testcafe';
