@@ -15,6 +15,6 @@ Parameter | Type | Description
 --------- | ---- | ------------
 `hooks`    | RequestHook subclass | A [RequestLogger](../requestlogger/README.md), [RequestMock](../requestmock/README.md) or custom user-defined hook.
 
-> The `t.removeRequestHooks` method uses the rest operator which allows you to pass multiple hooks as parameters or arrays of hooks.
+> The `t.removeRequestHooks` method uses the rest operator that allows you to pass multiple hooks as parameters or arrays of hooks.
 
 To attach request hooks, use the [t.attachRequestHooks](attachrequesthooks.md), [test.requestHooks](../test/requesthooks.md) and [fixture.requestHooks](../fixture/requesthooks.md) methods.
