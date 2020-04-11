@@ -11,7 +11,7 @@ Use the [RequestLogger](../global/requestlogger.md) constructor to create a logg
 
 [Attach the logger to a test or fixture](../../../guides/advanced-guides/intercept-http-requests.md#attach-hooks-to-tests-and-fixtures) to enable logging.
 
-You can access the log with the [logger.requests](requests.md) property, or search for entries that satisfies a predicate with [logger.contains](contains.md) and [logger.count](count.md) methods.
+You can access the log with the [logger.requests](requests.md) property, or search for entries that satisfy a predicate with [logger.contains](contains.md) and [logger.count](count.md) methods.
 
 The [logger.clear](clear.md) method removes all entries from the log.
 
