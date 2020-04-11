@@ -294,7 +294,7 @@ To run tests [remotely on a mobile device](../../concepts/browsers.md#remote-tes
 testcafe remote ./tests/sample-fixture.js
 ```
 
-TestCafe generates a URL and prints it in the console. When you visit this URL from the remote device, TestCafe runs tests in this browser. To run tests in several remote browsers, specify their number after the `remote` keyword: `remote:2` or `remote:4`.
+TestCafe generates a URL and displays it in the console. When you visit this URL from the remote device, TestCafe runs tests in this browser. To run tests in several remote browsers, specify their number after the `remote` keyword: `remote:2` or `remote:4`.
 
 In the API, create a remote browser connection with the [testcafe.createBrowserConnection](../../reference/api/testcafe/createbrowserconnection.md) method, visit the generated URL and run tests once the connection is initialized:
 
