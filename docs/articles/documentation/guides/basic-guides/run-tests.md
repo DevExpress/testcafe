@@ -77,7 +77,7 @@ await runner
 
 ### Filter Tests and Fixtures by Name
 
-Use the [-t (--test)](../../reference/command-line-interface.md#-t-name---test-name) command line argument or the [runner.filter](../../reference/api/runner/filter.md) method to run a test by its name:
+Use the [-t (--test)](../../reference/command-line-interface.md#-t-name---test-name) command line argument or [runner.filter](../../reference/api/runner/filter.md) method to run a test by name:
 
 ```sh
 testcafe safari ./tests/sample-fixture.js -t "Click a label"
