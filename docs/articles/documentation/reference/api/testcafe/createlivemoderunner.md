@@ -11,7 +11,7 @@ Creates a [test runner](../livemoderunner.md) that runs TestCafe in [live mode](
 createLiveModeRunner() → LiveModeRunner
 ```
 
-[LiveModeRunner](../livemoderunner.md) is a [Runner](../runner/README.md) descendant and provides the same API (with certain [limitations](../livemoderunner.md#limitations)).
+[LiveModeRunner](../livemoderunner.md) is a [Runner](../runner/README.md) descendant and provides the same API (with the following [limitations](../livemoderunner.md#limitations)).
 
 **Example**
 
