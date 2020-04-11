@@ -23,7 +23,7 @@ const headerLogger = RequestLogger(/testcafe/, {
 });
 ```
 
-To enable the logger to track the requests, [attach it to a test or fixture](#attach-hooks-to-tests-and-fixtures).
+To enable the logger to track requests, [attach the logger to a test or fixture](#attach-hooks-to-tests-and-fixtures).
 
 The `RequestLogger` stores the following parameters by default:
 
