@@ -241,7 +241,7 @@ await runner
 
 ### Use Headless Mode
 
-TestCafe can run tests in [headless mode](../../concepts/browsers.md#headless-mode) in browsers that support it. Put the `:headless` suffix after the browser name:
+TestCafe can run tests in [headless mode](../../concepts/browsers.md#headless-mode) in browsers that support it. To run tests in headless mode, put the `:headless` suffix after the browser name:
 
 ```sh
 testcafe firefox:headless ./tests/
