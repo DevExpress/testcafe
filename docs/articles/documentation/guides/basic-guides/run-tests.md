@@ -28,7 +28,7 @@ TestCafe also allows you to create a [configuration file](../../reference/config
 
 ## Specify Tests to Run
 
-You must provide a file path or a path to a directory with tests you want to run in the [second command line argument](../../reference/command-line-interface.md#file-pathglob-pattern):
+You should specify a path to a file or directory with tests you want to run in the [second command line argument](../../reference/command-line-interface.md#file-pathglob-pattern):
 
 ```sh
 testcafe chrome ./tests/
