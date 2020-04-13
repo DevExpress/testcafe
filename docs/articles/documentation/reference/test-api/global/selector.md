@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: Selector constructor
-permalink: /documentation/reference/test-api/selector/selector.html
+permalink: /documentation/reference/test-api/global/selector.html
 ---
 # Selector constructor
 
