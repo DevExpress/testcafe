@@ -1,8 +1,9 @@
 ---
 layout: docs
 title: Test HTTPS and HTTP/2 Websites
-permalink: /documentation/using-testcafe/common-concepts/test-https-and-http2-websites.html
+permalink: /documentation/guides/advanced-guides/test-https-and-http2-websites.html
 redirect_from:
+  - /documentation/using-testcafe/common-concepts/test-https-and-http2-websites.html
   - /documentation/using-testcafe/common-concepts/connect-to-the-testcafe-server-over-https.html
 ---
 # Test HTTPS and HTTP/2 Websites
@@ -14,7 +15,7 @@ This topic describes how TestCafe works with HTTPS and HTTP/2 websites.
 
 ## Test HTTPS Websites
 
-TestCafe is a proxy-based testing tool. The TestCafe [reverse proxy](https://en.wikipedia.org/wiki/Reverse_proxy) serves the tested webpage over HTTP and communicates with the original web server over HTTP or HTTPS (depending on the [specified page URL](../../test-api/test-code-structure.md#specifying-the-start-webpage)).
+TestCafe is a proxy-based testing tool. The TestCafe [reverse proxy](https://en.wikipedia.org/wiki/Reverse_proxy) serves the tested webpage over HTTP and communicates with the original web server over HTTP or HTTPS (depending on the [specified page URL](../../reference/test-api/fixture/page.md)).
 
 ![Connection Protocols](../../../images/proxy-connection-protocols.svg)
 
@@ -26,7 +27,7 @@ If the tested page does not use HTTPS-specific features (like
 
 ### Proxy the Website Over HTTPS
 
-When you run tests from the command line, use the [--ssl](../command-line-interface.md#--ssl-options) flag to enable HTTPS on a proxy server. Specify options required to initialize [a Node.js HTTPS server](https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener) after this flag in a semicolon-separated string. The most commonly used SSL options are described in the [TLS topic](https://nodejs.org/api/tls.html#tls_tls_createsecurecontext_options) in the Node.js documentation.
+When you run tests from the command line, use the [--ssl](../../reference/command-line-interface.md#--ssl-options) flag to enable HTTPS on a proxy server. Specify options required to initialize [a Node.js HTTPS server](https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener) after this flag in a semicolon-separated string. The most commonly used SSL options are described in the [TLS topic](https://nodejs.org/api/tls.html#tls_tls_createsecurecontext_options) in the Node.js documentation.
 
 The example below uses the PFX encoded private key and certificate chain to create an HTTPS server.
 
@@ -34,7 +35,7 @@ The example below uses the PFX encoded private key and certificate chain to crea
 testcafe --ssl pfx=path/to/file.pfx;rejectUnauthorized=true;...
 ```
 
-When you use the programming interface, pass the HTTPS server options to the [createTestCafe](../programming-interface/createtestcafe.md) method.
+When you use the programming interface, pass the HTTPS server options to the [createTestCafe](../../reference/api/global/createtestcafe.md) method.
 
 The following example uses the [openssl-self-signed-certificate](https://www.npmjs.com/package/openssl-self-signed-certificate) module to generate a self-signed certificate:
 
