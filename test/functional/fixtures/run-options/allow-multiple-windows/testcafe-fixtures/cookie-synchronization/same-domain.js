@@ -8,7 +8,6 @@ test('test', async t => {
 
     await t
         .click('#openNewWindow')
-        .wait(2000)
         .switchToIframe('iframe')
         .expect(resultCookie.textContent).eql('cookie=from-new-window');
 });
