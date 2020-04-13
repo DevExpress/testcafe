@@ -1,43 +1,35 @@
 ---
 layout: docs
-title: Debugging
-permalink: /documentation/test-api/debugging.html
-checked: true
+title: Debug
+permalink: /documentation/guides/basic-guides/debug.html
 ---
-# Debugging
+# Debug
 
 TestCafe allows you to debug server-side test code and test behavior on the client.
 
-* [Debugging Test Code](#debugging-test-code)
+* [Debug Test Code](#debug-test-code)
 * [Client-Side Debugging](#client-side-debugging)
 * [Options Useful for Debugging](#options-useful-for-debugging)
 
-## Debugging Test Code
+## Debug Test Code
 
 You can debug test code in Chrome Developer Tools and popular IDEs. See the following recipes for details.
 
-* [Debug in Chrome Developer Tools](../recipes/debug-in-chrome-dev-tools.md)
-* [Debug in Visual Studio Code](../recipes/debug-in-visual-studio-code.md)
+* [Debug in Chrome Developer Tools](../../recipes/debug-in-chrome-dev-tools.md)
+* [Debug in Visual Studio Code](../../recipes/debug-in-visual-studio-code.md)
 
 ## Client-Side Debugging
 
-TestCafe provides the `t.debug` method that pauses the test and allows you to debug using the browser's developer tools.
+TestCafe provides the [t.debug](../../reference/test-api/testcontroller/debug.md) method that pauses the test and allows you to debug using the browser's developer tools.
 
-```text
-t.debug()
-```
-
-When test execution reaches `t.debug`, it pauses so that you can open browser's developer tools
-and check the web page state, DOM elements' location, their CSS styles, etc.
-
-You can also use the [--debug-mode](../using-testcafe/command-line-interface.md#-d---debug-mode)
+You can also use the [--debug-mode](../../reference/command-line-interface.md#-d---debug-mode)
 command line option to pause the test before the first action or assertion.
 
 The footer displays buttons that allow you to continue the test or skip to the next test action or assertion.
 
 ![Page Footer when Debugging on a Client](../../images/debugging/client-debugging-footer.png)
 
-> The debugger does not stop at creating and resolving the [selectors](selecting-page-elements/selectors/README.md) and [client functions](obtaining-data-from-the-client/README.md).
+> The debugger does not stop at creating and resolving the [selectors](select-page-elements.md) and [client functions](obtain-client-side-data.md).
 
 TestCafe logs points in code where the debugger stopped.
 
@@ -64,7 +56,7 @@ TestCafe includes features that help you locate the cause of issues in your test
 
 ### Screenshots
 
-You can specify that a screenshot should be taken in a particular place in a test using the [t.takeScreenshot](actions/take-screenshot.md) action.
+You can specify that a screenshot should be taken in a particular place in a test using the [t.takeScreenshot](../../reference/test-api/testcontroller/takescreenshot.md) action.
 
 ```js
 fixture `My fixture`
@@ -81,7 +73,7 @@ test('My test', async t => {
 });
 ```
 
-You can also specify the [takeOnFails](../using-testcafe/command-line-interface.md#takeonfails) option to automatically take a screenshot when a test fails.
+You can also specify the [takeOnFails](../../reference/command-line-interface.md#takeonfails) option to automatically take a screenshot when a test fails.
 
 ```sh
 testcafe chrome ./my-tests --screenshots path=./screenshots,takeOnFails=true
@@ -93,7 +85,7 @@ Analyzing these screenshots reduces debugging time and allows you to determine t
 
 TestCafe provides the capability to change test speed. Tests are executed at full speed with minimum delays between actions and assertions by default, which can make it hard to identify problems when the test is running.
 
-To slow down the test, use the [--speed](../using-testcafe/command-line-interface.md#--speed-factor)
+To slow down the test, use the [--speed](../../reference/command-line-interface.md#--speed-factor)
 CLI flag. You can use values from `1` to `0.01`.
 
 ```sh

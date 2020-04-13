@@ -1,15 +1,16 @@
 ---
 layout: docs
-title: Built-In Waiting Mechanisms 
-permalink: /documentation/test-api/built-in-waiting-mechanisms.html
+title: Built-In Wait Mechanisms 
+permalink: /documentation/concepts/built-in-wait-mechanisms.html
 redirect_from:
+  - /documentation/test-api/built-in-waiting-mechanisms.html
   - /documentation/test-api/waiting-for-page-elements-to-appear.html
 ---
-# Built-In Waiting Mechanisms
+# Built-In Wait Mechanisms
 
 TestCafe has built-in automatic waiting mechanism and does not require dedicated API to wait for redirects or page elements to appear.
 
-This topic describes how these mechanisms work when TestCafe performs [test actions](actions/README.md), evaluates [assertions](assertions/README.md) and [selectors](selecting-page-elements/selectors/README.md), sends requests, and navigates the browser.
+This topic describes how these mechanisms work when TestCafe performs [test actions](../guides/basic-guides/interact-with-page-elements.md), evaluates [assertions](../guides/basic-guides/assert.md) and [selectors](../guides/basic-guides/select-page-elements.md), sends requests, and navigates the browser.
 
 * [Wait Mechanism for Actions](#wait-mechanism-for-actions)
 * [Wait Mechanism for Selectors](#wait-mechanism-for-selectors)
@@ -37,10 +38,10 @@ test('My test', async t => {
 });
 ```
 
-TestCafe tries to evaluate the specified selector multiple times within the [timeout](selecting-page-elements/selectors/using-selectors.md#selector-timeout).
+TestCafe tries to evaluate the specified selector multiple times within the [timeout](../guides/basic-guides/select-page-elements.md#selector-timeout).
 If the element does not appear, the test will fail.
 
-The [t.setFilesToUpload](actions/upload.md#populate-file-upload-input) and [t.clearUpload](actions/upload.md#clear-file-upload-input) actions are exceptions because they do not require a visible target element.
+The [t.setFilesToUpload](../reference/test-api/testcontroller/setfilestoupload.md) and [t.clearUpload](../reference/test-api/testcontroller/clearupload.md) actions are exceptions because they do not require a visible target element.
 
 ## Wait Mechanism for Selectors
 
@@ -61,10 +62,10 @@ test('My test', async t => {
 });
 ```
 
-TestCafe keeps trying to evaluate the selector until the element appears in the DOM or the [timeout](selecting-page-elements/selectors/using-selectors.md#selector-timeout) passes.
+TestCafe keeps trying to evaluate the selector until the element appears in the DOM or the [timeout](../guides/basic-guides/select-page-elements.md#selector-timeout) passes.
 
 You can additionally require that TestCafe should wait for an element to become visible.
-Use the [visibilityCheck](selecting-page-elements/selectors/selector-options.md#optionsvisibilitycheck) selector option for this.
+Use the [visibilityCheck](../reference/test-api/global/selector.md#optionsvisibilitycheck) selector option for this.
 
 ```js
 import { Selector } from 'testcafe';
@@ -83,14 +84,14 @@ test('My test', async t => {
 
 ## Wait Mechanism for Assertions
 
-TestCafe assertions use the [Smart Assertion Query Mechanism](assertions/README.md#smart-assertion-query-mechanism) that is activated when you pass a [selector property](selecting-page-elements/selectors/using-selectors.md#obtain-element-state)
-or a [client function](obtaining-data-from-the-client/README.md) as an actual value. In this instance, TestCafe keeps recalculating the actual
-value until it matches the expected value or the [assertion timeout](assertions/README.md#optionstimeout) passes.
+TestCafe assertions use the [Smart Assertion Query Mechanism](../guides/basic-guides/assert.md#smart-assertion-query-mechanism) that is activated when you pass a [selector property](../guides/basic-guides/select-page-elements.md#obtain-element-state)
+or a [client function](../guides/basic-guides/obtain-client-side-info.md) as an actual value. In this instance, TestCafe keeps recalculating the actual
+value until it matches the expected value or the [assertion timeout](../reference/test-api/testcontroller/expect/README.md#optionstimeout) passes.
 
 Note that the Smart Assertion Query Mechanism does not wait for page elements to appear.
 If you need to wait for an element before executing an assertion,
-add another assertion that checks the selector's [count](selecting-page-elements/selectors/using-selectors.md#check-if-an-element-exists)
-or [exists](selecting-page-elements/selectors/using-selectors.md#check-if-an-element-exists) property.
+add another assertion that checks the selector's [count](../reference/test-api/selector/count.md)
+or [exists](../reference/test-api/selector/exists.md) property.
 
 ```js
 import { Selector } from 'testcafe';
@@ -121,7 +122,7 @@ test('My test', async t => {
 
 TestCafe waits **3** seconds for XHR and fetch requests to complete before it executes a test action. The test continues after responses are received or the timeout is exceeded.
 
-If you expect a request to take more time, use a [selector](selecting-page-elements/selectors/using-selectors.md#selector-timeout) or [assertion](assertions/README.md#optionstimeout) with a custom timeout to wait until the UI reflects the request completion.
+If you expect a request to take more time, use a [selector](../reference/test-api/global/selector.md#optionstimeout) or [assertion](../reference/test-api/testcontroller/expect/README.md#optionstimeout) with a custom timeout to wait until the UI reflects the request completion.
 
 ```js
 // The page should print 'No Data' when the fetch request is completed.
