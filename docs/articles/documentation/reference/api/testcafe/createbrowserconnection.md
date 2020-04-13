@@ -11,7 +11,7 @@ Creates a [remote browser connection](../browserconnection/README.md).
 async createBrowserConnection() → Promise<BrowserConnection>
 ```
 
-To connect a remote browser, navigate it to [BrowserConnection.url](../browserconnection/url.md).
+To connect a remote browser, navigate to [BrowserConnection.url](../browserconnection/url.md).
 
 **Example**
 
