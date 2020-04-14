@@ -2,7 +2,7 @@
 
 Use this option to control which page is opened after you switch to the role.
 
-By default, TestCafe navigates back to the page that was opened previously to switching to the role.
+TestCafe navigates back to the page that was opened before the role was switched.
 To save the URL where a browser is redirected after login, set the `preserveUrl` option to `true`.
 Each time you switch to this role, TestCafe navigates to the saved URL.
 
