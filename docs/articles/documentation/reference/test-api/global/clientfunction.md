@@ -5,7 +5,7 @@ permalink: /documentation/reference/test-api/global/clientfunction.html
 ---
 # Client Function Constructor
 
-You can use `ClientFunction` constructor to create a client function.
+Creates a client function.
 
 ```text
 ClientFunction( fn [, options] )
@@ -16,7 +16,7 @@ Parameter              | Type     | Description
 `fn`                   | Function | A function to be executed on the client side.
 `options`&#160;*(optional)* | Object   | See [Options](#options).
 
-> Client functions cannot return DOM nodes. Use [selectors](../selecting-page-elements/selectors/README.md) to achieve this instead.
+> Client functions cannot return DOM nodes. Use [selectors](../selecting-page-elements/selectors/README.md) instead.
 
 The following example shows how to create a client function.
 

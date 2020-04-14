@@ -11,10 +11,9 @@ Overwrites [client function options](../global/clientfunction.md#options).
 clientFunction.with( options ) → ClientFunction
 ```
 
-`with` returns a new client function with a different set of options that includes options
-from the original function and new `options` that overwrite the original ones.
+`with` returns a new client function with a different set of options. This includes options from the original function and new `options` that overwrite the original.
 
-The sample below shows how to overwrite the client function options.
+The sample below shows how to overwrite client function options.
 
 ```js
 import { Selector, ClientFunction } from 'testcafe';

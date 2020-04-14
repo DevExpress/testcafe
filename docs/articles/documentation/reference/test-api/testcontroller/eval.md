@@ -5,7 +5,7 @@ permalink: /documentation/reference/test-api/testcontroller/eval.html
 ---
 # t.eval Method
 
-Creates a client function and executes it immediately without saving it.
+Creates a client function and executes it immediately (without saving).
 
 ```text
 t.eval( fn [, options] )
@@ -16,7 +16,7 @@ Parameter              | Type     | Description
 `fn`                   | Function | A function to be executed on the client side.
 `options`&#160;*(optional)* | Object   | See [Options](#options).
 
-The following example shows how to get the document's URI with `t.eval`.
+The following example shows how to get a document's URI with `t.eval`.
 
 ```js
 fixture `My fixture`
@@ -27,7 +27,7 @@ test('My Test', async t => {
 });
 ```
 
-> Since the `eval` method returns a value, not an object, you cannot chain other methods of the test controller after 'eval'.
+> Since the `eval` method returns a value, and not an object, you cannot chain other methods of the test controller after 'eval'.
 
 ## Options
 

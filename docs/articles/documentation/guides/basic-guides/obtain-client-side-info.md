@@ -10,34 +10,22 @@ TestCafe allows you to create [*Client Functions*](../../reference/test-api/glob
 > Do not modify the tested webpage within client functions.
 > Use [test actions](interact-with-the-page.md) to interact with the page instead.
 
-This topic contains the following sections.
-
-* [Client Function Constructor](#client-function-constructor)
-* [Run Asynchronous Client Code](#run-asynchronous-client-code)
-* [Execute Client Functions](#execute-client-functions)
-* [Overwrite Client Function Options](#overwrite-client-function-options)
-* [One-Time Client Code Execution](#one-time-client-code-execution)
-* [Call Selectors and Client Functions from Client-Side Code](#call-selectors-and-client-functions-from-client-side-code)
-    * [Import Functions to be Used as Client Function Dependencies](#import-functions-to-be-used-as-client-function-dependencies)
-* [Call Client Functions from Node.js Callbacks](#call-client-functions-from-nodejs-callbacks)
-* [Client Function Limitations](#client-function-limitations)
-
 ## Client Function Constructor
 
-You can use the [ClientFunction](../../reference/test-api/global/clientfunction.md) constructor to create a client function.
+Use the [ClientFunction](../../reference/test-api/global/clientfunction.md) constructor to create a client function.
 
 ```js
 import { ClientFunction } from 'testcafe';
 const getWindowLocation = ClientFunction(() => window.location);
 ```
 
-> Client functions cannot return DOM nodes. Use [selectors](select-page-elements.md) to achieve this.
+> Client functions cannot return DOM nodes. Use [selectors](select-page-elements.md) instead.
 
 ## Run Asynchronous Client Code
 
 TestCafe allows you to create client functions that run asynchronous code.
 
-You can pass a function that returns a Promise to the `ClientFunction` constructor to achieve this. In this instance, the client function will complete only when the Promise resolves.
+Pass a function that returns a Promise to the `ClientFunction constructor`. In this instance, the client function will complete only when the Promise resolves.
 
 ```js
 import { ClientFunction } from 'testcafe';
@@ -68,7 +56,7 @@ test('My Test', async t => {
 
 ## Overwrite Client Function Option
 
-You can overwrite client function options with the ClientFunction's [with method](../../reference/test-api/clientfunction/with.md).
+Overwrite client function options via the ClientFunction's [with](../../reference/test-api/clientfunction/with.md) method.
 
 ```js
 const cfWithDependency = cfWithoutDependency.with({
@@ -78,7 +66,7 @@ const cfWithDependency = cfWithoutDependency.with({
 
 ## One-Time Client Code Execution
 
-You can use the [eval method](../../reference/test-api/testcontroller/eval.md) of the [test controller](../../reference/test-api/testcontroller/README.md) to create a client function and execute it immediately without saving it.
+To create a client function and execute it immediately (without saving), use the test controller's [eval](../../reference/test-api/testcontroller/eval.md) method.
 
 ```js
 fixture `My fixture`
@@ -91,7 +79,7 @@ test('My Test', async t => {
 
 ## Import Functions to be Used as Client Function Dependencies
 
-Assume you have a JS file `utils.js` with a function you need to use as a client function dependency in your test file.
+Assume you have a JS file (`utils.js`) with a function to be used as a client-function dependency in your test file.
 
 **utils.js**
 
@@ -101,7 +89,7 @@ export function getDocumentURI() {
 }
 ```
 
-Note that TestCafe processes test files with [Babel](https://babeljs.io) internally. To avoid issues caused by code transpiling, use the [require](https://nodejs.org/api/modules.html#modules_require_id) function instead of the `import` statement to import client function dependencies.
+Note that TestCafe processes test files with [Babel](https://babeljs.io) internally. To avoid code transpiling issues, use the [require](https://nodejs.org/api/modules.html#modules_require_id) function instead of the `import` statement to import client function dependencies.
 
 **test.js**
 
@@ -126,10 +114,9 @@ test('My test', async t => {
 
 ## Call Client Functions from Node.js Callbacks
 
-Client functions need access to the [test controller](../../reference/test-api/testcontroller/README.md) to be executed.
-When called right from the test function, they implicitly obtain the test controller.
+Client functions need access to the [test controller](../../reference/test-api/testcontroller/README.md) to be executed. When called directly from a test function, they implicitly obtain the test controller.
 
-However, if you need to call a client function from a Node.js callback that fires during the test run,
+However, if you need to call a client function from a Node.js callback that fires during a test run,
 you need to manually bind this function to the test controller.
 
 You can use the `boundTestRun` option to do this.
@@ -158,16 +145,15 @@ test('Check client data', async t => {
 });
 ```
 
-This approach only works for Node.js callbacks that fire during the test run. To ensure that the test function
-does not finish before the callback does, suspend the test until the callback fires. You can introduce a promise and synchronously wait for it to complete as shown in the example above.
+This approach only works for Node.js callbacks that fire during a test run. To ensure that the test function
+does not finish before the callback, suspend the test until the callback fires. You can introduce a promise and synchronously wait for it to complete, as shown in the example above.
 
 ## Client Function Limitations
 
 * You cannot use generators or `async/await` syntax within client functions.
 
-* Client functions cannot access variables defined in the outer scope in test code.
-  >You can use arguments to pass data inside these functions, except for self-invoking functions
-  that cannot take any parameters from the outside.
+* Client functions cannot access variables defined in the outer scope.
+  >You can use arguments to pass data within these functions, except for self-invoking functions that do not accept outside parameters.
 
     >The return value is the only way to obtain data from client functions.
 
