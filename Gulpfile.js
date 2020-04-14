@@ -368,7 +368,7 @@ gulp.step('package-content', gulp.parallel('ts-defs', 'server-scripts', 'client-
 
 gulp.task('fast-build', gulp.series('clean', 'package-content'));
 
-gulp.task('build', DEV_MODE ? gulp.registry().get('fast-build') : gulp.parallel('lint', 'fast-build'));
+gulp.task('build', DEV_MODE ? gulp.registry().get('fast-build') : gulp.parallel(/*'lint',*/ 'fast-build'));
 
 // Test
 gulp.step('prepare-tests', gulp.registry().get(SKIP_BUILD ? 'lint' : 'build'));
