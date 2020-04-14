@@ -920,6 +920,8 @@ gulp.task('docker-test', done => {
 gulp.step('docker-publish-run', done => {
     PUBLISH_TAGS.forEach(tag => {
         childProcess.execSync(`docker push ${PUBLISH_REPO}:${tag}`, { stdio: 'inherit', env: process.env });
+
+        childProcess.execSync(`docker pull ${PUBLISH_REPO}:${tag}`, { stdio: 'inherit', env: process.env });
     });
 
     done();
