@@ -2,7 +2,7 @@ const expect                     = require('chai').expect;
 const errorInEachBrowserContains = require('../../../../assertion-helper.js').errorInEachBrowserContains;
 
 
-describe.only('[Raw API] Upload', function () {
+describe('[Raw API] Upload', function () {
     it('Should upload a file', function () {
         return runTests('./testcafe-fixtures/upload.testcafe', 'Upload a file', { shouldFail: true })
             .catch(function (errs) {

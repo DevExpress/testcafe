@@ -155,13 +155,13 @@ const MULTIPLE_WINDOWS_TESTS_GLOB = 'test/functional/fixtures/run-options/allow-
 const COMPILER_SERVICE_TESTS_GLOB = 'test/functional/fixtures/compiler-service/test.js';
 const LEGACY_TESTS_GLOB           = 'test/functional/legacy-fixtures/**/test.js';
 
-const SCREENSHOT_TESTS_GLOB = [
-    'test/functional/fixtures/api/es-next/take-screenshot/test.js',
-    'test/functional/fixtures/screenshots-on-fails/test.js'
-];
+// const SCREENSHOT_TESTS_GLOB = [
+//     'test/functional/fixtures/api/es-next/take-screenshot/test.js',
+//     'test/functional/fixtures/screenshots-on-fails/test.js'
+// ];
 
 const TESTS_GLOB = [
-    'test/functional/fixtures/**/test.js',
+    'test/functional/fixtures/api/raw/**/test.js',
     `!${MULTIPLE_WINDOWS_TESTS_GLOB}`,
     `!${COMPILER_SERVICE_TESTS_GLOB}`
 ];
@@ -729,11 +729,11 @@ function testFunctional (src, testingEnvironmentName, { allowMultipleWindows, ex
     if (DEV_MODE)
         process.env.DEV_MODE = 'true';
 
-    let tests = castArray(src);
+    const tests = castArray(src);
 
     // TODO: Run takeScreenshot tests first because other tests heavily impact them
-    if (src === TESTS_GLOB)
-        tests = SCREENSHOT_TESTS_GLOB.concat(tests);
+    //if (src === TESTS_GLOB)
+    //    tests = SCREENSHOT_TESTS_GLOB.concat(tests);
 
     tests.unshift(SETUP_TESTS_GLOB);
 
