@@ -5,29 +5,26 @@ permalink: /documentation/guides/advanced-guides/authentication.html
 ---
 # Authentication
 
-TestCafe ships with the [user roles](#user-roles) mechanism that covers most authentication types that require user actions on the page.
-
-You can also test websites that use [HTTP Basic](https://en.wikipedia.org/wiki/Basic_access_authentication) and [NTLM](https://en.wikipedia.org/wiki/NT_LAN_Manager) authentication. See [HTTP/NTLM Authentication](#http-authentication) for more information on how to provide credentials.
+TestCafe includes a [user role](#user-roles) mechanism that allows you to emulate user actions to log in to a website. You can also use [HTTP Basic and NTLM](#http-authentication) authentication.
 
 ## User Roles
 
-Many test scenarios involve the activity of more than one user. TestCafe addresses these scenarios by providing a convenient way
-to isolate authentication test actions and apply them easily whenever you need to switch the user account.
+Many test scenarios involve activity from more than one user. TestCafe allows you to isolate test actions required to authenticate a user (e.g., enter credentials, click 'Sign in'). During the test, you can switch between user accounts with a single method call.
 
-A piece of logic that logs in a particular user is called a *role*. Define a role for each user account participating in your test.
+A *role* contains code that logs in a particular user. You can define a role for each user account in a test.
 
 ### Why Use Roles
 
 Unlike other methods used to [extract reusable test logic](../../recipes/extract-reusable-test-code/README.md), roles are designed for login operations and provide the following dedicated features:
 
-* **Object-based API.** Authentication data and logic are stored in an object that is easy to pass around and activate when needed.
+* **Object-based API.** Authentication data and logic are stored in an object that is easy to pass and activate when needed.
 * **Single login.** Login actions are not repeated when you switch to a previously used role within the same session. If you activate a role in the [beforeEach](../basic-guides/test-organization.md#test-hooks) hook, login actions run once before the first test. Subsequent tests reuse authentication data so that it happens instantly.
 * **Automatic return.** The browser automatically navigates back to the page where you switched roles. (You can disable this behavior if required.)
 * **No logout needed.** Authentication data is automatically cleared when you switch between roles.
-* **Multiple authentication support.** If you log in to different services/websites during a test, authentication data from cookies and browser storages is accumulated in the active role. When you switch back to this role within the same test, you are automatically logged in to all websites.
+* **Multiple authentication support.** If you log in to different services/websites during a test, authentication data from cookie and browser storage accumulates in the active role. When you switch back to this role within the same test, you are automatically logged in to all websites.
 * **Anonymous role.** A built-in role that logs out of all accounts.
 
-> Roles work with authentication data in cookies and browser storages. If your authentication system stores data elsewhere, you may not be able to use roles.
+> Roles can access authentication data in cookie and browser storage. If your authentication system stores data elsewhere, you may not be able to use roles.
 
 ### Create and Apply Roles
 
@@ -65,7 +62,7 @@ After you create roles, you can switch between users at any time except role ini
 
 If you switch to a role for the first time in a test run, the browser navigates from the original page to a login page where role initialization code is executed. Then, the original page is reloaded with new credentials. (Use the [preserveUrl](../../reference/test-api/role/constructor.md#optionspreserveurl) option to disable the redirect to that page.) If you switch to a role that was already initialized, TestCafe simply reloads the current page with corresponding credentials.
 
-To switch to a role, use the [t.useRole](../../reference/test-api/testcontroller/userole.md) function.
+To activate a role, use the [t.useRole](../../reference/test-api/testcontroller/userole.md) function.
 
 ```js
 import { Selector } from 'testcafe';

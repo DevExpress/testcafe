@@ -13,4 +13,4 @@ fixture.httpAuth( credentials )
 
 {% include authentication/http-credentials.md %}
 
-TestCafe uses the specified credentials for all requests that require authentication in the fixture. To specify credentials to be used in individual tests, use the [test.httpAuth](../test/httpauth.md) method.
+TestCafe uses credentials specified with `fixture.httpAuth` for all requests that require authentication within the fixture. To specify credentials to be used in individual tests, use the [test.httpAuth](../test/httpauth.md) method.
