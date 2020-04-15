@@ -73,7 +73,7 @@ Browser alias flags ([:headless](../../../concepts/browsers.md#testing-in-headle
 }
 ```
 
-For [cloud testing services](../../../concepts/browsers.md#browsers-in-cloud-testing-services) and browsers acessed through [browser providers](../../../concepts/browsers.md#nonconventional-browsers), the `alias` property value is a string with all the specified browser, operating system and device parameters:
+For [cloud testing services](../../../concepts/browsers.md#browsers-in-cloud-testing-services) and browsers acessed through [browser providers](../../../concepts/browsers.md#nonconventional-browsers), the `alias` property value is a string with all the specified browser parameters, and operating system and device parameters:
 
 ```js
 {
