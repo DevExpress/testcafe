@@ -13,29 +13,97 @@ async clientScripts( script[, script2[, ...[, scriptN]]] ) → this
 
 Parameter | Type                | Description
 --------- | ------------------- | ------------
-`script`, `script2`, `scriptN`  | String &#124; Object &#124; Array | Scripts to inject into the tested pages. See [Provide Scripts to Inject](../../../guides/advanced-guides/inject-client-scripts.md#provide-scripts-to-inject) to learn how to specify them.
+`script`, `script2`, `scriptN`  | String &#124; Object &#124; Array | Scripts to inject into the tested pages.
 
-> Relative paths are resolved against the current working directory.
+## Inject a JavaScript File
 
-You can use the [page](../../../guides/advanced-guides/inject-client-scripts.md#provide-scripts-for-specific-pages) option to specify pages into which scripts should be injected. Otherwise, TestCafe injects scripts into all pages visited during the test run.
+{% capture syntax %}
+```text
+runner.clientScripts(filePath | { path: filePath })
+runner.clientScripts(filePath | { path: filePath }, ...)
+runner.clientScripts([ filePath | { path: filePath } ])
+```
+{% endcapture %}
+{% inlcude client-scripts/inject-javascript-file.md syntax=syntax relativePaths="cwd" %}
+**Example**
 
 ```js
 runner.clientScripts('assets/jquery.js');
+// or
+runner.clientScripts({ path: 'assets/jquery.js' });
 ```
+
+## Inject a Module
+
+{% capture syntax %}
+```text
+runner.clientScripts( { module: moduleName } )
+runner.clientScripts( { module: moduleName }, ... )
+runner.clientScripts([ { module: moduleName } ])
+```
+{% endcapture %}
+{% inlcude client-scripts/inject-javascript-file.md syntax=syntax %}
+**Example**
 
 ```js
-runner.clientScripts([
-    {
-        module: 'lodash'
-    },
-    {
-        path: 'scripts/react-helpers.js',
-        page: 'https://myapp.com/page/'
-    }
-]);
+runner.clientScripts({ module: 'lodash' });
 ```
 
-The [fixture.clientScripts](../test-api/fixture/clientscripts.md) and [test.clientScripts](../test-api/test/clientscripts.md) methods allow you to inject scripts into pages visited during an individual fixture or test.
+## Inject Script Code
+
+{% capture syntax %}
+```text
+runner.clientScripts({ content: code })
+runner.clientScripts({ content: code }, ...)
+runner.clientScripts([ { content: code } ])
+```
+{% endcapture %}
+{% inlcude client-scripts/inject-javascript-file.md syntax=syntax %}
+**Example**
+
+```js
+const mockDate = `
+    Date.prototype.getTime = function () {
+        return 42;
+    };
+`;
+
+runner.clientScripts({ content: mockDate });
+```
+
+## Provide Scripts for Specific Pages
+
+{% capture syntax %}
+```text
+runner.clientScripts({
+    page: url,
+    path: filePath | module: moduleName | content: code
+})
+
+runner.clientScripts({
+    page: url,
+    path: filePath | module: moduleName | content: code
+}, ...)
+
+runner.clientScripts([
+    {
+        page: url,
+        path: filePath | module: moduleName | content: code
+    }
+])
+```
+{% endcapture %}
+{% inlcude client-scripts/inject-javascript-file.md syntax=syntax regexp=true %}
+**Example**
+
+```js
+runner.clientScripts({
+    page: /\/user\/profile\//,
+    path: 'dist/jquery.js'
+});
+```
+
+The [fixture.clientScripts](../../test-api/fixture/clientscripts.md) and [test.clientScripts](../../test-api/test/clientscripts.md) methods allow you to inject scripts into pages visited during an individual fixture or test.
 
 See [Inject Scripts into Tested Pages](../../../guides/advanced-guides/inject-client-scripts.md) for more information.
 
