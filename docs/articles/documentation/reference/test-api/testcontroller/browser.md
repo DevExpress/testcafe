@@ -35,7 +35,7 @@ Property | Type | Description   | Example
 [os](#os) | Object | The name and version of the operating system. | `{ name: 'macOS', version: '10.15.1' }`
 [engine](#engine) | Object | The name and version of the browser engine. |  `{ name: 'Gecko', version: '20100101' }`
 [userAgent](#useragent) | String | The user agent string. | `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/77.0.3865.120 Safari/537.36`
-[prettyUserAgent](#prettyuseragent) | String | Formatted string with the browser's and operating system's name and version. | `Chrome 77.0.3865.75 / macOS 10.14.0`
+[prettyUserAgent](#prettyuseragent) | String | Formatted string with the browser and operating system's name and version. | `Chrome 77.0.3865.75 / macOS 10.14.0`
 
 ## Properties
 
