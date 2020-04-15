@@ -33,7 +33,7 @@ Property | Type | Description   | Example
 [os](../../reference/test-api/testcontroller/browser.md#os) | Object | The name and version of the operating system. | `{ name: 'macOS', version: '10.15.1' }`
 [engine](../../reference/test-api/testcontroller/browser.md#engine) | Object | The name and version of the browser engine. |  `{ name: 'Gecko', version: '20100101' }`
 [userAgent](../../reference/test-api/testcontroller/browser.md#useragent) | String | The user agent string. | `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/77.0.3865.120 Safari/537.36`
-[prettyUserAgent](../../reference/test-api/testcontroller/browser.md#prettyuseragent) | String | Formatted string with the browser's and operating system's name and version. | `Chrome 77.0.3865.75 / macOS 10.14.0`
+[prettyUserAgent](../../reference/test-api/testcontroller/browser.md#prettyuseragent) | String | Formatted string with the browser and operating system's name and version. | `Chrome 77.0.3865.75 / macOS 10.14.0`
 
 ## Examples
 
