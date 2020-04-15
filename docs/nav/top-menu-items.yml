@@ -9,7 +9,7 @@
 - text: Support
   url: /support/
 - text: Release Notes
-  url: /blog/
+  url: /release-notes/
 - text: TestCafe Studio
   url: https://www.devexpress.com/products/testcafestudio/
   external: true
