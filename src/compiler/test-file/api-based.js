@@ -174,10 +174,13 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         return this._runCompiledCode(compiledCode, filename);
     }
 
-    compile (code, filename) {
-        const [compiledCode] = this.precompile([{ code, filename }]);
+    async compile (code, filename) {
+        const [compiledCode] = await this.precompile([{ code, filename }]);
 
-        return this.execute(compiledCode, filename);
+        if (compiledCode)
+            return this.execute(compiledCode, filename);
+
+        return Promise.resolve();
     }
 
     _hasTests (code) {
