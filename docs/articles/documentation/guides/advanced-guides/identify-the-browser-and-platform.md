@@ -5,7 +5,7 @@ permalink: /documentation/guides/advanced-guides/identify-the-browser-and-platfo
 ---
 # Identify the Browser and Platform
 
-TestCafe allows you to obtain information about the current user agent in test code. These data identify the operating system, platform type, browser, engine, etc.
+TestCafe allows you to obtain information about the current user agent in test code. This data identifies the operating system, platform type, browser, engine, etc.
 
 Use the [t.browser](../../reference/test-api/testcontroller/browser.md) property to access user agent data.
 
