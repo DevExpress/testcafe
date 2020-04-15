@@ -32,7 +32,7 @@ of *officially supported* browsers against which TestCafe is actively tested.
 ### Locally Installed Browsers
 
 TestCafe can automatically detect popular browsers installed on the local computer.
-You can use a short name - *browser alias* - to identify these browsers when launching tests.
+You can use a short name - *browser alias* - to identify these browsers when you launch tests.
 
 The following table lists browsers that can be detected automatically.
 
@@ -47,8 +47,7 @@ Mozilla Firefox                            | `firefox`
 Opera                                      | `opera`
 Safari                                     | `safari`
 
-The list of all the available browsers can be obtained by calling the `testcafe` command
-with the [--list-browsers](../reference/command-line-interface.md#-b---list-browsers) flag.
+Call the `testcafe` command with the [--list-browsers](../reference/command-line-interface.md#-b---list-browsers) flag to view the list of all the available browsers.
 
 To run tests in a different local browser, specify the path to the browser executable file.
 
@@ -102,7 +101,7 @@ You can also create your own plugin. See [Browser Provider Plugin](../extending-
 
 Tests are run in Microsoft Edge Legacy if it is the only version of Edge installed on the machine.
 
-If Chromium-based and Legacy versions are available, you can change the default Edge application in **System Settings** to enable testing in the Legacy version.
+If Chromium-based and Legacy versions are available, you can change the default Edge application in **System Settings** to test in the Legacy version.
 
 To do this, open **Default apps** in **Windows Settings** and scroll down to select the option **Default Apps by Protocol**. Set the `MICROSOFT-EDGE:` protocol to Legacy Edge.
 
@@ -191,7 +190,7 @@ runner
 
 ### Emulate a Screen Size
 
-You can configure the device emulator by providing `width`, `height`, `orientation`, etc.
+You can specify parameters like `width`, `height`, or `orientation` to configure the device emulator.
 
 ```sh
 testcafe "chrome:emulation:width=100;height=200;mobile=true;orientation=vertical;touch=true" tests/sample-fixture.js
@@ -282,7 +281,7 @@ Parameter                      | Type   | Description             | Default
 
 By default, TestCafe launches browsers (Google Chrome and Mozilla Firefox so far) with a clean profile, i.e. without extensions, bookmarks and other profile settings. This was done to minimize the influence of profile parameters on test runs.
 
-However, if you need to start a browser with the current user profile, you can do this by specifying the `:userProfile` flag after the [browser alias](#locally-installed-browsers).
+However, if you need to start a browser with the current user profile, you can specify the `:userProfile` flag after the [browser alias](#locally-installed-browsers).
 
 ```sh
 testcafe firefox:userProfile tests/test.js
