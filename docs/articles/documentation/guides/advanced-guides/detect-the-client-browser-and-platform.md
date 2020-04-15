@@ -1,9 +1,9 @@
 ---
 layout: docs
-title: Identify the Browser and Platform
-permalink: /documentation/guides/advanced-guides/identify-the-browser-and-platform.html
+title: Detect the Client Browser and Platform
+permalink: /documentation/guides/advanced-guides/detect-the-client-browser-and-platform.html
 ---
-# Identify the Browser and Platform
+# Detect the Client Browser and Platform
 
 TestCafe allows you to obtain information about the current user agent in test code. This data identifies the operating system, platform type, browser, engine, etc.
 
