@@ -733,12 +733,6 @@ Injects scripts into pages visited during the tests. Use this property to introd
 
 ```json
 {
-    "clientScripts": "assets/jquery.js"
-}
-```
-
-```json
-{
     "clientScripts": [
         {
             "module": "lodash"
@@ -751,11 +745,106 @@ Injects scripts into pages visited during the tests. Use this property to introd
 }
 ```
 
-> Relative paths are resolved against the current working directory.
+### Inject a JavaScript File
 
-See [Provide Scripts to Inject](../guides/advanced-guides/inject-client-scripts.md#provide-scripts-to-inject) to learn how to specify the scripts.
+{% capture syntax %}
+```text
+{
+    "clientScripts": "<filePath>" | { "path": "<filePath>" }
+}
+{
+    "clientScripts": [ "<filePath>" | { "path": "<filePath>" } ]
+}
+```
+{% endcapture %}
+{% inlcude client-scripts/inject-javascript-file.md syntax=syntax relativePaths="cwd" %}
+**Example**
 
-You can use the [page](../guides/advanced-guides/inject-client-scripts.md#provide-scripts-for-specific-pages) option to specify pages into which scripts should be injected. Otherwise, TestCafe injects scripts into all pages visited during the test run.
+```js
+{
+    "clientScripts": "assets/jquery.js",
+    // or
+    "clientScripts": { "path": "assets/jquery.js" }
+}
+```
+
+### Inject a Module
+
+{% capture syntax %}
+```text
+{
+    "clientScripts": { "module": "<moduleName>" }
+}
+{
+    "clientScripts": [ { "module": "<moduleName>" } ]
+}
+```
+{% endcapture %}
+{% inlcude client-scripts/inject-javascript-file.md syntax=syntax %}
+**Example**
+
+```js
+{
+    "clientScripts": {
+        "module": "lodash"
+    }
+}
+```
+
+### Inject Script Code
+
+{% capture syntax %}
+```text
+{
+    "clientScripts": { "content": "<code>" }
+}
+{
+    "clientScripts": [ { "content": "<code>" } ]
+}
+```
+{% endcapture %}
+{% inlcude client-scripts/inject-javascript-file.md syntax=syntax %}
+**Example**
+
+```json
+{
+    "clientScripts": {
+        "content": "Date.prototype.getTime = () => 42;"
+    }
+}
+```
+
+### Provide Scripts for Specific Pages
+
+{% capture syntax %}
+```text
+{
+    "clientScripts": {
+        "page": "<url>",
+        "path": "<filePath>" | "module": "<moduleName>" | "content": "<code>"
+    }
+}
+{
+    "clientScripts": [
+        {
+            "page": "<url>",
+            "path": "<filePath>" | "module": "<moduleName>" | "content": "<code>"
+        }
+    ]
+}
+```
+{% endcapture %}
+{% inlcude client-scripts/inject-javascript-file.md syntax=syntax regexp=false %}
+**Example**
+
+```json
+{
+    "clientScripts": {
+        "page": "https://myapp.com/page/",
+        "content": "Geolocation.prototype.getCurrentPosition = () => new Positon(0, 0);"
+    }
+}
+```
 
 > Note that regular expressions are not supported in the configuration file. Use the [runner.clientScripts](api/runner/clientscripts.md) method or test API methods for [fixtures](test-api/fixture/clientscripts.md) and [tests](test-api/test/clientscripts.md) to [define target pages](../guides/advanced-guides/inject-client-scripts.md#provide-scripts-for-specific-pages) with a regular expression.
 
