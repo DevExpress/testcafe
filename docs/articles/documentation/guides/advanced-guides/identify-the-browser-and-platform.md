@@ -25,7 +25,7 @@ test('My test', async t => {
 
 Property | Type | Description   | Example
 -------- | ---- | ------------- | -------
-[alias](../../reference/test-api/testcontroller/browser.md#alias) | String | The browser alias string specified when tests were launched. | `firefox:headless`
+[alias](../../reference/test-api/testcontroller/browser.md#alias) | String | The browser alias string specified when tests are launched. | `firefox:headless`
 [name](../../reference/test-api/testcontroller/browser.md#name) | String | The browser name. | `Chrome`
 [version](../../reference/test-api/testcontroller/browser.md#version) | String | The browser version. | `77.0.3865.120`
 [platform](../../reference/test-api/testcontroller/browser.md#platform) | String | The platform type. | `desktop`
