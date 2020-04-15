@@ -119,7 +119,7 @@ TestCafe uses Node.js mechanisms to search for the module's entry point and inje
 
 Note that the browser must be able to execute the injected module. For example, modules that implement the [UMD](https://github.com/umdjs/umd) API can run in most modern browsers.
 
-See the details for:
+See details for:
 
 * [programming interface](../../reference/api/runner/clientscripts.md#inject-a-module),
 * [configuration file](../../reference/configuration-file.md#inject-a-module),
