@@ -82,4 +82,8 @@ describe('Allow multiple windows', () => {
             return runTests('testcafe-fixtures/i4855.js', 'ExecuteClientFunctionCommand', { allowMultipleWindows: true });
         });
     });
+
+    it('Should correctly synchronize a cookie from a new same-domain window', () => {
+        return runTests('testcafe-fixtures/cookie-synchronization/same-domain.js', null, { allowMultipleWindows: true });
+    });
 });
