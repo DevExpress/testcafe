@@ -46,7 +46,7 @@ Use either of the following options to inject scripts into pages visited during 
 
 ## Add Client Scripts to Specific Tests
 
-Use the [fixture.clientScripts](../../reference/test-api/fixture/clientscripts.md) and [test.clientScripts](../../reference/test-api/test/clientscripts.md) methods to inject scripts into pages visited during a particular test or fixture.
+Use the [fixture.clientScripts](../../reference/test-api/fixture/clientscripts.md) and [test.clientScripts](../../reference/test-api/test/clientscripts.md) methods to inject scripts into pages visited during a test or fixture.
 
 ```js
 fixture `My fixture`
