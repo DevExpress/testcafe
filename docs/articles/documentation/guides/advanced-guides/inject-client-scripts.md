@@ -70,7 +70,7 @@ You can pass the following arguments to specify the scripts to inject:
 
 You can also [inject scripts into specific pages](#provide-scripts-for-specific-pages) and [iframes](#inject-scripts-into-iframes).
 
-> Note that the API methods and configuration option support [multiple arguments](#specify-multiple-scripts).
+> Note that the API methods and configuration options support [multiple arguments](#specify-multiple-scripts).
 
 ### Inject a JavaScript File
 
