@@ -1,4 +1,4 @@
-You can also specify pages into which a script should be injected. For instance, this enables you to mock browser API on particular pages and use the default behavior everywhere else.
+You can also specify pages into which a script should be injected. This will allow you to mock browser API on specified pages and use the default behavior everywhere else.
 
 To specify target pages for a script, add the `page` property to the object you pass to `clientScripts`.
 
