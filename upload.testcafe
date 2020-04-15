@@ -1,0 +1,28 @@
+{
+    "fixtures": [
+        {
+            "name": "Upload",
+            "pageUrl": "http://localhost:3000/fixtures/api/raw/upload/pages/index.html",
+            "tests": [
+                {
+                    "name": "Upload a file",
+                    "commands": [
+                        {
+                            "type": "set-files-to-upload",
+                            "selector": "#file",
+                            "filePath": "C:\\repos\\testcafe\\test\\functional\\fixtures\\api\\raw\\upload\\test-data\\test.txt"
+                        },
+                        {
+                            "type": "click",
+                            "selector": "#submit"
+                        },
+                        {
+                            "type": "click",
+                            "selector": "#button"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
