@@ -19,6 +19,12 @@
                         {
                             "type": "click",
                             "selector": "#button"
+                        },
+                        {
+                           "type": "assertion",
+                           "assertionType": "eql",
+                           "actual": { "type" : "js-expr", "value" : "Selector('#errorInfo').textContent" },
+                           "expected": "Error is raised."
                         }
                     ]
                 },
@@ -61,6 +67,12 @@
                         {
                          "type": "click",
                          "selector": "#button2"
+                        },
+                        {
+                           "type": "assertion",
+                           "assertionType": "eql",
+                           "actual": { "type" : "js-expr", "value" : "Selector('#errorInfo').textContent" },
+                           "expected": "Error is raised."
                         }
                     ]
                 },
