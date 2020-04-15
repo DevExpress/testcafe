@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: Screenshots and Videos
-permalink: /documentation/using-testcafe/common-concepts/screenshots-and-videos.html
+permalink: /documentation/guides/advanced-guides/screenshots-and-videos.html
 ---
 # Screenshots and Videos
 
@@ -30,7 +30,7 @@ TestCafe allows you to take screenshots of the tested webpage and record videos 
 
 TestCafe allows you to take screenshots of the tested webpage at any moment during test run, or automatically whenever a test fails.
 
-> Important! Screenshots are not supported when you run tests in [remote browsers](browsers/browser-support.md#browsers-on-remote-devices).
+> Important! Screenshots are not supported when you run tests in [remote browsers](../../concepts/browsers.md#browsers-on-remote-devices).
 
 ### Prerequisites for Screenshots
 
@@ -38,7 +38,7 @@ Screenshots require .NET 4.0 or newer installed on Windows machines and an [ICCC
 
 ### Take Screenshots at Arbitrary Moments During Test Run
 
-You can take screenshots at any moment during test run. Use the [t.takeScreenshot](../../test-api/actions/take-screenshot.md#take-a-screenshot-of-the-entire-page) action to take a screenshot of the entire page, or the [t.takeElementScreenshot](../../test-api/actions/take-screenshot.md#take-a-screenshot-of-a-page-element) action to capture a particular element.
+You can take screenshots at any moment during test run. Use the [t.takeScreenshot](../../reference/test-api/testcontroller/takescreenshot.md) action to take a screenshot of the entire page, or the [t.takeElementScreenshot](../../reference/test-api/testcontroller/takeelementscreenshot.md) action to capture a particular element.
 
 ```js
 fixture `My fixture`
@@ -59,13 +59,13 @@ test('Take a screenshot of a fieldset', async t => {
 
 You can configure TestCafe to automatically take a screenshot whenever a test fails. Use either of the following:
 
-* the [takeOnFails](../command-line-interface.md#takeonfails) parameter in the `-s` (`--screenshots`) command line flag,
+* the [takeOnFails](../../reference/command-line-interface.md#takeonfails) parameter in the `-s` (`--screenshots`) command line flag,
 
     ```sh
     testcafe chrome tests/sample-fixture.js -s takeOnFails=true
     ```
 
-* the `takeOnFails` parameter of the [runner.screenshots](../programming-interface/runner.md#screenshots) API method,
+* the `takeOnFails` parameter of the [runner.screenshots](../../reference/api/runner/screenshots.md) API method,
 
     ```js
     runner.screenshots({
@@ -73,7 +73,7 @@ You can configure TestCafe to automatically take a screenshot whenever a test fa
     });
     ```
 
-* the [screenshots.takeOnfails](../configuration-file.md#screenshotstakeonfails) configuration file property.
+* the [screenshots.takeOnfails](../../reference/configuration-file.md#screenshotstakeonfails) configuration file property.
 
     ```json
     {
@@ -96,7 +96,7 @@ Option | Type | Description | Default Value
 
 You can specify screenshot options in either of the following ways:
 
-* the [-s (--screenshots)](../command-line-interface.md#-s---screenshots-optionvalueoption2value2) command line flag,
+* the [-s (--screenshots)](../../reference/command-line-interface.md#-s---screenshots-optionvalueoption2value2) command line flag,
 
     ```sh
     testcafe chrome test.js -s path=artifacts/screenshots,fullPage=true,pathPattern=${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png
@@ -104,7 +104,7 @@ You can specify screenshot options in either of the following ways:
 
     > Enclose parameter values in quotes if they contain spaces. In Windows `cmd.exe` shell, use double quotes.
 
-* the `options` parameter of the [runner.screenshots](../programming-interface/runner.md#screenshots) API method,
+* the `options` parameter of the [runner.screenshots](../../reference/api/runner/screenshots.md) API method,
 
     ```js
     runner.screenshots({
@@ -114,7 +114,7 @@ You can specify screenshot options in either of the following ways:
     });
     ```
 
-* the [screenshots](../configuration-file.md#screenshots) configuration file property.
+* the [screenshots](../../reference/configuration-file.md#screenshots) configuration file property.
 
     ```json
     {
@@ -128,15 +128,15 @@ You can specify screenshot options in either of the following ways:
 
 ### Disable Screenshots
 
-You can prevent TestCafe from taking screenshots whenever a test fails or a [screenshot action](../../test-api/actions/take-screenshot.md) is executed. Use one of the following options:
+You can prevent TestCafe from taking screenshots whenever a test fails or a [screenshot action](../../reference/test-api/testcontroller/takescreenshot.md) is executed. Use one of the following options:
 
-* the [--disable-screenshots](../command-line-interface.md#--disable-screenshots) command line flag,
+* the [--disable-screenshots](../../reference/command-line-interface.md#--disable-screenshots) command line flag,
 
     ```sh
     testcafe chrome tests/sample-fixture.js --disable-screenshots
     ```
 
-* the `disableScreenshots` option of the [runner.run](../programming-interface/runner.md#run) API method,
+* the `disableScreenshots` option of the [runner.run](../../reference/api/runner/run.md) API method,
 
     ```js
     runner.run({
@@ -144,7 +144,7 @@ You can prevent TestCafe from taking screenshots whenever a test fails or a [scr
     });
     ```
 
-* the [disableScreenshots](../configuration-file.md#disablescreenshots) configuration file property.
+* the [disableScreenshots](../../reference/configuration-file.md#disablescreenshots) configuration file property.
 
     ```json
     {
@@ -156,7 +156,7 @@ You can prevent TestCafe from taking screenshots whenever a test fails or a [scr
 
 TestCafe allows you to record videos of test runs.
 
-> Important! Video recording is supported in Google Chrome, Mozilla Firefox, and Microsoft Edge (Chromium-based). TestCafe cannot record videos when you run tests in [remote browsers](browsers/browser-support.md#browsers-on-remote-devices).
+> Important! Video recording is supported in Google Chrome, Mozilla Firefox, and Microsoft Edge (Chromium-based). TestCafe cannot record videos when you run tests in [remote browsers](../../concepts/browsers.md#browsers-on-remote-devices).
 
 ### Prerequisites for Video Recording
 
@@ -174,19 +174,19 @@ Videos are saved in the `.mp4` format.
 
 Use either of the following to enable video recording:
 
-* the [--video](../command-line-interface.md#--video-basepath) command line flag,
+* the [--video](../../reference/command-line-interface.md#--video-basepath) command line flag,
 
     ```sh
     testcafe chrome test.js --video artifacts/videos
     ```
 
-* the [runner.video](../programming-interface/runner.md#video) API method,
+* the [runner.video](../../reference/api/runner/video.md) API method,
 
     ```js
     runner.video('artifacts/videos');
     ```
 
-* the [videoPath](../configuration-file.md#videopath) configuration file property.
+* the [videoPath](../../reference/configuration-file.md#videopath) configuration file property.
 
     ```json
     {
@@ -211,7 +211,7 @@ Option | Type | Description | Default Value
 
 You can specify video options in either of the following ways:
 
-* the [--video-options](../command-line-interface.md#--video-options-optionvalueoption2value2) command line flag,
+* the [--video-options](../../reference/command-line-interface.md#--video-options-optionvalueoption2value2) command line flag,
 
     ```sh
     testcafe chrome test.js --video artifacts/videos --video-options singleFile=true,failedOnly=true,pathPattern=${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.mp4
@@ -219,7 +219,7 @@ You can specify video options in either of the following ways:
 
     > Enclose parameter values in quotes if they contain spaces. In Windows `cmd.exe` shell, use double quotes.
 
-* the `options` parameter of the [runner.video](../programming-interface/runner.md#video) API method,
+* the `options` parameter of the [runner.video](../../reference/api/runner/video.md) API method,
 
     ```js
     runner.video('artifacts/videos', {
@@ -229,7 +229,7 @@ You can specify video options in either of the following ways:
     });
     ```
 
-* the [videoOptions](../configuration-file.md#videooptions) configuration file property.
+* the [videoOptions](../../reference/configuration-file.md#videooptions) configuration file property.
 
     ```json
     {
@@ -247,13 +247,13 @@ These encoding options are passed to FFmpeg. Refer to the [FFmpeg documentation]
 
 To provide video encoding options, use either of the following options:
 
-* the [--video-encoding-options](../command-line-interface.md#--video-encoding-options-optionvalueoption2value2) command line flag,
+* the [--video-encoding-options](../../reference/command-line-interface.md#--video-encoding-options-optionvalueoption2value2) command line flag,
 
     ```sh
     testcafe chrome test.js --video artifacts/videos --video-encoding-options r=20,aspect=4:3
     ```
 
-* the `encodingOptions` parameter of the [runner.video](../programming-interface/runner.md#video) API method,
+* the `encodingOptions` parameter of the [runner.video](../../reference/api/runner/video.md) API method,
 
     ```js
     runner.video('artifacts/videos', { }, {
@@ -262,7 +262,7 @@ To provide video encoding options, use either of the following options:
     });
     ```
 
-* the [videoEncodingOptions](../configuration-file.md#videoencodingoptions) configuration file property.
+* the [videoEncodingOptions](../../reference/configuration-file.md#videoencodingoptions) configuration file property.
 
     ```json
     {
@@ -356,7 +356,7 @@ When TestCafe saves a screenshot or video file, it substitutes each placeholder 
 
 You can use the [default](#default-path-pattern) or [custom path pattern](#custom-path-patterns).
 
-> When you take a screenshot with the [t.takeScreenshot](../../test-api/actions/take-screenshot.md#take-a-screenshot-of-the-entire-page) or [t.takeElementScreenshot](../../test-api/actions/take-screenshot.md#take-a-screenshot-of-a-page-element) action, you can specify the exact file path. In this instance, TestCafe saves this screenshot to the specified location and does not use patterns.
+> When you take a screenshot with the [t.takeScreenshot](../../reference/test-api/testcontroller/takescreenshot.md) or [t.takeElementScreenshot](../../reference/test-api/testcontroller/takeelementscreenshot.md) action, you can specify the exact file path. In this instance, TestCafe saves this screenshot to the specified location and does not use patterns.
 
 #### Default Path Pattern
 
@@ -400,7 +400,7 @@ Placeholder | Description
 `${TIME}` | The test run's start time (HH-mm-ss).
 `${TEST_INDEX}` | The test's index.
 `${FILE_INDEX}` | The screenshot file's index.
-`${QUARANTINE_ATTEMPT}` | The [quarantine](../programming-interface/runner.md#quarantine-mode) attempt's number. If the quarantine mode is disabled, the `${QUARANTINE_ATTEMPT}` placeholder's value is 1.
+`${QUARANTINE_ATTEMPT}` | The [quarantine](../basic-guides/run-tests.md#quarantine-mode) attempt's number. If the quarantine mode is disabled, the `${QUARANTINE_ATTEMPT}` placeholder's value is 1.
 `${FIXTURE}` | The fixture's name.
 `${TEST}` | The test's name.
 `${USERAGENT}` | The combination of `${BROWSER}`, `${BROWSER_VERSION}`, `${OS}`, and `${OS_VERSION}` (separated by underscores).
@@ -409,4 +409,4 @@ Placeholder | Description
 `${OS}` | The operation system's name.
 `${OS_VERSION}` | The operation system's version.
 `${TEST_ID}` | Resolves to `test-${TEST_INDEX}` if TestCafe can associate this screenshot or video with a specific test; resolves to an empty string otherwise (for instance, when a single video is recorded for the entire test run).
-`${RUN_ID}` | Resolves to `run-${QUARANTINE_ATTEMPT}` for screenshots taken when [quarantine mode](../programming-interface/runner.md#quarantine-mode) is enabled; resolves to an empty string for videos and for screenshots taken when [quarantine mode](../programming-interface/runner.md#quarantine-mode) is disabled.
+`${RUN_ID}` | Resolves to `run-${QUARANTINE_ATTEMPT}` for screenshots taken when [quarantine mode](../basic-guides/run-tests.md#quarantine-mode) is enabled; resolves to an empty string for videos and for screenshots taken when [quarantine mode](../basic-guides/run-tests.md#quarantine-mode) is disabled.
