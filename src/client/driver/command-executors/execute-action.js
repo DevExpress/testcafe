@@ -212,7 +212,7 @@ class ActionExecutor {
 
             case COMMAND_TYPE.setFilesToUpload :
                 return new UploadAutomation(this.elements[0], this.command.filePath,
-                    filePaths => new ActionCannotFindFileToUploadError(filePaths)
+                    (filePaths, scannedFilePaths) => new ActionCannotFindFileToUploadError(filePaths, scannedFilePaths)
                 );
 
             case COMMAND_TYPE.clearUpload :
