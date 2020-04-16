@@ -25,7 +25,8 @@ const NON_CACHEABLE_PAGES = [
     '/fixtures/api/es-next/roles/pages',
     '/fixtures/api/es-next/request-hooks/pages',
     '/fixtures/regression/gh-2015/pages',
-    '/fixtures/regression/gh-2282/pages'
+    '/fixtures/regression/gh-2282/pages',
+    '/fixtures/api/raw/upload/pages/index.html'
 ];
 
 const UPLOAD_SUCCESS_PAGE_TEMPLATE = readSync('./views/upload-success.html.mustache');
