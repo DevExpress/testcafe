@@ -1,8 +1,9 @@
 ---
 layout: docs
 title: Reporters
-permalink: /documentation/using-testcafe/common-concepts/reporters.html
-checked: true
+permalink: /documentation/concepts/reporters.html
+redirect_from:
+  - /documentation/using-testcafe/common-concepts/reporters.html
 ---
 # Reporters
 
@@ -16,7 +17,7 @@ TestCafe ships with the following reporters:
 * [xUnit](https://github.com/DevExpress/testcafe-reporter-xunit)
 * [JSON](https://github.com/DevExpress/testcafe-reporter-json)
 
-You can also create a [custom reporter](/testcafe/documentation/extending-testcafe/reporter-plugin/) that fulfills your needs.
+You can also create a [custom reporter](../extending-testcafe/reporter-plugin/README.md) that fulfills your needs.
 
 Here are some custom reporters developed by the community.
 
@@ -39,11 +40,11 @@ You can search for available reporter packages on npm: [https://www.npmjs.com/se
 
 ## Installing the Reporters
 
-You can install reporter packages from npm as you would install any other plugin. See [Installing Plugins](../../extending-testcafe/README.md#installing-plugins).
+You can install reporter packages from npm as you would install any other plugin. See [Installing Plugins](../extending-testcafe/README.md#installing-plugins).
 
 ## Using the Reporters
 
 When running tests, you can select a reporter to generate test reports.
 You can do this by using the
-[-r (--reporter)](../command-line-interface.md#-r-nameoutput---reporter-nameoutput) command line option or the
-[runner.reporter](../programming-interface/runner.md#reporter) API method.
+[-r (--reporter)](../reference/command-line-interface.md#-r-nameoutput---reporter-nameoutput) command line option or the
+[runner.reporter](../reference/api/runner/reporter.md) API method.

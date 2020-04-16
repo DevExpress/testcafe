@@ -1,9 +1,11 @@
 ---
 layout: docs
-title: Using TestCafe Docker Image
-permalink: /documentation/using-testcafe/using-testcafe-docker-image.html
+title: Use TestCafe Docker Image
+permalink: /documentation/guides/advanced-guides/use-testcafe-docker-image.html
+redirect_from:
+  - /documentation/using-testcafe/using-testcafe-docker-image.html
 ---
-# Using TestCafe Docker Image
+# Use TestCafe Docker Image
 
 TestCafe provides a preconfigured Docker image with Chromium and Firefox installed.
 Therefore, you can avoid manual installation of browsers and the testing framework on the server.
@@ -58,7 +60,7 @@ This command takes the following parameters:
     In modern Docker for Windows, you also need to share a drive to reach it from Docker containers. For more information, see [Docker for Windows documentation](https://docs.docker.com/docker-for-windows/#file-sharing).
 
 * `-it testcafe/testcafe` - runs TestCafe in the interactive mode with the console enabled;
-* `${TESTCAFE_ARGS}` - arguments passed to the `testcafe` command. You can use any arguments from the TestCafe [command line interface](command-line-interface.md);
+* `${TESTCAFE_ARGS}` - arguments passed to the `testcafe` command. You can use any arguments from the TestCafe [command line interface](../../reference/command-line-interface.md);
 
     ```sh
     -it testcafe/testcafe chromium,firefox /tests/test.js
@@ -74,7 +76,7 @@ This command takes the following parameters:
 
 ## Test on the Host Machine
 
-To run tests in host machine browsers, connect them as [remote browsers](command-line-interface.md#remote-browsers). Do the following:
+To run tests in host machine browsers, connect them as [remote browsers](../../reference/command-line-interface.md#remote-browsers). Do the following:
 
 * pass the `--net=host` parameter to specify that the container should use the `host` network;
 * specify the `remote` keyword as the browser name.
@@ -90,9 +92,9 @@ Note that the `--net=host` option can weaken container security. If this is impo
 Add the following options to the `docker run` command to run tests on a remote desktop or mobile device:
 
 * map the `1337` and `1338` container ports to the corresponding host ports with the `-p` flag;
-* use the [--hostname](command-line-interface.md#--hostname-name) TestCafe flag to specify the host machine name;
+* use the [--hostname](../../reference/command-line-interface.md#--hostname-name) TestCafe flag to specify the host machine name;
 * pass the `--add-host` parameter to map the host machine name to the container's localhost IP;
-* specify the `remote` keyword as the browser name. See [Remote Browsers](command-line-interface.md#remote-browsers).
+* specify the `remote` keyword as the browser name. See [Remote Browsers](../../reference/command-line-interface.md#remote-browsers).
 
 The example below shows a command that runs tests in a remote browser.
 
@@ -120,7 +122,7 @@ where `${PORT1}` and `${PORT2}` are vacant container's ports, `${EXTERNAL_HOSTNA
 
 ## Proxy Settings
 
-Use the TestCafe [--proxy](command-line-interface.md#--proxy-host) and [--proxy-bypass](command-line-interface.md#--proxy-bypass-rules) options to configure proxy settings.
+Use the TestCafe [--proxy](../../reference/command-line-interface.md#--proxy-host) and [--proxy-bypass](../../reference/command-line-interface.md#--proxy-bypass-rules) options to configure proxy settings.
 
 ```sh
 docker run -v /d/tests:/tests -it testcafe/testcafe remote /tests/test.js --proxy proxy.mycorp.com
