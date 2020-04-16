@@ -4,20 +4,10 @@
     <title>Upload completed</title>
 </head>
 <body>
-    <div id="uploadedContent">
-        {{#uploadedDataArray}}
-            <p>{{{.}}}</p>
-        {{/uploadedDataArray}}
-    </div>
-    <div>
-        <span id="errorInfo"></span>
-    </div>
-    <script>
-        window.onerror = function () {
-            var errorInfoSpan = document.getElementById('errorInfo');
-
-            errorInfoSpan.textContent = 'Error is raised.'
-        }
-    </script>
+<div id="uploadedContent">
+    {{#uploadedDataArray}}
+        <p>{{{.}}}</p>
+    {{/uploadedDataArray}}
+</div>
 </body>
 </html>

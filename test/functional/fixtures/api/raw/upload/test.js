@@ -1,5 +1,6 @@
-const { expect }                     = require('chai');
-const { errorInEachBrowserContains } = require('../../../../assertion-helper.js');
+const expect                     = require('chai').expect;
+const errorInEachBrowserContains = require('../../../../assertion-helper.js').errorInEachBrowserContains;
+
 
 describe('[Raw API] Upload', function () {
     it('Should upload a file', function () {
