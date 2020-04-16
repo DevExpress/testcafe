@@ -160,6 +160,8 @@ const SCREENSHOT_TESTS_GLOB = [
     'test/functional/fixtures/screenshots-on-fails/test.js'
 ];
 
+const RAW_UPLOAD_TESTS_GLOB = 'test/functional/fixtures/api/raw/upload/test.js';
+
 const TESTS_GLOB = [
     'test/functional/fixtures/**/test.js',
     `!${MULTIPLE_WINDOWS_TESTS_GLOB}`,
@@ -732,8 +734,12 @@ function testFunctional (src, testingEnvironmentName, { allowMultipleWindows, ex
     let tests = castArray(src);
 
     // TODO: Run takeScreenshot tests first because other tests heavily impact them
-    if (src === TESTS_GLOB)
-        tests = SCREENSHOT_TESTS_GLOB.concat(tests);
+    if (src === TESTS_GLOB) {
+        tests = SCREENSHOT_TESTS_GLOB
+            .concat(RAW_UPLOAD_TESTS_GLOB)
+            .concat(tests);
+    }
+
 
     tests.unshift(SETUP_TESTS_GLOB);
 
