@@ -13,6 +13,11 @@
                             "filePath": "../test-data/test.txt"
                         },
                         {
+                            "type": "assertion",
+                            "assertionType": "ok",
+                            "actual": { "type" : "js-expr", "value" : "Selector('#submit').exists" }
+                        },
+                        {
                             "type": "click",
                             "selector": "#submit"
                         },
@@ -51,6 +56,11 @@
                             "filePath": ["../test-data/test2.txt", "../test-data/test3.txt"]
                         },
                         {
+                            "type": "assertion",
+                            "assertionType": "ok",
+                            "actual": { "type" : "js-expr", "value" : "Selector('#submit').exists" }
+                        },
+                        {
                             "type": "click",
                             "selector": "#submit"
                         },
@@ -85,6 +95,11 @@
                         {
                             "type": "clear-upload",
                             "selector": "#file"
+                        },
+                        {
+                            "type": "assertion",
+                            "assertionType": "ok",
+                            "actual": { "type" : "js-expr", "value" : "Selector('#submit').exists" }
                         },
                         {
                             "type": "click",
