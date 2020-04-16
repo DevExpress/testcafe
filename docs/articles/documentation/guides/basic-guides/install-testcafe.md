@@ -1,17 +1,19 @@
 ---
 layout: docs
-title: Installing TestCafe
-permalink: /documentation/using-testcafe/installing-testcafe.html
+title: Install TestCafe
+permalink: /documentation/guides/basic-guides/install-testcafe.html
+redirect_from:
+  - /documentation/using-testcafe/installing-testcafe.html
 ---
-# Installing TestCafe
+# Install TestCafe
 
 You can install TestCafe from `npm` globally or locally in your project.
 
-[Global installation](#global-installation) is required to run TestCafe in the [command line](command-line-interface.md) from any location. For instance, you need to install TestCafe globally to execute the `testcafe` command from your custom application.
+[Global installation](#global-installation) is required to run TestCafe in the [command line](../../reference/command-line-interface.md) from any location. For instance, you need to install TestCafe globally to execute the `testcafe` command from your custom application.
 
 > You can use `npx`, `yarn run` or the `npm` scripts to run the `testcafe` command from the project directory without global installation.
 
-[Local installation](#local-installation) should be preferred for continuous integration systems, [Node.js applications](programming-interface/README.md) and other scenarios where global installation is not required.
+[Local installation](#local-installation) should be preferred for continuous integration systems, [Node.js applications](../../reference/api/README.md) and other scenarios where global installation is not required.
 
 * Local installation makes your project setup easier: `npm install` executed in the project directory installs all dependencies including TestCafe.
 * Different projects can use different local TestCafe versions.
@@ -24,7 +26,7 @@ You can also run TestCafe [without prior installation](#ad-hoc-installation). Ho
 npm install -g testcafe
 ```
 
-After that, use the [testcafe](command-line-interface.md) command to run TestCafe from the command line.
+After that, use the [testcafe](../../reference/command-line-interface.md) command to run TestCafe from the command line.
 
 ```bash
 testcafe chrome tests/
@@ -38,7 +40,7 @@ The following command installs TestCafe into your project directory and saves it
 npm install --save-dev testcafe
 ```
 
-To run a local TestCafe version from the [command line](command-line-interface.md), use one of the following methods:
+To run a local TestCafe version from the [command line](../../reference/command-line-interface.md), use one of the following methods:
 
 * the [npx](https://www.npmjs.com/package/npx) command:
 
