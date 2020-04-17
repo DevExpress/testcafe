@@ -25,7 +25,7 @@ TestCafe provides the [t.debug](../../reference/test-api/testcontroller/debug.md
 You can also use the [--debug-mode](../../reference/command-line-interface.md#-d---debug-mode)
 command line option to pause the test before the first action or assertion.
 
-The footer displays buttons that allow you to continue the test or skip to the next test action or assertion.
+The footer displays buttons that allow you to continue the test, or skip to the next test action or assertion.
 
 ![Page Footer when Debugging on a Client](../../images/debugging/client-debugging-footer.png)
 
