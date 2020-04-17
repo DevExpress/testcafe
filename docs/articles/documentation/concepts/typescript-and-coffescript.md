@@ -37,7 +37,7 @@ file and will show you code completion hints for TestCafe API:
 In this case, your IDE will not be able to find the TestCafe declaration file and provide code completion.
 
 Now, you can write tests in the same manner as in JavaScript.
-When you run a test Testcafe will output if there are any compilation errors.
+When you run a test, Testcafe will output if there are any compilation errors.
 
 > The [extending selectors](../guides/basic-guides/select-page-elements.md#extend-selectors)
 > in TypeScript differs from extending selectors in JavaScript. Refer to the
