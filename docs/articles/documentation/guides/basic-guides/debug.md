@@ -83,7 +83,7 @@ Analyzing these screenshots reduces debugging time and allows you to determine t
 
 ### Test Speed
 
-TestCafe provides the capability to change test speed. Tests are executed at full speed with minimum delays between actions and assertions by default, which can make it hard to identify problems when the test is running.
+TestCafe provides the capability to change test speed. Tests are executed at full speed with minimum delays between actions and assertions, which can make it hard to identify problems when a test is running.
 
 To slow down the test, use the [--speed](../../reference/command-line-interface.md#--speed-factor)
 CLI flag. You can use values from `1` to `0.01`.
