@@ -22,7 +22,7 @@ TestCafe bundles the TypeScript declaration file with the npm package, so you do
 
 To start writing tests with TypeScript, install TestCafe into your project directory. For more information, see [Install TestCafe](../guides/basic-guides/install-testcafe.md#local-installation).
 
-When writing test in TypeScript, it is required to import TestCafe module first.
+When writing test in TypeScript, you must import the TestCafe module first.
 
 ```js
 import { Selector } from 'testcafe';
