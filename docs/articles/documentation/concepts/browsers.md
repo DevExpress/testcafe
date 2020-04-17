@@ -27,7 +27,7 @@ of *officially supported* browsers against which TestCafe is actively tested.
 * Google Chrome mobile
 * Safari mobile
 
-> TestCafe supports the latest version of each browser unless specified explicitly.
+> TestCafe supports the latest version of each browser (unless specified explicitly).
 
 ### Locally Installed Browsers
 
@@ -107,7 +107,7 @@ To test with the Legacy version of Edge, open **Default apps** in **Windows Sett
 
 ### Nonconventional Browsers
 
-To use a different type of browser, use a [browser provider plugin](../extending-testcafe/browser-provider-plugin/README.md).
+To run tests in a different type of browser, use a [browser provider plugin](../extending-testcafe/browser-provider-plugin/README.md).
 
 You can search npm for community-developed plugins. Their names begin with the `testcafe-browser-provider-` prefix: [https://www.npmjs.com/search?q=testcafe-browser-provider](https://www.npmjs.com/search?q=testcafe-browser-provider).
 
@@ -218,9 +218,9 @@ runner
     .run();
 ```
 
-### Use Emulation in Portable Chrome
+### Use Emulation in Chrome Portable
 
-To enable device emulation in a portable Chrome, use the [browser alias](#locally-installed-browsers). The `path:` prefix does not work in this case.
+To enable device emulation in Google Chrome Portable, use the [browser alias](#locally-installed-browsers). The `path:` prefix does not work in this case.
 
 ```sh
 testcafe "chrome:d:\chrome_portable\chrome.exe:emulation:device=iphone X" tests/test.js
@@ -230,7 +230,7 @@ testcafe "chrome:d:\chrome_portable\chrome.exe:emulation:device=iphone X" tests/
 
 Use the `userAgent` parameter to substitute a user agent string.
 
-> Important! TestCafe relies on the user agent string to emulate browser behavior. Tests are not guaranteed to run correctly if you provide a user agent that is invalid or [not supported by TestCafe](#browser-support).
+> Important! TestCafe relies on a user agent string to emulate browser behavior. Tests are not guaranteed to run correctly if you specify a user agent that is invalid or [not supported by TestCafe](#browser-support).
 
 You need to escape special characters in the user agent string when you specify it in the command line. These characters include:
 
