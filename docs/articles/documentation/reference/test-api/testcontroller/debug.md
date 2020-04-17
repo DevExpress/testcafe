@@ -11,7 +11,7 @@ Pauses the test and allows you to use the browser's developer tools.
 t.debug()
 ```
 
-When test execution reaches `t.debug`, it pauses so that you can open browser's developer tools
+When test execution reaches `t.debug`, it pauses so that you can open the browser's developer tools
 and check the web page state, DOM elements' location, their CSS styles, etc.
 
 You can also use the [--debug-mode](../../command-line-interface.md#-d---debug-mode)
