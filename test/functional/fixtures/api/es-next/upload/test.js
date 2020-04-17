@@ -40,13 +40,16 @@ describe('[API] Upload', function () {
             })
                 .catch(errs => {
                     expect(errs[0]).contains('Cannot find the following file(s) to upload');
-                    expect(errs[0]).contains('../dummy-file.txt');
+                    expect(errs[0]).contains('../dummy-file-1.txt');
+                    expect(errs[0]).contains('../dummy-file-2.txt');
                     expect(errs[0]).contains('The following locations were scanned for the missing upload files:');
 
-                    const fixtureDir      = path.resolve('./testcafe-fixtures');
-                    const scannedFilePath = path.resolve(fixtureDir, '../dummy-file.txt');
+                    const fixtureDir       = path.resolve('./testcafe-fixtures');
+                    const scannedFilePath1 = path.resolve(fixtureDir, '../dummy-file-1.txt');
+                    const scannedFilePath2 = path.resolve(fixtureDir, '../dummy-file-2.txt');
 
-                    expect(errs[0]).contains(scannedFilePath);
+                    expect(errs[0]).contains(scannedFilePath1);
+                    expect(errs[0]).contains(scannedFilePath2);
                 });
         });
     });
