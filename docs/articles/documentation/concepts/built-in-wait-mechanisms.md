@@ -8,7 +8,7 @@ redirect_from:
 ---
 # Built-In Wait Mechanisms
 
-TestCafe has built-in automatic waiting mechanism and does not require dedicated API to wait for redirects or page elements to appear.
+TestCafe has a built-in automatic waiting mechanism and does not require dedicated API to wait for redirects or page elements to appear.
 
 This topic describes how these mechanisms work when TestCafe performs [test actions](../guides/basic-guides/interact-with-page-elements.md), evaluates [assertions](../guides/basic-guides/assert.md) and [selectors](../guides/basic-guides/select-page-elements.md), sends requests, and navigates the browser.
 
