@@ -1,10 +1,14 @@
 ---
 layout: docs
-title: TypeScript Support
-permalink: /documentation/test-api/typescript-support.html
-checked: true
+title: TypeScript and CoffeeScript
+permalink: /documentation/concepts/typescript-and-coffeescript.html
+redirect_from:
+  - /documentation/test-api/typescript-support.html
+  - /documentation/test-api/coffeescript-support.html
 ---
-# TypeScript Support
+# TypeScript and CoffeeScript
+
+## TypeScript Support
 
 TestCafe allows you to write tests with [TypeScript](https://www.typescriptlang.org/) - a typed superset of JavaScript.
 Using TypeScript brings you all the advantages of strongly typed languages: rich coding assistance,
@@ -14,11 +18,11 @@ painless scalability, check-as-you-type code verification and much more.
 
 TestCafe bundles the TypeScript declaration file with the npm package, so you do not need to install it separately.
 
-## Writing Tests with TypeScript
+### Write Tests with TypeScript
 
-To start writing tests with TypeScript, install TestCafe into your project directory. For more information, see [Installing TestCafe](../using-testcafe/installing-testcafe.md#local-installation).
+To start writing tests with TypeScript, install TestCafe into your project directory. For more information, see [Install TestCafe](../guides/basic-guides/install-testcafe.md#local-installation).
 
-When writing test in TypeScript, it is required to import TestCafe module first.
+When writing test in TypeScript, you must import the TestCafe module first.
 
 ```js
 import { Selector } from 'testcafe';
@@ -29,37 +33,37 @@ file and will show you code completion hints for TestCafe API:
 
 ![Writing Tests with TypeScript](../../images/typescript-support.png)
 
-> If installed [globally](../using-testcafe/installing-testcafe.md#global-installation), TestCafe will successfully compile and run your tests written in TypeScript.
+> If installed [globally](../guides/basic-guides/install-testcafe.md#global-installation), TestCafe will successfully compile and run your tests written in TypeScript.
 In this case, your IDE will not be able to find the TestCafe declaration file and provide code completion.
 
 Now, you can write tests in the same manner as in JavaScript.
-When you run a test Testcafe will output if there are any compilation errors.
+When you run a test, Testcafe will output if there are any compilation errors.
 
-> The [extending selectors](./selecting-page-elements/selectors/extending-selectors.md)
+> The [extending selectors](../guides/basic-guides/select-page-elements.md#extend-selectors)
 > in TypeScript differs from extending selectors in JavaScript. Refer to the
-> [Custom Properties](./selecting-page-elements/selectors/extending-selectors.md#custom-properties)
-> and [Custom Methods](./selecting-page-elements/selectors/extending-selectors.md#custom-methods)
+> [Custom Properties](../guides/basic-guides/select-page-elements.md#custom-properties)
+> and [Custom Methods](../guides/basic-guides/select-page-elements.md#custom-methods)
 > sections to learn how to extend selectors in TypeScript.
 
-## Customize Compiler Options
+### Customize Compiler Options
 
-TestCafe allows you to specify [TypeScript compiler options](https://www.typescriptlang.org/docs/handbook/compiler-options.html) in the `tsconfig.json` file. You can use these options to enable JSX compilation, import code or typings with `paths` aliases, set aliases to React typings, or customize other compiler settings.
+TestCafe allows you to specify [TypeScript compiler options](https://www.typescriptlang.org/docs/handbook/compiler-options.html) in the `tsconfig.json` file. You can use these options to enable the JSX compilation, import code or typings with `paths` aliases, set aliases to React typings, or customize other compiler settings.
 
 To apply a custom TypeScript configuration file, specify its location in one of the following ways:
 
-* the [--ts-config-path](../using-testcafe/command-line-interface.md#--ts-config-path-path) command line parameter,
+* the [--ts-config-path](../reference/command-line-interface.md#--ts-config-path-path) command line parameter,
 
     ```sh
     testcafe chrome my-tests --ts-config-path /Users/s.johnson/testcafe/tsconfig.json
     ```
 
-* the [runner.tsConfigPath](../using-testcafe/programming-interface/runner.md#tsconfigpath) API method,
+* the [runner.tsConfigPath](../reference/api/runner/tsconfigpath.md) API method,
 
     ```js
     runner.tsConfigPath('/Users/s.johnson/testcafe/tsconfig.json');
     ```
 
-* the [tsConfigPath](../using-testcafe/configuration-file.md#tsconfigpath) configuration file property.
+* the [tsConfigPath](../reference/configuration-file.md#tsconfigpath) configuration file property.
 
     ```json
     {
@@ -97,3 +101,27 @@ Option                    | Value
 `skipLibCheck`            | `true`
 
 > TestCafe enables the `skipLibCheck` option for performance reasons. If you need to check types in your declaration files, set `skipLibCheck` to `false` in `tsconfig.json`.
+
+## CoffeeScript Support
+
+TestCafe allows you to write tests with [CoffeeScript](https://coffeescript.org/).
+
+**Example**
+
+```coffee
+import { Selector } from 'testcafe'
+
+fixture 'CoffeeScript Example'
+    .page 'https://devexpress.github.io/testcafe/example/'
+
+nameInput = Selector '#developer-name'
+
+test 'Test', (t) =>
+    await t
+        .typeText(nameInput, 'Peter')
+        .typeText(nameInput, 'Paker', { replace: true })
+        .typeText(nameInput, 'r', { caretPos: 2 })
+        .expect(nameInput.value).eql 'Parker';
+```
+
+You can run CoffeeScript tests in the same manner as JavaScript tests. TestCafe automatically compiles the CoffeeScript code, so you do not need to compile it manually.
