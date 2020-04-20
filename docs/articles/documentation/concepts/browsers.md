@@ -17,7 +17,7 @@ This topic lists browsers supported by TestCafe and describes how to use various
 ### Officially Supported Browsers
 
 While TestCafe is designed to support most modern browsers, there are a limited number
-of *officially supported* browsers against which TestCafe is actively tested.
+of *officially supported* browsers. TestCafe is actively tested with these browsers.
 
 * Google Chrome: Stable, Beta, Dev and Canary
 * Internet Explorer (11+)
@@ -77,8 +77,7 @@ First, you will need to create a remote browser connection.
 * API: use the [createBrowserConnection](../reference/api/testcafe/createbrowserconnection.md) method
 * Configuration file: [browsers](../reference/configuration-file.md#browsers)
 
-After that, TestCafe will provide a URL to open on the remote device in the browser against which you want to test.
-Access this URL from the desired browser. It then connects to the TestCafe server and starts the test.
+After that, TestCafe generates a URL to open in the browser that you need to test (on a remote device). This URL is then exposed through the API or displayed in the console. Access this URL from the desired browser. It then connects to the TestCafe server and starts the test.
 
 > Note that when you run tests in a remote browser, you cannot [take screenshots](../guides/basic-guides/interact-with-the-page.md#take-screenshot) or [resize the browser window](../guides/basic-guides/interact-with-the-page.md#resize-window).
 
