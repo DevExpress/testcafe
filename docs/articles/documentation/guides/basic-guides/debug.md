@@ -20,7 +20,7 @@ You can debug test code in Chrome Developer Tools and popular IDEs. See the foll
 
 ## Client-Side Debugging
 
-TestCafe provides the [t.debug](../../reference/test-api/testcontroller/debug.md) method that pauses the test and allows you to debug using the browser's developer tools.
+TestCafe provides the [t.debug](../../reference/test-api/testcontroller/debug.md) method that pauses the test and allows you to debug it with the browser's developer tools.
 
 You can also use the [--debug-mode](../../reference/command-line-interface.md#-d---debug-mode)
 command line option to pause the test before the first action or assertion.
