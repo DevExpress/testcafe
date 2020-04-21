@@ -3,6 +3,7 @@ layout: post
 title: How to Scroll Web Pages Using TestCafe
 permalink: /media/team-blog/:title.html
 isTeamBlog: true
+author: Alexander Prokhorov, Anastasia Karabanova
 ---
 # How to Scroll Web Pages Using TestCafe
 
