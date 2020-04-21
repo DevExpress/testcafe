@@ -1,15 +1,16 @@
 - text: Docs
   url: /documentation/getting-started/
-  highlightUrl: /documentation
-- text: Media
-  url: /media/community/
-  highlightUrl: /media
+  highlightUrl: /documentation/
+- text: Blog
+  url: /media/team-blog/
+  highlightUrl: /media/
 - text: FAQ
   url: /faq/
 - text: Support
   url: /support/
 - text: Release Notes
   url: /release-notes/
+  highlightUrl: /blog/
 - text: TestCafe Studio
   url: https://www.devexpress.com/products/testcafestudio/
   external: true
