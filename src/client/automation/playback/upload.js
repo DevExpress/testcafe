@@ -12,8 +12,15 @@ export default class UploadAutomation {
     run () {
         return doUpload(this.element, this.paths)
             .then(errs => {
-                if (errs.length)
-                    throw this.createError(arrayUtils.map(errs, err => err.path));
+                if (!errs.length)
+                    return;
+
+                const filePaths        = arrayUtils.map(errs, err => err.path);
+                const scannedFilePaths = arrayUtils.reduce(errs, (prev, current) => {
+                    return prev.concat(current.resolvedPaths);
+                }, []);
+
+                throw this.createError(filePaths, scannedFilePaths);
             });
     }
 }

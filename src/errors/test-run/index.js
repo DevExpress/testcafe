@@ -409,10 +409,11 @@ export class ActionIncorrectKeysError extends TestRunErrorBase {
 }
 
 export class ActionCannotFindFileToUploadError extends TestRunErrorBase {
-    constructor (filePaths) {
+    constructor (filePaths, scannedFilePaths) {
         super(TEST_RUN_ERRORS.actionCannotFindFileToUploadError);
 
-        this.filePaths = filePaths;
+        this.filePaths        = filePaths;
+        this.scannedFilePaths = scannedFilePaths;
     }
 }
 

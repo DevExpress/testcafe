@@ -2,6 +2,12 @@ Cannot find the following file(s) to upload:
 /path/1
 /path/2
 
+The following locations were scanned for the missing upload files:
+full-path-to/path/1
+full-path-to/path/2
+
+Ensure these files exist or change the working directory.
+
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>
 
