@@ -15,15 +15,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>TestCafe v0.17.0 Released | TestCafe</title>
+  <title>How to Scroll Web Pages Using TestCafe | TestCafe</title>
 
-  <meta name="description" content="TestCafe v0.17.0 Released: Testing Electron Apps and Concurrent Test ExecutionWith this release, we have prepared a bunch of new features. Two big news are t...">
+  <meta name="description" content="How to Scroll Web Pages Using TestCafeIf you&#39;re writing functional tests, you may need to scroll tested pages to display specific elements. In this artic...">
   <meta name="viewport" content="width=device-width">
 
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://devexpress.github.io/testcafe/blog/testcafe-v0-17-0-released.html" />
-  <meta property="og:title" content="TestCafe v0.17.0 Released | TestCafe" />
+  <meta property="og:url" content="https://devexpress.github.io/testcafe/media/team-blog/how-to-scroll-web-pages-using-testcafe.html" />
+  <meta property="og:title" content="How to Scroll Web Pages Using TestCafe | TestCafe" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-twitter-card-icon.png" />
@@ -35,7 +35,7 @@
   
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
-  <link rel="canonical" href="https://devexpress.github.io/testcafe/blog/testcafe-v0-17-0-released.html">
+  <link rel="canonical" href="https://devexpress.github.io/testcafe/media/team-blog/how-to-scroll-web-pages-using-testcafe.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="https://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -83,6 +83,18 @@
 
   
 
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
+  <link rel="stylesheet" href="/testcafe/css/docs.css">
+    
+    <link rel="stylesheet" href="/testcafe/css/community.css">
+    
+  <style>
+      .ps-container > .ps-scrollbar-x-rail,
+      .ps-container > .ps-scrollbar-y-rail {
+          opacity: 0.6;
+      }
+  </style>
   
 
   
@@ -172,11 +184,124 @@
     
 
   
+    <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/js/perfect-scrollbar.min.js"></script>
+    <script defer type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"></script>
+
+    <script>
+        var MIN_BODY_WIDTH = 1230;
+        var FOOTER_HEIGHT  = 225;
+
+        var nav     = null;
+        var article = null;
+
+        function getHeaderHeight () {
+            var DOCS_HEADER_HEIGHT   = 76;
+            var SURVEY_HEADER_HEIGHT = 32;
+
+            var surveyBanner          = document.querySelector('.survey-banner');
+            var isSurveyBannerVisible = surveyBanner && surveyBanner.className.indexOf('hidden') === -1;
+
+            return isSurveyBannerVisible ? DOCS_HEADER_HEIGHT + SURVEY_HEADER_HEIGHT : DOCS_HEADER_HEIGHT;
+        }
+
+        function setNavTopPosition () {
+            var headerHeight = getHeaderHeight();
+            var top          = null;
+
+            if (document.body.clientWidth > MIN_BODY_WIDTH) {
+                if (nav.style.top !== headerHeight + 'px') {
+                    nav.style.top = headerHeight + 'px';
+                    Ps.update(nav);
+                }
+            }
+            else {
+                top = window.pageYOffset <= headerHeight ? headerHeight - window.pageYOffset + 'px' : '0';
+
+                if (nav.style.top !== top) {
+                    nav.style.top = top;
+                    Ps.update(nav);
+                }
+            }
+        }
+
+        function setNavBottomPosition () {
+            var footerVisibleHeight = FOOTER_HEIGHT - document.body.scrollHeight + window.pageYOffset +
+                                      document.body.clientHeight;
+
+            if (footerVisibleHeight > 0) {
+                if (nav.style.bottom !== footerVisibleHeight + 'px') {
+                    nav.style.bottom = footerVisibleHeight + 'px';
+                    Ps.update(nav);
+                }
+            }
+            else if (nav.style.bottom !== '0') {
+                nav.style.bottom = '0';
+                Ps.update(nav);
+            }
+        }
+
+        function updateNavMenuPosition () {
+            nav.style.marginLeft = '-' + window.pageXOffset + 'px';
+
+            setNavBottomPosition();
+            setNavTopPosition();
+        }
+
+        function changeBodyHeight () {
+            if (document.body.style.height !== window.innerHeight + 'px')
+                document.body.style.height = window.innerHeight + 'px';
+        }
+
+        function initScrollBar() {
+            Ps.initialize(nav);
+
+            window.addEventListener('resize', function () {
+                Ps.update(nav);
+            });
+        }
+
+        function initNav() {
+            initScrollBar();
+            updateNavMenuPosition();
+            window.addEventListener('scroll', updateNavMenuPosition);
+            window.addEventListener('resize', updateNavMenuPosition);
+        }
+
+        document.addEventListener('DOMContentLoaded', function (e) {
+            if (isMobileDevice)
+                return;
+
+            nav     = document.querySelector('.doc-nav');
+            article = document.querySelector('.doc');
+
+            if (nav)
+                initNav(nav);
+        });
+    </script>
     
     <script>
-        if (document.images) {
-            img1 = new Image();
-            img1.src = '/testcafe/images/test-cafe-logo.png';
+        if (isMobileDevice) {
+            linkCss('/testcafe/css/docs.mobile.css');           
+            
+            if (false == false) {
+                document.addEventListener('DOMContentLoaded', function (e) {
+                    var docNavPanel = document.querySelector('.doc-nav-panel');
+                    var docNav      = document.querySelector('.doc-nav');
+
+                    docNavPanel.addEventListener('click', function (e) {
+                        if (docNav.className.indexOf('active') !== -1) {
+                            docNav.className = docNav.className.replace(' active', '');
+                            document.documentElement.style.overflowY = 'scroll';
+                            document.body.style.overflowY = 'initial';
+                        }
+                        else {
+                            docNav.className += ' active';
+                            document.documentElement.style.overflowY = 'hidden';
+                            document.body.style.overflowY = 'hidden';
+                        }
+                    });
+                });
+            }
         }
     </script>
   
@@ -192,7 +317,7 @@
 
                 var bodyMinimized          = document.body.clientWidth === MIN_BODY_WIDTH;
                 var docContentMargin       = bodyMinimized ? CONTENT_MARGIN_WITHOUT_DOC_MENU : CONTENT_MARGIN_WITH_DOC_MENU;
-                var isCommunitySection     = false;
+                var isCommunitySection     = true;
                 var contentMarginCommunity = isMobileDevice ? CONTENT_MARGIN_COMMUNITY_MOBILE : CONTENT_MARGIN_COMMUNITY_DESKTOP;
                 var contentMargin          = isCommunitySection ? contentMarginCommunity : docContentMargin;
 
@@ -265,7 +390,7 @@
         </div>
       
         
-        <div class="site-nav-tab">
+        <div class="site-nav-tab active">
           <a class="page-link" href="/testcafe/media/team-blog/"><span>Blog</span></a>
         </div>
       
@@ -280,7 +405,7 @@
         </div>
       
         
-        <div class="site-nav-tab active">
+        <div class="site-nav-tab">
           <a class="page-link" href="/testcafe/release-notes/"><span>Release Notes</span></a>
         </div>
       
@@ -435,101 +560,79 @@
     <main>
     <div class="post">
         <div class="post-date">
-            AUG  2, 2017
+            APR 20, 2020
         </div>
         <article class="post-content">
-            <h1>TestCafe v0.17.0 Released: Testing Electron Apps and Concurrent Test Execution</h1>
-<p>With this release, we have prepared a bunch of new features. Two big news are the Electron browser provider and concurrent test execution.</p>
-
-<p>Read on to learn more.</p>
+            <h1>How to Scroll Web Pages Using TestCafe</h1>
+<p>If you&#39;re writing functional tests, you may need to scroll tested pages to display specific elements. In this article, we look at several test scenarios to show how TestCafe navigates pages.</p>
 
 <!--more-->
-<h2><a class="anchor" id="enhancements"></a>Enhancements <a class="permalink" href="#enhancements">#</a></h2><h3><a class="anchor" id="testing-electron-applications-testcafe-browser-provider-electron"></a>⚙ Testing Electron applications (<a href="https://github.com/DevExpress/testcafe-browser-provider-electron">testcafe-browser-provider-electron</a>) <a class="permalink" href="#testing-electron-applications-testcafe-browser-provider-electron">#</a></h3>
-<p>We have created a browser provider that allows you to test Electron applications with TestCafe.</p>
+<h2><a class="anchor" id="built-in-testcafe-actions-scroll-the-page-automatically"></a>Built-in TestCafe Actions Scroll the Page Automatically <a class="permalink" href="#built-in-testcafe-actions-scroll-the-page-automatically">#</a></h2>
+<p>Each TestCafe API action scrolls a page to show the target element. You don&#39;t need to write extra code to click a button or input text. Simply pass a selector to the action method. TestCafe will automatically scroll to the element and execute the action.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// scroll to the "#submit-btn" element and click it</span>
+<span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="dl">'</span><span class="s1">#submit-btn</span><span class="dl">'</span><span class="p">);</span>
+</code></pre></div><h2><a class="anchor" id="scroll-to-a-rendered-dom-element"></a>Scroll to a Rendered DOM Element <a class="permalink" href="#scroll-to-a-rendered-dom-element">#</a></h2>
+<p>If you need to scroll a page to display a specific element or area, but don&#39;t need to perform an action on the target element, use the <a href="https://devexpress.github.io/testcafe/documentation/test-api/actions/hover.html">hover</a> method.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// scroll to the "#country-map" element</span>
+<span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">hover</span><span class="p">(</span><span class="dl">'</span><span class="s1">#country-map</span><span class="dl">'</span><span class="p">);</span>
+</code></pre></div><h2><a class="anchor" id="scroll-to-a-dynamically-generated-element"></a>Scroll to a Dynamically Generated Element <a class="permalink" href="#scroll-to-a-dynamically-generated-element">#</a></h2>
+<p>In certain scenarios, elements cannot be identified by a selector. For instance, a page may contain a dynamically generated list of identical items. Another example is virtual scrolling: the element might not exist on a page when the action starts.</p>
 
-<p>Getting it to work is simple. First, install the browser provider plugin from npm.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm <span class="nb">install </span>testcafe-browser-provider-electron
+<p>A solution in these cases is to use the browser&#39;s native API. For example, you can use the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/scrollBy">window.scrollBy</a> method. To access this method, utilize the <a href="https://devexpress.github.io/testcafe/documentation/test-api/obtaining-data-from-the-client/#creating-client-functions">ClientFunction</a> generator. Calculate the offset between the element and the top of the container, and pass these values to the scrollBy method.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="nx">fixture</span> <span class="s2">`Fixture`</span>
+   <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://github.com/DevExpress/testcafe`</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">scrollBy</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">((</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+   <span class="nb">window</span><span class="p">.</span><span class="nx">scrollBy</span><span class="p">(</span><span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s2">`test`</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+   <span class="kd">const</span> <span class="nx">targetElementPosition</span> <span class="o">=</span> <span class="c1">// ...</span>
+
+   <span class="k">await</span> <span class="nx">scrollBy</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">targetElementPosition</span><span class="p">);</span>
+
+   <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">debug</span><span class="p">();</span>
+<span class="p">});</span>
 </code></pre></div>
-<p>We assume that you have a JavaScript application that you wish to run in Electron.</p>
+<p>Sometimes offset calculation is not an option. If a page uses virtual scrolling, element heights can change. You may not even know the number of elements above the element to be displayed. You might only know the element&#39;s content, such as its display text.</p>
 
-<p>Create a <code>.testcafe-electron-rc</code> file that contains configurations for the Electron plugin.
-The only required setting here is <code>mainWindowUrl</code>. It&#39;s a URL (or path) to the main window page relative to the application directory.</p>
-<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-    </span><span class="nl">"mainWindowUrl"</span><span class="p">:</span><span class="w"> </span><span class="s2">"./index.html"</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre></div>
-<p>Place this file into the application root directory.</p>
+<p>To find an element by text, scroll to the last rendered item on the list so that the next portion of elements are loaded. Continue the process until you locate the element. A selector&#39;s <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/using-selectors.html#check-if-an-element-exists">exists</a> property allows you to scan rendered elements and see if an element with that text exists. If it does exist, the search is over. If not, repeat the cycle.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
-<p>At the next step, install the Electron module.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm <span class="nb">install </span>electron@latest
+<span class="nx">fixture</span> <span class="s2">`Getting Started`</span>
+    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://bvaughn.github.io/react-virtualized/#/components/List</span><span class="dl">'</span><span class="p">)</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Test 1</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">container</span>  <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">._1oXCrgdVudv-QMFo7eQCLb</span><span class="dl">'</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">listItem</span>   <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">._113CIjCFcgg_BK6pEtLzCZ</span><span class="dl">'</span><span class="p">);</span>
+    <span class="kd">const</span> <span class="nx">targetItem</span> <span class="o">=</span> <span class="nx">listItem</span><span class="p">.</span><span class="nx">withExactText</span><span class="p">(</span><span class="dl">'</span><span class="s1">Tisha Wurster</span><span class="dl">'</span><span class="p">);</span>
+
+    <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">container</span><span class="p">);</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="k">await</span> <span class="nx">targetItem</span><span class="p">.</span><span class="nx">exists</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">bottomItemIndex</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">listItem</span><span class="p">.</span><span class="nx">count</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="kd">const</span> <span class="nx">bottomItemText</span>  <span class="o">=</span> <span class="k">await</span> <span class="nx">listItem</span><span class="p">.</span><span class="nx">nth</span><span class="p">(</span><span class="nx">bottomItemIndex</span><span class="p">).</span><span class="nx">textContent</span><span class="p">;</span>
+        <span class="kd">const</span> <span class="nx">bottomItem</span>      <span class="o">=</span> <span class="k">await</span> <span class="nx">listItem</span><span class="p">.</span><span class="nx">withExactText</span><span class="p">(</span><span class="nx">bottomItemText</span><span class="p">);</span>
+
+        <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">hover</span><span class="p">(</span><span class="nx">bottomItem</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">hover</span><span class="p">(</span><span class="nx">targetItem</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">targetItem</span><span class="p">);</span>
+
+    <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">debug</span><span class="p">();</span>
+<span class="p">});</span>
 </code></pre></div>
-<p>Now you are ready to run tests. Specify the <code>electron</code> browser name and the application path
-at the test launch.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"electron:/home/user/electron-app"</span> <span class="s2">"path/to/test/file.js"</span>
-</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">testCafe</span>
-    <span class="p">.</span><span class="nx">createRunner</span><span class="p">()</span>
-    <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="dl">'</span><span class="s1">path/to/test/file.js</span><span class="dl">'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="dl">'</span><span class="s1">electron:/home/user/electron-app</span><span class="dl">'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
-</code></pre></div>
-<p>To learn more about the Electron browser provider, see the plugin <a href="https://github.com/DevExpress/testcafe-browser-provider-electron">readme</a>.</p>
-<h3><a class="anchor" id="concurrent-test-execution-1165"></a>⚙ Concurrent test execution (<a href="https://github.com/DevExpress/testcafe/issues/1165">#1165</a>) <a class="permalink" href="#concurrent-test-execution-1165">#</a></h3>
-<p>We&#39;ve added concurrent test launch. This makes a test batch complete faster.</p>
+<p>We hope you find these tips useful.</p>
 
-<p>By default TestCafe launches one instance of each specified browser. Tests run one by one in each of them.</p>
-
-<p>Enable <em>concurrency</em> and TestCafe will launch multiple instances of each browser. It will distribute the test batch among them. The tests will run in parallel.</p>
-
-<p>To enable concurrency, add <code>-c</code>in the command line. Or use the <code>runner.concurrency()</code> API method.
-Specify the number of instances to invoke for each browser.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">testcafe</span> <span class="o">-</span><span class="nx">c</span> <span class="mi">3</span> <span class="nx">chrome</span> <span class="nx">tests</span><span class="o">/</span><span class="nx">test</span><span class="p">.</span><span class="nx">js</span>
-</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">testRunPromise</span> <span class="o">=</span> <span class="nx">runner</span>
-    <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="dl">'</span><span class="s1">tests/test.js</span><span class="dl">'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="dl">'</span><span class="s1">chrome</span><span class="dl">'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">concurrency</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
-</code></pre></div>
-<p>For details, see <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/concurrent-test-execution.html">Concurrent Test Execution</a>.</p>
-<h3><a class="anchor" id="output-test-run-reports-to-slack-and-teamcity-testcafe-reporter-slack-testcafe-reporter-teamcity"></a>⚙ Output test run reports to Slack and TeamCity (<a href="https://github.com/Shafied/testcafe-reporter-slack">testcafe-reporter-slack</a>, <a href="https://github.com/Soluto/testcafe-reporter-teamcity">testcafe-reporter-teamcity</a>) <a class="permalink" href="#output-test-run-reports-to-slack-and-teamcity-testcafe-reporter-slack-testcafe-reporter-teamcity">#</a></h3>
-<p>Thanks to <a href="https://github.com/Shafied">@Shafied</a> and <a href="https://github.com/nirsky">@nirsky</a>, TestCafe ecosystem has gained two new reporter plugins.</p>
-
-<p>The Slack reporter allows you to create a chat bot that posts test run results to a Slack channel.</p>
-
-<p><img src="../images/testcafe-slack-reporter.png" alt="Slack Reporter" title=""></p>
-
-<p>The TeamCity reporter enables you to display reports inside the TeamCity UI.</p>
-
-<p><img src="../images/testcafe-reporter-teamcity.png" alt="TeamCity Reporter" title=""></p>
-<h3><a class="anchor" id="further-improvements-in-automatic-waiting-mechanism-1521"></a>⚙ Further improvements in automatic waiting mechanism (<a href="https://github.com/DevExpress/testcafe/issues/1521">#1521</a>) <a class="permalink" href="#further-improvements-in-automatic-waiting-mechanism-1521">#</a></h3>
-<p>We have enhanced the waiting mechanism behavior in certain scenarios where you still used to need <code>wait</code> actions.
-Now automatic waiting is much smarter and chances that you need to wait manually are diminished.</p>
-<h3><a class="anchor" id="user-roles-preserve-the-local-storage-1454"></a>⚙ User roles preserve the local storage (<a href="https://github.com/DevExpress/testcafe/issues/1454">#1454</a>) <a class="permalink" href="#user-roles-preserve-the-local-storage-1454">#</a></h3>
-<p>TestCafe now saves the local storage state when switching between roles. You get the same local storage content you left when you switch back.</p>
-
-<p>This is useful for testing websites that perform authentication via local storage instead of cookies.</p>
-<h2><a class="anchor" id="bug-fixes"></a>Bug Fixes <a class="permalink" href="#bug-fixes">#</a></h2>
-<ul>
-<li>Selector&#39;s <code>withAttribute</code> method supports search by strict match (<a href="https://github.com/DevExpress/testcafe/issues/1548">#1548</a>)</li>
-<li>Description for the <code>path</code> parameter of the <code>t.takeScreenshot</code> action has been corrected (<a href="https://github.com/DevExpress/testcafe/issues/1515">#1515</a>)</li>
-<li>Local storage is now cleaned appropriately after the test run.(<a href="https://github.com/DevExpress/testcafe/issues/1546">#1546</a>)</li>
-<li>TestCafe now checks element visibility with a timeout when the target element&#39;s <code>style.top</code> is negative (<a href="https://github.com/DevExpress/testcafe/issues/1185">#1185</a>)</li>
-<li>Fetching an absolute CORS URL now works correctly. (<a href="https://github.com/DevExpress/testcafe/issues/1629">#1629</a>)</li>
-<li>Add partial support for proxying live node collections (the <code>GetElementsByTagName</code> method) (<a href="https://github.com/DevExpress/testcafe/issues/1442">#1442</a>)</li>
-<li>TypeScript performance has been enhanced. (<a href="https://github.com/DevExpress/testcafe/issues/1591">#1591</a>)</li>
-<li>The right port is now applied to a cross-domain iframe location after redirect. (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/1191">testcafe-hammerhead/#1191</a>)</li>
-<li>All internal properties are marked as non-enumerable. (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/1182">testcafe-hammerhead/#1182</a>)</li>
-<li>Support proxying pages with defined referrer policy. (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/1195">testcafe-hammerhead/#1195</a>)</li>
-<li>WebWorker content is now correctly proxied in FireFox 54. (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/1216">testcafe-hammerhead/#1216</a>)</li>
-<li>Code instrumentation for the <code>document.activeElement</code> property works properly if it is <code>null</code>. (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/1226">testcafe-hammerhead/#1226</a>)</li>
-<li><code>length</code>, <code>item</code> and <code>namedItem</code> are no longer own properties of <code>LiveNodeListWrapper</code>. (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/1222">testcafe-hammerhead/#1222</a>)</li>
-<li>The <code>scope</code> option in the <code>serviceWorker.register</code> function is now processed correctly. (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/1233">testcafe-hammerhead/#1233</a>)</li>
-<li>Promises from a fetch request are now processed correctly. (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/1234">testcafe-hammerhead/#1234</a>)</li>
-<li>Fix transpiling for the <code>for..of</code> loop to support browsers without <code>window.Iterator</code>. (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/1231">testcafe-hammerhead/#1231</a>)</li>
-</ul>
+<p>Want to learn more about TestCafe? Feel free to mention <a href="https://twitter.com/DXTestCafe">@DXTestCafe</a> on Twitter and suggest a topic for the next post.</p>
 
         </article>
         <div id="back-to-posts-link">
-            <p><a href="../release-notes/">Back to Post List</a></p>
+            <p><a href="../../media/team-blog/">Back to Post List</a></p>
         </div>
         <!-- <div id="disqus_thread"></div> -->
     </div>
@@ -538,8 +641,8 @@ Now automatic waiting is much smarter and chances that you need to wait manually
 <!-- 
 <script>
     var disqus_config = function () {
-        this.page.url = 'https://devexpress.github.io/testcafe/blog/testcafe-v0-17-0-released.html';
-        this.page.identifier = '/blog/testcafe-v0-17-0-released';
+        this.page.url = 'https://devexpress.github.io/testcafe/media/team-blog/how-to-scroll-web-pages-using-testcafe.html';
+        this.page.identifier = '/media/team-blog/how-to-scroll-web-pages-using-testcafe';
     };
     (function() {
         var d = document, s = d.createElement('script');
