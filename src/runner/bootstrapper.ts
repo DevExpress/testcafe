@@ -17,6 +17,7 @@ import TestedApp from './tested-app';
 import parseFileList from '../utils/parse-file-list';
 import resolvePathRelativelyCwd from '../utils/resolve-path-relatively-cwd';
 import loadClientScripts from '../custom-client-scripts/load';
+import { getConcatenatedValuesString } from '../utils/string';
 
 import { Writable as WritableStream } from 'stream';
 import ClientScript from '../custom-client-scripts/client-script';
@@ -231,10 +232,11 @@ export default class Bootstrapper {
     }
 
     private async _getTests (): Promise<Test[]> {
-        const { sourceList, compilerOptions } = await this._getCompilerArguments();
+        const cwd                             = process.cwd();
+        const { sourceList, compilerOptions } = await this._getCompilerArguments(cwd);
 
         if (!sourceList.length)
-            throw new GeneralError(RUNTIME_ERRORS.testFilesNotFound);
+            throw new GeneralError(RUNTIME_ERRORS.testFilesNotFound, getConcatenatedValuesString(this.sources, '\n', ''), cwd);
 
         let tests = await this._compileTests({ sourceList, compilerOptions });
 
@@ -252,8 +254,8 @@ export default class Bootstrapper {
         return tests;
     }
 
-    private async _getCompilerArguments (): Promise<CompilerArguments> {
-        const sourceList = await parseFileList(this.sources, process.cwd());
+    private async _getCompilerArguments (cwd: string): Promise<CompilerArguments> {
+        const sourceList = await parseFileList(this.sources, cwd);
 
         const compilerOptions = {
             typeScriptOptions: {
