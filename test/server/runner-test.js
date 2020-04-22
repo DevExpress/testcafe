@@ -582,7 +582,7 @@ describe('Runner', () => {
                         'non-existing-file-1.js\n' +
                         'non-existing-file-2.js\n' +
                         '\n' +
-                        'The "C:\\repos\\testcafe" current working directory was used as the base path.\n' +
+                        `The "${process.cwd()}" current working directory was used as the base path.\n` +
                         'Ensure the file patterns are correct or change the current working directory.\n' +
                         'For more information on how to specify test files, see https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#file-pathglob-pattern.');
 
