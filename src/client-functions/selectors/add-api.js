@@ -147,12 +147,17 @@ function addSnapshotProperties (obj, getSelector, SelectorBuilder, properties) {
 function addVisibleProperty ({ obj, getSelector, SelectorBuilder }) {
     Object.defineProperty(obj, VISIBLE_PROP_NAME, {
         get: () => {
-            return ReExecutablePromise.fromFn(async () => {
+            function calculateVisible () {
                 const builder  = new SelectorBuilder(getSelector(), { getVisibleValueMode: true }, { instantiation: 'Selector' });
                 const resultFn = builder.getFunction();
 
                 return resultFn();
-            });
+            }
+
+            if (modeSwitcher.syncMode)
+                return calculateVisible();
+
+            return ReExecutablePromise.fromFn(calculateVisible);
         }
     });
 }
