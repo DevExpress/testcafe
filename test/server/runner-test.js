@@ -567,7 +567,7 @@ describe('Runner', () => {
             return runner
                 .browsers(connection)
                 .reporter('list')
-                .src(['non-existing-file.js'])
+                .src(['non-existing-file-1.js', 'non-existing-file-2.js'])
                 .run()
                 .then(() => {
                     BrowserConnection._generateId = origGenerateId;
@@ -577,7 +577,14 @@ describe('Runner', () => {
                 .catch(err => {
                     BrowserConnection._generateId = origGenerateId;
 
-                    expect(err.message).eql('The specified glob pattern does not match any file or the default test directories are empty.');
+                    expect(err.message).eql(
+                        'TestCafe could not find the test files that match the following patterns:\n' +
+                        'non-existing-file-1.js\n' +
+                        'non-existing-file-2.js\n' +
+                        '\n' +
+                        `The "${process.cwd()}" current working directory was used as the base path.\n` +
+                        'Ensure the file patterns are correct or change the current working directory.\n' +
+                        'For more information on how to specify test files, see https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#file-pathglob-pattern.');
 
                     expect(connectionsCount).eql(0);
                 });
