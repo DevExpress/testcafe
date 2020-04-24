@@ -54,11 +54,6 @@ class SelectorFilter {
             else
                 filtered = filtered.length;
         }
-        else if (options.getVisibleValueMode) {
-            const el = node[0];
-
-            return !!el && visible(el);
-        }
         else {
             if (options.collectionMode) {
                 if (options.index !== null) {
