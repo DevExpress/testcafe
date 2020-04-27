@@ -9,7 +9,7 @@ import log from './log';
 import remotesWizard from './remotes-wizard';
 import correctBrowsersAndSources from './correct-browsers-and-sources';
 import createTestCafe from '../';
-import { generateConfigFile } from './generate-config-file';
+import generateConfigFile from './generate-config-file';
 
 // NOTE: Load the provider pool lazily to reduce startup time
 const lazyRequire         = require('import-lazy')(require);

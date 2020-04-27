@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import inquirer from 'inquirer';
 
-export async function generateConfigFile (configFile: File, browserNames = []): Promise<object> {
+async function generateConfigFile (configFile: File, browserNames = []): Promise<object> {
     if (!await canGenerateConfigFile(configFile)) {
         console.log('Goodbye! 👋');
         process.exit(0);
@@ -34,7 +34,7 @@ export async function generateConfigFile (configFile: File, browserNames = []): 
             {
                 type:    'text',
                 name:    'src',
-                message: 'Specifiy files or directories from which to run tests. (Specify multiple separated by commas.)',
+                message: 'Specifiy files or directories from which to run tests. (Separated by commas.)',
                 filter:  function (value) {
                     value = value.split(',');
 
@@ -211,3 +211,5 @@ async function canGenerateConfigFile (configFile: File): Promise<boolean> {
     }
     return true;
 }
+
+export default generateConfigFile;
