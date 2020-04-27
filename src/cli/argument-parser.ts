@@ -95,6 +95,7 @@ export default class CLIArgumentParser {
             .usage('[options] <comma-separated-browser-list> <file-or-glob ...>')
             .description(CLIArgumentParser._getDescription())
 
+            .option('-i, --init', 'generate a configuration file')
             .option('-b, --list-browsers [provider]', 'output the aliases for local browsers or browsers available through the specified browser provider')
             .option('-r, --reporter <name[:outputFile][,...]>', 'specify the reporters and optionally files where reports are saved')
             .option('-s, --screenshots <option=value[,...]>', 'specify screenshot options')

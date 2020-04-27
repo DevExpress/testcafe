@@ -1,3 +1,5 @@
+import fs from 'fs';
+import path from 'path';
 import chalk from 'chalk';
 import { GeneralError, APIError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
@@ -7,10 +9,12 @@ import log from './log';
 import remotesWizard from './remotes-wizard';
 import correctBrowsersAndSources from './correct-browsers-and-sources';
 import createTestCafe from '../';
+import { generateConfigFile } from './generate-config-file';
 
 // NOTE: Load the provider pool lazily to reduce startup time
 const lazyRequire         = require('import-lazy')(require);
 const browserProviderPool = lazyRequire('../browser/provider/pool');
+const TESTCAFECONFIGFILE = path.join(process.cwd(), '.testcafe.json');
 
 let showMessageOnExit = true;
 let exitMessageShown  = false;
@@ -130,19 +134,15 @@ async function listBrowsers (providerName) {
         throw new GeneralError(RUNTIME_ERRORS.browserProviderNotFound, providerName);
 
     if (provider.isMultiBrowser) {
-        const browserNames = await provider.getBrowserList();
+        let browserNames = await provider.getBrowserList();
 
         await browserProviderPool.dispose();
 
-        if (providerName === 'locally-installed')
-            console.log(browserNames.join('\n'));
-        else
-            console.log(browserNames.map(browserName => `"${providerName}:${browserName}"`).join('\n'));
+        if (providerName !== 'locally-installed')
+            browserNames = browserNames.map(browserName => `"${providerName}:${browserName}"`);
+        return browserNames;
     }
-    else
-        console.log(`"${providerName}"`);
-
-    exit(0);
+    return [providerName];
 }
 
 (async function cli () {
@@ -155,8 +155,21 @@ async function listBrowsers (providerName) {
 
         await argParser.parse(process.argv);
 
-        if (argParser.opts.listBrowsers)
-            await listBrowsers(argParser.opts.providerName);
+        if (argParser.opts.listBrowsers) {
+            const browserNames = await listBrowsers(argParser.opts.providerName);
+
+            console.log(browserNames.join('\n'));
+        }
+        else if (argParser.opts.init) {
+            const browserNames =  await listBrowsers('locally-installed');
+            const generatedConfig = await generateConfigFile(fs.existsSync(TESTCAFECONFIGFILE), browserNames);
+
+            fs.writeFileSync(TESTCAFECONFIGFILE, JSON.stringify(generatedConfig, null, 2));
+            console.log('');
+            console.log(
+                `📝  Configuration file created at ${chalk.cyan(TESTCAFECONFIGFILE)}`,
+            );
+        }
         else
             await runTests(argParser);
     }
