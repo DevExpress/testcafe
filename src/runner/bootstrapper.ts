@@ -245,11 +245,14 @@ export default class Bootstrapper {
         if (testsWithOnlyFlag.length)
             tests = testsWithOnlyFlag;
 
+        if (!tests.length)
+            throw new GeneralError(RUNTIME_ERRORS.noTestsToRun);
+
         if (this.filter)
             tests = this._filterTests(tests, this.filter);
 
         if (!tests.length)
-            throw new GeneralError(RUNTIME_ERRORS.noTestsToRun);
+            throw new GeneralError(RUNTIME_ERRORS.noTestsToRunDueFiltering);
 
         return tests;
     }

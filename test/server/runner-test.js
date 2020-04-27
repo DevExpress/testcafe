@@ -438,7 +438,8 @@ describe('Runner', () => {
                 .src(['test/server/data/test-suites/test-as-module/without-tests/testfile.js'])
                 .run()
                 .catch(err => {
-                    expect(err.message).eql('No tests to run. Either the test files contain no tests or the filter function is too restrictive.');
+                    expect(err.message).eql('No tests found in the specified source files.\n' +
+                        "Ensure the sources contain the 'fixture' and 'test' directives.");
                 });
         });
 
@@ -547,8 +548,9 @@ describe('Runner', () => {
                     throw new Error('Promise rejection expected');
                 })
                 .catch(err => {
-                    expect(err.message).eql('No tests to run. Either the test files contain no tests ' +
-                                            'or the filter function is too restrictive.');
+                    expect(err.message).eql('The specified filter settings exclude all tests.\n' +
+                        'Modify these settings to leave at least one available test.\n' +
+                        'For more information on how to specify filter settings, see https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#filter.');
                 });
         });
     });

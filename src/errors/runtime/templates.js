@@ -5,7 +5,10 @@
 
 import { RUNTIME_ERRORS } from '../types';
 
-const TEST_SOURCE_PARAMETER_DOCUMENTATION_LINK = 'https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#file-pathglob-pattern';
+const DOCUMENTATION_LINKS = {
+    TEST_SOURCE_PARAMETER: 'https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#file-pathglob-pattern',
+    FILTER_SETTINGS:       'https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#filter'
+};
 
 export default {
     [RUNTIME_ERRORS.cannotCreateMultipleLiveModeRunners]:  'Cannot create multiple live mode runners.',
@@ -21,9 +24,15 @@ export default {
                                         '{sourceList}\n\n' +
                                         'The "{cwd}" current working directory was used as the base path.\n' +
                                         'Ensure the file patterns are correct or change the current working directory.\n' +
-                                        `For more information on how to specify test files, see ${TEST_SOURCE_PARAMETER_DOCUMENTATION_LINK}.`,
+                                        `For more information on how to specify test files, see ${DOCUMENTATION_LINKS.TEST_SOURCE_PARAMETER}.`,
 
-    [RUNTIME_ERRORS.noTestsToRun]:                                       'No tests to run. Either the test files contain no tests or the filter function is too restrictive.',
+    [RUNTIME_ERRORS.noTestsToRun]: 'No tests found in the specified source files.\n' +
+                                   "Ensure the sources contain the 'fixture' and 'test' directives.",
+
+    [RUNTIME_ERRORS.noTestsToRunDueFiltering]: 'The specified filter settings exclude all tests.\n' +
+                                               'Modify these settings to leave at least one available test.\n' +
+                                               `For more information on how to specify filter settings, see ${DOCUMENTATION_LINKS.FILTER_SETTINGS}.`,
+
     [RUNTIME_ERRORS.cannotFindReporterForAlias]:                         'The provided "{name}" reporter does not exist. Check that you have specified the report format correctly.',
     [RUNTIME_ERRORS.multipleSameStreamReporters]:                        'The following reporters attempted to write to the same output stream: "{reporters}". Only one reporter can write to a stream.',
     [RUNTIME_ERRORS.optionValueIsNotValidRegExp]:                        'The "{optionName}" option value is not a valid regular expression.',
