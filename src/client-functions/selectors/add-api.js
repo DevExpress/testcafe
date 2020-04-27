@@ -68,9 +68,9 @@ const expandSelectorResults = (new ClientFunctionBuilder((selector, populateDeri
 
 })).getFunction();
 
-async function getSnapshot (getSelector, callsite, SelectorBuilder) {
+async function getSnapshot (getSelector, callsite, SelectorBuilder, getVisibleValueMode) {
     let node       = null;
-    const selector = new SelectorBuilder(getSelector(), { needError: true }, { instantiation: 'Selector' }).getFunction();
+    const selector = new SelectorBuilder(getSelector(), { getVisibleValueMode, needError: true }, { instantiation: 'Selector' }).getFunction();
 
     try {
         node = await selector();
@@ -126,11 +126,12 @@ function addSnapshotProperties (obj, getSelector, SelectorBuilder, properties) {
 function addVisibleProperty ({ obj, getSelector, SelectorBuilder }) {
     Object.defineProperty(obj, VISIBLE_PROP_NAME, {
         get: () => {
-            return ReExecutablePromise.fromFn(async () => {
-                const builder  = new SelectorBuilder(getSelector(), { getVisibleValueMode: true }, { instantiation: 'Selector' });
-                const resultFn = builder.getFunction();
+            const callsite = getCallsiteForMethod('get');
 
-                return resultFn();
+            return ReExecutablePromise.fromFn(async () => {
+                const snapshot = await getSnapshot(getSelector, callsite, SelectorBuilder, true);
+
+                return !!snapshot && snapshot[VISIBLE_PROP_NAME];
             });
         }
     });

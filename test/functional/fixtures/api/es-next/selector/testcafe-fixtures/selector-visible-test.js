@@ -1,7 +1,7 @@
 import { Selector } from 'testcafe';
 
 fixture `Selector.visible`
-    .page('http://localhost:3000/fixtures/api/es-next/selector/pages/visible.html');
+    .page('../pages/visible.html');
 
 test('test', async t => {
     const nonExistingElement = Selector('#wrong-selector');
@@ -10,10 +10,16 @@ test('test', async t => {
         .expect(nonExistingElement.exists).notOk()
         .expect(nonExistingElement.visible).notOk();
 
-    const existingElement = Selector('div');
+    const invisibleElement = Selector('#invisible');
 
     await t
-        .expect(existingElement.exists).ok()
-        .expect(existingElement.visible).notOk();
+        .expect(invisibleElement.exists).ok()
+        .expect(invisibleElement.visible).notOk();
+
+    const visibleElement = Selector('#invisible, #visible').filterVisible();
+
+    await t.expect(visibleElement.exists).ok();
+    await t.expect((await visibleElement()).visible).ok();
+    await t.expect(visibleElement.visible).ok();
 });
 
