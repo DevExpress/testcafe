@@ -17,4 +17,4 @@ Parameter | Type | Description
 
 > The `t.removeRequestHooks` method uses the rest operator that allows you to pass multiple hooks as parameters or arrays of hooks.
 
-To attach request hooks, use the [t.attachRequestHooks](attachrequesthooks.md), [test.requestHooks](../test/requesthooks.md) and [fixture.requestHooks](../fixture/requesthooks.md) methods.
+To attach request hooks, use the [t.addRequestHooks](addrequesthooks.md), [test.requestHooks](../test/requesthooks.md) and [fixture.requestHooks](../fixture/requesthooks.md) methods.

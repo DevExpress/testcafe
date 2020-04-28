@@ -41,7 +41,7 @@ You can use the [t.dragToElement](dragtoelement.md) method to drag an element on
 
 ## Select Target Elements
 
-{% include actions/selector-options.md %}
+{% include actions/selector-parameter.md %}
 
 ## Options
 

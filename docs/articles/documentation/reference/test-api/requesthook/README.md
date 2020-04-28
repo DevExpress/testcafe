@@ -5,7 +5,7 @@ permalink: /documentation/reference/test-api/requesthook/
 ---
 # RequestHook Class
 
-The base class for [custom request hooks](../../../guides/advanced-guides/intercept-http-requests.md#custom-hooks).
+The base class for [custom request hooks](../../../guides/advanced-guides/intercept-http-requests.md#create-a-custom-request-hook).
 
 ```js
 class RequestHook {

@@ -2,6 +2,9 @@
 layout: docs
 title: Assert
 permalink: /documentation/guides/basic-guides/assert.html
+redirect_from:
+  - /documentation/test-api/assertions/
+  - /documentation/test-api/assertions/assertion-api.html
 ---
 # Assertions
 
@@ -87,7 +90,7 @@ To stabilize asynchronous functional tests, you need to add a timeout that allow
 Note that adding a timeout can increase the test's duration.
 
 TestCafe uses the smart assertion query mechanism if the assertion receives a [Selector's DOM node state property](select-page-elements.md#define-assertion-actual-value)
-or [client function](obtain-data-from-the-client.md) promise
+or [client function](obtain-client-side-info.md) promise
 as an `actual` value:
 if an assertion did not pass, the test does not fail immediately. The assertion retries to pass multiple times, and
 each time it requests the `actual` property value. The test fails if the assertion could not complete successfully
@@ -130,8 +133,8 @@ test('Button click', async t => {
 The approach described above allows you to create stable tests with fast runtime and reduces the risk of errors.
 
 You can specify the assertion query timeout in test code with the [options.timeout](#options) option.
-To set the timeout when you launch tests, pass the timeout value to the [runner.run](../../using-testcafe/programming-interface/runner.md#run)
-method if you use API or specify the [assertion-timeout](../../using-testcafe/command-line-interface.md#--assertion-timeout-ms) option
+To set the timeout when you launch tests, pass the timeout value to the [runner.run](../../reference/testcafe-api/runner/run.md)
+method if you use API or specify the [assertion-timeout](../../reference/command-line-interface.md#--assertion-timeout-ms) option
 if you run TestCafe from the command line.
 
 ## Options

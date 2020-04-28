@@ -2,6 +2,8 @@
 layout: docs
 title: DOMNodeState Object
 permalink: /documentation/reference/test-api/domnodestate.html
+redirect_from:
+  - /documentation/test-api/selecting-page-elements/dom-node-state.html
 ---
 # DOMNodeState Object
 

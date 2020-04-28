@@ -15,7 +15,7 @@ This release introduces access to the browser and platform information from test
 
 TestCafe now allows you to obtain information about the current user agent. These data identify the operating system, platform type, browser, engine, etc.
 
-Use the [t.browser](../documentation/test-api/identify-the-browser-and-platform.md) property to access user agent data.
+Use the [t.browser](../documentation/reference/test-api/testcontroller/browser.md) property to access user agent data.
 
 ```js
 import { Selector } from 'testcafe';
@@ -29,21 +29,21 @@ test('My test', async t => {
 });
 ```
 
-The [t.browser](../documentation/test-api/identify-the-browser-and-platform.md) object exposes the following properties:
+The [t.browser](../documentation/reference/test-api/testcontroller/browser.md) object exposes the following properties:
 
 Property | Type | Description   | Example
 -------- | ---- | ------------- | -------
-[alias](../documentation/test-api/identify-the-browser-and-platform.md#alias) | String | The browser alias string specified when tests were launched. | `firefox:headless`
-[name](../documentation/test-api/identify-the-browser-and-platform.md#name) | String | The browser name. | `Chrome`
-[version](../documentation/test-api/identify-the-browser-and-platform.md#version) | String | The browser version. | `77.0.3865.120`
-[platform](../documentation/test-api/identify-the-browser-and-platform.md#platform) | String | The platform type. | `desktop`
-[headless](../documentation/test-api/identify-the-browser-and-platform.md#headless) | Boolean | `true` if the browser runs in headless mode. | `false`
-[os](../documentation/test-api/identify-the-browser-and-platform.md#os) | Object | The name and version of the operating system. | `{ name: 'macOS', version: '10.15.1' }`
-[engine](../documentation/test-api/identify-the-browser-and-platform.md#engine) | Object | The name and version of the browser engine. |  `{ name: 'Gecko', version: '20100101' }`
-[userAgent](../documentation/test-api/identify-the-browser-and-platform.md#useragent) | String | The user agent string. | `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/77.0.3865.120 Safari/537.36`
-[prettyUserAgent](../documentation/test-api/identify-the-browser-and-platform.md#prettyuseragent) | String | Formatted string with the browser's and operating system's name and version. | `Chrome 77.0.3865.75 / macOS 10.14.0`
+[alias](../documentation/reference/test-api/testcontroller/browser.md#alias) | String | The browser alias string specified when tests were launched. | `firefox:headless`
+[name](../documentation/reference/test-api/testcontroller/browser.md#name) | String | The browser name. | `Chrome`
+[version](../documentation/reference/test-api/testcontroller/browser.md#version) | String | The browser version. | `77.0.3865.120`
+[platform](../documentation/reference/test-api/testcontroller/browser.md#platform) | String | The platform type. | `desktop`
+[headless](../documentation/reference/test-api/testcontroller/browser.md#headless) | Boolean | `true` if the browser runs in headless mode. | `false`
+[os](../documentation/reference/test-api/testcontroller/browser.md#os) | Object | The name and version of the operating system. | `{ name: 'macOS', version: '10.15.1' }`
+[engine](../documentation/reference/test-api/testcontroller/browser.md#engine) | Object | The name and version of the browser engine. |  `{ name: 'Gecko', version: '20100101' }`
+[userAgent](../documentation/reference/test-api/testcontroller/browser.md#useragent) | String | The user agent string. | `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/77.0.3865.120 Safari/537.36`
+[prettyUserAgent](../documentation/reference/test-api/testcontroller/browser.md#prettyuseragent) | String | Formatted string with the browser's and operating system's name and version. | `Chrome 77.0.3865.75 / macOS 10.14.0`
 
-The following example shows how to create a [beforeEach](../documentation/test-api/test-code-structure.md#test-hooks) hook that runs for specific [browser engines](../documentation/test-api/identify-the-browser-and-platform.md#engine).
+The following example shows how to create a [beforeEach](../documentation/reference/test-api/fixture/beforeeach.md) hook that runs for specific [browser engines](../documentation/reference/test-api/testcontroller/browser.md#engine).
 
 ```js
 import { Selector } from 'testcafe';
@@ -57,7 +57,7 @@ fixture `My fixture`
     });
 ```
 
-You can also use [t.browser](../documentation/test-api/identify-the-browser-and-platform.md) to generate the screenshot path based on the [browser name](../documentation/test-api/identify-the-browser-and-platform.md#name). This prevents screenshots taken with [t.takeElementScreenshot](../documentation/test-api/actions/take-screenshot.md#take-a-screenshot-of-a-page-element) in different browsers from being overwritten.
+You can also use [t.browser](../documentation/reference/test-api/testcontroller/browser.md) to generate the screenshot path based on the [browser name](../documentation/reference/test-api/testcontroller/browser.md#name). This prevents screenshots taken with [t.takeElementScreenshot](../documentation/reference/test-api/testcontroller/takeelementscreenshot.md) in different browsers from being overwritten.
 
 ```js
 import { Selector } from 'testcafe';
@@ -72,7 +72,7 @@ test('My test', async t => {
 });
 ```
 
-For more information and examples, see [Identify the Browser and Platform](../documentation/test-api/identify-the-browser-and-platform.md).
+For more information and examples, see [Identify the Browser and Platform](../documentation/guides/advanced-guides/detect-the-client-browser-and-platform.md).
 
 ## Bug Fixes
 

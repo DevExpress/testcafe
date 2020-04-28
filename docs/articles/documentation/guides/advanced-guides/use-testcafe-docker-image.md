@@ -112,7 +112,7 @@ Windows | `netstat -ano`
 macOS   | `netstat -anv`
 Linux   | `netstat -anp`
 
-If you choose to use different ports, publish them in the Docker container (use the `-p` flag) and specify them to TestCafe (use the [--ports](command-line-interface.md#--ports-port1port2) option).
+If you choose to use different ports, publish them in the Docker container (use the `-p` flag) and specify them to TestCafe (use the [--ports](../../reference/command-line-interface.md#--ports-port1port2) option).
 
 ```sh
 docker run --add-host=${EXTERNAL_HOSTNAME}:127.0.0.1 -p ${PORT1}:${PORT1} -p ${PORT2}:${PORT2} -v /d/tests:/tests -it testcafe/testcafe --hostname ${EXTERNAL_HOSTNAME} --ports ${PORT1},${PORT2} remote /tests/test.js

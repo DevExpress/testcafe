@@ -2,6 +2,16 @@
 layout: docs
 title: Intercept HTTP Requests
 permalink: /documentation/guides/advanced-guides/intercept-http-requests.html
+redirect_from:
+  - /documentation/test-api/intercepting-http-requests/mocking-http-responses.html
+  - /documentation/test-api/intercepting-http-requests/
+  - /documentation/test-api/intercepting-http-requests/attaching-hooks-to-tests-and-fixtures.html
+  - /documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html
+  - /documentation/test-api/intercepting-http-requests/logging-http-requests.html
+  - /documentation/test-api/intercepting-http-requests/mocking-http-requests.html
+  - /documentation/test-api/intercepting-http-requests/requestoptions-object.html
+  - /documentation/test-api/intercepting-http-requests/select-requests-to-be-handled-by-the-hook.html
+  - /documentation/test-api/intercepting-http-requests/specifying-which-requests-are-handled-by-the-hook.html
 ---
 # Intercept HTTP Requests
 
@@ -11,7 +21,7 @@ This section describes how to handle HTTP requests in your tests. TestCafe ships
 
 You can use the [request logger](../../reference/test-api/requestlogger/README.md) to record HTTP requests the tested web app sends and responses it receives. For instance, you may want to make sure that the data from a remote service is correct.
 
-Use the [RequestLogger](../../reference/test-api/global/requestlogger.md) constructor to create a request logger.
+Use the [RequestLogger](../../reference/test-api/requestlogger/constructor.md) constructor to create a request logger.
 
 ```js
 import { RequestLogger } from 'testcafe';
@@ -86,7 +96,7 @@ test('export to csv', async t => {
 
 Use TestCafe [request mocker](../../reference/test-api/requestmock/README.md) to substitute infrastructure that is difficult to deploy or that you do not want to use for test purposes. This can be a third-party service that charges you per pageview or an analytics service that should not log page views that tests generate. The mocker can intercept requests to this resource and emulate the response as needed.
 
-Use the [RequestMock](../../reference/test-api/global/requestmock.md) constructor to create a request mocker.
+Use the [RequestMock](../../reference/test-api/requestmock/constructor.md) constructor to create a request mocker.
 
 ```js
 var mock = RequestMock();

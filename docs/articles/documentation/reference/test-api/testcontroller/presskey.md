@@ -2,6 +2,8 @@
 layout: docs
 title: t.pressKey Method
 permalink: /documentation/reference/test-api/testcontroller/presskey.html
+redirect_from:
+  - /documentation/test-api/actions/press-key.html
 ---
 # t.pressKey Method
 
@@ -111,4 +113,4 @@ test('Key Presses', async t => {
 
 ## Options
 
-{% include actions/basic-actions.md %}
+{% include actions/basic-action-options.md %}

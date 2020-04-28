@@ -521,7 +521,6 @@ gulp.task('lint-docs', () => {
         'docs/articles/**/*.md',
         '!docs/articles/faq/**/*.md',
         '!docs/articles/documentation/recipes/**/*.md',
-        '!docs/articles/templates/**/*.md',
         '!docs/articles/blog/**/*.md',
         '!docs/articles/templates/**/*.md',
         'examples/**/*.md'

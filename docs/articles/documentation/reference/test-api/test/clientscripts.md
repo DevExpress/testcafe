@@ -37,13 +37,15 @@ You can use the [page](../../../guides/advanced-guides/inject-client-scripts.md#
 ## Inject a JavaScript File
 
 {% capture syntax %}
+
 ```text
 test.clientScripts(filePath | { path: filePath })
 test.clientScripts(filePath | { path: filePath }, ...)
 test.clientScripts([ filePath | { path: filePath } ])
 ```
+
 {% endcapture %}
-{% inlcude client-scripts/inject-javascript-file.md syntax=syntax relativePaths="local" %}
+{% include client-scripts/inject-javascript-file.md syntax=syntax relativePaths="local" %}
 **Example**
 
 ```js
@@ -55,13 +57,15 @@ test
 ## Inject a Module
 
 {% capture syntax %}
+
 ```text
 test.clientScripts( { module: moduleName } )
 test.clientScripts( { module: moduleName }, ... )
 test.clientScripts([ { module: moduleName } ])
 ```
+
 {% endcapture %}
-{% inlcude client-scripts/inject-javascript-file.md syntax=syntax %}
+{% include client-scripts/inject-module.md syntax=syntax %}
 **Example**
 
 ```js
@@ -73,13 +77,15 @@ test
 ## Inject Script Code
 
 {% capture syntax %}
+
 ```text
 test.clientScripts({ content: code })
 test.clientScripts({ content: code }, ...)
 test.clientScripts([ { content: code } ])
 ```
+
 {% endcapture %}
-{% inlcude client-scripts/inject-javascript-file.md syntax=syntax %}
+{% include client-scripts/inject-code.md syntax=syntax %}
 **Example**
 
 ```js
@@ -97,6 +103,7 @@ test
 ## Provide Scripts for Specific Pages
 
 {% capture syntax %}
+
 ```text
 test.clientScripts({
     page: url,
@@ -115,8 +122,9 @@ test.clientScripts([
     }
 ])
 ```
+
 {% endcapture %}
-{% inlcude client-scripts/inject-javascript-file.md syntax=syntax regexp=true %}
+{% include client-scripts/specify-pages.md syntax=syntax regexp=true %}
 **Example**
 
 ```js

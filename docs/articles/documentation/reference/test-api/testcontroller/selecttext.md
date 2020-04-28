@@ -52,7 +52,7 @@ You can also select `<textarea>` content with the [t.selectTextareaContent](sele
 
 ## Select Target Elements
 
-{% include actions/selector-options.md %}
+{% include actions/selector-parameter.md %}
 
 ## Options
 

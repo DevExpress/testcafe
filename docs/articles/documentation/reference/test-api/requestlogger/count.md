@@ -11,7 +11,7 @@ Returns the number of requests that match the predicate.
 count( predicate(Request) ) → Promise<Numeric>
 ```
 
-> If you use the `contains(predicate)` or `count(predicate)` methods in assertions, TestCafe uses the [Smart Assertion Query Mechanism](../../../guides/basic-guides/assert.md#smart-assertion-query-mechanis).
+> If you use the `contains(predicate)` or `count(predicate)` methods in assertions, TestCafe uses the [Smart Assertion Query Mechanism](../../../guides/basic-guides/assert.md#smart-assertion-query-mechanism).
 
 The predicate accepts a `Request` as the only parameter.
 

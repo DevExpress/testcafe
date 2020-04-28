@@ -2,6 +2,19 @@
 layout: docs
 title: Select Page Elements
 permalink: /documentation/guides/basic-guides/select-page-elements.html
+redirect_from:
+  - /documentation/test-api/selecting-page-elements/
+  - /documentation/test-api/selecting-page-elements/examples-of-working-with-dom-elements.html
+  - /documentation/test-api/selecting-page-elements/framework-specific-selectors.html
+  - /documentation/test-api/selecting-page-elements/selectors/
+  - /documentation/test-api/selecting-page-elements/selectors/creating-selectors.html
+  - /documentation/test-api/selecting-page-elements/selectors/edge-cases-and-limitations.html
+  - /documentation/test-api/selecting-page-elements/selectors/extending-selectors.html
+  - /documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html
+  - /documentation/test-api/selecting-page-elements/selectors/selector-options.html
+  - /documentation/test-api/selecting-page-elements/selector-options.html
+  - /documentation/test-api/selecting-page-elements/selectors/using-selectors.html
+  - /documentation/test-api/selecting-page-elements/selectors.html
 ---
 # Select Page Elements
 
@@ -57,7 +70,7 @@ You can use selectors to [inspect elements](#obtain-element-state), define [acti
 
 ## Create Selectors
 
-Pass a CSS selector string or a client-side function to the [Selector](../../reference/test-api/selector/selector.md) constructor to create a selector.
+Pass a CSS selector string or a client-side function to the [Selector](../../reference/test-api/selector/constructor.md) constructor to create a selector.
 
 ```js
 import { Selector } from 'testcafe';
@@ -294,11 +307,11 @@ When you pass selector properties instead of values, TestCafe enables [Smart Ass
 
 When a selector is executed, TestCafe waits for the target node to appear in the DOM until the *selector timeout* expires.
 
-Use the [timeout](../../reference/selector.md#optionstimeout) option to specify the selector timeout in test code. To set the timeout when you launch tests, pass it to the [runner.run](../../reference/testcafe-api/runner.md#run) API method or the [--selector-timeout](../../reference/command-line-interface.md#--selector-timeout-ms) command line option.
+Use the [timeout](../../reference/test-api/selector/constructor.md#optionstimeout) option to specify the selector timeout in test code. To set the timeout when you launch tests, pass it to the [runner.run](../../reference/testcafe-api/runner/run.md) API method or the [--selector-timeout](../../reference/command-line-interface.md#--selector-timeout-ms) command line option.
 
 During the timeout, the selector is re-executed until it returns a DOM node or the timeout is exceeded. If TestCafe cannot find the corresponding node in the DOM, the test fails.
 
-> Note that you can specify that the node returned by the selector should also be visible. To do this, use the [visibilityCheck](../../reference/selector.md#optionsvisibilitycheck) option.
+> Note that you can specify that the node returned by the selector should also be visible. To do this, use the [visibilityCheck](../../reference/test-api/selector/constructor.md#optionsvisibilitycheck) option.
 
 ## Debug Selectors
 
@@ -308,7 +321,7 @@ When you try to use a selector that does not match any DOM element, the test fai
 
 An error can also occur when you call a [selector's methods](#member-tables) in a chain. These methods are applied to the selector one by one. TestCafe detects the first method that returns no elements and highlights it in the error message.
 
-![Selector methods in a report](../../../../images/failed-selector-report.png)
+![Selector methods in a report](../../../images/failed-selector-report.png)
 
 ## Extend Selectors with Custom Properties and Methods
 
@@ -489,7 +502,7 @@ See the [repository documentation](https://github.com/miherlosev/testcafe-aureli
 
 ## Call Selectors from Node.js Callbacks
 
-Selectors need access to the [test controller](../../reference/testcontroller/README.md) to be executed. When called right from the test function, they implicitly obtain the test controller.
+Selectors need access to the [test controller](../../reference/test-api/testcontroller/README.md) to be executed. When called right from the test function, they implicitly obtain the test controller.
 
 However, if you need to call a selector from a Node.js callback that fires during the test run, you have to bind it to the test controller.
 
@@ -538,3 +551,304 @@ does not finish before the callback is executed, suspend the test until the call
   They cannot take any parameters from the outside.
 
     Likewise, the return value is the only way to obtain data from selectors.
+
+## Examples
+
+### Access Page Element Properties
+
+To work with page elements, use TestCafe selectors. Import the [Selector](../../reference/test-api/selector/constructor.md) function, call it and pass a CSS selector inside. This function creates a selector object [whose API](../../reference/test-api/domnodestate.md) exposes the most used members of HTML element API.
+
+```js
+import { Selector } from 'testcafe';
+
+fixture `My fixture`
+    .page `https://devexpress.github.io/testcafe/example/`;
+
+test('My test', async t => {
+    const element     = Selector('#developer-name');
+    const clientWidth = await element.clientWidth;
+
+    // do something with clientWidth
+});
+```
+
+If you need to access element properties not included in the selector's API, use the [selector.addCustomDOMProperties](../../reference/test-api/selector/addcustomdomproperties.md) method to retrieve them from DOM.
+
+```js
+import { Selector } from 'testcafe';
+
+fixture `My fixture`
+    .page `https://example.com`;
+
+test('Check Label HTML', async t => {
+    const label = Selector('label').addCustomDOMProperties({
+        innerHTML: el => el.innerHTML,
+        tabIndex: el => el.tabIndex,
+        lang: el => el.lang
+    });
+
+    await t
+        .expect(label.innerHTML).contains('type="checkbox"')
+        .expect(label.tabIndex).eql(2)
+        .expect(label.lang).eql('en');
+});
+```
+
+You can also use a [client function](obtain-client-side-info.md) to obtain a single element property from the client. In this case, you should pass the selector to client function's [dependencies](../../reference/test-api/clientfunction/constructor.md#optionsdependencies) option.
+
+```js
+import { Selector, ClientFunction } from 'testcafe';
+
+fixture `My fixture`
+    .page `https://devexpress.github.io/testcafe/example/`;
+
+test('Check Label HTML', async t => {
+    const label = Selector('label');
+
+    const getLabelHtml = ClientFunction(() => label().innerHTML, { dependencies: { label } });
+
+    await t
+        .expect(getLabelHtml()).contains('type="checkbox"')
+        .expect(getLabelHtml()).contains('name="remote"');
+});
+```
+
+> Note that selector's property getters and client functions are asynchronous. If you need their resulting value in your code, use the `await` keyword.
+>
+> However, you can omit `await` when you pass a selector property or a client function value into an [assertion](assert.md). In this instance, TestCafe uses its [Smart Assertion Query Mechanism](assert.md#smart-assertion-query-mechanism) to wait until the value is available. This makes your tests more stable.
+
+### Get a Page Element Using Custom Logic
+
+Sometimes CSS selectors are not powerful enough to identify the required page element.
+In this instance, you can introduce a function that picks the desired element.
+
+```js
+import { Selector } from 'testcafe';
+
+fixture `My fixture`
+    .page `https://devexpress.github.io/testcafe/example/`;
+
+test('My test', async t => {
+    const checkBoxesStartingWithR = Selector(() => {
+        let labels = document.querySelectorAll('label');
+
+        labels = Array.prototype.slice.call(labels);
+
+        const targetLabels = labels.filter(label => label.textContent.match(/^R/));
+
+        return targetLabels.map(label => label.children[0]);
+    });
+
+    await t.click(checkBoxesStartingWithR.nth(0));
+});
+```
+
+### Access Child Nodes in the DOM Hierarchy
+
+The [selector API](#member-tables) allows you to filter matching elements and search through adjacent elements in the DOM tree.
+
+Selector API contains two types methods:
+
+* methods that enumerate all node types
+* methods that enumerate DOM elements only
+
+<!-- markdownlint-disable MD033 -->
+Methods                                                | Enumerated Nodes
+------------------------------------------------------ | -------
+[filter(function)](../../reference/test-api/selector/filter.md)<br/>[find](../../reference/test-api/selector/find.md)<br/>[parent](../../reference/test-api/selector/parent.md) | All nodes
+[nth](../../reference/test-api/selector/nth.md)<br/>[withText](../../reference/test-api/selector/withtext.md)<br/>[withExactText](../../reference/test-api/selector/withexacttext.md)<br/>[withAttribute](../../reference/test-api/selector/withattribute.md)<br/>[filter(string)](../../reference/test-api/selector/filter.md)<br/>[filterVisible](../../reference/test-api/selector/filtervisible.md)<br/>[filterHidden](../../reference/test-api/selector/filterhidden.md)<br/>[child](../../reference/test-api/selector/child.md)<br/>[sibling](../../reference/test-api/selector/sibling.md)<br/>[nextSibling](../../reference/test-api/selector/nextsibling.md)<br/>[prevSibling](../../reference/test-api/selector/prevsibling.md) | Elements only
+<!-- markdownlint-enable MD033 -->
+
+The following example illustrates the difference between these methods and shows how to get a child text node for a given parent element.
+
+Consider the following *example.html* page:
+
+```js
+<!DOCTYPE html>
+<html>
+    <body>
+        This is my tested page. <!--This is the first child node of <body>-->
+        <p>My first paragraph.</p>
+        <p>My second paragraph.</p>
+    </body>
+</html>
+```
+
+Let's write a test that verifies text content of the body's first child node (*'This is my tested page'*).
+
+To select this node, use the [find](../../reference/test-api/selector/find.md) method that enumerates all nodes. Compare it with the [child](../../reference/test-api/selector/child.md) method that skips the text node and returns the `<p>` element.
+
+```js
+import { Selector } from 'testcafe';
+
+fixture `My Fixture`
+    .page `example.html`;
+
+const body              = Selector('body');
+const firstChildElement = body.child(0);                 // <p>
+const firstChildNode    = body.find((node, index) => {   // text node
+    return index === 0;
+});
+
+test('My Test', async t => {
+    await t
+        .expect(firstChildElement.textContent).eql('My first paragraph.')
+        .expect(firstChildNode.textContent).eql('\n        This is my tested page. ');
+});
+```
+
+### Access Shadow DOM
+
+CSS selectors passed to the [Selector](../../reference/test-api/selector/constructor.md) constructor cannot identify elements in the shadow DOM.
+
+To select a shadow element, initialize a selector with client-side code and use the [shadowRoot](https://developer.mozilla.org/en-US/docs/Web/API/Element/shadowRoot) property to get and return the required element from shadow DOM.
+
+The following example shows the `paragraph` selector that returns `<p>` from the shadow DOM.
+
+```js
+import { Selector } from 'testcafe';
+
+fixture `My fixture`
+    .page `https://chrisbateman.github.io/guide-to-web-components/demos/shadow-dom.htm`;
+
+const demoPage = Selector('#demo1');
+
+const paragraph = Selector(() => {
+    return demoPageSelector().shadowRoot.querySelectorAll('p');
+}, { dependencies: { demoPageSelector: demoPage } });
+
+test('Get text within shadow root', async t => {
+    await t.click(paragraph.nth(0));
+
+    var text = await paragraph.nth(0).textContent;
+
+    await t.expect(paragraph.nth(0).textContent).eql('These paragraphs are in a shadow root.');
+});
+```
+
+The `paragraph` selector obtains [shadowRoot](https://developer.mozilla.org/en-US/docs/Web/API/Element/shadowRoot) from the `#demo1` element. The `demoPage` selector that identifies `#demo1` is passed as a [dependency](../../reference/test-api/selector/constructor.md#optionsdependencies).
+
+### Check if an Element is Available
+
+Generally speaking, introducing conditions in tests is not considered good practice because it indicates that your tests are non-deterministic.
+The tested website should guarantee that the test writer knows the page state at any moment. If it is so, you need no conditions in test code.
+
+However, in practice, things are usually a bit different. Many websites contain elements that may be invisible or non-existent at times.
+In this instance, it may be a good idea to check the element availability before taking actions on it.
+
+```js
+import { Selector } from 'testcafe';
+
+fixture `My fixture`
+    .page `https://devexpress.github.io/testcafe/example/`;
+
+test('My test', async t => {
+    const element = Selector('#developer-name');
+
+    if(await element.exists && await element.visible)
+        await t.typeText(element, 'Peter Parker');
+
+    // ...
+});
+```
+
+### Enumerate Elements Identified by a Selector
+
+Another common case is creating a selector that matches several elements to perform certain actions using all of them.
+
+The following example clicks through a number of check boxes on the example page.
+
+```js
+import { Selector } from 'testcafe';
+
+fixture `My fixture`
+    .page `https://devexpress.github.io/testcafe/example/`;
+
+test('My test', async t => {
+    const checkboxes    = Selector('legend').withText('Which features are important to you:').parent(0).find('input');
+    const checkboxCount = await checkboxes.count;
+
+    for(let i = 0; i < checkboxCount; i++)
+        await t.click(checkboxes.nth(i));
+});
+```
+
+### Select Elements With Dynamic IDs
+
+TestCafe selectors should use element identifiers that persist between test runs. However, many JavaScript frameworks generate dynamic IDs for page elements. To identify elements whose `id` attribute changes, use selectors based on the element's class, content, tag name, or position:
+
+* [withText](../../reference/test-api/selector/withtext.md),
+* [withExactText](../../reference/test-api/selector/withexacttext.md),
+* [withAttribute](../../reference/test-api/selector/withattribute.md),
+* [parent](../../reference/test-api/selector/parent.md),
+* [child](../../reference/test-api/selector/child.md),
+* [sibling](../../reference/test-api/selector/sibling.md),
+* [nextSibling](../../reference/test-api/selector/nextsibling.md),
+* [prevSibling](../../reference/test-api/selector/prevsibling.md).
+
+**Example**
+
+```html
+<html>
+    <body>
+        <div id="j9dk399sd304" class="container">
+            <div id="dsf054k45o3e">Item 1</div>
+            <div id="lk94km904wfv">Item 2</div>
+        </div>
+    </body>
+</html>
+```
+
+```js
+import { Selector } from 'testcafe';
+
+fixture `My fixture`
+    .page `http://localhost/`;
+
+test('My test', async t => {
+    const container = Selector('div').withAttribute('class', 'container');
+    const item1     = Selector('div').withText('Item 1');
+    const item2     = container.child(1);
+});
+```
+
+If the element's ID is partially dynamic, you can use the following selectors to match the ID's static part:
+
+* [withAttribute(RegExp)](../../reference/test-api/selector/withattribute.md)
+* [[attribute~=value]](https://www.w3schools.com/cssref/sel_attribute_value_contains.asp),
+* [[attribute|=value]](https://www.w3schools.com/cssref/sel_attribute_value_lang.asp),
+* [[attribute^=value]](https://www.w3schools.com/cssref/sel_attr_begin.asp),
+* [[attribute$=value]](https://www.w3schools.com/cssref/sel_attr_end.asp),
+* [[attribute*=value]](https://www.w3schools.com/cssref/sel_attr_contain.asp).
+
+**Example**
+
+```html
+<html>
+    <body>
+        <div id="9fgk309d3-wrapper-9f">
+            <div id="g99dsf99sdfg-container">
+                <div id="item-df9f9sfd9fd9">Item</div>
+            </div>
+        </div>
+    </body>
+</html>
+```
+
+```js
+import { Selector } from 'testcafe';
+
+fixture `My fixture`
+    .page `http://localhost/`;
+
+test('My test', async t => {
+    const wrapper   = Selector('div').withAttribute('id', /\w+-wrapper-\w+/);
+    const container = Selector('[id$="container"]');
+    const item      = Selector('[id|="item"]');
+});
+```
+
+### Have a different use case?
+
+If none of the examples fit your requirements and you encounter difficulties, let us know on StackOverflow.
+We review and answer questions with the [TestCafe](https://stackoverflow.com/questions/tagged/testcafe) tag.

@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: t.expect.notContains Method
-permalink: /documentation/reference/test-api/testcontroller/expect/notсontains.html
+permalink: /documentation/reference/test-api/testcontroller/expect/notcontains.html
 ---
 # t.expect.notContains Method
 

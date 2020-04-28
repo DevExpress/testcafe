@@ -2,6 +2,8 @@
 layout: docs
 title: t.doubleClick Method
 permalink: /documentation/reference/test-api/testcontroller/doubleclick.html
+redirect_from:
+  - /documentation/test-api/actions/double-click.html
 ---
 # t.doubleClick Method
 
@@ -40,7 +42,7 @@ test('Invoke Image Options Dialog', async t => {
 
 ## Select Target Elements
 
-{% include actions/selector-options.md %}
+{% include actions/selector-parameter.md %}
 
 ## Options
 

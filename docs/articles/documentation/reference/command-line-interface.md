@@ -2,6 +2,8 @@
 layout: docs
 title: Command Line Interface
 permalink: /documentation/reference/command-line-interface.html
+redirect_from:
+  - /documentation/using-testcafe/command-line-interface.html
 ---
 # Command Line Interface
 
@@ -87,7 +89,7 @@ The `browser-list-comma-separated` argument specifies the list of browsers (sepa
 
 ### Local Browsers
 
-You can use browser aliases or paths to executable files to specify [locally installed browsers](../concepts/browsers.md#locally-installed-browsers). The [--list-browsers](#-b---list-browsers) command prints aliases for all automatically detected browsers.
+You can use browser aliases or paths to executable files to specify [locally installed browsers](../guides/concepts/browsers.md#locally-installed-browsers). The [--list-browsers](#-b---list-browsers) command prints aliases for all automatically detected browsers.
 
 The following example demonstrates how to run a test in two browsers: one browser is specified with an alias, the other browser is identified with a path.
 
@@ -103,7 +105,7 @@ testcafe all tests/sample-fixture.js
 
 ### Portable Browsers
 
-You can use a path to the browser's executable file (with the `path:` prefix) to specify [portable browsers](../concepts/browsers.md#portable-browsers), for example:
+You can use a path to the browser's executable file (with the `path:` prefix) to specify [portable browsers](../guides/concepts/browsers.md#portable-browsers), for example:
 
 ```sh
 testcafe path:d:\firefoxportable\firefoxportable.exe tests/sample-fixture.js
@@ -123,7 +125,7 @@ In `Unix` shells like `bash`, `zsh`, `csh` (macOS, Linux, Windows Subsystem for 
 testcafe 'path:`C:\Program Files (x86)\Firefox Portable\firefox.exe`' tests/sample-fixture.js
 ```
 
-> Do not use the `path:` prefix if you need to run a browser in the [headless mode](../concepts/browsers.md#testing-in-headless-mode), use [device emulation](../concepts/browsers.md#using-chromium-device-emulation) or [user profiles](../concepts/browsers.md#user-profiles). Specify the [browser alias](../concepts/browsers.md#locally-installed-browsers) in these cases.
+> Do not use the `path:` prefix if you need to run a browser in the [headless mode](../guides/concepts/browsers.md#test-in-headless-mode), use [device emulation](../guides/concepts/browsers.md#use-chromium-device-emulation) or [user profiles](../guides/concepts/browsers.md#user-profiles). Specify the [browser alias](../guides/concepts/browsers.md#locally-installed-browsers) in these cases.
 
 ### Test in Headless Mode
 
@@ -133,21 +135,21 @@ To run tests in the headless mode in Google Chrome or Firefox, use the `:headles
 testcafe "firefox:headless" tests/sample-fixture.js
 ```
 
-See [Test in Headless Mode](../concepts/browsers.md#testing-in-headless-mode) for more information.
+See [Test in Headless Mode](../guides/concepts/browsers.md#test-in-headless-mode) for more information.
 
 ### Use Chrome Device Emulation
 
-To run tests in Chrome's device emulation mode, specify `:emulation` and [device parameters](../concepts/browsers.md#emulator-parameters).
+To run tests in Chrome's device emulation mode, specify `:emulation` and [device parameters](../guides/concepts/browsers.md#emulator-parameters).
 
 ```sh
 testcafe "chrome:emulation:device=iphone X" tests/sample-fixture.js
 ```
 
-See [Use Chrome Device Emulation](../concepts/browsers.md#using-chromium-device-emulation) for more details.
+See [Use Chrome Device Emulation](../guides/concepts/browsers.md#use-chromium-device-emulation) for more details.
 
 ### Remote Browsers
 
-To run tests in a [browser on a remote device](../concepts/browsers.md#browsers-on-remote-devices), specify `remote` as a browser alias.
+To run tests in a [browser on a remote device](../guides/concepts/browsers.md#browsers-on-remote-devices), specify `remote` as a browser alias.
 
 ```sh
 testcafe remote tests/sample-fixture.js
@@ -170,7 +172,7 @@ This connects the browsers to TestCafe and starts the tests.
 
 ### Browsers Accessed Through Browser Provider Plugins
 
-To run tests in [cloud browsers](../concepts/browsers.md#browsers-in-cloud-testing-services) or [other browsers](../concepts/browsers.md#nonconventional-browsers) accessed through a [browser provider plugin](../extending-testcafe/browser-provider-plugin/README.md),
+To run tests in [cloud browsers](../guides/concepts/browsers.md#browsers-in-cloud-testing-services) or [other browsers](../guides/concepts/browsers.md#nonconventional-browsers) accessed through a [browser provider plugin](../extending-testcafe/browser-provider-plugin/README.md),
 specify the browser's alias that consists of the `{browser-provider-name}` prefix and the name of a browser (the latter can be omitted); for example, `saucelabs:Chrome@52.0:Windows 8.1`.
 
 ```sh
@@ -215,7 +217,7 @@ The `file-or-glob ...` argument specifies the files or directories (separated by
 
 TestCafe can run:
 
-* JavaScript, TypeScript and CoffeeScript files that use [TestCafe API](test-api/README.md),
+* JavaScript, TypeScript and CoffeeScript files that use TestCafe API,
 * [TestCafe Studio](https://www.devexpress.com/products/testcafestudio/) tests (`.testcafe` files),
 * Legacy TestCafe v2015.1 tests.
 
@@ -263,7 +265,7 @@ testcafe --version
 
 ### -b, --list-browsers
 
-Lists the aliases of the [auto-detected browsers](../concepts/browsers.md#locally-installed-browsers) installed on the local machine.
+Lists the aliases of the [auto-detected browsers](../guides/concepts/browsers.md#locally-installed-browsers) installed on the local machine.
 
 ```sh
 testcafe --list-browsers
@@ -271,7 +273,7 @@ testcafe --list-browsers
 
 ### -r \<name\[:output\],\[...\]\>, --reporter \<name\[:output\],\[...\]\>
 
-Specifies the name of a [built-in](../concepts/reporters.md) or [custom reporter](../extending-testcafe/reporter-plugin/README.md) that is used to generate test reports.
+Specifies the name of a [built-in](../guides/concepts/reporters.md) or [custom reporter](../extending-testcafe/reporter-plugin/README.md) that is used to generate test reports.
 
 The following command runs tests in all available browsers and generates a report in xunit format:
 
@@ -485,7 +487,7 @@ See [Video Encoding Options](../guides/advanced-guides/screenshots-and-videos.md
 
 ### -q, --quarantine-mode
 
-Enables the [quarantine mode](api/runner/run.md#quarantine-mode) for tests that fail.
+Enables the [quarantine mode](../guides/basic-guides/run-tests.md#quarantine-mode) for tests that fail.
 
 ```sh
 testcafe all tests/sample-fixture.js -q
@@ -596,7 +598,7 @@ testcafe ie my-tests -F "Page.*"
 
 ### --test-meta \<key=value\[,key2=value2,...\]\>
 
-TestCafe runs tests whose [metadata](../guides/basic-guides/test-organization.md#specifying-testing-metadata) matches the specified key-value pair.
+TestCafe runs tests whose [metadata](../guides/basic-guides/test-organization.md#specify-test-metadata) matches the specified key-value pair.
 
 For example, the following command runs tests whose metadata's `device` property is set to `mobile`, and `env` property is set to `production`.
 
@@ -608,7 +610,7 @@ testcafe chrome my-tests --test-meta device=mobile,env=production
 
 ### --fixture-meta \<key=value\[,key2=value2,...\]\>
 
-TestCafe runs tests whose fixture's [metadata](../guides/basic-guides/test-organization.md#specifying-testing-metadata) matches the specified key-value pair.
+TestCafe runs tests whose fixture's [metadata](../guides/basic-guides/test-organization.md#specify-test-metadata) matches the specified key-value pair.
 
 For example, the following command runs tests whose fixture's metadata has the `device` property set to the `mobile` value and the `env` property set to the `production` value.
 
@@ -655,7 +657,7 @@ Specifies that tests should run concurrently.
 TestCafe opens `n` instances of the same browser and creates a pool of browser instances.
 Tests are run concurrently against this pool, that is, each test is run in the first free instance.
 
-See [Concurrent Test Execution](../guides/basic-guides/run-tests.md#concurrent-test-execution) for more information about concurrent test execution.
+See [Concurrent Test Execution](../guides/basic-guides/run-tests.md#run-tests-concurrently) for more information about concurrent test execution.
 
 The following example shows how to run tests in three Chrome instances:
 
@@ -667,7 +669,7 @@ testcafe -c 3 chrome tests/sample-fixture.js
 
 ### --selector-timeout \<ms\>
 
-Specifies the time (in milliseconds) within which [selectors](../guides/basic-guides/selectors.md) attempt to obtain a node to be returned. See [Selector Timeout](../guides/basic-guides/selectors.md#selector-timeout).
+Specifies the time (in milliseconds) within which [selectors](../guides/basic-guides/select-page-elements.md) attempt to obtain a node to be returned. See [Selector Timeout](../guides/basic-guides/select-page-elements.md#selector-timeout).
 
 **Default value**: `10000`
 
@@ -680,7 +682,7 @@ testcafe ie my-tests --selector-timeout 500000
 ### --assertion-timeout \<ms\>
 
 Specifies the time (in milliseconds) TestCafe attempts to successfully execute an [assertion](../guides/basic-guides/assert.md)
-if a [selector property](../guides/basic-guides/selectors.md#define-assertion-actual-value)
+if a [selector property](../guides/basic-guides/select-page-elements.md#define-assertion-actual-value)
 or a [client function](../guides/basic-guides/obtain-client-side-info.md) was passed as an actual value.
 See [Smart Assertion Query Mechanism](../guides/basic-guides/assert.md#smart-assertion-query-mechanism).
 
@@ -745,7 +747,7 @@ Use the [fixture.clientScripts](test-api/fixture/clientscripts.md) and [test.cli
 
 You can also [inject modules](../guides/advanced-guides/inject-client-scripts.md#inject-a-module), [code strings](../guides/advanced-guides/inject-client-scripts.md#inject-script-code), or [add scripts to individual pages](../guides/advanced-guides/inject-client-scripts.md#provide-scripts-for-specific-pages) in the API and configuration file. Use the following methods and options to do this:
 
-* the [runner.clientScripts](api/runner/clientscripts.md) programming interface method
+* the [runner.clientScripts](testcafe-api/runner/clientscripts.md) programming interface method
 * the [clientScripts](configuration-file.md#clientscripts) configuration file property
 * the [fixture.clientScripts](test-api/fixture/clientscripts.md) and [test.clientScripts](test-api/test/clientscripts.md) test API methods (add scripts to pages visited during a particular fixture or test)
 
@@ -840,7 +842,7 @@ testcafe --ssl pfx=path/to/file.pfx;rejectUnauthorized=true;...
 
 Provide the `--ssl` flag if the tested webpage uses browser features that require
 secure origin ([Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API), [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API), [ApplePaySession](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaysession), [SubtleCrypto](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto), etc).
-See [Test HTTPS and HTTP/2 Websites](../guides/advanced-guides/test-https-and-http2-websites.md) for more information.
+See [Test HTTPS and HTTP/2 Websites](../guides/advanced-guides/test-https-features-and-http2-websites.md) for more information.
 
 *Related configuration file property*: [ssl](configuration-file.md#ssl).
 
@@ -882,7 +884,7 @@ testcafe chrome my-tests --sf
 
 ### --ts-config-path \<path\>
 
-Enables TestCafe to use a custom [TypeScript configuration file](../concepts/languages.md#customize-compiler-options) and specifies its location.
+Enables TestCafe to use a custom [TypeScript configuration file](../guides/concepts/typescript-and-coffeescript.md#customize-compiler-options) and specifies its location.
 
 ```sh
 testcafe chrome my-tests --ts-config-path /Users/s.johnson/testcafe/tsconfig.json
@@ -900,7 +902,7 @@ Prevents the browser from caching page content.
 testcafe chrome my-tests --disable-page-caching
 ```
 
-When navigation to a cached page occurs in [role code](../guides/advanced-guides/authentication.md#user-roles), local and session storage content is not preserved. Use the `--disable-page-caching` flag to retain the storage items after navigation. For more information, see [Troubleshooting: Test Actions Fail After Authentication](./guides/advanced-guides/authentication.md#test-actions-fail-after-authentication).
+When navigation to a cached page occurs in [role code](../guides/advanced-guides/authentication.md#user-roles), local and session storage content is not preserved. Use the `--disable-page-caching` flag to retain the storage items after navigation. For more information, see [Troubleshooting: Test Actions Fail After Authentication](../guides/advanced-guides/authentication.md#test-actions-fail-after-authentication).
 
 You can also disable page caching for an individual [fixture](test-api/fixture/disablepagecaching.md) or [test](test-api/test/disablepagecaching.md).
 

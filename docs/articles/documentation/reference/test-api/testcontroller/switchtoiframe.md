@@ -43,4 +43,4 @@ You can switch to the main window from the `<iframe>` with the [t.switchToMainWi
 
 ## Select Target Elements
 
-{% include actions/selector-options.md %}
+{% include actions/selector-parameter.md %}

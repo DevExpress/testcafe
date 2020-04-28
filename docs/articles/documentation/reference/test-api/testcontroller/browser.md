@@ -41,9 +41,9 @@ Property | Type | Description   | Example
 
 ### alias
 
-The [browser alias](../../../concepts/browsers.md#browser-alias) string specified when tests were launched.
+The [browser alias](../../../guides/concepts/browsers.md#locally-installed-browsers) string specified when tests were launched.
 
-For [locally installed](../../../concepts/browsers.md#locally-installed-browsers) browsers, this property contains the short browser name:
+For [locally installed](../../../guides/concepts/browsers.md#locally-installed-browsers) browsers, this property contains the short browser name:
 
 ```js
 {
@@ -51,7 +51,7 @@ For [locally installed](../../../concepts/browsers.md#locally-installed-browsers
 }
 ```
 
-For [portable](../../../concepts/browsers.md#portable-browsers) browsers, `alias` returns the `path:` prefix followed by the path to the browser executable:
+For [portable](../../../guides/concepts/browsers.md#portable-browsers) browsers, `alias` returns the `path:` prefix followed by the path to the browser executable:
 
 ```js
 {
@@ -59,7 +59,7 @@ For [portable](../../../concepts/browsers.md#portable-browsers) browsers, `alias
 }
 ```
 
-Browser alias flags ([:headless](../../../concepts/browsers.md#testing-in-headless-mode), [:emulation](../../../concepts/browsers.md#using-chromium-device-emulation), etc.) and command line parameters are included in the alias string:
+Browser alias flags ([:headless](../../../guides/concepts/browsers.md#test-in-headless-mode), [:emulation](../../../guides/concepts/browsers.md#use-chromium-device-emulation), etc.) and command line parameters are included in the alias string:
 
 ```js
 {
@@ -73,7 +73,7 @@ Browser alias flags ([:headless](../../../concepts/browsers.md#testing-in-headle
 }
 ```
 
-For [cloud testing services](../../../concepts/browsers.md#browsers-in-cloud-testing-services) and browsers acessed through [browser providers](../../../concepts/browsers.md#nonconventional-browsers), the `alias` property value is a string with all the specified browser parameters, and operating system and device parameters:
+For [cloud testing services](../../../guides/concepts/browsers.md#browsers-in-cloud-testing-services) and browsers acessed through [browser providers](../../../guides/concepts/browsers.md#nonconventional-browsers), the `alias` property value is a string with all the specified browser parameters, and operating system and device parameters:
 
 ```js
 {
@@ -97,7 +97,7 @@ The short browser name.
 }
 ```
 
-If the browser cannot be [detected automatically](../../../concepts/browsers.md#locally-installed-browsers), the `name` property is set to `'Other'`.
+If the browser cannot be [detected automatically](../../../guides/concepts/browsers.md#locally-installed-browsers), the `name` property is set to `'Other'`.
 
 ### version
 
@@ -137,7 +137,7 @@ Identifies the platform type. This property can have the following values:
 
 ### headless
 
-Specifies if the browser is in [headless mode](../../../concepts/browsers.md#testing-in-headless-mode).
+Specifies if the browser is in [headless mode](../../../guides/concepts/browsers.md#test-in-headless-mode).
 
 ```js
 {

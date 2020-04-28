@@ -7,7 +7,7 @@ permalink: /documentation/reference/test-api/requestmock/
 
 A request mocker that intercepts requests to a web resource and emulates the response.
 
-Use the [RequestMock](../global/requestmock.md) constructor to create a mocker.
+Use the [RequestMock](../requestmock/constructor.md) constructor to create a mocker.
 
 Call the [onRequestTo](onrequestto.md) and [respond](respond.md) methods in a chain to specify mock responses for every handled request.
 

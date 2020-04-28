@@ -14,11 +14,11 @@ we will focus on two simple methods that use a few other packages and can be eas
 
 ## Install TestCafe and create tests
 
-Install TestCafe [locally](../using-testcafe/installing-testcafe.md#local-installation) in your project and [create tests](../getting-started/README.md#creating-a-test).
+Install TestCafe [locally](../guides/basic-guides/install-testcafe.md#local-installation) in your project and [create tests](../getting-started/README.md#creating-a-test).
 
 ## Option 1 - Test webpages in the local file system
 
-[Specify the target webpage](../test-api/test-code-structure.md#specifying-the-start-webpage) using a relative path or the `file://` URL scheme.
+[Specify the target webpage](../guides/basic-guides/test-organization.md#specify-the-start-webpage) using a relative path or the `file://` URL scheme.
 
 ```js
 fixture `My fixture`
@@ -63,4 +63,4 @@ This script contains the following commands.
 
 2. `"testcafe chrome ./test/acceptance/**"` - runs TestCafe tests from the `./test/acceptance` directory in Chrome after the server starts
 
-For more information on how to configure a test run using a `testcafe` command, see [Command Line Interface](../using-testcafe/command-line-interface.md).
+For more information on how to configure a test run using a `testcafe` command, see [Command Line Interface](../reference/command-line-interface.md).

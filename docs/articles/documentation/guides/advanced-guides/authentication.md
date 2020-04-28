@@ -2,6 +2,10 @@
 layout: docs
 title: Authentication
 permalink: /documentation/guides/advanced-guides/authentication.html
+redirect_from:
+  - /documentation/test-api/authentication/
+  - /documentation/test-api/authentication/http-authentication.html
+  - /documentation/test-api/authentication/user-roles.html
 ---
 # Authentication
 
@@ -28,7 +32,7 @@ Unlike other methods used to [extract reusable test logic](../../recipes/extract
 
 ### Create and Apply Roles
 
-Use the [Role](../../reference/test-api/role/costructor.md) constructor to create and initialize a role. Pass the login page URL and sign-in [actions](../basic-guides/interact-with-the-page.md) to `Role`.
+Use the [Role](../../reference/test-api/role/constructor.md) constructor to create and initialize a role. Pass the login page URL and sign-in [actions](../basic-guides/interact-with-the-page.md) to `Role`.
 
 ```js
 import { Role } from 'testcafe';
@@ -172,5 +176,5 @@ test
 To disable page caching during the entire test run, use either of the following options:
 
 * the [--disable-page-caching](../../reference/command-line-interface.md#--disable-page-caching) command line flag,
-* the `disablePageCaching` option in the [runner.run](../../reference/api/runner/run.md) method,
+* the `disablePageCaching` option in the [runner.run](../../reference/testcafe-api/runner/run.md) method,
 * the [disablePageCaching](../../reference/configuration-file.md#disablepagecaching) configuration file property.

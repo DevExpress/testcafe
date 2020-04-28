@@ -14,7 +14,7 @@ t.takeElementScreenshot(selector[, path][, options])
 Parameter                | Type   | Description
 ------------------------ | ------ | -----------------------------------------------------------------------------------------------------
 `selector`               | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element whose screenshot should be taken. See [Select Target Elements](#select-target-elements).
-`path`&#160;*(optional)* | String | The screenshot file's relative path and name. The path is relative to the root directory specified in the [runner.screenshots](../../api/runner.md#screenshots) API method or the [-s (--screenshots)](../../command-line-interface.md#-s---screenshots-optionvalueoption2value2) command line option. This path overrides the relative path the default or custom [path patterns](../../../guides/advanced-guides/screenshots-and-videos.md#screenshot-and-video-directories) specify.
+`path`&#160;*(optional)* | String | The screenshot file's relative path and name. The path is relative to the root directory specified in the [runner.screenshots](../../testcafe-api/runner/screenshots.md) API method or the [-s (--screenshots)](../../command-line-interface.md#-s---screenshots-optionvalueoption2value2) command line option. This path overrides the relative path the default or custom [path patterns](../../../guides/advanced-guides/screenshots-and-videos.md#screenshot-and-video-directories) specify.
 `options`&#160;*(optional)*   | Object | Options that define how the screenshot is taken. See details below.
 
 The example below demonstrates how to use `t.takeElementScreenshot` action.
@@ -52,7 +52,7 @@ Field    | Type   | Description
 `bottom` | Number | The bottom edge of the cropping rectangle. The coordinate is calculated from the element's top edge. If a negative number is passed, the coordinate is calculated from the element's bottom edge.
 `right`  | Number | The right edge of the cropping rectangle. The coordinate is calculated from the element's left edge. If a negative number is passed, the coordinate is calculated from the element's right edge.
 
-![Crop Rectangle](../../../images/screenshot-crop.png)
+![Crop Rectangle](../../../../images/screenshot-crop.png)
 
 **Example**
 
@@ -76,10 +76,11 @@ test('Take a screenshot of my new avatar', async t => {
         });
 });
 ```
+
 You can take a screenshot of the entire page with the [t.takeScreenshot](takescreenshot.md) method.
 
 See [Screenshots and Videos](../../../guides/advanced-guides/screenshots-and-videos.md) for more information on taking screenshots.
 
 ## Select Target Elements
 
-{% include actions/selector-options.md %}
+{% include actions/selector-parameter.md %}

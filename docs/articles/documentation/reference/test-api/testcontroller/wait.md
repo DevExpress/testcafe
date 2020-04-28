@@ -2,6 +2,8 @@
 layout: docs
 title: t.wait Method
 permalink: /documentation/reference/test-api/testcontroller/wait.html
+redirect_from: 
+  - /documentation/test-api/pausing-the-test.html
 ---
 # t.wait Method
 

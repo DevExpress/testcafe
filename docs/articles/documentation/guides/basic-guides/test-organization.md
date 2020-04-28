@@ -2,6 +2,8 @@
 layout: docs
 title: Test Organization
 permalink: /documentation/guides/basic-guides/test-organization.html
+redirect_from:
+  - /documentation/test-api/test-code-structure.html
 ---
 # Test Organization
 
@@ -108,12 +110,12 @@ test
 You can run tests or fixtures whose metadata contains specific values. Use the following options to filter tests by metadata:
 
 * the [--test-meta](../../reference/command-line-interface.md#--test-meta-keyvaluekey2value2) and [--fixture-meta](../../reference/command-line-interface.md#--fixture-meta-keyvaluekey2value2) command line options
-* the `testMeta` and `fixtureMeta` parameters in the [runner.filter](../../reference/programming-interface/runner.md#filter) method
+* the `testMeta` and `fixtureMeta` parameters in the [runner.filter](../../reference/testcafe-api/runner/filter.md) method
 * the [filter.testMeta](../../reference/configuration-file.md#filtertestmeta) and [filter.fixtureMeta](../../reference/configuration-file.md#filterfixturemeta) configuration file properties
 
 ### Display Metadata in the Reports
 
-You can include test's metadata to reports in [custom reporters](../../extending-testcafe/reporter-plugin/README.md). The reporter's [reportFixtureStart](../../extending-testcafe/reporter-plugin/reporter-methods.md#reportfixturestart) and [reportTestDone](../../extending-testcafe/reporter-plugin/reporter-methods.md#reporttestdone) methods can access the fixture and test metadata.
+You can include test's metadata to reports in [custom reporters](../extend-testcafe/reporter-plugin.md). The reporter's [reportFixtureStart](../../reference/plugin-api/reporter.md#reportfixturestart) and [reportTestDone](../../reference/plugin-api/reporter.md#reporttestdone) methods can access the fixture and test metadata.
 
 ## Initialization and Clean-Up
 

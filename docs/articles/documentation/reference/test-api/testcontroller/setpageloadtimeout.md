@@ -17,7 +17,7 @@ Parameter  | Type      | Description
 
 After the timeout passes or the `window.load` event is raised (whichever happens first), TestCafe starts the test.
 
-You can also set the page load timeout when you launch tests from the [command line](../../command-line-interface.md#--page-load-timeout-ms) or [the API](../../programming-interface/runner.md#run).
+You can also set the page load timeout when you launch tests from the [command line](../../command-line-interface.md#--page-load-timeout-ms) or [the API](../../testcafe-api/runner/run.md).
 
 **Example**
 

@@ -16,7 +16,7 @@ Selector('section').prevSibling((node, idx, originNode) => {
 });
 ```
 
-The [dependencies parameter](../../obtaining-data-from-the-client/README.md#optionsdependencies) allows
+The [dependencies parameter](/testcafe/documentation/reference/test-api/selector/constructor.html#optionsdependencies) allows
 you to pass objects to the `filterFn` client-side scope where they appear as variables.
 
 ```js

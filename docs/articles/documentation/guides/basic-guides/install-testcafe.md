@@ -13,7 +13,7 @@ You can install TestCafe from `npm` globally or locally in your project.
 
 > You can use `npx`, `yarn run` or the `npm` scripts to run the `testcafe` command from the project directory without global installation.
 
-[Local installation](#local-installation) should be preferred for continuous integration systems, [Node.js applications](../../reference/api/README.md) and other scenarios where global installation is not required.
+[Local installation](#local-installation) should be preferred for continuous integration systems, Node.js applications and other scenarios where global installation is not required.
 
 * Local installation makes your project setup easier: `npm install` executed in the project directory installs all dependencies including TestCafe.
 * Different projects can use different local TestCafe versions.

@@ -7,7 +7,7 @@ permalink: /documentation/reference/test-api/requestlogger/
 
 A request logger that stores the requests sent and responses received during test execution.
 
-Use the [RequestLogger](../global/requestlogger.md) constructor to create a logger.
+Use the [RequestLogger](../requestlogger/constructor.md) constructor to create a logger.
 
 [Attach the logger to a test or fixture](../../../guides/advanced-guides/intercept-http-requests.md#attach-hooks-to-tests-and-fixtures) to enable logging.
 

@@ -10,4 +10,3 @@ Clears all logged requests.
 ```text
 clear() → void
 ```
-

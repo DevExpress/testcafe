@@ -4,10 +4,6 @@
   url: /documentation/guides/
 - text: Reference
   url: /documentation/reference/
-- text: Extending TestCafe
-  url: /documentation/extending-testcafe/
-- text: Continuous Integration
-  url: /documentation/continuous-integration/
 - text: Recipes
   url: /documentation/recipes/
 - text: How It Works
