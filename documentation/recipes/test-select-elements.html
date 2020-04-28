@@ -574,19 +574,11 @@
         </div>
       
         <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
+          <a href="/testcafe/documentation/guides/">Guides</a>      
         </div>
       
         <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/test-api/">Test API</a>      
-        </div>
-      
-        <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>      
-        </div>
-      
-        <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/continuous-integration/">Continuous Integration</a>      
+          <a href="/testcafe/documentation/reference/">Reference</a>      
         </div>
       
         <div class="doc-top-nav-tab active" >
@@ -616,12 +608,6 @@
 
 	
 	
-
-	
-	
-
-	
-	
 	<div class="doc-nav-panel">
 		<div class="toggle-nav-button"></div>
 		<div class="doc-nav-panel-header">
@@ -634,6 +620,15 @@
 			<ul>
 				<li>
 				<ul>
+
+    <li>
+		    
+		
+
+<span>Recipes</span>
+
+		
+			<ul>
 
     <li>
 		    
@@ -810,6 +805,10 @@
     </li>
 
 </ul>
+		
+    </li>
+
+</ul>
 				</li>
 			</ul>
 		</div>
@@ -865,18 +864,18 @@ and checks that the <code>&lt;select&gt;</code> element contains the right city.
     <span class="c1">// Here you will put test code.</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>First, you need a <a href="../test-api/selecting-page-elements/selectors/">selector</a> that picks the <code>&lt;select&gt;</code> element.</p>
+<p>First, you need a <a href="../guides/basic-guides/select-page-elements.html">selector</a> that picks the <code>&lt;select&gt;</code> element.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">citySelect</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#city</span><span class="dl">'</span><span class="p">);</span>
 </code></pre></div>
 <p>Use this selector to click the element and invoke the drop-down menu.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">citySelect</span><span class="p">);</span>
 </code></pre></div>
 <p>Next, write code that selects <code>London</code> from the drop-down list. To this end, introduce a selector that identifies options.
-This selector uses the <a href="../test-api/selecting-page-elements/selectors/functional-style-selectors.html#find">find</a> function to locate <code>&lt;option&gt;</code> elements inside <code>&lt;select&gt;</code>.</p>
+This selector uses the <a href="../reference/test-api/selector/find.html">find</a> function to locate <code>&lt;option&gt;</code> elements inside <code>&lt;select&gt;</code>.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">cityOption</span> <span class="o">=</span> <span class="nx">citySelect</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="dl">'</span><span class="s1">option</span><span class="dl">'</span><span class="p">);</span>
 </code></pre></div>
-<p>To find the <code>London</code> value, use the selector&#39;s filter methods that include <a href="../test-api/selecting-page-elements/selectors/functional-style-selectors.html#withtext">withText</a>, <a href="../test-api/selecting-page-elements/selectors/functional-style-selectors.html#nth">nth</a> and
-<a href="../test-api/selecting-page-elements/selectors/functional-style-selectors.html#withattribute">withAttribute</a>.
+<p>To find the <code>London</code> value, use the selector&#39;s filter methods that include <a href="../reference/test-api/selector/withtext.html">withText</a>, <a href="../reference/test-api/selector/nth.html">nth</a> and
+<a href="../reference/test-api/selector/withattribute.html">withAttribute</a>.
 Then pass this selector to the <code>click</code> method.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">await</span> <span class="nx">t</span>
     <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">citySelect</span><span class="p">)</span>

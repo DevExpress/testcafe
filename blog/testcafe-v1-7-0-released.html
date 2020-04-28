@@ -403,19 +403,11 @@
         </div>
       
         <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
+          <a href="/testcafe/documentation/guides/">Guides</a>      
         </div>
       
         <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/test-api/">Test API</a>      
-        </div>
-      
-        <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>      
-        </div>
-      
-        <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/continuous-integration/">Continuous Integration</a>      
+          <a href="/testcafe/documentation/reference/">Reference</a>      
         </div>
       
         <div class="doc-top-nav-tab " >
@@ -445,7 +437,7 @@
 <h2><a class="anchor" id="enhancements"></a>Enhancements <a class="permalink" href="#enhancements">#</a></h2><h3><a class="anchor" id="identify-the-browser-and-platform-in-test-code-481"></a>⚙️ Identify the Browser and Platform in Test Code (<a href="https://github.com/DevExpress/testcafe/issues/481">#481</a>) <a class="permalink" href="#identify-the-browser-and-platform-in-test-code-481">#</a></h3>
 <p>TestCafe now allows you to obtain information about the current user agent. These data identify the operating system, platform type, browser, engine, etc.</p>
 
-<p>Use the <a href="../documentation/test-api/identify-the-browser-and-platform.html">t.browser</a> property to access user agent data.</p>
+<p>Use the <a href="../documentation/reference/test-api/testcontroller/browser.html">t.browser</a> property to access user agent data.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="nx">fixture</span> <span class="s2">`My fixture`</span>
@@ -456,7 +448,7 @@
         <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">div</span><span class="dl">'</span><span class="p">).</span><span class="nx">withText</span><span class="p">(</span><span class="dl">'</span><span class="s1">Browser not supported</span><span class="dl">'</span><span class="p">).</span><span class="nx">visible</span><span class="p">).</span><span class="nx">ok</span><span class="p">();</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>The <a href="../documentation/test-api/identify-the-browser-and-platform.html">t.browser</a> object exposes the following properties:</p>
+<p>The <a href="../documentation/reference/test-api/testcontroller/browser.html">t.browser</a> object exposes the following properties:</p>
 <div class="table-wrapper"><table><thead><tr>
 <th>Property</th>
 <th>Type</th>
@@ -464,61 +456,61 @@
 <th>Example</th>
 </tr>
 </thead><tbody><tr>
-<td><a href="../documentation/test-api/identify-the-browser-and-platform.html#alias">alias</a></td>
+<td><a href="../documentation/reference/test-api/testcontroller/browser.html#alias">alias</a></td>
 <td>String</td>
 <td>The browser alias string specified when tests were launched.</td>
 <td><code>firefox:headless</code></td>
 </tr>
 <tr>
-<td><a href="../documentation/test-api/identify-the-browser-and-platform.html#name">name</a></td>
+<td><a href="../documentation/reference/test-api/testcontroller/browser.html#name">name</a></td>
 <td>String</td>
 <td>The browser name.</td>
 <td><code>Chrome</code></td>
 </tr>
 <tr>
-<td><a href="../documentation/test-api/identify-the-browser-and-platform.html#version">version</a></td>
+<td><a href="../documentation/reference/test-api/testcontroller/browser.html#version">version</a></td>
 <td>String</td>
 <td>The browser version.</td>
 <td><code>77.0.3865.120</code></td>
 </tr>
 <tr>
-<td><a href="../documentation/test-api/identify-the-browser-and-platform.html#platform">platform</a></td>
+<td><a href="../documentation/reference/test-api/testcontroller/browser.html#platform">platform</a></td>
 <td>String</td>
 <td>The platform type.</td>
 <td><code>desktop</code></td>
 </tr>
 <tr>
-<td><a href="../documentation/test-api/identify-the-browser-and-platform.html#headless">headless</a></td>
+<td><a href="../documentation/reference/test-api/testcontroller/browser.html#headless">headless</a></td>
 <td>Boolean</td>
 <td><code>true</code> if the browser runs in headless mode.</td>
 <td><code>false</code></td>
 </tr>
 <tr>
-<td><a href="../documentation/test-api/identify-the-browser-and-platform.html#os">os</a></td>
+<td><a href="../documentation/reference/test-api/testcontroller/browser.html#os">os</a></td>
 <td>Object</td>
 <td>The name and version of the operating system.</td>
 <td><code>{ name: &#39;macOS&#39;, version: &#39;10.15.1&#39; }</code></td>
 </tr>
 <tr>
-<td><a href="../documentation/test-api/identify-the-browser-and-platform.html#engine">engine</a></td>
+<td><a href="../documentation/reference/test-api/testcontroller/browser.html#engine">engine</a></td>
 <td>Object</td>
 <td>The name and version of the browser engine.</td>
 <td><code>{ name: &#39;Gecko&#39;, version: &#39;20100101&#39; }</code></td>
 </tr>
 <tr>
-<td><a href="../documentation/test-api/identify-the-browser-and-platform.html#useragent">userAgent</a></td>
+<td><a href="../documentation/reference/test-api/testcontroller/browser.html#useragent">userAgent</a></td>
 <td>String</td>
 <td>The user agent string.</td>
 <td><code>Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/77.0.3865.120 Safari/537.36</code></td>
 </tr>
 <tr>
-<td><a href="../documentation/test-api/identify-the-browser-and-platform.html#prettyuseragent">prettyUserAgent</a></td>
+<td><a href="../documentation/reference/test-api/testcontroller/browser.html#prettyuseragent">prettyUserAgent</a></td>
 <td>String</td>
 <td>Formatted string with the browser&#39;s and operating system&#39;s name and version.</td>
 <td><code>Chrome 77.0.3865.75 / macOS 10.14.0</code></td>
 </tr>
 </tbody></table></div>
-<p>The following example shows how to create a <a href="../documentation/test-api/test-code-structure.html#test-hooks">beforeEach</a> hook that runs for specific <a href="../documentation/test-api/identify-the-browser-and-platform.html#engine">browser engines</a>.</p>
+<p>The following example shows how to create a <a href="../documentation/reference/test-api/fixture/beforeeach.html">beforeEach</a> hook that runs for specific <a href="../documentation/reference/test-api/testcontroller/browser.html#engine">browser engines</a>.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="nx">fixture</span> <span class="s2">`My fixture`</span>
@@ -529,7 +521,7 @@
         <span class="c1">// ...</span>
     <span class="p">});</span>
 </code></pre></div>
-<p>You can also use <a href="../documentation/test-api/identify-the-browser-and-platform.html">t.browser</a> to generate the screenshot path based on the <a href="../documentation/test-api/identify-the-browser-and-platform.html#name">browser name</a>. This prevents screenshots taken with <a href="../documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-a-page-element">t.takeElementScreenshot</a> in different browsers from being overwritten.</p>
+<p>You can also use <a href="../documentation/reference/test-api/testcontroller/browser.html">t.browser</a> to generate the screenshot path based on the <a href="../documentation/reference/test-api/testcontroller/browser.html#name">browser name</a>. This prevents screenshots taken with <a href="../documentation/reference/test-api/testcontroller/takeelementscreenshot.html">t.takeElementScreenshot</a> in different browsers from being overwritten.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="nx">fixture</span> <span class="s2">`My fixture`</span>
@@ -541,7 +533,7 @@
     <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">takeElementScreenshot</span><span class="p">(</span><span class="nx">loginButton</span><span class="p">,</span> <span class="s2">`auth/</span><span class="p">${</span><span class="nx">t</span><span class="p">.</span><span class="nx">browser</span><span class="p">.</span><span class="nx">name</span><span class="p">}</span><span class="s2">/login-button.png`</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>For more information and examples, see <a href="../documentation/test-api/identify-the-browser-and-platform.html">Identify the Browser and Platform</a>.</p>
+<p>For more information and examples, see <a href="../documentation/guides/advanced-guides/detect-the-client-browser-and-platform.html">Identify the Browser and Platform</a>.</p>
 <h2><a class="anchor" id="bug-fixes"></a>Bug Fixes <a class="permalink" href="#bug-fixes">#</a></h2>
 <ul>
 <li>Fixed an error on pages that submit forms immediately after loading (<a href="https://github.com/DevExpress/testcafe/issues/4360">#4360</a> by <a href="https://github.com/bill-looby-i">@bill-looby-i</a>)</li>

@@ -403,19 +403,11 @@
         </div>
       
         <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
+          <a href="/testcafe/documentation/guides/">Guides</a>      
         </div>
       
         <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/test-api/">Test API</a>      
-        </div>
-      
-        <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>      
-        </div>
-      
-        <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/continuous-integration/">Continuous Integration</a>      
+          <a href="/testcafe/documentation/reference/">Reference</a>      
         </div>
       
         <div class="doc-top-nav-tab " >
@@ -496,17 +488,17 @@ This proxy injects the driver script that emulates user actions into the tested 
 <td style="text-align: center">&#10003;</td>
 </tr>
 <tr>
-<td>Clear and flexible <a href="https://devexpress.github.io/testcafe/documentation/test-api/">API</a> supports ES6 and <a href="https://devexpress.github.io/testcafe/documentation/recipes/using-page-model.html">PageModel pattern</a></td>
+<td>Clear and flexible API supports ES6 and <a href="../documentation/recipes/extract-reusable-test-code/use-page-model.html">PageModel pattern</a></td>
 <td style="text-align: center">&#10003;</td>
 <td style="text-align: center">&#10003;</td>
 </tr>
 <tr>
-<td>Stable tests due to the <a href="https://devexpress.github.io/testcafe/documentation/test-api/assertions/#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a></td>
+<td>Stable tests due to the <a href="../documentation/guides/basic-guides/assert.html#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a></td>
 <td style="text-align: center">&#10003;</td>
 <td style="text-align: center">&#10003;</td>
 </tr>
 <tr>
-<td>Tests run fast due to intelligent <a href="https://devexpress.github.io/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html">Automatic Waiting Mechanism</a> and <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/concurrent-test-execution.html">Concurrent Test Execution</a></td>
+<td>Tests run fast due to intelligent <a href="../documentation/guides/concepts/built-in-wait-mechanisms.html">Automatic Waiting Mechanism</a> and <a href="../documentation/guides/basic-guides/run-tests.html#run-tests-concurrently">Concurrent Test Execution</a></td>
 <td style="text-align: center">&#10003;</td>
 <td style="text-align: center">&#10003;</td>
 </tr>
@@ -561,7 +553,7 @@ This proxy injects the driver script that emulates user actions into the tested 
 <p><a href="https://testcafe.devexpress.com">TestCafe v2015.1</a> is no longer available for purchase or subscription renewal. We recommend that TestCafe v2015.1 users switch to <a href="https://www.devexpress.com/products/testcafestudio/">TestCafe Studio</a> to access the latest features. See this <a href="https://community.devexpress.com/blogs/testcafe/archive/2018/11/26/testcafe-studio-a-new-web-testing-ide.aspx">blog post</a> for details.</p>
 <h3><a class="anchor" id="which-browsers-does-testcafe-support-what-are-the-exact-supported-versions"></a>Which browsers does TestCafe support? What are the exact supported versions? <a class="permalink" href="#which-browsers-does-testcafe-support-what-are-the-exact-supported-versions">#</a></h3>
 <p>You can find a list of supported browsers in
-<a href="../documentation/using-testcafe/common-concepts/browsers/browser-support.html">our documentation</a>.
+<a href="../documentation/guides/concepts/browsers.html">our documentation</a>.
 TestCafe is tested against the two latest versions of each browser
 except for the browsers whose versions are specified explicitly in this list.</p>
 
@@ -582,7 +574,7 @@ which means it should work with any browser with HTML5 support released in the l
    <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">fs</span><span class="p">.</span><span class="nx">existsSync</span><span class="p">(</span><span class="nx">filePath</span><span class="p">)).</span><span class="nx">ok</span><span class="p">();</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>If a Node.js module or a JavaScript file can be executed in the browser, you can <a href="../documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html">inject it into the tested page</a>.</p>
+<p>If a Node.js module or a JavaScript file can be executed in the browser, you can <a href="../documentation/guides/advanced-guides/inject-client-scripts.html">inject it into the tested page</a>.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
     <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://example.com`</span>
     <span class="c1">// The fixture.clientScripts method injects jquery.js</span>
@@ -598,9 +590,9 @@ which means it should work with any browser with HTML5 support released in the l
     <span class="kd">const</span> <span class="nx">text</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">clientFunction</span><span class="p">();</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>For more information about how to inject scripts, see <a href="../documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html">Inject Scripts Into Tested Pages</a>.</p>
+<p>For more information about how to inject scripts, see <a href="../documentation/guides/advanced-guides/inject-client-scripts.html">Inject Scripts Into Tested Pages</a>.</p>
 <h3><a class="anchor" id="how-do-i-work-with-configuration-files-and-environment-variables"></a>How do I work with configuration files and environment variables? <a class="permalink" href="#how-do-i-work-with-configuration-files-and-environment-variables">#</a></h3>
-<p>TestCafe allows you to specify settings in a <a href="../documentation/using-testcafe/configuration-file.html">configuration file</a>.</p>
+<p>TestCafe allows you to specify settings in a <a href="../documentation/reference/configuration-file.html">configuration file</a>.</p>
 
 <p>If you need to use custom properties in the configuration, create a separate configuration file and import it to the tests.</p>
 <blockquote><div class="blockquote-content"><p>Vote for the following GitHub issue if you want us to support custom properties in <code>.testcaferc.json</code>: <a href="https://github.com/DevExpress/testcafe/issues/3593">#3593</a></p>
@@ -620,18 +612,18 @@ which means it should work with any browser with HTML5 support released in the l
 <h3><a class="anchor" id="how-do-i-identify-elements-with-dynamic-ids"></a>How do I identify elements with dynamic IDs? <a class="permalink" href="#how-do-i-identify-elements-with-dynamic-ids">#</a></h3>
 <p>TestCafe selectors should use element identifiers that persist between test runs. However, many JavaScript frameworks generate dynamic IDs for page elements. To identify elements whose <code>id</code> attribute changes, use selectors based on the element&#39;s class, content, tag name, or position.</p>
 
-<p>See the <a href="../documentation/test-api/selecting-page-elements/examples-of-working-with-dom-elements.html#select-elements-with-dynamic-ids">Select Elements With Dynamic IDs</a> example for details.</p>
+<p>See the <a href="../documentation/guides/basic-guides/select-page-elements.html#select-elements-with-dynamic-ids">Select Elements With Dynamic IDs</a> example for details.</p>
 <h2><a class="anchor" id="troubleshooting"></a>Troubleshooting <a class="permalink" href="#troubleshooting">#</a></h2><h3><a class="anchor" id="i-have-installed-testcafe-but-i-cannot-run-it-what-should-i-do"></a>I have installed TestCafe but I cannot run it. What should I do? <a class="permalink" href="#i-have-installed-testcafe-but-i-cannot-run-it-what-should-i-do">#</a></h3>
 <p><strong>Check your firewall.</strong> First, make sure that your firewall does not block the ports TestCafe uses.
 TestCafe chooses free ports automatically by default. Use the
-<a href="../documentation/using-testcafe/command-line-interface.html#--ports-port1port2">--ports</a> command line option
-or the <a href="../documentation/using-testcafe/programming-interface/createtestcafe.html">createTestCafe</a>
+<a href="../documentation/reference/command-line-interface.html#--ports-port1port2">--ports</a> command line option
+or the <a href="../documentation/reference/testcafe-api/global/createtestcafe.html">createTestCafe</a>
 API factory function to specify custom ports. After that, check that the firewall does not block these specific ports.</p>
 
 <p><strong>Check your proxy server.</strong> Another reason for this problem can be the proxy server you use to access the Internet.
 If your network is connected to the Web via a proxy, use the
-<a href="../documentation/using-testcafe/command-line-interface.html#--proxy-host">--proxy</a> command line option
-or the <a href="../documentation/using-testcafe/programming-interface/runner.html#useproxy">useProxy</a> API method
+<a href="../documentation/reference/command-line-interface.html#--proxy-host">--proxy</a> command line option
+or the <a href="../documentation/reference/testcafe-api/runner/useproxy.html">useProxy</a> API method
 to specify the proxy address.</p>
 
 <p><strong>For Linux check X11.</strong> Also note that if you run TestCafe on Linux,
@@ -642,7 +634,7 @@ However, if you use the <a href="https://en.wikipedia.org/wiki/Xvfb">Xvbf</a> se
 <p><strong>JavaScript errors.</strong> The most common reason for this is a JavaScript error on the tested page.
 Load this page in the browser, open the console and see if the page has any errors.
 In case there are errors, you can either fix them or use
-the <a href="../documentation/using-testcafe/command-line-interface.html#-e---skip-js-errors">--skip-js-errors</a> flag
+the <a href="../documentation/reference/command-line-interface.html#-e---skip-js-errors">--skip-js-errors</a> flag
 to tell TestCafe to skip them.</p>
 
 <p><strong>Browser extensions.</strong> If this does not help, try running the problematic test in incognito mode.
@@ -668,15 +660,15 @@ to use the plugin in other projects as well, install it globally.</p>
 <p>This happens because either:</p>
 
 <ul>
-<li>one of the <a href="../documentation/test-api/selecting-page-elements/selectors/">selectors</a> you used in test code does not match any DOM element, or</li>
-<li>you used an incorrect CSS selector or a client-side function that returns no element to specify an <a href="../documentation/test-api/actions/#selecting-target-elements">action&#39;s target element</a>.</li>
+<li>one of the <a href="../documentation/guides/basic-guides/select-page-elements.html">selectors</a> you used in test code does not match any DOM element, or</li>
+<li>you used an incorrect CSS selector or a client-side function that returns no element to specify an <a href="../documentation/reference/test-api/testcontroller/click.html#select-target-elements">action&#39;s target element</a>.</li>
 </ul>
 
 <p>To determine the cause of this issue, do the following:</p>
 
 <ol>
-<li>Look at the error message in the test run report <a href="../documentation/test-api/selecting-page-elements/selectors/using-selectors.html#debug-selectors">to learn which selector has failed</a>.</li>
-<li>Add the <a href="../documentation/test-api/debugging.html">t.debug()</a> method before this selector to stop test execution before it reaches this point.</li>
+<li>Look at the error message in the test run report <a href="../documentation/guides/basic-guides/select-page-elements.html#debug-selectors">to learn which selector has failed</a>.</li>
+<li>Add the <a href="../documentation/guides/basic-guides/debug.html">t.debug()</a> method before this selector to stop test execution before it reaches this point.</li>
 <li>Run the test and wait until the browser stops at the breakpoint.</li>
 </ol>
 
@@ -686,15 +678,15 @@ to use the plugin in other projects as well, install it globally.</p>
 <li>the element is present on the page;</li>
 <li>the element is visible (TestCafe considers it visible if it does not have <code>display</code> set to <code>none</code>,
 <code>visibility</code> set to <code>hidden</code> or the zero <code>width</code> or <code>height</code>);</li>
-<li>the element&#39;s part targeted by the action is visible (the center of the element, or a point specified by the <a href="../documentation/test-api/actions/action-options.html#mouse-action-options"><code>offsetX</code> and <code>offsetY</code></a> parameters);</li>
+<li>the element&#39;s part targeted by the action is visible (the center of the element, or a point specified by the <a href="../documentation/reference/test-api/testcontroller/click.html#options"><code>offsetX</code> and <code>offsetY</code></a> parameters);</li>
 <li>the element is not in an <code>&lt;iframe&gt;</code> (if it is, use the
-<a href="../documentation/test-api/working-with-iframes.html">t.switchToIframe</a> method
+<a href="../documentation/guides/basic-guides/interact-with-the-page.html#work-with-iframes">t.switchToIframe</a> method
 to switch to the appropriate <code>&lt;iframe&gt;</code>).</li>
 </ul>
 
 <p>Also, try running the test in full screen.
-Use the <a href="../documentation/test-api/actions/resize-window.html#maximizing-the-window">t.maximizeWindow</a>
-and <a href="../documentation/test-api/actions/resize-window.html#setting-the-window-size">t.resizeWindow</a> actions
+Use the <a href="../documentation/reference/test-api/testcontroller/maximizewindow.html">t.maximizeWindow</a>
+and <a href="../documentation/reference/test-api/testcontroller/resizewindow.html">t.resizeWindow</a> actions
 to control the browser window size. If the test passes, it means your webpage hides
 the target element when the window is resized to smaller dimensions.</p>
 
@@ -704,7 +696,7 @@ the target element when the window is resized to smaller dimensions.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">A request to https://www.example.com has failed.
 Use quarantine mode to perform additional attempts to execute this test.
 </code></pre></div>
-<p>You can use <a href="../documentation/using-testcafe/command-line-interface.html#-q---quarantine-mode">quarantine mode</a> to complete the tests if this problem occurs infrequently.</p>
+<p>You can use <a href="../documentation/guides/basic-guides/run-tests.html#quarantine-mode">quarantine mode</a> to complete the tests if this problem occurs infrequently.</p>
 
 <p>However, we recommend that you determine the cause of this issue and address it.</p>
 
@@ -724,7 +716,7 @@ Use quarantine mode to perform additional attempts to execute this test.
 
 <ul>
 <li>Increase the container&#39;s resource limits.</li>
-<li>Set the <a href="../documentation/using-testcafe/common-concepts/concurrent-test-execution.html">concurrency factor</a> to <code>1</code>.</li>
+<li>Set the <a href="../documentation/guides/basic-guides/run-tests.html#run-tests-concurrently">concurrency factor</a> to <code>1</code>.</li>
 <li>Deploy the application&#39;s Web server on a separate machine.</li>
 <li>Run tests on a local device outside a container.</li>
 </ul>
@@ -739,11 +731,11 @@ Use quarantine mode to perform additional attempts to execute this test.
 <p>According to users&#39; feedback, the following CI systems work best with TestCafe:</p>
 
 <ul>
-<li><a href="../documentation/continuous-integration/azure-devops.html">Azure Pipelines</a></li>
-<li><a href="../documentation/continuous-integration/gitlab.html">GitLab</a></li>
-<li><a href="../documentation/continuous-integration/travis.html">TravisCI</a></li>
-<li><a href="../documentation/continuous-integration/circleci.html">CircleCI</a></li>
-<li><a href="../documentation/continuous-integration/appveyor.html">AppVeyor</a></li>
+<li><a href="../documentation/guides/continuous-integration/azure-devops.html">Azure Pipelines</a></li>
+<li><a href="../documentation/guides/continuous-integration/gitlab.html">GitLab</a></li>
+<li><a href="../documentation/guides/continuous-integration/travis.html">TravisCI</a></li>
+<li><a href="../documentation/guides/continuous-integration/circleci.html">CircleCI</a></li>
+<li><a href="../documentation/guides/continuous-integration/appveyor.html">AppVeyor</a></li>
 </ul>
 
 

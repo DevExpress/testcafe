@@ -574,19 +574,11 @@
         </div>
       
         <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
+          <a href="/testcafe/documentation/guides/">Guides</a>      
         </div>
       
         <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/test-api/">Test API</a>      
-        </div>
-      
-        <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>      
-        </div>
-      
-        <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/continuous-integration/">Continuous Integration</a>      
+          <a href="/testcafe/documentation/reference/">Reference</a>      
         </div>
       
         <div class="doc-top-nav-tab active" >
@@ -616,12 +608,6 @@
 
 	
 	
-
-	
-	
-
-	
-	
 	<div class="doc-nav-panel">
 		<div class="toggle-nav-button"></div>
 		<div class="doc-nav-panel-header">
@@ -634,6 +620,15 @@
 			<ul>
 				<li>
 				<ul>
+
+    <li>
+		    
+		
+
+<span>Recipes</span>
+
+		
+			<ul>
 
     <li>
 		    
@@ -810,6 +805,10 @@
     </li>
 
 </ul>
+		
+    </li>
+
+</ul>
 				</li>
 			</ul>
 		</div>
@@ -832,9 +831,9 @@ we will focus on two simple methods that use a few other packages and can be eas
 <li><a href="#option-2---set-up-a-local-http-server">Option 2 - Set up a local HTTP server</a></li>
 </ul>
 <h2><a class="anchor" id="install-testcafe-and-create-tests"></a>Install TestCafe and create tests <a class="permalink" href="#install-testcafe-and-create-tests">#</a></h2>
-<p>Install TestCafe <a href="../using-testcafe/installing-testcafe.html#local-installation">locally</a> in your project and <a href="../getting-started/#creating-a-test">create tests</a>.</p>
+<p>Install TestCafe <a href="../guides/basic-guides/install-testcafe.html#local-installation">locally</a> in your project and <a href="../getting-started/#creating-a-test">create tests</a>.</p>
 <h2><a class="anchor" id="option-1---test-webpages-in-the-local-file-system"></a>Option 1 - Test webpages in the local file system <a class="permalink" href="#option-1---test-webpages-in-the-local-file-system">#</a></h2>
-<p><a href="../test-api/test-code-structure.html#specifying-the-start-webpage">Specify the target webpage</a> using a relative path or the <code>file://</code> URL scheme.</p>
+<p><a href="../guides/basic-guides/test-organization.html#specify-the-start-webpage">Specify the target webpage</a> using a relative path or the <code>file://</code> URL scheme.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
     <span class="p">.</span><span class="nx">page</span> <span class="s2">`file:///user/my-website/index.html`</span>
 </code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
@@ -866,7 +865,7 @@ use <code>fixture(&#39;...&#39;).page(&#39;http://localhost:8080/dir/page.html&#
 <li><p><code>&quot;testcafe chrome ./test/acceptance/**&quot;</code> - runs TestCafe tests from the <code>./test/acceptance</code> directory in Chrome after the server starts</p></li>
 </ol>
 
-<p>For more information on how to configure a test run using a <code>testcafe</code> command, see <a href="../using-testcafe/command-line-interface.html">Command Line Interface</a>.</p>
+<p>For more information on how to configure a test run using a <code>testcafe</code> command, see <a href="../reference/command-line-interface.html">Command Line Interface</a>.</p>
 
 
 		</div>

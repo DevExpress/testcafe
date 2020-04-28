@@ -574,19 +574,11 @@
         </div>
       
         <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
+          <a href="/testcafe/documentation/guides/">Guides</a>      
         </div>
       
         <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/test-api/">Test API</a>      
-        </div>
-      
-        <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>      
-        </div>
-      
-        <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/continuous-integration/">Continuous Integration</a>      
+          <a href="/testcafe/documentation/reference/">Reference</a>      
         </div>
       
         <div class="doc-top-nav-tab active" >
@@ -616,12 +608,6 @@
 
 	
 	
-
-	
-	
-
-	
-	
 	<div class="doc-nav-panel">
 		<div class="toggle-nav-button"></div>
 		<div class="doc-nav-panel-header">
@@ -634,6 +620,15 @@
 			<ul>
 				<li>
 				<ul>
+
+    <li>
+		    
+		
+
+<span>Recipes</span>
+
+		
+			<ul>
 
     <li>
 		    
@@ -810,6 +805,10 @@
     </li>
 
 </ul>
+		
+    </li>
+
+</ul>
 				</li>
 			</ul>
 		</div>
@@ -846,7 +845,7 @@
     <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="dl">'</span><span class="s1">#submit-button</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">};</span>
 </code></pre></div>
-<p>Note that this file imports <code>t</code> (the <a href="../../test-api/test-code-structure.html#test-controller">test controller</a>) from the <code>testcafe</code> module. You don&#39;t need to pass <code>t</code> to helper functions because TestCafe can resolve the current test context and provide the correct test controller instance.</p>
+<p>Note that this file imports <code>t</code> (the <a href="../../reference/test-api/testcontroller/">test controller</a>) from the <code>testcafe</code> module. You don&#39;t need to pass <code>t</code> to helper functions because TestCafe can resolve the current test context and provide the correct test controller instance.</p>
 
 <p>In test code, import functions from <code>helper.js</code> and call them with the <code>await</code> keyword:</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>

@@ -574,19 +574,11 @@
         </div>
       
         <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
+          <a href="/testcafe/documentation/guides/">Guides</a>      
         </div>
       
         <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/test-api/">Test API</a>      
-        </div>
-      
-        <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>      
-        </div>
-      
-        <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/continuous-integration/">Continuous Integration</a>      
+          <a href="/testcafe/documentation/reference/">Reference</a>      
         </div>
       
         <div class="doc-top-nav-tab active" >
@@ -616,12 +608,6 @@
 
 	
 	
-
-	
-	
-
-	
-	
 	<div class="doc-nav-panel">
 		<div class="toggle-nav-button"></div>
 		<div class="doc-nav-panel-header">
@@ -634,6 +620,15 @@
 			<ul>
 				<li>
 				<ul>
+
+    <li>
+		    
+		
+
+<span>Recipes</span>
+
+		
+			<ul>
 
     <li>
 		    
@@ -810,6 +805,10 @@
     </li>
 
 </ul>
+		
+    </li>
+
+</ul>
 				</li>
 			</ul>
 		</div>
@@ -841,7 +840,7 @@
     </span><span class="p">}</span><span class="w">
 </span><span class="p">]</span><span class="w">
 </span></code></pre></div>
-<p>To create data-driven tests, iterate through the test cases, call the <a href="../test-api/test-code-structure.html#tests">test</a> method at each iteration and write <a href="../test-api/actions/">test actions</a> and <a href="../test-api/assertions/">assertions</a> that use test case parameters.</p>
+<p>To create data-driven tests, iterate through the test cases, call the <a href="../guides/basic-guides/test-organization.html#tests">test</a> method at each iteration and write <a href="../guides/basic-guides/interact-with-the-page.html">test actions</a> and <a href="../guides/basic-guides/assert.html">assertions</a> that use test case parameters.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="kd">const</span> <span class="nx">dataSet</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">./data.json</span><span class="dl">'</span><span class="p">);</span>

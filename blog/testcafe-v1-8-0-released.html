@@ -403,19 +403,11 @@
         </div>
       
         <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
+          <a href="/testcafe/documentation/guides/">Guides</a>      
         </div>
       
         <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/test-api/">Test API</a>      
-        </div>
-      
-        <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>      
-        </div>
-      
-        <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/continuous-integration/">Continuous Integration</a>      
+          <a href="/testcafe/documentation/reference/">Reference</a>      
         </div>
       
         <div class="doc-top-nav-tab " >
@@ -443,14 +435,14 @@
 
 <!--more-->
 <h2><a class="anchor" id="support-for-the-new-microsoft-edge"></a>🌟 Support for the New Microsoft Edge <a class="permalink" href="#support-for-the-new-microsoft-edge">#</a></h2>
-<p>TestCafe v1.8.0 supports the new Microsoft Edge based on Chromium. The new Edge is available under the same <a href="../documentation/using-testcafe/common-concepts/browsers/browser-support.html#locally-installed-browsers">alias</a>: <code>edge</code>.</p>
+<p>TestCafe v1.8.0 supports the new Microsoft Edge based on Chromium. The new Edge is available under the same <a href="../documentation/guides/concepts/browsers.html#locally-installed-browsers">alias</a>: <code>edge</code>.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe edge test.js
 </code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">await</span> <span class="nx">runner</span>
     <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="dl">'</span><span class="s1">test.js</span><span class="dl">'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="dl">'</span><span class="s1">edge</span><span class="dl">'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
 </code></pre></div>
-<p>Supported Edge&#39;s features include <a href="../documentation/using-testcafe/common-concepts/browsers/testing-in-headless-mode.html">headless mode</a>, <a href="../documentation/using-testcafe/common-concepts/browsers/using-chromium-device-emulation.html">mobile device emulation</a>, and <a href="../documentation/using-testcafe/common-concepts/screenshots-and-videos.html#record-videos">video recording</a>.</p>
+<p>Supported Edge&#39;s features include <a href="../documentation/guides/concepts/browsers.html#test-in-headless-mode">headless mode</a>, <a href="../documentation/guides/concepts/browsers.html#use-chromium-device-emulation">mobile device emulation</a>, and <a href="../documentation/guides/advanced-guides/screenshots-and-videos.html#record-videos">video recording</a>.</p>
 <h2><a class="anchor" id="bug-fixes"></a>Bug Fixes <a class="permalink" href="#bug-fixes">#</a></h2>
 <ul>
 <li>Fixed an error thrown when the webpage creates a <code>Proxy</code> (<a href="https://github.com/DevExpress/testcafe-hammerhead/issues/2206">testcafe-hammerhead/#2206</a>) by <a href="https://github.com/link89">@link89</a></li>
