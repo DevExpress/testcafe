@@ -1,7 +1,9 @@
 ---
 layout: docs
 title: Inject Client Scripts
-permalink: /documentation/using-testcafe/common-concepts/inject-client-scripts.html
+permalink: /documentation/guides/advanced-guides/inject-client-scripts.html
+redirect_from:
+  - /documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html
 ---
 # Inject Client Scripts
 
@@ -30,7 +32,7 @@ Use either of the following options to inject scripts into pages visited during 
     testcafe chrome test.js --client-scripts mockDate.js,assets/react-helpers.js
     ```
 
-* the [runner.clientScripts](../../reference/api/runner/clientscripts.md) API method
+* the [runner.clientScripts](../../reference/testcafe-api/runner/clientscripts.md) API method
 
     ```js
     runner.clientScripts('mockDate.js', 'scripts/react-helpers.js');
@@ -93,9 +95,9 @@ runner.clientScripts('assets/jquery.js');
 See the details for:
 
 * [command line interface](../../reference/command-line-interface.md#--cs-pathpath2---client-scripts-pathpath2),
-* [programming interface](../../reference/api/runner/clientscripts.md#inject-a-javascript-file),
+* [programming interface](../../reference/testcafe-api/runner/clientscripts.md#inject-a-javascript-file),
 * [configuration file](../../reference/configuration-file.md#inject-a-javascript-file),
-* test API: [fixture.clientScripts](../../reference/test-api/fixture/clientscripts.md#inject-a-javascript-file), [test.clientScripts](../reference/test-api/test/clientscripts.md#inject-a-javascript-file).
+* test API: [fixture.clientScripts](../../reference/test-api/fixture/clientscripts.md#inject-a-javascript-file), [test.clientScripts](../../reference/test-api/test/clientscripts.md#inject-a-javascript-file).
 
 ### Inject a Module
 
@@ -121,9 +123,9 @@ Note that the browser must be able to execute the injected module. For example, 
 
 See details for:
 
-* [programming interface](../../reference/api/runner/clientscripts.md#inject-a-module),
+* [programming interface](../../reference/testcafe-api/runner/clientscripts.md#inject-a-module),
 * [configuration file](../../reference/configuration-file.md#inject-a-module),
-* test API: [fixture.clientScripts](../../reference/test-api/fixture/clientscripts.md#inject-a-module), [test.clientScripts](../reference/test-api/test/clientscripts.md#inject-a-module).
+* test API: [fixture.clientScripts](../../reference/test-api/fixture/clientscripts.md#inject-a-module), [test.clientScripts](../../reference/test-api/test/clientscripts.md#inject-a-module).
 
 ### Inject Script Code
 
@@ -151,9 +153,9 @@ test
 
 See the details for:
 
-* [programming interface](../../reference/api/runner/clientscripts.md#inject-script-code),
+* [programming interface](../../reference/testcafe-api/runner/clientscripts.md#inject-script-code),
 * [configuration file](../../reference/configuration-file.md#inject-script-code),
-* test API: [fixture.clientScripts](../../reference/test-api/fixture/clientscripts.md#inject-script-code), [test.clientScripts](../reference/test-api/test/clientscripts.md#inject-script-code).
+* test API: [fixture.clientScripts](../../reference/test-api/fixture/clientscripts.md#inject-script-code), [test.clientScripts](../../reference/test-api/test/clientscripts.md#inject-script-code).
 
 ### Provide Scripts for Specific Pages
 
@@ -179,9 +181,9 @@ runner.clientScripts({
 
 See the details for:
 
-* [programming interface](../../reference/api/runner/clientscripts.md#provide-scripts-for-specific-pages),
+* [programming interface](../../reference/testcafe-api/runner/clientscripts.md#provide-scripts-for-specific-pages),
 * [configuration file](../../reference/configuration-file.md#provide-scripts-for-specific-pages),
-* test API: [fixture.clientScripts](../../reference/test-api/fixture/clientscripts.md#provide-scripts-for-specific-pages), [test.clientScripts](../reference/test-api/test/clientscripts.md#provide-scripts-for-specific-pages).
+* test API: [fixture.clientScripts](../../reference/test-api/fixture/clientscripts.md#provide-scripts-for-specific-pages), [test.clientScripts](../../reference/test-api/test/clientscripts.md#provide-scripts-for-specific-pages).
 
 ### Inject Scripts Into Iframes
 

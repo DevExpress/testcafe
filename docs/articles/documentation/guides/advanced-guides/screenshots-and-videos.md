@@ -2,6 +2,8 @@
 layout: docs
 title: Screenshots and Videos
 permalink: /documentation/guides/advanced-guides/screenshots-and-videos.html
+redirect_from:
+  - /documentation/using-testcafe/common-concepts/screenshots-and-videos.html
 ---
 # Screenshots and Videos
 
@@ -30,7 +32,7 @@ TestCafe allows you to take screenshots of the tested webpage and record videos 
 
 TestCafe allows you to take screenshots of the tested webpage at any moment during test run, or automatically whenever a test fails.
 
-> Important! Screenshots are not supported when you run tests in [remote browsers](../../concepts/browsers.md#browsers-on-remote-devices).
+> Important! Screenshots are not supported when you run tests in [remote browsers](../concepts/browsers.md#browsers-on-remote-devices).
 
 ### Prerequisites for Screenshots
 
@@ -65,7 +67,7 @@ You can configure TestCafe to automatically take a screenshot whenever a test fa
     testcafe chrome tests/sample-fixture.js -s takeOnFails=true
     ```
 
-* the `takeOnFails` parameter of the [runner.screenshots](../../reference/api/runner/screenshots.md) API method,
+* the `takeOnFails` parameter of the [runner.screenshots](../../reference/testcafe-api/runner/screenshots.md) API method,
 
     ```js
     runner.screenshots({
@@ -104,7 +106,7 @@ You can specify screenshot options in either of the following ways:
 
     > Enclose parameter values in quotes if they contain spaces. In Windows `cmd.exe` shell, use double quotes.
 
-* the `options` parameter of the [runner.screenshots](../../reference/api/runner/screenshots.md) API method,
+* the `options` parameter of the [runner.screenshots](../../reference/testcafe-api/runner/screenshots.md) API method,
 
     ```js
     runner.screenshots({
@@ -136,7 +138,7 @@ You can prevent TestCafe from taking screenshots whenever a test fails or a [scr
     testcafe chrome tests/sample-fixture.js --disable-screenshots
     ```
 
-* the `disableScreenshots` option of the [runner.run](../../reference/api/runner/run.md) API method,
+* the `disableScreenshots` option of the [runner.run](../../reference/testcafe-api/runner/run.md) API method,
 
     ```js
     runner.run({
@@ -156,7 +158,7 @@ You can prevent TestCafe from taking screenshots whenever a test fails or a [scr
 
 TestCafe allows you to record videos of test runs.
 
-> Important! Video recording is supported in Google Chrome, Mozilla Firefox, and Microsoft Edge (Chromium-based). TestCafe cannot record videos when you run tests in [remote browsers](../../concepts/browsers.md#browsers-on-remote-devices).
+> Important! Video recording is supported in Google Chrome, Mozilla Firefox, and Microsoft Edge (Chromium-based). TestCafe cannot record videos when you run tests in [remote browsers](../concepts/browsers.md#browsers-on-remote-devices).
 
 ### Prerequisites for Video Recording
 
@@ -180,7 +182,7 @@ Use either of the following to enable video recording:
     testcafe chrome test.js --video artifacts/videos
     ```
 
-* the [runner.video](../../reference/api/runner/video.md) API method,
+* the [runner.video](../../reference/testcafe-api/runner/video.md) API method,
 
     ```js
     runner.video('artifacts/videos');
@@ -219,7 +221,7 @@ You can specify video options in either of the following ways:
 
     > Enclose parameter values in quotes if they contain spaces. In Windows `cmd.exe` shell, use double quotes.
 
-* the `options` parameter of the [runner.video](../../reference/api/runner/video.md) API method,
+* the `options` parameter of the [runner.video](../../reference/testcafe-api/runner/video.md) API method,
 
     ```js
     runner.video('artifacts/videos', {
@@ -253,7 +255,7 @@ To provide video encoding options, use either of the following options:
     testcafe chrome test.js --video artifacts/videos --video-encoding-options r=20,aspect=4:3
     ```
 
-* the `encodingOptions` parameter of the [runner.video](../../reference/api/runner/video.md) API method,
+* the `encodingOptions` parameter of the [runner.video](../../reference/testcafe-api/runner/video.md) API method,
 
     ```js
     runner.video('artifacts/videos', { }, {

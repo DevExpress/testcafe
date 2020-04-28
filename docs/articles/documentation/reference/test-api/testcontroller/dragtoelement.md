@@ -33,11 +33,12 @@ test('Drag an item from the toolbox', async t => {
         .expect(designSurfaceItems.count).gt(0);
 });
 ```
+
 You can drag an element to a specified offset with the [t.drag](drag.md) method.
 
 ## Select Target Elements
 
-{% include actions/selector-options.md %}
+{% include actions/selector-parameter.md %}
 
 ## Options
 

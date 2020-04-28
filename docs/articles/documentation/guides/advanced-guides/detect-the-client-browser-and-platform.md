@@ -2,6 +2,8 @@
 layout: docs
 title: Detect the Client Browser and Platform
 permalink: /documentation/guides/advanced-guides/detect-the-client-browser-and-platform.html
+redirect_from:
+  - /documentation/test-api/identify-the-browser-and-platform.html
 ---
 # Detect the Client Browser and Platform
 

@@ -2,6 +2,8 @@
 layout: docs
 title: t.click Method
 permalink: /documentation/reference/test-api/testcontroller/click.html
+redirect_from:
+  - /documentation/test-api/actions/click.html
 ---
 # t.click Method
 
@@ -35,7 +37,7 @@ test('Click a check box and check its state', async t => {
 
 ## Select Target Elements
 
-{% include actions/selector-options.md %}
+{% include actions/selector-parameter.md %}
 
 ## Options
 

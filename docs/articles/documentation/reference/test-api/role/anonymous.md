@@ -7,7 +7,7 @@ permalink: /documentation/reference/test-api/role/anonymous.html
 
 Returns an anonymous role that logs out the user when activated.
 
-```
+```text
 Role.anonymous()
 ```
 

@@ -210,7 +210,7 @@ test('Click check boxes and then verify their state', async t => {
 
 Add an action that enters the developer name and clicks the Submit button.
 
-1. Import `t`, a [test controller](../../test-api/test-code-structure.md#test-controller), from the `testcafe` module.
+1. Import `t`, a [test controller](../../reference/test-api/testcontroller/README.md), from the `testcafe` module.
 
     ```js
     import { Selector, t } from 'testcafe';

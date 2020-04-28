@@ -7,7 +7,7 @@ permalink: /documentation/reference/test-api/testcontroller/
 
 A *test controller* object exposes the test API's methods. The test controller is passed to each function that can run server-side test code (like [test](../global/test.md), [beforeEach](../fixture/beforeeach.md) or [afterEach](../fixture/aftereach.md)).
 
-Use the test controller to call [test actions](interact-with-the-page.md), handle [browser dialogs](interact-with-the-page.md), use the [wait function](interact-with-the-page.md), or [execute assertions](assert.md).
+Use the test controller to call [test actions](../../../guides/basic-guides/interact-with-the-page.md), handle [browser dialogs](../../../guides/basic-guides/interact-with-the-page.md#handle-native-dialogs), use the [wait function](../../../guides/basic-guides/interact-with-the-page.md#wait), or [execute assertions](../../../guides/basic-guides/assert.md).
 
 ```js
 fixture `My fixture`
@@ -25,11 +25,11 @@ test('My Test', async t => {
 });
 ```
 
-The test runner also uses the test controller to access the internal context required for the test API to operate. When you call [selectors](select-page-elements.md) and [client functions](obtain-client-side-info.md) from Node.js callbacks, pass the test controller explicitly, because the API cannot retrieve it from the context.
+The test runner also uses the test controller to access the internal context required for the test API to operate. When you call [selectors](../../../guides/basic-guides/select-page-elements.md) and [client functions](../../../guides/basic-guides/obtain-client-side-info.md) from Node.js callbacks, pass the test controller explicitly, because the API cannot retrieve it from the context.
 
 ## Implicit Test Controller Usage
 
-In certain scenarios, you may need to call the test API from outside the test code. For instance, your [page model](../recipes/extract-reusable-test-code/use-page-model.md) can contain methods that perform common operations used in different tests (like authentication).
+In certain scenarios, you may need to call the test API from outside the test code. For instance, your [page model](../../../recipes/extract-reusable-test-code/use-page-model.md) can contain methods that perform common operations used in different tests (like authentication).
 
 ```js
 import { Selector } from 'testcafe';

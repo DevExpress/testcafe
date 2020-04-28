@@ -41,4 +41,4 @@ The [t.clearUpload](clearupload.md) method allows you to remove files added with
 
 ## Select Target Elements
 
-{% include actions/selector-options.md %}
+{% include actions/selector-parameter.md %}

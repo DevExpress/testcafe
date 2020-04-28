@@ -23,4 +23,4 @@ var mock = RequestMock()
     .respond(/*...*/);
 ```
 
-{% inlcude intercept-http-requests/request-filter.md %}
+{% include intercept-http-requests/request-filter.md %}

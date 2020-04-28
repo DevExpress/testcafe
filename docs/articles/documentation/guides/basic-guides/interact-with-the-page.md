@@ -2,6 +2,18 @@
 layout: docs
 title: Interact With The Page
 permalink: /documentation/guides/basic-guides/interact-with-the-page.html
+redirect_from:
+  - /documentation/test-api/actions/
+  - /documentation/test-api/actions/action-options.html
+  - /documentation/test-api/actions/drag-element.html
+  - /documentation/test-api/actions/resize-window.html
+  - /documentation/test-api/actions/select-text.html
+  - /documentation/test-api/actions/take-screenshot.html
+  - /documentation/test-api/actions/upload.html
+  - /documentation/test-api/
+  - /documentation/test-api/a-z.html
+  - /documentation/test-api/handling-native-dialogs.html
+  - /documentation/test-api/working-with-iframes.html
 ---
 # Interact With The Page
 
@@ -260,7 +272,7 @@ Use resize window actions to maximize a browser window or resize it to fit a spe
 * [Resize Window to Fit Device](../../reference/test-api/testcontroller/resizewindowtofitdevice.md)
 * [Maximize Window](../../reference/test-api/testcontroller/maximizewindow.md)
 
-> Important! Window resize actions are not supported when you run tests in [remote browsers](../../using-testcafe/common-concepts/browsers/browser-support.md#browsers-on-remote-devices).
+> Important! Window resize actions are not supported when you run tests in [remote browsers](../concepts/browsers.md#browsers-on-remote-devices).
 
 **Note**: these actions require .NET 4.0 or newer installed on Windows machines and an [ICCCM/EWMH-compliant window manager](https://en.wikipedia.org/wiki/Comparison_of_X_window_managers) on Linux.
 

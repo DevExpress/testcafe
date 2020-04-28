@@ -30,7 +30,7 @@ Parameter               | Type                | Description
 `node`                  | Object &#124; Array | The DOM node if the [returnDOMNodes](#options) option is set to `false`; an array of DOM nodes if [returnDOMNodes](#options) is set to `true`.
 `param1`, `param2`, ... | Any      | Method parameters.
 
-The `addCustomMethods` function also adds the specified methods to the [element state](domnodestate.md) returned by the selector.
+The `addCustomMethods` function also adds the specified methods to the [element state](../domnodestate.md) returned by the selector.
 
 ## Options
 

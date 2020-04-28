@@ -5,7 +5,7 @@ permalink: /documentation/reference/test-api/clientfunction/with.html
 ---
 # ClientFunction.with Method
 
-Overwrites [client function options](../global/clientfunction.md#options).
+Overwrites [client function options](../clientfunction/constructor.md#options).
 
 ```text
 clientFunction.with( options ) → ClientFunction

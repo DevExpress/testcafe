@@ -56,7 +56,7 @@ You can also select specified text with the [t.selectText](selecttext.md) method
 
 ## Select Target Elements
 
-{% include actions/selector-options.md %}
+{% include actions/selector-parameter.md %}
 
 ## Options
 

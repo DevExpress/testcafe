@@ -2,6 +2,8 @@
 layout: docs
 title: t.typeText Method
 permalink: /documentation/reference/test-api/testcontroller/typetext.html
+redirect_from:
+  - /documentation/test-api/actions/type-text.html
 ---
 # t.typeText Method
 
@@ -58,7 +60,7 @@ Range      | `n`                | `'45'`
 
 ## Select Target Elements
 
-{% include actions/selector-options.md %}
+{% include actions/selector-parameter.md %}
 
 ## Options
 

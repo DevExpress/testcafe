@@ -4,15 +4,15 @@
 
 **Type**: Object
 
-If you need to call a selector from a Node.js callback, assign the current [test controller](../../test-code-structure.md#test-controller) to the `boundTestRun` option.
+If you need to call a selector from a Node.js callback, assign the current [test controller](/testcafe/documentation/reference/test-api/testcontroller/) to the `boundTestRun` option.
 
-For more information, see [Calling Selectors from Node.js Callbacks](edge-cases-and-limitations.md#calling-selectors-from-nodejs-callbacks).
+For more information, see [Calling Selectors from Node.js Callbacks](/testcafe/documentation/guides/basic-guides/select-page-elements.html#call-selectors-from-nodejs-callbacks).
 
 ### options.dependencies
 
 **Type**: Object
 
-Use this option to pass functions, variables or objects to selectors [initialized with a function](creating-selectors.md#initialize-selectors). The `dependencies` object's properties are added to the function's scope as variables.
+Use this option to pass functions, variables or objects to selectors [initialized with a function](/testcafe/documentation/guides/basic-guides/select-page-elements.html#create-selectors). The `dependencies` object's properties are added to the function's scope as variables.
 
 Use `dependencies` instead of the function's arguments if you do not need to pass new values every time you call the selector.
 
@@ -45,7 +45,7 @@ The time (in milliseconds) allowed for an element returned by the selector to ap
 
 If the [visibilityCheck](#optionsvisibilitycheck) option is enabled, the element then must become visible within the `timeout`.
 
-**Default value**: the timeout specified in the [runner.run](../../../using-testcafe/programming-interface/runner.md#run) API method or the [--selector-timeout](../../../using-testcafe/command-line-interface.md#--selector-timeout-ms) command line option.
+**Default value**: the timeout specified in the [runner.run](/testcafe/documentation/reference/testcafe-api/runner/run.html) API method or the [--selector-timeout](/testcafe/documentation/reference/command-line-interface.html#--selector-timeout-ms) command line option.
 
 ### options.visibilityCheck
 
@@ -61,7 +61,7 @@ This option is in effect when TestCafe waits for the selector to return a page e
     const width = await Selector('#element', { visibilityCheck: true }).clientWidth;
     ```
 
-* a selector property is passed to an [assertion](../../assertions/README.md) as its actual value;
+* a selector property is passed to an [assertion](/testcafe/documentation/guides/basic-guides/assert.html) as its actual value;
 
     ```js
     await t.expect(Selector('#element', { visibilityCheck: true }).clientWidth).eql(400);
@@ -75,7 +75,7 @@ This option is in effect when TestCafe waits for the selector to return a page e
 
 If the target element is not visible, the selector throws an exception.
 
-Note that when a selector is passed to a [test action](../../actions/README.md) as the target element's identifier, the target element should be visible regardless of the `visibilityCheck` option.
+Note that when a selector is passed to a [test action](/testcafe/documentation/guides/basic-guides/interact-with-the-page.html) as the target element's identifier, the target element should be visible regardless of the `visibilityCheck` option.
 
 Unlike filter functions, the `visibilityCheck` option does not change the selector's matched set.
 
@@ -100,6 +100,6 @@ const count = await Selector('div', { visibilityCheck: true }).count;
 // does not affect the selector's matched set
 ```
 
-To filter page elements by their visibility, use [filterVisible](functional-style-selectors.md#filtervisible) and [filterHidden](functional-style-selectors.md#filterhidden) methods.
+To filter page elements by their visibility, use [filterVisible](/testcafe/documentation/reference/test-api/selector/filtervisible.html) and [filterHidden](/testcafe/documentation/reference/test-api/selector/filterhidden.html) methods.
 
 **Default value**: `false`

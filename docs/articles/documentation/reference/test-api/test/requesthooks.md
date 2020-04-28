@@ -23,6 +23,6 @@ You can also use the [fixture.requestHooks](../fixture/requesthooks.md) method t
 
 > Request hooks attached to a fixture are invoked before hooks attached to its tests.
 
-The [t.attachRequestHooks](../testcontroller/attachrequesthooks.md) method allows you to attach request hooks throughout test execution.
+The [t.addRequestHooks](../testcontroller/addrequesthooks.md) method allows you to attach request hooks throughout test execution.
 
 Use the [t.removeRequestHooks](../testcontroller/removerequesthooks.md) method to remove attached request hooks.

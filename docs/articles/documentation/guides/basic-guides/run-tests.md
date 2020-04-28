@@ -2,10 +2,13 @@
 layout: docs
 title: Run Tests
 permalink: /documentation/guides/basic-guides/run-tests.html
+redirect_from:
+  - /documentation/using-testcafe/common-concepts/concurrent-test-execution.html
+  - /documentation/using-testcafe/common-concepts/live-mode.html
 ---
 # Run Tests
 
-You can run TestCafe tests from the [command line](../../reference/command-line-interface.md) or [JavaScript/TypeScript API](../../reference/api/README.md).
+You can run TestCafe tests from the [command line](../../reference/command-line-interface.md) or JavaScript/TypeScript API.
 
 ```sh
 testcafe safari ./tests/my-fixture.js
@@ -34,7 +37,7 @@ You should specify a path to a file or directory with tests you want to run in t
 testcafe chrome ./tests/
 ```
 
-In the API, use the [runner.src](../../reference/api/runner/src.md) method:
+In the API, use the [runner.src](../../reference/testcafe-api/runner/src.md) method:
 
 ```js
 await runner
@@ -77,7 +80,7 @@ await runner
 
 ### Filter Tests and Fixtures by Name
 
-Use the [-t (--test)](../../reference/command-line-interface.md#-t-name---test-name) command line argument or [runner.filter](../../reference/api/runner/filter.md) method to run a test by name:
+Use the [-t (--test)](../../reference/command-line-interface.md#-t-name---test-name) command line argument or [runner.filter](../../reference/testcafe-api/runner/filter.md) method to run a test by name:
 
 ```sh
 testcafe safari ./tests/sample-fixture.js -t "Click a label"
@@ -107,7 +110,7 @@ To run a fixture by name, use the [-f (--fixture)](../../reference/command-line-
 testcafe firefox ./my-tests/ -f "Sample fixture"
 ```
 
-The [runner.filter](../../reference/api/runner/filter.md) method's predicate accepts the `fixtureName` parameter:
+The [runner.filter](../../reference/testcafe-api/runner/filter.md) method's predicate accepts the `fixtureName` parameter:
 
 ```js
 await runner
@@ -135,7 +138,7 @@ You can also run tests whose metadata contains specific values. Use the [--test-
 testcafe chrome ./my-tests/ --test-meta device=mobile,env=production
 ```
 
-The [runner.filter](../../reference/api/runner/filter.md) method's predicate accepts the `testMeta` parameter:
+The [runner.filter](../../reference/testcafe-api/runner/filter.md) method's predicate accepts the `testMeta` parameter:
 
 ```js
 await runner
@@ -155,7 +158,7 @@ To filter fixtures with specific metadata, use the [--fixture-meta](../../refere
 testcafe firefox ./my-tests/ --fixture-meta device=mobile,env=production
 ```
 
-In [runner.filter](../../reference/api/runner/filter.md), the fixture metadata is available in the `fixtureMeta` parameter:
+In [runner.filter](../../reference/testcafe-api/runner/filter.md), the fixture metadata is available in the `fixtureMeta` parameter:
 
 ```js
 await runner
@@ -173,13 +176,13 @@ await runner
 
 You should specify the browsers where you want to run tests in the first command line parameter.
 
-TestCafe automatically detects supported browsers installed on the local machine. Use [browser aliases](../../concepts/browsers.md) to identify the target browser:
+TestCafe automatically detects supported browsers installed on the local machine. Use [browser aliases](../concepts/browsers.md) to identify the target browser:
 
 ```sh
 testcafe chrome ./tests/
 ```
 
-In the API, use the [runner.browsers](../../reference/api/runner/browsers.md) method:
+In the API, use the [runner.browsers](../../reference/testcafe-api/runner/browsers.md) method:
 
 ```js
 await runner
@@ -198,7 +201,7 @@ You can run tests in several browsers. In the command line, specify a comma-sepa
 testcafe safari,chrome ./tests/
 ```
 
-In the API, pass an array of browser identifiers to [runner.browsers](../../reference/api/runner/browsers.md):
+In the API, pass an array of browser identifiers to [runner.browsers](../../reference/testcafe-api/runner/browsers.md):
 
 ```js
 await runner
@@ -209,7 +212,7 @@ await runner
 
 ### Run Tests in All Installed Browsers
 
-Use the `all` alias to run tests in all locally installed browsers [TestCafe can detect](../../concepts/browsers.md#locally-installed-browsers):
+Use the `all` alias to run tests in all locally installed browsers [TestCafe can detect](../concepts/browsers.md#locally-installed-browsers):
 
 ```sh
 testcafe all ./tests/
@@ -224,7 +227,7 @@ await runner
 
 ### Test in Portable Browsers
 
-You can also specify the path to a browser executable to [launch portable browsers](../../concepts/browsers.md#portable-browsers). Use the `path:` prefix followed by the full path:
+You can also specify the path to a browser executable to [launch portable browsers](../concepts/browsers.md#portable-browsers). Use the `path:` prefix followed by the full path:
 
 ```sh
 testcafe path:d:\firefoxportable\firefoxportable.exe ./tests/
@@ -241,7 +244,7 @@ await runner
 
 ### Use Headless Mode
 
-TestCafe can run tests in [headless mode](../../concepts/browsers.md#headless-mode) in browsers that support it. To run tests in headless mode, put the `:headless` suffix after the browser name:
+TestCafe can run tests in [headless mode](../concepts/browsers.md#test-in-headless-mode) in browsers that support it. To run tests in headless mode, put the `:headless` suffix after the browser name:
 
 ```sh
 testcafe firefox:headless ./tests/
@@ -256,7 +259,7 @@ await runner
 
 ### Enable Mobile Device Emulation
 
-You can use [Google Chrome mobile device emulation](../../concepts/browsers.md#mobile-device-emulation) to test mobile layout and features on desktops. Specify the `:emulation` postfix followed by emulation options:
+You can use [Google Chrome mobile device emulation](../concepts/browsers.md#use-chromium-device-emulation) to test mobile layout and features on desktops. Specify the `:emulation` postfix followed by emulation options:
 
 ```sh
 testcafe "chrome:emulation:device=iphone X" ./tests/sample-fixture.js
@@ -271,7 +274,7 @@ await runner
 
 ### Test in Cloud Testing Services
 
-TestCafe can also run tests in cloud testing services such as BrowserStack or SauceLabs. Install the [browser provider](../../concepts/browsers.md#browser-providers) for your service and specify the browser alias as described in the browser provider documentation.
+TestCafe can also run tests in cloud testing services such as BrowserStack or SauceLabs. Install the [browser provider](../concepts/browsers.md#browsers-in-cloud-testing-services) for your service and specify the browser alias as described in the browser provider documentation.
 
 For instance, to use SauceLabs, install the [testcafe-browser-provider-saucelabs](https://github.com/DevExpress/testcafe-browser-provider-saucelabs) module from `npm` and run tests as follows:
 
@@ -288,7 +291,7 @@ await runner
 
 ### Test on Remote and Mobile Devices
 
-To run tests [remotely on a mobile device](../../concepts/browsers.md#remote-testing) or a computer with no TestCafe installation, specify `remote` instead of the browser alias in the command line:
+To run tests [remotely on a mobile device](../concepts/browsers.md#browsers-on-remote-devices) or a computer with no TestCafe installation, specify `remote` instead of the browser alias in the command line:
 
 ```sh
 testcafe remote ./tests/sample-fixture.js
@@ -296,7 +299,7 @@ testcafe remote ./tests/sample-fixture.js
 
 TestCafe generates a URL and displays it in the console. When you visit this URL from the remote device, TestCafe runs tests in this browser. To run tests in several remote browsers, specify their number after the `remote` keyword: `remote:2` or `remote:4`.
 
-In the API, create a remote browser connection with the [testcafe.createBrowserConnection](../../reference/api/testcafe/createbrowserconnection.md) method, visit the generated URL and run tests once the connection is initialized:
+In the API, create a remote browser connection with the [testcafe.createBrowserConnection](../../reference/testcafe-api/testcafe/createbrowserconnection.md) method, visit the generated URL and run tests once the connection is initialized:
 
 ```js
 const createTestCafe   = require('testcafe');
@@ -318,9 +321,9 @@ await runner
 
 ## Specify the Report Format
 
-A *reporter* is a module that formats and outputs test run results. TestCafe ships with five basic reporters, including reporters for spec, JSON, and xUnit formats. You can [install other reporters](../../concepts/reporters.md) as plugins or [create a custom reporter](../../extending-testcafe/custom-reporter-plugins.md).
+A *reporter* is a module that formats and outputs test run results. TestCafe ships with five basic reporters, including reporters for spec, JSON, and xUnit formats. You can [install other reporters](../concepts/reporters.md) as plugins or [create a custom reporter](../extend-testcafe/reporter-plugin.md).
 
-Use the [-r (--reporter)](../../reference/command-line-interface.md#-r-nameoutput---reporter-nameoutput) flag in the command line and the [runner.reporter](../../reference/api/runner/reporter.md) method in the API to specify which reporter to use.
+Use the [-r (--reporter)](../../reference/command-line-interface.md#-r-nameoutput---reporter-nameoutput) flag in the command line and the [runner.reporter](../../reference/testcafe-api/runner/reporter.md) method in the API to specify which reporter to use.
 
 ```sh
 testcafe all ./tests/sample-fixture.js -r xunit
@@ -348,7 +351,7 @@ await runner
 
 *Related configuration file property:* [reporter](../../reference/configuration-file.md#reporter)
 
-To define the output target, specify it after a semicolon in the command line or as the second parameter in [runner.reporter](../../reference/api/runner/reporter.md).
+To define the output target, specify it after a semicolon in the command line or as the second parameter in [runner.reporter](../../reference/testcafe-api/runner/reporter.md).
 
 ```sh
 testcafe all ./tests/sample-fixture.js -r json:report.json
@@ -383,7 +386,7 @@ await runner
 
 TestCafe can take screenshots of the tested page automatically when a test fails. You can also capture screenshots at arbitrary moments with the [t.takeScreenshot](../../reference/test-api/testcontroller/takescreenshot.md) and [t.takeElementScreenshot](../../reference/test-api/testcontroller/takeelementscreenshot.md) actions.
 
-Use the [-s (--screenshots)](../../reference/command-line-interface.md#-s---screenshots-optionvalueoption2value2) command line flag or the [runner.screenshots](../../reference/api/runner/screenshots.md) API method.
+Use the [-s (--screenshots)](../../reference/command-line-interface.md#-s---screenshots-optionvalueoption2value2) command line flag or the [runner.screenshots](../../reference/testcafe-api/runner/screenshots.md) API method.
 
 ```sh
 testcafe all ./tests/sample-fixture.js -s path=artifacts/screenshots,takeOnFails=true
@@ -402,9 +405,9 @@ await runner
 
 *Related configuration file property:* [screenshots](../../reference/configuration-file.md#screenshots)
 
-To record videos of test runs, pass the [--video](../../reference/command-line-interface.md#--video-basepath) command line flag or use the [runner.video](../../reference/api/runner/video.md) API method.
+To record videos of test runs, pass the [--video](../../reference/command-line-interface.md#--video-basepath) command line flag or use the [runner.video](../../reference/testcafe-api/runner/video.md) API method.
 
-You can also specify video recording options in the [--video-options](../../reference/command-line-interface.md#--video-options-optionvalueoption2value2) command line argument or a [runner.video](../../reference/api/runner/video.md) parameter:
+You can also specify video recording options in the [--video-options](../../reference/command-line-interface.md#--video-options-optionvalueoption2value2) command line argument or a [runner.video](../../reference/testcafe-api/runner/video.md) parameter:
 
 ```sh
 testcafe chrome ./test.js --video ./videos/ --video-options singleFile=true,failedOnly=true
@@ -430,7 +433,7 @@ await runner
 
 To save time spent on testing, TestCafe allows you to execute tests *concurrently*. In concurrent mode, TestCafe invokes multiple instances of each browser. These instances constitute the pool of browsers against which tests run concurrently, i.e. each test runs in the first available instance.
 
-To enable concurrency, use the [-c (--concurrency)](../../reference/command-line-interface.md#-c-n---concurrency-n) command line option or the [runner.concurrency](../../reference/api/runner/concurrency.md) API method.
+To enable concurrency, use the [-c (--concurrency)](../../reference/command-line-interface.md#-c-n---concurrency-n) command line option or the [runner.concurrency](../../reference/testcafe-api/runner/concurrency.md) API method.
 
 > Important! Concurrent test execution is not supported in Microsoft Edge. This is because there is no known way to start Edge in a new window and make it open a particular URL.
 
@@ -462,10 +465,10 @@ In this case, tests are distributed across four Safari instances and the same te
 
 > If an uncaught error or unhandled promise rejection occurs on the server during test execution, all tests running concurrently will fail.
 
-When you run tests on [remote devices](../command-line-interface.md#remote-browsers),
+When you run tests on [remote devices](../../reference/command-line-interface.md#remote-browsers),
 create connections for each instance of each browser you test against. When using
 the command line interface, specify this number after the `remote:` keyword. In API, create
-a [browser connection](../programming-interface/browserconnection.md) for each instance.
+a [browser connection](../../reference/testcafe-api/browserconnection/README.md) for each instance.
 
 On a remote device, invoke all the required instances manually. The total number of instances
 should divide by the concurrency parameter `n`. Otherwise, an exception will be thrown.
@@ -480,7 +483,7 @@ If you test against multiple remote browsers, open and connect all instances of 
 
 TestCafe can execute a specified shell command before it starts tests. For instance, you can run a command that starts a local web server and deploys the tested app. TestCafe automatically terminates the process when tests are finished.
 
-Use the [-a (--app)](../../reference/command-line-interface.md#-a-command---app-command) CLI flag or the [runner.startApp](../../reference/api/runner/startapp.md) API method to provide a command:
+Use the [-a (--app)](../../reference/command-line-interface.md#-a-command---app-command) CLI flag or the [runner.startApp](../../reference/testcafe-api/runner/startapp.md) API method to provide a command:
 
 ```sh
 testcafe chrome ./my-tests/ --app "node server.js"
@@ -496,7 +499,7 @@ await runner
 
 *Related configuration file property:* [appCommand](../../reference/configuration-file.md#appcommand)
 
-TestCafe delays tests to allow the shell command to execute. The default timeout is *1000* milliseconds. Use the [--app-init-delay](../../reference/command-line-interface.md#--app-init-delay-ms) CLI flag or a [runner.startApp](../../reference/api/runner/startapp.md) parameter to specify the timeout value.
+TestCafe delays tests to allow the shell command to execute. The default timeout is *1000* milliseconds. Use the [--app-init-delay](../../reference/command-line-interface.md#--app-init-delay-ms) CLI flag or a [runner.startApp](../../reference/testcafe-api/runner/startapp.md) parameter to specify the timeout value.
 
 ```sh
 testcafe chrome ./my-tests/ --app "node server.js" --app-init-delay 4000
@@ -514,7 +517,7 @@ await runner
 
 ## Provide a Proxy URL
 
-If your network uses a proxy to access the internet, specify the proxy URL to TestCafe. Use the [--proxy](../../reference/command-line-interface.md#--proxy-host) command line argument or the [runner.useProxy](../../reference/api/runner/useproxy.md) API method:
+If your network uses a proxy to access the internet, specify the proxy URL to TestCafe. Use the [--proxy](../../reference/command-line-interface.md#--proxy-host) command line argument or the [runner.useProxy](../../reference/testcafe-api/runner/useproxy.md) API method:
 
 ```sh
 testcafe chrome ./my-tests/ --proxy proxy.mycompany.com
@@ -530,7 +533,7 @@ await runner
 
 *Related configuration file property:* [proxy](../../reference/configuration-file.md#proxy)
 
-You can also specify URLs that should be accessed directly. Pass the list of URLs in the [--proxy-bypass](../../reference/command-line-interface.md#--proxy-bypass-rules) command line argument or a [runner.useProxy](../../reference/api/runner/useproxy.md) parameter:
+You can also specify URLs that should be accessed directly. Pass the list of URLs in the [--proxy-bypass](../../reference/command-line-interface.md#--proxy-bypass-rules) command line argument or a [runner.useProxy](../../reference/testcafe-api/runner/useproxy.md) parameter:
 
 ```sh
 testcafe chrome ./my-tests/ --proxy proxy.corp.mycompany.com --proxy-bypass localhost:8080
@@ -562,7 +565,7 @@ Use the [-L (--live)](../../reference/command-line-interface.md#-l---live) flag 
 testcafe chrome tests/test.js -L
 ```
 
-In the API, create a [live mode runner](../../reference/api/livemoderunner/README.md) with the [testcafe.createLiveModeRunner](../../reference/api/testcafe/createlivemoderunner.md) function and use it instead of a [regular test runner](../../reference/api/runner/README.md).
+In the API, create a [live mode runner](../../reference/testcafe-api/livemoderunner.md) with the [testcafe.createLiveModeRunner](../../reference/testcafe-api/testcafe/createlivemoderunner.md) function and use it instead of a [regular test runner](../../reference/testcafe-api/runner/README.md).
 
 ```js
 const createTestCafe = require('testcafe');
@@ -615,7 +618,7 @@ When the quarantine mode is enabled, tests run according to the following logic:
 3. The most frequent outcome is recorded as the test result.
 4. If the test result differs between test runs, the test is marked as unstable.
 
-Use the [-q (--quarantine-mode)](../../reference/command-line-interface.md#-q---quarantine-mode) command line flag or the `quarantineMode` option in the [runner.run](../../reference/api/runner/run.md) method to enable quarantine mode:
+Use the [-q (--quarantine-mode)](../../reference/command-line-interface.md#-q---quarantine-mode) command line flag or the `quarantineMode` option in the [runner.run](../../reference/testcafe-api/runner/run.md) method to enable quarantine mode:
 
 ```sh
 testcafe chrome ./tests/ -q

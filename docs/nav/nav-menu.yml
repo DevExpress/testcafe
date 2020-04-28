@@ -4,12 +4,11 @@
   url: /documentation/guides/README.md
   content:
   - name: Basic Guides
-    url: /documentation/guides/basic-guides/README.md
     content:
     - name: Install TestCafe
       url: /documentation/guides/basic-guides/install-testcafe.md
-    - name: Organize Tests
-      url: /documentation/guides/basic-guides/organize-tests.md
+    - name: Test Organization
+      url: /documentation/guides/basic-guides/test-organization.md
     - name: Select Page Elements
       url: /documentation/guides/basic-guides/select-page-elements.md
     - name: Interact with the Page
@@ -23,7 +22,6 @@
     - name: Debug
       url: /documentation/guides/basic-guides/debug.md
   - name: Advanced Guides
-    url: /documentation/guides/advanced-guides/README.md
     content:
     - name: Authentication
       url: /documentation/guides/advanced-guides/authentication.md
@@ -35,30 +33,138 @@
       url: /documentation/guides/advanced-guides/inject-client-scripts.md
     - name: Test HTTPS Features and HTTP/2 Websites
       url: /documentation/guides/advanced-guides/test-https-features-and-http2-websites.md
-    - name: Identify the Browser and Platform
-      url: /documentation/guides/advanced-guides/identify-the-browser-and-platform.md
-    - name: Use Docker Image
-      url: /documentation/guides/advanced-guides/use-docker-image.md
+    - name: Detect the Client Browser and Platform
+      url: /documentation/guides/advanced-guides/detect-the-client-browser-and-platform.md
+    - name: Use TestCafe Docker Image
+      url: /documentation/guides/advanced-guides/use-testcafe-docker-image.md
   - name: Concepts
-    url: /documentation/guides/concepts/README.md
     content:
     - name: Browsers
       url: /documentation/guides/concepts/browsers.md
     - name: Reporters
       url: /documentation/guides/concepts/reporters.md
-    - name: Supported Languages
-      url: /documentation/guides/concepts/supported-languages.md
-    - name: Built-in Waiting Mechanisms
-      url: /documentation/guides/concepts/built-in-waiting-mechanisms.md
+    - name: TypeScript and CoffeeScript
+      url: /documentation/guides/concepts/typescript-and-coffeescript.md
+    - name: Built-in Wait Mechanisms
+      url: /documentation/guides/concepts/built-in-wait-mechanisms.md
+  - name: Continuous Integration
+    content:
+    - name: AppVeyor
+      url: /documentation/guides/continuous-integration/appveyor.md
+    - name: Azure DevOps
+      url: /documentation/guides/continuous-integration/azure-devops.md
+    - name: Bitbucket Pipelines
+      url: /documentation/guides/continuous-integration/bitbucket-pipelines.md
+    - name: CircleCI
+      url: /documentation/guides/continuous-integration/circleci.md
+    - name: GitHub Actions
+      url: /documentation/guides/continuous-integration/github-actions.md  
+    - name: GitLab
+      url: /documentation/guides/continuous-integration/gitlab.md
+    - name: Jenkins
+      url: /documentation/guides/continuous-integration/jenkins.md
+    - name: TeamCity
+      url: /documentation/guides/continuous-integration/teamcity.md
+    - name: Travis
+      url: /documentation/guides/continuous-integration/travis.md
+    - name: Travis + Sauce Labs
+      url: /documentation/guides/continuous-integration/travis-and-sauce-labs.md
+  - name: Extend TestCafe
+    content:
+    - name: Install Plugins
+      url: /documentation/guides/extend-testcafe/install-plugins.md
+    - name: Reporter Plugin
+      url: /documentation/guides/extend-testcafe/reporter-plugin.md
+    - name: Browser Provider Plugin
+      url: /documentation/guides/extend-testcafe/browser-provider-plugin.md
 - name: REFERENCE
   url: /documentation/reference/README.md
   content:
   - name: Test API
-    url: /documentation/reference/test-api/README.md
     content:
+    - name: Global Functions
+      content:
+      - name: fixture Function
+        url: /documentation/reference/test-api/global/fixture.md
+      - name: test Function
+        url: /documentation/reference/test-api/global/test.md
+    - name: ClientFunction
+      url: /documentation/reference/test-api/clientfunction/README.md
+      content:
+      - name: ClientFunction Constructor
+        url: /documentation/reference/test-api/clientfunction/constructor.md
+      - name: with Method
+        url: /documentation/reference/test-api/clientfunction/with.md
+    - name: DOMNodeState
+      url: /documentation/reference/test-api/domnodestate.md
+    - name: Fixture
+      content:
+      - name: after Method
+        url: /documentation/reference/test-api/fixture/after.md
+      - name: afterEach Method
+        url: /documentation/reference/test-api/fixture/aftereach.md
+      - name: before Method
+        url: /documentation/reference/test-api/fixture/before.md
+      - name: beforeEach Method
+        url: /documentation/reference/test-api/fixture/beforeeach.md
+      - name: clientScripts Method
+        url: /documentation/reference/test-api/fixture/clientscripts.md
+      - name: disablePageCaching Method
+        url: /documentation/reference/test-api/fixture/disablepagecaching.md
+      - name: httpAuth Method
+        url: /documentation/reference/test-api/fixture/httpauth.md
+      - name: meta Method
+        url: /documentation/reference/test-api/fixture/meta.md
+      - name: only Method
+        url: /documentation/reference/test-api/fixture/only.md
+      - name: page Method
+        url: /documentation/reference/test-api/fixture/page.md
+      - name: requestHooks Method
+        url: /documentation/reference/test-api/fixture/requesthooks.md
+      - name: skip Method
+        url: /documentation/reference/test-api/fixture/skip.md
+    - name: RequestHook
+      url: /documentation/reference/test-api/requesthook/README.md
+      content:
+      - name: RequestHook Constructor
+        url: /documentation/reference/test-api/requesthook/constructor.md
+      - name: onRequest Method
+        url: /documentation/reference/test-api/requesthook/onrequest.md
+      - name: onResponse Method
+        url: /documentation/reference/test-api/requesthook/onresponse.md
+    - name: RequestLogger
+      url: /documentation/reference/test-api/requestlogger/README.md
+      content:
+      - name: RequestLogger Constructor
+        url: /documentation/reference/test-api/requestlogger/constructor.md
+      - name: clear Method
+        url: /documentation/reference/test-api/requestlogger/clear.md
+      - name: contains Method
+        url: /documentation/reference/test-api/requestlogger/contains.md
+      - name: count Method
+        url: /documentation/reference/test-api/requestlogger/count.md
+      - name: requests Property
+        url: /documentation/reference/test-api/requestlogger/requests.md
+    - name: RequestMock
+      url: /documentation/reference/test-api/requestmock/README.md
+      content:
+      - name: RequestMock Constructor
+        url: /documentation/reference/test-api/requestmock/constructor.md
+      - name: onRequestTo Method
+        url: /documentation/reference/test-api/requestmock/onrequestto.md
+      - name: respond Method
+        url: /documentation/reference/test-api/requestmock/respond.md
+    - name: Role
+      content:
+      - name: Role Constructor
+        url: /documentation/reference/test-api/role/constructor.md
+      - name: anonymous Static Method
+        url: /documentation/reference/test-api/role/anonymous.md
     - name: Selector
       url: /documentation/reference/test-api/selector/README.md
       content:
+      - name: Selector constructor
+        url: /documentation/reference/test-api/selector/constructor.md
       - name: addCustomDOMProperties Method
         url: /documentation/reference/test-api/selector/addcustomdomproperties.md
       - name: addCustomMethods Method
@@ -85,8 +191,6 @@
         url: /documentation/reference/test-api/selector/parent.md
       - name: prevSibling Method
         url: /documentation/reference/test-api/selector/prevsibling.md
-      - name: Selector constructor
-        url: /documentation/reference/test-api/selector/selector.md
       - name: sibling Method
         url: /documentation/reference/test-api/selector/sibling.md
       - name: with Method
@@ -97,55 +201,164 @@
         url: /documentation/reference/test-api/selector/withexacttext.md
       - name: withText Method
         url: /documentation/reference/test-api/selector/withtext.md
-    - name: DOMNodeState
-      url: /documentation/reference/test-api/domnodestate.md
+    - name: Test
+      content:
+      - name: after Method
+        url: /documentation/reference/test-api/test/after.md
+      - name: before Method
+        url: /documentation/reference/test-api/test/before.md
+      - name: clientScripts Method
+        url: /documentation/reference/test-api/test/clientscripts.md
+      - name: disablePageCaching Method
+        url: /documentation/reference/test-api/test/disablepagecaching.md
+      - name: httpAuth Method
+        url: /documentation/reference/test-api/test/httpauth.md
+      - name: meta Method
+        url: /documentation/reference/test-api/test/meta.md
+      - name: only Method
+        url: /documentation/reference/test-api/test/only.md
+      - name: page Method
+        url: /documentation/reference/test-api/test/page.md
+      - name: requestHooks Method
+        url: /documentation/reference/test-api/test/requesthooks.md
+      - name: skip Method
+        url: /documentation/reference/test-api/test/skip.md
+    - name: TestController
+      content:
+      - name: addRequestHooks Method
+        url: /documentation/reference/test-api/testcontroller/addrequesthooks.md
+      - name: browser Property
+        url: /documentation/reference/test-api/testcontroller/browser.md
+      - name: clearUpload Method
+        url: /documentation/reference/test-api/testcontroller/clearupload.md
+      - name: click Method
+        url: /documentation/reference/test-api/testcontroller/click.md
+      - name: ctx Property
+        url: /documentation/reference/test-api/testcontroller/ctx.md
+      - name: debug Method
+        url: /documentation/reference/test-api/testcontroller/debug.md
+      - name: doubleClick Method
+        url: /documentation/reference/test-api/testcontroller/doubleclick.md
+      - name: drag Method
+        url: /documentation/reference/test-api/testcontroller/drag.md
+      - name: dragToElement Method
+        url: /documentation/reference/test-api/testcontroller/dragtoelement.md
+      - name: eval Method
+        url: /documentation/reference/test-api/testcontroller/eval.md
+      - name: fixtureCtx Property
+        url: /documentation/reference/test-api/testcontroller/fixturectx.md
+      - name: getBrowserConsoleMessages Method
+        url: /documentation/reference/test-api/testcontroller/getbrowserconsolemessages.md
+      - name: getNativeDialogHistory Method
+        url: /documentation/reference/test-api/testcontroller/getnativedialoghistory.md
+      - name: hover Method
+        url: /documentation/reference/test-api/testcontroller/hover.md
+      - name: maximizeWindow Method
+        url: /documentation/reference/test-api/testcontroller/maximizewindow.md
+      - name: navigateTo Method
+        url: /documentation/reference/test-api/testcontroller/navigateto.md
+      - name: pressKey Method
+        url: /documentation/reference/test-api/testcontroller/presskey.md
+      - name: removeRequestHooks Method
+        url: /documentation/reference/test-api/testcontroller/removerequesthooks.md
+      - name: resizeWindow Method
+        url: /documentation/reference/test-api/testcontroller/resizewindow.md
+      - name: resizeWindowToFitDevice Method
+        url: /documentation/reference/test-api/testcontroller/resizewindowtofitdevice.md
+      - name: rightClick Method
+        url: /documentation/reference/test-api/testcontroller/rightclick.md
+      - name: selectEditableContent Method
+        url: /documentation/reference/test-api/testcontroller/selecteditablecontent.md
+      - name: selectText Method
+        url: /documentation/reference/test-api/testcontroller/selecttext.md
+      - name: selectTextAreaContent Method
+        url: /documentation/reference/test-api/testcontroller/selecttextareacontent.md
+      - name: setFilesToUpload Method
+        url: /documentation/reference/test-api/testcontroller/setfilestoupload.md
+      - name: setNativeDialogHandler Method
+        url: /documentation/reference/test-api/testcontroller/setnativedialoghandler.md
+      - name: setPageLoadTimeout Method
+        url: /documentation/reference/test-api/testcontroller/setpageloadtimeout.md
+      - name: setTestSpeed Method
+        url: /documentation/reference/test-api/testcontroller/settestspeed.md
+      - name: switchToIframe Method
+        url: /documentation/reference/test-api/testcontroller/switchtoiframe.md
+      - name: switchToMainWindow Method
+        url: /documentation/reference/test-api/testcontroller/switchtomainwindow.md
+      - name: takeElementScreenshot Method
+        url: /documentation/reference/test-api/testcontroller/takeelementscreenshot.md
+      - name: takeScreenshot Method
+        url: /documentation/reference/test-api/testcontroller/takescreenshot.md
+      - name: typeText Method
+        url: /documentation/reference/test-api/testcontroller/typetext.md
+      - name: useRole Method
+        url: /documentation/reference/test-api/testcontroller/userole.md
+      - name: wait Method
+        url: /documentation/reference/test-api/testcontroller/wait.md
   - name: Command Line Interface
     url: /documentation/reference/command-line-interface.md
   - name: TestCafe API
-    url: /documentation/reference/testcafe-api/README.md
+    content:
+    - name: Global Functions
+      content:
+      - name: createTestCafe Function
+        url: /documentation/reference/testcafe-api/global/createtestcafe.md
+    - name: BrowserConnection
+      url: /documentation/reference/testcafe-api/browserconnection/README.md
+      content:
+      - name: ready Event
+        url: /documentation/reference/testcafe-api/browserconnection/ready.md
+      - name: url Property
+        url: /documentation/reference/testcafe-api/browserconnection/url.md
+    - name: LiveModeRunner
+      url: /documentation/reference/testcafe-api/livemoderunner.md
+    - name: Runner
+      url: /documentation/reference/testcafe-api/runner/README.md
+      content:
+      - name: browsers Method
+        url: /documentation/reference/testcafe-api/runner/browsers.md
+      - name: clientScripts Method
+        url: /documentation/reference/testcafe-api/runner/clientscripts.md
+      - name: concurrency Method
+        url: /documentation/reference/testcafe-api/runner/concurrency.md
+      - name: filter Method
+        url: /documentation/reference/testcafe-api/runner/filter.md
+      - name: reporter Method
+        url: /documentation/reference/testcafe-api/runner/reporter.md
+      - name: run Method
+        url: /documentation/reference/testcafe-api/runner/run.md
+      - name: screenshots Method
+        url: /documentation/reference/testcafe-api/runner/screenshots.md
+      - name: src Method
+        url: /documentation/reference/testcafe-api/runner/src.md
+      - name: startApp Method
+        url: /documentation/reference/testcafe-api/runner/startapp.md
+      - name: stop Method
+        url: /documentation/reference/testcafe-api/runner/stop.md
+      - name: tsConfigPath Method
+        url: /documentation/reference/testcafe-api/runner/tsconfigpath.md
+      - name: useProxy Method
+        url: /documentation/reference/testcafe-api/runner/useproxy.md
+      - name: video Method
+        url: /documentation/reference/testcafe-api/runner/video.md
+    - name: TestCafe
+      url: /documentation/reference/testcafe-api/testcafe/README.md
+      content:
+      - name: close Method
+        url: /documentation/reference/testcafe-api/testcafe/close.md
+      - name: createBrowserConnection Method
+        url: /documentation/reference/testcafe-api/testcafe/createbrowserconnection.md
+      - name: createLiveModeRunner Method
+        url: /documentation/reference/testcafe-api/testcafe/createlivemoderunner.md
+      - name: createRunner Method
+        url: /documentation/reference/testcafe-api/testcafe/createrunner.md
   - name: Configuration File
     url: /documentation/reference/configuration-file.md
-- name: EXTENDING TESTCAFE
-  url: /documentation/extending-testcafe/README.md
-  content:
-  - name: Reporter Plugin
-    url: /documentation/extending-testcafe/reporter-plugin/README.md
-    content:
-    - name: Reporter Methods
-      url: /documentation/extending-testcafe/reporter-plugin/reporter-methods.md
-    - name: Helpers
-      url: /documentation/extending-testcafe/reporter-plugin/helpers.md
-  - name: Browser Provider Plugin
-    url: /documentation/extending-testcafe/browser-provider-plugin/README.md
-    content:
-    - name: Browser Provider Methods
-      url: /documentation/extending-testcafe/browser-provider-plugin/browser-provider-methods.md
-- name: CONTINUOUS INTEGRATION
-  url: /documentation/continuous-integration/README.md
-  content:
-  - name: AppVeyor
-    url: /documentation/continuous-integration/appveyor.md
-  - name: Azure DevOps
-    url: /documentation/continuous-integration/azure-devops.md
-  - name: Bitbucket Pipelines
-    url: /documentation/continuous-integration/bitbucket-pipelines.md
-  - name: CircleCI
-    url: /documentation/continuous-integration/circleci.md
-  - name: GitHub Actions
-    url: /documentation/continuous-integration/github-actions.md  
-  - name: GitLab
-    url: /documentation/continuous-integration/gitlab.md
-  - name: Jenkins
-    url: /documentation/continuous-integration/jenkins.md
-  - name: TeamCity
-    url: /documentation/continuous-integration/teamcity.md
-  - name: Travis
-    url: /documentation/continuous-integration/travis.md
-  - name: Travis + Sauce Labs
-    url: /documentation/continuous-integration/travis-and-sauce-labs.md
 - name: RECIPES
   url: /documentation/recipes/README.md
   content:
+  - name: Recipes
+    content:
     - name: Access Environment Variables in Tests
       url: /documentation/recipes/access-environment-variables-in-tests.md
     - name: Create Data-Driven Tests
@@ -153,19 +366,19 @@
     - name: Debug Tests
       url: /documentation/recipes/debug-tests/README.md
       content:
-        - name: Chrome Developer Tools
-          url: /documentation/recipes/debug-tests/chrome-dev-tools.md
-        - name: Visual Studio Code
-          url: /documentation/recipes/debug-tests/visual-studio-code.md
-        - name: WebStorm
-          url: /documentation/recipes/debug-tests/webstorm.md
+      - name: Chrome Developer Tools
+        url: /documentation/recipes/debug-tests/chrome-dev-tools.md
+      - name: Visual Studio Code
+        url: /documentation/recipes/debug-tests/visual-studio-code.md
+      - name: WebStorm
+        url: /documentation/recipes/debug-tests/webstorm.md
     - name: Extract Reusable Test Code
       url: /documentation/recipes/extract-reusable-test-code/README.md
       content:
-        - name: Use Page Model
-          url: /documentation/recipes/extract-reusable-test-code/use-page-model.md
-        - name: Create Helpers
-          url: /documentation/recipes/extract-reusable-test-code/create-helpers.md
+      - name: Use Page Model
+        url: /documentation/recipes/extract-reusable-test-code/use-page-model.md
+      - name: Create Helpers
+        url: /documentation/recipes/extract-reusable-test-code/create-helpers.md
     - name: Find Code Issues with Flow Type Checker
       url: /documentation/recipes/find-code-issues-with-flow-type-checker.md
     - name: Import Third-Party Modules
@@ -181,7 +394,7 @@
     - name: Use Task Runners
       url: /documentation/recipes/use-task-runners/README.md
       content:
-        - name: Grunt
-          url: /documentation/recipes/use-task-runners/grunt.md
-        - name: Gulp
-          url: /documentation/recipes/use-task-runners/gulp.md
+      - name: Grunt
+        url: /documentation/recipes/use-task-runners/grunt.md
+      - name: Gulp
+        url: /documentation/recipes/use-task-runners/gulp.md

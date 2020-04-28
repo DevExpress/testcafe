@@ -2,6 +2,8 @@
 layout: docs
 title: Debug
 permalink: /documentation/guides/basic-guides/debug.html
+redirect_from:
+  - /documentation/test-api/debugging.html
 ---
 # Debug
 
@@ -27,13 +29,13 @@ command line option to pause the test before the first action or assertion.
 
 The footer displays buttons that allow you to continue the test, or skip to the next test action or assertion.
 
-![Page Footer when Debugging on a Client](../../images/debugging/client-debugging-footer.png)
+![Page Footer when Debugging on a Client](../../../images/debugging/client-debugging-footer.png)
 
-> The debugger does not stop at creating and resolving the [selectors](select-page-elements.md) and [client functions](obtain-client-side-data.md).
+> The debugger does not stop at creating and resolving the [selectors](select-page-elements.md) and [client functions](obtain-client-side-info.md).
 
 TestCafe logs points in code where the debugger stopped.
 
-![Logging Debugger Breakpoints](../../images/debugging/log-debugger.png)
+![Logging Debugger Breakpoints](../../../images/debugging/log-debugger.png)
 
 **Example**
 

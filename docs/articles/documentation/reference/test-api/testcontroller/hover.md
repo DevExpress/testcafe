@@ -2,6 +2,8 @@
 layout: docs
 title: t.hover Method
 permalink: /documentation/reference/test-api/testcontroller/hover.html
+redirect_from:
+  - /documentation/test-api/actions/hover.html
 ---
 # t.hover Method
 
@@ -39,7 +41,7 @@ test('Select combo box value', async t => {
 
 ## Select Target Elements
 
-{% include actions/selector-options.md %}
+{% include actions/selector-parameter.md %}
 
 ## Options
 

@@ -2,6 +2,8 @@
 layout: docs
 title: t.navigateTo Method
 permalink: /documentation/reference/test-api/testcontroller/navigateto.html
+redirect_from:
+  - /documentation/test-api/actions/navigate.html
 ---
 # t.navigateTo Method
 

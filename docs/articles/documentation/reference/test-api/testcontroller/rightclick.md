@@ -2,7 +2,8 @@
 layout: docs
 title: t.rightClick Method
 permalink: /documentation/reference/test-api/testcontroller/rightclick.html
-checked: true
+redirect_from:
+  - /documentation/test-api/actions/right-click.html
 ---
 # t.rightClick Method
 
@@ -37,7 +38,7 @@ test('Popup Menu', async t => {
 
 ## Select Target Elements
 
-{% include actions/selector-options.md %}
+{% include actions/selector-parameter.md %}
 
 ## Options
 

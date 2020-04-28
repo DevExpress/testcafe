@@ -36,13 +36,15 @@ You can use the [page](../../../guides/advanced-guides/inject-client-scripts.md#
 ## Inject a JavaScript File
 
 {% capture syntax %}
+
 ```text
 fixture.clientScripts(filePath | { path: filePath })
 fixture.clientScripts(filePath | { path: filePath }, ...)
 fixture.clientScripts([ filePath | { path: filePath } ])
 ```
+
 {% endcapture %}
-{% inlcude client-scripts/inject-javascript-file.md syntax=syntax relativePaths="local" %}
+{% include client-scripts/inject-javascript-file.md syntax=syntax relativePaths="local" %}
 **Example**
 
 ```js
@@ -54,13 +56,15 @@ fixture `My fixture`
 ## Inject a Module
 
 {% capture syntax %}
+
 ```text
 fixture.clientScripts( { module: moduleName } )
 fixture.clientScripts( { module: moduleName }, ... )
 fixture.clientScripts([ { module: moduleName } ])
 ```
+
 {% endcapture %}
-{% inlcude client-scripts/inject-javascript-file.md syntax=syntax %}
+{% include client-scripts/inject-module.md syntax=syntax %}
 **Example**
 
 ```js
@@ -72,13 +76,15 @@ fixture `My fixture`
 ## Inject Script Code
 
 {% capture syntax %}
+
 ```text
 fixture.clientScripts({ content: code })
 fixture.clientScripts({ content: code }, ...)
 fixture.clientScripts([ { content: code } ])
 ```
+
 {% endcapture %}
-{% inlcude client-scripts/inject-javascript-file.md syntax=syntax %}
+{% include client-scripts/inject-code.md syntax=syntax %}
 **Example**
 
 ```js
@@ -96,6 +102,7 @@ fixture `My fixture`
 ## Provide Scripts for Specific Pages
 
 {% capture syntax %}
+
 ```text
 fixture.clientScripts({
     page: url,
@@ -114,8 +121,9 @@ fixture.clientScripts([
     }
 ])
 ```
+
 {% endcapture %}
-{% inlcude client-scripts/inject-javascript-file.md syntax=syntax regexp=true %}
+{% include client-scripts/specify-pages.md syntax=syntax regexp=true %}
 **Example**
 
 ```js

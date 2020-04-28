@@ -7,7 +7,7 @@ permalink: /documentation/reference/test-api/selector/child.html
 
 Finds child ***elements*** for nodes in the matched set.
 
-> Important! For information about how to access child ***nodes***, see [Access Child Nodes in the DOM Hierarchy](dumb-link.md).
+> Important! For information about how to access child ***nodes***, see [Access Child Nodes in the DOM Hierarchy](../../../guides/basic-guides/select-page-elements.md#access-child-nodes-in-the-dom-hierarchy).
 
 ## Syntax
 

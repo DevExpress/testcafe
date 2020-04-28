@@ -42,12 +42,11 @@ test('Delete text within a contentEditable element', async t => {
 > If the HTML element defined by `endSelector` is located on a higher level of the page hierarchy
 > than the one defined by `startSelector`, the action will perform a backward selection.
 
-
 You can also select `<textarea>` content with the [t.selectTextareaContent](selecttextareacontent.md) method and editable content with the [t.selectEditableContent](selecteditablecontent.md) method.
 
 ## Select Target Elements
 
-{% include actions/selector-options.md %}
+{% include actions/selector-parameter.md %}
 
 ## Options
 

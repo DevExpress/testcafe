@@ -10,13 +10,13 @@ redirect_from:
 TestCafe allows you to run tests on any device that has network access to the machine where TestCafe is installed.
 
 This guide demonstrates how to test on a remote computer and a mobile device.
-It assumes that TestCafe is already [installed](../using-testcafe/installing-testcafe.md)
+It assumes that TestCafe is already [installed](../guides/basic-guides/install-testcafe.md)
 in your project and you have [created some tests](../getting-started/README.md#creating-a-test).
 
 ## Run Tests on a Remote Computer
 
 1. Open the console and type a command to run tests.
-  Use [remote](../using-testcafe/command-line-interface.md#remote-browsers) as a browser alias
+  Use [remote](../reference/command-line-interface.md#remote-browsers) as a browser alias
   to specify that tests should run on a remote machine.
 
     ```sh
@@ -33,7 +33,7 @@ in your project and you have [created some tests](../getting-started/README.md#c
 
 ## Run Tests on a Mobile Device
 
-1. Open the console and type a command to run tests with [remote](../using-testcafe/command-line-interface.md#remote-browsers) as a browser alias.
+1. Open the console and type a command to run tests with [remote](../reference/command-line-interface.md#remote-browsers) as a browser alias.
   Add the `--qr-code` flag to generate a QR-code for the mobile device.
 
     ```sh

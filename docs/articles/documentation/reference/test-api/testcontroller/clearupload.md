@@ -41,4 +41,4 @@ test('Trying to upload with no files specified', async t => {
 
 ## Select Target Elements
 
-{% include actions/selector-options.md %}
+{% include actions/selector-parameter.md %}
