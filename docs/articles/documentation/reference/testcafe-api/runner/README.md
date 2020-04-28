@@ -29,7 +29,7 @@ Method                  | Description
 [reporter](reporter.md)           | Configures how TestCafe generates test run reports.
 [screenshots](screenshots.md)     | Specifies how TestCafe should take screenshots of the tested pages.
 [startApp](startapp.md)           | Specifies a shell command that is executed before TestCafe runs tests.
-[tsConfigPath](tsconfigpath.md)   | Enables TestCafe to use a custom [TypeScript configuration file](../../../concepts/typescript-and-coffeescript.md#customize-compiler-options) and specifies its location.
+[tsConfigPath](tsconfigpath.md)   | Enables TestCafe to use a custom [TypeScript configuration file](../../../guides/concepts/typescript-and-coffeescript.md#customize-compiler-options) and specifies its location.
 [useProxy](useproxy.md)           | Specifies the proxy server used in your local network to access the Internet.
 [video](video.md)                 | Enables TestCafe to record videos of test runs.
 
