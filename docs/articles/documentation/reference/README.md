@@ -5,13 +5,9 @@ permalink: /documentation/reference/
 ---
 # Reference
 
-## Command Line Interface
+## [Command Line Interface](command-line-interface.md)
 
-* [Command Line Interface](command-line-interface.md)
-
-## Configuration File
-
-* [Configuration File](configuration-file.md)
+## [Configuration File](configuration-file.md)
 
 ## Test API
 

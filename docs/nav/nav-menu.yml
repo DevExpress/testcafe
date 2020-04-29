@@ -80,10 +80,10 @@
 - name: REFERENCE
   url: /documentation/reference/README.md
   content:
-  - name: Configuration File
-    url: /documentation/reference/configuration-file.md
   - name: Command Line Interface
     url: /documentation/reference/command-line-interface.md
+  - name: Configuration File
+    url: /documentation/reference/configuration-file.md
   - name: Test API
     content:
     - name: Global Functions
