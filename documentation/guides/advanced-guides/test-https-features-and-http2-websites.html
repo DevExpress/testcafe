@@ -1013,9 +1013,7 @@
 <p>When you use the programming interface, pass the HTTPS server options to the <a href="../../reference/testcafe-api/global/createtestcafe.html">createTestCafe</a> method.</p>
 
 <p>The following example uses the <a href="https://www.npmjs.com/package/openssl-self-signed-certificate">openssl-self-signed-certificate</a> module to generate a self-signed certificate:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="dl">'</span><span class="s1">use strict</span><span class="dl">'</span><span class="p">;</span>
-
-<span class="kd">const</span> <span class="nx">createTestCafe</span>        <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">);</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">createTestCafe</span>        <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">);</span>
 <span class="kd">const</span> <span class="nx">selfSignedSertificate</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">openssl-self-signed-certificate</span><span class="dl">'</span><span class="p">);</span>
 <span class="kd">let</span> <span class="nx">runner</span>                  <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
 
