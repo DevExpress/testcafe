@@ -88,10 +88,10 @@ npx testcafe chrome tests/
 
 TestCafe requires screen recording permission on macOS (v10.15 Catalina and newer) to perform test actions, take screenshots and record videos. When TestCafe starts the first time, macOS asks you to allow screen recording for *TestCafe Browser Tools*.
 
-![Screen Recording Permissions](../../images/recording-permissions.png)
+![Screen Recording Permissions](../../../images/recording-permissions.png)
 
 Click **Open System Preferences** and check **TestCafe Browser Tools** to grant permission.
 
 When you update TestCafe, macOS may reset its security permissions (it depends on which TestCafe components are updated). In this case, the system repeats the request the next time you run tests. When the **Security and Privacy** dialog opens, uncheck the **TestCafe Browser Tools** check box and check it again.
 
-![Screen Recording Permissions](../../images/recording-permission-system-settings.png)
+![Screen Recording Permissions](../../../images/recording-permission-system-settings.png)

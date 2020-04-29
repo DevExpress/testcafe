@@ -40,8 +40,6 @@ When you use the programming interface, pass the HTTPS server options to the [cr
 The following example uses the [openssl-self-signed-certificate](https://www.npmjs.com/package/openssl-self-signed-certificate) module to generate a self-signed certificate:
 
 ```js
-'use strict';
-
 const createTestCafe        = require('testcafe');
 const selfSignedSertificate = require('openssl-self-signed-certificate');
 let runner                  = null;

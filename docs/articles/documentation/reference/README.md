@@ -5,15 +5,26 @@ permalink: /documentation/reference/
 ---
 # Reference
 
+## Command Line Interface
+
+* [Command Line Interface](command-line-interface.md)
+
+## Configuration File
+
+* [Configuration File](configuration-file.md)
+
 ## Test API
 
-* [fixture Function](test-api/global/fixture.md)
-* [test Function](test-api/global/test.md)
+### Global Functions
+
+* [fixture](test-api/global/fixture.md)
+* [test](test-api/global/test.md)
 
 ### ClientFunction
 
+* [ClientFunction Object](test-api/clientfunction/README.md)
 * [ClientFunction Constructor](test-api/clientfunction/constructor.md)
-* [with Method](test-api/clientfunction/with.md)
+* [with](test-api/clientfunction/with.md)
 
 ### DOMNodeState
 
@@ -21,120 +32,138 @@ permalink: /documentation/reference/
 
 ### Fixture
 
-* [after Method](test-api/fixture/after.md)
-* [afterEach Method](test-api/fixture/aftereach.md)
-* [before Method](test-api/fixture/before.md)
-* [beforeEach Method](test-api/fixture/beforeeach.md)
-* [clientScripts Method](test-api/fixture/clientscripts.md)
-* [disablePageCaching Method](test-api/fixture/disablepagecaching.md)
-* [httpAuth Method](test-api/fixture/httpauth.md)
-* [meta Method](test-api/fixture/meta.md)
-* [only Method](test-api/fixture/only.md)
-* [page Method](test-api/fixture/page.md)
-* [requestHooks Method](test-api/fixture/requesthooks.md)
-* [skip Method](test-api/fixture/skip.md)
+* [after](test-api/fixture/after.md)
+* [afterEach](test-api/fixture/aftereach.md)
+* [before](test-api/fixture/before.md)
+* [beforeEach](test-api/fixture/beforeeach.md)
+* [clientScripts](test-api/fixture/clientscripts.md)
+* [disablePageCaching](test-api/fixture/disablepagecaching.md)
+* [httpAuth](test-api/fixture/httpauth.md)
+* [meta](test-api/fixture/meta.md)
+* [only](test-api/fixture/only.md)
+* [page](test-api/fixture/page.md)
+* [requestHooks](test-api/fixture/requesthooks.md)
+* [skip](test-api/fixture/skip.md)
 
 ### RequestHook
 
+* [RequestHook Object](test-api/requesthook/README.md)
 * [RequestHook Constructor](test-api/requesthook/constructor.md)
-* [onRequest Method](test-api/requesthook/onrequest.md)
-* [onResponse Method](test-api/requesthook/onresponse.md)
+* [onRequest](test-api/requesthook/onrequest.md)
+* [onResponse](test-api/requesthook/onresponse.md)
 
 ### RequestLogger
 
+* [RequestLogger Object](test-api/requestlogger/README.md)
 * [RequestLogger Constructor](test-api/requestlogger/constructor.md)
-* [clear Method](test-api/requestlogger/clear.md)
-* [contains Method](test-api/requestlogger/contains.md)
-* [count Method](test-api/requestlogger/count.md)
-* [requests Property](test-api/requestlogger/requests.md)
+* [clear](test-api/requestlogger/clear.md)
+* [contains](test-api/requestlogger/contains.md)
+* [count](test-api/requestlogger/count.md)
+* [requests](test-api/requestlogger/requests.md)
 
 ### RequestMock
 
+* [RequestMock Object](test-api/requestmock/README.md)
 * [RequestMock Constructor](test-api/requestmock/constructor.md)
-* [onRequestTo Method](test-api/requestmock/onrequestto.md)
-* [respond Method](test-api/requestmock/respond.md)
+* [onRequestTo](test-api/requestmock/onrequestto.md)
+* [respond](test-api/requestmock/respond.md)
 
 ### Role
 
 * [Role Constructor](test-api/role/constructor.md)
-* [anonymous Static Method](test-api/role/anonymous.md)
+* [anonymous Static](test-api/role/anonymous.md)
 
 ### Selector
 
+* [Selector Object](test-api/selector/README.md)
 * [Selector constructor](test-api/selector/constructor.md)
-* [addCustomDOMProperties Method](test-api/selector/addcustomdomproperties.md)
-* [addCustomMethods Method](test-api/selector/addcustommethods.md)
-* [child Method](test-api/selector/child.md)
-* [count Property](test-api/selector/count.md)
-* [exists Property](test-api/selector/exists.md)
-* [filter Method](test-api/selector/filter.md)
-* [filterHidden Method](test-api/selector/filterhidden.md)
-* [filterVisible Method](test-api/selector/filtervisible.md)
-* [find Method](test-api/selector/find.md)
-* [nextSibling Method](test-api/selector/nextsibling.md)
-* [nth Method](test-api/selector/nth.md)
-* [parent Method](test-api/selector/parent.md)
-* [prevSibling Method](test-api/selector/prevsibling.md)
-* [sibling Method](test-api/selector/sibling.md)
-* [with Method](test-api/selector/with.md)
-* [withAttribute Method](test-api/selector/withattribute.md)
-* [withExactText Method](test-api/selector/withexacttext.md)
-* [withText Method](test-api/selector/withtext.md)
+* [addCustomDOMProperties](test-api/selector/addcustomdomproperties.md)
+* [addCustomMethods](test-api/selector/addcustommethods.md)
+* [child](test-api/selector/child.md)
+* [count](test-api/selector/count.md)
+* [exists](test-api/selector/exists.md)
+* [filter](test-api/selector/filter.md)
+* [filterHidden](test-api/selector/filterhidden.md)
+* [filterVisible](test-api/selector/filtervisible.md)
+* [find](test-api/selector/find.md)
+* [nextSibling](test-api/selector/nextsibling.md)
+* [nth](test-api/selector/nth.md)
+* [parent](test-api/selector/parent.md)
+* [prevSibling](test-api/selector/prevsibling.md)
+* [sibling](test-api/selector/sibling.md)
+* [with](test-api/selector/with.md)
+* [withAttribute](test-api/selector/withattribute.md)
+* [withExactText](test-api/selector/withexacttext.md)
+* [withText](test-api/selector/withtext.md)
 
 ### Test
 
-* [after Method](test-api/test/after.md)
-* [before Method](test-api/test/before.md)
-* [clientScripts Method](test-api/test/clientscripts.md)
-* [disablePageCaching Method](test-api/test/disablepagecaching.md)
-* [httpAuth Method](test-api/test/httpauth.md)
-* [meta Method](test-api/test/meta.md)
-* [only Method](test-api/test/only.md)
-* [page Method](test-api/test/page.md)
-* [requestHooks Method](test-api/test/requesthooks.md)
-* [skip Method](test-api/test/skip.md)
+* [after](test-api/test/after.md)
+* [before](test-api/test/before.md)
+* [clientScripts](test-api/test/clientscripts.md)
+* [disablePageCaching](test-api/test/disablepagecaching.md)
+* [httpAuth](test-api/test/httpauth.md)
+* [meta](test-api/test/meta.md)
+* [only](test-api/test/only.md)
+* [page](test-api/test/page.md)
+* [requestHooks](test-api/test/requesthooks.md)
+* [skip](test-api/test/skip.md)
 
 ### TestController
 
-* [addRequestHooks Method](test-api/testcontroller/addrequesthooks.md)
-* [browser Property](test-api/testcontroller/browser.md)
-* [clearUpload Method](test-api/testcontroller/clearupload.md)
-* [click Method](test-api/testcontroller/click.md)
-* [ctx Property](test-api/testcontroller/ctx.md)
-* [debug Method](test-api/testcontroller/debug.md)
-* [doubleClick Method](test-api/testcontroller/doubleclick.md)
-* [drag Method](test-api/testcontroller/drag.md)
-* [dragToElement Method](test-api/testcontroller/dragtoelement.md)
-* [eval Method](test-api/testcontroller/eval.md)
-* [fixtureCtx Property](test-api/testcontroller/fixturectx.md)
-* [getBrowserConsoleMessages Method](test-api/testcontroller/getbrowserconsolemessages.md)
-* [getNativeDialogHistory Method](test-api/testcontroller/getnativedialoghistory.md)
-* [hover Method](test-api/testcontroller/hover.md)
-* [maximizeWindow Method](test-api/testcontroller/maximizewindow.md)
-* [navigateTo Method](test-api/testcontroller/navigateto.md)
-* [pressKey Method](test-api/testcontroller/presskey.md)
-* [removeRequestHooks Method](test-api/testcontroller/removerequesthooks.md)
-* [resizeWindow Method](test-api/testcontroller/resizewindow.md)
-* [resizeWindowToFitDevice Method](test-api/testcontroller/resizewindowtofitdevice.md)
-* [rightClick Method](test-api/testcontroller/rightclick.md)
-* [selectEditableContent Method](test-api/testcontroller/selecteditablecontent.md)
-* [selectText Method](test-api/testcontroller/selecttext.md)
-* [selectTextAreaContent Method](test-api/testcontroller/selecttextareacontent.md)
-* [setFilesToUpload Method](test-api/testcontroller/setfilestoupload.md)
-* [setNativeDialogHandler Method](test-api/testcontroller/setnativedialoghandler.md)
-* [setPageLoadTimeout Method](test-api/testcontroller/setpageloadtimeout.md)
-* [setTestSpeed Method](test-api/testcontroller/settestspeed.md)
-* [switchToIframe Method](test-api/testcontroller/switchtoiframe.md)
-* [switchToMainWindow Method](test-api/testcontroller/switchtomainwindow.md)
-* [takeElementScreenshot Method](test-api/testcontroller/takeelementscreenshot.md)
-* [takeScreenshot Method](test-api/testcontroller/takescreenshot.md)
-* [typeText Method](test-api/testcontroller/typetext.md)
-* [useRole Method](test-api/testcontroller/userole.md)
-* [wait Method](test-api/testcontroller/wait.md)
-
-## Command Line Interface
-
-* [Command Line Interface](command-line-interface.md)
+* [TestController Object](test-api/testcontroller/README.md)
+* [addRequestHooks](test-api/testcontroller/addrequesthooks.md)
+* [browser](test-api/testcontroller/browser.md)
+* [clearUpload](test-api/testcontroller/clearupload.md)
+* [click](test-api/testcontroller/click.md)
+* [ctx](test-api/testcontroller/ctx.md)
+* [debug](test-api/testcontroller/debug.md)
+* [doubleClick](test-api/testcontroller/doubleclick.md)
+* [drag](test-api/testcontroller/drag.md)
+* [dragToElement](test-api/testcontroller/dragtoelement.md)
+* [eval](test-api/testcontroller/eval.md)
+* [expect](test-api/testcontroller/expect/README.md)
+  * [contains](test-api/testcontroller/expect/contains.md)
+  * [eql](test-api/testcontroller/expect/eql.md)
+  * [gt](test-api/testcontroller/expect/gt.md)
+  * [gte](test-api/testcontroller/expect/gte.md)
+  * [lt](test-api/testcontroller/expect/lt.md)
+  * [lte](test-api/testcontroller/expect/lte.md)
+  * [match](test-api/testcontroller/expect/match.md)
+  * [notcontains](test-api/testcontroller/expect/notcontains.md)
+  * [noteql](test-api/testcontroller/expect/noteql.md)
+  * [notmatch](test-api/testcontroller/expect/notmatch.md)
+  * [notok](test-api/testcontroller/expect/notok.md)
+  * [nottypeof](test-api/testcontroller/expect/nottypeof.md)
+  * [notwithin](test-api/testcontroller/expect/notwithin.md)
+  * [ok](test-api/testcontroller/expect/ok.md)
+  * [typeof](test-api/testcontroller/expect/typeof.md)
+  * [within](test-api/testcontroller/expect/within.md)
+* [fixtureCtx](test-api/testcontroller/fixturectx.md)
+* [getBrowserConsoleMessages](test-api/testcontroller/getbrowserconsolemessages.md)
+* [getNativeDialogHistory](test-api/testcontroller/getnativedialoghistory.md)
+* [hover](test-api/testcontroller/hover.md)
+* [maximizeWindow](test-api/testcontroller/maximizewindow.md)
+* [navigateTo](test-api/testcontroller/navigateto.md)
+* [pressKey](test-api/testcontroller/presskey.md)
+* [removeRequestHooks](test-api/testcontroller/removerequesthooks.md)
+* [resizeWindow](test-api/testcontroller/resizewindow.md)
+* [resizeWindowToFitDevice](test-api/testcontroller/resizewindowtofitdevice.md)
+* [rightClick](test-api/testcontroller/rightclick.md)
+* [selectEditableContent](test-api/testcontroller/selecteditablecontent.md)
+* [selectText](test-api/testcontroller/selecttext.md)
+* [selectTextAreaContent](test-api/testcontroller/selecttextareacontent.md)
+* [setFilesToUpload](test-api/testcontroller/setfilestoupload.md)
+* [setNativeDialogHandler](test-api/testcontroller/setnativedialoghandler.md)
+* [setPageLoadTimeout](test-api/testcontroller/setpageloadtimeout.md)
+* [setTestSpeed](test-api/testcontroller/settestspeed.md)
+* [switchToIframe](test-api/testcontroller/switchtoiframe.md)
+* [switchToMainWindow](test-api/testcontroller/switchtomainwindow.md)
+* [takeElementScreenshot](test-api/testcontroller/takeelementscreenshot.md)
+* [takeScreenshot](test-api/testcontroller/takescreenshot.md)
+* [typeText](test-api/testcontroller/typetext.md)
+* [useRole](test-api/testcontroller/userole.md)
+* [wait](test-api/testcontroller/wait.md)
 
 ## TestCafe API
 
@@ -142,8 +171,8 @@ permalink: /documentation/reference/
 
 ### BrowserConnection
 
-* [ready Event](testcafe-api/browserconnection/ready.md)
-* [url Property](testcafe-api/browserconnection/url.md)
+* [ready](testcafe-api/browserconnection/ready.md)
+* [url](testcafe-api/browserconnection/url.md)
 
 ### LiveModeRunner
 
@@ -151,27 +180,23 @@ permalink: /documentation/reference/
 
 ### Runner
 
-* [browsers Method](testcafe-api/runner/browsers.md)
-* [clientScripts Method](testcafe-api/runner/clientscripts.md)
-* [concurrency Method](testcafe-api/runner/concurrency.md)
-* [filter Method](testcafe-api/runner/filter.md)
-* [reporter Method](testcafe-api/runner/reporter.md)
-* [run Method](testcafe-api/runner/run.md)
-* [screenshots Method](testcafe-api/runner/screenshots.md)
-* [src Method](testcafe-api/runner/src.md)
-* [startApp Method](testcafe-api/runner/startapp.md)
-* [stop Method](testcafe-api/runner/stop.md)
-* [tsConfigPath Method](testcafe-api/runner/tsconfigpath.md)
-* [useProxy Method](testcafe-api/runner/useproxy.md)
-* [video Method](testcafe-api/runner/video.md)
+* [browsers](testcafe-api/runner/browsers.md)
+* [clientScripts](testcafe-api/runner/clientscripts.md)
+* [concurrency](testcafe-api/runner/concurrency.md)
+* [filter](testcafe-api/runner/filter.md)
+* [reporter](testcafe-api/runner/reporter.md)
+* [run](testcafe-api/runner/run.md)
+* [screenshots](testcafe-api/runner/screenshots.md)
+* [src](testcafe-api/runner/src.md)
+* [startApp](testcafe-api/runner/startapp.md)
+* [stop](testcafe-api/runner/stop.md)
+* [tsConfigPath](testcafe-api/runner/tsconfigpath.md)
+* [useProxy](testcafe-api/runner/useproxy.md)
+* [video](testcafe-api/runner/video.md)
 
 ### TestCafe
 
-* [close Method](testcafe-api/testcafe/close.md)
-* [createBrowserConnection Method](testcafe-api/testcafe/createbrowserconnection.md)
-* [createLiveModeRunner Method](testcafe-api/testcafe/createlivemoderunner.md)
-* [createRunner Method](testcafe-api/testcafe/createrunner.md)
-
-## Configuration File
-
-* [Configuration File](configuration-file.md)
+* [close](testcafe-api/testcafe/close.md)
+* [createBrowserConnection](testcafe-api/testcafe/createbrowserconnection.md)
+* [createLiveModeRunner](testcafe-api/testcafe/createlivemoderunner.md)
+* [createRunner](testcafe-api/testcafe/createrunner.md)

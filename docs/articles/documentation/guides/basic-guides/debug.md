@@ -17,8 +17,9 @@ TestCafe allows you to debug server-side test code and test behavior on the clie
 
 You can debug test code in Chrome Developer Tools and popular IDEs. See the following recipes for details.
 
-* [Debug in Chrome Developer Tools](../../recipes/debug-in-chrome-dev-tools.md)
-* [Debug in Visual Studio Code](../../recipes/debug-in-visual-studio-code.md)
+* [Debug in Chrome Developer Tools](../../recipes/debug-tests/chrome-dev-tools.md)
+* [Debug in Visual Studio Code](../../recipes/debug-tests/visual-studio-code.md)
+* [Debug in WebStorm](../../recipes/debug-tests/webstorm.md)
 
 ## Client-Side Debugging
 

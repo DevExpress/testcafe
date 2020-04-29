@@ -468,25 +468,29 @@ gulp.task('test-client-legacy-travis-mobile', gulp.series('prepare-tests', 'test
 
 //Documentation
 gulp.task('generate-docs-readme', done => {
-    function generateItem (name, url, level) {
-        return ' '.repeat(level * 2) + '* [' + name + '](articles' + url + ')\n';
+    function buildItem (name, url, level) {
+        return `${' '.repeat(level * 2)}* ${url ? buildLink(name, url) : name}\n`;
     }
 
-    function generateDirectory (tocItems, level) {
+    function buildLink (name, url) {
+        return `[${name}](articles${url})`;
+    }
+
+    function buildDirectory (tocItems, level) {
         let res = '';
 
         tocItems.forEach(item => {
-            res += generateItem(item.name ? item.name : item.url, item.url, level);
+            res += buildItem(item.name ? item.name : item.url, item.url, level);
 
             if (item.content)
-                res += generateDirectory(item.content, level + 1);
+                res += buildDirectory(item.content, level + 1);
         });
 
         return res;
     }
 
-    function generateReadme (toc) {
-        const tocList = generateDirectory(toc, 0);
+    function buildReadme (toc) {
+        const tocList = buildDirectory(toc, 0);
 
         return '# Documentation\n\n> This is the documentation\'s development version. ' +
                'The functionality described here may not be included in the current release version. ' +
@@ -496,7 +500,7 @@ gulp.task('generate-docs-readme', done => {
     }
 
     const toc    = yaml.safeLoad(fs.readFileSync('docs/nav/nav-menu.yml', 'utf8'));
-    const readme = generateReadme(toc);
+    const readme = buildReadme(toc);
 
     fs.writeFileSync('docs/README.md', readme);
 

@@ -6,7 +6,7 @@ redirect_from:
   - /documentation/test-api/assertions/
   - /documentation/test-api/assertions/assertion-api.html
 ---
-# Assertions
+# Assert
 
 You can use *assertions* to check if the tested page's state matches the expected state.
 
@@ -19,9 +19,9 @@ This topic consists of the following sections:
 
 ## Assertion Structure
 
-To construct assertions, use the test controller's [`expect`](../../reference/test-api/testcontroller/expect/README.md) method.
+To construct assertions, use the test controller's [expect](../../reference/test-api/testcontroller/expect/README.md) method.
 
-The `expect` method is followed by an assertion method that accepts an expected value
+The [t.expect](../../reference/test-api/testcontroller/expect/README.md) method is followed by an assertion method that accepts an expected value
 and optional arguments.
 
 The following example shows the structure of the deep equality assertion:
