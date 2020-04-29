@@ -107,6 +107,7 @@ export const RUNTIME_ERRORS = {
     unsupportedUrlProtocol:                             'E1027',
     testControllerProxyCannotResolveTestRun:            'E1028',
     timeLimitedPromiseTimeoutExpired:                   'E1029',
+    noTestsToRunDueFiltering:                           'E1030',
     cannotSetVideoOptionsWithoutBaseVideoPathSpecified: 'E1031',
     multipleAPIMethodCallForbidden:                     'E1032',
     invalidReporterOutput:                              'E1033',
