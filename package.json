@@ -1,11 +1,10 @@
 {
-  "name": "testcafe",
+  "name": "@rajaguru/testcafe-custom",
   "description": "Automated browser testing for the modern web development stack.",
   "license": "MIT",
   "version": "1.8.4",
   "author": {
-    "name": "Developer Express Inc.",
-    "url": "https://www.devexpress.com/"
+    "name": "rajaguruduraisamy-okta"
   },
   "bugs": {
     "url": "https://github.com/DevExpress/testcafe/issues"
@@ -13,7 +12,7 @@
   "homepage": "https://devexpress.github.io/testcafe/",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DevExpress/testcafe.git"
+    "url": "git+https://github.com/rajaguruduraisamy-okta/testcafe.git"
   },
   "engines": {
     "node": ">=8.0.0"
