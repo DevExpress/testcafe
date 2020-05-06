@@ -268,6 +268,15 @@
             window.addEventListener('resize', updateNavMenuPosition);
         }
 
+        function scrollToActiveItem() {
+            var activeItem = document.querySelector('.doc-nav .active');
+            var scrollContainer = document.querySelector('.ps-container');
+
+            if (scrollContainer && activeItem) {
+                scrollContainer.scrollTop = activeItem.offsetTop;
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function (e) {
             if (isMobileDevice)
                 return;
@@ -277,6 +286,8 @@
 
             if (nav)
                 initNav(nav);
+
+            scrollToActiveItem();
         });
     </script>
     
@@ -807,6 +818,15 @@
 		    
 		
 
+<a href="/testcafe/documentation/guides/concepts/page-model.html"  >Page Model</a>
+
+		
+    </li>
+
+    <li>
+		    
+		
+
 <a href="/testcafe/documentation/guides/concepts/typescript-and-coffeescript.html"  >TypeScript and CoffeeScript</a>
 
 		
@@ -1209,7 +1229,7 @@ To interact with the page, use <a href="interact-with-the-page.html">test action
 <span class="p">});</span>
 </code></pre></div>
 <p>Note that if a selector matches several DOM nodes on the page, this asynchronous call returns the first matching node.</p>
-<blockquote><div class="blockquote-content"><p>TestCafe wait mechanisms do not work when you pass a snapshot&#39;s property to an <a href="assert.html">assertion</a>. To enable [Smart Assertion Query]assert.md#smart-assertion-query-mechanism), pass <a href="../../reference/test-api/domnodestate.html#members-common-across-all-nodes">selector&#39;s properties</a> instead.</p>
+<blockquote><div class="blockquote-content"><p>TestCafe wait mechanisms do not work when you pass a snapshot&#39;s property to an <a href="assert.html">assertion</a>. To enable <a href="assert.html#smart-assertion-query-mechanism">Smart Assertion Query</a>, pass <a href="../../reference/test-api/domnodestate.html#members-common-across-all-nodes">selector&#39;s properties</a> instead.</p>
 </div></blockquote><h3><a class="anchor" id="define-action-targets"></a>Define Action Targets <a class="permalink" href="#define-action-targets">#</a></h3>
 <p>You can pass selectors to <a href="interact-with-the-page.html">test actions</a> to specify the action&#39;s target element.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>

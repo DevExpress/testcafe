@@ -268,6 +268,15 @@
             window.addEventListener('resize', updateNavMenuPosition);
         }
 
+        function scrollToActiveItem() {
+            var activeItem = document.querySelector('.doc-nav .active');
+            var scrollContainer = document.querySelector('.ps-container');
+
+            if (scrollContainer && activeItem) {
+                scrollContainer.scrollTop = activeItem.offsetTop;
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function (e) {
             if (isMobileDevice)
                 return;
@@ -277,6 +286,8 @@
 
             if (nav)
                 initNav(nav);
+
+            scrollToActiveItem();
         });
     </script>
     
@@ -683,30 +694,8 @@
 		    
 		
 
-<a href="/testcafe/documentation/recipes/extract-reusable-test-code/"  >Extract Reusable Test Code</a>
+<a href="/testcafe/documentation/recipes/create-helpers.html"  >Create Helpers</a>
 
-		
-			<ul>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/recipes/extract-reusable-test-code/use-page-model.html"  >Use Page Model</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/recipes/extract-reusable-test-code/create-helpers.html"  >Create Helpers</a>
-
-		
-    </li>
-
-</ul>
 		
     </li>
 
@@ -811,12 +800,19 @@
 			<h1>Recipes</h1>
 <p>This section provides examples and recipes of how to use TestCafe in different scenarios.</p>
 
+<p><strong>Basic</strong></p>
+
+<ul>
+<li><a href="test-select-elements.html">Test &lt;select&gt; Elements</a></li>
+<li><a href="test-static-html-pages.html">Test Static HTML Pages</a></li>
+<li><a href="test-on-remote-computers-and-mobile-devices.html">Test on Remote Computers and Mobile Devices</a></li>
+</ul>
+
 <p><strong>Best Practices</strong></p>
 
 <ul>
-<li><a href="extract-reusable-test-code/use-page-model.html">Use Page Model</a></li>
-<li><a href="extract-reusable-test-code/create-helpers.html">Create Helpers</a></li>
-<li><a href="create-data-driven-tests.html">Create Data-Driven Tests</a></li>
+<li><a href="create-helpers.html">Helpers</a></li>
+<li><a href="create-data-driven-tests.html">Data-Driven Tests</a></li>
 </ul>
 
 <p><strong>Extending Capabilities</strong></p>
@@ -845,14 +841,6 @@
 <li><a href="use-angular-cli-builder.html">Angular CLI Builder</a></li>
 <li><a href="use-task-runners/">Task Runners</a></li>
 <li><a href="find-code-issues-with-flow-type-checker.html">Flow Type Checker</a></li>
-</ul>
-
-<p><strong>Tips</strong></p>
-
-<ul>
-<li><a href="test-select-elements.html">Test &lt;select&gt; Elements</a></li>
-<li><a href="test-static-html-pages.html">Test Static HTML Pages</a></li>
-<li><a href="test-on-remote-computers-and-mobile-devices.html">Test on Remote Computers and Mobile Devices</a></li>
 </ul>
 
 

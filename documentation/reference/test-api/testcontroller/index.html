@@ -268,6 +268,15 @@
             window.addEventListener('resize', updateNavMenuPosition);
         }
 
+        function scrollToActiveItem() {
+            var activeItem = document.querySelector('.doc-nav .active');
+            var scrollContainer = document.querySelector('.ps-container');
+
+            if (scrollContainer && activeItem) {
+                scrollContainer.scrollTop = activeItem.offsetTop;
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function (e) {
             if (isMobileDevice)
                 return;
@@ -277,6 +286,8 @@
 
             if (nav)
                 initNav(nav);
+
+            scrollToActiveItem();
         });
     </script>
     
@@ -2068,7 +2079,7 @@
 </code></pre></div>
 <p>The test runner also uses the test controller to access the internal context required for the test API to operate. When you call <a href="../../../guides/basic-guides/select-page-elements.html">selectors</a> and <a href="../../../guides/basic-guides/obtain-client-side-info.html">client functions</a> from Node.js callbacks, pass the test controller explicitly, because the API cannot retrieve it from the context.</p>
 <h2><a class="anchor" id="implicit-test-controller-usage"></a>Implicit Test Controller Usage <a class="permalink" href="#implicit-test-controller-usage">#</a></h2>
-<p>In certain scenarios, you may need to call the test API from outside the test code. For instance, your <a href="../../../recipes/extract-reusable-test-code/use-page-model.html">page model</a> can contain methods that perform common operations used in different tests (like authentication).</p>
+<p>In certain scenarios, you may need to call the test API from outside the test code. For instance, your <a href="../../../guides/concepts/page-model.html">page model</a> can contain methods that perform common operations used in different tests (like authentication).</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="kd">class</span> <span class="nx">Page</span> <span class="p">{</span>

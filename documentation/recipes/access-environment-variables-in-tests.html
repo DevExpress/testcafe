@@ -268,6 +268,15 @@
             window.addEventListener('resize', updateNavMenuPosition);
         }
 
+        function scrollToActiveItem() {
+            var activeItem = document.querySelector('.doc-nav .active');
+            var scrollContainer = document.querySelector('.ps-container');
+
+            if (scrollContainer && activeItem) {
+                scrollContainer.scrollTop = activeItem.offsetTop;
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function (e) {
             if (isMobileDevice)
                 return;
@@ -277,6 +286,8 @@
 
             if (nav)
                 initNav(nav);
+
+            scrollToActiveItem();
         });
     </script>
     
@@ -683,30 +694,8 @@
 		    
 		
 
-<a href="/testcafe/documentation/recipes/extract-reusable-test-code/"  >Extract Reusable Test Code</a>
+<a href="/testcafe/documentation/recipes/create-helpers.html"  >Create Helpers</a>
 
-		
-			<ul>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/recipes/extract-reusable-test-code/use-page-model.html"  >Use Page Model</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/recipes/extract-reusable-test-code/create-helpers.html"  >Create Helpers</a>
-
-		
-    </li>
-
-</ul>
 		
     </li>
 

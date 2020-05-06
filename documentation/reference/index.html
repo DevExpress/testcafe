@@ -268,6 +268,15 @@
             window.addEventListener('resize', updateNavMenuPosition);
         }
 
+        function scrollToActiveItem() {
+            var activeItem = document.querySelector('.doc-nav .active');
+            var scrollContainer = document.querySelector('.ps-container');
+
+            if (scrollContainer && activeItem) {
+                scrollContainer.scrollTop = activeItem.offsetTop;
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function (e) {
             if (isMobileDevice)
                 return;
@@ -277,6 +286,8 @@
 
             if (nav)
                 initNav(nav);
+
+            scrollToActiveItem();
         });
     </script>
     
@@ -2048,22 +2059,35 @@
 	<article class="doc">
 		<div class="post-content">
 
-			<h1>Reference</h1><h2><a class="anchor" id="command-line-interface"></a><a href="command-line-interface.html">Command Line Interface</a> <a class="permalink" href="#command-line-interface">#</a></h2><h2><a class="anchor" id="configuration-file"></a><a href="configuration-file.html">Configuration File</a> <a class="permalink" href="#configuration-file">#</a></h2><h2><a class="anchor" id="test-api"></a>Test API <a class="permalink" href="#test-api">#</a></h2><h3><a class="anchor" id="global-functions"></a>Global Functions <a class="permalink" href="#global-functions">#</a></h3>
+			<h1>Reference</h1>
+<!-- markdownlint-disable MD033 MD036 -->
+
+<p style="font-size: 18px"><a href="command-line-interface.html">Command Line Interface</a></p>
+
+<p style="font-size: 18px"><a href="configuration-file.html">Configuration File</a></p>
+
+<!-- markdownlint-enable MD033 -->
+
+<p><strong>Test API</strong></p>
+
+<p><em>Global Functions</em></p>
+
 <ul>
 <li><a href="test-api/global/fixture.html">fixture</a></li>
 <li><a href="test-api/global/test.html">test</a></li>
 </ul>
-<h3><a class="anchor" id="clientfunction"></a>ClientFunction <a class="permalink" href="#clientfunction">#</a></h3>
+
+<p><em><a href="test-api/clientfunction/">ClientFunction</a></em></p>
+
 <ul>
-<li><a href="test-api/clientfunction/">ClientFunction Object</a></li>
 <li><a href="test-api/clientfunction/constructor.html">ClientFunction Constructor</a></li>
 <li><a href="test-api/clientfunction/with.html">with</a></li>
 </ul>
-<h3><a class="anchor" id="domnodestate"></a>DOMNodeState <a class="permalink" href="#domnodestate">#</a></h3>
-<ul>
-<li><a href="test-api/domnodestate.html">DOMNodeState</a></li>
-</ul>
-<h3><a class="anchor" id="fixture"></a>Fixture <a class="permalink" href="#fixture">#</a></h3>
+
+<p><em><a href="test-api/domnodestate.html">DOMNodeState</a></em></p>
+
+<p><em>Fixture</em></p>
+
 <ul>
 <li><a href="test-api/fixture/after.html">after</a></li>
 <li><a href="test-api/fixture/aftereach.html">afterEach</a></li>
@@ -2078,37 +2102,43 @@
 <li><a href="test-api/fixture/requesthooks.html">requestHooks</a></li>
 <li><a href="test-api/fixture/skip.html">skip</a></li>
 </ul>
-<h3><a class="anchor" id="requesthook"></a>RequestHook <a class="permalink" href="#requesthook">#</a></h3>
+
+<p><em><a href="test-api/requesthook/">RequestHook</a></em></p>
+
 <ul>
-<li><a href="test-api/requesthook/">RequestHook Object</a></li>
 <li><a href="test-api/requesthook/constructor.html">RequestHook Constructor</a></li>
 <li><a href="test-api/requesthook/onrequest.html">onRequest</a></li>
 <li><a href="test-api/requesthook/onresponse.html">onResponse</a></li>
 </ul>
-<h3><a class="anchor" id="requestlogger"></a>RequestLogger <a class="permalink" href="#requestlogger">#</a></h3>
+
+<p><em><a href="test-api/requestlogger/">RequestLogger</a></em></p>
+
 <ul>
-<li><a href="test-api/requestlogger/">RequestLogger Object</a></li>
 <li><a href="test-api/requestlogger/constructor.html">RequestLogger Constructor</a></li>
 <li><a href="test-api/requestlogger/clear.html">clear</a></li>
 <li><a href="test-api/requestlogger/contains.html">contains</a></li>
 <li><a href="test-api/requestlogger/count.html">count</a></li>
 <li><a href="test-api/requestlogger/requests.html">requests</a></li>
 </ul>
-<h3><a class="anchor" id="requestmock"></a>RequestMock <a class="permalink" href="#requestmock">#</a></h3>
+
+<p><em><a href="test-api/requestmock/">RequestMock</a></em></p>
+
 <ul>
-<li><a href="test-api/requestmock/">RequestMock Object</a></li>
 <li><a href="test-api/requestmock/constructor.html">RequestMock Constructor</a></li>
 <li><a href="test-api/requestmock/onrequestto.html">onRequestTo</a></li>
 <li><a href="test-api/requestmock/respond.html">respond</a></li>
 </ul>
-<h3><a class="anchor" id="role"></a>Role <a class="permalink" href="#role">#</a></h3>
+
+<p><em>Role</em></p>
+
 <ul>
 <li><a href="test-api/role/constructor.html">Role Constructor</a></li>
 <li><a href="test-api/role/anonymous.html">anonymous Static</a></li>
 </ul>
-<h3><a class="anchor" id="selector"></a>Selector <a class="permalink" href="#selector">#</a></h3>
+
+<p><em><a href="test-api/selector/">Selector</a></em></p>
+
 <ul>
-<li><a href="test-api/selector/">Selector Object</a></li>
 <li><a href="test-api/selector/constructor.html">Selector constructor</a></li>
 <li><a href="test-api/selector/addcustomdomproperties.html">addCustomDOMProperties</a></li>
 <li><a href="test-api/selector/addcustommethods.html">addCustomMethods</a></li>
@@ -2129,7 +2159,9 @@
 <li><a href="test-api/selector/withexacttext.html">withExactText</a></li>
 <li><a href="test-api/selector/withtext.html">withText</a></li>
 </ul>
-<h3><a class="anchor" id="test"></a>Test <a class="permalink" href="#test">#</a></h3>
+
+<p><em>Test</em></p>
+
 <ul>
 <li><a href="test-api/test/after.html">after</a></li>
 <li><a href="test-api/test/before.html">before</a></li>
@@ -2142,9 +2174,10 @@
 <li><a href="test-api/test/requesthooks.html">requestHooks</a></li>
 <li><a href="test-api/test/skip.html">skip</a></li>
 </ul>
-<h3><a class="anchor" id="testcontroller"></a>TestController <a class="permalink" href="#testcontroller">#</a></h3>
+
+<p><em><a href="test-api/testcontroller/">TestController</a></em></p>
+
 <ul>
-<li><a href="test-api/testcontroller/">TestController Object</a></li>
 <li><a href="test-api/testcontroller/addrequesthooks.html">addRequestHooks</a></li>
 <li><a href="test-api/testcontroller/browser.html">browser</a></li>
 <li><a href="test-api/testcontroller/clearupload.html">clearUpload</a></li>
@@ -2201,20 +2234,24 @@
 <li><a href="test-api/testcontroller/userole.html">useRole</a></li>
 <li><a href="test-api/testcontroller/wait.html">wait</a></li>
 </ul>
-<h2><a class="anchor" id="testcafe-api"></a>TestCafe API <a class="permalink" href="#testcafe-api">#</a></h2>
+
+<p><strong>TestCafe API</strong></p>
+
 <ul>
 <li><a href="testcafe-api/global/createtestcafe.html">createTestCafe Function</a></li>
 </ul>
-<h3><a class="anchor" id="browserconnection"></a>BrowserConnection <a class="permalink" href="#browserconnection">#</a></h3>
+
+<p><em><a href="testcafe-api/browserconnection/">BrowserConnection</a></em></p>
+
 <ul>
 <li><a href="testcafe-api/browserconnection/ready.html">ready</a></li>
 <li><a href="testcafe-api/browserconnection/url.html">url</a></li>
 </ul>
-<h3><a class="anchor" id="livemoderunner"></a>LiveModeRunner <a class="permalink" href="#livemoderunner">#</a></h3>
-<ul>
-<li><a href="testcafe-api/livemoderunner.html">LiveModeRunner</a></li>
-</ul>
-<h3><a class="anchor" id="runner"></a>Runner <a class="permalink" href="#runner">#</a></h3>
+
+<p><em><a href="testcafe-api/livemoderunner.html">LiveModeRunner</a></em></p>
+
+<p><em><a href="testcafe-api/runner/">Runner</a></em></p>
+
 <ul>
 <li><a href="testcafe-api/runner/browsers.html">browsers</a></li>
 <li><a href="testcafe-api/runner/clientscripts.html">clientScripts</a></li>
@@ -2230,7 +2267,9 @@
 <li><a href="testcafe-api/runner/useproxy.html">useProxy</a></li>
 <li><a href="testcafe-api/runner/video.html">video</a></li>
 </ul>
-<h3><a class="anchor" id="testcafe"></a>TestCafe <a class="permalink" href="#testcafe">#</a></h3>
+
+<p><em><a href="testcafe-api/testcafe/">TestCafe</a></em></p>
+
 <ul>
 <li><a href="testcafe-api/testcafe/close.html">close</a></li>
 <li><a href="testcafe-api/testcafe/createbrowserconnection.html">createBrowserConnection</a></li>
