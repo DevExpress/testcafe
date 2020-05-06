@@ -43,7 +43,7 @@ export default {
         runtimeInfo.activeWindowId = null;
 
         if (allowMultipleWindows)
-            runtimeInfo.activeWindowId = await this.calculateWindowId(browserId);
+            runtimeInfo.activeWindowId = this.calculateWindowId();
 
         await cdp.createClient(runtimeInfo);
 
