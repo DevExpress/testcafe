@@ -43,6 +43,8 @@
       url: /documentation/guides/concepts/browsers.md
     - name: Reporters
       url: /documentation/guides/concepts/reporters.md
+    - name: Page Model
+      url: /documentation/guides/concepts/page-model.md
     - name: TypeScript and CoffeeScript
       url: /documentation/guides/concepts/typescript-and-coffeescript.md
     - name: Built-in Wait Mechanisms
@@ -405,13 +407,8 @@
       url: /documentation/recipes/debug-tests/visual-studio-code.md
     - name: WebStorm
       url: /documentation/recipes/debug-tests/webstorm.md
-  - name: Extract Reusable Test Code
-    url: /documentation/recipes/extract-reusable-test-code/README.md
-    content:
-    - name: Use Page Model
-      url: /documentation/recipes/extract-reusable-test-code/use-page-model.md
-    - name: Create Helpers
-      url: /documentation/recipes/extract-reusable-test-code/create-helpers.md
+  - name: Create Helpers
+    url: /documentation/recipes/create-helpers.md
   - name: Find Code Issues with Flow Type Checker
     url: /documentation/recipes/find-code-issues-with-flow-type-checker.md
   - name: Import Third-Party Modules

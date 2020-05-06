@@ -47,7 +47,7 @@ The table below compares TestCafe and TestCafe Studio:
 | No need for WebDriver, browser plugins or other tools | &#10003; | &#10003; |
 | Cross-platform and cross-browser out of the box | &#10003; | &#10003; |
 | Write tests in the latest JavaScript or TypeScript | &#10003; | &#10003; |
-| Clear and flexible API supports ES6 and [PageModel pattern](../documentation/recipes/extract-reusable-test-code/use-page-model.md) | &#10003; | &#10003; |
+| Clear and flexible API supports ES6 and [PageModel pattern](../documentation/guides/concepts/page-model.md) | &#10003; | &#10003; |
 | Stable tests due to the [Smart Assertion Query Mechanism](../documentation/guides/basic-guides/assert.md#smart-assertion-query-mechanism) | &#10003; | &#10003; |
 | Tests run fast due to intelligent [Automatic Waiting Mechanism](../documentation/guides/concepts/built-in-wait-mechanisms.md) and [Concurrent Test Execution](../documentation/guides/basic-guides/run-tests.md#run-tests-concurrently) | &#10003; | &#10003; |
 | Custom reporter plugins | &#10003; | &#10003; |

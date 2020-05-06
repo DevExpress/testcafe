@@ -1,12 +1,13 @@
 ---
 layout: docs
-title: Use Page Model
-permalink: /documentation/recipes/extract-reusable-test-code/use-page-model.html
+title: Page Model
+permalink: /documentation/guides/concepts/page-model.html
 redirect_from:
   - /documentation/recipes/using-page-model.html
   - /documentation/recipes/use-page-model.html
+  - /documentation/recipes/extract-reusable-test-code/use-page-model.html
 ---
-# Use Page Model
+# Page Model
 
 [Page Model](http://martinfowler.com/bliki/PageObject.html) is a test automation pattern that allows you to create an abstraction of the tested page and use it in test code to refer to page elements.
 
@@ -85,7 +86,7 @@ This class will contain the Page Model, so name the file `page-model.js`.
 ### Step 2 - Add a Page Element to the Page Model
 
 Add the `Developer Name` input element to the model. To do this,
-introduce the `nameInput` property and assign a [selector](../../test-api/selecting-page-elements/selectors/README.md) to it.
+introduce the `nameInput` property and assign a [selector](../basic-guides/select-page-elements.md) to it.
 
 ```js
 import { Selector } from 'testcafe';

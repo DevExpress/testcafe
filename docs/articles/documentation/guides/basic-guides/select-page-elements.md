@@ -239,7 +239,7 @@ test('DOM Node Snapshot', async t => {
 
 Note that if a selector matches several DOM nodes on the page, this asynchronous call returns the first matching node.
 
-> TestCafe wait mechanisms do not work when you pass a snapshot's property to an [assertion](assert.md). To enable [Smart Assertion Query]assert.md#smart-assertion-query-mechanism), pass [selector's properties](../../reference/test-api/domnodestate.md#members-common-across-all-nodes) instead.
+> TestCafe wait mechanisms do not work when you pass a snapshot's property to an [assertion](assert.md). To enable [Smart Assertion Query](assert.md#smart-assertion-query-mechanism), pass [selector's properties](../../reference/test-api/domnodestate.md#members-common-across-all-nodes) instead.
 
 ### Define Action Targets
 

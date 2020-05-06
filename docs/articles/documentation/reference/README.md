@@ -5,28 +5,27 @@ permalink: /documentation/reference/
 ---
 # Reference
 
-## [Command Line Interface](command-line-interface.md)
+<!-- markdownlint-disable MD033 MD036 -->
+<p style="font-size: 18px"><a href="command-line-interface.html">Command Line Interface</a></p>
 
-## [Configuration File](configuration-file.md)
+<p style="font-size: 18px"><a href="configuration-file.html">Configuration File</a></p>
+<!-- markdownlint-enable MD033 -->
 
-## Test API
+**Test API**
 
-### Global Functions
+*Global Functions*
 
 * [fixture](test-api/global/fixture.md)
 * [test](test-api/global/test.md)
 
-### ClientFunction
+*[ClientFunction](test-api/clientfunction/README.md)*
 
-* [ClientFunction Object](test-api/clientfunction/README.md)
 * [ClientFunction Constructor](test-api/clientfunction/constructor.md)
 * [with](test-api/clientfunction/with.md)
 
-### DOMNodeState
+*[DOMNodeState](test-api/domnodestate.md)*
 
-* [DOMNodeState](test-api/domnodestate.md)
-
-### Fixture
+*Fixture*
 
 * [after](test-api/fixture/after.md)
 * [afterEach](test-api/fixture/aftereach.md)
@@ -41,37 +40,33 @@ permalink: /documentation/reference/
 * [requestHooks](test-api/fixture/requesthooks.md)
 * [skip](test-api/fixture/skip.md)
 
-### RequestHook
+*[RequestHook](test-api/requesthook/README.md)*
 
-* [RequestHook Object](test-api/requesthook/README.md)
 * [RequestHook Constructor](test-api/requesthook/constructor.md)
 * [onRequest](test-api/requesthook/onrequest.md)
 * [onResponse](test-api/requesthook/onresponse.md)
 
-### RequestLogger
+*[RequestLogger](test-api/requestlogger/README.md)*
 
-* [RequestLogger Object](test-api/requestlogger/README.md)
 * [RequestLogger Constructor](test-api/requestlogger/constructor.md)
 * [clear](test-api/requestlogger/clear.md)
 * [contains](test-api/requestlogger/contains.md)
 * [count](test-api/requestlogger/count.md)
 * [requests](test-api/requestlogger/requests.md)
 
-### RequestMock
+*[RequestMock](test-api/requestmock/README.md)*
 
-* [RequestMock Object](test-api/requestmock/README.md)
 * [RequestMock Constructor](test-api/requestmock/constructor.md)
 * [onRequestTo](test-api/requestmock/onrequestto.md)
 * [respond](test-api/requestmock/respond.md)
 
-### Role
+*Role*
 
 * [Role Constructor](test-api/role/constructor.md)
 * [anonymous Static](test-api/role/anonymous.md)
 
-### Selector
+*[Selector](test-api/selector/README.md)*
 
-* [Selector Object](test-api/selector/README.md)
 * [Selector constructor](test-api/selector/constructor.md)
 * [addCustomDOMProperties](test-api/selector/addcustomdomproperties.md)
 * [addCustomMethods](test-api/selector/addcustommethods.md)
@@ -92,7 +87,7 @@ permalink: /documentation/reference/
 * [withExactText](test-api/selector/withexacttext.md)
 * [withText](test-api/selector/withtext.md)
 
-### Test
+*Test*
 
 * [after](test-api/test/after.md)
 * [before](test-api/test/before.md)
@@ -105,9 +100,8 @@ permalink: /documentation/reference/
 * [requestHooks](test-api/test/requesthooks.md)
 * [skip](test-api/test/skip.md)
 
-### TestController
+*[TestController](test-api/testcontroller/README.md)*
 
-* [TestController Object](test-api/testcontroller/README.md)
 * [addRequestHooks](test-api/testcontroller/addrequesthooks.md)
 * [browser](test-api/testcontroller/browser.md)
 * [clearUpload](test-api/testcontroller/clearupload.md)
@@ -161,20 +155,18 @@ permalink: /documentation/reference/
 * [useRole](test-api/testcontroller/userole.md)
 * [wait](test-api/testcontroller/wait.md)
 
-## TestCafe API
+**TestCafe API**
 
 * [createTestCafe Function](testcafe-api/global/createtestcafe.md)
 
-### BrowserConnection
+*[BrowserConnection](testcafe-api/browserconnection/README.md)*
 
 * [ready](testcafe-api/browserconnection/ready.md)
 * [url](testcafe-api/browserconnection/url.md)
 
-### LiveModeRunner
+*[LiveModeRunner](testcafe-api/livemoderunner.md)*
 
-* [LiveModeRunner](testcafe-api/livemoderunner.md)
-
-### Runner
+*[Runner](testcafe-api/runner/README.md)*
 
 * [browsers](testcafe-api/runner/browsers.md)
 * [clientScripts](testcafe-api/runner/clientscripts.md)
@@ -190,7 +182,7 @@ permalink: /documentation/reference/
 * [useProxy](testcafe-api/runner/useproxy.md)
 * [video](testcafe-api/runner/video.md)
 
-### TestCafe
+*[TestCafe](testcafe-api/testcafe/README.md)*
 
 * [close](testcafe-api/testcafe/close.md)
 * [createBrowserConnection](testcafe-api/testcafe/createbrowserconnection.md)

@@ -24,6 +24,7 @@
   * Concepts
     * [Browsers](articles/documentation/guides/concepts/browsers.md)
     * [Reporters](articles/documentation/guides/concepts/reporters.md)
+    * [Page Model](articles/documentation/guides/concepts/page-model.md)
     * [TypeScript and CoffeeScript](articles/documentation/guides/concepts/typescript-and-coffeescript.md)
     * [Built-in Wait Mechanisms](articles/documentation/guides/concepts/built-in-wait-mechanisms.md)
   * Continuous Integration
@@ -42,8 +43,8 @@
     * [Reporter Plugin](articles/documentation/guides/extend-testcafe/reporter-plugin.md)
     * [Browser Provider Plugin](articles/documentation/guides/extend-testcafe/browser-provider-plugin.md)
 * [REFERENCE](articles/documentation/reference/README.md)
-  * [Configuration File](articles/documentation/reference/configuration-file.md)
   * [Command Line Interface](articles/documentation/reference/command-line-interface.md)
+  * [Configuration File](articles/documentation/reference/configuration-file.md)
   * Test API
     * Global Functions
       * [fixture](articles/documentation/reference/test-api/global/fixture.md)
@@ -199,9 +200,7 @@
     * [Chrome Developer Tools](articles/documentation/recipes/debug-tests/chrome-dev-tools.md)
     * [Visual Studio Code](articles/documentation/recipes/debug-tests/visual-studio-code.md)
     * [WebStorm](articles/documentation/recipes/debug-tests/webstorm.md)
-  * [Extract Reusable Test Code](articles/documentation/recipes/extract-reusable-test-code/README.md)
-    * [Use Page Model](articles/documentation/recipes/extract-reusable-test-code/use-page-model.md)
-    * [Create Helpers](articles/documentation/recipes/extract-reusable-test-code/create-helpers.md)
+  * [Create Helpers](articles/documentation/recipes/create-helpers.md)
   * [Find Code Issues with Flow Type Checker](articles/documentation/recipes/find-code-issues-with-flow-type-checker.md)
   * [Import Third-Party Modules](articles/documentation/recipes/import-third-party-modules.md)
   * [Test &lt;select&gt; Elements](articles/documentation/recipes/test-select-elements.md)
