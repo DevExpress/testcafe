@@ -5,7 +5,7 @@ permalink: /documentation/reference/test-api/fixture/meta.html
 ---
 # Fixture.meta Method
 
-Specifies the [fixture's metadata](../../../guides/basic-guides/test-organization.md#specify-test-metadata).
+Specifies the [fixture's metadata](../../../guides/basic-guides/organize-tests.md#specify-test-metadata).
 
 ```text
 fixture.meta( name, value )

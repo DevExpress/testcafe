@@ -7,8 +7,8 @@
     content:
     - name: Install TestCafe
       url: /documentation/guides/basic-guides/install-testcafe.md
-    - name: Test Organization
-      url: /documentation/guides/basic-guides/test-organization.md
+    - name: Organize Tests
+      url: /documentation/guides/basic-guides/organize-tests.md
     - name: Select Page Elements
       url: /documentation/guides/basic-guides/select-page-elements.md
     - name: Interact with the Page

@@ -6,7 +6,7 @@
 * [Guides](articles/documentation/guides/README.md)
   * Basic Guides
     * [Install TestCafe](articles/documentation/guides/basic-guides/install-testcafe.md)
-    * [Test Organization](articles/documentation/guides/basic-guides/test-organization.md)
+    * [Organize Tests](articles/documentation/guides/basic-guides/organize-tests.md)
     * [Select Page Elements](articles/documentation/guides/basic-guides/select-page-elements.md)
     * [Interact with the Page](articles/documentation/guides/basic-guides/interact-with-the-page.md)
     * [Assert](articles/documentation/guides/basic-guides/assert.md)

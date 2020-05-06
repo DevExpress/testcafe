@@ -68,7 +68,7 @@ Parameter | Type   | Description
 --------- | ------ | --------------------------------
 `name`    | String | The test fixture name.
 `path`    | String | The path to a test fixture file.
-`meta`    | Object | The fixture metadata. See [Specify Test Metadata](../../guides/basic-guides/test-organization.md#specify-test-metadata) for more information.
+`meta`    | Object | The fixture metadata. See [Specify Test Metadata](../../guides/basic-guides/organize-tests.md#specify-test-metadata) for more information.
 
 **Example**
 
@@ -94,7 +94,7 @@ async reportTestStart (name, meta)
 Parameter | Type   | Description
 --------- | ------ | --------------------------------
 `name`    | String | The test name.
-`meta`    | Object | The test metadata. See [Specifying Testing Metadata](../../guides/basic-guides/test-organization.md#specify-test-metadata) for more information.
+`meta`    | Object | The test metadata. See [Specify Testing Metadata](../../guides/basic-guides/organize-tests.md#specify-test-metadata) for more information.
 
 **Example**
 
@@ -119,7 +119,7 @@ Parameter     | Type   | Description
 ------------- | ------ | -------------------------------------------------------------
 `name`        | String | The test name.
 `testRunInfo` | Object | The [testRunInfo](#testruninfo-object) object.
-`meta`        | Object | The test metadata. See [Specifying Testing Metadata](../../guides/basic-guides/test-organization.md#specify-test-metadata) for more information.
+`meta`        | Object | The test metadata. See [Specify Testing Metadata](../../guides/basic-guides/organize-tests.md#specify-test-metadata) for more information.
 
 **Example**
 

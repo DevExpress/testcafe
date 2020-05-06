@@ -598,7 +598,7 @@ You can use live mode with any browsers: local, remote, mobile or headless.
 
 > Important! Live mode is designed to work with tests locally. Do not use it in CI systems.
 
-**Tip:** use the [only](test-organization.md#skip-tests) function to work with a single test.
+**Tip:** use the [only](organize-tests.md#skip-tests) function to work with a single test.
 
 ### Console Shortcuts in Live Mode
 

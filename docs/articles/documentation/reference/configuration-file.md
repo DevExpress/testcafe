@@ -563,7 +563,7 @@ Runs tests whose names match the specified `grep` pattern.
 
 ### filter.testMeta
 
-Runs tests whose [metadata](../guides/basic-guides/test-organization.md#specify-test-metadata) matches the specified key-value pair.
+Runs tests whose [metadata](../guides/basic-guides/organize-tests.md#specify-test-metadata) matches the specified key-value pair.
 
 ```json
 {
@@ -583,7 +583,7 @@ This configuration runs tests whose metadata's `device` property is set to `mobi
 
 ### filter.fixtureMeta
 
-Runs tests whose fixture's [metadata](../guides/basic-guides/test-organization.md#specify-test-metadata) matches the specified key-value pair.
+Runs tests whose fixture's [metadata](../guides/basic-guides/organize-tests.md#specify-test-metadata) matches the specified key-value pair.
 
 ```json
 {

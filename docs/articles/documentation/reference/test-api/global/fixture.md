@@ -16,7 +16,7 @@ Parameter     | Type   | Description
 ------------- | ------ | ------------------------
 `fixtureName` | String | The name of the fixture.
 
-This function returns the fixture object that allows you to configure the fixture: specify the [start webpage](../../../guides/basic-guides/test-organization.md#specify-the-start-webpage), [metadata](../../../guides/basic-guides/test-organization.md#specify-test-metadata) and [the initialization and clean-up code](../../../guides/basic-guides/test-organization.md#initialization-and-clean-up) for tests included in the fixture.
+This function returns the fixture object that allows you to configure the fixture: specify the [start webpage](../../../guides/basic-guides/organize-tests.md#specify-the-start-webpage), [metadata](../../../guides/basic-guides/organize-tests.md#specify-test-metadata) and [the initialization and clean-up code](../../../guides/basic-guides/organize-tests.md#initialization-and-clean-up) for tests included in the fixture.
 
 ```js
 fixture `Authentication tests`

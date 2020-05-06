@@ -42,21 +42,21 @@ Firstly, import the `testcafe` module.
 import { Selector } from 'testcafe';
 ```
 
-Then declare a fixture using the [fixture](../guides/basic-guides/test-organization.md#fixtures) function.
+Then declare a fixture using the [fixture](../guides/basic-guides/organize-tests.md#fixtures) function.
 
 ```js
 fixture `Getting Started`
 ```
 
 In this tutorial, you create a test for the [http://devexpress.github.io/testcafe/example](/testcafe/example) sample page.
-Specify this page as a start page for the fixture using the [page](../guides/basic-guides/test-organization.md#specify-the-start-webpage) function.
+Specify this page as a start page for the fixture using the [page](../guides/basic-guides/organize-tests.md#specify-the-start-webpage) function.
 
 ```js
 fixture `Getting Started`
     .page `http://devexpress.github.io/testcafe/example`;
 ```
 
-Then, create the [test](../guides/basic-guides/test-organization.md#tests) function where you can enter test code.
+Then, create the [test](../guides/basic-guides/organize-tests.md#tests) function where you can enter test code.
 
 ```js
 import { Selector } from 'testcafe';

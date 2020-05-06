@@ -26,7 +26,7 @@ Assume you have a `data.json` file with data objects (*test cases*) that consist
 ]
 ```
 
-To create data-driven tests, iterate through the test cases, call the [test](../guides/basic-guides/test-organization.md#tests) method at each iteration and write [test actions](../guides/basic-guides/interact-with-the-page.md) and [assertions](../guides/basic-guides/assert.md) that use test case parameters.
+To create data-driven tests, iterate through the test cases, call the [test](../guides/basic-guides/organize-tests.md#tests) method at each iteration and write [test actions](../guides/basic-guides/interact-with-the-page.md) and [assertions](../guides/basic-guides/assert.md) that use test case parameters.
 
 ```js
 import { Selector } from 'testcafe';

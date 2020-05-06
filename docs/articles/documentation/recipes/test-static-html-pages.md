@@ -18,7 +18,7 @@ Install TestCafe [locally](../guides/basic-guides/install-testcafe.md#local-inst
 
 ## Option 1 - Test webpages in the local file system
 
-[Specify the target webpage](../guides/basic-guides/test-organization.md#specify-the-start-webpage) using a relative path or the `file://` URL scheme.
+[Specify the target webpage](../guides/basic-guides/organize-tests.md#specify-the-start-webpage) using a relative path or the `file://` URL scheme.
 
 ```js
 fixture `My fixture`
