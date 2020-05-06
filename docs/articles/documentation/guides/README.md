@@ -30,6 +30,7 @@ permalink: /documentation/guides/
 
 * [Browsers](concepts/browsers.md)
 * [Reporters](concepts/reporters.md)
+* [Page Model](concepts/page-model.md)
 * [TypeScript and CoffeeScript](concepts/typescript-and-coffeescript.md)
 * [Built-in Wait Mechanisms](concepts/built-in-wait-mechanisms.md)
 
