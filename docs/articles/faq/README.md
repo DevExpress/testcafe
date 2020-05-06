@@ -47,9 +47,9 @@ The table below compares TestCafe and TestCafe Studio:
 | No need for WebDriver, browser plugins or other tools | &#10003; | &#10003; |
 | Cross-platform and cross-browser out of the box | &#10003; | &#10003; |
 | Write tests in the latest JavaScript or TypeScript | &#10003; | &#10003; |
-| Clear and flexible [API](https://devexpress.github.io/testcafe/documentation/test-api/) supports ES6 and [PageModel pattern](https://devexpress.github.io/testcafe/documentation/recipes/using-page-model.html) | &#10003; | &#10003; |
-| Stable tests due to the [Smart Assertion Query Mechanism](https://devexpress.github.io/testcafe/documentation/test-api/assertions/#smart-assertion-query-mechanism) | &#10003; | &#10003; |
-| Tests run fast due to intelligent [Automatic Waiting Mechanism](https://devexpress.github.io/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html) and [Concurrent Test Execution](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/concurrent-test-execution.html) | &#10003; | &#10003; |
+| Clear and flexible API supports ES6 and [PageModel pattern](../documentation/guides/concepts/page-model.md) | &#10003; | &#10003; |
+| Stable tests due to the [Smart Assertion Query Mechanism](../documentation/guides/basic-guides/assert.md#smart-assertion-query-mechanism) | &#10003; | &#10003; |
+| Tests run fast due to intelligent [Automatic Waiting Mechanism](../documentation/guides/concepts/built-in-wait-mechanisms.md) and [Concurrent Test Execution](../documentation/guides/basic-guides/run-tests.md#run-tests-concurrently) | &#10003; | &#10003; |
 | Custom reporter plugins | &#10003; | &#10003; |
 | Use third-party Node.js modules in test scripts | &#10003; | &#10003; |
 | Integration with popular CI systems | &#10003; | &nbsp;&#10003;\* |
@@ -69,7 +69,7 @@ The table below compares TestCafe and TestCafe Studio:
 ### Which browsers does TestCafe support? What are the exact supported versions?
 
 You can find a list of supported browsers in
-[our documentation](../documentation/using-testcafe/common-concepts/browsers/browser-support.md).
+[our documentation](../documentation/guides/concepts/browsers.md).
 TestCafe is tested against the two latest versions of each browser
 except for the browsers whose versions are specified explicitly in this list.
 
@@ -95,7 +95,7 @@ test('test', async t => {
 });
 ```
 
-If a Node.js module or a JavaScript file can be executed in the browser, you can [inject it into the tested page](../documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.md).
+If a Node.js module or a JavaScript file can be executed in the browser, you can [inject it into the tested page](../documentation/guides/advanced-guides/inject-client-scripts.md).
 
 ```js
 fixture `My fixture`
@@ -114,11 +114,11 @@ test('test', async t => {
 });
 ```
 
-For more information about how to inject scripts, see [Inject Scripts Into Tested Pages](../documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.md).
+For more information about how to inject scripts, see [Inject Scripts Into Tested Pages](../documentation/guides/advanced-guides/inject-client-scripts.md).
 
 ### How do I work with configuration files and environment variables?
 
-TestCafe allows you to specify settings in a [configuration file](../documentation/using-testcafe/configuration-file.md).
+TestCafe allows you to specify settings in a [configuration file](../documentation/reference/configuration-file.md).
 
 If you need to use custom properties in the configuration, create a separate configuration file and import it to the tests.
 
@@ -147,7 +147,7 @@ Alternatively, you can use [environment variables](../documentation/recipes/acce
 
 TestCafe selectors should use element identifiers that persist between test runs. However, many JavaScript frameworks generate dynamic IDs for page elements. To identify elements whose `id` attribute changes, use selectors based on the element's class, content, tag name, or position.
 
-See the [Select Elements With Dynamic IDs](../documentation/test-api/selecting-page-elements/examples-of-working-with-dom-elements.md#select-elements-with-dynamic-ids) example for details.
+See the [Select Elements With Dynamic IDs](../documentation/guides/basic-guides/select-page-elements.md#select-elements-with-dynamic-ids) example for details.
 
 ## Troubleshooting
 
@@ -155,14 +155,14 @@ See the [Select Elements With Dynamic IDs](../documentation/test-api/selecting-p
 
 **Check your firewall.** First, make sure that your firewall does not block the ports TestCafe uses.
 TestCafe chooses free ports automatically by default. Use the
-[--ports](../documentation/using-testcafe/command-line-interface.md#--ports-port1port2) command line option
-or the [createTestCafe](../documentation/using-testcafe/programming-interface/createtestcafe.md)
+[--ports](../documentation/reference/command-line-interface.md#--ports-port1port2) command line option
+or the [createTestCafe](../documentation/reference/testcafe-api/global/createtestcafe.md)
 API factory function to specify custom ports. After that, check that the firewall does not block these specific ports.
 
 **Check your proxy server.** Another reason for this problem can be the proxy server you use to access the Internet.
 If your network is connected to the Web via a proxy, use the
-[--proxy](../documentation/using-testcafe/command-line-interface.md#--proxy-host) command line option
-or the [useProxy](../documentation/using-testcafe/programming-interface/runner.md#useproxy) API method
+[--proxy](../documentation/reference/command-line-interface.md#--proxy-host) command line option
+or the [useProxy](../documentation/reference/testcafe-api/runner/useproxy.md) API method
 to specify the proxy address.
 
 **For Linux check X11.** Also note that if you run TestCafe on Linux,
@@ -175,7 +175,7 @@ However, if you use the [Xvbf](https://en.wikipedia.org/wiki/Xvfb) server, you c
 **JavaScript errors.** The most common reason for this is a JavaScript error on the tested page.
 Load this page in the browser, open the console and see if the page has any errors.
 In case there are errors, you can either fix them or use
-the [--skip-js-errors](../documentation/using-testcafe/command-line-interface.md#-e---skip-js-errors) flag
+the [--skip-js-errors](../documentation/reference/command-line-interface.md#-e---skip-js-errors) flag
 to tell TestCafe to skip them.
 
 **Browser extensions.** If this does not help, try running the problematic test in incognito mode.
@@ -216,13 +216,13 @@ npm install -g {pluginName}
 
 This happens because either:
 
-* one of the [selectors](../documentation/test-api/selecting-page-elements/selectors/README.md) you used in test code does not match any DOM element, or
-* you used an incorrect CSS selector or a client-side function that returns no element to specify an [action's target element](../documentation/test-api/actions/README.md#selecting-target-elements).
+* one of the [selectors](../documentation/guides/basic-guides/select-page-elements.md) you used in test code does not match any DOM element, or
+* you used an incorrect CSS selector or a client-side function that returns no element to specify an [action's target element](../documentation/reference/test-api/testcontroller/click.md#select-target-elements).
 
 To determine the cause of this issue, do the following:
 
-1. Look at the error message in the test run report [to learn which selector has failed](../documentation/test-api/selecting-page-elements/selectors/using-selectors.md#debug-selectors).
-2. Add the [t.debug()](../documentation/test-api/debugging.md) method before this selector to stop test execution before it reaches this point.
+1. Look at the error message in the test run report [to learn which selector has failed](../documentation/guides/basic-guides/select-page-elements.md#debug-selectors).
+2. Add the [t.debug()](../documentation/guides/basic-guides/debug.md) method before this selector to stop test execution before it reaches this point.
 3. Run the test and wait until the browser stops at the breakpoint.
 
 After this, use the browser's development tools to check that:
@@ -230,14 +230,14 @@ After this, use the browser's development tools to check that:
 * the element is present on the page;
 * the element is visible (TestCafe considers it visible if it does not have `display` set to `none`,
   `visibility` set to `hidden` or the zero `width` or `height`);
-* the element's part targeted by the action is visible (the center of the element, or a point specified by the [`offsetX` and `offsetY`](../documentation/test-api/actions/action-options.md#mouse-action-options) parameters);
+* the element's part targeted by the action is visible (the center of the element, or a point specified by the [`offsetX` and `offsetY`](../documentation/reference/test-api/testcontroller/click.md#options) parameters);
 * the element is not in an `<iframe>` (if it is, use the
-  [t.switchToIframe](../documentation/test-api/working-with-iframes.md) method
+  [t.switchToIframe](../documentation/guides/basic-guides/interact-with-the-page.md#work-with-iframes) method
   to switch to the appropriate `<iframe>`).
 
 Also, try running the test in full screen.
-Use the [t.maximizeWindow](../documentation/test-api/actions/resize-window.md#maximizing-the-window)
-and [t.resizeWindow](../documentation/test-api/actions/resize-window.md#setting-the-window-size) actions
+Use the [t.maximizeWindow](../documentation/reference/test-api/testcontroller/maximizewindow.md)
+and [t.resizeWindow](../documentation/reference/test-api/testcontroller/resizewindow.md) actions
 to control the browser window size. If the test passes, it means your webpage hides
 the target element when the window is resized to smaller dimensions.
 
@@ -252,7 +252,7 @@ A request to https://www.example.com has failed.
 Use quarantine mode to perform additional attempts to execute this test.
 ```
 
-You can use [quarantine mode](../documentation/using-testcafe/command-line-interface.md#-q---quarantine-mode) to complete the tests if this problem occurs infrequently.
+You can use [quarantine mode](../documentation/guides/basic-guides/run-tests.md#quarantine-mode) to complete the tests if this problem occurs infrequently.
 
 However, we recommend that you determine the cause of this issue and address it.
 
@@ -275,7 +275,7 @@ Check if the Web and DNS servers are online and configured to accept requests to
 If you run TestCafe in a container or CI system, use the following steps to diagnose resource shortage:
 
 * Increase the container's resource limits.
-* Set the [concurrency factor](../documentation/using-testcafe/common-concepts/concurrent-test-execution.md) to `1`.
+* Set the [concurrency factor](../documentation/guides/basic-guides/run-tests.md#run-tests-concurrently) to `1`.
 * Deploy the application's Web server on a separate machine.
 * Run tests on a local device outside a container.
 
@@ -286,8 +286,8 @@ If this fixes the tests, it indicates that they require additional resources. Yo
 
 According to users' feedback, the following CI systems work best with TestCafe:
 
-* [Azure Pipelines](../documentation/continuous-integration/azure-devops.md)
-* [GitLab](../documentation/continuous-integration/gitlab.md)
-* [TravisCI](../documentation/continuous-integration/travis.md)
-* [CircleCI](../documentation/continuous-integration/circleci.md)
-* [AppVeyor](../documentation/continuous-integration/appveyor.md)
+* [Azure Pipelines](../documentation/guides/continuous-integration/azure-devops.md)
+* [GitLab](../documentation/guides/continuous-integration/gitlab.md)
+* [TravisCI](../documentation/guides/continuous-integration/travis.md)
+* [CircleCI](../documentation/guides/continuous-integration/circleci.md)
+* [AppVeyor](../documentation/guides/continuous-integration/appveyor.md)

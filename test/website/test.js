@@ -88,7 +88,7 @@ class WebsiteTester {
 
             links.forEach(link => util.log(util.colors.red(link)));
 
-            util.log();
+            util.log('---');
         }
     }
 
