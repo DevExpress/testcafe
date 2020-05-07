@@ -1,9 +1,10 @@
 ---
 layout: docs
 title: Debug Tests in Chrome Developer Tools
-permalink: /documentation/recipes/debug-tests/chrome-dev-tools.html
+permalink: /documentation/recipes/debugging/chrome-dev-tools.html
 redirect_from:
   - /documentation/recipes/debug-in-chrome-dev-tools.html
+  - /documentation/recipes/debug-tests/chrome-dev-tools.html
   - /documentation/recipes/debugging-with-chrome-dev-tools.html
 ---
 # Debug Tests in Chrome Developer Tools

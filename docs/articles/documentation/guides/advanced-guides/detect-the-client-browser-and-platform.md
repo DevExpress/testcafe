@@ -41,7 +41,7 @@ Property | Type | Description   | Example
 
 ### Create a Browser-Specific Hook
 
-The following example shows how to create a [beforeEach](../basic-guides/test-organization.md#test-hooks) hook that runs for particular [browser engines](../../reference/test-api/testcontroller/browser.md#engine) only:
+The following example shows how to create a [beforeEach](../basic-guides/organize-tests.md#test-hooks) hook that runs for particular [browser engines](../../reference/test-api/testcontroller/browser.md#engine) only:
 
 ```js
 import { Selector } from 'testcafe';

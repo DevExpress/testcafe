@@ -1,7 +1,9 @@
 ---
 layout: docs
 title: Debug Tests in WebStorm
-permalink: /documentation/recipes/debug-tests/webstorm.html
+permalink: /documentation/recipes/debugging/webstorm.html
+redirect_from:
+  - /documentation/recipes/debug-tests/webstorm.html
 ---
 # Debug Tests in WebStorm
 

@@ -1,9 +1,10 @@
 ---
 layout: docs
 title: Use TestCafe with Grunt
-permalink: /documentation/recipes/use-task-runners/grunt.html
+permalink: /documentation/recipes/integrations/grunt.html
 redirect_from:
   - /documentation/recipes/using-testcafe-with-grunt.html
+  - /documentation/recipes/use-task-runners/grunt.html
 ---
 # Use TestCafe with Grunt
 

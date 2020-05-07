@@ -16,8 +16,22 @@ redirect_from:
 This topic lists browsers supported by TestCafe and describes how to use various browser features.
 
 * [Browser Support](#browser-support)
+  * [Officially Supported Browsers](#officially-supported-browsers)
+  * [Locally Installed Browsers](#locally-installed-browsers)
+  * [Portable Browsers](#portable-browsers)
+  * [Browsers on Remote Devices](#browsers-on-remote-devices)
+  * [Browsers in Cloud Testing Services](#browsers-in-cloud-testing-services)
+  * [Microsoft Edge Legacy Support](#microsoft-edge-legacy-support)
+  * [Nonconventional Browsers](#nonconventional-browsers)
 * [Test in Headless Mode](#test-in-headless-mode)
+  * [Automation Port](#automation-port)
 * [Use Chromium Device Emulation](#use-chromium-device-emulation)
+  * [Emulate a Device](#emulate-a-device)
+  * [Emulate Screen Size](#emulate-screen-size)
+  * [Use Emulation in Headless Mode](#use-emulation-in-headless-mode)
+  * [Use Emulation in Chrome Portable](#use-emulation-in-chrome-portable)
+  * [Substitute a User Agent](#substitute-a-user-agent)
+  * [Emulator Parameters](#emulator-parameters)
 * [User Profiles](#user-profiles)
 
 ## Browser Support

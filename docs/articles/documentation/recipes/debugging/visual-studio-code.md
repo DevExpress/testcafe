@@ -1,8 +1,9 @@
 ---
 layout: docs
 title: Debug Tests in Visual Studio Code
-permalink: /documentation/recipes/debug-tests/visual-studio-code.html
+permalink: /documentation/recipes/debugging/visual-studio-code.html
 redirect_from:
+  - /documentation/recipes/debug-tests/visual-studio-code.html
   - /documentation/recipes/debug-in-visual-studio-code.html
   - /documentation/recipes/debugging-with-visual-studio-code.html
 ---

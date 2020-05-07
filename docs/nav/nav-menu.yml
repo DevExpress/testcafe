@@ -7,8 +7,8 @@
     content:
     - name: Install TestCafe
       url: /documentation/guides/basic-guides/install-testcafe.md
-    - name: Test Organization
-      url: /documentation/guides/basic-guides/test-organization.md
+    - name: Organize Tests
+      url: /documentation/guides/basic-guides/organize-tests.md
     - name: Select Page Elements
       url: /documentation/guides/basic-guides/select-page-elements.md
     - name: Interact with the Page
@@ -268,21 +268,21 @@
         url: /documentation/reference/test-api/testcontroller/expect/lte.md
       - name: expect.match
         url: /documentation/reference/test-api/testcontroller/expect/match.md
-      - name: expect.notcontains
+      - name: expect.notContains
         url: /documentation/reference/test-api/testcontroller/expect/notcontains.md
-      - name: expect.noteql
+      - name: expect.notEql
         url: /documentation/reference/test-api/testcontroller/expect/noteql.md
-      - name: expect.notmatch
+      - name: expect.notMatch
         url: /documentation/reference/test-api/testcontroller/expect/notmatch.md
-      - name: expect.notok
+      - name: expect.notOk
         url: /documentation/reference/test-api/testcontroller/expect/notok.md
-      - name: expect.nottypeof
+      - name: expect.notTypeOf
         url: /documentation/reference/test-api/testcontroller/expect/nottypeof.md
-      - name: expect.notwithin
+      - name: expect.notWithin
         url: /documentation/reference/test-api/testcontroller/expect/notwithin.md
       - name: expect.ok
         url: /documentation/reference/test-api/testcontroller/expect/ok.md
-      - name: expect.typeof
+      - name: expect.typeOf
         url: /documentation/reference/test-api/testcontroller/expect/typeof.md
       - name: expect.within
         url: /documentation/reference/test-api/testcontroller/expect/within.md
@@ -394,37 +394,41 @@
 - name: Recipes
   url: /documentation/recipes/README.md
   content:
-  - name: Access Environment Variables in Tests
-    url: /documentation/recipes/access-environment-variables-in-tests.md
-  - name: Create Data-Driven Tests
-    url: /documentation/recipes/create-data-driven-tests.md
-  - name: Debug Tests
-    url: /documentation/recipes/debug-tests/README.md
+  - name: Basics
+    content:
+    - name: Test &lt;select&gt; Elements
+      url: /documentation/recipes/basics/test-select-elements.md
+    - name: Test Static HTML Pages
+      url: /documentation/recipes/basics/test-static-html-pages.md
+    - name: Test on Remote Computers and Mobile Devices
+      url: /documentation/recipes/basics/test-on-remote-computers-and-mobile-devices.md
+  - name: Best Practices
+    content:
+    - name: Create Helpers
+      url: /documentation/recipes/best-practices/create-helpers.md
+    - name: Create Data-Driven Tests
+      url: /documentation/recipes/best-practices/create-data-driven-tests.md
+  - name: Integrations
+    content:
+    - name: Import Third-Party Modules
+      url: /documentation/recipes/integrations/import-third-party-modules.md
+    - name: Angular CLI Builder
+      url: /documentation/recipes/integrations/use-angular-cli-builder.md
+    - name: Gulp
+      url: /documentation/recipes/integrations/gulp.md
+    - name: Grunt
+      url: /documentation/recipes/integrations/grunt.md
+    - name: Flow Type Checker
+      url: /documentation/recipes/integrations/find-code-issues-with-flow-type-checker.md
+  - name: Configuration
+    content:
+    - name: Access Environment Variables in Tests
+      url: /documentation/recipes/configuration/access-environment-variables-in-tests.md
+  - name: Debugging
     content:
     - name: Chrome Developer Tools
-      url: /documentation/recipes/debug-tests/chrome-dev-tools.md
+      url: /documentation/recipes/debugging/chrome-dev-tools.md
     - name: Visual Studio Code
-      url: /documentation/recipes/debug-tests/visual-studio-code.md
+      url: /documentation/recipes/debugging/visual-studio-code.md
     - name: WebStorm
-      url: /documentation/recipes/debug-tests/webstorm.md
-  - name: Create Helpers
-    url: /documentation/recipes/create-helpers.md
-  - name: Find Code Issues with Flow Type Checker
-    url: /documentation/recipes/find-code-issues-with-flow-type-checker.md
-  - name: Import Third-Party Modules
-    url: /documentation/recipes/import-third-party-modules.md
-  - name: Test &lt;select&gt; Elements
-    url: /documentation/recipes/test-select-elements.md
-  - name: Test Static HTML Pages
-    url: /documentation/recipes/test-static-html-pages.md
-  - name: Test on Remote Computers and Mobile Devices
-    url: /documentation/recipes/test-on-remote-computers-and-mobile-devices.md
-  - name: Use Angular CLI Builder
-    url: /documentation/recipes/use-angular-cli-builder.md
-  - name: Use Task Runners
-    url: /documentation/recipes/use-task-runners/README.md
-    content:
-    - name: Grunt
-      url: /documentation/recipes/use-task-runners/grunt.md
-    - name: Gulp
-      url: /documentation/recipes/use-task-runners/gulp.md
+      url: /documentation/recipes/debugging/webstorm.md

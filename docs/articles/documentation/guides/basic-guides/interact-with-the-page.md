@@ -19,6 +19,20 @@ redirect_from:
 
 Test API provides a set of **actions** you can use to interact with the page.
 
+* [Click](#click)
+* [Press Key](#press-key)
+* [Navigate](#navigate)
+* [Type Text](#type-text)
+* [Select Text](#select-text)
+* [Hover](#hover)
+* [Drag Elements](#drag-elements)
+* [Upload Files](#upload-files)
+* [Take Screenshot](#take-screenshot)
+* [Work with iframes](#work-with-iframes)
+* [Handle Native Dialogs](#handle-native-dialogs)
+* [Resize Window](#resize-window)
+* [Wait](#wait)
+
 They are implemented as methods in the [test controller](../../reference/test-api/testcontroller/README.md) object. You can call them in a chained fashion.
 
 The available actions with reproducible usage examples and links to their descriptions are listed below.

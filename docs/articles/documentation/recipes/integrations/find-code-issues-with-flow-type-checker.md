@@ -1,9 +1,10 @@
 ---
 layout: docs
 title: Find Code Issues with Flow Type Checker
-permalink: /documentation/recipes/find-code-issues-with-flow-type-checker.html
+permalink: /documentation/recipes/integrations/find-code-issues-with-flow-type-checker.html
 redirect_from:
   - /documentation/recipes/finding-code-issues-with-flow-type-checker.html
+  - /documentation/recipes/find-code-issues-with-flow-type-checker.html
 ---
 # Find Code Issues with Flow Type Checker
 

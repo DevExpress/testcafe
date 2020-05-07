@@ -503,7 +503,7 @@ The footer displays a status bar in which you can resume test execution or skip 
 
 ![Debugging status bar](../../images/debugging/client-debugging-footer.png)
 
-> If the test you run in the debug mode contains a [test hook](../guides/basic-guides/test-organization.md#test-hooks),
+> If the test you run in the debug mode contains a [test hook](../guides/basic-guides/organize-tests.md#test-hooks),
 > it is paused within this hook before the first action.
 
 You can also use the **Unlock page** switch in the footer to unlock the tested page and interact with its elements.
@@ -598,7 +598,7 @@ testcafe ie my-tests -F "Page.*"
 
 ### --test-meta \<key=value\[,key2=value2,...\]\>
 
-TestCafe runs tests whose [metadata](../guides/basic-guides/test-organization.md#specify-test-metadata) matches the specified key-value pair.
+TestCafe runs tests whose [metadata](../guides/basic-guides/organize-tests.md#specify-test-metadata) matches the specified key-value pair.
 
 For example, the following command runs tests whose metadata's `device` property is set to `mobile`, and `env` property is set to `production`.
 
@@ -610,7 +610,7 @@ testcafe chrome my-tests --test-meta device=mobile,env=production
 
 ### --fixture-meta \<key=value\[,key2=value2,...\]\>
 
-TestCafe runs tests whose fixture's [metadata](../guides/basic-guides/test-organization.md#specify-test-metadata) matches the specified key-value pair.
+TestCafe runs tests whose fixture's [metadata](../guides/basic-guides/organize-tests.md#specify-test-metadata) matches the specified key-value pair.
 
 For example, the following command runs tests whose fixture's metadata has the `device` property set to the `mobile` value and the `env` property set to the `production` value.
 

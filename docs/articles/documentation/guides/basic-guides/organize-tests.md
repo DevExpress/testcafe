@@ -1,11 +1,11 @@
 ---
 layout: docs
-title: Test Organization
-permalink: /documentation/guides/basic-guides/test-organization.html
+title: Organize Tests
+permalink: /documentation/guides/basic-guides/organize-tests.html
 redirect_from:
   - /documentation/test-api/test-code-structure.html
 ---
-# Test Organization
+# Organize Tests
 
 This topic describes how to organize test code, declare fixtures, tests, and hooks.
 

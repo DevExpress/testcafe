@@ -5,7 +5,7 @@ permalink: /documentation/reference/test-api/testcontroller/fixturectx.html
 ---
 # t.fixtureCtx Property
 
-Allows you to access the *fixture context* from test code. Use it to share variables between [fixture hook functions](../../../guides/basic-guides/test-organization.md#fixture-hooks) and test code.
+Allows you to access the *fixture context* from test code. Use it to share variables between [fixture hook functions](../../../guides/basic-guides/organize-tests.md#fixture-hooks) and test code.
 
 ```text
 t.fixtureCtx

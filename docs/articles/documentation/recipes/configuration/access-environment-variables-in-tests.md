@@ -1,7 +1,9 @@
 ---
 layout: docs
 title: Access Environment Variables in Tests
-permalink: /documentation/recipes/access-environment-variables-in-tests.html
+permalink: /documentation/recipes/configuration/access-environment-variables-in-tests.html
+redirect_from:
+  - /documentation/recipes/access-environment-variables-in-tests.html
 ---
 # Access Environment Variables in Tests
 

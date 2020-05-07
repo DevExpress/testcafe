@@ -8,7 +8,7 @@ permalink: /documentation/guides/
 ## Basic Guides
 
 * [Install TestCafe](basic-guides/install-testcafe.md)
-* [Test Organization](basic-guides/test-organization.md)
+* [Organize Tests](basic-guides/organize-tests.md)
 * [Select Page Elements](basic-guides/select-page-elements.md)
 * [Interact with the Page](basic-guides/interact-with-the-page.md)
 * [Assert](basic-guides/assert.md)

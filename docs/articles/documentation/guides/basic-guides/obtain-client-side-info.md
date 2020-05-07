@@ -12,6 +12,17 @@ redirect_from:
 
 TestCafe allows you to create *client functions* that can return any serializable value from the client side, such as the current URL or custom data calculated by a client script.
 
+* [Client Function Constructor](#client-function-constructor)
+* [Run Asynchronous Client Code](#run-asynchronous-client-code)
+* [Execute Client Functions](#execute-client-functions)
+* [Overwrite Client Function Options](#overwrite-client-function-options)
+* [One-Time Client Code Execution](#one-time-client-code-execution)
+* [Import Functions to be Used as Client Function Dependencies](#import-functions-to-be-used-as-client-function-dependencies)
+* [Call Client Functions from Node.js Callbacks](#call-client-functions-from-nodejs-callbacks)
+* [Client Function Limitations](#client-function-limitations)
+* [Access Console Messages](#access-console-messages)
+* [Examples](#examples)
+
 > Do not modify the tested webpage within client functions.
 > Use [test actions](interact-with-the-page.md) to interact with the page instead.
 
@@ -59,7 +70,7 @@ test('My Test', async t => {
 });
 ```
 
-## Overwrite Client Function Option
+## Overwrite Client Function Options
 
 Overwrite client function options via the ClientFunction's [with](../../reference/test-api/clientfunction/with.md) method.
 

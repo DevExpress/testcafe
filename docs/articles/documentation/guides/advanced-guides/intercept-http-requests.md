@@ -17,6 +17,11 @@ redirect_from:
 
 This section describes how to handle HTTP requests in your tests. TestCafe ships with request hooks that allow you to log the requests and mock the responses. You can also create a custom HTTP request hook, which enables you, for instance, to emulate authentications like **Kerberos** or **Client Certificate Authentication**.
 
+* [Log HTTP Requests](#log-http-requests)
+* [Mock HTTP Requests](#mock-http-requests)
+* [Create a Custom Request Hook](#create-a-custom-request-hook)
+* [Attach Hooks to Tests and Fixtures](#attach-hooks-to-tests-and-fixtures)
+
 ## Log HTTP Requests
 
 You can use the [request logger](../../reference/test-api/requestlogger/README.md) to record HTTP requests the tested web app sends and responses it receives. For instance, you may want to make sure that the data from a remote service is correct.

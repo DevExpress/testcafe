@@ -5,7 +5,7 @@ permalink: /documentation/reference/test-api/test/meta.html
 ---
 # Test.meta Method
 
-Specifies the [test's metadata](../../../guides/basic-guides/test-organization.md#specify-test-metadata).
+Specifies the [test's metadata](../../../guides/basic-guides/organize-tests.md#specify-test-metadata).
 
 ```text
 test.meta( name, value )

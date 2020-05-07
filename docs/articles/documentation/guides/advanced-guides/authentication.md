@@ -11,6 +11,13 @@ redirect_from:
 
 TestCafe includes a [user role](#user-roles) mechanism that allows you to emulate user actions to log in to a website. You can also use [HTTP Basic and NTLM](#http-authentication) authentication.
 
+* [User Roles](#user-roles)
+  * [Why Use Roles](#why-use-roles)
+  * [Create and Apply Roles](#create-and-apply-roles)
+  * [Anonymous Role](#anonymous-role)
+* [HTTP Authentication](#http-authentication)
+* [Troubleshooting](#troubleshooting)
+
 ## User Roles
 
 Many test scenarios involve activity from more than one user. TestCafe allows you to isolate test actions required to authenticate a user (e.g., enter credentials, click 'Sign in'). During the test, you can switch between user accounts with a single method call.
@@ -19,10 +26,10 @@ A *role* contains code that logs in a particular user. You can define a role for
 
 ### Why Use Roles
 
-Unlike other methods used to [extract reusable test logic](../../recipes/extract-reusable-test-code/README.md), roles are designed for login operations and provide the following dedicated features:
+Unlike [page models](../concepts/page-model.md) or [helper functions](../../recipes/best-practices/create-helpers.md), roles are designed for login operations and provide the following dedicated features:
 
 * **Object-based API.** Authentication data and logic are stored in an object that is easy to pass and activate when needed.
-* **Single login.** Login actions are not repeated when you switch to a previously used role within the same session. If you activate a role in the [beforeEach](../basic-guides/test-organization.md#test-hooks) hook, login actions run once before the first test. Subsequent tests reuse authentication data so that it happens instantly.
+* **Single login.** Login actions are not repeated when you switch to a previously used role within the same session. If you activate a role in the [beforeEach](../basic-guides/organize-tests.md#test-hooks) hook, login actions run once before the first test. Subsequent tests reuse authentication data so that it happens instantly.
 * **Automatic return.** The browser automatically navigates back to the page where you switched roles. (You can disable this behavior if required.)
 * **No logout needed.** Authentication data is automatically cleared when you switch between roles.
 * **Multiple authentication support.** If you log in to different services/websites during a test, authentication data from cookie and browser storage accumulates in the active role. When you switch back to this role within the same test, you are automatically logged in to all websites.

@@ -1,9 +1,10 @@
 ---
 layout: docs
 title: Test &lt;select&gt; Elements
-permalink: /documentation/recipes/test-select-elements.html
+permalink: /documentation/recipes/basics/test-select-elements.html
 redirect_from:
   - /documentation/recipes/testing-select-elements.html
+  - /documentation/recipes/test-select-elements.html
 ---
 # Test \<select\> Elements
 
@@ -58,7 +59,7 @@ test(`Select an option from the drop-down menu`, async t => {
 });
 ```
 
-First, you need a [selector](../guides/basic-guides/select-page-elements.md) that picks the `<select>` element.
+First, you need a [selector](../../guides/basic-guides/select-page-elements.md) that picks the `<select>` element.
 
 ```js
 const citySelect = Selector('#city');
@@ -71,14 +72,14 @@ await t.click(citySelect);
 ```
 
 Next, write code that selects `London` from the drop-down list. To this end, introduce a selector that identifies options.
-This selector uses the [find](../reference/test-api/selector/find.md) function to locate `<option>` elements inside `<select>`.
+This selector uses the [find](../../reference/test-api/selector/find.md) function to locate `<option>` elements inside `<select>`.
 
 ```js
 const cityOption = citySelect.find('option');
 ```
 
-To find the `London` value, use the selector's filter methods that include [withText](../reference/test-api/selector/withtext.md), [nth](../reference/test-api/selector/nth.md) and
-[withAttribute](../reference/test-api/selector/withattribute.md).
+To find the `London` value, use the selector's filter methods that include [withText](../../reference/test-api/selector/withtext.md), [nth](../../reference/test-api/selector/nth.md) and
+[withAttribute](../../reference/test-api/selector/withattribute.md).
 Then pass this selector to the `click` method.
 
 ```js
