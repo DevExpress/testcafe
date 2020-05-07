@@ -1,9 +1,10 @@
 ---
 layout: docs
 title: Use TestCafe with Gulp
-permalink: /documentation/recipes/use-task-runners/gulp.html
+permalink: /documentation/recipes/integrations/gulp.html
 redirect_from:
   - /documentation/recipes/using-testcafe-with-grunt.html
+  - /documentation/recipes/use-task-runners/gulp.html
 ---
 # Use TestCafe with Gulp
 

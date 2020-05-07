@@ -16,6 +16,7 @@ This topic consists of the following sections:
 
 * [Assertion Structure](#assertion-structure)
 * [Smart Assertion Query Mechanism](#smart-assertion-query-mechanism)
+* [Options](#options)
 
 ## Assertion Structure
 

@@ -29,6 +29,29 @@ testCafe.close();
 
 TestCafe also allows you to create a [configuration file](../../reference/configuration-file.md) where you can define test run settings. You can then omit these settings in the command line or API to use values from the configuration file.
 
+* [Specify Tests to Run](#specify-tests-to-run)
+  * [Run Tests From Multiple Sources](#run-tests-from-multiple-sources)
+  * [Use Glob Patterns](#use-glob-patterns)
+  * [Filter Tests and Fixtures by Name](#filter-tests-and-fixtures-by-name)
+  * [Filter Tests and Fixtures by Metadata](#filter-tests-and-fixtures-by-metadata)
+* [Specify Target Browsers](#specify-target-browsers)
+  * [Use Multiple Browsers](#use-multiple-browsers)
+  * [Run Tests in All Installed Browsers](#run-tests-in-all-installed-browsers)
+  * [Test in Portable Browsers](#test-in-portable-browsers)
+  * [Use Headless Mode](#use-headless-mode)
+  * [Enable Mobile Device Emulation](#enable-mobile-device-emulation)
+  * [Test in Cloud Testing Services](#test-in-cloud-testing-services)
+  * [Test on Remote and Mobile Devices](#test-on-remote-and-mobile-devices)
+* [Specify the Report Format](#specify-the-report-format)
+* [Customize Screenshot and Video Settings](#customize-screenshot-and-video-settings)
+* [Run Tests Concurrently](#run-tests-concurrently)
+* [Stage the Tested App](#stage-the-tested-app)
+* [Provide a Proxy URL](#provide-a-proxy-url)
+* [Live Mode](#live-mode)
+  * [How Live Mode Works](#how-live-mode-works)
+  * [Console Shortcuts in Live Mode](#console-shortcuts-in-live-mode)
+* [Quarantine Mode](#quarantine-mode)
+
 ## Specify Tests to Run
 
 You should specify a path to a file or directory with tests you want to run in the [second command line argument](../../reference/command-line-interface.md#file-pathglob-pattern):
@@ -479,7 +502,7 @@ testcafe -c 2 remote:4 tests/test.js
 
 If you test against multiple remote browsers, open and connect all instances of one browser before connecting the next browser.
 
-## Deploy the Tested App
+## Stage the Tested App
 
 TestCafe can execute a specified shell command before it starts tests. For instance, you can run a command that starts a local web server and deploys the tested app. TestCafe automatically terminates the process when tests are finished.
 

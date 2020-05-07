@@ -65,6 +65,28 @@ const parent = Selector('#query-my-parent').parent();
 
 You can use selectors to [inspect elements](#obtain-element-state), define [action targets](#define-action-targets), and [assertion actual values](#define-assertion-actual-value).
 
+* [Create Selectors](#create-selectors)
+* [Member Tables](#member-tables)
+* [Use Selectors](#use-selectors)
+  * [Check if an Element Exists](#check-if-an-element-exists)
+  * [Obtain Element State](#obtain-element-state)
+    * [DOM Node Snapshot](#dom-node-snapshot)
+  * [Define Action Targets](#define-action-targets)
+  * [Define Assertion Actual Value](#define-assertion-actual-value)
+* [Selector Timeout](#selector-timeout)
+* [Debug Selectors](#debug-selectors)
+* [Extend Selectors with Custom Properties and Methods](#extend-selectors-with-custom-properties-and-methods)
+* [Overwrite Options](#overwrite-options)
+* [Framework-Specific Selectors](#framework-specific-selectors)
+  * [React](#react)
+  * [Angular](#angular)
+  * [AngularJS](#angularjs)
+  * [Vue](#vue)
+  * [Aurelia](#aurelia)
+* [Call Selectors from Node.js Callbacks](#call-selectors-from-nodejs-callbacks)
+* [Limitations](#limitations)
+* [Examples](#examples)
+
 > Important! Do not modify the tested webpage within selectors.
 > To interact with the page, use [test actions](interact-with-the-page.md).
 
@@ -135,7 +157,7 @@ const sel = Selector('div').child();
 </html>
 ```
 
-### Member Tables
+## Member Tables
 
 The following methods filter elements from the selector:
 

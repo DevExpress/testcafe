@@ -1,7 +1,9 @@
 ---
 layout: docs
 title: Use Angular CLI Builder
-permalink: /documentation/recipes/use-angular-cli-builder.html
+permalink: /documentation/recipes/integrations/use-angular-cli-builder.html
+redirect_from:
+  - /documentation/recipes/use-angular-cli-builder.html
 ---
 # Use Angular CLI Builder
 

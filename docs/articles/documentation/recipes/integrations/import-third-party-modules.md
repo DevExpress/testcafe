@@ -1,7 +1,9 @@
 ---
 layout: docs
 title: Import Third-Party Modules
-permalink: /documentation/recipes/import-third-party-modules.html
+permalink: /documentation/recipes/integrations/import-third-party-modules.html
+redirect_from:
+  - /documentation/recipes/import-third-party-modules.html
 ---
 # Import Third-Party Modules
 
