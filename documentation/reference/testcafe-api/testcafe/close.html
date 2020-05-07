@@ -1479,7 +1479,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/notcontains.html"  >expect.notcontains</a>
+<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/notcontains.html"  >expect.notContains</a>
 
 		
     </li>
@@ -1488,7 +1488,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/noteql.html"  >expect.noteql</a>
+<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/noteql.html"  >expect.notEql</a>
 
 		
     </li>
@@ -1497,7 +1497,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/notmatch.html"  >expect.notmatch</a>
+<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/notmatch.html"  >expect.notMatch</a>
 
 		
     </li>
@@ -1506,7 +1506,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/notok.html"  >expect.notok</a>
+<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/notok.html"  >expect.notOk</a>
 
 		
     </li>
@@ -1515,7 +1515,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/nottypeof.html"  >expect.nottypeof</a>
+<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/nottypeof.html"  >expect.notTypeOf</a>
 
 		
     </li>
@@ -1524,7 +1524,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/notwithin.html"  >expect.notwithin</a>
+<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/notwithin.html"  >expect.notWithin</a>
 
 		
     </li>
@@ -1542,7 +1542,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/typeof.html"  >expect.typeof</a>
+<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/typeof.html"  >expect.typeOf</a>
 
 		
     </li>
@@ -2061,7 +2061,22 @@
 
 			<h1>TestCafe.close Method</h1>
 <p>Stops the TestCafe server. Forcibly closes all connections and pending test runs.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">async close()
+<div class="highlight"><pre><code class="language-text" data-lang="text">async close() → Promise&lt;void&gt;
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">createTestCafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">let</span> <span class="nx">testcafe</span>         <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+
+<span class="nx">createTestCafe</span><span class="p">(</span><span class="dl">'</span><span class="s1">localhost</span><span class="dl">'</span><span class="p">,</span> <span class="mi">1337</span><span class="p">,</span> <span class="mi">1338</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">tc</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">testcafe</span>     <span class="o">=</span> <span class="nx">tc</span><span class="p">;</span>
+        <span class="kd">const</span> <span class="nx">runner</span> <span class="o">=</span> <span class="nx">testcafe</span><span class="p">.</span><span class="nx">createRunner</span><span class="p">();</span>
+
+        <span class="k">return</span> <span class="nx">runner</span><span class="p">.</span><span class="nx">run</span><span class="p">();</span>
+    <span class="p">})</span>
+    <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">failed</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="dl">'</span><span class="s1">Tests failed: </span><span class="dl">'</span> <span class="o">+</span> <span class="nx">failed</span><span class="p">);</span>
+        <span class="nx">testcafe</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span>
+    <span class="p">})</span>
+    <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">error</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">});</span>
 </code></pre></div>
 
 		</div>

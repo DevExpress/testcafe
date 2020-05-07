@@ -648,7 +648,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/guides/basic-guides/test-organization.html"  >Test Organization</a>
+<a href="/testcafe/documentation/guides/basic-guides/organize-tests.html"  >Organize Tests</a>
 
 		
     </li>
@@ -1042,6 +1042,36 @@
 <span class="kd">const</span> <span class="nx">parent</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#query-my-parent</span><span class="dl">'</span><span class="p">).</span><span class="nx">parent</span><span class="p">();</span>
 </code></pre></div>
 <p>You can use selectors to <a href="#obtain-element-state">inspect elements</a>, define <a href="#define-action-targets">action targets</a>, and <a href="#define-assertion-actual-value">assertion actual values</a>.</p>
+
+<ul>
+<li><a href="#create-selectors">Create Selectors</a></li>
+<li><a href="#member-tables">Member Tables</a></li>
+<li><a href="#use-selectors">Use Selectors</a>
+
+<ul>
+<li><a href="#check-if-an-element-exists">Check if an Element Exists</a></li>
+<li><a href="#obtain-element-state">Obtain Element State</a></li>
+<li><a href="#dom-node-snapshot">DOM Node Snapshot</a></li>
+<li><a href="#define-action-targets">Define Action Targets</a></li>
+<li><a href="#define-assertion-actual-value">Define Assertion Actual Value</a></li>
+</ul></li>
+<li><a href="#selector-timeout">Selector Timeout</a></li>
+<li><a href="#debug-selectors">Debug Selectors</a></li>
+<li><a href="#extend-selectors-with-custom-properties-and-methods">Extend Selectors with Custom Properties and Methods</a></li>
+<li><a href="#overwrite-options">Overwrite Options</a></li>
+<li><a href="#framework-specific-selectors">Framework-Specific Selectors</a>
+
+<ul>
+<li><a href="#react">React</a></li>
+<li><a href="#angular">Angular</a></li>
+<li><a href="#angularjs">AngularJS</a></li>
+<li><a href="#vue">Vue</a></li>
+<li><a href="#aurelia">Aurelia</a></li>
+</ul></li>
+<li><a href="#call-selectors-from-nodejs-callbacks">Call Selectors from Node.js Callbacks</a></li>
+<li><a href="#limitations">Limitations</a></li>
+<li><a href="#examples">Examples</a></li>
+</ul>
 <blockquote class="important"><div class="blockquote-content"><p>Do not modify the tested webpage within selectors.
 To interact with the page, use <a href="interact-with-the-page.html">test actions</a>.</p>
 </div></blockquote><h2><a class="anchor" id="create-selectors"></a>Create Selectors <a class="permalink" href="#create-selectors">#</a></h2>
@@ -1096,7 +1126,7 @@ To interact with the page, use <a href="interact-with-the-page.html">test action
         <span class="nt">&lt;/div&gt;</span>
     <span class="nt">&lt;/body&gt;</span>
 <span class="nt">&lt;/html&gt;</span>
-</code></pre></div><h3><a class="anchor" id="member-tables"></a>Member Tables <a class="permalink" href="#member-tables">#</a></h3>
+</code></pre></div><h2><a class="anchor" id="member-tables"></a>Member Tables <a class="permalink" href="#member-tables">#</a></h2>
 <p>The following methods filter elements from the selector:</p>
 <div class="table-wrapper"><table><thead><tr>
 <th>Method</th>

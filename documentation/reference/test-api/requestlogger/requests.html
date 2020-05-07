@@ -1479,7 +1479,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/notcontains.html"  >expect.notcontains</a>
+<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/notcontains.html"  >expect.notContains</a>
 
 		
     </li>
@@ -1488,7 +1488,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/noteql.html"  >expect.noteql</a>
+<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/noteql.html"  >expect.notEql</a>
 
 		
     </li>
@@ -1497,7 +1497,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/notmatch.html"  >expect.notmatch</a>
+<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/notmatch.html"  >expect.notMatch</a>
 
 		
     </li>
@@ -1506,7 +1506,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/notok.html"  >expect.notok</a>
+<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/notok.html"  >expect.notOk</a>
 
 		
     </li>
@@ -1515,7 +1515,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/nottypeof.html"  >expect.nottypeof</a>
+<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/nottypeof.html"  >expect.notTypeOf</a>
 
 		
     </li>
@@ -1524,7 +1524,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/notwithin.html"  >expect.notwithin</a>
+<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/notwithin.html"  >expect.notWithin</a>
 
 		
     </li>
@@ -1542,7 +1542,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/typeof.html"  >expect.typeof</a>
+<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/typeof.html"  >expect.typeOf</a>
 
 		
     </li>
@@ -2063,6 +2063,79 @@
 <p>Returns an array of logged requests.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">requests → Array&lt;Request&gt;
 </code></pre></div>
+<p>The <code>Request</code> object represents a request-response pair.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="p">{</span>
+    <span class="nl">userAgent</span><span class="p">:</span> <span class="nb">String</span><span class="p">,</span>
+    <span class="nx">request</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nl">url</span><span class="p">:</span> <span class="nb">String</span><span class="p">,</span>
+        <span class="nx">method</span><span class="p">:</span> <span class="nb">String</span><span class="p">,</span>
+        <span class="nx">headers</span><span class="p">:</span> <span class="nb">Object</span><span class="p">,</span>
+        <span class="nx">body</span><span class="p">:</span> <span class="nx">Buffer</span> <span class="o">|</span> <span class="nb">String</span><span class="p">,</span>
+        <span class="nx">timestamp</span><span class="p">:</span> <span class="nb">Number</span>
+    <span class="p">},</span>
+    <span class="nx">response</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nl">statusCode</span><span class="p">:</span> <span class="nb">Number</span><span class="p">,</span>
+        <span class="nx">headers</span><span class="p">:</span> <span class="nb">Object</span><span class="p">,</span>
+        <span class="nx">body</span><span class="p">:</span> <span class="nx">Buffer</span> <span class="o">|</span> <span class="nb">String</span><span class="p">,</span>
+        <span class="nx">timestamp</span><span class="p">:</span> <span class="nb">Number</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><div class="table-wrapper"><table><thead><tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody><tr>
+<td><code>userAgent</code></td>
+<td>String</td>
+<td>Identifies the user agent that sent the request. Contains the formatted name and version of the browser and operating system.</td>
+</tr>
+<tr>
+<td><code>request.url</code></td>
+<td>String</td>
+<td>The URL where the request is sent.</td>
+</tr>
+<tr>
+<td><code>request.method</code></td>
+<td>String</td>
+<td>The request&#39;s HTTP method.</td>
+</tr>
+<tr>
+<td><code>request.headers</code></td>
+<td>Object</td>
+<td>Request headers in the property-value form. Logged if the <code>logRequestHeaders</code> option is set to <code>true</code>.</td>
+</tr>
+<tr>
+<td><code>request.body</code></td>
+<td><a href="https://nodejs.org/api/buffer.html">Buffer</a> &#124; String</td>
+<td>The request body. A <a href="https://nodejs.org/api/buffer.html">Buffer</a> or string depending on the <code>stringifyRequestBody</code> option. Logged if the <code>logRequestBody</code> option is set to <code>true</code>.</td>
+</tr>
+<tr>
+<td><code>request.timestamp</code></td>
+<td>Number</td>
+<td>The timestamp that specifies when the request was intercepted.</td>
+</tr>
+<tr>
+<td><code>response.statusCode</code></td>
+<td>Number</td>
+<td>The status code received in the response.</td>
+</tr>
+<tr>
+<td><code>response.headers</code></td>
+<td>Object</td>
+<td>Response headers in the property-value form. Logged if the <code>logResponseHeaders</code> option is set to <code>true</code>.</td>
+</tr>
+<tr>
+<td><code>response.body</code></td>
+<td><a href="https://nodejs.org/api/buffer.html">Buffer</a> &#124; String</td>
+<td>The response body. A <a href="https://nodejs.org/api/buffer.html">Buffer</a> or string depending on the <code>stringifyResponseBody</code> option. Logged if the <code>logResponseBody</code> option is set to <code>true</code>.</td>
+</tr>
+<tr>
+<td><code>response.timestamp</code></td>
+<td>Number</td>
+<td>The timestamp that specifies when the response was intercepted.</td>
+</tr>
+</tbody></table></div>
 
 		</div>
 	</article>

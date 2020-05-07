@@ -612,15 +612,15 @@ This file must have a special structure - tests must be organized into fixtures.
 <p>Firstly, import the <code>testcafe</code> module.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 </code></pre></div>
-<p>Then declare a fixture using the <a href="../guides/basic-guides/test-organization.html#fixtures">fixture</a> function.</p>
+<p>Then declare a fixture using the <a href="../guides/basic-guides/organize-tests.html#fixtures">fixture</a> function.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`Getting Started`</span>
 </code></pre></div>
 <p>In this tutorial, you create a test for the <a href="/testcafe/example">http://devexpress.github.io/testcafe/example</a> sample page.
-Specify this page as a start page for the fixture using the <a href="../guides/basic-guides/test-organization.html#specify-the-start-webpage">page</a> function.</p>
+Specify this page as a start page for the fixture using the <a href="../guides/basic-guides/organize-tests.html#specify-the-start-webpage">page</a> function.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`Getting Started`</span>
     <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://devexpress.github.io/testcafe/example`</span><span class="p">;</span>
 </code></pre></div>
-<p>Then, create the <a href="../guides/basic-guides/test-organization.html#tests">test</a> function where you can enter test code.</p>
+<p>Then, create the <a href="../guides/basic-guides/organize-tests.html#tests">test</a> function where you can enter test code.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="nx">fixture</span> <span class="s2">`Getting Started`</span>

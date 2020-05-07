@@ -648,7 +648,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/guides/basic-guides/test-organization.html"  >Test Organization</a>
+<a href="/testcafe/documentation/guides/basic-guides/organize-tests.html"  >Organize Tests</a>
 
 		
     </li>
@@ -1022,6 +1022,40 @@
 <span class="nx">testCafe</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span>
 </code></pre></div>
 <p>TestCafe also allows you to create a <a href="../../reference/configuration-file.html">configuration file</a> where you can define test run settings. You can then omit these settings in the command line or API to use values from the configuration file.</p>
+
+<ul>
+<li><a href="#specify-tests-to-run">Specify Tests to Run</a>
+
+<ul>
+<li><a href="#run-tests-from-multiple-sources">Run Tests From Multiple Sources</a></li>
+<li><a href="#use-glob-patterns">Use Glob Patterns</a></li>
+<li><a href="#filter-tests-and-fixtures-by-name">Filter Tests and Fixtures by Name</a></li>
+<li><a href="#filter-tests-and-fixtures-by-metadata">Filter Tests and Fixtures by Metadata</a></li>
+</ul></li>
+<li><a href="#specify-target-browsers">Specify Target Browsers</a>
+
+<ul>
+<li><a href="#use-multiple-browsers">Use Multiple Browsers</a></li>
+<li><a href="#run-tests-in-all-installed-browsers">Run Tests in All Installed Browsers</a></li>
+<li><a href="#test-in-portable-browsers">Test in Portable Browsers</a></li>
+<li><a href="#use-headless-mode">Use Headless Mode</a></li>
+<li><a href="#enable-mobile-device-emulation">Enable Mobile Device Emulation</a></li>
+<li><a href="#test-in-cloud-testing-services">Test in Cloud Testing Services</a></li>
+<li><a href="#test-on-remote-and-mobile-devices">Test on Remote and Mobile Devices</a></li>
+</ul></li>
+<li><a href="#specify-the-report-format">Specify the Report Format</a></li>
+<li><a href="#customize-screenshot-and-video-settings">Customize Screenshot and Video Settings</a></li>
+<li><a href="#run-tests-concurrently">Run Tests Concurrently</a></li>
+<li><a href="#stage-the-tested-app">Stage the Tested App</a></li>
+<li><a href="#provide-a-proxy-url">Provide a Proxy URL</a></li>
+<li><a href="#live-mode">Live Mode</a>
+
+<ul>
+<li><a href="#how-live-mode-works">How Live Mode Works</a></li>
+<li><a href="#console-shortcuts-in-live-mode">Console Shortcuts in Live Mode</a></li>
+</ul></li>
+<li><a href="#quarantine-mode">Quarantine Mode</a></li>
+</ul>
 <h2><a class="anchor" id="specify-tests-to-run"></a>Specify Tests to Run <a class="permalink" href="#specify-tests-to-run">#</a></h2>
 <p>You should specify a path to a file or directory with tests you want to run in the <a href="../../reference/command-line-interface.html#file-pathglob-pattern">second command line argument</a>:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome ./tests/
@@ -1295,7 +1329,7 @@ should divide by the concurrency parameter <code>n</code>. Otherwise, an excepti
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="nt">-c</span> 2 remote:4 tests/test.js
 </code></pre></div>
 <p>If you test against multiple remote browsers, open and connect all instances of one browser before connecting the next browser.</p>
-<h2><a class="anchor" id="deploy-the-tested-app"></a>Deploy the Tested App <a class="permalink" href="#deploy-the-tested-app">#</a></h2>
+<h2><a class="anchor" id="stage-the-tested-app"></a>Stage the Tested App <a class="permalink" href="#stage-the-tested-app">#</a></h2>
 <p>TestCafe can execute a specified shell command before it starts tests. For instance, you can run a command that starts a local web server and deploys the tested app. TestCafe automatically terminates the process when tests are finished.</p>
 
 <p>Use the <a href="../../reference/command-line-interface.html#-a-command---app-command">-a (--app)</a> CLI flag or the <a href="../../reference/testcafe-api/runner/startapp.html">runner.startApp</a> API method to provide a command:</p>
@@ -1373,7 +1407,7 @@ should divide by the concurrency parameter <code>n</code>. Otherwise, an excepti
 <p>You can use live mode with any browsers: local, remote, mobile or headless.</p>
 <blockquote class="important"><div class="blockquote-content"><p>Live mode is designed to work with tests locally. Do not use it in CI systems.</p>
 </div></blockquote>
-<p><strong>Tip:</strong> use the <a href="test-organization.html#skip-tests">only</a> function to work with a single test.</p>
+<p><strong>Tip:</strong> use the <a href="organize-tests.html#skip-tests">only</a> function to work with a single test.</p>
 <h3><a class="anchor" id="console-shortcuts-in-live-mode"></a>Console Shortcuts in Live Mode <a class="permalink" href="#console-shortcuts-in-live-mode">#</a></h3>
 <ul>
 <li><code>Ctrl+S</code> - stops the current test run;</li>

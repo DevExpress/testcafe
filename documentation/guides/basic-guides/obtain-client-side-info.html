@@ -648,7 +648,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/guides/basic-guides/test-organization.html"  >Test Organization</a>
+<a href="/testcafe/documentation/guides/basic-guides/organize-tests.html"  >Organize Tests</a>
 
 		
     </li>
@@ -1009,6 +1009,19 @@
 
 			<h1>Obtain Client-Side Info</h1>
 <p>TestCafe allows you to create <em>client functions</em> that can return any serializable value from the client side, such as the current URL or custom data calculated by a client script.</p>
+
+<ul>
+<li><a href="#client-function-constructor">Client Function Constructor</a></li>
+<li><a href="#run-asynchronous-client-code">Run Asynchronous Client Code</a></li>
+<li><a href="#execute-client-functions">Execute Client Functions</a></li>
+<li><a href="#overwrite-client-function-options">Overwrite Client Function Options</a></li>
+<li><a href="#one-time-client-code-execution">One-Time Client Code Execution</a></li>
+<li><a href="#import-functions-to-be-used-as-client-function-dependencies">Import Functions to be Used as Client Function Dependencies</a></li>
+<li><a href="#call-client-functions-from-nodejs-callbacks">Call Client Functions from Node.js Callbacks</a></li>
+<li><a href="#client-function-limitations">Client Function Limitations</a></li>
+<li><a href="#access-console-messages">Access Console Messages</a></li>
+<li><a href="#examples">Examples</a></li>
+</ul>
 <blockquote><div class="blockquote-content"><p>Do not modify the tested webpage within client functions.
 Use <a href="interact-with-the-page.html">test actions</a> to interact with the page instead.</p>
 </div></blockquote><h2><a class="anchor" id="client-function-constructor"></a>Client Function Constructor <a class="permalink" href="#client-function-constructor">#</a></h2>
@@ -1039,7 +1052,7 @@ Use <a href="interact-with-the-page.html">test actions</a> to interact with the 
 <span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">My Test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="kd">const</span> <span class="nx">location</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">getWindowLocation</span><span class="p">();</span>
 <span class="p">});</span>
-</code></pre></div><h2><a class="anchor" id="overwrite-client-function-option"></a>Overwrite Client Function Option <a class="permalink" href="#overwrite-client-function-option">#</a></h2>
+</code></pre></div><h2><a class="anchor" id="overwrite-client-function-options"></a>Overwrite Client Function Options <a class="permalink" href="#overwrite-client-function-options">#</a></h2>
 <p>Overwrite client function options via the ClientFunction&#39;s <a href="../../reference/test-api/clientfunction/with.html">with</a> method.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">cfWithDependency</span> <span class="o">=</span> <span class="nx">cfWithoutDependency</span><span class="p">.</span><span class="kd">with</span><span class="p">({</span>
     <span class="na">dependencies</span><span class="p">:</span> <span class="p">{</span> <span class="na">foo</span><span class="p">:</span> <span class="dl">'</span><span class="s1">bar</span><span class="dl">'</span> <span class="p">}</span>

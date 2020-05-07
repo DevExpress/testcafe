@@ -1479,7 +1479,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/notcontains.html"  >expect.notcontains</a>
+<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/notcontains.html"  >expect.notContains</a>
 
 		
     </li>
@@ -1488,7 +1488,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/noteql.html"  >expect.noteql</a>
+<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/noteql.html"  >expect.notEql</a>
 
 		
     </li>
@@ -1497,7 +1497,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/notmatch.html"  >expect.notmatch</a>
+<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/notmatch.html"  >expect.notMatch</a>
 
 		
     </li>
@@ -1506,7 +1506,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/notok.html"  >expect.notok</a>
+<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/notok.html"  >expect.notOk</a>
 
 		
     </li>
@@ -1515,7 +1515,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/nottypeof.html"  >expect.nottypeof</a>
+<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/nottypeof.html"  >expect.notTypeOf</a>
 
 		
     </li>
@@ -1524,7 +1524,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/notwithin.html"  >expect.notwithin</a>
+<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/notwithin.html"  >expect.notWithin</a>
 
 		
     </li>
@@ -1542,7 +1542,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/typeof.html"  >expect.typeof</a>
+<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/typeof.html"  >expect.typeOf</a>
 
 		
     </li>
@@ -2366,7 +2366,7 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
 <p>The footer displays a status bar in which you can resume test execution or skip to the next action or assertion.</p>
 
 <p><img src="../../images/debugging/client-debugging-footer.png" alt="Debugging status bar" title=""></p>
-<blockquote><div class="blockquote-content"><p>If the test you run in the debug mode contains a <a href="../guides/basic-guides/test-organization.html#test-hooks">test hook</a>,
+<blockquote><div class="blockquote-content"><p>If the test you run in the debug mode contains a <a href="../guides/basic-guides/organize-tests.html#test-hooks">test hook</a>,
 it is paused within this hook before the first action.</p>
 </div></blockquote>
 <p>You can also use the <strong>Unlock page</strong> switch in the footer to unlock the tested page and interact with its elements.</p>
@@ -2424,14 +2424,14 @@ it is paused within this hook before the first action.</p>
 </code></pre></div>
 <p><em>Related configuration file property</em>: <a href="configuration-file.html#filterfixturegrep">filter.fixtureGrep</a>.</p>
 <h3><a class="anchor" id="--test-meta-keyvaluekey2value2"></a>--test-meta &lt;key=value[,key2=value2,...]&gt; <a class="permalink" href="#--test-meta-keyvaluekey2value2">#</a></h3>
-<p>TestCafe runs tests whose <a href="../guides/basic-guides/test-organization.html#specify-test-metadata">metadata</a> matches the specified key-value pair.</p>
+<p>TestCafe runs tests whose <a href="../guides/basic-guides/organize-tests.html#specify-test-metadata">metadata</a> matches the specified key-value pair.</p>
 
 <p>For example, the following command runs tests whose metadata&#39;s <code>device</code> property is set to <code>mobile</code>, and <code>env</code> property is set to <code>production</code>.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests <span class="nt">--test-meta</span> <span class="nv">device</span><span class="o">=</span>mobile,env<span class="o">=</span>production
 </code></pre></div>
 <p><em>Related configuration file property</em>: <a href="configuration-file.html#filtertestmeta">filter.testMeta</a>.</p>
 <h3><a class="anchor" id="--fixture-meta-keyvaluekey2value2"></a>--fixture-meta &lt;key=value[,key2=value2,...]&gt; <a class="permalink" href="#--fixture-meta-keyvaluekey2value2">#</a></h3>
-<p>TestCafe runs tests whose fixture&#39;s <a href="../guides/basic-guides/test-organization.html#specify-test-metadata">metadata</a> matches the specified key-value pair.</p>
+<p>TestCafe runs tests whose fixture&#39;s <a href="../guides/basic-guides/organize-tests.html#specify-test-metadata">metadata</a> matches the specified key-value pair.</p>
 
 <p>For example, the following command runs tests whose fixture&#39;s metadata has the <code>device</code> property set to the <code>mobile</code> value and the <code>env</code> property set to the <code>production</code> value.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests <span class="nt">--fixture-meta</span> <span class="nv">device</span><span class="o">=</span>mobile,env<span class="o">=</span>production
