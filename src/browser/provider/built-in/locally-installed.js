@@ -36,7 +36,7 @@ export default {
         let activeWindowId = null;
 
         if (allowMultipleWindows)
-            activeWindowId = await this.calculateWindowId(browserId);
+            activeWindowId = this.calculateWindowId();
 
         this.openedBrowsers[browserId] = { activeWindowId };
     },
