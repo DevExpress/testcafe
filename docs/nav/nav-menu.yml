@@ -396,7 +396,7 @@
   content:
   - name: Basics
     content:
-    - name: Test \<select\> Elements
+    - name: Test &lt;select&gt; Elements
       url: /documentation/recipes/basics/test-select-elements.md
     - name: Test Static HTML Pages
       url: /documentation/recipes/basics/test-static-html-pages.md
