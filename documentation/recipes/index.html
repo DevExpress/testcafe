@@ -268,6 +268,15 @@
             window.addEventListener('resize', updateNavMenuPosition);
         }
 
+        function scrollToActiveItem() {
+            var activeItem = document.querySelector('.doc-nav .active');
+            var scrollContainer = document.querySelector('.ps-container');
+
+            if (scrollContainer && activeItem) {
+                scrollContainer.scrollTop = activeItem.offsetTop;
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function (e) {
             if (isMobileDevice)
                 return;
@@ -277,6 +286,8 @@
 
             if (nav)
                 initNav(nav);
+
+            scrollToActiveItem();
         });
     </script>
     
@@ -574,19 +585,11 @@
         </div>
       
         <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
+          <a href="/testcafe/documentation/guides/">Guides</a>      
         </div>
       
         <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/test-api/">Test API</a>      
-        </div>
-      
-        <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>      
-        </div>
-      
-        <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/continuous-integration/">Continuous Integration</a>      
+          <a href="/testcafe/documentation/reference/">Reference</a>      
         </div>
       
         <div class="doc-top-nav-tab active" >
@@ -616,12 +619,6 @@
 
 	
 	
-
-	
-	
-
-	
-	
 	<div class="doc-nav-panel">
 		<div class="toggle-nav-button"></div>
 		<div class="doc-nav-panel-header">
@@ -639,25 +636,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/recipes/access-environment-variables-in-tests.html"  >Access Environment Variables in Tests</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/recipes/create-data-driven-tests.html"  >Create Data-Driven Tests</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/recipes/debug-tests/"  >Debug Tests</a>
+<span>Basics</span>
 
 		
 			<ul>
@@ -666,7 +645,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/recipes/debug-tests/chrome-dev-tools.html"  >Chrome Developer Tools</a>
+<a href="/testcafe/documentation/recipes/basics/test-select-elements.html"  >Test &lt;select&gt; Elements</a>
 
 		
     </li>
@@ -675,7 +654,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/recipes/debug-tests/visual-studio-code.html"  >Visual Studio Code</a>
+<a href="/testcafe/documentation/recipes/basics/test-static-html-pages.html"  >Test Static HTML Pages</a>
 
 		
     </li>
@@ -684,7 +663,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/recipes/debug-tests/webstorm.html"  >WebStorm</a>
+<a href="/testcafe/documentation/recipes/basics/test-on-remote-computers-and-mobile-devices.html"  >Test on Remote Computers and Mobile Devices</a>
 
 		
     </li>
@@ -697,7 +676,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/recipes/extract-reusable-test-code/"  >Extract Reusable Test Code</a>
+<span>Best Practices</span>
 
 		
 			<ul>
@@ -706,7 +685,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/recipes/extract-reusable-test-code/use-page-model.html"  >Use Page Model</a>
+<a href="/testcafe/documentation/recipes/best-practices/create-helpers.html"  >Create Helpers</a>
 
 		
     </li>
@@ -715,7 +694,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/recipes/extract-reusable-test-code/create-helpers.html"  >Create Helpers</a>
+<a href="/testcafe/documentation/recipes/best-practices/create-data-driven-tests.html"  >Create Data-Driven Tests</a>
 
 		
     </li>
@@ -728,61 +707,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/recipes/find-code-issues-with-flow-type-checker.html"  >Find Code Issues with Flow Type Checker</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/recipes/import-third-party-modules.html"  >Import Third-Party Modules</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/recipes/test-select-elements.html"  >Test &lt;select&gt; Elements</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/recipes/test-static-html-pages.html"  >Test Static HTML Pages</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/recipes/test-on-remote-computers-and-mobile-devices.html"  >Test on Remote Computers and Mobile Devices</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/recipes/use-angular-cli-builder.html"  >Use Angular CLI Builder</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/recipes/use-task-runners/"  >Use Task Runners</a>
+<span>Integrations</span>
 
 		
 			<ul>
@@ -791,7 +716,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/recipes/use-task-runners/grunt.html"  >Grunt</a>
+<a href="/testcafe/documentation/recipes/integrations/import-third-party-modules.html"  >Import Third-Party Modules</a>
 
 		
     </li>
@@ -800,7 +725,96 @@
 		    
 		
 
-<a href="/testcafe/documentation/recipes/use-task-runners/gulp.html"  >Gulp</a>
+<a href="/testcafe/documentation/recipes/integrations/use-angular-cli-builder.html"  >Angular CLI Builder</a>
+
+		
+    </li>
+
+    <li>
+		    
+		
+
+<a href="/testcafe/documentation/recipes/integrations/gulp.html"  >Gulp</a>
+
+		
+    </li>
+
+    <li>
+		    
+		
+
+<a href="/testcafe/documentation/recipes/integrations/grunt.html"  >Grunt</a>
+
+		
+    </li>
+
+    <li>
+		    
+		
+
+<a href="/testcafe/documentation/recipes/integrations/find-code-issues-with-flow-type-checker.html"  >Flow Type Checker</a>
+
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+
+<span>Configuration</span>
+
+		
+			<ul>
+
+    <li>
+		    
+		
+
+<a href="/testcafe/documentation/recipes/configuration/access-environment-variables-in-tests.html"  >Access Environment Variables in Tests</a>
+
+		
+    </li>
+
+</ul>
+		
+    </li>
+
+    <li>
+		    
+		
+
+<span>Debugging</span>
+
+		
+			<ul>
+
+    <li>
+		    
+		
+
+<a href="/testcafe/documentation/recipes/debugging/chrome-dev-tools.html"  >Chrome Developer Tools</a>
+
+		
+    </li>
+
+    <li>
+		    
+		
+
+<a href="/testcafe/documentation/recipes/debugging/visual-studio-code.html"  >Visual Studio Code</a>
+
+		
+    </li>
+
+    <li>
+		    
+		
+
+<a href="/testcafe/documentation/recipes/debugging/webstorm.html"  >WebStorm</a>
 
 		
     </li>
@@ -825,18 +839,43 @@
 			<h1>Recipes</h1>
 <p>This section provides examples and recipes of how to use TestCafe in different scenarios.</p>
 
+<p><strong>Basics</strong></p>
+
 <ul>
-<li><a href="access-environment-variables-in-tests.html">Access Environment Variables in Tests</a></li>
-<li><a href="create-data-driven-tests.html">Create Data-Driven Tests</a></li>
-<li><a href="debug-tests/">Debug Tests</a></li>
-<li><a href="extract-reusable-test-code/">Extract Reusable Test Code</a></li>
-<li><a href="find-code-issues-with-flow-type-checker.html">Find Code Issues with Flow Type Checker</a></li>
-<li><a href="import-third-party-modules.html">Import Third-Party Modules</a></li>
-<li><a href="test-select-elements.html">Test &lt;select&gt; Elements</a></li>
-<li><a href="test-static-html-pages.html">Test Static HTML Pages</a></li>
-<li><a href="test-on-remote-computers-and-mobile-devices.html">Test on Remote Computers and Mobile Devices</a></li>
-<li><a href="use-angular-cli-builder.html">Use Angular CLI Builder</a></li>
-<li><a href="use-task-runners/">Use Task Runners</a></li>
+<li><a href="basics/test-select-elements.html">Test &lt;select&gt; Elements</a></li>
+<li><a href="basics/test-static-html-pages.html">Test Static HTML Pages</a></li>
+<li><a href="basics/test-on-remote-computers-and-mobile-devices.html">Test on Remote Computers and Mobile Devices</a></li>
+</ul>
+
+<p><strong>Best Practices</strong></p>
+
+<ul>
+<li><a href="best-practices/create-helpers.html">Create Helpers</a></li>
+<li><a href="best-practices/create-data-driven-tests.html">Create Data-Driven Tests</a></li>
+</ul>
+
+<p><strong>Integrations</strong></p>
+
+<ul>
+<li><a href="integrations/import-third-party-modules.html">Import Third-Party Modules</a></li>
+<li><a href="integrations/use-angular-cli-builder.html">Angular CLI Builder</a></li>
+<li><a href="integrations/gulp.html">Gulp</a></li>
+<li><a href="integrations/grunt.html">Grunt</a></li>
+<li><a href="integrations/find-code-issues-with-flow-type-checker.html">Flow Type Checker</a></li>
+</ul>
+
+<p><strong>Configuration</strong></p>
+
+<ul>
+<li><a href="configuration/access-environment-variables-in-tests.html">Access Environment Variables in Tests</a></li>
+</ul>
+
+<p><strong>Debugging</strong></p>
+
+<ul>
+<li><a href="debugging/chrome-dev-tools.html">Chrome Developer Tools</a></li>
+<li><a href="debugging/visual-studio-code.html">Visual Studio Code</a></li>
+<li><a href="debugging/webstorm.html">WebStorm</a></li>
 </ul>
 
 

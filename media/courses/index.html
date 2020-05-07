@@ -267,6 +267,15 @@
             window.addEventListener('resize', updateNavMenuPosition);
         }
 
+        function scrollToActiveItem() {
+            var activeItem = document.querySelector('.doc-nav .active');
+            var scrollContainer = document.querySelector('.ps-container');
+
+            if (scrollContainer && activeItem) {
+                scrollContainer.scrollTop = activeItem.offsetTop;
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function (e) {
             if (isMobileDevice)
                 return;
@@ -276,6 +285,8 @@
 
             if (nav)
                 initNav(nav);
+
+            scrollToActiveItem();
         });
     </script>
     
@@ -528,19 +539,11 @@
         </div>
       
         <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/using-testcafe/">Using TestCafe</a>      
+          <a href="/testcafe/documentation/guides/">Guides</a>      
         </div>
       
         <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/test-api/">Test API</a>      
-        </div>
-      
-        <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/extending-testcafe/">Extending TestCafe</a>      
-        </div>
-      
-        <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/continuous-integration/">Continuous Integration</a>      
+          <a href="/testcafe/documentation/reference/">Reference</a>      
         </div>
       
         <div class="doc-top-nav-tab " >
@@ -634,63 +637,6 @@
     This section lists online community-created courses that explain how to use TestCafe.
 </div>
 <div class="post-list">
-
-    
-
-
-
-
-
-
-
-
-<div class="post-preview">
-    
-    <div class="post-title"><a href="https://www.udemy.com/course/automated-testing-with-testcafe/">Automated Software Testing with TestCafe</a></div>
-    
-        <div class="post-subtitle">Published on <a href="https://www.udemy.com/">Udemy</a> by Kaniel Outis - Mar  1, 2020</div>
-    
-    
-    
-</div>
-
-    
-
-
-
-
-
-
-
-
-<div class="post-preview">
-    
-    <div class="post-title"><a href="https://www.pluralsight.com/courses/testcafe-end-to-end-web-testing-getting-started">End-to-End Web Testing With TestCafe: Getting Started</a></div>
-    
-        <div class="post-subtitle">Published on <a href="https://www.pluralsight.com/">Pluralsight</a> by <a href="https://twitter.com/mwq27">Marques Woodson</a> - Jun 13, 2019</div>
-    
-    
-    
-</div>
-
-    
-
-
-
-
-
-
-
-
-<div class="post-preview">
-    
-    <div class="post-title"><a href="https://coursinator.com/course/build-an-end-to-end-software-testing-framework-with-testcafe">Build an End-to-End Software Testing Framework with TestCafe</a></div>
-    
-        <div class="post-subtitle">Published on <a href="https://coursinator.com/">Coursinator</a> by <a href="https://twitter.com/bogdanvazzolla">Bogdan Vazzolla</a></div>
-    
-    
-    
-</div>
 
 </div>
 

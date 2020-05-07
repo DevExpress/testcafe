@@ -5,8 +5,8 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 21 Apr 2020 12:16:00 +0300</pubDate>
-    <lastBuildDate>Tue, 21 Apr 2020 12:16:00 +0300</lastBuildDate>
+    <pubDate>Thu, 07 May 2020 12:51:26 +0300</pubDate>
+    <lastBuildDate>Thu, 07 May 2020 12:51:26 +0300</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
@@ -92,14 +92,14 @@
 
 &lt;!--more--&gt;
 &lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;support-for-the-new-microsoft-edge&quot;&gt;&lt;/a&gt;🌟 Support for the New Microsoft Edge &lt;a class=&quot;permalink&quot; href=&quot;#support-for-the-new-microsoft-edge&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;TestCafe v1.8.0 supports the new Microsoft Edge based on Chromium. The new Edge is available under the same &lt;a href=&quot;../documentation/using-testcafe/common-concepts/browsers/browser-support.html#locally-installed-browsers&quot;&gt;alias&lt;/a&gt;: &lt;code&gt;edge&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;TestCafe v1.8.0 supports the new Microsoft Edge based on Chromium. The new Edge is available under the same &lt;a href=&quot;../documentation/guides/concepts/browsers.html#locally-installed-browsers&quot;&gt;alias&lt;/a&gt;: &lt;code&gt;edge&lt;/code&gt;.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe edge test.js
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;test.js&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;browsers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;edge&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Supported Edge&amp;#39;s features include &lt;a href=&quot;../documentation/using-testcafe/common-concepts/browsers/testing-in-headless-mode.html&quot;&gt;headless mode&lt;/a&gt;, &lt;a href=&quot;../documentation/using-testcafe/common-concepts/browsers/using-chromium-device-emulation.html&quot;&gt;mobile device emulation&lt;/a&gt;, and &lt;a href=&quot;../documentation/using-testcafe/common-concepts/screenshots-and-videos.html#record-videos&quot;&gt;video recording&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Supported Edge&amp;#39;s features include &lt;a href=&quot;../documentation/guides/concepts/browsers.html#test-in-headless-mode&quot;&gt;headless mode&lt;/a&gt;, &lt;a href=&quot;../documentation/guides/concepts/browsers.html#use-chromium-device-emulation&quot;&gt;mobile device emulation&lt;/a&gt;, and &lt;a href=&quot;../documentation/guides/advanced-guides/screenshots-and-videos.html#record-videos&quot;&gt;video recording&lt;/a&gt;.&lt;/p&gt;
 &lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;Fixed an error thrown when the webpage creates a &lt;code&gt;Proxy&lt;/code&gt; (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2206&quot;&gt;testcafe-hammerhead/#2206&lt;/a&gt;) by &lt;a href=&quot;https://github.com/link89&quot;&gt;@link89&lt;/a&gt;&lt;/li&gt;
@@ -122,7 +122,7 @@
 &lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;identify-the-browser-and-platform-in-test-code-481&quot;&gt;&lt;/a&gt;⚙️ Identify the Browser and Platform in Test Code (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/481&quot;&gt;#481&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#identify-the-browser-and-platform-in-test-code-481&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;TestCafe now allows you to obtain information about the current user agent. These data identify the operating system, platform type, browser, engine, etc.&lt;/p&gt;
 
-&lt;p&gt;Use the &lt;a href=&quot;../documentation/test-api/identify-the-browser-and-platform.html&quot;&gt;t.browser&lt;/a&gt; property to access user agent data.&lt;/p&gt;
+&lt;p&gt;Use the &lt;a href=&quot;../documentation/reference/test-api/testcontroller/browser.html&quot;&gt;t.browser&lt;/a&gt; property to access user agent data.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;testcafe&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 
 &lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`My fixture`&lt;/span&gt;
@@ -133,7 +133,7 @@
         &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;div&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;withText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Browser not supported&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;visible&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ok&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;The &lt;a href=&quot;../documentation/test-api/identify-the-browser-and-platform.html&quot;&gt;t.browser&lt;/a&gt; object exposes the following properties:&lt;/p&gt;
+&lt;p&gt;The &lt;a href=&quot;../documentation/reference/test-api/testcontroller/browser.html&quot;&gt;t.browser&lt;/a&gt; object exposes the following properties:&lt;/p&gt;
 &lt;div class=&quot;table-wrapper&quot;&gt;&lt;table&gt;&lt;thead&gt;&lt;tr&gt;
 &lt;th&gt;Property&lt;/th&gt;
 &lt;th&gt;Type&lt;/th&gt;
@@ -141,61 +141,61 @@
 &lt;th&gt;Example&lt;/th&gt;
 &lt;/tr&gt;
 &lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;
-&lt;td&gt;&lt;a href=&quot;../documentation/test-api/identify-the-browser-and-platform.html#alias&quot;&gt;alias&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&quot;../documentation/reference/test-api/testcontroller/browser.html#alias&quot;&gt;alias&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;String&lt;/td&gt;
 &lt;td&gt;The browser alias string specified when tests were launched.&lt;/td&gt;
 &lt;td&gt;&lt;code&gt;firefox:headless&lt;/code&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;&lt;a href=&quot;../documentation/test-api/identify-the-browser-and-platform.html#name&quot;&gt;name&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&quot;../documentation/reference/test-api/testcontroller/browser.html#name&quot;&gt;name&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;String&lt;/td&gt;
 &lt;td&gt;The browser name.&lt;/td&gt;
 &lt;td&gt;&lt;code&gt;Chrome&lt;/code&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;&lt;a href=&quot;../documentation/test-api/identify-the-browser-and-platform.html#version&quot;&gt;version&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&quot;../documentation/reference/test-api/testcontroller/browser.html#version&quot;&gt;version&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;String&lt;/td&gt;
 &lt;td&gt;The browser version.&lt;/td&gt;
 &lt;td&gt;&lt;code&gt;77.0.3865.120&lt;/code&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;&lt;a href=&quot;../documentation/test-api/identify-the-browser-and-platform.html#platform&quot;&gt;platform&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&quot;../documentation/reference/test-api/testcontroller/browser.html#platform&quot;&gt;platform&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;String&lt;/td&gt;
 &lt;td&gt;The platform type.&lt;/td&gt;
 &lt;td&gt;&lt;code&gt;desktop&lt;/code&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;&lt;a href=&quot;../documentation/test-api/identify-the-browser-and-platform.html#headless&quot;&gt;headless&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&quot;../documentation/reference/test-api/testcontroller/browser.html#headless&quot;&gt;headless&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;Boolean&lt;/td&gt;
 &lt;td&gt;&lt;code&gt;true&lt;/code&gt; if the browser runs in headless mode.&lt;/td&gt;
 &lt;td&gt;&lt;code&gt;false&lt;/code&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;&lt;a href=&quot;../documentation/test-api/identify-the-browser-and-platform.html#os&quot;&gt;os&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&quot;../documentation/reference/test-api/testcontroller/browser.html#os&quot;&gt;os&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;Object&lt;/td&gt;
 &lt;td&gt;The name and version of the operating system.&lt;/td&gt;
 &lt;td&gt;&lt;code&gt;{ name: &amp;#39;macOS&amp;#39;, version: &amp;#39;10.15.1&amp;#39; }&lt;/code&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;&lt;a href=&quot;../documentation/test-api/identify-the-browser-and-platform.html#engine&quot;&gt;engine&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&quot;../documentation/reference/test-api/testcontroller/browser.html#engine&quot;&gt;engine&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;Object&lt;/td&gt;
 &lt;td&gt;The name and version of the browser engine.&lt;/td&gt;
 &lt;td&gt;&lt;code&gt;{ name: &amp;#39;Gecko&amp;#39;, version: &amp;#39;20100101&amp;#39; }&lt;/code&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;&lt;a href=&quot;../documentation/test-api/identify-the-browser-and-platform.html#useragent&quot;&gt;userAgent&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&quot;../documentation/reference/test-api/testcontroller/browser.html#useragent&quot;&gt;userAgent&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;String&lt;/td&gt;
 &lt;td&gt;The user agent string.&lt;/td&gt;
 &lt;td&gt;&lt;code&gt;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/77.0.3865.120 Safari/537.36&lt;/code&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;&lt;a href=&quot;../documentation/test-api/identify-the-browser-and-platform.html#prettyuseragent&quot;&gt;prettyUserAgent&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;&lt;a href=&quot;../documentation/reference/test-api/testcontroller/browser.html#prettyuseragent&quot;&gt;prettyUserAgent&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;String&lt;/td&gt;
 &lt;td&gt;Formatted string with the browser&amp;#39;s and operating system&amp;#39;s name and version.&lt;/td&gt;
 &lt;td&gt;&lt;code&gt;Chrome 77.0.3865.75 / macOS 10.14.0&lt;/code&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;
-&lt;p&gt;The following example shows how to create a &lt;a href=&quot;../documentation/test-api/test-code-structure.html#test-hooks&quot;&gt;beforeEach&lt;/a&gt; hook that runs for specific &lt;a href=&quot;../documentation/test-api/identify-the-browser-and-platform.html#engine&quot;&gt;browser engines&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The following example shows how to create a &lt;a href=&quot;../documentation/reference/test-api/fixture/beforeeach.html&quot;&gt;beforeEach&lt;/a&gt; hook that runs for specific &lt;a href=&quot;../documentation/reference/test-api/testcontroller/browser.html#engine&quot;&gt;browser engines&lt;/a&gt;.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;testcafe&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 
 &lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`My fixture`&lt;/span&gt;
@@ -206,7 +206,7 @@
         &lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;You can also use &lt;a href=&quot;../documentation/test-api/identify-the-browser-and-platform.html&quot;&gt;t.browser&lt;/a&gt; to generate the screenshot path based on the &lt;a href=&quot;../documentation/test-api/identify-the-browser-and-platform.html#name&quot;&gt;browser name&lt;/a&gt;. This prevents screenshots taken with &lt;a href=&quot;../documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-a-page-element&quot;&gt;t.takeElementScreenshot&lt;/a&gt; in different browsers from being overwritten.&lt;/p&gt;
+&lt;p&gt;You can also use &lt;a href=&quot;../documentation/reference/test-api/testcontroller/browser.html&quot;&gt;t.browser&lt;/a&gt; to generate the screenshot path based on the &lt;a href=&quot;../documentation/reference/test-api/testcontroller/browser.html#name&quot;&gt;browser name&lt;/a&gt;. This prevents screenshots taken with &lt;a href=&quot;../documentation/reference/test-api/testcontroller/takeelementscreenshot.html&quot;&gt;t.takeElementScreenshot&lt;/a&gt; in different browsers from being overwritten.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;testcafe&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 
 &lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`My fixture`&lt;/span&gt;
@@ -218,7 +218,7 @@
     &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;takeElementScreenshot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;loginButton&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`auth/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;browser&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/login-button.png`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;For more information and examples, see &lt;a href=&quot;../documentation/test-api/identify-the-browser-and-platform.html&quot;&gt;Identify the Browser and Platform&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;For more information and examples, see &lt;a href=&quot;../documentation/guides/advanced-guides/detect-the-client-browser-and-platform.html&quot;&gt;Identify the Browser and Platform&lt;/a&gt;.&lt;/p&gt;
 &lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;Fixed an error on pages that submit forms immediately after loading (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/4360&quot;&gt;#4360&lt;/a&gt; by &lt;a href=&quot;https://github.com/bill-looby-i&quot;&gt;@bill-looby-i&lt;/a&gt;)&lt;/li&gt;
