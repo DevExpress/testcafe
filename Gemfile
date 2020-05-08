@@ -4,5 +4,5 @@ source 'https://rubygems.org' do
   gem 'sanitize', '~>5.0'
   gem 'redcarpet', '~>3.5'
   gem 'jekyll-sitemap', '~>1.3'
-  gem 'jekyll-redirect-from', '~>0.15'
+  gem 'jekyll-redirect-from', git: 'https://github.com/VasilyStrelyaev/jekyll-redirect-from'
 end 
