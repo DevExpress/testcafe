@@ -56,7 +56,7 @@ test(`test`, async t => {
 
 Sometimes offset calculation is not an option. If a page uses virtual scrolling, element heights can change. You may not even know the number of elements above the element to be displayed. You might only know the element's content, such as its display text.
 
-To find an element by text, scroll to the last rendered item on the list so that the next portion of elements are loaded. Continue the process until you locate the element. A selector's [exists](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/using-selectors.html#check-if-an-element-exists) property allows you to scan rendered elements and see if an element with that text exists. If it does exist, the search is over. If not, repeat the cycle.
+To find an element by text, scroll to the last rendered item on the list so that the next portion of elements are loaded. Continue the process until you locate the element. A selector's [exists](https://devexpress.github.io/testcafe/documentation/guides/basic-guides/select-page-elements.html#check-if-an-element-exists) property allows you to scan rendered elements and see if an element with that text exists. If it does exist, the search is over. If not, repeat the cycle.
 
 ```js
 import { Selector } from 'testcafe';
