@@ -2,6 +2,7 @@ import { EventEmitter } from 'events';
 import { Writable } from 'stream';
 import { GeneralError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
+import Reporter from '../reporter';
 
 interface Plugin {
     name: string;
@@ -18,7 +19,7 @@ class ReporterStreamController {
     private _pluginInfos: PluginInfo[];
     private _task: EventEmitter;
 
-    public constructor (task: EventEmitter, reporters: any[]) {
+    public constructor (task: EventEmitter, reporters: Reporter[]) {
         this._pluginInfos = [];
         this._task = task;
         this.multipleStreamError = null;

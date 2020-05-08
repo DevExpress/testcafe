@@ -2,9 +2,9 @@
 // TODO: Get rid of Pinkie after dropping IE11
 import Promise from 'pinkie';
 import COMMAND from '../../browser/connection/command';
-import STATUS from '../../browser/connection/status';
 import { UNSTABLE_NETWORK_MODE_HEADER } from '../../browser/connection/unstable-network-mode';
 import { HEARTBEAT_INTERVAL } from '../../utils/browser-connection-timeouts';
+import HeartbeatStatus from '../../browser/connection/heartbeat-status';
 
 let allowInitScriptExecution = false;
 let retryTestPages           = false;
@@ -63,7 +63,7 @@ export function startHeartbeat (heartbeatUrl, createXHR) {
     function heartbeat () {
         sendXHR(heartbeatUrl, createXHR)
             .then(status => {
-                if (status.code === STATUS.closing && !isCurrentLocation(status.url)) {
+                if (status.code === HeartbeatStatus.closing && !isCurrentLocation(status.url)) {
                     stopInitScriptExecution();
                     document.location = status.url;
                 }

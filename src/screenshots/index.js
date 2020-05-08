@@ -4,7 +4,6 @@ import Capturer from './capturer';
 import PathPattern from '../utils/path-pattern';
 import getCommonPath from '../utils/get-common-path';
 
-
 const SCREENSHOT_EXTENSION = 'png';
 
 export default class Screenshots {
