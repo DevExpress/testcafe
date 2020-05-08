@@ -22,7 +22,7 @@ await t.click('#submit-btn');
 
 ## Scroll to a Rendered DOM Element
 
-If you need to scroll a page to display a specific element or area, but don't need to perform an action on the target element, use the [hover](https://devexpress.github.io/testcafe/documentation/test-api/actions/hover.html) method.
+If you need to scroll a page to display a specific element or area, but don't need to perform an action on the target element, use the [hover](https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/hover.html) method.
 
 ```js
 // scroll to the "#country-map" element
@@ -33,7 +33,7 @@ await t.hover('#country-map');
 
 In certain scenarios, elements cannot be identified by a selector. For instance, a page may contain a dynamically generated list of identical items. Another example is virtual scrolling: the element might not exist on a page when the action starts.
 
-A solution in these cases is to use the browser's native API. For example, you can use the [window.scrollBy](https://developer.mozilla.org/en-US/docs/Web/API/Window/scrollBy) method. To access this method, utilize the [ClientFunction](https://devexpress.github.io/testcafe/documentation/test-api/obtaining-data-from-the-client/#creating-client-functions) generator. Calculate the offset between the element and the top of the container, and pass these values to the scrollBy method.
+A solution in these cases is to use the browser's native API. For example, you can use the [window.scrollBy](https://developer.mozilla.org/en-US/docs/Web/API/Window/scrollBy) method. To access this method, utilize the [ClientFunction](https://devexpress.github.io/testcafe/documentation/reference/test-api/clientfunction/constructor.html) generator. Calculate the offset between the element and the top of the container, and pass these values to the scrollBy method.
 
 ```js
 import { ClientFunction } from 'testcafe';
