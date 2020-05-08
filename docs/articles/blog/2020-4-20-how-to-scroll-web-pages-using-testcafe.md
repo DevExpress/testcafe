@@ -22,7 +22,7 @@ await t.click('#submit-btn');
 
 ## Scroll to a Rendered DOM Element
 
-If you need to scroll a page to display a specific element or area, but don't need to perform an action on the target element, use the [hover](https://devexpress.github.io/testcafe/documentation/test-api/actions/hover.html) method.
+If you need to scroll a page to display a specific element or area, but don't need to perform an action on the target element, use the [hover](https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/hover.html) method.
 
 ```js
 // scroll to the "#country-map" element
@@ -33,7 +33,7 @@ await t.hover('#country-map');
 
 In certain scenarios, elements cannot be identified by a selector. For instance, a page may contain a dynamically generated list of identical items. Another example is virtual scrolling: the element might not exist on a page when the action starts.
 
-A solution in these cases is to use the browser's native API. For example, you can use the [window.scrollBy](https://developer.mozilla.org/en-US/docs/Web/API/Window/scrollBy) method. To access this method, utilize the [ClientFunction](https://devexpress.github.io/testcafe/documentation/test-api/obtaining-data-from-the-client/#creating-client-functions) generator. Calculate the offset between the element and the top of the container, and pass these values to the scrollBy method.
+A solution in these cases is to use the browser's native API. For example, you can use the [window.scrollBy](https://developer.mozilla.org/en-US/docs/Web/API/Window/scrollBy) method. To access this method, utilize the [ClientFunction](https://devexpress.github.io/testcafe/documentation/reference/test-api/clientfunction/constructor.html) generator. Calculate the offset between the element and the top of the container, and pass these values to the scrollBy method.
 
 ```js
 import { ClientFunction } from 'testcafe';
@@ -56,7 +56,7 @@ test(`test`, async t => {
 
 Sometimes offset calculation is not an option. If a page uses virtual scrolling, element heights can change. You may not even know the number of elements above the element to be displayed. You might only know the element's content, such as its display text.
 
-To find an element by text, scroll to the last rendered item on the list so that the next portion of elements are loaded. Continue the process until you locate the element. A selector's [exists](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/using-selectors.html#check-if-an-element-exists) property allows you to scan rendered elements and see if an element with that text exists. If it does exist, the search is over. If not, repeat the cycle.
+To find an element by text, scroll to the last rendered item on the list so that the next portion of elements are loaded. Continue the process until you locate the element. A selector's [exists](https://devexpress.github.io/testcafe/documentation/guides/basic-guides/select-page-elements.html#check-if-an-element-exists) property allows you to scan rendered elements and see if an element with that text exists. If it does exist, the search is over. If not, repeat the cycle.
 
 ```js
 import { Selector } from 'testcafe';
