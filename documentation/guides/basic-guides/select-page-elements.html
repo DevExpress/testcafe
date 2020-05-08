@@ -1374,7 +1374,7 @@ To interact with the page, use <a href="interact-with-the-page.html">test action
 <p>For this purpose, the TestCafe team and community have developed libraries of dedicated selectors for the most popular frameworks.</p>
 <h3><a class="anchor" id="react"></a>React <a class="permalink" href="#react">#</a></h3>
 <p>The React selectors module provides the <code>ReactSelector</code> class that allows you to select DOM elements by the component name. You can get a root element or search through the nested components or elements. In addition, you can obtain the component props and state.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="nx">ReactSelector</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe-react-selectors</span><span class="dl">'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">ReactSelector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe-react-selectors</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="kd">const</span> <span class="nx">TodoList</span>         <span class="o">=</span> <span class="nx">ReactSelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">TodoApp TodoList</span><span class="dl">'</span><span class="p">);</span>
 <span class="kd">const</span> <span class="nx">itemsCountStatus</span> <span class="o">=</span> <span class="nx">ReactSelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">TodoApp div</span><span class="dl">'</span><span class="p">);</span>
