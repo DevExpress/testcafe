@@ -3,8 +3,17 @@
   <meta charset="utf-8">
   <title>Redirecting&hellip;</title>
   <link rel="canonical" href="https://devexpress.github.io/testcafe/documentation/guides/basic-guides/debug.html">
-  <script>location="https://devexpress.github.io/testcafe/documentation/guides/basic-guides/debug.html"</script>
-  <meta http-equiv="refresh" content="0; url=https://devexpress.github.io/testcafe/documentation/guides/basic-guides/debug.html">
+  <script>
+    var url = 'https://devexpress.github.io/testcafe/documentation/guides/basic-guides/debug.html';
+    if (location.search && url.indexOf('?') === -1) {
+      url = url.replace(/($|#)/, location.search + '$1');
+    }
+    if (location.hash && url.indexOf('#') === -1) {
+      url += location.hash; 
+    }
+    location=url;
+  </script>
+  <meta http-equiv="refresh" content="1; url=https://devexpress.github.io/testcafe/documentation/guides/basic-guides/debug.html">
   <meta name="robots" content="noindex">
   <h1>Redirecting&hellip;</h1>
   <a href="https://devexpress.github.io/testcafe/documentation/guides/basic-guides/debug.html">Click here if you are not redirected.</a>
