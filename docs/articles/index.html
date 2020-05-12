@@ -31,7 +31,7 @@ permalink: /
                     <div class="value value-1">
                         <p>Works on all popular environments</p>
                         <div class="description">
-                            <p>TestCafe runs on Windows, MacOS, and Linux. It supports desktop, mobile, remote and cloud <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/browser-support.html" target="_blank">browsers</a> (UI or headless).</p>
+                            <p>TestCafe runs on Windows, MacOS, and Linux. It supports desktop, mobile, remote and cloud <a href="https://devexpress.github.io/testcafe/documentation/guides/concepts/browsers.html" target="_blank">browsers</a> (UI or headless).</p>
                         </div>
                     </div>
                 </div>
@@ -141,7 +141,7 @@ test('My first test', async t => {
                             <div class="feature feature-1">
                                 <p>Create stable tests<br/>(and no manual timeouts)</p>
                                 <div class="description">
-                                    <p>TestCafe automatically waits for page loads and XHRs before the test starts and after each action. It also features smart test actions and <a href="https://devexpress.github.io/testcafe/documentation/test-api/assertions/#smart-assertion-query-mechanism" target="_blank">assertions</a> that wait for page elements to appear. You can change the maximum wait time. If elements load faster, tests skip the timeout and continue.</p>
+                                    <p>TestCafe automatically waits for page loads and XHRs before the test starts and after each action. It also features smart test actions and <a href="https://devexpress.github.io/testcafe/documentation/guides/basic-guides/assert.html#smart-assertion-query-mechanism" target="_blank">assertions</a> that wait for page elements to appear. You can change the maximum wait time. If elements load faster, tests skip the timeout and continue.</p>
                                 </div>
                             </div>
                         </div>
@@ -149,7 +149,7 @@ test('My first test', async t => {
                             <div class="feature feature-2">
                                 <p>Write in latest JS<br/>or TypeScript</p>
                                 <div class="description">
-                                    <p>TestCafe supports the latest JavaScript features, including ES2017 (for example, async/await). You can also use <a href="https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.html" target="_blank">TypeScript</a> if you prefer a strongly typed language.</p>
+                                    <p>TestCafe supports the latest JavaScript features, including ES2017 (for example, async/await). You can also use <a href="https://devexpress.github.io/testcafe/documentation/guides/concepts/typescript-and-coffeescript.html" target="_blank">TypeScript</a> if you prefer a strongly typed language.</p>
                                 </div>
                             </div>
                         </div>
@@ -157,7 +157,7 @@ test('My first test', async t => {
                             <div class="feature feature-3">
                                 <p>Detect JS errors<br/>in your code</p>
                                 <div class="description">
-                                    <p>TestCafe reports JS errors that it finds on the webpage. Tests automatically fail because of that. However, you can <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-e---skip-js-errors" target="_blank">disable this</a>.</p>
+                                    <p>TestCafe reports JS errors that it finds on the webpage. Tests automatically fail because of that. However, you can <a href="https://devexpress.github.io/testcafe/documentation/reference/command-line-interface.html#-e---skip-js-errors" target="_blank">disable this</a>.</p>
                                 </div>
                             </div>
                         </div>
@@ -167,7 +167,7 @@ test('My first test', async t => {
                             <div class="feature feature-4">
                                 <p>Launch<br/>concurrent tests</p>
                                 <div class="description">
-                                    <p>TestCafe can open multiple instances of the same browser to run <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/concurrent-test-execution.html" target="_blank">parallel tests</a> which decreases test execution time.</p>
+                                    <p>TestCafe can open multiple instances of the same browser to run <a href="https://devexpress.github.io/testcafe/documentation/guides/basic-guides/run-tests.html#run-tests-concurrently" target="_blank">parallel tests</a> which decreases test execution time.</p>
                                 </div>
                             </div>
                         </div>
@@ -175,7 +175,7 @@ test('My first test', async t => {
                             <div class="feature feature-5">
                                 <p>Build readable tests<br/>with PageObject</p>
                                 <div class="description">
-                                    <p>The TestCafe's <a href="https://devexpress.github.io/testcafe/documentation/test-api/" target="_blank">Test API</a> includes a high-level selector library, assertions, etc. You can combine them to implement readable tests with the <a href="https://devexpress.github.io/testcafe/documentation/recipes/using-page-model.html" target="_blank">PageObject pattern</a>.</p>
+                                    <p>The TestCafe's Test API includes a high-level selector library, assertions, etc. You can combine them to implement readable tests with the <a href="https://devexpress.github.io/testcafe/documentation/guides/concepts/page-model.html" target="_blank">PageObject pattern</a>.</p>
                                     <div class="feature-5-code"><code class="page-object-example">const el = Selector('.column').find('label')<br/>           .withText('MacOS').child('input');</code></div>
                                     <div class="feature-5-code-mobile"><code class="page-object-example">const el = Selector('.column')
            .find('label')
@@ -188,7 +188,7 @@ test('My first test', async t => {
                             <div class="feature feature-6">
                                 <p>Include tests in continuous<br/>integration system</p>
                                 <div class="description">
-                                    <p>You can run TestCafe from a console, and its reports can be viewed in a CI system's interface (<a href="https://devexpress.github.io/testcafe/documentation/recipes/integrating-testcafe-with-ci-systems/teamcity.html" target="_blank">TeamCity</a>, <a href="https://devexpress.github.io/testcafe/documentation/recipes/integrating-testcafe-with-ci-systems/jenkins.html" target="_blank">Jenkins</a>, <a href="https://devexpress.github.io/testcafe/documentation/recipes/integrating-testcafe-with-ci-systems/travis.html" target="_blank">Travis</a> & etc.)</p>
+                                    <p>You can run TestCafe from a console, and its reports can be viewed in a CI system's interface (<a href="https://devexpress.github.io/testcafe/documentation/guides/continuous-integration/teamcity.html" target="_blank">TeamCity</a>, <a href="https://devexpress.github.io/testcafe/documentation/guides/continuous-integration/jenkins.html" target="_blank">Jenkins</a>, <a href="https://devexpress.github.io/testcafe/documentation/guides/continuous-integration/travis.html" target="_blank">Travis</a> & etc.)</p>
                                 </div>
                             </div>
                         </div>
@@ -203,7 +203,7 @@ test('My first test', async t => {
                         </div>
                     </div>
                     <div class="buttons">
-                        <a class="learn-more-button" href="/testcafe/documentation/using-testcafe/common-concepts/live-mode.html">Learn more</a>
+                        <a class="learn-more-button" href="/testcafe/documentation/guides/basic-guides/run-tests.html#live-mode">Learn more</a>
                         <!-- <a class="video-button">See how it works</a> -->
                     </div>
                 </div>

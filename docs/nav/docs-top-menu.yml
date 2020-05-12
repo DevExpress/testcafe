@@ -1,13 +1,9 @@
 - text: Getting Started
   url: /documentation/getting-started/
-- text: Using TestCafe
-  url: /documentation/using-testcafe/
-- text: Test API
-  url: /documentation/test-api/
-- text: Extending TestCafe
-  url: /documentation/extending-testcafe/
-- text: Continuous Integration
-  url: /documentation/continuous-integration/
+- text: Guides
+  url: /documentation/guides/
+- text: Reference
+  url: /documentation/reference/
 - text: Recipes
   url: /documentation/recipes/
 - text: How It Works

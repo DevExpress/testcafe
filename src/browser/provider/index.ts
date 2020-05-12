@@ -4,7 +4,7 @@ import { dirname } from 'path';
 import makeDir from 'make-dir';
 import BrowserConnection from '../connection';
 import delay from '../../utils/delay';
-import { GET_TITLE_SCRIPT, GET_WINDOW_DIMENSIONS_INFO_SCRIPT, GET_WINDOW_ID_SCRIPT } from './utils/client-functions';
+import { GET_TITLE_SCRIPT, GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from './utils/client-functions';
 import WARNING_MESSAGE from '../../notifications/warning-message';
 import { Dictionary } from '../../configuration/interfaces';
 
@@ -83,12 +83,6 @@ export default class BrowserProvider {
         const connection = BrowserConnection.getById(browserId) as BrowserConnection;
 
         return connection.idle;
-    }
-
-    private async _calculateWindowId (browserId: string): Promise<void> {
-        const windowId = await this.plugin.runInitScript(browserId, GET_WINDOW_ID_SCRIPT);
-
-        this.setActiveWindowId(browserId, windowId);
     }
 
     private async _calculateResizeCorrections (browserId: string): Promise<void> {

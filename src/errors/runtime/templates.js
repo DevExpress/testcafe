@@ -5,17 +5,34 @@
 
 import { RUNTIME_ERRORS } from '../types';
 
+const DOCUMENTATION_LINKS = {
+    TEST_SOURCE_PARAMETER: 'https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#file-pathglob-pattern',
+    FILTER_SETTINGS:       'https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#filter'
+};
+
 export default {
-    [RUNTIME_ERRORS.cannotCreateMultipleLiveModeRunners]:                'Cannot create multiple live mode runners.',
-    [RUNTIME_ERRORS.cannotRunLiveModeRunnerMultipleTimes]:               'Cannot run a live mode runner multiple times.',
-    [RUNTIME_ERRORS.browserDisconnected]:                                'The {userAgent} browser disconnected. This problem may appear when a browser hangs or is closed, or due to network issues.',
-    [RUNTIME_ERRORS.cannotRunAgainstDisconnectedBrowsers]:               'The following browsers disconnected: {userAgents}. Tests will not be run.',
-    [RUNTIME_ERRORS.cannotEstablishBrowserConnection]:                   'Unable to establish one or more of the specified browser connections. This can be caused by network issues or remote device failure.',
-    [RUNTIME_ERRORS.cannotFindBrowser]:                                  'Unable to find the browser. "{browser}" is not a browser alias or path to an executable file.',
-    [RUNTIME_ERRORS.browserProviderNotFound]:                            'The specified "{providerName}" browser provider was not found.',
-    [RUNTIME_ERRORS.browserNotSet]:                                      'No browser selected to test against.',
-    [RUNTIME_ERRORS.testFilesNotFound]:                                  'The specified glob pattern does not match any file or the default test directories are empty.',
-    [RUNTIME_ERRORS.noTestsToRun]:                                       'No tests to run. Either the test files contain no tests or the filter function is too restrictive.',
+    [RUNTIME_ERRORS.cannotCreateMultipleLiveModeRunners]:  'Cannot create multiple live mode runners.',
+    [RUNTIME_ERRORS.cannotRunLiveModeRunnerMultipleTimes]: 'Cannot run a live mode runner multiple times.',
+    [RUNTIME_ERRORS.browserDisconnected]:                  'The {userAgent} browser disconnected. This problem may appear when a browser hangs or is closed, or due to network issues.',
+    [RUNTIME_ERRORS.cannotRunAgainstDisconnectedBrowsers]: 'The following browsers disconnected: {userAgents}. Tests will not be run.',
+    [RUNTIME_ERRORS.cannotEstablishBrowserConnection]:     'Unable to establish one or more of the specified browser connections. This can be caused by network issues or remote device failure.',
+    [RUNTIME_ERRORS.cannotFindBrowser]:                    'Unable to find the browser. "{browser}" is not a browser alias or path to an executable file.',
+    [RUNTIME_ERRORS.browserProviderNotFound]:              'The specified "{providerName}" browser provider was not found.',
+    [RUNTIME_ERRORS.browserNotSet]:                        'No browser selected to test against.',
+
+    [RUNTIME_ERRORS.testFilesNotFound]: 'TestCafe could not find the test files that match the following patterns:\n' +
+                                        '{sourceList}\n\n' +
+                                        'The "{cwd}" current working directory was used as the base path.\n' +
+                                        'Ensure the file patterns are correct or change the current working directory.\n' +
+                                        `For more information on how to specify test files, see ${DOCUMENTATION_LINKS.TEST_SOURCE_PARAMETER}.`,
+
+    [RUNTIME_ERRORS.noTestsToRun]: 'No tests found in the specified source files.\n' +
+                                   "Ensure the sources contain the 'fixture' and 'test' directives.",
+
+    [RUNTIME_ERRORS.noTestsToRunDueFiltering]: 'The specified filter settings exclude all tests.\n' +
+                                               'Modify these settings to leave at least one available test.\n' +
+                                               `For more information on how to specify filter settings, see ${DOCUMENTATION_LINKS.FILTER_SETTINGS}.`,
+
     [RUNTIME_ERRORS.cannotFindReporterForAlias]:                         'The provided "{name}" reporter does not exist. Check that you have specified the report format correctly.',
     [RUNTIME_ERRORS.multipleSameStreamReporters]:                        'The following reporters attempted to write to the same output stream: "{reporters}". Only one reporter can write to a stream.',
     [RUNTIME_ERRORS.optionValueIsNotValidRegExp]:                        'The "{optionName}" option value is not a valid regular expression.',

@@ -35,3 +35,7 @@ test('Invalid filePath argument', async t => {
 test('Invalid selector argument (clearUpload)', async t => {
     await t.clearUpload(null);
 });
+
+test('Error on upload non-existing file', async t => {
+    await t.setFilesToUpload('#file', ['../dummy-file-1.txt', '../dummy-file-2.txt']);
+});

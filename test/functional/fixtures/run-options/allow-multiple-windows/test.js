@@ -86,4 +86,8 @@ describe('Allow multiple windows', () => {
     it('Should correctly synchronize a cookie from a new same-domain window', () => {
         return runTests('testcafe-fixtures/cookie-synchronization/same-domain.js', null, { allowMultipleWindows: true });
     });
+
+    it('Should continue debugging when a child window closes', () => {
+        return runTests('testcafe-fixtures/debug-synchronization.js', null, { only: 'chrome', allowMultipleWindows: true });
+    });
 });

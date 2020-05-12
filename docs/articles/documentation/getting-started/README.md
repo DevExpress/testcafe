@@ -26,12 +26,12 @@ Ensure that [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/) are
 npm install -g testcafe
 ```
 
-For more information, see [Installing TestCafe](../using-testcafe/installing-testcafe.md).
+For more information, see [Installing TestCafe](../guides/basic-guides/install-testcafe.md).
 
 ## Creating a Test
 
 TestCafe allows you to write tests using TypeScript or JavaScript (with its modern features like `async/await`).
-You get all the advantages of strongly-typed languages like rich coding assistance, painless scalability, check-as-you-type code verification, etc., by using TypeScript to write your TestCafe tests. For more information about writing tests in TypeScript, see [TypeScript Support](../test-api/typescript-support.md).
+You get all the advantages of strongly-typed languages like rich coding assistance, painless scalability, check-as-you-type code verification, etc., by using TypeScript to write your TestCafe tests. For more information about writing tests in TypeScript, see [TypeScript Support](../guides/concepts/typescript-and-coffeescript.md).
 
 To create a test, create a new .js or .ts file.
 This file must have a special structure - tests must be organized into fixtures.
@@ -42,21 +42,21 @@ Firstly, import the `testcafe` module.
 import { Selector } from 'testcafe';
 ```
 
-Then declare a fixture using the [fixture](../test-api/test-code-structure.md#fixtures) function.
+Then declare a fixture using the [fixture](../guides/basic-guides/organize-tests.md#fixtures) function.
 
 ```js
 fixture `Getting Started`
 ```
 
 In this tutorial, you create a test for the [http://devexpress.github.io/testcafe/example](/testcafe/example) sample page.
-Specify this page as a start page for the fixture using the [page](../test-api/test-code-structure.md#specifying-the-start-webpage) function.
+Specify this page as a start page for the fixture using the [page](../guides/basic-guides/organize-tests.md#specify-the-start-webpage) function.
 
 ```js
 fixture `Getting Started`
     .page `http://devexpress.github.io/testcafe/example`;
 ```
 
-Then, create the [test](../test-api/test-code-structure.md#tests) function where you can enter test code.
+Then, create the [test](../guides/basic-guides/organize-tests.md#tests) function where you can enter test code.
 
 ```js
 import { Selector } from 'testcafe';
@@ -71,7 +71,7 @@ test('My first test', async t => {
 
 ## Running the Test
 
-You can run the test from a command shell by calling a single command where you specify the [target browser](../using-testcafe/command-line-interface.md#browser-list) and [file path](../using-testcafe/command-line-interface.md#file-pathglob-pattern).
+You can run the test from a command shell by calling a single command where you specify the [target browser](../reference/command-line-interface.md#browser-list) and [file path](../reference/command-line-interface.md#file-pathglob-pattern).
 
 ```sh
 testcafe chrome test1.js
@@ -83,7 +83,7 @@ TestCafe automatically opens the chosen browser and starts test execution within
 > Inactive tabs and minimized browser windows switch to a lower resource consumption mode
 > where tests are not guaranteed to execute correctly.
 
-For more information on how to configure the test run, see [Command Line Interface](../using-testcafe/command-line-interface.md).
+For more information on how to configure the test run, see [Command Line Interface](../reference/command-line-interface.md).
 
 ## Viewing the Test Results
 
@@ -91,14 +91,14 @@ While the test is running, TestCafe is gathering information about the test run 
 
 ![Test Report](../../images/report.png)
 
-See [Reporters](../using-testcafe/common-concepts/reporters.md) for more information.
+See [Reporters](../guides/concepts/reporters.md) for more information.
 
 ## Writing Test Code
 
 ### Performing Actions on the Page
 
 Every test should be capable of interacting with page content. To perform user actions, TestCafe provides
-a number of [actions](../test-api/actions/README.md): `click`, `hover`, `typeText`, `setFilesToUpload`, etc.
+a number of [actions](../guides/basic-guides/interact-with-the-page.md): `click`, `hover`, `typeText`, `setFilesToUpload`, etc.
 They can be called in a chain.
 
 The following fixture contains a simple test that types a developer name into a text editor and then clicks the Submit button.
@@ -116,7 +116,7 @@ test('My first test', async t => {
 });
 ```
 
-All test actions are implemented as async functions of the [test controller object](../test-api/test-code-structure.md#test-controller) `t`.
+All test actions are implemented as async functions of the [test controller object](../reference/test-api/testcontroller/README.md) `t`.
 This object is used to access test run API.
 To wait for actions to complete, use the `await` keyword when calling these actions or action chains.
 
@@ -124,8 +124,8 @@ To wait for actions to complete, use the `await` keyword when calling these acti
 
 TestCafe allows you to observe the page state.
 For this purpose, it offers special kinds of functions that will execute your code on the client:
-[Selector](../test-api/selecting-page-elements/selectors/README.md) used to get direct access to DOM elements
-and [ClientFunction](../test-api/obtaining-data-from-the-client/README.md) used to obtain arbitrary data from the client side.
+[Selector](../guides/basic-guides/select-page-elements.md) used to get direct access to DOM elements
+and [ClientFunction](../guides/basic-guides/obtain-client-side-info.md) used to obtain arbitrary data from the client side.
 You call these functions as regular async functions, that is, you can obtain their results and use parameters to pass data to them.
 
 The selector API provides methods and properties to select elements on the page and get their state.
@@ -152,7 +152,7 @@ test('My first test', async t => {
 });
 ```
 
-See [Selecting Page Elements](../test-api/selecting-page-elements/README.md) for more information.
+See [Select Page Elements](../guides/basic-guides/select-page-elements.md) for more information.
 
 ### Assertions
 
@@ -160,7 +160,7 @@ A functional test should also check the result of actions performed.
 For example, the article header on the "Thank you" page should address a user using the entered name.
 To check if the header is correct, you have to add an assertion to the test.
 
-The following test demonstrates how to use [built-in assertions](../test-api/assertions/README.md).
+The following test demonstrates how to use [built-in assertions](../guides/basic-guides/assert.md).
 
 ```js
 import { Selector } from 'testcafe';

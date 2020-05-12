@@ -1,5 +1,5 @@
-const expect = require('chai').expect;
-
+const { expect } = require('chai');
+const path       = require('path');
 
 describe('[API] Upload', function () {
     describe('t.setFilesToUpload', function () {
@@ -30,6 +30,26 @@ describe('[API] Upload', function () {
                 .catch(function (errs) {
                     expect(errs[0]).contains('The "filePath" argument is expected to be a non-empty string or a string array, but it was "".');
                     expect(errs[0]).contains('> 32 |    await t.setFilesToUpload(\'#file\', \'\');');
+                });
+        });
+
+        it('Should raise an error if the specified file is not exist', () => {
+            return runTests('./testcafe-fixtures/upload-test.js', 'Error on upload non-existing file', {
+                shouldFail: true,
+                only:       'chrome'
+            })
+                .catch(errs => {
+                    expect(errs[0]).contains('Cannot find the following file(s) to upload');
+                    expect(errs[0]).contains('../dummy-file-1.txt');
+                    expect(errs[0]).contains('../dummy-file-2.txt');
+                    expect(errs[0]).contains('The following locations were scanned for the missing upload files:');
+
+                    const fixtureDir       = path.resolve('./testcafe-fixtures');
+                    const scannedFilePath1 = path.resolve(fixtureDir, '../dummy-file-1.txt');
+                    const scannedFilePath2 = path.resolve(fixtureDir, '../dummy-file-2.txt');
+
+                    expect(errs[0]).contains(scannedFilePath1);
+                    expect(errs[0]).contains(scannedFilePath2);
                 });
         });
     });

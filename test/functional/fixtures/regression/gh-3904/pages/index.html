@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>gh-3904</title>
+</head>
+<body>
+
+<form method="get" target="tool_content" action="http://localhost:3000/fixtures/regression/gh-3904/pages/frame.html"></form>
+
+<iframe src="about:blank" name="tool_content" id="tool_content"></iframe>
+
+<script type="text/javascript">
+    setTimeout(function() {
+        document.forms[0].submit();
+    }, 100);
+</script>
+</body>
+</html>

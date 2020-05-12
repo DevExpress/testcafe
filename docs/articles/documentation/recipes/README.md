@@ -9,14 +9,31 @@ redirect_from:
 
 This section provides examples and recipes of how to use TestCafe in different scenarios.
 
-* [Access Environment Variables in Tests](access-environment-variables-in-tests.md)
-* [Create Data-Driven Tests](create-data-driven-tests.md)
-* [Debug Tests](debug-tests/README.md)
-* [Extract Reusable Test Code](extract-reusable-test-code/README.md)
-* [Find Code Issues with Flow Type Checker](find-code-issues-with-flow-type-checker.md)
-* [Import Third-Party Modules](import-third-party-modules.md)
-* [Test \<select\> Elements](test-select-elements.md)
-* [Test Static HTML Pages](test-static-html-pages.md)
-* [Test on Remote Computers and Mobile Devices](test-on-remote-computers-and-mobile-devices.md)
-* [Use Angular CLI Builder](use-angular-cli-builder.md)
-* [Use Task Runners](use-task-runners/README.md)
+**Basics**
+
+* [Test \<select\> Elements](basics/test-select-elements.md)
+* [Test Static HTML Pages](basics/test-static-html-pages.md)
+* [Test on Remote Computers and Mobile Devices](basics/test-on-remote-computers-and-mobile-devices.md)
+
+**Best Practices**
+
+* [Create Helpers](best-practices/create-helpers.md)
+* [Create Data-Driven Tests](best-practices/create-data-driven-tests.md)
+
+**Integrations**
+
+* [Import Third-Party Modules](integrations/import-third-party-modules.md)
+* [Angular CLI Builder](integrations/use-angular-cli-builder.md)
+* [Gulp](integrations/gulp.md)
+* [Grunt](integrations/grunt.md)
+* [Flow Type Checker](integrations/find-code-issues-with-flow-type-checker.md)
+
+**Configuration**
+
+* [Access Environment Variables in Tests](configuration/access-environment-variables-in-tests.md)
+
+**Debugging**
+
+* [Chrome Developer Tools](debugging/chrome-dev-tools.md)
+* [Visual Studio Code](debugging/visual-studio-code.md)
+* [WebStorm](debugging/webstorm.md)

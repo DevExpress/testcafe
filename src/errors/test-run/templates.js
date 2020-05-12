@@ -187,7 +187,12 @@ export default {
 
     [TEST_RUN_ERRORS.actionCannotFindFileToUploadError]: err => `
         Cannot find the following file(s) to upload:
-        ${err.filePaths.map(path => `  ${escapeHtml(path)}`).join('\n')}
+        ${err.filePaths.map(path => escapeHtml(path)).join('\n')}
+
+        The following locations were scanned for the missing upload files:
+        ${err.scannedFilePaths.map(path => escapeHtml(path)).join('\n')}
+
+        Ensure these files exist or change the working directory.
     `,
 
     [TEST_RUN_ERRORS.actionElementNotTextAreaError]: () => `

@@ -293,7 +293,11 @@ describe('Error formatting', () => {
         });
 
         it('Should format "actionCannotFindFileToUploadError" message', () => {
-            assertErrorMessage('action-cannot-find-file-to-upload-error', new ActionCannotFindFileToUploadError(['/path/1', '/path/2']));
+            const filePaths        = ['/path/1', '/path/2'];
+            const scannedFilePaths = ['full-path-to/path/1', 'full-path-to/path/2'];
+            const err              = new ActionCannotFindFileToUploadError(filePaths, scannedFilePaths);
+
+            assertErrorMessage('action-cannot-find-file-to-upload-error', err);
         });
 
         it('Should format "actionUnsupportedDeviceTypeError" message', () => {
