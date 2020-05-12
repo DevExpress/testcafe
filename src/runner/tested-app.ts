@@ -1,4 +1,4 @@
-import { exec } from 'child_process';
+import { ChildProcess, exec } from 'child_process';
 import { delimiter as pathDelimiter } from 'path';
 import kill from 'tree-kill';
 import OS from 'os-family';
@@ -26,13 +26,17 @@ const ENV_PATH_KEY = (function () {
 
 
 export default class TestedApp {
-    constructor () {
-        this.process      = null;
+    private _killed: boolean;
+    public errorPromise: null | Promise<void>;
+    private _process: null | ChildProcess;
+
+    public constructor () {
+        this._process     = null;
         this.errorPromise = null;
-        this.killed       = false;
+        this._killed      = false;
     }
 
-    async start (command, initDelay) {
+    public async start (command: string, initDelay: number): Promise<void> {
         this.errorPromise = new Promise((resolve, reject) => {
             const env       = Object.assign({}, process.env);
             const path      = env[ENV_PATH_KEY] || '';
@@ -42,8 +46,8 @@ export default class TestedApp {
 
             env[ENV_PATH_KEY] = pathParts.join(pathDelimiter);
 
-            this.process = exec(command, { env }, err => {
-                if (!this.killed && err) {
+            this._process = exec(command, { env }, err => {
+                if (!this._killed && err) {
                     const message = err.stack || String(err);
 
                     reject(new GeneralError(RUNTIME_ERRORS.testedAppFailedWithError, message));
@@ -57,10 +61,10 @@ export default class TestedApp {
         ]);
     }
 
-    async kill () {
-        this.killed = true;
+    public async kill (): Promise<void> {
+        this._killed = true;
 
-        const killPromise = new Promise(resolve => kill(this.process.pid, 'SIGTERM', resolve));
+        const killPromise = new Promise(resolve => kill((this._process as ChildProcess).pid, 'SIGTERM', resolve));
 
         await killPromise;
     }

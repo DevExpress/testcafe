@@ -325,7 +325,7 @@ export default class Bootstrapper {
 
         const testedApp = new TestedApp();
 
-        await testedApp.start(this.appCommand, this.appInitDelay);
+        await testedApp.start(this.appCommand, this.appInitDelay as number);
 
         return testedApp;
     }
