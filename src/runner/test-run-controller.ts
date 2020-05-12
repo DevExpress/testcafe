@@ -74,7 +74,7 @@ export default class TestRunController extends AsyncEventEmitter {
     private readonly _quarantine: null | Quarantine;
     private _disconnectionCount: number;
     private readonly _proxy: Proxy;
-    private readonly _index: number;
+    public readonly index: number;
     public test: Test;
     private readonly _opts: Dictionary<OptionValue>;
     private _screenshots: Screenshots;
@@ -88,7 +88,7 @@ export default class TestRunController extends AsyncEventEmitter {
         super();
 
         this.test  = test;
-        this._index = index;
+        this.index = index;
         this._opts  = opts;
 
         this._proxy                 = proxy;
@@ -112,7 +112,7 @@ export default class TestRunController extends AsyncEventEmitter {
     }
 
     private async _createTestRun (connection: BrowserConnection): Promise<TestRun | LegacyTestRun> {
-        const screenshotCapturer = this._screenshots.createCapturerFor(this.test, this._index, this._quarantine, connection, this._warningLog);
+        const screenshotCapturer = this._screenshots.createCapturerFor(this.test, this.index, this._quarantine, connection, this._warningLog);
         const TestRunCtor        = this._testRunCtor;
 
         this.testRun = new TestRunCtor(this.test, connection, screenshotCapturer, this._warningLog, this._opts);
@@ -127,7 +127,7 @@ export default class TestRunController extends AsyncEventEmitter {
                 testRun:    this.testRun,
                 legacy:     TestRunCtor === LegacyTestRun,
                 test:       this.test,
-                index:      this._index,
+                index:      this.index,
                 quarantine: this._quarantine,
             });
         }
