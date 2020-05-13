@@ -52,7 +52,8 @@ export class IPCProxy extends EventEmitter {
             return error;
         }
 
-        // 'name', 'error' and 'stack' properties of the 'Error' class are not enumerable.
+        // The properties of the 'Error' class lost during serialization using the 'JSON.stringify' way
+        // because they are not enumerable.
         // We clone them to mark these properties as enumerable
         return Object.assign({}, error);
     }
