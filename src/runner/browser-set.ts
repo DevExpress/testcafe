@@ -134,9 +134,9 @@ export default class BrowserSet extends EventEmitter {
 
         bc.removeListener('error', this._browserErrorHandler);
 
-        const appropriateStateSwitch = !bc.permanent ?
-            BrowserSet._closeConnection(bc) :
-            BrowserSet._waitIdle(bc);
+        const appropriateStateSwitch = bc.permanent ?
+            BrowserSet._waitIdle(bc) :
+            BrowserSet._closeConnection(bc);
 
         const release = getTimeLimitedPromise(appropriateStateSwitch, RELEASE_TIMEOUT).then(() => remove(this._pendingReleases, release)) as Promise<void>;
 
