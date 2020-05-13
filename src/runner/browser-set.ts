@@ -14,7 +14,6 @@ const REMOTE_BROWSERS_READY_TIMEOUT = 6 * 60 * 1000;
 const RELEASE_TIMEOUT               = 10000;
 
 export default class BrowserSet extends EventEmitter {
-    public readonly RELEASE_TIMEOUT: number;
     private readonly _browserConnections: BrowserConnection[];
     private readonly _browserErrorHandler: (error: Error) => void;
     private readonly _pendingReleases: Promise<void>[];
@@ -24,13 +23,9 @@ export default class BrowserSet extends EventEmitter {
     public constructor (browserConnectionGroups: BrowserConnection[][]) {
         super();
 
-        this.RELEASE_TIMEOUT = RELEASE_TIMEOUT;
-
-        this._pendingReleases = [];
-
-        this.browserConnectionGroups = browserConnectionGroups;
-        this._browserConnections     = flatten(browserConnectionGroups);
-
+        this._pendingReleases         = [];
+        this.browserConnectionGroups  = browserConnectionGroups;
+        this._browserConnections      = flatten(browserConnectionGroups);
         this._connectionsReadyTimeout = null;
 
         this._browserErrorHandler = (error: Error) => this.emit('error', error);
@@ -143,7 +138,7 @@ export default class BrowserSet extends EventEmitter {
             BrowserSet._closeConnection(bc) :
             BrowserSet._waitIdle(bc);
 
-        const release = getTimeLimitedPromise(appropriateStateSwitch, this.RELEASE_TIMEOUT).then(() => remove(this._pendingReleases, release)) as Promise<void>;
+        const release = getTimeLimitedPromise(appropriateStateSwitch, RELEASE_TIMEOUT).then(() => remove(this._pendingReleases, release)) as Promise<void>;
 
         this._pendingReleases.push(release);
 
