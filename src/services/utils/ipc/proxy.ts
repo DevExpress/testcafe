@@ -52,7 +52,9 @@ export class IPCProxy extends EventEmitter {
             return error;
         }
 
-        return { name: error.name, message: error.message, stack: error.stack, ...error };
+        // 'name', 'error' and 'stack' properties of the 'Error' class are not enumerable.
+        // We clone them to mark these properties as enumerable
+        return Object.assign({}, error);
     }
 
     private async _onRead (packet: IPCPacket): Promise<void> {
