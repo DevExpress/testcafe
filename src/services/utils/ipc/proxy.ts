@@ -54,7 +54,7 @@ export class IPCProxy extends EventEmitter {
 
         // The properties of the 'Error' class lost during serialization using the 'JSON.stringify' way
         // because they are not enumerable.
-        // We clone them to mark these properties as enumerable
+        // We clone them to mark these properties as enumerable.
         return Object.assign({}, error);
     }
 
