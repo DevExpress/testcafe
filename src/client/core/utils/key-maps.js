@@ -95,19 +95,11 @@ export default {
 
     specialKeys: SPECIAL_KEYS,
 
-    reversedModifiers: reverseMap(MODIFIERS),
-
-    reversedShiftMap: reverseMap(SHIFT_MAP),
-
-    reversedSpecialKeys: reverseMap(SPECIAL_KEYS),
+    keyProperty: KEY_PROPERTY,
 
     modifiersMap: {
         option: 'alt'
     },
-
-    keyProperty: KEY_PROPERTY,
-
-    reversedKeyProperty: reverseMap(KEY_PROPERTY),
 
     symbolCharCodeToKeyCode: {
         96: 192, // `
@@ -151,5 +143,13 @@ export default {
         107: 43,
         106: 42,
         111: 47
-    }
+    },
+
+    reversedModifiers: reverseMap(MODIFIERS),
+
+    reversedShiftMap: reverseMap(SHIFT_MAP),
+
+    reversedSpecialKeys: reverseMap(SPECIAL_KEYS),
+
+    reversedKeyProperty: reverseMap(KEY_PROPERTY)
 };
