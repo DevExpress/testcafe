@@ -195,10 +195,10 @@ before(function () {
                 const screenshotPath              = opts && opts.setScreenshotPath ? config.testScreenshotsDir : '';
                 const videoPath                   = opts && opts.setVideoPath ? config.testVideosDir : '';
                 const clientScripts               = opts && opts.clientScripts || [];
+                const quarantineMode              = !!process.env.FORCE_QUARANTINE_MODE || opts && opts.quarantineMode;
 
                 const {
                     skipJsErrors,
-                    quarantineMode,
                     screenshotPathPattern,
                     screenshotsOnFails,
                     screenshotsFullPage,

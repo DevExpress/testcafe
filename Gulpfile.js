@@ -740,7 +740,7 @@ gulp.task('publish-website', gulp.series('build-website-production', 'website-pu
 
 gulp.task('test-docs-travis', gulp.parallel('test-website-travis', 'lint'));
 
-function testFunctional (src, testingEnvironmentName, { allowMultipleWindows, experimentalCompilerService } = {}) {
+function testFunctional (src, testingEnvironmentName, { allowMultipleWindows, experimentalCompilerService, forceQuarantineMode } = {}) {
     process.env.TESTING_ENVIRONMENT       = testingEnvironmentName;
     process.env.BROWSERSTACK_USE_AUTOMATE = 1;
 
@@ -749,6 +749,9 @@ function testFunctional (src, testingEnvironmentName, { allowMultipleWindows, ex
 
     if (experimentalCompilerService)
         process.env.EXPERIMENTAL_COMPILER_SERVICE = 'true';
+
+    if (forceQuarantineMode)
+        process.env.FORCE_QUARANTINE_MODE = 'true';
 
     if (!process.env.BROWSERSTACK_NO_LOCAL)
         process.env.BROWSERSTACK_NO_LOCAL = 1;
