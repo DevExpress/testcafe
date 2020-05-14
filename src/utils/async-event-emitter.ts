@@ -3,11 +3,10 @@ import Emittery from 'emittery';
 export default class AsyncEventEmitter extends Emittery {
     public once (event: string, listener?: Function): Promise<any> {
         return new Promise((resolve, reject) => {
-            const off = this.on(event, function (data) {
+            const off = this.on(event, data => {
                 try {
                     off();
 
-                    //@ts-ignore
                     const result = listener ? listener.call(this, data) : data;
 
                     resolve(result);

@@ -25,4 +25,19 @@ describe('IPC Proxy', () => {
 
         expect(result).deep.equal(['yo', 42, 'ok']);
     });
+
+    it('Should preserve generic error information', async () => {
+        serviceHost = new ServiceHost(require.resolve('./data/ipc-proxy/async-service'));
+
+        try {
+            await serviceHost.throwError('yo');
+
+            throw new Error('Promise rejection expected');
+        }
+        catch (err) {
+            expect(err.name).equal('MyError');
+            expect(err.message).equal('yo');
+            expect(err.stack).contain('Error: yo\n    at AsyncService.throwError');
+        }
+    });
 });
