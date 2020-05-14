@@ -22,6 +22,10 @@ class AsyncServiceHost {
         return args;
     }
 
+    async throwError (message) {
+        return await this.proxy.call('throwError', message);
+    }
+
     async close () {
         this.service.kill();
     }
