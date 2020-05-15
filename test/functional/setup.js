@@ -304,8 +304,6 @@ before(function () {
 
 beforeEach(function () {
     global.currentTest = this.currentTest;
-
-    //this.retries(5);
 });
 
 after(function () {
