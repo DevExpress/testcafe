@@ -166,6 +166,8 @@ const TESTS_GLOB = [
     `!${COMPILER_SERVICE_TESTS_GLOB}`
 ];
 
+const RETRY_TEST_RUN_COUNT = 3;
+
 let websiteServer = null;
 
 function promisifyStream (stream) {
@@ -740,7 +742,7 @@ gulp.task('publish-website', gulp.series('build-website-production', 'website-pu
 
 gulp.task('test-docs-travis', gulp.parallel('test-website-travis', 'lint'));
 
-function testFunctional (src, testingEnvironmentName, { allowMultipleWindows, experimentalCompilerService, forceQuarantineMode } = {}) {
+function testFunctional (src, testingEnvironmentName, { allowMultipleWindows, experimentalCompilerService, retry } = {}) {
     process.env.TESTING_ENVIRONMENT       = testingEnvironmentName;
     process.env.BROWSERSTACK_USE_AUTOMATE = 1;
 
@@ -749,9 +751,6 @@ function testFunctional (src, testingEnvironmentName, { allowMultipleWindows, ex
 
     if (experimentalCompilerService)
         process.env.EXPERIMENTAL_COMPILER_SERVICE = 'true';
-
-    if (forceQuarantineMode)
-        process.env.FORCE_QUARANTINE_MODE = 'true';
 
     if (!process.env.BROWSERSTACK_NO_LOCAL)
         process.env.BROWSERSTACK_NO_LOCAL = 1;
@@ -767,23 +766,28 @@ function testFunctional (src, testingEnvironmentName, { allowMultipleWindows, ex
 
     tests.unshift(SETUP_TESTS_GLOB);
 
+    const opts = {
+        ui:       'bdd',
+        reporter: 'spec',
+        timeout:  typeof v8debug === 'undefined' ? 3 * 60 * 1000 : Infinity // NOTE: disable timeouts in debug
+    };
+
+    if (retry)
+        opts.retries = RETRY_TEST_RUN_COUNT;
+
     return gulp
         .src(tests)
-        .pipe(mocha({
-            ui:       'bdd',
-            reporter: 'spec',
-            timeout:  typeof v8debug === 'undefined' ? 3 * 60 * 1000 : Infinity // NOTE: disable timeouts in debug
-        }));
+        .pipe(mocha(opts));
 }
 
 gulp.step('test-functional-travis-desktop-osx-and-ms-edge-run', () => {
-    return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers);
+    return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers, { retry: true });
 });
 
 gulp.task('test-functional-travis-desktop-osx-and-ms-edge', gulp.series('prepare-tests', 'test-functional-travis-desktop-osx-and-ms-edge-run'));
 
 gulp.step('test-functional-travis-mobile-run', () => {
-    return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.mobileBrowsers);
+    return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.mobileBrowsers, { retry: true });
 });
 
 gulp.task('test-functional-travis-mobile', gulp.series('prepare-tests', 'test-functional-travis-mobile-run'));

@@ -195,10 +195,10 @@ before(function () {
                 const screenshotPath              = opts && opts.setScreenshotPath ? config.testScreenshotsDir : '';
                 const videoPath                   = opts && opts.setVideoPath ? config.testVideosDir : '';
                 const clientScripts               = opts && opts.clientScripts || [];
-                const quarantineMode              = !!process.env.FORCE_QUARANTINE_MODE || opts && opts.quarantineMode;
 
                 const {
                     skipJsErrors,
+                    quarantineMode,
                     screenshotPathPattern,
                     screenshotsOnFails,
                     screenshotsFullPage,
@@ -290,7 +290,7 @@ before(function () {
                             taskReport.fixtures[0].tests[0] :
                             taskReport;
 
-                        testReport.warnings   = taskReport.warnings;
+                        testReport.warnings    = taskReport.warnings;
                         testReport.failedCount = failedCount;
 
                         global.testReport = testReport;
@@ -304,6 +304,8 @@ before(function () {
 
 beforeEach(function () {
     global.currentTest = this.currentTest;
+
+    //this.retries(5);
 });
 
 after(function () {
