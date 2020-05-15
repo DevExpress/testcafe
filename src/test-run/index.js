@@ -227,7 +227,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     // Hammerhead payload
-    async _getPayloadScript () {
+    async getPayloadScript () {
         this.fileDownloadingHandled               = false;
         this.resolveWaitForFileDownloadingPromise = null;
 
@@ -252,7 +252,7 @@ export default class TestRun extends AsyncEventEmitter {
         });
     }
 
-    async _getIframePayloadScript () {
+    async getIframePayloadScript () {
         return Mustache.render(IFRAME_TEST_RUN_TEMPLATE, {
             testRunId:       JSON.stringify(this.session.id),
             selectorTimeout: this.opts.selectorTimeout,
