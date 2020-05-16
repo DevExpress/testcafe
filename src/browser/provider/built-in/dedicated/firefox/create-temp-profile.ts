@@ -53,7 +53,8 @@ async function generatePreferences (profileDir: string, { marionettePort, config
         'user_pref("dom.timeout.budget_throttling_max_delay", 0);',
         // NOTE: We set the foreground configuration for the background budget throttling parameters
         'user_pref("dom.timeout.background_throttling_max_budget", -1);',
-        'user_pref("dom.timeout.background_budget_regeneration_rate", 1);'
+        'user_pref("dom.timeout.background_budget_regeneration_rate", 1);',
+        'user_pref("security.enterprise_roots.enabled", true);'
     ];
 
     if (marionettePort) {
