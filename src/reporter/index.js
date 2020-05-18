@@ -75,7 +75,9 @@ export default class Reporter {
             screenshots:    reportItem.screenshots,
             videos:         reportItem.videos,
             quarantine:     reportItem.quarantine,
-            skipped:        reportItem.test.skip
+            skipped:        reportItem.test.skip,
+            testRunIds:     reportItem.testRunIds,
+            testId:         reportItem.test.id
         };
     }
 
@@ -191,7 +193,7 @@ export default class Reporter {
 
             if (!reportItem.pendingStarts) {
                 if (this.plugin.reportTestStart) {
-                    const testStartInfo = { testRunIds: reportItem.testRunIds };
+                    const testStartInfo = { testRunIds: reportItem.testRunIds, testId: reportItem.test.id };
 
                     await this.plugin.reportTestStart(reportItem.test.name, reportItem.test.meta, testStartInfo);
                 }

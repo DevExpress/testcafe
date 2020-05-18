@@ -610,6 +610,7 @@ describe('Reporter', () => {
                         run: 'run-001'
                     },
                     {
+                        testId:     'idf1t1',
                         testRunIds: [
                             'f1t1',
                             'f1t1'
@@ -642,7 +643,12 @@ describe('Reporter', () => {
                             takenOnFail:       false,
                             quarantineAttempt: 2
                         }],
-                        videos: []
+                        videos:     [],
+                        testId:     'idf1t1',
+                        testRunIds: [
+                            'f1t1',
+                            'f1t1'
+                        ]
                     },
                     {
                         run: 'run-001'
@@ -659,6 +665,7 @@ describe('Reporter', () => {
                         run: 'run-001'
                     },
                     {
+                        testId:     'idf1t2',
                         testRunIds: [
                             'f1t2',
                             'f1t2'
@@ -709,7 +716,12 @@ describe('Reporter', () => {
                             takenOnFail:       true,
                             quarantineAttempt: null
                         }],
-                        videos: []
+                        videos:     [],
+                        testId:     'idf1t2',
+                        testRunIds: [
+                            'f1t2',
+                            'f1t2'
+                        ]
                     },
                     {
                         run: 'run-001'
@@ -726,6 +738,7 @@ describe('Reporter', () => {
                         run: 'run-001'
                     },
                     {
+                        testId:     'idf1t3',
                         testRunIds: [
                             'f1t3',
                             'f1t3'
@@ -748,7 +761,12 @@ describe('Reporter', () => {
                         quarantine:     null,
                         screenshotPath: null,
                         screenshots:    [],
-                        videos:         []
+                        videos:         [],
+                        testId:         'idf1t3',
+                        testRunIds:     [
+                            'f1t3',
+                            'f1t3'
+                        ]
                     },
                     {
                         run: 'run-001'
@@ -775,6 +793,7 @@ describe('Reporter', () => {
                         run: 'run-001'
                     },
                     {
+                        testId:     'idf2t1',
                         testRunIds: [
                             'f2t1',
                             'f2t1'
@@ -797,7 +816,12 @@ describe('Reporter', () => {
                         quarantine:     null,
                         screenshotPath: null,
                         screenshots:    [],
-                        videos:         []
+                        videos:         [],
+                        testId:         'idf2t1',
+                        testRunIds:     [
+                            'f2t1',
+                            'f2t1'
+                        ]
                     },
                     {
                         run: 'run-001'
@@ -814,6 +838,7 @@ describe('Reporter', () => {
                         run: 'run-001'
                     },
                     {
+                        testId:     'idf2t2',
                         testRunIds: [
                             'f2t2',
                             'f2t2'
@@ -836,7 +861,12 @@ describe('Reporter', () => {
                         quarantine:     null,
                         screenshotPath: null,
                         screenshots:    [],
-                        videos:         []
+                        videos:         [],
+                        testId:         'idf2t2',
+                        testRunIds:     [
+                            'f2t2',
+                            'f2t2'
+                        ]
                     },
                     {
                         run: 'run-001'
@@ -861,6 +891,7 @@ describe('Reporter', () => {
                         run: 'run-001'
                     },
                     {
+                        testId:     'idf3t1',
                         testRunIds: [
                             'f3t1',
                             'f3t1'
@@ -889,7 +920,12 @@ describe('Reporter', () => {
                         quarantine:     null,
                         screenshotPath: null,
                         screenshots:    [],
-                        videos:         []
+                        videos:         [],
+                        testId:         'idf3t1',
+                        testRunIds:     [
+                            'f3t1',
+                            'f3t1'
+                        ]
                     },
                     {
                         run: 'run-001'
@@ -906,6 +942,7 @@ describe('Reporter', () => {
                         run: 'run-001'
                     },
                     {
+                        testId:     'idf3t2',
                         testRunIds: [
                             'f3t2',
                             'f3t2'
@@ -928,7 +965,12 @@ describe('Reporter', () => {
                         quarantine:     null,
                         screenshotPath: null,
                         screenshots:    [],
-                        videos:         []
+                        videos:         [],
+                        testId:         'idf3t2',
+                        testRunIds:     [
+                            'f3t2',
+                            'f3t2'
+                        ]
                     },
                     {
                         run: 'run-001'
@@ -945,6 +987,7 @@ describe('Reporter', () => {
                         run: 'run-001'
                     },
                     {
+                        testId:     'idf3t3',
                         testRunIds: [
                             'f3t3',
                             'f3t3'
@@ -967,7 +1010,12 @@ describe('Reporter', () => {
                         quarantine:     null,
                         screenshotPath: null,
                         screenshots:    [],
-                        videos:         []
+                        videos:         [],
+                        testId:         'idf3t3',
+                        testRunIds:     [
+                            'f3t3',
+                            'f3t3'
+                        ]
                     },
                     {
                         run: 'run-001'
