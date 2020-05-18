@@ -569,7 +569,7 @@ gulp.task('clean-website', () => {
 });
 
 gulp.step('fetch-assets-repo', cb => {
-    git.clone('https://github.com/DevExpress/testcafe-gh-page-assets.git', { args: 'site' }, cb);
+    git.clone('https://github.com/DevExpress/testcafe-gh-page-assets.git', { args: 'site' }, cb); 
 });
 
 gulp.step('put-in-articles', () => {
@@ -622,15 +622,6 @@ gulp.step('put-in-templates', () => {
 
 gulp.step('put-in-website-content', gulp.parallel('put-in-articles', 'put-in-navigation', 'put-in-posts', 'put-in-publications', 'put-in-tweets', 'put-in-templates', 'put-in-community-content', 'put-in-courses'));
 
-gulp.step('prepare-website-content', gulp.series('clean-website', 'fetch-assets-repo', 'put-in-website-content'));
-
-gulp.step('put-in-templates', () => {
-    return gulp
-        .src('docs/articles/templates/**/*')
-        .pipe(gulp.dest('site/src/_includes'));
-});
-
-gulp.step('put-in-website-content', gulp.parallel('put-in-articles', 'put-in-navigation', 'put-in-posts', 'put-in-publications', 'put-in-tweets', 'put-in-templates'));
 gulp.step('prepare-website-content', gulp.series('clean-website', 'fetch-assets-repo', 'put-in-website-content'));
 
 gulp.step('prepare-website', gulp.parallel('lint-docs', 'prepare-website-content'));
