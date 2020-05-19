@@ -1,5 +1,19 @@
 # Changelog
 
+## v1.8.5 (2020-5-19)
+
+### Bug Fixes
+
+* The Linux version in the Docker image was updated to support the latest browsers ([#5057](https://github.com/DevExpress/testcafe/issues/5057))
+* Fixed a regression in `selector.filterVisible` behavior ([#5002](https://github.com/DevExpress/testcafe/issues/5002))
+* Fixed a bug when `iframe` content did not load ([#3904](https://github.com/DevExpress/testcafe/issues/3904))
+* Enhanced a number of error messages ([#4841](https://github.com/DevExpress/testcafe/issues/4841), [#4860](https://github.com/DevExpress/testcafe/issues/4860), [testcafe-hammerhead/PR#2288](https://github.com/DevExpress/testcafe-hammerhead/pull/2288))
+* Fixed an exception that occurred when selecting text in `email` inputs ([#4893](https://github.com/DevExpress/testcafe/issues/4893))
+* Fixed a bug when the `www-authenticate` header was skipped ([testcafe-hammerhead/#2286](https://github.com/DevExpress/testcafe-hammerhead/issues/2286))
+* Fixed stack overflow caused by `WindowSync.syncBetweenWindows` ([testcafe-hammerhead/#2285](https://github.com/DevExpress/testcafe-hammerhead/issues/2285))
+* Fixed an issue with HTTP requests broken due to the `cache-control` header ([testcafe-hammerhead/#2226](https://github.com/DevExpress/testcafe-hammerhead/issues/2226))
+* Fixed an authentication issue related to cookies set by mistake ([testcafe-hammerhead/#2166](https://github.com/DevExpress/testcafe-hammerhead/issues/2166))
+
 ## v1.8.4 (2020-4-7)
 
 ### Bug Fixes
