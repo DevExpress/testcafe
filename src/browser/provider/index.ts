@@ -188,7 +188,7 @@ export default class BrowserProvider {
         await browserTools.maximize(this._getWindowDescriptor(browserId));
     }
 
-    private async canUseDefaultWindowActions (browserId: string): Promise<boolean> {
+    public async canUseDefaultWindowActions (browserId: string): Promise<boolean> {
         const isLocalBrowser    = await this.plugin.isLocalBrowser(browserId);
         const isHeadlessBrowser = await this.plugin.isHeadlessBrowser(browserId);
 
