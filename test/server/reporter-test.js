@@ -529,7 +529,10 @@ describe('Reporter', () => {
                                 ]
                             }
                         }
-                    ]
+                    ],
+                    {
+                        stopOnFirstFail: false
+                    }
                 ]
             },
             {
