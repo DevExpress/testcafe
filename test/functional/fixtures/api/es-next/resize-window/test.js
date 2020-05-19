@@ -47,7 +47,7 @@ describe('[API] Resize window actions', function () {
                     only:       'chrome'
                 })
                     .catch(function (errs) {
-                        expect(errs[0]).to.contains('The "device" argument specifies an unsupported "iPhone555" device. For a list of supported devices, refer to "http://viewportsizes.com"');
+                        expect(errs[0]).to.contains('The "device" argument specifies an unsupported "iPhone555" device. For a list of supported devices, refer to "https://github.com/DevExpress/device-specs/blob/master/viewport-sizes.json"');
                         expect(errs[0]).to.contains(' > 67 |    await t.resizeWindowToFitDevice(\'iPhone555\');');
                     });
             });

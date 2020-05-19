@@ -101,11 +101,6 @@ export default {
     [RUNTIME_ERRORS.unexpectedIPCHeadPacket]:                            'Cannot create an IPC message due to an unexpected IPC head packet.',
     [RUNTIME_ERRORS.unexpectedIPCBodyPacket]:                            'Cannot create an IPC message due to an unexpected IPC body packet.',
     [RUNTIME_ERRORS.unexpectedIPCTailPacket]:                            'Cannot create an IPC message due to an unexpected IPC tail packet.',
-    [RUNTIME_ERRORS.cannotFindTypescriptConfigurationFile]:              'Unable to find the TypeScript configuration file in "{filePath}"',
-    [RUNTIME_ERRORS.clientScriptInitializerIsNotSpecified]:              'Specify the JavaScript file path, module name or script content to inject a client script.',
-    [RUNTIME_ERRORS.clientScriptBasePathIsNotSpecified]:                 'Specify the base path for the client script file.',
-    [RUNTIME_ERRORS.clientScriptInitializerMultipleContentSources]:      'You cannot combine the file path, module name and script content when you specify a client script to inject.',
-    [RUNTIME_ERRORS.clientScriptModuleEntryPointPathCalculationError]:   'An error occurred when trying to locate the injected client script module:\n\n{errorMessage}.',
     [RUNTIME_ERRORS.cannotUseAllowMultipleWindowsOptionForLegacyTests]:  'You cannot run Legacy API tests in multi-window mode.',
     [RUNTIME_ERRORS.cannotUseAllowMultipleWindowsOptionForSomeBrowsers]: 'You cannot use multi-window mode in {browsers}.'
 };
