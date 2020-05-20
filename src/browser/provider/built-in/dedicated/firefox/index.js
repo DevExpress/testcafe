@@ -40,8 +40,6 @@ export default {
 
         await this.waitForConnectionReady(runtimeInfo.browserId);
 
-        runtimeInfo.activeWindowId = null;
-
         if (allowMultipleWindows)
             runtimeInfo.activeWindowId = this.calculateWindowId();
 
