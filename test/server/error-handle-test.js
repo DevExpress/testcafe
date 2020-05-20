@@ -10,6 +10,12 @@ const delay               = require('../../lib/utils/delay');
 const semver              = require('semver');
 
 class TaskMock extends AsyncEventEmitter {
+    constructor () {
+        super();
+
+        this.opts = {};
+    }
+
     unRegisterClientScriptRouting () {}
 }
 
