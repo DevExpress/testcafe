@@ -18,8 +18,12 @@
     <div class="space"></div>
     <div class="item"></div>
     <div class="space"></div>
+    <div>
+        <span id="emittedEvents"></span>
+    </div>
     <script>
-        var item = document.querySelector('.item');
+        var item             = document.querySelector('.item');
+        var emittedEventSpan = document.getElementById('emittedEvents');
 
         function logEventProperties (e) {
             var eventProperties = {
@@ -40,13 +44,14 @@
             console.log(JSON.stringify(eventProperties));
         }
 
-        item.addEventListener('mouseenter', function (e) {
-            logEventProperties(e);
-        });
+        function logEvent (event) {
+            emittedEventSpan.textContent += event.type + ';';
 
-        item.addEventListener('mouseleave', function (e) {
-            logEventProperties(e);
-        });
+            logEventProperties(event);
+        }
+
+        item.addEventListener('mouseenter', logEvent);
+        item.addEventListener('mouseleave', logEvent);
     </script>
 </body>
 </html>
