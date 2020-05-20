@@ -359,10 +359,38 @@ describe('Reporter', () => {
         }
     }
 
+    const configurationOptions = {
+        allowMultipleWindows:   false,
+        appInitDelay:           1000,
+        assertionTimeout:       3000,
+        browsers:               ['chrome', 'firefox'],
+        concurrency:            1,
+        debugMode:              false,
+        debugOnFail:            false,
+        developmentMode:        false,
+        disablePageCaching:     false,
+        disablePageReloads:     false,
+        disableScreenshots:     false,
+        hostname:               'localhost',
+        pageLoadTimeout:        3000,
+        port1:                  1337,
+        port2:                  1338,
+        quarantineMode:         false,
+        reporter:               [{ name: 'customReporter' }],
+        retryTestPages:         false,
+        screenshots:            { path: '/path/to/screenshots' },
+        selectorTimeout:        10000,
+        skipJsErrors:           false,
+        skipUncaughtErrors:     false,
+        speed:                  1,
+        src:                    ['test.js'],
+        stopOnFirstFail:        false,
+        takeScreenshotsOnFails: false
+    };
 
     class TaskMock extends Task {
         constructor () {
-            super(testMocks, chunk(browserConnectionMocks, 1), {}, { stopOnFirstFail: false });
+            super(testMocks, chunk(browserConnectionMocks, 1), {}, configurationOptions);
 
             this.screenshots = new ScreenshotsMock();
 
@@ -530,8 +558,34 @@ describe('Reporter', () => {
                             }
                         }
                     ],
+                    // NOTE: configuration options
                     {
-                        stopOnFirstFail: false
+                        allowMultipleWindows:   false,
+                        appInitDelay:           1000,
+                        assertionTimeout:       3000,
+                        browsers:               ['chrome', 'firefox'],
+                        concurrency:            1,
+                        debugMode:              false,
+                        debugOnFail:            false,
+                        developmentMode:        false,
+                        disablePageCaching:     false,
+                        disablePageReloads:     false,
+                        disableScreenshots:     false,
+                        hostname:               'localhost',
+                        pageLoadTimeout:        3000,
+                        port1:                  1337,
+                        port2:                  1338,
+                        quarantineMode:         false,
+                        reporter:               [{ name: 'customReporter' }],
+                        retryTestPages:         false,
+                        screenshots:            { path: '/path/to/screenshots' },
+                        selectorTimeout:        10000,
+                        skipJsErrors:           false,
+                        skipUncaughtErrors:     false,
+                        speed:                  1,
+                        src:                    ['test.js'],
+                        stopOnFirstFail:        false,
+                        takeScreenshotsOnFails: false
                     }
                 ]
             },
