@@ -1,4 +1,4 @@
-import { find, sortBy, union } from 'lodash';
+import { find, sortBy, union, assign } from 'lodash';
 import { writable as isWritableStream } from 'is-stream';
 import ReporterPluginHost from './plugin-host';
 import formatCommand from './command/format-command';
@@ -55,7 +55,8 @@ export default class Reporter {
             pendingRuns:                runsPerTest,
             pendingStarts:              runsPerTest,
             pendingTestRunDonePromise:  Reporter._createPendingPromise(),
-            pendingTestRunStartPromise: Reporter._createPendingPromise()
+            pendingTestRunStartPromise: Reporter._createPendingPromise(),
+            browsers:                   []
         };
     }
 
@@ -76,7 +77,7 @@ export default class Reporter {
             videos:         reportItem.videos,
             quarantine:     reportItem.quarantine,
             skipped:        reportItem.test.skip,
-            testRunIds:     reportItem.testRunIds,
+            browsers:       reportItem.browsers,
             testId:         reportItem.test.id
         };
     }
@@ -212,6 +213,8 @@ export default class Reporter {
             reportItem.unstable    = reportItem.unstable || testRun.unstable;
             reportItem.errs        = reportItem.errs.concat(testRun.errs);
             reportItem.warnings    = testRun.warningLog ? union(reportItem.warnings, testRun.warningLog.messages) : [];
+
+            reportItem.browsers.push(assign({ testRunId: testRun.id }, testRun.controller.browser));
 
             if (!reportItem.pendingRuns)
                 await this._resolveReportItem(reportItem, testRun);
