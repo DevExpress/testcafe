@@ -11,7 +11,7 @@ import {
 const EXTERNAL_LINKS = {
     createNewIssue:      'https://github.com/DevExpress/testcafe/issues/new?template=bug-report.md',
     troubleshootNetwork: 'https://go.devexpress.com/TestCafe_FAQ_ARequestHasFailed.aspx',
-    viewportSizes:       'http://viewportsizes.com'
+    viewportSizes:       'https://github.com/DevExpress/device-specs/blob/master/viewport-sizes.json'
 };
 
 export default {
