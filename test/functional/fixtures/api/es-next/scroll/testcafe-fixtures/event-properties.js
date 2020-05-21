@@ -13,7 +13,7 @@ test('test', async t => {
     await t
         .hover('.item')
         .click(Selector('.space').nth(1))
-        .wait(1000);
+        .expect(Selector('#emittedEvents').textContent).eql('mouseenter;mouseleave;');
 
     const { log } = await t.getBrowserConsoleMessages();
 
