@@ -77,6 +77,8 @@ import sendConfirmationMessage from './driver-link/send-confirmation-message';
 import DriverRole from './role';
 import { CHECK_CHILD_WINDOW_CLOSED_INTERVAL } from './driver-link/timeouts';
 
+const settings = hammerhead.get('./settings');
+
 const transport      = hammerhead.transport;
 const Promise        = hammerhead.Promise;
 const messageSandbox = hammerhead.eventSandbox.message;
@@ -121,20 +123,22 @@ export default class Driver extends serviceUtils.EventEmitter {
         this.EXECUTING_IN_IFRAME_FLAG      = 'testcafe|driver|executing-in-iframe-flag';
         this.PENDING_WINDOW_SWITCHING_FLAG = 'testcafe|driver|pending-window-switching-flag';
 
-        this.testRunId               = testRunId;
-        this.heartbeatUrl            = communicationUrls.heartbeat;
-        this.browserStatusUrl        = communicationUrls.status;
-        this.browserStatusDoneUrl    = communicationUrls.statusDone;
-        this.browserActiveWindowId   = communicationUrls.activeWindowId;
-        this.userAgent               = runInfo.userAgent;
-        this.fixtureName             = runInfo.fixtureName;
-        this.testName                = runInfo.testName;
-        this.selectorTimeout         = options.selectorTimeout;
-        this.pageLoadTimeout         = options.pageLoadTimeout;
-        this.childWindowReadyTimeout = options.childWindowReadyTimeout;
-        this.initialSpeed            = options.speed;
-        this.skipJsErrors            = options.skipJsErrors;
-        this.dialogHandler           = options.dialogHandler;
+        this.testRunId                  = testRunId;
+        this.heartbeatUrl               = communicationUrls.heartbeat;
+        this.browserStatusUrl           = communicationUrls.status;
+        this.browserStatusDoneUrl       = communicationUrls.statusDone;
+        this.browserActiveWindowId      = communicationUrls.activeWindowId;
+        this.userAgent                  = runInfo.userAgent;
+        this.fixtureName                = runInfo.fixtureName;
+        this.testName                   = runInfo.testName;
+        this.selectorTimeout            = options.selectorTimeout;
+        this.pageLoadTimeout            = options.pageLoadTimeout;
+        this.childWindowReadyTimeout    = options.childWindowReadyTimeout;
+        this.initialSpeed               = options.speed;
+        this.skipJsErrors               = options.skipJsErrors;
+        this.dialogHandler              = options.dialogHandler;
+        this.canUseDefaultWindowActions = options.canUseDefaultWindowActions;
+        this.isFirstPageLoad            = settings.get().isFirstPageLoad;
 
         this.customCommandHandlers = {};
 
@@ -1125,10 +1129,21 @@ export default class Driver extends serviceUtils.EventEmitter {
         this._initConsoleMessages();
     }
 
+    _doFirstPageLoadSetup () {
+        if (this.isFirstPageLoad && this.canUseDefaultWindowActions) {
+            // Stub: perform initial setup of the test first page
+
+            return Promise.resolve();
+        }
+
+        return Promise.resolve();
+    }
+
     start () {
         this._init();
 
-        this._getDriverRole()
+        this._doFirstPageLoadSetup()
+            .then(() => this._getDriverRole())
             .then(role => {
                 if (role === DriverRole.master)
                     this._startInternal();

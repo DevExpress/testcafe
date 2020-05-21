@@ -410,4 +410,8 @@ export default class BrowserConnection extends EventEmitter {
     public set activeWindowId (val) {
         this.provider.setActiveWindowId(this.id, val);
     }
+
+    public async canUseDefaultWindowActions (): Promise<boolean> {
+        return this.provider.canUseDefaultWindowActions(this.id);
+    }
 }

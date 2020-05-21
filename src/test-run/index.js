@@ -227,7 +227,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     // Hammerhead payload
-    _getPayloadScript () {
+    async getPayloadScript () {
         this.fileDownloadingHandled               = false;
         this.resolveWaitForFileDownloadingPromise = null;
 
@@ -247,11 +247,12 @@ export default class TestRun extends AsyncEventEmitter {
             skipJsErrors:                 this.opts.skipJsErrors,
             retryTestPages:               this.opts.retryTestPages,
             speed:                        this.speed,
-            dialogHandler:                JSON.stringify(this.activeDialogHandler)
+            dialogHandler:                JSON.stringify(this.activeDialogHandler),
+            canUseDefaultWindowActions:   JSON.stringify(await this.browserConnection.canUseDefaultWindowActions())
         });
     }
 
-    _getIframePayloadScript () {
+    async getIframePayloadScript () {
         return Mustache.render(IFRAME_TEST_RUN_TEMPLATE, {
             testRunId:       JSON.stringify(this.session.id),
             selectorTimeout: this.opts.selectorTimeout,
@@ -861,7 +862,6 @@ export default class TestRun extends AsyncEventEmitter {
         await bookmark.restore(callsite, stateSnapshot);
     }
 
-    // Get current URL
     async getCurrentUrl () {
         const builder = new ClientFunctionBuilder(() => {
             /* eslint-disable no-undef */

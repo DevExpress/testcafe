@@ -112,7 +112,11 @@ export default class Runner extends EventEmitter {
     }
 
     async _getTaskResult (task, browserSet, reporters, testedApp) {
-        task.on('browser-job-done', job => browserSet.releaseConnection(job.browserConnection));
+        if (!task.opts.live) {
+            task.on('browser-job-done', job => {
+                job.browserConnections.forEach(bc => browserSet.releaseConnection(bc));
+            });
+        }
 
         const browserSetErrorPromise = promisifyEvent(browserSet, 'error');
         const streamController       = new ReporterStreamController(task, reporters);

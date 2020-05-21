@@ -391,6 +391,12 @@
         url: /documentation/reference/testcafe-api/testcafe/createlivemoderunner.md
       - name: createRunner
         url: /documentation/reference/testcafe-api/testcafe/createrunner.md
+  - name: Plugin API
+    content:
+    - name: BrowserProvider Interface
+      url: /documentation/reference/plugin-api/browserprovider.md
+    - name: Reporter Interface
+      url: /documentation/reference/plugin-api/reporter.md
 - name: Recipes
   url: /documentation/recipes/README.md
   content:

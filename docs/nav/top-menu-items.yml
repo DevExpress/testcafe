@@ -4,6 +4,7 @@
 - text: Blog
   url: /media/team-blog/
   highlightUrl: /media/
+  id: blog-link
 - text: FAQ
   url: /faq/
 - text: Support
