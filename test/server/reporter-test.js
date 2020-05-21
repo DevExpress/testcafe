@@ -246,7 +246,7 @@ describe('Reporter', () => {
     const firefoxTestRunMocks = [
         //fixture1test1
         {
-            id:                'f1t1',
+            id:                'f1t1ff',
             test:              testMocks[0],
             unstable:          true,
             browserConnection: browserConnectionMocks[1],
@@ -259,7 +259,7 @@ describe('Reporter', () => {
 
         // 'fixture1test2
         {
-            id:                'f1t2',
+            id:                'f1t2ff',
             test:              testMocks[1],
             unstable:          false,
             browserConnection: browserConnectionMocks[1],
@@ -269,7 +269,7 @@ describe('Reporter', () => {
 
         //fixture1test3
         {
-            id:                'f1t3',
+            id:                'f1t3ff',
             test:              testMocks[2],
             unstable:          false,
             browserConnection: browserConnectionMocks[1],
@@ -279,7 +279,7 @@ describe('Reporter', () => {
 
         //fixture2test1
         {
-            id:                'f2t1',
+            id:                'f2t1ff',
             test:              testMocks[3],
             unstable:          false,
             browserConnection: browserConnectionMocks[1],
@@ -289,7 +289,7 @@ describe('Reporter', () => {
 
         //fixture2test2
         {
-            id:                'f2t2',
+            id:                'f2t2ff',
             test:              testMocks[4],
             unstable:          false,
             browserConnection: browserConnectionMocks[1],
@@ -299,7 +299,7 @@ describe('Reporter', () => {
 
         //fixture3test1
         {
-            id:                'f3t1',
+            id:                'f3t1ff',
             test:              testMocks[5],
             unstable:          true,
             browserConnection: browserConnectionMocks[1],
@@ -309,7 +309,7 @@ describe('Reporter', () => {
 
         //fixture3test2
         {
-            id:                'f3t2',
+            id:                'f3t2ff',
             test:              testMocks[6],
             unstable:          true,
             browserConnection: browserConnectionMocks[1],
@@ -319,7 +319,7 @@ describe('Reporter', () => {
 
         //fixture3test3
         {
-            id:                'f3t3',
+            id:                'f3t3ff',
             test:              testMocks[7],
             unstable:          true,
             browserConnection: browserConnectionMocks[1],
@@ -431,7 +431,7 @@ describe('Reporter', () => {
         log = [];
     });
 
-    it('Should analyze task progress and call appropriate plugin methods', function () {
+    it.only('Should analyze task progress and call appropriate plugin methods', function () {
         this.timeout(30000);
 
         const taskMock = new TaskMock();
@@ -613,7 +613,7 @@ describe('Reporter', () => {
                         testId:     'idf1t1',
                         testRunIds: [
                             'f1t1',
-                            'f1t1'
+                            'f1t1ff'
                         ]
                     }
                 ]
@@ -647,7 +647,7 @@ describe('Reporter', () => {
                         testId:     'idf1t1',
                         testRunIds: [
                             'f1t1',
-                            'f1t1'
+                            'f1t1ff'
                         ]
                     },
                     {
@@ -668,7 +668,7 @@ describe('Reporter', () => {
                         testId:     'idf1t2',
                         testRunIds: [
                             'f1t2',
-                            'f1t2'
+                            'f1t2ff'
                         ]
                     }
                 ]
@@ -720,7 +720,7 @@ describe('Reporter', () => {
                         testId:     'idf1t2',
                         testRunIds: [
                             'f1t2',
-                            'f1t2'
+                            'f1t2ff'
                         ]
                     },
                     {
@@ -741,7 +741,7 @@ describe('Reporter', () => {
                         testId:     'idf1t3',
                         testRunIds: [
                             'f1t3',
-                            'f1t3'
+                            'f1t3ff'
                         ]
                     }
                 ]
@@ -765,7 +765,7 @@ describe('Reporter', () => {
                         testId:         'idf1t3',
                         testRunIds:     [
                             'f1t3',
-                            'f1t3'
+                            'f1t3ff'
                         ]
                     },
                     {
@@ -796,7 +796,7 @@ describe('Reporter', () => {
                         testId:     'idf2t1',
                         testRunIds: [
                             'f2t1',
-                            'f2t1'
+                            'f2t1ff'
                         ]
                     }
                 ]
@@ -820,7 +820,7 @@ describe('Reporter', () => {
                         testId:         'idf2t1',
                         testRunIds:     [
                             'f2t1',
-                            'f2t1'
+                            'f2t1ff'
                         ]
                     },
                     {
@@ -841,7 +841,7 @@ describe('Reporter', () => {
                         testId:     'idf2t2',
                         testRunIds: [
                             'f2t2',
-                            'f2t2'
+                            'f2t2ff'
                         ]
                     }
                 ]
@@ -865,7 +865,7 @@ describe('Reporter', () => {
                         testId:         'idf2t2',
                         testRunIds:     [
                             'f2t2',
-                            'f2t2'
+                            'f2t2ff'
                         ]
                     },
                     {
@@ -894,7 +894,7 @@ describe('Reporter', () => {
                         testId:     'idf3t1',
                         testRunIds: [
                             'f3t1',
-                            'f3t1'
+                            'f3t1ff'
                         ]
                     }
                 ]
@@ -924,7 +924,7 @@ describe('Reporter', () => {
                         testId:         'idf3t1',
                         testRunIds:     [
                             'f3t1',
-                            'f3t1'
+                            'f3t1ff'
                         ]
                     },
                     {
@@ -945,7 +945,7 @@ describe('Reporter', () => {
                         testId:     'idf3t2',
                         testRunIds: [
                             'f3t2',
-                            'f3t2'
+                            'f3t2ff'
                         ]
                     }
                 ]
@@ -969,7 +969,7 @@ describe('Reporter', () => {
                         testId:         'idf3t2',
                         testRunIds:     [
                             'f3t2',
-                            'f3t2'
+                            'f3t2ff'
                         ]
                     },
                     {
@@ -990,7 +990,7 @@ describe('Reporter', () => {
                         testId:     'idf3t3',
                         testRunIds: [
                             'f3t3',
-                            'f3t3'
+                            'f3t3ff'
                         ]
                     }
                 ]
@@ -1014,7 +1014,7 @@ describe('Reporter', () => {
                         testId:         'idf3t3',
                         testRunIds:     [
                             'f3t3',
-                            'f3t3'
+                            'f3t3ff'
                         ]
                     },
                     {
