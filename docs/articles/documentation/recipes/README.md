@@ -23,6 +23,7 @@ This section provides examples and recipes of how to use TestCafe in different s
 **Integrations**
 
 * [Import Third-Party Modules](integrations/import-third-party-modules.md)
+* [Testcafe Testing Library](integrations/testing-library.md)
 * [Angular CLI Builder](integrations/use-angular-cli-builder.md)
 * [Gulp](integrations/gulp.md)
 * [Grunt](integrations/grunt.md)
