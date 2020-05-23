@@ -6,7 +6,7 @@ import { readSync as read } from 'read-file-relative';
 import promisifyEvent from 'promisify-event';
 import nanoid from 'nanoid';
 import COMMAND from './command';
-import STATUS from './status';
+import HeartbeatStatus from './heartbeat-status';
 import { GeneralError } from '../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../errors/types';
 import { HEARTBEAT_TIMEOUT, BROWSER_RESTART_TIMEOUT } from '../../utils/browser-connection-timeouts';
@@ -21,13 +21,13 @@ interface DisconnectionPromise<T> extends Promise<T> {
     reject: Function;
 }
 
-interface BrowserConnectionStatus {
+interface BrowserConnectionStatusResult {
     cmd: string;
     url: string;
 }
 
-interface HeartbeatStatus {
-    code: string;
+interface HeartbeatStatusResult {
+    code: HeartbeatStatus;
     url: string;
 }
 
@@ -40,7 +40,7 @@ interface InitScriptTask extends InitScript {
 }
 
 export default class BrowserConnection extends EventEmitter {
-    private permanent: boolean;
+    public permanent: boolean;
     private readonly allowMultipleWindows: boolean;
     private readonly HEARTBEAT_TIMEOUT: number;
     private readonly BROWSER_RESTART_TIMEOUT: number;
@@ -51,9 +51,9 @@ export default class BrowserConnection extends EventEmitter {
     private disconnectionPromise: DisconnectionPromise<void> | null;
     private testRunAborted: boolean;
     private closing: boolean;
-    private closed: boolean;
+    public closed: boolean;
     public ready: boolean;
-    private opened: boolean;
+    public opened: boolean;
     private heartbeatTimeout: NodeJS.Timeout | null;
     private pendingTestRunUrl: string | null;
     public readonly url: string;
@@ -67,7 +67,6 @@ export default class BrowserConnection extends EventEmitter {
     private readonly statusUrl: string;
     private readonly activeWindowIdUrl: string;
     private statusDoneUrl: string;
-    private switchingToIdle: boolean;
 
     public idle: boolean;
 
@@ -98,7 +97,6 @@ export default class BrowserConnection extends EventEmitter {
         this.ready                = false;
         this.opened               = false;
         this.idle                 = true;
-        this.switchingToIdle      = false;
         this.heartbeatTimeout     = null;
         this.pendingTestRunUrl    = null;
         this.allowMultipleWindows = allowMultipleWindows;
@@ -166,8 +164,8 @@ export default class BrowserConnection extends EventEmitter {
 
     private _forceIdle (): void {
         if (!this.idle) {
-            this.switchingToIdle = false;
-            this.idle            = true;
+            this.idle = true;
+
             this.emit('idle');
         }
     }
@@ -342,12 +340,12 @@ export default class BrowserConnection extends EventEmitter {
         this.emit('ready');
     }
 
-    public heartbeat (): HeartbeatStatus {
+    public heartbeat (): HeartbeatStatusResult {
         clearTimeout(this.heartbeatTimeout as NodeJS.Timeout);
         this._waitForHeartbeat();
 
         return {
-            code: this.closing ? STATUS.closing : STATUS.ok,
+            code: this.closing ? HeartbeatStatus.closing : HeartbeatStatus.ok,
             url:  this.closing ? this.idleUrl : ''
         };
     }
@@ -383,7 +381,7 @@ export default class BrowserConnection extends EventEmitter {
         await this.provider.reportJobResult(this.id, status, data);
     }
 
-    public async getStatus (isTestDone: boolean): Promise<BrowserConnectionStatus> {
+    public async getStatus (isTestDone: boolean): Promise<BrowserConnectionStatusResult> {
         if (!this.idle && !isTestDone) {
             this.idle = true;
             this.emit('idle');
@@ -396,6 +394,7 @@ export default class BrowserConnection extends EventEmitter {
 
             if (testRunUrl) {
                 this.idle = false;
+
                 return { cmd: COMMAND.run, url: testRunUrl };
             }
         }

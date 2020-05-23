@@ -4,8 +4,6 @@ import TestRunController from './test-run-controller';
 import SessionController from '../test-run/session-controller';
 import RESULT from './browser-job-result';
 
-
-// Browser job
 export default class BrowserJob extends AsyncEventEmitter {
     constructor (tests, browserConnections, proxy, screenshots, warningLog, fixtureHookController, opts) {
         super();
