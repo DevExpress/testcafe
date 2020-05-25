@@ -5,8 +5,8 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 25 May 2020 19:01:07 +0300</pubDate>
-    <lastBuildDate>Mon, 25 May 2020 19:01:07 +0300</lastBuildDate>
+    <pubDate>Mon, 25 May 2020 19:47:20 +0300</pubDate>
+    <lastBuildDate>Mon, 25 May 2020 19:47:20 +0300</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
@@ -81,7 +81,7 @@
 
 &lt;p&gt;Since &lt;code&gt;document.querySelectorAll&lt;/code&gt; returns an empty list, you can see that there is no such element on the page, but the &lt;strong&gt;Submit&lt;/strong&gt; button is visible. Use the &lt;strong&gt;Inspect&lt;/strong&gt; command to see how this button is rendered in markup:&lt;/p&gt;
 
-&lt;p&gt;&lt;img srcset=&quot;/testcafe/images/blog/2020-5-25-inspect,
+&lt;p&gt;&lt;img srcset=&quot;/testcafe/images/blog/2020-5-25-inspect.png,
             /testcafe/images/blog/2020-5-25-inspect@2x.png 2x&quot;
         src=&quot;/testcafe/images/blog/2020-5-25-inspect.png&quot;
         alt=&quot;Inspect the button in development tools&quot;/&gt;&lt;/p&gt;
