@@ -1,9 +1,10 @@
-const expect              = require('chai').expect;
-const { promisify }       = require('util');
-const request             = require('request');
-const createTestCafe      = require('../../lib/');
-const COMMAND             = require('../../lib/browser/connection/command');
-const browserProviderPool = require('../../lib/browser/provider/pool');
+const { expect }              = require('chai');
+const { promisify }           = require('util');
+const request                 = require('request');
+const createTestCafe          = require('../../lib/');
+const COMMAND                 = require('../../lib/browser/connection/command');
+const browserProviderPool     = require('../../lib/browser/provider/pool');
+const BrowserConnectionStatus = require('../../lib/browser/connection/status');
 
 const promisedRequest = promisify(request);
 
@@ -76,7 +77,7 @@ describe('Browser connection', function () {
         return promisedRequest(options)
             .then(function (res) {
                 expect(eventFired).to.be.true;
-                expect(connection.ready).to.be.true;
+                expect(connection.status).eql(BrowserConnectionStatus.opened);
                 expect(connection.userAgent).eql('Chrome 41.0.2227.1 / macOS 10.10.1');
                 expect(res.statusCode).eql(302);
                 expect(res.headers['location']).eql(connection.idleUrl);
