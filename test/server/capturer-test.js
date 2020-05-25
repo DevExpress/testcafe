@@ -1,5 +1,5 @@
 const nanoid                     = require('nanoid');
-const expect                     = require('chai').expect;
+const { expect }                 = require('chai');
 const { resolve, dirname, join } = require('path');
 const { statSync }               = require('fs');
 const Capturer                   = require('../../lib/screenshots/capturer');
@@ -65,11 +65,10 @@ describe('Capturer', () => {
         const screenshots = new ScreenshotsMock({ enabled: true, path: process.cwd(), pathPattern: '', fullPage: false });
 
         const testRunControllerMock = {
-            screenshots,
-            test: { fixture: {} },
-            emit: () => {
-            },
-            TestRunCtor: function (test, connection) {
+            _screenshots: screenshots,
+            test:         { fixture: {} },
+            emit:         () => { },
+            _testRunCtor: function (test, connection) {
                 this.id                = 'test-run-id';
                 this.browserConnection = connection;
             }

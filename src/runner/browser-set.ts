@@ -2,43 +2,48 @@ import { EventEmitter } from 'events';
 import getTimeLimitedPromise from 'time-limit-promise';
 import promisifyEvent from 'promisify-event';
 import { noop, pull as remove, flatten } from 'lodash';
+// @ts-ignore
 import mapReverse from 'map-reverse';
 import { GeneralError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
+import BrowserConnection from '../browser/connection';
 
 const LOCAL_BROWSERS_READY_TIMEOUT  = 2 * 60 * 1000;
 const REMOTE_BROWSERS_READY_TIMEOUT = 6 * 60 * 1000;
+const RELEASE_TIMEOUT               = 10000;
 
 export default class BrowserSet extends EventEmitter {
-    constructor (browserConnectionGroups) {
+    private readonly _browserConnections: BrowserConnection[];
+    private readonly _browserErrorHandler: (error: Error) => void;
+    private readonly _pendingReleases: Promise<void>[];
+    private _connectionsReadyTimeout: null | NodeJS.Timeout;
+    public browserConnectionGroups: BrowserConnection[][];
+
+    public constructor (browserConnectionGroups: BrowserConnection[][]) {
         super();
 
-        this.RELEASE_TIMEOUT = 10000;
+        this._pendingReleases         = [];
+        this.browserConnectionGroups  = browserConnectionGroups;
+        this._browserConnections      = flatten(browserConnectionGroups);
+        this._connectionsReadyTimeout = null;
 
-        this.pendingReleases = [];
+        this._browserErrorHandler = (error: Error) => this.emit('error', error);
 
-        this.browserConnectionGroups = browserConnectionGroups;
-        this.browserConnections      = flatten(browserConnectionGroups);
-
-        this.connectionsReadyTimeout = null;
-
-        this.browserErrorHandler = error => this.emit('error', error);
-
-        this.browserConnections.forEach(bc => bc.on('error', this.browserErrorHandler));
+        this._browserConnections.forEach(bc => bc.on('error', this._browserErrorHandler));
 
         // NOTE: We're setting an empty error handler, because Node kills the process on an 'error' event
         // if there is no handler. See: https://nodejs.org/api/events.html#events_class_events_eventemitter
         this.on('error', noop);
     }
 
-    static async _waitIdle (bc) {
+    private static async _waitIdle (bc: BrowserConnection): Promise<void> {
         if (bc.idle || !bc.ready)
             return;
 
         await promisifyEvent(bc, 'idle');
     }
 
-    static async _closeConnection (bc) {
+    private static async _closeConnection (bc: BrowserConnection): Promise<void> {
         if (bc.closed || !bc.ready)
             return;
 
@@ -47,35 +52,37 @@ export default class BrowserSet extends EventEmitter {
         await promisifyEvent(bc, 'closed');
     }
 
-    async _getReadyTimeout () {
-        const isLocalBrowser      = connection => connection.provider.isLocalBrowser(connection.id, connection.browserInfo.browserName);
-        const remoteBrowsersExist = (await Promise.all(this.browserConnections.map(isLocalBrowser))).indexOf(false) > -1;
+    private async _getReadyTimeout (): Promise<number> {
+        const isLocalBrowser      = (connection: BrowserConnection): boolean => connection.provider.isLocalBrowser(connection.id, connection.browserInfo.browserName);
+        const remoteBrowsersExist = (await Promise.all(this._browserConnections.map(isLocalBrowser))).indexOf(false) > -1;
 
         return remoteBrowsersExist ? REMOTE_BROWSERS_READY_TIMEOUT : LOCAL_BROWSERS_READY_TIMEOUT;
     }
 
-    _createPendingConnectionPromise (readyPromise, timeout, timeoutError) {
+    private _createPendingConnectionPromise (readyPromise: Promise<BrowserConnection[]>, timeout: number, timeoutError: GeneralError): Promise<unknown> {
         const timeoutPromise = new Promise((_, reject) => {
-            this.connectionsReadyTimeout = setTimeout(() => reject(timeoutError), timeout);
+            this._connectionsReadyTimeout = setTimeout(() => reject(timeoutError), timeout);
         });
 
         return Promise
             .race([readyPromise, timeoutPromise])
             .then(
                 value => {
-                    this.connectionsReadyTimeout.unref();
+                    (this._connectionsReadyTimeout as NodeJS.Timeout).unref();
+
                     return value;
                 },
                 error => {
-                    this.connectionsReadyTimeout.unref();
+                    (this._connectionsReadyTimeout as NodeJS.Timeout).unref();
+
                     throw error;
                 }
             );
     }
 
-    async _waitConnectionsOpened () {
+    private async _waitConnectionsOpened (): Promise<void> {
         const connectionsReadyPromise = Promise.all(
-            this.browserConnections
+            this._browserConnections
                 .filter(bc => !bc.opened)
                 .map(bc => promisifyEvent(bc, 'opened'))
         );
@@ -86,8 +93,8 @@ export default class BrowserSet extends EventEmitter {
         await this._createPendingConnectionPromise(connectionsReadyPromise, readyTimeout, timeoutError);
     }
 
-    _checkForDisconnections () {
-        const disconnectedUserAgents = this.browserConnections
+    private _checkForDisconnections (): void {
+        const disconnectedUserAgents = this._browserConnections
             .filter(bc => bc.closed)
             .map(bc => bc.userAgent);
 
@@ -97,7 +104,7 @@ export default class BrowserSet extends EventEmitter {
 
 
     //API
-    static from (browserConnections) {
+    public static from (browserConnections: BrowserConnection[][]): Promise<BrowserSet> {
         const browserSet = new BrowserSet(browserConnections);
 
         const prepareConnection = Promise.resolve()
@@ -119,35 +126,36 @@ export default class BrowserSet extends EventEmitter {
             });
     }
 
-    releaseConnection (bc) {
-        if (this.browserConnections.indexOf(bc) < 0)
+    public releaseConnection (bc: BrowserConnection): Promise<void> {
+        if (!this._browserConnections.includes(bc))
             return Promise.resolve();
 
-        remove(this.browserConnections, bc);
+        remove(this._browserConnections, bc);
 
-        bc.removeListener('error', this.browserErrorHandler);
+        bc.removeListener('error', this._browserErrorHandler);
 
-        const appropriateStateSwitch = !bc.permanent ?
-            BrowserSet._closeConnection(bc) :
-            BrowserSet._waitIdle(bc);
+        const appropriateStateSwitch = bc.permanent ?
+            BrowserSet._waitIdle(bc) :
+            BrowserSet._closeConnection(bc);
 
-        const release = getTimeLimitedPromise(appropriateStateSwitch, this.RELEASE_TIMEOUT).then(() => remove(this.pendingReleases, release));
+        const release = getTimeLimitedPromise(appropriateStateSwitch, RELEASE_TIMEOUT)
+            .then(() => remove(this._pendingReleases, release)) as Promise<void>;
 
-        this.pendingReleases.push(release);
+        this._pendingReleases.push(release);
 
         return release;
     }
 
-    async dispose () {
+    public async dispose (): Promise<void> {
         // NOTE: When browserConnection is cancelled, it is removed from
         // the this.connections array, which leads to shifting indexes
         // towards the beginning. So, we must copy the array in order to iterate it,
         // or we can perform iteration from the end to the beginning.
-        if (this.connectionsReadyTimeout)
-            this.connectionsReadyTimeout.unref();
+        if (this._connectionsReadyTimeout)
+            this._connectionsReadyTimeout.unref();
 
-        mapReverse(this.browserConnections, bc => this.releaseConnection(bc));
+        mapReverse(this._browserConnections, (bc: BrowserConnection) => this.releaseConnection(bc));
 
-        await Promise.all(this.pendingReleases);
+        await Promise.all(this._pendingReleases);
     }
 }
