@@ -1,6 +1,169 @@
 [
     {
         "type": "article",
+        "source": "Medium",
+        "sourceHomePage": "https://medium.com/",
+        "date": "2020-05-19",
+        "title": "Using TestCafe with React.js",
+        "url": "https://medium.com/@sampath.katari/using-testcafe-with-react-js-77920feedda8",
+        "author": "Sampath Katari",
+        "profileUrl": "https://twitter.com/sampathkatari"
+    },
+    {
+        "type": "article",
+        "source": "Dev Tester",
+        "sourceHomePage": "https://dev-tester.com",
+        "date": "2020-05-19",
+        "title": "Data-Driven Testing in TestCafe (Part 1) - JSON and XML",
+        "url": "https://dev-tester.com/data-driven-testing-in-testcafe-part-1-json-and-xml/",
+        "author": "Dennis Martinez",
+        "profileUrl": "https://twitter.com/dennmart",
+        "excerpt": "Data-driven testing is a useful technique to keep your tests efficient, and maintainable. Learn how to use JSON and XML to drive your TestCafe test suite."
+    },
+    {
+        "type": "article",
+        "source": "dev.to",
+        "sourceHomePage": "https://dev.to/",
+        "date": "2020-05-17",
+        "title": "How to Run TestCafe CLI on BrowserStack in Docker Container",
+        "url": "https://dev.to/mciastek/how-to-run-testcafe-cli-on-browserstack-in-docker-container-4lm4",
+        "author": "Mirek Ciastek",
+        "profileUrl": "https://twitter.com/mciastek",
+        "excerpt": "Every application needs testing and most of them need End-to-End (E2E) testing. The quickest way to have E2E tests is to do them manually, but repetitive manual work costs far too much for a company. Automation can help reduce the costs of running End-to-End tests and increase the confidence of a team at the same time. It's true that configuring an E2E test runner and including it into our development workflow isn't an easy task, but once you're done, you never look back. We benefit from more confidence in our code with every single test written, and ensure that the combined pieces of an application, or system, work in perfect harmony."
+    },
+    {
+        "type": "article",
+        "source": "Medium",
+        "sourceHomePage": "https://medium.com/",
+        "date": "2020-05-11",
+        "title": "Set Up Scheduled Tests With TestCafe, Gitlab CI, and Alerts on Slack",
+        "url": "https://medium.com/better-programming/set-up-scheduled-tests-with-testcafe-gitlab-ci-and-alerts-on-slack-9c55ca17c235",
+        "author": "Angad Singh",
+        "profileUrl": "https://twitter.com/AngSin17"
+    },
+    {
+        "type": "article",
+        "source": "Medium",
+        "sourceHomePage": "https://medium.com/",
+        "date": "2020-05-09",
+        "title": "Notes on Automated User (web) interface Test/Checks and Browser Automation",
+        "url": "https://medium.com/@francisco.mancardi/notes-on-automated-user-web-interface-test-checks-and-browser-automation-7a2a2202c66b",
+        "author": "Francisco Mancardi",
+        "profileUrl": "https://twitter.com/TLOpenSource",
+        "excerpt": "I want to share our experience at TESISQUARE (www.tesisquare.com) in the process of adopting automation. Some of the things can sound obvious but IMHO reviewing it is a must to avoid wasting your time and resources."
+    },
+    {
+        "type": "article",
+        "source": "Dev Tester",
+        "sourceHomePage": "https://dev-tester.com",
+        "date": "2020-05-05",
+        "title": "Using the Node.js Debugger for Your TestCafe Tests",
+        "url": "https://dev-tester.com/using-the-node-js-debugger-for-your-testcafe-tests",
+        "author": "Dennis Martinez",
+        "profileUrl": "https://twitter.com/dennmart",
+        "excerpt": "Sometimes you need a powerful debugger to get to the bottom of a tricky bug in your tests. Learn how to use the Node.js debugger with TestCafe."
+    },
+    {
+        "type": "article",
+        "source": "Medium",
+        "sourceHomePage": "https://medium.com/",
+        "date": "2020-05-03",
+        "title": "Why TestCafe?",
+        "url": "https://medium.com/swlh/why-testcafe-91e2029ffe44",
+        "author": "Amal Jayaraj",
+        "profileUrl": "https://medium.com/@amaljayaraj07",
+        "excerpt": "In one of our recent projects at my company, we started using TestCafe for end-to-end UI automation. This article will describe how we ended up choosing TestCafe as the choice of framework for front end automation."
+    },
+    {
+        "type": "article",
+        "source": "LinkedIn",
+        "sourceHomePage": "https://www.linkedin.com/",
+        "date": "2020-04-28",
+        "title": "Bye-bye Selenium, Hello TestCafe",
+        "url": "https://www.linkedin.com/pulse/bye-bye-selenium-hello-testcafe-faisal-khan/",
+        "author": "Faisal Khan",
+        "profileUrl": "https://www.linkedin.com/in/faiskhan/"
+    },
+    {
+        "type": "article",
+        "source": "Dev Tester",
+        "sourceHomePage": "https://dev-tester.com",
+        "date": "2020-04-28",
+        "title": "3 Useful Ways to Debug Your TestCafe Tests",
+        "url": "https://dev-tester.com/3-useful-ways-to-debug-your-testcafe-tests/",
+        "author": "Dennis Martinez",
+        "profileUrl": "https://twitter.com/dennmart",
+        "excerpt": "Face it: your end-to-end tests will fail at some point. With TestCafe, you have plenty of ways to get to the bottom of your issues."
+    },
+    {
+        "type": "article",
+        "source": "Dev Tester",
+        "sourceHomePage": "https://dev-tester.com",
+        "date": "2020-04-21",
+        "title": "Control Your Secrets on TestCafe With Vault",
+        "url": "https://dev-tester.com/control-your-secrets-on-testcafe-with-vault/",
+        "author": "Dennis Martinez",
+        "profileUrl": "https://twitter.com/dennmart",
+        "excerpt": "If you need to access secure information in your tests, a tool like Vault by HashiCorp can help. Check out how to use it in your TestCafe test suite."
+    },    
+    {
+        "type": "article",
+        "source": "Engineering Quality",
+        "sourceHomePage": "https://www.engineeringquality.tech",
+        "date": "2020-04-18",
+        "title": "Continuous Integration with Jenkins and TestCafe",
+        "url": "https://www.engineeringquality.tech/articles/continuous-integration-with-jenkins-and-testcafe",
+        "author": "Tushara",
+        "profileUrl": "https://twitter.com/frontendQE",
+        "excerpt": "There is plenty of documentation available online for Jenkins and TestCafe. This article is for the beginners to get started with continuous integration without a Docker image. I directly referred to some online documents and added few steps where needed for additional details."
+    },
+    {
+        "type": "article",
+        "source": "LA TAVERNE DU TESTEUR",
+        "sourceHomePage": "https://latavernedutesteur.fr/",
+        "date": "2020-03-27",
+        "title": "OUTILS DE TEST: TESTER VOTRE UI AVEC TESTCAFÉ",
+        "url": "https://latavernedutesteur.fr/2020/03/27/outils-de-test-tester-votre-ui-avec-testcafe/",
+        "author": "Benjamin Butel",
+        "profileUrl": "https://twitter.com/BenjaminButel",
+        "lang": "French",
+        "langCode": "fr"
+    },
+    {
+        "type": "article",
+        "source": "LinkedIn",
+        "sourceHomePage": "https://www.linkedin.com",
+        "date": "2020-03-19",
+        "title": "React - TestCafe - End To End Testing ",
+        "url": "https://www.linkedin.com/pulse/react-testcafe-end-testing-arnab-chatterjee/",
+        "author": "Arnab Chatterjee",
+        "profileUrl": "https://www.linkedin.com/in/chattarb/"
+    },
+    {
+        "type": "article",
+        "source": "PSYENCE:MEDIA",
+        "sourceHomePage": "https://tech.recruit-mp.co.jp/",
+        "date": "2020-03-18",
+        "title": "TestCafe で E2E テストを始めよう #2 - ベーシック認証とユーザーロール（アカウント認証）",
+        "url": "https://tech.recruit-mp.co.jp/front-end/post-20251/",
+        "author": "wakamsha",
+        "profileUrl": "https://twitter.com/wakamsha",
+        "lang": "Japanese",
+        "langCode": "jp"
+    },
+    {
+        "type": "article",
+        "source": "Dev Tester",
+        "sourceHomePage": "https://dev-tester.com",
+        "date": "2020-03-17",
+        "title": "Get a Jump-Start on Your Testing With TestCafe and Docker",
+        "url": "https://dev-tester.com/get-a-jump-start-on-your-testing-with-testcafe-and-docker/",
+        "author": "Dennis Martinez",
+        "profileUrl": "https://twitter.com/dennmart",
+        "excerpt": "TestCafe is simple to install, but needs some dependencies. If you can't or don't want to deal with it, leverage the power of Docker to run your test suite."
+    },
+    {
+        "type": "article",
         "source": "Marie Drake's Blog",
         "sourceHomePage": "https://www.mariedrake.com/",
         "date": "2020-03-16",
@@ -82,7 +245,7 @@
         "title": "TestCafe: A Perfect Automation Tool for Web-Based Applications",
         "url": "https://celestialsys.com/blog/testcafe-a-perfect-automation-tool-for-web-based-applications/",
         "author": "Sumana Ramesh",
-        "excerpt": "If you are looking for an alternative product like Selenium here’s another new cool web testing tool, TestCafe. With TestCafe, you can write tests in JavaScript and TypeScript and it is easy to use, free and has enhanced features, which helps the testers in overcoming the efforts of setting up plugins."
+        "excerpt": "If you are looking for an alternative product like Selenium here's another new cool web testing tool, TestCafe. With TestCafe, you can write tests in JavaScript and TypeScript and it is easy to use, free and has enhanced features, which helps the testers in overcoming the efforts of setting up plugins."
     },
     {
         "type": "article",

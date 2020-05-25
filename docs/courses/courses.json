@@ -23,5 +23,13 @@
         "url": "https://coursinator.com/course/build-an-end-to-end-software-testing-framework-with-testcafe",
         "author": "Bogdan Vazzolla",
         "profileUrl": "https://twitter.com/bogdanvazzolla"
+    },
+    {
+        "title": "TestCafe E2E Test para principiantes",
+        "source": "Testing en Chile",
+        "sourceHomePage": "https://www.testingenchile.cl",
+        "url": "https://www.testingenchile.cl/testcafe-e2e-test-para-princiantes/",
+        "lang": "Spanish",
+        "langCode": "es"
     }
 ]
