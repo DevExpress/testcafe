@@ -154,7 +154,7 @@
     "cross-spawn": "^4.0.0",
     "devtools-protocol": "0.0.678506",
     "dom-walk": "^0.1.1",
-    "eslint-plugin-hammerhead": "0.3.0",
+    "eslint-plugin-hammerhead": "0.3.1",
     "eslint-plugin-no-only-tests": "^2.0.1",
     "express": "^4.13.3",
     "express-ntlm": "2.4.0",

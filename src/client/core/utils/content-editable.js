@@ -5,7 +5,7 @@ import { nativeMethods } from '../deps/hammerhead';
 
 //nodes utils
 function getOwnFirstVisibleTextNode (el) {
-    const children       = el.childNodes;
+    const children       = nativeMethods.nodeChildNodesGetter.call(el);
     const childrenLength = domUtils.getChildNodesLength(children);
 
     if (!childrenLength && isVisibleTextNode(el))
@@ -15,7 +15,9 @@ function getOwnFirstVisibleTextNode (el) {
 }
 
 function getOwnFirstVisibleNode (el) {
-    return arrayUtils.find(el.childNodes, node => isVisibleTextNode(node) ||
+    const cildNodes = nativeMethods.nodeChildNodesGetter.call(el);
+
+    return arrayUtils.find(cildNodes, node => isVisibleTextNode(node) ||
                                                   !isSkippableNode(node) && getOwnFirstVisibleNode(node));
 }
 
@@ -40,15 +42,21 @@ function isVisibleNode (node) {
 }
 
 function getVisibleChildren (node) {
-    return arrayUtils.filter(node.childNodes, isVisibleNode);
+    const childNodes = nativeMethods.nodeChildNodesGetter.call(node);
+
+    return arrayUtils.filter(childNodes, isVisibleNode);
 }
 
 function hasVisibleChildren (node) {
-    return arrayUtils.some(node.childNodes, isVisibleNode);
+    const childNodes = nativeMethods.nodeChildNodesGetter.call(node);
+
+    return arrayUtils.some(childNodes, isVisibleNode);
 }
 
 function hasSelectableChildren (node) {
-    return arrayUtils.some(node.childNodes, child => isNodeSelectable(child, true));
+    const childNodes = nativeMethods.nodeChildNodesGetter.call(node);
+
+    return arrayUtils.some(childNodes, child => isNodeSelectable(child, true));
 }
 
 //NOTE: before such elements (like div or p) adds line breaks before and after it
@@ -62,7 +70,9 @@ function isNodeBlockWithBreakLine (parent, node) {
     if (domUtils.isShadowUIElement(parent) || domUtils.isShadowUIElement(node))
         return false;
 
-    if (!domUtils.isTheSameNode(node, parent) && domUtils.getChildNodesLength(node.childNodes) &&
+    const childNodes = nativeMethods.nodeChildNodesGetter.call(node);
+
+    if (!domUtils.isTheSameNode(node, parent) && domUtils.getChildNodesLength(childNodes) &&
         /div|p/.test(domUtils.getTagName(node))) {
         parentFirstVisibleChild = getOwnFirstVisibleNode(parent);
 
@@ -79,7 +89,7 @@ function isNodeBlockWithBreakLine (parent, node) {
 }
 
 function isNodeAfterNodeBlockWithBreakLine (parent, node) {
-    const isRenderedNode          = domUtils.isRenderedNode(node);
+    const isRenderedNode        = domUtils.isRenderedNode(node);
     let parentFirstVisibleChild = null;
     let firstVisibleChild       = null;
     let previousSibling         = null;
@@ -87,8 +97,10 @@ function isNodeAfterNodeBlockWithBreakLine (parent, node) {
     if (domUtils.isShadowUIElement(parent) || domUtils.isShadowUIElement(node))
         return false;
 
+    const childNodes = nativeMethods.nodeChildNodesGetter.call(node);
+
     if (!domUtils.isTheSameNode(node, parent) &&
-        (isRenderedNode && domUtils.isElementNode(node) && domUtils.getChildNodesLength(node.childNodes) &&
+        (isRenderedNode && domUtils.isElementNode(node) && domUtils.getChildNodesLength(childNodes) &&
          !/div|p/.test(domUtils.getTagName(node)) ||
          isVisibleTextNode(node) && !domUtils.isTheSameNode(node, parent) && node.nodeValue.length)) {
 
@@ -112,12 +124,12 @@ function isNodeAfterNodeBlockWithBreakLine (parent, node) {
 }
 
 function getFirstTextNode (el, onlyVisible) {
-    const children                    = el.childNodes;
-    const childrenLength              = domUtils.getChildNodesLength(children);
+    const children                  = nativeMethods.nodeChildNodesGetter.call(el);
+    const childrenLength            = domUtils.getChildNodesLength(children);
     let curNode                     = null;
     let child                       = null;
     let isNotContentEditableElement = null;
-    const checkTextNode               = onlyVisible ? isVisibleTextNode : domUtils.isTextNode;
+    const checkTextNode             = onlyVisible ? isVisibleTextNode : domUtils.isTextNode;
 
     if (!childrenLength && checkTextNode(el))
         return el;
@@ -144,8 +156,8 @@ export function getFirstVisibleTextNode (el) {
 }
 
 export function getLastTextNode (el, onlyVisible) {
-    const children                    = el.childNodes;
-    const childrenLength              = domUtils.getChildNodesLength(children);
+    const children                  = nativeMethods.nodeChildNodesGetter.call(el);
+    const childrenLength            = domUtils.getChildNodesLength(children);
     let curNode                     = null;
     let child                       = null;
     let isNotContentEditableElement = null;
@@ -275,7 +287,8 @@ export function getNearestCommonAncestor (node1, node2) {
 function getSelectedPositionInParentByOffset (node, offset) {
     let currentNode          = null;
     let currentOffset        = null;
-    const childCount           = domUtils.getChildNodesLength(node.childNodes);
+    const childNodes         = nativeMethods.nodeChildNodesGetter.call(node);
+    const childCount         = domUtils.getChildNodesLength(childNodes);
     let isSearchForLastChild = offset >= childCount;
 
     // NOTE: we get a child element by its offset index in the parent
@@ -284,9 +297,9 @@ function getSelectedPositionInParentByOffset (node, offset) {
 
     // NOTE: IE behavior
     if (isSearchForLastChild)
-        currentNode = node.childNodes[childCount - 1];
+        currentNode = childNodes[childCount - 1];
     else {
-        currentNode   = node.childNodes[offset];
+        currentNode   = childNodes[offset];
         currentOffset = 0;
     }
 
@@ -298,9 +311,9 @@ function getSelectedPositionInParentByOffset (node, offset) {
         isSearchForLastChild = offset - 1 >= childCount;
 
         if (isSearchForLastChild)
-            currentNode = node.childNodes[childCount - 2];
+            currentNode = childNodes[childCount - 2];
         else {
-            currentNode   = node.childNodes[offset - 1];
+            currentNode   = childNodes[offset - 1];
             currentOffset = 0;
         }
     }
@@ -385,9 +398,10 @@ export function getSelectionEndPosition (el, selection, inverseSelection) {
 }
 
 function getElementOffset (target) {
-    let offset = 0;
+    let offset       = 0;
+    const childNodes = nativeMethods.nodeChildNodesGetter.call(target);
 
-    const firstBreakElement = arrayUtils.find(target.childNodes, (node, index) => {
+    const firstBreakElement = arrayUtils.find(childNodes, (node, index) => {
         offset = index;
         return domUtils.getTagName(node) === 'br';
     });
@@ -423,7 +437,7 @@ export function calculateNodeAndOffsetByPosition (el, offset) {
     };
 
     function checkChildNodes (target) {
-        const childNodes       = target.childNodes;
+        const childNodes       = nativeMethods.nodeChildNodesGetter.call(target);
         const childNodesLength = domUtils.getChildNodesLength(childNodes);
 
         if (point.node)
@@ -474,7 +488,7 @@ export function calculatePositionByNodeAndOffset (el, { node, offset }) {
     let find          = false;
 
     function checkChildNodes (target) {
-        const childNodes       = target.childNodes;
+        const childNodes       = nativeMethods.nodeChildNodesGetter.call(target);
         const childNodesLength = domUtils.getChildNodesLength(childNodes);
 
         if (find)
@@ -572,8 +586,8 @@ function hasWhiteSpacePreStyle (el, container) {
 }
 
 function getContentEditableNodes (target) {
-    let result           = [];
-    const childNodes       = target.childNodes;
+    let result             = [];
+    const childNodes       = nativeMethods.nodeChildNodesGetter.call(target);
     const childNodesLength = domUtils.getChildNodesLength(childNodes);
 
     if (!isSkippableNode(target) && !childNodesLength && domUtils.isTextNode(target))

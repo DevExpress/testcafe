@@ -9,9 +9,10 @@ import {
 
 // Node
 const nodeSnapshotPropertyInitializers = {
-    // eslint-disable-next-line no-restricted-properties
+    /*eslint-disable no-restricted-properties*/
     textContent:    node => node.textContent,
     childNodeCount: node => node.childNodes.length,
+    /*eslint-enable no-restricted-properties*/
     hasChildNodes:  node => !!nodeSnapshotPropertyInitializers.childNodeCount(node),
 
     childElementCount: node => {
@@ -23,13 +24,13 @@ const nodeSnapshotPropertyInitializers = {
 
         // NOTE: IE doesn't have `children` for non-element nodes =/
         let childElementCount = 0;
-        const childNodeCount    = node.childNodes.length;
-        /*eslint-enable no-restricted-properties*/
+        const childNodeCount  = node.childNodes.length;
 
         for (let i = 0; i < childNodeCount; i++) {
             if (node.childNodes[i].nodeType === 1)
                 childElementCount++;
         }
+        /*eslint-enable no-restricted-properties*/
 
         return childElementCount;
     },

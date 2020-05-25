@@ -61,8 +61,11 @@ function _typeTextInElementNode (elementNode, text, offset) {
 
     if (domUtils.getTagName(elementNode) === 'br')
         parent.insertBefore(nodeForTyping, elementNode);
-    else if (offset > 0)
-        elementNode.insertBefore(nodeForTyping, elementNode.childNodes[offset]);
+    else if (offset > 0) {
+        const childNodes = nativeMethods.nodeChildNodesGetter.call(elementNode);
+
+        elementNode.insertBefore(nodeForTyping, childNodes[offset]);
+    }
     else
         elementNode.appendChild(nodeForTyping);
 
