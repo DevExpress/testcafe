@@ -75,7 +75,7 @@ The test pauses before the button click. You can now use browser utilities to se
 
 Since `document.querySelectorAll` returns an empty list, you can see that there is no such element on the page, but the **Submit** button is visible. Use the **Inspect** command to see how this button is rendered in markup:
 
-<img srcset="/testcafe/images/blog/2020-5-25-inspect,
+<img srcset="/testcafe/images/blog/2020-5-25-inspect.png,
             /testcafe/images/blog/2020-5-25-inspect@2x.png 2x"
         src="/testcafe/images/blog/2020-5-25-inspect.png"
         alt="Inspect the button in development tools"/>
