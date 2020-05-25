@@ -12,7 +12,7 @@
         $(function () {
             var name = sessionStorage.getItem('developer-name');
             var text = name ? "Thank you, " + name + "!" : "Thank you!";
-            $("<h1 id=\"article-header\">" + text + "</h1>").prependTo('.result-content');
+            $("<h1 id=\"article-header\" data-testid=\"thank-you-header\">" + text + "</h1>").prependTo('.result-content');
         });
     </script>
 </head>

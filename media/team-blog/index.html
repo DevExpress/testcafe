@@ -387,6 +387,27 @@
     <div class="page-content-wrapper">
 
       
+
+
+<script>
+    var TEAM_BLOG_LAST_VISITED_FLAG = 'team-blog-last-visited';
+    var TEAM_BLOG_LINK_ID           = 'blog-link';
+    var TEAM_BLOG_LINK_NEW_CLASS    = 'new-post';
+    var NOTIFICATIONS_ACTIVE_SINCE  = new Date(2020, 4, 21)
+
+    var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
+
+    window.addEventListener('DOMContentLoaded', function (e) {
+        var lastPostDate = new Date(1590354000 * 1000);
+        
+        if(lastPostDate > teamBlogLastVisited) {
+            var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
+            
+            if(blogLink)
+                blogLink.className += ` ${TEAM_BLOG_LINK_NEW_CLASS}`;
+        }
+    });
+</script>
 <header class="site-header fixed">
   <div class="site-header-content">
     <a class="site-logo" href="/testcafe/"></a>
@@ -401,8 +422,8 @@
         </div>
       
         
-        <div class="site-nav-tab active">
-          <a class="page-link" href="/testcafe/media/team-blog/"><span>Blog</span></a>
+        <div class="site-nav-tab active" id="blog-link-tab">
+          <a class="page-link" id="blog-link" href="/testcafe/media/team-blog/"><span>Blog</span></a>
         </div>
       
         
@@ -630,7 +651,22 @@
 	<article class="doc">
 		<div class="post-content">
 
-			<div class="blog-title">
+			<script>
+    var POST_CLASS     = 'post-title';
+    var POST_DATE_ATTR = 'data-creation-date';
+
+    window.addEventListener('DOMContentLoaded', function (e) {
+        document.querySelectorAll(`.${POST_CLASS}[${POST_DATE_ATTR}]`).forEach(element => {
+            var postDate = new Date(element.getAttribute(POST_DATE_ATTR) * 1000);
+
+            if(postDate > teamBlogLastVisited)
+                element.className += ` ${TEAM_BLOG_LINK_NEW_CLASS}`;
+        });
+
+        window.localStorage.setItem(TEAM_BLOG_LAST_VISITED_FLAG, Date.now());
+    });    
+</script>
+<div class="blog-title">
     TestCafe Team Blog
 </div>
 <div class="blog-subtitle">
@@ -642,9 +678,47 @@
         
         
         
+        
         <div class="post-preview">
     
-    <div class="post-title"><a href="/testcafe/media/team-blog/how-to-scroll-web-pages-using-testcafe.html">How to Scroll Web Pages Using TestCafe</a></div>
+    <div class="post-title" data-creation-date="1590354000"><a href="/testcafe/media/team-blog/how-to-debug-tests-in-testcafe-quick-guide.html">How to Debug Tests in TestCafe: Quick Guide</a></div>
+    
+        <div class="post-subtitle">Published by Sergey Shurygin, Vasily Strelyaev – May 25, 2020</div>
+    
+    
+    <div class="post-extract">
+        
+        <a href="/testcafe/media/team-blog/how-to-debug-tests-in-testcafe-quick-guide.html"><p>
+<p>If you&#39;ve ever written a TestCafe test, you may be familiar with the following errors:</p>
+
+<ul>
+<li>Cannot obtain information about the node because the specified selector does not match any node in the DOM tree.</li>
+<li>The specified selector does not match any element in the DOM tree.</li>
+<li>The element that matches the specified selector is not visible.</li>
+</ul>
+
+<p>The first two errors are self-explanatory. The last error, however, can easily be misinterpreted. This error frequently occurs if multiple elements match the same selector. The first matching element may be hidden, while the required element is visible.</p>
+
+<p>What should you do next? How do you update the selector so that it produces expected results? What should you do if the test previously passed, but it now fails?</p>
+</p></a>
+    </div>
+    
+    
+    <p class="read-more">
+        <a href="/testcafe/media/team-blog/how-to-debug-tests-in-testcafe-quick-guide.html">Read More</a>
+    </p>
+    
+</div>
+    
+
+    
+        
+        
+        
+        
+        <div class="post-preview">
+    
+    <div class="post-title" data-creation-date="1587330000"><a href="/testcafe/media/team-blog/how-to-scroll-web-pages-using-testcafe.html">How to Scroll Web Pages Using TestCafe</a></div>
     
         <div class="post-subtitle">Published by Alexander Prokhorov, Anastasia Karabanova – Apr 20, 2020</div>
     

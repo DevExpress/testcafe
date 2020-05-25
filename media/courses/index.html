@@ -387,6 +387,27 @@
     <div class="page-content-wrapper">
 
       
+
+
+<script>
+    var TEAM_BLOG_LAST_VISITED_FLAG = 'team-blog-last-visited';
+    var TEAM_BLOG_LINK_ID           = 'blog-link';
+    var TEAM_BLOG_LINK_NEW_CLASS    = 'new-post';
+    var NOTIFICATIONS_ACTIVE_SINCE  = new Date(2020, 4, 21)
+
+    var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
+
+    window.addEventListener('DOMContentLoaded', function (e) {
+        var lastPostDate = new Date(1590354000 * 1000);
+        
+        if(lastPostDate > teamBlogLastVisited) {
+            var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
+            
+            if(blogLink)
+                blogLink.className += ` ${TEAM_BLOG_LINK_NEW_CLASS}`;
+        }
+    });
+</script>
 <header class="site-header fixed">
   <div class="site-header-content">
     <a class="site-logo" href="/testcafe/"></a>
@@ -401,8 +422,8 @@
         </div>
       
         
-        <div class="site-nav-tab active">
-          <a class="page-link" href="/testcafe/media/team-blog/"><span>Blog</span></a>
+        <div class="site-nav-tab active" id="blog-link-tab">
+          <a class="page-link" id="blog-link" href="/testcafe/media/team-blog/"><span>Blog</span></a>
         </div>
       
         
@@ -637,6 +658,82 @@
     This section lists online community-created courses that explain how to use TestCafe.
 </div>
 <div class="post-list">
+
+    
+
+
+
+
+
+
+
+
+<div class="post-preview">
+    
+    <div class="post-title"><a href="https://www.udemy.com/course/automated-testing-with-testcafe/">Automated Software Testing with TestCafe</a></div>
+    
+        <div class="post-subtitle">Published on <a href="https://www.udemy.com/">Udemy</a> by Kaniel Outis - Mar  1, 2020</div>
+    
+    
+    
+</div>
+
+    
+
+
+
+
+
+
+
+
+<div class="post-preview">
+    
+    <div class="post-title"><a href="https://www.pluralsight.com/courses/testcafe-end-to-end-web-testing-getting-started">End-to-End Web Testing With TestCafe: Getting Started</a></div>
+    
+        <div class="post-subtitle">Published on <a href="https://www.pluralsight.com/">Pluralsight</a> by <a href="https://twitter.com/mwq27">Marques Woodson</a> - Jun 13, 2019</div>
+    
+    
+    
+</div>
+
+    
+
+
+
+
+
+
+
+
+<div class="post-preview">
+    
+    <div class="post-title"><a href="https://coursinator.com/course/build-an-end-to-end-software-testing-framework-with-testcafe">Build an End-to-End Software Testing Framework with TestCafe</a></div>
+    
+        <div class="post-subtitle">Published on <a href="https://coursinator.com/">Coursinator</a> by <a href="https://twitter.com/bogdanvazzolla">Bogdan Vazzolla</a></div>
+    
+    
+    
+</div>
+
+    
+
+
+
+
+
+
+
+
+<div class="post-preview">
+    
+    <div class="post-title"><a href="https://www.testingenchile.cl/testcafe-e2e-test-para-princiantes/" lang="es">TestCafe E2E Test para principiantes</a> <span class="content-lang">(Spanish)</span></div>
+    
+        <div class="post-subtitle">Published on <a href="https://www.testingenchile.cl">Testing en Chile</a></div>
+    
+    
+    
+</div>
 
 </div>
 

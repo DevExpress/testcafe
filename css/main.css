@@ -308,6 +308,10 @@ table > tbody > tr > td {
       padding-top: 0; }
       .site-nav .site-nav-tab .page-link:hover {
         text-decoration: none; }
+    .site-nav .site-nav-tab.new-post {
+      background-image: url("/testcafe/images/newblog-menu-indicator-icon.svg");
+      background-position: top 4px right 7px;
+      background-repeat: no-repeat; }
 
 #studio-link-tab {
   margin: 0 10px;
