@@ -11,7 +11,7 @@ const site                       = require('./site');
 const RemoteConnector            = require('./remote-connector');
 const getTestError               = require('./get-test-error.js');
 const { createSimpleTestStream } = require('./utils/stream');
-const BrowserConnectionStatus    = require('../lib/browser/connection/status');
+const BrowserConnectionStatus    = require('../../lib/browser/connection/status');
 
 let testCafe     = null;
 let browsersInfo = null;
