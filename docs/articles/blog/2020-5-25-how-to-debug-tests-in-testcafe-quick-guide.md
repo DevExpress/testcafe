@@ -25,14 +25,14 @@ First, check the application to ensure that the test didn't fail due to a bug. I
 
 TestCafe uses CSS selectors to identify page elements. To see if a selector matches an element, pause test execution in the browser and debug the test.
 
-To stop the test, you can use the [--debug-on-fail](../documentation/reference/command-line-interface.md#--debug-on-fail) CLI flag or the [t.debug()](../documentation/reference/test-api/testcontroller/debug.md) test action. The difference between these approaches is summarized below:
+To stop the test, you can use the [--debug-on-fail](../../documentation/reference/command-line-interface.md#--debug-on-fail) CLI flag or the [t.debug()](../../documentation/reference/test-api/testcontroller/debug.md) test action. The difference between these approaches is summarized below:
 
 `t.debug()` | `--debug-on-fail`
 ----------- | -------------------
 Allows you to define the moment when the test stops. | Suspends the test only if it fails.
-You only need to modify the test code to use it. | Requires that you edit the test run command (which may take longer than the [t.debug()](../documentation/reference/test-api/testcontroller/debug.md) action).
+You only need to modify the test code to use it. | Requires that you edit the test run command (which may take longer than the [t.debug()](../../documentation/reference/test-api/testcontroller/debug.md) action).
 
-Let's look at a test from the TestCafe [Getting Started](../documentation/getting-started/README.md) topic. Assume the **Submit** button's selector changed and the test failed:
+Let's look at a test from the TestCafe [Getting Started](../../documentation/getting-started/README.md) topic. Assume the **Submit** button's selector changed and the test failed:
 
 ```js
 import { Selector } from 'testcafe';
@@ -57,7 +57,7 @@ The test now throws the following error when we run it:
         src="/testcafe/images/blog/2020-5-25-test-results.png"
         alt="Test results showing an error"/>
 
-Insert [t.debug()](../documentation/reference/test-api/testcontroller/debug.md) before the line that fails:
+Insert [t.debug()](../../documentation/reference/test-api/testcontroller/debug.md) before the line that fails:
 
 ```js
 await t
@@ -116,7 +116,7 @@ const getCell = Selector((table, row, column) => {
 
 ## Server-side Debugging
 
-Test flow can be complicated if it includes data preparation, HTTP requests or database access. You can use Node.js to debug this code, along with Visual Studio Code, WebStorm, or Chrome Developer Tools. See the [Recipes](https://devexpress.github.io/testcafe/documentation/recipes/) for details.
+Test flow can be complicated if it includes data preparation, HTTP requests or database access. You can use Node.js to debug this code, along with Visual Studio Code, WebStorm, or Chrome Developer Tools. See the [Recipes](../../documentation/recipes/README.md) for details.
 
 Note that it is easier to use client-side debugging to execute chained actions step by step. The server treats the entire chain as a single action, so you must divide it into separate actions to debug.
 
