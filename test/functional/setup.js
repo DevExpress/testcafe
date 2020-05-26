@@ -11,6 +11,7 @@ const site                       = require('./site');
 const RemoteConnector            = require('./remote-connector');
 const getTestError               = require('./get-test-error.js');
 const { createSimpleTestStream } = require('./utils/stream');
+const BrowserConnectionStatus    = require('../../lib/browser/connection/status');
 
 let testCafe     = null;
 let browsersInfo = null;
@@ -102,7 +103,9 @@ function openRemoteBrowsers () {
 }
 
 function waitUtilBrowserConnectionOpened (connection) {
-    const connectedPromise = connection.opened ? Promise.resolve() : promisifyEvent(connection, 'opened');
+    const connectedPromise = connection.status === BrowserConnectionStatus.opened
+        ? Promise.resolve()
+        : promisifyEvent(connection, 'opened');
 
     return connectedPromise
         .then(() => {

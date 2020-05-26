@@ -1,12 +1,13 @@
 import { EventEmitter } from 'events';
 import getTimeLimitedPromise from 'time-limit-promise';
 import promisifyEvent from 'promisify-event';
-import { noop, pull as remove, flatten } from 'lodash';
+import { flatten, noop, pull as remove } from 'lodash';
 // @ts-ignore
 import mapReverse from 'map-reverse';
 import { GeneralError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
 import BrowserConnection from '../browser/connection';
+import BrowserConnectionStatus from '../browser/connection/status';
 
 const LOCAL_BROWSERS_READY_TIMEOUT  = 2 * 60 * 1000;
 const REMOTE_BROWSERS_READY_TIMEOUT = 6 * 60 * 1000;
@@ -37,14 +38,14 @@ export default class BrowserSet extends EventEmitter {
     }
 
     private static async _waitIdle (bc: BrowserConnection): Promise<void> {
-        if (bc.idle || !bc.ready)
+        if (bc.idle || !bc.isReady())
             return;
 
         await promisifyEvent(bc, 'idle');
     }
 
     private static async _closeConnection (bc: BrowserConnection): Promise<void> {
-        if (bc.closed || !bc.ready)
+        if (bc.status === BrowserConnectionStatus.closed || !bc.isReady())
             return;
 
         bc.close();
@@ -83,7 +84,7 @@ export default class BrowserSet extends EventEmitter {
     private async _waitConnectionsOpened (): Promise<void> {
         const connectionsReadyPromise = Promise.all(
             this._browserConnections
-                .filter(bc => !bc.opened)
+                .filter(bc => bc.status !== BrowserConnectionStatus.opened)
                 .map(bc => promisifyEvent(bc, 'opened'))
         );
 
@@ -95,7 +96,7 @@ export default class BrowserSet extends EventEmitter {
 
     private _checkForDisconnections (): void {
         const disconnectedUserAgents = this._browserConnections
-            .filter(bc => bc.closed)
+            .filter(bc => bc.status === BrowserConnectionStatus.closed)
             .map(bc => bc.userAgent);
 
         if (disconnectedUserAgents.length)

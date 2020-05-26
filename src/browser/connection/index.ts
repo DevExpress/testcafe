@@ -6,10 +6,11 @@ import { readSync as read } from 'read-file-relative';
 import promisifyEvent from 'promisify-event';
 import nanoid from 'nanoid';
 import COMMAND from './command';
+import BrowserConnectionStatus from './status';
 import HeartbeatStatus from './heartbeat-status';
 import { GeneralError } from '../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../errors/types';
-import { HEARTBEAT_TIMEOUT, BROWSER_RESTART_TIMEOUT } from '../../utils/browser-connection-timeouts';
+import { BROWSER_RESTART_TIMEOUT, HEARTBEAT_TIMEOUT } from '../../utils/browser-connection-timeouts';
 import { Dictionary } from '../../configuration/interfaces';
 import BrowserConnectionGateway from './gateway';
 
@@ -50,10 +51,7 @@ export default class BrowserConnection extends EventEmitter {
     private browserConnectionGateway: BrowserConnectionGateway;
     private disconnectionPromise: DisconnectionPromise<void> | null;
     private testRunAborted: boolean;
-    private closing: boolean;
-    public closed: boolean;
-    public ready: boolean;
-    public opened: boolean;
+    public status: BrowserConnectionStatus;
     private heartbeatTimeout: NodeJS.Timeout | null;
     private pendingTestRunUrl: string | null;
     public readonly url: string;
@@ -92,10 +90,7 @@ export default class BrowserConnection extends EventEmitter {
         this.provider = browserInfo.provider;
 
         this.permanent            = permanent;
-        this.closing              = false;
-        this.closed               = false;
-        this.ready                = false;
-        this.opened               = false;
+        this.status               = BrowserConnectionStatus.uninitialized;
         this.idle                 = true;
         this.heartbeatTimeout     = null;
         this.pendingTestRunUrl    = null;
@@ -135,10 +130,10 @@ export default class BrowserConnection extends EventEmitter {
         try {
             await this.provider.openBrowser(this.id, this.url, this.browserInfo.browserName, this.allowMultipleWindows);
 
-            if (!this.ready)
+            if (this.status !== BrowserConnectionStatus.ready)
                 await promisifyEvent(this, 'ready');
 
-            this.opened = true;
+            this.status = BrowserConnectionStatus.opened;
             this.emit('opened');
         }
         catch (err) {
@@ -178,7 +173,7 @@ export default class BrowserConnection extends EventEmitter {
         this.heartbeatTimeout = setTimeout(() => {
             const err = this._createBrowserDisconnectedError();
 
-            this.opened         = false;
+            this.status         = BrowserConnectionStatus.disconnected;
             this.testRunAborted = true;
 
             this.emit('disconnected', err);
@@ -206,7 +201,7 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     private async _restartBrowser (): Promise<void> {
-        this.ready = false;
+        this.status = BrowserConnectionStatus.uninitialized;
 
         this._forceIdle();
 
@@ -313,10 +308,10 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     public close (): void {
-        if (this.closed || this.closing)
+        if (this.status === BrowserConnectionStatus.closing || this.status === BrowserConnectionStatus.closed)
             return;
 
-        this.closing = true;
+        this.status = BrowserConnectionStatus.closing;
 
         this._closeBrowser()
             .then(() => {
@@ -325,15 +320,14 @@ export default class BrowserConnection extends EventEmitter {
 
                 delete connections[this.id];
 
-                this.ready  = false;
-                this.closed = true;
+                this.status = BrowserConnectionStatus.closed;
 
                 this.emit('closed');
             });
     }
 
     public establish (userAgent: string): void {
-        this.ready                       = true;
+        this.status                      = BrowserConnectionStatus.ready;
         this.browserInfo.parsedUserAgent = parseUserAgent(userAgent);
 
         this._waitForHeartbeat();
@@ -345,8 +339,8 @@ export default class BrowserConnection extends EventEmitter {
         this._waitForHeartbeat();
 
         return {
-            code: this.closing ? HeartbeatStatus.closing : HeartbeatStatus.ok,
-            url:  this.closing ? this.idleUrl : ''
+            code: this.status === BrowserConnectionStatus.closing ? HeartbeatStatus.closing : HeartbeatStatus.ok,
+            url:  this.status === BrowserConnectionStatus.closing ? this.idleUrl : ''
         };
     }
 
@@ -387,7 +381,7 @@ export default class BrowserConnection extends EventEmitter {
             this.emit('idle');
         }
 
-        if (this.opened) {
+        if (this.status === BrowserConnectionStatus.opened) {
             const testRunUrl = await this._getTestRunUrl(isTestDone || this.testRunAborted);
 
             this.testRunAborted = false;
@@ -412,5 +406,11 @@ export default class BrowserConnection extends EventEmitter {
 
     public async canUseDefaultWindowActions (): Promise<boolean> {
         return this.provider.canUseDefaultWindowActions(this.id);
+    }
+
+    public isReady (): boolean {
+        return this.status === BrowserConnectionStatus.ready ||
+            this.status === BrowserConnectionStatus.opened ||
+            this.status === BrowserConnectionStatus.closing;
     }
 }
