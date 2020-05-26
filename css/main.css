@@ -296,8 +296,8 @@ table > tbody > tr > td {
     margin-right: 20px; }
     @media (max-width: 1310px) {
       .site-nav .site-nav-tab {
-        padding-left: 7px;
-        padding-right: 7px; } }
+        padding-left: 8px;
+        padding-right: 8px; } }
     .site-nav .site-nav-tab.active {
       background-color: #ebeeef;
       border-radius: 5px; }
@@ -308,6 +308,13 @@ table > tbody > tr > td {
       padding-top: 0; }
       .site-nav .site-nav-tab .page-link:hover {
         text-decoration: none; }
+    .site-nav .site-nav-tab.new-post {
+      background-image: url("/testcafe/images/newblog-menu-indicator-icon.svg");
+      background-position: top 4px right 7px;
+      background-repeat: no-repeat; }
+      @media (max-width: 1310px) {
+        .site-nav .site-nav-tab.new-post {
+          background-position: top 4px right 1px; } }
 
 #studio-link-tab {
   margin: 0 10px;

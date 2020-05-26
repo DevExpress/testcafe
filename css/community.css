@@ -31,6 +31,11 @@
   color: #2fa4cf; }
   .post-title a:hover, .post-subtitle a:hover, .read-more a:hover {
     color: #0086B7; }
+.post-title.new-post a, .post-subtitle.new-post a, .read-more.new-post a {
+  background-image: url("/testcafe/images/newblog-icon.svg");
+  background-position: bottom 5px right;
+  background-repeat: no-repeat;
+  padding-right: 42px; }
 
 .post-subtitle a, .read-more a {
   text-decoration: underline; }

@@ -73,30 +73,30 @@
 <div class="column col-1">
         <fieldset>
             <legend>Your name:</legend>
-            <input id="developer-name" name="name" type="text" />
-            <input type="button" id="populate" value="Populate">
+            <input id="developer-name" name="name" type="text" data-testid="name-input" />
+            <input type="button" id="populate" data-testid="populate-button" value="Populate">
         </fieldset>
         <fieldset>
             <legend>Which features are important to you:</legend>
-            <p><label for="remote-testing"><input type="checkbox" name="remote" id="remote-testing">Support for testing on remote devices</label></p>
-            <p><label for="reusing-js-code"><input type="checkbox" name="re-using" id="reusing-js-code">Re-using existing JavaScript code for testing</label></p>
-            <p><label for="background-parallel-testing"><input type="checkbox" name="background" id="background-parallel-testing">Running tests in background and/or in parallel in multiple browsers</label></p>
-            <p><label for="continuous-integration-embedding"><input type="checkbox" name="CI" id="continuous-integration-embedding">Easy embedding into a Continuous integration system</label></p>
-            <p><label for="traffic-markup-analysis"><input type="checkbox" name="analysis" id="traffic-markup-analysis">Advanced traffic and markup analysis</label></p>
+            <p><label for="remote-testing"><input type="checkbox" name="remote" id="remote-testing" data-testid="remote-testing-checkbox">Support for testing on remote devices</label></p>
+            <p><label for="reusing-js-code"><input type="checkbox" name="re-using" id="reusing-js-code" data-testid="reusing-js-code-checkbox">Re-using existing JavaScript code for testing</label></p>
+            <p><label for="background-parallel-testing"><input type="checkbox" name="background" id="background-parallel-testing" data-testid="parallel-testing-checkbox">Running tests in background and/or in parallel in multiple browsers</label></p>
+            <p><label for="continuous-integration-embedding"><input type="checkbox" name="CI" id="continuous-integration-embedding" data-testid="ci-checkbox">Easy embedding into a Continuous integration system</label></p>
+            <p><label for="traffic-markup-analysis"><input type="checkbox" name="analysis" id="traffic-markup-analysis" data-testid="analysis-checkbox">Advanced traffic and markup analysis</label></p>
         </fieldset>
 </div>
 
 <div class="column col-2">
         <fieldset>
             <legend>What is your primary Operating System:</legend>
-            <p><label for="windows"><input type="radio" name="os" id="windows" value="Windows">Windows</label></p>
-            <p><label for="macos"><input type="radio" name="os" id="macos" value="MacOS">MacOS</label></p>
-            <p><label for="linux"><input type="radio" name="os" id="linux" value="Linux">Linux</label></p>
+            <p><label for="windows"><input type="radio" name="os" id="windows" value="Windows" data-testid="windows-radio">Windows</label></p>
+            <p><label for="macos"><input type="radio" name="os" id="macos" value="MacOS" data-testid="macos-radio">MacOS</label></p>
+            <p><label for="linux"><input type="radio" name="os" id="linux" value="Linux" data-testid="linux-radio">Linux</label></p>
         </fieldset>
 
         <fieldset>
             <legend>Which TestCafe interface do you use:</legend>
-            <select id="preferred-interface" name="preferred-interface">
+            <select id="preferred-interface" name="preferred-interface" data-testid="preferred-interface-select">
                 <option>Command Line</option>
                 <option>JavaScript API</option>
                 <option>Both</option>
@@ -106,7 +106,7 @@
 </div>
 <div class="form-bottom">
         <fieldset id="tried-section">
-            <label for="tried-test-cafe"><input type="checkbox" name="tried-test-cafe" id="tried-test-cafe">I have tried TestCafe</label>
+            <label for="tried-test-cafe"><input type="checkbox" name="tried-test-cafe" id="tried-test-cafe" data-testid="tried-testcafe-checkbox">I have tried TestCafe</label>
         </fieldset>
 
         <fieldset>
@@ -130,12 +130,12 @@
 
         <fieldset>
             <legend>Please let us know what you think:</legend>
-            <textarea id="comments" name="comments" disabled></textarea>
+            <textarea id="comments" name="comments" data-testid="comments-area" disabled></textarea>
         </fieldset>
 
-        <button type="submit" id="submit-button" disabled>Submit</button>
+        <button type="submit" id="submit-button" data-testid="submit-button" disabled>Submit</button>
 </div>
-        <input type="hidden" id="testcafe-rank" name="testcafe-rank" value="1">
+        <input type="hidden" id="testcafe-rank" data-testid="rank-input" name="testcafe-rank" value="1">
         </div>
     </form>
 </body>

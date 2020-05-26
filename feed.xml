@@ -5,9 +5,127 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 08 May 2020 17:30:00 +0300</pubDate>
-    <lastBuildDate>Fri, 08 May 2020 17:30:00 +0300</lastBuildDate>
+    <pubDate>Tue, 26 May 2020 14:37:41 +0300</pubDate>
+    <lastBuildDate>Tue, 26 May 2020 14:37:41 +0300</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>How to Debug Tests in TestCafe: Quick Guide</title>
+        <description>&lt;h1&gt;How to Debug Tests in TestCafe: Quick Guide&lt;/h1&gt;
+&lt;p&gt;If you&amp;#39;ve ever written a TestCafe test, you may be familiar with the following errors:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Cannot obtain information about the node because the specified selector does not match any node in the DOM tree.&lt;/li&gt;
+&lt;li&gt;The specified selector does not match any element in the DOM tree.&lt;/li&gt;
+&lt;li&gt;The element that matches the specified selector is not visible.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The first two errors are self-explanatory. The last error, however, can easily be misinterpreted. This error frequently occurs if multiple elements match the same selector. The first matching element may be hidden, while the required element is visible.&lt;/p&gt;
+
+&lt;p&gt;What should you do next? How do you update the selector so that it produces expected results? What should you do if the test previously passed, but it now fails?&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;First, check the application to ensure that the test didn&amp;#39;t fail due to a bug. If the app runs as expected, then you can begin debugging the test.&lt;/p&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;client-side-debugging&quot;&gt;&lt;/a&gt;Client-side Debugging &lt;a class=&quot;permalink&quot; href=&quot;#client-side-debugging&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;TestCafe uses CSS selectors to identify page elements. To see if a selector matches an element, pause test execution in the browser and debug the test.&lt;/p&gt;
+
+&lt;p&gt;To stop the test, you can use the &lt;a href=&quot;../../documentation/reference/command-line-interface.html#--debug-on-fail&quot;&gt;--debug-on-fail&lt;/a&gt; CLI flag or the &lt;a href=&quot;../../documentation/reference/test-api/testcontroller/debug.html&quot;&gt;t.debug()&lt;/a&gt; test action. The difference between these approaches is summarized below:&lt;/p&gt;
+&lt;div class=&quot;table-wrapper&quot;&gt;&lt;table&gt;&lt;thead&gt;&lt;tr&gt;
+&lt;th&gt;&lt;code&gt;t.debug()&lt;/code&gt;&lt;/th&gt;
+&lt;th&gt;&lt;code&gt;--debug-on-fail&lt;/code&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;
+&lt;td&gt;Allows you to define the moment when the test stops.&lt;/td&gt;
+&lt;td&gt;Suspends the test only if it fails.&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;You only need to modify the test code to use it.&lt;/td&gt;
+&lt;td&gt;Requires that you edit the test run command (which may take longer than the &lt;a href=&quot;../../documentation/reference/test-api/testcontroller/debug.html&quot;&gt;t.debug()&lt;/a&gt; action).&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;
+&lt;p&gt;Let&amp;#39;s look at a test from the TestCafe &lt;a href=&quot;../../documentation/getting-started/&quot;&gt;Getting Started&lt;/a&gt; topic. Assume the &lt;strong&gt;Submit&lt;/strong&gt; button&amp;#39;s selector changed and the test failed:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;testcafe&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`Getting Started`&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`http://devexpress.github.io/testcafe/example`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;My first test&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;typeText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#developer-name&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;John Smith&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;click&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#submit-button-invalid&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+        &lt;span class=&quot;c1&quot;&gt;// Use the assertion to check if the actual header text is equal to the expected one&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#article-header&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;innerText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;eql&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Thank you, John Smith!&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The test now throws the following error when we run it:&lt;/p&gt;
+
+&lt;p&gt;&lt;img srcset=&quot;/testcafe/images/blog/2020-5-25-test-results.png,
+            /testcafe/images/blog/2020-5-25-test-results@2x.png 2x&quot;
+        src=&quot;/testcafe/images/blog/2020-5-25-test-results.png&quot;
+        alt=&quot;Test results showing an error&quot;/&gt;&lt;/p&gt;
+
+&lt;p&gt;Insert &lt;a href=&quot;../../documentation/reference/test-api/testcontroller/debug.html&quot;&gt;t.debug()&lt;/a&gt; before the line that fails:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;typeText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#developer-name&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;John Smith&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;debug&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;click&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#submit-button-invalid&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The test pauses before the button click. You can now use browser utilities to see if any elements match the selector.&lt;/p&gt;
+
+&lt;p&gt;&lt;img srcset=&quot;/testcafe/images/blog/2020-5-25-dev-tools.png,
+            /testcafe/images/blog/2020-5-25-dev-tools@2x.png 2x&quot;
+        src=&quot;/testcafe/images/blog/2020-5-25-dev-tools.png&quot;
+        alt=&quot;Check a selector in development tools&quot;/&gt;&lt;/p&gt;
+
+&lt;p&gt;Since &lt;code&gt;document.querySelectorAll&lt;/code&gt; returns an empty list, you can see that there is no such element on the page, but the &lt;strong&gt;Submit&lt;/strong&gt; button is visible. Use the &lt;strong&gt;Inspect&lt;/strong&gt; command to see how this button is rendered in markup:&lt;/p&gt;
+
+&lt;p&gt;&lt;img srcset=&quot;/testcafe/images/blog/2020-5-25-inspect.png,
+            /testcafe/images/blog/2020-5-25-inspect@2x.png 2x&quot;
+        src=&quot;/testcafe/images/blog/2020-5-25-inspect.png&quot;
+        alt=&quot;Inspect the button in development tools&quot;/&gt;&lt;/p&gt;
+
+&lt;p&gt;The browser&amp;#39;s development tools pane shows that the button&amp;#39;s ID is &lt;code&gt;submit-button&lt;/code&gt;.&lt;/p&gt;
+&lt;blockquote&gt;&lt;div class=&quot;blockquote-content&quot;&gt;&lt;p&gt;You can use Chrome Dev Tools&amp;#39; shortcuts (&lt;code&gt;$&lt;/code&gt; and &lt;code&gt;$$&lt;/code&gt;) to query selectors. However, if your website uses jQuery, the &lt;code&gt;$&lt;/code&gt; shortcut is overridden. TestCafe searches for elements with &lt;code&gt;document.querySelectorAll&lt;/code&gt;, which behaves in a slightly different way than jQuery. Please keep this in mind.&lt;/p&gt;
+&lt;/div&gt;&lt;/blockquote&gt;
+&lt;p&gt;To use an element inside an iframe, switch the browsing context with &lt;a href=&quot;../../documentation/reference/test-api/testcontroller/switchtoiframe.html&quot;&gt;t.switchToIframe&lt;/a&gt; before the action.&lt;/p&gt;
+&lt;blockquote&gt;&lt;div class=&quot;blockquote-content&quot;&gt;&lt;p&gt;Google Chrome lets you pause complex animations that your website might play when elements appear. To stop JavaScript execution, press &lt;code&gt;F8&lt;/code&gt; when the &lt;strong&gt;Sources&lt;/strong&gt; tab is open.&lt;/p&gt;
+&lt;/div&gt;&lt;/blockquote&gt;&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;debugging-client-functions&quot;&gt;&lt;/a&gt;Debugging Client Functions &lt;a class=&quot;permalink&quot; href=&quot;#debugging-client-functions&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Another client-side debugging trick in TestCafe allows you to execute code within the browser to obtain client-side data or identify page elements.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;getStoredValue&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ClientFunction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;key&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;localStorage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getItem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;getCell&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;column&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;querySelectorAll&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;tr&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;querySelectorAll&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;td&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;column&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;To debug this code, add the &lt;code&gt;debugger&lt;/code&gt; statement. The browser will stop the script and open developer tools.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;getStoredValue&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ClientFunction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;key&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;debugger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;localStorage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getItem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;getCell&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;column&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;debugger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;table&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;querySelectorAll&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;tr&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;row&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;querySelectorAll&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;td&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)[&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;column&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;server-side-debugging&quot;&gt;&lt;/a&gt;Server-side Debugging &lt;a class=&quot;permalink&quot; href=&quot;#server-side-debugging&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Test flow can be complicated if it includes data preparation, HTTP requests or database access. You can use Node.js to debug this code, along with Visual Studio Code, WebStorm, or Chrome Developer Tools. See the &lt;a href=&quot;../../documentation/recipes/&quot;&gt;Recipes&lt;/a&gt; for details.&lt;/p&gt;
+
+&lt;p&gt;Note that it is easier to use client-side debugging to execute chained actions step by step. The server treats the entire chain as a single action, so you must divide it into separate actions to debug.&lt;/p&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;stay-tuned-for-more-information-on-test-debugging&quot;&gt;&lt;/a&gt;Stay Tuned for More Information on Test Debugging &lt;a class=&quot;permalink&quot; href=&quot;#stay-tuned-for-more-information-on-test-debugging&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;As explained in this blog post, TestCafe and modern browsers offer all the tools necessary to debug your application or test. Note, however, that tools do not always locate errors quickly and easily. We&amp;#39;ve often spent more time debugging than desired. In our next blog post, I&amp;#39;ll share a few techniques that may save time when you debug a test.&lt;/p&gt;
+
+&lt;p&gt;If you have any questions or want to share your test debugging story – write to us directly at &lt;a href=&quot;mailto:testcafeteam@devexpress.com&quot;&gt;testcafeteam@devexpress.com&lt;/a&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 25 May 2020 00:00:00 +0300</pubDate>
+        <link>https://devexpress.github.io/testcafe/media/team-blog/how-to-debug-tests-in-testcafe-quick-guide.html</link>
+        <guid isPermaLink="true">https://devexpress.github.io/testcafe/media/team-blog/how-to-debug-tests-in-testcafe-quick-guide.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>How to Scroll Web Pages Using TestCafe</title>
@@ -641,135 +759,6 @@
         <pubDate>Thu, 28 Feb 2019 00:00:00 +0300</pubDate>
         <link>https://devexpress.github.io/testcafe/blog/testcafe-v1-1-0-released.html</link>
         <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v1-1-0-released.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>TestCafe v1.0.0 Released</title>
-        <description>&lt;h1&gt;TestCafe v1.0.0 Released&lt;/h1&gt;
-&lt;p&gt;TestCafe v1.0.0 is our first major update that includes features like video recording, configuration file, &amp;quot;live mode&amp;quot; for rapid test development and much more.&lt;/p&gt;
-
-&lt;!--more--&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;breaking-changes&quot;&gt;&lt;/a&gt;Breaking Changes &lt;a class=&quot;permalink&quot; href=&quot;#breaking-changes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;TestCafe v1.0.0 introduces minor changes to the framework&amp;#39;s behavior and programming interface. You can find the details in the &lt;a href=&quot;https://devexpress.github.io/testcafe/blog/migration-from-testcafe-v0-x-y-to-v1-0-0.html&quot;&gt;migration guide&lt;/a&gt;.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;video-recording-2151&quot;&gt;&lt;/a&gt;⚙ Video Recording (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2151&quot;&gt;#2151&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#video-recording-2151&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;You can now &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html#record-videos&quot;&gt;record videos of test runs&lt;/a&gt; in Google Chrome and Mozilla Firefox. To enable video recording, &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html#prerequisites-for-video-recording&quot;&gt;install the FFmpeg library&lt;/a&gt; and then do one of the following:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;specify the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--video-basepath&quot;&gt;--video&lt;/a&gt; command line flag,&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome test.js &lt;span class=&quot;nt&quot;&gt;--video&lt;/span&gt; artifacts/videos/
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;call the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#video&quot;&gt;runner.video&lt;/a&gt; API method,&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;video&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;artifacts/videos/&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;specify the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#videopath&quot;&gt;videoPath&lt;/a&gt; configuration file property (configuration file is also a new feature, see below).&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;videoPath&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;artifacts/videos/&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;TestCafe records all tests and saves each recording in a separate file. You can change this behavior in &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html#basic-video-options&quot;&gt;video options&lt;/a&gt;. You can also customize &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html#video-encoding-options&quot;&gt;video encoding parameters&lt;/a&gt;.&lt;/p&gt;
-&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;configuration-file-3131&quot;&gt;&lt;/a&gt;⚙ Configuration File (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3131&quot;&gt;#3131&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#configuration-file-3131&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;TestCafe now allows you to store its settings in the &lt;code&gt;.testcaferc.json&lt;/code&gt; &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html&quot;&gt;configuration file&lt;/a&gt; (with support for &lt;code&gt;JSON5&lt;/code&gt; syntax).&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;browsers&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;chrome&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;src&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/home/user/auth-tests/fixture-1.js&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/home/user/mobile-tests/&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;reporter&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-        &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;xunit&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-        &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;output&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;reports/report.xml&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;screenshotPath&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/home/user/tests/screenshots/&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;takeScreenshotsOnFails&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;videoPath&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/home/user/tests/videos/&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;pageLoadTimeout&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;hostname&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;host.mycorp.com&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;and&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;more&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Keep the configuration file in the project&amp;#39;s root directory from which you run TestCafe.&lt;/p&gt;
-
-&lt;p&gt;Settings you specify when you launch tests from the command line and programming interfaces override settings from &lt;code&gt;.testcaferc.json&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;See &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html&quot;&gt;Configuration File&lt;/a&gt; for more information.&lt;/p&gt;
-&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;live-mode-3215&quot;&gt;&lt;/a&gt;⚙ Live Mode (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3215&quot;&gt;#3215&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#live-mode-3215&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;We have integrated the &lt;a href=&quot;https://github.com/DevExpress/testcafe-live&quot;&gt;testcafe-live&lt;/a&gt; module into our main code so you can now use the new &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/live-mode.html&quot;&gt;live mode&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Live mode keeps the TestCafe process and browsers opened the whole time you are working on tests. Changes you make in code immediately restart the tests. That is, live mode allows you to see test results instantly. See &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/live-mode.html#how-live-mode-works&quot;&gt;How Live Mode Works&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Use the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-l---live&quot;&gt;-L (--live)&lt;/a&gt; flag to enable live mode from the command line interface.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome tests/test.js &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;In the API, create a &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/livemoderunner.html&quot;&gt;live mode runner&lt;/a&gt; with the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/testcafe.html#createlivemoderunner&quot;&gt;testcafe.createLiveModeRunner&lt;/a&gt; function and use it instead of a &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html&quot;&gt;regular test runner&lt;/a&gt;.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;createTestCafe&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;testcafe&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;testcafe&lt;/span&gt;         &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;createTestCafe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;localhost&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1337&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1338&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;tc&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;testcafe&lt;/span&gt;         &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;tc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;liveRunner&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;testcafe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;createLiveModeRunner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;liveRunner&lt;/span&gt;
-            &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;tests/test.js&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-            &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;browsers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;chrome&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-            &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;testcafe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;custom-reporter-api-enhancements-part-of-2753-pull-request&quot;&gt;&lt;/a&gt;⚙ Custom Reporter API Enhancements (Part of &lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2753&quot;&gt;#2753&lt;/a&gt;; &lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/3177&quot;&gt;Pull Request&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#custom-reporter-api-enhancements-part-of-2753-pull-request&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;You can now access warnings that appeared during the test run from the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttestdone&quot;&gt;reportTestDone&lt;/a&gt; method. To do this, use the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#testruninfo-object&quot;&gt;testRunInfo&lt;/a&gt; object&amp;#39;s &lt;code&gt;warnings&lt;/code&gt; property.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;reportTestDone&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;testRunInfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;meta&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;warnings&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;testRunInfo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;warnings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;hasWarnings&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!!&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;warnings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;hasWarnings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;newline&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-            &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Warnings:&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-        &lt;span class=&quot;nx&quot;&gt;warnings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;forEach&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;warning&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;newline&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-                &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;warning&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;The &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttaskdone&quot;&gt;reportTaskDone&lt;/a&gt; method now receives the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#result-object&quot;&gt;result&lt;/a&gt; parameter that contains information about the number of passed, failed, and skipped tests.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;reportTaskDone&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;endTime&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;passed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;warnings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`Testing finished!`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;newline&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`Passed: &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;passedCount&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;newline&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`Failed: &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;failedCount&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;newline&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;write&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`Skipped: &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;skippedCount&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;newline&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;typings-for-programming-interface-3341-by-infctr&quot;&gt;&lt;/a&gt;⚙ Typings for Programming Interface (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3341&quot;&gt;#3341&lt;/a&gt;) by &lt;a href=&quot;https://github.com/infctr&quot;&gt;@infctr&lt;/a&gt; &lt;a class=&quot;permalink&quot; href=&quot;#typings-for-programming-interface-3341-by-infctr&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;TestCafe &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/&quot;&gt;programming interface&lt;/a&gt; now features TypeScript typings.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../images/api-typings.png&quot; alt=&quot;API Typings&quot; title=&quot;&quot;&gt;&lt;/p&gt;
-&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;programming-interface-simpler-api-to-write-reports-to-a-file&quot;&gt;&lt;/a&gt;⚙ Programming Interface: Simpler API to Write Reports to a File &lt;a class=&quot;permalink&quot; href=&quot;#programming-interface-simpler-api-to-write-reports-to-a-file&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;You no longer need to use &lt;code&gt;fs.createWriteStream&lt;/code&gt; to create a stream that writes a report to a file. You can now pass the file name as the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#reporter&quot;&gt;runner.reporter&lt;/a&gt; parameter.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runnner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;reporter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;json&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;reports/report.json&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;The test runner no longer hangs when a custom reporter implementation uses synchronous callbacks (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3209&quot;&gt;#3209&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixture hooks for two adjacent fixtures are now executed in the correct order (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3298&quot;&gt;#3298&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Iframes no longer throw an error after a &lt;code&gt;document.open&lt;/code&gt; call in IE and Edge (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3343&quot;&gt;#3343&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;TestCafe no longer triggers a click event when you disable a button with a &lt;code&gt;span&lt;/code&gt; element inside (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2902&quot;&gt;#2902&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed a bug that led to errors in certain cases (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3189&quot;&gt;#3189&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;We have improved the status panel design and adaptivity (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3073&quot;&gt;#3073&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Redirects through several pages in iframes now work correctly (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1825&quot;&gt;testcafe-hammerhead/#1825&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;TestCafe can now correctly work with pages that override &lt;code&gt;HTMLElement.classList&lt;/code&gt; in IE11 (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1890&quot;&gt;testcafe-hammerhead/#1890&lt;/a&gt;)&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Thu, 07 Feb 2019 00:00:00 +0300</pubDate>
-        <link>https://devexpress.github.io/testcafe/blog/testcafe-v1-0-0-released.html</link>
-        <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v1-0-0-released.html</guid>
         
         
       </item>

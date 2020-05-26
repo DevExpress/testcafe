@@ -63,6 +63,8 @@ html {
               html body .page-content-wrapper .site-header .site-header-content .site-nav .site-nav-tab.active {
                 background-color: #fff;
                 border-radius: 0; }
+              html body .page-content-wrapper .site-header .site-header-content .site-nav .site-nav-tab.new-post {
+                background-position: top 11px right; }
               html body .page-content-wrapper .site-header .site-header-content .site-nav .site-nav-tab:nth-child(2) {
                 padding: 10px 0 10px; }
                 html body .page-content-wrapper .site-header .site-header-content .site-nav .site-nav-tab:nth-child(2) .page-link {
