@@ -5,8 +5,8 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 26 May 2020 12:17:38 +0300</pubDate>
-    <lastBuildDate>Tue, 26 May 2020 12:17:38 +0300</lastBuildDate>
+    <pubDate>Tue, 26 May 2020 14:37:41 +0300</pubDate>
+    <lastBuildDate>Tue, 26 May 2020 14:37:41 +0300</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
@@ -89,8 +89,9 @@
 &lt;p&gt;The browser&amp;#39;s development tools pane shows that the button&amp;#39;s ID is &lt;code&gt;submit-button&lt;/code&gt;.&lt;/p&gt;
 &lt;blockquote&gt;&lt;div class=&quot;blockquote-content&quot;&gt;&lt;p&gt;You can use Chrome Dev Tools&amp;#39; shortcuts (&lt;code&gt;$&lt;/code&gt; and &lt;code&gt;$$&lt;/code&gt;) to query selectors. However, if your website uses jQuery, the &lt;code&gt;$&lt;/code&gt; shortcut is overridden. TestCafe searches for elements with &lt;code&gt;document.querySelectorAll&lt;/code&gt;, which behaves in a slightly different way than jQuery. Please keep this in mind.&lt;/p&gt;
 &lt;/div&gt;&lt;/blockquote&gt;
-&lt;p&gt;&lt;strong&gt;Hint&lt;/strong&gt;. Google Chrome lets you pause complex animations that your website might play when elements appear. To stop JavaScript execution, press &lt;code&gt;F8&lt;/code&gt; when the &lt;strong&gt;Sources&lt;/strong&gt; tab is open.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;debugging-client-functions&quot;&gt;&lt;/a&gt;Debugging Client Functions &lt;a class=&quot;permalink&quot; href=&quot;#debugging-client-functions&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;To use an element inside an iframe, switch the browsing context with &lt;a href=&quot;../../documentation/reference/test-api/testcontroller/switchtoiframe.html&quot;&gt;t.switchToIframe&lt;/a&gt; before the action.&lt;/p&gt;
+&lt;blockquote&gt;&lt;div class=&quot;blockquote-content&quot;&gt;&lt;p&gt;Google Chrome lets you pause complex animations that your website might play when elements appear. To stop JavaScript execution, press &lt;code&gt;F8&lt;/code&gt; when the &lt;strong&gt;Sources&lt;/strong&gt; tab is open.&lt;/p&gt;
+&lt;/div&gt;&lt;/blockquote&gt;&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;debugging-client-functions&quot;&gt;&lt;/a&gt;Debugging Client Functions &lt;a class=&quot;permalink&quot; href=&quot;#debugging-client-functions&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;p&gt;Another client-side debugging trick in TestCafe allows you to execute code within the browser to obtain client-side data or identify page elements.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;getStoredValue&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ClientFunction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;key&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;localStorage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getItem&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;

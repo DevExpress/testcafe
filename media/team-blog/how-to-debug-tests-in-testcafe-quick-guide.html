@@ -665,8 +665,9 @@
 <p>The browser&#39;s development tools pane shows that the button&#39;s ID is <code>submit-button</code>.</p>
 <blockquote><div class="blockquote-content"><p>You can use Chrome Dev Tools&#39; shortcuts (<code>$</code> and <code>$$</code>) to query selectors. However, if your website uses jQuery, the <code>$</code> shortcut is overridden. TestCafe searches for elements with <code>document.querySelectorAll</code>, which behaves in a slightly different way than jQuery. Please keep this in mind.</p>
 </div></blockquote>
-<p><strong>Hint</strong>. Google Chrome lets you pause complex animations that your website might play when elements appear. To stop JavaScript execution, press <code>F8</code> when the <strong>Sources</strong> tab is open.</p>
-<h2><a class="anchor" id="debugging-client-functions"></a>Debugging Client Functions <a class="permalink" href="#debugging-client-functions">#</a></h2>
+<p>To use an element inside an iframe, switch the browsing context with <a href="../../documentation/reference/test-api/testcontroller/switchtoiframe.html">t.switchToIframe</a> before the action.</p>
+<blockquote><div class="blockquote-content"><p>Google Chrome lets you pause complex animations that your website might play when elements appear. To stop JavaScript execution, press <code>F8</code> when the <strong>Sources</strong> tab is open.</p>
+</div></blockquote><h2><a class="anchor" id="debugging-client-functions"></a>Debugging Client Functions <a class="permalink" href="#debugging-client-functions">#</a></h2>
 <p>Another client-side debugging trick in TestCafe allows you to execute code within the browser to obtain client-side data or identify page elements.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">getStoredValue</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(</span><span class="nx">key</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nb">window</span><span class="p">.</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">getItem</span><span class="p">(</span><span class="nx">key</span><span class="p">);</span>
