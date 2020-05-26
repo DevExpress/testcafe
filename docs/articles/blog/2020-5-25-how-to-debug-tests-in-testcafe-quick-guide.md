@@ -84,7 +84,9 @@ The browser's development tools pane shows that the button's ID is `submit-butto
 
 > You can use Chrome Dev Tools' shortcuts (`$` and `$$`) to query selectors. However, if your website uses jQuery, the `$` shortcut is overridden. TestCafe searches for elements with `document.querySelectorAll`, which behaves in a slightly different way than jQuery. Please keep this in mind.
 
-**Hint**. Google Chrome lets you pause complex animations that your website might play when elements appear. To stop JavaScript execution, press `F8` when the **Sources** tab is open.
+To use an element located inside an iframe, switch the browsing context with [t.switchToIframe](../../documentation/reference/test-api/testcontroller/switchtoiframe.md) before the action.
+
+> Google Chrome lets you pause complex animations that your website might play when elements appear. To stop JavaScript execution, press `F8` when the **Sources** tab is open.
 
 ## Debugging Client Functions
 
