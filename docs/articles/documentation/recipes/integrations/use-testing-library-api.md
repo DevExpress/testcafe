@@ -5,7 +5,7 @@ permalink: /documentation/recipes/integrations/use-testing-library-api.html
 ---
 # Use Testing Library API
 
-[Testing Library](https://testing-library.com) is a family of libraries that provide consistent test API across testing and UI frameworks. Testing Library makes it easy for you to migrate your tests between frameworks, or test websites that use different JavaScript libraries for the UI.
+[Testing Library](https://testing-library.com) is a family of libraries that drives tests from the <b>_user's perspective_</b> and provides a consistent test API across testing and UI frameworks. Testing Library makes it easy for you to migrate your tests between frameworks, or test websites that use different JavaScript libraries for the UI.
 
 ## Install
 
