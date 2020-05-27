@@ -418,6 +418,8 @@
     content:
     - name: Import Third-Party Modules
       url: /documentation/recipes/integrations/import-third-party-modules.md
+    - name: Testing Library API
+      url: /documentation/recipes/integrations/use-testing-library-api.md
     - name: Angular CLI Builder
       url: /documentation/recipes/integrations/use-angular-cli-builder.md
     - name: Gulp
