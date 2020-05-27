@@ -315,7 +315,7 @@ export function isElementContainsNode (parentElement, childNode) {
     if (isTheSameNode(childNode, parentElement))
         return true;
 
-    const childNodes = parentElement.childNodes;
+    const childNodes = nativeMethods.nodeChildNodesGetter.call(parentElement);
     const length     = getChildNodesLength(childNodes);
 
     for (let i = 0; i < length; i++) {
