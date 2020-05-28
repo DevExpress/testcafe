@@ -758,8 +758,7 @@ function testFunctional (src, testingEnvironmentName, { allowMultipleWindows, ex
     tests.unshift(SETUP_TESTS_GLOB);
 
     const opts = {
-        ui:       'bdd',
-        reporter: 'spec',
+        reporter: 'mocha-reporter-spec-with-retries',
         timeout:  typeof v8debug === 'undefined' ? 3 * 60 * 1000 : Infinity // NOTE: disable timeouts in debug
     };
 
