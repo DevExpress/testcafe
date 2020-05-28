@@ -1,5 +1,22 @@
 # Changelog
 
+## v1.8.6 (2020-5-29)
+
+### Bug Fixes
+
+* Added TypeScript definitions for the `RequestMock.onRequestTo` and `RequestMock.respond` methods ([#5108](https://github.com/DevExpress/testcafe/issues/5108))
+* Added a TypeScript definition for the client script's `module` option ([#5071](https://github.com/DevExpress/testcafe/issues/5071))
+* TestCafe can now run `.jsx` and `.tsx` files with test code ([#4817](https://github.com/DevExpress/testcafe/issues/4817))
+* Firefox now uses the system certificate storage by default on Windows ([PR#5077](https://github.com/DevExpress/testcafe/pull/5077)) by [@rybesh](https://github.com/rybesh)
+* Fixed an error that occurred in PowerShell Strict Mode ([#4665](https://github.com/DevExpress/testcafe/issues/4665))
+* Fixed a bug that prevented tested pages from changing their title ([testcafe-hammerhead/#2328](https://github.com/DevExpress/testcafe-hammerhead/issues/2328))
+* Fixed an `Invalid Calling Object` error in IE11 ([testcafe-hammerhead/#2236](https://github.com/DevExpress/testcafe-hammerhead/issues/2236))
+* Fixed an error (`Cannot read property 'on' of undefined`) that occurred when testing iframes ([testcafe-hammerhead/#2326](https://github.com/DevExpress/testcafe-hammerhead/issues/2326))
+* Fixed a bug when `MutationObserver.prevSibling` and `MutationObserver.nextSibling` returned wrong values ([testcafe-hammerhead/#2321](https://github.com/DevExpress/testcafe-hammerhead/issues/2321))
+* Fixed a page render error that occurred when using ES6 `Proxy` ([testcafe-hammerhead/#2056](https://github.com/DevExpress/testcafe-hammerhead/issues/2056))
+* Fixed the `ERR_HTTP_HEADERS_SENT` error ([testcafe-hammerhead/#2317](https://github.com/DevExpress/testcafe-hammerhead/issues/2317))
+* Fixed a `QuotaExceedError` error occurred when the `LocalStorage` API was used ([testcafe-hammerhead/#1454](https://github.com/DevExpress/testcafe-hammerhead/issues/1454))
+
 ## v1.8.5 (2020-5-19)
 
 ### Bug Fixes
