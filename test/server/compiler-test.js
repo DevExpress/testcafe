@@ -128,6 +128,33 @@ describe('Compiler', function () {
                 });
         });
 
+        it('Should compile basic JSX', async function () {
+            const sources = [
+                'test/server/data/test-suites/compile-react/testfile.jsx'
+            ];
+
+            const compiled = await compile(sources);
+
+            const testfile = path.resolve('test/server/data/test-suites/compile-react/testfile.jsx');
+            const tests    = compiled.tests;
+            const fixtures = compiled.fixtures;
+
+            expect(tests.length).eql(1);
+            expect(fixtures.length).eql(1);
+
+            expect(fixtures[0].name).eql('JSX');
+            expect(fixtures[0].path).eql(testfile);
+            expect(fixtures[0].pageUrl).eql('about:blank');
+
+            expect(tests[0].name).eql('Test React');
+            expect(tests[0].fixture).eql(fixtures[0]);
+
+            const results = await tests[0].fn(testRunMock);
+
+            expect(results.type).eql('h2');
+            expect(results.props.children).eql('Hello React');
+        });
+
         it('Should provide exportable lib dep', function () {
             return compile('test/server/data/test-suites/exportable-lib-dep/testfile.js')
                 .then(function (compiled) {
@@ -237,6 +264,33 @@ describe('Compiler', function () {
                         'F3T1: Hey from dep1 and dep2'
                     ]);
                 });
+        });
+
+        it('Should compile basic TSX', async function () {
+            const sources = [
+                'test/server/data/test-suites/compile-react/testfile.tsx'
+            ];
+
+            const compiled = await compile(sources);
+
+            const testfile = path.resolve('test/server/data/test-suites/compile-react/testfile.tsx');
+            const tests    = compiled.tests;
+            const fixtures = compiled.fixtures;
+
+            expect(tests.length).eql(1);
+            expect(fixtures.length).eql(1);
+
+            expect(fixtures[0].name).eql('TSX');
+            expect(fixtures[0].path).eql(testfile);
+            expect(fixtures[0].pageUrl).eql('about:blank');
+
+            expect(tests[0].name).eql('Test React');
+            expect(tests[0].fixture).eql(fixtures[0]);
+
+            const results = await tests[0].fn(testRunMock);
+
+            expect(results.type).eql('h2');
+            expect(results.props.children).eql('Hello React');
         });
 
         it('Should compile mixed dependencies', function () {

@@ -32,6 +32,7 @@ export const DEFAULT_TYPESCRIPT_COMPILER_OPTIONS: Dictionary<boolean | number> =
     module:                  1 /* ts.ModuleKind.CommonJS */,
     moduleResolution:        2 /* ts.ModuleResolutionKind.Node */,
     target:                  3 /* ts.ScriptTarget.ES2016 */,
+    jsx:                     2 /* ts.JsxEmit.React */,
     suppressOutputPathCheck: true,
     skipLibCheck:            true
 };
