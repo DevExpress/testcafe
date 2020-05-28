@@ -28,7 +28,6 @@ export const DEFAULT_TYPESCRIPT_COMPILER_OPTIONS: Dictionary<boolean | number> =
     allowJs:                 true,
     pretty:                  true,
     inlineSourceMap:         true,
-    esModuleInterop:         true,
     noImplicitAny:           false,
     module:                  1 /* ts.ModuleKind.CommonJS */,
     moduleResolution:        2 /* ts.ModuleResolutionKind.Node */,

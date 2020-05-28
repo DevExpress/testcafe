@@ -130,12 +130,12 @@ describe('Compiler', function () {
 
         it('Should compile basic JSX', async function () {
             const sources = [
-                'test/server/data/test-suites/basic/testfile.jsx'
+                'test/server/data/test-suites/compile-react/testfile.jsx'
             ];
 
             const compiled = await compile(sources);
 
-            const testfile = path.resolve('test/server/data/test-suites/basic/testfile.jsx');
+            const testfile = path.resolve('test/server/data/test-suites/compile-react/testfile.jsx');
             const tests    = compiled.tests;
             const fixtures = compiled.fixtures;
 
@@ -268,12 +268,12 @@ describe('Compiler', function () {
 
         it('Should compile basic TSX', async function () {
             const sources = [
-                'test/server/data/test-suites/typescript-basic/testfile.tsx'
+                'test/server/data/test-suites/compile-react/testfile.tsx'
             ];
 
             const compiled = await compile(sources);
 
-            const testfile = path.resolve('test/server/data/test-suites/typescript-basic/testfile.tsx');
+            const testfile = path.resolve('test/server/data/test-suites/compile-react/testfile.tsx');
             const tests    = compiled.tests;
             const fixtures = compiled.fixtures;
 
