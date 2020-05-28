@@ -115,7 +115,7 @@
     "sanitize-filename": "^1.6.0",
     "source-map-support": "^0.5.16",
     "strip-bom": "^2.0.0",
-    "testcafe-browser-tools": "2.0.11",
+    "testcafe-browser-tools": "2.0.12",
     "testcafe-hammerhead": "17.1.2",
     "testcafe-legacy-api": "4.0.0",
     "testcafe-reporter-json": "^2.1.0",
