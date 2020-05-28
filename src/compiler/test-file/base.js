@@ -1,10 +1,12 @@
-import { escapeRegExp as escapeRe } from 'lodash';
+import { escapeRegExp as escapeRe, flatten } from 'lodash';
 
 export default class TestFileCompilerBase {
     constructor () {
-        const escapedExt = escapeRe(this.getSupportedExtension());
+        const escapedExt = flatten([this.getSupportedExtension()])
+            .map(ext => escapeRe(ext))
+            .join('|');
 
-        this.supportedExtensionRe = new RegExp(`${escapedExt}$`);
+        this.supportedExtensionRe = new RegExp(`(${escapedExt})$`);
     }
 
     _hasTests (/* code */) {

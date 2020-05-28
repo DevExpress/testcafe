@@ -16,7 +16,7 @@ export default class Compiler {
     }
 
     static getSupportedTestFileExtensions () {
-        return uniq(getTestFileCompilers().map(compiler => compiler.getSupportedExtension()));
+        return uniq(flattenDeep(getTestFileCompilers().map(compiler => compiler.getSupportedExtension())));
     }
 
     async _createTestFileInfo (filename) {
