@@ -171,8 +171,11 @@ export default class Reporter {
             const startTime  = new Date();
             const userAgents = task.browserConnectionGroups.map(group => group[0].userAgent);
             const first      = this.reportQueue[0];
+            const taskProperties = {
+                configuration: task.opts
+            };
 
-            await this.plugin.reportTaskStart(startTime, userAgents, this.testCount, task.testStructure);
+            await this.plugin.reportTaskStart(startTime, userAgents, this.testCount, task.testStructure, taskProperties);
             await this.plugin.reportFixtureStart(first.fixture.name, first.fixture.path, first.fixture.meta);
         });
 
