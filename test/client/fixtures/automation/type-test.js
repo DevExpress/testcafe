@@ -288,46 +288,48 @@ $(document).ready(function () {
         });
     }
 
-    asyncTest('change event can be raised after prevented keypress if there are unsaved changes', function () {
-        const $input = $('<input type="text" />').addClass(TEST_ELEMENT_CLASS).appendTo('body');
+    if (!browserUtils.isAndroid) {
+        asyncTest('change event can be raised after prevented keypress if there are unsaved changes', function () {
+            const $input = $('<input type="text" />').addClass(TEST_ELEMENT_CLASS).appendTo('body');
 
-        let changed = false;
+            let changed = false;
 
-        $input.bind('change', function () {
-            changed = true;
-        });
-
-        $input.bind('keypress', function (e) {
-            if (e.key === '-') {
-                e.target.value += String.fromCharCode(e.keyCode);
-                return false;
-            }
-
-            return true;
-        });
-
-        const firstType = new TypeAutomation($input[0], 'test-', new TypeOptions({ offsetX: 5, offsetY: 5 }));
-
-        firstType
-            .run()
-            .then(function () {
-                $input[0].blur();
-
-                ok(changed, 'change event raised on prevented keypress with unsaved data check');
-
-                changed = false;
-
-                const secondType = new TypeAutomation($input[0], '---', new TypeOptions({ offsetX: 5, offsetY: 5 }));
-
-                return secondType.run();
-            })
-            .then(function () {
-                $input[0].blur();
-
-                ok(!changed, 'change event not raised on prevented keypress with no unsaved data check');
-                start();
+            $input.bind('change', function () {
+                changed = true;
             });
-    });
+
+            $input.bind('keypress', function (e) {
+                if (e.key === '-') {
+                    e.target.value += String.fromCharCode(e.keyCode);
+                    return false;
+                }
+
+                return true;
+            });
+
+            const firstType = new TypeAutomation($input[0], 'test-', new TypeOptions({ offsetX: 5, offsetY: 5 }));
+
+            firstType
+                .run()
+                .then(function () {
+                    $input[0].blur();
+
+                    ok(changed, 'change event raised on prevented keypress with unsaved data check');
+
+                    changed = false;
+
+                    const secondType = new TypeAutomation($input[0], '---', new TypeOptions({ offsetX: 5, offsetY: 5 }));
+
+                    return secondType.run();
+                })
+                .then(function () {
+                    $input[0].blur();
+
+                    ok(!changed, 'change event not raised on prevented keypress with no unsaved data check');
+                    start();
+                });
+        });
+    }
 
     asyncTest('keypress args must contain charCode of the symbol, not keyCode', function () {
         const $input   = $('<input type="text" />').addClass(TEST_ELEMENT_CLASS).appendTo('body');
