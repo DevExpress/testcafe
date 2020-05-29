@@ -45,6 +45,8 @@ export default class TypeAutomation {
         this.currentKey           = null;
         this.currentKeyIdentifier = null;
 
+        this.changePrepared = false;
+
         this.eventArgs = {
             options: null,
             element: null
@@ -180,6 +182,8 @@ export default class TypeAutomation {
         this.currentKey           = this.currentKeyCode === SPECIAL_KEYS['enter'] ? 'Enter' : char;
         this.currentKeyIdentifier = getKeyIdentifier(this.currentKey);
 
+        this.changePrepared = domUtils.getElementValue(this.element) !== elementEditingWatcher.getElementSavedValue(this.element);
+
         this._keydown();
         this._keypress();
 
@@ -230,7 +234,10 @@ export default class TypeAutomation {
         // NOTE: change event must not be raised after prevented keydown
         // or keypress even if element value was changed (B253816)
         if (this.eventState.simulateKeypress === false || this.eventState.simulateTypeChar === false) {
-            elementEditingWatcher.restartWatchingElementEditing(element);
+            // NOTE: change event should still be raised if element value
+            // was changed before the prevented keypress or keydown
+            if (this.changePrepared === false)
+                elementEditingWatcher.restartWatchingElementEditing(element);
 
             return delay(this.automationSettings.keyActionStepDelay);
         }
