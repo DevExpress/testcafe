@@ -1,6 +1,17 @@
 const expect = require('chai').expect;
 
 describe('[API] Assertions', function () {
+    let counter = 0;
+
+    it('!!!Unstable test', () => {
+        counter++;
+
+        if (counter === 2)
+            expect(true).eql(true);
+        else
+            expect(false).eql(true);
+    });
+
     it('Should perform .eql() assertion', function () {
         return runTests('./testcafe-fixtures/assertions-test.js', '.eql() assertion', {
             shouldFail: true,
