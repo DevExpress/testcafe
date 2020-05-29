@@ -17,8 +17,7 @@ trigger:
 pool: 'BrowserStack agents'
 
 variables:
-    name: RETRY_FAILED_TESTS
-    value: true
+  RETRY_FAILED_TESTS: "true"
 
 steps:
 - bash: |
