@@ -30,6 +30,9 @@ steps:
   inputs:
     versionSpec: '10.x'
 
+  env:
+    RETRY_FAILED_TESTS: "true"
+
 - bash: |
     npm install --no-progress --loglevel error
     npm test
