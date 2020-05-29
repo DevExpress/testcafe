@@ -1,7 +1,3 @@
-variables:
-    name: RETRY_FAILED_TESTS
-    value: true
-
 trigger:
   branches:
     exclude:
@@ -19,6 +15,10 @@ trigger:
     - /package.json
 
 pool: 'BrowserStack agents'
+
+variables:
+    name: RETRY_FAILED_TESTS
+    value: true
 
 steps:
 - bash: |
