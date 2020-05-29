@@ -1,3 +1,7 @@
+variables:
+    name: RETRY_FAILED_TESTS
+    value: true
+
 trigger:
   branches:
     exclude:
@@ -31,7 +35,6 @@ steps:
     versionSpec: '10.x'
 
 - bash: |
-    export RETRY_FAILED_TESTS=true
     npm install --no-progress --loglevel error
     npm test
   displayName: 'Run tests'
