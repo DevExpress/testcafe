@@ -181,7 +181,7 @@
     "markdownlint": "^0.19.0",
     "merge-stream": "^1.0.1",
     "minimist": "^1.2.0",
-    "mocha-reporter-spec-with-retries": "0.0.4",
+    "mocha-reporter-spec-with-retries": "0.0.5",
     "multer": "^1.1.0",
     "npm-auditor": "^1.1.1",
     "open": "^6.4.0",
