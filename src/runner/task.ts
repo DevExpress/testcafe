@@ -2,67 +2,61 @@ import { pull as remove, groupBy } from 'lodash';
 import moment from 'moment';
 import AsyncEventEmitter from '../utils/async-event-emitter';
 import BrowserJob from './browser-job';
-import Screenshots from '../screenshots';
-import WarningLog from '../notifications/warning-log';
-import FixtureHookController from './fixture-hook-controller';
 import * as clientScriptsRouting from '../custom-client-scripts/routing';
 import Videos from '../video-recorder/videos';
 import TestRun from '../test-run';
 import { Proxy } from 'testcafe-hammerhead';
-import { Dictionary } from '../configuration/interfaces';
-import { ActionEventArg, ReportedTestStructureItem } from './interfaces';
-import BrowserConnection from '../browser/connection';
+import {
+    ActionEventArg,
+    ReportedTestStructureItem,
+    RuntimeResources
+} from './interfaces';
 import Test from '../api/structure/test';
 import { VideoOptions } from '../video-recorder/interfaces';
+import TestCafeConfiguration from '../configuration/testcafe-configuration';
+import BrowserSet from './browser-set';
+import Screenshots from '../screenshots';
+import WarningLog from '../notifications/warning-log';
 
 export default class Task extends AsyncEventEmitter {
     private readonly _timeStamp: moment.Moment;
     private _running: boolean;
-    public browserConnectionGroups: BrowserConnection[][];
-    public readonly tests: Test[];
-    public readonly opts: Dictionary<OptionValue>;
+    private readonly _runnableConfiguration: RuntimeResources;
+    public readonly configuration: TestCafeConfiguration;
     private readonly _proxy: Proxy;
-    public readonly warningLog: WarningLog;
-    public readonly screenshots: Screenshots;
-    public readonly fixtureHookController: FixtureHookController;
     private readonly _pendingBrowserJobs: BrowserJob[];
     private readonly _clientScriptRoutes: string[];
     public readonly testStructure: ReportedTestStructureItem[];
     public readonly videos?: Videos;
 
-    public constructor (tests: Test[], browserConnectionGroups: BrowserConnection[][], proxy: Proxy, opts: Dictionary<OptionValue>) {
+    public constructor (runnableConfiguration: RuntimeResources, proxy: Proxy, configuration: TestCafeConfiguration) {
         super();
 
-        this._timeStamp              = moment();
-        this._running                = false;
-        this.browserConnectionGroups = browserConnectionGroups;
-        this.tests                   = tests;
-        this.opts                    = opts;
-        this._proxy                  = proxy;
-        this.warningLog              = new WarningLog();
+        this._timeStamp             = moment();
+        this._running               = false;
+        this._runnableConfiguration = runnableConfiguration;
+        this.configuration          = configuration;
+        this._proxy                 = proxy;
+        this._pendingBrowserJobs    = runnableConfiguration.browserJobs.map(job => this._assignBrowserJobEventHandlers(job));
+        this._clientScriptRoutes    = clientScriptsRouting.register(proxy, this.tests);
+        this.testStructure          = this._prepareTestStructure(this.tests);
+        this.videos                 = this._initializeVideos();
 
-        const { path, pathPattern, fullPage } = this.opts.screenshots as ScreenshotOptionValue;
-
-        this.screenshots = new Screenshots({
-            enabled: !this.opts.disableScreenshots,
-            path,
-            pathPattern,
-            fullPage
-        });
-
-        this.fixtureHookController = new FixtureHookController(tests, browserConnectionGroups.length);
-        this._pendingBrowserJobs   = this._createBrowserJobs(proxy, this.opts);
-        this._clientScriptRoutes   = clientScriptsRouting.register(proxy, tests);
-        this.testStructure         = this._prepareTestStructure(tests);
-
-        if (this.opts.videoPath) {
-            const { videoPath, videoOptions, videoEncodingOptions } = this.opts;
-
-            this.videos = new Videos(this._pendingBrowserJobs, { videoPath, videoOptions, videoEncodingOptions } as unknown as VideoOptions, this.warningLog, this._timeStamp);
-        }
     }
 
-    private _assignBrowserJobEventHandlers (job: BrowserJob): void {
+    private _initializeVideos (): Videos | undefined {
+        const videoPath = this.configuration.getVideoPathOption();
+
+        if (!videoPath)
+            return void 0;
+
+        const videoOptions         = this.configuration.getVideoOption();
+        const videoEncodingOptions = this.configuration.getVideoEncodingOption();
+
+        return new Videos(this._pendingBrowserJobs, { videoPath, videoOptions, videoEncodingOptions } as unknown as VideoOptions, this.warningLog, this._timeStamp);
+    }
+
+    private _assignBrowserJobEventHandlers (job: BrowserJob): BrowserJob {
         job.on('test-run-start', async (testRun: TestRun) => {
             await this.emit('test-run-start', testRun);
         });
@@ -70,7 +64,7 @@ export default class Task extends AsyncEventEmitter {
         job.on('test-run-done', async (testRun: TestRun) => {
             await this.emit('test-run-done', testRun);
 
-            if (this.opts.stopOnFirstFail && testRun.errs.length) {
+            if (this.configuration.getStopOnFirstFailOption() && testRun.errs.length) {
                 this.abort();
 
                 await this.emit('done');
@@ -101,6 +95,7 @@ export default class Task extends AsyncEventEmitter {
             await this.emit('test-action-done', args);
         });
 
+        return job;
     }
 
     private _prepareTestStructure (tests: Test[]): ReportedTestStructureItem[] {
@@ -126,19 +121,24 @@ export default class Task extends AsyncEventEmitter {
         });
     }
 
-    private _createBrowserJobs (proxy: Proxy, opts: Dictionary<OptionValue>): BrowserJob[] {
-        return this.browserConnectionGroups.map(browserConnectionGroup => {
-            const job = new BrowserJob(this.tests, browserConnectionGroup, proxy, this.screenshots, this.warningLog, this.fixtureHookController, opts);
-
-            this._assignBrowserJobEventHandlers(job);
-            browserConnectionGroup.map(bc => bc.addJob(job));
-
-            return job;
-        });
-    }
-
     public unRegisterClientScriptRouting (): void {
         clientScriptsRouting.unRegister(this._proxy, this._clientScriptRoutes);
+    }
+
+    public get browserSet (): BrowserSet {
+        return this._runnableConfiguration.browserSet;
+    }
+
+    public get tests (): Test[] {
+        return this._runnableConfiguration.tests;
+    }
+
+    public get screenshots (): Screenshots {
+        return this._runnableConfiguration.screenshots;
+    }
+
+    public get warningLog (): WarningLog {
+        return this._runnableConfiguration.warningLog;
     }
 
     // API

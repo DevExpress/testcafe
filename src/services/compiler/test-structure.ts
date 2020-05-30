@@ -1,7 +1,9 @@
 import { uniq, keyBy } from 'lodash';
 import { TEST_FUNCTION_PROPERTIES } from './protocol';
 
-import { Fixture, Test, TestFile } from '../../api/structure/interfaces';
+import Test from '../../api/structure/test';
+import Fixture from '../../api/structure/fixture';
+import TestFile from '../../api/structure/test-file';
 import * as unitTypes from '../../api/structure/unit-types';
 
 
@@ -80,6 +82,7 @@ export function serialize (units: Units): Units {
     const result: Units = {};
 
     for (const unit of Object.values(units)) {
+        //@ts-ignore
         const copy: Unit = { ...unit };
 
         replaceTestFunctions(copy);

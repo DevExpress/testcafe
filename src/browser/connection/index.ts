@@ -63,6 +63,7 @@ export default class BrowserConnection extends EventEmitter {
     public readonly idleUrl: string;
     private forcedIdleUrl: string;
     private readonly initScriptUrl: string;
+    private readonly setupWindowUrl: string;
     private readonly heartbeatRelativeUrl: string;
     private readonly statusRelativeUrl: string;
     private readonly statusDoneRelativeUrl: string;
@@ -101,10 +102,11 @@ export default class BrowserConnection extends EventEmitter {
         this.pendingTestRunUrl    = null;
         this.allowMultipleWindows = allowMultipleWindows;
 
-        this.url           = `${gateway.domain}/browser/connect/${this.id}`;
-        this.idleUrl       = `${gateway.domain}/browser/idle/${this.id}`;
-        this.forcedIdleUrl = `${gateway.domain}/browser/idle-forced/${this.id}`;
-        this.initScriptUrl = `${gateway.domain}/browser/init-script/${this.id}`;
+        this.url            = `${gateway.domain}/browser/connect/${this.id}`;
+        this.idleUrl        = `${gateway.domain}/browser/idle/${this.id}`;
+        this.forcedIdleUrl  = `${gateway.domain}/browser/idle-forced/${this.id}`;
+        this.initScriptUrl  = `${gateway.domain}/browser/init-script/${this.id}`;
+        this.setupWindowUrl = `${gateway.domain}/browser/set-up-window/${this.id}`;
 
         this.heartbeatRelativeUrl  = `/browser/heartbeat/${this.id}`;
         this.statusRelativeUrl     = `/browser/status/${this.id}`;
@@ -187,7 +189,7 @@ export default class BrowserConnection extends EventEmitter {
         }, this.HEARTBEAT_TIMEOUT);
     }
 
-    private async _getTestRunUrl (needPopNext: boolean): Promise<string> {
+    public async getTestRunUrl (needPopNext: boolean): Promise<string> {
         if (needPopNext || !this.pendingTestRunUrl)
             this.pendingTestRunUrl = await this._popNextTestRunUrl();
 
@@ -404,7 +406,7 @@ export default class BrowserConnection extends EventEmitter {
         }
 
         if (this.status === BrowserConnectionStatus.opened) {
-            const testRunUrl = await this._getTestRunUrl(isTestDone || this.testRunAborted);
+            const testRunUrl = await this.getTestRunUrl(isTestDone || this.testRunAborted);
 
             this.testRunAborted = false;
 
@@ -434,5 +436,9 @@ export default class BrowserConnection extends EventEmitter {
         return this.status === BrowserConnectionStatus.ready ||
             this.status === BrowserConnectionStatus.opened ||
             this.status === BrowserConnectionStatus.closing;
+    }
+
+    public async setUpBrowserWindow (): Promise<void> {
+        return this.provider.setUpBrowserWindow(this.id);
     }
 }

@@ -129,7 +129,7 @@ const EMPTY_COMMAND_EVENT              = 'empty-command-event';
 const CHILD_WINDOW_CLOSED_EVENT        = 'child-window-closed';
 
 export default class Driver extends serviceUtils.EventEmitter {
-    constructor (testRunId, communicationUrls, runInfo, options) {
+    constructor (testRunId, browserId, communicationUrls, runInfo, options) {
         super();
 
         this.COMMAND_EXECUTING_FLAG        = 'testcafe|driver|command-executing-flag';
@@ -137,10 +137,13 @@ export default class Driver extends serviceUtils.EventEmitter {
         this.PENDING_WINDOW_SWITCHING_FLAG = 'testcafe|driver|pending-window-switching-flag';
 
         this.testRunId                  = testRunId;
+        this.browserId                  = browserId;
         this.heartbeatUrl               = communicationUrls.heartbeat;
         this.browserStatusUrl           = communicationUrls.status;
         this.browserStatusDoneUrl       = communicationUrls.statusDone;
         this.browserActiveWindowId      = communicationUrls.activeWindowId;
+        this.initScriptUrl              = communicationUrls.initScriptUrl;
+        this.setupWindowUrl             = communicationUrls.setupWindowUrl;
         this.userAgent                  = runInfo.userAgent;
         this.fixtureName                = runInfo.fixtureName;
         this.testName                   = runInfo.testName;
@@ -173,6 +176,9 @@ export default class Driver extends serviceUtils.EventEmitter {
 
         if (options.retryTestPages)
             browser.enableRetryingTestPages();
+
+        browser.startHeartbeat(this.heartbeatUrl, hammerhead.createNativeXHR);
+        browser.startInitScriptExecution(this.initScriptUrl, hammerhead.createNativeXHR);
 
         this.pageInitialRequestBarrier = new RequestBarrier();
 
@@ -1389,13 +1395,21 @@ export default class Driver extends serviceUtils.EventEmitter {
         this.speed = this.initialSpeed;
 
         this._initConsoleMessages();
+        this._setDocumentTitle();
+    }
+
+    _setDocumentTitle () {
+        const title = `[${this.browserId}]`;
+
+        domUtils.setDocumentTitle(document, title);
     }
 
     _doFirstPageLoadSetup () {
         if (this.isFirstPageLoad && this.canUseDefaultWindowActions) {
-            // Stub: perform initial setup of the test first page
-
-            return Promise.resolve();
+            return browser.sendXHR(this.setupWindowUrl, hammerhead.createNativeXHR, { method: 'POST' })
+                .then(() => {
+                    browser.stopInitScriptExecution();
+                });
         }
 
         return Promise.resolve();

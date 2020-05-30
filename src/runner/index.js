@@ -30,7 +30,7 @@ export default class Runner extends EventEmitter {
         super();
 
         this.proxy               = proxy;
-        this.bootstrapper        = this._createBootstrapper(browserConnectionGateway, compilerService);
+        this.bootstrapper        = new Bootstrapper(proxy, browserConnectionGateway, configuration, compilerService);
         this.pendingTaskPromises = [];
         this.configuration       = configuration;
         this.isCli               = false;
@@ -41,10 +41,6 @@ export default class Runner extends EventEmitter {
             OPTION_NAMES.reporter,
             OPTION_NAMES.clientScripts
         ]);
-    }
-
-    _createBootstrapper (browserConnectionGateway, compilerService) {
-        return new Bootstrapper(browserConnectionGateway, compilerService);
     }
 
     _disposeBrowserSet (browserSet) {
@@ -105,14 +101,14 @@ export default class Runner extends EventEmitter {
     _getFailedTestCount (task, reporter) {
         let failedTestCount = reporter.testCount - reporter.passed;
 
-        if (task.opts.stopOnFirstFail && !!failedTestCount)
+        if (task.configuration.getStopOnFirstFailOption() && !!failedTestCount)
             failedTestCount = 1;
 
         return failedTestCount;
     }
 
     async _getTaskResult (task, browserSet, reporters, testedApp) {
-        if (!task.opts.live) {
+        if (!task.configuration.getLiveOption()) {
             task.on('browser-job-done', job => {
                 job.browserConnections.forEach(bc => browserSet.releaseConnection(bc));
             });
@@ -152,19 +148,17 @@ export default class Runner extends EventEmitter {
         return this._getFailedTestCount(task, reporters[0]);
     }
 
-    _createTask (tests, browserConnectionGroups, proxy, opts) {
-        return new Task(tests, browserConnectionGroups, proxy, opts);
-    }
+    _runTask (runnableConfiguration) {
+        const { browserSet, testedApp, reporterPlugins } = runnableConfiguration;
 
-    _runTask (reporterPlugins, browserSet, tests, testedApp) {
-        const task              = this._createTask(tests, browserSet.browserConnectionGroups, this.proxy, this.configuration.getOptions());
+        const task              = new Task(runnableConfiguration, this.proxy, this.configuration);
         const reporters         = reporterPlugins.map(reporter => new Reporter(reporter.plugin, task, reporter.outStream, reporter.name));
         const completionPromise = this._getTaskResult(task, browserSet, reporters, testedApp);
         let completed           = false;
 
         task.on('start', startHandlingTestErrors);
 
-        if (!this.configuration.getOption(OPTION_NAMES.skipUncaughtErrors)) {
+        if (!this.configuration.getSkipUncaughtErrors()) {
             task.on('test-run-start', addRunningTest);
             task.on('test-run-done', removeRunningTest);
         }
@@ -194,7 +188,7 @@ export default class Runner extends EventEmitter {
     }
 
     _validateDebugLogger () {
-        const debugLogger = this.configuration.getOption(OPTION_NAMES.debugLogger);
+        const debugLogger = this.configuration.getDebugLoggerOption();
 
         const debugLoggerDefinedCorrectly = debugLogger === null || !!debugLogger &&
             ['showBreakpoint', 'hideBreakpoint'].every(method => method in debugLogger && isFunction(debugLogger[method]));
@@ -207,7 +201,7 @@ export default class Runner extends EventEmitter {
     }
 
     _validateSpeedOption () {
-        const speed = this.configuration.getOption(OPTION_NAMES.speed);
+        const speed = this.configuration.getSpeedOption();
 
         if (speed === void 0)
             return;
@@ -217,7 +211,7 @@ export default class Runner extends EventEmitter {
     }
 
     _validateConcurrencyOption () {
-        const concurrency = this.configuration.getOption(OPTION_NAMES.concurrency);
+        const concurrency = this.configuration.getConcurrencyOption();
 
         if (concurrency === void 0)
             return;
@@ -227,7 +221,7 @@ export default class Runner extends EventEmitter {
     }
 
     _validateProxyBypassOption () {
-        let proxyBypass = this.configuration.getOption(OPTION_NAMES.proxyBypass);
+        let proxyBypass = this.configuration.getProxyByPassOption();
 
         if (proxyBypass === void 0)
             return;
@@ -250,10 +244,10 @@ export default class Runner extends EventEmitter {
         let { path, pathPattern } = this.configuration.getOption(OPTION_NAMES.screenshots) || {};
 
         if (!path)
-            path = this.configuration.getOption(OPTION_NAMES.screenshotPath);
+            path = this.configuration.getScreenshotPathOption();
 
         if (!pathPattern)
-            pathPattern = this.configuration.getOption(OPTION_NAMES.screenshotPathPattern);
+            pathPattern = this.configuration.getScreenshotPathPattern();
 
         return { path, pathPattern };
     }
@@ -261,7 +255,7 @@ export default class Runner extends EventEmitter {
     _validateScreenshotOptions () {
         const { path, pathPattern } = this._getScreenshotOptions();
 
-        const disableScreenshots = this.configuration.getOption(OPTION_NAMES.disableScreenshots) || !path;
+        const disableScreenshots = this.configuration.getDisableScreenshotsOption() || !path;
 
         this.configuration.mergeOptions({ [OPTION_NAMES.disableScreenshots]: disableScreenshots });
 
@@ -282,10 +276,10 @@ export default class Runner extends EventEmitter {
     }
 
     async _validateVideoOptions () {
-        const videoPath            = this.configuration.getOption(OPTION_NAMES.videoPath);
-        const videoEncodingOptions = this.configuration.getOption(OPTION_NAMES.videoEncodingOptions);
+        const videoPath            = this.configuration.getVideoPathOption();
+        const videoEncodingOptions = this.configuration.getVideoEncodingOption();
 
-        let videoOptions = this.configuration.getOption(OPTION_NAMES.videoOptions);
+        let videoOptions = this.configuration.getVideoOption();
 
         if (!videoPath) {
             if (videoOptions || videoEncodingOptions)
@@ -339,7 +333,7 @@ export default class Runner extends EventEmitter {
     }
 
     _validateAllowMultipleWindowsOption (tests, browserSet) {
-        const allowMultipleWindows = this.configuration.getOption(OPTION_NAMES.allowMultipleWindows);
+        const allowMultipleWindows = this.configuration.getAllowMultipleWindowsOption();
 
         if (!allowMultipleWindows)
             return;
@@ -363,22 +357,6 @@ export default class Runner extends EventEmitter {
 
         if (forbiddenCharsList.length)
             throw new GeneralError(RUNTIME_ERRORS.forbiddenCharatersInScreenshotPath, screenshotPath, pathType, renderForbiddenCharsList(forbiddenCharsList));
-    }
-
-    _setBootstrapperOptions () {
-        this.configuration.prepare();
-        this.configuration.notifyAboutOverriddenOptions();
-
-        this.bootstrapper.sources              = this.configuration.getOption(OPTION_NAMES.src) || this.bootstrapper.sources;
-        this.bootstrapper.browsers             = this.configuration.getOption(OPTION_NAMES.browsers) || this.bootstrapper.browsers;
-        this.bootstrapper.concurrency          = this.configuration.getOption(OPTION_NAMES.concurrency);
-        this.bootstrapper.appCommand           = this.configuration.getOption(OPTION_NAMES.appCommand) || this.bootstrapper.appCommand;
-        this.bootstrapper.appInitDelay         = this.configuration.getOption(OPTION_NAMES.appInitDelay);
-        this.bootstrapper.filter               = this.configuration.getOption(OPTION_NAMES.filter) || this.bootstrapper.filter;
-        this.bootstrapper.reporters            = this.configuration.getOption(OPTION_NAMES.reporter) || this.bootstrapper.reporters;
-        this.bootstrapper.tsConfigPath         = this.configuration.getOption(OPTION_NAMES.tsConfigPath);
-        this.bootstrapper.clientScripts        = this.configuration.getOption(OPTION_NAMES.clientScripts) || this.bootstrapper.clientScripts;
-        this.bootstrapper.allowMultipleWindows = this.configuration.getOption(OPTION_NAMES.allowMultipleWindows);
     }
 
     // API
@@ -516,17 +494,20 @@ export default class Runner extends EventEmitter {
     run (options = {}) {
         this.apiMethodWasCalled.reset();
         this.configuration.mergeOptions(options);
-        this._setBootstrapperOptions();
+        this.configuration.prepare();
+        this.configuration.notifyAboutOverriddenOptions();
 
         const runTaskPromise = Promise.resolve()
             .then(() => this._validateRunOptions())
             .then(() => this._createRunnableConfiguration())
-            .then(async ({ reporterPlugins, browserSet, tests, testedApp, commonClientScripts }) => {
+            .then(async runnableConfiguration => {
+                const { tests, commonClientScripts, browserSet } = runnableConfiguration;
+
                 await this._prepareClientScripts(tests, commonClientScripts);
 
                 this._validateAllowMultipleWindowsOption(tests, browserSet);
 
-                return this._runTask(reporterPlugins, browserSet, tests, testedApp);
+                return this._runTask(runnableConfiguration);
             });
 
         return this._createCancelablePromise(runTaskPromise);

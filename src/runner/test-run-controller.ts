@@ -9,9 +9,10 @@ import Test from '../api/structure/test';
 import Screenshots from '../screenshots';
 import WarningLog from '../notifications/warning-log';
 import FixtureHookController from './fixture-hook-controller';
-import { Dictionary } from '../configuration/interfaces';
 import { ActionEventArg } from './interfaces';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
+import TestCafeConfiguration from '../configuration/testcafe-configuration';
+import OPTION_NAMES from '../configuration/option-names';
 
 const QUARANTINE_THRESHOLD = 3;
 const DISCONNECT_THRESHOLD = 3;
@@ -76,37 +77,34 @@ export default class TestRunController extends AsyncEventEmitter {
     private readonly _proxy: Proxy;
     public readonly index: number;
     public test: Test;
-    private readonly _opts: Dictionary<OptionValue>;
     private _screenshots: Screenshots;
+    private _configuration: TestCafeConfiguration;
     private readonly _warningLog: WarningLog;
     private readonly _fixtureHookController: FixtureHookController;
     private readonly _testRunCtor: LegacyTestRun['constructor'] | TestRun['constructor'];
     public testRun: null | LegacyTestRun | TestRun;
     public done: boolean;
 
-    public constructor (test: Test, index: number, proxy: Proxy, screenshots: Screenshots, warningLog: WarningLog, fixtureHookController: FixtureHookController, opts: Dictionary<OptionValue>) {
+    public constructor (test: Test, index: number, proxy: Proxy, screenshots: Screenshots, warningLog: WarningLog, fixtureHookController: FixtureHookController, configuration: TestCafeConfiguration) {
         super();
 
-        this.test  = test;
-        this.index = index;
-        this._opts  = opts;
-
+        this.test                   = test;
+        this.index                  = index;
         this._proxy                 = proxy;
+        this._configuration         = configuration;
         this._screenshots           = screenshots;
         this._warningLog            = warningLog;
         this._fixtureHookController = fixtureHookController;
-
-        this._testRunCtor = TestRunController._getTestRunCtor(test, opts);
-
-        this.testRun             = null;
-        this.done               = false;
-        this._quarantine         = this._opts.quarantineMode ? new Quarantine() : null;
-        this._disconnectionCount = 0;
+        this._testRunCtor           = TestRunController._getTestRunCtor(test, configuration.getOption(OPTION_NAMES.TestRunCtor) as Function);
+        this.testRun                = null;
+        this.done                   = false;
+        this._quarantine            = this._configuration.getOption(OPTION_NAMES.quarantineMode) ? new Quarantine() : null;
+        this._disconnectionCount    = 0;
     }
 
-    private static _getTestRunCtor (test: Test, opts: Dictionary<OptionValue>): LegacyTestRun | TestRun {
-        if (opts.TestRunCtor)
-            return opts.TestRunCtor;
+    private static _getTestRunCtor (test: Test, TestRunCtor: Function): LegacyTestRun | TestRun {
+        if (TestRunCtor)
+            return TestRunCtor;
 
         return (test as LegacyTestRun).isLegacy ? LegacyTestRun : TestRun;
     }
@@ -115,7 +113,7 @@ export default class TestRunController extends AsyncEventEmitter {
         const screenshotCapturer = this._screenshots.createCapturerFor(this.test, this.index, this._quarantine, connection, this._warningLog);
         const TestRunCtor        = this._testRunCtor;
 
-        this.testRun = new TestRunCtor(this.test, connection, screenshotCapturer, this._warningLog, this._opts);
+        this.testRun = new TestRunCtor(this.test, connection, screenshotCapturer, this._warningLog, this._configuration.getOptions());
 
         this._screenshots.addTestRun(this.test, this.testRun);
 

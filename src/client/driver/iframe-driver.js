@@ -9,8 +9,8 @@ import { TYPE as MESSAGE_TYPE } from './driver-link/messages';
 import IframeNativeDialogTracker from './native-dialog-tracker/iframe';
 
 export default class IframeDriver extends Driver {
-    constructor (testRunId, options) {
-        super(testRunId, {}, {}, options);
+    constructor (testRunId, browserId, options) {
+        super(testRunId, browserId, {}, {}, options);
 
         this.lastParentDriverMessageId = null;
         this.parentDriverLink          = new ParentIframeDriverLink(window.parent);

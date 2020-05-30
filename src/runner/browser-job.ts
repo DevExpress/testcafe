@@ -8,8 +8,8 @@ import Test from '../api/structure/test';
 import Screenshots from '../screenshots';
 import WarningLog from '../notifications/warning-log';
 import FixtureHookController from './fixture-hook-controller';
-import { Dictionary } from '../configuration/interfaces';
 import BrowserJobResult from './browser-job-result';
+import TestCafeConfiguration from '../configuration/testcafe-configuration';
 
 interface BrowserJobResultInfo {
     status: BrowserJobResult;
@@ -20,34 +20,32 @@ export default class BrowserJob extends AsyncEventEmitter {
     private _started: boolean;
     private _total: number;
     private _passed: number;
-    private readonly _opts: Dictionary<OptionValue>;
     private readonly _proxy: Proxy;
     public readonly browserConnections: BrowserConnection[];
     private readonly _screenshots: Screenshots;
     public readonly warningLog: WarningLog;
-    public readonly fixtureHookController: FixtureHookController;
+    public fixtureHookController: FixtureHookController | null;
     private _result: BrowserJobResultInfo | null;
-    private readonly _testRunControllerQueue: TestRunController[];
+    private _testRunControllerQueue: TestRunController[];
     private readonly _reportsPending: TestRunController[];
     private readonly _connectionErrorListener: (error: Error) => void;
     private readonly _completionQueue: TestRunController[];
+    private readonly _configuration: TestCafeConfiguration;
 
-    public constructor (tests: Test[], browserConnections: BrowserConnection[], proxy: Proxy, screenshots: Screenshots, warningLog: WarningLog, fixtureHookController: FixtureHookController, opts: Dictionary<OptionValue>) {
+    public constructor (browserConnections: BrowserConnection[], proxy: Proxy, screenshots: Screenshots, warningLog: WarningLog, configuration: TestCafeConfiguration) {
         super();
 
-        this._started = false;
-
-        this._total                = 0;
-        this._passed               = 0;
-        this._opts                 = opts;
-        this._proxy                = proxy;
-        this.browserConnections    = browserConnections;
-        this._screenshots          = screenshots;
-        this.warningLog            = warningLog;
-        this.fixtureHookController = fixtureHookController;
-        this._result               = null;
-
-        this._testRunControllerQueue = tests.map((test, index) => this._createTestRunController(test, index));
+        this._started                = false;
+        this._total                  = 0;
+        this._passed                 = 0;
+        this._proxy                  = proxy;
+        this.browserConnections      = browserConnections;
+        this._screenshots            = screenshots;
+        this.warningLog              = warningLog;
+        this.fixtureHookController   = null;
+        this._result                 = null;
+        this._configuration          = configuration;
+        this._testRunControllerQueue = [];
 
         this._completionQueue = [];
         this._reportsPending  = [];
@@ -59,7 +57,7 @@ export default class BrowserJob extends AsyncEventEmitter {
 
     private _createTestRunController (test: Test, index: number): TestRunController {
         const testRunController = new TestRunController(test, index + 1, this._proxy, this._screenshots, this.warningLog,
-            this.fixtureHookController, this._opts);
+            this.fixtureHookController as FixtureHookController, this._configuration);
 
         testRunController.on('test-run-create', async testRunInfo => {
             await this.emit('test-run-create', testRunInfo);
@@ -126,7 +124,7 @@ export default class BrowserJob extends AsyncEventEmitter {
         }
 
         if (!this._completionQueue.length && !this.hasQueuedTestRuns) {
-            if (!this._opts.live)
+            if (!this._configuration.getLiveOption())
                 SessionController.closeSession(testRunController.testRun);
 
             this
@@ -144,9 +142,9 @@ export default class BrowserJob extends AsyncEventEmitter {
         while (this._testRunControllerQueue.length) {
             // NOTE: before hook for test run fixture is currently
             // executing, so test run is temporary blocked
-            const testRunController         = this._testRunControllerQueue[0];
+            const testRunController         = (this._testRunControllerQueue as TestRunController[])[0];
             const isBlocked                 = testRunController.blocked;
-            const isConcurrency             = this._opts.concurrency as number > 1;
+            const isConcurrency             = this._configuration.getConcurrencyOption() > 1;
             const hasIncompleteTestRuns     = this._completionQueue.some(controller => !controller.done);
             const needWaitLastTestInFixture = this._reportsPending.some(controller => controller.test.fixture !== testRunController.test.fixture);
 
@@ -154,7 +152,7 @@ export default class BrowserJob extends AsyncEventEmitter {
                 break;
 
             this._reportsPending.push(testRunController);
-            this._testRunControllerQueue.shift();
+            (this._testRunControllerQueue as TestRunController[]).shift();
             this._addToCompletionQueue(testRunController);
 
             if (!this._started) {
@@ -176,5 +174,10 @@ export default class BrowserJob extends AsyncEventEmitter {
         this.clearListeners();
         this._setResult(BrowserJobResult.aborted);
         this.browserConnections.map(bc => bc.removeJob(this));
+    }
+
+    public init (tests: Test[], browserConnectionGroupsLength: number): void {
+        this.fixtureHookController   = new FixtureHookController(tests, browserConnectionGroupsLength);
+        this._testRunControllerQueue = tests.map((test, index) => this._createTestRunController(test, index));
     }
 }

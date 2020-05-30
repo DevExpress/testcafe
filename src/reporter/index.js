@@ -9,12 +9,12 @@ export default class Reporter {
         this.task   = task;
 
         this.disposed        = false;
+        this.testCount       = 0;
         this.passed          = 0;
         this.failed          = 0;
         this.skipped         = 0;
-        this.testCount       = task.tests.filter(test => !test.skip).length;
-        this.reportQueue     = Reporter._createReportQueue(task);
-        this.stopOnFirstFail = task.opts.stopOnFirstFail;
+        this.reportQueue     = [];
+        this.stopOnFirstFail = task.configuration.getStopOnFirstFailOption();
         this.outStream       = outStream;
 
         this.pendingTaskDonePromise = Reporter._createPendingPromise();
@@ -59,24 +59,46 @@ export default class Reporter {
         };
     }
 
-    static _createReportQueue (task) {
-        const runsPerTest = task.browserConnectionGroups.length;
+    static _createTestRunInfo (reportItem) {
+        const {
+            warnings,
+            unstable,
+            screenshotPath,
+            screenshots,
+            videos,
+            quarantine
+        } = reportItem;
 
-        return task.tests.map(test => Reporter._createReportItem(test, runsPerTest));
+        return {
+            errs:       sortBy(reportItem.errs, ['userAgent', 'code']),
+            skipped:    reportItem.test.skip,
+            durationMs: new Date() - reportItem.startTime,
+            warnings,
+            unstable,
+            screenshotPath,
+            screenshots,
+            videos,
+            quarantine
+        };
     }
 
-    static _createTestRunInfo (reportItem) {
-        return {
-            errs:           sortBy(reportItem.errs, ['userAgent', 'code']),
-            warnings:       reportItem.warnings,
-            durationMs:     new Date() - reportItem.startTime,
-            unstable:       reportItem.unstable,
-            screenshotPath: reportItem.screenshotPath,
-            screenshots:    reportItem.screenshots,
-            videos:         reportItem.videos,
-            quarantine:     reportItem.quarantine,
-            skipped:        reportItem.test.skip
-        };
+    static _getUserAgents (task) {
+        return task.browserSet.browserConnectionGroups
+            .map(group => group[0].userAgent);
+    }
+
+    static _getRunsPerTest (task) {
+        return task.browserSet.browserConnectionGroups.length;
+    }
+
+    static _getExecutedTestCount (task) {
+        return task.tests.filter(test => !test.skip).length;
+    }
+
+    _initReportQueue (task) {
+        const runsPerTest = Reporter._getRunsPerTest(task);
+
+        this.reportQueue = task.tests.map(test => Reporter._createReportItem(test, runsPerTest));
     }
 
     _getReportItemForTestRun (testRun) {
@@ -168,11 +190,15 @@ export default class Reporter {
         const task = this.task;
 
         task.once('start', async () => {
-            const startTime  = new Date();
-            const userAgents = task.browserConnectionGroups.map(group => group[0].userAgent);
-            const first      = this.reportQueue[0];
+            this._initReportQueue(task);
+
+            this.testCount = Reporter._getExecutedTestCount(task);
+
+            const startTime      = new Date();
+            const userAgents     = Reporter._getUserAgents(task);
+            const first          = this.reportQueue[0];
             const taskProperties = {
-                configuration: task.opts
+                configuration: task.configuration.getOptions()
             };
 
             await this.plugin.reportTaskStart(startTime, userAgents, this.testCount, task.testStructure, taskProperties);

@@ -516,3 +516,11 @@ export function contains (element, target) {
 
     return !!findParent(target, true, node => node === element);
 }
+
+export function setDocumentTitle (document, title) {
+    hammerhead.nativeMethods.documentTitleSetter.call(document, title);
+}
+
+export function getDocumentTitle (document) {
+    return hammerhead.nativeMethods.documentTitleGetter.call(document);
+}

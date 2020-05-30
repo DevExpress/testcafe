@@ -19,6 +19,8 @@
     var browserStatusUrl           = origin + {{{browserStatusRelativeUrl}}};
     var browserStatusDoneUrl       = origin + {{{browserStatusDoneRelativeUrl}}};
     var browserActiveWindowIdUrl   = origin + {{{browserActiveWindowIdUrl}}};
+    var browserInitScriptUrl       = {{{browserInitScriptUrl}}};
+    var browserSetupWindowUrl      = {{{browserSetupWindowUrl}}};
     var skipJsErrors               = {{{skipJsErrors}}};
     var dialogHandler              = {{{dialogHandler}}};
     var userAgent                  = {{{userAgent}}};
@@ -27,8 +29,12 @@
     var canUseDefaultWindowActions = {{{canUseDefaultWindowActions}}};
 
     var ClientDriver = window['%testCafeDriver%'];
-    var driver       = new ClientDriver(testRunId,
-        { heartbeat: browserHeartbeatUrl, status: browserStatusUrl, statusDone: browserStatusDoneUrl, activeWindowId: browserActiveWindowIdUrl },
+    var driver       = new ClientDriver(testRunId, browserId,
+        {
+          heartbeat: browserHeartbeatUrl, status: browserStatusUrl, statusDone: browserStatusDoneUrl,
+          activeWindowId: browserActiveWindowIdUrl, initScriptUrl: browserInitScriptUrl,
+          setupWindowUrl: browserSetupWindowUrl
+        },
         { userAgent: userAgent, fixtureName: fixtureName, testName: testName },
         {
             selectorTimeout:            selectorTimeout,

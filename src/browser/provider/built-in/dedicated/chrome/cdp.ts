@@ -75,8 +75,6 @@ async function setEmulation (runtimeInfo: RuntimeInfo): Promise<void> {
         if (client.Emulation.setTouchEmulationEnabled)
             await client.Emulation.setTouchEmulationEnabled(touchConfig);
     }
-
-    await resizeWindow({ width: config.width, height: config.height }, runtimeInfo);
 }
 
 async function enableDownloads ({ client }: RuntimeInfo): Promise<void> {

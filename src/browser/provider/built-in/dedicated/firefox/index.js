@@ -38,6 +38,8 @@ export default {
 
         await startLocalFirefox(pageUrl, runtimeInfo);
 
+        this.openedBrowsers[browserId] = runtimeInfo;
+
         await this.waitForConnectionReady(runtimeInfo.browserId);
 
         if (allowMultipleWindows)
@@ -45,8 +47,6 @@ export default {
 
         if (runtimeInfo.marionettePort)
             runtimeInfo.marionetteClient = await this._createMarionetteClient(runtimeInfo);
-
-        this.openedBrowsers[browserId] = runtimeInfo;
     },
 
     async closeBrowser (browserId) {

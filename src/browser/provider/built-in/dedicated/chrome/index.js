@@ -52,21 +52,29 @@ export default {
 
         await startLocalChrome(pageUrl, runtimeInfo);
 
-        await this.waitForConnectionReady(browserId);
+        this.openedBrowsers[browserId] = runtimeInfo;
 
-        runtimeInfo.viewportSize   = await this.runInitScript(browserId, GET_WINDOW_DIMENSIONS_INFO_SCRIPT);
-        runtimeInfo.activeWindowId = null;
+        await this.waitForConnectionReady(browserId);
 
         if (allowMultipleWindows)
             runtimeInfo.activeWindowId = this.calculateWindowId();
 
         await cdp.createClient(runtimeInfo);
 
-        this.openedBrowsers[browserId] = runtimeInfo;
-
-        await this._ensureWindowIsExpanded(browserId, runtimeInfo.viewportSize);
-
         this._setUserAgentMetaInfoForEmulatingDevice(browserId, runtimeInfo.config);
+    },
+
+    async resizeWindowAfterOpeningBrowser (browserId) {
+        const runtimeInfo = this.openedBrowsers[browserId];
+
+        runtimeInfo.viewportSize = await this.runInitScript(browserId, GET_WINDOW_DIMENSIONS_INFO_SCRIPT);
+
+        const { config, viewportSize } = runtimeInfo;
+
+        if (config.emulation)
+            await cdp.resizeWindow({ width: config.width, height: config.height }, runtimeInfo);
+
+        await this._ensureWindowIsExpanded(browserId, viewportSize);
     },
 
     async closeBrowser (browserId) {

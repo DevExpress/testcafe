@@ -3,13 +3,10 @@ import OS from 'os-family';
 import { dirname } from 'path';
 import makeDir from 'make-dir';
 import BrowserConnection from '../connection';
-import delay from '../../utils/delay';
 import { GET_TITLE_SCRIPT, GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from './utils/client-functions';
 import WARNING_MESSAGE from '../../notifications/warning-message';
 import { Dictionary } from '../../configuration/interfaces';
 import { WindowDimentionsInfo } from '../interfaces';
-
-const BROWSER_OPENING_DELAY = 2000;
 
 const RESIZE_DIFF_SIZE = {
     width:  100,
@@ -135,10 +132,6 @@ export default class BrowserProvider {
 
         await this._ensureLocalBrowserInfo(browserId);
 
-        // NOTE: delay to ensure the window finished the opening
-        await this.plugin.waitForConnectionReady(browserId);
-        await delay(BROWSER_OPENING_DELAY);
-
         if (this.localBrowsersInfo[browserId])
             this.localBrowsersInfo[browserId].windowDescriptor = await browserTools.findWindow(browserId);
     }
@@ -246,9 +239,6 @@ export default class BrowserProvider {
 
     public async openBrowser (browserId: string, pageUrl: string, browserName: string, allowMultipleWindows: boolean): Promise<void> {
         await this.plugin.openBrowser(browserId, pageUrl, browserName, allowMultipleWindows);
-
-        if (await this.canUseDefaultWindowActions(browserId))
-            await this._ensureBrowserWindowParameters(browserId);
     }
 
     public async closeBrowser (browserId: string): Promise<void> {
@@ -354,5 +344,12 @@ export default class BrowserProvider {
 
     public setActiveWindowId (browserId: string, val: string): void {
         this.plugin.setActiveWindowId(browserId, val);
+    }
+
+    public async setUpBrowserWindow (browserId: string): Promise<void> {
+        if (this.plugin.resizeWindowAfterOpeningBrowser)
+            await this.plugin.resizeWindowAfterOpeningBrowser(browserId);
+
+        await this._ensureBrowserWindowParameters(browserId);
     }
 }

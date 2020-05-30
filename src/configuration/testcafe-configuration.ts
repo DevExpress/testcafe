@@ -12,16 +12,30 @@ import resolvePathRelativelyCwd from '../utils/resolve-path-relatively-cwd';
 import {
     DEFAULT_APP_INIT_DELAY,
     DEFAULT_CONCURRENCY_VALUE,
+    DEFAULT_DEVELOPMENT_MODE,
+    DEFAULT_REPORTER,
+    DEFAULT_RETRY_TEST_PAGES,
+    DEFAULT_SOURCE_DIRECTORIES,
     DEFAULT_SPEED_VALUE,
     DEFAULT_TIMEOUT,
-    DEFAULT_SOURCE_DIRECTORIES,
-    DEFAULT_DEVELOPMENT_MODE,
-    DEFAULT_RETRY_TEST_PAGES,
     STATIC_CONTENT_CACHING_SETTINGS
 } from './default-values';
 
 import OptionSource from './option-source';
-import { Dictionary, FilterOption, ReporterOption, StaticContentCachingOptions } from './interfaces';
+import {
+    Dictionary,
+    FilterOption,
+    ReporterOption,
+    StaticContentCachingOptions
+} from './interfaces';
+
+import {
+    BrowserSource,
+    ClientScriptSource,
+    Filter,
+    ReporterSource,
+    TestSource
+} from '../runner/interfaces';
 
 const CONFIGURATION_FILENAME = '.testcaferc.json';
 
@@ -38,7 +52,8 @@ const OPTION_FLAG_NAMES = [
     OPTION_NAMES.disablePageCaching,
     OPTION_NAMES.disablePageReloads,
     OPTION_NAMES.disableScreenshots,
-    OPTION_NAMES.allowMultipleWindows
+    OPTION_NAMES.allowMultipleWindows,
+    OPTION_NAMES.live
 ];
 
 const OPTION_INIT_FLAG_NAMES = [
@@ -194,11 +209,105 @@ export default class TestCafeConfiguration extends Configuration {
         this._ensureOptionWithValue(OPTION_NAMES.src, DEFAULT_SOURCE_DIRECTORIES, OptionSource.Configuration);
         this._ensureOptionWithValue(OPTION_NAMES.developmentMode, DEFAULT_DEVELOPMENT_MODE, OptionSource.Configuration);
         this._ensureOptionWithValue(OPTION_NAMES.retryTestPages, DEFAULT_RETRY_TEST_PAGES, OptionSource.Configuration);
+        this._ensureOptionWithValue(OPTION_NAMES.reporter, [DEFAULT_REPORTER], OptionSource.Configuration);
+        this._ensureOptionWithValue(OPTION_NAMES.clientScripts, [], OptionSource.Configuration);
 
         this._ensureScreenshotPath();
     }
 
     public static get FILENAME (): string {
         return CONFIGURATION_FILENAME;
+    }
+
+    public getSrcOption (): TestSource[] {
+        return this.getOption(OPTION_NAMES.src) as TestSource[];
+    }
+
+    public getTsConfigPathOption (): string {
+        return this.getOption(OPTION_NAMES.tsConfigPath) as string;
+    }
+
+    public getFilterOption (): Filter {
+        return this.getOption(OPTION_NAMES.filter) as Filter;
+    }
+
+    public getBrowsersOption (): BrowserSource[] {
+        return this.getOption(OPTION_NAMES.browsers) as BrowserSource[];
+    }
+
+    public getAllowMultipleWindowsOption (): boolean {
+        return this.getOption(OPTION_NAMES.allowMultipleWindows) as boolean;
+    }
+
+    public getScreenshotsOption (): ScreenshotOptionValue {
+        return this.getOption(OPTION_NAMES.screenshots) as ScreenshotOptionValue;
+    }
+
+    public getDisableScreenshotsOption (): boolean {
+        return this.getOption(OPTION_NAMES.disableScreenshots) as boolean;
+    }
+
+    public getConcurrencyOption (): number {
+        return this.getOption(OPTION_NAMES.concurrency) as number;
+    }
+
+    public getReporterOption (): ReporterSource[] {
+        return this.getOption(OPTION_NAMES.reporter) as ReporterSource[];
+    }
+
+    public getAppCommandOption (): string {
+        return this.getOption(OPTION_NAMES.appCommand) as string;
+    }
+
+    public getAppInitDelayOption (): number {
+        return this.getOption(OPTION_NAMES.appInitDelay) as number;
+    }
+
+    public getClientScriptsOption (): ClientScriptSource[] {
+        return this.getOption(OPTION_NAMES.clientScripts) as ClientScriptSource[];
+    }
+
+    public getLiveOption (): boolean {
+        return this.getOption(OPTION_NAMES.live) as boolean;
+    }
+
+    public getVideoPathOption (): string {
+        return this.getOption(OPTION_NAMES.videoPath) as string;
+    }
+
+    public getVideoOption (): object {
+        return this.getOption(OPTION_NAMES.videoOptions) as object;
+    }
+
+    public getVideoEncodingOption (): object {
+        return this.getOption(OPTION_NAMES.videoEncodingOptions) as object;
+    }
+
+    public getStopOnFirstFailOption (): boolean {
+        return this.getOption(OPTION_NAMES.stopOnFirstFail) as boolean;
+    }
+
+    public getSpeedOption (): number {
+        return this.getOption(OPTION_NAMES.speed) as number;
+    }
+
+    public getProxyByPassOption (): unknown {
+        return this.getOption(OPTION_NAMES.proxyBypass) as unknown;
+    }
+
+    public getScreenshotPathOption (): string {
+        return this.getOption(OPTION_NAMES.screenshotPath) as string;
+    }
+
+    public getScreenshotPathPattern (): string {
+        return this.getOption(OPTION_NAMES.screenshotPathPattern) as string;
+    }
+
+    public getSkipUncaughtErrors (): boolean {
+        return this.getOption(OPTION_NAMES.skipUncaughtErrors) as boolean;
+    }
+
+    public getDebugLoggerOption (): unknown {
+        return this.getOption(OPTION_NAMES.debugLogger) as unknown;
     }
 }

@@ -60,6 +60,7 @@ describe('Runner', () => {
         browserProviderPool.addProvider('remote', origRemoteBrowserProvider);
 
         connection.close();
+
         return testCafe.close();
     });
 
@@ -941,6 +942,11 @@ describe('Runner', () => {
             }
         };
 
+        const jobMock = {
+            popNextTestRunUrl: async () => 'first tested page url',
+            hasQueuedTestRuns: true
+        };
+
         function taskDone () {
             this._pendingBrowserJobs.forEach(job => {
                 this.emit('browser-job-done', job);
@@ -973,7 +979,11 @@ describe('Runner', () => {
                 setTimeout(taskActionCallback.bind(this), TASK_ACTION_DELAY);
 
                 return this.browserConnectionGroups.map(bcGroup => {
-                    return { browserConnections: bcGroup };
+                    bcGroup.map(bc => bc.addJob(jobMock));
+
+                    jobMock.browserConnections = bcGroup;
+
+                    return jobMock;
                 });
             };
 

@@ -1,4 +1,4 @@
-import path from 'path';
+import { dirname } from 'path';
 import fs from 'fs';
 import isCI from 'is-ci';
 import { flatten, chunk, times } from 'lodash';
@@ -18,31 +18,27 @@ import parseFileList from '../utils/parse-file-list';
 import resolvePathRelativelyCwd from '../utils/resolve-path-relatively-cwd';
 import loadClientScripts from '../custom-client-scripts/load';
 import { getConcatenatedValuesString } from '../utils/string';
-
 import { Writable as WritableStream } from 'stream';
-import ClientScript from '../custom-client-scripts/client-script';
-import ClientScriptInit from '../custom-client-scripts/client-script-init';
 import BrowserProvider from '../browser/provider';
 import BrowserConnectionGateway from '../browser/connection/gateway';
 import { CompilerArguments } from '../compiler/interfaces';
 import CompilerService from '../services/compiler/host';
-import { Metadata, Test } from '../api/structure/interfaces';
+import Test from '../api/structure/test';
+import BrowserJob from './browser-job';
+import { Proxy } from 'testcafe-hammerhead';
+import Screenshots from '../screenshots';
+import WarningLog from '../notifications/warning-log';
+import TestCafeConfiguration from '../configuration/testcafe-configuration';
+import {
+    TestSource,
+    Filter,
+    ReporterPlugin,
+    ReporterPluginSource,
+    BasicRuntimeResources,
+    RuntimeResources, BrowserConnectionRelatedResources
+} from './interfaces';
 
-type TestSource = unknown;
-
-type ReporterPlugin = unknown;
-
-type BrowserSource = BrowserConnection | string;
-
-interface ReporterSource {
-    name: string;
-    output?: string | WritableStream;
-}
-
-interface ReporterPluginSource {
-    plugin: ReporterPlugin;
-    outStream?: WritableStream;
-}
+import { EventEmitter } from 'events';
 
 interface ReporterPluginFactory {
     (): ReporterPlugin;
@@ -50,10 +46,6 @@ interface ReporterPluginFactory {
 
 function isReporterPluginFactory (value: string | Function): value is ReporterPluginFactory {
     return typeof value === 'function';
-}
-
-interface Filter {
-    (testName: string, fixtureName: string, fixturePath: string, testMeta: Metadata, fixtureMeta: Metadata): boolean;
 }
 
 interface BrowserInfo {
@@ -70,17 +62,6 @@ interface PromiseSuccess<T> {
 
 interface PromiseError<E extends Error = Error> {
     error: E;
-}
-
-interface BasicRuntimeResources {
-    browserSet: BrowserSet;
-    tests: Test[];
-    testedApp?: TestedApp;
-}
-
-interface RuntimeResources extends BasicRuntimeResources {
-    reporterPlugins: ReporterPluginSource[];
-    commonClientScripts: ClientScript[];
 }
 
 type PromiseResult<T, E extends Error = Error> = PromiseSuccess<T> | PromiseError<E>;
@@ -100,36 +81,21 @@ type PromiseCollection<T> = {
 
 type ResultCollection<T> = { [P in keyof T]: PromiseResult<T[P]> };
 
-export default class Bootstrapper {
+export default class Bootstrapper extends EventEmitter {
     private readonly browserConnectionGateway: BrowserConnectionGateway;
-
-    public concurrency: number;
-    public sources: TestSource[];
-    public browsers: BrowserSource[];
-    public reporters: ReporterSource[];
-    public filter?: Filter;
-    public appCommand?: string;
-    public appInitDelay?: number;
-    public tsConfigPath?: string;
-    public clientScripts: ClientScriptInit[];
-    public allowMultipleWindows: boolean;
-
+    private readonly proxy: Proxy;
+    private readonly _configuration: TestCafeConfiguration;
     private readonly compilerService?: CompilerService;
 
-    public constructor (browserConnectionGateway: BrowserConnectionGateway, compilerService?: CompilerService) {
-        this.browserConnectionGateway = browserConnectionGateway;
-        this.concurrency              = 1;
-        this.sources                  = [];
-        this.browsers                 = [];
-        this.reporters                = [];
-        this.filter                   = void 0;
-        this.appCommand               = void 0;
-        this.appInitDelay             = void 0;
-        this.tsConfigPath             = void 0;
-        this.clientScripts            = [];
-        this.allowMultipleWindows     = false;
+    public static readonly TESTS_BOOSTRAPPING_DONE_EVENT = 'tests-bootstrapping-done';
 
-        this.compilerService = compilerService;
+    public constructor (proxy: Proxy, browserConnectionGateway: BrowserConnectionGateway, configuration: TestCafeConfiguration, compilerService?: CompilerService) {
+        super();
+
+        this.proxy                    = proxy;
+        this.browserConnectionGateway = browserConnectionGateway;
+        this.compilerService          = compilerService;
+        this._configuration           = configuration;
     }
 
     private static _getBrowserName (browser: BrowserInfoSource): string {
@@ -186,36 +152,91 @@ export default class Bootstrapper {
     }
 
     private async _getBrowserInfo (): Promise<BrowserInfoSource[]> {
-        if (!this.browsers.length)
+        const browsers = this._configuration.getBrowsersOption();
+
+        if (!browsers.length)
             throw new GeneralError(RUNTIME_ERRORS.browserNotSet);
 
-        const browserInfo = await Promise.all(this.browsers.map(browser => browserProviderPool.getBrowserInfo(browser)));
+        const browserInfo = await Promise.all(browsers.map(browser => browserProviderPool.getBrowserInfo(browser)));
 
         return flatten(browserInfo);
     }
 
-    private _createAutomatedConnections (browserInfo: BrowserInfo[]): BrowserConnection[][] {
+    private _createAutomatedConnections (browserInfo: BrowserInfo[], concurrency: number): BrowserConnection[][] {
         if (!browserInfo)
             return [];
 
+        const allowMultipleWindows = this._configuration.getAllowMultipleWindowsOption();
+
         return browserInfo
-            .map(browser => times(this.concurrency, () => new BrowserConnection(this.browserConnectionGateway, browser, false, this.allowMultipleWindows)));
+            .map(browser => times(concurrency, () => new BrowserConnection(this.browserConnectionGateway, browser, false, allowMultipleWindows)));
     }
 
-    private async _getBrowserConnections (browserInfo: BrowserInfoSource[]): Promise<BrowserSet> {
-        const { automated, remotes } = Bootstrapper._splitBrowserInfo(browserInfo);
+    private _createScreenshots (): Screenshots {
+        const screenshotOpts                  = this._configuration.getScreenshotsOption();
+        const disableScreenshots              = this._configuration.getDisableScreenshotsOption();
+        const { path, pathPattern, fullPage } = screenshotOpts;
 
-        if (remotes && remotes.length % this.concurrency)
+        return new Screenshots({
+            enabled: !disableScreenshots,
+            path,
+            pathPattern,
+            fullPage
+        });
+    }
+
+    private async _getBrowserSet (browserInfo: BrowserInfoSource[]): Promise<BrowserSet> {
+        const { automated, remotes } = Bootstrapper._splitBrowserInfo(browserInfo);
+        const concurrency            = this._configuration.getConcurrencyOption();
+
+        if (remotes && remotes.length % concurrency)
             throw new GeneralError(RUNTIME_ERRORS.cannotDivideRemotesCountByConcurrency);
 
-        let browserConnections = this._createAutomatedConnections(automated);
+        const browserConnections = this
+            ._createAutomatedConnections(automated, concurrency)
+            .concat(chunk(remotes, concurrency));
 
-        browserConnections = browserConnections.concat(chunk(remotes, this.concurrency));
+        return BrowserSet.from(browserConnections);
+    }
 
-        return await BrowserSet.from(browserConnections);
+    private _createBrowserJobs (browserSet: BrowserSet, screenshots: Screenshots, warningLog: WarningLog): BrowserJob[] {
+        const browserJobs: BrowserJob[]     = [];
+        const browserConnectionGroupsLength = browserSet.browserConnectionGroups.length;
+
+        browserSet.browserConnectionGroups.map(browserConnectionGroup => {
+            const job = new BrowserJob(browserConnectionGroup, this.proxy, screenshots, warningLog, this._configuration);
+
+            this.on(Bootstrapper.TESTS_BOOSTRAPPING_DONE_EVENT, (tests: Test[]) => {
+                job.init(tests, browserConnectionGroupsLength);
+
+                browserConnectionGroup.map(bc => bc.emit('testsBootstrapped'));
+            });
+
+            browserConnectionGroup.map(bc => bc.addJob(job));
+            browserJobs.push(job);
+        });
+
+        return browserJobs;
+    }
+
+    private async _getBrowserConnectionRelatedResources (browserInfo: BrowserInfoSource[]): Promise<BrowserConnectionRelatedResources> {
+        const browserSet  = await this._getBrowserSet(browserInfo);
+        const screenshots = this._createScreenshots();
+        const warningLog  = new WarningLog();
+        const browserJobs = this._createBrowserJobs(browserSet, screenshots, warningLog);
+
+        return {
+            browserSet,
+            browserJobs,
+            warningLog,
+            screenshots
+        };
     }
 
     private _filterTests (tests: Test[], predicate: Filter): Test[] {
+        if (!predicate)
+            return tests;
+
         return tests.filter(test => predicate(test.name, test.fixture.name, test.fixture.path, test.meta, test.fixture.meta));
     }
 
@@ -233,10 +254,12 @@ export default class Bootstrapper {
 
     private async _getTests (): Promise<Test[]> {
         const cwd                             = process.cwd();
-        const { sourceList, compilerOptions } = await this._getCompilerArguments(cwd);
+        const sources                         = this._configuration.getSrcOption();
+        const tsConfigPath                    = this._configuration.getTsConfigPathOption();
+        const { sourceList, compilerOptions } = await this._getCompilerArguments(cwd, sources, tsConfigPath);
 
         if (!sourceList.length)
-            throw new GeneralError(RUNTIME_ERRORS.testFilesNotFound, getConcatenatedValuesString(this.sources, '\n', ''), cwd);
+            throw new GeneralError(RUNTIME_ERRORS.testFilesNotFound, getConcatenatedValuesString(sources, '\n', ''), cwd);
 
         let tests = await this._compileTests({ sourceList, compilerOptions });
 
@@ -248,21 +271,22 @@ export default class Bootstrapper {
         if (!tests.length)
             throw new GeneralError(RUNTIME_ERRORS.noTestsToRun);
 
-        if (this.filter)
-            tests = this._filterTests(tests, this.filter);
+        tests = this._filterTests(tests, this._configuration.getFilterOption());
 
         if (!tests.length)
             throw new GeneralError(RUNTIME_ERRORS.noTestsToRunDueFiltering);
 
+        this.emit(Bootstrapper.TESTS_BOOSTRAPPING_DONE_EVENT, tests);
+
         return tests;
     }
 
-    private async _getCompilerArguments (cwd: string): Promise<CompilerArguments> {
-        const sourceList = await parseFileList(this.sources, cwd);
+    private async _getCompilerArguments (cwd: string, sources: TestSource[], tsConfigPath: string): Promise<CompilerArguments> {
+        const sourceList = await parseFileList(sources, cwd);
 
         const compilerOptions = {
             typeScriptOptions: {
-                tsConfigPath: this.tsConfigPath
+                tsConfigPath
             }
         };
 
@@ -275,16 +299,9 @@ export default class Bootstrapper {
 
         const fullReporterOutputPath = resolvePathRelativelyCwd(outStream);
 
-        await makeDir(path.dirname(fullReporterOutputPath));
+        await makeDir(dirname(fullReporterOutputPath));
 
         return fs.createWriteStream(fullReporterOutputPath);
-    }
-
-    private static _addDefaultReporter (reporters: ReporterSource[]): void {
-        reporters.push({
-            name:   'spec',
-            output: process.stdout
-        });
     }
 
     private _requireReporterPluginFactory (reporterName: string): ReporterPluginFactory {
@@ -304,10 +321,9 @@ export default class Bootstrapper {
     }
 
     private async _getReporterPlugins (): Promise<ReporterPluginSource[]> {
-        if (!this.reporters.length)
-            Bootstrapper._addDefaultReporter(this.reporters);
+        const reporters = this._configuration.getReporterOption();
 
-        return Promise.all(this.reporters.map(async ({ name, output }) => {
+        return Promise.all(reporters.map(async ({ name, output }) => {
             const pluginFactory = this._getPluginFactory(name);
             const outStream     = output ? await this._ensureOutStream(output) : void 0;
 
@@ -320,12 +336,15 @@ export default class Bootstrapper {
     }
 
     private async _startTestedApp (): Promise<TestedApp|undefined> {
-        if (!this.appCommand)
+        const appCommand   = this._configuration.getAppCommandOption();
+        const appInitDelay = this._configuration.getAppInitDelayOption();
+
+        if (!appCommand)
             return void 0;
 
         const testedApp = new TestedApp();
 
-        await testedApp.start(this.appCommand, this.appInitDelay as number);
+        await testedApp.start(appCommand, appInitDelay as number);
 
         return testedApp;
     }
@@ -338,11 +357,11 @@ export default class Bootstrapper {
     }
 
     private async _bootstrapSequence (browserInfo: BrowserInfoSource[]): Promise<BasicRuntimeResources> {
-        const tests       = await this._getTests();
-        const testedApp   = await this._startTestedApp();
-        const browserSet  = await this._getBrowserConnections(browserInfo);
+        const tests                             = await this._getTests();
+        const testedApp                         = await this._startTestedApp();
+        const browserConnectionRelatedResources = await this._getBrowserConnectionRelatedResources(browserInfo);
 
-        return { tests, testedApp, browserSet };
+        return { tests, testedApp, ...browserConnectionRelatedResources };
     }
 
     private _wrapBootstrappingPromise<T> (promise: Promise<T>): Promise<PromiseResult<T>> {
@@ -381,35 +400,38 @@ export default class Bootstrapper {
 
     private async _bootstrapParallel (browserInfo: BrowserInfoSource[]): Promise<BasicRuntimeResources> {
         const bootstrappingPromises = {
-            browserSet: this._getBrowserConnections(browserInfo),
-            tests:      this._getTests(),
-            app:        this._startTestedApp()
+            browserConnectionRelatedResources: this._getBrowserConnectionRelatedResources(browserInfo),
+            tests:                             this._getTests(),
+            app:                               this._startTestedApp()
         };
 
         const bootstrappingResultPromises = this._getBootstrappingPromises(bootstrappingPromises);
 
         const bootstrappingResults = await Promise.all([
-            bootstrappingResultPromises.browserSet,
+            bootstrappingResultPromises.browserConnectionRelatedResources,
             bootstrappingResultPromises.tests,
             bootstrappingResultPromises.app
         ]);
 
-        const [browserSetResults, testResults, appResults] = bootstrappingResults;
+        const [browserConnectionRelatedResourceResult, testResults, appResults] = bootstrappingResults;
 
-        if (isPromiseError(browserSetResults) || isPromiseError(testResults) || isPromiseError(appResults))
+        if (isPromiseError(browserConnectionRelatedResourceResult) || isPromiseError(testResults) || isPromiseError(appResults)) {
+            //@ts-ignore
             throw await this._getBootstrappingError(...bootstrappingResults);
+        }
 
         return {
-            browserSet: browserSetResults.result,
-            tests:      testResults.result,
-            testedApp:  appResults.result
+            tests:     testResults.result,
+            testedApp: appResults.result,
+            ...browserConnectionRelatedResourceResult.result
         };
     }
 
     // API
     public async createRunnableConfiguration (): Promise<RuntimeResources> {
         const reporterPlugins     = await this._getReporterPlugins();
-        const commonClientScripts = await loadClientScripts(this.clientScripts);
+        const clientScriptSources = this._configuration.getClientScriptsOption();
+        const commonClientScripts = await loadClientScripts(clientScriptSources);
 
         // NOTE: If a user forgot to specify a browser, but has specified a path to tests, the specified path will be
         // considered as the browser argument, and the tests path argument will have the predefined default value.

@@ -82,6 +82,7 @@ export default class BrowserSet extends EventEmitter {
     }
 
     private async _waitConnectionsOpened (): Promise<void> {
+        // TODO: split to waitRemoteConnectionsOpened, waitLocalConnectionsOpened
         const connectionsReadyPromise = Promise.all(
             this._browserConnections
                 .filter(bc => bc.status !== BrowserConnectionStatus.opened)
@@ -111,7 +112,9 @@ export default class BrowserSet extends EventEmitter {
         const prepareConnection = Promise.resolve()
             .then(() => {
                 browserSet._checkForDisconnections();
-                return browserSet._waitConnectionsOpened();
+
+                // Need to waitForRemoteConnectionsOpened here
+                //return browserSet._waitConnectionsOpened();
             })
             .then(() => browserSet);
 

@@ -5,6 +5,7 @@ const createTestCafe          = require('../../lib/');
 const COMMAND                 = require('../../lib/browser/connection/command');
 const browserProviderPool     = require('../../lib/browser/provider/pool');
 const BrowserConnectionStatus = require('../../lib/browser/connection/status');
+const { noop }                = require('lodash');
 
 const promisedRequest = promisify(request);
 
@@ -21,6 +22,11 @@ describe('Browser connection', function () {
         closeBrowser: function () {
             return Promise.resolve();
         }
+    };
+
+    const jobMock = {
+        popNextTestRunUrl: async () => 'first tested page url',
+        hasQueuedTestRuns: true
     };
 
     before(function () {
@@ -50,6 +56,12 @@ describe('Browser connection', function () {
             .createBrowserConnection()
             .then(function (bc) {
                 connection = bc;
+
+                connection.on('ready', () => {
+                    process.nextTick(() => {
+                        connection.addJob(jobMock);
+                    });
+                });
             });
     });
 
@@ -58,10 +70,10 @@ describe('Browser connection', function () {
         connection.close();
     });
 
-    it('Should fire "ready" event and redirect to idle page once established', function () {
+    it('Should fire "ready" event and redirect to idle page once established', () => {
         let eventFired = false;
 
-        connection.on('ready', function () {
+        connection.on('ready', () => {
             eventFired = true;
         });
 
@@ -75,7 +87,7 @@ describe('Browser connection', function () {
         };
 
         return promisedRequest(options)
-            .then(function (res) {
+            .then(res => {
                 expect(eventFired).to.be.true;
                 expect(connection.status).eql(BrowserConnectionStatus.opened);
                 expect(connection.userAgent).eql('Chrome 41.0.2227.1 / macOS 10.10.1');
@@ -84,12 +96,12 @@ describe('Browser connection', function () {
             });
     });
 
-    it('Should respond with error if connection was established twice', function () {
+    it('Should respond with error if connection was established twice', () => {
         return promisedRequest(connection.url)
-            .then(function () {
+            .then(() => {
                 return promisedRequest(connection.url);
             })
-            .then(function (res) {
+            .then(res => {
                 expect(res.statusCode).eql(500);
                 expect(res.body).eql('The connection is already established.');
             });
@@ -116,71 +128,69 @@ describe('Browser connection', function () {
         request(options);
     });
 
-    it('Should provide status', function () {
+    it('Should provide status', () => {
         function createBrowserJobMock (urls) {
             return {
-                popNextTestRunUrl: function () {
-                    const url = urls.shift();
-
-                    return url;
-                },
+                popNextTestRunUrl: () => urls.shift(),
 
                 get hasQueuedTestRuns () {
                     return urls.length;
                 },
 
-                once: function () {
-                    // Do nothing =)
-                },
+                once: noop,
 
-                on: function () {
-                    // Do nothing
-                }
+                on: noop
             };
         }
-
-        connection.addJob(createBrowserJobMock(['1', '2']));
-        connection.addJob(createBrowserJobMock(['3']));
 
         function queryStatus () {
             return promisedRequest(connection.statusDoneUrl);
         }
 
-        return promisedRequest(connection.url)
+        connection.on('ready', () => {
+            process.nextTick(() => {
+                connection.jobQueue.length = 0;
 
+                connection.addJob(createBrowserJobMock(['1', '2']));
+                connection.addJob(createBrowserJobMock(['3']));
+            });
+        });
+
+        return promisedRequest(connection.url)
             .then(queryStatus)
-            .then(function (res) {
+            .then(res => {
                 expect(JSON.parse(res.body)).eql({ cmd: COMMAND.run, url: '1' });
             })
 
             .then(queryStatus)
-            .then(function (res) {
+            .then(res => {
                 expect(JSON.parse(res.body)).eql({ cmd: COMMAND.run, url: '2' });
             })
 
             .then(queryStatus)
-            .then(function (res) {
+            .then(res => {
                 expect(JSON.parse(res.body)).eql({ cmd: COMMAND.run, url: '3' });
             })
 
             .then(queryStatus)
-            .then(function (res) {
+            .then(res => {
                 expect(JSON.parse(res.body)).eql({ cmd: COMMAND.idle, url: connection.idleUrl });
             });
     });
 
-    it('Should respond to the service queries with error if not ready', function () {
+    it('Should respond to the service queries with error if not ready', () => {
         let testCases = [
             connection.heartbeatUrl,
             connection.idleUrl,
             connection.statusUrl
         ];
 
-        testCases = testCases.map(function (url) {
-            return promisedRequest(url).then(function (res) {
-                expect(res.statusCode).eql(500);
-                expect(res.body).eql('The connection is not ready yet.');
-            });
+        testCases = testCases.map(url => {
+            return promisedRequest(url)
+                .then(res => {
+                    expect(res.statusCode).eql(500);
+                    expect(res.body).eql('The connection is not ready yet.');
+                });
         });
 
         return Promise.all(testCases);

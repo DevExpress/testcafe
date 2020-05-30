@@ -49,3 +49,9 @@ export const TYPESCRIPT_BLACKLISTED_OPTIONS = [
     'outFile',
     'out'
 ];
+
+export const DEFAULT_REPORTER = {
+    name:   'spec',
+    output: process.stdout
+};
+

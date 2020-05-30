@@ -5,6 +5,7 @@ import { Proxy } from 'testcafe-hammerhead';
 import { Dictionary } from '../../configuration/interfaces';
 import BrowserConnection from './index';
 import { IncomingMessage, ServerResponse } from 'http';
+import SetupWindowResult from './setup-window-result';
 
 const IDLE_PAGE_SCRIPT = read('../../client/browser/idle-page/index.js');
 const IDLE_PAGE_STYLE  = read('../../client/browser/idle-page/styles.css');
@@ -52,6 +53,7 @@ export default class BrowserConnectionGateway {
         this._dispatch('/browser/init-script/{id}', proxy, BrowserConnectionGateway._onInitScriptResponse, 'POST');
         this._dispatch('/browser/active-window-id/{id}', proxy, BrowserConnectionGateway._onGetActiveWindowIdRequest);
         this._dispatch('/browser/active-window-id/{id}', proxy, BrowserConnectionGateway._onSetActiveWindowIdRequest, 'POST');
+        this._dispatch('/browser/set-up-window/{id}', proxy, BrowserConnectionGateway._onSetupWindow, 'POST');
 
         proxy.GET('/browser/connect', (req: IncomingMessage, res: ServerResponse) => this._connectNextRemoteBrowser(req, res));
         proxy.GET('/browser/connect/', (req: IncomingMessage, res: ServerResponse) => this._connectNextRemoteBrowser(req, res));
@@ -84,7 +86,7 @@ export default class BrowserConnectionGateway {
     }
 
     // Route handlers
-    private static _onConnection (req: IncomingMessage, res: ServerResponse, connection: BrowserConnection): void {
+    private static async _onConnection (req: IncomingMessage, res: ServerResponse, connection: BrowserConnection): Promise<void> {
         if (connection.isReady())
             respond500(res, 'The connection is already established.');
 
@@ -92,7 +94,14 @@ export default class BrowserConnectionGateway {
             const userAgent = req.headers['user-agent'] as string;
 
             connection.establish(userAgent);
-            redirect(res, connection.idleUrl);
+
+            if (connection.permanent)
+                redirect(res, connection.idleUrl);
+            else {
+                const testRunUrl = await connection.getTestRunUrl(true) || connection.idleUrl;
+
+                redirect(res, testRunUrl);
+            }
         }
     }
 
@@ -168,6 +177,14 @@ export default class BrowserConnectionGateway {
 
                 respondWithJSON(res);
             });
+        }
+    }
+
+    private static async _onSetupWindow (req: IncomingMessage, res: ServerResponse, connection: BrowserConnection): Promise<void> {
+        if (BrowserConnectionGateway._ensureConnectionReady(res, connection)) {
+            await connection.setUpBrowserWindow();
+
+            respondWithJSON(res, { result: SetupWindowResult.ok });
         }
     }
 
