@@ -11,7 +11,7 @@ This section lists examples from the [testcafe-examples](https://github.com/DevE
 
 Example | Description
 ------- | ------------
-[Find Element By Trimmed Text](https://github.com/DevExpress/testcafe-examples/tree/master/examples/find-element-by-trimmed-text) | Find a header element with extra space characters by its trimmed text content.
+[Find Element By Trimmed Text](https://github.com/DevExpress/testcafe-examples/tree/master/examples/find-element-by-trimmed-text) | Find a header element with extra space characters by trimmed text content.
 [Use XPath Selectors](https://github.com/DevExpress/testcafe-examples/tree/master/examples/use-xpath-selectors) | Find an input with an XPath selector.
 
 ## Testing the DOM
@@ -20,7 +20,7 @@ Example | Description
 ------- | ------------
 [Access Element Properties](https://github.com/DevExpress/testcafe-examples/tree/master/examples/element-properties) | Access DOM element's properties and verify them with assertions.
 [Iterate Over Table Rows](https://github.com/DevExpress/testcafe-examples/tree/master/examples/iterate-over-table-rows) | Verify cell content for even and odd rows.
-[Test \<select\> Elements](https://github.com/DevExpress/testcafe-examples/tree/master/examples/test-select-elements) | Open a `<select>` element's drop-down, click an item and verify the value.
+[Test \<select\> Elements](https://github.com/DevExpress/testcafe-examples/tree/master/examples/test-select-elements) | Open a `<select>` element's drop-down list, click an item, and verify the value.
 [Page Reload](https://github.com/DevExpress/testcafe-examples/tree/master/examples/page-manipulation) | Execute custom code on the page to obtain data or manipulate the page state.
 
 ## Test Organization
@@ -36,7 +36,7 @@ Example | Description
 Example | Description
 ------- | ------------
 [Inject Custom Client Scripts](https://github.com/DevExpress/testcafe-examples/tree/master/examples/client-scripts) | Inject Node.js modules into the tested webpage.
-[Import Third-Party Modules](https://github.com/DevExpress/testcafe-examples/tree/master/examples/import-third-party-modules) | Import a third-party Node.js module test code.
+[Import Third-Party Modules](https://github.com/DevExpress/testcafe-examples/tree/master/examples/import-third-party-modules) | Import a third-party Node.js module into test code.
 
 ## Browser API Mocks
 
