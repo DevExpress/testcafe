@@ -42,7 +42,7 @@ Example | Description
 
 Example | Description
 ------- | ------------
-[Mock Date](https://github.com/DevExpress/testcafe-examples/tree/master/examples/mock-date) | Use [mockdate](https://www.npmjs.com/package/mockdate) to substitute the current data.
+[Mock Date](https://github.com/DevExpress/testcafe-examples/tree/master/examples/mock-date) | Substitutes current data with [mockdate](https://www.npmjs.com/package/mockdate).
 [Mock Geolocation API](https://github.com/DevExpress/testcafe-examples/tree/master/examples/mock-geolocation-api) | Substitute the location in test code.
 
 ## Wait Mechanisms
