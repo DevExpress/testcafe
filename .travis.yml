@@ -1,36 +1,45 @@
 if: NOT (commit_message =~ /^\[docs\]/)
 
-addons:
- chrome:  stable
- firefox: latest
- apt:
-  packages:
-   - dbus
-
 language: node_js
-matrix:
- include:
-  - node_js: "10"
-    env: GULP_TASK="test-server"
-  - node_js: "stable"
-    env: GULP_TASK="test-server"
-  - node_js: "10"
-    env: GULP_TASK="test-client-travis"
-  - node_js: "10"
-    env: GULP_TASK="test-client-travis-mobile"
-  - node_js: "10"
-    env: GULP_TASK="test-functional-local-headless-chrome"
-  - node_js: "10"
-    env: GULP_TASK="test-functional-local-headless-firefox"
-  - node_js: "10"
-    env: GULP_TASK="test-functional-local-legacy"
-  - node_js: "10"
-    env: GULP_TASK="test-functional-local-compiler-service"
-  - node_js: "10"
-    env: GULP_TASK="test-functional-local-multiple-windows"
-    services:
-      - xvfb
- fast_finish: true
+os: linux
+dist: xenial
+jobs:
+  include:
+    - node_js: "10"
+      env: GULP_TASK="test-server"
+    - node_js: "stable"
+      env: GULP_TASK="test-server"
+    - node_js: "10"
+      env: GULP_TASK="test-client-travis"
+    - node_js: "10"
+      env: GULP_TASK="test-client-travis-mobile"
+    - node_js: "10"
+      env:
+        GULP_TASK="test-functional-local-headless-chrome"
+        RETRY_FAILED_TESTS="true"
+      addons:
+        chrome:  stable
+    - node_js: "10"
+      env:
+        GULP_TASK="test-functional-local-headless-firefox"
+        RETRY_FAILED_TESTS="true"
+      addons:
+        firefox:  latest
+    - node_js: "10"
+      env: GULP_TASK="test-functional-local-legacy"
+      addons:
+        chrome:  stable
+    - node_js: "10"
+      env: GULP_TASK="test-functional-local-compiler-service"
+      addons:
+        chrome:  stable
+    - node_js: "10"
+      env: GULP_TASK="test-functional-local-multiple-windows"
+      addons:
+        chrome:  stable
+      services:
+        - xvfb
+  fast_finish: true
 
 cache:
   directories:
@@ -45,4 +54,4 @@ branches:
     - new-docs
 
 notifications:
- email: false
+  email: false

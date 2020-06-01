@@ -733,7 +733,7 @@ gulp.task('publish-website', gulp.series('build-website-production', 'website-pu
 
 gulp.task('test-docs-travis', gulp.parallel('test-website-travis', 'lint'));
 
-function testFunctional (src, testingEnvironmentName, { allowMultipleWindows, experimentalCompilerService, retry } = {}) {
+function testFunctional (src, testingEnvironmentName, { allowMultipleWindows, experimentalCompilerService } = {}) {
     process.env.TESTING_ENVIRONMENT       = testingEnvironmentName;
     process.env.BROWSERSTACK_USE_AUTOMATE = 1;
 
@@ -763,8 +763,11 @@ function testFunctional (src, testingEnvironmentName, { allowMultipleWindows, ex
         timeout:  typeof v8debug === 'undefined' ? 3 * 60 * 1000 : Infinity // NOTE: disable timeouts in debug
     };
 
-    if (retry)
+    if (process.env.RETRY_FAILED_TESTS === 'true') {
         opts.retries = RETRY_TEST_RUN_COUNT;
+
+        console.log('!!!Retry filed tests'); //eslint-disable-line no-console
+    }
 
     return gulp
         .src(tests)
@@ -772,13 +775,13 @@ function testFunctional (src, testingEnvironmentName, { allowMultipleWindows, ex
 }
 
 gulp.step('test-functional-travis-desktop-osx-and-ms-edge-run', () => {
-    return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers, { retry: true });
+    return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers);
 });
 
 gulp.task('test-functional-travis-desktop-osx-and-ms-edge', gulp.series('prepare-tests', 'test-functional-travis-desktop-osx-and-ms-edge-run'));
 
 gulp.step('test-functional-travis-mobile-run', () => {
-    return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.mobileBrowsers, { retry: true });
+    return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.mobileBrowsers);
 });
 
 gulp.task('test-functional-travis-mobile', gulp.series('prepare-tests', 'test-functional-travis-mobile-run'));
