@@ -49,14 +49,13 @@ The following navigation and action keys are supported:
 
 ## Browser Processing Emulation
 
-When a user presses a key or key combination, the browser dispatches an event that triggers handlers in page code. Most browsers also respond to common keystrokes with their integrated actions (for instance, they select text when you press `Cmd/Ctrl+A` or copy objects to the clipboard when you press `Cmd/Ctrl+C`).
+When a user presses a key or key combination, the browser dispatches an event that triggers handlers in page code. Most browsers also respond to common keystrokes with their integrated actions (for instance, they select text when you press `Cmd/Ctrl+A` or switch focus when you press `Shift+Tab`).
 
-The `t.pressKey` action triggers only page handlers for most keystrokes.
-
-TestCafe Studio emulates browser processing for the following keys and key combinations:
+The `t.pressKey` action triggers only page handlers for most keystrokes. Browser processing is emulated with a limited set of elements:
 
 Shortcut        | Elements
 --------------- | -----------
+`'ctrl+c'`, `'ctrl+v'` | None. Clipboard operations are *not emulated*.
 `'ctrl+a'`      | [text field-based inputs](#text-field-based-inputs), `<textarea>`, `contentEditable`
 `'backspace'`   | [text field-based inputs](#text-field-based-inputs), `<textarea>`, `contentEditable`
 `'delete'`      | [text field-based inputs](#text-field-based-inputs), `<textarea>`, `contentEditable`
