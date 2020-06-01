@@ -286,10 +286,8 @@ $(document).ready(function () {
                     start();
                 });
         });
-    }
 
-    if (!browserUtils.isAndroid) {
-        asyncTest('change event can be raised after prevented keypress if there are unsaved changes', function () {
+        asyncTest('change event can be raised after prevented keypress if there are unsaved changes (GH-4881)', function () {
             const $input = $('<input type="text" />').addClass(TEST_ELEMENT_CLASS).appendTo('body');
 
             let changed = false;
