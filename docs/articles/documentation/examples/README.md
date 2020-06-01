@@ -18,7 +18,7 @@ Example | Description
 
 Example | Description
 ------- | ------------
-[Access Element Properties](https://github.com/DevExpress/testcafe-examples/tree/master/examples/element-properties) | Access DOM element's properties and verify them with assertions.
+[Access Element Properties](https://github.com/DevExpress/testcafe-examples/tree/master/examples/element-properties) | Access DOM element properties and verify them with assertions.
 [Iterate Over Table Rows](https://github.com/DevExpress/testcafe-examples/tree/master/examples/iterate-over-table-rows) | Verify cell content for even and odd rows.
 [Test \<select\> Elements](https://github.com/DevExpress/testcafe-examples/tree/master/examples/test-select-elements) | Open a `<select>` element's drop-down list, click an item, and verify the value.
 [Page Reload](https://github.com/DevExpress/testcafe-examples/tree/master/examples/page-manipulation) | Execute custom code on the page to obtain data or manipulate the page state.
