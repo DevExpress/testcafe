@@ -235,7 +235,7 @@ export default class TypeAutomation {
         // or keypress even if element value was changed (B253816)
         if (this.eventState.simulateKeypress === false || this.eventState.simulateTypeChar === false) {
             // NOTE: change event should still be raised if element value
-            // was changed before the prevented keypress or keydown
+            // was changed before the prevented keypress or keydown (GH-4881)
             if (this.changePrepared === false)
                 elementEditingWatcher.restartWatchingElementEditing(element);
 
