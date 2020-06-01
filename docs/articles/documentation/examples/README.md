@@ -50,4 +50,4 @@ Example | Description
 Example | Description
 ------- | ------------
 [Wait Until an Element Property Has a Specific Value](https://github.com/DevExpress/testcafe-examples/tree/master/examples/wait-for-element-property-value) | Use an assertion to pause the test until an element's width is `100%`.
-[Wait For File Download](https://github.com/DevExpress/testcafe-examples/tree/master/examples/wait-for-file-download) | Specify that a test should to wait for the file to download.
+[Wait For File Download](https://github.com/DevExpress/testcafe-examples/tree/master/examples/wait-for-file-download) | Specify that the test should wait for the file to download.
