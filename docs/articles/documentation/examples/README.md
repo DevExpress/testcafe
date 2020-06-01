@@ -29,7 +29,7 @@ Example | Description
 ------- | ------------
 [Extract Code to Helpers](https://github.com/DevExpress/testcafe-examples/tree/master/examples/extract-code-to-helpers) | Extract test code to functions defined in a separate module.
 [Create Data-Driven Tests](https://github.com/DevExpress/testcafe-examples/tree/master/examples/create-data-driven-tests) | Create a test that performs parameterized actions.
-[Use Page Model](https://github.com/DevExpress/testcafe-examples/tree/master/examples/use-page-model) | Abstract out element selectors and common operations with these elements into a page model.
+[Use Page Model](https://github.com/DevExpress/testcafe-examples/tree/master/examples/use-page-model) | Extract element selectors and common operations with these elements to a page model.
 
 ## Interoperability
 
