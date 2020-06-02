@@ -1,9 +1,9 @@
-const { expect }              = require('chai');
-const { chunk, random, noop } = require('lodash');
-const Reporter                = require('../../lib/reporter');
-const Task                    = require('../../lib/runner/task');
-const Videos                  = require('../../lib/video-recorder/videos');
-const delay                   = require('../../lib/utils/delay');
+const { expect }                      = require('chai');
+const { chunk, random, noop, sortBy } = require('lodash');
+const Reporter                        = require('../../lib/reporter');
+const Task                            = require('../../lib/runner/task');
+const Videos                          = require('../../lib/video-recorder/videos');
+const delay                           = require('../../lib/utils/delay');
 
 describe('Reporter', () => {
     // Runnable configuration mocks
@@ -487,6 +487,8 @@ describe('Reporter', () => {
                 reportTestStart: function (...args) {
                     expect(args[0]).to.be.an('string');
 
+                    args[1].testRunIds = args[1].testRunIds.sort();
+
                     return delay(1000)
                         .then(() => log.push({ method: 'reportTestStart', args: args }));
                 },
@@ -496,6 +498,7 @@ describe('Reporter', () => {
 
                     // NOTE: replace durationMs
                     args[1].durationMs = 74000;
+                    args[1].browsers = sortBy(args[1].browsers, ['alias']);
 
                     return delay(1000)
                         .then(() => log.push({ method: 'reportTestDone', args: args }));
