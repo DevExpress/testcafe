@@ -11,7 +11,7 @@ This section lists examples from the [testcafe-examples](https://github.com/DevE
 
 Example | Description
 ------- | ------------
-[Find Element By Trimmed Text](https://github.com/DevExpress/testcafe-examples/tree/master/examples/find-element-by-trimmed-text) | Find a header element with extra space characters by trimmed text content.
+[Find Element By Trimmed Text](https://github.com/DevExpress/testcafe-examples/tree/master/examples/find-element-by-trimmed-text) | Ignores white-space characters when searching for an element by text.
 [Use XPath Selectors](https://github.com/DevExpress/testcafe-examples/tree/master/examples/use-xpath-selectors) | Find an input with an XPath selector.
 
 ## Testing the DOM
