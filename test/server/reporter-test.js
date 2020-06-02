@@ -487,7 +487,7 @@ describe('Reporter', () => {
                 reportTestStart: function (...args) {
                     expect(args[0]).to.be.an('string');
 
-                    args[1].testRunIds = args[1].testRunIds.sort();
+                    args[2].testRunIds = args[2].testRunIds.sort();
 
                     return delay(1000)
                         .then(() => log.push({ method: 'reportTestStart', args: args }));
