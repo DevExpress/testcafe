@@ -127,7 +127,7 @@ Parameter     | Type   | Description
 async reportTestDone (name, testRunInfo, meta) {
     const hasErr      = !!testRunInfo.errs.length;
     const hasWarnings = !!testRunInfo.warnings.length;
-    const result      = testRunInfo.skipped ? 'skipped' : hasErr ? `passed` : `failed`;
+    const result      = testRunInfo.skipped ? 'skipped' : hasErr ? `failed` : `passed`;
 
     name = `${this.currentFixtureName} - ${name}`;
 
@@ -416,7 +416,7 @@ const LINE_WIDTH = 50;
 
 async reportTestDone (name, testRunInfo, meta) {
     const hasErr    = !!testRunInfo.errs.length;
-    const result    = hasErr ? `passed` : `failed`;
+    const result    = hasErr ? `failed` : `passed`;
 
     name = `${this.currentFixtureName} - ${name}`;
 
@@ -513,7 +513,7 @@ The following example demonstrates how to color test results:
 ```js
 async reportTestDone (name, testRunInfo, meta) {
     const hasErr = !!testRunInfo.errs.length;
-    const result = hasErr ? this.chalk.green(`passed`) : this.chalk.red(`failed`);
+    const result = hasErr ? this.chalk.red(`failed`) : this.chalk.green(`passed`);
 
     name = `${this.currentFixtureName} - ${name}`;
 

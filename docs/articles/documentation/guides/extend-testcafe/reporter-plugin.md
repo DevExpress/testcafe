@@ -125,7 +125,7 @@ export default function () {
             const warnings    = testRunInfo.warnings;
             const hasErrors   = !!errors.length;
             const hasWarnings = !!warnings.length;
-            const result      = hasErrors ? `passed` : `failed`;
+            const result      = hasErrors ? `failed` : `passed`;
 
             name = `${this.currentFixtureName} - ${name}`;
 
