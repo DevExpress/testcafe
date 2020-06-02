@@ -3,12 +3,13 @@ import BrowserJob from '../runner/browser-job';
 import { Dictionary } from '../configuration/interfaces';
 import WarningLog from '../notifications/warning-log';
 import { VideoOptions, TestVideoInfo, TestRunVideoInfo, TestRunVideoSavedEventArgs } from './interfaces';
+import moment from 'moment';
 
 export default class Videos {
     public testVideoInfos: Dictionary<TestVideoInfo>;
 
     public constructor (
-        browserJobs: BrowserJob[], { videoPath, videoOptions, videoEncodingOptions }: VideoOptions, warningLog: WarningLog, timeStamp: unknown) {
+        browserJobs: BrowserJob[], { videoPath, videoOptions, videoEncodingOptions }: VideoOptions, warningLog: WarningLog, timeStamp: moment.Moment) {
         const options = { timeStamp: timeStamp, ...videoOptions };
 
         this.testVideoInfos = {};

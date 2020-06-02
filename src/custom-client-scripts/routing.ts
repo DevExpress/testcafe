@@ -19,7 +19,7 @@ export function isLegacyTest (test: TestItem): test is LegacyTest {
     return !!(test as LegacyTest).isLegacy;
 }
 
-export function register (proxy: Proxy, tests: TestItem[]): string[] {
+export function register (proxy: Proxy, tests: Test[]): string[] {
     const routes: string[] = [];
 
     tests.forEach(test => {
