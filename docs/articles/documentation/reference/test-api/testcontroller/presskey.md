@@ -49,7 +49,7 @@ The following navigation and action keys are supported:
 
 ## Browser Processing Emulation
 
-When a user presses a key or key combination, the browser dispatches an event that triggers handlers in page code. Most browsers also respond to common keystrokes with their integrated actions (for instance, they select text when you press `Cmd/Ctrl+A` or switch focus when you press `Shift+Tab`).
+When a user presses a key or a key combination, the browser dispatches an event that triggers handlers in page code. Most browsers also respond to common keystrokes with their integrated actions (for instance, they select text when you press `Cmd/Ctrl+A` or switch focus when you press `Shift+Tab`).
 
 The `t.pressKey` action triggers only page handlers for most keystrokes. Browser processing is emulated with a limited set of elements:
 
