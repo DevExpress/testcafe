@@ -18,6 +18,29 @@ if (config.useLocalBrowsers) {
                     expect(failedCount).eql(0);
                 });
         });
+
+        it('Should provide emulating device for user agent', async () => {
+            let prettyUserAgents = null;
+
+            const customReporter = () => ({
+                reportTaskStart (startTime, userAgents) {
+                    prettyUserAgents = userAgents;
+                },
+                reportTestDone () {},
+                reportFixtureStart () {},
+                reportTaskDone () {}
+            });
+
+            await testCafe
+                .createRunner()
+                .src(path.join(__dirname, './testcafe-fixtures/index-test.js'))
+                .reporter(customReporter)
+                .browsers('chrome:emulation:device=iphone X')
+                .run();
+
+            expect(prettyUserAgents.length).eql(1);
+            expect(prettyUserAgents[0]).to.include('(Emulating iPhone X)');
+        });
     });
 }
 

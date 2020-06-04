@@ -12,6 +12,7 @@ describe('Chrome provider config parser', function () {
         expect(config.headless).to.be.true;
         expect(config.emulation).to.be.true;
 
+        expect(config.deviceName).to.equal('Apple iPhone 4');
         expect(config.mobile).to.be.true;
         expect(config.touch).to.be.true;
         expect(config.width).to.equal(320);
@@ -33,6 +34,7 @@ describe('Chrome provider config parser', function () {
 
         expect(config.emulation).to.be.true;
 
+        expect(config.deviceName).to.be.undefined;
         expect(config.mobile).to.be.true;
         expect(config.touch).to.be.false;
         expect(config.width).to.equal(800);
@@ -46,6 +48,7 @@ describe('Chrome provider config parser', function () {
 
         expect(config.emulation).to.be.true;
 
+        expect(config.deviceName).to.be.undefined;
         expect(config.mobile).to.be.false;
         expect(config.touch).to.be.undefined;
         expect(config.width).to.equal(0);
@@ -59,6 +62,7 @@ describe('Chrome provider config parser', function () {
         expect(config.headless).to.be.true;
         expect(config.emulation).to.be.true;
 
+        expect(config.deviceName).to.be.undefined;
         expect(config.mobile).to.be.false;
         expect(config.touch).to.be.undefined;
         expect(config.width).to.equal(1280);
