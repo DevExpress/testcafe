@@ -621,6 +621,10 @@
           <a href="/testcafe/documentation/how-it-works/">How It Works</a>      
         </div>
       
+        <div class="doc-top-nav-tab " >
+          <a href="/testcafe/documentation/examples/">Examples</a>      
+        </div>
+      
     </div>
   </div>
 </div>
@@ -2191,13 +2195,13 @@ where tests are not guaranteed to execute correctly.</p>
 <td><code>disablePageCaching</code></td>
 <td>Boolean</td>
 <td>Prevents the browser from caching page content. When navigation to a cached page occurs in <a href="../../../guides/advanced-guides/authentication.html">role code</a>, local and session storage content is not preserved. Set <code>disablePageCaching</code> to <code>true</code> to retain the storage items after navigation. For more information, see <a href="../../../guides/advanced-guides/authentication.html#test-actions-fail-after-authentication">Troubleshooting: Test Actions Fail After Authentication</a>. You can also disable page caching for an individual <a href="../../test-api/fixture/disablepagecaching.html">fixture</a> or <a href="../../test-api/test/disablepagecaching.html">test</a>.</td>
-<td></td>
+<td><code>false</code></td>
 </tr>
 <tr>
 <td><code>disableScreenshots</code></td>
 <td>Boolean</td>
 <td>Prevents TestCafe from taking screenshots. When this option is specified, screenshots are not taken whenever a test fails or when <a href="../../test-api/testcontroller/takescreenshot.html">t.takeScreenshot</a> or <a href="../../test-api/testcontroller/takeelementscreenshot.html">t.takeElementScreenshot</a> is executed.</td>
-<td></td>
+<td><code>false</code></td>
 </tr>
 </tbody></table></div>
 <p>After all tests are finished, call the <a href="../testcafe/close.html">testcafe.close</a> function to stop the TestCafe server.</p>
