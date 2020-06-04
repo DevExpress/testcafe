@@ -84,8 +84,7 @@ export default class BrowserConnection extends EventEmitter {
         this.disconnectionPromise     = null;
         this.testRunAborted           = false;
 
-        this.browserInfo                           = browserInfo;
-        this.browserInfo.userAgentProviderMetaInfo = '';
+        this.browserInfo = browserInfo;
 
         this.provider = browserInfo.provider;
 
@@ -274,16 +273,11 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     public setProviderMetaInfo (str: string): void {
-        this.browserInfo.userAgentProviderMetaInfo = str;
+        this.browserInfo.parsedUserAgent.prettyUserAgent += ` (${str})`;
     }
 
     public get userAgent (): string {
-        let userAgent = this.browserInfo.parsedUserAgent.prettyUserAgent;
-
-        if (this.browserInfo.userAgentProviderMetaInfo)
-            userAgent += ` (${this.browserInfo.userAgentProviderMetaInfo})`;
-
-        return userAgent;
+        return this.browserInfo.parsedUserAgent.prettyUserAgent;
     }
 
     public get hasQueuedJobs (): boolean {
