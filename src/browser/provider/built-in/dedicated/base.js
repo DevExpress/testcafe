@@ -45,6 +45,13 @@ export default {
         return this.openedBrowsers[browserId].config.headless;
     },
 
+    isEmulation (browserId) {
+        if (this.openedBrowsers[browserId])
+            return this.openedBrowsers[browserId].config.emulation;
+
+        return false;
+    },
+
     _getCropDimensions (viewportWidth, viewportHeight) {
         if (!viewportWidth || !viewportHeight)
             return null;

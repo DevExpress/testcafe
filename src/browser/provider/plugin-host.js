@@ -107,6 +107,10 @@ export default class BrowserProviderPluginHost {
         return false;
     }
 
+    isEmulation (/* browserId */) {
+        return false;
+    }
+
     async hasCustomActionForBrowser (/* browserId */) {
         return {
             hasCloseBrowser:                this.hasOwnProperty('closeBrowser'),
