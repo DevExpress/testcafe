@@ -35,7 +35,7 @@ if (config.useLocalBrowsers) {
                 .createRunner()
                 .src(path.join(__dirname, './testcafe-fixtures/index-test.js'))
                 .reporter(customReporter)
-                .browsers('chrome:emulation:device=iphone X')
+                .browsers('chrome:headless:emulation:device=iphone X --no-sandbox')
                 .run();
 
             expect(prettyUserAgents.length).eql(1);
