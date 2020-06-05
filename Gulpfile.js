@@ -762,11 +762,8 @@ function testFunctional (src, testingEnvironmentName, { allowMultipleWindows, ex
         timeout:  typeof v8debug === 'undefined' ? 3 * 60 * 1000 : Infinity // NOTE: disable timeouts in debug
     };
 
-    if (process.env.RETRY_FAILED_TESTS === 'true') {
+    if (process.env.RETRY_FAILED_TESTS === 'true')
         opts.retries = RETRY_TEST_RUN_COUNT;
-
-        console.log('!!!Retry filed tests'); //eslint-disable-line no-console
-    }
 
     return gulp
         .src(tests)
