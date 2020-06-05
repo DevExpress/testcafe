@@ -300,7 +300,7 @@ Parameter                      | Type   | Description             | Default
 
 ## User Profiles
 
-By default, TestCafe launches Google Chrome and Mozilla Firefox with a clean profile (i.e. without extensions, bookmarks and other profile settings) - to minimize profile parameter influence on test runs.
+By default, TestCafe launches Google Chrome, Microsoft Edge (Chromium-based, version 79 and above) and Mozilla Firefox with a clean profile (i.e. without extensions, bookmarks and other profile settings) - to minimize profile parameter influence on test runs.
 
 However, if you need to start a browser with the current user profile, you can specify the `:userProfile` flag after the [browser alias](#locally-installed-browsers).
 
