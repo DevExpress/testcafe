@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/expect/noteql.html
 Assert that `actual` is not equal to `unexpected`.
 
 ```text
-await t.expect( actual ).notEql( unexpected, message, options );
+await t.expect( actual ).notEql( expected, message, options );
 ```
 
 Parameter              | Type                                              | Description
