@@ -36,7 +36,7 @@ Refer to the [Testing Library documentation](https://testing-library.com/docs/te
 The following example demonstrates TestCafe actions whose target elements are queried with the Testing Library API:
 
 ```js
-import * as screen from '@testing-library/testcafe';
+import { screen } from '@testing-library/testcafe';
 
 test('getByPlaceHolderText', async t => {
     await t.typeText(
