@@ -63,7 +63,7 @@ const link = Selector('div')
 const parent = Selector('#query-my-parent').parent();
 ```
 
-You can use selectors to [inspect elements](#obtain-element-state), define [action targets](#define-action-targets), and [assertion actual values](#define-assertion-actual-value).
+You can use selectors to [inspect elements](#obtain-element-state), define [action targets](#define-action-targets), and [assert actual values](#define-assertion-actual-value).
 
 * [Create Selectors](#create-selectors)
 * [Member Tables](#member-tables)
