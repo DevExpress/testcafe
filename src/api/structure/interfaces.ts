@@ -1,6 +1,6 @@
 import { Dictionary } from '../../configuration/interfaces';
 import BaseUnit from './base-unit';
-
+import ClientScript from '../../custom-client-scripts/client-script';
 
 export type Metadata = Dictionary<string>;
 
@@ -14,6 +14,8 @@ export interface TestingUnit extends BaseUnit {
     only: boolean;
     testFile: TestFile;
     meta: Metadata;
+    skip: boolean;
+    clientScripts: ClientScript[];
 }
 
 export interface Fixture extends TestingUnit {

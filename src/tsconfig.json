@@ -11,6 +11,7 @@
     "checkJs": false,
     "inlineSourceMap": true,
     "inlineSources": true,
-    "types": ["node"]
+    "types": ["node"],
+    "allowSyntheticDefaultImports": true
   }
 }

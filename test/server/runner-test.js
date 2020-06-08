@@ -942,7 +942,7 @@ describe('Runner', () => {
         };
 
         function taskDone () {
-            this.pendingBrowserJobs.forEach(job => {
+            this._pendingBrowserJobs.forEach(job => {
                 this.emit('browser-job-done', job);
             });
 
