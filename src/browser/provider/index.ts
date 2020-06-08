@@ -243,10 +243,6 @@ export default class BrowserProvider {
         return this.plugin.isHeadlessBrowser(browserId);
     }
 
-    public isEmulation (browserId: string): boolean {
-        return this.plugin.isEmulation(browserId);
-    }
-
     public async openBrowser (browserId: string, pageUrl: string, browserName: string, allowMultipleWindows: boolean): Promise<void> {
         await this.plugin.openBrowser(browserId, pageUrl, browserName, allowMultipleWindows);
 

@@ -48,10 +48,10 @@ export default class BrowserProviderPluginHost {
         connection.addWarning(...args);
     }
 
-    setUserAgentMetaInfo (browserId, message) {
+    setUserAgentMetaInfo (browserId, message, ...args) {
         const connection = BrowserConnection.getById(browserId);
 
-        connection.setProviderMetaInfo(message);
+        connection.setProviderMetaInfo(message, ...args);
     }
 
     async closeLocalBrowser (browserId) {
@@ -104,10 +104,6 @@ export default class BrowserProviderPluginHost {
     }
 
     isHeadlessBrowser (/* browserId */) {
-        return false;
-    }
-
-    isEmulation (/* browserId */) {
         return false;
     }
 

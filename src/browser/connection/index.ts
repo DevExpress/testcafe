@@ -40,6 +40,10 @@ interface InitScriptTask extends InitScript {
     resolve: Function;
 }
 
+interface ProviderMetaInfoOptions {
+    changePrettyUserAgent?: boolean;
+}
+
 export default class BrowserConnection extends EventEmitter {
     public permanent: boolean;
     private readonly allowMultipleWindows: boolean;
@@ -71,6 +75,8 @@ export default class BrowserConnection extends EventEmitter {
     public browserInfo: any;
     public provider: any;
 
+    private isUserAgentContainMetaInfo: boolean;
+
     public constructor (gateway: BrowserConnectionGateway, browserInfo: any, permanent: boolean, allowMultipleWindows = false) {
         super();
 
@@ -86,6 +92,8 @@ export default class BrowserConnection extends EventEmitter {
 
         this.browserInfo                           = browserInfo;
         this.browserInfo.userAgentProviderMetaInfo = '';
+
+        this.isUserAgentContainMetaInfo            = false;
 
         this.provider = browserInfo.provider;
 
@@ -273,17 +281,28 @@ export default class BrowserConnection extends EventEmitter {
             this.currentJob.warningLog.addWarning(...args);
     }
 
-    public setProviderMetaInfo (str: string): void {
-        this.browserInfo.userAgentProviderMetaInfo = str;
+    public setProviderMetaInfo (str: string, options?: ProviderMetaInfoOptions): void {
+        const changePrettyUserAgent = options?.changePrettyUserAgent as boolean;
 
-        if (this.provider.isEmulation(this.id))
-            this.browserInfo.parsedUserAgent.prettyUserAgent += ` (${this.browserInfo.userAgentProviderMetaInfo})`;
+        if (changePrettyUserAgent) {
+            const addMetaInfo = (): void => {
+                this.browserInfo.parsedUserAgent.prettyUserAgent += ` (${str})`;
+            };
+
+            // NOTE:
+            // change prettyUserAgent only when connection already was established
+            if (this.status === BrowserConnectionStatus.uninitialized)
+                this.on('ready', addMetaInfo);
+            else
+                addMetaInfo();
+
+            return;
+        }
+
+        this.browserInfo.userAgentProviderMetaInfo = str;
     }
 
     public get userAgent (): string {
-        if (this.provider.isEmulation(this.id))
-            return this.browserInfo.parsedUserAgent.prettyUserAgent;
-
         let userAgent = this.browserInfo.parsedUserAgent.prettyUserAgent;
 
         if (this.browserInfo.userAgentProviderMetaInfo)
