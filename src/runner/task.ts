@@ -24,7 +24,7 @@ export default class Task extends AsyncEventEmitter {
     private readonly _proxy: Proxy;
     public readonly warningLog: WarningLog;
     public readonly screenshots: Screenshots;
-    private readonly _fixtureHookController: FixtureHookController;
+    public readonly fixtureHookController: FixtureHookController;
     private readonly _pendingBrowserJobs: BrowserJob[];
     private readonly _clientScriptRoutes: string[];
     public readonly testStructure: ReportedTestStructureItem[];
@@ -50,10 +50,10 @@ export default class Task extends AsyncEventEmitter {
             fullPage
         });
 
-        this._fixtureHookController = new FixtureHookController(tests, browserConnectionGroups.length);
-        this._pendingBrowserJobs    = this._createBrowserJobs(proxy, this.opts);
-        this._clientScriptRoutes    = clientScriptsRouting.register(proxy, tests);
-        this.testStructure          = this._prepareTestStructure(tests);
+        this.fixtureHookController = new FixtureHookController(tests, browserConnectionGroups.length);
+        this._pendingBrowserJobs   = this._createBrowserJobs(proxy, this.opts);
+        this._clientScriptRoutes   = clientScriptsRouting.register(proxy, tests);
+        this.testStructure         = this._prepareTestStructure(tests);
 
         if (this.opts.videoPath) {
             const { videoPath, videoOptions, videoEncodingOptions } = this.opts;
@@ -127,11 +127,11 @@ export default class Task extends AsyncEventEmitter {
     }
 
     private _createBrowserJobs (proxy: Proxy, opts: Dictionary<OptionValue>): BrowserJob[] {
-        return this.browserConnectionGroups.map((browserConnectionGroup: BrowserConnection[]) => {
-            const job = new BrowserJob(this.tests, browserConnectionGroup, proxy, this.screenshots, this.warningLog, this._fixtureHookController, opts);
+        return this.browserConnectionGroups.map(browserConnectionGroup => {
+            const job = new BrowserJob(this.tests, browserConnectionGroup, proxy, this.screenshots, this.warningLog, this.fixtureHookController, opts);
 
             this._assignBrowserJobEventHandlers(job);
-            browserConnectionGroup.map((bc: BrowserConnection) => bc.addJob(job));
+            browserConnectionGroup.map(bc => bc.addJob(job));
 
             return job;
         });
@@ -143,6 +143,6 @@ export default class Task extends AsyncEventEmitter {
 
     // API
     public abort (): void {
-        this._pendingBrowserJobs.forEach((job: BrowserJob) => job.abort());
+        this._pendingBrowserJobs.forEach(job => job.abort());
     }
 }
