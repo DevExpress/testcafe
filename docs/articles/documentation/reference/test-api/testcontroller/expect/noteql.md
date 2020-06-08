@@ -5,10 +5,10 @@ permalink: /documentation/reference/test-api/testcontroller/expect/noteql.html
 ---
 # t.expect.notEql Method
 
-Assert that `actual` is not equal to `unexpected`.
+Assert that `actual` is not equal to `expected`.
 
 ```text
-await t.expect( actual ).notEql( unexpected, message, options );
+await t.expect( actual ).notEql( expected, message, options );
 ```
 
 Parameter              | Type                                              | Description
