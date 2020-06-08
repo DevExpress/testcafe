@@ -75,8 +75,6 @@ export default class BrowserConnection extends EventEmitter {
     public browserInfo: any;
     public provider: any;
 
-    private isUserAgentContainMetaInfo: boolean;
-
     public constructor (gateway: BrowserConnectionGateway, browserInfo: any, permanent: boolean, allowMultipleWindows = false) {
         super();
 
@@ -92,8 +90,6 @@ export default class BrowserConnection extends EventEmitter {
 
         this.browserInfo                           = browserInfo;
         this.browserInfo.userAgentProviderMetaInfo = '';
-
-        this.isUserAgentContainMetaInfo            = false;
 
         this.provider = browserInfo.provider;
 
