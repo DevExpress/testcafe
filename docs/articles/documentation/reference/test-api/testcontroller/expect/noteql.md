@@ -5,16 +5,16 @@ permalink: /documentation/reference/test-api/testcontroller/expect/noteql.html
 ---
 # t.expect.notEql Method
 
-Assert that `actual` is not equal to `expected`.
+Assert that `actual` is not equal to `value`.
 
 ```text
-await t.expect( actual ).notEql( expected, message, options );
+await t.expect( actual ).notEql( value, message, options );
 ```
 
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------
 `actual`             | Any type | A comparison value. See [`actual` parameter value](#actual-parameter-value).
-`expected`             | Any type | The type of value that is expected not to be equal to `actual`.
+`value`             | Any type | The type of value that is expected not to be equal to `actual`.
 `message`&#160;*(optional)* | String   | An assertion message displayed in the report if the test fails.
 `options`&#160;*(optional)* | Object   | See [Options](#options).
 
