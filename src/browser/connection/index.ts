@@ -41,7 +41,7 @@ interface InitScriptTask extends InitScript {
 }
 
 interface ProviderMetaInfoOptions {
-    changePrettyUserAgent?: boolean;
+    appendToUserAgent?: boolean;
 }
 
 export default class BrowserConnection extends EventEmitter {
@@ -277,20 +277,20 @@ export default class BrowserConnection extends EventEmitter {
             this.currentJob.warningLog.addWarning(...args);
     }
 
+    private _appendToPrettyUserAgent (str: string): void {
+        this.browserInfo.parsedUserAgent.prettyUserAgent += ` (${str})`;
+    }
+
     public setProviderMetaInfo (str: string, options?: ProviderMetaInfoOptions): void {
-        const changePrettyUserAgent = options?.changePrettyUserAgent as boolean;
+        const appendToUserAgent = options?.appendToUserAgent as boolean;
 
-        if (changePrettyUserAgent) {
-            const addMetaInfo = (): void => {
-                this.browserInfo.parsedUserAgent.prettyUserAgent += ` (${str})`;
-            };
-
+        if (appendToUserAgent) {
             // NOTE:
             // change prettyUserAgent only when connection already was established
-            if (this.status === BrowserConnectionStatus.uninitialized)
-                this.on('ready', addMetaInfo);
+            if (this.isReady())
+                this._appendToPrettyUserAgent(str);
             else
-                addMetaInfo();
+                this.on('ready', () => this._appendToPrettyUserAgent(str));
 
             return;
         }

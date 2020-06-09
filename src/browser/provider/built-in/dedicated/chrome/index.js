@@ -53,11 +53,11 @@ export default {
 
         if (runtimeInfo.config.emulation && runtimeInfo.config.deviceName) {
             const metaInfo = `Emulating ${runtimeInfo.config.deviceName}`;
-            const options = {
-                changePrettyUserAgent: true
+            const options  = {
+                appendToUserAgent: true
             };
 
-            await this.setUserAgentMetaInfo(browserId, metaInfo, options);
+            this.setUserAgentMetaInfo(browserId, metaInfo, options);
         }
     },
 

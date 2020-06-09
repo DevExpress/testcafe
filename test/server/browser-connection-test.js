@@ -204,7 +204,7 @@ describe('Browser connection', function () {
 
         const prettyUserAgentWithMetaInfo = `Chrome 41.0.2227.1 / macOS 10.10.1 (meta-info)`;
 
-        connection.setProviderMetaInfo('meta-info', { changePrettyUserAgent: true });
+        connection.setProviderMetaInfo('meta-info', { appendToUserAgent: true });
 
         return promisedRequest(options)
             .then(() => {
