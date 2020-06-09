@@ -1,7 +1,10 @@
 const path                 = require('path');
+const chai                 = require('chai');
 const expect               = require('chai').expect;
 const config               = require('../../../config');
 const { createNullStream } = require('../../../utils/stream');
+
+chai.use(require('chai-string'));
 
 
 if (config.useLocalBrowsers) {
@@ -39,7 +42,7 @@ if (config.useLocalBrowsers) {
                 .run();
 
             expect(prettyUserAgents.length).eql(1);
-            expect(prettyUserAgents[0]).to.include('(Emulating iPhone X)');
+            expect(prettyUserAgents[0]).endsWith('(Emulating iPhone X)');
         });
     });
 }
