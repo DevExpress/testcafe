@@ -16,7 +16,7 @@ t.setNativeDialogHandler( fn(type, text, url) [, options] )
 Parameter  | Type                           | Description
 ---------- | ------------------------------ | -------------
 `fn`       | Function &#124; ClientFunction | A regular or [client function](../../../guides/basic-guides/obtain-client-side-info.md) that will be triggered whenever a native dialog is invoked. `null` to remove the native dialog handler.
-`options`&#160;*(optional)*  | Object                         | See [Client Function Options]../clientfunction/constructor.md#options).
+`options`&#160;*(optional)*  | Object                         | See [Client Function Options](../clientfunction/constructor.md#options).
 
 The handler function has the following arguments.
 
