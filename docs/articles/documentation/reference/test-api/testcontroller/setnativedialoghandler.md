@@ -49,7 +49,11 @@ beforeunload | Ignored                                                  | 'Leave
 confirm      | `true` to answer 'OK'; `false` to answer 'Cancel'.       | 'Cancel' button.
 prompt       | A string that contains text to be typed into the prompt. | 'Cancel' button.
 
-The following example demonstrates how to handle an alert dialog.
+You can get the native dialog history with the [t.getNativeDialogHistory](getnativedialoghistory.md) method.
+
+## Examples
+
+### Handle an Alert Dialog
 
 ```js
 fixture `My fixture`
@@ -62,7 +66,7 @@ test('My test', async t => {
 });
 ```
 
-The next example is a test that handles two confirm dialogs and a prompt dialog.
+### Handle Multiple Dialogs
 
 ```js
 fixture `My fixture`
@@ -93,4 +97,17 @@ test('My test', async t => {
 });
 ```
 
-You can get the native dialog history with the [t.getNativeDialogHistory](getnativedialoghistory.md) method.
+### Use a Variable in the Dialog Handler
+
+This example shows a `delete` method in a [page model](../../../guides/concepts/page-model.md). The dialog handler types the removed item's name (`this.name`) into a dialog to confirm deletion. The `name` variable is passed to the handler through [options.dependencies](../clientfunction/constructor.md#optionsdependencies).
+
+```js
+class Page {
+    /* ... */
+    async delete () {
+        const name = await this.name;
+        await t.setNativeDialogHandler(() => name, { dependencies: { name }});
+        await t.click(this.deleteBtn);
+    }
+}
+```
