@@ -99,11 +99,14 @@ test('My test', async t => {
 
 ### Use a Variable in the Dialog Handler
 
-This example shows a `delete` method in a [page model](../../../guides/concepts/page-model.md). The dialog handler types the removed item's name (`this.name`) into a dialog to confirm deletion. The `name` variable is passed to the handler through [options.dependencies](../clientfunction/constructor.md#optionsdependencies).
+This example shows a `delete` method in a [page model](../../../guides/concepts/page-model.md). The dialog handler types the removed item's name (`this.name`) into a prompt dialog to confirm deletion. The `name` variable is passed to the handler through [options.dependencies](../clientfunction/constructor.md#optionsdependencies).
 
 ```js
 class Page {
-    /* ... */
+    constructor () {
+        /* ... */
+        this.name = Selector('.item-name').textContent;
+    }
     async delete () {
         const name = await this.name;
         await t.setNativeDialogHandler(() => name, { dependencies: { name }});
