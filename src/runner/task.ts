@@ -12,7 +12,7 @@ import { Proxy } from 'testcafe-hammerhead';
 import { Dictionary } from '../configuration/interfaces';
 import { ActionEventArg, ReportedTestStructureItem } from './interfaces';
 import BrowserConnection from '../browser/connection';
-import { Test } from '../api/structure/interfaces';
+import Test from '../api/structure/test';
 import { VideoOptions } from '../video-recorder/interfaces';
 
 export default class Task extends AsyncEventEmitter {
