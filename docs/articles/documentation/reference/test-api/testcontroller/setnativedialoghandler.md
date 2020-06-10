@@ -109,8 +109,9 @@ class Page {
     }
     async delete () {
         const name = await this.name;
-        await t.setNativeDialogHandler(() => name, { dependencies: { name }});
-        await t.click(this.deleteBtn);
+        await t
+            .setNativeDialogHandler(() => name, { dependencies: { name }})
+            .click(this.deleteBtn);
     }
 }
 ```
