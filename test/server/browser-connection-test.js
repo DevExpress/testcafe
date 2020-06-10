@@ -185,5 +185,43 @@ describe('Browser connection', function () {
 
         return Promise.all(testCases);
     });
+
+    it('Should set meta information for User-Agent', () => {
+        let eventFired = false;
+
+        connection.on('ready', function () {
+            eventFired = true;
+        });
+
+        const options = {
+            url:            connection.url,
+            followRedirect: false,
+            headers:        {
+                'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
+                              '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36'
+            }
+        };
+
+        const prettyUserAgentWithMetaInfo = `Chrome 41.0.2227.1 / macOS 10.10.1 (meta-info)`;
+
+        connection.setProviderMetaInfo('meta-info', { appendToUserAgent: true });
+
+        return promisedRequest(options)
+            .then(() => {
+                expect(eventFired).to.be.true;
+
+                expect(connection.browserInfo.userAgentProviderMetaInfo).eql('');
+                expect(connection.browserInfo.parsedUserAgent.prettyUserAgent).eql(prettyUserAgentWithMetaInfo);
+                expect(connection.userAgent).eql(prettyUserAgentWithMetaInfo);
+
+                // NOTE:
+                // set meta info after connection was already established without changing pretty user agent
+                connection.setProviderMetaInfo('another meta-info');
+
+                expect(connection.browserInfo.userAgentProviderMetaInfo).eql('another meta-info');
+                expect(connection.browserInfo.parsedUserAgent.prettyUserAgent).eql(prettyUserAgentWithMetaInfo);
+                expect(connection.userAgent).eql(prettyUserAgentWithMetaInfo + ' (another meta-info)');
+            });
+    });
 });
 

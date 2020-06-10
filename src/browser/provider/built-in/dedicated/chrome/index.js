@@ -50,6 +50,15 @@ export default {
         this.openedBrowsers[browserId] = runtimeInfo;
 
         await this._ensureWindowIsExpanded(browserId, runtimeInfo.viewportSize);
+
+        if (runtimeInfo.config.emulation && runtimeInfo.config.deviceName) {
+            const metaInfo = `Emulating ${runtimeInfo.config.deviceName}`;
+            const options  = {
+                appendToUserAgent: true
+            };
+
+            this.setUserAgentMetaInfo(browserId, metaInfo, options);
+        }
     },
 
     async closeBrowser (browserId) {

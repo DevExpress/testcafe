@@ -9,6 +9,7 @@ interface Size {
 }
 
 interface Config {
+    deviceName?: string;
     headless: boolean;
     mobile: boolean;
     emulation: false;

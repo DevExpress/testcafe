@@ -40,6 +40,10 @@ interface InitScriptTask extends InitScript {
     resolve: Function;
 }
 
+interface ProviderMetaInfoOptions {
+    appendToUserAgent?: boolean;
+}
+
 export default class BrowserConnection extends EventEmitter {
     public permanent: boolean;
     private readonly allowMultipleWindows: boolean;
@@ -273,7 +277,24 @@ export default class BrowserConnection extends EventEmitter {
             this.currentJob.warningLog.addWarning(...args);
     }
 
-    public setProviderMetaInfo (str: string): void {
+    private _appendToPrettyUserAgent (str: string): void {
+        this.browserInfo.parsedUserAgent.prettyUserAgent += ` (${str})`;
+    }
+
+    public setProviderMetaInfo (str: string, options?: ProviderMetaInfoOptions): void {
+        const appendToUserAgent = options?.appendToUserAgent as boolean;
+
+        if (appendToUserAgent) {
+            // NOTE:
+            // change prettyUserAgent only when connection already was established
+            if (this.isReady())
+                this._appendToPrettyUserAgent(str);
+            else
+                this.on('ready', () => this._appendToPrettyUserAgent(str));
+
+            return;
+        }
+
         this.browserInfo.userAgentProviderMetaInfo = str;
     }
 
