@@ -58,12 +58,19 @@ You can get more request parameters and determine whether to handle the request 
 
 ```js
 const logger = RequestLogger(request => {
-    return request.url === 'http://example.com' &&
-           request.method === 'post' &&
-           request.isAjax &&
-           request.body === '{ test: true }' &&
+    return request.body === '{ test: true }' &&
            request.headers['content-type'] === 'application/json';
 });
+```
+
+```js
+const mock = RequestMock()
+    .onRequestTo(request => {
+        return request.url === 'http://example.com' &&
+               request.method === 'post' &&
+               request.isAjax;
+    })
+    .respond(/*...*/);
 ```
 
 This predicate takes the `request` parameter that provides the following properties:
