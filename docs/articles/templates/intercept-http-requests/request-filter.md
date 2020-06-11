@@ -68,7 +68,8 @@ const mock = RequestMock()
     .onRequestTo(request => {
         return request.url === 'http://example.com' &&
                request.method === 'post' &&
-               request.isAjax;
+               request.isAjax &&
+               request.body.toString() === 'foo=bar';
     })
     .respond(/*...*/);
 ```
