@@ -22,7 +22,7 @@ export default class BrowserJob extends AsyncEventEmitter {
     private _passed: number;
     private readonly _opts: Dictionary<OptionValue>;
     private readonly _proxy: Proxy;
-    private readonly _browserConnections: BrowserConnection[];
+    public readonly browserConnections: BrowserConnection[];
     private readonly _screenshots: Screenshots;
     private readonly _warningLog: WarningLog;
     public readonly fixtureHookController: FixtureHookController;
@@ -41,7 +41,7 @@ export default class BrowserJob extends AsyncEventEmitter {
         this._passed                = 0;
         this._opts                  = opts;
         this._proxy                 = proxy;
-        this._browserConnections    = browserConnections;
+        this.browserConnections    = browserConnections;
         this._screenshots           = screenshots;
         this._warningLog            = warningLog;
         this.fixtureHookController = fixtureHookController;
@@ -54,7 +54,7 @@ export default class BrowserJob extends AsyncEventEmitter {
 
         this._connectionErrorListener = (error: Error) => this._setResult(BrowserJobResult.errored, error);
 
-        this._browserConnections.map(bc => bc.once('error', this._connectionErrorListener));
+        this.browserConnections.map(bc => bc.once('error', this._connectionErrorListener));
     }
 
     private _createTestRunController (test: Test, index: number): TestRunController {
@@ -93,9 +93,9 @@ export default class BrowserJob extends AsyncEventEmitter {
 
         this._result = { status, data };
 
-        this._browserConnections.forEach(bc => bc.removeListener('error', this._connectionErrorListener));
+        this.browserConnections.forEach(bc => bc.removeListener('error', this._connectionErrorListener));
 
-        await Promise.all(this._browserConnections.map(bc => bc.reportJobResult((this._result as BrowserJobResultInfo).status, (this._result as BrowserJobResultInfo).data)));
+        await Promise.all(this.browserConnections.map(bc => bc.reportJobResult((this._result as BrowserJobResultInfo).status, (this._result as BrowserJobResultInfo).data)));
     }
 
     private _addToCompletionQueue (testRunInfo: TestRunController): void {
@@ -175,6 +175,6 @@ export default class BrowserJob extends AsyncEventEmitter {
     public abort (): void {
         this.clearListeners();
         this._setResult(BrowserJobResult.aborted);
-        this._browserConnections.map(bc => bc.removeJob(this));
+        this.browserConnections.map(bc => bc.removeJob(this));
     }
 }
