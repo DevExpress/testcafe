@@ -683,12 +683,12 @@ describe('Reporter', () => {
                             {
                                 alias:     'Chrome',
                                 headless:  false,
-                                testRunId: 'f1t1'
+                                testRunId: 'f1t2'
                             },
                             {
                                 alias:     'Firefox',
                                 headless:  false,
-                                testRunId: 'f1t1ff'
+                                testRunId: 'f1t2ff'
                             }
                         ]
                     },
@@ -764,12 +764,12 @@ describe('Reporter', () => {
                             {
                                 alias:     'Chrome',
                                 headless:  false,
-                                testRunId: 'f1t1'
+                                testRunId: 'f1t3'
                             },
                             {
                                 alias:     'Firefox',
                                 headless:  false,
-                                testRunId: 'f1t1ff'
+                                testRunId: 'f1t3ff'
                             }
                         ]
                     },
@@ -817,12 +817,12 @@ describe('Reporter', () => {
                             {
                                 alias:     'Chrome',
                                 headless:  false,
-                                testRunId: 'f1t1'
+                                testRunId: 'f2t1'
                             },
                             {
                                 alias:     'Firefox',
                                 headless:  false,
-                                testRunId: 'f1t1ff'
+                                testRunId: 'f2t1ff'
                             }
                         ]
                     },
@@ -880,12 +880,12 @@ describe('Reporter', () => {
                             {
                                 alias:     'Chrome',
                                 headless:  false,
-                                testRunId: 'f1t1'
+                                testRunId: 'f2t2'
                             },
                             {
                                 alias:     'Firefox',
                                 headless:  false,
-                                testRunId: 'f1t1ff'
+                                testRunId: 'f2t2ff'
                             }
                         ]
                     },
@@ -933,12 +933,12 @@ describe('Reporter', () => {
                             {
                                 alias:     'Chrome',
                                 headless:  false,
-                                testRunId: 'f1t1'
+                                testRunId: 'f3t1'
                             },
                             {
                                 alias:     'Firefox',
                                 headless:  false,
-                                testRunId: 'f1t1ff'
+                                testRunId: 'f3t1ff'
                             }
                         ]
                     },
@@ -1000,12 +1000,12 @@ describe('Reporter', () => {
                             {
                                 alias:     'Chrome',
                                 headless:  false,
-                                testRunId: 'f1t1'
+                                testRunId: 'f3t2'
                             },
                             {
                                 alias:     'Firefox',
                                 headless:  false,
-                                testRunId: 'f1t1ff'
+                                testRunId: 'f3t2ff'
                             }
                         ]
                     },
@@ -1053,12 +1053,12 @@ describe('Reporter', () => {
                             {
                                 alias:     'Chrome',
                                 headless:  false,
-                                testRunId: 'f1t1'
+                                testRunId: 'f3t3'
                             },
                             {
                                 alias:     'Firefox',
                                 headless:  false,
-                                testRunId: 'f1t1ff'
+                                testRunId: 'f3t3ff'
                             }
                         ]
                     },
