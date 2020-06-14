@@ -105,6 +105,73 @@ interface VideoEncodingOptions extends Partial<DefaultEncodingOptions> {
     aspect?: string;
 }
 
+interface ReportedTestItem {
+    id: string;
+    name: string;
+    skip: boolean;
+}
+
+interface ReportedFixtureItem {
+    id: string;
+    name: string;
+    tests: ReportedTestItem[];
+}
+
+interface ReportedTestStructureItem {
+    fixture: ReportedFixtureItem;
+}
+
+interface Screenshot {
+    screenshotPath: string;
+    thumbnailPath: string;
+    userAgent: string;
+    quarantineAttempt?: number;
+    takenOnFail: boolean;
+}
+
+interface TestRunInfo {
+    errs: object[];
+    warnings: string[];
+    durationMs: number;
+    unstable: boolean;
+    screenshotPath: string;
+    screenshots: Screenshot[];
+    quarantine: {
+        [key: string]: {
+            passed: boolean;
+        }
+    }
+    skipped: boolean;
+}
+
+interface TaskResult {
+    passedCount: number;
+    failedCount: number;
+    skippedCount: number;
+}
+
+interface TaskProperties {
+    configuration: {
+        [key: string]: string
+    }
+}
+
+interface MetaData {
+    [key: string]: string
+}
+
+interface CustomReporter {
+    reportTaskStart: (startTime: Date, userAgents: string[], testCount: number, testStructure: ReportedTestStructureItem, taskProperties?: TaskProperties) => void;
+    reportTestStart?: (name: string, meta: MetaData) => void;
+    reportFixtureStart: (name: string, path: string, meta: MetaData) => void;
+    reportTestDone: (name: string, testRunInfo: TestRunInfo, meta: MetaData) => void;
+    reportTaskDone: (endTime: Date, passed: number, warnings: string[], result: TaskResult) => void;
+}
+
+interface CustomReporterFunction {
+    (): CustomReporter;
+}
+
 interface TestCafe {
     /**
      * Creates the test runner that is used to configure and launch test tasks.
@@ -210,14 +277,14 @@ interface Runner {
      * @param name - The name of the reporter to use.
      * @param output - The stream or the name of the file to which the report is written.
      */
-    reporter(name: string, output?: string | NodeJS.WritableStream): this;
+    reporter(name: string | CustomReporterFunction, output?: string | NodeJS.WritableStream): this;
 
     /**
      * Configures TestCafe's reporting feature.
      *
      * @param reporters An array of reporters
      */
-    reporter(reporters: Array<string | { name: string, output?: string | NodeJS.WritableStream }>): this;
+    reporter(reporters: Array<string | CustomReporterFunction | { name: string | CustomReporterFunction, output?: string | NodeJS.WritableStream }>): this;
 
     /**
      * Specifies that tests should run concurrently.
