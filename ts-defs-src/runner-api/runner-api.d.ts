@@ -274,7 +274,7 @@ interface Runner {
     /**
      * Configures TestCafe's reporting feature.
      *
-     * @param name - The name of the reporter to use.
+     * @param name - The name of the reporter to use or custom reporter
      * @param output - The stream or the name of the file to which the report is written.
      */
     reporter(name: string | CustomReporterFunction, output?: string | NodeJS.WritableStream): this;
