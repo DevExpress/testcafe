@@ -24,6 +24,21 @@ export default {
         return ChromeRunTimeInfo.create(hostName, configString, allowMultipleWindows);
     },
 
+    _setUserAgentMetaInfoForEmulatingDevice (browserId, config) {
+        const { emulation, deviceName } = config;
+        const isDeviceEmulation         = emulation && deviceName;
+
+        if (!isDeviceEmulation)
+            return;
+
+        const metaInfo = `Emulating ${deviceName}`;
+        const options  = {
+            appendToUserAgent: true
+        };
+
+        this.setUserAgentMetaInfo(browserId, metaInfo, options);
+    },
+
     async openBrowser (browserId, pageUrl, configString, allowMultipleWindows) {
         const parsedPageUrl = parseUrl(pageUrl);
         const runtimeInfo   = await this._createRunTimeInfo(parsedPageUrl.hostname, configString, allowMultipleWindows);
@@ -51,14 +66,7 @@ export default {
 
         await this._ensureWindowIsExpanded(browserId, runtimeInfo.viewportSize);
 
-        if (runtimeInfo.config.emulation && runtimeInfo.config.deviceName) {
-            const metaInfo = `Emulating ${runtimeInfo.config.deviceName}`;
-            const options  = {
-                appendToUserAgent: true
-            };
-
-            this.setUserAgentMetaInfo(browserId, metaInfo, options);
-        }
+        this._setUserAgentMetaInfoForEmulatingDevice(browserId, runtimeInfo.config);
     },
 
     async closeBrowser (browserId) {

@@ -7,6 +7,7 @@ import delay from '../../utils/delay';
 import { GET_TITLE_SCRIPT, GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from './utils/client-functions';
 import WARNING_MESSAGE from '../../notifications/warning-message';
 import { Dictionary } from '../../configuration/interfaces';
+import { WindowDimentionsInfo } from '../interfaces';
 
 const BROWSER_OPENING_DELAY = 2000;
 
@@ -94,17 +95,17 @@ export default class BrowserProvider {
         if (!await browserTools.isMaximized(title))
             return;
 
-        const currentSize = await this.plugin.runInitScript(browserId, GET_WINDOW_DIMENSIONS_INFO_SCRIPT);
+        const currentSize = await this.plugin.runInitScript(browserId, GET_WINDOW_DIMENSIONS_INFO_SCRIPT) as WindowDimentionsInfo;
         const etalonSize  = subtractSizes(currentSize, RESIZE_DIFF_SIZE);
 
         await browserTools.resize(title, currentSize.width, currentSize.height, etalonSize.width, etalonSize.height);
 
-        let resizedSize    = await this.plugin.runInitScript(browserId, GET_WINDOW_DIMENSIONS_INFO_SCRIPT);
+        let resizedSize    = await this.plugin.runInitScript(browserId, GET_WINDOW_DIMENSIONS_INFO_SCRIPT) as WindowDimentionsInfo;
         let correctionSize = subtractSizes(resizedSize, etalonSize);
 
         await browserTools.resize(title, resizedSize.width, resizedSize.height, etalonSize.width, etalonSize.height);
 
-        resizedSize = await this.plugin.runInitScript(browserId, GET_WINDOW_DIMENSIONS_INFO_SCRIPT);
+        resizedSize = await this.plugin.runInitScript(browserId, GET_WINDOW_DIMENSIONS_INFO_SCRIPT) as WindowDimentionsInfo;
 
         correctionSize = sumSizes(correctionSize, subtractSizes(resizedSize, etalonSize));
 
@@ -118,7 +119,7 @@ export default class BrowserProvider {
         if (!this._isBrowserIdle(browserId))
             return;
 
-        const sizeInfo = await this.plugin.runInitScript(browserId, GET_WINDOW_DIMENSIONS_INFO_SCRIPT);
+        const sizeInfo = await this.plugin.runInitScript(browserId, GET_WINDOW_DIMENSIONS_INFO_SCRIPT) as WindowDimentionsInfo;
 
         if (this.localBrowsersInfo[browserId]) {
             this.localBrowsersInfo[browserId].maxScreenSize = {

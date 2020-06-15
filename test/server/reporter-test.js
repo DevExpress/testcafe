@@ -1,9 +1,9 @@
-const { expect }        = require('chai');
-const { chunk, random } = require('lodash');
-const Reporter          = require('../../lib/reporter');
-const Task              = require('../../lib/runner/task');
-const Videos            = require('../../lib/video-recorder/videos');
-const delay             = require('../../lib/utils/delay');
+const { expect }              = require('chai');
+const { chunk, random, noop } = require('lodash');
+const Reporter                = require('../../lib/reporter');
+const Task                    = require('../../lib/runner/task');
+const Videos                  = require('../../lib/video-recorder/videos');
+const delay                   = require('../../lib/utils/delay');
 
 describe('Reporter', () => {
     // Runnable configuration mocks
@@ -1041,15 +1041,11 @@ describe('Reporter', () => {
 
         function createReporter () {
             return new Reporter({
-                reportTaskStart: function () {
-                },
-                reportTaskDone: function () {
-                },
-                reportFixtureStart: function () {
-                },
-                reportTestStart: function () {
-                },
-                reportTestDone: function (name, testRunInfo) {
+                reportTaskStart:    noop,
+                reportTaskDone:     noop,
+                reportFixtureStart: noop,
+                reportTestStart:    noop,
+                reportTestDone:     (name, testRunInfo) => {
                     videoLog.push(testRunInfo.videos);
                 }
             }, taskMock);
