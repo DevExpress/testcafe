@@ -193,9 +193,12 @@
       * [createBrowserConnection](articles/documentation/reference/testcafe-api/testcafe/createbrowserconnection.md)
       * [createLiveModeRunner](articles/documentation/reference/testcafe-api/testcafe/createlivemoderunner.md)
       * [createRunner](articles/documentation/reference/testcafe-api/testcafe/createrunner.md)
+  * Plugin API
+    * [BrowserProvider Interface](articles/documentation/reference/plugin-api/browserprovider.md)
+    * [Reporter Interface](articles/documentation/reference/plugin-api/reporter.md)
 * [Recipes](articles/documentation/recipes/README.md)
   * Basics
-    * [Test \<select\> Elements](articles/documentation/recipes/basics/test-select-elements.md)
+    * [Test &lt;select&gt; Elements](articles/documentation/recipes/basics/test-select-elements.md)
     * [Test Static HTML Pages](articles/documentation/recipes/basics/test-static-html-pages.md)
     * [Test on Remote Computers and Mobile Devices](articles/documentation/recipes/basics/test-on-remote-computers-and-mobile-devices.md)
   * Best Practices
@@ -203,9 +206,11 @@
     * [Create Data-Driven Tests](articles/documentation/recipes/best-practices/create-data-driven-tests.md)
   * Integrations
     * [Import Third-Party Modules](articles/documentation/recipes/integrations/import-third-party-modules.md)
+    * [Testing Library API](articles/documentation/recipes/integrations/use-testing-library-api.md)
     * [Angular CLI Builder](articles/documentation/recipes/integrations/use-angular-cli-builder.md)
     * [Gulp](articles/documentation/recipes/integrations/gulp.md)
     * [Grunt](articles/documentation/recipes/integrations/grunt.md)
+    * [Test Websites That Use reCAPTCHA](articles/documentation/recipes/integrations/test-websites-that-use-recaptcha.md)
     * [Flow Type Checker](articles/documentation/recipes/integrations/find-code-issues-with-flow-type-checker.md)
   * Configuration
     * [Access Environment Variables in Tests](articles/documentation/recipes/configuration/access-environment-variables-in-tests.md)
