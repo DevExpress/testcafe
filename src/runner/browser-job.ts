@@ -24,7 +24,7 @@ export default class BrowserJob extends AsyncEventEmitter {
     private readonly _proxy: Proxy;
     public readonly browserConnections: BrowserConnection[];
     private readonly _screenshots: Screenshots;
-    private readonly _warningLog: WarningLog;
+    public readonly warningLog: WarningLog;
     public readonly fixtureHookController: FixtureHookController;
     private _result: BrowserJobResultInfo | null;
     private readonly _testRunControllerQueue: TestRunController[];
@@ -37,15 +37,15 @@ export default class BrowserJob extends AsyncEventEmitter {
 
         this._started = false;
 
-        this._total                 = 0;
-        this._passed                = 0;
-        this._opts                  = opts;
-        this._proxy                 = proxy;
+        this._total                = 0;
+        this._passed               = 0;
+        this._opts                 = opts;
+        this._proxy                = proxy;
         this.browserConnections    = browserConnections;
-        this._screenshots           = screenshots;
-        this._warningLog            = warningLog;
+        this._screenshots          = screenshots;
+        this.warningLog            = warningLog;
         this.fixtureHookController = fixtureHookController;
-        this._result                = null;
+        this._result               = null;
 
         this._testRunControllerQueue = tests.map((test, index) => this._createTestRunController(test, index));
 
@@ -58,7 +58,7 @@ export default class BrowserJob extends AsyncEventEmitter {
     }
 
     private _createTestRunController (test: Test, index: number): TestRunController {
-        const testRunController = new TestRunController(test, index + 1, this._proxy, this._screenshots, this._warningLog,
+        const testRunController = new TestRunController(test, index + 1, this._proxy, this._screenshots, this.warningLog,
             this.fixtureHookController, this._opts);
 
         testRunController.on('test-run-create', async testRunInfo => {
