@@ -161,7 +161,7 @@ interface MetaData {
 }
 
 interface CustomReporter {
-    reportTaskStart: (startTime: Date, userAgents: string[], testCount: number, testStructure: ReportedTestStructureItem[], taskProperties?: TaskProperties) => void;
+    reportTaskStart: (startTime: Date, userAgents: string[], testCount: number, testStructure: ReportedTestStructureItem[], taskProperties: TaskProperties) => void;
     reportTestStart?: (name: string, meta: MetaData) => void;
     reportFixtureStart: (name: string, path: string, meta: MetaData) => void;
     reportTestDone: (name: string, testRunInfo: TestRunInfo, meta: MetaData) => void;
