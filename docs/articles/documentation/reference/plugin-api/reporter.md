@@ -28,19 +28,21 @@ You can use the [helper methods and libraries](#helper-methods) within the repor
 Fires when a test task starts.
 
 ```text
-async reportTaskStart (startTime, userAgents, testCount)
+async reportTaskStart (startTime, userAgents, testCount, testStructure, taskProperties)
 ```
 
-Parameter    | Type             | Description
------------- | ---------------- | ---------------------------------------
-`startTime`  | Date             | The date and time when testing started.
-`userAgents` | Array of Strings | The list of browsers used for testing. Contains the formatted names and versions of the browsers and operating systems.
-`testCount`  | Number           | The total number of tests to run.
+Parameter        | Type              | Description
+---------------- | ----------------- | ---------------------------------------
+`startTime`      | Date              | The date and time when testing started.
+`userAgents`     | Array of Strings  | The list of browsers used for testing. Contains the formatted names and versions of the browsers and operating systems.
+`testCount`      | Number            | The total number of tests to run.
+`testStructure`  | Array of Objects  | An array of [testStructure](#teststructure-object) objects.
+`taskProperties` | Object            | A [taskProperties](#taskproperties-object) object.
 
 **Example**
 
 ```js
-async reportTaskStart (startTime, userAgents, testCount) {
+async reportTaskStart (startTime, userAgents, testCount, testStructure, taskProperties) {
     this.startTime = startTime;
     this.testCount = testCount;
 
@@ -49,12 +51,53 @@ async reportTaskStart (startTime, userAgents, testCount) {
     this.write(`Testing started: ${time}`)
         .newline()
         .write(`Running ${testCount} tests in: ${userAgents}`)
-        .newline();
+        .newline()
+        .write(`Test structure: ${JSON.stringify(testStructure)}`)
+        .newline()
+        .write(`Using configuration: ${JSON.stringify(taskProperties)}`);
 }
 
 //=> Testing started: 8/12/2016 3:00:00 am
 //=> Running 6 tests in: Chrome 41.0.2227 / Mac OS X 10.10.1,Firefox 47 / Mac OS X 10.10.1
+//=> Test structure: [{"fixture":{"id":"2zeHcQZ","name":"Fixture1","tests":[{"id":"PThvxSu","name":"Test1","skip":false}, {"id":"QRfgxvu","name":"Test2","skip":false}]}}]
+//=> Using configuration: {"configuration":{"hostname":"localhost","port1":65235,"port2":65236,"developmentMode":false,"retryTestPages":false,"src":["/home/user/tests/**/*.js"],"reporter":[{}],"browsers":["chrome"],"quarantineMode":true,"skipJsErrors":false,"debugMode":false,"debugOnFail":false,"skipUncaughtErrors":false,"stopOnFirstFail":false,"takeScreenshotsOnFails":false,"disablePageCaching":false,"disablePageReloads":false,"disableScreenshots":false,"allowMultipleWindows":false,"selectorTimeout":10000,"assertionTimeout":3000,"pageLoadTimeout":3000,"speed":1,"appInitDelay":1000,"concurrency":1,"screenshots":{"path":"/home/user/reports/screenshots/"},"debugLogger":{"messages":[],"debugLogging":false,"streamsOverridden":false}}}
 ```
+
+### testStructure Object
+
+The `testStructure` array provides definition of tests that wil be executed per fixture. The array contain objects with following properties:
+
+Property            | Type    | Description
+------------------- | ------- | --------------------------------------------------------
+`fixture`           | Object  | A [fixture](#fixture-object) object.
+
+### fixture Object
+
+The `fixture` object provides name, id and tests defined under it. The object has the following properties:
+
+Property       | Type             | Description
+-------------- | ---------------- | --------------------------------------------------------
+`id`           | String           | Randomly generated fixture id
+`name`         | String           | Fixture name
+`tests`        | Array of Objects | An array of [tests](#tests-object) objects.
+
+### tests Object
+
+The `tests` object provides name, id and information if test should be skipped. The object has the following properties:
+
+Property       | Type             | Description
+-------------- | ---------------- | --------------------------------------------------------
+`id`           | String           | Randomly generated test id
+`name`         | String           | Test name
+`skip`         | Boolean          | Specifies if the test should be skipped
+
+### taskProperties Object
+
+The `taskProperties` provides information about a configuration that was used to execute the test run. The object contain following properties:
+
+Property            | Type    | Description
+------------------- | ------- | --------------------------------------------------------
+`configuration`     | Object  | A [configuration](../configuration-file.md) object.
 
 ## reportFixtureStart
 

@@ -65,7 +65,7 @@ Implement the following reporter methods (four mandatory and one optional):
 ```js
 export default function () {
     return {
-        async reportTaskStart (/* startTime, userAgents, testCount */) {
+        async reportTaskStart (/* startTime, userAgents, testCount, testStructure, taskProperties */) {
             throw new Error('Not implemented');
         },
 

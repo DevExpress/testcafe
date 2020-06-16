@@ -58,3 +58,30 @@ createTestCafe('localhost', 1337, 1338)
         testcafe.close();
     });
 ```
+
+**Example with multiple test runners**
+
+```js
+const createTestCafe = require('testcafe');
+let testcafe         = null;
+
+createTestCafe('localhost')
+    .then(tc => {
+        testcafe     = tc;
+        const desktopRunner = testcafe
+                          .createRunner()
+                          .filter(/* isDesktopTest */)
+                          .browsers('chrome');
+        const mobileRunner = testcafe
+                          .createRunner()
+                          .filter(/* isMobileTest */)
+                          .browsers('chrome:emulation:device=iPad;mobile=true;touch=true');
+
+        return Promise.allSettled([desktopRunner, mobileRunner].map(testRunner => testRunner.run())); // Promise.allSettled requires Node >= 12.10.0
+    })
+    .then(([desktopFailed, mobileFailed]) => {
+        console.log('Desktop tests failed: ' + desktopFailed, 'Mobile tests failed: ' + mobileFailed);
+        testcafe.close();
+    })
+    .catch(error => { /* ... */ });
+```

@@ -15,7 +15,7 @@ reporter([ name | { name, output } | fn ]) → this
 
 Parameter                | Type                        | Description                                     | Default
 ------------------------ | --------------------------- | ----------------------------------------------- | --------
-`name`                   | String      | The name of the [reporter](../../../guides/concepts/reporters.md).
+`name`                   | String &#124; Function     | The name of the [reporter](../../../guides/concepts/reporters.md) or function that [returns a custom reporter object](#specify-a-custom-reporter)
 `output`&#160;*(optional)* | String &#124; Writable Stream implementer | The file path where the report is written or the output stream. | `stdout`
 `fn` | A function that [returns a custom reporter object](#specify-a-custom-reporter).
 
@@ -59,8 +59,9 @@ import { createTestCafe } from 'testcafe';
 
 const customReporter = () => {
     return {
-        async reportTaskStart (startTime, userAgents, testCount) { /* ... */ },
+        async reportTaskStart (startTime, userAgents, testCount, testStructure, taskProperties) { /* ... */ },
         async reportFixtureStart (name, path, meta) { /* ... */ },
+        async reportTestStart (name, meta) { /* ... */ }, // This method is optional
         async reportTestDone (name, testRunInfo, meta) { /* ... */ },
         async reportTaskDone (endTime, passed, warnings, result) { /* ... */ }
     };
@@ -70,6 +71,15 @@ const testcafe = await createTestCafe(/* [...] */);
 const runner   = testcafe.createRunner();
 
 await runner.reporter(customReporter);
+```
+
+Custom reporter can also be combined with multiple reporters
+
+```js
+runner.reporter(['spec', {
+    name: customReporter,
+    output: 'reports/customReporter.json'
+}]);
 ```
 
 ## Implement a Custom Stream
