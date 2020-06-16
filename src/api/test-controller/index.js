@@ -5,6 +5,7 @@ import { getCallsiteForMethod } from '../../errors/get-callsite';
 import ClientFunctionBuilder from '../../client-functions/client-function-builder';
 import Assertion from './assertion';
 import { getDelegatedAPIList, delegateAPI } from '../../utils/delegated-api';
+import WARNING_MESSAGE from '../../notifications/warning-message';
 
 import {
     ClickCommand,
@@ -57,6 +58,7 @@ export default class TestController {
         this.testRun               = testRun;
         this.executionChain        = Promise.resolve();
         this.callsitesWithoutAwait = new Set();
+        this.warningLog = testRun.warningLog;
     }
 
     // NOTE: we track missing `awaits` by exposing a special custom Promise to user code.
@@ -342,7 +344,16 @@ export default class TestController {
         return this.testRun.executeAction(name, new GetBrowserConsoleMessagesCommand(), callsite);
     }
 
+    _addAssertionWarning (value, builderClassName, warningMessage) {
+        if (typeof value === 'function' && value[Object.getOwnPropertySymbols(value)[0]].constructor.name === builderClassName)
+            this.warningLog.addWarning(warningMessage);
+
+    }
+
     _expect$ (actual) {
+        this._addAssertionWarning(actual, 'SelectorBuilder', WARNING_MESSAGE.assertedSelectorInstance);
+        this._addAssertionWarning(actual, 'ClientFunctionBuilder', WARNING_MESSAGE.assertedClientFunctionInstance);
+
         const callsite = getCallsiteForMethod('expect');
 
         return new Assertion(actual, this, callsite);

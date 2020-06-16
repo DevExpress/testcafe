@@ -32,6 +32,8 @@ export default {
                                                         'The placeholder{suffix} {verb} replaced with an empty string.',
 
     clientScriptsWithEmptyContent:      'The client script you tried to inject is empty.',
-    clientScriptsWithDuplicatedContent: 'You injected the following client script{suffix} several times:\n {duplicatedScripts}'
+    clientScriptsWithDuplicatedContent: 'You injected the following client script{suffix} several times:\n {duplicatedScripts}',
+    assertedSelectorInstance:           'You are trying to assert the Selector instance.\nIf you want to assert that the selected element exists, consider using yourSelector.exists in the .expect() statement.',
+    assertedClientFunctionInstance:     'You are trying to assert the ClientFunction instance.\nIf you want to assert the returned value, consider calling your ClientFunction (using yourClientFunction.call()) in the .expect() statement.'
 };
 
