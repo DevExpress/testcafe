@@ -457,6 +457,77 @@ module.exports = [
     },
     {
         testRunId: 'test-run-id',
+        name:    'openWindow',
+        command: {
+            type: 'open-window',
+            url:  'http://example.com'
+        },
+        test:    {
+            id:    'test-id',
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
+        },
+        browser: { alias: 'test-browser', headless: false }
+    },
+    {
+        testRunId: 'test-run-id',
+        name:    'switchToWindow',
+        command: {
+            type:     'switch-to-window',
+            windowId: 'window-id'
+        },
+        test:    {
+            id:    'test-id',
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
+        },
+        browser: { alias: 'test-browser', headless: false }
+    },
+    {
+        testRunId: 'test-run-id',
+        name:    'closeWindow',
+        command: {
+            type:     'close-window',
+            windowId: 'window-id'
+        },
+        test:    {
+            id:    'test-id',
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
+        },
+        browser: { alias: 'test-browser', headless: false }
+    },
+    {
+        testRunId: 'test-run-id',
+        name:    'getCurrentWindow',
+        command: {
+            type: 'get-current-window'
+        },
+        test:    {
+            id:    'test-id',
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
+        },
+        browser: { alias: 'test-browser', headless: false }
+    },
+    {
+        testRunId: 'test-run-id',
         name:    'setNativeDialogHandler',
         command: {
             dialogHandler: {

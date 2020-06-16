@@ -35,7 +35,7 @@ export default {
     switchToMainWindow:         'switch-to-main-window',
     openWindow:                 'open-window',
     closeWindow:                'close-window',
-    getCurrentWindowCommand:    'get-current-window-command',
+    getCurrentWindowCommand:    'get-current-window',
     switchToWindow:             'switch-to-window',
     switchToParentWindow:       'switch-to-parent-window',
     setNativeDialogHandler:     'set-native-dialog-handler',

@@ -345,6 +345,11 @@ export class GetCurrentWindowCommand extends CommandBase {
     constructor (obj, testRun) {
         super(obj, testRun, TYPE.getCurrentWindowCommand);
     }
+
+    _getAssignableProperties () {
+        return [
+        ];
+    }
 }
 
 
