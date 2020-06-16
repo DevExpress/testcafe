@@ -159,3 +159,11 @@ test('ClientFunction result assertion', async t => {
 test('Assertion without method call', async t => {
     await t.expect();
 });
+
+test('Passing Selector instance into an assertion', async t => {
+    await t.expect(Selector('#el1')).eql(true);
+});
+
+test('Passing ClientFunction instance into an assertion', async t => {
+    await t.expect(ClientFunction(() => true)).eql(true);
+});
