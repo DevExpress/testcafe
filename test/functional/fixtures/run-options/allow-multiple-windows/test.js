@@ -90,4 +90,88 @@ describe('Allow multiple windows', () => {
     it('Should continue debugging when a child window closes', () => {
         return runTests('testcafe-fixtures/debug-synchronization.js', null, { only: 'chrome', allowMultipleWindows: true });
     });
+
+    describe('API', () => {
+        it('Open child window', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Open child window', { only: 'chrome', allowMultipleWindows: true });
+        });
+
+        it('Close current window', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Close current window', { only: 'chrome', allowMultipleWindows: true });
+        });
+
+        it('Get current window', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Get current window', { only: 'chrome', allowMultipleWindows: true });
+        });
+
+        it('Switch to parent window', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to parent window', { only: 'chrome', allowMultipleWindows: true });
+        });
+
+        it('Switch to unexisting window', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to unexisting window', { only: 'chrome', allowMultipleWindows: true, shouldFail: true })
+                .catch(errs => {
+                    expect(errs[0]).to.contain('The window defined in command is not found.');
+                });
+        });
+
+        it('Switch to child window', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to child window', { only: 'chrome', allowMultipleWindows: true });
+        });
+
+
+        it('Switch to other child', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to other child', { only: 'chrome', allowMultipleWindows: true });
+        });
+
+        it('Switch to deep child', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to deep child', { only: 'chrome', allowMultipleWindows: true });
+        });
+
+        it('Close specific window from parent', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Close specific window from parent', { only: 'chrome', allowMultipleWindows: true });
+        });
+
+        it('Close specific window from child', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Close specific window from child', { only: 'chrome', allowMultipleWindows: true, shouldFail: true })
+                .catch(errs => {
+                    expect(errs[0]).to.contain('The window defined in command is not found.');
+                });
+        });
+
+        it('Close specific window and switch to it', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Close specific window and switch to it', { only: 'chrome', allowMultipleWindows: true, shouldFail: true })
+                .catch(errs => {
+                    expect(errs[0]).to.contain('The window defined in command is not found.');
+                });
+        });
+
+        it('Close parent window and catch error', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Close parent window and catch error', { only: 'chrome', allowMultipleWindows: true, shouldFail: true })
+                .catch(errs => {
+                    expect(errs[0]).to.contain('Cannot close window with opened child windows.');
+                });
+        });
+
+        it('Close unexisting window', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Close unexisting window', { only: 'chrome', allowMultipleWindows: true, shouldFail: true })
+                .catch(errs => {
+                    expect(errs[0]).to.contain('The window defined in command is not found');
+                });
+        });
+
+        it('Close unexisting child window', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Close unexisting child window', { only: 'chrome', allowMultipleWindows: true, shouldFail: true })
+                .catch(errs => {
+                    expect(errs[0]).to.contain('The window defined in command is not found.');
+                });
+        });
+
+        it('Close closed window', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Close closed window', { only: 'chrome', allowMultipleWindows: true, shouldFail: true })
+                .catch(errs => {
+                    expect(errs[0]).to.contain('The window defined in command is not found.');
+                });
+        });
+    });
 });

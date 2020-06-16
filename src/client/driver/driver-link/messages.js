@@ -1,13 +1,20 @@
 import generateId from '../generate-id';
 
 export const TYPE = {
-    establishConnection:    'driver|establish-connection',
-    commandExecuted:        'driver|command-executed',
-    executeCommand:         'driver|execute-command',
-    confirmation:           'driver|confirmation',
-    setNativeDialogHandler: 'driver|set-native-dialog-handler',
-    setAsMaster:            'driver|set-as-master',
-    closeAllChildWindows:   'driver|close-all-child-windows'
+    establishConnection:     'driver|establish-connection',
+    executeWindowApiCommand: 'driver|execute-window-api-command',
+    validateWindowExists:    'driver|validate-window-exists',
+    commandExecuted:         'driver|command-executed',
+    executeCommand:          'driver|execute-command',
+    confirmation:            'driver|confirmation',
+    setNativeDialogHandler:  'driver|set-native-dialog-handler',
+    setAsMaster:             'driver|set-as-master',
+    closeAllChildWindows:    'driver|close-all-child-windows'
+};
+
+export const MULTIPLE_WINDOW_API_COMMAND = {
+    switchToWindow: 'switchToWindow',
+    close:          'close'
 };
 
 class InterDriverMessage {
@@ -20,6 +27,24 @@ class InterDriverMessage {
 export class EstablishConnectionMessage extends InterDriverMessage {
     constructor () {
         super(TYPE.establishConnection);
+    }
+}
+
+export class WindowValidationMessage extends InterDriverMessage {
+    constructor (windowId, cmd) {
+        super(TYPE.validateWindowExists);
+
+        this.windowId = windowId;
+        this.cmd      = cmd;
+    }
+}
+
+export class ExecuteWindowApiCommandMessage extends InterDriverMessage {
+    constructor (windowId, cmd) {
+        super(TYPE.executeWindowApiCommand);
+
+        this.windowId = windowId;
+        this.cmd      = cmd;
     }
 }
 

@@ -20,4 +20,10 @@ export default class ChildWindowDriverLink {
 
         return sendMessageToDriver(msg, this.driverWindow, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT, CloseChildWindowError);
     }
+
+    searchChildWindows ({ windowId, cmd }, Ctor) {
+        const msg = new Ctor(windowId, cmd);
+
+        return sendMessageToDriver(msg, this.driverWindow, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT, CannotSwitchToWindowError);
+    }
 }

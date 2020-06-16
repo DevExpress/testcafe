@@ -23,6 +23,10 @@ export default class ParentWindowDriverLink {
         return sendMessageToDriver(msg, wnd, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT, CannotSwitchToWindowError);
     }
 
+    getTopOpenedWindow () {
+        return this._getTopOpenedWindow(this.currentDriverWindow);
+    }
+
     setTopOpenedWindowAsMaster () {
         const wnd = this._getTopOpenedWindow(this.currentDriverWindow);
 

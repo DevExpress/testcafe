@@ -23,6 +23,10 @@ import {
     ClearUploadCommand,
     SwitchToIframeCommand,
     SwitchToMainWindowCommand,
+    OpenWindowCommand,
+    CloseWindowCommand,
+    GetCurrentWindowCommand,
+    SwitchToWindowCommand,
     SetNativeDialogHandlerCommand,
     GetNativeDialogHistoryCommand,
     GetBrowserConsoleMessagesCommand,
@@ -265,6 +269,26 @@ export default class TestController {
 
     _switchToMainWindow$ () {
         return this._enqueueCommand('switchToMainWindow', SwitchToMainWindowCommand);
+    }
+
+    _openWindow$ (url) {
+        return this._enqueueCommand('openWindow', OpenWindowCommand, { url });
+    }
+
+    _closeWindow$ (wnd) {
+        const windowId = wnd ? wnd.id : null;
+
+        return this._enqueueCommand('closeWindow', CloseWindowCommand, { windowId });
+    }
+
+    _getCurrentWindow$ () {
+        return this._enqueueCommand('getCurrentWindow', GetCurrentWindowCommand);
+    }
+
+    _switchToWindow$ (wnd) {
+        const windowId = wnd ? wnd.id : null;
+
+        return this._enqueueCommand('switchToWindow', SwitchToWindowCommand, { windowId });
     }
 
     _eval$ (fn, options) {
