@@ -1,11 +1,15 @@
 // TODO: Fix https://github.com/DevExpress/testcafe/issues/4139 to get rid of Pinkie
 import Promise from 'pinkie';
+import { renderers } from 'callsite-record';
+import chalk from 'chalk';
 import { identity, assign, isNil as isNullOrUndefined, flattenDeep as flatten } from 'lodash';
 import { getCallsiteForMethod } from '../../errors/get-callsite';
 import ClientFunctionBuilder from '../../client-functions/client-function-builder';
 import Assertion from './assertion';
 import { getDelegatedAPIList, delegateAPI } from '../../utils/delegated-api';
 import WARNING_MESSAGE from '../../notifications/warning-message';
+import renderCallsiteSync from '../../utils/render-callsite-sync';
+import createStackFilter from '../../errors/create-stack-filter';
 
 import {
     ClickCommand,
@@ -344,17 +348,21 @@ export default class TestController {
         return this.testRun.executeAction(name, new GetBrowserConsoleMessagesCommand(), callsite);
     }
 
-    _addAssertionWarning (value, builderClassName, warningMessage) {
-        if (typeof value === 'function' && value[Object.getOwnPropertySymbols(value)[0]].constructor.name === builderClassName)
-            this.warningLog.addWarning(warningMessage);
-
-    }
-
     _expect$ (actual) {
-        this._addAssertionWarning(actual, 'SelectorBuilder', WARNING_MESSAGE.assertedSelectorInstance);
-        this._addAssertionWarning(actual, 'ClientFunctionBuilder', WARNING_MESSAGE.assertedClientFunctionInstance);
-
         const callsite = getCallsiteForMethod('expect');
+
+        const addAssertionWarning = (value, builderClassName, warningMessage, warningCallsite) => {
+            const renderedCallsite = renderCallsiteSync(warningCallsite, {
+                renderer:    renderers.noColor,
+                stackFilter: createStackFilter(Error.stackTraceLimit)
+            });
+
+            if (typeof value === 'function' && value[Object.getOwnPropertySymbols(value)[0]] && value[Object.getOwnPropertySymbols(value)[0]].constructor.name === builderClassName)
+                this.warningLog.addWarning(warningMessage + `\n\n${chalk.yellow(renderedCallsite)}`);
+        };
+
+        addAssertionWarning(actual, 'SelectorBuilder', WARNING_MESSAGE.assertedSelectorInstance, callsite);
+        addAssertionWarning(actual, 'ClientFunctionBuilder', WARNING_MESSAGE.assertedClientFunctionInstance, callsite);
 
         return new Assertion(actual, this, callsite);
     }
