@@ -24,6 +24,7 @@ This section provides examples and recipes of how to use TestCafe in different s
 
 * [Import Third-Party Modules](integrations/import-third-party-modules.md)
 * [Testing Library API](integrations/use-testing-library-api.md)
+* [Axe-core](https://github.com/testcafe-community/axe)
 * [Angular CLI Builder](integrations/use-angular-cli-builder.md)
 * [Gulp](integrations/gulp.md)
 * [Grunt](integrations/grunt.md)
