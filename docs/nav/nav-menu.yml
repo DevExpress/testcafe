@@ -426,6 +426,8 @@
       url: /documentation/recipes/integrations/gulp.md
     - name: Grunt
       url: /documentation/recipes/integrations/grunt.md
+    - name: Test Websites That Use reCAPTCHA
+      url: /documentation/recipes/integrations/test-websites-that-use-recaptcha.md
     - name: Flow Type Checker
       url: /documentation/recipes/integrations/find-code-issues-with-flow-type-checker.md
   - name: Configuration
