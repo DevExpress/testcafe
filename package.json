@@ -191,7 +191,7 @@
     "react": "^16.13.1",
     "recursive-copy": "^2.0.5",
     "request": "^2.58.0",
-    "rollup": "^2.2.0",
+    "rollup": "2.16.1",
     "rollup-plugin-typescript2": "^0.26.0",
     "run-sequence": "^1.2.2",
     "saucelabs-connector": "^0.2.0",
