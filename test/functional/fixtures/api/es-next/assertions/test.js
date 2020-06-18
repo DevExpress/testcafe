@@ -182,7 +182,7 @@ describe('[API] Assertions', function () {
             shouldFail: true,
             only:       'chrome'
         })
-            .then(function () {
+            .catch(function () {
                 expect(testReport.warnings[0]).to.match(new RegExp(['You are trying to assert the Selector instance.\nIf you want to ',
                     'assert that the selected element exists, consider using yourSelector.exists in the .expect() statement.'].join('')));
             });
@@ -193,7 +193,7 @@ describe('[API] Assertions', function () {
             shouldFail: true,
             only:       'chrome'
         })
-            .then(function () {
+            .catch(function () {
                 expect(testReport.warnings[0]).to.match(new RegExp(['You are trying to assert the ClientFunction instance.\nIf you want to ',
                     'assert the returned value, consider calling your ClientFunction (using yourClientFunction.call()) in the .expect() statement.'].join('')));
             });
