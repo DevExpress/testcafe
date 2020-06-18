@@ -13,7 +13,7 @@ This topic describes how to configure reCAPTCHA for TestCafe tests.
 
 Create a separate key for testing environments in the [reCAPTCHA admin console](https://www.google.com/recaptcha/admin/create). Then follow the instructions on the page to use this key when you build the site for testing.
 
-> Scores may not be accurate in testing environments as reCAPTCHA v3 relies on seeing real traffic.
+> Scores may not be accurate in testing environments as reCAPTCHA v3 relies on real traffic.
 
 Alternatively, you can change the `score` threshold or disable the reCAPTCHA check completely in your development build.
 
