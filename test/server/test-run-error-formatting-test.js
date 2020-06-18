@@ -80,6 +80,7 @@ const {
     ChildWindowClosedBeforeSwitchingError,
     WindowNotFoundError,
     CannotCloseWindowWithChildrenError,
+    AllowMultipleWindowsOptionIsNotSpecifiedError
 } = require('../../lib/errors/test-run');
 
 const untestedErrorTypes = Object.keys(TEST_RUN_ERRORS).map(key => TEST_RUN_ERRORS[key]);
@@ -461,6 +462,10 @@ describe('Error formatting', () => {
 
         it('Should format "windowNotFoundError"', () => {
             assertErrorMessage('window-not-found-error', new WindowNotFoundError());
+        });
+
+        it('Should format "allowMultipleWindowsOptionIsNotSpecifiedError"', () => {
+            assertErrorMessage('allow-multiple-windows-option-is-not-specified-error', new AllowMultipleWindowsOptionIsNotSpecifiedError('openWindow'));
         });
     });
 
