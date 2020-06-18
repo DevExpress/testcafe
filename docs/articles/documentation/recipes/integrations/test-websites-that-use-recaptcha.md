@@ -7,7 +7,7 @@ permalink: /documentation/recipes/integrations/test-websites-that-use-recaptcha.
 
 TestCafe does not implement mechanisms that circumvent CAPTCHA challenges. However, many CAPTCHA providers allow you to disable or simulate the verification in test environments.
 
-This topic describes how to configure reCAPTCHA so that TestCafe tests pass through it.
+This topic describes how to configure reCAPTCHA for TestCafe tests.
 
 ## reCAPTCHA v3
 
