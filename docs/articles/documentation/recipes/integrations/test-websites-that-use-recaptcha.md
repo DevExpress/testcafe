@@ -19,7 +19,7 @@ Alternatively, you can change the `score` threshold or disable the reCAPTCHA che
 
 ## reCAPTCHA v2
 
-Use the following test keys that generate the `No CAPTCHA` response and make all verification requests pass:
+Use the following test keys that generate the `No CAPTCHA` response and pass all verification requests:
 
 **Site key**: `6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI`  
 **Secret key**: `6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe`
