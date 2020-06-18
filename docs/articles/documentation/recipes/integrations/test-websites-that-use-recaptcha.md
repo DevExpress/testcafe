@@ -15,7 +15,7 @@ Create a separate key for testing environments in the [reCAPTCHA admin console](
 
 > Scores may not be accurate in testing environments as reCAPTCHA v3 relies on real traffic.
 
-Alternatively, you can change the `score` threshold or disable the reCAPTCHA check completely in your development build.
+Alternatively, you can change the `score` threshold or disable the reCAPTCHA check in your development build.
 
 ## reCAPTCHA v2
 
