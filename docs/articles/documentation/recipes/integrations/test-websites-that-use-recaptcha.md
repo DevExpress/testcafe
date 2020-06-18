@@ -5,7 +5,7 @@ permalink: /documentation/recipes/integrations/test-websites-that-use-recaptcha.
 ---
 # Test Websites That Use reCAPTCHA
 
-TestCafe does not implement mechanisms that circumvent CAPTCHA challenges. However, many CAPTCHA providers allow you to disable or mock the verification in test environments.
+TestCafe does not implement mechanisms that circumvent CAPTCHA challenges. However, many CAPTCHA providers allow you to disable or simulate the verification in test environments.
 
 This topic describes how to configure reCAPTCHA so that TestCafe tests pass through it.
 
