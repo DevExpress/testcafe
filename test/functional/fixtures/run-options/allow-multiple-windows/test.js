@@ -173,5 +173,12 @@ describe('Allow multiple windows', () => {
                     expect(errs[0]).to.contain('The window defined in command is not found.');
                 });
         });
+
+        it('Open window without `allowMultipleWindows` option', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Open window without `allowMultipleWindows` option', { only: 'chrome', shouldFail: true })
+                .catch(errs => {
+                    expect(errs[0]).to.contain('To use the "openWindow" specify the "allow-multiple-windows" run option.');
+                });
+        });
     });
 });

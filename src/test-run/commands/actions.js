@@ -343,7 +343,7 @@ export class CloseWindowCommand extends CommandBase {
 
 export class GetCurrentWindowCommand extends CommandBase {
     constructor (obj, testRun) {
-        super(obj, testRun, TYPE.getCurrentWindowCommand);
+        super(obj, testRun, TYPE.getCurrentWindow);
     }
 
     _getAssignableProperties () {

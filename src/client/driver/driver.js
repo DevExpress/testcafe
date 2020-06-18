@@ -59,9 +59,10 @@ import BrowserConsoleMessages from '../../test-run/browser-console-messages';
 import NativeDialogTracker from './native-dialog-tracker';
 
 import {
-    WindowValidationMessage,
-    MULTIPLE_WINDOW_API_COMMAND,
-    ExecuteWindowApiCommandMessage,
+    SwitchToWindowValidationMessage,
+    CloseWindowValidationMessage,
+    CloseWindowCommandMessage,
+    SwitchToWindowCommandMessage,
     SetNativeDialogHandlerMessage,
     TYPE as MESSAGE_TYPE
 } from './driver-link/messages';
@@ -179,7 +180,7 @@ export default class Driver extends serviceUtils.EventEmitter {
             .documentReady(this.pageLoadTimeout)
             .then(() => this.pageInitialRequestBarrier.wait(true));
 
-        this._openWindowResolve = () => {};
+        this._openWindowPromiseResolveFn = () => {};
 
         this._initChildDriverListening();
 
@@ -330,7 +331,7 @@ export default class Driver extends serviceUtils.EventEmitter {
     _onChildWindowOpened (e) {
         this._addChildWindowDriverLink(e);
         this._switchToChildWindow(e.windowId);
-        this._openWindowResolve(e.windowId);
+        this._openWindowPromiseResolveFn(e.windowId);
     }
 
     // HACK: For https://github.com/DevExpress/testcafe/issues/3560
@@ -443,19 +444,6 @@ export default class Driver extends serviceUtils.EventEmitter {
         childIframeDriverLink.sendConfirmationMessage(id);
     }
 
-    _getTargetWindowFoundResult (msg) {
-        const result = {
-            success: true
-        };
-
-        if (this.childWindowDriverLinks.length && msg.cmd === MULTIPLE_WINDOW_API_COMMAND.close) {
-            result.success = false;
-            result.errCode = TEST_RUN_ERRORS.cannotCloseWindowWithChildrenError;
-        }
-
-        return Promise.resolve(result);
-    }
-
     _getTargetWindowNotFoundResult () {
         return Promise.resolve({
             success: false,
@@ -477,18 +465,22 @@ export default class Driver extends serviceUtils.EventEmitter {
         return errItem ? { errCode: errItem.result.errCode } : void 0;
     }
 
-    _handleValidateWindowExists (msg, wnd) {
+    _handleWindowValidation (msg, wnd, windowFoundHandler, WindowValidationMessageCtor) {
         let promiseResult = null;
 
         if (msg.windowId === this.windowId)
-            promiseResult = this._getTargetWindowFoundResult(msg);
+            promiseResult = windowFoundHandler();
 
-        else if (!this.childWindowDriverLinks.length)
-            promiseResult = this._getTargetWindowNotFoundResult();
+        else if (!this.childWindowDriverLinks.length) {
+            promiseResult = Promise.resolve({
+                success: false,
+                errCode: TEST_RUN_ERRORS.targetWindowNotFoundError
+            });
+        }
 
         else {
             promiseResult = Promise.all(this.childWindowDriverLinks.map(childWindowDriverLink => {
-                return childWindowDriverLink.searchChildWindows(msg, WindowValidationMessage);
+                return childWindowDriverLink.searchChildWindows(msg, WindowValidationMessageCtor);
             }))
                 .then(arr => {
                     return this._getChildWindowValidateResult(arr);
@@ -505,17 +497,33 @@ export default class Driver extends serviceUtils.EventEmitter {
             });
     }
 
-    _handleExecuteWindowApiCommand (msg, wnd) {
+    _handleCloseWindowValidation (msg, wnd) {
+        const windowFoundHandler = () => {
+            if (this.childWindowDriverLinks.length) {
+                return Promise.resolve({
+                    success: false,
+                    errCode: TEST_RUN_ERRORS.cannotCloseWindowWithChildrenError
+                });
+            }
+
+            return Promise.resolve({ success: true });
+        };
+
+        return this._handleWindowValidation(msg, wnd, windowFoundHandler, CloseWindowValidationMessage);
+    }
+
+    _handleSwitchToWindowValidation (msg, wnd) {
+        const windowFoundHandler = () => {
+            return Promise.resolve({ success: true });
+        };
+
+        return this._handleWindowValidation(msg, wnd, windowFoundHandler, SwitchToWindowValidationMessage);
+    }
+
+    _handleWindowClose (msg, wnd) {
         let promise = null;
 
-        if (msg.windowId === this.windowId && msg.cmd === MULTIPLE_WINDOW_API_COMMAND.switchToWindow) {
-            promise = Promise.resolve()
-                .then(() => {
-                    this._setCurrentWindowAsMaster();
-                });
-        }
-
-        if (!promise && msg.cmd === MULTIPLE_WINDOW_API_COMMAND.close && this.childWindowDriverLinks.length) {
+        if (this.childWindowDriverLinks.length) {
             const childWindowToClose = this.childWindowDriverLinks.find(link => link.windowId === msg.windowId);
 
             if (childWindowToClose) {
@@ -527,7 +535,34 @@ export default class Driver extends serviceUtils.EventEmitter {
 
         if (!promise && this.childWindowDriverLinks.length) {
             promise = Promise.all(this.childWindowDriverLinks.map(childWindowDriverLink => {
-                return childWindowDriverLink.searchChildWindows(msg, ExecuteWindowApiCommandMessage);
+                return childWindowDriverLink.searchChildWindows(msg, CloseWindowCommandMessage);
+            }));
+        }
+
+        if (!promise)
+            promise = Promise.resolve();
+
+        promise.then(() => {
+            sendConfirmationMessage({
+                requestMsgId: msg.id,
+                window:       wnd
+            });
+        });
+    }
+
+    _handleSwitchToWindow (msg, wnd) {
+        let promise = null;
+
+        if (msg.windowId === this.windowId) {
+            promise = Promise.resolve()
+                .then(() => {
+                    this._setCurrentWindowAsMaster();
+                });
+        }
+
+        if (!promise && this.childWindowDriverLinks.length) {
+            promise = Promise.all(this.childWindowDriverLinks.map(childWindowDriverLink => {
+                return childWindowDriverLink.searchChildWindows(msg, SwitchToWindowCommandMessage);
             }));
         }
 
@@ -598,10 +633,14 @@ export default class Driver extends serviceUtils.EventEmitter {
                 this._addChildIframeDriverLink(msg.id, window);
             else if (msg.type === MESSAGE_TYPE.setAsMaster)
                 this._handleSetAsMasterMessage(msg, window);
-            else if (msg.type === MESSAGE_TYPE.executeWindowApiCommand)
-                this._handleExecuteWindowApiCommand(msg, window);
-            else if (msg.type === MESSAGE_TYPE.validateWindowExists)
-                this._handleValidateWindowExists(msg, window);
+            else if (msg.type === MESSAGE_TYPE.switchToWindow)
+                this._handleSwitchToWindow(msg, window);
+            else if (msg.type === MESSAGE_TYPE.closeWindow)
+                this._handleWindowClose(msg, window);
+            else if (msg.type === MESSAGE_TYPE.switchToWindowValidation)
+                this._handleSwitchToWindowValidation(msg, window);
+            else if (msg.type === MESSAGE_TYPE.closeWindowValidation)
+                this._handleCloseWindowValidation(msg, window);
             else if (msg.type === MESSAGE_TYPE.closeAllChildWindows)
                 this._handleCloseAllWindowsMessage(msg, window);
         });
@@ -904,7 +943,7 @@ export default class Driver extends serviceUtils.EventEmitter {
 
     _onWindowOpenCommand (command) {
         const openWindowPromise = new Promise(resolve => {
-            this._openWindowResolve = resolve;
+            this._openWindowPromiseResolveFn = resolve;
 
             window.open(command.url);
         });
@@ -928,14 +967,14 @@ export default class Driver extends serviceUtils.EventEmitter {
 
         const windowId = command.windowId || this.windowId;
 
-        this._validateChildWindowExists(windowId, MULTIPLE_WINDOW_API_COMMAND.close, wnd)
+        this._validateChildWindowCloseCommandExists(windowId, wnd)
             .then(response => {
                 const result = response.result;
 
                 if (result && result.errCode)
                     throw new ChildWindowValidationError(result.errCode);
 
-                return sendMessageToDriver(new ExecuteWindowApiCommandMessage(windowId, MULTIPLE_WINDOW_API_COMMAND.close), wnd, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT, CannotSwitchToWindowError);
+                return sendMessageToDriver(new CloseWindowCommandMessage(windowId), wnd, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT, CannotSwitchToWindowError);
             })
             .then(() => {
                 // NOTE: we need to send new Driver Status only if we close direct child window
@@ -963,8 +1002,12 @@ export default class Driver extends serviceUtils.EventEmitter {
         }));
     }
 
-    _validateChildWindowExists (windowId, cmd, wnd) {
-        return sendMessageToDriver(new WindowValidationMessage(windowId, cmd), wnd, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT, CannotSwitchToWindowError);
+    _validateChildWindowCloseCommandExists (windowId, wnd) {
+        return sendMessageToDriver(new CloseWindowValidationMessage(windowId), wnd, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT, CannotSwitchToWindowError);
+    }
+
+    _validateChildWindowSwitchToWindowCommandExists (windowId, wnd) {
+        return sendMessageToDriver(new SwitchToWindowValidationMessage(windowId), wnd, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT, CannotSwitchToWindowError);
     }
 
 
@@ -974,7 +1017,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         if (this.parentWindowDriverLink)
             wnd = this.parentWindowDriverLink.getTopOpenedWindow();
 
-        this._validateChildWindowExists(command.windowId, MULTIPLE_WINDOW_API_COMMAND.switchToWindow, wnd)
+        this._validateChildWindowSwitchToWindowCommandExists(command.windowId, wnd)
             .then(response => {
                 const result = response.result;
 
@@ -987,7 +1030,7 @@ export default class Driver extends serviceUtils.EventEmitter {
                 else {
                     this._stopInternal();
 
-                    sendMessageToDriver(new ExecuteWindowApiCommandMessage(command.windowId, MULTIPLE_WINDOW_API_COMMAND.switchToWindow), wnd, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT, CannotSwitchToWindowError);
+                    sendMessageToDriver(new SwitchToWindowCommandMessage(command.windowId), wnd, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT, CannotSwitchToWindowError);
                 }
             });
     }
@@ -1158,7 +1201,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         else if (command.type === COMMAND_TYPE.closeWindow)
             this._onWindowCloseCommand(command);
 
-        else if (command.type === COMMAND_TYPE.getCurrentWindowCommand)
+        else if (command.type === COMMAND_TYPE.getCurrentWindow)
             this._onGetCurrentWindowCommand(command);
 
         else if (command.type === COMMAND_TYPE.switchToWindow)

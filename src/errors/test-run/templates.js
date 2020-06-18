@@ -348,4 +348,8 @@ export default {
     [TEST_RUN_ERRORS.targetWindowNotFoundError]: () => `
         The window defined in command is not found.
     `,
+
+    [TEST_RUN_ERRORS.allowMultipleWindowsOptionIsNotSpecifiedError]: err => `
+        To use the "${err.methodName}" specify the "allow-multiple-windows" run option.
+    `,
 };

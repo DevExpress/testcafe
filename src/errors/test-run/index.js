@@ -643,3 +643,11 @@ export class ChildWindowClosedBeforeSwitchingError extends TestRunErrorBase {
     }
 }
 
+export class AllowMultipleWindowsOptionIsNotSpecifiedError extends TestRunErrorBase {
+    constructor (methodName) {
+        super(TEST_RUN_ERRORS.allowMultipleWindowsOptionIsNotSpecifiedError);
+
+        this.methodName = methodName;
+    }
+}
+

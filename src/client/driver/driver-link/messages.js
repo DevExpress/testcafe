@@ -1,20 +1,17 @@
 import generateId from '../generate-id';
 
 export const TYPE = {
-    establishConnection:     'driver|establish-connection',
-    executeWindowApiCommand: 'driver|execute-window-api-command',
-    validateWindowExists:    'driver|validate-window-exists',
-    commandExecuted:         'driver|command-executed',
-    executeCommand:          'driver|execute-command',
-    confirmation:            'driver|confirmation',
-    setNativeDialogHandler:  'driver|set-native-dialog-handler',
-    setAsMaster:             'driver|set-as-master',
-    closeAllChildWindows:    'driver|close-all-child-windows'
-};
-
-export const MULTIPLE_WINDOW_API_COMMAND = {
-    switchToWindow: 'switchToWindow',
-    close:          'close'
+    establishConnection:      'driver|establish-connection',
+    switchToWindow:           'driver|switch-to-window',
+    closeWindow:              'driver|close-window',
+    closeWindowValidation:    'driver|close-window-validation',
+    switchToWindowValidation: 'driver|switch-to-window-validation',
+    commandExecuted:          'driver|command-executed',
+    executeCommand:           'driver|execute-command',
+    confirmation:             'driver|confirmation',
+    setNativeDialogHandler:   'driver|set-native-dialog-handler',
+    setAsMaster:              'driver|set-as-master',
+    closeAllChildWindows:     'driver|close-all-child-windows'
 };
 
 class InterDriverMessage {
@@ -30,21 +27,35 @@ export class EstablishConnectionMessage extends InterDriverMessage {
     }
 }
 
-export class WindowValidationMessage extends InterDriverMessage {
-    constructor (windowId, cmd) {
-        super(TYPE.validateWindowExists);
+export class CloseWindowValidationMessage extends InterDriverMessage {
+    constructor (windowId) {
+        super(TYPE.closeWindowValidation);
 
         this.windowId = windowId;
-        this.cmd      = cmd;
     }
 }
 
-export class ExecuteWindowApiCommandMessage extends InterDriverMessage {
-    constructor (windowId, cmd) {
-        super(TYPE.executeWindowApiCommand);
+export class SwitchToWindowValidationMessage extends InterDriverMessage {
+    constructor (windowId) {
+        super(TYPE.switchToWindowValidation);
 
         this.windowId = windowId;
-        this.cmd      = cmd;
+    }
+}
+
+export class CloseWindowCommandMessage extends InterDriverMessage {
+    constructor (windowId) {
+        super(TYPE.closeWindow);
+
+        this.windowId = windowId;
+    }
+}
+
+export class SwitchToWindowCommandMessage extends InterDriverMessage {
+    constructor (windowId) {
+        super(TYPE.switchToWindow);
+
+        this.windowId = windowId;
     }
 }
 
