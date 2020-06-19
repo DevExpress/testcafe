@@ -45,7 +45,7 @@ const CONFIG = CHUNK_NAMES.map(chunk => ({
         globals: GLOBALS(chunk),
         // NOTE: 'use strict' in our scripts can break user code
         // https://github.com/DevExpress/testcafe/issues/258
-        strict: false
+        strict:  false
     },
 
     plugins: [
@@ -53,7 +53,8 @@ const CONFIG = CHUNK_NAMES.map(chunk => ({
         resolve(),
         alias({
             entries: [{
-                find: 'tslib', replacement: '../../node_modules/tslib/tslib.es6.js'
+                find:        'tslib',
+                replacement: '../../node_modules/tslib/tslib.es6.js'
             }]
         }),
         commonjs(),

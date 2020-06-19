@@ -1,11 +1,5 @@
-import hammerhead from '../deps/hammerhead';
-import { reduce } from './array';
-
-const Promise = hammerhead.Promise;
-
-
 export async function whilst (condition, iterator) {
-    while(condition())
+    while (condition())
         await iterator();
 }
 

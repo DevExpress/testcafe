@@ -28,8 +28,8 @@ class IdlePage {
         try {
             const { command } = await browser.checkStatus(this.statusUrl, createXHR);
 
-                if (command.cmd === COMMAND.idle)
-                    window.setTimeout(() => this._checkStatus(), CHECK_STATUS_DELAY);
+            if (command.cmd === COMMAND.idle)
+                window.setTimeout(() => this._checkStatus(), CHECK_STATUS_DELAY);
         }
         catch (err) {
             this.statusIndicator.showDisconnection();
