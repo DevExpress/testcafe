@@ -1,4 +1,4 @@
-Cannot close window with opened child windows.
+Cannot close a window that has an open child window.
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>

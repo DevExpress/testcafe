@@ -1,4 +1,4 @@
-The window defined in command is not found.
+Cannot find the window specified in the action parameters.
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>

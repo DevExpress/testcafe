@@ -342,14 +342,14 @@ export default {
     `,
 
     [TEST_RUN_ERRORS.cannotCloseWindowWithChildrenError]: () => `
-        Cannot close window with opened child windows.
+        Cannot close a window that has an open child window.
     `,
 
     [TEST_RUN_ERRORS.targetWindowNotFoundError]: () => `
-        The window defined in command is not found.
+        Cannot find the window specified in the action parameters.
     `,
 
     [TEST_RUN_ERRORS.allowMultipleWindowsOptionIsNotSpecifiedError]: err => `
-        To use the "${err.methodName}" specify the "allow-multiple-windows" run option.
+        You should activate multi window mode (enable the "allow-multiple-windows" run option) to use the "${err.methodName}" method.
     `,
 };

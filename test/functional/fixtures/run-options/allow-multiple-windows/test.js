@@ -111,7 +111,7 @@ describe('Allow multiple windows', () => {
         it('Switch to unexisting window', () => {
             return runTests('testcafe-fixtures/api/api-test.js', 'Switch to unexisting window', { only: 'chrome', allowMultipleWindows: true, shouldFail: true })
                 .catch(errs => {
-                    expect(errs[0]).to.contain('The window defined in command is not found.');
+                    expect(errs[0]).to.contain('Cannot find the window specified in the action parameters.');
                 });
         });
 
@@ -135,49 +135,49 @@ describe('Allow multiple windows', () => {
         it('Close specific window from child', () => {
             return runTests('testcafe-fixtures/api/api-test.js', 'Close specific window from child', { only: 'chrome', allowMultipleWindows: true, shouldFail: true })
                 .catch(errs => {
-                    expect(errs[0]).to.contain('The window defined in command is not found.');
+                    expect(errs[0]).to.contain('Cannot find the window specified in the action parameters.');
                 });
         });
 
         it('Close specific window and switch to it', () => {
             return runTests('testcafe-fixtures/api/api-test.js', 'Close specific window and switch to it', { only: 'chrome', allowMultipleWindows: true, shouldFail: true })
                 .catch(errs => {
-                    expect(errs[0]).to.contain('The window defined in command is not found.');
+                    expect(errs[0]).to.contain('Cannot find the window specified in the action parameters.');
                 });
         });
 
         it('Close parent window and catch error', () => {
             return runTests('testcafe-fixtures/api/api-test.js', 'Close parent window and catch error', { only: 'chrome', allowMultipleWindows: true, shouldFail: true })
                 .catch(errs => {
-                    expect(errs[0]).to.contain('Cannot close window with opened child windows.');
+                    expect(errs[0]).to.contain('Cannot close a window that has an open child window.');
                 });
         });
 
         it('Close unexisting window', () => {
             return runTests('testcafe-fixtures/api/api-test.js', 'Close unexisting window', { only: 'chrome', allowMultipleWindows: true, shouldFail: true })
                 .catch(errs => {
-                    expect(errs[0]).to.contain('The window defined in command is not found');
+                    expect(errs[0]).to.contain('Cannot find the window specified in the action parameters');
                 });
         });
 
         it('Close unexisting child window', () => {
             return runTests('testcafe-fixtures/api/api-test.js', 'Close unexisting child window', { only: 'chrome', allowMultipleWindows: true, shouldFail: true })
                 .catch(errs => {
-                    expect(errs[0]).to.contain('The window defined in command is not found.');
+                    expect(errs[0]).to.contain('Cannot find the window specified in the action parameters.');
                 });
         });
 
         it('Close closed window', () => {
             return runTests('testcafe-fixtures/api/api-test.js', 'Close closed window', { only: 'chrome', allowMultipleWindows: true, shouldFail: true })
                 .catch(errs => {
-                    expect(errs[0]).to.contain('The window defined in command is not found.');
+                    expect(errs[0]).to.contain('Cannot find the window specified in the action parameters.');
                 });
         });
 
         it('Open window without `allowMultipleWindows` option', () => {
             return runTests('testcafe-fixtures/api/api-test.js', 'Open window without `allowMultipleWindows` option', { only: 'chrome', shouldFail: true })
                 .catch(errs => {
-                    expect(errs[0]).to.contain('To use the "openWindow" specify the "allow-multiple-windows" run option.');
+                    expect(errs[0]).to.contain('You should activate multi window mode (enable the "allow-multiple-windows" run option) to use the "openWindow" method.');
                 });
         });
     });
