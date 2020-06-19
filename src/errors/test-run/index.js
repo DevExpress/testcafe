@@ -560,6 +560,24 @@ export class CloseChildWindowError extends TestRunErrorBase {
     }
 }
 
+export class ChildWindowValidationError extends TestRunErrorBase {
+    constructor (code) {
+        super(code);
+    }
+}
+
+export class WindowNotFoundError extends ChildWindowValidationError {
+    constructor () {
+        super(TEST_RUN_ERRORS.targetWindowNotFoundError);
+    }
+}
+
+export class CannotCloseWindowWithChildrenError extends ChildWindowValidationError {
+    constructor () {
+        super(TEST_RUN_ERRORS.cannotCloseWindowWithChildrenError);
+    }
+}
+
 export class CurrentIframeNotFoundError extends TestRunErrorBase {
     constructor () {
         super(TEST_RUN_ERRORS.currentIframeNotFoundError);
@@ -622,6 +640,14 @@ export class RequestHookNotImplementedMethodError extends TestRunErrorBase {
 export class ChildWindowClosedBeforeSwitchingError extends TestRunErrorBase {
     constructor () {
         super(TEST_RUN_ERRORS.childWindowClosedBeforeSwitchingError);
+    }
+}
+
+export class AllowMultipleWindowsOptionIsNotSpecifiedError extends TestRunErrorBase {
+    constructor (methodName) {
+        super(TEST_RUN_ERRORS.allowMultipleWindowsOptionIsNotSpecifiedError);
+
+        this.methodName = methodName;
     }
 }
 

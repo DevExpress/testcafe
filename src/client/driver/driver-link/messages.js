@@ -1,13 +1,17 @@
 import generateId from '../generate-id';
 
 export const TYPE = {
-    establishConnection:    'driver|establish-connection',
-    commandExecuted:        'driver|command-executed',
-    executeCommand:         'driver|execute-command',
-    confirmation:           'driver|confirmation',
-    setNativeDialogHandler: 'driver|set-native-dialog-handler',
-    setAsMaster:            'driver|set-as-master',
-    closeAllChildWindows:   'driver|close-all-child-windows'
+    establishConnection:      'driver|establish-connection',
+    switchToWindow:           'driver|switch-to-window',
+    closeWindow:              'driver|close-window',
+    closeWindowValidation:    'driver|close-window-validation',
+    switchToWindowValidation: 'driver|switch-to-window-validation',
+    commandExecuted:          'driver|command-executed',
+    executeCommand:           'driver|execute-command',
+    confirmation:             'driver|confirmation',
+    setNativeDialogHandler:   'driver|set-native-dialog-handler',
+    setAsMaster:              'driver|set-as-master',
+    closeAllChildWindows:     'driver|close-all-child-windows'
 };
 
 class InterDriverMessage {
@@ -20,6 +24,38 @@ class InterDriverMessage {
 export class EstablishConnectionMessage extends InterDriverMessage {
     constructor () {
         super(TYPE.establishConnection);
+    }
+}
+
+export class CloseWindowValidationMessage extends InterDriverMessage {
+    constructor (windowId) {
+        super(TYPE.closeWindowValidation);
+
+        this.windowId = windowId;
+    }
+}
+
+export class SwitchToWindowValidationMessage extends InterDriverMessage {
+    constructor (windowId) {
+        super(TYPE.switchToWindowValidation);
+
+        this.windowId = windowId;
+    }
+}
+
+export class CloseWindowCommandMessage extends InterDriverMessage {
+    constructor (windowId) {
+        super(TYPE.closeWindow);
+
+        this.windowId = windowId;
+    }
+}
+
+export class SwitchToWindowCommandMessage extends InterDriverMessage {
+    constructor (windowId) {
+        super(TYPE.switchToWindow);
+
+        this.windowId = windowId;
     }
 }
 

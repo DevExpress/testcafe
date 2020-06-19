@@ -23,6 +23,10 @@ import {
     ClearUploadCommand,
     SwitchToIframeCommand,
     SwitchToMainWindowCommand,
+    OpenWindowCommand,
+    CloseWindowCommand,
+    GetCurrentWindowCommand,
+    SwitchToWindowCommand,
     SetNativeDialogHandlerCommand,
     GetNativeDialogHistoryCommand,
     GetBrowserConsoleMessagesCommand,
@@ -42,6 +46,7 @@ import {
 import { WaitCommand, DebugCommand } from '../../test-run/commands/observation';
 import assertRequestHookType from '../request-hooks/assert-type';
 import { createExecutionContext as createContext } from './execution-context';
+import { AllowMultipleWindowsOptionIsNotSpecifiedError } from '../../errors/test-run';
 
 const originalThen = Promise.resolve().then;
 
@@ -119,6 +124,11 @@ export default class TestController {
                     });
             };
         });
+    }
+
+    _validateMultipleWindowCommand (apiMethodName) {
+        if (!this.testRun.allowMultipleWindows)
+            throw new AllowMultipleWindowsOptionIsNotSpecifiedError(apiMethodName);
     }
 
     getExecutionContext () {
@@ -265,6 +275,41 @@ export default class TestController {
 
     _switchToMainWindow$ () {
         return this._enqueueCommand('switchToMainWindow', SwitchToMainWindowCommand);
+    }
+
+    _openWindow$ (url) {
+        const apiMethodName = 'openWindow';
+
+        this._validateMultipleWindowCommand(apiMethodName);
+
+        return this._enqueueCommand(apiMethodName, OpenWindowCommand, { url });
+    }
+
+    _closeWindow$ (window) {
+        const apiMethodName = 'closeWindow';
+        const windowId      = window?.id || null;
+
+        this._validateMultipleWindowCommand(apiMethodName);
+
+        return this._enqueueCommand(apiMethodName, CloseWindowCommand, { windowId });
+    }
+
+    _getCurrentWindow$ () {
+        const apiMethodName = 'getCurrentWindow';
+
+        this._validateMultipleWindowCommand(apiMethodName);
+
+        return this._enqueueCommand(apiMethodName, GetCurrentWindowCommand);
+    }
+
+    _switchToWindow$ (window) {
+        const apiMethodName = 'switchToWindow';
+
+        this._validateMultipleWindowCommand(apiMethodName);
+
+        const windowId = window?.id;
+
+        return this._enqueueCommand(apiMethodName, SwitchToWindowCommand, { windowId });
     }
 
     _eval$ (fn, options) {

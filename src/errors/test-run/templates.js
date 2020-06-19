@@ -339,5 +339,17 @@ export default {
 
     [TEST_RUN_ERRORS.childWindowClosedBeforeSwitchingError]: () => `
         The child window was closed before TestCafe could switch to it.
-    `
+    `,
+
+    [TEST_RUN_ERRORS.cannotCloseWindowWithChildrenError]: () => `
+        Cannot close a window that has an open child window.
+    `,
+
+    [TEST_RUN_ERRORS.targetWindowNotFoundError]: () => `
+        Cannot find the window specified in the action parameters.
+    `,
+
+    [TEST_RUN_ERRORS.allowMultipleWindowsOptionIsNotSpecifiedError]: err => `
+        You should activate multi window mode (enable the "allow-multiple-windows" run option) to use the "${err.methodName}" method.
+    `,
 };
