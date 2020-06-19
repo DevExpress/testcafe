@@ -497,16 +497,20 @@ export default class Driver extends serviceUtils.EventEmitter {
             });
     }
 
+    _getCloseWindowFoundResult () {
+        if (this.childWindowDriverLinks.length) {
+            return Promise.resolve({
+                success: false,
+                errCode: TEST_RUN_ERRORS.cannotCloseWindowWithChildrenError
+            });
+        }
+
+        return Promise.resolve({ success: true });
+    }
+
     _handleCloseWindowValidation (msg, wnd) {
         const getWindowFoundResult = () => {
-            if (this.childWindowDriverLinks.length) {
-                return Promise.resolve({
-                    success: false,
-                    errCode: TEST_RUN_ERRORS.cannotCloseWindowWithChildrenError
-                });
-            }
-
-            return Promise.resolve({ success: true });
+            return this._getCloseWindowFoundResult();
         };
 
         return this._handleWindowValidation(msg, wnd, getWindowFoundResult, CloseWindowValidationMessage);
@@ -958,7 +962,7 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     _onWindowCloseCommand (command) {
-        const wnd                           = this.parentWindowDriverLink ? this.parentWindowDriverLink.getTopOpenedWindow() : window;
+        const wnd                           = this.parentWindowDriverLink?.getTopOpenedWindow() || window;
         const targetWindowIsFirstLevelChild = !!this.childWindowDriverLinks.find(link => link.windowId === command.windowId);
         const windowId                      = command.windowId || this.windowId;
 
@@ -991,7 +995,8 @@ export default class Driver extends serviceUtils.EventEmitter {
     _onGetCurrentWindowCommand () {
         this._onReady(new DriverStatus({
             isCommandResult: true,
-            result:          {
+
+            result: {
                 id: this.windowId
             }
         }));

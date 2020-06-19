@@ -285,12 +285,11 @@ export default class TestController {
         return this._enqueueCommand(apiMethodName, OpenWindowCommand, { url });
     }
 
-    _closeWindow$ (wnd) {
+    _closeWindow$ (window) {
         const apiMethodName = 'closeWindow';
+        const windowId      = window?.id || null;
 
         this._validateMultipleWindowCommand(apiMethodName);
-
-        const windowId = wnd ? wnd.id : null;
 
         return this._enqueueCommand(apiMethodName, CloseWindowCommand, { windowId });
     }
@@ -303,12 +302,12 @@ export default class TestController {
         return this._enqueueCommand(apiMethodName, GetCurrentWindowCommand);
     }
 
-    _switchToWindow$ (wnd) {
+    _switchToWindow$ (window) {
         const apiMethodName = 'switchToWindow';
 
         this._validateMultipleWindowCommand(apiMethodName);
 
-        const windowId = wnd ? wnd.id : null;
+        const windowId = window?.id;
 
         return this._enqueueCommand(apiMethodName, SwitchToWindowCommand, { windowId });
     }
