@@ -466,34 +466,34 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     _handleWindowValidation (msg, wnd, getWindowFoundResult, WindowValidationMessageCtor) {
-        let promise = null;
-
-        if (msg.windowId === this.windowId)
-            promise = getWindowFoundResult();
-
-        else if (!this.childWindowDriverLinks.length) {
-            promise = Promise.resolve({
-                success: false,
-                errCode: TEST_RUN_ERRORS.targetWindowNotFoundError
-            });
-        }
-
-        else {
-            promise = Promise.all(this.childWindowDriverLinks.map(childWindowDriverLink => {
-                return childWindowDriverLink.findChildWindows(msg, WindowValidationMessageCtor);
-            }))
-                .then(arr => {
-                    return this._getChildWindowValidateResult(arr);
-                });
-        }
-
-        return promise
+        return this._validateWindow(msg, wnd, getWindowFoundResult, WindowValidationMessageCtor)
             .then(result => {
                 sendConfirmationMessage({
                     requestMsgId: msg.id,
                     window:       wnd,
                     result
                 });
+            });
+    }
+
+    _validateWindow (msg, wnd, getWindowFoundResult, WindowValidationMessageCtor) {
+        if (msg.windowId === this.windowId)
+            return getWindowFoundResult();
+
+        else if (!this.childWindowDriverLinks.length) {
+            return Promise.resolve({
+                success: false,
+                errCode: TEST_RUN_ERRORS.targetWindowNotFoundError
+            });
+        }
+
+        const searchQueries = this.childWindowDriverLinks.map(childWindowDriverLink => {
+            return childWindowDriverLink.findChildWindows(msg, WindowValidationMessageCtor);
+        });
+
+        return Promise.all(searchQueries)
+            .then(arr => {
+                return this._getChildWindowValidateResult(arr);
             });
     }
 
@@ -524,61 +524,61 @@ export default class Driver extends serviceUtils.EventEmitter {
         return this._handleWindowValidation(msg, wnd, getWindowFoundResult, SwitchToWindowValidationMessage);
     }
 
-    _handleWindowClose (msg, wnd) {
-        let promise = null;
-
-        if (this.childWindowDriverLinks.length) {
-            const childWindowToClose = this.childWindowDriverLinks.find(link => link.windowId === msg.windowId);
-
-            if (childWindowToClose) {
-                promise = this._createWaitForEventPromise(CHILD_WINDOW_CLOSED_EVENT, CHILD_WINDOW_CLOSED_EVENT_TIMEOUT);
-
-                childWindowToClose.driverWindow.close();
-            }
-        }
-
-        if (!promise && this.childWindowDriverLinks.length) {
-            promise = Promise.all(this.childWindowDriverLinks.map(childWindowDriverLink => {
-                return childWindowDriverLink.findChildWindows(msg, CloseWindowCommandMessage);
-            }));
-        }
-
-        if (!promise)
-            promise = Promise.resolve();
-
-        promise.then(() => {
-            sendConfirmationMessage({
-                requestMsgId: msg.id,
-                window:       wnd
+    _handleCloseWindow (msg, wnd) {
+        return this._closeWindow(msg, wnd)
+            .then(() => {
+                sendConfirmationMessage({
+                    requestMsgId: msg.id,
+                    window:       wnd
+                });
             });
+    }
+
+    _closeWindow (msg) {
+        if (!this.childWindowDriverLinks.length)
+            return Promise.resolve();
+
+        const childWindowToClose = this.childWindowDriverLinks.find(link => link.windowId === msg.windowId);
+
+        if (childWindowToClose) {
+            const result = this._createWaitForEventPromise(CHILD_WINDOW_CLOSED_EVENT, CHILD_WINDOW_CLOSED_EVENT_TIMEOUT);
+
+            childWindowToClose.driverWindow.close();
+
+            return result;
+        }
+
+        const searchQueries = this.childWindowDriverLinks.map(childWindowDriverLink => {
+            return childWindowDriverLink.findChildWindows(msg, CloseWindowCommandMessage);
         });
+
+        return Promise.all(searchQueries);
     }
 
     _handleSwitchToWindow (msg, wnd) {
-        let promise = null;
+        return this._switchToWindow(msg)
+            .then(() => {
+                sendConfirmationMessage({
+                    requestMsgId: msg.id,
+                    window:       wnd
+                });
+            });
+    }
 
+    _switchToWindow (msg) {
         if (msg.windowId === this.windowId) {
-            promise = Promise.resolve()
+            return Promise.resolve()
                 .then(() => {
                     this._setCurrentWindowAsMaster();
                 });
         }
 
-        if (!promise && this.childWindowDriverLinks.length) {
-            promise = Promise.all(this.childWindowDriverLinks.map(childWindowDriverLink => {
-                return childWindowDriverLink.findChildWindows(msg, SwitchToWindowCommandMessage);
-            }));
-        }
+        if (!this.childWindowDriverLinks.length)
+            return Promise.resolve();
 
-        if (!promise)
-            promise = Promise.resolve();
-
-        promise.then(() => {
-            sendConfirmationMessage({
-                requestMsgId: msg.id,
-                window:       wnd
-            });
-        });
+        return Promise.all(this.childWindowDriverLinks.map(childWindowDriverLink => {
+            return childWindowDriverLink.findChildWindows(msg, SwitchToWindowCommandMessage);
+        }));
     }
 
     _handleSetAsMasterMessage (msg, wnd) {
@@ -640,7 +640,7 @@ export default class Driver extends serviceUtils.EventEmitter {
             else if (msg.type === MESSAGE_TYPE.switchToWindow)
                 this._handleSwitchToWindow(msg, window);
             else if (msg.type === MESSAGE_TYPE.closeWindow)
-                this._handleWindowClose(msg, window);
+                this._handleCloseWindow(msg, window);
             else if (msg.type === MESSAGE_TYPE.switchToWindowValidation)
                 this._handleSwitchToWindowValidation(msg, window);
             else if (msg.type === MESSAGE_TYPE.closeWindowValidation)
