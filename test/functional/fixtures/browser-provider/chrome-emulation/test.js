@@ -1,11 +1,11 @@
 const path                 = require('path');
 const chai                 = require('chai');
-const expect               = require('chai').expect;
+const { expect }           = require('chai');
 const config               = require('../../../config');
 const { createNullStream } = require('../../../utils/stream');
+const { createReporter }   = require('../../../utils/reporter');
 
 chai.use(require('chai-string'));
-
 
 if (config.useLocalBrowsers) {
     describe('Browser Provider - Chrome Emulation Mode', () => {
@@ -25,19 +25,16 @@ if (config.useLocalBrowsers) {
         it('Should provide emulating device for user agent', async () => {
             let prettyUserAgents = null;
 
-            const customReporter = () => ({
+            const reporter = createReporter({
                 reportTaskStart (startTime, userAgents) {
                     prettyUserAgents = userAgents;
-                },
-                reportTestDone () {},
-                reportFixtureStart () {},
-                reportTaskDone () {}
+                }
             });
 
             await testCafe
                 .createRunner()
                 .src(path.join(__dirname, './testcafe-fixtures/index-test.js'))
-                .reporter(customReporter)
+                .reporter(reporter)
                 .browsers('chrome:headless:emulation:device=iphone X --no-sandbox')
                 .run();
 

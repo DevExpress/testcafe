@@ -1,20 +1,16 @@
-const path           = require('path');
-const expect         = require('chai').expect;
-const createTestCafe = require('../../../../../lib');
-const config         = require('../../../config.js');
+const path               = require('path');
+const { expect }         = require('chai');
+const createTestCafe     = require('../../../../../lib');
+const config             = require('../../../config.js');
+const { createReporter } = require('../../../utils/reporter');
 
 function customReporter (name) {
-    return () => {
-        return {
-            name: name,
-            reportTestDone () { },
-            reportFixtureStart () { },
-            reportTaskStart () {
-                this.write('');
-            },
-            reportTaskDone () { }
-        };
-    };
+    return createReporter({
+        name,
+        reportTaskStart () {
+            this.write('');
+        }
+    });
 }
 
 let testCafe = null;

@@ -1,7 +1,7 @@
 import Emittery from 'emittery';
 
 export default class AsyncEventEmitter extends Emittery {
-    public once (event: string, listener?: Function): Promise<any> {
+    public once (event: string, listener?: Function): Promise<any> { // eslint-disable-line @typescript-eslint/no-explicit-any
         return new Promise((resolve, reject) => {
             const off = this.on(event, data => {
                 try {

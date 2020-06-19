@@ -1,23 +1,16 @@
-const expect = require('chai').expect;
+const { expect }         = require('chai');
+const { createReporter } = require('../../../utils/reporter');
 
 const log = [];
 
-function customReporter () {
-    return {
-        reportTestStart (name) {
-            log.push(`start: ${name}`);
-        },
-        reportTestDone (name) {
-            log.push(`done: ${name}`);
-        },
-        reportFixtureStart () {
-        },
-        reportTaskStart () {
-        },
-        reportTaskDone () {
-        }
-    };
-}
+const reporter = createReporter({
+    reportTestStart (name) {
+        log.push(`start: ${name}`);
+    },
+    reportTestDone (name) {
+        log.push(`done: ${name}`);
+    }
+});
 
 const expectedLog = [
     `start: test 0`,
@@ -28,7 +21,7 @@ const expectedLog = [
 
 describe('[Regression](GH-4725)', function () {
     it('Should respect test start/done event order', function () {
-        return runTests('testcafe-fixtures/index.js', null, { reporter: customReporter })
+        return runTests('testcafe-fixtures/index.js', null, { reporter })
             .then(() => {
                 expect(log).eql(expectedLog);
             });

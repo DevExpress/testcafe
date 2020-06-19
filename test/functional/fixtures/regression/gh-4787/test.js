@@ -1,8 +1,9 @@
-const expect         = require('chai').expect;
-const path           = require('path');
-const createTestCafe = require('../../../../../lib');
-const config         = require('../../../config.js');
-const delay          = require('../../../../../lib/utils/delay');
+const { expect }         = require('chai');
+const path               = require('path');
+const createTestCafe     = require('../../../../../lib');
+const config             = require('../../../config.js');
+const delay              = require('../../../../../lib/utils/delay');
+const { createReporter } = require('../../../utils/reporter');
 
 let cafe   = null;
 let runner = null;
@@ -21,29 +22,23 @@ async function sleep () {
     return delay(100);
 }
 
-function customReporter () {
-    return {
-        async reportTaskStart () {
-        },
-        async reportTaskDone () {
-        },
-        async reportFixtureStart (name) {
-            log.push(name);
+const reporter = createReporter({
+    async reportFixtureStart (name) {
+        log.push(name);
 
-            await sleep();
-        },
-        async reportTestStart (name) {
-            log.push(name);
+        await sleep();
+    },
+    async reportTestStart (name) {
+        log.push(name);
 
-            await sleep();
-        },
-        async reportTestDone (name) {
-            log.push(name);
+        await sleep();
+    },
+    async reportTestDone (name) {
+        log.push(name);
 
-            await sleep();
-        }
-    };
-}
+        await sleep();
+    }
+});
 
 if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
     describe('[Regression](GH-4787) - Should wait for last report before new fixture starts', function () {
@@ -57,7 +52,7 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
                     return runner
                         .src(path.join(__dirname, './testcafe-fixtures/index.js'))
                         .browsers(['chrome', 'firefox'])
-                        .reporter(customReporter)
+                        .reporter(reporter)
                         .run();
                 })
                 .then(() => {

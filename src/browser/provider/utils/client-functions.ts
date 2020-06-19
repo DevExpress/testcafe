@@ -1,9 +1,11 @@
+import { WindowDimentionsInfo } from '../../interfaces';
+
 /*eslint-disable no-undef, no-var*/
-function getTitle () {
+function getTitle (): string {
     return document.title;
 }
 
-function getWindowDimensionsInfo () {
+function getWindowDimensionsInfo (): WindowDimentionsInfo {
     return {
         width:           window.innerWidth,
         height:          window.innerHeight,

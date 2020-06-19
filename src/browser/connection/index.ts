@@ -13,6 +13,7 @@ import { RUNTIME_ERRORS } from '../../errors/types';
 import { BROWSER_RESTART_TIMEOUT, HEARTBEAT_TIMEOUT } from '../../utils/browser-connection-timeouts';
 import { Dictionary } from '../../configuration/interfaces';
 import BrowserConnectionGateway from './gateway';
+import BrowserJob from '../../runner/browser-job';
 
 const IDLE_PAGE_TEMPLATE                         = read('../../client/browser/idle-page/index.html.mustache');
 const connections: Dictionary<BrowserConnection> = {};
@@ -50,7 +51,7 @@ export default class BrowserConnection extends EventEmitter {
     private readonly HEARTBEAT_TIMEOUT: number;
     private readonly BROWSER_RESTART_TIMEOUT: number;
     public readonly id: string;
-    private readonly jobQueue: any[];
+    private readonly jobQueue: BrowserJob[];
     private readonly initScriptsQueue: InitScriptTask[];
     private browserConnectionGateway: BrowserConnectionGateway;
     private disconnectionPromise: DisconnectionPromise<void> | null;
@@ -311,7 +312,7 @@ export default class BrowserConnection extends EventEmitter {
         return !!this.jobQueue.length;
     }
 
-    public get currentJob (): any {
+    public get currentJob (): BrowserJob {
         return this.jobQueue[0];
     }
 
@@ -320,11 +321,11 @@ export default class BrowserConnection extends EventEmitter {
         return new Promise(resolve => this.initScriptsQueue.push({ code, resolve }));
     }
 
-    public addJob (job: any): void {
+    public addJob (job: BrowserJob): void {
         this.jobQueue.push(job);
     }
 
-    public removeJob (job: any): void {
+    public removeJob (job: BrowserJob): void {
         remove(this.jobQueue, job);
     }
 

@@ -1,6 +1,5 @@
 const { Writable: WritableStream } = require('stream');
 
-
 const ASYNC_REPORTER_FINALIZING_TIMEOUT = 2000;
 
 module.exports.createSimpleTestStream = () => {
@@ -28,7 +27,6 @@ module.exports.createSimpleTestStream = () => {
         }
     };
 };
-
 
 module.exports.createAsyncTestStream = ({ shouldFail } = {}) => {
     return new WritableStream({
