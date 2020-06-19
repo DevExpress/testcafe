@@ -55,6 +55,6 @@ createTestCafe('localhost', 1337, 1338)
     })
     .then(failedCount => {
         console.log('Tests failed: ' + failedCount);
-        testcafe.close();
+        return testcafe.close();
     });
 ```

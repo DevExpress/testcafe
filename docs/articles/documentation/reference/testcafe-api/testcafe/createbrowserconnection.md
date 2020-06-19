@@ -39,7 +39,7 @@ createTestCafe('localhost', 1337, 1338)
                 .run()
                 .then(failedCount => {
                     console.log(failedCount);
-                    testcafe.close();
+                    return testcafe.close();
                  })
                 .catch(error => { /* ... */});
         });

@@ -24,7 +24,7 @@ createTestCafe('localhost', 1337, 1338)
     })
     .then(failed => {
         console.log('Tests failed: ' + failed);
-        testcafe.close();
+        return testcafe.close();
     })
     .catch(error => { /* ... */ });
 ```

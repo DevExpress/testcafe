@@ -24,7 +24,7 @@ await runner
     .browsers('safari')
     .run();
 
-testCafe.close();
+await testCafe.close();
 ```
 
 TestCafe also allows you to create a [configuration file](../../reference/configuration-file.md) where you can define test run settings. You can then omit these settings in the command line or API to use values from the configuration file.
@@ -607,7 +607,7 @@ createTestCafe('localhost', 1337, 1338)
             .run();
     })
     .then(() => {
-        testcafe.close();
+        return testcafe.close();
     });
 ```
 
