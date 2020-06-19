@@ -1,0 +1,18 @@
+<html>
+<head>
+    <script>
+        var log = [];
+
+        log.push('head:before-first-title: ' + String(document.title));
+    </script>
+    <title>Test page title</title>
+    <script>
+        log.push('head:after-first-title: ' + String(document.title));
+    </script>
+</head>
+<body>
+    <script>
+        log.push('body: ' + String(document.title));
+    </script>
+</body>
+</html>
