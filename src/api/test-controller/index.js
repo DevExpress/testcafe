@@ -1,7 +1,6 @@
 // TODO: Fix https://github.com/DevExpress/testcafe/issues/4139 to get rid of Pinkie
 import Promise from 'pinkie';
 import { renderers } from 'callsite-record';
-import chalk from 'chalk';
 import { identity, assign, isNil as isNullOrUndefined, flattenDeep as flatten } from 'lodash';
 import { getCallsiteForMethod } from '../../errors/get-callsite';
 import ClientFunctionBuilder from '../../client-functions/client-function-builder';
@@ -52,6 +51,7 @@ import { WaitCommand, DebugCommand } from '../../test-run/commands/observation';
 import assertRequestHookType from '../request-hooks/assert-type';
 import { createExecutionContext as createContext } from './execution-context';
 import { AllowMultipleWindowsOptionIsNotSpecifiedError } from '../../errors/test-run';
+import { isClientFunction, isSelector } from '../../client-functions/types';
 
 const originalThen = Promise.resolve().then;
 
@@ -62,7 +62,7 @@ export default class TestController {
         this.testRun               = testRun;
         this.executionChain        = Promise.resolve();
         this.callsitesWithoutAwait = new Set();
-        this.warningLog = testRun.warningLog;
+        this.warningLog            = testRun.warningLog;
     }
 
     // NOTE: we track missing `awaits` by exposing a special custom Promise to user code.
@@ -351,20 +351,22 @@ export default class TestController {
     _expect$ (actual) {
         const callsite = getCallsiteForMethod('expect');
 
-        const addAssertionWarning = (value, builderClassName, warningMessage, warningCallsite) => {
-            const renderedCallsite = renderCallsiteSync(warningCallsite, {
-                renderer:    renderers.noColor,
-                stackFilter: createStackFilter(Error.stackTraceLimit)
-            });
+        if (isClientFunction(actual))
+            this._addWarning(WARNING_MESSAGE.assertedClientFunctionInstance, callsite);
 
-            if (typeof value === 'function' && value[Object.getOwnPropertySymbols(value)[0]] && value[Object.getOwnPropertySymbols(value)[0]].constructor.name === builderClassName)
-                this.warningLog.addWarning(warningMessage + `\n\n${chalk.yellow(renderedCallsite)}`);
-        };
-
-        addAssertionWarning(actual, 'SelectorBuilder', WARNING_MESSAGE.assertedSelectorInstance, callsite);
-        addAssertionWarning(actual, 'ClientFunctionBuilder', WARNING_MESSAGE.assertedClientFunctionInstance, callsite);
+        if (isSelector(actual))
+            this._addWarning(WARNING_MESSAGE.assertedSelectorInstance, callsite);
 
         return new Assertion(actual, this, callsite);
+    }
+
+    _addWarning (message, callsite = void 0) {
+        const renderedCallsite = renderCallsiteSync(callsite, {
+            renderer:    renderers.noColor,
+            stackFilter: createStackFilter(Error.stackTraceLimit)
+        });
+
+        this.warningLog.addWarning(message + `\n\n${renderedCallsite}`);
     }
 
     _debug$ () {
