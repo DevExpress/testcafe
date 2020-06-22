@@ -57,20 +57,25 @@ After all tests are finished, call the [testcafe.close](../testcafe/close.md) fu
 const createTestCafe = require('testcafe');
 
 const testcafe = await createTestCafe('localhost', 1337, 1338);
-const runner   = testcafe.createRunner();
 
-const failed = await runner.run({
-    skipJsErrors: true,
-    quarantineMode: true,
-    selectorTimeout: 50000,
-    assertionTimeout: 7000,
-    pageLoadTimeout: 8000,
-    speed: 0.1,
-    stopOnFirstFail: true
-});
+try {
+    const runner = testcafe.createRunner();
 
-console.log('Tests failed: ' + failed);
-await testcafe.close();
+    const failed = await runner.run({
+        skipJsErrors: true,
+        quarantineMode: true,
+        selectorTimeout: 50000,
+        assertionTimeout: 7000,
+        pageLoadTimeout: 8000,
+        speed: 0.1,
+        stopOnFirstFail: true
+    });
+
+    console.log('Tests failed: ' + failed);
+}
+finally {
+    await testcafe.close();
+}
 ```
 
 If a browser stops responding while it executes tests, TestCafe restarts the browser and reruns the current test in a new browser instance.

@@ -15,9 +15,14 @@ async close() → Promise<void>
 const createTestCafe = require('testcafe');
 
 const testcafe = await createTestCafe('localhost', 1337, 1338);
-const runner   = testcafe.createRunner();
-const failed   = await runner.run();
 
-console.log('Tests failed: ' + failed);
-await testcafe.close();
+try {
+    const runner = testcafe.createRunner();
+    const failed = await runner.run();
+
+    console.log('Tests failed: ' + failed);
+}
+finally {
+    await testcafe.close();
+}
 ```
