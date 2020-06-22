@@ -405,9 +405,11 @@ TestCafe selector functions are based on CSS selectors or client JS code, which 
 
 For this purpose, the TestCafe team and community have developed libraries of dedicated selectors for the most popular frameworks.
 
+> Front-end development tools (such as React DevTools or Vue DevTools) can interfere with TestCafe and cause errors. Do not open them while you run or debug TestCafe tests.
+
 ### React
 
-The React selectors module provides the `ReactSelector` class that allows you to select DOM elements by the component name. You can get a root element or search through the nested components or elements. In addition, you can obtain the component props and state.
+The React selectors module provides the `ReactSelector` class, which allows you to select DOM elements by the component name. You can get a root element or search through the nested components or elements. In addition, you can obtain the component props and state.
 
 ```js
 import { ReactSelector } from 'testcafe-react-selectors';

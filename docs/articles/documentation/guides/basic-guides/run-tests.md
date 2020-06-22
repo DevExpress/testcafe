@@ -52,6 +52,8 @@ TestCafe also allows you to create a [configuration file](../../reference/config
   * [Console Shortcuts in Live Mode](#console-shortcuts-in-live-mode)
 * [Quarantine Mode](#quarantine-mode)
 
+> Important! Front-end development tools (such as React DevTools or Vue DevTools) can interfere with TestCafe and cause errors. Do not open them while you run or debug TestCafe tests.
+
 ## Specify Tests to Run
 
 You should specify a path to a file or directory with tests you want to run in the [second command line argument](../../reference/command-line-interface.md#file-pathglob-pattern):
