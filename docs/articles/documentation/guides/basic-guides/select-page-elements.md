@@ -409,7 +409,7 @@ For this purpose, the TestCafe team and community have developed libraries of de
 
 ### React
 
-The React selectors module provides the `ReactSelector` class that allows you to select DOM elements by the component name. You can get a root element or search through the nested components or elements. In addition, you can obtain the component props and state.
+The React selectors module provides the `ReactSelector` class, which allows you to select DOM elements by the component name. You can get a root element or search through the nested components or elements. In addition, you can obtain the component props and state.
 
 ```js
 import { ReactSelector } from 'testcafe-react-selectors';
