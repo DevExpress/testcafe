@@ -21,7 +21,7 @@ For more information, see [the TestCafe Live repository](https://github.com/DevE
 
 ### ⚙ Taking Screenshots of Individual Page Elements ([#1496](https://github.com/DevExpress/testcafe/issues/1496))
 
-We have added the [t.takeElementScreenshot](https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-a-page-element) action that allows you to take a screenshot of an individual page element.
+We have added the [t.takeElementScreenshot](https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/takeelementscreenshot.html) action that allows you to take a screenshot of an individual page element.
 
 ```js
 import { Selector } from 'testcafe';
@@ -37,11 +37,11 @@ test('Take a screenshot of a fieldset', async t => {
 });
 ```
 
-This action allows you to position the center of the screenshot or crop it. For more information, see the [t.takeElementScreenshot](https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-a-page-element) description.
+This action allows you to position the center of the screenshot or crop it. For more information, see the [t.takeElementScreenshot](https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/takeelementscreenshot.html) description.
 
 ### ⚙ Filtering Elements by Their Visibility ([#1018](https://github.com/DevExpress/testcafe/issues/1018))
 
-You can now use the [filterVisible](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#filtervisible) and [filterHidden](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#filterhidden) methods to display only visible or hidden elements.
+You can now use the [filterVisible](https://devexpress.github.io/testcafe/documentation/reference/test-api/selector/filtervisible.html) and [filterHidden](https://devexpress.github.io/testcafe/documentation/reference/test-api/selector/filterhidden.html) methods to display only visible or hidden elements.
 
 ```js
 import { Selector } from 'testcafe';
@@ -62,7 +62,7 @@ test('Filter visible and hidden elements', async t => {
 
 ### ⚙ Finding Elements by the Exact Matching Text ([#1292](https://github.com/DevExpress/testcafe/issues/1292))
 
-The current selector's [withText](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#withtext) method looks for elements whose text content *contains* the specified string. With this release, we have added the [withExactText](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#withexacttext) method that performs search by *strict match*.
+The current selector's [withText](https://devexpress.github.io/testcafe/documentation/reference/test-api/selector/withtext.html) method looks for elements whose text content *contains* the specified string. With this release, we have added the [withExactText](https://devexpress.github.io/testcafe/documentation/reference/test-api/selector/withexacttext.html) method that performs search by *strict match*.
 
 ```js
 import { Selector } from 'testcafe';
@@ -83,7 +83,7 @@ test('Search by exact text', async t => {
 
 ### ⚙ Using Decorators in TypeScript Code ([#2117](https://github.com/DevExpress/testcafe/issues/2117)) by [@pietrovich](https://github.com/pietrovich)
 
-TestCafe now allows you to use [decorators](https://www.typescriptlang.org/docs/handbook/decorators.html) when [writing tests in TypeScript](https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.html).
+TestCafe now allows you to use [decorators](https://www.typescriptlang.org/docs/handbook/decorators.html) when [writing tests in TypeScript](https://devexpress.github.io/testcafe/documentation/guides/concepts/typescript-and-coffeescript.html).
 
 Note that decorators are still an experimental feature in TypeScript.
 

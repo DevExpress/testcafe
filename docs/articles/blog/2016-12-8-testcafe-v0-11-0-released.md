@@ -15,7 +15,7 @@ Redesigned selector system, built-in assertions and lots of bug fixes! 🚀🚀�
 
 #### New selector methods
 
-Multiple [filtering](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#filter-dom-nodes) and [hierarchical](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#search-for-elements-in-the-dom-hierarchy) methods were introduced for selectors.
+Multiple [filtering and hierarchical](https://devexpress.github.io/testcafe/documentation/guides/basic-guides/select-page-elements.html#member-tables) methods were introduced for selectors.
 Now you can build flexible, lazily-evaluated functional-style selector chains.
 
 *Here are some examples:*
@@ -29,8 +29,8 @@ Then, for each `label` element finds a parent that matches the `div.someClass` s
 
 ------
 
-Like in jQuery, if you request a [property](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/dom-node-state.html#members-common-across-all-nodes) of the matched set or try evaluate
-a [snapshot](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/using-selectors.html#dom-node-snapshot), the selector returns values for the first element in the set.
+Like in jQuery, if you request a [property](https://devexpress.github.io/testcafe/documentation/reference/test-api/domnodestate.html#members-common-across-all-nodes) of the matched set or try evaluate
+a [snapshot](https://devexpress.github.io/testcafe/documentation/guides/basic-guides/select-page-elements.html#dom-node-snapshot), the selector returns values for the first element in the set.
 
 ```js
 // Returns id of the first element in the set
@@ -72,7 +72,7 @@ In this example the selector:
 
 #### Getting selector matched set length
 
-Also, now you can get selector matched set length and check matching elements existence by using selector [`count` and `exists` properties](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/using-selectors.html#check-if-an-element-exists).
+Also, now you can get selector matched set length and check matching elements existence by using selector [`count` and `exists` properties](https://devexpress.github.io/testcafe/documentation/guides/basic-guides/select-page-elements.html#check-if-an-element-exists).
 
 #### Unawaited parametrized selector calls now allowed outside test context
 
@@ -141,14 +141,14 @@ const id = await t.select('.someClass').id;
 const id = await Selector('.someClass').id;
 ```
 
-* `selectorOptions.index` - use [selector.nth()](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#nth) instead.
-* `selectorOptions.text` - use [selector.withText()](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#withtext) instead.
-* `selectorOptions.dependencies` - use [filtering](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#filter-dom-nodes) and [hierarchical](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#search-for-elements-in-the-dom-hierarchy) methods to build combined selectors instead.
+* `selectorOptions.index` - use [selector.nth()](https://devexpress.github.io/testcafe/documentation/reference/test-api/selector/nth.html) instead.
+* `selectorOptions.text` - use [selector.withText()](https://devexpress.github.io/testcafe/documentation/reference/test-api/selector/withtext.html) instead.
+* `selectorOptions.dependencies` - use [filtering and hierarchical](https://devexpress.github.io/testcafe/documentation/guides/basic-guides/select-page-elements.html#member-tables) methods to build combined selectors instead.
 
 ### ⚙ Built-in assertions. ([#998](https://github.com/DevExpress/testcafe/issues/998))
 
-TestCafe now ships with [numerous built-in BDD-style assertions](https://devexpress.github.io/testcafe/documentation/test-api/assertions/assertion-api.html).
-If the TestCafe assertion receives a [Selector's DOM node state property](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/using-selectors.html#define-assertion-actual-value) as an actual value, TestCafe uses the [smart assertion query mechanism](https://devexpress.github.io/testcafe/documentation/test-api/assertions/index.html#smart-assertion-query-mechanism):
+TestCafe now ships with [numerous built-in BDD-style assertions](https://devexpress.github.io/testcafe/documentation/guides/basic-guides/assert.html).
+If the TestCafe assertion receives a [Selector's DOM node state property](https://devexpress.github.io/testcafe/documentation/guides/basic-guides/select-page-elements.html#define-assertion-actual-value) as an actual value, TestCafe uses the [smart assertion query mechanism](https://devexpress.github.io/testcafe/documentation/guides/basic-guides/assert.html#smart-assertion-query-mechanism):
 if an assertion did not passed, the test does not fail immediately. The assertion retries to pass multiple times and each time it re-requests the actual shorthand value. The test fails if the assertion could not complete successfully within a timeout.
 This approach allows you to create stable tests that lack random errors and decrease the amount of time required to run all your tests due to the lack of extra waitings.
 
@@ -182,7 +182,7 @@ test('Button click', async t => {
 });
 ```
 
-### ⚙ Added [`selected` and `selectedIndex` DOM node state properties](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/dom-node-state.html#members-common-across-all-nodes). ([#951](https://github.com/DevExpress/testcafe/issues/951))
+### ⚙ Added [`selected` and `selectedIndex` DOM node state properties](https://devexpress.github.io/testcafe/documentation/reference/test-api/domnodestate.html#members-common-across-all-nodes). ([#951](https://github.com/DevExpress/testcafe/issues/951))
 
 ### ⚙ It's now possible to start browser with arguments. ([#905](https://github.com/DevExpress/testcafe/issues/905))
 
@@ -192,7 +192,7 @@ If you need to pass arguments for the specified browser, write them right after 
 testcafe "chrome --start-fullscreen",firefox tests/test.js
 ```
 
-See [Starting browser with arguments](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#starting-browser-with-arguments).
+See [Starting browser with arguments](https://devexpress.github.io/testcafe/documentation/reference/command-line-interface.html#start-a-browser-with-arguments).
 
 ## Bug Fixes
 

@@ -109,7 +109,7 @@ test(`Test Speed`, async t => {
 
 ### ⚙ Using test controller outside of test code ([#1166](https://github.com/DevExpress/testcafe/issues/1166))
 
-You may sometimes need to call test API from outside of test code. For instance, your [page model](https://devexpress.github.io/testcafe/documentation/recipes/using-page-model.html)
+You may sometimes need to call test API from outside of test code. For instance, your [page model](https://devexpress.github.io/testcafe/documentation/guides/concepts/page-model.html)
 can contain methods that perform common operations used in many tests, like authentication.
 
 ```js
@@ -201,9 +201,9 @@ const id = await t.select('.someClass').id;
 const id = await Selector('.someClass').id;
 ```
 
-* `selectorOptions.index` - use [selector.nth()](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#nth) instead.
-* `selectorOptions.text` - use [selector.withText()](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#withtext) instead.
-* `selectorOptions.dependencies` - use [filtering](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#filter-dom-nodes) and [hierarchical](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#search-for-elements-in-the-dom-hierarchy) methods to build combined selectors instead.
+* `selectorOptions.index` - use [selector.nth()](https://devexpress.github.io/testcafe/documentation/reference/test-api/selector/nth.html) instead.
+* `selectorOptions.text` - use [selector.withText()](https://devexpress.github.io/testcafe/documentation/reference/test-api/selector/withtext.html) instead.
+* `selectorOptions.dependencies` - use [filtering and hierarchical](https://devexpress.github.io/testcafe/documentation/guides/basic-guides/select-page-elements.html#member-tables) methods to build combined selectors instead.
 
 ## Bug Fixes
 
