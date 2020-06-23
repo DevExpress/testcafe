@@ -378,6 +378,13 @@ export default class TestController {
 
     _expect$ (actual) {
         const callsite = getCallsiteForMethod('expect');
+        
+        if (global.snapshotPropertyCallsite && global.snapshotPropertyCallsite.filename === callsite.filename &&
+                global.snapshotPropertyCallsite.lineNum === callsite.lineNum) {
+            this._addWarning(WARNING_MESSAGE.redundantAwaitInAssertion, callsite);
+
+            global.snapshotPropertyCallsite = null;
+        }
 
         if (isClientFunction(actual))
             this._addWarning(WARNING_MESSAGE.assertedClientFunctionInstance, callsite);

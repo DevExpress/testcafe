@@ -113,11 +113,21 @@ function addSnapshotProperties (obj, getSelector, SelectorBuilder, properties) {
             get: () => {
                 const callsite = getCallsiteForMethod('get');
 
-                return ReExecutablePromise.fromFn(async () => {
+                const propertyPromise = ReExecutablePromise.fromFn(async () => {
                     const snapshot = await getSnapshot(getSelector, callsite, SelectorBuilder);
 
                     return snapshot[prop];
                 });
+
+                propertyPromise.then = function (onFulfilled, onRejected) {
+                    global.snapshotPropertyCallsite = callsite;
+
+                    this._ensureExecuting();
+
+                    return this._taskPromise.then(onFulfilled, onRejected);
+                }
+
+                return propertyPromise;
             }
         });
     });
