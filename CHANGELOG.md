@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.8.7 (2020-6-23)
+
+### Bug Fixes
+
+* TestCafe now shows the emulated device's name in the report when tests run in Chrome Emulation Mode ([#3290](https://github.com/DevExpress/testcafe/issues/3290))
+* Event simulation for Knockout.js inputs has been enhanced ([#4881](https://github.com/DevExpress/testcafe/issues/4881))
+* Fixed authentication issues for specific web apps ([testcafe-hammerhead/#2344](https://github.com/DevExpress/testcafe-hammerhead/issues/2344))
+* Enhanced interoperability for pages that use ES6 destructuring ([testcafe-hammerhead/#642](https://github.com/DevExpress/testcafe-hammerhead/issues/642))
+* Fixed `<title>` element handling in iframes ([testcafe-hammerhead/#2340](https://github.com/DevExpress/testcafe-hammerhead/issues/2340))
+* Enhanced compatibility with the `axe` accessibility testing library ([testcafe-hammerhead/#2350](https://github.com/DevExpress/testcafe-hammerhead/issues/2350))
+
 ## v1.8.6 (2020-6-1)
 
 ### Bug Fixes
