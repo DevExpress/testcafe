@@ -40,7 +40,7 @@ The TestCafe framework simply allows you to skip the hassles mentioned above:
   starts the browsers, runs tests, gathers the results and generates the reports
 
 Learn more about TestCafe – take a look at the [feature list](https://devexpress.github.io/testcafe/#features)
-and the [getting started](https://devexpress.github.io/testcafe/documentation/getting-started/) section.
+and the [getting started](../documentation/getting-started/) section.
 If you want to hack with us, visit our [GitHub page](https://github.com/DevExpress/testcafe).
 
 Try TestCafe now and tell us what you think on StackOverflow. We review and answer questions with the [TestCafe](https://stackoverflow.com/questions/tagged/testcafe) tag.

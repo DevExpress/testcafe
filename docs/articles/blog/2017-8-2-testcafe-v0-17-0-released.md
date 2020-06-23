@@ -82,7 +82,7 @@ var testRunPromise = runner
     .run();
 ```
 
-For details, see [Concurrent Test Execution](https://devexpress.github.io/testcafe/documentation/guides/basic-guides/run-tests.html#run-tests-concurrently).
+For details, see [Concurrent Test Execution](../documentation/guides/basic-guides/run-tests.md#run-tests-concurrently).
 
 ### ⚙ Output test run reports to Slack and TeamCity ([testcafe-reporter-slack](https://github.com/Shafied/testcafe-reporter-slack), [testcafe-reporter-teamcity](https://github.com/Soluto/testcafe-reporter-teamcity))
 
