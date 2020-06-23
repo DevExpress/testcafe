@@ -15,20 +15,15 @@ createRunner() → Runner
 
 ```js
 const createTestCafe = require('testcafe');
-let testcafe         = null;
 
-createTestCafe('localhost', 1337, 1338)
-    .then(tc => {
-        testcafe     = tc;
-        const runner = testcafe.createRunner();
+const testcafe = await createTestCafe('localhost', 1337, 1338);
+const runner   = testcafe.createRunner();
 
-        return runner
-            .src(['tests/fixture1.js', 'tests/func/fixture3.js'])
-            .browsers(['chrome', 'safari'])
-            .run();
-    })
-    .then(failedCount => {
-        console.log('Tests failed: ' + failedCount);
-        testcafe.close();
-    });
+const failedCount = await runner
+    .src(['tests/fixture1.js', 'tests/func/fixture3.js'])
+    .browsers(['chrome', 'safari'])
+    .run();
+
+console.log('Tests failed: ' + failedCount);
+await testcafe.close();
 ```

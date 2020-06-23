@@ -16,15 +16,20 @@ testcafe safari ./tests/my-fixture.js
 
 ```js
 const createTestCafe = require('testcafe');
-const testCafe       = await createTestCafe('localhost', 1337, 1338);
-const runner         = testCafe.createRunner();
 
-await runner
-    .src('./tests/my-fixture.js')
-    .browsers('safari')
-    .run();
+const testCafe = await createTestCafe('localhost', 1337, 1338);
 
-testCafe.close();
+try {
+    const runner = testCafe.createRunner();
+
+    await runner
+        .src('./tests/my-fixture.js')
+        .browsers('safari')
+        .run();
+}
+finally {
+    await testCafe.close();
+}
 ```
 
 TestCafe also allows you to create a [configuration file](../../reference/configuration-file.md) where you can define test run settings. You can then omit these settings in the command line or API to use values from the configuration file.
@@ -594,21 +599,20 @@ In the API, create a [live mode runner](../../reference/testcafe-api/livemoderun
 
 ```js
 const createTestCafe = require('testcafe');
-let testcafe         = null;
 
-createTestCafe('localhost', 1337, 1338)
-    .then(tc => {
-        testcafe         = tc;
-        const liveRunner = testcafe.createLiveModeRunner();
+const testcafe = await createTestCafe('localhost', 1337, 1338);
 
-        return liveRunner
-            .src('tests/test.js')
-            .browsers('chrome')
-            .run();
-    })
-    .then(() => {
-        testcafe.close();
-    });
+try {
+    const liveRunner = testcafe.createLiveModeRunner();
+
+    await liveRunner
+        .src('tests/test.js')
+        .browsers('chrome')
+        .run();
+}
+finally {
+    await testcafe.close();
+}
 ```
 
 ### How Live Mode Works

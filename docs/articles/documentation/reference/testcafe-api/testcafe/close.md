@@ -13,18 +13,16 @@ async close() → Promise<void>
 
 ```js
 const createTestCafe = require('testcafe');
-let testcafe         = null;
 
-createTestCafe('localhost', 1337, 1338)
-    .then(tc => {
-        testcafe     = tc;
-        const runner = testcafe.createRunner();
+const testcafe = await createTestCafe('localhost', 1337, 1338);
 
-        return runner.run();
-    })
-    .then(failed => {
-        console.log('Tests failed: ' + failed);
-        testcafe.close();
-    })
-    .catch(error => { /* ... */ });
+try {
+    const runner = testcafe.createRunner();
+    const failed = await runner.run();
+
+    console.log('Tests failed: ' + failed);
+}
+finally {
+    await testcafe.close();
+}
 ```

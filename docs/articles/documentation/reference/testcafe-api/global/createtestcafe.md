@@ -34,11 +34,9 @@ Create a `TestCafe` instance with the `createTestCafe` function.
 ```js
 const createTestCafe = require('testcafe');
 
-createTestCafe('localhost', 1337, 1338)
-    .then(testcafe => {
-        runner = testcafe.createRunner();
-        /* ... */
-    });
+const testcafe = await createTestCafe('localhost', 1337, 1338);
+const runner   = testcafe.createRunner();
+/* ... */
 ```
 
 Establish an HTTPS connection with the TestCafe server. The [openssl-self-signed-certificate](https://www.npmjs.com/package/openssl-self-signed-certificate) module is used to generate a self-signed certificate for development use.
@@ -48,27 +46,23 @@ Establish an HTTPS connection with the TestCafe server. The [openssl-self-signed
 
 const createTestCafe        = require('testcafe');
 const selfSignedSertificate = require('openssl-self-signed-certificate');
-let runner                  = null;
 
 const sslOptions = {
     key:  selfSignedSertificate.key,
     cert: selfSignedSertificate.cert
 };
 
-createTestCafe('localhost', 1337, 1338, sslOptions)
-    .then(testcafe => {
-        runner = testcafe.createRunner();
-    })
-    .then(() => {
-        return runner
-            .src('test.js')
+const testcafe = await createTestCafe('localhost', 1337, 1338, sslOptions);
+const runner   = testcafe.createRunner();
 
-            // Browsers restrict self-signed certificate usage unless you
-            // explicitly set a flag specific to each browser.
-            // For Chrome, this is '--allow-insecure-localhost'.
-            .browsers('chrome --allow-insecure-localhost')
-            .run();
-    });
+await runner
+    .src('test.js')
+
+    // Browsers restrict self-signed certificate usage unless you
+    // explicitly set a flag specific to each browser.
+    // For Chrome, this is '--allow-insecure-localhost'.
+    .browsers('chrome --allow-insecure-localhost')
+    .run();
 ```
 
 ## See Also

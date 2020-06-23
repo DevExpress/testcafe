@@ -96,7 +96,7 @@ createTestCafe('localhost', 1337, 1338)
             .run();
     })
     .then(() => {
-        testcafe.close();
+        return testcafe.close();
     });
 ```
 

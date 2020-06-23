@@ -17,21 +17,16 @@ createLiveModeRunner() → LiveModeRunner
 
 ```js
 const createTestCafe = require('testcafe');
-let testcafe         = null;
 
-createTestCafe('localhost', 1337, 1338)
-    .then(tc => {
-        testcafe         = tc;
-        const liveRunner = testcafe.createLiveModeRunner();
+const testcafe   = await createTestCafe('localhost', 1337, 1338)
+const liveRunner = testcafe.createLiveModeRunner();
 
-        return liveRunner
-            .src('tests/test.js')
-            .browsers('chrome')
-            .run();
-    })
-    .then(() => {
-        testcafe.close();
-    });
+await liveRunner
+    .src('tests/test.js')
+    .browsers('chrome')
+    .run();
+
+await testcafe.close();
 ```
 
 > Important! You cannot create multiple live mode runners for the same TestCafe server instance. This is because a TestCafe server can handle only one watcher that tracks changes to test files.

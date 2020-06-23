@@ -74,30 +74,21 @@ runner.browsers('firefox:/home/user/apps/firefox.app:userProfile');
 
 ```js
 const createTestCafe = require('testcafe');
-let runner           = null;
-let testcafe         = null;
 
-createTestCafe('localhost', 1337, 1338)
-    .then(tc => {
-        testcafe = tc;
-        runner   = testcafe.createRunner();
+const testcafe         = await createTestCafe('localhost', 1337, 1338);
+const runner           = testcafe.createRunner();
+const remoteConnection = await testcafe.createBrowserConnection();
 
-        return testcafe.createBrowserConnection();
-    })
-    .then(remoteConnection => {
+// Outputs remoteConnection.url so that it can be visited from the remote browser.
+console.log(remoteConnection.url);
 
-        // Outputs remoteConnection.url so that it can be visited from the remote browser.
-        console.log(remoteConnection.url);
+remoteConnection.once('ready', async () => {
+    const failedCount = await runner
+        .src('test.js')
+        .browsers(remoteConnection)
+        .run();
 
-        remoteConnection.once('ready', () => {
-            runner
-                .src('test.js')
-                .browsers(remoteConnection)
-                .run()
-                .then(failedCount => {
-                    console.log(failedCount);
-                    testcafe.close();
-                 });
-        });
-    });
+    console.log(failedCount);
+    await testcafe.close();
+});
 ```

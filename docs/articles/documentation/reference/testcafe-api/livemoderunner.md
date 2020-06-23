@@ -15,21 +15,16 @@ Use the [testCafe.createLiveModeRunner](testcafe/createlivemoderunner.md) functi
 
 ```js
 const createTestCafe = require('testcafe');
-let testcafe         = null;
 
-createTestCafe('localhost', 1337, 1338)
-    .then(tc => {
-        testcafe         = tc;
-        const liveRunner = testcafe.createLiveModeRunner();
+const testcafe   = await createTestCafe('localhost', 1337, 1338);
+const liveRunner = testcafe.createLiveModeRunner();
 
-        return liveRunner
-            .src('tests/test.js')
-            .browsers('chrome')
-            .run();
-    })
-    .then(() => {
-        testcafe.close();
-    });
+await liveRunner
+    .src('tests/test.js')
+    .browsers('chrome')
+    .run();
+
+await testcafe.close();
 ```
 
 `LiveModeRunner` is a [Runner class](runner/README.md) descendant and provides the same API (with certain [limitations](#limitations)).
