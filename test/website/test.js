@@ -118,39 +118,39 @@ class WebsiteTester {
             let linkTests   = [];
 
             const siteChecker = new blc.SiteChecker({
-                    excludeLinksToSamePage: false,
-                    excludedKeywords: ['*linkedin.com*'],
-                    requestMethod: 'get'
+                excludeLinksToSamePage: false,
+                excludedKeywords:       ['*linkedin.com*'],
+                requestMethod:          'get'
+            },
+            {
+                link: result => linkTests.push(this._getBrokenLink(result)),
+
+                page: (error, pageUrl) => {
+                    pageTests.push(Promise
+                        .all(linkTests)
+                        .then(res => {
+                            const brokenLinks = res.filter(value => !!value);
+
+                            this._outputBrokenLinks(pageUrl, brokenLinks);
+                            return brokenLinks.length;
+                        }));
                 },
-                {
-                    link: result => linkTests.push(this._getBrokenLink(result)),
 
-                    page: (error, pageUrl) => {
-                        pageTests.push(Promise
-                            .all(linkTests)
-                            .then(res => {
-                                const brokenLinks = res.filter(value => !!value);
+                html: (tree, robots, response, pageUrl) => {
+                    linkTests                = [];
+                    this.parsedDocs[pageUrl] = tree;
+                },
 
-                                this._outputBrokenLinks(pageUrl, brokenLinks);
-                                return brokenLinks.length;
-                            }));
-                    },
+                end: () => {
+                    Promise
+                        .all(pageTests)
+                        .then(res => {
+                            const brokenLinksCount = res.reduce((acc, value) => acc + value);
 
-                    html: (tree, robots, response, pageUrl) => {
-                        linkTests                = [];
-                        this.parsedDocs[pageUrl] = tree;
-                    },
-
-                    end: () => {
-                        Promise
-                            .all(pageTests)
-                            .then(res => {
-                                const brokenLinksCount = res.reduce((acc, value) => acc + value);
-
-                                resolve(!!brokenLinksCount);
-                            });
-                    }
-                });
+                            resolve(!!brokenLinksCount);
+                        });
+                }
+            });
 
             siteChecker.enqueue('http://localhost:8080/testcafe');
         });
