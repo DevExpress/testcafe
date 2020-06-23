@@ -13,7 +13,7 @@ Intercepting HTTP requests, specifying resources accessed by bypassing a proxy s
 
 TestCafe now allows you to record HTTP request data or mock responses. You can also create a custom HTTP request hook to emulate authentications like  **Kerberos** or **Client Certificate Authentication**.
 
-See [Intercepting HTTP Requests](https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests) for more information.
+See [Intercepting HTTP Requests](../documentation/guides/advanced-guides/intercept-http-requests.md) for more information.
 
 ## Enhancements
 
@@ -21,7 +21,7 @@ See [Intercepting HTTP Requests](https://devexpress.github.io/testcafe/documenta
 
 TestCafe now allows you to bypass the proxy server when accessing specific resources.
 
-To specify resources that require direct access, use the [--proxy-bypass](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--proxy-bypass-rules) flag in the command line or the [useProxy](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#useproxy) API method's parameters.
+To specify resources that require direct access, use the [--proxy-bypass](../documentation/reference/command-line-interface.md#--proxy-bypass-rules) flag in the command line or the [useProxy](../documentation/reference/testcafe-api/runner/useproxy.md) API method's parameters.
 
 ```sh
 testcafe chrome my-tests/**/*.js --proxy proxy.corp.mycompany.com --proxy-bypass localhost:8080,internal-resource.corp.mycompany.com
@@ -35,7 +35,7 @@ runner.useProxy('172.0.10.10:8080', ['localhost:8080', 'internal-resource.corp.m
 
 TestCafe allows you to specify additional information for tests in the form of key-value metadata and use it in reports.
 
-You can define metadata for a fixture or a test using the [meta](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#specifying-testing-metadata) method:
+You can define metadata for a fixture or a test using the [meta](../documentation/guides/basic-guides/organize-tests.md#specify-test-metadata) method:
 
 ```js
 fixture `My Fixture`
@@ -50,13 +50,13 @@ test
     ('MyTest', async t => { /* ... */});
 ```
 
-To include testing metadata to reports, use the [custom reporter methods](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html).
+To include testing metadata to reports, use the [custom reporter methods](../documentation/reference/plugin-api/reporter.md).
 
 ### ⚙ Passing a regular promise to `t.expect` is deprecated now ([#2207](https://github.com/DevExpress/testcafe/issues/2207))
 
 TestCafe now throws an error if you pass a regular promise to the assertion's `expect` method.
 
-If you need to assert a regular promise, set the [allowUnawaitedPromise](https://devexpress.github.io/testcafe/documentation/test-api/assertions/#optionsallowunawaitedpromise) option to `true`.
+If you need to assert a regular promise, set the [allowUnawaitedPromise](../documentation/guides/basic-guides/assert.md#optionsallowunawaitedpromise) option to `true`.
 
 ```js
 await t.expect(doSomethingAsync()).ok('check that a promise is returned', { allowUnawaitedPromise: true });

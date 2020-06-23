@@ -13,11 +13,11 @@ This release introduces the capability to disable page caching in TestCafe.
 
 ### ⚙ Page Caching Can be Disabled ([#3780](https://github.com/DevExpress/testcafe/issues/3780))
 
-TestCafe may be unable to log in to the tested website correctly if the web server uses caching for authentication pages or pages to which users are redirected after login. See the [User Roles](https://devexpress.github.io/testcafe/documentation/test-api/authentication/user-roles.html#test-actions-fail-after-authentication) topic for details.
+TestCafe may be unable to log in to the tested website correctly if the web server uses caching for authentication pages or pages to which users are redirected after login. See the [User Roles](../documentation/guides/advanced-guides/authentication.md#test-actions-fail-after-authentication) topic for details.
 
 If tests fail unexpectedly after authentication, disable page caching in TestCafe.
 
-Use the [fixture.disablePageCaching](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#disable-page-caching) and [test.disablePageCaching](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#disable-page-caching) methods to disable caching during a particular fixture or test.
+Use the [fixture.disablePageCaching](../documentation/reference/test-api/fixture/disablepagecaching.md) and [test.disablePageCaching](../documentation/reference/test-api/test/disablepagecaching.md) methods to disable caching during a particular fixture or test.
 
 ```js
 fixture
@@ -33,19 +33,19 @@ test
 
 To disable page caching during the entire test run, use either of the following options:
 
-* the [--disable-page-caching](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--disable-page-caching) command line flag
+* the [--disable-page-caching](../documentation/reference/command-line-interface.md#--disable-page-caching) command line flag
 
     ```sh
     testcafe chrome my-tests --disable-page-caching
     ```
 
-* the `disablePageCaching` option in the [runner.run](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#run) method
+* the `disablePageCaching` option in the [runner.run](../documentation/reference/testcafe-api/runner/run.md) method
 
     ```js
     runner.run({ disablePageCaching: true });
     ```
 
-* the [disablePageCaching](https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#disablepagecaching) configuration file property
+* the [disablePageCaching](../documentation/reference/configuration-file.md#disablepagecaching) configuration file property
 
     ```json
     {

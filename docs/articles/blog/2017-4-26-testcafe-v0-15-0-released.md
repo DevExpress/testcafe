@@ -13,7 +13,7 @@ Plugins for React and Vue.js, TestCafe Docker image, support for Internet access
 
 ### New calls to selector's withText method no longer override previous calls
 
-We have changed the way the [withText](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#withtext)
+We have changed the way the [withText](../documentation/reference/test-api/selector/withtext.md)
 method behaves when it is called in a chain.
 
 ```js
@@ -103,7 +103,7 @@ docker pull testcafe/testcafe
 docker run -v //user/tests:/tests -it testcafe/testcafe firefox tests/**/*.js
 ```
 
-To learn more, see [Using TestCafe Docker Image](https://devexpress.github.io/testcafe/documentation/using-testcafe/using-testcafe-docker-image.html)
+To learn more, see [Using TestCafe Docker Image](../documentation/guides/advanced-guides/use-testcafe-docker-image.md)
 
 ### ⚙ Support for Internet access proxies ([#1206](https://github.com/DevExpress/testcafe/issues/1206))
 
@@ -125,7 +125,7 @@ Note that you can pass the credentials with the proxy server host.
 
 ### ⚙ Debugging mode option ([#1347](https://github.com/DevExpress/testcafe/issues/1347))
 
-As an alternative to calling the [t.debug](https://devexpress.github.io/testcafe/documentation/test-api/debugging.html#client-side-debugging) method
+As an alternative to calling the [t.debug](../documentation/guides/basic-guides/debug.md#client-side-debugging) method
 in test code, you can now specify the `--debug-mode` command line option to pause the test before the first action or assertion.
 When the test is paused, you can debug in the browser developer tools as well as continue test execution step by step.
 
@@ -160,7 +160,7 @@ t.expect(el.hasAttribute('disabled')).ok();
 
 ### ⚙ Redirection when switching between roles ([#1339](https://github.com/DevExpress/testcafe/issues/1339))
 
-[User roles](https://devexpress.github.io/testcafe/documentation/test-api/authentication/user-roles.html) now provide a `preserveUrl` option
+[User roles](../documentation/guides/advanced-guides/authentication.md#user-roles) now provide a `preserveUrl` option
 that allows you to save the webpage URL to which the browser was redirected after logging in. If you enable this option when creating a role,
 the browser will be redirected to the saved URL every time you switch to this role.
 

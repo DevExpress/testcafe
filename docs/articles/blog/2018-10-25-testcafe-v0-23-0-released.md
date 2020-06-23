@@ -15,13 +15,13 @@ Stop a test run after the first test fail, view JavaScript errors' stack trace i
 
 You can now configure TestCafe to stop the entire test run after the first test fail. This saves your time when you fix problems with your tests one by one.
 
-Specify the [--sf](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--sf---stop-on-first-fail) flag to enable this feature when you run tests from the command line.
+Specify the [--sf](../documentation/reference/command-line-interface.md#--sf---stop-on-first-fail) flag to enable this feature when you run tests from the command line.
 
 ```sh
 testcafe chrome my-tests --sf
 ```
 
-In the API, use the [stopOnFirstFail](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#run) option.
+In the API, use the [stopOnFirstFail](../documentation/reference/testcafe-api/runner/run.md) option.
 
 ```js
 runner.run({ stopOnFirstFail: true })
@@ -29,7 +29,7 @@ runner.run({ stopOnFirstFail: true })
 
 ### ⚙ View the JavaScript Errors' Stack Traces in Reports ([#2043](https://github.com/DevExpress/testcafe/issues/2043))
 
-Now when a JavaScript error occurs on the tested webpage, the test run report includes a stack trace for this error (only if the [--skip-js-errors](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-e---skip-js-errors) option is disabled).
+Now when a JavaScript error occurs on the tested webpage, the test run report includes a stack trace for this error (only if the [--skip-js-errors](../documentation/reference/command-line-interface.md#-e---skip-js-errors) option is disabled).
 
 ![A report that contains a stack trace for a client JS error](../images/client-error-stack-report.png)
 
