@@ -167,3 +167,10 @@ test('Passing Selector instance into an assertion', async t => {
 test('Passing ClientFunction instance into an assertion', async t => {
     await t.expect(ClientFunction(() => true)).eql(true);
 });
+
+test('Await Selector property', async t => {
+    await t
+        .expect(Selector('#el1')).ok()
+        .expect(await Selector('#el1')).ok()
+        .expect(await Selector('#el1').innerText).eql('');
+})

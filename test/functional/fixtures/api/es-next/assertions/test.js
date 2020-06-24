@@ -199,6 +199,14 @@ describe('[API] Assertions', function () {
             });
     });
 
+    it('Should raise a warning when trying to await Selector property in assertion', function () {
+        return runTests('./testcafe-fixtures/assertions-test.js', 'Await Selector property', { only: 'chrome' })
+            .then(() => expect(testReport.warnings.length).to.eql(1))
+            .then(() => expect(testReport.warnings[0]).to.match(new RegExp(['You are using a DOM snapshot property in your assertion\\. ',
+            `Its value is set when 'await Selector\\(\\.\\.\\.\\)' is resolved and it won't be updated if the element's state changes\\. `,
+            `If it wasn't intentional, try using Selector without await\\.`].join(''))));
+    });
+
     it('Should retry assertion for selector results', function () {
         return runTests('./testcafe-fixtures/assertions-test.js', 'Selector result assertion', { only: 'chrome' });
     });
