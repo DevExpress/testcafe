@@ -12,6 +12,8 @@ TestCafe has an extensive command line interface that allows it to fit well in a
 
 This topic shows how you can integrate TestCafe tests into project build process in [Jenkins](https://jenkins.io/).
 
+> You may also like this [TestCafe plugin](https://plugins.jenkins.io/testcafe/) for Jenkins that attaches screenshots and videos to the Jenkins test results page.
+
 ## Enable Jenkins to Start the Browser UI (macOS and Linux)
 
 The default Jenkins configuration on macOS and Linux does not allow the CI system to start the local browser's UI. This section describes how to give Jenkins these permissions.
@@ -201,3 +203,5 @@ Find a build in the **Build History** section and select **Test Results** from t
 Jenkins displays a test run report with overall results. Click the test name for information about a specific test.
 
 ![View Test Results](../../../images/jenkins/test-results.png)
+
+> You can also use the [TestCafe plugin](https://plugins.jenkins.io/testcafe/) to attach screenshots and videos to the test results page.
