@@ -125,7 +125,7 @@ function addSnapshotProperties (obj, getSelector, SelectorBuilder, properties) {
                     this._ensureExecuting();
 
                     return this._taskPromise.then(onFulfilled, onRejected);
-                }
+                };
 
                 return propertyPromise;
             }

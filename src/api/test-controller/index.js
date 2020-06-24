@@ -378,7 +378,7 @@ export default class TestController {
 
     _expect$ (actual) {
         const callsite = getCallsiteForMethod('expect');
-        
+
         if (global.snapshotPropertyCallsite && global.snapshotPropertyCallsite.filename === callsite.filename &&
                 global.snapshotPropertyCallsite.lineNum === callsite.lineNum) {
             this._addWarning(WARNING_MESSAGE.redundantAwaitInAssertion, callsite);
