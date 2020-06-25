@@ -214,6 +214,17 @@ export default class Reporter {
             reportItem.errs        = reportItem.errs.concat(testRun.errs);
             reportItem.warnings    = testRun.warningLog ? union(reportItem.warnings, testRun.warningLog.messages) : [];
 
+            try {
+                reportItem.browsers.push(Object.assign({ testRunId: testRun.id }, testRun.controller.browser));
+            }
+            catch (e) {
+                global.console.log('error: ' + e);
+                global.console.log('reportItem: ' + JSON.stringify(reportItem));
+
+                if (!testRun.controller)
+                    global.console.log('controller is null');
+            }
+
             if (!reportItem.pendingRuns)
                 await this._resolveReportItem(reportItem, testRun);
 
