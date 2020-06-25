@@ -1,6 +1,6 @@
 const testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 const RClickAutomation   = testCafeAutomation.RClick;
-const ClickOptions       = testCafeAutomation.get('../../test-run/commands/options').ClickOptions;
+const ClickOptions       = testCafeAutomation.ClickOptions;
 
 const testCafeCore = window.getTestCafeModule('testCafeCore');
 

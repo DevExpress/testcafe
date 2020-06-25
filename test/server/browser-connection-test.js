@@ -1,9 +1,10 @@
-const expect              = require('chai').expect;
-const { promisify }       = require('util');
-const request             = require('request');
-const createTestCafe      = require('../../lib/');
-const COMMAND             = require('../../lib/browser/connection/command');
-const browserProviderPool = require('../../lib/browser/provider/pool');
+const { expect }              = require('chai');
+const { promisify }           = require('util');
+const request                 = require('request');
+const createTestCafe          = require('../../lib/');
+const COMMAND                 = require('../../lib/browser/connection/command');
+const browserProviderPool     = require('../../lib/browser/provider/pool');
+const BrowserConnectionStatus = require('../../lib/browser/connection/status');
 
 const promisedRequest = promisify(request);
 
@@ -76,7 +77,7 @@ describe('Browser connection', function () {
         return promisedRequest(options)
             .then(function (res) {
                 expect(eventFired).to.be.true;
-                expect(connection.ready).to.be.true;
+                expect(connection.status).eql(BrowserConnectionStatus.opened);
                 expect(connection.userAgent).eql('Chrome 41.0.2227.1 / macOS 10.10.1');
                 expect(res.statusCode).eql(302);
                 expect(res.headers['location']).eql(connection.idleUrl);
@@ -183,6 +184,44 @@ describe('Browser connection', function () {
         });
 
         return Promise.all(testCases);
+    });
+
+    it('Should set meta information for User-Agent', () => {
+        let eventFired = false;
+
+        connection.on('ready', function () {
+            eventFired = true;
+        });
+
+        const options = {
+            url:            connection.url,
+            followRedirect: false,
+            headers:        {
+                'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
+                              '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36'
+            }
+        };
+
+        const prettyUserAgentWithMetaInfo = `Chrome 41.0.2227.1 / macOS 10.10.1 (meta-info)`;
+
+        connection.setProviderMetaInfo('meta-info', { appendToUserAgent: true });
+
+        return promisedRequest(options)
+            .then(() => {
+                expect(eventFired).to.be.true;
+
+                expect(connection.browserInfo.userAgentProviderMetaInfo).eql('');
+                expect(connection.browserInfo.parsedUserAgent.prettyUserAgent).eql(prettyUserAgentWithMetaInfo);
+                expect(connection.userAgent).eql(prettyUserAgentWithMetaInfo);
+
+                // NOTE:
+                // set meta info after connection was already established without changing pretty user agent
+                connection.setProviderMetaInfo('another meta-info');
+
+                expect(connection.browserInfo.userAgentProviderMetaInfo).eql('another meta-info');
+                expect(connection.browserInfo.parsedUserAgent.prettyUserAgent).eql(prettyUserAgentWithMetaInfo);
+                expect(connection.userAgent).eql(prettyUserAgentWithMetaInfo + ' (another meta-info)');
+            });
     });
 });
 

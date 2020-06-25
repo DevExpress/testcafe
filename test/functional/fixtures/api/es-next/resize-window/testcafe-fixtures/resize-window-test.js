@@ -53,10 +53,13 @@ test('Resize the window to fit a device', async t => {
 });
 
 test('Resize the window to fit a device with portrait orientation', async t => {
-    await t.resizeWindowToFitDevice('iPhone', { portraitOrientation: true });
+    // NOTE: Firefox 74 cannot set its width less than ~450px in both the headless and non-headless modes.
+    const iPadSize = { width: 1024, height: 768 };
 
-    expect(await getWindowWidth()).equals(iPhoneSize.height);
-    expect(await getWindowHeight()).equals(iPhoneSize.width);
+    await t.resizeWindowToFitDevice('iPad', { portraitOrientation: true });
+
+    expect(await getWindowWidth()).equals(iPadSize.height);
+    expect(await getWindowHeight()).equals(iPadSize.width);
 });
 
 

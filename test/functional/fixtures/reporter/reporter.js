@@ -48,7 +48,7 @@ function generateReporter (log, options = {}) {
                 log.push(item);
             },
 
-            async reportTestActionDone (name, { command, test, fixture, errors }) {
+            async reportTestActionDone (name, { command, test, fixture, err }) {
                 if (!emitOnDone)
                     return;
 
@@ -57,8 +57,8 @@ function generateReporter (log, options = {}) {
 
                 const item = { name, action: 'done', command };
 
-                if (errors && errors.length)
-                    item.errors = errors.map(err => err.code);
+                if (err)
+                    item.err = err.code;
 
                 if (includeTestInfo) {
                     if (test.id) {

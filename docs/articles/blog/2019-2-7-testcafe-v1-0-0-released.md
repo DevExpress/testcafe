@@ -17,21 +17,21 @@ TestCafe v1.0.0 introduces minor changes to the framework's behavior and program
 
 ### ⚙ Video Recording ([#2151](https://github.com/DevExpress/testcafe/issues/2151))
 
-You can now [record videos of test runs](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html#record-videos) in Google Chrome and Mozilla Firefox. To enable video recording, [install the FFmpeg library](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html#prerequisites-for-video-recording) and then do one of the following:
+You can now [record videos of test runs](../documentation/guides/advanced-guides/screenshots-and-videos.md#record-videos) in Google Chrome and Mozilla Firefox. To enable video recording, [install the FFmpeg library](../documentation/guides/advanced-guides/screenshots-and-videos.md#prerequisites-for-video-recording) and then do one of the following:
 
-* specify the [--video](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--video-basepath) command line flag,
+* specify the [--video](../documentation/reference/command-line-interface.md#--video-basepath) command line flag,
 
     ```sh
     testcafe chrome test.js --video artifacts/videos/
     ```
 
-* call the [runner.video](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#video) API method,
+* call the [runner.video](../documentation/reference/testcafe-api/runner/video.md) API method,
 
     ```js
     runner.video('artifacts/videos/');
     ```
 
-* specify the [videoPath](https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#videopath) configuration file property (configuration file is also a new feature, see below).
+* specify the [videoPath](../documentation/reference/configuration-file.md#videopath) configuration file property (configuration file is also a new feature, see below).
 
     ```json
     {
@@ -39,11 +39,11 @@ You can now [record videos of test runs](https://devexpress.github.io/testcafe/d
     }
     ```
 
-TestCafe records all tests and saves each recording in a separate file. You can change this behavior in [video options](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html#basic-video-options). You can also customize [video encoding parameters](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html#video-encoding-options).
+TestCafe records all tests and saves each recording in a separate file. You can change this behavior in [video options](../documentation/guides/advanced-guides/screenshots-and-videos.md#basic-video-options). You can also customize [video encoding parameters](../documentation/guides/advanced-guides/screenshots-and-videos.md#video-encoding-options).
 
 ### ⚙ Configuration File ([#3131](https://github.com/DevExpress/testcafe/issues/3131))
 
-TestCafe now allows you to store its settings in the `.testcaferc.json` [configuration file](https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html) (with support for `JSON5` syntax).
+TestCafe now allows you to store its settings in the `.testcaferc.json` [configuration file](../documentation/reference/configuration-file.md) (with support for `JSON5` syntax).
 
 ```json
 {
@@ -66,21 +66,21 @@ Keep the configuration file in the project's root directory from which you run T
 
 Settings you specify when you launch tests from the command line and programming interfaces override settings from `.testcaferc.json`.
 
-See [Configuration File](https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html) for more information.
+See [Configuration File](../documentation/reference/configuration-file.md) for more information.
 
 ### ⚙ Live Mode ([#3215](https://github.com/DevExpress/testcafe/issues/3215))
 
-We have integrated the [testcafe-live](https://github.com/DevExpress/testcafe-live) module into our main code so you can now use the new [live mode](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/live-mode.html).
+We have integrated the [testcafe-live](https://github.com/DevExpress/testcafe-live) module into our main code so you can now use the new [live mode](../documentation/guides/basic-guides/run-tests.md#live-mode).
 
-Live mode keeps the TestCafe process and browsers opened the whole time you are working on tests. Changes you make in code immediately restart the tests. That is, live mode allows you to see test results instantly. See [How Live Mode Works](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/live-mode.html#how-live-mode-works).
+Live mode keeps the TestCafe process and browsers opened the whole time you are working on tests. Changes you make in code immediately restart the tests. That is, live mode allows you to see test results instantly. See [How Live Mode Works](../documentation/guides/basic-guides/run-tests.md#how-live-mode-works).
 
-Use the [-L (--live)](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-l---live) flag to enable live mode from the command line interface.
+Use the [-L (--live)](../documentation/reference/command-line-interface.md#-l---live) flag to enable live mode from the command line interface.
 
 ```sh
 testcafe chrome tests/test.js -L
 ```
 
-In the API, create a [live mode runner](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/livemoderunner.html) with the [testcafe.createLiveModeRunner](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/testcafe.html#createlivemoderunner) function and use it instead of a [regular test runner](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html).
+In the API, create a [live mode runner](../documentation/reference/testcafe-api/livemoderunner.md) with the [testcafe.createLiveModeRunner](../documentation/reference/testcafe-api/testcafe/createlivemoderunner.md) function and use it instead of a [regular test runner](../documentation/reference/testcafe-api/runner/).
 
 ```js
 const createTestCafe = require('testcafe');
@@ -96,13 +96,13 @@ createTestCafe('localhost', 1337, 1338)
             .run();
     })
     .then(() => {
-        testcafe.close();
+        return testcafe.close();
     });
 ```
 
 ### ⚙ Custom Reporter API Enhancements (Part of [#2753](https://github.com/DevExpress/testcafe/issues/2753); [Pull Request](https://github.com/DevExpress/testcafe/pull/3177))
 
-* You can now access warnings that appeared during the test run from the [reportTestDone](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttestdone) method. To do this, use the [testRunInfo](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#testruninfo-object) object's `warnings` property.
+* You can now access warnings that appeared during the test run from the [reportTestDone](../documentation/reference/plugin-api/reporter.md#reporttestdone) method. To do this, use the [testRunInfo](../documentation/reference/plugin-api/reporter.md#testruninfo-object) object's `warnings` property.
 
     ```js
     async reportTestDone (name, testRunInfo, meta) {
@@ -121,7 +121,7 @@ createTestCafe('localhost', 1337, 1338)
     }
     ```
 
-* The [reportTaskDone](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttaskdone) method now receives the [result](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#result-object) parameter that contains information about the number of passed, failed, and skipped tests.
+* The [reportTaskDone](../documentation/reference/plugin-api/reporter.md#reporttaskdone) method now receives the [result](../documentation/reference/plugin-api/reporter.md#result-object) parameter that contains information about the number of passed, failed, and skipped tests.
 
     ```js
     async reportTaskDone (endTime, passed, warnings, result) {
@@ -138,13 +138,13 @@ createTestCafe('localhost', 1337, 1338)
 
 ### ⚙ Typings for Programming Interface ([#3341](https://github.com/DevExpress/testcafe/issues/3341)) by [@infctr](https://github.com/infctr)
 
-TestCafe [programming interface](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/) now features TypeScript typings.
+TestCafe programming interface now features TypeScript typings.
 
 ![API Typings](../images/api-typings.png)
 
 ### ⚙ Programming Interface: Simpler API to Write Reports to a File
 
-You no longer need to use `fs.createWriteStream` to create a stream that writes a report to a file. You can now pass the file name as the [runner.reporter](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#reporter) parameter.
+You no longer need to use `fs.createWriteStream` to create a stream that writes a report to a file. You can now pass the file name as the [runner.reporter](../documentation/reference/testcafe-api/runner/reporter.md) parameter.
 
 ```js
 runnner.reporter('json', 'reports/report.json');

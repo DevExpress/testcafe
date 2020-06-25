@@ -13,7 +13,7 @@ Use metadata to select and run tests and fixtures, and load tests dynamically.
 
 ### ⚙ Select Tests and Fixtures to Run by Their Metadata ([#2527](https://github.com/DevExpress/testcafe/issues/2527)) by [@NickCis](https://github.com/NickCis)
 
-You can now run only those tests or fixtures whose [metadata](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#specifying-testing-metadata) contains a specific set of values. Use the [--test-meta](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--test-meta-keyvaluekey2value2) and [--fixture-meta](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--fixture-meta-keyvaluekey2value2) flags to specify these values.
+You can now run only those tests or fixtures whose [metadata](../documentation/guides/basic-guides/organize-tests.md#specify-test-metadata) contains a specific set of values. Use the [--test-meta](../documentation/reference/command-line-interface.md#--test-meta-keyvaluekey2value2) and [--fixture-meta](../documentation/reference/command-line-interface.md#--fixture-meta-keyvaluekey2value2) flags to specify these values.
 
 ```sh
 testcafe chrome my-tests --test-meta device=mobile,env=production
@@ -23,7 +23,7 @@ testcafe chrome my-tests --test-meta device=mobile,env=production
 testcafe chrome my-tests --fixture-meta subsystem=payments,type=regression
 ```
 
-In the API, test and fixture metadata is now passed to the [runner.filter](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#filter) method in the `testMeta` and `fixtureMeta` parameters. Use this metadata to build a logic that determines whether to run the current test.
+In the API, test and fixture metadata is now passed to the [runner.filter](../documentation/reference/testcafe-api/runner/filter.md) method in the `testMeta` and `fixtureMeta` parameters. Use this metadata to build a logic that determines whether to run the current test.
 
 ```js
 runner.filter((testName, fixtureName, fixturePath, testMeta, fixtureMeta) => {
@@ -36,7 +36,7 @@ runner.filter((testName, fixtureName, fixturePath, testMeta, fixtureMeta) => {
 
 You can now run tests imported from external libraries or generated dynamically even if the `.js` file does not contain any tests.
 
-Previously, test files had to contain the [fixture](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#fixtures) and [test](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#tests) directives. You can now add the `--disable-test-syntax-validation` command line flag to bypass this check.
+Previously, test files had to contain the [fixture](../documentation/guides/basic-guides/organize-tests.md#fixtures) and [test](../documentation/guides/basic-guides/organize-tests.md#tests) directives. You can now add the `--disable-test-syntax-validation` command line flag to bypass this check.
 
 ```sh
 testcafe safari test.js --disable-test-syntax-validation

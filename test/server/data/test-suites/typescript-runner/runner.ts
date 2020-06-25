@@ -10,6 +10,20 @@ test('Starts and terminates runner', async () => {
 
     runner
         .browsers(remoteConnection)
+        .clientScripts({
+            content: 'abracadabra',
+            page:    'some/page'
+        })
+        .clientScripts([
+            {
+                module: 'some-module',
+                page:   'some/page'
+            },
+            {
+                path: '/some/path',
+                page: 'some/page'
+            }
+        ])
         .video(
             'artifacts/videos',
             {

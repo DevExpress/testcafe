@@ -1,4 +1,5 @@
-const expect = require('chai').expect;
+const { expect }         = require('chai');
+const { createReporter } = require('../../../utils/reporter');
 
 function timeout (ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -10,23 +11,15 @@ let finishedReportTaskCount = 0;
 
 const getReporter = function (delay) {
     return {
-        name: () => {
-            return {
-                reportTestDone () {
-                },
-                reportFixtureStart: () => {
-                },
-                reportTaskStart: () => {
-                },
-                reportTaskDone: async () => {
-                    startedReportTaskCount++;
+        name: createReporter({
+            reportTaskDone: async () => {
+                startedReportTaskCount++;
 
-                    await timeout(delay);
+                await timeout(delay);
 
-                    finishedReportTaskCount++;
-                }
-            };
-        },
+                finishedReportTaskCount++;
+            }
+        }),
         output: {
             write: () => {
             },

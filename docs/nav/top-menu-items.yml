@@ -1,17 +1,17 @@
 - text: Docs
   url: /documentation/getting-started/
-  highlightUrl: /documentation
-- text: GitHub
-  url: https://github.com/DevExpress/testcafe
-  external: true
+  highlightUrl: /documentation/
+- text: Blog
+  url: /media/team-blog/
+  highlightUrl: /media/
+  id: blog-link
 - text: FAQ
   url: /faq/
-- text: Roadmap
-  url: /roadmap/
-- text: Release Notes
-  url: /blog/
 - text: Support
   url: /support/
+- text: Release Notes
+  url: /release-notes/
+  highlightUrl: /blog/
 - text: TestCafe Studio
   url: https://www.devexpress.com/products/testcafestudio/
   external: true

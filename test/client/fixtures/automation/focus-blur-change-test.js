@@ -7,14 +7,14 @@ const eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 const testCafeCore       = window.getTestCafeModule('testCafeCore');
 const testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 
-const ClickOptions = testCafeAutomation.get('../../test-run/commands/options').ClickOptions;
-const TypeOptions  = testCafeAutomation.get('../../test-run/commands/options').TypeOptions;
+const ClickOptions = testCafeAutomation.ClickOptions;
+const TypeOptions  = testCafeAutomation.TypeOptions;
 
 const ClickAutomation = testCafeAutomation.Click;
 const TypeAutomation  = testCafeAutomation.Type;
 const PressAutomation = testCafeAutomation.Press;
 
-const parseKeySequence = testCafeCore.get('./utils/parse-key-sequence');
+const parseKeySequence = testCafeCore.parseKeySequence;
 const getOffsetOptions = testCafeAutomation.getOffsetOptions;
 
 testCafeCore.preventRealEvents();

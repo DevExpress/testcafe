@@ -11,7 +11,7 @@ In this release, we have added support for the new Chromium-based Microsoft Edge
 
 ## 🌟 Support for the New Microsoft Edge
 
-TestCafe v1.8.0 supports the new Microsoft Edge based on Chromium. The new Edge is available under the same [alias](../documentation/using-testcafe/common-concepts/browsers/browser-support.md#locally-installed-browsers): `edge`.
+TestCafe v1.8.0 supports the new Microsoft Edge based on Chromium. The new Edge is available under the same [alias](../documentation/guides/concepts/browsers.md#locally-installed-browsers): `edge`.
 
 ```sh
 testcafe edge test.js
@@ -24,7 +24,7 @@ await runner
     .run();
 ```
 
-Supported Edge's features include [headless mode](../documentation/using-testcafe/common-concepts/browsers/testing-in-headless-mode.md), [mobile device emulation](../documentation/using-testcafe/common-concepts/browsers/using-chromium-device-emulation.md), and [video recording](../documentation/using-testcafe/common-concepts/screenshots-and-videos.md#record-videos).
+Supported Edge's features include [headless mode](../documentation/guides/concepts/browsers.md#test-in-headless-mode), [mobile device emulation](../documentation/guides/concepts/browsers.md#use-chromium-device-emulation), and [video recording](../documentation/guides/advanced-guides/screenshots-and-videos.md#record-videos).
 
 ## Bug Fixes
 

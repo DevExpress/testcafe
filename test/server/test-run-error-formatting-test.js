@@ -1,5 +1,6 @@
 const expect                              = require('chai').expect;
 const { pull: remove, chain, values }     = require('lodash');
+const TestRun                             = require('../../lib/test-run');
 const TEST_RUN_PHASE                      = require('../../lib/test-run/phase');
 const { TEST_RUN_ERRORS, RUNTIME_ERRORS } = require('../../lib/errors/types');
 const TestRunErrorFormattableAdapter      = require('../../lib/errors/test-run/formattable-adapter');
@@ -76,7 +77,10 @@ const {
     ChildWindowNotFoundError,
     CannotSwitchToWindowError,
     CloseChildWindowError,
-    ChildWindowClosedBeforeSwitchingError
+    ChildWindowClosedBeforeSwitchingError,
+    WindowNotFoundError,
+    CannotCloseWindowWithChildrenError,
+    AllowMultipleWindowsOptionIsNotSpecifiedError
 } = require('../../lib/errors/test-run');
 
 const untestedErrorTypes = Object.keys(TEST_RUN_ERRORS).map(key => TEST_RUN_ERRORS[key]);
@@ -118,6 +122,34 @@ function assertErrorMessage (file, err) {
 
 describe('Error formatting', () => {
     describe('Errors', () => {
+        it('Base error formattable adapter properties', () => {
+            const testRunMock = TestRun.prototype;
+
+            Object.assign(testRunMock, {
+                session:           { id: 'test-run-id' },
+                browserConnection: { userAgent: 'chrome' },
+                errScreenshotPath: 'screenshot-path',
+                phase:             'test-run-phase',
+                callsite:          'callsite',
+                errs:              []
+            });
+
+            TestRun.prototype.addError.call(testRunMock, { callsite: 'callsite' });
+
+            const err = testRunMock.errs[0];
+
+            expect(err).instanceOf(TestRunErrorFormattableAdapter);
+
+            expect(err).eql({
+                userAgent:      'chrome',
+                screenshotPath: 'screenshot-path',
+                testRunId:      'test-run-id',
+                testRunPhase:   'test-run-phase',
+                callsite:       'callsite'
+            });
+        });
+
+
         it('Should format "actionIntegerOptionError" message', () => {
             assertErrorMessage('action-integer-option-error', new ActionIntegerOptionError('offsetX', '1.01'));
         });
@@ -264,7 +296,11 @@ describe('Error formatting', () => {
         });
 
         it('Should format "actionCannotFindFileToUploadError" message', () => {
-            assertErrorMessage('action-cannot-find-file-to-upload-error', new ActionCannotFindFileToUploadError(['/path/1', '/path/2']));
+            const filePaths        = ['/path/1', '/path/2'];
+            const scannedFilePaths = ['full-path-to/path/1', 'full-path-to/path/2'];
+            const err              = new ActionCannotFindFileToUploadError(filePaths, scannedFilePaths);
+
+            assertErrorMessage('action-cannot-find-file-to-upload-error', err);
         });
 
         it('Should format "actionUnsupportedDeviceTypeError" message', () => {
@@ -418,6 +454,18 @@ describe('Error formatting', () => {
 
         it('Should format "childWindowClosedBeforeSwitchingError"', () => {
             assertErrorMessage('child-window-closed-before-switching-error', new ChildWindowClosedBeforeSwitchingError());
+        });
+
+        it('Should format "cannotCloseWindowWithChildrenError"', () => {
+            assertErrorMessage('cannot-close-window-with-children-error', new CannotCloseWindowWithChildrenError());
+        });
+
+        it('Should format "windowNotFoundError"', () => {
+            assertErrorMessage('window-not-found-error', new WindowNotFoundError());
+        });
+
+        it('Should format "allowMultipleWindowsOptionIsNotSpecifiedError"', () => {
+            assertErrorMessage('allow-multiple-windows-option-is-not-specified-error', new AllowMultipleWindowsOptionIsNotSpecifiedError('openWindow'));
         });
     });
 

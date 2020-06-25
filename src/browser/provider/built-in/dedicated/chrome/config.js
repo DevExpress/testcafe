@@ -82,6 +82,7 @@ function getDeviceBasedOptions (deviceName, orientation) {
         orientation = mobile ? 'vertical' : 'horizontal';
 
     return {
+        deviceName:  deviceData.title,
         mobile:      mobile,
         orientation: orientation,
         touch:       deviceData.capabilities.indexOf('touch') >= 0,

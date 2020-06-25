@@ -24,14 +24,16 @@ class IdlePage {
         document.title = '[' + document.location.toString() + ']';
     }
 
-    _checkStatus () {
-        browser
-            .checkStatus(this.statusUrl, createXHR)
-            .then(({ command }) => {
-                if (command.cmd === COMMAND.idle)
-                    window.setTimeout(() => this._checkStatus(), CHECK_STATUS_DELAY);
-            })
-            .catch(() => this.statusIndicator.showDisconnection());
+    async _checkStatus () {
+        try {
+            const { command } = await browser.checkStatus(this.statusUrl, createXHR);
+
+            if (command.cmd === COMMAND.idle)
+                window.setTimeout(() => this._checkStatus(), CHECK_STATUS_DELAY);
+        }
+        catch (err) {
+            this.statusIndicator.showDisconnection();
+        }
     }
 }
 

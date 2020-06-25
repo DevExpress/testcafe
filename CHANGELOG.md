@@ -1,6 +1,71 @@
 # Changelog
 
+## v1.8.7 (2020-6-23)
+
+### Bug Fixes
+
+* TestCafe now shows the emulated device's name in the report when tests run in Chrome Emulation Mode ([#3290](https://github.com/DevExpress/testcafe/issues/3290))
+* Event simulation for Knockout.js inputs has been enhanced ([#4881](https://github.com/DevExpress/testcafe/issues/4881))
+* Fixed authentication issues for specific web apps ([testcafe-hammerhead/#2344](https://github.com/DevExpress/testcafe-hammerhead/issues/2344))
+* Enhanced interoperability for pages that use ES6 destructuring ([testcafe-hammerhead/#642](https://github.com/DevExpress/testcafe-hammerhead/issues/642))
+* Fixed `<title>` element handling in iframes ([testcafe-hammerhead/#2340](https://github.com/DevExpress/testcafe-hammerhead/issues/2340))
+* Enhanced compatibility with the `axe` accessibility testing library ([testcafe-hammerhead/#2350](https://github.com/DevExpress/testcafe-hammerhead/issues/2350))
+
+## v1.8.6 (2020-6-1)
+
+### Bug Fixes
+
+* Added TypeScript definitions for the `RequestMock.onRequestTo` and `RequestMock.respond` methods ([#5108](https://github.com/DevExpress/testcafe/issues/5108))
+* Added a TypeScript definition for the client script's `module` option ([#5071](https://github.com/DevExpress/testcafe/issues/5071))
+* TestCafe can now run `.jsx` and `.tsx` files with test code ([#4817](https://github.com/DevExpress/testcafe/issues/4817))
+* Firefox now uses the system certificate storage by default on Windows ([PR#5077](https://github.com/DevExpress/testcafe/pull/5077)) by [@rybesh](https://github.com/rybesh)
+* Fixed an error that occurred in PowerShell Strict Mode ([#4665](https://github.com/DevExpress/testcafe/issues/4665))
+* Fixed a bug that prevented tested pages from changing their title ([testcafe-hammerhead/#2328](https://github.com/DevExpress/testcafe-hammerhead/issues/2328))
+* Fixed an `Invalid Calling Object` error in IE11 ([testcafe-hammerhead/#2236](https://github.com/DevExpress/testcafe-hammerhead/issues/2236))
+* Fixed an error (`Cannot read property 'on' of undefined`) that occurred when testing iframes ([testcafe-hammerhead/#2326](https://github.com/DevExpress/testcafe-hammerhead/issues/2326))
+* Fixed a bug when `MutationObserver.prevSibling` and `MutationObserver.nextSibling` returned wrong values ([testcafe-hammerhead/#2321](https://github.com/DevExpress/testcafe-hammerhead/issues/2321))
+* Fixed a page render error that occurred when using ES6 `Proxy` ([testcafe-hammerhead/#2056](https://github.com/DevExpress/testcafe-hammerhead/issues/2056))
+* Fixed the `ERR_HTTP_HEADERS_SENT` error ([testcafe-hammerhead/#2317](https://github.com/DevExpress/testcafe-hammerhead/issues/2317))
+* Fixed a `QuotaExceedError` error occurred when the `LocalStorage` API was used ([testcafe-hammerhead/#1454](https://github.com/DevExpress/testcafe-hammerhead/issues/1454))
+
+## v1.8.5 (2020-5-19)
+
+### Bug Fixes
+
+* The Linux version in the Docker image was updated to support the latest browsers ([#5057](https://github.com/DevExpress/testcafe/issues/5057))
+* Fixed a regression in `selector.filterVisible` behavior ([#5002](https://github.com/DevExpress/testcafe/issues/5002))
+* Fixed a bug when `iframe` content did not load ([#3904](https://github.com/DevExpress/testcafe/issues/3904))
+* Enhanced a number of error messages ([#4841](https://github.com/DevExpress/testcafe/issues/4841), [#4860](https://github.com/DevExpress/testcafe/issues/4860), [testcafe-hammerhead/PR#2288](https://github.com/DevExpress/testcafe-hammerhead/pull/2288))
+* Fixed an exception that occurred when selecting text in `email` inputs ([#4893](https://github.com/DevExpress/testcafe/issues/4893))
+* Fixed a bug when the `www-authenticate` header was skipped ([testcafe-hammerhead/#2286](https://github.com/DevExpress/testcafe-hammerhead/issues/2286))
+* Fixed stack overflow caused by `WindowSync.syncBetweenWindows` ([testcafe-hammerhead/#2285](https://github.com/DevExpress/testcafe-hammerhead/issues/2285))
+* Fixed an issue with HTTP requests broken due to the `cache-control` header ([testcafe-hammerhead/#2226](https://github.com/DevExpress/testcafe-hammerhead/issues/2226))
+* Fixed an authentication issue related to cookies set by mistake ([testcafe-hammerhead/#2166](https://github.com/DevExpress/testcafe-hammerhead/issues/2166))
+
+## v1.8.4 (2020-4-7)
+
+### Bug Fixes
+
+* TestCafe no longer throws an error when you access the `visible` selector property for a non-existing element ([#2386](https://github.com/DevExpress/testcafe/issues/2386))
+* `t.pressKey` now works if the active element is inside the Shadow DOM ([#2432](https://github.com/DevExpress/testcafe/issues/2432))
+* An original Node.js error is displayed if a browser provider was unable to load ([#4522](https://github.com/DevExpress/testcafe/issues/4522))
+* Custom hooks that use `responseEventConfigureOpts` now trigger the `onResponse` handler for AJAX requests ([testcafe-hammerhead/#2190](https://github.com/DevExpress/testcafe-hammerhead/issues/2190))
+
+## v1.8.3 (2020-3-17)
+
+### Bug Fixes
+
+* Added TypeScript definitions for the `disablePageCaching` and `disablePageReload` methods ([PR #4751](https://github.com/DevExpress/testcafe/pull/4751) by [@jaypea](https://github.com/jaypea))
+* Fixed a bug where tests hung at random moments in Chrome ([#4530](https://github.com/DevExpress/testcafe/issues/4530))
+* Fixed a bug that led to crashes when TestCafe clicked an SVG element in IE11 ([#4709](https://github.com/DevExpress/testcafe/issues/4709))
+* Tests can now click buttons inside elements whose `disabled` property is set to `true` ([testcafe-hammerhead/#2234](https://github.com/DevExpress/testcafe-hammerhead/issues/2234))
+* TestCafe now emits the `change` event in Chrome when an input's `disabled` property is set to `true` ([testcafe-hammerhead/#2240](https://github.com/DevExpress/testcafe-hammerhead/issues/2240))
+* TestCafe Hammerhead now processed `await` keywords with a parenthesis in client scripts correctly ([testcafe-hammerhead/#2255](https://github.com/DevExpress/testcafe-hammerhead/issues/2255))
+* The `click` event action now crosses into the standard DOM from Web Component's shadow DOM ([testcafe-hammerhead/#2272](https://github.com/DevExpress/testcafe-hammerhead/issues/2272))
+
 ## v1.8.2 (2020-2-17)
+
+### Bug Fixes
 
 * Added new device names to the `t.resizeWindowToFitDevice` action ([#3767](https://github.com/DevExpress/testcafe/issues/3767))
 * You can now use several reporters with no output stream specified if only one reporter writes to `stdout` ([#3765](https://github.com/DevExpress/testcafe/issues/3765), [#4675](https://github.com/DevExpress/testcafe/issues/4675))
@@ -947,7 +1012,7 @@ createTestCafe('localhost', 1337, 1338)
             .run();
     })
     .then(() => {
-        testcafe.close();
+        return testcafe.close();
     });
 ```
 

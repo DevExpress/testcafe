@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<script>
+    var xhr = new XMLHttpRequest();
+
+    xhr.addEventListener('load', function () {
+        const div = document.createElement('div');
+
+        div.id          = 'result';
+        div.textContent = xhr.responseText;
+
+        document.body.appendChild(div);
+    });
+
+    xhr.open('post', '/xhr/0');
+    xhr.send();
+</script>
+</body>
+</html>

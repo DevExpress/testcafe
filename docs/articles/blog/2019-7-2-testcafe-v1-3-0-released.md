@@ -29,9 +29,9 @@ Define the `compilerOptions` property in `tsconfig.json` and specify the compile
 }
 ```
 
-Save this file to the directory from which you run tests (or use the [tsConfigPath](https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#tsconfigpath) setting in the main configuration file to specify a different location).
+Save this file to the directory from which you run tests (or use the [tsConfigPath](../documentation/reference/configuration-file.md#tsconfigpath) setting in the main configuration file to specify a different location).
 
-See [Customize Compiler Options](https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.html#customize-compiler-options) for more information.
+See [Customize Compiler Options](../documentation/guides/concepts/typescript-and-coffeescript.md#customize-compiler-options) for more information.
 
 ## Bug Fixes
 

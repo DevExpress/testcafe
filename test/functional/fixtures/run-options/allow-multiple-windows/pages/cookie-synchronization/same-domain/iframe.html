@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Iframe</title>
+</head>
+<body>
+<div id="cookie"></div>
+<script>
+    var cookieDiv  = document.querySelector('#cookie');
+    var intervalId = setInterval(function () {
+        if (!document.cookie)
+            return;
+
+        cookieDiv.textContent = document.cookie;
+        clearInterval(intervalId);
+    }, 50);
+</script>
+</body>
+</html>

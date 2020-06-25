@@ -69,6 +69,32 @@ Server.prototype._setupRoutes = function () {
         res.end(parsedUA.name);
     });
 
+    this.app.get('/i4855', (req, res) => {
+        res.send(`
+            <html>
+                <body>
+                    <script>
+                        var driver = window['%testCafeDriverInstance%'];
+
+                        function closeWindowAfter1Sec () {
+                            window.setTimeout(() =>{
+                                window.close();
+                            }, 1000);
+                        }
+
+                        driver._onExecuteSelectorCommand = function () {
+                            closeWindowAfter1Sec();
+                        };
+
+                        driver._onExecuteClientFunctionCommand = function() {
+                            closeWindowAfter1Sec();
+                        };
+                    </script>
+                </body>
+            </html>
+        `);
+    });
+
     this.app.get('*', function (req, res) {
         const reqPath      = req.params[0] || '';
         const resourcePath = path.join(server.basePath, reqPath);
@@ -107,6 +133,19 @@ Server.prototype._setupRoutes = function () {
     this.app.post('/set-token/', function (req, res) {
         res.setHeader('set-cookie', 'token=' + req.body.token);
         res.redirect(req.headers['referer']);
+    });
+
+    this.app.post('/set-token-and-close', (req, res) => {
+        res.setHeader('set-cookie', 'token=' + req.body.token);
+        res.send(`
+            <html>
+                <body>
+                    <script>
+                        window.close();
+                    </script>
+                </body>
+            </html>
+        `);
     });
 
     this.app.post('/file-upload', upload.any(), function (req, res) {

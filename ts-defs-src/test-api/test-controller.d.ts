@@ -267,7 +267,7 @@ interface TestController {
     /**
      * Fits the browser window into a particular device.
      *
-     * @param deviceName - The name of the device as listed at http://viewportsizes.com/.
+     * @param deviceName - The name of the device as listed at https://github.com/DevExpress/device-specs/blob/master/viewport-sizes.json.
      * @param options - Provide additional information about the device.
      */
     resizeWindowToFitDevice(deviceName: string, options?: ResizeToFitDeviceOptions): TestControllerPromise;

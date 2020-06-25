@@ -5,6 +5,7 @@ const { rmdirSync, statSync } = require('fs');
 const { join, dirname }       = require('path');
 const proxyquire              = require('proxyquire');
 const sinon                   = require('sinon');
+const Module                  = require('module');
 const browserProviderPool     = require('../../lib/browser/provider/pool');
 const parseProviderName       = require('../../lib/browser/provider/parse-provider-name');
 const BrowserConnection       = require('../../lib/browser/connection');
@@ -269,6 +270,26 @@ describe('Browser provider', function () {
             return browserProviderPool.getProvider('chrome').then(function (provider) {
                 expect(provider).to.be.not.null;
             });
+        });
+
+        it('Should emit loading errors', () => {
+            const originResolveFilename = Module._resolveFilename;
+
+            Module._resolveFilename = () => 'dummy-module-path.js';
+
+            return browserProviderPool
+                .getProvider('dummy')
+                .then(() => {
+                    Module._resolveFilename = originResolveFilename;
+
+                    throw new Error('The error should be thrown');
+                })
+                .catch(err => {
+                    Module._resolveFilename = originResolveFilename;
+
+                    expect(err.code).eql('ENOENT');
+                    expect(err.path).eql('dummy-module-path.js');
+                });
         });
     });
 

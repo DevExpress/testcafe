@@ -133,8 +133,10 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
 
     public _getRequireCompilers (): RequireCompilers {
         return {
-            '.ts': (code, filename) => this._compileCode(code, filename),
-            '.js': (code, filename) => ESNextTestFileCompiler.prototype._compileCode.call(this, code, filename)
+            '.ts':  (code, filename) => this._compileCode(code, filename),
+            '.tsx': (code, filename) => this._compileCode(code, filename),
+            '.js':  (code, filename) => ESNextTestFileCompiler.prototype._compileCode.call(this, code, filename),
+            '.jsx': (code, filename) => ESNextTestFileCompiler.prototype._compileCode.call(this, code, filename)
         };
     }
 
@@ -142,7 +144,7 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
         return true;
     }
 
-    public getSupportedExtension (): string {
-        return '.ts';
+    public getSupportedExtension (): string[] {
+        return ['.ts', '.tsx'];
     }
 }

@@ -1,6 +1,9 @@
 import indentString from 'indent-string';
 
-const CONCATENATED_VALUES_SEPARATOR = ', ';
+const DEFAULT_CONCATENATED_VALUES = {
+    SEPARATOR:  ', ',
+    QUOTE_CHAR: '"'
+};
 
 function rtrim (str) {
     return str.replace(/\s+$/, '');
@@ -80,10 +83,8 @@ export function getPluralSuffix (array) {
     return array.length > 1 ? 's' : '';
 }
 
-export function getConcatenatedValuesString (array, separator) {
-    separator = separator || CONCATENATED_VALUES_SEPARATOR;
-
-    return array.map(item => `"${item}"`).join(separator);
+export function getConcatenatedValuesString (array, separator = DEFAULT_CONCATENATED_VALUES.SEPARATOR, quoteChar = DEFAULT_CONCATENATED_VALUES.QUOTE_CHAR) {
+    return array.map(item => `${quoteChar}${item}${quoteChar}`).join(separator);
 }
 
 export function getToBeInPastTense (array) {

@@ -41,7 +41,7 @@ Now the test run report can identify which selector's method does not match any 
 
 Previously, TestCafe ignored uncaught errors and unhandled promise rejections that occurred on the server. Whenever an error or a promise rejection happened, test execution continued.
 
-Starting from v0.22.0, tests fail if a server error or promise rejection is unhandled. To return to the previous behavior, we have introduced the `skipUncaughtErrors` option. Use the [--skip-uncaught-errors](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-u---skip-uncaught-errors) flag in the command line or the [skipUncaughtErrors](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#run) option in the API.
+Starting from v0.22.0, tests fail if a server error or promise rejection is unhandled. To return to the previous behavior, we have introduced the `skipUncaughtErrors` option. Use the [--skip-uncaught-errors](../documentation/reference/command-line-interface.md#-u---skip-uncaught-errors) flag in the command line or the [skipUncaughtErrors](../documentation/reference/testcafe-api/runner/run.md) option in the API.
 
 ```sh
 testcafe chrome tests/fixture.js --skipUncaughtErrors
@@ -53,7 +53,7 @@ runner.run({skipUncaughtErrors:true})
 
 ### ⚙ Use Glob Patterns in `runner.src` ([#980](https://github.com/DevExpress/testcafe/issues/980))
 
-You can now use [glob patterns](https://github.com/isaacs/node-glob#glob-primer) in the [runner.src](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#src) method to specify a set of test files.
+You can now use [glob patterns](https://github.com/isaacs/node-glob#glob-primer) in the [runner.src](../documentation/reference/testcafe-api/runner/src.md) method to specify a set of test files.
 
 ```js
 runner.src(['/home/user/tests/**/*.js', '!/home/user/tests/foo.js']);

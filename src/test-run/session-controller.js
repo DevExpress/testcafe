@@ -14,12 +14,12 @@ export default class SessionController extends Session {
     }
 
     // Hammerhead payload
-    _getPayloadScript () {
-        return this.currentTestRun._getPayloadScript();
+    async getPayloadScript () {
+        return this.currentTestRun.getPayloadScript();
     }
 
-    _getIframePayloadScript () {
-        return this.currentTestRun._getIframePayloadScript();
+    async getIframePayloadScript () {
+        return this.currentTestRun.getIframePayloadScript();
     }
 
 

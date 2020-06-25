@@ -1,8 +1,7 @@
 // TODO: once we'll have client commons load it from there instead of node modules (currently it's leads to two copies of this packages on client)
 // TODO: Get rid of Pinkie after dropping IE11
-import Promise from 'pinkie';
 import COMMAND from '../../browser/connection/command';
-import STATUS from '../../browser/connection/status';
+import HeartbeatStatus from '../../browser/connection/heartbeat-status';
 import { UNSTABLE_NETWORK_MODE_HEADER } from '../../browser/connection/unstable-network-mode';
 import { HEARTBEAT_INTERVAL } from '../../utils/browser-connection-timeouts';
 
@@ -12,6 +11,8 @@ let heartbeatIntervalId      = null;
 
 const noop  = () => void 0;
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+const evaluate = eval; // eslint-disable-line no-eval
 
 const FETCH_PAGE_TO_CACHE_RETRY_DELAY = 300;
 const FETCH_PAGE_TO_CACHE_RETRY_COUNT = 5;
@@ -61,7 +62,7 @@ export function startHeartbeat (heartbeatUrl, createXHR) {
     function heartbeat () {
         sendXHR(heartbeatUrl, createXHR)
             .then(status => {
-                if (status.code === STATUS.closing && !isCurrentLocation(status.url)) {
+                if (status.code === HeartbeatStatus.closing && !isCurrentLocation(status.url)) {
                     stopInitScriptExecution();
                     document.location = status.url;
                 }
@@ -86,9 +87,7 @@ function executeInitScript (initScriptUrl, createXHR) {
             if (!res.code)
                 return null;
 
-            /* eslint-disable no-eval,  no-restricted-globals*/
-            return sendXHR(initScriptUrl, createXHR, { method: 'POST', data: JSON.stringify(eval(res.code)) });
-            /* eslint-enable no-eval, no-restricted-globals */
+            return sendXHR(initScriptUrl, createXHR, { method: 'POST', data: JSON.stringify(evaluate(res.code)) }); //eslint-disable-line no-restricted-globals
         })
         .then(() => {
             window.setTimeout(() => executeInitScript(initScriptUrl, createXHR), 1000);

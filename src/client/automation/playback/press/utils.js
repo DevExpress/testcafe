@@ -1,13 +1,14 @@
 import hammerhead from '../../deps/hammerhead';
-import { KEY_MAPS, domUtils } from '../../deps/testcafe-core';
+import { KEY_MAPS, domUtils, arrayUtils } from '../../deps/testcafe-core';
 import isLetter from '../../utils/is-letter';
-import { findDocument, isRadioButtonElement } from '../../../core/utils/dom';
-import * as arrayUtils from '../../../core/utils/array';
+
 
 const nativeMethods    = hammerhead.nativeMethods;
 const browserUtils     = hammerhead.utils.browser;
 const focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
 const Promise          = hammerhead.Promise;
+
+const { findDocument, isRadioButtonElement, getActiveElement } = domUtils;
 
 export function changeLetterCase (letter) {
     const isLowCase = letter === letter.toLowerCase();
@@ -62,11 +63,9 @@ export function getChar (key, shiftModified) {
 
 export function getDeepActiveElement (currentDocument) {
     const doc                 = currentDocument || document;
+    const activeElement       = getActiveElement(doc);
     let activeElementInIframe = null;
-    let activeElement         = nativeMethods.documentActiveElementGetter.call(doc);
 
-    if (!activeElement || !domUtils.isDomElement(activeElement))
-        activeElement = doc.body;
 
     if (activeElement && domUtils.isIframeElement(activeElement) &&
         nativeMethods.contentDocumentGetter.call(activeElement)) {

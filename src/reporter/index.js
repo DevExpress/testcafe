@@ -2,7 +2,6 @@ import { find, sortBy, union } from 'lodash';
 import { writable as isWritableStream } from 'is-stream';
 import ReporterPluginHost from './plugin-host';
 import formatCommand from './command/format-command';
-import TestCafeErrorList from '../errors/error-list';
 
 export default class Reporter {
     constructor (plugin, task, outStream, name) {
@@ -43,8 +42,10 @@ export default class Reporter {
         return {
             fixture:                    test.fixture,
             test:                       test,
+            testRunIds:                 [],
             screenshotPath:             null,
             screenshots:                [],
+            videos:                     [],
             quarantine:                 null,
             errs:                       [],
             warnings:                   [],
@@ -72,6 +73,7 @@ export default class Reporter {
             unstable:       reportItem.unstable,
             screenshotPath: reportItem.screenshotPath,
             screenshots:    reportItem.screenshots,
+            videos:         reportItem.videos,
             quarantine:     reportItem.quarantine,
             skipped:        reportItem.test.skip
         };
@@ -89,12 +91,12 @@ export default class Reporter {
             reportItem     = this.reportQueue.shift();
             currentFixture = reportItem.fixture;
 
-            await this.plugin.reportTestDone(reportItem.test.name, reportItem.testRunInfo, reportItem.test.meta);
-
             // NOTE: here we assume that tests are sorted by fixture.
             // Therefore, if the next report item has a different
             // fixture, we can report this fixture start.
             nextReportItem = this.reportQueue[0];
+
+            await this.plugin.reportTestDone(reportItem.test.name, reportItem.testRunInfo, reportItem.test.meta);
 
             if (nextReportItem && nextReportItem.fixture !== currentFixture)
                 await this.plugin.reportFixtureStart(nextReportItem.fixture.name, nextReportItem.fixture.path, nextReportItem.fixture.meta);
@@ -106,6 +108,9 @@ export default class Reporter {
             reportItem.screenshotPath = this.task.screenshots.getPathFor(testRun.test);
             reportItem.screenshots    = this.task.screenshots.getScreenshotsInfo(testRun.test);
         }
+
+        if (this.task.videos)
+            reportItem.videos = this.task.videos.getTestVideos(reportItem.test.id);
 
         if (testRun.quarantine) {
             reportItem.quarantine = testRun.quarantine.attempts.reduce((result, errors, index) => {
@@ -134,14 +139,14 @@ export default class Reporter {
         reportItem.pendingTestRunDonePromise.resolve();
     }
 
-    _prepareReportTestActionEventArgs ({ command, result, testRun, errors }) {
+    _prepareReportTestActionEventArgs ({ command, duration, result, testRun, err }) {
         const args = {};
 
-        if (errors) {
-            errors = errors instanceof TestCafeErrorList ? errors.items : [errors];
+        if (err)
+            args.err = err;
 
-            args.errors = errors;
-        }
+        if (typeof duration === 'number')
+            args.duration = duration;
 
         return Object.assign(args, {
             testRunId: testRun.id,
@@ -166,13 +171,18 @@ export default class Reporter {
             const startTime  = new Date();
             const userAgents = task.browserConnectionGroups.map(group => group[0].userAgent);
             const first      = this.reportQueue[0];
+            const taskProperties = {
+                configuration: task.opts
+            };
 
-            await this.plugin.reportTaskStart(startTime, userAgents, this.testCount);
+            await this.plugin.reportTaskStart(startTime, userAgents, this.testCount, task.testStructure, taskProperties);
             await this.plugin.reportFixtureStart(first.fixture.name, first.fixture.path, first.fixture.meta);
         });
 
         task.on('test-run-start', async testRun => {
             const reportItem = this._getReportItemForTestRun(testRun);
+
+            reportItem.testRunIds.push(testRun.id);
 
             if (!reportItem.startTime)
                 reportItem.startTime = new Date();
@@ -180,8 +190,11 @@ export default class Reporter {
             reportItem.pendingStarts--;
 
             if (!reportItem.pendingStarts) {
-                if (this.plugin.reportTestStart)
-                    await this.plugin.reportTestStart(reportItem.test.name, reportItem.test.meta);
+                if (this.plugin.reportTestStart) {
+                    const testStartInfo = { testRunIds: reportItem.testRunIds };
+
+                    await this.plugin.reportTestStart(reportItem.test.name, reportItem.test.meta, testStartInfo);
+                }
 
                 reportItem.pendingTestRunStartPromise.resolve();
             }
@@ -204,17 +217,17 @@ export default class Reporter {
             await reportItem.pendingTestRunDonePromise;
         });
 
-        task.on('test-action-start', async ({ apiActionName, command, testRun }) => {
+        task.on('test-action-start', async ({ apiActionName, ...args }) => {
             if (this.plugin.reportTestActionStart) {
-                const args = this._prepareReportTestActionEventArgs({ command, testRun });
+                args = this._prepareReportTestActionEventArgs(args);
 
                 await this.plugin.reportTestActionStart(apiActionName, args);
             }
         });
 
-        task.on('test-action-done', async ({ apiActionName, command, result, testRun, errors }) => {
+        task.on('test-action-done', async ({ apiActionName, ...args }) => {
             if (this.plugin.reportTestActionDone) {
-                const args = this._prepareReportTestActionEventArgs({ command, result, testRun, errors });
+                args = this._prepareReportTestActionEventArgs(args);
 
                 await this.plugin.reportTestActionDone(apiActionName, args);
             }

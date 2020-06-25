@@ -145,6 +145,10 @@ describe('[API] Selector', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'hasAttribute method', DEFAULT_RUN_OPTIONS);
     });
 
+    it('Should not fail on accessing "visible" property for a non-existing element (GH-2386)', () => {
+        return runTests('./testcafe-fixtures/selector-visible-test.js', null, DEFAULT_RUN_OPTIONS);
+    });
+
     describe('Errors', function () {
         it('Should handle errors in Selector code', function () {
             return runTests('./testcafe-fixtures/selector-error-test.js', 'Error in code', { shouldFail: true })

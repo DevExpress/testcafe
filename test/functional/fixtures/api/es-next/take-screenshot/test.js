@@ -1,9 +1,10 @@
-const path            = require('path');
-const fs              = require('fs');
-const chai            = require('chai');
-const { expect }      = chai;
-const config          = require('../../../../config.js');
-const assertionHelper = require('../../../../assertion-helper.js');
+const path               = require('path');
+const fs                 = require('fs');
+const chai               = require('chai');
+const { expect }         = chai;
+const config             = require('../../../../config.js');
+const assertionHelper    = require('../../../../assertion-helper.js');
+const { createReporter } = require('../../../../utils/reporter');
 
 chai.use(require('chai-string'));
 
@@ -24,27 +25,23 @@ const getReporter = function (scope) {
         screenshot.screenshotPath  = patchScreenshotPath(screenshot.screenshotPath);
         screenshot.thumbnailPath   = patchScreenshotPath(screenshot.thumbnailPath);
         screenshot.isPassedAttempt = quarantine[screenshot.quarantineAttempt].passed;
+        screenshot.testRunId       = scope.testRunIds.includes(screenshot.testRunId);
 
         userAgents[screenshot.userAgent] = true;
     }
 
-    return function () {
-        return {
-            reportTestDone: (name, testRunInfo) => {
-                testRunInfo.screenshots.forEach(screenshot => prepareScreenshot(screenshot, testRunInfo.quarantine));
+    return createReporter({
+        reportTestDone: (name, testRunInfo) => {
+            testRunInfo.screenshots.forEach(screenshot => prepareScreenshot(screenshot, testRunInfo.quarantine));
 
-                scope.screenshots = testRunInfo.screenshots;
-                scope.userAgents  = Object.keys(userAgents);
-                scope.unstable    = testRunInfo.unstable;
-            },
-            reportFixtureStart: () => {
-            },
-            reportTaskStart: () => {
-            },
-            reportTaskDone: () => {
-            }
-        };
-    };
+            scope.screenshots = testRunInfo.screenshots;
+            scope.userAgents  = Object.keys(userAgents);
+            scope.unstable    = testRunInfo.unstable;
+        },
+        reportTestStart: (name, meta, { testRunIds }) => {
+            scope.testRunIds = testRunIds;
+        }
+    });
 };
 
 describe('[API] t.takeScreenshot()', function () {
@@ -218,6 +215,7 @@ describe('[API] t.takeScreenshot()', function () {
                         }
 
                         return {
+                            testRunId:         true,
                             screenshotPath,
                             thumbnailPath,
                             takenOnFail,

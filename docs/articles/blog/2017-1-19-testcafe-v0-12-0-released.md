@@ -15,7 +15,7 @@ HTTP authentication support, a CI-friendly way to start and stop the tested app 
 
 TestCafe now supports testing webpages protected with HTTP Basic and NTLM authentication.
 
-Use the [httpAuth](https://devexpress.github.io/testcafe/documentation/test-api/authentication/http-authentication.html) function in fixture or test declaration to specify the credentials.
+Use the [httpAuth](../documentation/guides/advanced-guides/authentication.md#http-authentication) function in fixture or test declaration to specify the credentials.
 
 ```js
 fixture `My fixture`
@@ -74,7 +74,7 @@ The `t.takeScreenshot`, `t.resizeWindow`, `t.resizeWindowToFitDevice` and `t.max
 
 The state of webpage elements can now be extended with custom properties.
 
-We have added the [addCustomDOMProperties](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/extending-selectors.html#custom-properties)
+We have added the [addCustomDOMProperties](../documentation/reference/test-api/selector/addcustomdomproperties.md)
 method to the selector, so that you can add properties to the element state like in the following example.
 
 ```js
@@ -146,8 +146,8 @@ An individual test can now override the fixture's `page` setting and start on a 
 
 ### ⚙ Initialization and finalization methods for a test ([#1108](https://github.com/DevExpress/testcafe/issues/1108))
 
-We have added the [before](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up)
-and [after](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up) methods to the test declaration.
+We have added the [before](../documentation/reference/test-api/test/before.md)
+and [after](../documentation/reference/test-api/test/after.md) methods to the test declaration.
 Use them to provide code that will be executed before a test is started and after it is finished.
 
 ```js
@@ -246,7 +246,7 @@ await t.click('#element', { offsetX: -10, offsetY: -30 });
 ### ⚙ Client functions as an assertion's actual value ([#1009](https://github.com/DevExpress/testcafe/issues/1009))
 
 You can now pass client functions to assertion's `expect` method. In this instance, the
-[Smart Assertion Query Mechanism](https://devexpress.github.io/testcafe/documentation/test-api/assertions/#smart-assertion-query-mechanism)
+[Smart Assertion Query Mechanism](../documentation/guides/basic-guides/assert.md#smart-assertion-query-mechanism)
 will run this client function and use the return value as the assertion's actual value.
 
 ```js
@@ -284,7 +284,7 @@ Get it to ensure that ESLint does not fail on TestCafe test code.
 * Onclick event handler is now executed correctly during click automation in specific cases ([#1138](https://github.com/DevExpress/testcafe/issues/1138))
 * The `application/pdf` mime type is no longer recognized as a page ([testcafe-hammerhead#1014](https://github.com/DevExpress/testcafe-hammerhead/issues/1014))
 * Limited support for the `frameset` tag is implemented ([testcafe-hammerhead#1009](https://github.com/DevExpress/testcafe-hammerhead/issues/1009))
-* `Function.prototype.toString` is now proxied correctly when it is overriden in a user script ([testcafe-hammerhead#999](https://github.com/DevExpress/testcafe-hammerhead/issues/999))
+* `Function.prototype.toString` is now proxied correctly when it is overridden in a user script ([testcafe-hammerhead#999](https://github.com/DevExpress/testcafe-hammerhead/issues/999))
 * Script processing no longer hangs on chained assignments ([testcafe-hammerhead#866](https://github.com/DevExpress/testcafe-hammerhead/issues/866))
 * `formaction` attribute is now processed ([testcafe-hammerhead#988](https://github.com/DevExpress/testcafe-hammerhead/issues/988))
 * `document.styleSheets` is now overrided ([testcafe-hammerhead#1000](https://github.com/DevExpress/testcafe-hammerhead/issues/1000))

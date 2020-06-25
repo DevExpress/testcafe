@@ -3,12 +3,12 @@ const browserUtils  = hammerhead.utils.browser;
 const nativeMethods = hammerhead.nativeMethods;
 
 const testCafeCore      = window.getTestCafeModule('testCafeCore');
-const parseKeySequence  = testCafeCore.get('./utils/parse-key-sequence');
+const parseKeySequence  = testCafeCore.parseKeySequence;
 
 const testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 const TypeAutomation     = testCafeAutomation.Type;
 const PressAutomation    = testCafeAutomation.Press;
-const TypeOptions        = testCafeAutomation.get('../../test-run/commands/options').TypeOptions;
+const TypeOptions        = testCafeAutomation.TypeOptions;
 
 testCafeCore.preventRealEvents();
 
@@ -283,6 +283,47 @@ $(document).ready(function () {
                     $input[0].blur();
 
                     ok(!changed, 'check change event was not raised if keypress was prevented');
+                    start();
+                });
+        });
+
+        asyncTest('change event can be raised after prevented keypress if there are unsaved changes (GH-4881)', function () {
+            const $input = $('<input type="text" />').addClass(TEST_ELEMENT_CLASS).appendTo('body');
+
+            let changed = false;
+
+            $input.bind('change', function () {
+                changed = true;
+            });
+
+            $input.bind('keypress', function (e) {
+                if (e.key === '-') {
+                    e.target.value += String.fromCharCode(e.keyCode);
+                    return false;
+                }
+
+                return true;
+            });
+
+            const firstType = new TypeAutomation($input[0], 'test-', new TypeOptions({ offsetX: 5, offsetY: 5 }));
+
+            firstType
+                .run()
+                .then(function () {
+                    $input[0].blur();
+
+                    ok(changed, 'change event raised on prevented keypress with unsaved data check');
+
+                    changed = false;
+
+                    const secondType = new TypeAutomation($input[0], '---', new TypeOptions({ offsetX: 5, offsetY: 5 }));
+
+                    return secondType.run();
+                })
+                .then(function () {
+                    $input[0].blur();
+
+                    ok(!changed, 'change event not raised on prevented keypress with no unsaved data check');
                     start();
                 });
         });

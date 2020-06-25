@@ -4,8 +4,8 @@ const nativeMethods = hammerhead.nativeMethods;
 const testCafeCore = window.getTestCafeModule('testCafeCore');
 
 const testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
-const ClickOptions       = testCafeAutomation.get('../../test-run/commands/options').ClickOptions;
-const MouseOptions       = testCafeAutomation.get('../../test-run/commands/options').MouseOptions;
+const ClickOptions       = testCafeAutomation.ClickOptions;
+const MouseOptions       = testCafeAutomation.MouseOptions;
 const ClickAutomation    = testCafeAutomation.Click;
 const HoverAutomation    = testCafeAutomation.Hover;
 const getOffsetOptions   = testCafeAutomation.getOffsetOptions;

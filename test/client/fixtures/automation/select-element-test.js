@@ -4,12 +4,12 @@ const featureDetection = hammerhead.utils.featureDetection;
 const shadowUI         = hammerhead.shadowUI;
 
 const testCafeCore     = window.getTestCafeModule('testCafeCore');
-const parseKeySequence = testCafeCore.get('./utils/parse-key-sequence');
+const parseKeySequence = testCafeCore.parseKeySequence;
 
 testCafeCore.preventRealEvents();
 
 const testCafeAutomation         = window.getTestCafeModule('testCafeAutomation');
-const ClickOptions               = testCafeAutomation.get('../../test-run/commands/options').ClickOptions;
+const ClickOptions               = testCafeAutomation.ClickOptions;
 const PressAutomation            = testCafeAutomation.Press;
 const DblClickAutomation         = testCafeAutomation.DblClick;
 const ClickAutomation            = testCafeAutomation.Click;
@@ -17,7 +17,7 @@ const SelectChildClickAutomation = testCafeAutomation.SelectChildClick;
 const getOffsetOptions           = testCafeAutomation.getOffsetOptions;
 
 const testCafeUI    = window.getTestCafeModule('testCafeUI');
-const selectElement = testCafeUI.get('./select-element');
+const selectElement = testCafeUI.selectElement;
 
 $(document).ready(function () {
     //consts

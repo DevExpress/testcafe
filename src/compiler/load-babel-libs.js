@@ -15,6 +15,9 @@ function getOptsForPresetFallback () {
 
 // NOTE: lazy load heavy dependencies
 export default function loadBabelLibs () {
+    const presetReact = require('babel-preset-react');
+
+    presetReact.presets = []; // disables flow so it doesn't confict w/ presetFlow
     return {
         babel:                    require('babel-core'),
         presetStage2:             require('babel-preset-stage-2'),
@@ -23,6 +26,7 @@ export default function loadBabelLibs () {
         transformRuntime:         require('babel-plugin-transform-runtime'),
         transformForOfAsArray:    require('babel-plugin-transform-for-of-as-array').default,
         presetFallback:           require('babel-preset-env').default(null, getOptsForPresetFallback()),
-        presetEnv:                require('babel-preset-env').default(null, getOptsForPresetEnv())
+        presetEnv:                require('babel-preset-env').default(null, getOptsForPresetEnv()),
+        presetReact,
     };
 }

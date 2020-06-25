@@ -1,0 +1,35 @@
+[
+    {
+        "title": "Automated Software Testing with TestCafe",
+        "source": "Udemy",
+        "sourceHomePage": "https://www.udemy.com/",
+        "date": "2020-03-01",
+        "url": "https://www.udemy.com/course/automated-testing-with-testcafe/",
+        "author": "Kaniel Outis"
+    },
+    {
+        "title": "End-to-End Web Testing With TestCafe: Getting Started",
+        "source": "Pluralsight",
+        "sourceHomePage": "https://www.pluralsight.com/",
+        "date": "2019-06-13",
+        "url": "https://www.pluralsight.com/courses/testcafe-end-to-end-web-testing-getting-started",
+        "author": "Marques Woodson",
+        "profileUrl": "https://twitter.com/mwq27"
+    },
+    {
+        "title": "Build an End-to-End Software Testing Framework with TestCafe",
+        "source": "Coursinator",
+        "sourceHomePage": "https://coursinator.com/",
+        "url": "https://coursinator.com/course/build-an-end-to-end-software-testing-framework-with-testcafe",
+        "author": "Bogdan Vazzolla",
+        "profileUrl": "https://twitter.com/bogdanvazzolla"
+    },
+    {
+        "title": "TestCafe E2E Test para principiantes",
+        "source": "Testing en Chile",
+        "sourceHomePage": "https://www.testingenchile.cl",
+        "url": "https://www.testingenchile.cl/testcafe-e2e-test-para-princiantes/",
+        "lang": "Spanish",
+        "langCode": "es"
+    }
+]

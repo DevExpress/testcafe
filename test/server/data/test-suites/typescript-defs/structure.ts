@@ -24,6 +24,10 @@ fixture
     })
     .afterEach(async t => {
         await t.click('#smth');
+    })
+    .clientScripts({
+        content: 'abracadabra',
+        page:    'some/page'
     });
 
 test
@@ -51,4 +55,14 @@ test
         password: 'pass',
         domain: 'domain',
         workstation: 'workstation'
-    });
+    })
+    .clientScripts([
+        {
+            module: 'some-module',
+            page:   'some/page'
+        },
+        {
+            path: '/some/path',
+            page: 'some/page'
+        }
+    ]);

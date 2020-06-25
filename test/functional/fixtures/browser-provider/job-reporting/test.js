@@ -1,14 +1,14 @@
 const path                  = require('path');
-const expect                = require('chai').expect;
+const { expect }            = require('chai');
 const config                = require('../../../config');
 const chromeBrowserProvider = require('../../../../../lib/browser/provider/built-in/dedicated/chrome');
 const browserProviderPool   = require('../../../../../lib/browser/provider/pool');
 const BrowserConnection     = require('../../../../../lib/browser/connection');
-
+const { noop }              = require('lodash');
 
 if (config.useLocalBrowsers) {
     describe('Browser Provider - Job Results Reporting', function () {
-        const BROWSER_OPENING_DELAY = 3000;
+        const BROWSER_OPENING_DELAY = 4000;
 
         let mockProvider = null;
 
@@ -61,13 +61,8 @@ if (config.useLocalBrowsers) {
                 .createRunner()
                 .src(path.join(__dirname, file))
                 .reporter('json', {
-                    write: function () {
-
-                    },
-
-                    end: function () {
-
-                    }
+                    write: noop,
+                    end:   noop
                 })
                 .browsers(browsers)
                 .run();
@@ -78,16 +73,16 @@ if (config.useLocalBrowsers) {
 
             return browserProviderPool
                 .getProvider('chrome')
-                .then(function (provider) {
+                .then(provider => {
                     mockProvider = provider;
                 });
         });
 
-        after(function () {
+        after(() => {
             browserProviderPool.addProvider('chrome', chromeBrowserProvider);
         });
 
-        beforeEach(function () {
+        beforeEach(() => {
             mockProvider.plugin.state     = {};
             mockProvider.plugin.idNameMap = {};
         });
@@ -102,12 +97,12 @@ if (config.useLocalBrowsers) {
                 });
         });
 
-        it('Should report job error to the providers', function () {
+        it('Should report job error to the providers', () => {
             return run(['chrome:failed-1', 'chrome:id-2'], './testcafe-fixtures/long-test.js')
-                .then(function () {
+                .then(() => {
                     throw new Error('Promise rejection expected');
                 })
-                .catch(function (error) {
+                .catch(error => {
                     expect(error.message).eql('Connection error');
                     expect(mockProvider.plugin.state['failed-1'].result).eql(mockProvider.plugin.JOB_RESULT.errored);
                     expect(mockProvider.plugin.state['failed-1'].data.message).eql('Connection error');

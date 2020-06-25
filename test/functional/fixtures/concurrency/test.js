@@ -1,8 +1,8 @@
-const path    = require('path');
-const expect  = require('chai').expect;
-const isCI    = require('is-ci');
-const config  = require('../../config');
-
+const path               = require('path');
+const { expect }         = require('chai');
+const isCI               = require('is-ci');
+const config             = require('../../config');
+const { createReporter } = require('../../utils/reporter');
 
 if (config.useLocalBrowsers) {
     describe('Concurrency', function () {
@@ -65,25 +65,15 @@ if (config.useLocalBrowsers) {
             return promise;
         }
 
-        function customReporter () {
-            return {
-                reportTestDone: function (name) {
-                    this.write('Test ' + name + ' done').newline();
-                },
+        const customReporter = createReporter({
+            reportTestDone: function (name) {
+                this.write('Test ' + name + ' done').newline();
+            },
 
-                reportFixtureStart: function (name) {
-                    this.write('Fixture ' + name + ' started').newline();
-                },
-
-                reportTaskStart: function () {
-
-                },
-
-                reportTaskDone: function () {
-
-                }
-            };
-        }
+            reportFixtureStart: function (name) {
+                this.write('Fixture ' + name + ' started').newline();
+            }
+        });
 
         beforeEach(function () {
             global.timeline = [];

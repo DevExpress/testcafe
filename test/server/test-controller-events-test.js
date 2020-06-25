@@ -1,16 +1,19 @@
-const expect            = require('chai').expect;
-const AsyncEventEmitter = require('../../lib/utils/async-event-emitter');
-const TestRun           = require('../../lib/test-run');
-const TestController    = require('../../lib/api/test-controller');
-const Task              = require('../../lib/runner/task');
-const BrowserJob        = require('../../lib/runner/browser-job');
-const Reporter          = require('../../lib/reporter');
-const { Role }          = require('../../lib/api/exportable-lib');
+const expect                         = require('chai').expect;
+const AsyncEventEmitter              = require('../../lib/utils/async-event-emitter');
+const delay                          = require('../../lib/utils/delay');
+const TestRun                        = require('../../lib/test-run');
+const TestController                 = require('../../lib/api/test-controller');
+const Task                           = require('../../lib/runner/task');
+const BrowserJob                     = require('../../lib/runner/browser-job');
+const Reporter                       = require('../../lib/reporter');
+const { Role }                       = require('../../lib/api/exportable-lib');
+const TestRunErrorFormattableAdapter = require('../../lib/errors/test-run/formattable-adapter');
 
 class TestRunMock extends TestRun {
     constructor () {
         super({ id: 'test-id', name: 'test-name', fixture: { path: 'dummy', id: 'fixture-id', name: 'fixture-name' } }, {}, {}, {}, {});
 
+        this.allowMultipleWindows = true;
 
         this.browserConnection = {
             browserInfo: {
@@ -31,7 +34,7 @@ class TestRunMock extends TestRun {
     }
 
     executeCommand () {
-        return Promise.resolve();
+        return delay(10);
     }
 }
 
@@ -62,16 +65,31 @@ const options = {
     modifiers: {
         alt:   true,
         ctrl:  true,
-        meta:  true,
         shift: true
     },
     offsetX:            1,
     offsetY:            2,
     destinationOffsetX: 3,
-    destinationOffsetY: 4,
     speed:              1,
     replace:            true,
-    paste:              true,
+    paste:              true
+};
+
+const actionsWithoutOptions = {
+    click:                   ['#target'],
+    rightClick:              ['#target'],
+    doubleClick:             ['#target'],
+    hover:                   ['#target'],
+    drag:                    ['#target', 100, 200],
+    dragToElement:           ['#target', '#target'],
+    typeText:                ['#input', 'test'],
+    selectText:              ['#input', 1, 3],
+    selectTextAreaContent:   ['#textarea', 1, 2, 3, 4],
+    selectEditableContent:   ['#contenteditable', '#contenteditable'],
+    pressKey:                ['enter'],
+    takeScreenshot:          [{ path: 'screenshotPath', fullPage: true }],
+    takeElementScreenshot:   ['#target', 'screenshotPath'],
+    resizeWindowToFitDevice: ['Sony Xperia Z']
 };
 
 const actions = {
@@ -91,12 +109,16 @@ const actions = {
     setFilesToUpload:          ['#file', '../test.js'],
     clearUpload:               ['#file'],
     takeScreenshot:            [{ path: 'screenshotPath', fullPage: true }],
-    takeElementScreenshot:     ['#target', 'screenshotPath'],
+    takeElementScreenshot:     ['#target', 'screenshotPath', { includeMargins: true, crop: { top: -100 } }],
     resizeWindow:              [200, 200],
     resizeWindowToFitDevice:   ['Sony Xperia Z', { portraitOrientation: true }],
     maximizeWindow:            [],
     switchToIframe:            ['#iframe'],
     switchToMainWindow:        [],
+    openWindow:                ['http://example.com'],
+    switchToWindow:            [{ id: 'window-id' }],
+    closeWindow:               [{ id: 'window-id' }],
+    getCurrentWindow:          [],
     setNativeDialogHandler:    [() => true],
     getNativeDialogHistory:    [],
     getBrowserConsoleMessages: [],
@@ -174,16 +196,23 @@ describe('TestController action events', () => {
     });
 
     it('Error action', () => {
-        let actionResult = null;
+        let actionResult   = null;
+        let errorAdapter   = null;
+        let resultDuration = null;
 
         initializeReporter({
-            async reportTestActionDone (name, { command, errors }) {
-                actionResult = { name, command: command.type, err: errors[0].message };
+            async reportTestActionDone (name, { command, duration, err }) {
+                errorAdapter   = err;
+                resultDuration = duration;
+                actionResult   = { name, command: command.type, err: err.errMsg };
             }
         });
 
         testController.testRun.executeCommand = () => {
-            throw new Error('test error');
+            return delay(10)
+                .then(() => {
+                    throw new Error('test error');
+                });
         };
 
         return testController.click('#target')
@@ -191,8 +220,102 @@ describe('TestController action events', () => {
                 throw new Error();
             })
             .catch(err => {
+                expect(errorAdapter).instanceOf(TestRunErrorFormattableAdapter);
                 expect(err.message).eql('test error');
-                expect(actionResult).eql({ name: 'click', command: 'click', err: 'test error' });
+                expect(resultDuration).to.be.a('number').with.above(0);
+                expect(actionResult).eql({ name: 'click', command: 'click', err: 'Error: test error' });
             });
+    });
+
+    it('Duration', () => {
+        let resultDuration = null;
+
+        initializeReporter({
+            async reportTestActionDone (name, { duration }) {
+                resultDuration = duration;
+            }
+        });
+
+        testController.testRun.executeCommand = () => {
+            return delay(10);
+        };
+
+        return testController.click('#target')
+            .then(() => {
+                expect(resultDuration).to.be.a('number').with.above(0);
+            });
+    });
+
+    it('Default command options should not be passed to the `reportTestActionDone` method', async () => {
+        const log  = [];
+
+        initializeReporter({
+            async reportTestActionDone (name, { command }) {
+                log.push(name);
+
+                if (command.options)
+                    log.push(command.options);
+            }
+        }, task);
+
+        const actionsKeys = Object.keys(actionsWithoutOptions);
+
+        for (let i = 0; i < actionsKeys.length; i++)
+            await testController[actionsKeys[i]].apply(testController, actionsWithoutOptions[actionsKeys[i]]);
+
+        expect(log).eql(actionsKeys);
+    });
+
+    it('Show only modified action options', async () => {
+        const doneLog  = [];
+
+        initializeReporter({
+            async reportTestActionDone (name, { command }) {
+                const item = { name };
+
+                if (command.options)
+                    item.options = command.options;
+
+                doneLog.push(item);
+            }
+        }, task);
+
+        await testController.click('#target', { caretPos: 1, modifiers: { shift: true } });
+        await testController.click('#target', { modifiers: { ctrl: false } });
+
+        await testController.resizeWindowToFitDevice('iPhone 5', { portraitOrientation: true });
+        await testController.resizeWindowToFitDevice('iPhone 5', { portraitOrientation: false });
+
+        await testController.expect(true).eql(true, 'message', { timeout: 500 });
+        await testController.expect(true).eql(true);
+
+        const expectedLog = [
+            {
+                name:    'click',
+                options: {
+                    caretPos:  1,
+                    modifiers: {
+                        shift: true
+                    }
+                }
+            },
+            { name: 'click' },
+            {
+                name:    'resizeWindowToFitDevice',
+                options: {
+                    portraitOrientation: true
+                }
+            },
+            { name: 'resizeWindowToFitDevice' },
+            {
+                name:    'eql',
+                options: {
+                    timeout: 500
+                }
+            },
+            { name: 'eql' }
+        ];
+
+        expect(doneLog).eql(expectedLog);
     });
 });

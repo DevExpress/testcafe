@@ -11,6 +11,7 @@ import defineLazyProperty from '../../utils/define-lazy-property';
 import { addAPI, addCustomMethods } from './add-api';
 import createSnapshotMethods from './create-snapshot-methods';
 import prepareApiFnArgs from './prepare-api-args';
+import returnSinglePropMode from '../return-single-prop-mode';
 
 export default class SelectorBuilder extends ClientFunctionBuilder {
     constructor (fn, options, callsiteNames) {
@@ -68,10 +69,10 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
                     return function(){
                         var args           = __dependencies$.boundArgs || arguments;
                         var selectorFilter = window['%testCafeSelectorFilter%'];
-                        
+
                         var nodes = __f$.apply(this, args);
                         nodes     = selectorFilter.cast(nodes);
-                        
+
                         if (!nodes.length && !selectorFilter.error)
                             selectorFilter.error = __dependencies$.apiInfo.apiFnID;
 
@@ -116,6 +117,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
             filterHidden,
             counterMode,
             collectionMode,
+            getVisibleValueMode,
             index,
             customDOMProperties,
             customMethods,
@@ -129,7 +131,8 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
                 filterHidden,
                 counterMode,
                 collectionMode,
-                index: isNullOrUndefined(index) ? null : index
+                index: isNullOrUndefined(index) ? null : index,
+                getVisibleValueMode
             },
             apiInfo: {
                 apiFnChain,
@@ -196,7 +199,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
     _processResult (result, selectorArgs) {
         const snapshot = super._processResult(result, selectorArgs);
 
-        if (snapshot && !this.options.counterMode) {
+        if (snapshot && !returnSinglePropMode(this.options)) {
             this._addBoundArgsSelectorGetter(snapshot, selectorArgs);
             createSnapshotMethods(snapshot);
 

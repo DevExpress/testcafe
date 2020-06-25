@@ -74,7 +74,7 @@ test('test that involves two users', async t => {
 });
 ```
 
-To learn more, see [User Roles](https://devexpress.github.io/testcafe/documentation/test-api/authentication/user-roles.html).
+To learn more, see [User Roles](../documentation/guides/advanced-guides/authentication.md#user-roles).
 
 ### ⚙ BrowserStack support
 
@@ -124,7 +124,7 @@ TestCafe logs points in code where the debugger stopped.
 
 ### ⚙ Testing local webpages ([#1286](https://github.com/DevExpress/testcafe/issues/1286))
 
-You can now run tests against local webpages. To do this, specify a URL with the `file://` scheme or a relative path when calling the [page](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#specifying-the-start-webpage) function.
+You can now run tests against local webpages. To do this, specify a URL with the `file://` scheme or a relative path when calling the [page](../documentation/reference/test-api/fixture/page.md) function.
 
 ```js
 fixture `MyFixture`
@@ -136,7 +136,7 @@ fixture `MyFixture`
     .page `../my-project/index.html`;
 ```
 
-You can also navigate to local pages with the [t.navigateTo](https://devexpress.github.io/testcafe/documentation/test-api/actions/navigate.html) action.
+You can also navigate to local pages with the [t.navigateTo](../documentation/reference/test-api/testcontroller/navigateto.md) action.
 
 ```js
 fixture `My fixture`
@@ -151,7 +151,7 @@ test('Navigate to local pages', async t => {
 
 ### ⚙ Adding custom methods to the selector ([#1212](https://github.com/DevExpress/testcafe/issues/1212))
 
-You can now extend selectors with custom methods executed on the client. Use the [addCustomMethods](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/extending-selectors.html#custom-methods) method to provide custom methods.
+You can now extend selectors with custom methods executed on the client. Use the [addCustomMethods](../documentation/reference/test-api/selector/addcustommethods.md) method to provide custom methods.
 
 ```js
 const myTable = Selector('.my-table').addCustomMethods({
@@ -166,7 +166,7 @@ Use this feature to build selectors that reflect the specifics of your web app.
 
 ### ⚙ Removing the native dialog handler ([#243](https://github.com/DevExpress/testcafe/issues/243))
 
-We have added the capability to remove a [native dialog handler](https://devexpress.github.io/testcafe/documentation/test-api/handling-native-dialogs.html) by passing `null` to the `t.setNativeDialogHandler` method.
+We have added the capability to remove a [native dialog handler](../documentation/reference/test-api/testcontroller/setnativedialoghandler.md) by passing `null` to the `t.setNativeDialogHandler` method.
 
 ```js
 fixture `My fixture`

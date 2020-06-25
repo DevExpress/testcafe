@@ -1,24 +1,18 @@
 const path                = require('path');
-const expect              = require('chai').expect;
+const { expect }          = require('chai');
 const config              = require('../../../config');
 const browserProviderPool = require('../../../../../lib/browser/provider/pool');
 const BrowserConnection   = require('../../../../../lib/browser/connection');
+const { createReporter }  = require('../../../utils/reporter');
+
 
 let errors = null;
 
-function customReporter () {
-    return {
-        reportTestDone (name, testRunInfo) {
-            errors = testRunInfo.errs;
-        },
-        reportFixtureStart () {
-        },
-        reportTaskStart () {
-        },
-        reportTaskDone () {
-        }
-    };
-}
+const reporter = createReporter({
+    reportTestDone (name, testRunInfo) {
+        errors = testRunInfo.errs;
+    }
+});
 
 function createConnection (browser) {
     return browserProviderPool
@@ -43,7 +37,7 @@ function run (pathToTest, filter) {
                 .createRunner()
                 .src(src)
                 .filter(testName => testName === filter)
-                .reporter(customReporter)
+                .reporter(reporter)
                 .browsers(connection)
                 .run();
         });

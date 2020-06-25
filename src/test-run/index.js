@@ -25,7 +25,6 @@ import { UNSTABLE_NETWORK_MODE_HEADER } from '../browser/connection/unstable-net
 import WarningLog from '../notifications/warning-log';
 import WARNING_MESSAGE from '../notifications/warning-message';
 import { StateSnapshot, SPECIAL_ERROR_PAGE } from 'testcafe-hammerhead';
-import { NavigateToCommand } from './commands/actions';
 import * as INJECTABLES from '../assets/injectables';
 import { findProblematicScripts } from '../custom-client-scripts/utils';
 import getCustomClientScriptUrl from '../custom-client-scripts/get-url';
@@ -42,6 +41,7 @@ import {
 } from './commands/utils';
 
 import { TEST_RUN_ERRORS } from '../errors/types';
+import processTestFnError from '../errors/process-test-fn-error';
 
 const lazyRequire                 = require('import-lazy')(require);
 const SessionController           = lazyRequire('./session-controller');
@@ -52,6 +52,7 @@ const AssertionExecutor           = lazyRequire('../assertions/executor');
 const actionCommands              = lazyRequire('./commands/actions');
 const browserManipulationCommands = lazyRequire('./commands/browser-manipulation');
 const serviceCommands             = lazyRequire('./commands/service');
+const observationCommands         = lazyRequire('./commands/observation');
 
 const { executeJsExpression, executeAsyncJsExpression } = lazyRequire('./execute-js-expression');
 
@@ -226,7 +227,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     // Hammerhead payload
-    _getPayloadScript () {
+    async getPayloadScript () {
         this.fileDownloadingHandled               = false;
         this.resolveWaitForFileDownloadingPromise = null;
 
@@ -246,11 +247,12 @@ export default class TestRun extends AsyncEventEmitter {
             skipJsErrors:                 this.opts.skipJsErrors,
             retryTestPages:               this.opts.retryTestPages,
             speed:                        this.speed,
-            dialogHandler:                JSON.stringify(this.activeDialogHandler)
+            dialogHandler:                JSON.stringify(this.activeDialogHandler),
+            canUseDefaultWindowActions:   JSON.stringify(await this.browserConnection.canUseDefaultWindowActions())
         });
     }
 
-    _getIframePayloadScript () {
+    async getIframePayloadScript () {
         return Mustache.render(IFRAME_TEST_RUN_TEMPLATE, {
             testRunId:       JSON.stringify(this.session.id),
             selectorTimeout: this.opts.selectorTimeout,
@@ -294,15 +296,14 @@ export default class TestRun extends AsyncEventEmitter {
             await fn(this);
         }
         catch (err) {
-            let screenshotPath = null;
+            await this._makeScreenshotOnFail();
 
-            const { screenshots } = this.opts;
+            this.addError(err);
 
-            if (screenshots && screenshots.takeOnFails)
-                screenshotPath = await this.executeCommand(new browserManipulationCommands.TakeScreenshotOnFailCommand());
-
-            this.addError(err, screenshotPath);
             return false;
+        }
+        finally {
+            this.errScreenshotPath = null;
         }
 
         return !this._addPendingPageErrorIfAny();
@@ -378,19 +379,20 @@ export default class TestRun extends AsyncEventEmitter {
         return false;
     }
 
-    _createErrorAdapter (err, screenshotPath) {
+    _createErrorAdapter (err) {
         return new TestRunErrorFormattableAdapter(err, {
             userAgent:      this.browserConnection.userAgent,
-            screenshotPath: screenshotPath || '',
+            screenshotPath: this.errScreenshotPath || '',
+            testRunId:      this.id,
             testRunPhase:   this.phase
         });
     }
 
-    addError (err, screenshotPath) {
+    addError (err) {
         const errList = err instanceof TestCafeErrorList ? err.items : [err];
 
         errList.forEach(item => {
-            const adapter = this._createErrorAdapter(item, screenshotPath);
+            const adapter = this._createErrorAdapter(item);
 
             this.errs.push(adapter);
         });
@@ -491,13 +493,27 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     // Handle driver request
+    _shouldResolveCurrentDriverTask (driverStatus) {
+        const currentCommand = this.currentDriverTask.command;
+
+        const isExecutingObservationCommand = currentCommand instanceof observationCommands.ExecuteSelectorCommand ||
+            currentCommand instanceof observationCommands.ExecuteClientFunctionCommand;
+
+        const isDebugActive = currentCommand instanceof serviceCommands.SetBreakpointCommand;
+
+        const shouldExecuteCurrentCommand =
+            driverStatus.isFirstRequestAfterWindowSwitching && (isExecutingObservationCommand || isDebugActive);
+
+        return !shouldExecuteCurrentCommand;
+    }
+
     _fulfillCurrentDriverTask (driverStatus) {
         if (!this.currentDriverTask)
             return;
 
         if (driverStatus.executionError)
             this._rejectCurrentDriverTask(driverStatus.executionError);
-        else
+        else if (this._shouldResolveCurrentDriverTask(driverStatus))
             this._resolveCurrentDriverTask(driverStatus.result);
     }
 
@@ -616,11 +632,16 @@ export default class TestRun extends AsyncEventEmitter {
             await this._enqueueSetBreakpointCommand(callsite);
     }
 
-    async executeAction (actionName, command, callsite) {
-        let error  = null;
-        let result = null;
+    async executeAction (apiActionName, command, callsite) {
+        const actionArgs = { apiActionName, command };
 
-        await this.emitActionStart(actionName, command);
+        let errorAdapter = null;
+        let error        = null;
+        let result       = null;
+
+        await this.emitActionEvent('action-start', actionArgs);
+
+        const start = new Date();
 
         try {
             result = await this.executeCommand(command, callsite);
@@ -629,7 +650,26 @@ export default class TestRun extends AsyncEventEmitter {
             error = err;
         }
 
-        await this.emitActionDone(actionName, command, result, error);
+        const duration = new Date() - start;
+
+        if (error) {
+            // NOTE: check if error is TestCafeErrorList is specific for the `useRole` action
+            // if error is TestCafeErrorList we do not need to create an adapter,
+            // since error is already was processed in role initializer
+            if (!(error instanceof TestCafeErrorList)) {
+                await this._makeScreenshotOnFail();
+
+                errorAdapter = this._createErrorAdapter(processTestFnError(error));
+            }
+        }
+
+        Object.assign(actionArgs, {
+            result,
+            duration,
+            err: errorAdapter
+        });
+
+        await this.emitActionEvent('action-done', actionArgs);
 
         if (error)
             throw error;
@@ -709,6 +749,13 @@ export default class TestRun extends AsyncEventEmitter {
         return Promise.reject(err);
     }
 
+    async _makeScreenshotOnFail () {
+        const { screenshots } = this.opts;
+
+        if (!this.errScreenshotPath && screenshots && screenshots.takeOnFails)
+            this.errScreenshotPath = await this.executeCommand(new browserManipulationCommands.TakeScreenshotOnFailCommand());
+    }
+
     _decorateWithFlag (fn, flagName, value) {
         return async () => {
             this[flagName] = value;
@@ -771,7 +818,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     async navigateToUrl (url, forceReload, stateSnapshot) {
-        const navigateCommand = new NavigateToCommand({ url, forceReload, stateSnapshot });
+        const navigateCommand = new actionCommands.NavigateToCommand({ url, forceReload, stateSnapshot });
 
         await this.executeCommand(navigateCommand);
     }
@@ -815,7 +862,6 @@ export default class TestRun extends AsyncEventEmitter {
         await bookmark.restore(callsite, stateSnapshot);
     }
 
-    // Get current URL
     async getCurrentUrl () {
         const builder = new ClientFunctionBuilder(() => {
             /* eslint-disable no-undef */
@@ -839,14 +885,9 @@ export default class TestRun extends AsyncEventEmitter {
         delete testRunTracker.activeTestRuns[this.session.id];
     }
 
-    async emitActionStart (apiActionName, command) {
+    async emitActionEvent (eventName, args) {
         if (!this.preventEmitActionEvents)
-            await this.emit('action-start', { command, apiActionName });
-    }
-
-    async emitActionDone (apiActionName, command, result, errors) {
-        if (!this.preventEmitActionEvents)
-            await this.emit('action-done', { command, apiActionName, result, errors });
+            await this.emit(eventName, args);
     }
 }
 

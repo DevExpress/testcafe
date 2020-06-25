@@ -13,23 +13,23 @@ This release introduces the capability to inject custom scripts into tested page
 
 ### ⚙ Inject Scripts Into Tested Pages ([#1739](https://github.com/DevExpress/testcafe/issues/1739))
 
-TestCafe now allows you to [inject scripts](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html) into pages visited during the tests. Use this feature to add helper functions, mock browser API or import modules.
+TestCafe now allows you to [inject scripts](../documentation/guides/advanced-guides/inject-client-scripts.md) into pages visited during the tests. Use this feature to add helper functions, mock browser API or import modules.
 
 To add client scripts to all tests, specify them in the command line, API or configuration file. Use the following options:
 
-* the [--cs (--client-scripts)](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--cs-pathpath2---client-scripts-pathpath2) command line argument
+* the [--cs (--client-scripts)](../documentation/reference/command-line-interface.md#--cs-pathpath2---client-scripts-pathpath2) command line argument
 
     ```sh
     testcafe chrome test.js --client-scripts mockDate.js,assets/react-helpers.js
     ```
 
-* the [runner.clientScripts](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#clientscripts) API method
+* the [runner.clientScripts](../documentation/reference/testcafe-api/runner/clientscripts.md) API method
 
     ```js
     runner.clientScripts('mockDate.js', 'scripts/react-helpers.js');
     ```
 
-* the [clientScripts](https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#clientscripts) configuration file property
+* the [clientScripts](../documentation/reference/configuration-file.md#clientscripts) configuration file property
 
     ```json
     {
@@ -37,7 +37,7 @@ To add client scripts to all tests, specify them in the command line, API or con
     }
     ```
 
-If you need to add scripts to individual fixtures or tests, use the [fixture.clientScripts](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#inject-scripts-into-tested-pages) and [test.clientScripts](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#inject-scripts-into-tested-pages) methods in test code.
+If you need to add scripts to individual fixtures or tests, use the [fixture.clientScripts](../documentation/reference/test-api/fixture/clientscripts.md) and [test.clientScripts](../documentation/reference/test-api/test/clientscripts.md) methods in test code.
 
 ```js
 fixture `My fixture`
@@ -51,7 +51,7 @@ test
     .clientScripts('mockDate.js', 'scripts/react-helpers.js');
 ```
 
-TestCafe also allows you to [inject scripts into specific pages](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html#provide-scripts-for-specific-pages).
+TestCafe also allows you to [inject scripts into specific pages](../documentation/guides/advanced-guides/inject-client-scripts.md#provide-scripts-for-specific-pages).
 
 ```js
 fixture `My fixture`
@@ -65,14 +65,14 @@ This is helpful when you need to override the browser API on particular pages an
 
 You can specify the scripts to inject as follows:
 
-* pass the [path to a JavaScript file](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html#inject-a-javascript-file) to inject its content:
+* pass the [path to a JavaScript file](../documentation/guides/advanced-guides/inject-client-scripts.md#inject-a-javascript-file) to inject its content:
 
     ```js
     fixture `My fixture`
         .clientScripts({ path: 'assets/jquery.js' });
     ```
 
-* use the [module name](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html#inject-a-module) to inject a module:
+* use the [module name](../documentation/guides/advanced-guides/inject-client-scripts.md#inject-a-module) to inject a module:
 
     ```js
     fixture `My fixture`
@@ -81,14 +81,14 @@ You can specify the scripts to inject as follows:
 
     TestCafe searches for the module's entry point with Node.js mechanisms and injects its content. Note that the browser must be able to execute this module.
 
-* pass the [code](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html#inject-script-code) you need to inject:
+* pass the [code](../documentation/guides/advanced-guides/inject-client-scripts.md#inject-script-code) you need to inject:
 
     ```js
     fixture `My fixture`
         .clientScripts({ content: 'Geolocation.prototype.getCurrentPosition = () => new Positon(0, 0);' });
     ```
 
-For more information, see [Inject Scripts into Tested Pages](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html).
+For more information, see [Inject Scripts into Tested Pages](../documentation/guides/advanced-guides/inject-client-scripts.md).
 
 ## Bug Fixes
 

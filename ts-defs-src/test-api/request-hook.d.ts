@@ -151,16 +151,62 @@ interface RequestMock {
      * Specifies requests to intercept
      * @param filter - Specifies which requests should be mocked with a response that follows in the `respond` method.
      */
-    onRequestTo(filter: string | RegExp | object | ((req: any) => boolean)): RequestMock;
+    onRequestTo(filter: string | RegExp | object | ((req: RequestOptions) => boolean)): RequestMock;
     /**
      * Specifies the mocked response.
      * @param body - The mocked response body.
      * @param statusCode - The response status code.
      * @param headers - Custom headers added to the response in the property-value form.
      */
-    respond(body?: object | string | ((req: any, res: any) => any), statusCode?: number, headers?: object): RequestMock;
+    respond(body?: object | string | ((req: RequestOptions, res: ResponseMock) => any), statusCode?: number, headers?: object): RequestMock;
 }
 
 interface RequestMockFactory {
     (): RequestMock;
+}
+
+/**
+ * {@link https://devexpress.github.io/testcafe/documentation/reference/test-api/requestmock/respond.html#requestoptions See documentation}.
+ */
+interface RequestOptions {
+    /** The request headers in the property-value form. */
+    headers: Object;
+    /** The request body. */
+    body: Buffer;
+    /** The URL to which the request is sent. */
+    url: string;
+    /** The protocol to use. Default: http:. */
+    protocol: string;
+    /** The alias for the host. */
+    hostname: string;
+    /** The domain name or IP address of the server to issue the request to. Default: localhost. */
+    host: string;
+    /** The port of the remote server. Default: 80. */
+    port: number;
+    /**
+     * The request path. Should include query string if any. E.G. '/index.html?page=12'. An exception
+     * is thrown when the request path contains illegal characters. Currently, only spaces are
+     * rejected but that may change in the future. Default: '/'.
+     */
+    path: string;
+    /** The string specifying the HTTP request method. Default: 'GET'. */
+    method: string;
+    /**
+     * Credentials that were used for authentication in the current session using NTLM or Basic
+     * authentication. For HTTP Basic authentication, these are `username` and `password`. NTLM
+     * authentication additionally specifies `workstation` and `domain`.
+     * See {@link https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/authentication.html#http-authentication HTTP Authentication}.
+     */
+    credentials: object;
+    /**
+     * If a proxy is used, the property contains information about its `host`, `hostname`, `port`,
+     * `proxyAuth`, `authHeader` and `bypassRules`.
+     */
+    proxy: object;
+}
+
+interface ResponseMock {
+    headers: object;
+    statusCode: number;
+    setBody(value: string): void;
 }

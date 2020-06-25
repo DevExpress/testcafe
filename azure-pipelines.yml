@@ -16,6 +16,9 @@ trigger:
 
 pool: 'BrowserStack agents'
 
+variables:
+  RETRY_FAILED_TESTS: "true"
+
 steps:
 - bash: |
     if [[ $BUILD_SOURCEVERSIONMESSAGE =~ ^\[docs\] ]] || [[ ! -f "appveyor.yml" ]]; then
@@ -35,4 +38,4 @@ steps:
     npm test
   displayName: 'Run tests'
   condition: and(succeeded(), not(variables['isDocCommit']))
-  timeoutInMinutes: 50
+  timeoutInMinutes: 60

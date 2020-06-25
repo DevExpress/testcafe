@@ -1,7 +1,21 @@
+import { isEmpty } from 'lodash';
 import { ExecuteSelectorCommand, ExecuteClientFunctionCommand } from '../../test-run/commands/observation';
 import { NavigateToCommand, SetNativeDialogHandlerCommand, UseRoleCommand } from '../../test-run/commands/actions';
 import { createReplicator, SelectorNodeTransform } from '../../client-functions/replicator';
 import { Command, FormattedCommand, SelectorInfo } from './interfaces';
+import { Dictionary } from '../../configuration/interfaces';
+import diff from '../../utils/diff';
+
+import {
+    ActionOptions,
+    ResizeToFitDeviceOptions,
+    AssertionOptions
+} from '../../test-run/commands/options';
+
+
+function isCommandOptions (obj: object): boolean {
+    return obj instanceof ActionOptions || obj instanceof ResizeToFitDeviceOptions || obj instanceof AssertionOptions;
+}
 
 export class CommandFormatter {
     private _elements: HTMLElement[] = [];
@@ -49,8 +63,9 @@ export class CommandFormatter {
 
     private _prepareSelector (command: Command, propertyName: string): SelectorInfo {
         const selectorChain = command.apiFnChain as string[];
+        const expression    = selectorChain.join('');
 
-        const expression = selectorChain.join('');
+        const result: SelectorInfo = { expression };
 
         let element = null;
 
@@ -58,9 +73,12 @@ export class CommandFormatter {
             element = this._getElementByPropertyName(propertyName);
 
         if (element)
-            return { expression, element };
+            result.element = element;
 
-        return { expression };
+        if (command.timeout)
+            result.timeout = command.timeout;
+
+        return result;
     }
 
     private _prepareClientFunction (command: Command): object {
@@ -91,12 +109,18 @@ export class CommandFormatter {
         const sourceProperties = this._command._getAssignableProperties().map(prop => prop.name);
 
         sourceProperties.forEach((key: string) => {
-            const prop = this._command[key];
+            const property = this._command[key];
 
-            if (prop instanceof ExecuteSelectorCommand)
-                formattedCommand[key] = this._prepareSelector(prop, key);
+            if (property instanceof ExecuteSelectorCommand)
+                formattedCommand[key] = this._prepareSelector(property, key);
+            else if (isCommandOptions(property)) {
+                const modifiedOptions = CommandFormatter._getModifiedOptions(property);
+
+                if (!isEmpty(modifiedOptions))
+                    formattedCommand[key] = modifiedOptions;
+            }
             else
-                formattedCommand[key] = prop;
+                formattedCommand[key] = property;
         });
     }
 
@@ -107,5 +131,12 @@ export class CommandFormatter {
         const decoded = createReplicator(new SelectorNodeTransform()).decode(this._result);
 
         this._elements = Array.isArray(decoded) ? decoded : [decoded];
+    }
+
+    private static _getModifiedOptions (commandOptions: object): Dictionary<object> | null {
+        const constructor    = commandOptions.constructor as ObjectConstructor;
+        const defaultOptions = new constructor();
+
+        return diff(defaultOptions as Dictionary<object>, commandOptions as Dictionary<object>);
     }
 }

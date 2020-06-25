@@ -11,6 +11,7 @@ export default class TestRunErrorFormattableAdapter {
     constructor (err, metaInfo) {
         this.userAgent      = metaInfo.userAgent;
         this.screenshotPath = metaInfo.screenshotPath;
+        this.testRunId      = metaInfo.testRunId;
         this.testRunPhase   = metaInfo.testRunPhase;
 
         assignIn(this, err);

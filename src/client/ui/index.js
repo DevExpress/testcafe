@@ -7,7 +7,7 @@ import ProgressPanel from './progress-panel';
 import StatusBar from './status-bar';
 import IframeStatusBar from './status-bar/iframe-status-bar';
 import cursorUI from './cursor';
-import * as iframeCursorUI from './cursor/iframe-cursor';
+import iframeCursorUI from './cursor/iframe-cursor';
 import screenshotMark from './screenshot-mark';
 import uiRoot from './ui-root';
 
@@ -34,6 +34,9 @@ messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
     }
 });
 
+const exports = {};
+
+exports.uiRoot          = uiRoot;
 exports.cursorUI        = cursorUI;
 exports.iframeCursorUI  = iframeCursorUI;
 exports.selectElement   = selectElement;
@@ -41,8 +44,6 @@ exports.modalBackground = modalBackground;
 exports.ProgressPanel   = ProgressPanel;
 exports.StatusBar       = StatusBar;
 exports.IframeStatusBar = IframeStatusBar;
-
-exports.get = require;
 
 
 exports.hide = function (hideTopRoot) {

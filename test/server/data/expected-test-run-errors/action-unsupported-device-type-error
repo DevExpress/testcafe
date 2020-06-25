@@ -1,5 +1,6 @@
 The "device" argument specifies an unsupported "iPhone 555" device. For a
-list of supported devices, refer to "http://viewportsizes.com".
+list of supported devices, refer to
+"https://github.com/DevExpress/device-specs/blob/master/viewport-sizes.json".
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>

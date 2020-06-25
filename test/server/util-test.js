@@ -21,6 +21,8 @@ const prepareReporters                 = require('../../lib/utils/prepare-report
 const { replaceLeadingSpacesWithNbsp } = require('../../lib/errors/test-run/utils');
 const createTempProfile                = require('../../lib/browser/provider/built-in/dedicated/chrome/create-temp-profile');
 const parseUserAgent                   = require('../../lib/utils/parse-user-agent');
+const diff                             = require('../../lib/utils/diff');
+
 
 const {
     buildChromeArgs,
@@ -37,6 +39,29 @@ describe('Utils', () => {
 
     it('Escape user agent', () => {
         expect(escapeUserAgent('Chrome 67.0.3396 / Windows 8.1.0.0')).eql('Chrome_67.0.3396_Windows_8.1.0.0');
+    });
+
+    it('Diff', () => {
+        expect(diff(null, null)).eql({});
+        expect(diff(void 0, void 0)).eql({});
+        expect(diff(1, 2)).eql({});
+        expect(diff({ a: void 0 }, { b: void 0 })).eql({});
+        expect(diff({ a: null }, { b: null })).eql({});
+        expect(diff({ a: null }, { a: 1 })).eql({ a: 1 });
+        expect(diff({ a: 1 }, { a: 1 })).eql({});
+        expect(diff({ a: 1 }, { a: void 0 })).eql({ a: void 0 });
+        expect(diff({ a: 1 }, { a: null })).eql({ a: null });
+        expect(diff({ a: 1, b: 1 }, { a: 1, b: 1 })).eql({});
+        expect(diff({ a: 1, b: {} }, { a: 1, b: {} })).eql({});
+        expect(diff({ a: 1, b: { c: 3 } }, { a: 1, b: { c: 3 } })).eql({});
+        expect(diff({ a: 1, b: { c: { d: 4 } } }, { a: 1, b: { c: { d: 4 } } })).eql({});
+        expect(diff({ a: 0 }, { a: 1 })).eql({ a: 1 });
+        expect(diff({ a: 1 }, { a: 0 })).eql({ a: 0 });
+        expect(diff({ a: 1 }, { a: 2 })).eql({ a: 2 });
+        expect(diff({ a: 1, b: 1 }, { a: 1, b: 2 })).eql({ b: 2 });
+        expect(diff({ a: 1, b: { c: 3 } }, { a: 1, b: { c: 4 } })).eql({ b: { c: 4 } });
+        expect(diff({ a: 1, b: { c: 3 } }, { a: 2, b: { c: 4 } })).eql({ a: 2, b: { c: 4 } });
+        expect(diff({ a: 1, b: { c: { d: 4 } } }, { a: 1, b: { c: { d: 5 } } })).eql({ b: { c: { d: 5 } } });
     });
 
     it('Parse user agent', () => {

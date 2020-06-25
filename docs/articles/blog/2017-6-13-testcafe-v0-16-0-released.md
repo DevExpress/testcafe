@@ -27,7 +27,7 @@ import { Selector } from 'testcafe';
 
 and write your test.
 
-For details, see [TypeScript Support](https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.html)
+For details, see [TypeScript Support](../documentation/guides/concepts/typescript-and-coffeescript.md)
 
 ### ⚙ Support running in Chrome in headless mode and in device emulator ([#1417](https://github.com/DevExpress/testcafe/issues/1417))
 
@@ -39,13 +39,13 @@ Now TestCafe allows you to run your tests in Google Chrome in headless and devic
 testcafe "chrome:headless" tests/sample-fixture.js
 ```
 
-Device emulation mode allows you to check how your tests works on mobile devices via Chrome's built-in [device emulator](https://developers.google.com/web/tools/chrome-devtools/device-mode/). To run tests in device emulation mode, specify `emulation:` and [device parameters](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/using-chromium-device-emulation.html#emulator-parameters):
+Device emulation mode allows you to check how your tests works on mobile devices via Chrome's built-in [device emulator](https://developers.google.com/web/tools/chrome-devtools/device-mode/). To run tests in device emulation mode, specify `emulation:` and [device parameters](../documentation/guides/concepts/browsers.md#emulator-parameters):
 
 ```sh
 testcafe "chrome:emulation:device=iphone 6" tests/sample-fixture.js
 ```
 
-For details, see [Using Chrome-specific Features](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/using-chrome-device-emulation.html).
+For details, see [Using Chrome-specific Features](../documentation/guides/concepts/browsers.md#use-chromium-device-emulation).
 
 ### ⚙ Support HTML5 Drag and Drop ([#897](https://github.com/DevExpress/testcafe/issues/897))
 
@@ -53,7 +53,7 @@ Starting with this release, TestCafe supports HTML5 drag and drop, so you can te
 
 ### ⚙ Fixed URL for opening remote browsers ([#1476](https://github.com/DevExpress/testcafe/issues/1476))
 
-We have simplified the format of links that TestCafe generates when you [run tests on remote browsers](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/browser-support.html#browsers-on-remote-devices).
+We have simplified the format of links that TestCafe generates when you [run tests on remote browsers](../documentation/guides/concepts/browsers.md#browsers-on-remote-devices).
 
 Now, you have no need to type a unique link for each test run, all the links became constant. So, it is easier now to run tests on a remote device repeatedly: you can run them by navigating a link from your browser history.
 

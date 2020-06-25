@@ -3,12 +3,12 @@ const browserUtils     = hammerhead.utils.browser;
 const featureDetection = hammerhead.utils.featureDetection;
 
 const testCafeCore = window.getTestCafeModule('testCafeCore');
-const styleUtils   = testCafeCore.get('./utils/style');
+const styleUtils   = testCafeCore.styleUtils;
 
 const testCafeAutomation = window.getTestCafeModule('testCafeAutomation');
 const getOffsetOptions   = testCafeAutomation.getOffsetOptions;
 const ClickAutomation    = testCafeAutomation.Click;
-const ClickOptions       = testCafeAutomation.get('../../test-run/commands/options').ClickOptions;
+const ClickOptions       = testCafeAutomation.ClickOptions;
 
 testCafeCore.preventRealEvents();
 
@@ -753,6 +753,40 @@ $(document).ready(function () {
 
 
     module('regression');
+
+    asyncTest('GH-4709 - Fails to click on svg element', function () {
+        const div   = document.createElement('div');
+        let clicked = false;
+
+        div.innerHTML        = '<svg><circle cx=\'50\' cy=\'50\' r=\'40\' stroke=\'black\' stroke-width=\'3\' fill=\'red\'></circle></svg>';
+        div.className        = TEST_ELEMENT_CLASS;
+        div.style.paddingTop = '200px';
+
+        const svg = div.childNodes[0];
+
+        svg.style.width  = '80px';
+        svg.style.height = '80px';
+
+        document.body.appendChild(div);
+
+        svg.addEventListener('click', function () {
+            clicked = true;
+        });
+
+        const clickBody = new ClickAutomation(document.body, { offsetX: 1, offsetY: 1 });
+        const clickSvg  = new ClickAutomation(svg, { offsetX: 40, offsetY: 40 });
+
+        // NOTE: we need to move cursor to any element before the clicking on svg to reproduce the issue
+        clickBody
+            .run()
+            .then(function () {
+                return clickSvg.run();
+            })
+            .then(function () {
+                equal(clicked, true);
+                startNext();
+            });
+    });
 
     asyncTest('Q558721 - Test running hangs if element is hidden in non-scrollable container', function () {
         let clickRaised = false;

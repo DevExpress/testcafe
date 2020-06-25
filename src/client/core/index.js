@@ -30,6 +30,8 @@ import * as browser from '../browser';
 import selectorTextFilter from '../../client-functions/selectors/selector-text-filter';
 import selectorAttributeFilter from '../../client-functions/selectors/selector-attribute-filter';
 
+const exports = {};
+
 exports.RequestBarrier              = RequestBarrier;
 exports.pageUnloadBarrier           = pageUnloadBarrier;
 exports.preventRealEvents           = preventRealEvents;
@@ -59,8 +61,6 @@ exports.browser                = browser;
 
 exports.selectorTextFilter      = selectorTextFilter;
 exports.selectorAttributeFilter = selectorAttributeFilter;
-
-exports.get = require;
 
 const nativeMethods    = hammerhead.nativeMethods;
 const evalIframeScript = hammerhead.EVENTS.evalIframeScript;

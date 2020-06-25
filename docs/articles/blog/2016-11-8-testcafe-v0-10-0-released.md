@@ -64,7 +64,7 @@ if (await selector.hasClass('foo')) {
 }
 ```
 
-See [Snapshot API Shorthands](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/using-selectors.html#obtain-element-state).  
+See [Snapshot API Shorthands](../documentation/guides/basic-guides/select-page-elements.md#obtain-element-state).  
 
 ### Improved automatic wait mechanism
 

@@ -6,7 +6,6 @@ const mouseOptions = Object.assign({
     modifiers: {
         alt:   true,
         ctrl:  true,
-        meta:  true,
         shift: true,
     },
     offsetX:   1,
@@ -16,8 +15,7 @@ const mouseOptions = Object.assign({
 const clickOptions = Object.assign({ caretPos: 1 }, mouseOptions);
 
 const dragToElementOptions = Object.assign({
-    destinationOffsetX: 3,
-    destinationOffsetY: 4
+    destinationOffsetX: 3
 }, mouseOptions);
 
 const typeTextOptions = Object.assign({
@@ -347,7 +345,12 @@ module.exports = [
             selector: { expression:'Selector(\'#target\')' },
             path:     'screenshotPath',
             type:     'take-element-screenshot',
-            options:  new ElementScreenshotOptions()
+            options:  {
+                includeMargins: true,
+                crop: {
+                    top: -100
+                }
+            }
         },
         test:    {
             id:    'test-id',
@@ -440,6 +443,77 @@ module.exports = [
         name:    'switchToMainWindow',
         command: {
             type: 'switch-to-main-window'
+        },
+        test:    {
+            id:    'test-id',
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
+        },
+        browser: { alias: 'test-browser', headless: false }
+    },
+    {
+        testRunId: 'test-run-id',
+        name:    'openWindow',
+        command: {
+            type: 'open-window',
+            url:  'http://example.com'
+        },
+        test:    {
+            id:    'test-id',
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
+        },
+        browser: { alias: 'test-browser', headless: false }
+    },
+    {
+        testRunId: 'test-run-id',
+        name:    'switchToWindow',
+        command: {
+            type:     'switch-to-window',
+            windowId: 'window-id'
+        },
+        test:    {
+            id:    'test-id',
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
+        },
+        browser: { alias: 'test-browser', headless: false }
+    },
+    {
+        testRunId: 'test-run-id',
+        name:    'closeWindow',
+        command: {
+            type:     'close-window',
+            windowId: 'window-id'
+        },
+        test:    {
+            id:    'test-id',
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
+        },
+        browser: { alias: 'test-browser', headless: false }
+    },
+    {
+        testRunId: 'test-run-id',
+        name:    'getCurrentWindow',
+        command: {
+            type: 'get-current-window'
         },
         test:    {
             id:    'test-id',

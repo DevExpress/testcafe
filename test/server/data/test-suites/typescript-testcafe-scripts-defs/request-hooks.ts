@@ -30,7 +30,7 @@ const mock = RequestMock()
         return req.url === 'https://example.com';
     }).respond((req, res) => {
         if (req.url === 'https://example.com')
-            res.statusCode = '200';
+            res.statusCode = 200;
     });
 
 

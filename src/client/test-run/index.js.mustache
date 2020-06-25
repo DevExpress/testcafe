@@ -8,35 +8,37 @@
     if (!origin)
         origin = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '');
 
-    var testRunId                = {{{testRunId}}};
-    var browserId                = {{{browserId}}};
-    var selectorTimeout          = {{{selectorTimeout}}};
-    var pageLoadTimeout          = {{{pageLoadTimeout}}};
-    var childWindowReadyTimeout  = {{{childWindowReadyTimeout}}};
-    var retryTestPages           = {{{retryTestPages}}};
-    var speed                    = {{{speed}}};
-    var browserHeartbeatUrl      = origin + {{{browserHeartbeatRelativeUrl}}};
-    var browserStatusUrl         = origin + {{{browserStatusRelativeUrl}}};
-    var browserStatusDoneUrl     = origin + {{{browserStatusDoneRelativeUrl}}};
-    var browserActiveWindowIdUrl = origin + {{{browserActiveWindowIdUrl}}};
-    var skipJsErrors             = {{{skipJsErrors}}};
-    var dialogHandler            = {{{dialogHandler}}};
-    var userAgent                = {{{userAgent}}};
-    var fixtureName              = {{{fixtureName}}};
-    var testName                 = {{{testName}}};
+    var testRunId                  = {{{testRunId}}};
+    var browserId                  = {{{browserId}}};
+    var selectorTimeout            = {{{selectorTimeout}}};
+    var pageLoadTimeout            = {{{pageLoadTimeout}}};
+    var childWindowReadyTimeout    = {{{childWindowReadyTimeout}}};
+    var retryTestPages             = {{{retryTestPages}}};
+    var speed                      = {{{speed}}};
+    var browserHeartbeatUrl        = origin + {{{browserHeartbeatRelativeUrl}}};
+    var browserStatusUrl           = origin + {{{browserStatusRelativeUrl}}};
+    var browserStatusDoneUrl       = origin + {{{browserStatusDoneRelativeUrl}}};
+    var browserActiveWindowIdUrl   = origin + {{{browserActiveWindowIdUrl}}};
+    var skipJsErrors               = {{{skipJsErrors}}};
+    var dialogHandler              = {{{dialogHandler}}};
+    var userAgent                  = {{{userAgent}}};
+    var fixtureName                = {{{fixtureName}}};
+    var testName                   = {{{testName}}};
+    var canUseDefaultWindowActions = {{{canUseDefaultWindowActions}}};
 
     var ClientDriver = window['%testCafeDriver%'];
     var driver       = new ClientDriver(testRunId,
         { heartbeat: browserHeartbeatUrl, status: browserStatusUrl, statusDone: browserStatusDoneUrl, activeWindowId: browserActiveWindowIdUrl },
         { userAgent: userAgent, fixtureName: fixtureName, testName: testName },
         {
-            selectorTimeout:         selectorTimeout,
-            pageLoadTimeout:         pageLoadTimeout,
-            childWindowReadyTimeout: childWindowReadyTimeout,
-            skipJsErrors:            skipJsErrors,
-            dialogHandler:           dialogHandler,
-            retryTestPages:          retryTestPages,
-            speed:                   speed
+            selectorTimeout:            selectorTimeout,
+            pageLoadTimeout:            pageLoadTimeout,
+            childWindowReadyTimeout:    childWindowReadyTimeout,
+            skipJsErrors:               skipJsErrors,
+            dialogHandler:              dialogHandler,
+            retryTestPages:             retryTestPages,
+            speed:                      speed,
+            canUseDefaultWindowActions: canUseDefaultWindowActions
         }
     );
 

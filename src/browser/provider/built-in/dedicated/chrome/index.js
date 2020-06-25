@@ -7,7 +7,6 @@ import { start as startLocalChrome, stop as stopLocalChrome } from './local-chro
 import * as cdp from './cdp';
 import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../../utils/client-functions';
 
-
 const MIN_AVAILABLE_DIMENSION = 50;
 
 export default {
@@ -25,6 +24,21 @@ export default {
         return ChromeRunTimeInfo.create(hostName, configString, allowMultipleWindows);
     },
 
+    _setUserAgentMetaInfoForEmulatingDevice (browserId, config) {
+        const { emulation, deviceName } = config;
+        const isDeviceEmulation         = emulation && deviceName;
+
+        if (!isDeviceEmulation)
+            return;
+
+        const metaInfo = `Emulating ${deviceName}`;
+        const options  = {
+            appendToUserAgent: true
+        };
+
+        this.setUserAgentMetaInfo(browserId, metaInfo, options);
+    },
+
     async openBrowser (browserId, pageUrl, configString, allowMultipleWindows) {
         const parsedPageUrl = parseUrl(pageUrl);
         const runtimeInfo   = await this._createRunTimeInfo(parsedPageUrl.hostname, configString, allowMultipleWindows);
@@ -40,13 +54,19 @@ export default {
 
         await this.waitForConnectionReady(browserId);
 
-        runtimeInfo.viewportSize = await this.runInitScript(browserId, GET_WINDOW_DIMENSIONS_INFO_SCRIPT);
+        runtimeInfo.viewportSize   = await this.runInitScript(browserId, GET_WINDOW_DIMENSIONS_INFO_SCRIPT);
+        runtimeInfo.activeWindowId = null;
+
+        if (allowMultipleWindows)
+            runtimeInfo.activeWindowId = this.calculateWindowId();
 
         await cdp.createClient(runtimeInfo);
 
         this.openedBrowsers[browserId] = runtimeInfo;
 
         await this._ensureWindowIsExpanded(browserId, runtimeInfo.viewportSize);
+
+        this._setUserAgentMetaInfoForEmulatingDevice(browserId, runtimeInfo.config);
     },
 
     async closeBrowser (browserId) {

@@ -23,7 +23,7 @@ Enable the `fullPage` option in CLI, API or configuration file to capture the fu
 
 *Command line interface*
 
-Enable the [fullPage](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#fullpage) parameter of the [-s (--screenshots)](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-s---screenshots-optionvalueoption2value2) flag:
+Enable the [fullPage](../documentation/reference/command-line-interface.md#fullpage) parameter of the [-s (--screenshots)](../documentation/reference/command-line-interface.md#-s---screenshots-optionvalueoption2value2) flag:
 
 ```sh
 testcafe chrome test.js -s fullPage=true
@@ -31,7 +31,7 @@ testcafe chrome test.js -s fullPage=true
 
 *API*
 
-Pass the `fullPage` option to [runner.screenshots](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#screenshots):
+Pass the `fullPage` option to [runner.screenshots](../documentation/reference/testcafe-api/runner/screenshots.md):
 
 ```js
 runner.screenshots({
@@ -41,7 +41,7 @@ runner.screenshots({
 
 *Configuration file*
 
-Set the [screenshots.fullPage](https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#screenshotsfullpage) property:
+Set the [screenshots.fullPage](../documentation/reference/configuration-file.md#screenshotsfullpage) property:
 
 ```json
 {
@@ -53,7 +53,7 @@ Set the [screenshots.fullPage](https://devexpress.github.io/testcafe/documentati
 
 *Test code*
 
-Pass the `fullPage` option to the [t.takeScreenshot](https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-the-entire-page) action:
+Pass the `fullPage` option to the [t.takeScreenshot](../documentation/reference/test-api/testcontroller/takescreenshot.md) action:
 
 ```js
 t.takeScreenshot({
@@ -69,7 +69,7 @@ The command line interface and configuration file schema have been updated to pr
 
 *Command line interface*
 
-Screenshot options in CLI are now consolidated under the [-s (--screenshots)](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-s---screenshots-optionvalueoption2value2) flag in an `option=value` string:
+Screenshot options in CLI are now consolidated under the [-s (--screenshots)](../documentation/reference/command-line-interface.md#-s---screenshots-optionvalueoption2value2) flag in an `option=value` string:
 
 ```sh
 testcafe chrome test.js -s takeOnFails=true,pathPattern=${DATE}_${TIME}/${FILE_INDEX}.png
@@ -83,7 +83,7 @@ Old Usage                                      | New Usage
 
 *Configuration file*
 
-Configuration file properties that specify screenshot options are now combined in the [screenshots](https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#screenshots) object:
+Configuration file properties that specify screenshot options are now combined in the [screenshots](../documentation/reference/configuration-file.md#screenshots) object:
 
 ```json
 {
@@ -105,7 +105,7 @@ Old Property             | New Property
 
 TestCafe now saves the screenshots to `./screenshots` if the base directory is not specified.
 
-The [--screenshots](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-s---screenshots-optionvalueoption2value2) CLI flag, the [runner.screenshots](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#screenshots) method or the [screenshotPath](https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#screenshotpath) configuration option are not required to take screenshots. For instance, you can run TestCafe with no additional parameters and use the [t.takeScreenshot](https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-the-entire-page) action in test code:
+The [--screenshots](../documentation/reference/command-line-interface.md#-s---screenshots-optionvalueoption2value2) CLI flag, the [runner.screenshots](../documentation/reference/testcafe-api/runner/screenshots.md) method or the [screenshotPath](../documentation/reference/configuration-file.md#screenshotpath) configuration option are not required to take screenshots. For instance, you can run TestCafe with no additional parameters and use the [t.takeScreenshot](../documentation/reference/test-api/testcontroller/takescreenshot.md) action in test code:
 
 ```sh
 testcafe chrome test.js
@@ -122,7 +122,7 @@ test('Take a screenshot', async t => {
 });
 ```
 
-The `path` argument in [runner.screenshots](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#screenshots) is now optional.
+The `path` argument in [runner.screenshots](../documentation/reference/testcafe-api/runner/screenshots.md) is now optional.
 
 ```js
 runner.screenshots({
@@ -132,23 +132,23 @@ runner.screenshots({
 
 ### ⚙ New Option to Disable Screenshots
 
-We have added an option that allows you to disable taking screenshots. If this option is specified, TestCafe does not take screenshots when a test fails and when the [t.takeScreenshot](https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-the-entire-page) or [t.takeElementScreenshot](https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-a-page-element) action is executed.
+We have added an option that allows you to disable taking screenshots. If this option is specified, TestCafe does not take screenshots when a test fails and when the [t.takeScreenshot](../documentation/reference/test-api/testcontroller/takescreenshot.md) or [t.takeElementScreenshot](../documentation/reference/test-api/testcontroller/takeelementscreenshot.md) action is executed.
 
 You can disable screenshots with a command line, API or configuration file option:
 
-* the [--disable-screenshots](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--disable-screenshots) command line flag
+* the [--disable-screenshots](../documentation/reference/command-line-interface.md#--disable-screenshots) command line flag
 
     ```sh
     testcafe chrome my-tests --disable-screenshots
     ```
 
-* the `disableScreenshots` option in the [runner.run](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#run) method
+* the `disableScreenshots` option in the [runner.run](../documentation/reference/testcafe-api/runner/run.md) method
 
     ```js
     runner.run({ disableScreenshots: true });
     ```
 
-* the [disableScreenshots](https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#disablescreenshots) configuration file property
+* the [disableScreenshots](../documentation/reference/configuration-file.md#disablescreenshots) configuration file property
 
     ```json
     {

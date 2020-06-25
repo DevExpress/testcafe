@@ -11,7 +11,7 @@ import {
 const EXTERNAL_LINKS = {
     createNewIssue:      'https://github.com/DevExpress/testcafe/issues/new?template=bug-report.md',
     troubleshootNetwork: 'https://go.devexpress.com/TestCafe_FAQ_ARequestHasFailed.aspx',
-    viewportSizes:       'http://viewportsizes.com'
+    viewportSizes:       'https://github.com/DevExpress/device-specs/blob/master/viewport-sizes.json'
 };
 
 export default {
@@ -187,7 +187,12 @@ export default {
 
     [TEST_RUN_ERRORS.actionCannotFindFileToUploadError]: err => `
         Cannot find the following file(s) to upload:
-        ${err.filePaths.map(path => `  ${escapeHtml(path)}`).join('\n')}
+        ${err.filePaths.map(path => escapeHtml(path)).join('\n')}
+
+        The following locations were scanned for the missing upload files:
+        ${err.scannedFilePaths.map(path => escapeHtml(path)).join('\n')}
+
+        Ensure these files exist or change the working directory.
     `,
 
     [TEST_RUN_ERRORS.actionElementNotTextAreaError]: () => `
@@ -334,5 +339,17 @@ export default {
 
     [TEST_RUN_ERRORS.childWindowClosedBeforeSwitchingError]: () => `
         The child window was closed before TestCafe could switch to it.
-    `
+    `,
+
+    [TEST_RUN_ERRORS.cannotCloseWindowWithChildrenError]: () => `
+        Cannot close a window that has an open child window.
+    `,
+
+    [TEST_RUN_ERRORS.targetWindowNotFoundError]: () => `
+        Cannot find the window specified in the action parameters.
+    `,
+
+    [TEST_RUN_ERRORS.allowMultipleWindowsOptionIsNotSpecifiedError]: err => `
+        You should activate multi window mode (enable the "allow-multiple-windows" run option) to use the "${err.methodName}" method.
+    `,
 };
