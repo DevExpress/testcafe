@@ -8,8 +8,8 @@ import { GeneralError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
 
 class LiveModeRunner extends Runner {
-    constructor (proxy, browserConnectionGateway, options) {
-        super(proxy, browserConnectionGateway, options);
+    constructor (proxy, browserConnectionGateway, configuration) {
+        super(proxy, browserConnectionGateway, configuration);
 
         this.stopping              = false;
         this.runnerTaskPromise     = null;
@@ -26,8 +26,8 @@ class LiveModeRunner extends Runner {
             TestRunCtor: this.testRunController.TestRunCtor,
             assets:      []
         });
-        this.controller         = this._createController();
-        this.configurationCache = null;
+        this.controller                 = this._createController();
+        this.runnableConfigurationCache = null;
     }
 
     runTests (isFirstRun = false) {
@@ -38,7 +38,9 @@ class LiveModeRunner extends Runner {
                 return this._validateRunnableConfiguration(isFirstRun);
             })
             .then(() => {
-                this.testRunController.setExpectedTestCount(this.configurationCache.tests.filter(t => !t.skip).length);
+                const executedTestCount = this.runnableConfigurationCache.tests.filter(t => !t.skip).length;
+
+                this.testRunController.setExpectedTestCount(executedTestCount);
             })
             .then(() => {
                 this.runnerTaskPromise = super.run(this.opts);
@@ -65,14 +67,16 @@ class LiveModeRunner extends Runner {
     }
 
     _createRunnableConfiguration () {
-        if (this.configurationCache)
-            return Promise.resolve(this.configurationCache);
+        if (this.runnableConfigurationCache)
+            return Promise.resolve(this.runnableConfigurationCache);
+
+        this.configuration.prepare(this.opts);
 
         return super._createRunnableConfiguration()
-            .then(configuration => {
-                this.configurationCache = configuration;
+            .then(runnableConfiguration => {
+                this.runnableConfigurationCache = runnableConfiguration;
 
-                return configuration;
+                return runnableConfiguration;
             })
             .catch(err => {
                 this.rejectInfiniteWaiting(err);
@@ -84,7 +88,7 @@ class LiveModeRunner extends Runner {
     }
 
     run (options) {
-        this.configurationCache = null;
+        this.runnableConfigurationCache = null;
 
         if (this._running)
             throw new GeneralError(RUNTIME_ERRORS.cannotRunLiveModeRunnerMultipleTimes);
@@ -99,9 +103,7 @@ class LiveModeRunner extends Runner {
 
         this.opts = Object.assign({}, this.opts, options);
 
-        this._setBootstrapperOptions();
-
-        const fileListPromise = parseFileList(this.bootstrapper.sources, process.cwd());
+        const fileListPromise = parseFileList(this.configuration.getSrcOption(), process.cwd());
 
         fileListPromise
             .then(files => {
@@ -146,7 +148,7 @@ class LiveModeRunner extends Runner {
     }
 
     async _finishPreviousTestRuns () {
-        if (!this.configurationCache.tests) return;
+        if (!this.runnableConfigurationCache.tests) return;
 
         this.testRunController.run();
     }
@@ -161,7 +163,7 @@ class LiveModeRunner extends Runner {
 
         return this.bootstrapper._getTests()
             .then(tests => {
-                this.configurationCache.tests = tests;
+                this.runnableConfigurationCache.tests = tests;
 
                 return this.bootstrappingError ? Promise.reject(this.bootstrappingError) : Promise.resolve();
             });

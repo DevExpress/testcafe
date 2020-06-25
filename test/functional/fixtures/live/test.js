@@ -1,9 +1,10 @@
-const { noop }       = require('lodash');
-const createTestCafe = require('../../../../lib');
-const config         = require('../../config');
-const path           = require('path');
-const { expect }     = require('chai');
-const helper         = require('./test-helper');
+const { noop }           = require('lodash');
+const createTestCafe     = require('../../../../lib');
+const config             = require('../../config');
+const path               = require('path');
+const { expect }         = require('chai');
+const helper             = require('./test-helper');
+const { createReporter } = require('../../utils/reporter');
 
 const DEFAULT_BROWSERS = ['chrome', 'firefox'];
 let cafe               = null;
@@ -52,14 +53,7 @@ function createLiveModeRunner (tc, src, browsers = DEFAULT_BROWSERS) {
     return runner
         .src(path.join(__dirname, src))
         .browsers(browsers)
-        .reporter(() => {
-            return {
-                reportTaskStart:    noop,
-                reportTaskDone:     noop,
-                reportTestDone:     noop,
-                reportFixtureStart: noop
-            };
-        });
+        .reporter(createReporter());
 }
 
 if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
@@ -121,7 +115,7 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
                 });
         });
 
-        it('Client scripts', () => {
+        it.only('Client scripts', () => {
             return createTestCafe('127.0.0.1', 1335, 1336)
                 .then(tc => {
                     cafe = tc;
@@ -147,7 +141,6 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
                     return cafe.close();
                 });
         });
-
 
         it('Same runner stops and then runs again with other settings', function () {
             let finishTest = null;

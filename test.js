@@ -1,3 +1,21 @@
-fixture `Fixture`;
+import { ClientFunction } from 'testcafe';
 
-test('test', async t => {});
+fixture `Touch events`;
+
+const EVENT_HANDLERS = ['ontouchstart', 'ontouchend', 'ontouchmove', 'ontouchcancel'];
+
+const hasTouchEventHandlers = ClientFunction(() => {
+    setTimeout(() => {
+        var hasOnTouchStart = 'ontouchstart' in window;
+        debugger;
+    }, 2000);
+
+
+    //return EVENT_HANDLERS.every(handler => handler in window);
+}, {
+    dependencies: { EVENT_HANDLERS }
+});
+
+test('Check presence of touch event handlers', async t => {
+    await t.expect(hasTouchEventHandlers()).ok();
+});

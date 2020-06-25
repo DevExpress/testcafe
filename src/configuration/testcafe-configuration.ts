@@ -94,12 +94,14 @@ export default class TestCafeConfiguration extends Configuration {
         this.mergeOptions(options);
     }
 
-    public prepare (): void {
+    public prepare (options: object): void {
+        this.mergeOptions(options);
         this._prepareFlags();
         this._setDefaultValues();
+        this._notifyAboutOverriddenOptions();
     }
 
-    public notifyAboutOverriddenOptions (): void {
+    private _notifyAboutOverriddenOptions (): void {
         if (!this._overriddenOptions.length)
             return;
 

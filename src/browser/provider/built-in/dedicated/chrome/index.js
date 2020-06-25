@@ -59,9 +59,9 @@ export default {
         if (allowMultipleWindows)
             runtimeInfo.activeWindowId = this.calculateWindowId();
 
-        await cdp.createClient(runtimeInfo);
-
         this._setUserAgentMetaInfoForEmulatingDevice(browserId, runtimeInfo.config);
+
+        await cdp.createClient(runtimeInfo);
     },
 
     async resizeWindowAfterOpeningBrowser (browserId) {
@@ -71,6 +71,7 @@ export default {
 
         const { config, viewportSize } = runtimeInfo;
 
+        // emulation should be here??
         if (config.emulation)
             await cdp.resizeWindow({ width: config.width, height: config.height }, runtimeInfo);
 
