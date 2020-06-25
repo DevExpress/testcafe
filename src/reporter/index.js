@@ -219,7 +219,7 @@ export default class Reporter {
             }
             catch (e) {
                 global.console.log('error: ' + e);
-                global.console.log('reportItem: ' + JSON.stringify(reportItem));
+                global.console.log('Phase: ' + testRun.phase);
 
                 if (!testRun.controller)
                     global.console.log('controller is null');
