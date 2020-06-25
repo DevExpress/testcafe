@@ -111,18 +111,7 @@ export const stringify = (value) => {
             ).replace(/,(\n|$)/g, '$1');
         }
     
-        // IE7/IE8 has a bizarre String constructor; needs to be coerced
-        // into an array and back to obj.
-        if (typeHint === 'string' && typeof value === 'object') {
-            value = value.split('').reduce(function(acc, char, idx) {
-                acc[idx] = char;
-                return acc;
-            }, {});
-
-            typeHint = 'object';
-        } else {
-            return JSON.stringify(value, null, indent);
-        }
+        return JSON.stringify(value, null, indent);
     }
     
     for (var prop in value) {
