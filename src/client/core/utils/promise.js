@@ -1,31 +1,14 @@
-import hammerhead from '../deps/hammerhead';
-import { reduce } from './array';
-
-const Promise = hammerhead.Promise;
-
-
-export function whilst (condition, iterator) {
-    return new Promise((resolve, reject) => {
-        function iterate () {
-            if (condition())
-                return iterator().then(iterate).catch(err => reject(err));
-
-            return resolve();
-        }
-
-        return iterate();
-    });
+export async function whilst (condition, iterator) {
+    while (condition())
+        await iterator();
 }
 
-export function times (n, iterator) {
-    let promise = Promise.resolve();
-
+export async function times (n, iterator) {
     for (let i = 0; i < n; i++)
-        promise = promise.then(() => iterator(i));
-
-    return promise;
+        await iterator(i);
 }
 
-export function each (items, iterator) {
-    return reduce(items, (promise, item) => promise.then(() => iterator(item)), Promise.resolve());
+export async function each (items, iterator) {
+    for (const item of items)
+        await iterator(item);
 }

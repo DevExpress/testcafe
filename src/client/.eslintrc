@@ -13,6 +13,9 @@
     "node": false,
     "es6": false
   },
+  "globals": {
+    "Promise": true
+  },
   "plugins": [
     "hammerhead"
   ]
