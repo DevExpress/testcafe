@@ -214,7 +214,9 @@ export default class Reporter {
             reportItem.errs        = reportItem.errs.concat(testRun.errs);
             reportItem.warnings    = testRun.warningLog ? union(reportItem.warnings, testRun.warningLog.messages) : [];
 
-            reportItem.browsers.push(assign({ testRunId: testRun.id }, testRun.controller.browser));
+            //reportItem.browsers.push(assign({ testRunId: testRun.id }, testRun.controller.browser));
+
+            console.log(`reportItem: ${JSON.stringify(reportItem)}`);
 
             if (!reportItem.pendingRuns)
                 await this._resolveReportItem(reportItem, testRun);
