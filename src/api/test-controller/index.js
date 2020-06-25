@@ -353,8 +353,7 @@ export default class TestController {
 
         if (isClientFunction(actual))
             this._addWarning(WARNING_MESSAGE.assertedClientFunctionInstance, callsite);
-
-        if (isSelector(actual))
+        else if (isSelector(actual))
             this._addWarning(WARNING_MESSAGE.assertedSelectorInstance, callsite);
 
         return new Assertion(actual, this, callsite);
