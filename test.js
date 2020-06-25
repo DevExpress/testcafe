@@ -5,17 +5,24 @@ fixture `Touch events`;
 const EVENT_HANDLERS = ['ontouchstart', 'ontouchend', 'ontouchmove', 'ontouchcancel'];
 
 const hasTouchEventHandlers = ClientFunction(() => {
-    setTimeout(() => {
-        var hasOnTouchStart = 'ontouchstart' in window;
-        debugger;
-    }, 2000);
+    var hasOnTouchStart = 'ontouchstart' in window;
 
-
+    return hasOnTouchStart;
     //return EVENT_HANDLERS.every(handler => handler in window);
 }, {
     dependencies: { EVENT_HANDLERS }
 });
 
+const getUserAgent = ClientFunction(() => {
+    return navigator.userAgent;
+});
+
 test('Check presence of touch event handlers', async t => {
-    await t.expect(hasTouchEventHandlers()).ok();
+    console.log(await getUserAgent());
+
+    await t
+        .expect(hasTouchEventHandlers()).ok()
+        .wait(5000);
+
+
 });

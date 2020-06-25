@@ -71,11 +71,11 @@ export default {
 
         const { config, viewportSize } = runtimeInfo;
 
-        // emulation should be here??
         if (config.emulation)
-            await cdp.resizeWindow({ width: config.width, height: config.height }, runtimeInfo);
+            await cdp.setEmulationAndResize(runtimeInfo);
 
-        await this._ensureWindowIsExpanded(browserId, viewportSize);
+        else
+            await this._ensureWindowIsExpanded(browserId, viewportSize);
     },
 
     async closeBrowser (browserId) {

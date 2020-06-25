@@ -74,6 +74,8 @@ async function setEmulation (runtimeInfo: RuntimeInfo): Promise<void> {
 
         if (client.Emulation.setTouchEmulationEnabled)
             await client.Emulation.setTouchEmulationEnabled(touchConfig);
+
+        await resizeWindow({ width: config.width, height: config.height }, runtimeInfo);
     }
 }
 
@@ -156,6 +158,21 @@ export async function createClient (runtimeInfo: RuntimeInfo): Promise<void> {
     await client.Network.enable({});
     await client.Runtime.enable();
 
+    /*const devicePixelRatioQueryResult = await client.Runtime.evaluate({ expression: 'window.devicePixelRatio' });
+
+    runtimeInfo.originalDevicePixelRatio = devicePixelRatioQueryResult.result.value;
+    runtimeInfo.emulatedDevicePixelRatio = config.scaleFactor || runtimeInfo.originalDevicePixelRatio;
+
+    if (config.emulation)
+        await setEmulation(runtimeInfo);*/
+
+    if (config.headless)
+        await enableDownloads(runtimeInfo);
+}
+
+export async function setEmulationAndResize (runtimeInfo: RuntimeInfo): Promise<void> {
+    const { client, config } = runtimeInfo;
+
     const devicePixelRatioQueryResult = await client.Runtime.evaluate({ expression: 'window.devicePixelRatio' });
 
     runtimeInfo.originalDevicePixelRatio = devicePixelRatioQueryResult.result.value;
@@ -163,9 +180,6 @@ export async function createClient (runtimeInfo: RuntimeInfo): Promise<void> {
 
     if (config.emulation)
         await setEmulation(runtimeInfo);
-
-    if (config.headless)
-        await enableDownloads(runtimeInfo);
 }
 
 export function isHeadlessTab ({ tab, config }: RuntimeInfo): boolean {
