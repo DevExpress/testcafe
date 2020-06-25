@@ -13,8 +13,8 @@ import { Dictionary } from '../configuration/interfaces';
 import { ActionEventArg } from './interfaces';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
 
-const QUARANTINE_THRESHOLD = 3;
-const DISCONNECT_THRESHOLD = 3;
+let QUARANTINE_THRESHOLD = 1;
+let DISCONNECT_THRESHOLD = 1;
 
 interface AttemptResult {
     failedTimes: number;
@@ -26,6 +26,10 @@ class Quarantine {
 
     public constructor () {
         this.attempts = [];
+        if (process.env.MAX_QUARANTINE_RETRIES) {
+            DISCONNECT_THRESHOLD = parseInt(process.env.MAX_QUARANTINE_RETRIES.toString(), 10);
+            QUARANTINE_THRESHOLD = parseInt(process.env.MAX_QUARANTINE_RETRIES.toString(), 10);
+        }
     }
 
     public getFailedAttempts (): TestRunErrorFormattableAdapter[][] {
