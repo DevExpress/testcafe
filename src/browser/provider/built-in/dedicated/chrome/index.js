@@ -9,9 +9,7 @@ import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../../utils/client-functio
 
 const MIN_AVAILABLE_DIMENSION = 50;
 
-export default {
-    ...dedicatedProviderBase,
-
+export default Object.assign(dedicatedProviderBase, {
     _getConfig (name) {
         return getConfig(name);
     },
@@ -47,10 +45,14 @@ export default {
         runtimeInfo.browserId   = browserId;
 
         runtimeInfo.providerMethods = {
-            resizeLocalBrowserWindow: (...args) => this.resizeLocalBrowserWindow(...args)
+            resizeLocalBrowserWindow: (...args) => this.resizeLocalBrowserWindow(...args),
+            emitConnectedEvent:       () => this.emit(this.CONNECTED_EVENT_NAME)
         };
 
+        this._setUserAgentMetaInfoForEmulatingDevice(browserId, runtimeInfo.config);
+
         await startLocalChrome(pageUrl, runtimeInfo);
+        await cdp.createClient1(runtimeInfo);
 
         this.openedBrowsers[browserId] = runtimeInfo;
 
@@ -59,9 +61,7 @@ export default {
         if (allowMultipleWindows)
             runtimeInfo.activeWindowId = this.calculateWindowId();
 
-        this._setUserAgentMetaInfoForEmulatingDevice(browserId, runtimeInfo.config);
-
-        await cdp.createClient(runtimeInfo);
+        //await cdp.createClient(runtimeInfo);
     },
 
     async resizeWindowAfterOpeningBrowser (browserId) {
@@ -134,4 +134,4 @@ export default {
             await this.resizeWindow(browserId, newWidth, newHeight, outerWidth, outerHeight);
         }
     }
-};
+});

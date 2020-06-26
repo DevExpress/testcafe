@@ -2,13 +2,18 @@ import { getBrowserInfo } from 'testcafe-browser-tools';
 import getMaximizedHeadlessWindowSize from '../../utils/get-maximized-headless-window-size';
 import { cropScreenshot } from '../../../../screenshots/crop';
 import { readPng, writePng } from '../../../../utils/promisified-functions';
+import { EventEmitter } from 'events';
 
-export default {
+export default Object.assign(new EventEmitter(), {
     openedBrowsers: {},
 
     isMultiBrowser: false,
 
     supportMultipleWindows: true,
+
+    connectedWithDebugProtocol: true,
+
+    CONNECTED_EVENT_NAME: 'connected',
 
     getActiveWindowId (browserId) {
         return this.openedBrowsers[browserId].activeWindowId;
@@ -76,4 +81,4 @@ export default {
 
         await this.resizeWindow(browserId, maximumSize.width, maximumSize.height, maximumSize.width, maximumSize.height);
     }
-};
+});

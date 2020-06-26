@@ -1,3 +1,4 @@
+import promisifyEvent from 'promisify-event';
 import { readSync as read } from 'read-file-relative';
 import { respond404, respond500, respondWithJSON, redirect, preventCaching } from '../../utils/http';
 import RemotesQueue from './remotes-queue';
@@ -98,9 +99,19 @@ export default class BrowserConnectionGateway {
             if (connection.permanent)
                 redirect(res, connection.idleUrl);
             else {
-                const testRunUrl = await connection.getTestRunUrl(true) || connection.idleUrl;
+                if (connection.provider.plugin.connectedWithDebugProtocol) {
+                    promisifyEvent(connection.provider.plugin, connection.provider.plugin.CONNECTED_EVENT_NAME)
+                        .then(async () => {
+                            const testRunUrl = await connection.getTestRunUrl(true) || connection.idleUrl;
 
-                redirect(res, testRunUrl);
+                            redirect(res, testRunUrl);
+                        });
+                }
+                else {
+                    const testRunUrl = await connection.getTestRunUrl(true) || connection.idleUrl;
+
+                    redirect(res, testRunUrl);
+                }
             }
         }
     }

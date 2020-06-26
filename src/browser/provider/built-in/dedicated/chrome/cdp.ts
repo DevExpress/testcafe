@@ -22,6 +22,7 @@ interface Config {
 
 interface ProviderMethods {
     resizeLocalBrowserWindow (browserId: string, newWidth: number, newHeight: number, currentWidth: number, currentHeight: number): Promise<void>;
+    emitConnectedEvent(): void;
 }
 
 interface RuntimeInfo {
@@ -54,6 +55,34 @@ async function setEmulationBounds ({ client, config, viewportSize, emulatedDevic
     await setDeviceMetricsOverride(client, viewportSize.width, viewportSize.height, emulatedDevicePixelRatio, config.mobile);
 
     await client.Emulation.setVisibleSize({ width: viewportSize.width, height: viewportSize.height });
+}
+
+async function setUserAgent (runtimeInfo: RuntimeInfo): Promise<void> {
+    const { client, config } = runtimeInfo;
+
+    if (config.userAgent !== void 0)
+        await client.Network.setUserAgentOverride({ userAgent: config.userAgent });
+}
+
+async function setTouchBehavior (runtimeInfo: RuntimeInfo): Promise<void> {
+    const { client, config } = runtimeInfo;
+
+    if (config.touch === void 0)
+        return;
+
+    const touchConfig: TouchConfigOptions = {
+        enabled:        config.touch,
+        configuration:  config.mobile ? 'mobile' : 'desktop',
+        maxTouchPoints: 1
+    };
+
+    if (client.Emulation.setEmitTouchEventsForMouse)
+        await client.Emulation.setEmitTouchEventsForMouse(touchConfig);
+
+    if (client.Emulation.setTouchEmulationEnabled)
+        await client.Emulation.setTouchEmulationEnabled(touchConfig);
+
+    //await resizeWindow({ width: config.width, height: config.height }, runtimeInfo);
 }
 
 async function setEmulation (runtimeInfo: RuntimeInfo): Promise<void> {
@@ -168,6 +197,53 @@ export async function createClient (runtimeInfo: RuntimeInfo): Promise<void> {
 
     if (config.headless)
         await enableDownloads(runtimeInfo);
+}
+
+export async function createClient1 (runtimeInfo: RuntimeInfo): Promise<void> {
+    const { browserId, cdpPort, config } = runtimeInfo;
+
+    let tab    = null;
+    let client = null;
+
+    try {
+        tab = await getActiveTab(cdpPort, browserId);
+
+        if (!tab)
+            return;
+
+        client = await remoteChrome({ target: tab, port: cdpPort });
+    }
+    catch (e) {
+        return;
+    }
+
+    runtimeInfo.tab    = tab;
+    runtimeInfo.client = client;
+
+    await client.Page.enable();
+    await client.Network.enable({});
+    await client.Runtime.enable();
+
+    await calculateEmulatedDevicePixelRatio(runtimeInfo);
+
+    if (config.emulation)
+        await setEmulation1(runtimeInfo);
+
+    runtimeInfo.providerMethods.emitConnectedEvent();
+}
+
+async function calculateEmulatedDevicePixelRatio (runtimeInfo: RuntimeInfo): Promise<void> {
+    const { client, config }          = runtimeInfo;
+    const devicePixelRatioQueryResult = await client.Runtime.evaluate({ expression: 'window.devicePixelRatio' });
+
+    runtimeInfo.originalDevicePixelRatio = devicePixelRatioQueryResult.result.value;
+    runtimeInfo.emulatedDevicePixelRatio = config.scaleFactor || runtimeInfo.originalDevicePixelRatio;
+}
+
+async function setEmulation1 (runtimeInfo: RuntimeInfo): Promise<void> {
+    await setUserAgent(runtimeInfo);
+    await setTouchBehavior(runtimeInfo);
+    await setEmulationBounds(runtimeInfo);
 }
 
 export async function setEmulationAndResize (runtimeInfo: RuntimeInfo): Promise<void> {

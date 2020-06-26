@@ -18,6 +18,8 @@ const getUserAgent = ClientFunction(() => {
 });
 
 test('Check presence of touch event handlers', async t => {
+    await ClientFunction(() => location.reload(true))();
+
     console.log(await getUserAgent());
 
     await t
