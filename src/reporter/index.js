@@ -2,6 +2,7 @@ import { find, sortBy, union } from 'lodash';
 import { writable as isWritableStream } from 'is-stream';
 import ReporterPluginHost from './plugin-host';
 import formatCommand from './command/format-command';
+import getBrowser from '../utils/get-browser';
 
 export default class Reporter {
     constructor (plugin, task, outStream, name) {
@@ -214,16 +215,7 @@ export default class Reporter {
             reportItem.errs        = reportItem.errs.concat(testRun.errs);
             reportItem.warnings    = testRun.warningLog ? union(reportItem.warnings, testRun.warningLog.messages) : [];
 
-            try {
-                reportItem.browsers.push(Object.assign({ testRunId: testRun.id }, testRun.controller.browser));
-            }
-            catch (e) {
-                global.console.log('error: ' + e);
-                global.console.log('Phase: ' + testRun.phase);
-
-                if (!testRun.controller)
-                    global.console.log('controller is null');
-            }
+            reportItem.browsers.push(getBrowser(testRun.browserConnection));
 
             if (!reportItem.pendingRuns)
                 await this._resolveReportItem(reportItem, testRun);

@@ -9,6 +9,7 @@ import { getDelegatedAPIList, delegateAPI } from '../../utils/delegated-api';
 import WARNING_MESSAGE from '../../notifications/warning-message';
 import renderCallsiteSync from '../../utils/render-callsite-sync';
 import createStackFilter from '../../errors/create-stack-filter';
+import getBrowser from '../../utils/get-browser';
 
 import {
     ClickCommand,
@@ -163,11 +164,7 @@ export default class TestController {
     }
 
     _browser$getter () {
-        return assign({}, this.testRun.browserConnection.browserInfo.parsedUserAgent,
-            {
-                alias:    this.testRun.browserConnection.browserInfo.alias,
-                headless: this.testRun.browserConnection.isHeadlessBrowser()
-            });
+        return getBrowser(this.testRun.browserConnection);
     }
 
     _click$ (selector, options) {
