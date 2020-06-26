@@ -188,8 +188,6 @@ export class ExternalAssertionLibraryError extends TestRunErrorBase {
     constructor (err, callsite) {
         super(TEST_RUN_ERRORS.externalAssertionLibraryError);
 
-        debugger;
-
         [ err.actual, err.expected ] = stringifyDiffObjects(err.actual, err.expected);
 
         this.errMsg   = err.message + '\n\n' + generateDiff(err.actual, err.expected);

@@ -69,14 +69,12 @@ export default class AssertionExecutor extends EventEmitter {
 
     async run () {
         this.startTime = new Date();
-        debugger;
 
         try {
             await this.fn();
         }
 
         catch (err) {
-            debugger;
             if (err.name === 'AssertionError' || err.constructor.name === 'AssertionError')
                 throw new ExternalAssertionLibraryError(err, this.callsite);
 
