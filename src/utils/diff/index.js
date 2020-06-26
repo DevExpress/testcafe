@@ -2,7 +2,7 @@ import { colorLines } from './diff-colors';
 import { isString, cleanUp, notBlank } from './diff-util';
 import { stringify } from './diff-stringify';
 
-const diff = require('diff');                                               //CHANGE LATER
+const diff = require('diff'); //CHANGE LATER
 
 
 function unifiedDiff (actual, expected) {
@@ -19,24 +19,25 @@ function unifiedDiff (actual, expected) {
             .filter(notBlank)
             .join('\n')
     );
-};
+}
 
 export function stringifyDiffObjects (actual, expected) {
-    if (!isString(actual) || !isString(expected)) {
+    if (!isString(actual) || !isString(expected))
         return [ stringify(actual), stringify(expected) ];
-    }
+
 
     return [ actual, expected ];
-};
+}
 
 export function generateDiff (actual, expected) {
     try {
         return unifiedDiff(actual, expected);
-    } catch (err) {
+    }
+    catch (err) {
         const msg =
             colorLines('diff removed', 'Failed to generate diff') +
             '\n';
 
         return msg;
     }
-};
+}

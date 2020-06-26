@@ -3,23 +3,23 @@ import { INDENT } from './diff-const';
 
 
 export function type (value) {
-    if (value === undefined) {
+    if (typeof value === 'undefined')
         return 'undefined';
-    }
 
-    if (value === null) {
+
+    if (value === null)
         return 'null';
-    }
-    
-    if (Buffer.isBuffer(value)) {
+
+
+    if (Buffer.isBuffer(value))
         return 'buffer';
-    }
+
 
     return Object.prototype.toString
         .call(value)
         .replace(/^\[.+\s(.+?)]$/, '$1')
         .toLowerCase();
-};
+}
 
 export function emptyRepresentation (value, typeHint) {
     switch (typeHint) {
@@ -38,32 +38,32 @@ export function emptyRepresentation (value, typeHint) {
         default:
             return value.toString();
     }
-};
+}
 
 export function isString (obj) {
     return typeof obj === 'string';
-};
+}
 
-export function notBlank(line) {
+export function notBlank (line) {
     return typeof line !== 'undefined' && line !== null;
-};
+}
 
-export function cleanUp(line) {
-    if (line[0] === '+') {
+export function cleanUp (line) {
+    if (line[0] === '+')
         return INDENT + colorLines('diff added', line);
-    }
 
-    if (line[0] === '-') {
+
+    if (line[0] === '-')
         return INDENT + colorLines('diff removed', line);
-    }
 
-    if (line.match(/@@/)) {
+
+    if (line.match(/@@/))
         return '--';
-    }
-    
-    if (line.match(/\\ No newline/)) {
+
+
+    if (line.match(/\\ No newline/))
         return null;
-    }
-    
+
+
     return INDENT + colorLines('diff filler', line);
-};
+}

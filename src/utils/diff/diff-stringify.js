@@ -4,12 +4,12 @@ import { INDENT } from './diff-const';
 
 function format (value, stack, typeHint) {
     typeHint = typeHint || type(value);
-    
+
     stack = stack || [];
-    
-    if (stack.indexOf(value) !== -1) {
+
+    if (stack.indexOf(value) !== -1)
         return '[Circular]';
-    }
+
 
     if (['buffer', 'null', 'undefined', 'date', 'number', 'regexp', 'boolean', 'symbol'].indexOf(typeHint) !== -1)
         return value;
@@ -18,7 +18,7 @@ function format (value, stack, typeHint) {
         let formattedObj;
 
         withStack(stack, value, () => {
-            formattedObj = value.map((item) => {
+            formattedObj = value.map(item => {
                 return format(item, stack);
             });
         });
@@ -27,35 +27,35 @@ function format (value, stack, typeHint) {
     }
 
     if (typeHint === 'object') {
-        let formattedObj = {};
+        const formattedObj = {};
 
         withStack(stack, value, () => {
             Object.keys(value)
-            .sort()
-            .forEach((key) => {
-                formattedObj[key] = format(value[key], stack);
-            });
+                .sort()
+                .forEach(key => {
+                    formattedObj[key] = format(value[key], stack);
+                });
         });
 
         return formattedObj;
     }
 
     return value + '';
-};
+}
 
-function withStack(stack, value, fn) {
+function withStack (stack, value, fn) {
     stack.push(value);
     fn();
     stack.pop();
 
     return stack;
-};
+}
 
 export function stringify (value) {
-    var typeHint = type(value);
-    
+    const typeHint = type(value);
+
     if (['object', 'array'].indexOf(typeHint) !== -1) {
-        for (var prop in value) {
+        for (const prop in value) {
             if (Object.prototype.hasOwnProperty.call(value, prop)) {
                 return JSON.stringify(
                     format(value, null, typeHint),
@@ -67,7 +67,7 @@ export function stringify (value) {
     }
 
     if (typeHint === 'buffer') {
-        var json = Buffer.prototype.toJSON.call(value);
+        const json = Buffer.prototype.toJSON.call(value);
 
         return JSON.stringify(
             json.data && json.type ? json.data : json,
@@ -76,9 +76,9 @@ export function stringify (value) {
         ).replace(/,(\n|$)/g, '$1');
     }
 
-    if (value) {
+    if (value)
         return JSON.stringify(value, null, INDENT) || value.toString();
-    }
-    
+
+
     return emptyRepresentation(value, typeHint);
-};
+}
