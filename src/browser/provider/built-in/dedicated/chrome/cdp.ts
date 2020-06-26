@@ -243,7 +243,10 @@ async function calculateEmulatedDevicePixelRatio (runtimeInfo: RuntimeInfo): Pro
 async function setEmulation1 (runtimeInfo: RuntimeInfo): Promise<void> {
     await setUserAgent(runtimeInfo);
     await setTouchBehavior(runtimeInfo);
-    await setEmulationBounds(runtimeInfo);
+    await resizeWindow({
+        width: runtimeInfo.config.width,
+        height: runtimeInfo.config.height
+    }, runtimeInfo);
 }
 
 export async function setEmulationAndResize (runtimeInfo: RuntimeInfo): Promise<void> {
@@ -281,10 +284,8 @@ export async function updateMobileViewportSize (runtimeInfo: RuntimeInfo): Promi
 export async function resizeWindow (newDimensions: Size, runtimeInfo: RuntimeInfo): Promise<void> {
     const { browserId, config, viewportSize, providerMethods } = runtimeInfo;
 
-    const currentWidth  = viewportSize.width;
-    const currentHeight = viewportSize.height;
-    const newWidth      = newDimensions.width || currentWidth;
-    const newHeight     = newDimensions.height || currentHeight;
+    const newWidth  = newDimensions.width;
+    const newHeight = newDimensions.height;
 
     if (!config.headless)
         await providerMethods.resizeLocalBrowserWindow(browserId, newWidth, newHeight, currentWidth, currentHeight);
