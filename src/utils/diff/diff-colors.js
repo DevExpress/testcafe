@@ -1,20 +1,21 @@
 const colors = {
-    'diff gutter': 90,
+    'diff filler': 90,
     'diff added': 32,
     'diff removed': 31
 };
 
-export const color = (type, str) => {
-    if (!colors) {                                                          //CHANGE LATER
-        return String(str);
+function color (name, str) {
+    if (colors[name]) {
+        return '\u001b[' + colors[name] + 'm' + str + '\u001b[0m';    
     }
-    return '\u001b[' + colors[type] + 'm' + str + '\u001b[0m';
+
+    return str;
 };
 
-export const colorLines = (name, str) => {
+export function colorLines (name, str) {
     return str
         .split('\n')
-        .map(function(str) {
+        .map((str) => {
             return color(name, str);
         })
         .join('\n');
