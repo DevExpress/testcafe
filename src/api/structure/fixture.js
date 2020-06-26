@@ -1,24 +1,19 @@
 import { flattenDeep as flatten } from 'lodash';
 import { SPECIAL_BLANK_PAGE } from 'testcafe-hammerhead';
-
 import TestingUnit from './testing-unit';
-import { FIXTURE as FIXTURE_TYPE } from './unit-types';
-
+import UnitType from './unit-type';
 import { assertType, is } from '../../errors/runtime/type-assertions';
 import handleTagArgs from '../../utils/handle-tag-args';
 import wrapTestFunction from '../wrap-test-function';
 import assertRequestHookType from '../request-hooks/assert-type';
 import assertClientScriptType from '../../custom-client-scripts/assert-type';
-
 import OPTION_NAMES from '../../configuration/option-names';
-
 import { APIError } from '../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../errors/types';
 
-
 export default class Fixture extends TestingUnit {
     constructor (testFile) {
-        super(testFile, FIXTURE_TYPE);
+        super(testFile, UnitType.fixture);
 
         this.path = testFile.filename;
 

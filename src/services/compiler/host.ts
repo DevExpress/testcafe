@@ -9,8 +9,7 @@ import TestCafeErrorList from '../../errors/error-list';
 
 import { CompilerProtocol, RunTestArguments, ExecuteCommandArguments, FunctionProperties } from './protocol';
 import { CompilerArguments } from '../../compiler/interfaces';
-import { Test } from '../../api/structure/interfaces';
-
+import Test from '../../api/structure/test';
 
 const SERVICE_PATH = require.resolve('./service');
 

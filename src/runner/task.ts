@@ -117,7 +117,7 @@ export default class Task extends AsyncEventEmitter {
                     tests: testsByGroup.map(test => {
                         return {
                             id:   test.id,
-                            name: test.name,
+                            name: test.name as string,
                             skip: test.skip
                         };
                     })

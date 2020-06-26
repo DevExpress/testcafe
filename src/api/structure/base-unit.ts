@@ -1,18 +1,14 @@
 import { generateUniqueId } from 'testcafe-hammerhead';
-import * as unitTypes from './unit-types';
-
-
-type UnitTypes = typeof unitTypes;
-type UnitType = UnitTypes[keyof UnitTypes];
+import UnitType from './unit-type';
 
 const ID_LENGTH = 7;
 
 export default class BaseUnit {
     public id: string;
-    public unitTypeName: UnitType;
+    public unitType: UnitType;
 
-    public constructor (unitTypeName: UnitType) {
-        this.id           = generateUniqueId(ID_LENGTH);
-        this.unitTypeName = unitTypeName;
+    public constructor (unitType: UnitType) {
+        this.id       = generateUniqueId(ID_LENGTH);
+        this.unitType = unitType;
     }
 }
