@@ -39,4 +39,4 @@ Feature                                                                         
 Feature                                                                                           | Status
 ------------------------------------------------------------------------------------------------- | -------------------
 [Custom TypeScript Compilation Options](https://github.com/DevExpress/testcafe/issues/1845)       | **Implemented**
-[Jenkins Plugin](https://github.com/DevExpress/testcafe/issues/4289)                              | **In Progress**
+[Jenkins Plugin](https://github.com/DevExpress/testcafe/issues/4289)                              | **Implemented**
