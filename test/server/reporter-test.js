@@ -10,8 +10,21 @@ describe('Reporter', () => {
     const screenshotDir = '/screenshots/1445437598847';
 
     const browserConnectionMocks = [
-        { userAgent: 'Chrome' },
-        { userAgent: 'Firefox' }
+        {
+            userAgent:   'Chrome',
+            browserInfo: {
+                alias:           'Chrome',
+                parsedUserAgent: { userAgent: 'Chrome' }
+            },
+            isHeadlessBrowser: () => false },
+        {
+            userAgent:   'Firefox',
+            browserInfo: {
+                alias:           'Firefox',
+                parsedUserAgent: { userAgent: 'Firefox' }
+            },
+            isHeadlessBrowser: () => false
+        }
     ];
 
     const fixtureMocks = [
@@ -153,21 +166,6 @@ describe('Reporter', () => {
         }
     ];
 
-    const controllerMocks = [
-        {
-            browser: {
-                alias:    'Chrome',
-                headless: false
-            }
-        },
-        {
-            browser: {
-                alias:    'Firefox',
-                headless: false
-            }
-        }
-    ];
-
     // Test run mocks
     const chromeTestRunMocks = [
         //fixture1test1
@@ -178,7 +176,6 @@ describe('Reporter', () => {
             browserConnection: browserConnectionMocks[0],
             errs:              [],
             warningLog:        { messages: [] },
-            controller:        controllerMocks[0],
             quarantine:        {
                 attempts: [['1', '2'], []]
             }
@@ -191,7 +188,6 @@ describe('Reporter', () => {
             unstable:          false,
             browserConnection: browserConnectionMocks[0],
             warningLog:        { messages: [] },
-            controller:        controllerMocks[0],
 
             errs: [
                 { text: 'err1' },
@@ -206,8 +202,7 @@ describe('Reporter', () => {
             unstable:          false,
             browserConnection: browserConnectionMocks[0],
             errs:              [],
-            warningLog:        { messages: [] },
-            controller:        controllerMocks[0]
+            warningLog:        { messages: [] }
         },
 
         //fixture2test1
@@ -217,8 +212,7 @@ describe('Reporter', () => {
             unstable:          false,
             browserConnection: browserConnectionMocks[0],
             errs:              [],
-            warningLog:        { messages: [] },
-            controller:        controllerMocks[0]
+            warningLog:        { messages: [] }
         },
 
         //fixture2test2
@@ -228,8 +222,7 @@ describe('Reporter', () => {
             unstable:          false,
             browserConnection: browserConnectionMocks[0],
             errs:              [],
-            warningLog:        { messages: [] },
-            controller:        controllerMocks[0]
+            warningLog:        { messages: [] }
         },
 
         //fixture3test1
@@ -239,8 +232,7 @@ describe('Reporter', () => {
             unstable:          false,
             browserConnection: browserConnectionMocks[0],
             errs:              [],
-            warningLog:        { messages: [] },
-            controller:        controllerMocks[0]
+            warningLog:        { messages: [] }
         },
 
         //fixture3test2
@@ -248,10 +240,9 @@ describe('Reporter', () => {
             id:                'f3t2',
             test:              testMocks[6],
             unstable:          true,
-            browserConnection: browserConnectionMocks[1],
+            browserConnection: browserConnectionMocks[0],
             errs:              [],
-            warningLog:        { messages: [] },
-            controller:        controllerMocks[0]
+            warningLog:        { messages: [] }
         },
 
         //fixture3test3
@@ -259,10 +250,9 @@ describe('Reporter', () => {
             id:                'f3t3',
             test:              testMocks[7],
             unstable:          true,
-            browserConnection: browserConnectionMocks[1],
+            browserConnection: browserConnectionMocks[0],
             errs:              [],
-            warningLog:        { messages: ['warning2'] },
-            controller:        controllerMocks[0]
+            warningLog:        { messages: ['warning2'] }
         }
     ];
 
@@ -275,7 +265,6 @@ describe('Reporter', () => {
             browserConnection: browserConnectionMocks[1],
             errs:              [],
             warningLog:        { messages: [] },
-            controller:        controllerMocks[1],
             quarantine:        {
                 attempts: [['1', '2'], []]
             }
@@ -288,8 +277,7 @@ describe('Reporter', () => {
             unstable:          false,
             browserConnection: browserConnectionMocks[1],
             errs:              [{ text: 'err1' }],
-            warningLog:        { messages: [] },
-            controller:        controllerMocks[1]
+            warningLog:        { messages: [] }
         },
 
         //fixture1test3
@@ -299,8 +287,7 @@ describe('Reporter', () => {
             unstable:          false,
             browserConnection: browserConnectionMocks[1],
             errs:              [],
-            warningLog:        { messages: [] },
-            controller:        controllerMocks[1]
+            warningLog:        { messages: [] }
         },
 
         //fixture2test1
@@ -310,8 +297,7 @@ describe('Reporter', () => {
             unstable:          false,
             browserConnection: browserConnectionMocks[1],
             errs:              [],
-            warningLog:        { messages: [] },
-            controller:        controllerMocks[1]
+            warningLog:        { messages: [] }
         },
 
         //fixture2test2
@@ -321,8 +307,7 @@ describe('Reporter', () => {
             unstable:          false,
             browserConnection: browserConnectionMocks[1],
             errs:              [],
-            warningLog:        { messages: [] },
-            controller:        controllerMocks[1]
+            warningLog:        { messages: [] }
         },
 
         //fixture3test1
@@ -332,8 +317,7 @@ describe('Reporter', () => {
             unstable:          true,
             browserConnection: browserConnectionMocks[1],
             errs:              [{ text: 'err1' }],
-            warningLog:        { messages: ['warning1'] },
-            controller:        controllerMocks[1]
+            warningLog:        { messages: ['warning1'] }
         },
 
         //fixture3test2
@@ -343,8 +327,7 @@ describe('Reporter', () => {
             unstable:          true,
             browserConnection: browserConnectionMocks[1],
             errs:              [],
-            warningLog:        { messages: [] },
-            controller:        controllerMocks[1]
+            warningLog:        { messages: [] }
         },
 
         //fixture3test3
@@ -354,8 +337,7 @@ describe('Reporter', () => {
             unstable:          true,
             browserConnection: browserConnectionMocks[1],
             errs:              [],
-            warningLog:        { messages: ['warning2', 'warning3'] },
-            controller:        controllerMocks[1]
+            warningLog:        { messages: ['warning2', 'warning3'] }
         }
     ];
 
@@ -682,11 +664,13 @@ describe('Reporter', () => {
                         browsers: [
                             {
                                 alias:     'Chrome',
+                                userAgent: 'Chrome',
                                 headless:  false,
                                 testRunId: 'f1t1'
                             },
                             {
                                 alias:     'Firefox',
+                                userAgent: 'Firefox',
                                 headless:  false,
                                 testRunId: 'f1t1ff'
                             }
@@ -763,11 +747,13 @@ describe('Reporter', () => {
                         browsers: [
                             {
                                 alias:     'Chrome',
+                                userAgent: 'Chrome',
                                 headless:  false,
                                 testRunId: 'f1t2'
                             },
                             {
                                 alias:     'Firefox',
+                                userAgent: 'Firefox',
                                 headless:  false,
                                 testRunId: 'f1t2ff'
                             }
@@ -816,11 +802,13 @@ describe('Reporter', () => {
                         browsers:       [
                             {
                                 alias:     'Chrome',
+                                userAgent: 'Chrome',
                                 headless:  false,
                                 testRunId: 'f1t3'
                             },
                             {
                                 alias:     'Firefox',
+                                userAgent: 'Firefox',
                                 headless:  false,
                                 testRunId: 'f1t3ff'
                             }
@@ -879,11 +867,13 @@ describe('Reporter', () => {
                         browsers:       [
                             {
                                 alias:     'Chrome',
+                                userAgent: 'Chrome',
                                 headless:  false,
                                 testRunId: 'f2t1'
                             },
                             {
                                 alias:     'Firefox',
+                                userAgent: 'Firefox',
                                 headless:  false,
                                 testRunId: 'f2t1ff'
                             }
@@ -932,11 +922,13 @@ describe('Reporter', () => {
                         browsers:       [
                             {
                                 alias:     'Chrome',
+                                userAgent: 'Chrome',
                                 headless:  false,
                                 testRunId: 'f2t2'
                             },
                             {
                                 alias:     'Firefox',
+                                userAgent: 'Firefox',
                                 headless:  false,
                                 testRunId: 'f2t2ff'
                             }
@@ -999,11 +991,13 @@ describe('Reporter', () => {
                         browsers:       [
                             {
                                 alias:     'Chrome',
+                                userAgent: 'Chrome',
                                 headless:  false,
                                 testRunId: 'f3t1'
                             },
                             {
                                 alias:     'Firefox',
+                                userAgent: 'Firefox',
                                 headless:  false,
                                 testRunId: 'f3t1ff'
                             }
@@ -1052,11 +1046,13 @@ describe('Reporter', () => {
                         browsers:       [
                             {
                                 alias:     'Chrome',
+                                userAgent: 'Chrome',
                                 headless:  false,
                                 testRunId: 'f3t2'
                             },
                             {
                                 alias:     'Firefox',
+                                userAgent: 'Firefox',
                                 headless:  false,
                                 testRunId: 'f3t2ff'
                             }
@@ -1105,11 +1101,13 @@ describe('Reporter', () => {
                         browsers:       [
                             {
                                 alias:     'Chrome',
+                                userAgent: 'Chrome',
                                 headless:  false,
                                 testRunId: 'f3t3'
                             },
                             {
                                 alias:     'Firefox',
+                                userAgent: 'Firefox',
                                 headless:  false,
                                 testRunId: 'f3t3ff'
                             }

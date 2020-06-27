@@ -215,7 +215,7 @@ export default class Reporter {
             reportItem.errs        = reportItem.errs.concat(testRun.errs);
             reportItem.warnings    = testRun.warningLog ? union(reportItem.warnings, testRun.warningLog.messages) : [];
 
-            reportItem.browsers.push(getBrowser(testRun.browserConnection));
+            reportItem.browsers.push(Object.assign({ testRunId: testRun.id }, getBrowser(testRun.browserConnection)));
 
             if (!reportItem.pendingRuns)
                 await this._resolveReportItem(reportItem, testRun);
