@@ -3,7 +3,7 @@
 // Do not use any browser or node-specific API!
 // -------------------------------------------------------------
 import { TEST_RUN_ERRORS } from '../types';
-import { generateDiff, stringifyDiffObjects } from '../../utils/diff/index';
+import * as diff from '../../utils/diff/index';
 
 // Base
 //--------------------------------------------------------------------
@@ -188,9 +188,9 @@ export class ExternalAssertionLibraryError extends TestRunErrorBase {
     constructor (err, callsite) {
         super(TEST_RUN_ERRORS.externalAssertionLibraryError);
 
-        [ err.actual, err.expected ] = stringifyDiffObjects(err.actual, err.expected);
+        [ err.actual, err.expected ] = [ diff.stringify(err.actual), diff.stringify(err.expected) ];
 
-        this.errMsg   = err.message + '\n\n' + generateDiff(err.actual, err.expected);
+        this.errMsg   = err.message + '\n\n' + diff.generateDiff(err.actual, err.expected);
         this.callsite = callsite;
     }
 }
