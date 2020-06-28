@@ -54,6 +54,7 @@
     "prepublishOnly": "publish-please guard"
   },
   "dependencies": {
+    "@types/diff": "^4.0.2",
     "@types/node": "^10.12.19",
     "async-exit-hook": "^1.1.2",
     "babel-core": "^6.22.1",
@@ -78,6 +79,7 @@
     "dedent": "^0.4.0",
     "del": "^3.0.0",
     "device-specs": "^1.0.0",
+    "diff": "^4.0.2",
     "elegant-spinner": "^1.0.1",
     "emittery": "^0.4.1",
     "endpoint-utils": "^1.0.2",
