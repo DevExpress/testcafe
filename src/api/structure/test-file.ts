@@ -26,7 +26,7 @@ export default class TestFile extends BaseUnit {
                 test[prop] = test[prop] || test.fixture[prop];
             });
 
-            if (!test.disablePageReloads)
+            if (test.disablePageReloads === void 0)
                 test.disablePageReloads = test.fixture.disablePageReloads;
 
             if (!test.disablePageCaching)

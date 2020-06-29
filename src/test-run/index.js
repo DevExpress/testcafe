@@ -86,7 +86,7 @@ export default class TestRun extends AsyncEventEmitter {
         this.speed                = this.opts.speed;
         this.pageLoadTimeout      = this.opts.pageLoadTimeout;
 
-        this.disablePageReloads   = test.disablePageReloads || opts.disablePageReloads;
+        this.disablePageReloads   = test.disablePageReloads || opts.disablePageReloads && test.disablePageReloads !== false;
         this.disablePageCaching   = test.disablePageCaching || opts.disablePageCaching;
         this.allowMultipleWindows = opts.allowMultipleWindows;
 

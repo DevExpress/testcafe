@@ -22,7 +22,7 @@ export default class TestingUnit extends BaseUnit {
     public skip: boolean;
     public requestHooks: RequestHook[];
     public clientScripts: ClientScriptInit[];
-    public disablePageReloads: boolean;
+    public disablePageReloads: boolean | undefined;
     public disablePageCaching: boolean;
     public apiMethodWasCalled: FlagList;
     public apiOrigin: Function;
@@ -41,7 +41,7 @@ export default class TestingUnit extends BaseUnit {
         this.requestHooks    = [];
         this.clientScripts   = [];
 
-        this.disablePageReloads = false;
+        this.disablePageReloads = void 0;
         this.disablePageCaching = false;
 
         this.apiMethodWasCalled = new FlagList([OPTION_NAMES.clientScripts, OPTION_NAMES.requestHooks]);
