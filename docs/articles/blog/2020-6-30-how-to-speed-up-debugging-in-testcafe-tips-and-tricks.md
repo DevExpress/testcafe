@@ -9,6 +9,8 @@ author: Sergey Shurygin, Vasily Strelyaev
 
 In the previous post, we talked about the approaches you can follow to debug TestCafe tests. In this post, we will focus on best practices that help you save time while debugging.  We will also mention a few things to keep in mind in order to write easy-to-debug tests.
 
+<!--more-->
+
 ## Tips on how to debug tests
 
 **If you know which test throws an error, run this test separately.**
