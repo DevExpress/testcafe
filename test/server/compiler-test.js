@@ -24,10 +24,6 @@ require('source-map-support').install();
 describe('Compiler', function () {
     const testRunMock = { id: 'yo' };
 
-    const tsCompilerPath     = path.resolve('src/compiler/test-file/formats/typescript/compiler.ts');
-    const apiBasedPath       = path.resolve('src/compiler/test-file/api-based.js');
-    const esNextCompilerPath = path.resolve('src/compiler/test-file/formats/es-next/compiler.js');
-
     this.timeout(20000);
 
     // FIXME: Babel errors always contain POSIX-format file paths.
@@ -708,9 +704,6 @@ describe('Compiler', function () {
             const dep      = posixResolve('test/server/data/test-suites/syntax-error-in-dep/dep.js');
 
             const stack = [
-                esNextCompilerPath,
-                esNextCompilerPath,
-                apiBasedPath,
                 testfile
             ];
 
@@ -734,7 +727,6 @@ describe('Compiler', function () {
 
             const stack = [
                 dep,
-                apiBasedPath,
                 testfile
             ];
 
@@ -765,7 +757,6 @@ describe('Compiler', function () {
                     assertError(err, {
                         stackTop: [
                             dep,
-                            apiBasedPath,
                             testfile
                         ],
 
@@ -812,18 +803,13 @@ describe('Compiler', function () {
         it('Should raise an error if test file has a syntax error', function () {
             const testfile = posixResolve('test/server/data/test-suites/syntax-error-in-testfile/testfile.js');
 
-            const stack  = [
-                esNextCompilerPath,
-                apiBasedPath,
-            ];
-
             return compile(testfile)
                 .then(function () {
                     throw new Error('Promise rejection expected');
                 })
                 .catch(function (err) {
                     assertError(err, {
-                        stackTop: stack,
+                        stackTop: null,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
                                  'SyntaxError: ' + testfile + ': Unexpected token, expected { (1:7)'
@@ -837,18 +823,13 @@ describe('Compiler', function () {
                 posixResolve('test/server/data/test-suites/flow-type-declarations/flower-marker.js')
             ];
 
-            const stack  = [
-                esNextCompilerPath,
-                apiBasedPath,
-            ];
-
             return compile(testfiles[0])
                 .then(function () {
                     throw new Error('Promise rejection expected');
                 })
                 .catch(function (err) {
                     assertError(err, {
-                        stackTop: stack,
+                        stackTop: null,
 
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
@@ -862,7 +843,7 @@ describe('Compiler', function () {
                 })
                 .catch(function (err) {
                     assertError(err, {
-                        stackTop: stack,
+                        stackTop: null,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
                                  'SyntaxError: ' + testfiles[1] + ': Unexpected token, expected ; (2:8)'
@@ -872,7 +853,6 @@ describe('Compiler', function () {
 
         it('Should raise an error if test file has a TypeScript error', function () {
             const testfile = posixResolve('test/server/data/test-suites/typescript-compile-errors/testfile.ts');
-            const stack    = tsCompilerPath;
 
             return compile(testfile)
                 .then(function () {
@@ -880,7 +860,7 @@ describe('Compiler', function () {
                 })
                 .catch(function (err) {
                     assertError(err, {
-                        stackTop: stack,
+                        stackTop: null,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
                                  'Error: TypeScript compilation failed.\n' +

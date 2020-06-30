@@ -177,6 +177,28 @@ describe('[API] Assertions', function () {
             });
     });
 
+    it('Should raise a warning when trying to assert Selector instance', function () {
+        return runTests('./testcafe-fixtures/assertions-test.js', 'Passing Selector instance into an assertion', {
+            shouldFail: true,
+            only:       'chrome'
+        })
+            .catch(function () {
+                expect(testReport.warnings[0]).to.match(new RegExp(['You are trying to assert the Selector instance\\.\nIf you want to ',
+                    'assert that the selected element exists, consider using yourSelector\\.exists in the \\.expect\\(\\) statement\\.'].join('')));
+            });
+    });
+
+    it('Should raise a warning when trying to assert ClientFunction instance', function () {
+        return runTests('./testcafe-fixtures/assertions-test.js', 'Passing ClientFunction instance into an assertion', {
+            shouldFail: true,
+            only:       'chrome'
+        })
+            .catch(function () {
+                expect(testReport.warnings[0]).to.match(new RegExp(['You are trying to assert the ClientFunction instance\\.\nIf you want to ',
+                    'assert the returned value, consider calling your ClientFunction \\(using yourClientFunction\\.call\\(\\)\\) in the \\.expect\\(\\) statement\\.'].join('')));
+            });
+    });
+
     it('Should retry assertion for selector results', function () {
         return runTests('./testcafe-fixtures/assertions-test.js', 'Selector result assertion', { only: 'chrome' });
     });
