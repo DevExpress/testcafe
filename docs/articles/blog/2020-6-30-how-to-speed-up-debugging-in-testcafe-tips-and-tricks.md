@@ -75,4 +75,3 @@ If subsequent tests use data produced by previous tests, you can expect the foll
 To simplify debugging in the future, be sure to avoid dependencies between tests.
 
 For more best practice tips, see the following help topic: [How to Scroll Web Pages Using TestCafe](https://devexpress.github.io/testcafe/media/team-blog/how-to-scroll-web-pages-using-testcafe.html).
- 
