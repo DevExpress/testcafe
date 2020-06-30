@@ -183,8 +183,8 @@ describe('[API] Assertions', function () {
             only:       'chrome'
         })
             .catch(function () {
-                expect(testReport.warnings[0]).to.match(new RegExp(['You are trying to assert the Selector instance\\.\nIf you want to ',
-                    'assert that the selected element exists, consider using yourSelector\\.exists in the \\.expect\\(\\) statement\\.'].join('')));
+                expect(testReport.warnings[0]).to.match(new RegExp(['You passed a Selector object to \'t\\.expect\\(\\)\'\\.\nIf you want to check ',
+                    'that a matched element exists, pass the \'selector\\.exists\' value instead\\.'].join('')));
             });
     });
 
@@ -194,8 +194,8 @@ describe('[API] Assertions', function () {
             only:       'chrome'
         })
             .catch(function () {
-                expect(testReport.warnings[0]).to.match(new RegExp(['You are trying to assert the ClientFunction instance\\.\nIf you want to ',
-                    'assert the returned value, consider calling your ClientFunction \\(using yourClientFunction\\.call\\(\\)\\) in the \\.expect\\(\\) statement\\.'].join('')));
+                expect(testReport.warnings[0]).to.match(new RegExp(['You passed a ClientFunction object to \'t\\.expect\\(\\)\'\\.\nIf you want to check ',
+                    'the function\'s return value, call the client function \\(\'clientFunction\\(\\)\'\\) instead\\.'].join('')));
             });
     });
 
