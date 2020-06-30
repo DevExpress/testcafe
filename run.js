@@ -9,7 +9,7 @@ createTestCafe('localhost', 1337, 1338, void 0, true)
         return runner
             .src('test.js')
             //.browsers('chrome:emulation:device=iphone 6 --no-sandbox --auto-open-devtools-for-tabs')
-            .browsers('chrome:emulation:device=iphone 6 --no-sandbox')
+            .browsers('chrome:headless:emulation:device=iphone 6 --no-sandbox')
             //.browsers('chrome --auto-open-devtools-for-tabs --disable-background-networking')
             //.browsers('chrome')
             //.browsers('firefox')

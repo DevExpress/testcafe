@@ -85,29 +85,6 @@ async function setTouchBehavior (runtimeInfo: RuntimeInfo): Promise<void> {
     //await resizeWindow({ width: config.width, height: config.height }, runtimeInfo);
 }
 
-async function setEmulation (runtimeInfo: RuntimeInfo): Promise<void> {
-    const { client, config } = runtimeInfo;
-
-    if (config.userAgent !== void 0)
-        await client.Network.setUserAgentOverride({ userAgent: config.userAgent });
-
-    if (config.touch !== void 0) {
-        const touchConfig: TouchConfigOptions = {
-            enabled:        config.touch,
-            configuration:  config.mobile ? 'mobile' : 'desktop',
-            maxTouchPoints: 1
-        };
-
-        if (client.Emulation.setEmitTouchEventsForMouse)
-            await client.Emulation.setEmitTouchEventsForMouse(touchConfig);
-
-        if (client.Emulation.setTouchEmulationEnabled)
-            await client.Emulation.setTouchEmulationEnabled(touchConfig);
-
-        await resizeWindow({ width: config.width, height: config.height }, runtimeInfo);
-    }
-}
-
 async function enableDownloads ({ client }: RuntimeInfo): Promise<void> {
     await client.Page.setDownloadBehavior({
         behavior:     'allow',
@@ -163,43 +140,6 @@ async function setDeviceMetricsOverride (client: remoteChrome.ProtocolApi, width
 }
 
 export async function createClient (runtimeInfo: RuntimeInfo): Promise<void> {
-    const { browserId, config, cdpPort } = runtimeInfo;
-
-    let tab    = null;
-    let client = null;
-
-    try {
-        tab = await getActiveTab(cdpPort, browserId);
-
-        if (!tab)
-            return;
-
-        client = await remoteChrome({ target: tab, port: cdpPort });
-    }
-    catch (e) {
-        return;
-    }
-
-    runtimeInfo.tab    = tab;
-    runtimeInfo.client = client;
-
-    await client.Page.enable();
-    await client.Network.enable({});
-    await client.Runtime.enable();
-
-    /*const devicePixelRatioQueryResult = await client.Runtime.evaluate({ expression: 'window.devicePixelRatio' });
-
-    runtimeInfo.originalDevicePixelRatio = devicePixelRatioQueryResult.result.value;
-    runtimeInfo.emulatedDevicePixelRatio = config.scaleFactor || runtimeInfo.originalDevicePixelRatio;
-
-    if (config.emulation)
-        await setEmulation(runtimeInfo);*/
-
-    if (config.headless)
-        await enableDownloads(runtimeInfo);
-}
-
-export async function createClient1 (runtimeInfo: RuntimeInfo): Promise<void> {
     const { browserId, cdpPort, config } = runtimeInfo;
 
     let tab    = null;
@@ -220,15 +160,21 @@ export async function createClient1 (runtimeInfo: RuntimeInfo): Promise<void> {
     runtimeInfo.tab    = tab;
     runtimeInfo.client = client;
 
+    console.log('cdp.before client.Page.enable');
     await client.Page.enable();
     await client.Network.enable({});
     await client.Runtime.enable();
+    console.log('cdp.after client.Page.enable');
 
     await calculateEmulatedDevicePixelRatio(runtimeInfo);
 
     if (config.emulation)
-        await setEmulation1(runtimeInfo);
+        await setEmulation(runtimeInfo);
 
+    if (config.headless)
+        await enableDownloads(runtimeInfo);
+
+    console.log('cdp.before emitting chrome connected event');
     runtimeInfo.providerMethods.emitConnectedEvent();
 }
 
@@ -240,25 +186,9 @@ async function calculateEmulatedDevicePixelRatio (runtimeInfo: RuntimeInfo): Pro
     runtimeInfo.emulatedDevicePixelRatio = config.scaleFactor || runtimeInfo.originalDevicePixelRatio;
 }
 
-async function setEmulation1 (runtimeInfo: RuntimeInfo): Promise<void> {
+async function setEmulation (runtimeInfo: RuntimeInfo): Promise<void> {
     await setUserAgent(runtimeInfo);
     await setTouchBehavior(runtimeInfo);
-    await resizeWindow({
-        width: runtimeInfo.config.width,
-        height: runtimeInfo.config.height
-    }, runtimeInfo);
-}
-
-export async function setEmulationAndResize (runtimeInfo: RuntimeInfo): Promise<void> {
-    const { client, config } = runtimeInfo;
-
-    const devicePixelRatioQueryResult = await client.Runtime.evaluate({ expression: 'window.devicePixelRatio' });
-
-    runtimeInfo.originalDevicePixelRatio = devicePixelRatioQueryResult.result.value;
-    runtimeInfo.emulatedDevicePixelRatio = config.scaleFactor || runtimeInfo.originalDevicePixelRatio;
-
-    if (config.emulation)
-        await setEmulation(runtimeInfo);
 }
 
 export function isHeadlessTab ({ tab, config }: RuntimeInfo): boolean {
@@ -284,8 +214,10 @@ export async function updateMobileViewportSize (runtimeInfo: RuntimeInfo): Promi
 export async function resizeWindow (newDimensions: Size, runtimeInfo: RuntimeInfo): Promise<void> {
     const { browserId, config, viewportSize, providerMethods } = runtimeInfo;
 
-    const newWidth  = newDimensions.width;
-    const newHeight = newDimensions.height;
+    const currentWidth  = viewportSize.width;
+    const currentHeight = viewportSize.height;
+    const newWidth      = newDimensions.width || currentWidth;
+    const newHeight     = newDimensions.height || currentHeight;
 
     if (!config.headless)
         await providerMethods.resizeLocalBrowserWindow(browserId, newWidth, newHeight, currentWidth, currentHeight);

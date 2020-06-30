@@ -94,24 +94,27 @@ export default class BrowserConnectionGateway {
         else {
             const userAgent = req.headers['user-agent'] as string;
 
-            connection.establish(userAgent);
-
             if (connection.permanent)
                 redirect(res, connection.idleUrl);
             else {
                 if (connection.provider.plugin.connectedWithDebugProtocol) {
+                    console.log('gateway.before promisify connected event');
                     promisifyEvent(connection.provider.plugin, connection.provider.plugin.CONNECTED_EVENT_NAME)
                         .then(async () => {
+                            connection.establish(userAgent);
+                            console.log('gateway.raise ready event');
                             const testRunUrl = await connection.getTestRunUrl(true) || connection.idleUrl;
 
+                            console.log('gateway.redirect to first tested page');
                             redirect(res, testRunUrl);
                         });
                 }
-                else {
-                    const testRunUrl = await connection.getTestRunUrl(true) || connection.idleUrl;
-
-                    redirect(res, testRunUrl);
-                }
+                // else {
+                // console.log('gateway.redirect to the first tested page');
+                // const testRunUrl = await connection.getTestRunUrl(true) || connection.idleUrl;
+                //
+                // redirect(res, testRunUrl);
+                //}
             }
         }
     }

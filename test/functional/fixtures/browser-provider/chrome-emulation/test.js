@@ -15,7 +15,7 @@ if (config.useLocalBrowsers) {
                 .src(path.join(__dirname, './testcafe-fixtures/index-test.js'))
                 .filter(fixtureName => fixtureName === 'Check presence of touch event handlers')
                 .reporter('minimal', createNullStream())
-                //.browsers('chrome:headless:emulation:device=iphone 6 --no-sandbox')
+                .browsers('chrome:headless:emulation:device=iphone 6 --no-sandbox')
                 .run()
                 .then(failedCount => {
                     expect(failedCount).eql(0);
