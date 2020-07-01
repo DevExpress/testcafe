@@ -251,6 +251,8 @@ export default class TestRun extends AsyncEventEmitter {
             browserStatusRelativeUrl:     JSON.stringify(this.browserConnection.statusRelativeUrl),
             browserStatusDoneRelativeUrl: JSON.stringify(this.browserConnection.statusDoneRelativeUrl),
             browserActiveWindowIdUrl:     JSON.stringify(this.browserConnection.activeWindowIdUrl),
+            browserInitScriptUrl:         JSON.stringify(this.browserConnection.initScriptUrl),
+            browserSetupWindowUrl:        JSON.stringify(this.browserConnection.setupWindowUrl),
             userAgent:                    JSON.stringify(this.browserConnection.userAgent),
             testName:                     JSON.stringify(this.test.name),
             fixtureName:                  JSON.stringify(this.test.fixture.name),
@@ -261,13 +263,15 @@ export default class TestRun extends AsyncEventEmitter {
             retryTestPages:               this.opts.retryTestPages,
             speed:                        this.speed,
             dialogHandler:                JSON.stringify(this.activeDialogHandler),
-            canUseDefaultWindowActions:   JSON.stringify(await this.browserConnection.canUseDefaultWindowActions())
+            canUseDefaultWindowActions:   JSON.stringify(await this.browserConnection.canUseDefaultWindowActions()),
+            isLocalBrowser:               JSON.stringify(await this.browserConnection.isLocalBrowser())
         });
     }
 
     async getIframePayloadScript () {
         return Mustache.render(IFRAME_TEST_RUN_TEMPLATE, {
             testRunId:       JSON.stringify(this.session.id),
+            browserId:       JSON.stringify(this.browserConnection.id),
             selectorTimeout: this.opts.selectorTimeout,
             pageLoadTimeout: this.pageLoadTimeout,
             retryTestPages:  !!this.opts.retryTestPages,

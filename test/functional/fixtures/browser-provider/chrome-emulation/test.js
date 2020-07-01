@@ -4,37 +4,37 @@ const { expect }           = require('chai');
 const config               = require('../../../config');
 const { createNullStream } = require('../../../utils/stream');
 const { createReporter }   = require('../../../utils/reporter');
-const os                   = require('os-family');
-const detectDisplay        = require('../../../../../lib/utils/detect-display');
-
-const isLinuxWithoutGUI = os.linux && !detectDisplay();
 
 chai.use(require('chai-string'));
 
 if (config.useLocalBrowsers) {
     describe('Browser Provider - Chrome Emulation Mode', () => {
         describe('Should emulate touch event handlers', () => {
-            async function checkTouchEmulation (browserAlias) {
-                const failedCount = await testCafe
+            it('headless', () => {
+                return testCafe
                     .createRunner()
                     .src(path.join(__dirname, './testcafe-fixtures/index-test.js'))
                     .filter(fixtureName => fixtureName === 'Check presence of touch event handlers')
                     .reporter('minimal', createNullStream())
-                    .browsers(browserAlias)
-                    .run();
-
-                expect(failedCount).eql(0);
-            }
-
-            it('headless', () => {
-                return checkTouchEmulation('chrome:headless:emulation:device=iphone 6 --no-sandbox');
+                    .browsers('chrome:headless:emulation:device=iphone 6 --no-sandbox')
+                    .run()
+                    .then(failedCount => {
+                        expect(failedCount).eql(0);
+                    });
             });
 
-            if (!isLinuxWithoutGUI) {
-                it('non-headless', () => {
-                    return checkTouchEmulation('chrome:emulation:device=iphone 6 --no-sandbox');
-                });
-            }
+            it('non-headless', () => {
+                return testCafe
+                    .createRunner()
+                    .src(path.join(__dirname, './testcafe-fixtures/index-test.js'))
+                    .filter(fixtureName => fixtureName === 'Check presence of touch event handlers')
+                    .reporter('minimal', createNullStream())
+                    .browsers('chrome:emulation:device=iphone 6 --no-sandbox')
+                    .run()
+                    .then(failedCount => {
+                        expect(failedCount).eql(0);
+                    });
+            });
         });
 
         it('Should provide emulating device for user agent', async () => {
@@ -58,3 +58,4 @@ if (config.useLocalBrowsers) {
         });
     });
 }
+

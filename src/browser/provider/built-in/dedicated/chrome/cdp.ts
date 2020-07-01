@@ -56,27 +56,37 @@ async function setEmulationBounds ({ client, config, viewportSize, emulatedDevic
     await client.Emulation.setVisibleSize({ width: viewportSize.width, height: viewportSize.height });
 }
 
-async function setEmulation (runtimeInfo: RuntimeInfo): Promise<void> {
+async function setUserAgentEmulation (runtimeInfo: RuntimeInfo): Promise<void> {
     const { client, config } = runtimeInfo;
 
-    if (config.userAgent !== void 0)
-        await client.Network.setUserAgentOverride({ userAgent: config.userAgent });
+    if (config.userAgent === void 0)
+        return;
 
-    if (config.touch !== void 0) {
-        const touchConfig: TouchConfigOptions = {
-            enabled:        config.touch,
-            configuration:  config.mobile ? 'mobile' : 'desktop',
-            maxTouchPoints: 1
-        };
+    await client.Network.setUserAgentOverride({ userAgent: config.userAgent });
+}
 
-        if (client.Emulation.setEmitTouchEventsForMouse)
-            await client.Emulation.setEmitTouchEventsForMouse(touchConfig);
+async function setTouchEmulation (runtimeInfo: RuntimeInfo): Promise<void> {
+    const { client, config } = runtimeInfo;
 
-        if (client.Emulation.setTouchEmulationEnabled)
-            await client.Emulation.setTouchEmulationEnabled(touchConfig);
-    }
+    if (config.touch === void 0)
+        return;
 
-    await resizeWindow({ width: config.width, height: config.height }, runtimeInfo);
+    const touchConfig: TouchConfigOptions = {
+        enabled:        config.touch,
+        configuration:  config.mobile ? 'mobile' : 'desktop',
+        maxTouchPoints: 1
+    };
+
+    if (client.Emulation.setEmitTouchEventsForMouse)
+        await client.Emulation.setEmitTouchEventsForMouse(touchConfig);
+
+    if (client.Emulation.setTouchEmulationEnabled)
+        await client.Emulation.setTouchEmulationEnabled(touchConfig);
+}
+
+async function setEmulation (runtimeInfo: RuntimeInfo): Promise<void> {
+    await setUserAgentEmulation(runtimeInfo);
+    await setTouchEmulation(runtimeInfo);
 }
 
 async function enableDownloads ({ client }: RuntimeInfo): Promise<void> {
@@ -84,6 +94,14 @@ async function enableDownloads ({ client }: RuntimeInfo): Promise<void> {
         behavior:     'allow',
         downloadPath: DOWNLOADS_DIR
     });
+}
+
+async function calculateEmulatedDevicePixelRatio (runtimeInfo: RuntimeInfo): Promise<void> {
+    const { client, config }          = runtimeInfo;
+    const devicePixelRatioQueryResult = await client.Runtime.evaluate({ expression: 'window.devicePixelRatio' });
+
+    runtimeInfo.originalDevicePixelRatio = devicePixelRatioQueryResult.result.value;
+    runtimeInfo.emulatedDevicePixelRatio = config.scaleFactor || runtimeInfo.originalDevicePixelRatio;
 }
 
 export async function getScreenshotData ({ client, config, emulatedDevicePixelRatio }: RuntimeInfo, fullPage?: boolean): Promise<Buffer> {
@@ -158,10 +176,7 @@ export async function createClient (runtimeInfo: RuntimeInfo): Promise<void> {
     await client.Network.enable({});
     await client.Runtime.enable();
 
-    const devicePixelRatioQueryResult = await client.Runtime.evaluate({ expression: 'window.devicePixelRatio' });
-
-    runtimeInfo.originalDevicePixelRatio = devicePixelRatioQueryResult.result.value;
-    runtimeInfo.emulatedDevicePixelRatio = config.scaleFactor || runtimeInfo.originalDevicePixelRatio;
+    await calculateEmulatedDevicePixelRatio(runtimeInfo);
 
     if (config.emulation)
         await setEmulation(runtimeInfo);

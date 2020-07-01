@@ -2,7 +2,8 @@ import { WindowDimentionsInfo } from '../../interfaces';
 
 /*eslint-disable no-undef, no-var*/
 function getTitle (): string {
-    return document.title;
+    // @ts-ignore
+    return window['%testCafeCore%'].domUtils.getDocumentTitle(document);
 }
 
 function getWindowDimensionsInfo (): WindowDimentionsInfo {

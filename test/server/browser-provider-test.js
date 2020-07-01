@@ -476,6 +476,7 @@ describe('Browser provider', function () {
             );
 
             await provider.openBrowser(bc.id);
+            await provider.setUpBrowserWindow(bc.id);
 
             expect(debugMock.data['testcafe:browser:provider']).eql('Error: SomeError');
             expect(warningLog.messages).eql([dedent`

@@ -136,7 +136,7 @@ const EMPTY_COMMAND_EVENT              = 'empty-command-event';
 const CHILD_WINDOW_CLOSED_EVENT        = 'child-window-closed';
 
 export default class Driver extends serviceUtils.EventEmitter {
-    constructor (testRunId, communicationUrls, runInfo, options) {
+    constructor (testRunId, connectionId, communicationUrls, runInfo, options) {
         super();
 
         this.COMMAND_EXECUTING_FLAG        = 'testcafe|driver|command-executing-flag';
@@ -145,10 +145,13 @@ export default class Driver extends serviceUtils.EventEmitter {
         this.WINDOW_COMMAND_API_CALL_FLAG  = 'testcafe|driver|window-command-api-flag';
 
         this.testRunId                  = testRunId;
+        this.connectionId               = connectionId;
         this.heartbeatUrl               = communicationUrls.heartbeat;
         this.browserStatusUrl           = communicationUrls.status;
         this.browserStatusDoneUrl       = communicationUrls.statusDone;
         this.browserActiveWindowId      = communicationUrls.activeWindowId;
+        this.initScriptUrl              = communicationUrls.initScriptUrl;
+        this.setupWindowUrl             = communicationUrls.setupWindowUrl;
         this.userAgent                  = runInfo.userAgent;
         this.fixtureName                = runInfo.fixtureName;
         this.testName                   = runInfo.testName;
@@ -159,6 +162,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         this.skipJsErrors               = options.skipJsErrors;
         this.dialogHandler              = options.dialogHandler;
         this.canUseDefaultWindowActions = options.canUseDefaultWindowActions;
+        this.isLocalBrowser             = options.isLocalBrowser;
         this.isFirstPageLoad            = settings.get().isFirstPageLoad;
 
         this.customCommandHandlers = {};
@@ -181,6 +185,9 @@ export default class Driver extends serviceUtils.EventEmitter {
 
         if (options.retryTestPages)
             browser.enableRetryingTestPages();
+
+        browser.startHeartbeat(this.heartbeatUrl, hammerhead.createNativeXHR);
+        browser.startInitScriptExecution(this.initScriptUrl, hammerhead.createNativeXHR);
 
         this.pageInitialRequestBarrier = new RequestBarrier();
 
@@ -1494,28 +1501,36 @@ export default class Driver extends serviceUtils.EventEmitter {
         this.speed = this.initialSpeed;
 
         this._initConsoleMessages();
+        this._setDocumentTitle();
     }
 
-    _doFirstPageLoadSetup () {
-        if (this.isFirstPageLoad && this.canUseDefaultWindowActions) {
-            // Stub: perform initial setup of the test first page
+    _setDocumentTitle () {
+        const title = `[${this.connectionId}]`;
 
-            return Promise.resolve();
+        domUtils.setDocumentTitle(document, title);
+        hammerhead.sandbox.node.onInternalTitleValueSet();
+    }
+
+    async _doFirstPageLoadSetup () {
+        if (this.isFirstPageLoad && this.isLocalBrowser) {
+            await browser.sendXHR(this.setupWindowUrl, hammerhead.createNativeXHR, { method: 'POST' });
+
+            browser.stopInitScriptExecution();
         }
 
-        return Promise.resolve();
+        return;
     }
 
-    start () {
+    async start () {
         this._init();
 
-        this._doFirstPageLoadSetup()
-            .then(() => this._getDriverRole())
-            .then(role => {
-                if (role === DriverRole.master)
-                    this._startInternal();
-                else
-                    this._initParentWindowLink();
-            });
+        await this._doFirstPageLoadSetup();
+
+        const role = await this._getDriverRole();
+
+        if (role === DriverRole.master)
+            this._startInternal();
+        else
+            this._initParentWindowLink();
     }
 }
