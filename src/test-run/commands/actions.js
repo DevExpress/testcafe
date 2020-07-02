@@ -398,6 +398,16 @@ export class SwitchToParentWindowCommand extends CommandBase {
     }
 }
 
+export class SwitchToRecentWindowCommand extends CommandBase {
+    constructor (obj, testRun) {
+        super(obj, testRun, TYPE.switchToRecentWindow);
+    }
+
+    _getAssignableProperties () {
+        return [];
+    }
+}
+
 export class SetNativeDialogHandlerCommand extends CommandBase {
     constructor (obj, testRun) {
         super(obj, testRun, TYPE.setNativeDialogHandler);

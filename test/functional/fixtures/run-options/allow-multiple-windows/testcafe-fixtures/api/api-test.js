@@ -93,6 +93,29 @@ test('Switch to window by title', async t => {
     await t.expect(Selector('h1').innerText).eql('child-2');
 });
 
+test('Switch to recent window', async t => {
+    await t
+        .openWindow(child1Url)
+        .openWindow(child2Url)
+        .expect(Selector('h1').innerText).eql('child-2')
+        .switchToRecentWindow()
+        .expect(Selector('h1').innerText).eql('child-1')
+        .switchToRecentWindow()
+        .expect(Selector('h1').innerText).eql('child-2');
+});
+
+test('Switch to recent closed window', async t => {
+    const child2Window = await t
+        .openWindow(child1Url)
+        .openWindow(child2Url);
+
+    await t.expect(Selector('h1').innerText).eql('child-2')
+        .switchToRecentWindow()
+        .expect(Selector('h1').innerText).eql('child-1')
+        .closeWindow(child2Window)
+        .switchToRecentWindow();
+});
+
 test('Switch to child window', async t => {
     let currentWindow = null;
 

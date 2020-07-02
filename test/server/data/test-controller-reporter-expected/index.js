@@ -545,6 +545,23 @@ module.exports = [
     },
     {
         testRunId: 'test-run-id',
+        name:    'switchToRecentWindow',
+        command: {
+            type: 'switch-to-recent-window'
+        },
+        test:    {
+            id:    'test-id',
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
+        },
+        browser: { alias: 'test-browser', headless: false }
+    },
+    {
+        testRunId: 'test-run-id',
         name:    'setNativeDialogHandler',
         command: {
             dialogHandler: {

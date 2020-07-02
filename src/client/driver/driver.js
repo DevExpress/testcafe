@@ -1254,7 +1254,9 @@ export default class Driver extends serviceUtils.EventEmitter {
         else if (command.type === COMMAND_TYPE.getCurrentWindow)
             this._onGetCurrentWindowCommand(command);
 
-        else if (command.type === COMMAND_TYPE.switchToWindow || command.type === COMMAND_TYPE.switchToWindowByPredicate)
+        else if (command.type === COMMAND_TYPE.switchToWindow ||
+                 command.type === COMMAND_TYPE.switchToWindowByPredicate ||
+                 command.type === COMMAND_TYPE.switchToRecentWindow)
             this._onSwitchToWindow(command);
 
         else if (command.type === COMMAND_TYPE.switchToParentWindow)

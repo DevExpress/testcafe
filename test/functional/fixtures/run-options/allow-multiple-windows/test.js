@@ -134,6 +134,17 @@ describe('Allow multiple windows', () => {
             return runTests('testcafe-fixtures/api/api-test.js', 'Switch to window by title', { only: 'chrome', allowMultipleWindows: true });
         });
 
+        it('Switch to recent window', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to recent window', { only: 'chrome', allowMultipleWindows: true });
+        });
+
+        it('Switch to recent closed window', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to recent closed window', { only: 'chrome', allowMultipleWindows: true, shouldFail: true })
+                .catch(errs => {
+                    expect(errs[0]).to.contain('Cannot find the window specified in the action parameters.');
+                });
+        });
+
         it('Switch to other child', () => {
             return runTests('testcafe-fixtures/api/api-test.js', 'Switch to other child', { only: 'chrome', allowMultipleWindows: true });
         });

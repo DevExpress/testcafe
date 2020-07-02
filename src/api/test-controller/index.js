@@ -33,6 +33,7 @@ import {
     SwitchToWindowCommand,
     SwitchToWindowByPredicateCommand,
     SwitchToParentWindowCommand,
+    SwitchToRecentWindowCommand,
     SetNativeDialogHandlerCommand,
     GetNativeDialogHistoryCommand,
     GetBrowserConsoleMessagesCommand,
@@ -338,6 +339,14 @@ export default class TestController {
         this._validateMultipleWindowCommand(apiMethodName);
 
         return this._enqueueCommand(apiMethodName, SwitchToParentWindowCommand);
+    }
+
+    _switchToRecentWindow$ () {
+        const apiMethodName = 'switchToRecentWindow';
+
+        this._validateMultipleWindowCommand(apiMethodName);
+
+        return this._enqueueCommand(apiMethodName, SwitchToRecentWindowCommand);
     }
 
     _eval$ (fn, options) {
