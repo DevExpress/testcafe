@@ -119,6 +119,7 @@ const actions = {
     switchToWindow:            [{ id: 'window-id' }],
     closeWindow:               [{ id: 'window-id' }],
     getCurrentWindow:          [],
+    switchToParentWindow:      [],
     setNativeDialogHandler:    [() => true],
     getNativeDialogHistory:    [],
     getBrowserConsoleMessages: [],

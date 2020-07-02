@@ -572,6 +572,12 @@ export class WindowNotFoundError extends ChildWindowValidationError {
     }
 }
 
+export class ParentWindowNotFoundError extends TestRunErrorBase {
+    constructor () {
+        super(TEST_RUN_ERRORS.parentWindowNotFoundError);
+    }
+}
+
 export class CannotCloseWindowWithChildrenError extends ChildWindowValidationError {
     constructor () {
         super(TEST_RUN_ERRORS.cannotCloseWindowWithChildrenError);

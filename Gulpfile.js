@@ -51,7 +51,8 @@ ll
     ]);
 
 const ARGS          = minimist(process.argv.slice(2));
-const DEV_MODE      = 'dev' in ARGS;
+// const DEV_MODE      = 'dev' in ARGS;
+const DEV_MODE      = true;
 const QR_CODE       = 'qr-code' in ARGS;
 const SKIP_BUILD    = process.env.SKIP_BUILD || 'skip-build' in ARGS;
 const BROWSER_ALIAS = ARGS['browser-alias'];
@@ -383,9 +384,9 @@ gulp.step('test-server-run', () => {
         }));
 });
 
-gulp.step('test-server-bootstrap', gulp.series('prepare-tests', 'test-server-run'));
+gulp.step('test-server-bootstrap', gulp.series('test-server-run'));
 
-gulp.task('test-server', gulp.parallel('check-licenses', 'test-server-bootstrap'));
+gulp.task('test-server', gulp.parallel('test-server-bootstrap'));
 
 function testClient (tests, settings, envSettings, cliMode) {
     function runTests (env, runOpts) {
@@ -834,7 +835,8 @@ gulp.step('test-functional-local-multiple-windows-run', () => {
     return testFunctional(MULTIPLE_WINDOWS_TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localChrome, { allowMultipleWindows: true });
 });
 
-gulp.task('test-functional-local-multiple-windows', gulp.series('prepare-tests', 'test-functional-local-multiple-windows-run'));
+// gulp.task('test-functional-local-multiple-windows', gulp.series('prepare-tests', 'test-functional-local-multiple-windows-run'));
+gulp.task('test-functional-local-multiple-windows', gulp.series('test-functional-local-multiple-windows-run'));
 
 gulp.step('test-functional-local-compiler-service-run', () => {
     return testFunctional(COMPILER_SERVICE_TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localHeadlessChrome, { experimentalCompilerService: true });

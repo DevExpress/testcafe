@@ -31,6 +31,8 @@ import {
     CloseWindowCommand,
     GetCurrentWindowCommand,
     SwitchToWindowCommand,
+    SwitchToWindowByPredicateCommand,
+    SwitchToParentWindowCommand,
     SetNativeDialogHandlerCommand,
     GetNativeDialogHistoryCommand,
     GetBrowserConsoleMessagesCommand,
@@ -308,14 +310,34 @@ export default class TestController {
         return this._enqueueCommand(apiMethodName, GetCurrentWindowCommand);
     }
 
-    _switchToWindow$ (window) {
+    _switchToWindow$ (windowSelector, options = {}) {
         const apiMethodName = 'switchToWindow';
 
         this._validateMultipleWindowCommand(apiMethodName);
 
-        const windowId = window?.id;
+        let command;
+        let args;
 
-        return this._enqueueCommand(apiMethodName, SwitchToWindowCommand, { windowId });
+        if (typeof windowSelector === 'function') {
+            command = SwitchToWindowByPredicateCommand;
+
+            args = { findWindow: { fn: windowSelector, options } };
+        }
+        else {
+            command = SwitchToWindowCommand;
+
+            args = { windowId: windowSelector?.id };
+        }
+
+        return this._enqueueCommand(apiMethodName, command, args);
+    }
+
+    _switchToParentWindow$ () {
+        const apiMethodName = 'switchToParentWindow';
+
+        this._validateMultipleWindowCommand(apiMethodName);
+
+        return this._enqueueCommand(apiMethodName, SwitchToParentWindowCommand);
     }
 
     _eval$ (fn, options) {

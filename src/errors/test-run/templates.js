@@ -352,4 +352,8 @@ export default {
     [TEST_RUN_ERRORS.allowMultipleWindowsOptionIsNotSpecifiedError]: err => `
         You should activate multi window mode (enable the "allow-multiple-windows" run option) to use the "${err.methodName}" method.
     `,
+
+    [TEST_RUN_ERRORS.parentWindowNotFoundError]: () => `
+        Cannot find the parent window.
+    `,
 };

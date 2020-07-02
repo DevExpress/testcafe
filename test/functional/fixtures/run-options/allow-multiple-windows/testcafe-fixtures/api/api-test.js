@@ -45,7 +45,7 @@ test('Switch to parent window', async t => {
     await t.expect(currentWindow.id).notEql(parentWindow.id);
 
     currentWindow = await t
-        .switchToWindow(parentWindow)
+        .switchToParentWindow()
         .getCurrentWindow();
 
     await t
@@ -53,8 +53,44 @@ test('Switch to parent window', async t => {
         .expect(Selector('h1').innerText).eql('parent');
 });
 
+test('Switch to unexisting parent window', async t => {
+    await t.switchToParentWindow();
+});
+
 test('Switch to unexisting window', async t => {
     await t.switchToWindow({ id: 'unexising_window' });
+});
+
+test('Switch to window by url', async t => {
+    await t.openWindow(child1Url);
+
+    await t.switchToWindow(w => {
+        return w.location.href === parentUrl &&
+            w.location.protocol === 'http:' &&
+            w.location.host === 'localhost:3000' &&
+            w.location.port === '3000' &&
+            w.location.query === '/fixtures/run-options/allow-multiple-windows/pages/api/parent.html';
+    }, { dependencies: { parentUrl } });
+
+    await t.expect(Selector('h1').innerText).eql('parent');
+
+    await t.switchToWindow(w => w.location.href === child1Url, { dependencies: { child1Url } });
+
+    await t.expect(Selector('h1').innerText).eql('child-1');
+});
+
+test('Switch to window by title', async t => {
+    await t.openWindow(child1Url);
+    await t.openWindow(child2Url);
+
+    await t.switchToWindow(w => w.title === 'parent');
+    await t.expect(Selector('h1').innerText).eql('parent');
+
+    await t.switchToWindow(w => w.title === 'child-1');
+    await t.expect(Selector('h1').innerText).eql('child-1');
+
+    await t.switchToWindow(w => w.title === 'child-2');
+    await t.expect(Selector('h1').innerText).eql('child-2');
 });
 
 test('Switch to child window', async t => {
@@ -65,9 +101,9 @@ test('Switch to child window', async t => {
 
     await t.expect(Selector('h1').innerText).eql('child-1');
 
-    await t.switchToWindow(parentWindow);
-
-    currentWindow = await t.getCurrentWindow();
+    currentWindow = await t
+        .switchToParentWindow()
+        .getCurrentWindow();
 
     await t
         .expect(currentWindow.id).eql(parentWindow.id)
@@ -81,11 +117,10 @@ test('Switch to child window', async t => {
 });
 
 test('Switch to other child', async t => {
-    const parentWindow = await t.getCurrentWindow();
     const child1Window = await t.openWindow(child1Url);
 
     await t
-        .switchToWindow(parentWindow)
+        .switchToParentWindow()
         .openWindow(child2Url)
         .expect(Selector('h1').innerText).eql('child-2')
         .switchToWindow(child1Window);
@@ -122,21 +157,19 @@ test('Switch to deep child', async t => {
 
 
 test('Close specific window from parent', async t => {
-    const parentWindow = await t.getCurrentWindow();
-    const childWindow  = await t.openWindow(child1Url);
+    const childWindow = await t.openWindow(child1Url);
 
-    await t.switchToWindow(parentWindow);
-
-    await t.closeWindow(childWindow);
+    await t
+        .switchToParentWindow()
+        .closeWindow(childWindow);
 
     await t.expect(Selector('h1').innerText).eql('parent');
 });
 
 test('Close specific window from child', async t => {
-    const parentWindow = await t.getCurrentWindow();
     const childWindow1 = await t.openWindow(child1Url);
 
-    await t.switchToWindow(parentWindow);
+    await t.switchToParentWindow();
     await t.openWindow(child2Url);
     await t.expect(Selector('h1').innerText).eql('child-2');
     await t.closeWindow(childWindow1);
@@ -145,10 +178,9 @@ test('Close specific window from child', async t => {
 });
 
 test('Close specific window and switch to it', async t => {
-    const parentWindow = await t.getCurrentWindow();
-    const childWindow  = await t.openWindow(child1Url);
+    const childWindow = await t.openWindow(child1Url);
 
-    await t.switchToWindow(parentWindow);
+    await t.switchToParentWindow();
     await t.closeWindow(childWindow);
     await t.switchToWindow(childWindow);
 });
@@ -159,16 +191,14 @@ test('Close unexisting window', async t => {
 
 test('Close unexisting child window', async t => {
     await t.openWindow(child1Url);
-
     await t.closeWindow({ id: 'unexising_window' });
 });
 
 
 test('Close closed window', async t => {
-    const childWindow  = await t.openWindow(child1Url);
+    const childWindow = await t.openWindow(child1Url);
 
     await t.closeWindow(childWindow);
-
     await t.closeWindow(childWindow);
 });
 
@@ -176,7 +206,6 @@ test('Close parent window and catch error', async t => {
     const parentWindow = await t.openWindow(child1Url);
 
     await t.openWindow(child2Url);
-
     await t.closeWindow(parentWindow);
 });
 
