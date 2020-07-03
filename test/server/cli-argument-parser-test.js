@@ -605,7 +605,7 @@ describe('CLI argument parser', function () {
     });
 
     it('Should parse command line arguments', function () {
-        return parse('-r list -S -q -e --hostname myhost --proxy localhost:1234 --proxy-bypass localhost:5678 --qr-code --app run-app --speed 0.5 --debug-on-fail --disable-page-reloads --dev --sf --disable-page-caching ie test/server/data/file-list/file-1.js')
+        return parse('-r list -S -q -e --hostname myhost --proxy localhost:1234 --proxy-bypass localhost:5678 --qr-code --app run-app --speed 0.5 --debug-on-fail --disable-page-reloads --retry-test-pages --dev --sf --disable-page-caching ie test/server/data/file-list/file-1.js')
             .then(parser => {
                 expect(parser.opts.browsers).eql(['ie']);
                 expect(parser.opts.src).eql(['test/server/data/file-list/file-1.js']);
@@ -618,7 +618,6 @@ describe('CLI argument parser', function () {
                 expect(parser.opts.screenshots.pathPattern).to.be.undefined;
                 expect(parser.opts.quarantineMode).to.be.ok;
                 expect(parser.opts.skipJsErrors).to.be.ok;
-                expect(parser.opts.disablePageReloads).to.be.ok;
                 expect(parser.opts.dev).to.be.ok;
                 expect(parser.opts.speed).eql(0.5);
                 expect(parser.opts.qrCode).to.be.ok;
@@ -627,6 +626,8 @@ describe('CLI argument parser', function () {
                 expect(parser.opts.debugOnFail).to.be.ok;
                 expect(parser.opts.stopOnFirstFail).to.be.ok;
                 expect(parser.opts.disablePageCaching).to.be.ok;
+                expect(parser.opts.disablePageReloads).to.be.ok;
+                expect(parser.opts.retryTestPages).to.be.ok;
             });
     });
 
@@ -675,6 +676,7 @@ describe('CLI argument parser', function () {
             { long: '--client-scripts', short: '--cs' },
             { long: '--disable-page-caching' },
             { long: '--disable-page-reloads' },
+            { long: '--retry-test-pages' },
             { long: '--disable-screenshots' },
             { long: '--screenshots-full-page' },
             { long: '--disable-multiple-windows' },

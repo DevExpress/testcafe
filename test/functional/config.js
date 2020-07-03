@@ -1,7 +1,6 @@
-const os = require('os');
-
 const isTravisEnvironment = !!process.env.TRAVIS;
-const hostname            = isTravisEnvironment ? os.hostname() : '127.0.0.1';
+const isAzureEnvironment  = !!process.env.TF_BUILD;
+const hostname            = isAzureEnvironment ? process.env.HOSTNAME : '127.0.0.1';
 
 const browserProviderNames = {
     sauceLabs:    'sauceLabs',
@@ -35,6 +34,11 @@ testingEnvironments[testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers] = {
 
     retryTestPages: true,
 
+    ssl: {
+        cert: process.env.SSL_CERT,
+        key:  process.env.SSL_PKEY
+    },
+
     browsers: [
         {
             browserName: 'browserstack:safari@11.1:OS X High Sierra',
@@ -62,6 +66,11 @@ testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
     browserstack: {
         username:  process.env.BROWSER_STACK_USERNAME,
         accessKey: process.env.BROWSER_STACK_ACCESS_KEY
+    },
+
+    ssl: {
+        cert: process.env.SSL_CERT,
+        key:  process.env.SSL_PKEY
     },
 
     retryTestPages: true,
@@ -232,6 +241,10 @@ module.exports = {
 
     get retryTestPages () {
         return this.currentEnvironment.retryTestPages;
+    },
+
+    get ssl () {
+        return this.currentEnvironment.ssl;
     },
 
     isTravisEnvironment,

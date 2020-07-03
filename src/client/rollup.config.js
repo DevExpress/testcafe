@@ -9,10 +9,13 @@ import inject from '@rollup/plugin-inject';
 import alias from '@rollup/plugin-alias';
 
 
-const IDLE_PAGE_CHUNK = 'browser/idle-page/index.js';
+const NO_HAMMERHEAD_CHUNKS = [
+    'browser/idle-page/index.js',
+    'browser/service-worker.js'
+];
 
 const CHUNK_NAMES = [
-    IDLE_PAGE_CHUNK,
+    ...NO_HAMMERHEAD_CHUNKS,
     'core/index.js',
     'driver/index.js',
     'ui/index.js',
@@ -33,7 +36,7 @@ const EXTENDED_GLOBALS = {
     'pinkie': 'window[\'%hammerhead%\'].Promise'
 };
 
-const GLOBALS = chunk => chunk === IDLE_PAGE_CHUNK ? COMMON_GLOBALS : EXTENDED_GLOBALS;
+const GLOBALS = chunk => NO_HAMMERHEAD_CHUNKS.includes(chunk) ? COMMON_GLOBALS : EXTENDED_GLOBALS;
 
 const CONFIG = CHUNK_NAMES.map(chunk => ({
     input:    chunk,

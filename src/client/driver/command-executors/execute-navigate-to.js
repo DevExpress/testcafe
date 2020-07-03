@@ -1,4 +1,4 @@
-import hammerhead from '../deps/hammerhead';
+import { navigateTo, Promise } from '../deps/hammerhead';
 import {
     RequestBarrier,
     pageUnloadBarrier,
@@ -8,24 +8,17 @@ import {
 import DriverStatus from '../status';
 
 
-const { createNativeXHR, utils } = hammerhead;
+export default async function executeNavigateTo (command) {
+    try {
+        const requestBarrier = new RequestBarrier();
 
-export default function executeNavigateTo (command) {
-    const navigationUrl = utils.url.getNavigationUrl(command.url, window);
+        navigateTo(command.url, command.forceReload);
 
-    let ensurePagePromise = hammerhead.Promise.resolve();
+        await Promise.all([requestBarrier.wait(), pageUnloadBarrier.wait()]);
 
-    if (navigationUrl && browser.isRetryingTestPagesEnabled())
-        ensurePagePromise = browser.fetchPageToCache(navigationUrl, createNativeXHR);
-
-    return ensurePagePromise
-        .then(() => {
-            const requestBarrier = new RequestBarrier();
-
-            hammerhead.navigateTo(command.url, command.forceReload);
-
-            return hammerhead.Promise.all([requestBarrier.wait(), pageUnloadBarrier.wait()]);
-        })
-        .then(() => new DriverStatus({ isCommandResult: true }))
-        .catch(err => new DriverStatus({ isCommandResult: true, executionError: err }));
+        return new DriverStatus({ isCommandResult: true });
+    }
+    catch (error) {
+        return new DriverStatus({ isCommandResult: true, executionError: error });
+    }
 }
