@@ -1,4 +1,5 @@
 const path                       = require('path');
+const { readFileSync }           = require('fs');
 const SlConnector                = require('saucelabs-connector');
 const BsConnector                = require('browserstack-connector');
 const caller                     = require('caller');
@@ -142,7 +143,12 @@ before(function () {
 
     mocha.timeout(60000);
 
-    const { devMode, retryTestPages } = config;
+    const { devMode, retryTestPages, ssl } = config;
+
+    if (ssl) {
+        ssl.cert = ssl.cert && readFileSync(ssl.cert);
+        ssl.key  = ssl.key && readFileSync(ssl.key);
+    }
 
     const testCafeOptions = {
         hostname: config.testCafe.hostname,
@@ -152,6 +158,7 @@ before(function () {
         developmentMode: devMode,
 
         retryTestPages,
+        ssl,
 
         experimentalCompilerService: !!process.env.EXPERIMENTAL_COMPILER_SERVICE
     };

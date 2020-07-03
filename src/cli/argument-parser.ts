@@ -134,6 +134,7 @@ export default class CLIArgumentParser {
             .option('--cs, --client-scripts <paths>', 'inject scripts into tested pages', this._parseList, [])
             .option('--disable-page-caching', 'disable page caching during test execution')
             .option('--disable-page-reloads', 'disable page reloads between tests')
+            .option('--retry-test-pages', 'retry network requests to test pages during test execution')
             .option('--disable-screenshots', 'disable screenshots')
             .option('--screenshots-full-page', 'enable full-page screenshots')
 

@@ -1,11 +1,11 @@
 (function () {
     var IframeDriver = window['%testCafeIframeDriver%'];
     var driver       = new IframeDriver({{{testRunId}}}, {
-        selectorTimeout:     {{{selectorTimeout}}},
-        pageLoadTimeout:     {{{pageLoadTimeout}}},
-        dialogHandler:       {{{dialogHandler}}},
-        unstableNetworkMode: {{{retryTestPages}}},
-        speed:               {{{speed}}}
+        selectorTimeout: {{{selectorTimeout}}},
+        pageLoadTimeout: {{{pageLoadTimeout}}},
+        dialogHandler:   {{{dialogHandler}}},
+        retryTestPages:  {{{retryTestPages}}},
+        speed:           {{{speed}}}
     });
 
     driver.start();

@@ -1,6 +1,8 @@
+import debug from 'debug';
 import { EventEmitter } from 'events';
 import Mustache from 'mustache';
 import { pull as remove } from 'lodash';
+import timeLimit from 'time-limit-promise';
 import parseUserAgent, { ParsedUserAgent } from '../../utils/parse-user-agent';
 import { readSync as read } from 'read-file-relative';
 import promisifyEvent from 'promisify-event';
@@ -8,14 +10,16 @@ import nanoid from 'nanoid';
 import COMMAND from './command';
 import BrowserConnectionStatus from './status';
 import HeartbeatStatus from './heartbeat-status';
-import { GeneralError } from '../../errors/runtime';
+import { GeneralError, TimeoutError } from '../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../errors/types';
-import { BROWSER_RESTART_TIMEOUT, HEARTBEAT_TIMEOUT } from '../../utils/browser-connection-timeouts';
+import { BROWSER_RESTART_TIMEOUT, BROWSER_CLOSE_TIMEOUT, HEARTBEAT_TIMEOUT } from '../../utils/browser-connection-timeouts';
 import { Dictionary } from '../../configuration/interfaces';
 import BrowserConnectionGateway from './gateway';
 import BrowserJob from '../../runner/browser-job';
 import WarningLog from '../../notifications/warning-log';
 import BrowserProvider from '../provider';
+
+const DEBUG_SCOPE = (id: string): string => `testcafe:browser:connection:${id}`;
 
 const IDLE_PAGE_TEMPLATE                         = read('../../client/browser/idle-page/index.html.mustache');
 const connections: Dictionary<BrowserConnection> = {};
@@ -83,6 +87,7 @@ export default class BrowserConnection extends EventEmitter {
     private readonly activeWindowIdUrl: string;
     private statusDoneUrl: string;
     private warningLog: WarningLog;
+    private readonly debugLogger: debug.Debugger;
 
     public idle: boolean;
 
@@ -99,7 +104,10 @@ export default class BrowserConnection extends EventEmitter {
         this.HEARTBEAT_TIMEOUT       = HEARTBEAT_TIMEOUT;
         this.BROWSER_RESTART_TIMEOUT = BROWSER_RESTART_TIMEOUT;
 
-        this.id                       = BrowserConnection._generateId();
+        this.id = BrowserConnection._generateId();
+
+        this.debugLogger = debug(DEBUG_SCOPE(this.id));
+
         this.jobQueue                 = [];
         this.initScriptsQueue         = [];
         this.browserConnectionGateway = gateway;
@@ -133,7 +141,8 @@ export default class BrowserConnection extends EventEmitter {
         this.statusUrl     = `${gateway.domain}${this.statusRelativeUrl}`;
         this.statusDoneUrl = `${gateway.domain}${this.statusDoneRelativeUrl}`;
 
-        this.on('error', () => {
+        this.on('error', e => {
+            this.debugLogger(e);
             this._forceIdle();
             this.close();
         });
@@ -159,6 +168,7 @@ export default class BrowserConnection extends EventEmitter {
                 await promisifyEvent(this, 'ready');
 
             this.status = BrowserConnectionStatus.opened;
+
             this.emit('opened');
         }
         catch (err) {
@@ -179,6 +189,7 @@ export default class BrowserConnection extends EventEmitter {
         }
         catch (err) {
             // NOTE: A warning would be really nice here, but it can't be done while log is stored in a task.
+            this.debugLogger(err);
         }
     }
 
@@ -234,7 +245,8 @@ export default class BrowserConnection extends EventEmitter {
         let isTimeoutExpired                = false;
         let timeout: NodeJS.Timeout | null  = null;
 
-        const restartPromise = this._closeBrowser()
+        const restartPromise = timeLimit(this._closeBrowser(), BROWSER_CLOSE_TIMEOUT, { rejectWith: new TimeoutError() })
+            .catch(error => this.debugLogger(error))
             .then(() => this._runBrowser());
 
         const timeoutPromise = new Promise(resolve => {

@@ -40,9 +40,8 @@ test
             .expect(hook1.done).ok()
             .expect(hook2.done).ok();
 
-        // NOTE: If caching is prevented for the page and 'retryTestPages' option is turned on
-        // then the tested page will be requested twice.
-        const expectedResult = t.testRun.opts.retryTestPages ? '1,2,1,2' : '1,2';
+
+        const expectedResult = '1,2';
 
         await t.expect(result.toString()).eql(expectedResult);
     });

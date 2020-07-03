@@ -23,7 +23,6 @@ import testRunTracker from '../api/test-run-tracker';
 import ROLE_PHASE from '../role/phase';
 import ReporterPluginHost from '../reporter/plugin-host';
 import BrowserConsoleMessages from './browser-console-messages';
-import { UNSTABLE_NETWORK_MODE_HEADER } from '../browser/connection/unstable-network-mode';
 import WarningLog from '../notifications/warning-log';
 import WARNING_MESSAGE from '../notifications/warning-message';
 import { StateSnapshot, SPECIAL_ERROR_PAGE } from 'testcafe-hammerhead';
@@ -288,11 +287,6 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     handlePageError (ctx, err) {
-        if (ctx.req.headers[UNSTABLE_NETWORK_MODE_HEADER]) {
-            ctx.closeWithError(500, err.toString());
-            return;
-        }
-
         this.pendingPageError = new PageLoadError(err, ctx.reqOpts.url);
 
         ctx.redirect(ctx.toProxyUrl(SPECIAL_ERROR_PAGE));

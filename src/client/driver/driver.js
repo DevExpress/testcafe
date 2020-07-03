@@ -178,14 +178,9 @@ export default class Driver extends serviceUtils.EventEmitter {
         this.setAsMasterInProgress            = false;
         this.checkClosedChildWindowIntervalId = null;
 
-        if (options.retryTestPages)
-            browser.enableRetryingTestPages();
-
         this.pageInitialRequestBarrier = new RequestBarrier();
 
-        this.readyPromise = eventUtils
-            .documentReady(this.pageLoadTimeout)
-            .then(() => this.pageInitialRequestBarrier.wait(true));
+        this.readyPromise = this._getReadyPromise();
 
         this._initChildDriverListening();
 
@@ -215,6 +210,15 @@ export default class Driver extends serviceUtils.EventEmitter {
 
     set consoleMessages (messages) {
         return this.contextStorage.setItem(CONSOLE_MESSAGES, messages ? messages.getCopy() : null);
+    }
+
+    async _getReadyPromise () {
+        if (this.retryTestPages)
+            await browser.enableRetryingTestPages();
+
+        await eventUtils.documentReady(this.pageLoadTimeout);
+
+        await this.pageInitialRequestBarrier.wait(true);
     }
 
     _hasPendingActionFlags (contextStorage) {
