@@ -2,6 +2,7 @@ import { find, sortBy, union } from 'lodash';
 import { writable as isWritableStream } from 'is-stream';
 import ReporterPluginHost from './plugin-host';
 import formatCommand from './command/format-command';
+import getBrowser from '../utils/get-browser';
 
 export default class Reporter {
     constructor (plugin, task, outStream, name) {
@@ -55,7 +56,8 @@ export default class Reporter {
             pendingRuns:                runsPerTest,
             pendingStarts:              runsPerTest,
             pendingTestRunDonePromise:  Reporter._createPendingPromise(),
-            pendingTestRunStartPromise: Reporter._createPendingPromise()
+            pendingTestRunStartPromise: Reporter._createPendingPromise(),
+            browsers:                   []
         };
     }
 
@@ -75,7 +77,9 @@ export default class Reporter {
             screenshots:    reportItem.screenshots,
             videos:         reportItem.videos,
             quarantine:     reportItem.quarantine,
-            skipped:        reportItem.test.skip
+            skipped:        reportItem.test.skip,
+            browsers:       reportItem.browsers,
+            testId:         reportItem.test.id
         };
     }
 
@@ -191,7 +195,7 @@ export default class Reporter {
 
             if (!reportItem.pendingStarts) {
                 if (this.plugin.reportTestStart) {
-                    const testStartInfo = { testRunIds: reportItem.testRunIds };
+                    const testStartInfo = { testRunIds: reportItem.testRunIds, testId: reportItem.test.id };
 
                     await this.plugin.reportTestStart(reportItem.test.name, reportItem.test.meta, testStartInfo);
                 }
@@ -210,6 +214,8 @@ export default class Reporter {
             reportItem.unstable    = reportItem.unstable || testRun.unstable;
             reportItem.errs        = reportItem.errs.concat(testRun.errs);
             reportItem.warnings    = testRun.warningLog ? union(reportItem.warnings, testRun.warningLog.messages) : [];
+
+            reportItem.browsers.push(Object.assign({ testRunId: testRun.id }, getBrowser(testRun.browserConnection)));
 
             if (!reportItem.pendingRuns)
                 await this._resolveReportItem(reportItem, testRun);
