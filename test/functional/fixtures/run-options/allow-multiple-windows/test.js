@@ -111,7 +111,7 @@ describe('Allow multiple windows', () => {
         it('Switch to unexisting parent window', () => {
             return runTests('testcafe-fixtures/api/api-test.js', 'Switch to unexisting parent window', { only: 'chrome', allowMultipleWindows: true, shouldFail: true })
                 .catch(errs => {
-                    expect(errs[0]).to.contain('Cannot find the parent window.');
+                    expect(errs[0]).to.contain('Cannot find the parent window. Make sure that the current window was opened from another window.');
                 });
         });
 
@@ -134,6 +134,13 @@ describe('Allow multiple windows', () => {
             return runTests('testcafe-fixtures/api/api-test.js', 'Switch to window by title', { only: 'chrome', allowMultipleWindows: true });
         });
 
+        it('Switch to window by predicate with error', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to window by predicate with error', { only: 'chrome', allowMultipleWindows: true, shouldFail: true })
+                .catch(errs => {
+                    expect(errs[0]).to.contain('The error occured inside the "switchToWindow" argument function:  Error details: Cannot read property \'field\' of undefined');
+                });
+        });
+
         it('Switch to recent window', () => {
             return runTests('testcafe-fixtures/api/api-test.js', 'Switch to recent window', { only: 'chrome', allowMultipleWindows: true });
         });
@@ -141,7 +148,7 @@ describe('Allow multiple windows', () => {
         it('Switch to recent closed window', () => {
             return runTests('testcafe-fixtures/api/api-test.js', 'Switch to recent closed window', { only: 'chrome', allowMultipleWindows: true, shouldFail: true })
                 .catch(errs => {
-                    expect(errs[0]).to.contain('Cannot find the window specified in the action parameters.');
+                    expect(errs[0]).to.contain('Cannot find the recent window. Make sure that the recent window is opened.');
                 });
         });
 

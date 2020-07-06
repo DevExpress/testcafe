@@ -93,6 +93,10 @@ test('Switch to window by title', async t => {
     await t.expect(Selector('h1').innerText).eql('child-2');
 });
 
+test('Switch to window by predicate with error', async t => {
+    await t.switchToWindow(w => w.nonExistingProperty.field === 'parent');
+});
+
 test('Switch to recent window', async t => {
     await t
         .openWindow(child1Url)
