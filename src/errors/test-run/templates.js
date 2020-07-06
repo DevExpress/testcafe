@@ -354,15 +354,15 @@ export default {
     `,
 
     [TEST_RUN_ERRORS.parentWindowNotFoundError]: () => `
-        Cannot find the parent window. Make sure that the current window was opened from another window.
+        Cannot find the parent window. Make sure that the tested window was opened from another window.
     `,
 
     [TEST_RUN_ERRORS.recentWindowNotFoundError]: () => `
-        Cannot find the recent window. Make sure that the recent window is opened.
+        Cannot find the previous window. Make sure that the previous window is opened.
     `,
 
     [TEST_RUN_ERRORS.switchToWindowPredicateError]: err => `
-        The error occured inside the "switchToWindow" argument function:
+        An error occurred inside the "switchToWindow" argument function.
         
         Error details:
         ${escapeHtml(err.errMsg)}

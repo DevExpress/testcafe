@@ -560,29 +560,23 @@ export class CloseChildWindowError extends TestRunErrorBase {
     }
 }
 
-export class ChildWindowValidationError extends TestRunErrorBase {
-    constructor ({ errCode, errMsg }) {
-        super(errCode);
-
-        this.errMsg = errMsg;
-    }
-}
-
-export class WindowNotFoundError extends ChildWindowValidationError {
+export class WindowNotFoundError extends TestRunErrorBase {
     constructor () {
         super(TEST_RUN_ERRORS.targetWindowNotFoundError);
     }
 }
 
-export class CannotCloseWindowWithChildrenError extends ChildWindowValidationError {
+export class CannotCloseWindowWithChildrenError extends TestRunErrorBase {
     constructor () {
         super(TEST_RUN_ERRORS.cannotCloseWindowWithChildrenError);
     }
 }
 
-export class SwitchToWindowPredicateError extends ChildWindowValidationError {
-    constructor () {
+export class SwitchToWindowPredicateError extends TestRunErrorBase {
+    constructor (errMsg) {
         super(TEST_RUN_ERRORS.switchToWindowPredicateError);
+
+        this.errMsg = errMsg;
     }
 }
 

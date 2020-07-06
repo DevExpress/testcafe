@@ -80,6 +80,8 @@ const {
     ChildWindowClosedBeforeSwitchingError,
     WindowNotFoundError,
     ParentWindowNotFoundError,
+    RecentWindowNotFoundError,
+    SwitchToWindowPredicateError,
     CannotCloseWindowWithChildrenError,
     AllowMultipleWindowsOptionIsNotSpecifiedError
 } = require('../../lib/errors/test-run');
@@ -467,6 +469,14 @@ describe('Error formatting', () => {
 
         it('Should format "parentWindowNotFoundError"', () => {
             assertErrorMessage('parent-window-not-found-error', new ParentWindowNotFoundError());
+        });
+
+        it('Should format "recentWindowNotFoundError"', () => {
+            assertErrorMessage('recent-window-not-found-error', new RecentWindowNotFoundError());
+        });
+
+        it('Should format "switchToWindowPredicateError"', () => {
+            assertErrorMessage('switch-to-window-predicate-error', new SwitchToWindowPredicateError('error message'));
         });
 
         it('Should format "allowMultipleWindowsOptionIsNotSpecifiedError"', () => {

@@ -51,7 +51,6 @@ import {
     ChildWindowIsNotLoadedError,
     CannotSwitchToWindowError,
     CloseChildWindowError,
-    ChildWindowValidationError,
     ChildWindowClosedBeforeSwitchingError,
     ParentWindowNotFoundError,
     RecentWindowNotFoundError
@@ -89,6 +88,7 @@ import sendConfirmationMessage from './driver-link/send-confirmation-message';
 import DriverRole from './role';
 import { CHECK_CHILD_WINDOW_CLOSED_INTERVAL, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT } from './driver-link/timeouts';
 import sendMessageToDriver from './driver-link/send-message-to-driver';
+import ChildWindowValidationErrorFactory from '../../errors/test-run/child-window-error-factory';
 
 const settings = hammerhead.get('./settings');
 
@@ -1018,7 +1018,7 @@ export default class Driver extends serviceUtils.EventEmitter {
                 const result = response.result;
 
                 if (!result.success)
-                    throw new ChildWindowValidationError(result);
+                    throw ChildWindowValidationErrorFactory.createError(result);
 
                 return sendMessageToDriver(new CloseWindowCommandMessage({ windowId }), wnd, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT, CannotSwitchToWindowError);
             })
@@ -1057,7 +1057,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         return sendMessageToDriver(new SwitchToWindowValidationMessage({ windowId, fn }), wnd, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT, CannotSwitchToWindowError);
     }
 
-    _onSwitchToWindow (command, ErrorCtor = ChildWindowValidationError) {
+    _onSwitchToWindow (command, err) {
         const wnd = this.parentWindowDriverLink ? this.parentWindowDriverLink.getTopOpenedWindow() : window;
 
         this._validateChildWindowSwitchToWindowCommandExists({ windowId: command.windowId, fn: command.findWindow }, wnd)
@@ -1067,7 +1067,7 @@ export default class Driver extends serviceUtils.EventEmitter {
                 if (!result.success) {
                     this._onReady(new DriverStatus({
                         isCommandResult: true,
-                        executionError:  new ErrorCtor(result)
+                        executionError:  err || ChildWindowValidationErrorFactory.createError(result)
                     }));
                 }
                 else {
@@ -1079,7 +1079,7 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     _onSwitchToRecentWindow (command) {
-        this._onSwitchToWindow(command, RecentWindowNotFoundError);
+        this._onSwitchToWindow(command, new RecentWindowNotFoundError());
     }
 
     _onSwitchToParentWindow () {
