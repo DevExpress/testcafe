@@ -11,6 +11,7 @@ const parseProviderName       = require('../../lib/browser/provider/parse-provid
 const BrowserConnection       = require('../../lib/browser/connection');
 const ProviderCtor            = require('../../lib/browser/provider/');
 const WARNING_MESSAGE         = require('../../lib/notifications/warning-message');
+const BrowserProviderPluginHost = require('../../lib/browser/provider/plugin-host');
 
 class BrowserConnectionMock extends BrowserConnection {
     constructor () {
@@ -27,6 +28,17 @@ class BrowserConnectionMock extends BrowserConnection {
     }
 }
 
+function debugMock (id) {
+    if (!debugMock.data)
+        debugMock.data = {};
+
+    if (!debugMock.data[id])
+        debugMock.data[id] = '';
+
+    return newData => {
+        debugMock.data[id] += newData;
+    };
+}
 
 describe('Browser provider', function () {
     describe('Path and arguments handling', function () {
@@ -383,6 +395,71 @@ describe('Browser provider', function () {
                     });
             });
         });
+    });
+
+    describe('Remote provider', () => {
+        it('Should log an error if a browser window was not found', async () => {
+            const bc   = new BrowserConnectionMock();
+
+            bc.isReady = () => true;
+
+            const remoteProvider = proxyquire('../../lib/browser/provider/built-in/remote', {
+                'testcafe-browser-tools': {
+                    findWindow () {
+                        throw new Error('SomeError');
+                    }
+                },
+                debug: debugMock
+            });
+
+            const provider = new ProviderCtor(new BrowserProviderPluginHost(remoteProvider));
+
+            await provider.openBrowser(bc.id);
+
+            expect(debugMock.data['testcafe:browser:provider:built-in:remote']).eql('Error: SomeError');
+
+            debugMock.data = {};
+        });
+    });
+
+    it('Should raise a warning if a browser window was not found', async () => {
+        const bc      = new BrowserConnectionMock();
+
+        bc.isReady    = () => true;
+
+        let warning; let errorMsg;
+
+        bc.addWarning = (...args) => {
+            warning  = args[0];
+            errorMsg = args[1];
+        };
+
+        const ProviderMock = proxyquire('../../lib/browser/provider', {
+            'testcafe-browser-tools': {
+                default: {
+                    findWindow () {
+                        throw new Error('SomeError');
+                    }
+                }
+            },
+            debug: debugMock
+        });
+
+        const provider = new ProviderMock(
+            new BrowserProviderPluginHost({
+                openBrowser:       noop,
+                isLocalBrowser:    () => true,
+                isHeadlessBrowser: () => false,
+            })
+        );
+
+        await provider.openBrowser(bc.id);
+
+        expect(debugMock.data['testcafe:browser:provider']).eql('Error: SomeError');
+        expect(warning).eql(WARNING_MESSAGE.cannotFindWindowDescriptorError);
+        expect(errorMsg).eql('SomeError');
+
+        debugMock.data = {};
     });
 });
 

@@ -1,6 +1,9 @@
+import debug from 'debug';
 import { findWindow } from 'testcafe-browser-tools';
 import WARNING_MESSAGE from '../../../notifications/warning-message';
 
+
+const DEBUG_LOGGER = debug('testcafe:browser:provider:built-in:remote');
 
 export default {
     canDetectLocalBrowsers: true,
@@ -13,7 +16,15 @@ export default {
 
         await this.waitForConnectionReady(browserId);
 
-        const localBrowserWindow = await findWindow(browserId);
+        let localBrowserWindow = null;
+
+        try {
+            localBrowserWindow = await findWindow(browserId);
+        }
+        catch (err) {
+            // NOTE: suppress the error, because finding of the local browser window was failed
+            DEBUG_LOGGER(err);
+        }
 
         this.localBrowsersFlags[browserId] = localBrowserWindow !== null;
     },
