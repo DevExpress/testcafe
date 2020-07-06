@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.8.8 (2020-7-6)
+
+### Bug Fixes
+
+* TestCafe now emits warnings when `ClientFunction` and `Selector` instances are asserted without a call ([#5211](https://github.com/DevExpress/testcafe/pull/5211))
+* Fixed click simulation for Ionic framework elements that use the `disabled` attribute ([](https://github.com/DevExpress/testcafe/issues/5141))
+* Improved compatibility with test pages that use destructuring in the `for..of` loops ([testcafe-hammerhead#2363](https://github.com/DevExpress/testcafe-hammerhead/issues/2363))
+* Improved compatibility with test pages that use destructuring in ternary expressions ([testcafe-hammerhead#2362](https://github.com/DevExpress/testcafe-hammerhead/issues/2362))
+* Improved compatibility with pages that use SVG elements with the `title` tag ([testcafe-hammerhead#2364](https://github.com/DevExpress/testcafe-hammerhead/issues/2364))
+* Fixed the `Failed to execute 'postMessage' on 'Window'` exception for test pages that use the `<iframe>` tags ([testcafe-hammerhead#2165](https://github.com/DevExpress/testcafe-hammerhead/issues/2165))
+
 ## v1.8.7 (2020-6-23)
 
 ### Bug Fixes
