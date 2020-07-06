@@ -262,7 +262,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1590354000 * 1000);
+        var lastPostDate = new Date(1593464400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -536,7 +536,7 @@ You can assign to <code>ctx</code> parameter&#39;s properties or add new propert
         <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="nx">nameInput</span><span class="p">,</span> <span class="dl">'</span><span class="s1"> Parker</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div><h3><a class="anchor" id="using-test-controller-outside-of-test-code-1166"></a>⚙ Using test controller outside of test code (<a href="https://github.com/DevExpress/testcafe/issues/1166">#1166</a>) <a class="permalink" href="#using-test-controller-outside-of-test-code-1166">#</a></h3>
-<p>You may sometimes need to call test API from outside of test code. For instance, your <a href="https://devexpress.github.io/testcafe/documentation/recipes/using-page-model.html">page model</a>
+<p>You may sometimes need to call test API from outside of test code. For instance, your <a href="../documentation/guides/concepts/page-model.html">page model</a>
 can contain methods that perform common operations used in many tests, like authentication.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
@@ -610,9 +610,9 @@ Instead, you can simply import <code>t</code> to the page model file.</p>
 <span class="kd">const</span> <span class="nx">id</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">.someClass</span><span class="dl">'</span><span class="p">).</span><span class="nx">id</span><span class="p">;</span>
 </code></pre></div>
 <ul>
-<li><code>selectorOptions.index</code> - use <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#nth">selector.nth()</a> instead.</li>
-<li><code>selectorOptions.text</code> - use <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#withtext">selector.withText()</a> instead.</li>
-<li><code>selectorOptions.dependencies</code> - use <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#filter-dom-nodes">filtering</a> and <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#search-for-elements-in-the-dom-hierarchy">hierarchical</a> methods to build combined selectors instead.</li>
+<li><code>selectorOptions.index</code> - use <a href="../documentation/reference/test-api/selector/nth.html">selector.nth()</a> instead.</li>
+<li><code>selectorOptions.text</code> - use <a href="../documentation/reference/test-api/selector/withtext.html">selector.withText()</a> instead.</li>
+<li><code>selectorOptions.dependencies</code> - use <a href="../documentation/guides/basic-guides/select-page-elements.html#member-tables">filtering and hierarchical</a> methods to build combined selectors instead.</li>
 </ul>
 <h2><a class="anchor" id="bug-fixes"></a>Bug Fixes <a class="permalink" href="#bug-fixes">#</a></h2>
 <ul>

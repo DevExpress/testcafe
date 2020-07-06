@@ -262,7 +262,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1590354000 * 1000);
+        var lastPostDate = new Date(1593464400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -460,11 +460,11 @@
 
 <!--more-->
 <h2><a class="anchor" id="enhancements"></a>Enhancements <a class="permalink" href="#enhancements">#</a></h2><h3><a class="anchor" id="select-tests-and-fixtures-to-run-by-their-metadata-2527-by-nickcis"></a>⚙ Select Tests and Fixtures to Run by Their Metadata (<a href="https://github.com/DevExpress/testcafe/issues/2527">#2527</a>) by <a href="https://github.com/NickCis">@NickCis</a> <a class="permalink" href="#select-tests-and-fixtures-to-run-by-their-metadata-2527-by-nickcis">#</a></h3>
-<p>You can now run only those tests or fixtures whose <a href="https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#specifying-testing-metadata">metadata</a> contains a specific set of values. Use the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--test-meta-keyvaluekey2value2">--test-meta</a> and <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--fixture-meta-keyvaluekey2value2">--fixture-meta</a> flags to specify these values.</p>
+<p>You can now run only those tests or fixtures whose <a href="../documentation/guides/basic-guides/organize-tests.html#specify-test-metadata">metadata</a> contains a specific set of values. Use the <a href="../documentation/reference/command-line-interface.html#--test-meta-keyvaluekey2value2">--test-meta</a> and <a href="../documentation/reference/command-line-interface.html#--fixture-meta-keyvaluekey2value2">--fixture-meta</a> flags to specify these values.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests <span class="nt">--test-meta</span> <span class="nv">device</span><span class="o">=</span>mobile,env<span class="o">=</span>production
 </code></pre></div><div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests <span class="nt">--fixture-meta</span> <span class="nv">subsystem</span><span class="o">=</span>payments,type<span class="o">=</span>regression
 </code></pre></div>
-<p>In the API, test and fixture metadata is now passed to the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#filter">runner.filter</a> method in the <code>testMeta</code> and <code>fixtureMeta</code> parameters. Use this metadata to build a logic that determines whether to run the current test.</p>
+<p>In the API, test and fixture metadata is now passed to the <a href="../documentation/reference/testcafe-api/runner/filter.html">runner.filter</a> method in the <code>testMeta</code> and <code>fixtureMeta</code> parameters. Use this metadata to build a logic that determines whether to run the current test.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">filter</span><span class="p">((</span><span class="nx">testName</span><span class="p">,</span> <span class="nx">fixtureName</span><span class="p">,</span> <span class="nx">fixturePath</span><span class="p">,</span> <span class="nx">testMeta</span><span class="p">,</span> <span class="nx">fixtureMeta</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="k">return</span> <span class="nx">testMeta</span><span class="p">.</span><span class="nx">mobile</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">true</span><span class="dl">'</span> <span class="o">&amp;&amp;</span>
         <span class="nx">fixtureMeta</span><span class="p">.</span><span class="nx">env</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">staging</span><span class="dl">'</span><span class="p">;</span>
@@ -472,7 +472,7 @@
 </code></pre></div><h3><a class="anchor" id="run-dynamically-loaded-tests-2074"></a>⚙ Run Dynamically Loaded Tests (<a href="https://github.com/DevExpress/testcafe/issues/2074">#2074</a>) <a class="permalink" href="#run-dynamically-loaded-tests-2074">#</a></h3>
 <p>You can now run tests imported from external libraries or generated dynamically even if the <code>.js</code> file does not contain any tests.</p>
 
-<p>Previously, test files had to contain the <a href="https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#fixtures">fixture</a> and <a href="https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#tests">test</a> directives. You can now add the <code>--disable-test-syntax-validation</code> command line flag to bypass this check.</p>
+<p>Previously, test files had to contain the <a href="../documentation/guides/basic-guides/organize-tests.html#fixtures">fixture</a> and <a href="../documentation/guides/basic-guides/organize-tests.html#tests">test</a> directives. You can now add the <code>--disable-test-syntax-validation</code> command line flag to bypass this check.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe safari test.js <span class="nt">--disable-test-syntax-validation</span>
 </code></pre></div>
 <p>In the API, use the <code>disableTestSyntaxValidation</code> option.</p>

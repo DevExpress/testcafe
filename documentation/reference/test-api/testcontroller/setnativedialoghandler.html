@@ -444,7 +444,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1590354000 * 1000);
+        var lastPostDate = new Date(1593464400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -2133,7 +2133,7 @@ using the <code>setNativeDialogHandler</code> method of the
 <tr>
 <td><code>options</code>&#160;<em>(optional)</em></td>
 <td>Object</td>
-<td>See [Client Function Options]../clientfunction/constructor.md#options).</td>
+<td>See <a href="../clientfunction/constructor.html#options">Client Function Options</a>.</td>
 </tr>
 </tbody></table></div>
 <p>The handler function has the following arguments.</p>
@@ -2198,8 +2198,8 @@ If you return nothing, TestCafe performs default handling.</p>
 <td>&#39;Cancel&#39; button.</td>
 </tr>
 </tbody></table></div>
-<p>The following example demonstrates how to handle an alert dialog.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+<p>You can get the native dialog history with the <a href="getnativedialoghistory.html">t.getNativeDialogHistory</a> method.</p>
+<h2><a class="anchor" id="examples"></a>Examples <a class="permalink" href="#examples">#</a></h2><h3><a class="anchor" id="handle-an-alert-dialog"></a>Handle an Alert Dialog <a class="permalink" href="#handle-an-alert-dialog">#</a></h3><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
     <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
 
 <span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">My test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -2207,9 +2207,7 @@ If you return nothing, TestCafe performs default handling.</p>
         <span class="p">.</span><span class="nx">setNativeDialogHandler</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="kc">true</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="dl">'</span><span class="s1">#show-alert-button</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div>
-<p>The next example is a test that handles two confirm dialogs and a prompt dialog.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+</code></pre></div><h3><a class="anchor" id="handle-multiple-dialogs"></a>Handle Multiple Dialogs <a class="permalink" href="#handle-multiple-dialogs">#</a></h3><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
     <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
 
 <span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">My test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -2235,9 +2233,21 @@ If you return nothing, TestCafe performs default handling.</p>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="dl">'</span><span class="s1">#show-prompt</span><span class="dl">'</span><span class="p">);</span>
         <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="dl">'</span><span class="s1">#confirm-account-deletion</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
+</code></pre></div><h3><a class="anchor" id="use-a-variable-in-the-dialog-handler"></a>Use a Variable in the Dialog Handler <a class="permalink" href="#use-a-variable-in-the-dialog-handler">#</a></h3>
+<p>This example shows a <code>delete</code> method in a <a href="../../../guides/concepts/page-model.html">page model</a>. The dialog handler types the removed item&#39;s name (<code>this.name</code>) into a prompt dialog to confirm deletion. The <code>name</code> variable is passed to the handler through <a href="../clientfunction/constructor.html#optionsdependencies">options.dependencies</a>.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">class</span> <span class="nx">Page</span> <span class="p">{</span>
+    <span class="kd">constructor</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="cm">/* ... */</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">.item-name</span><span class="dl">'</span><span class="p">).</span><span class="nx">textContent</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">async</span> <span class="k">delete</span> <span class="p">()</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">name</span> <span class="o">=</span> <span class="k">await</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
+        <span class="k">await</span> <span class="nx">t</span>
+            <span class="p">.</span><span class="nx">setNativeDialogHandler</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">name</span><span class="p">,</span> <span class="p">{</span> <span class="na">dependencies</span><span class="p">:</span> <span class="p">{</span> <span class="nx">name</span> <span class="p">}})</span>
+            <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">deleteBtn</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
-<p>You can get the native dialog history with the <a href="getnativedialoghistory.html">t.getNativeDialogHistory</a> method.</p>
-
 
 		</div>
 	</article>

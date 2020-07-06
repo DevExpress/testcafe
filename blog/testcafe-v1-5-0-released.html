@@ -262,7 +262,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1590354000 * 1000);
+        var lastPostDate = new Date(1593464400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -460,11 +460,11 @@
 
 <!--more-->
 <h2><a class="anchor" id="enhancements"></a>Enhancements <a class="permalink" href="#enhancements">#</a></h2><h3><a class="anchor" id="page-caching-can-be-disabled-3780"></a>⚙ Page Caching Can be Disabled (<a href="https://github.com/DevExpress/testcafe/issues/3780">#3780</a>) <a class="permalink" href="#page-caching-can-be-disabled-3780">#</a></h3>
-<p>TestCafe may be unable to log in to the tested website correctly if the web server uses caching for authentication pages or pages to which users are redirected after login. See the <a href="https://devexpress.github.io/testcafe/documentation/test-api/authentication/user-roles.html#test-actions-fail-after-authentication">User Roles</a> topic for details.</p>
+<p>TestCafe may be unable to log in to the tested website correctly if the web server uses caching for authentication pages or pages to which users are redirected after login. See the <a href="../documentation/guides/advanced-guides/authentication.html#test-actions-fail-after-authentication">User Roles</a> topic for details.</p>
 
 <p>If tests fail unexpectedly after authentication, disable page caching in TestCafe.</p>
 
-<p>Use the <a href="https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#disable-page-caching">fixture.disablePageCaching</a> and <a href="https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#disable-page-caching">test.disablePageCaching</a> methods to disable caching during a particular fixture or test.</p>
+<p>Use the <a href="../documentation/reference/test-api/fixture/disablepagecaching.html">fixture.disablePageCaching</a> and <a href="../documentation/reference/test-api/test/disablepagecaching.html">test.disablePageCaching</a> methods to disable caching during a particular fixture or test.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span>
     <span class="p">.</span><span class="nx">disablePageCaching</span> <span class="s2">`My fixture`</span>
     <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://example.com`</span><span class="p">;</span>
@@ -475,13 +475,13 @@
 <p>To disable page caching during the entire test run, use either of the following options:</p>
 
 <ul>
-<li><p>the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--disable-page-caching">--disable-page-caching</a> command line flag</p>
+<li><p>the <a href="../documentation/reference/command-line-interface.html#--disable-page-caching">--disable-page-caching</a> command line flag</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests <span class="nt">--disable-page-caching</span>
 </code></pre></div></li>
-<li><p>the <code>disablePageCaching</code> option in the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#run">runner.run</a> method</p>
+<li><p>the <code>disablePageCaching</code> option in the <a href="../documentation/reference/testcafe-api/runner/run.html">runner.run</a> method</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">run</span><span class="p">({</span> <span class="na">disablePageCaching</span><span class="p">:</span> <span class="kc">true</span> <span class="p">});</span>
 </code></pre></div></li>
-<li><p>the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#disablepagecaching">disablePageCaching</a> configuration file property</p>
+<li><p>the <a href="../documentation/reference/configuration-file.html#disablepagecaching">disablePageCaching</a> configuration file property</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
     </span><span class="nl">"disablePageCaching"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
 </span><span class="p">}</span><span class="w">

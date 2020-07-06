@@ -444,7 +444,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1590354000 * 1000);
+        var lastPostDate = new Date(1593464400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -786,6 +786,15 @@
 		    
 		
 
+<a href="/testcafe/documentation/recipes/integrations/test-websites-that-use-recaptcha.html"  >Test Websites That Use reCAPTCHA</a>
+
+		
+    </li>
+
+    <li>
+		    
+		
+
 <a href="/testcafe/documentation/recipes/integrations/find-code-issues-with-flow-type-checker.html"  >Flow Type Checker</a>
 
 		
@@ -888,7 +897,7 @@
 <p>Refer to the <a href="https://testing-library.com/docs/testcafe-testing-library/intro">Testing Library documentation</a> for the detailed API description.</p>
 
 <p>The following example demonstrates TestCafe actions whose target elements are queried with the Testing Library API:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="o">*</span> <span class="k">as</span> <span class="nx">screen</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@testing-library/testcafe</span><span class="dl">'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">screen</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">@testing-library/testcafe</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">getByPlaceHolderText</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">typeText</span><span class="p">(</span>

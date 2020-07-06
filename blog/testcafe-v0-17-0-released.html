@@ -262,7 +262,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1590354000 * 1000);
+        var lastPostDate = new Date(1593464400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -506,7 +506,7 @@ Specify the number of instances to invoke for each browser.</p>
     <span class="p">.</span><span class="nx">concurrency</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
 </code></pre></div>
-<p>For details, see <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/concurrent-test-execution.html">Concurrent Test Execution</a>.</p>
+<p>For details, see <a href="../documentation/guides/basic-guides/run-tests.html#run-tests-concurrently">Concurrent Test Execution</a>.</p>
 <h3><a class="anchor" id="output-test-run-reports-to-slack-and-teamcity-testcafe-reporter-slack-testcafe-reporter-teamcity"></a>⚙ Output test run reports to Slack and TeamCity (<a href="https://github.com/Shafied/testcafe-reporter-slack">testcafe-reporter-slack</a>, <a href="https://github.com/Soluto/testcafe-reporter-teamcity">testcafe-reporter-teamcity</a>) <a class="permalink" href="#output-test-run-reports-to-slack-and-teamcity-testcafe-reporter-slack-testcafe-reporter-teamcity">#</a></h3>
 <p>Thanks to <a href="https://github.com/Shafied">@Shafied</a> and <a href="https://github.com/nirsky">@nirsky</a>, TestCafe ecosystem has gained two new reporter plugins.</p>
 

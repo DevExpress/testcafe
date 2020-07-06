@@ -262,7 +262,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1590354000 * 1000);
+        var lastPostDate = new Date(1593464400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -460,7 +460,7 @@
 
 <!--more-->
 <h2><a class="anchor" id="breaking-changes"></a>Breaking Changes <a class="permalink" href="#breaking-changes">#</a></h2><h3><a class="anchor" id="new-calls-to-selectors-withtext-method-no-longer-override-previous-calls"></a>New calls to selector&#39;s withText method no longer override previous calls <a class="permalink" href="#new-calls-to-selectors-withtext-method-no-longer-override-previous-calls">#</a></h3>
-<p>We have changed the way the <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#withtext">withText</a>
+<p>We have changed the way the <a href="../documentation/reference/test-api/selector/withtext.html">withText</a>
 method behaves when it is called in a chain.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">el</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">div</span><span class="dl">'</span><span class="p">).</span><span class="nx">withText</span><span class="p">(</span><span class="dl">'</span><span class="s1">This is</span><span class="dl">'</span><span class="p">).</span><span class="nx">withText</span><span class="p">(</span><span class="dl">'</span><span class="s1">my element</span><span class="dl">'</span><span class="p">);</span>
 </code></pre></div>
@@ -524,7 +524,7 @@ Pull the Docker image from the repository and run TestCafe immediately.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">docker pull testcafe/testcafe
 docker run <span class="nt">-v</span> //user/tests:/tests <span class="nt">-it</span> testcafe/testcafe firefox tests/<span class="k">**</span>/<span class="k">*</span>.js
 </code></pre></div>
-<p>To learn more, see <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/using-testcafe-docker-image.html">Using TestCafe Docker Image</a></p>
+<p>To learn more, see <a href="../documentation/guides/advanced-guides/use-testcafe-docker-image.html">Using TestCafe Docker Image</a></p>
 <h3><a class="anchor" id="support-for-internet-access-proxies-1206"></a>⚙ Support for Internet access proxies (<a href="https://github.com/DevExpress/testcafe/issues/1206">#1206</a>) <a class="permalink" href="#support-for-internet-access-proxies-1206">#</a></h3>
 <p>If your local network uses a proxy server to access the Internet, TestCafe can use it reach the external webpages.</p>
 
@@ -536,7 +536,7 @@ docker run <span class="nt">-v</span> //user/tests:/tests <span class="nt">-it</
 </code></pre></div>
 <p>Note that you can pass the credentials with the proxy server host.</p>
 <h3><a class="anchor" id="debugging-mode-option-1347"></a>⚙ Debugging mode option (<a href="https://github.com/DevExpress/testcafe/issues/1347">#1347</a>) <a class="permalink" href="#debugging-mode-option-1347">#</a></h3>
-<p>As an alternative to calling the <a href="https://devexpress.github.io/testcafe/documentation/test-api/debugging.html#client-side-debugging">t.debug</a> method
+<p>As an alternative to calling the <a href="../documentation/guides/basic-guides/debug.html#client-side-debugging">t.debug</a> method
 in test code, you can now specify the <code>--debug-mode</code> command line option to pause the test before the first action or assertion.
 When the test is paused, you can debug in the browser developer tools as well as continue test execution step by step.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests/<span class="k">**</span>/<span class="k">*</span>.js <span class="nt">--debug-mode</span>
@@ -553,7 +553,7 @@ You can omit the attribute value to select elements that simply have the specifi
 
 <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">el</span><span class="p">.</span><span class="nx">hasAttribute</span><span class="p">(</span><span class="dl">'</span><span class="s1">disabled</span><span class="dl">'</span><span class="p">)).</span><span class="nx">ok</span><span class="p">();</span>
 </code></pre></div><h3><a class="anchor" id="redirection-when-switching-between-roles-1339"></a>⚙ Redirection when switching between roles (<a href="https://github.com/DevExpress/testcafe/issues/1339">#1339</a>) <a class="permalink" href="#redirection-when-switching-between-roles-1339">#</a></h3>
-<p><a href="https://devexpress.github.io/testcafe/documentation/test-api/authentication/user-roles.html">User roles</a> now provide a <code>preserveUrl</code> option
+<p><a href="../documentation/guides/advanced-guides/authentication.html#user-roles">User roles</a> now provide a <code>preserveUrl</code> option
 that allows you to save the webpage URL to which the browser was redirected after logging in. If you enable this option when creating a role,
 the browser will be redirected to the saved URL every time you switch to this role.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">regularUser</span> <span class="o">=</span> <span class="nx">Role</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>

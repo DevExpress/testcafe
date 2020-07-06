@@ -262,7 +262,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1590354000 * 1000);
+        var lastPostDate = new Date(1593464400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -462,7 +462,7 @@
 <h2><a class="anchor" id="enhancements"></a>Enhancements <a class="permalink" href="#enhancements">#</a></h2><h3><a class="anchor" id="http-authentication-support-955-1109"></a>⚙ HTTP authentication support (<a href="https://github.com/DevExpress/testcafe/issues/955">#955</a>, <a href="https://github.com/DevExpress/testcafe/issues/1109">#1109</a>) <a class="permalink" href="#http-authentication-support-955-1109">#</a></h3>
 <p>TestCafe now supports testing webpages protected with HTTP Basic and NTLM authentication.</p>
 
-<p>Use the <a href="https://devexpress.github.io/testcafe/documentation/test-api/authentication/http-authentication.html">httpAuth</a> function in fixture or test declaration to specify the credentials.</p>
+<p>Use the <a href="../documentation/guides/advanced-guides/authentication.html#http-authentication">httpAuth</a> function in fixture or test declaration to specify the credentials.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
     <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://example.com`</span>
     <span class="p">.</span><span class="nx">httpAuth</span><span class="p">({</span>
@@ -500,7 +500,7 @@ TestCafe will automatically execute this command before running tests and stop t
 <h3><a class="anchor" id="adding-custom-properties-to-the-element-state-749"></a>⚙ Adding custom properties to the element state (<a href="https://github.com/DevExpress/testcafe/issues/749">#749</a>) <a class="permalink" href="#adding-custom-properties-to-the-element-state-749">#</a></h3>
 <p>The state of webpage elements can now be extended with custom properties.</p>
 
-<p>We have added the <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/extending-selectors.html#custom-properties">addCustomDOMProperties</a>
+<p>We have added the <a href="../documentation/reference/test-api/selector/addcustomdomproperties.html">addCustomDOMProperties</a>
 method to the selector, so that you can add properties to the element state like in the following example.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span>
 
@@ -554,8 +554,8 @@ Use the <code>fixture.skip</code> and <code>test.skip</code> methods for this.</
          <span class="c1">// Starts at http://devexpress.github.io/testcafe/blog/</span>
      <span class="p">});</span>
 </code></pre></div><h3><a class="anchor" id="initialization-and-finalization-methods-for-a-test-1108"></a>⚙ Initialization and finalization methods for a test (<a href="https://github.com/DevExpress/testcafe/issues/1108">#1108</a>) <a class="permalink" href="#initialization-and-finalization-methods-for-a-test-1108">#</a></h3>
-<p>We have added the <a href="https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up">before</a>
-and <a href="https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#initialization-and-clean-up">after</a> methods to the test declaration.
+<p>We have added the <a href="../documentation/reference/test-api/test/before.html">before</a>
+and <a href="../documentation/reference/test-api/test/after.html">after</a> methods to the test declaration.
 Use them to provide code that will be executed before a test is started and after it is finished.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">test</span>
     <span class="p">.</span><span class="nx">before</span><span class="p">(</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
@@ -618,7 +618,7 @@ In this instance, the cursor position is calculated from the bottom-right corner
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="dl">'</span><span class="s1">#element</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span> <span class="na">offsetX</span><span class="p">:</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="na">offsetY</span><span class="p">:</span> <span class="o">-</span><span class="mi">30</span> <span class="p">});</span>
 </code></pre></div><h3><a class="anchor" id="client-functions-as-an-assertions-actual-value-1009"></a>⚙ Client functions as an assertion&#39;s actual value (<a href="https://github.com/DevExpress/testcafe/issues/1009">#1009</a>) <a class="permalink" href="#client-functions-as-an-assertions-actual-value-1009">#</a></h3>
 <p>You can now pass client functions to assertion&#39;s <code>expect</code> method. In this instance, the
-<a href="https://devexpress.github.io/testcafe/documentation/test-api/assertions/#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a>
+<a href="../documentation/guides/basic-guides/assert.html#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a>
 will run this client function and use the return value as the assertion&#39;s actual value.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 

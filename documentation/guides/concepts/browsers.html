@@ -444,7 +444,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1590354000 * 1000);
+        var lastPostDate = new Date(1593464400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -1330,7 +1330,7 @@ You can use a short name - the <em>browser alias</em> - to identify browsers whe
 <td><code>9222</code> if you load a user profile with the <a href="#user-profiles">:userProfile</a> or <code>--user-data-dir</code> flag. Otherwise, TestCafe automatically assigns a free port.</td>
 </tr>
 </tbody></table></div><h2><a class="anchor" id="user-profiles"></a>User Profiles <a class="permalink" href="#user-profiles">#</a></h2>
-<p>By default, TestCafe launches Google Chrome and Mozilla Firefox with a clean profile (i.e. without extensions, bookmarks and other profile settings) - to minimize profile parameter influence on test runs.</p>
+<p>By default, TestCafe launches Chromium, Google Chrome, Microsoft Edge (Chromium-based, version 79 and above) and Mozilla Firefox with a clean profile (i.e. without extensions, bookmarks and other profile settings) - to minimize profile parameter influence on test runs.</p>
 
 <p>However, if you need to start a browser with the current user profile, you can specify the <code>:userProfile</code> flag after the <a href="#locally-installed-browsers">browser alias</a>.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe firefox:userProfile tests/test.js

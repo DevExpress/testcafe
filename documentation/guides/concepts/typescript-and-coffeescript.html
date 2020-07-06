@@ -444,7 +444,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1590354000 * 1000);
+        var lastPostDate = new Date(1593464400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -1060,7 +1060,7 @@ in TypeScript differs from extending selectors in JavaScript. Refer to the
 and <a href="../../reference/test-api/selector/addcustommethods.html">selector.addCustomMethods</a>
 sections to learn how to extend selectors in TypeScript.</p>
 </div></blockquote><h3><a class="anchor" id="customize-compiler-options"></a>Customize Compiler Options <a class="permalink" href="#customize-compiler-options">#</a></h3>
-<p>TestCafe allows you to specify <a href="https://www.typescriptlang.org/docs/handbook/compiler-options.html">TypeScript compiler options</a> in the <code>tsconfig.json</code> file. You can use these options to enable the JSX compilation, import code or typings with <code>paths</code> aliases, set aliases to React typings, or customize other compiler settings.</p>
+<p>TestCafe allows you to specify <a href="https://www.typescriptlang.org/docs/handbook/compiler-options.html">TypeScript compiler options</a> in the <code>tsconfig.json</code> file. You can use these options to enable the JSX compilation, set aliases to React typings, or customize other compiler settings.</p>
 
 <p>To apply a custom TypeScript configuration file, specify its location in one of the following ways:</p>
 

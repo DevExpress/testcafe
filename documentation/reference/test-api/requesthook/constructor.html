@@ -444,7 +444,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1590354000 * 1000);
+        var lastPostDate = new Date(1593464400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -2187,12 +2187,17 @@
 </code></pre></div><h3><a class="anchor" id="filter-with-a-predicate"></a>Filter with a Predicate <a class="permalink" href="#filter-with-a-predicate">#</a></h3>
 <p>You can get more request parameters and determine whether to handle the request with the predicate functions.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">logger</span> <span class="o">=</span> <span class="nx">RequestLogger</span><span class="p">(</span><span class="nx">request</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">request</span><span class="p">.</span><span class="nx">url</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">http://example.com</span><span class="dl">'</span> <span class="o">&amp;&amp;</span>
-           <span class="nx">request</span><span class="p">.</span><span class="nx">method</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">post</span><span class="dl">'</span> <span class="o">&amp;&amp;</span>
-           <span class="nx">request</span><span class="p">.</span><span class="nx">isAjax</span> <span class="o">&amp;&amp;</span>
-           <span class="nx">request</span><span class="p">.</span><span class="nx">body</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">{ test: true }</span><span class="dl">'</span> <span class="o">&amp;&amp;</span>
+    <span class="k">return</span> <span class="nx">request</span><span class="p">.</span><span class="nx">body</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">{ test: true }</span><span class="dl">'</span> <span class="o">&amp;&amp;</span>
            <span class="nx">request</span><span class="p">.</span><span class="nx">headers</span><span class="p">[</span><span class="dl">'</span><span class="s1">content-type</span><span class="dl">'</span><span class="p">]</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">application/json</span><span class="dl">'</span><span class="p">;</span>
 <span class="p">});</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">mock</span> <span class="o">=</span> <span class="nx">RequestMock</span><span class="p">()</span>
+    <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="nx">request</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">request</span><span class="p">.</span><span class="nx">url</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">http://example.com</span><span class="dl">'</span> <span class="o">&amp;&amp;</span>
+               <span class="nx">request</span><span class="p">.</span><span class="nx">method</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">post</span><span class="dl">'</span> <span class="o">&amp;&amp;</span>
+               <span class="nx">request</span><span class="p">.</span><span class="nx">isAjax</span> <span class="o">&amp;&amp;</span>
+               <span class="nx">request</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">toString</span><span class="p">()</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">foo=bar</span><span class="dl">'</span><span class="p">;</span>
+    <span class="p">})</span>
+    <span class="p">.</span><span class="nx">respond</span><span class="p">(</span><span class="cm">/*...*/</span><span class="p">);</span>
 </code></pre></div>
 <p>This predicate takes the <code>request</code> parameter that provides the following properties:</p>
 <div class="table-wrapper"><table><thead><tr>

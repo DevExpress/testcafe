@@ -262,7 +262,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1590354000 * 1000);
+        var lastPostDate = new Date(1593464400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -460,25 +460,25 @@
 
 <!--more-->
 <h2><a class="anchor" id="enhancements"></a>Enhancements <a class="permalink" href="#enhancements">#</a></h2><h3><a class="anchor" id="inject-scripts-into-tested-pages-1739"></a>⚙ Inject Scripts Into Tested Pages (<a href="https://github.com/DevExpress/testcafe/issues/1739">#1739</a>) <a class="permalink" href="#inject-scripts-into-tested-pages-1739">#</a></h3>
-<p>TestCafe now allows you to <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html">inject scripts</a> into pages visited during the tests. Use this feature to add helper functions, mock browser API or import modules.</p>
+<p>TestCafe now allows you to <a href="../documentation/guides/advanced-guides/inject-client-scripts.html">inject scripts</a> into pages visited during the tests. Use this feature to add helper functions, mock browser API or import modules.</p>
 
 <p>To add client scripts to all tests, specify them in the command line, API or configuration file. Use the following options:</p>
 
 <ul>
-<li><p>the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--cs-pathpath2---client-scripts-pathpath2">--cs (--client-scripts)</a> command line argument</p>
+<li><p>the <a href="../documentation/reference/command-line-interface.html#--cs-pathpath2---client-scripts-pathpath2">--cs (--client-scripts)</a> command line argument</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js <span class="nt">--client-scripts</span> mockDate.js,assets/react-helpers.js
 </code></pre></div></li>
-<li><p>the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#clientscripts">runner.clientScripts</a> API method</p>
+<li><p>the <a href="../documentation/reference/testcafe-api/runner/clientscripts.html">runner.clientScripts</a> API method</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">clientScripts</span><span class="p">(</span><span class="dl">'</span><span class="s1">mockDate.js</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">scripts/react-helpers.js</span><span class="dl">'</span><span class="p">);</span>
 </code></pre></div></li>
-<li><p>the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#clientscripts">clientScripts</a> configuration file property</p>
+<li><p>the <a href="../documentation/reference/configuration-file.html#clientscripts">clientScripts</a> configuration file property</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
     </span><span class="nl">"clientScripts"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"mockDate.js"</span><span class="p">,</span><span class="w"> </span><span class="s2">"scripts/react-helpers.js"</span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div></li>
 </ul>
 
-<p>If you need to add scripts to individual fixtures or tests, use the <a href="https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#inject-scripts-into-tested-pages">fixture.clientScripts</a> and <a href="https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#inject-scripts-into-tested-pages">test.clientScripts</a> methods in test code.</p>
+<p>If you need to add scripts to individual fixtures or tests, use the <a href="../documentation/reference/test-api/fixture/clientscripts.html">fixture.clientScripts</a> and <a href="../documentation/reference/test-api/test/clientscripts.html">test.clientScripts</a> methods in test code.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
     <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://example.com`</span>
     <span class="p">.</span><span class="nx">clientScripts</span><span class="p">(</span><span class="dl">'</span><span class="s1">mockDate.js</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">scripts/react-helpers.js</span><span class="dl">'</span><span class="p">);</span>
@@ -486,7 +486,7 @@
     <span class="p">(</span><span class="dl">'</span><span class="s1">My test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">})</span>
     <span class="p">.</span><span class="nx">clientScripts</span><span class="p">(</span><span class="dl">'</span><span class="s1">mockDate.js</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">scripts/react-helpers.js</span><span class="dl">'</span><span class="p">);</span>
 </code></pre></div>
-<p>TestCafe also allows you to <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html#provide-scripts-for-specific-pages">inject scripts into specific pages</a>.</p>
+<p>TestCafe also allows you to <a href="../documentation/guides/advanced-guides/inject-client-scripts.html#provide-scripts-for-specific-pages">inject scripts into specific pages</a>.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
     <span class="p">.</span><span class="nx">clientScripts</span><span class="p">({</span>
         <span class="na">page</span><span class="p">:</span> <span class="dl">'</span><span class="s1">https://myapp.com/page/</span><span class="dl">'</span><span class="p">,</span>
@@ -498,22 +498,22 @@
 <p>You can specify the scripts to inject as follows:</p>
 
 <ul>
-<li><p>pass the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html#inject-a-javascript-file">path to a JavaScript file</a> to inject its content:</p>
+<li><p>pass the <a href="../documentation/guides/advanced-guides/inject-client-scripts.html#inject-a-javascript-file">path to a JavaScript file</a> to inject its content:</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
     <span class="p">.</span><span class="nx">clientScripts</span><span class="p">({</span> <span class="na">path</span><span class="p">:</span> <span class="dl">'</span><span class="s1">assets/jquery.js</span><span class="dl">'</span> <span class="p">});</span>
 </code></pre></div></li>
-<li><p>use the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html#inject-a-module">module name</a> to inject a module:</p>
+<li><p>use the <a href="../documentation/guides/advanced-guides/inject-client-scripts.html#inject-a-module">module name</a> to inject a module:</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
     <span class="p">.</span><span class="nx">clientScripts</span><span class="p">({</span> <span class="na">module</span><span class="p">:</span> <span class="dl">'</span><span class="s1">async</span><span class="dl">'</span> <span class="p">});</span>
 </code></pre></div>
 <p>TestCafe searches for the module&#39;s entry point with Node.js mechanisms and injects its content. Note that the browser must be able to execute this module.</p></li>
-<li><p>pass the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html#inject-script-code">code</a> you need to inject:</p>
+<li><p>pass the <a href="../documentation/guides/advanced-guides/inject-client-scripts.html#inject-script-code">code</a> you need to inject:</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
     <span class="p">.</span><span class="nx">clientScripts</span><span class="p">({</span> <span class="na">content</span><span class="p">:</span> <span class="dl">'</span><span class="s1">Geolocation.prototype.getCurrentPosition = () =&gt; new Positon(0, 0);</span><span class="dl">'</span> <span class="p">});</span>
 </code></pre></div></li>
 </ul>
 
-<p>For more information, see <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html">Inject Scripts into Tested Pages</a>.</p>
+<p>For more information, see <a href="../documentation/guides/advanced-guides/inject-client-scripts.html">Inject Scripts into Tested Pages</a>.</p>
 <h2><a class="anchor" id="bug-fixes"></a>Bug Fixes <a class="permalink" href="#bug-fixes">#</a></h2>
 <ul>
 <li>The browser no longer displays 404 errors after the test submits a form (<a href="https://github.com/DevExpress/testcafe/issues/3560">#3560</a></li>

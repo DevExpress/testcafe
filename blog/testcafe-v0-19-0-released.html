@@ -262,7 +262,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1590354000 * 1000);
+        var lastPostDate = new Date(1593464400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -466,7 +466,7 @@
 
 <p>For more information, see <a href="https://github.com/DevExpress/testcafe-live">the TestCafe Live repository</a>.</p>
 <h2><a class="anchor" id="enhancements"></a>Enhancements <a class="permalink" href="#enhancements">#</a></h2><h3><a class="anchor" id="taking-screenshots-of-individual-page-elements-1496"></a>⚙ Taking Screenshots of Individual Page Elements (<a href="https://github.com/DevExpress/testcafe/issues/1496">#1496</a>) <a class="permalink" href="#taking-screenshots-of-individual-page-elements-1496">#</a></h3>
-<p>We have added the <a href="https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-a-page-element">t.takeElementScreenshot</a> action that allows you to take a screenshot of an individual page element.</p>
+<p>We have added the <a href="../documentation/reference/test-api/testcontroller/takeelementscreenshot.html">t.takeElementScreenshot</a> action that allows you to take a screenshot of an individual page element.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="nx">fixture</span> <span class="s2">`My fixture`</span>
@@ -479,9 +479,9 @@
         <span class="p">.</span><span class="nx">takeElementScreenshot</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">fieldset</span><span class="dl">'</span><span class="p">).</span><span class="nx">nth</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="dl">'</span><span class="s1">my-fixture/important-features.png</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>This action allows you to position the center of the screenshot or crop it. For more information, see the <a href="https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-a-page-element">t.takeElementScreenshot</a> description.</p>
+<p>This action allows you to position the center of the screenshot or crop it. For more information, see the <a href="../documentation/reference/test-api/testcontroller/takeelementscreenshot.html">t.takeElementScreenshot</a> description.</p>
 <h3><a class="anchor" id="filtering-elements-by-their-visibility-1018"></a>⚙ Filtering Elements by Their Visibility (<a href="https://github.com/DevExpress/testcafe/issues/1018">#1018</a>) <a class="permalink" href="#filtering-elements-by-their-visibility-1018">#</a></h3>
-<p>You can now use the <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#filtervisible">filterVisible</a> and <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#filterhidden">filterHidden</a> methods to display only visible or hidden elements.</p>
+<p>You can now use the <a href="../documentation/reference/test-api/selector/filtervisible.html">filterVisible</a> and <a href="../documentation/reference/test-api/selector/filterhidden.html">filterHidden</a> methods to display only visible or hidden elements.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="nx">fixture</span> <span class="s2">`My fixture`</span>
@@ -497,7 +497,7 @@
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">visibleInputs</span><span class="p">.</span><span class="nx">count</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="mi">11</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div><h3><a class="anchor" id="finding-elements-by-the-exact-matching-text-1292"></a>⚙ Finding Elements by the Exact Matching Text (<a href="https://github.com/DevExpress/testcafe/issues/1292">#1292</a>) <a class="permalink" href="#finding-elements-by-the-exact-matching-text-1292">#</a></h3>
-<p>The current selector&#39;s <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#withtext">withText</a> method looks for elements whose text content <em>contains</em> the specified string. With this release, we have added the <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#withexacttext">withExactText</a> method that performs search by <em>strict match</em>.</p>
+<p>The current selector&#39;s <a href="../documentation/reference/test-api/selector/withtext.html">withText</a> method looks for elements whose text content <em>contains</em> the specified string. With this release, we have added the <a href="../documentation/reference/test-api/selector/withexacttext.html">withExactText</a> method that performs search by <em>strict match</em>.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="nx">fixture</span> <span class="s2">`My fixture`</span>
@@ -513,7 +513,7 @@
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">reusingLabel</span><span class="p">.</span><span class="nx">exists</span><span class="p">).</span><span class="nx">ok</span><span class="p">();</span>
 <span class="p">});</span>
 </code></pre></div><h3><a class="anchor" id="using-decorators-in-typescript-code-2117-by-pietrovich"></a>⚙ Using Decorators in TypeScript Code (<a href="https://github.com/DevExpress/testcafe/issues/2117">#2117</a>) by <a href="https://github.com/pietrovich">@pietrovich</a> <a class="permalink" href="#using-decorators-in-typescript-code-2117-by-pietrovich">#</a></h3>
-<p>TestCafe now allows you to use <a href="https://www.typescriptlang.org/docs/handbook/decorators.html">decorators</a> when <a href="https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.html">writing tests in TypeScript</a>.</p>
+<p>TestCafe now allows you to use <a href="https://www.typescriptlang.org/docs/handbook/decorators.html">decorators</a> when <a href="../documentation/guides/concepts/typescript-and-coffeescript.html">writing tests in TypeScript</a>.</p>
 
 <p>Note that decorators are still an experimental feature in TypeScript.</p>
 <h2><a class="anchor" id="bug-fixes"></a>Bug Fixes <a class="permalink" href="#bug-fixes">#</a></h2>

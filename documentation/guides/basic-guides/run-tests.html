@@ -444,7 +444,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1590354000 * 1000);
+        var lastPostDate = new Date(1593464400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -1036,15 +1036,20 @@
 <p>You can run TestCafe tests from the <a href="../../reference/command-line-interface.html">command line</a> or JavaScript/TypeScript API.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe safari ./tests/my-fixture.js
 </code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">createTestCafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">);</span>
-<span class="kd">const</span> <span class="nx">testCafe</span>       <span class="o">=</span> <span class="k">await</span> <span class="nx">createTestCafe</span><span class="p">(</span><span class="dl">'</span><span class="s1">localhost</span><span class="dl">'</span><span class="p">,</span> <span class="mi">1337</span><span class="p">,</span> <span class="mi">1338</span><span class="p">);</span>
-<span class="kd">const</span> <span class="nx">runner</span>         <span class="o">=</span> <span class="nx">testCafe</span><span class="p">.</span><span class="nx">createRunner</span><span class="p">();</span>
 
-<span class="k">await</span> <span class="nx">runner</span>
-    <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="dl">'</span><span class="s1">./tests/my-fixture.js</span><span class="dl">'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="dl">'</span><span class="s1">safari</span><span class="dl">'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
+<span class="kd">const</span> <span class="nx">testCafe</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">createTestCafe</span><span class="p">(</span><span class="dl">'</span><span class="s1">localhost</span><span class="dl">'</span><span class="p">,</span> <span class="mi">1337</span><span class="p">,</span> <span class="mi">1338</span><span class="p">);</span>
 
-<span class="nx">testCafe</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span>
+<span class="k">try</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">runner</span> <span class="o">=</span> <span class="nx">testCafe</span><span class="p">.</span><span class="nx">createRunner</span><span class="p">();</span>
+
+    <span class="k">await</span> <span class="nx">runner</span>
+        <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="dl">'</span><span class="s1">./tests/my-fixture.js</span><span class="dl">'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="dl">'</span><span class="s1">safari</span><span class="dl">'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="k">finally</span> <span class="p">{</span>
+    <span class="k">await</span> <span class="nx">testCafe</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>TestCafe also allows you to create a <a href="../../reference/configuration-file.html">configuration file</a> where you can define test run settings. You can then omit these settings in the command line or API to use values from the configuration file.</p>
 
@@ -1081,7 +1086,8 @@
 </ul></li>
 <li><a href="#quarantine-mode">Quarantine Mode</a></li>
 </ul>
-<h2><a class="anchor" id="specify-tests-to-run"></a>Specify Tests to Run <a class="permalink" href="#specify-tests-to-run">#</a></h2>
+<blockquote class="important"><div class="blockquote-content"><p>Front-end development tools (such as React DevTools or Vue DevTools) can interfere with TestCafe and cause errors. Do not open them while you run or debug TestCafe tests.</p>
+</div></blockquote><h2><a class="anchor" id="specify-tests-to-run"></a>Specify Tests to Run <a class="permalink" href="#specify-tests-to-run">#</a></h2>
 <p>You should specify a path to a file or directory with tests you want to run in the <a href="../../reference/command-line-interface.html#file-pathglob-pattern">second command line argument</a>:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome ./tests/
 </code></pre></div>
@@ -1407,21 +1413,20 @@ should divide by the concurrency parameter <code>n</code>. Otherwise, an excepti
 </code></pre></div>
 <p>In the API, create a <a href="../../reference/testcafe-api/livemoderunner.html">live mode runner</a> with the <a href="../../reference/testcafe-api/testcafe/createlivemoderunner.html">testcafe.createLiveModeRunner</a> function and use it instead of a <a href="../../reference/testcafe-api/runner/">regular test runner</a>.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">createTestCafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">testcafe</span>         <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
 
-<span class="nx">createTestCafe</span><span class="p">(</span><span class="dl">'</span><span class="s1">localhost</span><span class="dl">'</span><span class="p">,</span> <span class="mi">1337</span><span class="p">,</span> <span class="mi">1338</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">tc</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="nx">testcafe</span>         <span class="o">=</span> <span class="nx">tc</span><span class="p">;</span>
-        <span class="kd">const</span> <span class="nx">liveRunner</span> <span class="o">=</span> <span class="nx">testcafe</span><span class="p">.</span><span class="nx">createLiveModeRunner</span><span class="p">();</span>
+<span class="kd">const</span> <span class="nx">testcafe</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">createTestCafe</span><span class="p">(</span><span class="dl">'</span><span class="s1">localhost</span><span class="dl">'</span><span class="p">,</span> <span class="mi">1337</span><span class="p">,</span> <span class="mi">1338</span><span class="p">);</span>
 
-        <span class="k">return</span> <span class="nx">liveRunner</span>
-            <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="dl">'</span><span class="s1">tests/test.js</span><span class="dl">'</span><span class="p">)</span>
-            <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="dl">'</span><span class="s1">chrome</span><span class="dl">'</span><span class="p">)</span>
-            <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
-    <span class="p">})</span>
-    <span class="p">.</span><span class="nx">then</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="nx">testcafe</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span>
-    <span class="p">});</span>
+<span class="k">try</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">liveRunner</span> <span class="o">=</span> <span class="nx">testcafe</span><span class="p">.</span><span class="nx">createLiveModeRunner</span><span class="p">();</span>
+
+    <span class="k">await</span> <span class="nx">liveRunner</span>
+        <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="dl">'</span><span class="s1">tests/test.js</span><span class="dl">'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="dl">'</span><span class="s1">chrome</span><span class="dl">'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="k">finally</span> <span class="p">{</span>
+    <span class="k">await</span> <span class="nx">testcafe</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span>
+<span class="p">}</span>
 </code></pre></div><h3><a class="anchor" id="how-live-mode-works"></a>How Live Mode Works <a class="permalink" href="#how-live-mode-works">#</a></h3>
 <p>When you run tests with live mode enabled, TestCafe opens the browsers, runs the tests, shows the reports, and waits for further actions.</p>
 

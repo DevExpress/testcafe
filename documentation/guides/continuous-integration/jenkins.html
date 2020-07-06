@@ -444,7 +444,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1590354000 * 1000);
+        var lastPostDate = new Date(1593464400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -1036,7 +1036,8 @@
 <p>TestCafe has an extensive command line interface that allows it to fit well in any popular continuous integration system.</p>
 
 <p>This topic shows how you can integrate TestCafe tests into project build process in <a href="https://jenkins.io/">Jenkins</a>.</p>
-<h2><a class="anchor" id="enable-jenkins-to-start-the-browser-ui-macos-and-linux"></a>Enable Jenkins to Start the Browser UI (macOS and Linux) <a class="permalink" href="#enable-jenkins-to-start-the-browser-ui-macos-and-linux">#</a></h2>
+<blockquote><div class="blockquote-content"><p>You may also like this <a href="https://plugins.jenkins.io/testcafe/">TestCafe plugin</a> for Jenkins that attaches screenshots and videos to the Jenkins test results page.</p>
+</div></blockquote><h2><a class="anchor" id="enable-jenkins-to-start-the-browser-ui-macos-and-linux"></a>Enable Jenkins to Start the Browser UI (macOS and Linux) <a class="permalink" href="#enable-jenkins-to-start-the-browser-ui-macos-and-linux">#</a></h2>
 <p>The default Jenkins configuration on macOS and Linux does not allow the CI system to start the local browser&#39;s UI. This section describes how to give Jenkins these permissions.</p>
 
 <p>You can skip these steps if you use <a href="../concepts/browsers.html#test-in-headless-mode">headless browsers</a>, <a href="../concepts/browsers.html#browsers-in-cloud-testing-services">cloud testing services</a> or the <a href="#configure-the-display-server-linux">Xvfb server</a> (on Linux).</p>
@@ -1093,7 +1094,7 @@
 <h2><a class="anchor" id="step-1---install-nodejs-plugin"></a>Step 1 - Install Node.js Plugin <a class="permalink" href="#step-1---install-nodejs-plugin">#</a></h2>
 <ol>
 <li><p>Follow the <a href="https://www.jenkins.io/doc/book/managing/plugins/#installing-a-plugin">instructions from Jenkins documentation</a> to install a <a href="https://plugins.jenkins.io/nodejs/">Node.js plugin</a>.</p></li>
-<li><p>Configure this plugin as described in the <a href="https://plugins.jenkins.io/nodejs/#NodeJSPlugin-Usage">Usage section</a> on the plugin page. Ensure that you have added a Node.js installation on the <strong>Global Tool Configuration</strong> page and checked the <strong>Provide Node &amp; npm bin/ folder to PATH</strong> checkbox in your build configuration.</p></li>
+<li><p>Configure this plugin as described in the <strong>Usage</strong> section on the <a href="https://plugins.jenkins.io/nodejs/">plugin page</a>. Ensure that you have added a Node.js installation on the <strong>Global Tool Configuration</strong> page and checked the <strong>Provide Node &amp; npm bin/ folder to PATH</strong> checkbox in your build configuration.</p></li>
 </ol>
 <h2><a class="anchor" id="step-2---fetch-test-code-from-a-repository"></a>Step 2 - Fetch Test Code From a Repository <a class="permalink" href="#step-2---fetch-test-code-from-a-repository">#</a></h2>
 <p>This tutorial uses tests published in the <a href="https://github.com/DevExpress-Examples/testcafe-ci-demo">testcafe-ci-demo</a> GitHub repository. Fork it before you start.</p>
@@ -1158,7 +1159,8 @@ node_modules/.bin/testcafe chrome tests/<span class="k">**</span>/<span class="k
 <p>Jenkins displays a test run report with overall results. Click the test name for information about a specific test.</p>
 
 <p><img src="../../../images/jenkins/test-results.png" alt="View Test Results" title=""></p>
-
+<blockquote><div class="blockquote-content"><p>You can also use the <a href="https://plugins.jenkins.io/testcafe/">TestCafe plugin</a> to attach screenshots and videos to the test results page.</p>
+</div></blockquote>
 
 		</div>
 	</article>

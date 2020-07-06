@@ -444,7 +444,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1590354000 * 1000);
+        var lastPostDate = new Date(1593464400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -1060,27 +1060,23 @@
 <p>The following example uses the <a href="https://www.npmjs.com/package/openssl-self-signed-certificate">openssl-self-signed-certificate</a> module to generate a self-signed certificate:</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">createTestCafe</span>        <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">);</span>
 <span class="kd">const</span> <span class="nx">selfSignedSertificate</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">openssl-self-signed-certificate</span><span class="dl">'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">runner</span>                  <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
 
 <span class="kd">const</span> <span class="nx">sslOptions</span> <span class="o">=</span> <span class="p">{</span>
     <span class="na">key</span><span class="p">:</span>  <span class="nx">selfSignedSertificate</span><span class="p">.</span><span class="nx">key</span><span class="p">,</span>
     <span class="na">cert</span><span class="p">:</span> <span class="nx">selfSignedSertificate</span><span class="p">.</span><span class="nx">cert</span>
 <span class="p">};</span>
 
-<span class="nx">createTestCafe</span><span class="p">(</span><span class="dl">'</span><span class="s1">localhost</span><span class="dl">'</span><span class="p">,</span> <span class="mi">1337</span><span class="p">,</span> <span class="mi">1338</span><span class="p">,</span> <span class="nx">sslOptions</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">testcafe</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="nx">runner</span> <span class="o">=</span> <span class="nx">testcafe</span><span class="p">.</span><span class="nx">createRunner</span><span class="p">();</span>
-    <span class="p">})</span>
-    <span class="p">.</span><span class="nx">then</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">runner</span>
-            <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="dl">'</span><span class="s1">test.js</span><span class="dl">'</span><span class="p">)</span>
+<span class="kd">const</span> <span class="nx">testcafe</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">createTestCafe</span><span class="p">(</span><span class="dl">'</span><span class="s1">localhost</span><span class="dl">'</span><span class="p">,</span> <span class="mi">1337</span><span class="p">,</span> <span class="mi">1338</span><span class="p">,</span> <span class="nx">sslOptions</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">runner</span>   <span class="o">=</span> <span class="nx">testcafe</span><span class="p">.</span><span class="nx">createRunner</span><span class="p">();</span>
 
-            <span class="c1">// Browsers restrict self-signed certificate usage unless you</span>
-            <span class="c1">// explicitly set a flag specific to each browser.</span>
-            <span class="c1">// For Chrome, this is '--allow-insecure-localhost'.</span>
-            <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="dl">'</span><span class="s1">chrome --allow-insecure-localhost</span><span class="dl">'</span><span class="p">)</span>
-            <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
-    <span class="p">});</span>
+<span class="k">await</span> <span class="nx">runner</span>
+    <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="dl">'</span><span class="s1">test.js</span><span class="dl">'</span><span class="p">)</span>
+
+    <span class="c1">// Browsers restrict self-signed certificate usage unless you</span>
+    <span class="c1">// explicitly set a flag specific to each browser.</span>
+    <span class="c1">// For Chrome, this is '--allow-insecure-localhost'.</span>
+    <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="dl">'</span><span class="s1">chrome --allow-insecure-localhost</span><span class="dl">'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
 </code></pre></div><h2><a class="anchor" id="test-http2-websites"></a>Test HTTP/2 Websites <a class="permalink" href="#test-http2-websites">#</a></h2>
 <p>TestCafe can test an HTTP/2 website only if the server can downgrade the connection to HTTPS or HTTP/1. See <a href="https://nodejs.org/api/http2.html#http2_alpn_negotiation">ALPN negotiation</a> for details.</p>
 

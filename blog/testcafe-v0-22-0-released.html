@@ -262,7 +262,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1590354000 * 1000);
+        var lastPostDate = new Date(1593464400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -481,11 +481,11 @@
 <h3><a class="anchor" id="fail-on-uncaught-server-errors-2546"></a>⚙ Fail on Uncaught Server Errors (<a href="https://github.com/DevExpress/testcafe/issues/2546">#2546</a>) <a class="permalink" href="#fail-on-uncaught-server-errors-2546">#</a></h3>
 <p>Previously, TestCafe ignored uncaught errors and unhandled promise rejections that occurred on the server. Whenever an error or a promise rejection happened, test execution continued.</p>
 
-<p>Starting from v0.22.0, tests fail if a server error or promise rejection is unhandled. To return to the previous behavior, we have introduced the <code>skipUncaughtErrors</code> option. Use the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-u---skip-uncaught-errors">--skip-uncaught-errors</a> flag in the command line or the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#run">skipUncaughtErrors</a> option in the API.</p>
+<p>Starting from v0.22.0, tests fail if a server error or promise rejection is unhandled. To return to the previous behavior, we have introduced the <code>skipUncaughtErrors</code> option. Use the <a href="../documentation/reference/command-line-interface.html#-u---skip-uncaught-errors">--skip-uncaught-errors</a> flag in the command line or the <a href="../documentation/reference/testcafe-api/runner/run.html">skipUncaughtErrors</a> option in the API.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome tests/fixture.js <span class="nt">--skipUncaughtErrors</span>
 </code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">run</span><span class="p">({</span><span class="na">skipUncaughtErrors</span><span class="p">:</span><span class="kc">true</span><span class="p">})</span>
 </code></pre></div><h3><a class="anchor" id="use-glob-patterns-in-runnersrc-980"></a>⚙ Use Glob Patterns in <code>runner.src</code> (<a href="https://github.com/DevExpress/testcafe/issues/980">#980</a>) <a class="permalink" href="#use-glob-patterns-in-runnersrc-980">#</a></h3>
-<p>You can now use <a href="https://github.com/isaacs/node-glob#glob-primer">glob patterns</a> in the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#src">runner.src</a> method to specify a set of test files.</p>
+<p>You can now use <a href="https://github.com/isaacs/node-glob#glob-primer">glob patterns</a> in the <a href="../documentation/reference/testcafe-api/runner/src.html">runner.src</a> method to specify a set of test files.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">src</span><span class="p">([</span><span class="dl">'</span><span class="s1">/home/user/tests/**/*.js</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">!/home/user/tests/foo.js</span><span class="dl">'</span><span class="p">]);</span>
 </code></pre></div><h2><a class="anchor" id="bug-fixes"></a>Bug Fixes <a class="permalink" href="#bug-fixes">#</a></h2>
 <ul>

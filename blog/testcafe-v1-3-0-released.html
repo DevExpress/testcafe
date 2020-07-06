@@ -262,7 +262,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1590354000 * 1000);
+        var lastPostDate = new Date(1593464400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -472,9 +472,9 @@
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
-<p>Save this file to the directory from which you run tests (or use the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#tsconfigpath">tsConfigPath</a> setting in the main configuration file to specify a different location).</p>
+<p>Save this file to the directory from which you run tests (or use the <a href="../documentation/reference/configuration-file.html#tsconfigpath">tsConfigPath</a> setting in the main configuration file to specify a different location).</p>
 
-<p>See <a href="https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.html#customize-compiler-options">Customize Compiler Options</a> for more information.</p>
+<p>See <a href="../documentation/guides/concepts/typescript-and-coffeescript.html#customize-compiler-options">Customize Compiler Options</a> for more information.</p>
 <h2><a class="anchor" id="bug-fixes"></a>Bug Fixes <a class="permalink" href="#bug-fixes">#</a></h2>
 <ul>
 <li>TestCafe now waits for asynchronous tasks in <code>reportTaskDone</code> to complete before it exits (<a href="https://github.com/DevExpress/testcafe/issues/3835">#3835</a>)</li>

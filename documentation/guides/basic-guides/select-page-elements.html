@@ -444,7 +444,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1590354000 * 1000);
+        var lastPostDate = new Date(1593464400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -1066,7 +1066,7 @@
 
 <span class="kd">const</span> <span class="nx">parent</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#query-my-parent</span><span class="dl">'</span><span class="p">).</span><span class="nx">parent</span><span class="p">();</span>
 </code></pre></div>
-<p>You can use selectors to <a href="#obtain-element-state">inspect elements</a>, define <a href="#define-action-targets">action targets</a>, and <a href="#define-assertion-actual-value">assertion actual values</a>.</p>
+<p>You can use selectors to <a href="#obtain-element-state">inspect elements</a>, define <a href="#define-action-targets">action targets</a>, and perform <a href="#define-assertion-actual-value">assertions</a>.</p>
 
 <ul>
 <li><a href="#create-selectors">Create Selectors</a></li>
@@ -1397,8 +1397,9 @@ To interact with the page, use <a href="interact-with-the-page.html">test action
 <p>TestCafe selector functions are based on CSS selectors or client JS code, which is suitable for HTML5 websites. However, if you use a front-end framework, selectors based on framework-specific entities can improve locating elements. For instance, use the component tree for React or element bindings for Aurelia.</p>
 
 <p>For this purpose, the TestCafe team and community have developed libraries of dedicated selectors for the most popular frameworks.</p>
-<h3><a class="anchor" id="react"></a>React <a class="permalink" href="#react">#</a></h3>
-<p>The React selectors module provides the <code>ReactSelector</code> class that allows you to select DOM elements by the component name. You can get a root element or search through the nested components or elements. In addition, you can obtain the component props and state.</p>
+<blockquote><div class="blockquote-content"><p>Front-end development tools (such as React DevTools or Vue DevTools) can interfere with TestCafe and cause errors. Do not open them while you run or debug TestCafe tests.</p>
+</div></blockquote><h3><a class="anchor" id="react"></a>React <a class="permalink" href="#react">#</a></h3>
+<p>The React selectors module provides the <code>ReactSelector</code> class, which allows you to select DOM elements by the component name. You can get a root element or search through the nested components or elements. In addition, you can obtain the component props and state.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">ReactSelector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe-react-selectors</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="kd">const</span> <span class="nx">TodoList</span>         <span class="o">=</span> <span class="nx">ReactSelector</span><span class="p">(</span><span class="dl">'</span><span class="s1">TodoApp TodoList</span><span class="dl">'</span><span class="p">);</span>

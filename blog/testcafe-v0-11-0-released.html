@@ -262,7 +262,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1590354000 * 1000);
+        var lastPostDate = new Date(1593464400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -460,7 +460,7 @@
 
 <!--more-->
 <h2><a class="anchor" id="enhancements"></a>Enhancements <a class="permalink" href="#enhancements">#</a></h2><h3><a class="anchor" id="redesigned-selector-system-798"></a>⚙ Redesigned selector system. (<a href="https://github.com/DevExpress/testcafe/issues/798">#798</a>) <a class="permalink" href="#redesigned-selector-system-798">#</a></h3><h4><a class="anchor" id="new-selector-methods"></a>New selector methods <a class="permalink" href="#new-selector-methods">#</a></h4>
-<p>Multiple <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#filter-dom-nodes">filtering</a> and <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#search-for-elements-in-the-dom-hierarchy">hierarchical</a> methods were introduced for selectors.
+<p>Multiple <a href="../documentation/guides/basic-guides/select-page-elements.html#member-tables">filtering and hierarchical</a> methods were introduced for selectors.
 Now you can build flexible, lazily-evaluated functional-style selector chains.</p>
 
 <p><em>Here are some examples:</em></p>
@@ -471,8 +471,8 @@ Then, for each <code>label</code> element finds a parent that matches the <code>
 
 <hr>
 
-<p>Like in jQuery, if you request a <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/dom-node-state.html#members-common-across-all-nodes">property</a> of the matched set or try evaluate
-a <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/using-selectors.html#dom-node-snapshot">snapshot</a>, the selector returns values for the first element in the set.</p>
+<p>Like in jQuery, if you request a <a href="../documentation/reference/test-api/domnodestate.html#members-common-across-all-nodes">property</a> of the matched set or try evaluate
+a <a href="../documentation/guides/basic-guides/select-page-elements.html#dom-node-snapshot">snapshot</a>, the selector returns values for the first element in the set.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// Returns id of the first element in the set</span>
 <span class="kd">const</span> <span class="nx">id</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">ul</span><span class="dl">'</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="dl">'</span><span class="s1">label</span><span class="dl">'</span><span class="p">).</span><span class="nx">parent</span><span class="p">(</span><span class="dl">'</span><span class="s1">div.someClass</span><span class="dl">'</span><span class="p">).</span><span class="nx">id</span><span class="p">;</span>
 
@@ -505,7 +505,7 @@ a <a href="https://devexpress.github.io/testcafe/documentation/test-api/selectin
 
 <hr>
 <h4><a class="anchor" id="getting-selector-matched-set-length"></a>Getting selector matched set length <a class="permalink" href="#getting-selector-matched-set-length">#</a></h4>
-<p>Also, now you can get selector matched set length and check matching elements existence by using selector <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/using-selectors.html#check-if-an-element-exists"><code>count</code> and <code>exists</code> properties</a>.</p>
+<p>Also, now you can get selector matched set length and check matching elements existence by using selector <a href="../documentation/guides/basic-guides/select-page-elements.html#check-if-an-element-exists"><code>count</code> and <code>exists</code> properties</a>.</p>
 <h4><a class="anchor" id="unawaited-parametrized-selector-calls-now-allowed-outside-test-context"></a>Unawaited parametrized selector calls now allowed outside test context <a class="permalink" href="#unawaited-parametrized-selector-calls-now-allowed-outside-test-context">#</a></h4>
 <p>Previously selector call outside of text context thrown an error:</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">selector</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="nx">arg</span> <span class="o">=&gt;</span> <span class="cm">/* selector code */</span><span class="p">);</span>
@@ -553,13 +553,13 @@ a <a href="https://devexpress.github.io/testcafe/documentation/test-api/selectin
 <span class="kd">const</span> <span class="nx">id</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">.someClass</span><span class="dl">'</span><span class="p">).</span><span class="nx">id</span><span class="p">;</span>
 </code></pre></div>
 <ul>
-<li><code>selectorOptions.index</code> - use <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#nth">selector.nth()</a> instead.</li>
-<li><code>selectorOptions.text</code> - use <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#withtext">selector.withText()</a> instead.</li>
-<li><code>selectorOptions.dependencies</code> - use <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#filter-dom-nodes">filtering</a> and <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/functional-style-selectors.html#search-for-elements-in-the-dom-hierarchy">hierarchical</a> methods to build combined selectors instead.</li>
+<li><code>selectorOptions.index</code> - use <a href="../documentation/reference/test-api/selector/nth.html">selector.nth()</a> instead.</li>
+<li><code>selectorOptions.text</code> - use <a href="../documentation/reference/test-api/selector/withtext.html">selector.withText()</a> instead.</li>
+<li><code>selectorOptions.dependencies</code> - use <a href="../documentation/guides/basic-guides/select-page-elements.html#member-tables">filtering and hierarchical</a> methods to build combined selectors instead.</li>
 </ul>
 <h3><a class="anchor" id="built-in-assertions-998"></a>⚙ Built-in assertions. (<a href="https://github.com/DevExpress/testcafe/issues/998">#998</a>) <a class="permalink" href="#built-in-assertions-998">#</a></h3>
-<p>TestCafe now ships with <a href="https://devexpress.github.io/testcafe/documentation/test-api/assertions/assertion-api.html">numerous built-in BDD-style assertions</a>.
-If the TestCafe assertion receives a <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/using-selectors.html#define-assertion-actual-value">Selector&#39;s DOM node state property</a> as an actual value, TestCafe uses the <a href="https://devexpress.github.io/testcafe/documentation/test-api/assertions/index.html#smart-assertion-query-mechanism">smart assertion query mechanism</a>:
+<p>TestCafe now ships with <a href="../documentation/guides/basic-guides/assert.html">numerous built-in BDD-style assertions</a>.
+If the TestCafe assertion receives a <a href="../documentation/guides/basic-guides/select-page-elements.html#define-assertion-actual-value">Selector&#39;s DOM node state property</a> as an actual value, TestCafe uses the <a href="../documentation/guides/basic-guides/assert.html#smart-assertion-query-mechanism">smart assertion query mechanism</a>:
 if an assertion did not passed, the test does not fail immediately. The assertion retries to pass multiple times and each time it re-requests the actual shorthand value. The test fails if the assertion could not complete successfully within a timeout.
 This approach allows you to create stable tests that lack random errors and decrease the amount of time required to run all your tests due to the lack of extra waitings.</p>
 
@@ -586,11 +586,11 @@ This approach allows you to create stable tests that lack random errors and decr
         <span class="c1">// The default timeout is 3000 ms.</span>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">btn</span><span class="p">.</span><span class="nx">textContent</span><span class="p">).</span><span class="nx">contains</span><span class="p">(</span><span class="dl">'</span><span class="s1">Loading...</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div><h3><a class="anchor" id="added-selected-and-selectedindex-dom-node-state-properties-951"></a>⚙ Added <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/dom-node-state.html#members-common-across-all-nodes"><code>selected</code> and <code>selectedIndex</code> DOM node state properties</a>. (<a href="https://github.com/DevExpress/testcafe/issues/951">#951</a>) <a class="permalink" href="#added-selected-and-selectedindex-dom-node-state-properties-951">#</a></h3><h3><a class="anchor" id="its-now-possible-to-start-browser-with-arguments-905"></a>⚙ It&#39;s now possible to start browser with arguments. (<a href="https://github.com/DevExpress/testcafe/issues/905">#905</a>) <a class="permalink" href="#its-now-possible-to-start-browser-with-arguments-905">#</a></h3>
+</code></pre></div><h3><a class="anchor" id="added-selected-and-selectedindex-dom-node-state-properties-951"></a>⚙ Added <a href="../documentation/reference/test-api/domnodestate.html#members-common-across-all-nodes"><code>selected</code> and <code>selectedIndex</code> DOM node state properties</a>. (<a href="https://github.com/DevExpress/testcafe/issues/951">#951</a>) <a class="permalink" href="#added-selected-and-selectedindex-dom-node-state-properties-951">#</a></h3><h3><a class="anchor" id="its-now-possible-to-start-browser-with-arguments-905"></a>⚙ It&#39;s now possible to start browser with arguments. (<a href="https://github.com/DevExpress/testcafe/issues/905">#905</a>) <a class="permalink" href="#its-now-possible-to-start-browser-with-arguments-905">#</a></h3>
 <p>If you need to pass arguments for the specified browser, write them right after browser alias. Surround the browser call and its arguments with quotation marks:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome --start-fullscreen"</span>,firefox tests/test.js
 </code></pre></div>
-<p>See <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#starting-browser-with-arguments">Starting browser with arguments</a>.</p>
+<p>See <a href="../documentation/reference/command-line-interface.html#start-a-browser-with-arguments">Starting browser with arguments</a>.</p>
 <h2><a class="anchor" id="bug-fixes"></a>Bug Fixes <a class="permalink" href="#bug-fixes">#</a></h2>
 <ul>
 <li>Action keyboard events now have <code>event.key</code> and <code>event.keyIdentifier</code> properties set (<a href="https://github.com/DevExpress/testcafe/issues/993">#993</a>).</li>
