@@ -1,0 +1,26 @@
+<html>
+<head>
+    <script>
+        var log = [];
+    </script>
+    <title>Test page title 1</title>
+    <script>
+        log.push('head:after-first-title: ' + String(document.title));
+
+        var titleElement = document.getElementsByTagName('title')[0];
+
+        titleElement.innerText = 'Test page title 2';
+
+        log.push('head:after-title-update: ' + String(document.title));
+    </script>
+</head>
+<body>
+    <script>
+        log.push('body: ' + String(document.title));
+
+        titleElement.innerText = 'Test page title 3';
+
+        log.push('body:after-title-update: ' + String(document.title));
+    </script>
+</body>
+</html>
