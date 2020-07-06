@@ -26,7 +26,8 @@ import BrowserProvider from '../browser/provider';
 import BrowserConnectionGateway from '../browser/connection/gateway';
 import { CompilerArguments } from '../compiler/interfaces';
 import CompilerService from '../services/compiler/host';
-import { Metadata, Test } from '../api/structure/interfaces';
+import { Metadata } from '../api/structure/interfaces';
+import Test from '../api/structure/test';
 
 type TestSource = unknown;
 
@@ -216,7 +217,7 @@ export default class Bootstrapper {
     }
 
     private _filterTests (tests: Test[], predicate: Filter): Test[] {
-        return tests.filter(test => predicate(test.name, test.fixture.name, test.fixture.path, test.meta, test.fixture.meta));
+        return tests.filter(test => predicate(test.name as string, test.fixture.name, test.fixture.path, test.meta, test.fixture.meta));
     }
 
     private async _compileTests ({ sourceList, compilerOptions }: CompilerArguments): Promise<Test[]> {
