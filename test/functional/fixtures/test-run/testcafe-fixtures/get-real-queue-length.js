@@ -1,6 +1,6 @@
 import { PressKeyCommand } from '../../../../../lib/test-run/commands/actions';
 import { WaitCommand } from '../../../../../lib/test-run/commands/observation';
-import { ExecuteAsyncExpressionCommand, ExecuteExpressionCommand } from '../../../../../src/test-run/commands/actions';
+import { ExecuteAsyncExpressionCommand, ExecuteExpressionCommand } from '../../../../../lib/test-run/commands/actions';
 
 
 fixture `Test run commands queue`
