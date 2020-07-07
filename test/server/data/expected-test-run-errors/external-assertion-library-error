@@ -1,4 +1,12 @@
-AssertionError: expected true to deeply equal false
+expected true to deeply equal false
+
+\u001b[32m+ expected\u001b[0m \u001b[31m- actual\u001b[0m
+
+\u001b[31m-true\u001b[0m
+
+\u001b[32m+false\u001b[0m
+
+\u001b[90m\u001b[0m
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>
