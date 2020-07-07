@@ -105,7 +105,14 @@ describe('Allow multiple windows', () => {
         });
 
         it('Switch to parent window', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to parent window', { only: 'chrome', allowMultipleWindows: true });
+            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to parent window', { only: 'chrome', allowMultipleWindows: true, speed: 0.01 });
+        });
+
+        it('Switch to unexisting parent window', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to unexisting parent window', { only: 'chrome', allowMultipleWindows: true, shouldFail: true })
+                .catch(errs => {
+                    expect(errs[0]).to.contain('Cannot find the parent window. Make sure that the tested window was opened from another window.');
+                });
         });
 
         it('Switch to unexisting window', () => {
@@ -119,6 +126,31 @@ describe('Allow multiple windows', () => {
             return runTests('testcafe-fixtures/api/api-test.js', 'Switch to child window', { only: 'chrome', allowMultipleWindows: true });
         });
 
+        it('Switch to window by url', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to window by url', { only: 'chrome', allowMultipleWindows: true });
+        });
+
+        it('Switch to window by title', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to window by title', { only: 'chrome', allowMultipleWindows: true });
+        });
+
+        it('Switch to window by predicate with error', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to window by predicate with error', { only: 'chrome', allowMultipleWindows: true, shouldFail: true })
+                .catch(errs => {
+                    expect(errs[0]).to.contain('An error occurred inside the "switchToWindow" argument function.  Error details: Cannot read property \'field\' of undefined');
+                });
+        });
+
+        it('Switch to recent window', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to recent window', { only: 'chrome', allowMultipleWindows: true });
+        });
+
+        it('Switch to recent closed window', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to recent closed window', { only: 'chrome', allowMultipleWindows: true, shouldFail: true })
+                .catch(errs => {
+                    expect(errs[0]).to.contain('Cannot find the previous window. Make sure that the previous window is opened.');
+                });
+        });
 
         it('Switch to other child', () => {
             return runTests('testcafe-fixtures/api/api-test.js', 'Switch to other child', { only: 'chrome', allowMultipleWindows: true });

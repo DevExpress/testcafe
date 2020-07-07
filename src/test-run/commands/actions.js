@@ -76,7 +76,16 @@ function initDialogHandler (name, val, { skipVisibilityCheck, testRun }) {
         builder = new ClientFunctionBuilder(fn, options, { instantiation: methodName, execution: methodName });
 
     return builder.getCommand([]);
+}
 
+function initSwitchToWindowHandler (name, val) {
+    const fn      = val.fn;
+    const options = val.options;
+
+    const methodName = 'switchToWindowHandler';
+    const builder    = new ClientFunctionBuilder(fn, options, { instantiation: methodName, execution: methodName });
+
+    return builder.getCommand([]);
 }
 
 // Commands
@@ -360,8 +369,42 @@ export class SwitchToWindowCommand extends CommandBase {
 
     _getAssignableProperties () {
         return [
-            { name: 'windowId', type: nonEmptyStringArgument, required: true },
+            { name: 'windowId', type: nonEmptyStringArgument, required: true }
         ];
+    }
+}
+
+export class SwitchToWindowByPredicateCommand extends CommandBase {
+    constructor (obj, testRun) {
+        super(obj, testRun, TYPE.switchToWindowByPredicate);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'findWindow', init: initSwitchToWindowHandler, required: true }
+        ];
+    }
+}
+
+
+export class SwitchToParentWindowCommand extends CommandBase {
+    constructor (obj, testRun) {
+        super(obj, testRun, TYPE.switchToParentWindow);
+    }
+
+    _getAssignableProperties () {
+        return [
+        ];
+    }
+}
+
+export class SwitchToRecentWindowCommand extends CommandBase {
+    constructor (obj, testRun) {
+        super(obj, testRun, TYPE.switchToRecentWindow);
+    }
+
+    _getAssignableProperties () {
+        return [];
     }
 }
 

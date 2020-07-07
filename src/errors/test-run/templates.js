@@ -352,4 +352,19 @@ export default {
     [TEST_RUN_ERRORS.allowMultipleWindowsOptionIsNotSpecifiedError]: err => `
         You should activate multi window mode (enable the "allow-multiple-windows" run option) to use the "${err.methodName}" method.
     `,
+
+    [TEST_RUN_ERRORS.parentWindowNotFoundError]: () => `
+        Cannot find the parent window. Make sure that the tested window was opened from another window.
+    `,
+
+    [TEST_RUN_ERRORS.recentWindowNotFoundError]: () => `
+        Cannot find the previous window. Make sure that the previous window is opened.
+    `,
+
+    [TEST_RUN_ERRORS.switchToWindowPredicateError]: err => `
+        An error occurred inside the "switchToWindow" argument function.
+        
+        Error details:
+        ${escapeHtml(err.errMsg)}
+    `,
 };

@@ -28,7 +28,7 @@ export class EstablishConnectionMessage extends InterDriverMessage {
 }
 
 export class CloseWindowValidationMessage extends InterDriverMessage {
-    constructor (windowId) {
+    constructor ({ windowId }) {
         super(TYPE.closeWindowValidation);
 
         this.windowId = windowId;
@@ -36,15 +36,16 @@ export class CloseWindowValidationMessage extends InterDriverMessage {
 }
 
 export class SwitchToWindowValidationMessage extends InterDriverMessage {
-    constructor (windowId) {
+    constructor ({ windowId, fn }) {
         super(TYPE.switchToWindowValidation);
 
         this.windowId = windowId;
+        this.fn       = fn;
     }
 }
 
 export class CloseWindowCommandMessage extends InterDriverMessage {
-    constructor (windowId) {
+    constructor ({ windowId }) {
         super(TYPE.closeWindow);
 
         this.windowId = windowId;
@@ -52,10 +53,11 @@ export class CloseWindowCommandMessage extends InterDriverMessage {
 }
 
 export class SwitchToWindowCommandMessage extends InterDriverMessage {
-    constructor (windowId) {
+    constructor ({ windowId, fn }) {
         super(TYPE.switchToWindow);
 
         this.windowId = windowId;
+        this.fn       = fn;
     }
 }
 
@@ -94,8 +96,10 @@ export class SetNativeDialogHandlerMessage extends InterDriverMessage {
 }
 
 export class SetAsMasterMessage extends InterDriverMessage {
-    constructor () {
+    constructor (finalizePendingCommand) {
         super(TYPE.setAsMaster);
+
+        this.finalizePendingCommand = finalizePendingCommand;
     }
 }
 

@@ -17,8 +17,8 @@ export default class ParentWindowDriverLink {
         return topOpened;
     }
 
-    _setAsMaster (wnd) {
-        const msg = new SetAsMasterMessage();
+    _setAsMaster (wnd, finalizePendingCommand) {
+        const msg = new SetAsMasterMessage(finalizePendingCommand);
 
         return sendMessageToDriver(msg, wnd, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT, CannotSwitchToWindowError);
     }
@@ -33,9 +33,9 @@ export default class ParentWindowDriverLink {
         return this._setAsMaster(wnd);
     }
 
-    setParentWindowAsMaster () {
+    setParentWindowAsMaster (opts = {}) {
         const wnd = this.currentDriverWindow.opener;
 
-        return this._setAsMaster(wnd);
+        return this._setAsMaster(wnd, opts.finalizePendingCommand);
     }
 }

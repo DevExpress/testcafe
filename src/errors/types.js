@@ -76,7 +76,10 @@ export const TEST_RUN_ERRORS = {
     childWindowClosedBeforeSwitchingError:                 'E72',
     cannotCloseWindowWithChildrenError:                    'E73',
     targetWindowNotFoundError:                             'E74',
-    allowMultipleWindowsOptionIsNotSpecifiedError:         'E75'
+    allowMultipleWindowsOptionIsNotSpecifiedError:         'E75',
+    parentWindowNotFoundError:                             'E76',
+    recentWindowNotFoundError:                             'E77',
+    switchToWindowPredicateError:                          'E78'
 };
 
 export const RUNTIME_ERRORS = {
