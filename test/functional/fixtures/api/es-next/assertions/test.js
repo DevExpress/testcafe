@@ -207,7 +207,7 @@ describe('[API] Assertions', function () {
                     `If it wasn't intentional, try using Selector without await\\.`].join(''));
 
                 const snapshotWarnings = testReport.warnings.filter(warningStr => {
-                    return warningStr.match(snapshotWarningRegExp).length > 0;
+                    return warningStr.match(snapshotWarningRegExp);
                 });
 
                 expect(snapshotWarnings.length).to.eql(1);
