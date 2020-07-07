@@ -290,13 +290,11 @@ export default class Driver extends serviceUtils.EventEmitter {
             if (!firstClosedChildWindowDriverLink)
                 return;
 
-            const childWindowClosedEventArgs = { setWindowAsMaster: true };
-
-            this.emit(CHILD_WINDOW_CLOSED_EVENT, childWindowClosedEventArgs);
+            this.emit(CHILD_WINDOW_CLOSED_EVENT);
 
             arrayUtils.remove(this.childWindowDriverLinks, firstClosedChildWindowDriverLink);
 
-            if (childWindowClosedEventArgs.setWindowAsMaster)
+            if (!firstClosedChildWindowDriverLink.ignoreMasterSwitching)
                 this._setCurrentWindowAsMaster();
 
             if (!this.childWindowDriverLinks.length)
@@ -584,9 +582,9 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     _closeWindowAndWait (childWindowToClose, msg) {
-        const waitWindowForClose = this._createWaitForEventPromise(CHILD_WINDOW_CLOSED_EVENT, CHILD_WINDOW_CLOSED_EVENT_TIMEOUT, e => {
-            e.setWindowAsMaster = msg.isCurrentWindow;
-        });
+        const waitWindowForClose = this._createWaitForEventPromise(CHILD_WINDOW_CLOSED_EVENT, CHILD_WINDOW_CLOSED_EVENT_TIMEOUT);
+
+        childWindowToClose.ignoreMasterSwitching = !msg.isCurrentWindow;
 
         childWindowToClose.driverWindow.close();
 
@@ -778,7 +776,7 @@ export default class Driver extends serviceUtils.EventEmitter {
             });
     }
 
-    _createWaitForEventPromise (eventName, timeout, onSuccess) {
+    _createWaitForEventPromise (eventName, timeout) {
         let eventHandler = null;
 
         const timeoutPromise = new Promise(resolve => {
@@ -790,11 +788,8 @@ export default class Driver extends serviceUtils.EventEmitter {
         });
 
         const resultPromise = new Promise(resolve => {
-            eventHandler = function (...args) {
+            eventHandler = function () {
                 this.off(eventName, eventHandler);
-
-                if (typeof onSuccess === 'function')
-                    onSuccess.apply(this, args);
 
                 resolve();
             };
