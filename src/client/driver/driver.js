@@ -290,10 +290,14 @@ export default class Driver extends serviceUtils.EventEmitter {
             if (!firstClosedChildWindowDriverLink)
                 return;
 
-            this.emit(CHILD_WINDOW_CLOSED_EVENT);
+            const childWindowClosedEventArgs = { setWindowAsMaster: true };
+
+            this.emit(CHILD_WINDOW_CLOSED_EVENT, childWindowClosedEventArgs);
 
             arrayUtils.remove(this.childWindowDriverLinks, firstClosedChildWindowDriverLink);
-            this._setCurrentWindowAsMaster();
+
+            if (childWindowClosedEventArgs.setWindowAsMaster)
+                this._setCurrentWindowAsMaster();
 
             if (!this.childWindowDriverLinks.length)
                 nativeMethods.clearInterval.call(window, this.checkClosedChildWindowIntervalId);
@@ -579,19 +583,24 @@ export default class Driver extends serviceUtils.EventEmitter {
             });
     }
 
+    _closeWindowAndWait (childWindowToClose, msg) {
+        const waitWindowForClose = this._createWaitForEventPromise(CHILD_WINDOW_CLOSED_EVENT, CHILD_WINDOW_CLOSED_EVENT_TIMEOUT, e => {
+            e.setWindowAsMaster = msg.isCurrentWindow;
+        });
+
+        childWindowToClose.driverWindow.close();
+
+        return waitWindowForClose;
+    }
+
     _closeWindow (msg) {
         if (!this.childWindowDriverLinks.length)
             return Promise.resolve();
 
         const childWindowToClose = this.childWindowDriverLinks.find(link => link.windowId === msg.windowId);
 
-        if (childWindowToClose) {
-            const result = this._createWaitForEventPromise(CHILD_WINDOW_CLOSED_EVENT, CHILD_WINDOW_CLOSED_EVENT_TIMEOUT);
-
-            childWindowToClose.driverWindow.close();
-
-            return result;
-        }
+        if (childWindowToClose)
+            return this._closeWindowAndWait(childWindowToClose, msg);
 
         const searchQueries = this.childWindowDriverLinks.map(childWindowDriverLink => {
             return childWindowDriverLink.findChildWindows(msg, CloseWindowCommandMessage);
@@ -769,7 +778,7 @@ export default class Driver extends serviceUtils.EventEmitter {
             });
     }
 
-    _createWaitForEventPromise (eventName, timeout) {
+    _createWaitForEventPromise (eventName, timeout, onSuccess) {
         let eventHandler = null;
 
         const timeoutPromise = new Promise(resolve => {
@@ -781,8 +790,11 @@ export default class Driver extends serviceUtils.EventEmitter {
         });
 
         const resultPromise = new Promise(resolve => {
-            eventHandler = function () {
+            eventHandler = function (...args) {
                 this.off(eventName, eventHandler);
+
+                if (typeof onSuccess === 'function')
+                    onSuccess.apply(this, args);
 
                 resolve();
             };
@@ -1009,9 +1021,9 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     _onWindowCloseCommand (command) {
-        const wnd                           = this.parentWindowDriverLink?.getTopOpenedWindow() || window;
-        const targetWindowIsFirstLevelChild = !!this.childWindowDriverLinks.find(link => link.windowId === command.windowId);
-        const windowId                      = command.windowId || this.windowId;
+        const wnd             = this.parentWindowDriverLink?.getTopOpenedWindow() || window;
+        const windowId        = command.windowId || this.windowId;
+        const isCurrentWindow = windowId === this.windowId;
 
         this._validateChildWindowCloseCommandExists(windowId, wnd)
             .then(response => {
@@ -1020,12 +1032,13 @@ export default class Driver extends serviceUtils.EventEmitter {
                 if (!result.success)
                     throw ChildWindowValidationErrorFactory.createError(result);
 
-                return sendMessageToDriver(new CloseWindowCommandMessage({ windowId }), wnd, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT, CannotSwitchToWindowError);
+                return sendMessageToDriver(new CloseWindowCommandMessage({ windowId, isCurrentWindow }), wnd, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT, CannotSwitchToWindowError);
             })
             .then(() => {
-                // NOTE: we need to send new Driver Status only if we close direct child window
-                // in any other case the new Driver Status will be sent from the `_setCurrentWindowAsMaster` method
-                if (targetWindowIsFirstLevelChild) {
+                // NOTE: we do not need to send a new Driver Status if we close the current window
+                // in this case the new Driver Status will be sent from the `_setCurrentWindowAsMaster` method
+                // in other cases we need to send a new Driver Status from here.
+                if (!isCurrentWindow) {
                     this._onReady(new DriverStatus({
                         isCommandResult: true
                     }));

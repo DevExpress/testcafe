@@ -164,6 +164,10 @@ describe('Allow multiple windows', () => {
             return runTests('testcafe-fixtures/api/api-test.js', 'Close specific window from parent', { only: 'chrome', allowMultipleWindows: true });
         });
 
+        it('Close window and check master did not changed', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Close window and check master did not changed', { only: 'chrome', allowMultipleWindows: true });
+        });
+
         it('Close specific window from child', () => {
             return runTests('testcafe-fixtures/api/api-test.js', 'Close specific window from child', { only: 'chrome', allowMultipleWindows: true, shouldFail: true })
                 .catch(errs => {
