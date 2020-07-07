@@ -32,6 +32,7 @@ module.exports = function assertTestRunError (err, expectedFileName, setCallsite
 
     const expectedMsg = read(expectedFileName)
         .replace(/(\r\n)/gm, '\n')
+        .replace(/\\u001b/gm, '\u001b')
         .trim();
 
     expect(actual).eql(expectedMsg);

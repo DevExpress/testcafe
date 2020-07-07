@@ -330,11 +330,11 @@ describe('Error formatting', () => {
             assertErrorMessage('current-iframe-is-invisible-error', new CurrentIframeIsInvisibleError());
         });
 
-        it('Should format "missingAwaitError', () => {
+        it('Should format "missingAwaitError"', () => {
             assertErrorMessage('missing-await-error', new MissingAwaitError(testCallsite));
         });
 
-        it('Should format "externalAssertionLibraryError', () => {
+        it('Should format "externalAssertionLibraryError"', () => {
             assertErrorMessage('external-assertion-library-error', new ExternalAssertionLibraryError(testAssertionError, testCallsite));
         });
 
