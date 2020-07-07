@@ -1,4 +1,4 @@
-expected true to deeply equal false
+AssertionError: expected true to deeply equal false
 
 \u001b[32m+ expected\u001b[0m \u001b[31m- actual\u001b[0m
 
