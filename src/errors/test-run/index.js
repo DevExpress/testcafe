@@ -3,7 +3,7 @@
 // Do not use any browser or node-specific API!
 // -------------------------------------------------------------
 import { TEST_RUN_ERRORS } from '../types';
-import * as diff from '../../utils/diff/index';
+import * as diff from '../../utils/diff/';
 
 // Base
 //--------------------------------------------------------------------
