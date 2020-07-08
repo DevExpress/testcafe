@@ -1,44 +1,8 @@
+import util from 'util';
+import _ from 'lodash';
 import { colorLines } from './colors';
 import { INDENT } from './const';
 
-
-export function type (value: any): string {
-    if (typeof value === 'undefined')
-        return 'undefined';
-
-
-    if (value === null)
-        return 'null';
-
-
-    if (Buffer.isBuffer(value))
-        return 'buffer';
-
-
-    return Object.prototype.toString
-        .call(value)
-        .replace(/^\[.+\s(.+?)]$/, '$1')
-        .toLowerCase();
-}
-
-export function emptyRepresentation (value: any, typeHint: string): string {
-    switch (typeHint) {
-        case 'function':
-            return '[Function]';
-        case 'object':
-            return '{}';
-        case 'array':
-            return '[]';
-        case 'undefined':
-            return 'undefined';
-        case 'null':
-            return 'null';
-        case 'string':
-            return `''`;
-        default:
-            return value.toString();
-    }
-}
 
 export function cleanUp (line: string): string {
     if (line[0] === '+')
@@ -58,4 +22,18 @@ export function cleanUp (line: string): string {
 
 
     return INDENT + colorLines('diff filler', line);
+}
+
+export function stringify (value: any): string {
+    let valueToStringify = value;
+
+    if (_.isFunction(value))
+        return valueToStringify.toString();
+
+
+    if (_.isBuffer(value))
+        valueToStringify = Buffer.prototype.toJSON.call(value).data;
+
+
+    return util.inspect(valueToStringify, { compact: false, sorted: true, depth: 5, maxArrayLength: 100 }) || valueToStringify.toString;
 }

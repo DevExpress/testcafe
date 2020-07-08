@@ -1,7 +1,8 @@
 import * as jsdiff from 'diff';
 import { colorLines } from './colors';
-import { type, emptyRepresentation, cleanUp } from './util';
-import { INDENT } from './const';
+import { cleanUp } from './util';
+
+export { stringify } from './util';
 
 
 function unifiedDiff (actual: string, expected: string): string {
@@ -31,36 +32,4 @@ export function generateDiff (actual: string, expected: string): string {
 
         return msg;
     }
-}
-
-export function stringify (value: any): string {
-    const typeHint = type(value);
-
-    if (['object', 'array'].indexOf(typeHint) !== -1) {
-        for (const prop in value) {
-            if (Object.prototype.hasOwnProperty.call(value, prop)) {
-                return JSON.stringify(
-                    jsdiff.canonicalize(value, [], []),
-                    value,
-                    INDENT
-                ).replace(/,(\n|$)/g, '$1');
-            }
-        }
-    }
-
-    if (typeHint === 'buffer') {
-        const json = Buffer.prototype.toJSON.call(value);
-
-        return JSON.stringify(
-            json.data && json.type ? json.data : json,
-            value,
-            INDENT
-        ).replace(/,(\n|$)/g, '$1');
-    }
-
-    if (value)
-        return JSON.stringify(value, null, INDENT) || value.toString();
-
-
-    return emptyRepresentation(value, typeHint);
 }
