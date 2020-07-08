@@ -61,6 +61,10 @@ export default class ReporterPluginHost {
             'span syntax-comment':    str => this.chalk.grey.bold(str),
             'span syntax-invalid':    str => this.chalk.inverse(str),
 
+            'span diff-filler':  str => this.chalk.gray(str),
+            'span diff-added':   str => this.chalk.green(str),
+            'span diff-removed': str => this.chalk.red(str),
+
             'div code-frame':         identity,
             'div code-line':          str => str + '\n',
             'div code-line-last':     identity,

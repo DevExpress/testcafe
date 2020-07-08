@@ -1,17 +1,7 @@
-import { Colors } from './types';
-
-const colors: Colors = {
-    'diff filler':  90,
-    'diff added':   32,
-    'diff removed': 31
-};
+import _ from 'lodash';
 
 function color (name: string, str: string): string {
-    if (colors[name])
-        return '\u001b[' + colors[name] + 'm' + str + '\u001b[0m';
-
-
-    return str;
+    return `<span class="${name}">${_.escape(str)}</span>`;
 }
 
 export function colorLines (name: string, str: string): string {
@@ -21,4 +11,16 @@ export function colorLines (name: string, str: string): string {
             return color(name, line);
         })
         .join('\n');
+}
+
+export function setColors (line: string): string {
+    if (line[0] === '+')
+        return colorLines('diff-added', line);
+
+
+    if (line[0] === '-')
+        return colorLines('diff-removed', line);
+
+
+    return colorLines('diff-filler', line);
 }

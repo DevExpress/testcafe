@@ -1,27 +1,13 @@
 import util from 'util';
 import _ from 'lodash';
-import { colorLines } from './colors';
-import { INDENT } from './const';
+import { setColors } from './colors';
 
 
 export function cleanUp (line: string): string {
-    if (line[0] === '+')
-        return INDENT + colorLines('diff added', line);
-
-
-    if (line[0] === '-')
-        return INDENT + colorLines('diff removed', line);
-
-
-    if (line.match(/@@/))
-        return '--';
-
-
     if (line.match(/\\ No newline/))
         return '';
 
-
-    return INDENT + colorLines('diff filler', line);
+    return setColors(line);
 }
 
 export function stringify (value: any): string {
@@ -35,5 +21,5 @@ export function stringify (value: any): string {
         valueToStringify = Buffer.prototype.toJSON.call(value).data;
 
 
-    return util.inspect(valueToStringify, { compact: false, sorted: true, depth: 5, maxArrayLength: 100 }) || valueToStringify.toString;
+    return util.inspect(valueToStringify, { compact: false, sorted: true, depth: null }) || valueToStringify.toString;
 }
