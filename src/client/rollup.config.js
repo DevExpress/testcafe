@@ -3,6 +3,7 @@
 
 import path from 'path';
 import typescript from 'rollup-plugin-typescript2';
+import nodePolyfills from 'rollup-plugin-node-polyfills';
 import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
 import inject from '@rollup/plugin-inject';
@@ -50,7 +51,7 @@ const CONFIG = CHUNK_NAMES.map(chunk => ({
 
     plugins: [
         inject({ Promise: 'pinkie' }),
-        resolve(),
+        resolve({ preferBuiltins: false }),
         alias({
             entries: [{
                 find:        'tslib',
@@ -59,6 +60,7 @@ const CONFIG = CHUNK_NAMES.map(chunk => ({
         }),
         commonjs(),
         typescript({ include: ['*.+(j|t)s', '**/*.+(j|t)s', '../**/*.+(j|t)s'] }),
+        nodePolyfills()
     ]
 }));
 
