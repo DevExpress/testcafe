@@ -6,19 +6,14 @@ export { stringify } from './util';
 
 
 function unifiedDiff (actual: string, expected: string): string {
-    const msg = jsdiff.createPatch('string', actual, expected);
+    const msg   = jsdiff.createPatch('string', actual, expected);
     const lines = msg.split('\n').splice(5);
 
-    return (
-        colorLines('diff added', '+ expected') +
-        ' ' +
-        colorLines('diff removed', '- actual') +
-        '\n\n' +
-        lines
-            .map(cleanUp)
-            .filter((line: any) => typeof line !== 'undefined' && line !== null)
-            .join('\n')
-    );
+    return lines
+        .map(cleanUp)
+        .filter((line: any) => typeof line !== 'undefined' && line !== null)
+        .join('\n')
+    ;
 }
 
 export function generateDiff (actual: string, expected: string): string {
@@ -27,7 +22,7 @@ export function generateDiff (actual: string, expected: string): string {
     }
     catch (err) {
         const msg =
-            colorLines('diff removed', 'Failed to generate diff') +
+            colorLines('diff-removed', 'Failed to generate diff') +
             '\n';
 
         return msg;
