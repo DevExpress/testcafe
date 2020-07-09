@@ -262,7 +262,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1590354000 * 1000);
+        var lastPostDate = new Date(1593464400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -468,19 +468,19 @@
 
 <p><em>Command line interface</em></p>
 
-<p>Enable the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#fullpage">fullPage</a> parameter of the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-s---screenshots-optionvalueoption2value2">-s (--screenshots)</a> flag:</p>
+<p>Enable the <a href="../documentation/reference/command-line-interface.html#fullpage">fullPage</a> parameter of the <a href="../documentation/reference/command-line-interface.html#-s---screenshots-optionvalueoption2value2">-s (--screenshots)</a> flag:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js <span class="nt">-s</span> <span class="nv">fullPage</span><span class="o">=</span><span class="nb">true</span>
 </code></pre></div>
 <p><em>API</em></p>
 
-<p>Pass the <code>fullPage</code> option to <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#screenshots">runner.screenshots</a>:</p>
+<p>Pass the <code>fullPage</code> option to <a href="../documentation/reference/testcafe-api/runner/screenshots.html">runner.screenshots</a>:</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">screenshots</span><span class="p">({</span>
     <span class="na">fullPage</span><span class="p">:</span> <span class="kc">true</span>
 <span class="p">});</span>
 </code></pre></div>
 <p><em>Configuration file</em></p>
 
-<p>Set the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#screenshotsfullpage">screenshots.fullPage</a> property:</p>
+<p>Set the <a href="../documentation/reference/configuration-file.html#screenshotsfullpage">screenshots.fullPage</a> property:</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
     </span><span class="nl">"screenshots"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
         </span><span class="nl">"fullPage"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
@@ -489,7 +489,7 @@
 </span></code></pre></div>
 <p><em>Test code</em></p>
 
-<p>Pass the <code>fullPage</code> option to the <a href="https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-the-entire-page">t.takeScreenshot</a> action:</p>
+<p>Pass the <code>fullPage</code> option to the <a href="../documentation/reference/test-api/testcontroller/takescreenshot.html">t.takeScreenshot</a> action:</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">t</span><span class="p">.</span><span class="nx">takeScreenshot</span><span class="p">({</span>
     <span class="na">fullPage</span><span class="p">:</span> <span class="kc">true</span>
 <span class="p">});</span>
@@ -499,7 +499,7 @@
 </div></blockquote>
 <p><em>Command line interface</em></p>
 
-<p>Screenshot options in CLI are now consolidated under the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-s---screenshots-optionvalueoption2value2">-s (--screenshots)</a> flag in an <code>option=value</code> string:</p>
+<p>Screenshot options in CLI are now consolidated under the <a href="../documentation/reference/command-line-interface.html#-s---screenshots-optionvalueoption2value2">-s (--screenshots)</a> flag in an <code>option=value</code> string:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js <span class="nt">-s</span> <span class="nv">takeOnFails</span><span class="o">=</span><span class="nb">true</span>,pathPattern<span class="o">=</span><span class="k">${</span><span class="nv">DATE</span><span class="k">}</span>_<span class="k">${</span><span class="nv">TIME</span><span class="k">}</span>/<span class="k">${</span><span class="nv">FILE_INDEX</span><span class="k">}</span>.png
 </code></pre></div><div class="table-wrapper"><table><thead><tr>
 <th>Old Usage</th>
@@ -520,7 +520,7 @@
 </tbody></table></div>
 <p><em>Configuration file</em></p>
 
-<p>Configuration file properties that specify screenshot options are now combined in the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#screenshots">screenshots</a> object:</p>
+<p>Configuration file properties that specify screenshot options are now combined in the <a href="../documentation/reference/configuration-file.html#screenshots">screenshots</a> object:</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
     </span><span class="nl">"screenshots"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
         </span><span class="nl">"path"</span><span class="p">:</span><span class="w"> </span><span class="s2">"artifacts/screenshots"</span><span class="p">,</span><span class="w">
@@ -547,7 +547,7 @@
 </tbody></table></div><h3><a class="anchor" id="default-screenshot-directory"></a>⚙ Default Screenshot Directory <a class="permalink" href="#default-screenshot-directory">#</a></h3>
 <p>TestCafe now saves the screenshots to <code>./screenshots</code> if the base directory is not specified.</p>
 
-<p>The <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-s---screenshots-optionvalueoption2value2">--screenshots</a> CLI flag, the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#screenshots">runner.screenshots</a> method or the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#screenshotpath">screenshotPath</a> configuration option are not required to take screenshots. For instance, you can run TestCafe with no additional parameters and use the <a href="https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-the-entire-page">t.takeScreenshot</a> action in test code:</p>
+<p>The <a href="../documentation/reference/command-line-interface.html#-s---screenshots-optionvalueoption2value2">--screenshots</a> CLI flag, the <a href="../documentation/reference/testcafe-api/runner/screenshots.html">runner.screenshots</a> method or the <a href="../documentation/reference/configuration-file.html#screenshotpath">screenshotPath</a> configuration option are not required to take screenshots. For instance, you can run TestCafe with no additional parameters and use the <a href="../documentation/reference/test-api/testcontroller/takescreenshot.html">t.takeScreenshot</a> action in test code:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js
 </code></pre></div>
 <p><em>test.js</em></p>
@@ -558,23 +558,23 @@
     <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">takeScreenshot</span><span class="p">();</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>The <code>path</code> argument in <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#screenshots">runner.screenshots</a> is now optional.</p>
+<p>The <code>path</code> argument in <a href="../documentation/reference/testcafe-api/runner/screenshots.html">runner.screenshots</a> is now optional.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">screenshots</span><span class="p">({</span>
     <span class="na">takeOnFails</span><span class="p">:</span> <span class="kc">true</span>
 <span class="p">});</span>
 </code></pre></div><h3><a class="anchor" id="new-option-to-disable-screenshots"></a>⚙ New Option to Disable Screenshots <a class="permalink" href="#new-option-to-disable-screenshots">#</a></h3>
-<p>We have added an option that allows you to disable taking screenshots. If this option is specified, TestCafe does not take screenshots when a test fails and when the <a href="https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-the-entire-page">t.takeScreenshot</a> or <a href="https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-a-page-element">t.takeElementScreenshot</a> action is executed.</p>
+<p>We have added an option that allows you to disable taking screenshots. If this option is specified, TestCafe does not take screenshots when a test fails and when the <a href="../documentation/reference/test-api/testcontroller/takescreenshot.html">t.takeScreenshot</a> or <a href="../documentation/reference/test-api/testcontroller/takeelementscreenshot.html">t.takeElementScreenshot</a> action is executed.</p>
 
 <p>You can disable screenshots with a command line, API or configuration file option:</p>
 
 <ul>
-<li><p>the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--disable-screenshots">--disable-screenshots</a> command line flag</p>
+<li><p>the <a href="../documentation/reference/command-line-interface.html#--disable-screenshots">--disable-screenshots</a> command line flag</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests <span class="nt">--disable-screenshots</span>
 </code></pre></div></li>
-<li><p>the <code>disableScreenshots</code> option in the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#run">runner.run</a> method</p>
+<li><p>the <code>disableScreenshots</code> option in the <a href="../documentation/reference/testcafe-api/runner/run.html">runner.run</a> method</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">run</span><span class="p">({</span> <span class="na">disableScreenshots</span><span class="p">:</span> <span class="kc">true</span> <span class="p">});</span>
 </code></pre></div></li>
-<li><p>the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#disablescreenshots">disableScreenshots</a> configuration file property</p>
+<li><p>the <a href="../documentation/reference/configuration-file.html#disablescreenshots">disableScreenshots</a> configuration file property</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
     </span><span class="nl">"disableScreenshots"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
 </span><span class="p">}</span><span class="w">

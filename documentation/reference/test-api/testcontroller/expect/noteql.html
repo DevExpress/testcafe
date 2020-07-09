@@ -444,7 +444,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1590354000 * 1000);
+        var lastPostDate = new Date(1593464400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -2116,8 +2116,8 @@
 		<div class="post-content">
 
 			<h1>t.expect.notEql Method</h1>
-<p>Assert that <code>actual</code> is not equal to <code>unexpected</code>.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">await t.expect( actual ).notEql( unexpected, message, options );
+<p>Assert that <code>actual</code> is not equal to <code>value</code>.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">await t.expect( actual ).notEql( value, message, options );
 </code></pre></div><div class="table-wrapper"><table><thead><tr>
 <th>Parameter</th>
 <th>Type</th>
@@ -2129,7 +2129,7 @@
 <td>A comparison value. See <a href="#actual-parameter-value"><code>actual</code> parameter value</a>.</td>
 </tr>
 <tr>
-<td><code>expected</code></td>
+<td><code>value</code></td>
 <td>Any type</td>
 <td>The type of value that is expected not to be equal to <code>actual</code>.</td>
 </tr>

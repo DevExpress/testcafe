@@ -15,15 +15,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>RequestLogger.clear Method | TestCafe</title>
+  <title>How to Speed up Debugging in TestCafe: Tips and Tricks | TestCafe</title>
 
-  <meta name="description" content="">
+  <meta name="description" content="How to Speed up Debugging in TestCafe: Tips and TricksIn the previous post, we talked about the approaches you can follow to debug TestCafe tests. In this po...">
   <meta name="viewport" content="width=device-width">
 
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://devexpress.github.io/testcafe/documentation/reference/test-api/requestlogger/clear.html" />
-  <meta property="og:title" content="RequestLogger.clear Method | TestCafe" />
+  <meta property="og:url" content="https://devexpress.github.io/testcafe/media/team-blog/how-to-speed-up-debugging-in-testcafe-tips-and-tricks.html" />
+  <meta property="og:title" content="How to Speed up Debugging in TestCafe: Tips and Tricks | TestCafe" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-twitter-card-icon.png" />
@@ -35,7 +35,7 @@
   
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
-  <link rel="canonical" href="https://devexpress.github.io/testcafe/documentation/reference/test-api/requestlogger/clear.html">
+  <link rel="canonical" href="https://devexpress.github.io/testcafe/media/team-blog/how-to-speed-up-debugging-in-testcafe-tips-and-tricks.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="https://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -86,6 +86,8 @@
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
   <link rel="stylesheet" href="/testcafe/css/docs.css">
+    
+    <link rel="stylesheet" href="/testcafe/css/community.css">
     
   <style>
       .ps-container > .ps-scrollbar-x-rail,
@@ -157,9 +159,6 @@
                 docMenuItem.appendChild(docMenuItemIcon);
 
                 
-                    docMenuItem.className += ' expanded';
-                    docTopNav.className += ' expanded';
-                
 
                 docMenuItem.addEventListener('click', function (e) {
                     if (docTopNav.className.indexOf('expanded') !== -1) {
@@ -196,7 +195,7 @@
         var article = null;
 
         function getHeaderHeight () {
-            var DOCS_HEADER_HEIGHT   = 126;
+            var DOCS_HEADER_HEIGHT   = 76;
             var SURVEY_HEADER_HEIGHT = 32;
 
             var surveyBanner          = document.querySelector('.survey-banner');
@@ -329,7 +328,7 @@
 
                 var bodyMinimized          = document.body.clientWidth === MIN_BODY_WIDTH;
                 var docContentMargin       = bodyMinimized ? CONTENT_MARGIN_WITHOUT_DOC_MENU : CONTENT_MARGIN_WITH_DOC_MENU;
-                var isCommunitySection     = false;
+                var isCommunitySection     = true;
                 var contentMarginCommunity = isMobileDevice ? CONTENT_MARGIN_COMMUNITY_MOBILE : CONTENT_MARGIN_COMMUNITY_DESKTOP;
                 var contentMargin          = isCommunitySection ? contentMarginCommunity : docContentMargin;
 
@@ -388,51 +387,6 @@
     <div class="page-content-wrapper">
 
       
-<div class="survey-banner hidden">
-  <div class="survey-banner-message">
-      <span>How do you like TestCafe? </span><span class="desktop-text">Please take 3 minutes to fill out our survey. </span><a href="https://dxpr.es/2WYA3X4" target="_blank"><span class="desktop-text">Take the survey</span><span class="mobile-text">Take a 3-minute survey.</span></a>
-  </div>
-  <div class="survey-banner-close-button"></div>
-</div>
-<script>
-  var SURVEY_BANNER_DISPLAY_SETBACK_DAYS = 7;
-
-  function getDaysBetween(fromTime, toTime) {
-      var dayDurationMs = 24*60*60*1000;
-
-      return Math.round(Math.abs((fromTime - toTime)/(dayDurationMs)));
-  }
-
-  var wasSurveyBannerDismissed = window.localStorage.getItem(SUMMER_2019_SURVEY_BANNER_DISMISSED_FLAG);
-  var wasSurveyCompleted       = window.localStorage.getItem(SUMMER_2019_SURVEY_COMPLETED_FLAG);
-  var surveyOpenDate           = window.localStorage.getItem(SUMMER_2019_SURVEY_PAGE_OPEN_DATE_FLAG);
-  var surveySetbackExpired     = !surveyOpenDate || (getDaysBetween(surveyOpenDate, Date.now()) > SURVEY_BANNER_DISPLAY_SETBACK_DAYS);
-
-  if(!wasSurveyBannerDismissed && !wasSurveyCompleted && surveySetbackExpired) {
-      var surveyBanner      = document.querySelector('.survey-banner');
-      var surveyLink        = document.querySelector('.survey-banner a');
-      var surveyBannerClose = document.querySelector('.survey-banner-close-button');
-
-      function hideSurveyBanner() {
-          surveyBanner.className = surveyBanner.className += ' hidden';
-
-          if (!isMobileDevice)
-              updateNavMenuPosition();
-      }
-
-      surveyBanner.className = surveyBanner.className.replace(/hidden/,'');
-
-      surveyBannerClose.addEventListener('click', function () {
-          hideSurveyBanner();
-          window.localStorage.setItem(SUMMER_2019_SURVEY_BANNER_DISMISSED_FLAG, true);
-      });
-
-      surveyLink.addEventListener('click', function () {
-          hideSurveyBanner();
-      });
-  }
-</script>
-
 
 
 <script>
@@ -463,12 +417,12 @@
     <nav class="site-nav">
       
         
-        <div class="site-nav-tab active">
+        <div class="site-nav-tab">
           <a class="page-link" href="/testcafe/documentation/getting-started/"><span>Docs</span></a>
         </div>
       
         
-        <div class="site-nav-tab" id="blog-link-tab">
+        <div class="site-nav-tab active" id="blog-link-tab">
           <a class="page-link" id="blog-link" href="/testcafe/media/team-blog/"><span>Blog</span></a>
         </div>
       
@@ -609,7 +563,7 @@
           <a href="/testcafe/documentation/guides/">Guides</a>      
         </div>
       
-        <div class="doc-top-nav-tab active" >
+        <div class="doc-top-nav-tab " >
           <a href="/testcafe/documentation/reference/">Reference</a>      
         </div>
       
@@ -631,1499 +585,99 @@
 
 
       <div class="container">
-    
-
-	
-	
-
-	
-	
-
-	
-	
-	<div class="doc-nav-panel">
-		<div class="toggle-nav-button"></div>
-		<div class="doc-nav-panel-header">
-			<div class="doc-nav-panel-heading">Documentation</div>
-			<div class="doc-nav-panel-title">REFERENCE</div>
-		</div>
-	</div>
-	<nav class="doc-nav">	
-		<div class="doc-nav-content">
-			<ul>
-				<li>
-				<ul>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/command-line-interface.html"  >Command Line Interface</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/configuration-file.html"  >Configuration File</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<span>Test API</span>
-
-		
-			<ul>
-
-    <li>
-		    
-		
-
-<span>Global Functions</span>
-
-		
-			<ul>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/global/fixture.html"  >fixture</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/global/test.html"  >test</a>
-
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/clientfunction/"  >ClientFunction</a>
-
-		
-			<ul>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/clientfunction/constructor.html"  >Constructor</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/clientfunction/with.html"  >with</a>
-
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/domnodestate.html"  >DOMNodeState</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<span>Fixture</span>
-
-		
-			<ul>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/fixture/after.html"  >after</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/fixture/aftereach.html"  >afterEach</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/fixture/before.html"  >before</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/fixture/beforeeach.html"  >beforeEach</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/fixture/clientscripts.html"  >clientScripts</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/fixture/disablepagecaching.html"  >disablePageCaching</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/fixture/httpauth.html"  >httpAuth</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/fixture/meta.html"  >meta</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/fixture/only.html"  >only</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/fixture/page.html"  >page</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/fixture/requesthooks.html"  >requestHooks</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/fixture/skip.html"  >skip</a>
-
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/requesthook/"  >RequestHook</a>
-
-		
-			<ul>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/requesthook/constructor.html"  >Constructor</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/requesthook/onrequest.html"  >onRequest</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/requesthook/onresponse.html"  >onResponse</a>
-
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/requestlogger/"  >RequestLogger</a>
-
-		
-			<ul>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/requestlogger/constructor.html"  >Constructor</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/requestlogger/clear.html" class="active" >clear</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/requestlogger/contains.html"  >contains</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/requestlogger/count.html"  >count</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/requestlogger/requests.html"  >requests</a>
-
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/requestmock/"  >RequestMock</a>
-
-		
-			<ul>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/requestmock/constructor.html"  >Constructor</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/requestmock/onrequestto.html"  >onRequestTo</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/requestmock/respond.html"  >respond</a>
-
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-
-<span>Role</span>
-
-		
-			<ul>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/role/constructor.html"  >Constructor</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/role/anonymous.html"  >anonymous</a>
-
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/selector/"  >Selector</a>
-
-		
-			<ul>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/selector/constructor.html"  >Constructor</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/selector/addcustomdomproperties.html"  >addCustomDOMProperties</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/selector/addcustommethods.html"  >addCustomMethods</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/selector/child.html"  >child</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/selector/count.html"  >count</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/selector/exists.html"  >exists</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/selector/filter.html"  >filter</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/selector/filterhidden.html"  >filterHidden</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/selector/filtervisible.html"  >filterVisible</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/selector/find.html"  >find</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/selector/nextsibling.html"  >nextSibling</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/selector/nth.html"  >nth</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/selector/parent.html"  >parent</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/selector/prevsibling.html"  >prevSibling</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/selector/sibling.html"  >sibling</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/selector/with.html"  >with</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/selector/withattribute.html"  >withAttribute</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/selector/withexacttext.html"  >withExactText</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/selector/withtext.html"  >withText</a>
-
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-
-<span>Test</span>
-
-		
-			<ul>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/test/after.html"  >after</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/test/before.html"  >before</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/test/clientscripts.html"  >clientScripts</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/test/disablepagecaching.html"  >disablePageCaching</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/test/httpauth.html"  >httpAuth</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/test/meta.html"  >meta</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/test/only.html"  >only</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/test/page.html"  >page</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/test/requesthooks.html"  >requestHooks</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/test/skip.html"  >skip</a>
-
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/"  >TestController</a>
-
-		
-			<ul>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/addrequesthooks.html"  >addRequestHooks</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/browser.html"  >browser</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/clearupload.html"  >clearUpload</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/click.html"  >click</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/ctx.html"  >ctx</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/debug.html"  >debug</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/doubleclick.html"  >doubleClick</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/drag.html"  >drag</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/dragtoelement.html"  >dragToElement</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/eval.html"  >eval</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/"  >expect</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/contains.html"  >expect.contains</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/eql.html"  >expect.eql</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/gt.html"  >expect.gt</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/gte.html"  >expect.gte</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/lt.html"  >expect.lt</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/lte.html"  >expect.lte</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/match.html"  >expect.match</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/notcontains.html"  >expect.notContains</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/noteql.html"  >expect.notEql</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/notmatch.html"  >expect.notMatch</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/notok.html"  >expect.notOk</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/nottypeof.html"  >expect.notTypeOf</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/notwithin.html"  >expect.notWithin</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/ok.html"  >expect.ok</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/typeof.html"  >expect.typeOf</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/expect/within.html"  >expect.within</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/fixturectx.html"  >fixtureCtx</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/getbrowserconsolemessages.html"  >getBrowserConsoleMessages</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/getnativedialoghistory.html"  >getNativeDialogHistory</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/hover.html"  >hover</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/maximizewindow.html"  >maximizeWindow</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/navigateto.html"  >navigateTo</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/presskey.html"  >pressKey</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/removerequesthooks.html"  >removeRequestHooks</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/resizewindow.html"  >resizeWindow</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/resizewindowtofitdevice.html"  >resizeWindowToFitDevice</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/rightclick.html"  >rightClick</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/selecteditablecontent.html"  >selectEditableContent</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/selecttext.html"  >selectText</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/selecttextareacontent.html"  >selectTextAreaContent</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/setfilestoupload.html"  >setFilesToUpload</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/setnativedialoghandler.html"  >setNativeDialogHandler</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/setpageloadtimeout.html"  >setPageLoadTimeout</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/settestspeed.html"  >setTestSpeed</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/switchtoiframe.html"  >switchToIframe</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/switchtomainwindow.html"  >switchToMainWindow</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/takeelementscreenshot.html"  >takeElementScreenshot</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/takescreenshot.html"  >takeScreenshot</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/typetext.html"  >typeText</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/userole.html"  >useRole</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/test-api/testcontroller/wait.html"  >wait</a>
-
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-
-<span>TestCafe API</span>
-
-		
-			<ul>
-
-    <li>
-		    
-		
-
-<span>Global Functions</span>
-
-		
-			<ul>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/testcafe-api/global/createtestcafe.html"  >createTestCafe</a>
-
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/testcafe-api/browserconnection/"  >BrowserConnection</a>
-
-		
-			<ul>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/testcafe-api/browserconnection/ready.html"  >ready</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/testcafe-api/browserconnection/url.html"  >url</a>
-
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/testcafe-api/livemoderunner.html"  >LiveModeRunner</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/testcafe-api/runner/"  >Runner</a>
-
-		
-			<ul>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/testcafe-api/runner/browsers.html"  >browsers</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/testcafe-api/runner/clientscripts.html"  >clientScripts</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/testcafe-api/runner/concurrency.html"  >concurrency</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/testcafe-api/runner/filter.html"  >filter</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/testcafe-api/runner/reporter.html"  >reporter</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/testcafe-api/runner/run.html"  >run</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/testcafe-api/runner/screenshots.html"  >screenshots</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/testcafe-api/runner/src.html"  >src</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/testcafe-api/runner/startapp.html"  >startApp</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/testcafe-api/runner/stop.html"  >stop</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/testcafe-api/runner/tsconfigpath.html"  >tsConfigPath</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/testcafe-api/runner/useproxy.html"  >useProxy</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/testcafe-api/runner/video.html"  >video</a>
-
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/testcafe-api/testcafe/"  >TestCafe</a>
-
-		
-			<ul>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/testcafe-api/testcafe/close.html"  >close</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/testcafe-api/testcafe/createbrowserconnection.html"  >createBrowserConnection</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/testcafe-api/testcafe/createlivemoderunner.html"  >createLiveModeRunner</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/testcafe-api/testcafe/createrunner.html"  >createRunner</a>
-
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-
-<span>Plugin API</span>
-
-		
-			<ul>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/plugin-api/browserprovider.html"  >BrowserProvider Interface</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/reference/plugin-api/reporter.html"  >Reporter Interface</a>
-
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-</ul>
-				</li>
-			</ul>
-		</div>
-	</nav>
-	
-
-	
-	
-	
-
-
-<main>
-	<article class="doc">
-		<div class="post-content">
-
-			<h1>RequestLogger.clear Method</h1>
-<p>Clears all logged requests.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">clear() → void
+    <main>
+    <div class="post">
+        <div class="post-date">
+            JUN 30, 2020
+        </div>
+        <article class="post-content">
+            <h1>How to Speed up Debugging in TestCafe: Tips and Tricks</h1>
+<p>In the previous post, we talked about the approaches you can follow to debug TestCafe tests. In this post, we will focus on best practices that help you save time while debugging.  We will also mention a few things to keep in mind in order to write easy-to-debug tests.</p>
+
+<!--more-->
+<h2><a class="anchor" id="tips-on-how-to-debug-tests"></a>Tips on how to debug tests <a class="permalink" href="#tips-on-how-to-debug-tests">#</a></h2>
+<p><strong>If you know which test throws an error, run this test separately.</strong></p>
+
+<p>If you only need to check one test, do not wait until all tests pass. TestCafe can run any single test separately. Add the <a href="../../documentation/reference/command-line-interface.html#-t-name---test-name">--test shell argument</a> or use the <a href="../../documentation/reference/test-api/test/only.html">test.only</a> method in test code. (Be sure to remove <code>.only</code> before you commit changes.)</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome ./tests <span class="nt">--test</span> <span class="s2">"My test name"</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">My first test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="cm">/* ... */</span>
+<span class="p">}).</span><span class="nx">only</span><span class="p">;</span>
 </code></pre></div>
+<p><strong>Use live mode when you edit tests.</strong></p>
 
-		</div>
-	</article>
+<p>If you find yourself running a test repeatedly while you write or debug it, try live mode. In this mode, TestCafe watches the test file and restarts the test automatically after you save changes. To enable live mode, run the test with the <a href="../../documentation/reference/command-line-interface.html#-l---live">--live flag</a>.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome ./tests <span class="nt">--live</span>
+</code></pre></div>
+<p><strong>To identify an issue visually, decrease the test speed.</strong></p>
 
+<p>By default, tests are executed at full speed – with minimum delays between actions and assertions. This makes it difficult to identify problems visually during a test run. To slow the test down, use the <a href="../../documentation/reference/command-line-interface.html#--speed-factor">--speed flag</a>. The argument value is between <code>1</code> (fastest) and <code>0.01</code> (slowest).</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome ./tests <span class="nt">--speed</span> 0.1
+</code></pre></div>
+<p><strong>Use TestCafe Studio to determine why a selector does not work.</strong></p>
+
+<p>TestCafe may report that a selector does not return any element, although you have written it correctly. The reason may be an invisible DOM element that matches the same selector expression. To get a better understanding of the issue, record a similar test in TestCafe Studio and compare your selector to the selector that is generated.</p>
+
+<p><strong>If a test fails on CI, use screenshots and videos to clarify the reason.</strong></p>
+
+<p>You do not have to run a test locally to determine the reason why a test fails on CI. TestCafe can take a screenshot when the test fails and record a video of the test run. To enable screenshots and video recording, use the <a href="../../documentation/reference/command-line-interface.html#-s---screenshots-on-fails">--screenshots-on-fail</a> and <a href="../../documentation/reference/command-line-interface.html#--video-basepath">--video</a> CLI options. See the following help topic for details: <a href="../../documentation/guides/advanced-guides/screenshots-and-videos.html">Screenshots and Videos</a>.</p>
+<h2><a class="anchor" id="tips-on-how-to-write-tests-that-are-easy-to-debug"></a>Tips on how to write tests that are easy to debug <a class="permalink" href="#tips-on-how-to-write-tests-that-are-easy-to-debug">#</a></h2>
+<p><strong>Tests should be easy to run locally.</strong></p>
+
+<p>If it is difficult to run a test locally, developers are likely to delay test fixes, so that they turn &#39;green&#39; only shortly before the release. These delays may complicate the debug process.</p>
+
+<p>Developers can easily reproduce test scenarios locally and maintain &#39;green&#39; tests if the following is true:</p>
+
+<ul>
+<li>Tests are isolated from each other.</li>
+<li>The workstation environment is similar to the test environment.</li>
+</ul>
+
+<p>Ideally, a developer must be able to run any test locally with a single command, which requires the following:</p>
+
+<ul>
+<li>The product test build is easy to run in a Docker container (or by another approach that emulates the test environment).</li>
+<li>Test data is seeded in test code (for example, within the <code>before</code> and <code>after</code> hooks).</li>
+</ul>
+
+<p><strong>Tests should be independent.</strong></p>
+
+<p>If subsequent tests use data produced by previous tests, you can expect the following two issues:</p>
+
+<ul>
+<li>When a previous test fails, all dependent tests will also fail.</li>
+<li>You cannot debug a test until all previous tests are complete.</li>
+</ul>
+
+<p>To simplify debugging in the future, be sure to avoid dependencies between tests.</p>
+
+<p>For more best practice tips, see the following help topic: <a href="https://devexpress.github.io/testcafe/media/team-blog/how-to-scroll-web-pages-using-testcafe.html">How to Scroll Web Pages Using TestCafe</a>.</p>
+
+        </article>
+        <div id="back-to-posts-link">
+            <p><a href="../../media/team-blog/">Back to Post List</a></p>
+        </div>
+        <!-- <div id="disqus_thread"></div> -->
+    </div>
 </main>
+
+<!-- 
+<script>
+    var disqus_config = function () {
+        this.page.url = 'https://devexpress.github.io/testcafe/media/team-blog/how-to-speed-up-debugging-in-testcafe-tips-and-tricks.html';
+        this.page.identifier = '/media/team-blog/how-to-speed-up-debugging-in-testcafe-tips-and-tricks';
+    };
+    (function() {
+        var d = document, s = d.createElement('script');
+        
+        s.src = '//testcafe-blog.disqus.com/embed.js';
+        
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+ -->
 </div>
 
     </div>

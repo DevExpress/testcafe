@@ -262,7 +262,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1590354000 * 1000);
+        var lastPostDate = new Date(1593464400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -462,13 +462,13 @@
 <h2><a class="anchor" id="enhancements"></a>Enhancements <a class="permalink" href="#enhancements">#</a></h2><h3><a class="anchor" id="stop-test-run-after-the-first-test-fail-1323"></a>⚙ Stop Test Run After the First Test Fail (<a href="https://github.com/DevExpress/testcafe/issues/1323">#1323</a>) <a class="permalink" href="#stop-test-run-after-the-first-test-fail-1323">#</a></h3>
 <p>You can now configure TestCafe to stop the entire test run after the first test fail. This saves your time when you fix problems with your tests one by one.</p>
 
-<p>Specify the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--sf---stop-on-first-fail">--sf</a> flag to enable this feature when you run tests from the command line.</p>
+<p>Specify the <a href="../documentation/reference/command-line-interface.html#--sf---stop-on-first-fail">--sf</a> flag to enable this feature when you run tests from the command line.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests <span class="nt">--sf</span>
 </code></pre></div>
-<p>In the API, use the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#run">stopOnFirstFail</a> option.</p>
+<p>In the API, use the <a href="../documentation/reference/testcafe-api/runner/run.html">stopOnFirstFail</a> option.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">run</span><span class="p">({</span> <span class="na">stopOnFirstFail</span><span class="p">:</span> <span class="kc">true</span> <span class="p">})</span>
 </code></pre></div><h3><a class="anchor" id="view-the-javascript-errors-stack-traces-in-reports-2043"></a>⚙ View the JavaScript Errors&#39; Stack Traces in Reports (<a href="https://github.com/DevExpress/testcafe/issues/2043">#2043</a>) <a class="permalink" href="#view-the-javascript-errors-stack-traces-in-reports-2043">#</a></h3>
-<p>Now when a JavaScript error occurs on the tested webpage, the test run report includes a stack trace for this error (only if the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-e---skip-js-errors">--skip-js-errors</a> option is disabled).</p>
+<p>Now when a JavaScript error occurs on the tested webpage, the test run report includes a stack trace for this error (only if the <a href="../documentation/reference/command-line-interface.html#-e---skip-js-errors">--skip-js-errors</a> option is disabled).</p>
 
 <p><img src="../images/client-error-stack-report.png" alt="A report that contains a stack trace for a client JS error" title=""></p>
 <h3><a class="anchor" id="browsers-are-automatically-restarted-when-they-stop-responding-1815"></a>⚙ Browsers are Automatically Restarted When They Stop Responding (<a href="https://github.com/DevExpress/testcafe/issues/1815">#1815</a>) <a class="permalink" href="#browsers-are-automatically-restarted-when-they-stop-responding-1815">#</a></h3>

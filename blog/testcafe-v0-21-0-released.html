@@ -262,7 +262,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1590354000 * 1000);
+        var lastPostDate = new Date(1593464400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -464,10 +464,10 @@
 
 <p>Starting with v0.21.0, TestCafe can serve proxied web pages over HTTPS. This allows you to test pages that require a secure origin.</p>
 
-<p>To enable HTTPS when you use TestCafe through the command line, specify the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--ssl-options">--ssl</a> flag followed by the <a href="https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener">HTTPS server options</a>. The most commonly used options are described in the <a href="https://nodejs.org/api/tls.html#tls_tls_createsecurecontext_options">TLS topic</a> in the Node.js documentation.</p>
+<p>To enable HTTPS when you use TestCafe through the command line, specify the <a href="../documentation/reference/command-line-interface.html#--ssl-options">--ssl</a> flag followed by the <a href="https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener">HTTPS server options</a>. The most commonly used options are described in the <a href="https://nodejs.org/api/tls.html#tls_tls_createsecurecontext_options">TLS topic</a> in the Node.js documentation.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="nt">--ssl</span> <span class="nv">pfx</span><span class="o">=</span>path/to/file.pfx<span class="p">;</span><span class="nv">rejectUnauthorized</span><span class="o">=</span><span class="nb">true</span><span class="p">;</span>...
 </code></pre></div>
-<p>When you use a programming API, pass the HTTPS server options to the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/createtestcafe.html">createTestCafe</a> method.</p>
+<p>When you use a programming API, pass the HTTPS server options to the <a href="../documentation/reference/testcafe-api/global/createtestcafe.html">createTestCafe</a> method.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="dl">'</span><span class="s1">use strict</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="kd">const</span> <span class="nx">createTestCafe</span>        <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">);</span>
@@ -494,16 +494,16 @@
             <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
     <span class="p">});</span>
 </code></pre></div>
-<p>See <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/connect-to-the-testcafe-server-over-https.html">Connect to TestCafe Server over HTTPS</a> for more information.</p>
+<p>See <a href="../documentation/guides/advanced-guides/test-https-features-and-http2-websites.html">Connect to TestCafe Server over HTTPS</a> for more information.</p>
 <h3><a class="anchor" id="construct-screenshot-paths-with-patterns-2152"></a>⚙ Construct Screenshot Paths with Patterns (<a href="https://github.com/DevExpress/testcafe/issues/2152">#2152</a>) <a class="permalink" href="#construct-screenshot-paths-with-patterns-2152">#</a></h3>
-<p>You can now use patterns to construct paths to screenshots. TestCafe provides placeholders you can include in the path, for example, <code>${DATE}</code>, <code>${TIME}</code>, <code>${USERAGENT}</code>, etc. For a complete list, refer to <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/screenshots-and-videos.html#path-pattern-placeholders">Path Pattern Placeholders</a>.</p>
+<p>You can now use patterns to construct paths to screenshots. TestCafe provides placeholders you can include in the path, for example, <code>${DATE}</code>, <code>${TIME}</code>, <code>${USERAGENT}</code>, etc. For a complete list, refer to <a href="../documentation/guides/advanced-guides/screenshots-and-videos.html#path-pattern-placeholders">Path Pattern Placeholders</a>.</p>
 
 <p>Specify a screenshot path pattern when you run tests. Each time TestCafe takes a screenshot, it substitutes the placeholders with actual values and saves the screenshot to the resulting path.</p>
 
 <p>The following example shows how to specify a screenshot path pattern through the command line:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all test.js <span class="nt">-s</span> <span class="nv">path</span><span class="o">=</span>screenshots,pathPattern<span class="o">=</span><span class="k">${</span><span class="nv">DATE</span><span class="k">}</span>_<span class="k">${</span><span class="nv">TIME</span><span class="k">}</span>/test-<span class="k">${</span><span class="nv">TEST_INDEX</span><span class="k">}</span>/<span class="k">${</span><span class="nv">USERAGENT</span><span class="k">}</span>/<span class="k">${</span><span class="nv">FILE_INDEX</span><span class="k">}</span>.png
 </code></pre></div>
-<p>When you use a programming API, pass the screenshot path pattern to the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#screenshots">runner.screenshots method</a>.</p>
+<p>When you use a programming API, pass the screenshot path pattern to the <a href="../documentation/reference/testcafe-api/runner/screenshots.html">runner.screenshots method</a>.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">screenshots</span><span class="p">({</span>
     <span class="na">path</span><span class="p">:</span> <span class="dl">'</span><span class="s1">reports/screenshots/</span><span class="dl">'</span><span class="p">,</span>
     <span class="na">takeOnFails</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
@@ -524,7 +524,7 @@
 
 <p>If the test was run in the quarantine mode, you can also determine which attempts failed and passed.</p>
 
-<p>Refer to the <a href="https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttestdone">reportTestDone method description</a> for details on how to access this information.</p>
+<p>Refer to the <a href="../documentation/reference/plugin-api/reporter.html#reporttestdone">reportTestDone method description</a> for details on how to access this information.</p>
 <h2><a class="anchor" id="bug-fixes"></a>Bug Fixes <a class="permalink" href="#bug-fixes">#</a></h2>
 <ul>
 <li>HTML5 drag events are no longer simulated if <code>event.preventDefault</code> is called for the <code>mousedown</code> event (<a href="https://github.com/DevExpress/testcafe/issues/2529">#2529</a>)</li>

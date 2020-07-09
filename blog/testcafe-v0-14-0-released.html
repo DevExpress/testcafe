@@ -262,7 +262,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1590354000 * 1000);
+        var lastPostDate = new Date(1593464400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -515,7 +515,7 @@ to isolate authentication test actions and apply them easily whenever you need t
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">entry</span><span class="p">.</span><span class="nx">exists</span><span class="p">).</span><span class="nx">notOk</span><span class="p">()</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>To learn more, see <a href="https://devexpress.github.io/testcafe/documentation/test-api/authentication/user-roles.html">User Roles</a>.</p>
+<p>To learn more, see <a href="../documentation/guides/advanced-guides/authentication.html#user-roles">User Roles</a>.</p>
 <h3><a class="anchor" id="browserstack-support"></a>⚙ BrowserStack support <a class="permalink" href="#browserstack-support">#</a></h3>
 <p>We have released the <a href="https://www.browserstack.com/">BrowserStack</a> browser provider <a href="https://github.com/DevExpress/testcafe-browser-provider-browserstack">plugin</a>.</p>
 
@@ -550,13 +550,13 @@ and check the web page state, DOM elements location, their CSS styles.</p>
 
 <p><img src="../images/debugging/log-debugger.png" alt="Logging Debugger Breakpoints" title=""></p>
 <h3><a class="anchor" id="testing-local-webpages-1286"></a>⚙ Testing local webpages (<a href="https://github.com/DevExpress/testcafe/issues/1286">#1286</a>) <a class="permalink" href="#testing-local-webpages-1286">#</a></h3>
-<p>You can now run tests against local webpages. To do this, specify a URL with the <code>file://</code> scheme or a relative path when calling the <a href="https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#specifying-the-start-webpage">page</a> function.</p>
+<p>You can now run tests against local webpages. To do this, specify a URL with the <code>file://</code> scheme or a relative path when calling the <a href="../documentation/reference/test-api/fixture/page.html">page</a> function.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`MyFixture`</span>
     <span class="p">.</span><span class="nx">page</span> <span class="s2">`file:///user/my-website/index.html`</span><span class="p">;</span>
 </code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`MyFixture`</span>
     <span class="p">.</span><span class="nx">page</span> <span class="s2">`../my-project/index.html`</span><span class="p">;</span>
 </code></pre></div>
-<p>You can also navigate to local pages with the <a href="https://devexpress.github.io/testcafe/documentation/test-api/actions/navigate.html">t.navigateTo</a> action.</p>
+<p>You can also navigate to local pages with the <a href="../documentation/reference/test-api/testcontroller/navigateto.html">t.navigateTo</a> action.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
     <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
 
@@ -566,7 +566,7 @@ and check the web page state, DOM elements location, their CSS styles.</p>
         <span class="p">.</span><span class="nx">navigateTo</span><span class="p">(</span><span class="dl">'</span><span class="s1">../my-project/index.html</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div><h3><a class="anchor" id="adding-custom-methods-to-the-selector-1212"></a>⚙ Adding custom methods to the selector (<a href="https://github.com/DevExpress/testcafe/issues/1212">#1212</a>) <a class="permalink" href="#adding-custom-methods-to-the-selector-1212">#</a></h3>
-<p>You can now extend selectors with custom methods executed on the client. Use the <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/extending-selectors.html#custom-methods">addCustomMethods</a> method to provide custom methods.</p>
+<p>You can now extend selectors with custom methods executed on the client. Use the <a href="../documentation/reference/test-api/selector/addcustommethods.html">addCustomMethods</a> method to provide custom methods.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">myTable</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">.my-table</span><span class="dl">'</span><span class="p">).</span><span class="nx">addCustomMethods</span><span class="p">({</span>
     <span class="na">getCellText</span><span class="p">:</span> <span class="p">(</span><span class="nx">table</span><span class="p">,</span> <span class="nx">rowIndex</span><span class="p">,</span> <span class="nx">columnIndex</span><span class="p">)</span> <span class="o">=&gt;</span>
         <span class="nx">table</span><span class="p">.</span><span class="nx">rows</span><span class="p">[</span><span class="nx">rowIndex</span><span class="p">].</span><span class="nx">cells</span><span class="p">[</span><span class="nx">columnIndex</span><span class="p">].</span><span class="nx">innerText</span>
@@ -576,7 +576,7 @@ and check the web page state, DOM elements location, their CSS styles.</p>
 </code></pre></div>
 <p>Use this feature to build selectors that reflect the specifics of your web app.</p>
 <h3><a class="anchor" id="removing-the-native-dialog-handler-243"></a>⚙ Removing the native dialog handler (<a href="https://github.com/DevExpress/testcafe/issues/243">#243</a>) <a class="permalink" href="#removing-the-native-dialog-handler-243">#</a></h3>
-<p>We have added the capability to remove a <a href="https://devexpress.github.io/testcafe/documentation/test-api/handling-native-dialogs.html">native dialog handler</a> by passing <code>null</code> to the <code>t.setNativeDialogHandler</code> method.</p>
+<p>We have added the capability to remove a <a href="../documentation/reference/test-api/testcontroller/setnativedialoghandler.html">native dialog handler</a> by passing <code>null</code> to the <code>t.setNativeDialogHandler</code> method.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
     <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://devexpress.github.io/testcafe/example`</span><span class="p">;</span>
 

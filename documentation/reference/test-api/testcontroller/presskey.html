@@ -444,7 +444,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1590354000 * 1000);
+        var lastPostDate = new Date(1593464400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -2181,16 +2181,18 @@
 <li><code>&#39;delete&#39;</code></li>
 </ul>
 <h2><a class="anchor" id="browser-processing-emulation"></a>Browser Processing Emulation <a class="permalink" href="#browser-processing-emulation">#</a></h2>
-<p>When a user presses a key or key combination, the browser dispatches an event that triggers handlers in page code. Most browsers also respond to common keystrokes with their integrated actions (for instance, they select text when you press <code>Cmd/Ctrl+A</code> or copy objects to the clipboard when you press <code>Cmd/Ctrl+C</code>).</p>
+<p>When a user presses a key or a key combination, the browser dispatches an event that triggers handlers in page code. Most browsers also respond to common keystrokes with their integrated actions (for instance, they select text when you press <code>Cmd/Ctrl+A</code> or switch focus when you press <code>Shift+Tab</code>).</p>
 
-<p>The <code>t.pressKey</code> action triggers only page handlers for most keystrokes.</p>
-
-<p>TestCafe Studio emulates browser processing for the following keys and key combinations:</p>
+<p>The <code>t.pressKey</code> action only triggers page handlers for most keystrokes. Browser processing is emulated with a limited set of elements:</p>
 <div class="table-wrapper"><table><thead><tr>
 <th>Shortcut</th>
 <th>Elements</th>
 </tr>
 </thead><tbody><tr>
+<td><code>&#39;ctrl+c&#39;</code>, <code>&#39;ctrl+v&#39;</code></td>
+<td>None. Clipboard operations are <em>not emulated</em>.</td>
+</tr>
+<tr>
 <td><code>&#39;ctrl+a&#39;</code></td>
 <td><a href="#text-field-based-inputs">text field-based inputs</a>, <code>&lt;textarea&gt;</code>, <code>contentEditable</code></td>
 </tr>

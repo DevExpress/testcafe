@@ -262,7 +262,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1590354000 * 1000);
+        var lastPostDate = new Date(1593464400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -493,7 +493,7 @@ like <code>style</code>, <code>attributes</code> or <code>boundingClientRect</co
     <span class="c1">//...</span>
 <span class="p">}</span>
 </code></pre></div>
-<p>See <a href="https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors/using-selectors.html#obtain-element-state">Snapshot API Shorthands</a>.  </p>
+<p>See <a href="../documentation/guides/basic-guides/select-page-elements.html#obtain-element-state">Snapshot API Shorthands</a>.  </p>
 <h3><a class="anchor" id="improved-automatic-wait-mechanism"></a>Improved automatic wait mechanism <a class="permalink" href="#improved-automatic-wait-mechanism">#</a></h3>
 <p>We got rid of unnecessary waiting so that tests now run almost two times faster.</p>
 

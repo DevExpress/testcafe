@@ -5,9 +5,80 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 02 Jun 2020 18:09:48 +0300</pubDate>
-    <lastBuildDate>Tue, 02 Jun 2020 18:09:48 +0300</lastBuildDate>
+    <pubDate>Mon, 06 Jul 2020 18:49:24 +0300</pubDate>
+    <lastBuildDate>Mon, 06 Jul 2020 18:49:24 +0300</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>How to Speed up Debugging in TestCafe: Tips and Tricks</title>
+        <description>&lt;h1&gt;How to Speed up Debugging in TestCafe: Tips and Tricks&lt;/h1&gt;
+&lt;p&gt;In the previous post, we talked about the approaches you can follow to debug TestCafe tests. In this post, we will focus on best practices that help you save time while debugging.  We will also mention a few things to keep in mind in order to write easy-to-debug tests.&lt;/p&gt;
+
+&lt;!--more--&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;tips-on-how-to-debug-tests&quot;&gt;&lt;/a&gt;Tips on how to debug tests &lt;a class=&quot;permalink&quot; href=&quot;#tips-on-how-to-debug-tests&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;If you know which test throws an error, run this test separately.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;If you only need to check one test, do not wait until all tests pass. TestCafe can run any single test separately. Add the &lt;a href=&quot;../../documentation/reference/command-line-interface.html#-t-name---test-name&quot;&gt;--test shell argument&lt;/a&gt; or use the &lt;a href=&quot;../../documentation/reference/test-api/test/only.html&quot;&gt;test.only&lt;/a&gt; method in test code. (Be sure to remove &lt;code&gt;.only&lt;/code&gt; before you commit changes.)&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome ./tests &lt;span class=&quot;nt&quot;&gt;--test&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;My test name&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;My first test&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;cm&quot;&gt;/* ... */&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;only&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;Use live mode when you edit tests.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;If you find yourself running a test repeatedly while you write or debug it, try live mode. In this mode, TestCafe watches the test file and restarts the test automatically after you save changes. To enable live mode, run the test with the &lt;a href=&quot;../../documentation/reference/command-line-interface.html#-l---live&quot;&gt;--live flag&lt;/a&gt;.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome ./tests &lt;span class=&quot;nt&quot;&gt;--live&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;To identify an issue visually, decrease the test speed.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;By default, tests are executed at full speed – with minimum delays between actions and assertions. This makes it difficult to identify problems visually during a test run. To slow the test down, use the &lt;a href=&quot;../../documentation/reference/command-line-interface.html#--speed-factor&quot;&gt;--speed flag&lt;/a&gt;. The argument value is between &lt;code&gt;1&lt;/code&gt; (fastest) and &lt;code&gt;0.01&lt;/code&gt; (slowest).&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome ./tests &lt;span class=&quot;nt&quot;&gt;--speed&lt;/span&gt; 0.1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;Use TestCafe Studio to determine why a selector does not work.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;TestCafe may report that a selector does not return any element, although you have written it correctly. The reason may be an invisible DOM element that matches the same selector expression. To get a better understanding of the issue, record a similar test in TestCafe Studio and compare your selector to the selector that is generated.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;If a test fails on CI, use screenshots and videos to clarify the reason.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;You do not have to run a test locally to determine the reason why a test fails on CI. TestCafe can take a screenshot when the test fails and record a video of the test run. To enable screenshots and video recording, use the &lt;a href=&quot;../../documentation/reference/command-line-interface.html#-s---screenshots-on-fails&quot;&gt;--screenshots-on-fail&lt;/a&gt; and &lt;a href=&quot;../../documentation/reference/command-line-interface.html#--video-basepath&quot;&gt;--video&lt;/a&gt; CLI options. See the following help topic for details: &lt;a href=&quot;../../documentation/guides/advanced-guides/screenshots-and-videos.html&quot;&gt;Screenshots and Videos&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;tips-on-how-to-write-tests-that-are-easy-to-debug&quot;&gt;&lt;/a&gt;Tips on how to write tests that are easy to debug &lt;a class=&quot;permalink&quot; href=&quot;#tips-on-how-to-write-tests-that-are-easy-to-debug&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Tests should be easy to run locally.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;If it is difficult to run a test locally, developers are likely to delay test fixes, so that they turn &amp;#39;green&amp;#39; only shortly before the release. These delays may complicate the debug process.&lt;/p&gt;
+
+&lt;p&gt;Developers can easily reproduce test scenarios locally and maintain &amp;#39;green&amp;#39; tests if the following is true:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Tests are isolated from each other.&lt;/li&gt;
+&lt;li&gt;The workstation environment is similar to the test environment.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Ideally, a developer must be able to run any test locally with a single command, which requires the following:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The product test build is easy to run in a Docker container (or by another approach that emulates the test environment).&lt;/li&gt;
+&lt;li&gt;Test data is seeded in test code (for example, within the &lt;code&gt;before&lt;/code&gt; and &lt;code&gt;after&lt;/code&gt; hooks).&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Tests should be independent.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;If subsequent tests use data produced by previous tests, you can expect the following two issues:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;When a previous test fails, all dependent tests will also fail.&lt;/li&gt;
+&lt;li&gt;You cannot debug a test until all previous tests are complete.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;To simplify debugging in the future, be sure to avoid dependencies between tests.&lt;/p&gt;
+
+&lt;p&gt;For more best practice tips, see the following help topic: &lt;a href=&quot;https://devexpress.github.io/testcafe/media/team-blog/how-to-scroll-web-pages-using-testcafe.html&quot;&gt;How to Scroll Web Pages Using TestCafe&lt;/a&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 30 Jun 2020 00:00:00 +0300</pubDate>
+        <link>https://devexpress.github.io/testcafe/media/team-blog/how-to-speed-up-debugging-in-testcafe-tips-and-tricks.html</link>
+        <guid isPermaLink="true">https://devexpress.github.io/testcafe/media/team-blog/how-to-speed-up-debugging-in-testcafe-tips-and-tricks.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>How to Debug Tests in TestCafe: Quick Guide</title>
@@ -370,19 +441,19 @@
 
 &lt;p&gt;&lt;em&gt;Command line interface&lt;/em&gt;&lt;/p&gt;
 
-&lt;p&gt;Enable the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#fullpage&quot;&gt;fullPage&lt;/a&gt; parameter of the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-s---screenshots-optionvalueoption2value2&quot;&gt;-s (--screenshots)&lt;/a&gt; flag:&lt;/p&gt;
+&lt;p&gt;Enable the &lt;a href=&quot;../documentation/reference/command-line-interface.html#fullpage&quot;&gt;fullPage&lt;/a&gt; parameter of the &lt;a href=&quot;../documentation/reference/command-line-interface.html#-s---screenshots-optionvalueoption2value2&quot;&gt;-s (--screenshots)&lt;/a&gt; flag:&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome test.js &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;fullPage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;&lt;em&gt;API&lt;/em&gt;&lt;/p&gt;
 
-&lt;p&gt;Pass the &lt;code&gt;fullPage&lt;/code&gt; option to &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#screenshots&quot;&gt;runner.screenshots&lt;/a&gt;:&lt;/p&gt;
+&lt;p&gt;Pass the &lt;code&gt;fullPage&lt;/code&gt; option to &lt;a href=&quot;../documentation/reference/testcafe-api/runner/screenshots.html&quot;&gt;runner.screenshots&lt;/a&gt;:&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;screenshots&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
     &lt;span class=&quot;na&quot;&gt;fullPage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;&lt;em&gt;Configuration file&lt;/em&gt;&lt;/p&gt;
 
-&lt;p&gt;Set the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#screenshotsfullpage&quot;&gt;screenshots.fullPage&lt;/a&gt; property:&lt;/p&gt;
+&lt;p&gt;Set the &lt;a href=&quot;../documentation/reference/configuration-file.html#screenshotsfullpage&quot;&gt;screenshots.fullPage&lt;/a&gt; property:&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
     &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;screenshots&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
         &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;fullPage&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
@@ -391,7 +462,7 @@
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;&lt;em&gt;Test code&lt;/em&gt;&lt;/p&gt;
 
-&lt;p&gt;Pass the &lt;code&gt;fullPage&lt;/code&gt; option to the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-the-entire-page&quot;&gt;t.takeScreenshot&lt;/a&gt; action:&lt;/p&gt;
+&lt;p&gt;Pass the &lt;code&gt;fullPage&lt;/code&gt; option to the &lt;a href=&quot;../documentation/reference/test-api/testcontroller/takescreenshot.html&quot;&gt;t.takeScreenshot&lt;/a&gt; action:&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;takeScreenshot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
     &lt;span class=&quot;na&quot;&gt;fullPage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
@@ -401,7 +472,7 @@
 &lt;/div&gt;&lt;/blockquote&gt;
 &lt;p&gt;&lt;em&gt;Command line interface&lt;/em&gt;&lt;/p&gt;
 
-&lt;p&gt;Screenshot options in CLI are now consolidated under the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-s---screenshots-optionvalueoption2value2&quot;&gt;-s (--screenshots)&lt;/a&gt; flag in an &lt;code&gt;option=value&lt;/code&gt; string:&lt;/p&gt;
+&lt;p&gt;Screenshot options in CLI are now consolidated under the &lt;a href=&quot;../documentation/reference/command-line-interface.html#-s---screenshots-optionvalueoption2value2&quot;&gt;-s (--screenshots)&lt;/a&gt; flag in an &lt;code&gt;option=value&lt;/code&gt; string:&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome test.js &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;takeOnFails&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;,pathPattern&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;DATE&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;_&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;TIME&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;/&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;FILE_INDEX&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;.png
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;table-wrapper&quot;&gt;&lt;table&gt;&lt;thead&gt;&lt;tr&gt;
 &lt;th&gt;Old Usage&lt;/th&gt;
@@ -422,7 +493,7 @@
 &lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;
 &lt;p&gt;&lt;em&gt;Configuration file&lt;/em&gt;&lt;/p&gt;
 
-&lt;p&gt;Configuration file properties that specify screenshot options are now combined in the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#screenshots&quot;&gt;screenshots&lt;/a&gt; object:&lt;/p&gt;
+&lt;p&gt;Configuration file properties that specify screenshot options are now combined in the &lt;a href=&quot;../documentation/reference/configuration-file.html#screenshots&quot;&gt;screenshots&lt;/a&gt; object:&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
     &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;screenshots&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
         &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;path&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;artifacts/screenshots&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
@@ -449,7 +520,7 @@
 &lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;default-screenshot-directory&quot;&gt;&lt;/a&gt;⚙ Default Screenshot Directory &lt;a class=&quot;permalink&quot; href=&quot;#default-screenshot-directory&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;TestCafe now saves the screenshots to &lt;code&gt;./screenshots&lt;/code&gt; if the base directory is not specified.&lt;/p&gt;
 
-&lt;p&gt;The &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-s---screenshots-optionvalueoption2value2&quot;&gt;--screenshots&lt;/a&gt; CLI flag, the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#screenshots&quot;&gt;runner.screenshots&lt;/a&gt; method or the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#screenshotpath&quot;&gt;screenshotPath&lt;/a&gt; configuration option are not required to take screenshots. For instance, you can run TestCafe with no additional parameters and use the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-the-entire-page&quot;&gt;t.takeScreenshot&lt;/a&gt; action in test code:&lt;/p&gt;
+&lt;p&gt;The &lt;a href=&quot;../documentation/reference/command-line-interface.html#-s---screenshots-optionvalueoption2value2&quot;&gt;--screenshots&lt;/a&gt; CLI flag, the &lt;a href=&quot;../documentation/reference/testcafe-api/runner/screenshots.html&quot;&gt;runner.screenshots&lt;/a&gt; method or the &lt;a href=&quot;../documentation/reference/configuration-file.html#screenshotpath&quot;&gt;screenshotPath&lt;/a&gt; configuration option are not required to take screenshots. For instance, you can run TestCafe with no additional parameters and use the &lt;a href=&quot;../documentation/reference/test-api/testcontroller/takescreenshot.html&quot;&gt;t.takeScreenshot&lt;/a&gt; action in test code:&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome test.js
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;&lt;em&gt;test.js&lt;/em&gt;&lt;/p&gt;
@@ -460,23 +531,23 @@
     &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;takeScreenshot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;The &lt;code&gt;path&lt;/code&gt; argument in &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#screenshots&quot;&gt;runner.screenshots&lt;/a&gt; is now optional.&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;path&lt;/code&gt; argument in &lt;a href=&quot;../documentation/reference/testcafe-api/runner/screenshots.html&quot;&gt;runner.screenshots&lt;/a&gt; is now optional.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;screenshots&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
     &lt;span class=&quot;na&quot;&gt;takeOnFails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;new-option-to-disable-screenshots&quot;&gt;&lt;/a&gt;⚙ New Option to Disable Screenshots &lt;a class=&quot;permalink&quot; href=&quot;#new-option-to-disable-screenshots&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;We have added an option that allows you to disable taking screenshots. If this option is specified, TestCafe does not take screenshots when a test fails and when the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-the-entire-page&quot;&gt;t.takeScreenshot&lt;/a&gt; or &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/actions/take-screenshot.html#take-a-screenshot-of-a-page-element&quot;&gt;t.takeElementScreenshot&lt;/a&gt; action is executed.&lt;/p&gt;
+&lt;p&gt;We have added an option that allows you to disable taking screenshots. If this option is specified, TestCafe does not take screenshots when a test fails and when the &lt;a href=&quot;../documentation/reference/test-api/testcontroller/takescreenshot.html&quot;&gt;t.takeScreenshot&lt;/a&gt; or &lt;a href=&quot;../documentation/reference/test-api/testcontroller/takeelementscreenshot.html&quot;&gt;t.takeElementScreenshot&lt;/a&gt; action is executed.&lt;/p&gt;
 
 &lt;p&gt;You can disable screenshots with a command line, API or configuration file option:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--disable-screenshots&quot;&gt;--disable-screenshots&lt;/a&gt; command line flag&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;../documentation/reference/command-line-interface.html#--disable-screenshots&quot;&gt;--disable-screenshots&lt;/a&gt; command line flag&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome my-tests &lt;span class=&quot;nt&quot;&gt;--disable-screenshots&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;the &lt;code&gt;disableScreenshots&lt;/code&gt; option in the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#run&quot;&gt;runner.run&lt;/a&gt; method&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;the &lt;code&gt;disableScreenshots&lt;/code&gt; option in the &lt;a href=&quot;../documentation/reference/testcafe-api/runner/run.html&quot;&gt;runner.run&lt;/a&gt; method&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;disableScreenshots&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#disablescreenshots&quot;&gt;disableScreenshots&lt;/a&gt; configuration file property&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;../documentation/reference/configuration-file.html#disablescreenshots&quot;&gt;disableScreenshots&lt;/a&gt; configuration file property&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
     &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;disableScreenshots&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
@@ -506,11 +577,11 @@
 
 &lt;!--more--&gt;
 &lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;page-caching-can-be-disabled-3780&quot;&gt;&lt;/a&gt;⚙ Page Caching Can be Disabled (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3780&quot;&gt;#3780&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#page-caching-can-be-disabled-3780&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;TestCafe may be unable to log in to the tested website correctly if the web server uses caching for authentication pages or pages to which users are redirected after login. See the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/authentication/user-roles.html#test-actions-fail-after-authentication&quot;&gt;User Roles&lt;/a&gt; topic for details.&lt;/p&gt;
+&lt;p&gt;TestCafe may be unable to log in to the tested website correctly if the web server uses caching for authentication pages or pages to which users are redirected after login. See the &lt;a href=&quot;../documentation/guides/advanced-guides/authentication.html#test-actions-fail-after-authentication&quot;&gt;User Roles&lt;/a&gt; topic for details.&lt;/p&gt;
 
 &lt;p&gt;If tests fail unexpectedly after authentication, disable page caching in TestCafe.&lt;/p&gt;
 
-&lt;p&gt;Use the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#disable-page-caching&quot;&gt;fixture.disablePageCaching&lt;/a&gt; and &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#disable-page-caching&quot;&gt;test.disablePageCaching&lt;/a&gt; methods to disable caching during a particular fixture or test.&lt;/p&gt;
+&lt;p&gt;Use the &lt;a href=&quot;../documentation/reference/test-api/fixture/disablepagecaching.html&quot;&gt;fixture.disablePageCaching&lt;/a&gt; and &lt;a href=&quot;../documentation/reference/test-api/test/disablepagecaching.html&quot;&gt;test.disablePageCaching&lt;/a&gt; methods to disable caching during a particular fixture or test.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;disablePageCaching&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`My fixture`&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`https://example.com`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
@@ -521,13 +592,13 @@
 &lt;p&gt;To disable page caching during the entire test run, use either of the following options:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--disable-page-caching&quot;&gt;--disable-page-caching&lt;/a&gt; command line flag&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;../documentation/reference/command-line-interface.html#--disable-page-caching&quot;&gt;--disable-page-caching&lt;/a&gt; command line flag&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome my-tests &lt;span class=&quot;nt&quot;&gt;--disable-page-caching&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;the &lt;code&gt;disablePageCaching&lt;/code&gt; option in the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#run&quot;&gt;runner.run&lt;/a&gt; method&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;the &lt;code&gt;disablePageCaching&lt;/code&gt; option in the &lt;a href=&quot;../documentation/reference/testcafe-api/runner/run.html&quot;&gt;runner.run&lt;/a&gt; method&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;disablePageCaching&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#disablepagecaching&quot;&gt;disablePageCaching&lt;/a&gt; configuration file property&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;../documentation/reference/configuration-file.html#disablepagecaching&quot;&gt;disablePageCaching&lt;/a&gt; configuration file property&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
     &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;disablePageCaching&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
@@ -563,25 +634,25 @@
 
 &lt;!--more--&gt;
 &lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;inject-scripts-into-tested-pages-1739&quot;&gt;&lt;/a&gt;⚙ Inject Scripts Into Tested Pages (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1739&quot;&gt;#1739&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#inject-scripts-into-tested-pages-1739&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;TestCafe now allows you to &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html&quot;&gt;inject scripts&lt;/a&gt; into pages visited during the tests. Use this feature to add helper functions, mock browser API or import modules.&lt;/p&gt;
+&lt;p&gt;TestCafe now allows you to &lt;a href=&quot;../documentation/guides/advanced-guides/inject-client-scripts.html&quot;&gt;inject scripts&lt;/a&gt; into pages visited during the tests. Use this feature to add helper functions, mock browser API or import modules.&lt;/p&gt;
 
 &lt;p&gt;To add client scripts to all tests, specify them in the command line, API or configuration file. Use the following options:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--cs-pathpath2---client-scripts-pathpath2&quot;&gt;--cs (--client-scripts)&lt;/a&gt; command line argument&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;../documentation/reference/command-line-interface.html#--cs-pathpath2---client-scripts-pathpath2&quot;&gt;--cs (--client-scripts)&lt;/a&gt; command line argument&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome test.js &lt;span class=&quot;nt&quot;&gt;--client-scripts&lt;/span&gt; mockDate.js,assets/react-helpers.js
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#clientscripts&quot;&gt;runner.clientScripts&lt;/a&gt; API method&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;../documentation/reference/testcafe-api/runner/clientscripts.html&quot;&gt;runner.clientScripts&lt;/a&gt; API method&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;clientScripts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;mockDate.js&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;scripts/react-helpers.js&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#clientscripts&quot;&gt;clientScripts&lt;/a&gt; configuration file property&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;../documentation/reference/configuration-file.html#clientscripts&quot;&gt;clientScripts&lt;/a&gt; configuration file property&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
     &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;clientScripts&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;mockDate.js&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;scripts/react-helpers.js&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;If you need to add scripts to individual fixtures or tests, use the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#inject-scripts-into-tested-pages&quot;&gt;fixture.clientScripts&lt;/a&gt; and &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#inject-scripts-into-tested-pages&quot;&gt;test.clientScripts&lt;/a&gt; methods in test code.&lt;/p&gt;
+&lt;p&gt;If you need to add scripts to individual fixtures or tests, use the &lt;a href=&quot;../documentation/reference/test-api/fixture/clientscripts.html&quot;&gt;fixture.clientScripts&lt;/a&gt; and &lt;a href=&quot;../documentation/reference/test-api/test/clientscripts.html&quot;&gt;test.clientScripts&lt;/a&gt; methods in test code.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`My fixture`&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`http://example.com`&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;clientScripts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;mockDate.js&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;scripts/react-helpers.js&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
@@ -589,7 +660,7 @@
     &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;My test&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;cm&quot;&gt;/* ... */&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;clientScripts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;mockDate.js&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;scripts/react-helpers.js&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;TestCafe also allows you to &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html#provide-scripts-for-specific-pages&quot;&gt;inject scripts into specific pages&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;TestCafe also allows you to &lt;a href=&quot;../documentation/guides/advanced-guides/inject-client-scripts.html#provide-scripts-for-specific-pages&quot;&gt;inject scripts into specific pages&lt;/a&gt;.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`My fixture`&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;clientScripts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
         &lt;span class=&quot;na&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;https://myapp.com/page/&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
@@ -601,22 +672,22 @@
 &lt;p&gt;You can specify the scripts to inject as follows:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;pass the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html#inject-a-javascript-file&quot;&gt;path to a JavaScript file&lt;/a&gt; to inject its content:&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;pass the &lt;a href=&quot;../documentation/guides/advanced-guides/inject-client-scripts.html#inject-a-javascript-file&quot;&gt;path to a JavaScript file&lt;/a&gt; to inject its content:&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`My fixture`&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;clientScripts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;assets/jquery.js&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;use the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html#inject-a-module&quot;&gt;module name&lt;/a&gt; to inject a module:&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;use the &lt;a href=&quot;../documentation/guides/advanced-guides/inject-client-scripts.html#inject-a-module&quot;&gt;module name&lt;/a&gt; to inject a module:&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`My fixture`&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;clientScripts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;async&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;TestCafe searches for the module&amp;#39;s entry point with Node.js mechanisms and injects its content. Note that the browser must be able to execute this module.&lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;pass the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html#inject-script-code&quot;&gt;code&lt;/a&gt; you need to inject:&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;pass the &lt;a href=&quot;../documentation/guides/advanced-guides/inject-client-scripts.html#inject-script-code&quot;&gt;code&lt;/a&gt; you need to inject:&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`My fixture`&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;clientScripts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Geolocation.prototype.getCurrentPosition = () =&amp;gt; new Positon(0, 0);&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;For more information, see &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html&quot;&gt;Inject Scripts into Tested Pages&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;For more information, see &lt;a href=&quot;../documentation/guides/advanced-guides/inject-client-scripts.html&quot;&gt;Inject Scripts into Tested Pages&lt;/a&gt;.&lt;/p&gt;
 &lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;The browser no longer displays 404 errors after the test submits a form (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3560&quot;&gt;#3560&lt;/a&gt;&lt;/li&gt;
@@ -641,20 +712,20 @@
 
 &lt;!--more--&gt;
 
-&lt;p&gt;Version 1.3.0 introduced support for &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.html#customize-compiler-options&quot;&gt;custom TypeScript configuration files&lt;/a&gt; where you can provide the compiler options. This feature included automatic detection of these configuration files. If the directory from which you run tests contained a &lt;code&gt;tsconfig.json&lt;/code&gt; file, TestCafe would apply it by default.&lt;/p&gt;
+&lt;p&gt;Version 1.3.0 introduced support for &lt;a href=&quot;../documentation/guides/concepts/typescript-and-coffeescript.html#customize-compiler-options&quot;&gt;custom TypeScript configuration files&lt;/a&gt; where you can provide the compiler options. This feature included automatic detection of these configuration files. If the directory from which you run tests contained a &lt;code&gt;tsconfig.json&lt;/code&gt; file, TestCafe would apply it by default.&lt;/p&gt;
 
 &lt;p&gt;However, this behavior caused troubles for users who have already had &lt;code&gt;tsconfig.json&lt;/code&gt; files with conflicting settings in their projects. TestCafe attempted to apply these configurations, which resulted in issues with test compilation.&lt;/p&gt;
 
 &lt;p&gt;In v1.3.1, we have disabled &lt;code&gt;tsconfig.json&lt;/code&gt; auto-detection. Now you must explicitly specify the &lt;code&gt;tsconfig.json&lt;/code&gt; file location to apply the compiler settings. You can do it in one of the following ways:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--ts-config-path-path&quot;&gt;--ts-config-path&lt;/a&gt; command line parameter,&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;../documentation/reference/command-line-interface.html#--ts-config-path-path&quot;&gt;--ts-config-path&lt;/a&gt; command line parameter,&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome my-tests &lt;span class=&quot;nt&quot;&gt;--ts-config-path&lt;/span&gt; /Users/s.johnson/testcafe/tsconfig.json
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#tsconfigpath&quot;&gt;runner.tsConfigPath&lt;/a&gt; API method,&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;../documentation/reference/testcafe-api/runner/tsconfigpath.html&quot;&gt;runner.tsConfigPath&lt;/a&gt; API method,&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;tsConfigPath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;/Users/s.johnson/testcafe/tsconfig.json&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#tsconfigpath&quot;&gt;tsConfigPath&lt;/a&gt; configuration file property.&lt;/p&gt;
+&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;../documentation/reference/configuration-file.html#tsconfigpath&quot;&gt;tsConfigPath&lt;/a&gt; configuration file property.&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
     &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;tsConfigPath&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/Users/s.johnson/testcafe/tsconfig.json&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
@@ -689,9 +760,9 @@
     &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Save this file to the directory from which you run tests (or use the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#tsconfigpath&quot;&gt;tsConfigPath&lt;/a&gt; setting in the main configuration file to specify a different location).&lt;/p&gt;
+&lt;p&gt;Save this file to the directory from which you run tests (or use the &lt;a href=&quot;../documentation/reference/configuration-file.html#tsconfigpath&quot;&gt;tsConfigPath&lt;/a&gt; setting in the main configuration file to specify a different location).&lt;/p&gt;
 
-&lt;p&gt;See &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.html#customize-compiler-options&quot;&gt;Customize Compiler Options&lt;/a&gt; for more information.&lt;/p&gt;
+&lt;p&gt;See &lt;a href=&quot;../documentation/guides/concepts/typescript-and-coffeescript.html#customize-compiler-options&quot;&gt;Customize Compiler Options&lt;/a&gt; for more information.&lt;/p&gt;
 &lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;TestCafe now waits for asynchronous tasks in &lt;code&gt;reportTaskDone&lt;/code&gt; to complete before it exits (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3835&quot;&gt;#3835&lt;/a&gt;)&lt;/li&gt;
@@ -709,56 +780,6 @@
         <pubDate>Tue, 02 Jul 2019 00:00:00 +0300</pubDate>
         <link>https://devexpress.github.io/testcafe/blog/testcafe-v1-3-0-released.html</link>
         <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v1-3-0-released.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>TestCafe v1.1.0 Released</title>
-        <description>&lt;h1&gt;TestCafe v1.1.0 Released&lt;/h1&gt;
-&lt;p&gt;This release introduces TypeScript 3.0 support and enhanced TypeScript definitions for client functions.&lt;/p&gt;
-
-&lt;!--more--&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;typescript-3-support-3401&quot;&gt;&lt;/a&gt;⚙ TypeScript 3 Support (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3401&quot;&gt;#3401&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#typescript-3-support-3401&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;TypeScript test files can now use the new syntax features introduced in &lt;a href=&quot;https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-0.html&quot;&gt;TypeScript 3.0&lt;/a&gt; and &lt;a href=&quot;https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-3.html&quot;&gt;TypeScript 3.3&lt;/a&gt;.&lt;/p&gt;
-&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;enhanced-typescript-definitions-for-client-functions-3431-by-vitalics&quot;&gt;&lt;/a&gt;⚙ Enhanced TypeScript Definitions for Client Functions (&lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/3431&quot;&gt;#3431&lt;/a&gt;) by &lt;a href=&quot;https://github.com/vitalics&quot;&gt;@vitalics&lt;/a&gt; &lt;a class=&quot;permalink&quot; href=&quot;#enhanced-typescript-definitions-for-client-functions-3431-by-vitalics&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;The updated type definitions allow the TypeScript compiler to determine client function&amp;#39;s return value type. Static typing now warns you when you call wrong methods for the return value.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;getFoo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ClientFunction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;42&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;foo&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;getFoo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;match&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;/foo/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Before v1.1.0, an error occurred during test execution:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ testcafe chrome tests.ts
- Running tests in:
- - Chrome 72.0.3626 / Windows 10.0.0
- Fixture 1
- √ Test 1
- √ Test 2
- ...
- × Test N
-   1) TypeError: foo.match is not a function
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;With v1.1.0, the TypeScript compiler throws an error before tests are started:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ testcafe chrome tests.ts
-  ERROR Cannot prepare tests due to an error.
-  Error: TypeScript compilation failed.
-
-  tests.ts (4, 2): Property 'match' does not exist on type 'number'.
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;TestCafe no longer ignores test and fixture metadata filters specified in the configuration file (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3443&quot;&gt;#3443&lt;/a&gt;) by &lt;a href=&quot;https://github.com/NanjoW&quot;&gt;@NanjoW&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;TestCafe no longer resolves placeholders to &lt;code&gt;null&lt;/code&gt; in video path patterns (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3455&quot;&gt;#3455&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed the &lt;code&gt;KeyboardEvent&lt;/code&gt;&amp;#39;s &lt;code&gt;key&lt;/code&gt; property emulation for Safari (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3282&quot;&gt;#3282&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;TestCafe can now capture element screenshots after a long page scrolling (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3292&quot;&gt;#3292&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;The compilation time of TypeScript tests no longer degrades for a large number of files (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3475&quot;&gt;#3475&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Reach Router can now navigate correctly when tested with TestCafe (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1863&quot;&gt;testcafe-hammerhead/#1863&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;TestCafe now correctly handles websites that use the &lt;code&gt;WebKitMutationObserver&lt;/code&gt; class (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1912&quot;&gt;testcafe-hammerhead/#1912&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;TestCafe now processes ECMAScript modules in &lt;code&gt;&amp;lt;script&amp;gt;&lt;/code&gt; tags (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1725&quot;&gt;testcafe-hammerhead/#1725&lt;/a&gt;)&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Thu, 28 Feb 2019 00:00:00 +0300</pubDate>
-        <link>https://devexpress.github.io/testcafe/blog/testcafe-v1-1-0-released.html</link>
-        <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v1-1-0-released.html</guid>
         
         
       </item>

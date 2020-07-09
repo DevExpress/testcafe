@@ -262,7 +262,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1590354000 * 1000);
+        var lastPostDate = new Date(1593464400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -467,11 +467,11 @@
 <li><a href="#programming-interface-multiple-method-calls-prohibited">Programming Interface: Multiple Method Calls Prohibited</a></li>
 </ul>
 <h2><a class="anchor" id="test-syntax-validation-disabled-all-input-files-are-executed"></a>Test Syntax Validation Disabled: All Input Files Are Executed <a class="permalink" href="#test-syntax-validation-disabled-all-input-files-are-executed">#</a></h2>
-<p>Previous versions performed <em>test syntax validation</em> within input script files before executing them. Only files that contained the <a href="https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#fixtures">fixture</a> and <a href="https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#tests">test</a> directives were executed.</p>
+<p>Previous versions performed <em>test syntax validation</em> within input script files before executing them. Only files that contained the <a href="../documentation/guides/basic-guides/organize-tests.html#fixtures">fixture</a> and <a href="../documentation/guides/basic-guides/organize-tests.html#tests">test</a> directives were executed.</p>
 
 <p>Starting with v1.0.0, input script files are <strong>not</strong> validated. This means that TestCafe executes all the scripts you specify as test sources. If you use Glob patterns to specify input test files, please recheck these patterns to avoid unintended file matches.</p>
 
-<p>The <code>--disable-test-syntax-validation</code> command line flag and the <code>disableTestSyntaxValidation</code> option for the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#run">runner.run</a> API method that disabled test syntax validation were removed in v1.0.0.</p>
+<p>The <code>--disable-test-syntax-validation</code> command line flag and the <code>disableTestSyntaxValidation</code> option for the <a href="../documentation/reference/testcafe-api/runner/run.html">runner.run</a> API method that disabled test syntax validation were removed in v1.0.0.</p>
 <h3><a class="anchor" id="what-has-improved"></a>What Has Improved <a class="permalink" href="#what-has-improved">#</a></h3>
 <p>You can now load tests dynamically without additional customization. The following example illustrates how tests can be imported from an external library:</p>
 
@@ -493,7 +493,7 @@
 
 <span class="nx">runFixture</span><span class="p">(</span><span class="nx">fixtureName</span><span class="p">,</span> <span class="nx">url</span><span class="p">);</span>
 </code></pre></div><h2><a class="anchor" id="programming-interface-multiple-method-calls-prohibited"></a>Programming Interface: Multiple Method Calls Prohibited <a class="permalink" href="#programming-interface-multiple-method-calls-prohibited">#</a></h2>
-<p>Previous versions allowed you to call the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#src">runner.src</a>, <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#browsers">runner.browsers</a> and <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#reporter">runner.reporter</a> methods several times to specify multiple test files, browsers or reporters.</p>
+<p>Previous versions allowed you to call the <a href="../documentation/reference/testcafe-api/runner/src.html">runner.src</a>, <a href="../documentation/reference/testcafe-api/runner/browsers.html">runner.browsers</a> and <a href="../documentation/reference/testcafe-api/runner/reporter.html">runner.reporter</a> methods several times to specify multiple test files, browsers or reporters.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">stream</span> <span class="o">=</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">createWriteStream</span><span class="p">(</span><span class="dl">'</span><span class="s1">report.json</span><span class="dl">'</span><span class="p">);</span>
 
 <span class="nx">runner</span>
@@ -506,19 +506,19 @@
 </code></pre></div>
 <p>Starting with v1.0.0, pass arrays to these methods to specify multiple values.</p>
 
-<p>To use a reporter that writes to a file, add a <code>{ name, output }</code> object to an array (see the <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#reporter">runner.reporter</a> description for details).</p>
+<p>To use a reporter that writes to a file, add a <code>{ name, output }</code> object to an array (see the <a href="../documentation/reference/testcafe-api/runner/reporter.html">runner.reporter</a> description for details).</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span>
     <span class="p">.</span><span class="nx">src</span><span class="p">([</span><span class="dl">'</span><span class="s1">/home/user/tests/fixture1.js</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">fixture5.js</span><span class="dl">'</span><span class="p">])</span>
     <span class="p">.</span><span class="nx">browsers</span><span class="p">([</span><span class="dl">'</span><span class="s1">chrome</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">firefox:headless</span><span class="dl">'</span><span class="p">])</span>
     <span class="p">.</span><span class="nx">reporter</span><span class="p">([</span><span class="dl">'</span><span class="s1">minimal</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="dl">'</span><span class="s1">json</span><span class="dl">'</span><span class="p">,</span> <span class="na">output</span><span class="p">:</span> <span class="dl">'</span><span class="s1">report.json</span><span class="dl">'</span> <span class="p">}]);</span>
 </code></pre></div><h3><a class="anchor" id="what-has-improved"></a>What Has Improved <a class="permalink" href="#what-has-improved">#</a></h3>
-<p>The <a href="https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html">configuration file</a> we implemented is consistent with the API and command line interface.</p>
+<p>The <a href="../documentation/reference/configuration-file.html">configuration file</a> we implemented is consistent with the API and command line interface.</p>
 <h2><a class="anchor" id="custom-request-hooks-asynchronous-api"></a>Custom Request Hooks: Asynchronous API <a class="permalink" href="#custom-request-hooks-asynchronous-api">#</a></h2>
-<p><a href="https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/">Request hook</a> methods became asynchronous in TestCafe v1.0.0.</p>
+<p><a href="../documentation/test-api/intercepting-http-requests/">Request hook</a> methods became asynchronous in TestCafe v1.0.0.</p>
 
-<p>If the <a href="https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html#the-onrequest-method">onRequest</a> or <a href="https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html#the-onresponse-method">onResponse</a> method in your custom hook returns a Promise, TestCafe now waits for this Promise to resolve.</p>
+<p>If the <a href="../documentation/reference/test-api/requesthook/onrequest.html">onRequest</a> or <a href="../documentation/reference/test-api/requesthook/onresponse.html">onResponse</a> method in your custom hook returns a Promise, TestCafe now waits for this Promise to resolve.</p>
 
-<p>You should add the <code>async</code> keyword to the asynchronous <a href="https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html#the-onrequest-method">onRequest</a> and <a href="https://devexpress.github.io/testcafe/documentation/test-api/intercepting-http-requests/creating-a-custom-http-request-hook.html#the-onresponse-method">onResponse</a> method declarations.</p>
+<p>You should add the <code>async</code> keyword to the asynchronous <a href="../documentation/reference/test-api/requesthook/onrequest.html">onRequest</a> and <a href="../documentation/reference/test-api/requesthook/onresponse.html">onResponse</a> method declarations.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">RequestHook</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="kd">class</span> <span class="nx">MyRequestHook</span> <span class="kd">extends</span> <span class="nx">RequestHook</span> <span class="p">{</span>
@@ -538,9 +538,9 @@
 </code></pre></div><h3><a class="anchor" id="what-has-improved"></a>What Has Improved <a class="permalink" href="#what-has-improved">#</a></h3>
 <p>You can call asynchronous <a href="https://nodejs.org/api/fs.html">fs</a> functions, invoke a <a href="https://nodejs.org/api/child_process.html">child_process</a>, or perform asynchronous network requests (to a database or any other server) from inside the hooks.</p>
 <h2><a class="anchor" id="custom-reporter-plugins-asynchronous-api"></a>Custom Reporter Plugins: Asynchronous API <a class="permalink" href="#custom-reporter-plugins-asynchronous-api">#</a></h2>
-<p>TestCafe v1.0.0 also introduces an asynchronous API for <a href="https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/">reporter plugins</a>.</p>
+<p>TestCafe v1.0.0 also introduces an asynchronous API for <a href="../documentation/guides/extend-testcafe/reporter-plugin.html">reporter plugins</a>.</p>
 
-<p>Similarly to <a href="#custom-request-hooks-asynchronous-api">request hooks</a>, if any of the custom reporter&#39;s methods (<a href="https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttaskstart">reportTaskStart</a>, <a href="https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reportfixturestart">reportFixtureStart</a>, <a href="https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttestdone">reportTestDone</a> or <a href="https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/reporter-methods.html#reporttaskdone">reportTaskDone</a>) returns a Promise, this Promise is now awaited.</p>
+<p>Similarly to <a href="#custom-request-hooks-asynchronous-api">request hooks</a>, if any of the custom reporter&#39;s methods (<a href="../documentation/reference/plugin-api/reporter.html#reporttaskstart">reportTaskStart</a>, <a href="../documentation/reference/plugin-api/reporter.html#reportfixturestart">reportFixtureStart</a>, <a href="../documentation/reference/plugin-api/reporter.html#reporttestdone">reportTestDone</a> or <a href="../documentation/reference/plugin-api/reporter.html#reporttaskdone">reportTaskDone</a>) returns a Promise, this Promise is now awaited.</p>
 
 <p>Since the reporter methods are now asynchronous, add the <code>async</code> keyword to their declarations.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">async</span> <span class="nx">reportTaskStart</span> <span class="p">(</span><span class="nx">startTime</span><span class="p">,</span> <span class="nx">userAgents</span><span class="p">,</span> <span class="nx">testCount</span><span class="p">)</span> <span class="p">{</span>
