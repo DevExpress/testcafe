@@ -22,7 +22,8 @@ export default {
             localBrowserWindow = await findWindow(browserId);
         }
         catch (err) {
-            // NOTE: suppress the error, because finding of the local browser window was failed
+            // NOTE: We can suppress the error here since we can just disable window manipulation functions
+            // when the browser is truly remote and we cannot find a local window descriptor
             DEBUG_LOGGER(err);
         }
 

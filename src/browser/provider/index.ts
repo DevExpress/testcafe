@@ -150,6 +150,8 @@ export default class BrowserProvider {
                 windowDescriptor = await browserTools.findWindow(browserId);
             }
             catch (err) {
+                // NOTE: We can suppress the error here since we can just disable window manipulation functions
+                // when we cannot find a local window descriptor
                 DEBUG_LOGGER(err);
                 connection.addWarning(WARNING_MESSAGE.cannotFindWindowDescriptorError, err.message);
             }
