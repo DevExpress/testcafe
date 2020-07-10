@@ -8,12 +8,21 @@ import assertClientScriptType from '../../custom-client-scripts/assert-type';
 import { RUNTIME_ERRORS } from '../../errors/types';
 import { APIError } from '../../errors/runtime';
 import OPTION_NAMES from '../../configuration/option-names';
+import TestFile from './test-file';
+import Fixture from './fixture';
+import RequestHook from '../request-hooks/hook';
+import ClientScriptInit from '../../custom-client-scripts/client-script-init';
 
 export default class Test extends TestingUnit {
-    constructor (testFile) {
+    public fixture: Fixture;
+    public fn: Function | null;
+    public beforeFn: Function | null;
+    public afterFn: Function | null;
+
+    public constructor (testFile: TestFile) {
         super(testFile, UnitType.test);
 
-        this.fixture = testFile.currentFixture;
+        this.fixture = testFile.currentFixture as Fixture;
 
         this.fn            = null;
         this.beforeFn      = null;
@@ -24,10 +33,12 @@ export default class Test extends TestingUnit {
             this.clientScripts = this.fixture.clientScripts.slice();
         }
 
+        // @ts-ignore
         return this.apiOrigin;
     }
 
-    _add (name, fn) {
+    // @ts-ignore
+    private _add (name: string, fn: Function): Function {
         assertType(is.string, 'apiOrigin', 'The test name', name);
         assertType(is.function, 'apiOrigin', 'The test body', fn);
         assertType(is.nonNullObject, 'apiOrigin', `The fixture of '${name}' test`, this.fixture);
@@ -41,7 +52,7 @@ export default class Test extends TestingUnit {
         return this.apiOrigin;
     }
 
-    _before$ (fn) {
+    private _before$ (fn: Function): Function {
         assertType(is.function, 'before', 'test.before hook', fn);
 
         this.beforeFn = wrapTestFunction(fn);
@@ -49,7 +60,7 @@ export default class Test extends TestingUnit {
         return this.apiOrigin;
     }
 
-    _after$ (fn) {
+    private _after$ (fn: Function): Function {
         assertType(is.function, 'after', 'test.after hook', fn);
 
         this.afterFn = wrapTestFunction(fn);
@@ -57,7 +68,8 @@ export default class Test extends TestingUnit {
         return this.apiOrigin;
     }
 
-    _requestHooks$ (...hooks) {
+    private _requestHooks$ (...hooks: RequestHook[]): Function {
+        // @ts-ignore
         if (this.apiMethodWasCalled.requestHooks)
             throw new APIError(OPTION_NAMES.requestHooks, RUNTIME_ERRORS.multipleAPIMethodCallForbidden, OPTION_NAMES.requestHooks);
 
@@ -66,13 +78,14 @@ export default class Test extends TestingUnit {
         assertRequestHookType(hooks);
 
         this.requestHooks = union(this.requestHooks, hooks);
-
+        // @ts-ignore
         this.apiMethodWasCalled.requestHooks = true;
 
         return this.apiOrigin;
     }
 
-    _clientScripts$ (...scripts) {
+    private _clientScripts$ (...scripts: ClientScriptInit[]): Function {
+        // @ts-ignore
         if (this.apiMethodWasCalled.clientScripts)
             throw new APIError(OPTION_NAMES.clientScripts, RUNTIME_ERRORS.multipleAPIMethodCallForbidden, OPTION_NAMES.clientScripts);
 
@@ -81,11 +94,12 @@ export default class Test extends TestingUnit {
         assertClientScriptType(scripts);
 
         this.clientScripts = union(this.clientScripts, scripts);
-
+        // @ts-ignore
         this.apiMethodWasCalled.clientScripts = true;
 
         return this.apiOrigin;
     }
 }
 
+// @ts-ignore
 TestingUnit._makeAPIListForChildClass(Test);

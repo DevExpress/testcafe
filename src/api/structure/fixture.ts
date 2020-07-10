@@ -1,4 +1,5 @@
 import { flattenDeep as flatten } from 'lodash';
+// @ts-ignore
 import { SPECIAL_BLANK_PAGE } from 'testcafe-hammerhead';
 import TestingUnit from './testing-unit';
 import UnitType from './unit-type';
@@ -10,25 +11,35 @@ import assertClientScriptType from '../../custom-client-scripts/assert-type';
 import OPTION_NAMES from '../../configuration/option-names';
 import { APIError } from '../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../errors/types';
+import TestFile from './test-file';
+import RequestHook from '../request-hooks/hook';
+import ClientScriptInit from '../../custom-client-scripts/client-script-init';
 
 export default class Fixture extends TestingUnit {
-    constructor (testFile) {
+    public path: string;
+    public pageUrl: string;
+    public beforeEachFn: Function | null;
+    public afterEachFn: Function | null;
+    public beforeFn: Function | null;
+    public afterFn: Function | null;
+
+    public constructor (testFile: TestFile) {
         super(testFile, UnitType.fixture);
 
-        this.path = testFile.filename;
-
+        this.path    = testFile.filename;
         this.pageUrl = SPECIAL_BLANK_PAGE;
 
         this.beforeEachFn = null;
         this.afterEachFn  = null;
+        this.beforeFn     = null;
+        this.afterFn      = null;
 
-        this.beforeFn = null;
-        this.afterFn  = null;
-
+        // @ts-ignore
         return this.apiOrigin;
     }
 
-    _add (name, ...rest) {
+    // @ts-ignore
+    private _add (name: string, ...rest: unknown[]): Function {
         name = handleTagArgs(name, rest);
 
         assertType(is.string, 'apiOrigin', 'The fixture name', name);
@@ -39,7 +50,7 @@ export default class Fixture extends TestingUnit {
         return this.apiOrigin;
     }
 
-    _before$ (fn) {
+    private _before$ (fn: Function): Function {
         assertType(is.function, 'before', 'fixture.before hook', fn);
 
         this.beforeFn = fn;
@@ -47,7 +58,7 @@ export default class Fixture extends TestingUnit {
         return this.apiOrigin;
     }
 
-    _after$ (fn) {
+    private _after$ (fn: Function): Function {
         assertType(is.function, 'after', 'fixture.after hook', fn);
 
         this.afterFn = fn;
@@ -55,7 +66,7 @@ export default class Fixture extends TestingUnit {
         return this.apiOrigin;
     }
 
-    _beforeEach$ (fn) {
+    private _beforeEach$ (fn: Function): Function {
         assertType(is.function, 'beforeEach', 'fixture.beforeEach hook', fn);
 
         this.beforeEachFn = wrapTestFunction(fn);
@@ -63,7 +74,7 @@ export default class Fixture extends TestingUnit {
         return this.apiOrigin;
     }
 
-    _afterEach$ (fn) {
+    private _afterEach$ (fn: Function): Function {
         assertType(is.function, 'afterEach', 'fixture.afterEach hook', fn);
 
         this.afterEachFn = wrapTestFunction(fn);
@@ -71,7 +82,8 @@ export default class Fixture extends TestingUnit {
         return this.apiOrigin;
     }
 
-    _requestHooks$ (...hooks) {
+    private _requestHooks$ (...hooks: RequestHook[]): Function {
+        // @ts-ignore
         if (this.apiMethodWasCalled.requestHooks)
             throw new APIError(OPTION_NAMES.requestHooks, RUNTIME_ERRORS.multipleAPIMethodCallForbidden, OPTION_NAMES.requestHooks);
 
@@ -80,13 +92,14 @@ export default class Fixture extends TestingUnit {
         assertRequestHookType(hooks);
 
         this.requestHooks = hooks;
-
+        // @ts-ignore
         this.apiMethodWasCalled.requestHooks = true;
 
         return this.apiOrigin;
     }
 
-    _clientScripts$ (...scripts) {
+    private _clientScripts$ (...scripts: ClientScriptInit[]): Function {
+        // @ts-ignore
         if (this.apiMethodWasCalled.clientScripts)
             throw new APIError(OPTION_NAMES.clientScripts, RUNTIME_ERRORS.multipleAPIMethodCallForbidden, OPTION_NAMES.clientScripts);
 
@@ -95,11 +108,12 @@ export default class Fixture extends TestingUnit {
         assertClientScriptType(scripts);
 
         this.clientScripts = scripts;
-
+        // @ts-ignore
         this.apiMethodWasCalled.clientScripts = true;
 
         return this.apiOrigin;
     }
 }
 
+// @ts-ignore
 TestingUnit._makeAPIListForChildClass(Fixture);

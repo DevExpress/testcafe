@@ -228,7 +228,7 @@ export default class Bootstrapper {
     }
 
     private _filterTests (tests: Test[], predicate: Filter): Test[] {
-        return tests.filter(test => predicate(test.name as string, test.fixture.name, test.fixture.path, test.meta, test.fixture.meta));
+        return tests.filter(test => predicate(test.name as string, test.fixture.name as string, test.fixture.path, test.meta, test.fixture.meta));
     }
 
     private async _compileTests ({ sourceList, compilerOptions }: CompilerArguments): Promise<Test[]> {
