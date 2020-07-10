@@ -32,8 +32,6 @@ module.exports = function assertTestRunError (err, expectedFileName, setCallsite
 
     const expectedMsg = read(expectedFileName)
         .replace(/(\r\n)/gm, '\n')
-        // NOTE: Needed to check colors in detailed diffs (GH-5255)
-        .replace(/\\u001b/gm, '\u001b')
         .trim();
 
     expect(actual).eql(expectedMsg);

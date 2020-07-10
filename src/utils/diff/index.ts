@@ -1,8 +1,6 @@
 import * as jsdiff from 'diff';
 import { colorLines } from './colors';
-import { cleanUp } from './util';
-
-export { stringify } from './util';
+import { cleanUp, stringify } from './util';
 
 
 function unifiedDiff (actual: string, expected: string): string {
@@ -16,9 +14,9 @@ function unifiedDiff (actual: string, expected: string): string {
     ;
 }
 
-export function generateDiff (actual: string, expected: string): string {
+export function generate (actual: string, expected: string): string {
     try {
-        return unifiedDiff(actual, expected);
+        return unifiedDiff(stringify(actual), stringify(expected));
     }
     catch (err) {
         const msg =
