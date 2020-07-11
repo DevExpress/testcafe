@@ -1,5 +1,5 @@
-import util from 'util';
-import _ from 'lodash';
+import { inspect } from 'util';
+import { isFunction, isBuffer } from 'lodash';
 import { setColors } from './colors';
 
 export function cleanUp (line: string): string {
@@ -12,13 +12,13 @@ export function cleanUp (line: string): string {
 export function stringify (value: any): string {
     let valueToStringify = value;
 
-    if (_.isFunction(value))
+    if (isFunction(value))
         return valueToStringify.toString();
 
 
-    if (_.isBuffer(value))
+    if (isBuffer(value))
         valueToStringify = Buffer.prototype.toJSON.call(value).data;
 
 
-    return util.inspect(valueToStringify, { compact: false, sorted: true, depth: null }) || valueToStringify.toString;
+    return inspect(valueToStringify, { compact: false, sorted: true, depth: null }) || valueToStringify.toString;
 }
