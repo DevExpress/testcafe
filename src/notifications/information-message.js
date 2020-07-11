@@ -6,3 +6,8 @@ export const SCREEN_RECORDING_PERMISSION_REQUEST = dedent `
     
     Press any key to retry.
 `;
+
+export const FAILED_TO_GENERATE_DETAILED_DIFF = errorMessage => dedent `
+    Failed to generate diff due to an error:
+    ${errorMessage}
+`;

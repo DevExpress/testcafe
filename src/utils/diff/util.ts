@@ -2,7 +2,6 @@ import util from 'util';
 import _ from 'lodash';
 import { setColors } from './colors';
 
-
 export function cleanUp (line: string): string {
     if (line.match(/\\ No newline/))
         return '';

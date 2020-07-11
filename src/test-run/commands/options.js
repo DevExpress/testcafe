@@ -15,7 +15,7 @@ import {
     ActionPositiveIntegerOptionError,
     ActionBooleanOptionError,
     ActionSpeedOptionError
-} from '../../errors/test-run';
+} from '../../errors/test-run/shared';
 
 export const integerOption         = createIntegerValidator(ActionIntegerOptionError);
 export const positiveIntegerOption = createPositiveIntegerValidator(ActionPositiveIntegerOptionError);

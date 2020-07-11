@@ -41,7 +41,7 @@ import {
     ActionRootContainerNotFoundError,
     ActionElementNotTextAreaError,
     ActionElementIsNotFileInputError
-} from '../../../errors/test-run';
+} from '../../../errors/test-run/shared';
 
 import COMMAND_TYPE from '../../../test-run/commands/type';
 

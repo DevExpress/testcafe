@@ -11,7 +11,7 @@ import {
     ActionAdditionalElementNotFoundError,
     ActionAdditionalElementIsInvisibleError,
     ActionAdditionalSelectorMatchesWrongNodeTypeError
-} from '../../../errors/test-run';
+} from '../../../errors/test-run/shared';
 
 
 class ElementsRetriever {
