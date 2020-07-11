@@ -136,7 +136,11 @@ const testAssertionErrorEmpty = (function () {
 
 const testAssertionErrorFunction = (function () {
     try {
-        expect(function () {return true;}).eql(function () {return false;});
+        expect(function () {
+            return true;
+        }).eql(function () {
+            return false;
+        });
     }
     catch (err) {
         return err;
@@ -165,14 +169,14 @@ const testAssertionErrorObject = (function () {
                         fourth: {
                             fifth: {
                                 hello: 'world',
-                                six: '6'
+                                six:   '6'
                             }
                         }
                     }
                 }
             }
         };
-    
+
         const obj2 = {
             first: {
                 second: {
@@ -208,8 +212,10 @@ const testAssertionErrorString = (function () {
 })();
 
 const testAssertionErrorUndefinedNull = (function () {
+    let undefinedVar;
+
     try {
-        expect(undefined).eql(null);
+        expect(undefinedVar).eql(null);
     }
     catch (err) {
         return err;
