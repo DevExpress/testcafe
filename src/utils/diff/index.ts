@@ -1,7 +1,10 @@
 import * as jsdiff from 'diff';
-import { colorLines } from './colors';
+import debug from 'debug';
+import { isUndefined, isNull } from 'lodash';
 import { cleanUp, stringify } from './util';
+import { FAILED_TO_GENERATE_DETAILED_DIFF } from '../../notifications/information-message';
 
+const debugLogger = debug('testcafe:util:diff');
 
 function unifiedDiff (actual: string, expected: string): string {
     const msg   = jsdiff.createPatch('string', actual, expected);
@@ -9,7 +12,7 @@ function unifiedDiff (actual: string, expected: string): string {
 
     return lines
         .map(cleanUp)
-        .filter((line: any) => typeof line !== 'undefined' && line !== null)
+        .filter((line: any) => !isUndefined(line) && !isNull(line))
         .join('\n')
     ;
 }
@@ -19,10 +22,8 @@ export function generate (actual: string, expected: string): string {
         return unifiedDiff(stringify(actual), stringify(expected));
     }
     catch (err) {
-        const msg =
-            colorLines('diff-removed', 'Failed to generate diff') +
-            '\n';
+        debugLogger(FAILED_TO_GENERATE_DETAILED_DIFF(err.message));
 
-        return msg;
+        return '';
     }
 }

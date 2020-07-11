@@ -54,7 +54,7 @@ import {
     ChildWindowClosedBeforeSwitchingError,
     ParentWindowNotFoundError,
     RecentWindowNotFoundError
-} from '../../errors/test-run';
+} from '../../errors/test-run/shared';
 
 import BrowserConsoleMessages from '../../test-run/browser-console-messages';
 import NativeDialogTracker from './native-dialog-tracker';
