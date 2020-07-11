@@ -90,9 +90,126 @@ const untestedErrorTypes = Object.keys(TEST_RUN_ERRORS).map(key => TEST_RUN_ERRO
 
 const userAgentMock = 'Chrome 15.0.874.120 / macOS 10.15';
 
-const testAssertionError = (function () {
+const testAssertionErrorArray = (function () {
+    try {
+        expect([1, 2, 3, [4, 5], 6]).eql([1, 4, 2, 3, [5, 6, [7]]]);
+    }
+    catch (err) {
+        return err;
+    }
+
+    return null;
+})();
+
+const testAssertionErrorBoolean = (function () {
     try {
         expect(true).eql(false);
+    }
+    catch (err) {
+        return err;
+    }
+
+    return null;
+})();
+
+const testAssertionErrorBuffer = (function () {
+    try {
+        expect(Buffer.from('test')).eql(Buffer.from([1, 2, 3]));
+    }
+    catch (err) {
+        return err;
+    }
+
+    return null;
+})();
+
+const testAssertionErrorEmpty = (function () {
+    try {
+        expect([]).eql('');
+    }
+    catch (err) {
+        return err;
+    }
+
+    return null;
+})();
+
+const testAssertionErrorFunction = (function () {
+    try {
+        expect(function () {return true;}).eql(function () {return false;});
+    }
+    catch (err) {
+        return err;
+    }
+
+    return null;
+})();
+
+const testAssertionErrorNumber = (function () {
+    try {
+        expect(1).eql(2);
+    }
+    catch (err) {
+        return err;
+    }
+
+    return null;
+})();
+
+const testAssertionErrorObject = (function () {
+    try {
+        const obj1 = {
+            first: {
+                second: {
+                    third: {
+                        fourth: {
+                            fifth: {
+                                hello: 'world',
+                                six: '6'
+                            }
+                        }
+                    }
+                }
+            }
+        };
+    
+        const obj2 = {
+            first: {
+                second: {
+                    third: {
+                        fourth: {
+                            fifth: {
+                                hello: 'world'
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        expect(obj1).eql(obj2);
+    }
+    catch (err) {
+        return err;
+    }
+
+    return null;
+})();
+
+const testAssertionErrorString = (function () {
+    try {
+        expect('hi').eql('hey');
+    }
+    catch (err) {
+        return err;
+    }
+
+    return null;
+})();
+
+const testAssertionErrorUndefinedNull = (function () {
+    try {
+        expect(undefined).eql(null);
     }
     catch (err) {
         return err;
@@ -335,7 +452,18 @@ describe('Error formatting', () => {
         });
 
         it('Should format "externalAssertionLibraryError"', () => {
-            assertErrorMessage('external-assertion-library-error', new ExternalAssertionLibraryError(testAssertionError, testCallsite));
+            const filepath = filename => `../data/expected-test-run-errors/external-assertion-library-errors/${filename}`;
+
+            assertTestRunError(new ExternalAssertionLibraryError(testAssertionErrorArray, testCallsite), filepath('array'));
+            assertTestRunError(new ExternalAssertionLibraryError(testAssertionErrorBoolean, testCallsite), filepath('boolean'));
+            assertTestRunError(new ExternalAssertionLibraryError(testAssertionErrorBuffer, testCallsite), filepath('buffer'));
+            assertTestRunError(new ExternalAssertionLibraryError(testAssertionErrorEmpty, testCallsite), filepath('empty-representation'));
+            assertTestRunError(new ExternalAssertionLibraryError(testAssertionErrorFunction, testCallsite), filepath('function'));
+            assertTestRunError(new ExternalAssertionLibraryError(testAssertionErrorNumber, testCallsite), filepath('number'));
+            assertTestRunError(new ExternalAssertionLibraryError(testAssertionErrorObject, testCallsite), filepath('object'));
+            assertTestRunError(new ExternalAssertionLibraryError(testAssertionErrorString, testCallsite), filepath('string'));
+
+            assertErrorMessage('external-assertion-library-errors/undefined-null', new ExternalAssertionLibraryError(testAssertionErrorUndefinedNull, testCallsite));
         });
 
         it('Should format "uncaughtErrorInClientFunctionCode"', () => {
