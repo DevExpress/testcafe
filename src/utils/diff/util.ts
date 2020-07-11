@@ -20,5 +20,8 @@ export function stringify (value: any): string {
         valueToStringify = Buffer.prototype.toJSON.call(value).data;
 
 
-    return inspect(valueToStringify, { compact: false, sorted: true, depth: null }) || valueToStringify.toString;
+    return inspect(valueToStringify, { compact: false, sorted: true, depth: null })
+        .split('\n')
+        .map(line => line.replace(/,\s*$/, ''))
+        .join('\n') || valueToStringify.toString;
 }

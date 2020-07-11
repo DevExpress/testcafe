@@ -3,13 +3,11 @@ AssertionError: expected { Object (first) } to deeply equal { Object (first)
 
 + expected - actual
 
-     second: {
        third: {
          fourth: {
            fifth: {
--            hello: 'world',
+             hello: 'world'
 -            six: '6'
-+            hello: 'world'
            }
          }
        }
