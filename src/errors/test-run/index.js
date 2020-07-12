@@ -1,8 +1,7 @@
 import { TEST_RUN_ERRORS } from '../types';
 import * as diff from '../../utils/diff/';
 import {
-    TestRunErrorBase,
-    ChildWindowValidationError
+    TestRunErrorBase
 } from './shared';
 
 export * from './shared';
@@ -260,29 +259,6 @@ export class RoleSwitchInRoleInitializerError extends TestRunErrorBase {
         super(TEST_RUN_ERRORS.roleSwitchInRoleInitializerError);
 
         this.callsite = callsite;
-    }
-}
-
-
-// Iframe errors
-//--------------------------------------------------------------------
-export class WindowNotFoundError extends TestRunErrorBase {
-    constructor () {
-        super(TEST_RUN_ERRORS.targetWindowNotFoundError);
-    }
-}
-
-export class CannotCloseWindowWithChildrenError extends TestRunErrorBase {
-    constructor () {
-        super(TEST_RUN_ERRORS.cannotCloseWindowWithChildrenError);
-    }
-}
-
-export class SwitchToWindowPredicateError extends TestRunErrorBase {
-    constructor (errMsg) {
-        super(TEST_RUN_ERRORS.switchToWindowPredicateError);
-
-        this.errMsg = errMsg;
     }
 }
 
