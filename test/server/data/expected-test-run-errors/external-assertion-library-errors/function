@@ -2,9 +2,10 @@ AssertionError: expected [Function] to deeply equal [Function]
 
 + expected - actual
 
--function () {return true;}
-
-+function () {return false;}
+ function () {
+-            return true;
++            return false;
+         }
 
 
 
