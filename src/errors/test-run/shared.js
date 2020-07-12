@@ -326,6 +326,26 @@ export class CloseChildWindowError extends TestRunErrorBase {
     }
 }
 
+export class CannotCloseWindowWithChildrenError extends TestRunErrorBase {
+    constructor () {
+        super(TEST_RUN_ERRORS.cannotCloseWindowWithChildrenError);
+    }
+}
+
+export class SwitchToWindowPredicateError extends TestRunErrorBase {
+    constructor (errMsg) {
+        super(TEST_RUN_ERRORS.switchToWindowPredicateError);
+
+        this.errMsg = errMsg;
+    }
+}
+
+export class WindowNotFoundError extends TestRunErrorBase {
+    constructor () {
+        super(TEST_RUN_ERRORS.targetWindowNotFoundError);
+    }
+}
+
 export class ParentWindowNotFoundError extends TestRunErrorBase {
     constructor () {
         super(TEST_RUN_ERRORS.parentWindowNotFoundError);

@@ -4,7 +4,7 @@ import {
     CannotCloseWindowWithChildrenError,
     SwitchToWindowPredicateError,
     WindowNotFoundError
-} from './index';
+} from './shared';
 
 export default class ChildWindowValidationErrorFactory {
     static createError ({ errCode, errMsg }) {
