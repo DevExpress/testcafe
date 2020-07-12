@@ -9,6 +9,7 @@ import makeRegExp from '../../utils/make-reg-exp';
 import selectorTextFilter from './selector-text-filter';
 import selectorAttributeFilter from './selector-attribute-filter';
 import prepareApiFnArgs from './prepare-api-args';
+import * as globalCallsites from '../../utils/global-callsites';
 
 const VISIBLE_PROP_NAME = 'visible';
 
@@ -120,7 +121,7 @@ function addSnapshotProperties (obj, getSelector, SelectorBuilder, properties) {
                 });
 
                 propertyPromise.then = function (onFulfilled, onRejected) {
-                    global.snapshotPropertyCallsite = callsite;
+                    globalCallsites.snapshotPropertyCallsite = callsite;
 
                     this._ensureExecuting();
 

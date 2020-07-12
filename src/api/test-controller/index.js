@@ -10,6 +10,7 @@ import WARNING_MESSAGE from '../../notifications/warning-message';
 import renderCallsiteSync from '../../utils/render-callsite-sync';
 import createStackFilter from '../../errors/create-stack-filter';
 import getBrowser from '../../utils/get-browser';
+import * as globalCallsites from '../../utils/global-callsites';
 
 import {
     ClickCommand,
@@ -65,7 +66,6 @@ export default class TestController {
 
         this.testRun               = testRun;
         this.executionChain        = Promise.resolve();
-        this.callsitesWithoutAwait = new Set();
         this.warningLog            = testRun.warningLog;
     }
 
@@ -83,7 +83,7 @@ export default class TestController {
     // await t2.click('#btn3');   // <-- without check it will set callsiteWithoutAwait = null, so we will lost tracking
     _createExtendedPromise (promise, callsite) {
         const extendedPromise     = promise.then(identity);
-        const markCallsiteAwaited = () => this.callsitesWithoutAwait.delete(callsite);
+        const markCallsiteAwaited = () => globalCallsites.callsitesWithoutAwait.delete(callsite);
 
         extendedPromise.then = function () {
             markCallsiteAwaited();
@@ -106,7 +106,7 @@ export default class TestController {
         this.executionChain.then = originalThen;
         this.executionChain      = this.executionChain.then(executor);
 
-        this.callsitesWithoutAwait.add(callsite);
+        globalCallsites.callsitesWithoutAwait.add(callsite);
 
         this.executionChain = this._createExtendedPromise(this.executionChain, callsite);
 
@@ -379,11 +379,11 @@ export default class TestController {
     _expect$ (actual) {
         const callsite = getCallsiteForMethod('expect');
 
-        if (global.snapshotPropertyCallsite && global.snapshotPropertyCallsite.filename === callsite.filename &&
-                global.snapshotPropertyCallsite.lineNum === callsite.lineNum) {
+        if (globalCallsites.snapshotPropertyCallsite && globalCallsites.snapshotPropertyCallsite.filename === callsite.filename &&
+                globalCallsites.snapshotPropertyCallsite.lineNum === callsite.lineNum) {
             this._addWarning(WARNING_MESSAGE.redundantAwaitInAssertion, callsite);
 
-            global.snapshotPropertyCallsite = null;
+            globalCallsites.snapshotPropertyCallsite = null;
         }
 
         if (isClientFunction(actual))
