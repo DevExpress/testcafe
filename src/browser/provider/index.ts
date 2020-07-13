@@ -153,7 +153,11 @@ export default class BrowserProvider {
                 // NOTE: We can suppress the error here since we can just disable window manipulation functions
                 // when we cannot find a local window descriptor
                 DEBUG_LOGGER(err);
-                connection.addWarning(WARNING_MESSAGE.cannotFindWindowDescriptorError, err.message);
+                connection.addWarning(
+                    WARNING_MESSAGE.cannotFindWindowDescriptorError,
+                    connection.browserInfo.alias,
+                    err.message
+                );
             }
 
             this.localBrowsersInfo[browserId].windowDescriptor = windowDescriptor;

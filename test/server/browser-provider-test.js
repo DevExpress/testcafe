@@ -1,17 +1,18 @@
-const expect                  = require('chai').expect;
-const { noop, stubFalse }     = require('lodash');
-const nanoid                  = require('nanoid');
-const { rmdirSync, statSync } = require('fs');
-const { join, dirname }       = require('path');
-const proxyquire              = require('proxyquire');
-const sinon                   = require('sinon');
-const Module                  = require('module');
-const browserProviderPool     = require('../../lib/browser/provider/pool');
-const parseProviderName       = require('../../lib/browser/provider/parse-provider-name');
-const BrowserConnection       = require('../../lib/browser/connection');
-const ProviderCtor            = require('../../lib/browser/provider/');
-const WARNING_MESSAGE         = require('../../lib/notifications/warning-message');
+const expect                    = require('chai').expect;
+const { noop, stubFalse }       = require('lodash');
+const nanoid                    = require('nanoid');
+const { rmdirSync, statSync }   = require('fs');
+const { join, dirname }         = require('path');
+const proxyquire                = require('proxyquire');
+const sinon                     = require('sinon');
+const Module                    = require('module');
+const browserProviderPool       = require('../../lib/browser/provider/pool');
+const parseProviderName         = require('../../lib/browser/provider/parse-provider-name');
+const BrowserConnection         = require('../../lib/browser/connection');
+const ProviderCtor              = require('../../lib/browser/provider/');
+const WARNING_MESSAGE           = require('../../lib/notifications/warning-message');
 const BrowserProviderPluginHost = require('../../lib/browser/provider/plugin-host');
+const WarningLog                = require('../../lib/notifications/warning-log');
 
 class BrowserConnectionMock extends BrowserConnection {
     constructor () {
@@ -425,17 +426,12 @@ describe('Browser provider', function () {
     });
 
     it('Should raise a warning if a browser window was not found', async () => {
-        const bc = new BrowserConnectionMock();
+        const bc         = new BrowserConnectionMock();
+        const warningLog = new WarningLog();
 
-        bc.isReady = () => true;
-
-        let warning  = null;
-        let errorMsg = null;
-
-        bc.addWarning = (...args) => {
-            warning  = args[0];
-            errorMsg = args[1];
-        };
+        bc.isReady           = () => true;
+        bc.browserInfo.alias = 'chromium';
+        bc.addWarning        = (...args) => warningLog.addWarning(...args);
 
         const ProviderMock = proxyquire('../../lib/browser/provider', {
             'testcafe-browser-tools': {
@@ -459,8 +455,9 @@ describe('Browser provider', function () {
         await provider.openBrowser(bc.id);
 
         expect(debugMock.data['testcafe:browser:provider']).eql('Error: SomeError');
-        expect(warning).eql(WARNING_MESSAGE.cannotFindWindowDescriptorError);
-        expect(errorMsg).eql('SomeError');
+        expect(warningLog.messages).eql([
+            'Cannot find the "chromium" window. The following error occurred:\n\nSomeError'
+        ]);
     });
 });
 
