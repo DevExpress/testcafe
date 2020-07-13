@@ -65,7 +65,7 @@ test('Eval', async t => {
 });
 
 test('Screenshot on action error', async t => {
-    t.hover('body');
+    await t.hover('body');
 
     await t.click('#unexisting-element');
 });
