@@ -14,11 +14,15 @@ export default {
     maximizeError:                           'Was unable to maximize the window due to an error.\n\n{errMessage}',
     requestMockCORSValidationFailed:         '{RequestHook}: CORS validation failed for a request specified as {requestFilterRule}',
     debugInHeadlessError:                    'You cannot debug in headless mode.',
-    cannotFindWindowDescriptorError:         'Cannot find the "{browserAlias}" window. The following error occurred:\n\n{errMessage}',
     cannotReadConfigFile:                    'An error has occurred while reading the configuration file.',
     cannotParseConfigFile:                   "Failed to parse the '{path}' file.\n\nThis file is not a well-formed JSON file.",
     configOptionsWereOverriden:              'The {optionsString} option{suffix} from the configuration file will be ignored.',
     cannotOverrideTypeScriptConfigOptions:   'You cannot override the "{optionName}" compiler option in the TypeScript configuration file.',
+
+    cannotFindWindowDescriptorError: 'Could not find the "{browserAlias}" window. ' +
+                                     'TestCafe is unable to resize the window or take screenshots.\n\n' +
+                                     'The following error occurred while TestCafe was searching ' +
+                                     'for the window descriptor:\n\n{errMessage}',
 
     cannotFindSSLCertFile: 'Unable to find the "{path}" file, specified by the "{option}" ssl option. Error details:\n' +
                            '\n' +

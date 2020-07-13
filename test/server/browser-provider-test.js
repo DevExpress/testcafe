@@ -6,6 +6,7 @@ const { join, dirname }         = require('path');
 const proxyquire                = require('proxyquire');
 const sinon                     = require('sinon');
 const Module                    = require('module');
+const dedent                    = require('dedent');
 const browserProviderPool       = require('../../lib/browser/provider/pool');
 const parseProviderName         = require('../../lib/browser/provider/parse-provider-name');
 const BrowserConnection         = require('../../lib/browser/connection');
@@ -455,8 +456,12 @@ describe('Browser provider', function () {
         await provider.openBrowser(bc.id);
 
         expect(debugMock.data['testcafe:browser:provider']).eql('Error: SomeError');
-        expect(warningLog.messages).eql([
-            'Cannot find the "chromium" window. The following error occurred:\n\nSomeError'
+        expect(warningLog.messages).eql([dedent`
+            Could not find the "chromium" window. TestCafe is unable to resize the window or take screenshots.
+
+            The following error occurred while TestCafe was searching for the window descriptor:
+
+            SomeError`
         ]);
     });
 });
