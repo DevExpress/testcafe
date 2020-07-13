@@ -120,7 +120,7 @@ const actions = {
     closeWindow:               [{ id: 'window-id' }],
     getCurrentWindow:          [],
     switchToParentWindow:      [],
-    switchToRecentWindow:      [],
+    switchToPreviousWindow:    [],
     setNativeDialogHandler:    [() => true],
     getNativeDialogHistory:    [],
     getBrowserConsoleMessages: [],

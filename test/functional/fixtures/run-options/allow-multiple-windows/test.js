@@ -141,12 +141,12 @@ describe('Allow multiple windows', () => {
                 });
         });
 
-        it('Switch to recent window', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to recent window', { only: 'chrome', allowMultipleWindows: true });
+        it('Switch to previous window', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to previous window', { only: 'chrome', allowMultipleWindows: true });
         });
 
-        it('Switch to recent closed window', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to recent closed window', { only: 'chrome', allowMultipleWindows: true, shouldFail: true })
+        it('Switch to previous closed window', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to previous closed window', { only: 'chrome', allowMultipleWindows: true, shouldFail: true })
                 .catch(errs => {
                     expect(errs[0]).to.contain('Cannot find the previous window. Make sure that the previous window is opened.');
                 });

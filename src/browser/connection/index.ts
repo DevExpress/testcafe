@@ -47,7 +47,7 @@ interface ProviderMetaInfoOptions {
 
 export default class BrowserConnection extends EventEmitter {
     public permanent: boolean;
-    public recentActiveWindowId: string | null;
+    public previousActiveWindowId: string | null;
     private readonly allowMultipleWindows: boolean;
     private readonly HEARTBEAT_TIMEOUT: number;
     private readonly BROWSER_RESTART_TIMEOUT: number;
@@ -123,7 +123,7 @@ export default class BrowserConnection extends EventEmitter {
 
         connections[this.id] = this;
 
-        this.recentActiveWindowId = null;
+        this.previousActiveWindowId = null;
 
         this.browserConnectionGateway.startServingConnection(this);
 
@@ -426,7 +426,7 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     public set activeWindowId (val) {
-        this.recentActiveWindowId = this.activeWindowId;
+        this.previousActiveWindowId = this.activeWindowId;
 
         this.provider.setActiveWindowId(this.id, val);
     }

@@ -53,7 +53,7 @@ import {
     CloseChildWindowError,
     ChildWindowClosedBeforeSwitchingError,
     ParentWindowNotFoundError,
-    RecentWindowNotFoundError
+    PreviousWindowNotFoundError
 } from '../../errors/test-run';
 
 import BrowserConsoleMessages from '../../test-run/browser-console-messages';
@@ -1086,8 +1086,8 @@ export default class Driver extends serviceUtils.EventEmitter {
             });
     }
 
-    _onSwitchToRecentWindow (command) {
-        this._onSwitchToWindow(command, new RecentWindowNotFoundError());
+    _onSwitchToPreviousWindow (command) {
+        this._onSwitchToWindow(command, new PreviousWindowNotFoundError());
     }
 
     _onSwitchToParentWindow () {
@@ -1273,8 +1273,8 @@ export default class Driver extends serviceUtils.EventEmitter {
         else if (command.type === COMMAND_TYPE.switchToWindow || command.type === COMMAND_TYPE.switchToWindowByPredicate)
             this._onSwitchToWindow(command);
 
-        else if (command.type === COMMAND_TYPE.switchToRecentWindow)
-            this._onSwitchToRecentWindow(command);
+        else if (command.type === COMMAND_TYPE.switchToPreviousWindow)
+            this._onSwitchToPreviousWindow(command);
 
         else if (command.type === COMMAND_TYPE.switchToParentWindow)
             this._onSwitchToParentWindow();

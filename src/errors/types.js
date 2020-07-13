@@ -78,7 +78,7 @@ export const TEST_RUN_ERRORS = {
     targetWindowNotFoundError:                             'E74',
     allowMultipleWindowsOptionIsNotSpecifiedError:         'E75',
     parentWindowNotFoundError:                             'E76',
-    recentWindowNotFoundError:                             'E77',
+    previousWindowNotFoundError:                           'E77',
     switchToWindowPredicateError:                          'E78'
 };
 

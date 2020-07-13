@@ -545,20 +545,20 @@ module.exports = [
     },
     {
         testRunId: 'test-run-id',
-        name:    'switchToRecentWindow',
-        command: {
-            type: 'switch-to-recent-window'
+        name:      'switchToPreviousWindow',
+        command:   {
+            type: 'switch-to-previous-window'
         },
-        test:    {
+        test:      {
             id:    'test-id',
             name:  'test-name',
             phase: 'initial'
         },
-        fixture: {
+        fixture:   {
             id:   'fixture-id',
             name: 'fixture-name',
         },
-        browser: { alias: 'test-browser', headless: false }
+        browser:   { alias: 'test-browser', headless: false }
     },
     {
         testRunId: 'test-run-id',
