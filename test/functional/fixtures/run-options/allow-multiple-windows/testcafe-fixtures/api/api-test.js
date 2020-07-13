@@ -3,6 +3,7 @@ import { Selector } from 'testcafe';
 const parentUrl = 'http://localhost:3000/fixtures/run-options/allow-multiple-windows/pages/api/parent.html';
 const child1Url = 'http://localhost:3000/fixtures/run-options/allow-multiple-windows/pages/api/child-1.html';
 const child2Url = 'http://localhost:3000/fixtures/run-options/allow-multiple-windows/pages/api/child-2.html';
+const child3Url = 'http://localhost:3000/fixtures/run-options/allow-multiple-windows/pages/api/child-3.html';
 
 fixture `API`
     .page(parentUrl);
@@ -12,6 +13,15 @@ test('Open child window', async t => {
         .expect(Selector('h1').innerText).eql('parent')
         .openWindow(child1Url)
         .expect(Selector('h1').innerText).eql('child-1');
+});
+
+test('Open slow child window', async t => {
+    await t
+        .expect(Selector('h1').innerText).eql('parent')
+        .openWindow(child3Url)
+        .openWindow(child1Url)
+        .switchToRecentWindow()
+        .expect(Selector('h1').innerText).eql('child-3');
 });
 
 test('Close current window', async t => {

@@ -137,6 +137,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         this.COMMAND_EXECUTING_FLAG        = 'testcafe|driver|command-executing-flag';
         this.EXECUTING_IN_IFRAME_FLAG      = 'testcafe|driver|executing-in-iframe-flag';
         this.PENDING_WINDOW_SWITCHING_FLAG = 'testcafe|driver|pending-window-switching-flag';
+        this.WINDOW_COMMAND_API_CALL_FLAG  = 'testcafe|driver|window-command-api-flag';
 
         this.testRunId                  = testRunId;
         this.heartbeatUrl               = communicationUrls.heartbeat;
@@ -181,8 +182,6 @@ export default class Driver extends serviceUtils.EventEmitter {
         this.readyPromise = eventUtils
             .documentReady(this.pageLoadTimeout)
             .then(() => this.pageInitialRequestBarrier.wait(true));
-
-        this._openWindowPromiseResolveFn = () => {};
 
         this._initChildDriverListening();
 
@@ -335,7 +334,6 @@ export default class Driver extends serviceUtils.EventEmitter {
     _onChildWindowOpened (e) {
         this._addChildWindowDriverLink(e);
         this._switchToChildWindow(e.windowId);
-        this._openWindowPromiseResolveFn(e.windowId);
     }
 
     // HACK: For https://github.com/DevExpress/testcafe/issues/3560
@@ -654,6 +652,7 @@ export default class Driver extends serviceUtils.EventEmitter {
             .then(() => {
                 this._startInternal({
                     finalizePendingCommand: msg.finalizePendingCommand,
+                    result:                 { id: this.windowId }
                 });
 
                 this.setAsMasterInProgress = false;
@@ -824,6 +823,8 @@ export default class Driver extends serviceUtils.EventEmitter {
     _switchToChildWindow (selector) {
         this.contextStorage.setItem(this.PENDING_WINDOW_SWITCHING_FLAG, true);
 
+        const isWindowOpenedViaAPI = this.contextStorage.getItem(this.WINDOW_COMMAND_API_CALL_FLAG);
+
         return executeChildWindowDriverLinkSelector(selector, this.childWindowDriverLinks)
             .then(childWindowDriverLink => {
                 return this._ensureChildWindowDriverLink(childWindowDriverLink.driverWindow, ChildWindowIsNotLoadedError, this.childWindowReadyTimeout);
@@ -834,13 +835,13 @@ export default class Driver extends serviceUtils.EventEmitter {
                 return this._waitForCurrentCommandCompletion();
             })
             .then(() => {
-                return this._waitForEmptyCommand();
+                return isWindowOpenedViaAPI ? void 0 : this._waitForEmptyCommand();
             })
             .then(() => {
                 this._abortSwitchingToChildWindowIfItClosed();
                 this._stopInternal();
 
-                return this.activeChildWindowDriverLink.setAsMaster();
+                return this.activeChildWindowDriverLink.setAsMaster(isWindowOpenedViaAPI);
             })
             .then(() => {
                 this.contextStorage.setItem(this.PENDING_WINDOW_SWITCHING_FLAG, false);
@@ -1000,19 +1001,9 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     _onWindowOpenCommand (command) {
-        const openWindowPromise = new Promise(resolve => {
-            this._openWindowPromiseResolveFn = resolve;
+        this.contextStorage.setItem(this.WINDOW_COMMAND_API_CALL_FLAG, true);
 
-            window.open(command.url);
-        });
-
-        return openWindowPromise
-            .then(windowId => {
-                this._onReady(new DriverStatus({
-                    isCommandResult: true,
-                    result:          { id: windowId }
-                }));
-            });
+        window.open(command.url);
     }
 
     _onWindowCloseCommand (command) {
@@ -1246,6 +1237,8 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     _executeCommand (command) {
+        this.contextStorage.setItem(this.WINDOW_COMMAND_API_CALL_FLAG, false);
+
         if (this.customCommandHandlers[command.type])
             this._onCustomCommand(command);
 
@@ -1394,7 +1387,7 @@ export default class Driver extends serviceUtils.EventEmitter {
 
     }
 
-    _startCommandsProcessing (opts = { finalizePendingCommand: false, isFirstRequestAfterWindowSwitching: false }) {
+    _startCommandsProcessing (opts = { finalizePendingCommand: false, isFirstRequestAfterWindowSwitching: false, result: void 0 }) {
         const pendingStatus = this.contextStorage.getItem(PENDING_STATUS);
 
         if (pendingStatus)
@@ -1418,7 +1411,8 @@ export default class Driver extends serviceUtils.EventEmitter {
 
         const status = pendingStatus || new DriverStatus({
             isCommandResult:                    finalizePendingCommand,
-            isFirstRequestAfterWindowSwitching: opts.isFirstRequestAfterWindowSwitching
+            isFirstRequestAfterWindowSwitching: opts.isFirstRequestAfterWindowSwitching,
+            result:                             opts.result
         });
 
         this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, false);

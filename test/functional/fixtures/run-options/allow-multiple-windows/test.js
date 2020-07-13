@@ -96,6 +96,10 @@ describe('Allow multiple windows', () => {
             return runTests('testcafe-fixtures/api/api-test.js', 'Open child window', { only: 'chrome', allowMultipleWindows: true });
         });
 
+        it('Open slow child window ', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Open slow child window', { only: 'chrome', allowMultipleWindows: true });
+        });
+
         it('Close current window', () => {
             return runTests('testcafe-fixtures/api/api-test.js', 'Close current window', { only: 'chrome', allowMultipleWindows: true });
         });
