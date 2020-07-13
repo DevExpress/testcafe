@@ -67,6 +67,8 @@ export default class TestController {
         this.testRun               = testRun;
         this.executionChain        = Promise.resolve();
         this.warningLog            = testRun.warningLog;
+
+        globalCallsites.callsitesWithoutAwait = new Set();
     }
 
     // NOTE: we track missing `awaits` by exposing a special custom Promise to user code.
