@@ -79,7 +79,8 @@ export const TEST_RUN_ERRORS = {
     allowMultipleWindowsOptionIsNotSpecifiedError:         'E75',
     parentWindowNotFoundError:                             'E76',
     previousWindowNotFoundError:                           'E77',
-    switchToWindowPredicateError:                          'E78'
+    switchToWindowPredicateError:                          'E78',
+    actionFunctionArgumentError:                           'E79',
 };
 
 export const RUNTIME_ERRORS = {

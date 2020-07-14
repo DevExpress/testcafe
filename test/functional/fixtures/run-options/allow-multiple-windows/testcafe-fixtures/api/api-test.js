@@ -80,11 +80,11 @@ test('Switch to window by url', async t => {
             w.location.host === 'localhost:3000' &&
             w.location.port === '3000' &&
             w.location.query === '/fixtures/run-options/allow-multiple-windows/pages/api/parent.html';
-    }, { dependencies: { parentUrl } });
+    });
 
     await t.expect(Selector('h1').innerText).eql('parent');
 
-    await t.switchToWindow(w => w.location.href === child1Url, { dependencies: { child1Url } });
+    await t.switchToWindow(w => w.location.href === child1Url);
 
     await t.expect(Selector('h1').innerText).eql('child-1');
 });

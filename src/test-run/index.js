@@ -10,7 +10,9 @@ import {
     RequestHookUnhandledError,
     PageLoadError,
     RequestHookNotImplementedMethodError,
-    RoleSwitchInRoleInitializerError
+    RoleSwitchInRoleInitializerError,
+    SwitchToWindowPredicateError,
+    WindowNotFoundError
 } from '../errors/test-run/';
 import PHASE from './phase';
 import CLIENT_MESSAGES from './client-messages';
@@ -39,6 +41,11 @@ import {
     isExecutableOnClientCommand,
     isResizeWindowCommand
 } from './commands/utils';
+
+import {
+    GetCurrentWindowsCommand,
+    SwitchToWindowCommand
+} from './commands/actions';
 
 import { TEST_RUN_ERRORS } from '../errors/types';
 import processTestFnError from '../errors/process-test-fn-error';
@@ -739,6 +746,10 @@ export default class TestRun extends AsyncEventEmitter {
         if (command.type === COMMAND_TYPE.switchToPreviousWindow)
             command.windowId = this.browserConnection.previousActiveWindowId;
 
+        if (command.type === COMMAND_TYPE.switchToWindowByPredicate)
+            return this._switchToWindowByPredicate(command);
+
+
         return this._enqueueCommand(command, callsite);
     }
 
@@ -874,6 +885,24 @@ export default class TestRun extends AsyncEventEmitter {
         const getLocation = builder.getFunction();
 
         return await getLocation();
+    }
+
+    async _switchToWindowByPredicate (command) {
+        const currentWindows = await this.executeCommand(new GetCurrentWindowsCommand({}, this));
+
+        const window = currentWindows.find(wnd => {
+            try {
+                return command.findWindow(wnd);
+            }
+            catch (e) {
+                throw new SwitchToWindowPredicateError(e.message);
+            }
+        });
+
+        if (!window)
+            throw new WindowNotFoundError();
+
+        await this.executeCommand(new SwitchToWindowCommand({ windowId: window.id }), this);
     }
 
     _disconnect (err) {

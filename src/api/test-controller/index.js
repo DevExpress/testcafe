@@ -308,7 +308,7 @@ export default class TestController {
         return this._enqueueCommand(apiMethodName, GetCurrentWindowCommand);
     }
 
-    _switchToWindow$ (windowSelector, options = {}) {
+    _switchToWindow$ (windowSelector) {
         const apiMethodName = 'switchToWindow';
 
         this._validateMultipleWindowCommand(apiMethodName);
@@ -319,7 +319,7 @@ export default class TestController {
         if (typeof windowSelector === 'function') {
             command = SwitchToWindowByPredicateCommand;
 
-            args = { findWindow: { fn: windowSelector, options } };
+            args = { findWindow: windowSelector };
         }
         else {
             command = SwitchToWindowCommand;
