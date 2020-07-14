@@ -80,7 +80,7 @@ const {
     ChildWindowClosedBeforeSwitchingError,
     WindowNotFoundError,
     ParentWindowNotFoundError,
-    RecentWindowNotFoundError,
+    PreviousWindowNotFoundError,
     SwitchToWindowPredicateError,
     CannotCloseWindowWithChildrenError,
     AllowMultipleWindowsOptionIsNotSpecifiedError
@@ -471,8 +471,8 @@ describe('Error formatting', () => {
             assertErrorMessage('parent-window-not-found-error', new ParentWindowNotFoundError());
         });
 
-        it('Should format "recentWindowNotFoundError"', () => {
-            assertErrorMessage('recent-window-not-found-error', new RecentWindowNotFoundError());
+        it('Should format "previousWindowNotFoundError"', () => {
+            assertErrorMessage('previous-window-not-found-error', new PreviousWindowNotFoundError());
         });
 
         it('Should format "switchToWindowPredicateError"', () => {

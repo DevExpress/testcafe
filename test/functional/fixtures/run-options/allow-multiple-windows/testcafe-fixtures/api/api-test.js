@@ -107,27 +107,27 @@ test('Switch to window by predicate with error', async t => {
     await t.switchToWindow(w => w.nonExistingProperty.field === 'parent');
 });
 
-test('Switch to recent window', async t => {
+test('Switch to previous window', async t => {
     await t
         .openWindow(child1Url)
         .openWindow(child2Url)
         .expect(Selector('h1').innerText).eql('child-2')
-        .switchToRecentWindow()
+        .switchToPreviousWindow()
         .expect(Selector('h1').innerText).eql('child-1')
-        .switchToRecentWindow()
+        .switchToPreviousWindow()
         .expect(Selector('h1').innerText).eql('child-2');
 });
 
-test('Switch to recent closed window', async t => {
+test('Switch to previous closed window', async t => {
     const child2Window = await t
         .openWindow(child1Url)
         .openWindow(child2Url);
 
     await t.expect(Selector('h1').innerText).eql('child-2')
-        .switchToRecentWindow()
+        .switchToPreviousWindow()
         .expect(Selector('h1').innerText).eql('child-1')
         .closeWindow(child2Window)
-        .switchToRecentWindow();
+        .switchToPreviousWindow();
 });
 
 test('Switch to child window', async t => {

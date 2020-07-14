@@ -736,8 +736,8 @@ export default class TestRun extends AsyncEventEmitter {
         if (command.type === COMMAND_TYPE.getBrowserConsoleMessages)
             return await this._enqueueBrowserConsoleMessagesCommand(command, callsite);
 
-        if (command.type === COMMAND_TYPE.switchToRecentWindow)
-            command.windowId = this.browserConnection.recentActiveWindowId;
+        if (command.type === COMMAND_TYPE.switchToPreviousWindow)
+            command.windowId = this.browserConnection.previousActiveWindowId;
 
         return this._enqueueCommand(command, callsite);
     }

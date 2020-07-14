@@ -357,7 +357,7 @@ export default {
         Cannot find the parent window. Make sure that the tested window was opened from another window.
     `,
 
-    [TEST_RUN_ERRORS.recentWindowNotFoundError]: () => `
+    [TEST_RUN_ERRORS.previousWindowNotFoundError]: () => `
         Cannot find the previous window. Make sure that the previous window is opened.
     `,
 

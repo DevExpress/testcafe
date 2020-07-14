@@ -586,9 +586,9 @@ export class ParentWindowNotFoundError extends TestRunErrorBase {
     }
 }
 
-export class RecentWindowNotFoundError extends TestRunErrorBase {
+export class PreviousWindowNotFoundError extends TestRunErrorBase {
     constructor () {
-        super(TEST_RUN_ERRORS.recentWindowNotFoundError);
+        super(TEST_RUN_ERRORS.previousWindowNotFoundError);
     }
 }
 

@@ -398,9 +398,9 @@ export class SwitchToParentWindowCommand extends CommandBase {
     }
 }
 
-export class SwitchToRecentWindowCommand extends CommandBase {
+export class SwitchToPreviousWindowCommand extends CommandBase {
     constructor (obj, testRun) {
-        super(obj, testRun, TYPE.switchToRecentWindow);
+        super(obj, testRun, TYPE.switchToPreviousWindow);
     }
 
     _getAssignableProperties () {

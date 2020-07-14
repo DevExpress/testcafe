@@ -39,7 +39,7 @@ export default {
     switchToWindow:             'switch-to-window',
     switchToWindowByPredicate:  'switch-to-window-by-predicate',
     switchToParentWindow:       'switch-to-parent-window',
-    switchToRecentWindow:       'switch-to-recent-window',
+    switchToPreviousWindow:     'switch-to-previous-window',
     setNativeDialogHandler:     'set-native-dialog-handler',
     getNativeDialogHistory:     'get-native-dialog-history',
     getBrowserConsoleMessages:  'get-browser-console-messages',
