@@ -464,9 +464,6 @@ export default class Driver extends serviceUtils.EventEmitter {
         let errItem = arr.find(item => item.result.errCode === TEST_RUN_ERRORS.cannotCloseWindowWithChildrenError);
 
         if (!errItem)
-            errItem = arr.find(item => item.result.errCode === TEST_RUN_ERRORS.switchToWindowPredicateError);
-
-        if (!errItem)
             errItem = arr.find(item => !!item.result.errCode);
 
         return errItem ? { errCode: errItem.result.errCode } : void 0;
@@ -482,24 +479,13 @@ export default class Driver extends serviceUtils.EventEmitter {
         });
     }
 
-    _prepareFindWindowPredicateArgs () {
+    _getWindowInfo () {
         const parsedUrl = hammerhead.utils.url.parseProxyUrl(window.location.toString());
-
-        const { protocol, host, port, hostname, partAfterHost: query } = parsedUrl.destResourceInfo;
-
-        const location = {
-            href: parsedUrl.destUrl,
-            protocol,
-            host,
-            port,
-            hostname,
-            query
-        };
 
         return {
             id:    this.windowId,
             title: document.title,
-            location,
+            url:   parsedUrl.destUrl
         };
     }
 
@@ -508,14 +494,7 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     async _validateWindow (msg, wnd, getWindowFoundResult, WindowValidationMessageCtor) {
-        let windowExists = false;
-
-        try {
-            windowExists = this._isTargetWindow(msg);
-        }
-        catch (e) {
-            return this._getTargetWindowNotFoundResult(TEST_RUN_ERRORS.switchToWindowPredicateError, e.message);
-        }
+        const windowExists = this._isTargetWindow(msg);
 
         if (windowExists)
             return getWindowFoundResult();
@@ -597,14 +576,14 @@ export default class Driver extends serviceUtils.EventEmitter {
 
     async _getWindows () {
         if (!this.childWindowDriverLinks.length)
-            return [this._prepareFindWindowPredicateArgs()];
+            return [this._getWindowInfo()];
 
         const searchQueries = this.childWindowDriverLinks.map(childWindowDriverLink => {
             return childWindowDriverLink.findChildWindows({}, GetWindowsMessage);
         });
 
         const searchResults = await Promise.all(searchQueries);
-        let result          = [this._prepareFindWindowPredicateArgs()];
+        let result          = [this._getWindowInfo()];
 
         for (const item of searchResults) {
             if (Array.isArray(item.result))

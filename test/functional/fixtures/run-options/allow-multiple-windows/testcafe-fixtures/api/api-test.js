@@ -75,16 +75,20 @@ test('Switch to window by url', async t => {
     await t.openWindow(child1Url);
 
     await t.switchToWindow(w => {
-        return w.location.href === parentUrl &&
-            w.location.protocol === 'http:' &&
-            w.location.host === 'localhost:3000' &&
-            w.location.port === '3000' &&
-            w.location.query === '/fixtures/run-options/allow-multiple-windows/pages/api/parent.html';
+        return w.url instanceof URL &&
+               w.url.href === parentUrl &&
+               w.url.protocol === 'http:' &&
+               w.url.origin === 'http://localhost:3000' &&
+               w.url.host === 'localhost:3000' &&
+               w.url.hostname === 'localhost' &&
+               w.url.port === '3000' &&
+               w.url.pathname === '/fixtures/run-options/allow-multiple-windows/pages/api/parent.html' &&
+               w.url.searchParams instanceof URLSearchParams;
     });
 
     await t.expect(Selector('h1').innerText).eql('parent');
 
-    await t.switchToWindow(w => w.location.href === child1Url);
+    await t.switchToWindow(w => w.url.toString() === child1Url);
 
     await t.expect(Selector('h1').innerText).eql('child-1');
 });

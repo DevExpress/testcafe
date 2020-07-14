@@ -892,7 +892,9 @@ export default class TestRun extends AsyncEventEmitter {
 
         const window = currentWindows.find(wnd => {
             try {
-                return command.findWindow(wnd);
+                const url = new URL(wnd.url);
+
+                return command.findWindow({ url, title: wnd.title });
             }
             catch (e) {
                 throw new SwitchToWindowPredicateError(e.message);
