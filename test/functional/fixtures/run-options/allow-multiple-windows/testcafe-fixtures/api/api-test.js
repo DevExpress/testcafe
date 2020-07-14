@@ -20,7 +20,7 @@ test('Open slow child window', async t => {
         .expect(Selector('h1').innerText).eql('parent')
         .openWindow(child3Url)
         .openWindow(child1Url)
-        .switchToRecentWindow()
+        .switchToPreviousWindow()
         .expect(Selector('h1').innerText).eql('child-3');
 });
 
