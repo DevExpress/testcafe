@@ -264,7 +264,7 @@ You need to escape special characters in the user agent string when you specify 
 
 The way to escape special characters depends on the shell you use. You also need to escape semicolons from the TestCafe argument parser with an additional backslash.
 
-The following examples show how to escape user agent screens in `bash`, `PowerShell` and utilizing `Node.js API`.
+The following examples show how to escape user agent screens in `bash`, `PowerShell` and `JavaScript API`.
 
 **bash**
 
@@ -284,9 +284,9 @@ testcafe 'chrome:emulation:userAgent=''Mozilla/5.0 (Windows NT 10.0\; Win64\; x6
 
 **Node.js API**
 
-While executing TestCafe via `Node.js API`, user agent string should be provided as the parameter of `runner.browsers` [method](../../reference/testcafe-api/runner/browsers.md). Either single or double quotes might be used. Escape semicolons with a double backslash - to escape them from the TestCafe argument parser:
+When you execute TestCafe via `JavaScript API`, provide user agent string as the [runner.browsers] (../../reference/testcafe-api/runner/browsers.md) method parameter. Escape semicolons with a double backslash - to escape them from the TestCafe argument parser:
 
-```sh
+```js
 runner
     .src('tests/sample-fixture.js')
     .browsers('chrome:emulation:userAgent=Mozilla/5.0 (Windows NT 10.0\\; Win64\\; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36')
