@@ -266,7 +266,7 @@ runner
 
 #### Command Line Interface
 
-You need to escape special characters in the user agent string when you specify it in the command line. These characters include:
+You need to escape special characters in the user agent string when you specify it in the command line. These characters include the following:
 
 * `\` (backslash)
 * `'` (single quote)
