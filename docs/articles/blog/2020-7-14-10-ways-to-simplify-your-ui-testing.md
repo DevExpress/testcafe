@@ -17,7 +17,7 @@ In this webinar, you’ll learn:
 - How to create customizable tests that can easily evolve as business requirements change.
 - The purpose of Custom Selectors and why they make web testing so much easier.
 - The purpose of the Page Model approach and why it helps increase productivity.
-- And you'll learn how to master use of Smart Assertions
+- And you'll learn how to master use of Smart Assertions.
 
 ## Experience the TestCafe Difference
 
@@ -27,4 +27,4 @@ TestCafe Open Source and TestCafe Studio are driver free and do not require you 
 
 **Start Time:** 10AM Pacific Time
 
-[Register](https://dxpr.es/10_ways_to_simplify_ui_testing)
+**[Register](https://dxpr.es/10_ways_to_simplify_ui_testing)**
