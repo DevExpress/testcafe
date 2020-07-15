@@ -7,7 +7,7 @@ redirect_from:
 ---
 # Integrate TestCafe with GitHub Actions
 
-This topic describes how to use the [Run TestCafe action](https://github.com/DevExpress/testcafe-action) to integrate TestCafe tests into the [GitHub Actions](https://help.github.com/en/actions/automating-your-workflow-with-github-actions) build process.
+This topic describes how to use the [Run TestCafe action](https://github.com/DevExpress/testcafe-action) to integrate TestCafe tests into the [GitHub Actions](https://docs.github.com/en/actions/automating-your-workflow-with-github-actions) build process.
 
 * [Step 1 - Create a Workflow](#step-1---create-a-workflow)
 * [Step 2 - Create a Job](#step-2---create-a-job)
@@ -22,7 +22,7 @@ This topic describes how to use the [Run TestCafe action](https://github.com/Dev
 
 Create a YAML file (for instance, `testcafe-workflow.yml`) in the `.github/workflows` directory in your repository.
 
-Specify the [workflow name](https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#name) and the [event](https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#on) that triggers this workflow.
+Specify the [workflow name](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#name) and the [event](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#on) that triggers this workflow.
 
 ```yml
 name: End-to-End Tests
@@ -35,7 +35,7 @@ In this example, the workflow runs when you push changes to the repository.
 
 Create a job that runs the TestCafe tests.
 
-Provide the [job name](https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idname) and specify the [type of machine](https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on) that should run the job.
+Provide the [job name](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idname) and specify the [type of machine](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on) that should run the job.
 
 ```yml
 name: End-to-End Tests
@@ -47,11 +47,11 @@ jobs:
     runs-on: windows-latest
 ```
 
-This job runs on a GitHub-hosted virtual machine with the latest Windows version. `test` is the [job ID](https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_id) that must be unique to the `jobs` object.
+This job runs on a GitHub-hosted virtual machine with the latest Windows version. `test` is the [job ID](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_id) that must be unique to the `jobs` object.
 
 ## Step 3 - Add a Step That Fetches The Repository
 
-Add a [step](https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idsteps) that uses the [checkout](https://github.com/actions/checkout) action to fetch your repository content.
+Add a [step](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idsteps) that uses the [checkout](https://github.com/actions/checkout) action to fetch your repository content.
 
 ```yml
 name: End-to-End Tests
