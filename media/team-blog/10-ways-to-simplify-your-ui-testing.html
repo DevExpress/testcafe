@@ -16,15 +16,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>Getting Started | TestCafe</title>
+  <title>Upcoming Webinar: 10 Ways to Simplify Your UI Testing | TestCafe</title>
 
-  <meta name="description" content="">
+  <meta name="description" content="Upcoming Webinar: 10 Ways to Simplify Your UI TestingIn this free webinar, our Technical Evangelist Paul Usher will show you how to easily incorporate UI tes...">
   <meta name="viewport" content="width=device-width">
 
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://devexpress.github.io/testcafe/documentation/getting-started/" />
-  <meta property="og:title" content="Getting Started | TestCafe" />
+  <meta property="og:url" content="https://devexpress.github.io/testcafe/media/team-blog/10-ways-to-simplify-your-ui-testing.html" />
+  <meta property="og:title" content="Upcoming Webinar: 10 Ways to Simplify Your UI Testing | TestCafe" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-twitter-card-icon.png" />
@@ -37,7 +37,7 @@
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
   <link rel="stylesheet" href="/testcafe/css/banner.css">
-  <link rel="canonical" href="https://devexpress.github.io/testcafe/documentation/getting-started/">
+  <link rel="canonical" href="https://devexpress.github.io/testcafe/media/team-blog/10-ways-to-simplify-your-ui-testing.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="https://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -88,6 +88,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
   <link rel="stylesheet" href="/testcafe/css/docs.css">
     
+    <link rel="stylesheet" href="/testcafe/css/community.css">
+    
   <style>
       .ps-container > .ps-scrollbar-x-rail,
       .ps-container > .ps-scrollbar-y-rail {
@@ -100,6 +102,10 @@
 
   
 
+  
+  <script>
+    window.localStorage.setItem(SUMMER_2019_SURVEY_PAGE_OPEN_DATE_FLAG, Date.now());
+  </script>
   
 
   <script>
@@ -164,9 +170,6 @@
                 docMenuItem.appendChild(docMenuItemIcon);
 
                 
-                    docMenuItem.className += ' expanded';
-                    docTopNav.className += ' expanded';
-                
 
                 docMenuItem.addEventListener('click', function (e) {
                     if (docTopNav.className.indexOf('expanded') !== -1) {
@@ -203,7 +206,7 @@
         var article = null;
 
         function getHeaderHeight () {
-            var DOCS_HEADER_HEIGHT   = 126;
+            var DOCS_HEADER_HEIGHT   = 76;
             var SURVEY_HEADER_HEIGHT = 32;
 
             var surveyBanner          = document.querySelector('.survey-banner');
@@ -304,7 +307,7 @@
             linkCss('/testcafe/css/banner.mobile.css');
             linkCss('/testcafe/css/docs.mobile.css');           
             
-            if (true == false) {
+            if (false == false) {
                 document.addEventListener('DOMContentLoaded', function (e) {
                     var docNavPanel = document.querySelector('.doc-nav-panel');
                     var docNav      = document.querySelector('.doc-nav');
@@ -338,7 +341,7 @@
 
                 var bodyMinimized          = document.body.clientWidth === MIN_BODY_WIDTH;
                 var docContentMargin       = bodyMinimized ? CONTENT_MARGIN_WITHOUT_DOC_MENU : CONTENT_MARGIN_WITH_DOC_MENU;
-                var isCommunitySection     = false;
+                var isCommunitySection     = true;
                 var contentMarginCommunity = isMobileDevice ? CONTENT_MARGIN_COMMUNITY_MOBILE : CONTENT_MARGIN_COMMUNITY_DESKTOP;
                 var contentMargin          = isCommunitySection ? contentMarginCommunity : docContentMargin;
 
@@ -462,12 +465,12 @@
     <nav class="site-nav">
       
         
-        <div class="site-nav-tab active">
+        <div class="site-nav-tab">
           <a class="page-link" href="/testcafe/documentation/getting-started/"><span>Docs</span></a>
         </div>
       
         
-        <div class="site-nav-tab" id="blog-link-tab">
+        <div class="site-nav-tab active" id="blog-link-tab">
           <a class="page-link" id="blog-link" href="/testcafe/media/team-blog/"><span>Blog</span></a>
         </div>
       
@@ -600,7 +603,7 @@
   <div class="doc-top-nav-content">
     <div class="doc-top-nav-wrapper">
       
-        <div class="doc-top-nav-tab active" >
+        <div class="doc-top-nav-tab " >
           <a href="/testcafe/documentation/getting-started/">Getting Started</a>
         </div>
       
@@ -630,164 +633,60 @@
 
 
       <div class="container">
-    
+    <main>
+    <div class="post">
+        <div class="post-date">
+            JUL 14, 2020
+        </div>
+        <article class="post-content">
+            <h1>Upcoming Webinar: 10 Ways to Simplify Your UI Testing</h1>
+<p>In this free webinar, our Technical Evangelist <a href="https://twitter.com/paul__usher">Paul Usher</a> will show you how to easily incorporate UI testing in your development workflow. Paul will demonstrate how TestCafe can fit in any organization and how its features can be leveraged to deliver high quality web apps that always meet end-user expectations.</p>
 
-	
-	
+<!--more-->
 
-	
-	
-
-	
-	
-
-	
-	
-	
-
-
-<main>
-	<article class="post gs">
-		<div class="post-content">
-
-			<h1>Getting Started</h1>
-<p>This guide provides step-by-step instructions on how to create a functional web test with TestCafe and consists of the following sections.</p>
+<p>In this webinar, you’ll learn:</p>
 
 <ul>
-<li><a href="#installing-testcafe">Installing TestCafe</a></li>
-<li><a href="#creating-a-test">Creating a Test</a></li>
-<li><a href="#running-the-test">Running the Test</a></li>
-<li><a href="#viewing-the-test-results">Viewing the Test Results</a></li>
-<li><a href="#writing-test-code">Writing Test Code</a>
-
-<ul>
-<li><a href="#performing-actions-on-the-page">Performing Actions on the Page</a></li>
-<li><a href="#observing-page-state">Observing Page State</a></li>
-<li><a href="#assertions">Assertions</a></li>
-</ul></li>
+<li>How to setup TestCafe and start testing in under 10 minutes.</li>
+<li>How to create customizable tests that can easily evolve as business requirements change.</li>
+<li>The purpose of Custom Selectors and why they make web testing so much easier.</li>
+<li>The purpose of the Page Model approach and why it helps increase productivity.</li>
+<li>And you&#39;ll learn how to master use of Smart Assertions.</li>
 </ul>
-<h2><a class="anchor" id="installing-testcafe"></a>Installing TestCafe <a class="permalink" href="#installing-testcafe">#</a></h2>
-<p>Ensure that <a href="https://nodejs.org/">Node.js</a> and <a href="https://www.npmjs.com/">npm</a> are installed on your computer and run the following command:</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">npm <span class="nb">install</span> <span class="nt">-g</span> testcafe
-</code></pre></div>
-<p>For more information, see <a href="../guides/basic-guides/install-testcafe.html">Installing TestCafe</a>.</p>
-<h2><a class="anchor" id="creating-a-test"></a>Creating a Test <a class="permalink" href="#creating-a-test">#</a></h2>
-<p>TestCafe allows you to write tests using TypeScript or JavaScript (with its modern features like <code>async/await</code>).
-You get all the advantages of strongly-typed languages like rich coding assistance, painless scalability, check-as-you-type code verification, etc., by using TypeScript to write your TestCafe tests. For more information about writing tests in TypeScript, see <a href="../guides/concepts/typescript-and-coffeescript.html">TypeScript Support</a>.</p>
+<h2><a class="anchor" id="experience-the-testcafe-difference"></a>Experience the TestCafe Difference <a class="permalink" href="#experience-the-testcafe-difference">#</a></h2>
+<p>TestCafe Open Source and TestCafe Studio are driver free and do not require you to manage complex plug-ins. If you’re ready to test your web apps and want to deliver more reliable solutions to your end-users, be sure to click the link below and register your interest in this live webinar.</p>
 
-<p>To create a test, create a new .js or .ts file.
-This file must have a special structure - tests must be organized into fixtures.</p>
+<p><strong>Webinar Date:</strong> Wednesday, July 29, 2020</p>
 
-<p>Firstly, import the <code>testcafe</code> module.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
-</code></pre></div>
-<p>Then declare a fixture using the <a href="../guides/basic-guides/organize-tests.html#fixtures">fixture</a> function.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`Getting Started`</span>
-</code></pre></div>
-<p>In this tutorial, you create a test for the <a href="/testcafe/example">http://devexpress.github.io/testcafe/example</a> sample page.
-Specify this page as a start page for the fixture using the <a href="../guides/basic-guides/organize-tests.html#specify-the-start-webpage">page</a> function.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`Getting Started`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://devexpress.github.io/testcafe/example`</span><span class="p">;</span>
-</code></pre></div>
-<p>Then, create the <a href="../guides/basic-guides/organize-tests.html#tests">test</a> function where you can enter test code.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
+<p><strong>Start Time:</strong> 10AM Pacific Time</p>
 
-<span class="nx">fixture</span> <span class="s2">`Getting Started`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://devexpress.github.io/testcafe/example`</span><span class="p">;</span>
+<p><strong><a href="https://dxpr.es/10_ways_to_simplify_ui_testing">Register</a></strong></p>
 
-<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">My first test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="c1">// Test code</span>
-<span class="p">});</span>
-</code></pre></div><h2><a class="anchor" id="running-the-test"></a>Running the Test <a class="permalink" href="#running-the-test">#</a></h2>
-<p>You can run the test from a command shell by calling a single command where you specify the <a href="../reference/command-line-interface.html#browser-list">target browser</a> and <a href="../reference/command-line-interface.html#file-pathglob-pattern">file path</a>.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test1.js
-</code></pre></div>
-<p>TestCafe automatically opens the chosen browser and starts test execution within it.</p>
-<blockquote class="important"><div class="blockquote-content"><p>Make sure to keep the browser tab that is running tests active. Do not minimize the browser window.
-Inactive tabs and minimized browser windows switch to a lower resource consumption mode
-where tests are not guaranteed to execute correctly.</p>
-</div></blockquote>
-<p>For more information on how to configure the test run, see <a href="../reference/command-line-interface.html">Command Line Interface</a>.</p>
-<h2><a class="anchor" id="viewing-the-test-results"></a>Viewing the Test Results <a class="permalink" href="#viewing-the-test-results">#</a></h2>
-<p>While the test is running, TestCafe is gathering information about the test run and outputting the report in a command shell.</p>
-
-<p><img src="../../images/report.png" alt="Test Report" title=""></p>
-
-<p>See <a href="../guides/concepts/reporters.html">Reporters</a> for more information.</p>
-<h2><a class="anchor" id="writing-test-code"></a>Writing Test Code <a class="permalink" href="#writing-test-code">#</a></h2><h3><a class="anchor" id="performing-actions-on-the-page"></a>Performing Actions on the Page <a class="permalink" href="#performing-actions-on-the-page">#</a></h3>
-<p>Every test should be capable of interacting with page content. To perform user actions, TestCafe provides
-a number of <a href="../guides/basic-guides/interact-with-the-page.html">actions</a>: <code>click</code>, <code>hover</code>, <code>typeText</code>, <code>setFilesToUpload</code>, etc.
-They can be called in a chain.</p>
-
-<p>The following fixture contains a simple test that types a developer name into a text editor and then clicks the Submit button.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
-
-<span class="nx">fixture</span> <span class="s2">`Getting Started`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://devexpress.github.io/testcafe/example`</span><span class="p">;</span>
-
-<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">My first test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="k">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="dl">'</span><span class="s1">#developer-name</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">John Smith</span><span class="dl">'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="dl">'</span><span class="s1">#submit-button</span><span class="dl">'</span><span class="p">);</span>
-<span class="p">});</span>
-</code></pre></div>
-<p>All test actions are implemented as async functions of the <a href="../reference/test-api/testcontroller/">test controller object</a> <code>t</code>.
-This object is used to access test run API.
-To wait for actions to complete, use the <code>await</code> keyword when calling these actions or action chains.</p>
-<h3><a class="anchor" id="observing-page-state"></a>Observing Page State <a class="permalink" href="#observing-page-state">#</a></h3>
-<p>TestCafe allows you to observe the page state.
-For this purpose, it offers special kinds of functions that will execute your code on the client:
-<a href="../guides/basic-guides/select-page-elements.html">Selector</a> used to get direct access to DOM elements
-and <a href="../guides/basic-guides/obtain-client-side-info.html">ClientFunction</a> used to obtain arbitrary data from the client side.
-You call these functions as regular async functions, that is, you can obtain their results and use parameters to pass data to them.</p>
-
-<p>The selector API provides methods and properties to select elements on the page and get their state.</p>
-
-<p>For example, clicking the Submit button on the sample web page opens a &quot;Thank you&quot; page.
-To get access to DOM elements on the opened page, the <code>Selector</code> function can be used.
-The following example demonstrates how to access the article header element and obtain its actual text.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
-
-<span class="nx">fixture</span> <span class="s2">`Getting Started`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://devexpress.github.io/testcafe/example`</span><span class="p">;</span>
-
-<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">My first test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="k">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="dl">'</span><span class="s1">#developer-name</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">John Smith</span><span class="dl">'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="dl">'</span><span class="s1">#submit-button</span><span class="dl">'</span><span class="p">);</span>
-
-    <span class="kd">const</span> <span class="nx">articleHeader</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">.result-content</span><span class="dl">'</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="dl">'</span><span class="s1">h1</span><span class="dl">'</span><span class="p">);</span>
-
-    <span class="c1">// Obtain the text of the article header</span>
-    <span class="kd">let</span> <span class="nx">headerText</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">articleHeader</span><span class="p">.</span><span class="nx">innerText</span><span class="p">;</span>
-<span class="p">});</span>
-</code></pre></div>
-<p>See <a href="../guides/basic-guides/select-page-elements.html">Select Page Elements</a> for more information.</p>
-<h3><a class="anchor" id="assertions"></a>Assertions <a class="permalink" href="#assertions">#</a></h3>
-<p>A functional test should also check the result of actions performed.
-For example, the article header on the &quot;Thank you&quot; page should address a user using the entered name.
-To check if the header is correct, you have to add an assertion to the test.</p>
-
-<p>The following test demonstrates how to use <a href="../guides/basic-guides/assert.html">built-in assertions</a>.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
-
-<span class="nx">fixture</span> <span class="s2">`Getting Started`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://devexpress.github.io/testcafe/example`</span><span class="p">;</span>
-
-<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">My first test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="k">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="dl">'</span><span class="s1">#developer-name</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">John Smith</span><span class="dl">'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="dl">'</span><span class="s1">#submit-button</span><span class="dl">'</span><span class="p">)</span>
-
-        <span class="c1">// Use the assertion to check if the actual header text is equal to the expected one</span>
-        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#article-header</span><span class="dl">'</span><span class="p">).</span><span class="nx">innerText</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="dl">'</span><span class="s1">Thank you, John Smith!</span><span class="dl">'</span><span class="p">);</span>
-<span class="p">});</span>
-</code></pre></div>
-
-		</div>
-	</article>
-
+        </article>
+        <div id="back-to-posts-link">
+            <p><a href="../../media/team-blog/">Back to Post List</a></p>
+        </div>
+        <!-- <div id="disqus_thread"></div> -->
+    </div>
 </main>
+
+<!-- 
+<script>
+    var disqus_config = function () {
+        this.page.url = 'https://devexpress.github.io/testcafe/media/team-blog/10-ways-to-simplify-your-ui-testing.html';
+        this.page.identifier = '/media/team-blog/10-ways-to-simplify-your-ui-testing';
+    };
+    (function() {
+        var d = document, s = d.createElement('script');
+        
+        s.src = '//testcafe-blog.disqus.com/embed.js';
+        
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+ -->
 </div>
 
     </div>

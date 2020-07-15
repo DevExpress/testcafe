@@ -5,9 +5,41 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 06 Jul 2020 18:49:24 +0300</pubDate>
-    <lastBuildDate>Mon, 06 Jul 2020 18:49:24 +0300</lastBuildDate>
+    <pubDate>Wed, 15 Jul 2020 18:20:11 +0300</pubDate>
+    <lastBuildDate>Wed, 15 Jul 2020 18:20:11 +0300</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>Upcoming Webinar: 10 Ways to Simplify Your UI Testing</title>
+        <description>&lt;h1&gt;Upcoming Webinar: 10 Ways to Simplify Your UI Testing&lt;/h1&gt;
+&lt;p&gt;In this free webinar, our Technical Evangelist &lt;a href=&quot;https://twitter.com/paul__usher&quot;&gt;Paul Usher&lt;/a&gt; will show you how to easily incorporate UI testing in your development workflow. Paul will demonstrate how TestCafe can fit in any organization and how its features can be leveraged to deliver high quality web apps that always meet end-user expectations.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;In this webinar, you’ll learn:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;How to setup TestCafe and start testing in under 10 minutes.&lt;/li&gt;
+&lt;li&gt;How to create customizable tests that can easily evolve as business requirements change.&lt;/li&gt;
+&lt;li&gt;The purpose of Custom Selectors and why they make web testing so much easier.&lt;/li&gt;
+&lt;li&gt;The purpose of the Page Model approach and why it helps increase productivity.&lt;/li&gt;
+&lt;li&gt;And you&amp;#39;ll learn how to master use of Smart Assertions.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;experience-the-testcafe-difference&quot;&gt;&lt;/a&gt;Experience the TestCafe Difference &lt;a class=&quot;permalink&quot; href=&quot;#experience-the-testcafe-difference&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;TestCafe Open Source and TestCafe Studio are driver free and do not require you to manage complex plug-ins. If you’re ready to test your web apps and want to deliver more reliable solutions to your end-users, be sure to click the link below and register your interest in this live webinar.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Webinar Date:&lt;/strong&gt; Wednesday, July 29, 2020&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Start Time:&lt;/strong&gt; 10AM Pacific Time&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://dxpr.es/10_ways_to_simplify_ui_testing&quot;&gt;Register&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+</description>
+        <pubDate>Tue, 14 Jul 2020 00:00:00 +0300</pubDate>
+        <link>https://devexpress.github.io/testcafe/media/team-blog/10-ways-to-simplify-your-ui-testing.html</link>
+        <guid isPermaLink="true">https://devexpress.github.io/testcafe/media/team-blog/10-ways-to-simplify-your-ui-testing.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>How to Speed up Debugging in TestCafe: Tips and Tricks</title>
@@ -737,49 +769,6 @@
         <pubDate>Fri, 05 Jul 2019 00:00:00 +0300</pubDate>
         <link>https://devexpress.github.io/testcafe/blog/testcafe-v1-3-1-released.html</link>
         <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v1-3-1-released.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>TestCafe v1.3.0 Released</title>
-        <description>&lt;h1&gt;TestCafe v1.3.0 Released&lt;/h1&gt;
-&lt;p&gt;This release introduces support for the custom TypeScript configuration file and includes numerous bugfixes.&lt;/p&gt;
-
-&lt;!--more--&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;customize-typescript-compiler-options-1845&quot;&gt;&lt;/a&gt;⚙ Customize TypeScript Compiler Options (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1845&quot;&gt;#1845&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#customize-typescript-compiler-options-1845&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;&lt;blockquote&gt;&lt;div class=&quot;blockquote-content&quot;&gt;&lt;p&gt;&lt;strong&gt;Update:&lt;/strong&gt; v1.3.1 disables automatic detection of the &lt;code&gt;tsconfig.json&lt;/code&gt; file. See &lt;a href=&quot;https://devexpress.github.io/testcafe/blog/testcafe-v1-3-1-released.html&quot;&gt;v1.3.1 release notes&lt;/a&gt; for more information.&lt;/p&gt;
-&lt;/div&gt;&lt;/blockquote&gt;
-&lt;p&gt;TestCafe now allows you to specify the &lt;a href=&quot;https://www.typescriptlang.org/docs/handbook/compiler-options.html&quot;&gt;TypeScript compiler options&lt;/a&gt; in the &lt;code&gt;tsconfig.json&lt;/code&gt; configuration file. You can use these options to enable JSX compilation, import code or typings with &lt;code&gt;paths&lt;/code&gt; aliases, set aliases to React typings, or customize other compiler settings.&lt;/p&gt;
-
-&lt;p&gt;Define the &lt;code&gt;compilerOptions&lt;/code&gt; property in &lt;code&gt;tsconfig.json&lt;/code&gt; and specify the compiler options in this property:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;compilerOptions&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-        &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;jsx&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;react&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-        &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;jsxFactory&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;myFactory&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-        &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;alwaysStrict&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Save this file to the directory from which you run tests (or use the &lt;a href=&quot;../documentation/reference/configuration-file.html#tsconfigpath&quot;&gt;tsConfigPath&lt;/a&gt; setting in the main configuration file to specify a different location).&lt;/p&gt;
-
-&lt;p&gt;See &lt;a href=&quot;../documentation/guides/concepts/typescript-and-coffeescript.html#customize-compiler-options&quot;&gt;Customize Compiler Options&lt;/a&gt; for more information.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;TestCafe now waits for asynchronous tasks in &lt;code&gt;reportTaskDone&lt;/code&gt; to complete before it exits (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3835&quot;&gt;#3835&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;childNodes.length&lt;/code&gt; now returns the correct result after you type in an &lt;code&gt;iframe&lt;/code&gt; (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3887&quot;&gt;#3887&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;TestCafe no longer hangs when a custom request hook throws an error (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3786&quot;&gt;#3786&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Error messages now show the correct selector chains for selectors that use the &lt;code&gt;with&lt;/code&gt; method (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3874&quot;&gt;#3874&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;TestCafe can now work with test files located on a Windows network drive (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3918&quot;&gt;#3918&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Page elements overlapped by the TestCafe status panel are now scrolled into view correctly (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3924&quot;&gt;#3924&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Labels with the &lt;code&gt;tabIndex&lt;/code&gt; and &lt;code&gt;for&lt;/code&gt; attributes are now focused correctly (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3501&quot;&gt;#3501&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed a bug that prevented elements behind the footer from being scrolled up on some pages (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2601&quot;&gt;#2601&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Enhanced the previous fix for a Chrome 75 compatibility issue when &lt;code&gt;t.typeText&lt;/code&gt; typed each character at the beginning of the input (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/3865&quot;&gt;#3865&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;jQuery scroll functions no longer cause errors (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2045&quot;&gt;testcafe-hammerhead/#2045&lt;/a&gt;)&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Tue, 02 Jul 2019 00:00:00 +0300</pubDate>
-        <link>https://devexpress.github.io/testcafe/blog/testcafe-v1-3-0-released.html</link>
-        <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v1-3-0-released.html</guid>
         
         
       </item>

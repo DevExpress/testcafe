@@ -1,0 +1,33 @@
+.banner-placeholder {
+  display: none; }
+
+.survey-banner {
+  position: fixed;
+  height: auto; }
+  .survey-banner .survey-banner-message {
+    line-height: 20px;
+    padding: 10px 30px; }
+    .survey-banner .survey-banner-message span {
+      display: block;
+      text-align: left;
+      margin: 4px 0; }
+      .survey-banner .survey-banner-message span.desktop-text {
+        display: none; }
+      .survey-banner .survey-banner-message span.mobile-text {
+        display: block; }
+  .survey-banner .survey-banner-close-button {
+    background-position: top 15px right 15px; }
+
+.survey-banner:not(.hidden) ~ .container {
+  margin-top: 60px; }
+  .survey-banner:not(.hidden) ~ .container .doc-nav {
+    top: 192px; }
+
+.survey-banner:not(.hidden) ~ .site-header {
+  margin-top: 72px; }
+  .survey-banner:not(.hidden) ~ .site-header .site-header-content .site-nav {
+    top: 132px; }
+  .survey-banner:not(.hidden) ~ .site-header.fixed {
+    position: fixed; }
+    .survey-banner:not(.hidden) ~ .site-header.fixed ~ .container {
+      margin-top: 132px; }

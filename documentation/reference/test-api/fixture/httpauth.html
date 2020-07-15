@@ -8,6 +8,7 @@
   
   
   
+  
 
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -35,6 +36,7 @@
   
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
+  <link rel="stylesheet" href="/testcafe/css/banner.css">
   <link rel="canonical" href="https://devexpress.github.io/testcafe/documentation/reference/test-api/fixture/httpauth.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="https://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
@@ -57,7 +59,6 @@
      var isMobileDevice = !!md.mobile();
   </script>
   <script>
-      var SUMMER_2019_SURVEY_COMPLETED_FLAG        = 'summer-2019-survey-completed';
       var SUMMER_2019_SURVEY_PAGE_OPEN_DATE_FLAG   = 'summer-2019-survey-page-open-date';
       var SUMMER_2019_SURVEY_BANNER_DISMISSED_FLAG = 'summer-2019-survey-banner-dismissed';
   </script>
@@ -97,7 +98,9 @@
 
   
 
-    
+  
+
+  
 
   <script>
     function linkCss (href) {
@@ -120,8 +123,12 @@
     }
   </script>
     
+    
+
     <script>
         if (isMobileDevice) {
+            linkCss('/testcafe/css/banner.mobile.css');
+
             document.addEventListener('DOMContentLoaded', function (e) {
                 var siteNav         = document.querySelector('.site-nav');
                 var hamburgerButton = document.querySelector('.hamburger-button');
@@ -291,8 +298,10 @@
         });
     </script>
     
+    
     <script>
         if (isMobileDevice) {
+            linkCss('/testcafe/css/banner.mobile.css');
             linkCss('/testcafe/css/docs.mobile.css');           
             
             if (false == false) {
@@ -387,28 +396,17 @@
 
     <div class="page-content-wrapper">
 
-      
-<div class="survey-banner hidden">
-  <div class="survey-banner-message">
-      <span>How do you like TestCafe? </span><span class="desktop-text">Please take 3 minutes to fill out our survey. </span><a href="https://dxpr.es/2WYA3X4" target="_blank"><span class="desktop-text">Take the survey</span><span class="mobile-text">Take a 3-minute survey.</span></a>
-  </div>
+      <div class="survey-banner hidden">
+    <div class="survey-banner-message">
+        <span class="desktop-text">Join us on Wednesday, July 29th at 10am PDT / 1pm EDT for a live webinar on how to easily incorporate UI testing in your development workflow. </span><span class="mobile-text">Join us on July 29th for a live webinar.</span> <a href="/testcafe/media/team-blog/10-ways-to-simplify-your-ui-testing.html" target="_blank"><span>Register</span></a>
+    </div>
   <div class="survey-banner-close-button"></div>
 </div>
 <script>
-  var SURVEY_BANNER_DISPLAY_SETBACK_DAYS = 7;
-
-  function getDaysBetween(fromTime, toTime) {
-      var dayDurationMs = 24*60*60*1000;
-
-      return Math.round(Math.abs((fromTime - toTime)/(dayDurationMs)));
-  }
-
   var wasSurveyBannerDismissed = window.localStorage.getItem(SUMMER_2019_SURVEY_BANNER_DISMISSED_FLAG);
-  var wasSurveyCompleted       = window.localStorage.getItem(SUMMER_2019_SURVEY_COMPLETED_FLAG);
   var surveyOpenDate           = window.localStorage.getItem(SUMMER_2019_SURVEY_PAGE_OPEN_DATE_FLAG);
-  var surveySetbackExpired     = !surveyOpenDate || (getDaysBetween(surveyOpenDate, Date.now()) > SURVEY_BANNER_DISPLAY_SETBACK_DAYS);
 
-  if(!wasSurveyBannerDismissed && !wasSurveyCompleted && surveySetbackExpired) {
+  if(!wasSurveyBannerDismissed && !surveyOpenDate) {
       var surveyBanner      = document.querySelector('.survey-banner');
       var surveyLink        = document.querySelector('.survey-banner a');
       var surveyBannerClose = document.querySelector('.survey-banner-close-button');
@@ -416,7 +414,9 @@
       function hideSurveyBanner() {
           surveyBanner.className = surveyBanner.className += ' hidden';
 
-          if (!isMobileDevice)
+          var navExists = !!document.querySelector('.doc-nav');
+
+          if (!isMobileDevice && typeof updateNavMenuPosition !== 'undefined' && navExists)
               updateNavMenuPosition();
       }
 
@@ -434,7 +434,6 @@
 </script>
 
 
-
 <script>
     var TEAM_BLOG_LAST_VISITED_FLAG = 'team-blog-last-visited';
     var TEAM_BLOG_LINK_ID           = 'blog-link';
@@ -444,7 +443,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1593464400 * 1000);
+        var lastPostDate = new Date(1594674000 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -602,27 +601,27 @@
     <div class="doc-top-nav-wrapper">
       
         <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/getting-started/">Getting Started</a>      
+          <a href="/testcafe/documentation/getting-started/">Getting Started</a>
         </div>
       
         <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/guides/">Guides</a>      
+          <a href="/testcafe/documentation/guides/">Guides</a>
         </div>
       
         <div class="doc-top-nav-tab active" >
-          <a href="/testcafe/documentation/reference/">Reference</a>      
+          <a href="/testcafe/documentation/reference/">Reference</a>
         </div>
       
         <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/recipes/">Recipes</a>      
+          <a href="/testcafe/documentation/recipes/">Recipes</a>
         </div>
       
         <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/how-it-works/">How It Works</a>      
+          <a href="/testcafe/documentation/how-it-works/">How It Works</a>
         </div>
       
         <div class="doc-top-nav-tab " >
-          <a href="/testcafe/documentation/examples/">Examples</a>      
+          <a href="/testcafe/documentation/examples/">Examples</a>
         </div>
       
     </div>

@@ -10,6 +10,8 @@ html {
         height: 60px; }
         html body .page-content-wrapper .site-header.fixed {
           position: fixed; }
+          html body .page-content-wrapper .site-header.fixed ~ .container {
+            margin-top: 60px; }
         html body .page-content-wrapper .site-header .site-header-content {
           min-width: 0;
           padding: 0 0 0 30px;
@@ -128,16 +130,16 @@ html {
               display: none; }
       html body .page-content-wrapper .container {
         padding-left: 0;
-        padding-top: 0; }
+        padding-top: 0 !important; }
         html body .page-content-wrapper .container .post {
-          padding: 70px 30px 0px;
+          padding: 30px 30px 0px;
           min-width: 0; }
         html body .page-content-wrapper .container .blog-title {
           margin-top: 0; }
         html body .page-content-wrapper .container main .faq {
           min-width: 0;
           margin: 0;
-          padding: 70px 30px 0; }
+          padding: 30px 30px 0; }
     html body .site-footer {
       height: auto;
       z-index: 0; }

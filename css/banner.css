@@ -1,0 +1,43 @@
+.survey-banner:not(.hidden) ~ .container {
+  padding-top: 107px; }
+
+.survey-banner {
+  position: fixed;
+  width: 100%;
+  height: 32px;
+  background-color: #0AB42B;
+  display: flex;
+  z-index: 9999; }
+  .survey-banner .survey-banner-message {
+    width: 100%;
+    font-size: 14px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
+    line-height: 32px;
+    color: #FFFFFF;
+    text-align: center; }
+    .survey-banner .survey-banner-message span.mobile-text {
+      display: none; }
+    .survey-banner .survey-banner-message a {
+      color: #FFFFFF;
+      text-decoration: underline; }
+      .survey-banner .survey-banner-message a:hover {
+        color: #FFFFFF; }
+  .survey-banner .survey-banner-close-button {
+    width: 37px;
+    cursor: pointer;
+    background-image: url("/testcafe/images/survey-banner-close.svg");
+    background-repeat: no-repeat;
+    background-position: center center; }
+  .survey-banner.hidden {
+    display: none; }
+
+.survey-banner:not(.hidden) ~ .site-header {
+  top: 0;
+  margin-top: 32px; }
+
+.survey-banner[style*="static"]:not(.hidden) ~ .site-header {
+  margin-top: 0; }
+
+.survey-banner:not(.hidden) ~ .doc-top-nav {
+  top: 107px; }
