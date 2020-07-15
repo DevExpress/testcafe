@@ -19,8 +19,6 @@ In this webinar, you’ll learn:
 - The purpose of the Page Model approach and why it helps increase productivity.
 - And you'll learn how to master use of Smart Assertions
 
-For more best practice tips, see the following help topic: [How to Scroll Web Pages Using TestCafe](https://devexpress.github.io/testcafe/media/team-blog/how-to-scroll-web-pages-using-testcafe.html).
-
 ## Experience the TestCafe Difference
 
 TestCafe Open Source and TestCafe Studio are driver free and do not require you to manage complex plug-ins. If you’re ready to test your web apps and want to deliver more reliable solutions to your end-users, be sure to click the link below and register your interest in this live webinar.
