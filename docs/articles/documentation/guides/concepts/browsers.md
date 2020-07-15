@@ -255,7 +255,7 @@ Use the `userAgent` parameter to substitute a user agent string.
 
 #### JavaScript API
 
-When you launch TestCafe with JavaScript API, provide the user agent string in the [runner.browsers](../../reference/testcafe-api/runner/browsers.md) method parameter. Escape semicolons from the TestCafe argument parser with a double backslash:
+When you launch TestCafe with JavaScript API, provide the user agent string in the [runner.browsers](../../reference/testcafe-api/runner/browsers.md) method parameter. Escape semicolons from the TestCafe argument parser with a double backslash - as shown below:
 
 ```js
 runner
