@@ -383,16 +383,21 @@ export default class TestController {
     }
 
     _expect$ (actual) {
-        const callsite = getCallsiteForMethod('expect');
+        const callsite                  = getCallsiteForMethod('expect');
+        const snapshotPropertyCallsites = globalCallsites.snapshotPropertyCallsites[this.testRun.id];
 
-        if (globalCallsites.snapshotPropertyCallsites[callsite.filename] &&
-                globalCallsites.snapshotPropertyCallsites[callsite.filename].has(callsite.lineNum)) {
-            this._addWarning(WARNING_MESSAGE.redundantAwaitInAssertion, callsite);
+        if (snapshotPropertyCallsites) {
+            snapshotPropertyCallsites.forEach(selectorCallsite => {
+                if (selectorCallsite.filename === callsite.filename &&
+                    selectorCallsite.lineNum === callsite.lineNum) {
+                    this._addWarning(WARNING_MESSAGE.redundantAwaitInAssertion, callsite);
 
-            globalCallsites.snapshotPropertyCallsites[callsite.filename].delete(callsite.lineNum);
+                    snapshotPropertyCallsites.delete(selectorCallsite);
+                }
+            });
 
-            if (isEmpty(globalCallsites.snapshotPropertyCallsites[callsite.filename]))
-                delete globalCallsites.snapshotPropertyCallsites[callsite.filename];
+            if (isEmpty(snapshotPropertyCallsites))
+                delete globalCallsites.snapshotPropertyCallsites[this.testRun.id];
         }
 
         if (isClientFunction(actual))
