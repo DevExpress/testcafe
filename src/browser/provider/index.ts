@@ -1,3 +1,4 @@
+import debug from 'debug';
 import browserTools from 'testcafe-browser-tools';
 import OS from 'os-family';
 import { dirname } from 'path';
@@ -8,6 +9,8 @@ import { GET_TITLE_SCRIPT, GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from './utils/cli
 import WARNING_MESSAGE from '../../notifications/warning-message';
 import { Dictionary } from '../../configuration/interfaces';
 import { WindowDimentionsInfo } from '../interfaces';
+
+const DEBUG_LOGGER = debug('testcafe:browser:provider');
 
 const BROWSER_OPENING_DELAY = 2000;
 
@@ -139,8 +142,26 @@ export default class BrowserProvider {
         await this.plugin.waitForConnectionReady(browserId);
         await delay(BROWSER_OPENING_DELAY);
 
-        if (this.localBrowsersInfo[browserId])
-            this.localBrowsersInfo[browserId].windowDescriptor = await browserTools.findWindow(browserId);
+        if (this.localBrowsersInfo[browserId]) {
+            const connection     = BrowserConnection.getById(browserId) as BrowserConnection;
+            let windowDescriptor = null;
+
+            try {
+                windowDescriptor = await browserTools.findWindow(browserId);
+            }
+            catch (err) {
+                // NOTE: We can suppress the error here since we can just disable window manipulation functions
+                // when we cannot find a local window descriptor
+                DEBUG_LOGGER(err);
+                connection.addWarning(
+                    WARNING_MESSAGE.cannotFindWindowDescriptorError,
+                    connection.browserInfo.alias,
+                    err.message
+                );
+            }
+
+            this.localBrowsersInfo[browserId].windowDescriptor = windowDescriptor;
+        }
     }
 
     private async _ensureBrowserWindowParameters (browserId: string): Promise<void> {

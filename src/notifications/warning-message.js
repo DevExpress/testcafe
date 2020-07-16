@@ -19,6 +19,11 @@ export default {
     configOptionsWereOverriden:              'The {optionsString} option{suffix} from the configuration file will be ignored.',
     cannotOverrideTypeScriptConfigOptions:   'You cannot override the "{optionName}" compiler option in the TypeScript configuration file.',
 
+    cannotFindWindowDescriptorError: 'Could not find the "{browserAlias}" window. ' +
+                                     'TestCafe is unable to resize the window or take screenshots.\n\n' +
+                                     'The following error occurred while TestCafe was searching ' +
+                                     'for the window descriptor:\n\n{errMessage}',
+
     cannotFindSSLCertFile: 'Unable to find the "{path}" file, specified by the "{option}" ssl option. Error details:\n' +
                            '\n' +
                            '{err}',

@@ -14,6 +14,7 @@ import { BROWSER_RESTART_TIMEOUT, HEARTBEAT_TIMEOUT } from '../../utils/browser-
 import { Dictionary } from '../../configuration/interfaces';
 import BrowserConnectionGateway from './gateway';
 import BrowserJob from '../../runner/browser-job';
+import WarningLog from '../../notifications/warning-log';
 
 const IDLE_PAGE_TEMPLATE                         = read('../../client/browser/idle-page/index.html.mustache');
 const connections: Dictionary<BrowserConnection> = {};
@@ -71,6 +72,7 @@ export default class BrowserConnection extends EventEmitter {
     private readonly statusUrl: string;
     private readonly activeWindowIdUrl: string;
     private statusDoneUrl: string;
+    private warningLog: WarningLog;
 
     public idle: boolean;
 
@@ -89,6 +91,7 @@ export default class BrowserConnection extends EventEmitter {
         this.browserConnectionGateway = gateway;
         this.disconnectionPromise     = null;
         this.testRunAborted           = false;
+        this.warningLog               = new WarningLog();
 
         this.browserInfo                           = browserInfo;
         this.browserInfo.userAgentProviderMetaInfo = '';
@@ -279,10 +282,17 @@ export default class BrowserConnection extends EventEmitter {
     public addWarning (...args: any[]): void {
         if (this.currentJob)
             this.currentJob.warningLog.addWarning(...args);
+        else
+            this.warningLog.addWarning(...args);
     }
 
     private _appendToPrettyUserAgent (str: string): void {
         this.browserInfo.parsedUserAgent.prettyUserAgent += ` (${str})`;
+    }
+
+    private _moveWarningLogToJob (job: BrowserJob): void {
+        this.warningLog.copyTo(job.warningLog);
+        this.warningLog.clear();
     }
 
     public setProviderMetaInfo (str: string, options?: ProviderMetaInfoOptions): void {
@@ -326,6 +336,8 @@ export default class BrowserConnection extends EventEmitter {
 
     public addJob (job: BrowserJob): void {
         this.jobQueue.push(job);
+
+        this._moveWarningLogToJob(job);
     }
 
     public removeJob (job: BrowserJob): void {
