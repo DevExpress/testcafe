@@ -22,10 +22,13 @@ export default function wrapTestFunction (fn) {
         }
 
         if (!errList.hasUncaughtErrorsInTestCode) {
-            globalCallsites.callsitesWithoutAwait.forEach(callsite => {
+            globalCallsites.callsitesWithoutAwait[testRun.id].forEach(callsite => {
                 errList.addError(new MissingAwaitError(callsite));
+                globalCallsites.callsitesWithoutAwait[testRun.id].delete(callsite);
             });
         }
+
+        delete globalCallsites.callsitesWithoutAwait[testRun.id];
 
         if (errList.hasErrors)
             throw errList;

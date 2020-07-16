@@ -68,7 +68,7 @@ export default class TestController {
         this.executionChain        = Promise.resolve();
         this.warningLog            = testRun.warningLog;
 
-        globalCallsites.callsitesWithoutAwait = new Set();
+        globalCallsites.callsitesWithoutAwait[testRun.id] = new Set();
     }
 
     // NOTE: we track missing `awaits` by exposing a special custom Promise to user code.
@@ -85,7 +85,7 @@ export default class TestController {
     // await t2.click('#btn3');   // <-- without check it will set callsiteWithoutAwait = null, so we will lost tracking
     _createExtendedPromise (promise, callsite) {
         const extendedPromise     = promise.then(identity);
-        const markCallsiteAwaited = () => globalCallsites.callsitesWithoutAwait.delete(callsite);
+        const markCallsiteAwaited = () => globalCallsites.callsitesWithoutAwait[this.testRun.id].delete(callsite);
 
         extendedPromise.then = function () {
             markCallsiteAwaited();
@@ -108,7 +108,7 @@ export default class TestController {
         this.executionChain.then = originalThen;
         this.executionChain      = this.executionChain.then(executor);
 
-        globalCallsites.callsitesWithoutAwait.add(callsite);
+        globalCallsites.callsitesWithoutAwait[this.testRun.id].add(callsite);
 
         this.executionChain = this._createExtendedPromise(this.executionChain, callsite);
 
