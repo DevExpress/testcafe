@@ -1,5 +1,11 @@
 import { escape as escapeHTML } from 'lodash';
 
+export const DIFF_COLORS = {
+    DIFF_ADDED:   'diff-added',
+    DIFF_REMOVED: 'diff-removed',
+    DIFF_FILLER:  'diff-filler'
+};
+
 function color (name: string, str: string): string {
     return `<span class="${name}">${escapeHTML(str)}</span>`;
 }
@@ -15,12 +21,12 @@ export function colorLines (name: string, str: string): string {
 
 export function setColors (line: string): string {
     if (line[0] === '+')
-        return colorLines('diff-added', line);
+        return colorLines(DIFF_COLORS.DIFF_ADDED, line);
 
 
     if (line[0] === '-')
-        return colorLines('diff-removed', line);
+        return colorLines(DIFF_COLORS.DIFF_REMOVED, line);
 
 
-    return colorLines('diff-filler', line);
+    return colorLines(DIFF_COLORS.DIFF_FILLER, line);
 }
