@@ -15,8 +15,8 @@ Suppose you have a GitHub project for which you need to automatically run tests 
 
 * [Step 1 - Install TestCafe and create tests](#step-1---install-testcafe-and-create-tests)
 * [Step 2 - Enable Travis for your project](#step-2---enable-travis-for-your-project)
-* [Step 3 - Add the `test` script to package.json](#step-4---add-the-test-script-to-packagejson)
-* [Step 4 - Trigger a Travis CI build](#step-5---trigger-a-travis-ci-build)
+* [Step 3 - Add the `test` script to package.json](#step-3---add-the-test-script-to-packagejson)
+* [Step 4 - Trigger a Travis CI build](#step-4---trigger-a-travis-ci-build)
 
 > TestCafe provides an [example](https://github.com/DevExpress/testcafe/tree/master/examples/running-tests-in-firefox-and-chrome-using-travis-ci/) that can show you how to run tests in Chrome and Firefox with Travis CI.
 
