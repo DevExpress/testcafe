@@ -49,9 +49,8 @@ describe('Browser provider', function () {
 
     describe('Path and arguments handling', function () {
         it('Should parse the path: alias with arguments', async () => {
-            console.log('0')
             const browserInfo = await browserProviderPool.getBrowserInfo('path:/usr/bin/chrome --arg1 --arg2');
-            console.log(1);
+
             expect(browserInfo).include({
                 providerName: 'path',
                 browserName:  '/usr/bin/chrome --arg1 --arg2'
