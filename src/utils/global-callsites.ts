@@ -1,3 +1,3 @@
-export const snapshotPropertyCallsite = null;
+export const snapshotPropertyCallsites = {};
 
 export const callsitesWithoutAwait = {};

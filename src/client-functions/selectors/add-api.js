@@ -121,7 +121,10 @@ function addSnapshotProperties (obj, getSelector, SelectorBuilder, properties) {
                 });
 
                 propertyPromise.then = function (onFulfilled, onRejected) {
-                    globalCallsites.snapshotPropertyCallsite = callsite;
+                    if (!globalCallsites.snapshotPropertyCallsites[callsite.filename])
+                        globalCallsites.snapshotPropertyCallsites[callsite.filename] = new Set();
+
+                    globalCallsites.snapshotPropertyCallsites[callsite.filename].add(callsite.lineNum);
 
                     this._ensureExecuting();
 

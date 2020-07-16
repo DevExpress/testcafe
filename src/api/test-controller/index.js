@@ -1,7 +1,7 @@
 // TODO: Fix https://github.com/DevExpress/testcafe/issues/4139 to get rid of Pinkie
 import Promise from 'pinkie';
 import { renderers } from 'callsite-record';
-import { identity, assign, isNil as isNullOrUndefined, flattenDeep as flatten } from 'lodash';
+import { identity, assign, isNil as isNullOrUndefined, flattenDeep as flatten, isEmpty } from 'lodash';
 import { getCallsiteForMethod } from '../../errors/get-callsite';
 import ClientFunctionBuilder from '../../client-functions/client-function-builder';
 import Assertion from './assertion';
@@ -385,11 +385,14 @@ export default class TestController {
     _expect$ (actual) {
         const callsite = getCallsiteForMethod('expect');
 
-        if (globalCallsites.snapshotPropertyCallsite && globalCallsites.snapshotPropertyCallsite.filename === callsite.filename &&
-                globalCallsites.snapshotPropertyCallsite.lineNum === callsite.lineNum) {
+        if (globalCallsites.snapshotPropertyCallsites[callsite.filename] &&
+                globalCallsites.snapshotPropertyCallsites[callsite.filename].has(callsite.lineNum)) {
             this._addWarning(WARNING_MESSAGE.redundantAwaitInAssertion, callsite);
 
-            globalCallsites.snapshotPropertyCallsite = null;
+            globalCallsites.snapshotPropertyCallsites[callsite.filename].delete(callsite.lineNum);
+
+            if (isEmpty(globalCallsites.snapshotPropertyCallsites[callsite.filename]))
+                delete globalCallsites.snapshotPropertyCallsites[callsite.filename];
         }
 
         if (isClientFunction(actual))
