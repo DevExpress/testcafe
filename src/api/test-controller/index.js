@@ -108,7 +108,8 @@ export default class TestController {
         this.executionChain.then = originalThen;
         this.executionChain      = this.executionChain.then(executor);
 
-        globalCallsites.callsitesWithoutAwait[this.testRun.id].add(callsite);
+        if (globalCallsites.callsitesWithoutAwait[this.testRun.id])
+            globalCallsites.callsitesWithoutAwait[this.testRun.id].add(callsite);
 
         this.executionChain = this._createExtendedPromise(this.executionChain, callsite);
 
