@@ -53,8 +53,11 @@ import {
     CloseChildWindowError,
     ChildWindowClosedBeforeSwitchingError,
     ParentWindowNotFoundError,
-    PreviousWindowNotFoundError
+    PreviousWindowNotFoundError,
+    CannotCloseWindowWithChildrenError,
+    WindowNotFoundError
 } from '../../shared/errors';
+    
 
 import BrowserConsoleMessages from '../../test-run/browser-console-messages';
 import NativeDialogTracker from './native-dialog-tracker';
@@ -89,7 +92,6 @@ import sendConfirmationMessage from './driver-link/send-confirmation-message';
 import DriverRole from './role';
 import { CHECK_CHILD_WINDOW_CLOSED_INTERVAL, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT } from './driver-link/timeouts';
 import sendMessageToDriver from './driver-link/send-message-to-driver';
-import ChildWindowValidationErrorFactory from '../../shared/errors/child-window-error-factory';
 
 const settings = hammerhead.get('./settings');
 
@@ -509,6 +511,13 @@ export default class Driver extends serviceUtils.EventEmitter {
         const searchResults = await Promise.all(searchQueries);
 
         return this._getChildWindowValidateResult(searchResults);
+    }
+
+    static _createWindowValidationError ({ errCode }) {
+        if (errCode === TEST_RUN_ERRORS.cannotCloseWindowWithChildrenError)
+            return new CannotCloseWindowWithChildrenError();
+
+        return new WindowNotFoundError();
     }
 
     _getCloseWindowFoundResult () {
@@ -1015,7 +1024,7 @@ export default class Driver extends serviceUtils.EventEmitter {
             const result   = response.result;
 
             if (!result.success)
-                throw ChildWindowValidationErrorFactory.createError(result);
+                throw Driver._createWindowValidationError(result);
 
             await sendMessageToDriver(new CloseWindowCommandMessage({
                 windowId,
@@ -1076,7 +1085,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         if (!result.success) {
             this._onReady(new DriverStatus({
                 isCommandResult: true,
-                executionError:  err || ChildWindowValidationErrorFactory.createError(result)
+                executionError:  err || Driver._createWindowValidationError(result)
             }));
         }
         else {
