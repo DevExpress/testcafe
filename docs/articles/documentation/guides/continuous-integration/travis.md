@@ -18,7 +18,7 @@ Suppose you have a GitHub project for which you need to automatically run tests 
 * [Step 3 - Add the `test` script to package.json](#step-3---add-the-test-script-to-packagejson)
 * [Step 4 - Trigger a Travis CI build](#step-4---trigger-a-travis-ci-build)
 
-> TestCafe provides an [example](https://github.com/DevExpress/testcafe/tree/master/examples/running-tests-in-firefox-and-chrome-using-travis-ci/) that can show you how to run tests in Chrome and Firefox with Travis CI.
+> TestCafe provides an [example](https://github.com/DevExpress/testcafe/tree/master/examples/running-tests-in-firefox-and-chrome-using-travis-ci/) that shows how to run tests in Chrome and Firefox with Travis CI.
 
 ## Step 1 - Install TestCafe and create tests
 
@@ -26,8 +26,8 @@ Install TestCafe [locally](../basic-guides/install-testcafe.md#local-installatio
 
 ## Step 2 - Enable Travis for your project
 
-1. [Sign in to Travis CI](https://travis-ci.org/signin) with your GitHub account. Travis CI will synchronize your repositories from GitHub. You can see them on your [profile page](https://travis-ci.org/profile).
-2. Enable Travis CI for a repository you want to build by flicking the switch on.
+1. [Sign in to Travis CI](https://travis-ci.org/signin) with your GitHub account. Travis CI is synchronized with your repositories from GitHub. You can see them on your [profile page](https://travis-ci.org/profile).
+2. Enable Travis CI for a repository you want to build.
 
      ![Enable Travis for a repository](../../../images/travis-step-2-2.png)
 
@@ -37,7 +37,7 @@ Install TestCafe [locally](../basic-guides/install-testcafe.md#local-installatio
 
 3. Add a `.travis.yml` configuration file to the root of your project. This file contains parameters and commands that instruct Travis CI how to execute your builds. For more information, see [Customizing the Build](https://docs.travis-ci.com/user/customizing-the-build).
 
-     For Node.js projects that require Firefox and Chrome installed, the `.travis.yml` file can have the following content:
+     For Node.js projects that require Firefox and Chrome, the `.travis.yml` file should have the following content:
 
      ```yaml
      language: node_js
@@ -58,9 +58,9 @@ Install TestCafe [locally](../basic-guides/install-testcafe.md#local-installatio
 ## Step 3 - Add the `test` script to package.json
 
 To test a project, Travis runs test scripts. For Node.js projects, the default test script is `npm test`.
-To tell npm how to run your tests, add the `test` script to the project's package.json file. Use the `:headless` postfix to run browsers headlessly.
+To tell npm how to run your tests, add the `test` script to the project's package.json file. Use the `:headless` postfix to run browsers in headless mode.
 
-> Important! Travis CI uses Ubuntu Server virtual machines that do not have regular graphical environment like Unity, GNOME or KDE installed. Use the `:headless` postfix to run browsers headlessly.
+> Important! Travis CI uses Ubuntu Server virtual machines that do not have a graphic environment like Unity, GNOME or KDE. Use the `:headless` postfix to run browsers in headless mode.
 
 ```text
 "scripts": {
