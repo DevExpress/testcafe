@@ -37,7 +37,11 @@ Install TestCafe [locally](../basic-guides/install-testcafe.md#local-installatio
 
 3. Add a `.travis.yml` configuration file to the root of your project. This file contains parameters and commands that instruct Travis CI how to execute your builds. For more information, see [Customizing the Build](https://docs.travis-ci.com/user/customizing-the-build).
 
+<<<<<<< HEAD
      For Node.js projects that require Firefox and Chrome, the `.travis.yml` file should have the following content:
+=======
+     For Node.js projects that require Firefox and Chrome, the `.travis.yml` file can have the following content:
+>>>>>>> 60736db208417b653c16708faf4f6c412daadd68
 
      ```yaml
      language: node_js
