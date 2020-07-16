@@ -111,6 +111,12 @@ test('Switch to window by predicate with error', async t => {
     await t.switchToWindow(w => w.nonExistingProperty.field === 'parent');
 });
 
+test('Multiple windows are found warning', async t => {
+    await t.openWindow(child1Url);
+
+    await t.switchToWindow(() => true);
+});
+
 test('Switch to previous window', async t => {
     await t
         .openWindow(child1Url)

@@ -890,7 +890,7 @@ export default class TestRun extends AsyncEventEmitter {
     async _switchToWindowByPredicate (command) {
         const currentWindows = await this.executeCommand(new GetCurrentWindowsCommand({}, this));
 
-        const window = currentWindows.find(wnd => {
+        const windows = currentWindows.filter(wnd => {
             try {
                 const url = new URL(wnd.url);
 
@@ -901,10 +901,13 @@ export default class TestRun extends AsyncEventEmitter {
             }
         });
 
-        if (!window)
+        if (!windows.length)
             throw new WindowNotFoundError();
 
-        await this.executeCommand(new SwitchToWindowCommand({ windowId: window.id }), this);
+        if (windows.length > 1)
+            this.warningLog.addWarning(WARNING_MESSAGE.multipleWindowsFoundByPredicate);
+
+        await this.executeCommand(new SwitchToWindowCommand({ windowId: windows[0].id }), this);
     }
 
     _disconnect (err) {
