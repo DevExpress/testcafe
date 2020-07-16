@@ -137,6 +137,10 @@ export default {
         The "${err.argumentName}" argument is expected to be a Role instance, but it was ${err.actualValue}.
     `,
 
+    [TEST_RUN_ERRORS.actionFunctionArgumentError]: err => `
+        The "${err.argumentName}" argument is expected to be a function, but it was ${err.actualValue}.
+    `,
+
     [TEST_RUN_ERRORS.actionPositiveIntegerArgumentError]: err => `
         The "${err.argumentName}" argument is expected to be a positive integer, but it was ${err.actualValue}.
     `,

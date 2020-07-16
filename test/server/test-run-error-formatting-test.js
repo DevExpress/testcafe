@@ -24,6 +24,7 @@ const {
     ActionNullableStringArgumentError,
     ActionStringOrStringArrayArgumentError,
     ActionStringArrayElementError,
+    ActionFunctionArgumentError,
     PageLoadError,
     UncaughtErrorOnPage,
     UncaughtErrorInTestCode,
@@ -611,6 +612,10 @@ describe('Error formatting', () => {
 
         it('Should format "switchToWindowPredicateError"', () => {
             assertErrorMessage('switch-to-window-predicate-error', new SwitchToWindowPredicateError('error message'));
+        });
+
+        it('Should format "actionFunctionArgumentError"', () => {
+            assertErrorMessage('action-function-argument-error', new ActionFunctionArgumentError('predicate', 'number'));
         });
 
         it('Should format "allowMultipleWindowsOptionIsNotSpecifiedError"', () => {
