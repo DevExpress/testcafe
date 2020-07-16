@@ -49,8 +49,9 @@ describe('Browser provider', function () {
 
     describe('Path and arguments handling', function () {
         it('Should parse the path: alias with arguments', async () => {
+            console.log('0')
             const browserInfo = await browserProviderPool.getBrowserInfo('path:/usr/bin/chrome --arg1 --arg2');
-
+            console.log(1);
             expect(browserInfo).include({
                 providerName: 'path',
                 browserName:  '/usr/bin/chrome --arg1 --arg2'
@@ -426,43 +427,48 @@ describe('Browser provider', function () {
         });
     });
 
-    it('Should raise a warning if a browser window was not found', async () => {
-        const bc         = new BrowserConnectionMock();
-        const warningLog = new WarningLog();
+    describe('Regression', () => {
+        it('Should raise a warning if a browser window was not found', async () => {
+            const bc         = new BrowserConnectionMock();
+            const warningLog = new WarningLog();
 
-        bc.isReady           = () => true;
-        bc.browserInfo.alias = 'chromium';
-        bc.addWarning        = (...args) => warningLog.addWarning(...args);
+            bc.isReady           = () => true;
+            bc.browserInfo.alias = 'chromium';
+            bc.addWarning        = (...args) => warningLog.addWarning(...args);
 
-        const ProviderMock = proxyquire('../../lib/browser/provider', {
-            'testcafe-browser-tools': {
-                default: {
-                    findWindow () {
-                        throw new Error('SomeError');
+            const ProviderMock = proxyquire('../../lib/browser/provider', {
+                'testcafe-browser-tools': {
+                    default: {
+                        findWindow () {
+                            throw new Error('SomeError');
+                        }
                     }
-                }
-            },
-            debug: debugMock
+                },
+
+                'os-family': { win: false, linux: false, mac: false },
+                'debug':     debugMock
+            });
+
+            const provider = new ProviderMock(
+                new BrowserProviderPluginHost({
+                    openBrowser:       noop,
+                    isLocalBrowser:    () => true,
+                    isHeadlessBrowser: () => false,
+                })
+            );
+
+            await provider.openBrowser(bc.id);
+
+            expect(debugMock.data['testcafe:browser:provider']).eql('Error: SomeError');
+            expect(warningLog.messages).eql([dedent`
+                Could not find the "chromium" window. TestCafe is unable to resize the window or take screenshots.
+
+                The following error occurred while TestCafe was searching for the window descriptor:
+
+                SomeError`
+            ]);
         });
-
-        const provider = new ProviderMock(
-            new BrowserProviderPluginHost({
-                openBrowser:       noop,
-                isLocalBrowser:    () => true,
-                isHeadlessBrowser: () => false,
-            })
-        );
-
-        await provider.openBrowser(bc.id);
-
-        expect(debugMock.data['testcafe:browser:provider']).eql('Error: SomeError');
-        expect(warningLog.messages).eql([dedent`
-            Could not find the "chromium" window. TestCafe is unable to resize the window or take screenshots.
-
-            The following error occurred while TestCafe was searching for the window descriptor:
-
-            SomeError`
-        ]);
     });
+
 });
 
