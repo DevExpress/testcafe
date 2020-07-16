@@ -58,7 +58,7 @@ Install TestCafe [locally](../basic-guides/install-testcafe.md#local-installatio
 ## Step 3 - Add the `test` script to package.json
 
 To test a project, Travis runs test scripts. For Node.js projects, the default test script is `npm test`.
-To tell npm how to run your tests, add the `test` script to the project's package.json file. Use `testcafe` command in the script to run tests in Chrome and Firefox.
+To tell npm how to run your tests, add the `test` script to the project's package.json file. Use the `:headless` postfix to run browsers headlessly.
 
 > Important! Travis CI uses Ubuntu Server virtual machines that do not have regular graphical environment like Unity, GNOME or KDE installed. Modify the `testcafe` command to run browsers headlessly.
 
