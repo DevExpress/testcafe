@@ -21,7 +21,7 @@ export default function wrapTestFunction (fn) {
             errList.addError(err);
         }
 
-        if (!errList.hasUncaughtErrorsInTestCode) {
+        if (!errList.hasUncaughtErrorsInTestCode && globalCallsites.callsitesWithoutAwait[testRun.id]) {
             globalCallsites.callsitesWithoutAwait[testRun.id].forEach(callsite => {
                 errList.addError(new MissingAwaitError(callsite));
                 globalCallsites.callsitesWithoutAwait[testRun.id].delete(callsite);
