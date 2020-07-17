@@ -335,7 +335,7 @@ Use the [timeout](../../reference/test-api/selector/constructor.md#optionstimeou
 await t.expect(Selector('#elementId', { timeout: 500 }).innerText).eql('text', 'check element text');
 ```
 
-To set the timeout for all selectors, pass it to the [runner.run](../../reference/testcafe-api/runner/run.md) API method or the [--selector-timeout](../../reference/command-line-interface.md#--selector-timeout-ms) command line option when you launch tests. This will override the timeout options specified inside of tests.
+To set the timeout for all selectors, pass it to the [runner.run](../../reference/testcafe-api/runner/run.md) API method or the [--selector-timeout](../../reference/command-line-interface.md#--selector-timeout-ms) command line option when you launch tests. This will override the timeout options specified inside of tests, if any.
 
 During the timeout, the selector is re-executed until it returns a DOM node or the timeout is exceeded. If TestCafe cannot find the corresponding node in the DOM, the test fails.
 
