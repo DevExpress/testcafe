@@ -62,9 +62,9 @@ export default class ReporterPluginHost {
             'span syntax-comment':    str => this.chalk.grey.bold(str),
             'span syntax-invalid':    str => this.chalk.inverse(str),
 
-            [`span ${DIFF_COLORS.DIFF_FILLER}`]:  str => this.chalk.gray(str),
-            [`span ${DIFF_COLORS.DIFF_ADDED}`]:   str => this.chalk.green(str),
-            [`span ${DIFF_COLORS.DIFF_REMOVED}`]: str => this.chalk.red(str),
+            [`span ${DIFF_COLORS.DIFF_NOT_MODIFIED}`]: str => this.chalk.gray(str),
+            [`span ${DIFF_COLORS.DIFF_ADDED}`]:        str => this.chalk.green(str),
+            [`span ${DIFF_COLORS.DIFF_REMOVED}`]:      str => this.chalk.red(str),
 
             'div code-frame':         identity,
             'div code-line':          str => str + '\n',

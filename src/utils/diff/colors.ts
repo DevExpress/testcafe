@@ -1,9 +1,9 @@
 import { escape as escapeHTML } from 'lodash';
 
 export const DIFF_COLORS = {
-    DIFF_ADDED:   'diff-added',
-    DIFF_REMOVED: 'diff-removed',
-    DIFF_FILLER:  'diff-filler'
+    DIFF_ADDED:        'diff-added',
+    DIFF_REMOVED:      'diff-removed',
+    DIFF_NOT_MODIFIED: 'diff-not-modified'
 };
 
 function color (name: string, str: string): string {
@@ -23,10 +23,8 @@ export function setColors (line: string): string {
     if (line[0] === '+')
         return colorLines(DIFF_COLORS.DIFF_ADDED, line);
 
-
     if (line[0] === '-')
         return colorLines(DIFF_COLORS.DIFF_REMOVED, line);
 
-
-    return colorLines(DIFF_COLORS.DIFF_FILLER, line);
+    return colorLines(DIFF_COLORS.DIFF_NOT_MODIFIED, line);
 }

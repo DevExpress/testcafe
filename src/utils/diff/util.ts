@@ -1,12 +1,11 @@
 import { inspect } from 'util';
 import { isFunction, isBuffer } from 'lodash';
-import { setColors } from './colors';
 
-export function cleanUp (line: string): string {
+export function cleanUpFilter (line: string): boolean {
     if (line.match(/\\ No newline/))
-        return '';
+        return false;
 
-    return setColors(line);
+    return true;
 }
 
 export function stringify (value: any): string {
@@ -15,10 +14,8 @@ export function stringify (value: any): string {
     if (isFunction(value))
         return valueToStringify.toString();
 
-
     if (isBuffer(value))
         valueToStringify = Buffer.prototype.toJSON.call(value).data;
-
 
     return inspect(valueToStringify, { compact: false, sorted: true, depth: null })
         .split('\n')
