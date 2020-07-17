@@ -95,7 +95,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
         this._addBoundArgsSelectorGetter(resultPromise, args);
 
         // OPTIMIZATION: use buffer function as selector not to trigger lazy property ahead of time
-        addAPI(resultPromise, () => resultPromise.selector, SelectorBuilder, this.options.customDOMProperties, this.options.customMethods, testRun);
+        addAPI(resultPromise, () => resultPromise.selector, SelectorBuilder, this.options.customDOMProperties, this.options.customMethods);
 
         return resultPromise;
     }
@@ -186,7 +186,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
     _decorateFunction (selectorFn) {
         super._decorateFunction(selectorFn);
 
-        addAPI(selectorFn, () => selectorFn, SelectorBuilder, this.options.customDOMProperties, this.options.customMethods);
+        addAPI(selectorFn, () => selectorFn, SelectorBuilder, this.options.customDOMProperties, this.options.customMethods, this._getTestRun());
     }
 
     _getClientFnWithOverriddenOptions (options) {
