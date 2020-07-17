@@ -329,11 +329,13 @@ When you pass selector properties instead of values, TestCafe enables [Smart Ass
 
 When a selector is executed, TestCafe waits for the target node to appear in the DOM until the *selector timeout* expires.
 
-Use the [timeout](../../reference/test-api/selector/constructor.md#optionstimeout) option to specify the selector timeout in test code. To set the timeout when you launch tests, pass it to the [runner.run](../../reference/testcafe-api/runner/run.md) API method or the [--selector-timeout](../../reference/command-line-interface.md#--selector-timeout-ms) command line option.
+Use the [timeout](../../reference/test-api/selector/constructor.md#optionstimeout) option to specify the timeout for a particular selector in test code. 
 
 ```js
 await t.expect(Selector('#elementId', { timeout: 500 }).innerText).eql('text', 'check element text');
 ```
+
+To set the timeout for all selectors, pass it to the [runner.run](../../reference/testcafe-api/runner/run.md) API method or the [--selector-timeout](../../reference/command-line-interface.md#--selector-timeout-ms) command line option when you launch tests. This will override the timeout options specified inside of tests.
 
 During the timeout, the selector is re-executed until it returns a DOM node or the timeout is exceeded. If TestCafe cannot find the corresponding node in the DOM, the test fails.
 
