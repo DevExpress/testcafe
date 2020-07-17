@@ -57,7 +57,7 @@ import {
     CannotCloseWindowWithChildrenError,
     WindowNotFoundError
 } from '../../shared/errors';
-    
+
 
 import BrowserConsoleMessages from '../../test-run/browser-console-messages';
 import NativeDialogTracker from './native-dialog-tracker';

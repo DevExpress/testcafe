@@ -40,6 +40,6 @@ export default {
     clientScriptsWithDuplicatedContent: 'You injected the following client script{suffix} several times:\n {duplicatedScripts}',
     assertedSelectorInstance:           'You passed a Selector object to \'t.expect()\'.\nIf you want to check that a matched element exists, pass the \'selector.exists\' value instead.',
     assertedClientFunctionInstance:     'You passed a ClientFunction object to \'t.expect()\'.\nIf you want to check the function\'s return value, call the client function (\'clientFunction()\') instead.',
-    multipleWindowsFoundByPredicate:    'Multiple windows were found by the `switchToWindow` predicate function. The first window would be active.'
+    multipleWindowsFoundByPredicate:    'The predicate function passed to the \'switchToWindow\' method matched multiple windows. The first matching window was activated.'
 };
 
