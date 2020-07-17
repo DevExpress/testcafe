@@ -9,7 +9,6 @@ import makeRegExp from '../../utils/make-reg-exp';
 import selectorTextFilter from './selector-text-filter';
 import selectorAttributeFilter from './selector-attribute-filter';
 import prepareApiFnArgs from './prepare-api-args';
-import * as globalCallsites from '../../utils/global-callsites';
 
 const VISIBLE_PROP_NAME = 'visible';
 
@@ -108,7 +107,7 @@ function getDerivativeSelectorArgs (options, selectorFn, apiFn, filter, addition
     return Object.assign({}, options, { selectorFn, apiFn, filter, additionalDependencies });
 }
 
-function addSnapshotProperties (obj, getSelector, SelectorBuilder, properties, testRun) {
+function addSnapshotProperties (obj, getSelector, SelectorBuilder, properties, observedCallsites) {
     properties.forEach(prop => {
         Object.defineProperty(obj, prop, {
             get: () => {
@@ -121,12 +120,8 @@ function addSnapshotProperties (obj, getSelector, SelectorBuilder, properties, t
                 });
 
                 propertyPromise.then = function (onFulfilled, onRejected) {
-                    if (testRun) {
-                        if (!globalCallsites.snapshotPropertyCallsites[testRun.id])
-                            globalCallsites.snapshotPropertyCallsites[testRun.id] = new Set();
-
-                        globalCallsites.snapshotPropertyCallsites[testRun.id].add(callsite);
-                    }
+                    if (observedCallsites)
+                        observedCallsites.snapshotPropertyCallsites.add(callsite);
 
                     this._ensureExecuting();
 
@@ -211,10 +206,10 @@ function prepareSnapshotPropertyList (customDOMProperties) {
     return properties;
 }
 
-function addSnapshotPropertyShorthands ({ obj, getSelector, SelectorBuilder, customDOMProperties, customMethods, testRun }) {
+function addSnapshotPropertyShorthands ({ obj, getSelector, SelectorBuilder, customDOMProperties, customMethods, observedCallsites }) {
     const properties = prepareSnapshotPropertyList(customDOMProperties);
 
-    addSnapshotProperties(obj, getSelector, SelectorBuilder, properties, testRun);
+    addSnapshotProperties(obj, getSelector, SelectorBuilder, properties, observedCallsites);
     addCustomMethods(obj, getSelector, SelectorBuilder, customMethods);
 
     obj.getStyleProperty = prop => {
@@ -734,8 +729,8 @@ function addHierarchicalSelectors (options) {
     };
 }
 
-export function addAPI (selector, getSelector, SelectorBuilder, customDOMProperties, customMethods, testRun) {
-    const options = { obj: selector, getSelector, SelectorBuilder, customDOMProperties, customMethods, testRun };
+export function addAPI (selector, getSelector, SelectorBuilder, customDOMProperties, customMethods, observedCallsites) {
+    const options = { obj: selector, getSelector, SelectorBuilder, customDOMProperties, customMethods, observedCallsites };
 
     addFilterMethods(options);
     addHierarchicalSelectors(options);

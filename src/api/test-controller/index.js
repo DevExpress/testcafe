@@ -1,7 +1,7 @@
 // TODO: Fix https://github.com/DevExpress/testcafe/issues/4139 to get rid of Pinkie
 import Promise from 'pinkie';
 import { renderers } from 'callsite-record';
-import { identity, assign, isNil as isNullOrUndefined, flattenDeep as flatten, isEmpty } from 'lodash';
+import { identity, assign, isNil as isNullOrUndefined, flattenDeep as flatten } from 'lodash';
 import { getCallsiteForMethod } from '../../errors/get-callsite';
 import ClientFunctionBuilder from '../../client-functions/client-function-builder';
 import Assertion from './assertion';
@@ -10,7 +10,6 @@ import WARNING_MESSAGE from '../../notifications/warning-message';
 import renderCallsiteSync from '../../utils/render-callsite-sync';
 import createStackFilter from '../../errors/create-stack-filter';
 import getBrowser from '../../utils/get-browser';
-import * as globalCallsites from '../../utils/global-callsites';
 
 import {
     ClickCommand,
@@ -67,8 +66,6 @@ export default class TestController {
         this.testRun               = testRun;
         this.executionChain        = Promise.resolve();
         this.warningLog            = testRun.warningLog;
-
-        globalCallsites.callsitesWithoutAwait[testRun.id] = new Set();
     }
 
     // NOTE: we track missing `awaits` by exposing a special custom Promise to user code.
@@ -86,8 +83,8 @@ export default class TestController {
     _createExtendedPromise (promise, callsite) {
         const extendedPromise     = promise.then(identity);
         const markCallsiteAwaited = () => {
-            if (globalCallsites.callsitesWithoutAwait[this.testRun.id])
-                globalCallsites.callsitesWithoutAwait[this.testRun.id].delete(callsite);
+            if (this.testRun.observedCallsites)
+                this.testRun.observedCallsites.callsitesWithoutAwait.delete(callsite);
         };
 
         extendedPromise.then = function () {
@@ -111,8 +108,8 @@ export default class TestController {
         this.executionChain.then = originalThen;
         this.executionChain      = this.executionChain.then(executor);
 
-        if (globalCallsites.callsitesWithoutAwait[this.testRun.id])
-            globalCallsites.callsitesWithoutAwait[this.testRun.id].add(callsite);
+        if (this.testRun.observedCallsites)
+            this.testRun.observedCallsites.callsitesWithoutAwait.add(callsite);
 
         this.executionChain = this._createExtendedPromise(this.executionChain, callsite);
 
@@ -384,20 +381,18 @@ export default class TestController {
 
     _expect$ (actual) {
         const callsite                  = getCallsiteForMethod('expect');
-        const snapshotPropertyCallsites = globalCallsites.snapshotPropertyCallsites[this.testRun.id];
 
-        if (snapshotPropertyCallsites) {
+        if (this.testRun.observedCallsites) {
+            const snapshotPropertyCallsites = this.testRun.observedCallsites.snapshotPropertyCallsites;
+
             snapshotPropertyCallsites.forEach(selectorCallsite => {
                 if (selectorCallsite.filename === callsite.filename &&
                     selectorCallsite.lineNum === callsite.lineNum) {
-                    this._addWarning(WARNING_MESSAGE.redundantAwaitInAssertion, callsite);
+                    this._addWarning(WARNING_MESSAGE.redundantAwaitInAssertion, selectorCallsite);
 
                     snapshotPropertyCallsites.delete(selectorCallsite);
                 }
             });
-
-            if (isEmpty(snapshotPropertyCallsites))
-                delete globalCallsites.snapshotPropertyCallsites[this.testRun.id];
         }
 
         if (isClientFunction(actual))

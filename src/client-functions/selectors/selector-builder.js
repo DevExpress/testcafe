@@ -186,7 +186,14 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
     _decorateFunction (selectorFn) {
         super._decorateFunction(selectorFn);
 
-        addAPI(selectorFn, () => selectorFn, SelectorBuilder, this.options.customDOMProperties, this.options.customMethods, this._getTestRun());
+        addAPI(
+            selectorFn,
+            () => selectorFn,
+            SelectorBuilder,
+            this.options.customDOMProperties,
+            this.options.customMethods,
+            this._getTestRun() ? this._getTestRun().observedCallsites : null
+        );
     }
 
     _getClientFnWithOverriddenOptions (options) {

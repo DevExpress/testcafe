@@ -2,13 +2,17 @@ import TestController from './test-controller';
 import testRunTracker from './test-run-tracker';
 import TestCafeErrorList from '../errors/error-list';
 import { MissingAwaitError } from '../errors/test-run';
-import * as globalCallsites from '../utils/global-callsites';
 
 export default function wrapTestFunction (fn) {
     return async testRun => {
         let result       = null;
         const errList    = new TestCafeErrorList();
         const markeredfn = testRunTracker.addTrackingMarkerToFunction(testRun.id, fn);
+
+        testRun.observedCallsites = {
+            callsitesWithoutAwait:     new Set(),
+            snapshotPropertyCallsites: new Set()
+        };
 
         testRun.controller = new TestController(testRun);
 
@@ -21,14 +25,12 @@ export default function wrapTestFunction (fn) {
             errList.addError(err);
         }
 
-        if (!errList.hasUncaughtErrorsInTestCode && globalCallsites.callsitesWithoutAwait[testRun.id]) {
-            globalCallsites.callsitesWithoutAwait[testRun.id].forEach(callsite => {
+        if (!errList.hasUncaughtErrorsInTestCode) {
+            testRun.observedCallsites.callsitesWithoutAwait.forEach(callsite => {
                 errList.addError(new MissingAwaitError(callsite));
-                globalCallsites.callsitesWithoutAwait[testRun.id].delete(callsite);
+                testRun.observedCallsites.callsitesWithoutAwait.delete(callsite);
             });
         }
-
-        delete globalCallsites.callsitesWithoutAwait[testRun.id];
 
         if (errList.hasErrors)
             throw errList;
