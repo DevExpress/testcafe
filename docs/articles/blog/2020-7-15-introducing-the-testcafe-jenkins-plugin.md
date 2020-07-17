@@ -3,7 +3,7 @@ layout: post
 title: "Introducing the TestCafe Jenkins plugin"
 permalink: /media/team-blog/:title.html
 isTeamBlog: true
-author: Sergey Shurygin, Eugene Titerman
+author: Pavel Redrukhin, Eugene Titerman
 ---
 # Introducing the TestCafe Jenkins plugin
 
@@ -102,7 +102,7 @@ The *name* property of the *reporter* object is set as *jenkins*, which ensures 
 If you decide against using a config file, don't forget to [manually set](https://devexpress.github.io/testcafe/documentation/reference/command-line-interface.html#-r-nameoutput---reporter-nameoutput) the report format when launching your tests, like so:
 
 ```bash
-testcafe chrome test.js -r jenkins:report.xml.
+testcafe chrome test.js -r jenkins:report.xml
 ```
 
 Otherwise, just run the following command:
@@ -139,7 +139,7 @@ If you were working on fixing the cart button, these artifacts would instantly i
 
 ## Jenkins Pipeline integration
 
-If you don't want to use the Jenkins GUI to launch these tests, you can always make use of the [Jenkins Pipeline](https://www.jenkins.io/doc/book/pipeline/). It lets you declaratively configure your continuous delivery setup via Jenkinsfile, a text file checked into the project's source control repository. Here's a sample Jenkinsfile to be used with TestCafe:
+If you don't want to use the Jenkins GUI to launch these tests, you can always make use of the [Jenkins Pipeline](https://www.jenkins.io/doc/book/pipeline/). It lets you declaratively configure your CI/CD setup via Jenkinsfile, a text file checked into the project's source control repository. Here's a sample Jenkinsfile to be used with TestCafe:
 
 ```java
 pipeline {
