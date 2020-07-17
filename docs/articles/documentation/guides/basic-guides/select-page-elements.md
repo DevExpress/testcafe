@@ -331,6 +331,10 @@ When a selector is executed, TestCafe waits for the target node to appear in the
 
 Use the [timeout](../../reference/test-api/selector/constructor.md#optionstimeout) option to specify the selector timeout in test code. To set the timeout when you launch tests, pass it to the [runner.run](../../reference/testcafe-api/runner/run.md) API method or the [--selector-timeout](../../reference/command-line-interface.md#--selector-timeout-ms) command line option.
 
+```js
+await t.expect(Selector('#elementId', { timeout: 500 }).innerText).eql('text', 'check element text');
+```
+
 During the timeout, the selector is re-executed until it returns a DOM node or the timeout is exceeded. If TestCafe cannot find the corresponding node in the DOM, the test fails.
 
 > Note that you can specify that the node returned by the selector should also be visible. To do this, use the [visibilityCheck](../../reference/test-api/selector/constructor.md#optionsvisibilitycheck) option.
