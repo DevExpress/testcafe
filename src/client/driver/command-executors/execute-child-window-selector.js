@@ -1,5 +1,5 @@
 import hammerhead from '../deps/hammerhead';
-import { ChildWindowNotFoundError } from '../../../errors/test-run/shared';
+import { ChildWindowNotFoundError } from '../../../shared/errors';
 
 const Promise = hammerhead.Promise;
 

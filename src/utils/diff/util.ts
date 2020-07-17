@@ -2,10 +2,7 @@ import { inspect } from 'util';
 import { isFunction, isBuffer } from 'lodash';
 
 export function cleanUpFilter (line: string): boolean {
-    if (line.match(/\\ No newline/))
-        return false;
-
-    return true;
+    return !line.match(/\\ No newline/);
 }
 
 export function stringify (value: any): string {

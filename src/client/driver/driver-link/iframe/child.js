@@ -4,7 +4,7 @@ import {
     CurrentIframeIsNotLoadedError,
     CurrentIframeNotFoundError,
     CurrentIframeIsInvisibleError
-} from '../../../../errors/test-run/shared';
+} from '../../../../shared/errors';
 import sendMessageToDriver from '../send-message-to-driver';
 import { ExecuteCommandMessage, TYPE as MESSAGE_TYPE } from '../messages';
 import DriverStatus from '../../status';

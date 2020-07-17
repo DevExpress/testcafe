@@ -3,9 +3,7 @@ AssertionError: expected undefined to deeply equal null
 + expected - actual
 
 -undefined
-
 +null
-
 
 
 Browser: Chrome 15.0.874.120 / macOS 10.15

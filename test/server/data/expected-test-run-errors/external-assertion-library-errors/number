@@ -3,9 +3,7 @@ AssertionError: expected 1 to deeply equal 2
 + expected - actual
 
 -1
-
 +2
-
 
 
 Browser: Chrome 15.0.874.120 / macOS 10.15

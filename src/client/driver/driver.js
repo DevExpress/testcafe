@@ -54,7 +54,7 @@ import {
     ChildWindowClosedBeforeSwitchingError,
     ParentWindowNotFoundError,
     PreviousWindowNotFoundError
-} from '../../errors/test-run/shared';
+} from '../../shared/errors';
 
 import BrowserConsoleMessages from '../../test-run/browser-console-messages';
 import NativeDialogTracker from './native-dialog-tracker';
@@ -88,7 +88,7 @@ import sendConfirmationMessage from './driver-link/send-confirmation-message';
 import DriverRole from './role';
 import { CHECK_CHILD_WINDOW_CLOSED_INTERVAL, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT } from './driver-link/timeouts';
 import sendMessageToDriver from './driver-link/send-message-to-driver';
-import ChildWindowValidationErrorFactory from '../../errors/test-run/child-window-error-factory';
+import ChildWindowValidationErrorFactory from '../../shared/errors/child-window-error-factory';
 
 const settings = hammerhead.get('./settings');
 

@@ -14,7 +14,6 @@ AssertionError: expected <Buffer 74 65 73 74> to deeply equal <Buffer 01 02
  ]
 
 
-
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>
 
