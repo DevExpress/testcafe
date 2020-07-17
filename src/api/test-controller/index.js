@@ -380,7 +380,7 @@ export default class TestController {
     }
 
     _expect$ (actual) {
-        const callsite                  = getCallsiteForMethod('expect');
+        const callsite = getCallsiteForMethod('expect');
 
         if (this.testRun.observedCallsites) {
             const snapshotPropertyCallsites = this.testRun.observedCallsites.snapshotPropertyCallsites;
