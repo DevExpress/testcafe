@@ -139,5 +139,6 @@ export const RUNTIME_ERRORS = {
     unexpectedIPCBodyPacket:                            'E1053',
     unexpectedIPCTailPacket:                            'E1054',
     cannotUseAllowMultipleWindowsOptionForLegacyTests:  'E1055',
-    cannotUseAllowMultipleWindowsOptionForSomeBrowsers: 'E1056'
+    cannotUseAllowMultipleWindowsOptionForSomeBrowsers: 'E1056',
+    cannotRunLocalNonHeadlessBrowserWithoutDisplay:     'E1057',
 };

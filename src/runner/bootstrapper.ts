@@ -28,6 +28,7 @@ import { CompilerArguments } from '../compiler/interfaces';
 import CompilerService from '../services/compiler/host';
 import { Metadata } from '../api/structure/interfaces';
 import Test from '../api/structure/test';
+import detectDisplay from '../utils/detect-display';
 
 type TestSource = unknown;
 
@@ -58,6 +59,7 @@ interface Filter {
 }
 
 interface BrowserInfo {
+    alias?: string;
     browserName: string;
     providerName: string;
     provider: BrowserProvider;
@@ -184,6 +186,24 @@ export default class Bootstrapper {
             throw error;
 
         RemoteBrowserProvider.canDetectLocalBrowsers = false;
+    }
+
+    private static async _checkThatTestsCanRunWithoutDisplay (browserInfoSource: BrowserInfoSource[]): Promise<void> {
+        for (const browserInfo of browserInfoSource) {
+            if (browserInfo instanceof BrowserConnection)
+                continue;
+
+            const isLocalBrowser    = browserInfo.provider.isLocalBrowser(void 0, browserInfo.browserName);
+            const isHeadLessBrowser = browserInfo.provider.isHeadlessBrowser(void 0, browserInfo.browserName);
+
+            if (isLocalBrowser && !isHeadLessBrowser) {
+                throw new GeneralError(
+                    RUNTIME_ERRORS.cannotRunLocalNonHeadlessBrowserWithoutDisplay,
+                    browserInfo.alias,
+                    browserInfo.alias
+                );
+            }
+        }
     }
 
     private async _getBrowserInfo (): Promise<BrowserInfoSource[]> {
@@ -420,6 +440,9 @@ export default class Bootstrapper {
 
         if (OS.mac)
             await Bootstrapper._checkRequiredPermissions(browserInfo);
+
+        if (OS.linux && !detectDisplay())
+            await Bootstrapper._checkThatTestsCanRunWithoutDisplay(browserInfo);
 
         if (await this._canUseParallelBootstrapping(browserInfo))
             return { reporterPlugins, ...await this._bootstrapParallel(browserInfo), commonClientScripts };
