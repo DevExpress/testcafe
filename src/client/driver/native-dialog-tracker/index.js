@@ -1,5 +1,5 @@
 import hammerhead from '../deps/hammerhead';
-import { NativeDialogNotHandledError, UncaughtErrorInNativeDialogHandler } from '../../../errors/test-run';
+import { NativeDialogNotHandledError, UncaughtErrorInNativeDialogHandler } from '../../../shared/errors';
 import ClientFunctionExecutor from '../command-executors/client-functions/client-function-executor';
 import MESSAGE_TYPE from './messages';
 

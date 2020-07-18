@@ -1,10 +1,10 @@
-import { TEST_RUN_ERRORS } from '../types';
+import { TEST_RUN_ERRORS } from '../../errors/types';
 
 import {
     CannotCloseWindowWithChildrenError,
     SwitchToWindowPredicateError,
     WindowNotFoundError
-} from './index';
+} from './';
 
 export default class ChildWindowValidationErrorFactory {
     static createError ({ errCode, errMsg }) {

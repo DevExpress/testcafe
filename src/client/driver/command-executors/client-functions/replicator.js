@@ -1,7 +1,7 @@
 import Replicator from 'replicator';
 import evalFunction from './eval-function';
 import { NodeSnapshot, ElementSnapshot, ElementActionSnapshot } from './selector-executor/node-snapshots';
-import { DomNodeClientFunctionResultError, UncaughtErrorInCustomDOMPropertyCode } from '../../../../errors/test-run';
+import { DomNodeClientFunctionResultError, UncaughtErrorInCustomDOMPropertyCode } from '../../../../shared/errors';
 import hammerhead from '../../deps/hammerhead';
 
 // NOTE: save original ctors because they may be overwritten by page code

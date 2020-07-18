@@ -237,6 +237,10 @@ export default {
 
     [TEST_RUN_ERRORS.externalAssertionLibraryError]: err => `
         ${escapeHtml(err.errMsg)}
+
+        <span class="diff-added">+ expected</span> <span class="diff-removed">- actual</span>
+
+        ${err.diff}
     `,
 
     [TEST_RUN_ERRORS.domNodeClientFunctionResultError]: err => `

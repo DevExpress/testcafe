@@ -5,6 +5,7 @@ import moment from '../utils/moment-loader';
 import OS from 'os-family';
 import { wordWrap, removeTTYColors } from '../utils/string';
 import getViewportWidth from '../utils/get-viewport-width';
+import { DIFF_COLORS } from '../utils/diff/colors';
 
 // NOTE: we should not expose internal state to
 // the plugin, to avoid accidental rewrites.
@@ -60,6 +61,10 @@ export default class ReporterPluginHost {
             'span syntax-regex':      str => this.chalk.magenta(str),
             'span syntax-comment':    str => this.chalk.grey.bold(str),
             'span syntax-invalid':    str => this.chalk.inverse(str),
+
+            [`span ${DIFF_COLORS.DIFF_NOT_MODIFIED}`]: str => this.chalk.gray(str),
+            [`span ${DIFF_COLORS.DIFF_ADDED}`]:        str => this.chalk.green(str),
+            [`span ${DIFF_COLORS.DIFF_REMOVED}`]:      str => this.chalk.red(str),
 
             'div code-frame':         identity,
             'div code-line':          str => str + '\n',
