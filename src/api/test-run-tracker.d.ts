@@ -1,10 +1,18 @@
+import ObservedCallsitesStorage from '../test-run/observed-callsites-storage';
+import TestController from './test-controller';
+
 export interface TestRun {
     id: string;
+    controller: TestController;
+    observedCallsites: ObservedCallsitesStorage;
+
     executeAction(apiMethodName: string, command: unknown, callsite: unknown): Promise<unknown>;
 }
 
 export interface TestRunTracker {
     activeTestRuns: { [id: string]: TestRun };
+    addTrackingMarkerToFunction(testRunId: string, fn: Function): Function;
+    ensureEnabled(): void;
 }
 
 declare const testRunTracker: TestRunTracker;
