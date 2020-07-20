@@ -83,8 +83,7 @@ export default class TestController {
     _createExtendedPromise (promise, callsite) {
         const extendedPromise     = promise.then(identity);
         const markCallsiteAwaited = () => {
-            if (this.testRun.observedCallsites)
-                this.testRun.observedCallsites.callsitesWithoutAwait.delete(callsite);
+            this.testRun.observedCallsites.callsitesWithoutAwait.delete(callsite);
         };
 
         extendedPromise.then = function () {
@@ -108,8 +107,7 @@ export default class TestController {
         this.executionChain.then = originalThen;
         this.executionChain      = this.executionChain.then(executor);
 
-        if (this.testRun.observedCallsites)
-            this.testRun.observedCallsites.callsitesWithoutAwait.add(callsite);
+        this.testRun.observedCallsites.callsitesWithoutAwait.add(callsite);
 
         this.executionChain = this._createExtendedPromise(this.executionChain, callsite);
 
@@ -382,18 +380,17 @@ export default class TestController {
     _expect$ (actual) {
         const callsite = getCallsiteForMethod('expect');
 
-        if (this.testRun.observedCallsites) {
-            const snapshotPropertyCallsites = this.testRun.observedCallsites.snapshotPropertyCallsites;
 
-            snapshotPropertyCallsites.forEach(selectorCallsite => {
-                if (selectorCallsite.filename === callsite.filename &&
-                    selectorCallsite.lineNum === callsite.lineNum) {
-                    this._addWarning(WARNING_MESSAGE.redundantAwaitInAssertion, selectorCallsite);
+        const snapshotPropertyCallsites = this.testRun.observedCallsites.snapshotPropertyCallsites;
 
-                    snapshotPropertyCallsites.delete(selectorCallsite);
-                }
-            });
-        }
+        snapshotPropertyCallsites.forEach(selectorCallsite => {
+            if (selectorCallsite.filename === callsite.filename &&
+                selectorCallsite.lineNum === callsite.lineNum) {
+                this._addWarning(WARNING_MESSAGE.redundantAwaitInAssertion, selectorCallsite);
+
+                snapshotPropertyCallsites.delete(selectorCallsite);
+            }
+        });
 
         if (isClientFunction(actual))
             this._addWarning(WARNING_MESSAGE.assertedClientFunctionInstance, callsite);

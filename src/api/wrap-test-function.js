@@ -9,11 +9,6 @@ export default function wrapTestFunction (fn) {
         const errList    = new TestCafeErrorList();
         const markeredfn = testRunTracker.addTrackingMarkerToFunction(testRun.id, fn);
 
-        testRun.observedCallsites = {
-            callsitesWithoutAwait:     new Set(),
-            snapshotPropertyCallsites: new Set()
-        };
-
         testRun.controller = new TestController(testRun);
 
         testRunTracker.ensureEnabled();
@@ -25,7 +20,7 @@ export default function wrapTestFunction (fn) {
             errList.addError(err);
         }
 
-        if (!errList.hasUncaughtErrorsInTestCode) {
+        if (!errList.hasUncaughtErrorsInTestCode && testRun.observedCallsites) {
             testRun.observedCallsites.callsitesWithoutAwait.forEach(callsite => {
                 errList.addError(new MissingAwaitError(callsite));
                 testRun.observedCallsites.callsitesWithoutAwait.delete(callsite);

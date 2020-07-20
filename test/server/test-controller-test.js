@@ -1,12 +1,24 @@
+const proxyquire        = require('proxyquire');
 const expect            = require('chai').expect;
 const TestController    = require('../../lib/api/test-controller');
 const AssertionExecutor = require('../../lib/assertions/executor');
 
+const SessionControllerStub = { getSession: () => {
+    return { id: 'session-id' };
+} };
+
+const TestRun = proxyquire('../../lib/test-run/index', { './session-controller': SessionControllerStub });
+
 const errorMessage = 'some error in click command';
 
-class TestRunMock {
-    constructor (id, reason) {
-        this.id     = id;
+class TestRunMock extends TestRun {
+    _addInjectables () {}
+
+    _initRequestHooks () {}
+
+    constructor (reason) {
+        super({}, {}, {}, {}, {});
+
         this.errors = [];
         this.reason = reason;
     }
@@ -29,8 +41,7 @@ class TestRunMock {
 
 describe('TestController', () => {
     it('should reset executionChain if some command is rejected', () => {
-        const mockTestRun  = new TestRunMock('', '');
-
+        const mockTestRun  = new TestRunMock('');
 
         const testController = new TestController(mockTestRun);
 
