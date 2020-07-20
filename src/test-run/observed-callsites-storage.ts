@@ -1,8 +1,8 @@
 export default class ObservedCallsitesStorage {
-    public callsitesWithoutAwait: Set<Object>;
-    public snapshotPropertyCallsites: Set<Object>;
+    public callsitesWithoutAwait: Set<Record<string, any>>;
+    public snapshotPropertyCallsites: Set<Record<string, any>>;
 
-    constructor () {
+    public constructor () {
         this.callsitesWithoutAwait     = new Set();
         this.snapshotPropertyCallsites = new Set();
     }

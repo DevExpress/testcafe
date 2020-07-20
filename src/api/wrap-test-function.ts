@@ -4,7 +4,7 @@ import { TestRun } from './test-run-tracker.d';
 import TestCafeErrorList from '../errors/error-list';
 import { MissingAwaitError } from '../errors/test-run';
 
-export default function wrapTestFunction (fn: Function) {
+export default function wrapTestFunction (fn: Function): Function {
     return async (testRun: TestRun) => {
         let result       = null;
         const errList    = new TestCafeErrorList();

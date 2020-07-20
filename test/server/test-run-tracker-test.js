@@ -18,7 +18,7 @@ class TestRunMock extends TestRun {
         return 'id';
     }
 
-    constructor (expectedError) {
+    constructor () {
         super({}, {}, {}, {}, {});
     }
 }
