@@ -174,6 +174,12 @@ export class ActionRoleArgumentError extends ActionArgumentErrorBase {
     }
 }
 
+export class ActionFunctionArgumentError extends ActionArgumentErrorBase {
+    constructor (argumentName, actualValue) {
+        super(TEST_RUN_ERRORS.actionFunctionArgumentError, argumentName, actualValue);
+    }
+}
+
 export class ActionPositiveIntegerArgumentError extends ActionArgumentErrorBase {
     constructor (argumentName, actualValue) {
         super(TEST_RUN_ERRORS.actionPositiveIntegerArgumentError, argumentName, actualValue);

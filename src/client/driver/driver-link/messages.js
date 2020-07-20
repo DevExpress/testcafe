@@ -6,6 +6,7 @@ export const TYPE = {
     closeWindow:              'driver|close-window',
     closeWindowValidation:    'driver|close-window-validation',
     switchToWindowValidation: 'driver|switch-to-window-validation',
+    getWindows:               'driver|get-windows',
     commandExecuted:          'driver|command-executed',
     executeCommand:           'driver|execute-command',
     confirmation:             'driver|confirmation',
@@ -41,6 +42,12 @@ export class SwitchToWindowValidationMessage extends InterDriverMessage {
 
         this.windowId = windowId;
         this.fn       = fn;
+    }
+}
+
+export class GetWindowsMessage extends InterDriverMessage {
+    constructor () {
+        super(TYPE.getWindows);
     }
 }
 

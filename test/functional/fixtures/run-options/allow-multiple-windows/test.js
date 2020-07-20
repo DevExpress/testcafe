@@ -138,6 +138,14 @@ describe('Allow multiple windows', () => {
             return runTests('testcafe-fixtures/api/api-test.js', 'Switch to window by title', { only: 'chrome', allowMultipleWindows: true });
         });
 
+        it('Multiple windows are found warning', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Multiple windows are found warning', { only: 'chrome', allowMultipleWindows: true })
+                .then(() => {
+                    expect(testReport.warnings.length).eql(1);
+                    expect(testReport.warnings[0]).eql('The predicate function passed to the \'switchToWindow\' method matched multiple windows. The first matching window was activated.');
+                });
+        });
+
         it('Switch to window by predicate with error', () => {
             return runTests('testcafe-fixtures/api/api-test.js', 'Switch to window by predicate with error', { only: 'chrome', allowMultipleWindows: true, shouldFail: true })
                 .catch(errs => {

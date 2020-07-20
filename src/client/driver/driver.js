@@ -53,8 +53,11 @@ import {
     CloseChildWindowError,
     ChildWindowClosedBeforeSwitchingError,
     ParentWindowNotFoundError,
-    PreviousWindowNotFoundError
+    PreviousWindowNotFoundError,
+    CannotCloseWindowWithChildrenError,
+    WindowNotFoundError
 } from '../../shared/errors';
+
 
 import BrowserConsoleMessages from '../../test-run/browser-console-messages';
 import NativeDialogTracker from './native-dialog-tracker';
@@ -65,6 +68,7 @@ import {
     CloseWindowCommandMessage,
     SwitchToWindowCommandMessage,
     SetNativeDialogHandlerMessage,
+    GetWindowsMessage,
     TYPE as MESSAGE_TYPE
 } from './driver-link/messages';
 
@@ -88,7 +92,6 @@ import sendConfirmationMessage from './driver-link/send-confirmation-message';
 import DriverRole from './role';
 import { CHECK_CHILD_WINDOW_CLOSED_INTERVAL, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT } from './driver-link/timeouts';
 import sendMessageToDriver from './driver-link/send-message-to-driver';
-import ChildWindowValidationErrorFactory from '../../shared/errors/child-window-error-factory';
 
 const settings = hammerhead.get('./settings');
 
@@ -463,68 +466,37 @@ export default class Driver extends serviceUtils.EventEmitter {
         let errItem = arr.find(item => item.result.errCode === TEST_RUN_ERRORS.cannotCloseWindowWithChildrenError);
 
         if (!errItem)
-            errItem = arr.find(item => item.result.errCode === TEST_RUN_ERRORS.switchToWindowPredicateError);
-
-        if (!errItem)
             errItem = arr.find(item => !!item.result.errCode);
 
         return errItem ? { errCode: errItem.result.errCode } : void 0;
     }
 
-    _handleWindowValidation (msg, wnd, getWindowFoundResult, WindowValidationMessageCtor) {
-        return this._validateWindow(msg, wnd, getWindowFoundResult, WindowValidationMessageCtor)
-            .then(result => {
-                sendConfirmationMessage({
-                    requestMsgId: msg.id,
-                    window:       wnd,
-                    result
-                });
-            });
+    async _handleWindowValidation (msg, wnd, getWindowFoundResult, WindowValidationMessageCtor) {
+        const result = await this._validateWindow(msg, wnd, getWindowFoundResult, WindowValidationMessageCtor);
+
+        sendConfirmationMessage({
+            requestMsgId: msg.id,
+            window:       wnd,
+            result
+        });
     }
 
-    static _prepareFindWindowPredicateArgs () {
+    _getWindowInfo () {
         const parsedUrl = hammerhead.utils.url.parseProxyUrl(window.location.toString());
 
-        const { protocol, host, port, hostname, partAfterHost: query } = parsedUrl.destResourceInfo;
-
-        const location = {
-            href: parsedUrl.destUrl,
-            protocol,
-            host,
-            port,
-            hostname,
-            query
-        };
-
         return {
-            location,
-            title: document.title
+            id:    this.windowId,
+            title: document.title,
+            url:   parsedUrl.destUrl
         };
     }
 
-    _checkWindowExists (msg) {
-        return msg.windowId === this.windowId || this._checkWindowByPredicate(msg);
+    _isTargetWindow (msg) {
+        return msg.windowId === this.windowId;
     }
 
-    _checkWindowByPredicate ({ fn }) {
-        if (!fn)
-            return false;
-
-        const executor      = new ClientFunctionExecutor(fn);
-        const predicateArgs = Driver._prepareFindWindowPredicateArgs();
-
-        return executor.fn.call(null, predicateArgs);
-    }
-
-    _validateWindow (msg, wnd, getWindowFoundResult, WindowValidationMessageCtor) {
-        let windowExists = false;
-
-        try {
-            windowExists = this._checkWindowExists(msg);
-        }
-        catch (e) {
-            return this._getTargetWindowNotFoundResult(TEST_RUN_ERRORS.switchToWindowPredicateError, e.message);
-        }
+    async _validateWindow (msg, wnd, getWindowFoundResult, WindowValidationMessageCtor) {
+        const windowExists = this._isTargetWindow(msg);
 
         if (windowExists)
             return getWindowFoundResult();
@@ -536,10 +508,16 @@ export default class Driver extends serviceUtils.EventEmitter {
             return childWindowDriverLink.findChildWindows(msg, WindowValidationMessageCtor);
         });
 
-        return Promise.all(searchQueries)
-            .then(arr => {
-                return this._getChildWindowValidateResult(arr);
-            });
+        const searchResults = await Promise.all(searchQueries);
+
+        return this._getChildWindowValidateResult(searchResults);
+    }
+
+    static _createWindowValidationError ({ errCode }) {
+        if (errCode === TEST_RUN_ERRORS.cannotCloseWindowWithChildrenError)
+            return new CannotCloseWindowWithChildrenError();
+
+        return new WindowNotFoundError();
     }
 
     _getCloseWindowFoundResult () {
@@ -569,14 +547,13 @@ export default class Driver extends serviceUtils.EventEmitter {
         return this._handleWindowValidation(msg, wnd, getWindowFoundResult, SwitchToWindowValidationMessage);
     }
 
-    _handleCloseWindow (msg, wnd) {
-        return this._closeWindow(msg, wnd)
-            .then(() => {
-                sendConfirmationMessage({
-                    requestMsgId: msg.id,
-                    window:       wnd
-                });
-            });
+    async _handleCloseWindow (msg, wnd) {
+        await this._closeWindow(msg, wnd);
+
+        sendConfirmationMessage({
+            requestMsgId: msg.id,
+            window:       wnd
+        });
     }
 
     _closeWindowAndWait (childWindowToClose, msg) {
@@ -605,18 +582,47 @@ export default class Driver extends serviceUtils.EventEmitter {
         return Promise.all(searchQueries);
     }
 
-    _handleSwitchToWindow (msg, wnd) {
-        return this._switchToWindow(msg)
-            .then(() => {
-                sendConfirmationMessage({
-                    requestMsgId: msg.id,
-                    window:       wnd
-                });
-            });
+
+    async _getWindows () {
+        if (!this.childWindowDriverLinks.length)
+            return [this._getWindowInfo()];
+
+        const searchQueries = this.childWindowDriverLinks.map(childWindowDriverLink => {
+            return childWindowDriverLink.findChildWindows({}, GetWindowsMessage);
+        });
+
+        const searchResults = await Promise.all(searchQueries);
+        let result          = [this._getWindowInfo()];
+
+        for (const item of searchResults) {
+            if (Array.isArray(item.result))
+                result = result.concat(item.result);
+        }
+
+        return result;
+    }
+
+    async _handleGetWindows (msg, wnd) {
+        const result = await this._getWindows(msg, wnd);
+
+        sendConfirmationMessage({
+            requestMsgId: msg.id,
+            window:       wnd,
+            result
+        });
+    }
+
+    async _handleSwitchToWindow (msg, wnd) {
+        await this._switchToWindow(msg);
+
+        sendConfirmationMessage({
+            requestMsgId: msg.id,
+            window:       wnd
+        });
     }
 
     _switchToWindow (msg) {
-        if (this._checkWindowExists(msg)) {
+        if (this._isTargetWindow(msg)) {
             return Promise.resolve()
                 .then(() => {
                     this._setCurrentWindowAsMaster();
@@ -698,6 +704,8 @@ export default class Driver extends serviceUtils.EventEmitter {
                 this._handleSwitchToWindowValidation(msg, window);
             else if (msg.type === MESSAGE_TYPE.closeWindowValidation)
                 this._handleCloseWindowValidation(msg, window);
+            else if (msg.type === MESSAGE_TYPE.getWindows)
+                this._handleGetWindows(msg, window);
             else if (msg.type === MESSAGE_TYPE.closeAllChildWindows)
                 this._handleCloseAllWindowsMessage(msg, window);
         });
@@ -1006,36 +1014,39 @@ export default class Driver extends serviceUtils.EventEmitter {
         window.open(command.url);
     }
 
-    _onWindowCloseCommand (command) {
+    async _onWindowCloseCommand (command) {
         const wnd             = this.parentWindowDriverLink?.getTopOpenedWindow() || window;
         const windowId        = command.windowId || this.windowId;
         const isCurrentWindow = windowId === this.windowId;
 
-        this._validateChildWindowCloseCommandExists(windowId, wnd)
-            .then(response => {
-                const result = response.result;
+        try {
+            const response = await this._validateChildWindowCloseCommandExists(windowId, wnd);
+            const result   = response.result;
 
-                if (!result.success)
-                    throw ChildWindowValidationErrorFactory.createError(result);
+            if (!result.success)
+                throw Driver._createWindowValidationError(result);
 
-                return sendMessageToDriver(new CloseWindowCommandMessage({ windowId, isCurrentWindow }), wnd, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT, CannotSwitchToWindowError);
-            })
-            .then(() => {
-                // NOTE: we do not need to send a new Driver Status if we close the current window
-                // in this case the new Driver Status will be sent from the `_setCurrentWindowAsMaster` method
-                // in other cases we need to send a new Driver Status from here.
-                if (!isCurrentWindow) {
-                    this._onReady(new DriverStatus({
-                        isCommandResult: true
-                    }));
-                }
-            })
-            .catch(err => {
+            await sendMessageToDriver(new CloseWindowCommandMessage({
+                windowId,
+                isCurrentWindow
+            }), wnd, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT, CannotSwitchToWindowError);
+
+            // NOTE: we do not need to send a new Driver Status if we close the current window
+            // in this case the new Driver Status will be sent from the `_setCurrentWindowAsMaster` method
+            // in other cases we need to send a new Driver Status from here.
+
+            if (!isCurrentWindow) {
                 this._onReady(new DriverStatus({
-                    isCommandResult: true,
-                    executionError:  err
+                    isCommandResult: true
                 }));
-            });
+            }
+        }
+        catch (err) {
+            this._onReady(new DriverStatus({
+                isCommandResult: true,
+                executionError:  err
+            }));
+        }
     }
 
     _onGetCurrentWindowCommand () {
@@ -1048,6 +1059,16 @@ export default class Driver extends serviceUtils.EventEmitter {
         }));
     }
 
+    async _onGetWindowsCommand () {
+        const wnd      = this.parentWindowDriverLink?.getTopOpenedWindow() || window;
+        const response = await sendMessageToDriver(new GetWindowsMessage(), wnd, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT, CannotSwitchToWindowError);
+
+        this._onReady(new DriverStatus({
+            isCommandResult: true,
+            result:          response.result
+        }));
+    }
+
     _validateChildWindowCloseCommandExists (windowId, wnd) {
         return sendMessageToDriver(new CloseWindowValidationMessage({ windowId }), wnd, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT, CannotSwitchToWindowError);
     }
@@ -1056,25 +1077,22 @@ export default class Driver extends serviceUtils.EventEmitter {
         return sendMessageToDriver(new SwitchToWindowValidationMessage({ windowId, fn }), wnd, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT, CannotSwitchToWindowError);
     }
 
-    _onSwitchToWindow (command, err) {
-        const wnd = this.parentWindowDriverLink ? this.parentWindowDriverLink.getTopOpenedWindow() : window;
+    async _onSwitchToWindow (command, err) {
+        const wnd      = this.parentWindowDriverLink ? this.parentWindowDriverLink.getTopOpenedWindow() : window;
+        const response = await this._validateChildWindowSwitchToWindowCommandExists({ windowId: command.windowId, fn: command.findWindow }, wnd);
+        const result   = response.result;
 
-        this._validateChildWindowSwitchToWindowCommandExists({ windowId: command.windowId, fn: command.findWindow }, wnd)
-            .then(response => {
-                const result = response.result;
+        if (!result.success) {
+            this._onReady(new DriverStatus({
+                isCommandResult: true,
+                executionError:  err || Driver._createWindowValidationError(result)
+            }));
+        }
+        else {
+            this._stopInternal();
 
-                if (!result.success) {
-                    this._onReady(new DriverStatus({
-                        isCommandResult: true,
-                        executionError:  err || ChildWindowValidationErrorFactory.createError(result)
-                    }));
-                }
-                else {
-                    this._stopInternal();
-
-                    sendMessageToDriver(new SwitchToWindowCommandMessage({ windowId: command.windowId, fn: command.findWindow }), wnd, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT, CannotSwitchToWindowError);
-                }
-            });
+            sendMessageToDriver(new SwitchToWindowCommandMessage({ windowId: command.windowId, fn: command.findWindow }), wnd, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT, CannotSwitchToWindowError);
+        }
     }
 
     _onSwitchToPreviousWindow (command) {
@@ -1263,7 +1281,10 @@ export default class Driver extends serviceUtils.EventEmitter {
         else if (command.type === COMMAND_TYPE.getCurrentWindow)
             this._onGetCurrentWindowCommand(command);
 
-        else if (command.type === COMMAND_TYPE.switchToWindow || command.type === COMMAND_TYPE.switchToWindowByPredicate)
+        else if (command.type === COMMAND_TYPE.getCurrentWindows)
+            this._onGetWindowsCommand();
+
+        else if (command.type === COMMAND_TYPE.switchToWindow)
             this._onSwitchToWindow(command);
 
         else if (command.type === COMMAND_TYPE.switchToPreviousWindow)

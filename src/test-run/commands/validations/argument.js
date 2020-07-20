@@ -19,6 +19,7 @@ import {
     ActionStringOrStringArrayArgumentError,
     ActionStringArrayElementError,
     ActionUnsupportedDeviceTypeError,
+    ActionFunctionArgumentError,
     SetTestSpeedArgumentError,
     ForbiddenCharactersInScreenshotPathError
 } from '../../../errors/test-run';
@@ -120,4 +121,9 @@ export function screenshotPathArgument (name, val) {
 
     if (forbiddenCharsList.length)
         throw new ForbiddenCharactersInScreenshotPathError(val, forbiddenCharsList);
+}
+
+export function functionArgument (name, val) {
+    if (typeof val !== 'function')
+        throw new ActionFunctionArgumentError(name, val);
 }

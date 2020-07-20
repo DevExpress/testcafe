@@ -36,6 +36,7 @@ export default {
     openWindow:                 'open-window',
     closeWindow:                'close-window',
     getCurrentWindow:           'get-current-window',
+    getCurrentWindows:          'get-current-windows',
     switchToWindow:             'switch-to-window',
     switchToWindowByPredicate:  'switch-to-window-by-predicate',
     switchToParentWindow:       'switch-to-parent-window',
