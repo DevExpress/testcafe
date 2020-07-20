@@ -13,7 +13,6 @@ const BrowserSet              = require('../../lib/runner/browser-set');
 const browserProviderPool     = require('../../lib/browser/provider/pool');
 const delay                   = require('../../lib/utils/delay');
 const consoleWrapper          = require('./helpers/console-wrapper');
-const Bootstrapper            = require('../../lib/runner/bootstrapper');
 
 chai.use(require('chai-string'));
 
@@ -33,7 +32,7 @@ describe('Runner', () => {
         }
     };
 
-    const browserMock = { path: '/non/exist' };
+    const browserMock = 'chrome:headless';
 
     before(() => {
         return createTestCafe('127.0.0.1', 1335, 1336)
@@ -66,9 +65,6 @@ describe('Runner', () => {
 
     beforeEach(() => {
         runner = testCafe.createRunner();
-        // NOTE:
-        // Disable checking for graphic system (Linux), because it's may cause non determenistic test
-        Bootstrapper._checkThatTestsCanRunWithoutDisplay = noop;
     });
 
     afterEach(() => {
@@ -942,6 +938,10 @@ describe('Runner', () => {
                         resolve();
                     }, BROWSER_CLOSING_DELAY);
                 });
+            },
+
+            isHeadlessBrowser () {
+                return true;
             }
         };
 

@@ -35,6 +35,13 @@ export default {
     },
 
     async isLocalBrowser (browserId) {
+        // NOTE:
+        // if browserId is not specified, then a browser is not yet started
+        // we may assume that it's not local, because
+        // otherwise we'll just disable window manipulation function's after the browser will be started
+        if (!browserId)
+            return false;
+
         return this.localBrowsersFlags[browserId];
     },
 

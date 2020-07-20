@@ -193,8 +193,8 @@ export default class Bootstrapper {
             if (browserInfo instanceof BrowserConnection)
                 continue;
 
-            const isLocalBrowser    = browserInfo.provider.isLocalBrowser(void 0, browserInfo.browserName);
-            const isHeadLessBrowser = browserInfo.provider.isHeadlessBrowser(void 0, browserInfo.browserName);
+            const isLocalBrowser    = await browserInfo.provider.isLocalBrowser(void 0, browserInfo.browserName);
+            const isHeadLessBrowser = await browserInfo.provider.isHeadlessBrowser(void 0, browserInfo.browserName);
 
             if (isLocalBrowser && !isHeadLessBrowser) {
                 throw new GeneralError(
