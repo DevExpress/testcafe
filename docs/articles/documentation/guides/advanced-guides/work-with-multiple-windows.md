@@ -89,7 +89,7 @@ test('Switch to a parent window', async t => {
 });
 ```
 
-Use the t.switchToPreviousWindow method to switch to the previously open window:
+Use the t.switchToPreviousWindow method to switch to the window you had open before the current one:
 
 ```JavaScript
 test('Switch back', async t => {
@@ -135,7 +135,7 @@ Likewise, you can pass a predicate with the description of the window you want t
 await t.closeWindow(w => w.location.host === 'www.example.com');
 ```
 
-Note: You cannot orphan open windows.
+Note: You cannot orphan open windows. Trying to close a window with open children will result in an error. 
 
 ## Current limitations
 
