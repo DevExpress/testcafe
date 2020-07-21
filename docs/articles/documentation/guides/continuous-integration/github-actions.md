@@ -118,6 +118,8 @@ The TestCafe version to install.
 
 The following workflow demonstrates how to run TestCafe tests across Node.js versions and operating systems.
 
+{% raw %}
+
 ```yml
 name: Target Multiple Node.js Versions and Operating Systems
 on: [push]
@@ -140,6 +142,8 @@ jobs:
         with:
           args: "chrome tests"
 ```
+
+{% endraw %}
 
 This job contains a matrix strategy that duplicates it to run on Windows and Ubuntu virtual machines in three Node.js versions (`8`, `10`, and `12`).
 
