@@ -8,11 +8,11 @@ redirect_from:
 ---
 # Run Tests on BrowserStack with GitHub Actions
 
-This topic describes use of [Run TestCafe action](https://github.com/DevExpress/testcafe-action) to integrate TestCafe into the [GitHub Actions](https://docs.github.com/en/actions/automating-your-workflow-with-github-actions) build process. Tests are performed in [BrowserStack](https://automate.browserstack.com/) cloud testing service.
+This topic describes how to use the [Run TestCafe action](https://github.com/DevExpress/testcafe-action) to integrate TestCafe into the [GitHub Actions](https://docs.github.com/en/actions/automating-your-workflow-with-github-actions) build process. Tests are executed in the [BrowserStack](https://automate.browserstack.com/) cloud testing service.
 
 * [Step 1 - Create a Workflow](#step-1---create-a-workflow)
 * [Step 2 - Create a Job](#step-2---create-a-job)
-* [Step 3 - Provide your BrowserStack credentials](#step-3---provide-browserstack-credentials)
+* [Step 3 - Provide Your BrowserStack Credentials](#step-3---provide-browserstack-credentials)
 * [Step 4 - Add a Step That Fetches The Repository](#step-4---add-a-step-that-fetches-the-repository)
 * [Step 5 - Add a Step To Install TestCafe BrowserStack plugin](#step-5---add-a-step-to-install-testcafe-browserstack-plugin)
 * [Step 6 - Add a Step That Runs TestCafe](#step-6---add-a-step-that-runs-testcafe)
