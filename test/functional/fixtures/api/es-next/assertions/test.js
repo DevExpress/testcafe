@@ -1,4 +1,8 @@
 const expect = require('chai').expect;
+const fs = require('fs');
+const path = require('path');
+
+const dataPath = './data';
 
 describe('[API] Assertions', function () {
     it('Should perform .eql() assertion', function () {
@@ -199,18 +203,19 @@ describe('[API] Assertions', function () {
             });
     });
 
-    it('Should raise a warning when trying to await Selector property in assertion', function () {
+    it.only('Should raise a warning when trying to await Selector property in assertion', function () {
         return runTests('./testcafe-fixtures/assertions-test.js', 'Await Selector property', { only: 'chrome' })
             .then(() => {
-                const snapshotWarningRegExp = new RegExp(['You are using a DOM snapshot property in your assertion\\. ',
-                    `Its value is set when 'await Selector\\(\\.\\.\\.\\)' is resolved and it won't be updated if the element's state changes\\. `,
-                    `If it wasn't intentional, try using Selector without await\\.`].join(''));
+                const snapshotWarningRegExp = new RegExp([`You passed a DOM snapshot property to the assertion's 't\\.expect\\(\\)' method\\. `,
+                    `The property value is assigned when the snapshot is resolved and this value is no longer updated\\. `,
+                    `To ensure that the assertion verifies an up-to-date value, pass the selector property without 'await'\\.`].join(''));
 
                 const snapshotWarnings = testReport.warnings.filter(warningStr => {
                     return warningStr.match(snapshotWarningRegExp);
                 });
 
                 expect(snapshotWarnings.length).to.eql(1);
+                expect(snapshotWarnings[0]).to.eql(fs.readFileSync(path.join(__dirname, dataPath, 'expected-selector-property-awaited-callsite')).toString().replace(/\r/g, ''));
             });
     });
 
