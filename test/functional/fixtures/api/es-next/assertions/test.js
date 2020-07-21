@@ -215,7 +215,7 @@ describe('[API] Assertions', function () {
                 });
 
                 expect(snapshotWarnings.length).to.eql(1);
-                expect(snapshotWarnings[0]).to.eql(fs.readFileSync(path.join(__dirname, dataPath, 'expected-selector-property-awaited-callsite')).toString().replace(/\r/g, ''));
+                expect(snapshotWarnings[0]).to.match(new RegExp(fs.readFileSync(path.join(__dirname, dataPath, 'expected-selector-property-awaited-callsite')).toString().replace(/\r/g, '')));
             });
     });
 
