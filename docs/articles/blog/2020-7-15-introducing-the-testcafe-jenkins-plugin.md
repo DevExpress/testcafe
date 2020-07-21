@@ -19,14 +19,14 @@ The test results page should look like this with our plugin enabled:
 
 ## Test case: the disappearing button
 
-Let's say, the 'Add to Cart' button keeps disappearing from the mobile version of your website.
+Let's say the 'Add to Cart' button disappears on the mobile version of your website.
 
 ![The 'Add To Cart' button is absent from the mobile version of the website](/testcafe/images/jenkins-plugin/button-example.png)
 
 There are several ways TestCafe can help you detect this issue. You can:
 
 * Run the test through a [3rd party cloud testing service](https://devexpress.github.io/testcafe/documentation/guides/concepts/browsers.html#browsers-in-cloud-testing-services)
-* [Resize the browser window](https://devexpress.github.io/testcafe/documentation/guides/basic-guides/interact-with-the-page.html#resize-window) during the test, or
+* [Resize the browser window](https://devexpress.github.io/testcafe/documentation/guides/basic-guides/interact-with-the-page.html#resize-window) during the test
 * Take advantage of [Chromium's built-in emulation mode](https://devexpress.github.io/testcafe/documentation/guides/concepts/browsers.html#use-chromium-device-emulation)
 
 For the sake of this tutorial, let's pick the third option, as it offers greater stability and speed.
@@ -46,7 +46,7 @@ Now let's start automating.
 
 ### Step 1. Take care of the prerequisites
 
-TestCafe requires a working Node.js installation to run. If your testing environment does not contain node.js, [this Jenkins plugin](https://plugins.jenkins.io/nodejs/) can install it for you. Make sure you have Chromium ready to go, too: TestCafe cannot function without a browser.
+TestCafe requires a working Node.js installation to run. If your testing environment does not contain node.js, [this Jenkins plugin](https://plugins.jenkins.io/nodejs/) can install it for you. Make sure you have Chromium too: TestCafe cannot function without a browser.
 
 ### Step 2. Install the TestCafe Jenkins plugin
 
@@ -113,7 +113,7 @@ npx testcafe
 
 ### Step 5. Configure the reporter
 
-Add the "Publish JUnit test result report" *post-build action* to turn the pre-included [JUnit](https://plugins.jenkins.io/junit/) reporter plugin on. To display screenshots and videos alongside your test results, select the "Include links to TestCafe artifacts" option from the "Additional test report features" drop-down.
+Turn on the [JUnit](https://plugins.jenkins.io/junit/) reporter plugin: add the "Publish JUnit test result report" *post-build action*. To display screenshots and videos alongside your test results, select the option "Include links to TestCafe artifacts" from the "Additional test report features" drop-down.
 
 Important: Don't forget to check the "Retain long standard output/error" box. Otherwise the plugin will automatically truncate information concerning test screenshots and videos.
 
@@ -121,13 +121,13 @@ Important: Don't forget to check the "Retain long standard output/error" box. Ot
 
 ### Step 6. Run the build
 
-Save the changes to your project and run the build by pressing the "Build now" button on the project page:
+Save the changes to your project and press the "Build now" button on the project page:
 
 ![Jenkins Project menu with the Build Now Button highlighted](/testcafe/images/jenkins-plugin/build-now-button.png)
 
-## Looking at the results
+## Review the results
 
-After the tests are completed, press this link on the build page to view the results:
+After the tests are completed, press the following link on the build page to view the results:
 
 ![Test results link](/testcafe/images/jenkins-plugin/test-results-link.png)
 
@@ -139,7 +139,7 @@ If you were working on fixing the cart button, these artifacts would instantly i
 
 ## Jenkins Pipeline integration
 
-If you don't want to use the Jenkins GUI to launch these tests, you can always make use of the [Jenkins Pipeline](https://www.jenkins.io/doc/book/pipeline/). It lets you declaratively configure your CI/CD setup via Jenkinsfile, a text file checked into the project's source control repository. Here's a sample Jenkinsfile to be used with TestCafe:
+If you don't want to use the Jenkins GUI to launch these tests, you can always make use of [Jenkins Pipeline](https://www.jenkins.io/doc/book/pipeline/). It lets you declaratively configure your CI/CD setup via a Jenkinsfile, a text file checked into the project's source control repository. Here's a sample Jenkinsfile to be used with TestCafe:
 
 ```java
 pipeline {
