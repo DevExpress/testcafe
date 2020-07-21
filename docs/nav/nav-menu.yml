@@ -60,7 +60,9 @@
     - name: CircleCI
       url: /documentation/guides/continuous-integration/circleci.md
     - name: GitHub Actions
-      url: /documentation/guides/continuous-integration/github-actions.md  
+      url: /documentation/guides/continuous-integration/github-actions.md
+    - name: GitHub Actions + BrowserStack
+      url: /documentation/guides/continuous-integration/github-actions-and-browserstack.md
     - name: GitLab
       url: /documentation/guides/continuous-integration/gitlab.md
     - name: Jenkins

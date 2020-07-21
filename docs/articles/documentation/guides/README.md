@@ -41,6 +41,7 @@ permalink: /documentation/guides/
 * [Bitbucket Pipelines](continuous-integration/bitbucket-pipelines.md)
 * [CircleCI](continuous-integration/circleci.md)
 * [GitHub Actions](continuous-integration/github-actions.md)
+* [GitHub Actions + BrowserStack](github-actions-and-browserstack.md)
 * [GitLab](continuous-integration/gitlab.md)
 * [Jenkins](continuous-integration/jenkins.md)
 * [TeamCity](continuous-integration/teamcity.md)

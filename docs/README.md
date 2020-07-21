@@ -33,6 +33,7 @@
     * [Bitbucket Pipelines](articles/documentation/guides/continuous-integration/bitbucket-pipelines.md)
     * [CircleCI](articles/documentation/guides/continuous-integration/circleci.md)
     * [GitHub Actions](articles/documentation/guides/continuous-integration/github-actions.md)
+    * [GitHub Actions + BrowserStack](articles/documentation/guides/continuous-integration/github-actions-and-browserstack.md)
     * [GitLab](articles/documentation/guides/continuous-integration/gitlab.md)
     * [Jenkins](articles/documentation/guides/continuous-integration/jenkins.md)
     * [TeamCity](articles/documentation/guides/continuous-integration/teamcity.md)
