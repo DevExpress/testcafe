@@ -203,7 +203,7 @@ describe('[API] Assertions', function () {
             });
     });
 
-    it.only('Should raise a warning when trying to await Selector property in assertion', function () {
+    it('Should raise a warning when trying to await Selector property in assertion', function () {
         return runTests('./testcafe-fixtures/assertions-test.js', 'Await Selector property', { only: 'chrome' })
             .then(() => {
                 const snapshotWarningRegExp = new RegExp([`You passed a DOM snapshot property to the assertion's 't\\.expect\\(\\)' method\\. `,
