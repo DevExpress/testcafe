@@ -10,7 +10,7 @@ TestCafe can open, close, and switch between browser windows. This lets users te
 
 ## Basic use
 
-When your page launches a new window, the test will automatically continue in the newly open window. You don't need to write any extra code. When that window is closed, the test will switch back to its parent.
+When your page launches a new window, the test will automatically continue in the newly open window. When that window is closed, the test will switch back to its parent.
 
 ```JavaScript
 import { Selector } from 'testcafe';
