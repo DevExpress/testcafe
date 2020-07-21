@@ -32,7 +32,7 @@ TestCafe uses a [URL-rewriting proxy](https://github.com/DevExpress/testcafe-ham
 which allows it to work without the WebDriver.
 This proxy injects the driver script that emulates user actions into the tested page.
 
-You can read about this in our [forum](https://testcafe-discuss.devexpress.com/t/why-not-use-selenium/47).
+You can read about this in [How it Works](../documentation/how-it-works/README.md).
 
 ### What is the difference between [TestCafe Studio](https://www.devexpress.com/products/testcafestudio/) and [open-source TestCafe](https://devexpress.github.io/testcafe)?
 
