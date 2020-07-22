@@ -11,7 +11,7 @@ function run (browsers, testFile) {
         .run();
 }
 
-describe.only('Runner', () => {
+describe('Runner', () => {
     if (config.useLocalBrowsers && !config.useHeadlessBrowsers && os.linux) {
         let originalDisplay = null;
 
@@ -28,6 +28,8 @@ describe.only('Runner', () => {
         it('Should throw an error when tests are run on Linux without graphical subsystem', async () => {
             try {
                 await run('chromium', './testcafe-fixtures/basic-test.js');
+
+                throw new Error('Promise rejection expected');
             }
             catch (err) {
                 expect(err.message).eql(
