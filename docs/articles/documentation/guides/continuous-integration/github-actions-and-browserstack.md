@@ -11,7 +11,7 @@ This topic describes how to use the [Run TestCafe action](https://github.com/Dev
 * [Step 2 - Create a Job](#step-2---create-a-job)
 * [Step 3 - Provide Your BrowserStack Credentials](#step-3---provide-browserstack-credentials)
 * [Step 4 - Add a Step that Fetches the Repository](#step-4---add-a-step-that-fetches-the-repository)
-* [Step 5 - Add a Step to Install the TestCafe BrowserStack Plugin](#step-5---add-a-step-to-install-testcafe-browserstack-plugin)
+* [Step 5 - Add a Step to Install the TestCafe BrowserStack Plugin](#step-5---add-a-step-to-install-the-testcafe-browserstack-plugin)
 * [Step 6 - Add a Step that Runs TestCafe](#step-6---add-a-step-that-runs-testcafe)
 * [Action Options](#action-options)
   * [args](#args)
