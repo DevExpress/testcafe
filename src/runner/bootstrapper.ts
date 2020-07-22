@@ -7,7 +7,7 @@ import OS from 'os-family';
 import { errors, findWindow } from 'testcafe-browser-tools';
 import authenticationHelper from '../cli/authentication-helper';
 import Compiler from '../compiler';
-import BrowserConnection from '../browser/connection';
+import BrowserConnection, { BrowserInfo } from '../browser/connection';
 import browserProviderPool from '../browser/provider/pool';
 import BrowserSet from './browser-set';
 import RemoteBrowserProvider from '../browser/provider/built-in/remote';
@@ -22,7 +22,6 @@ import { getConcatenatedValuesString } from '../utils/string';
 import { Writable as WritableStream } from 'stream';
 import ClientScript from '../custom-client-scripts/client-script';
 import ClientScriptInit from '../custom-client-scripts/client-script-init';
-import BrowserProvider from '../browser/provider';
 import BrowserConnectionGateway from '../browser/connection/gateway';
 import { CompilerArguments } from '../compiler/interfaces';
 import CompilerService from '../services/compiler/host';
@@ -56,13 +55,6 @@ function isReporterPluginFactory (value: string | Function): value is ReporterPl
 
 interface Filter {
     (testName: string, fixtureName: string, fixturePath: string, testMeta: Metadata, fixtureMeta: Metadata): boolean;
-}
-
-interface BrowserInfo {
-    alias?: string;
-    browserName: string;
-    providerName: string;
-    provider: BrowserProvider;
 }
 
 type BrowserInfoSource = BrowserInfo | BrowserConnection;
@@ -189,17 +181,16 @@ export default class Bootstrapper {
     }
 
     private static async _checkThatTestsCanRunWithoutDisplay (browserInfoSource: BrowserInfoSource[]): Promise<void> {
-        for (const browserInfo of browserInfoSource) {
+        for (let browserInfo of browserInfoSource) {
             if (browserInfo instanceof BrowserConnection)
-                continue;
+                browserInfo = browserInfo.browserInfo;
 
             const isLocalBrowser    = await browserInfo.provider.isLocalBrowser(void 0, browserInfo.browserName);
-            const isHeadLessBrowser = await browserInfo.provider.isHeadlessBrowser(void 0, browserInfo.browserName);
+            const isHeadlessBrowser = await browserInfo.provider.isHeadlessBrowser(void 0, browserInfo.browserName);
 
-            if (isLocalBrowser && !isHeadLessBrowser) {
+            if (isLocalBrowser && !isHeadlessBrowser) {
                 throw new GeneralError(
                     RUNTIME_ERRORS.cannotRunLocalNonHeadlessBrowserWithoutDisplay,
-                    browserInfo.alias,
                     browserInfo.alias
                 );
             }

@@ -1,12 +1,10 @@
 const proxyquire              = require('proxyquire');
-const chai                    = require('chai');
-const { expect }              = chai;
+const { expect }              = require('chai');
 const { noop }                = require('lodash');
 const BrowserConnectionStatus = require('../../lib/browser/connection/status');
 const BrowserConnection       = require('../../lib/browser/connection');
 const Test                    = require('../../lib/api/structure/test');
-
-chai.use(require('chai-string'));
+const browserProviderPool     = require('../../lib/browser/provider/pool');
 
 class BrowserConnectionMock extends BrowserConnection {
     constructor (...args) {
@@ -54,9 +52,9 @@ describe('Bootstrapper', () => {
                     throw new Error('Promise rejection expected');
                 }
                 catch (err) {
-                    expect(err.message).startsWith(
-                        `You run chrome browser with graphic interface in Linux without graphic subsystem. ` +
-                        `Try to run chrome in headless mode. For more information see ` +
+                    expect(err.message).eql(
+                        `You run "chrome" browser with graphic interface in Linux without graphic subsystem. ` +
+                        `Try to run in headless mode. For more information see ` +
                         `https://devexpress.github.io/testcafe/documentation/` +
                         `guides/concepts/browsers.html#test-in-headless-mode`
                     );
@@ -64,7 +62,7 @@ describe('Bootstrapper', () => {
             });
 
             it('Should raise an error when browser is specified by a path', async () => {
-                bootstrapper.browsers = [ 'path:/non/exist' ];
+                bootstrapper.browsers = [ { path: '/non/exist' } ];
 
                 try {
                     await bootstrapper.createRunnableConfiguration();
@@ -72,10 +70,10 @@ describe('Bootstrapper', () => {
                     throw new Error('Promise rejection expected');
                 }
                 catch (err) {
-                    expect(err.message).startsWith(
-                        `You run path:/non/exist browser with graphic interface in Linux without graphic subsystem. ` +
-                        `Try to run path:/non/exist in headless mode. For more information see ` +
-                        `https://devexpress.github.io/testcafe/documentation/` +
+                    expect(err.message).eql(
+                        `You run "{"path":"/non/exist"}" browser with graphic interface ` +
+                        `in Linux without graphic subsystem. Try to run in headless mode. ` +
+                        `For more information see https://devexpress.github.io/testcafe/documentation/` +
                         `guides/concepts/browsers.html#test-in-headless-mode`
                     );
                 }
@@ -97,8 +95,15 @@ describe('Bootstrapper', () => {
                 }
             });
 
-            it('Should not raise an error when browser is specified as non-local', async () => {
-                bootstrapper.browsers = [ 'remote' ];
+            it('Should not raise an error when remote browser is passed as BrowserConnection', async () => {
+                const browserConnectionGateway = {
+                    startServingConnection: noop,
+                    stopServingConnection:  noop
+                };
+
+                const browserInfo = await browserProviderPool.getBrowserInfo('remote');
+
+                bootstrapper.browsers = [ new BrowserConnection(browserConnectionGateway, browserInfo) ];
 
                 let isErrorThrown = false;
 

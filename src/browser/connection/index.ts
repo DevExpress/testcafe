@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
 import Mustache from 'mustache';
 import { pull as remove } from 'lodash';
-import parseUserAgent from '../../utils/parse-user-agent';
+import parseUserAgent, { ParsedUserAgent } from '../../utils/parse-user-agent';
 import { readSync as read } from 'read-file-relative';
 import promisifyEvent from 'promisify-event';
 import nanoid from 'nanoid';
@@ -15,6 +15,7 @@ import { Dictionary } from '../../configuration/interfaces';
 import BrowserConnectionGateway from './gateway';
 import BrowserJob from '../../runner/browser-job';
 import WarningLog from '../../notifications/warning-log';
+import BrowserProvider from '../provider';
 
 const IDLE_PAGE_TEMPLATE                         = read('../../client/browser/idle-page/index.html.mustache');
 const connections: Dictionary<BrowserConnection> = {};
@@ -44,6 +45,15 @@ interface InitScriptTask extends InitScript {
 
 interface ProviderMetaInfoOptions {
     appendToUserAgent?: boolean;
+}
+
+export interface BrowserInfo {
+    alias: string;
+    browserName: string;
+    providerName: string;
+    provider: BrowserProvider;
+    userAgentProviderMetaInfo: string;
+    parsedUserAgent: ParsedUserAgent;
 }
 
 export default class BrowserConnection extends EventEmitter {
@@ -76,10 +86,14 @@ export default class BrowserConnection extends EventEmitter {
 
     public idle: boolean;
 
-    public browserInfo: any;
+    public browserInfo: BrowserInfo;
     public provider: any;
 
-    public constructor (gateway: BrowserConnectionGateway, browserInfo: any, permanent: boolean, allowMultipleWindows = false) {
+    public constructor (
+        gateway: BrowserConnectionGateway,
+        browserInfo: BrowserInfo,
+        permanent: boolean,
+        allowMultipleWindows = false) {
         super();
 
         this.HEARTBEAT_TIMEOUT       = HEARTBEAT_TIMEOUT;
