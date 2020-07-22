@@ -10,9 +10,9 @@ This topic describes how to use the [Run TestCafe action](https://github.com/Dev
 * [Step 1 - Create a Workflow](#step-1---create-a-workflow)
 * [Step 2 - Create a Job](#step-2---create-a-job)
 * [Step 3 - Provide Your BrowserStack Credentials](#step-3---provide-browserstack-credentials)
-* [Step 4 - Add a Step That Fetches The Repository](#step-4---add-a-step-that-fetches-the-repository)
-* [Step 5 - Add a Step To Install TestCafe BrowserStack plugin](#step-5---add-a-step-to-install-testcafe-browserstack-plugin)
-* [Step 6 - Add a Step That Runs TestCafe](#step-6---add-a-step-that-runs-testcafe)
+* [Step 4 - Add a Step that Fetches the Repository](#step-4---add-a-step-that-fetches-the-repository)
+* [Step 5 - Add a Step to Install the TestCafe BrowserStack Plugin](#step-5---add-a-step-to-install-testcafe-browserstack-plugin)
+* [Step 6 - Add a Step that Runs TestCafe](#step-6---add-a-step-that-runs-testcafe)
 * [Action Options](#action-options)
   * [args](#args)
   * [version](#version)
@@ -51,9 +51,9 @@ This job runs on a GitHub-hosted virtual machine with the latest Windows version
 
 ## Step 3 - Provide BrowserStack Credentials
 
-In order for TestCafe to be able to use browsers, provided by BrowserStack, valid Username and Access Key are necessary. Values are unique to your BrowserStack account and can be obtained from your [account settings](https://www.browserstack.com/accounts/settings).
+In order for TestCafe to use browsers provided by BrowserStack, valid BrowserStack credentials (Username and Access Key) are required. These credentials are unique to your BrowserStack account and can be obtained from the [account settings](https://www.browserstack.com/accounts/settings) page.
 
-Values should be set to `BROWSERSTACK_USERNAME` and `BROWSERSTACK_ACCESS_KEY` environment variables respectively. However, for security purposes, it is reccomended that you provide them as [secrets](https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets) in your repository.
+Values should be set to `BROWSERSTACK_USERNAME` and `BROWSERSTACK_ACCESS_KEY` environment variables, respectively. However, for security purposes, you should provide them as [secrets](https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets) in your repository.
 
 After adding the secrets, add the following content to the [env](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#env) in your workflow YAML file:
 
@@ -80,7 +80,7 @@ jobs:
 
 {% endraw %}
 
-## Step 4 - Add a Step That Fetches The Repository
+## Step 4 - Add a Step that Fetches the Repository
 
 Add a [step](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idsteps) that uses the [checkout](https://github.com/actions/checkout) action to fetch your repository content.
 
@@ -103,9 +103,9 @@ jobs:
 
 {% endraw %}
 
-## Step 5 - Add a Step To Install TestCafe BrowserStack plugin
+## Step 5 - Add a Step to Install the TestCafe BrowserStack Plugin
 
-In order to enable TestCafe to run in the BrowserStack environment, install our [browserstack plugin](https://github.com/DevExpress/testcafe-browser-provider-browserstack).
+To enable TestCafe to run in the BrowserStack environment, install our [browserstack plugin](https://github.com/DevExpress/testcafe-browser-provider-browserstack).
 
 {% raw %}
 
@@ -128,7 +128,7 @@ jobs:
 
 {% endraw %}
 
-## Step 6 - Add a Step That Runs TestCafe
+## Step 6 - Add a Step that Runs TestCafe
 
 Add the [Run TestCafe](https://github.com/DevExpress/testcafe-action) action. Use the [args](#args) parameter to provide TestCafe [command line arguments](../../reference/command-line-interface.md), including the BrowserStack configuration:
 
@@ -155,10 +155,10 @@ jobs:
 
 {% endraw %}
 
-> Note the additional pair of single quotes- BrowserStack configuration string includes a space, which can be interpreted as a separator by the command line.
+> Note the additional pair of single quotes. The BrowserStack configuration string includes a space, which can be interpreted as a separator by the command line.
 
-**Note**: Full list of available BrowserStack configurations can be obtained through console.
-First, you have to provide your credentials by exporting them:
+**Note**: A full list of available BrowserStack configurations can be obtained through the console.
+First, provide your credentials by exporting them:
 
 **bash**
 
@@ -174,7 +174,7 @@ Set-Variable -Name "BROWSERSTACK_USERNAME" -Value "<your_browserstack_username>"
 Set-Variable -Name "BROWSERSTACK_ACCESS_KEY" -Value "<your_browserstack_acess_key>"
 ```
 
-Afterwards, run in console:
+Then, run the following command in the console:
 
 ```sh
 testcafe -b browserstack
@@ -205,11 +205,11 @@ The TestCafe version to install.
     args: "'browserstack:chrome@84.0:Windows 10' tests"
 ```
 
-Commence the build by commiting changes and pushing to your repository. You can see the results on `Actions` page in your repository.
+To start the build, commit changes and push to the repository. You can see the results on the `Actions` page in your repository.
 
 ## Example
 
-The following sample demonstrates how to run TestCafe tests across different browser versions and operating systems provided by BrowserStack.
+The following example runs TestCafe tests across different browser versions and operating systems provided by BrowserStack.
 
 {% raw %}
 
