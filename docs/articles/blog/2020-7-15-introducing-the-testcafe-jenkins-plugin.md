@@ -1,33 +1,33 @@
 ---
 layout: post
-title: "Introducing the TestCafe Jenkins plugin"
+title: "Introducing the TestCafe Jenkins Plugin"
 permalink: /media/team-blog/:title.html
 isTeamBlog: true
 author: Pavel Redrukhin, Eugene Titerman
 ---
-# Introducing the TestCafe Jenkins plugin
+# Introducing the TestCafe Jenkins Plugin
 
 TestCafe can capture videos and screenshots so you can debug your tests and examine page UI. You can record all the tests or only those that failed, generate multiple video files or stitch them together, and even single out specific interactions (see [the documentation](https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/screenshots-and-videos.html) for the full list of available options).
 
-Many TestCafe users take advantage of Jenkins — a CI/CD solution — to automate their tests. Until recently, they had to manually match the screenshots and videos taken by TestCafe to the individual test reports. The newly implemented [TestCafe Jenkins plugin](https://plugins.jenkins.io/testcafe/) simplifies this process. Links to screenshots and videos taken during the test now automatically appear on the Jenkins test results page. You don't even need to keep your testing server running — all the necessary files are stored right inside the Jenkins build folder.
+Many TestCafe users take advantage of Jenkins — a CI/CD solution — to automate their tests. Until recently, they had to manually match the screenshots and videos taken by TestCafe to the individual test reports. The newly implemented [TestCafe Jenkins plugin](https://plugins.jenkins.io/testcafe/) simplifies this process. Links to screenshots and videos taken during the test now automatically appear on the Jenkins test results page. There is no need to keep the testing server running — all required files are stored inside the Jenkins build folder.
 
 <!--more-->
 
-The test results page should look like this with our plugin enabled:
+With our plugin enabled, the test results page should appear as follows:
 
 ![The updated test results page](/testcafe/images/jenkins-plugin/test-results-page.png)
 
 ## Test case: the disappearing button
 
-Let's say the 'Add to Cart' button disappears on the mobile version of your website.
+Let's assume that the 'Add to Cart' button disappears on the mobile version of your website.
 
 ![The 'Add To Cart' button is absent from the mobile version of the website](/testcafe/images/jenkins-plugin/button-example.png)
 
-TestCafe supports several mobile device emulation methods. You can:
+TestCafe supports the following mobile device emulation methods:
 
-* [Resize the browser window](https://devexpress.github.io/testcafe/documentation/guides/basic-guides/interact-with-the-page.html#resize-window) during testing
-* Run the test through a [3rd party cloud testing service](https://devexpress.github.io/testcafe/documentation/guides/concepts/browsers.html#browsers-in-cloud-testing-services)
-* Take advantage of [Chromium's built-in emulation mode](https://devexpress.github.io/testcafe/documentation/guides/concepts/browsers.html#use-chromium-device-emulation)
+* [Resize the browser window](https://devexpress.github.io/testcafe/documentation/guides/basic-guides/interact-with-the-page.html#resize-window) during the test
+* Run the test through a [third-party cloud testing service](https://devexpress.github.io/testcafe/documentation/guides/concepts/browsers.html#browsers-in-cloud-testing-services)
+* Use [Chromium's built-in emulation mode](https://devexpress.github.io/testcafe/documentation/guides/concepts/browsers.html#use-chromium-device-emulation)
 
 The third option offers greater speed and stability. We describe it going forward and recommend that you use it if possible.
 
@@ -44,7 +44,7 @@ Now let's configure Jenkins to launch this test every time we build our project.
 
 ## Basic setup
 
-### Step 1. Take care of the prerequisites
+### Step 1. Install prerequisites
 
 TestCafe requires a working Node.js installation to run. If your testing environment does not contain node.js, [this Jenkins plugin](https://plugins.jenkins.io/nodejs/) can install it for you. Make sure you have Chromium too: TestCafe cannot function without a browser.
 
@@ -54,7 +54,7 @@ To install the TestCafe Jenkins plugin, press the "Manage Plugins" link on the M
 
 ![Jenkins plugin search UI](/testcafe/images/jenkins-plugin/plugin-search-ui.png)
 
-### Step 3. Install the necessary Node packages
+### Step 3. Install the required Node packages
 
 Install the main testcafe library, as well as the [testcafe-reporter-jenkins](https://www.npmjs.com/package/testcafe-reporter-jenkins) package. The latter is needed to generate Jenkins-friendly JUnit format reports.
 
@@ -72,7 +72,7 @@ You can configure your tests via:
 * the JavaScript/TypeScript API
 * the .testcaferc.json [configuration file](https://devexpress.github.io/testcafe/documentation/reference/configuration-file.html)
 
-The last option provides an easy, declarative way to define your test settings. You can store this file in the same folder as your tests.  Below is the configuration we're going to use in this tutorial:
+The last option provides an easy, declarative way to define your test settings. You can store this file in the same folder as your tests. Below is the configuration used in this tutorial:
 
 ```js
 {
@@ -99,13 +99,13 @@ The *Browser* array contains the list of browsers TestCafe will use to run our t
 
 The *name* property of the *reporter* object is set as *jenkins*, which ensures that the reports generated by TestCafe can be properly parsed by the server.
 
-If you decide against using a config file, don't forget to [manually set](https://devexpress.github.io/testcafe/documentation/reference/command-line-interface.html#-r-nameoutput---reporter-nameoutput) the report format when launching your tests, like so:
+If you decide not to use a config file, be sure to [manually set](https://devexpress.github.io/testcafe/documentation/reference/command-line-interface.html#-r-nameoutput---reporter-nameoutput) the report format when you launch the tests as follows:
 
 ```bash
 testcafe chrome test.js -r jenkins:report.xml
 ```
 
-Otherwise, just run the following command:
+Otherwise, simply run the following command:
 
 ```bash
 npx testcafe
@@ -131,7 +131,7 @@ After the tests are completed, press the following link on the build page to vie
 
 ![Test results link](/testcafe/images/jenkins-plugin/test-results-link.png)
 
-There you'll see links to screenshots and videos taken during the test.
+You will see links to screenshots and videos taken during the test.
 
 ![Test results view](/testcafe/images/jenkins-plugin/test-results-view.png)
 
@@ -163,7 +163,7 @@ pipeline {
 }
 ```
 
-Note: The `test-e2e` npm script in this example is responsible for launching TestCafe. See the [TestCafe CLI](https://devexpress.github.io/testcafe/documentation/reference/command-line-interface.html) documentation for more information on the subject, and don't forget to manually set the reporter option as outlined earlier in this article.
+Note: The `test-e2e` npm script in this example launches TestCafe. As mentioned earlier in this topic, be sure to manually set the reporter option. For more information on the TestCafe CLI, see the following help topic: [Command Line Interface](https://devexpress.github.io/testcafe/documentation/reference/command-line-interface.html).
 
 --
 
