@@ -2,9 +2,6 @@
 layout: docs
 title: Run Tests on BrowserStack with GitHub Actions
 permalink: /documentation/guides/continuous-integration/github-actions-and-browserstack.html
-redirect_from:
-  - /documentation/recipes/integrating-testcafe-with-ci-systems/github-actions-and-browserstack.html
-  - /documentation/continuous-integration/github-actions-and-browserstack.html
 ---
 # Run Tests on BrowserStack with GitHub Actions
 
