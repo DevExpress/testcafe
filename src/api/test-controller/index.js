@@ -82,9 +82,8 @@ export default class TestController {
     // await t2.click('#btn3');   // <-- without check it will set callsiteWithoutAwait = null, so we will lost tracking
     _createExtendedPromise (promise, callsite) {
         const extendedPromise     = promise.then(identity);
-        const markCallsiteAwaited = () => {
-            this.testRun.observedCallsites.callsitesWithoutAwait.delete(callsite);
-        };
+        const observedCallsites   = this.testRun.observedCallsites;
+        const markCallsiteAwaited = () => observedCallsites.callsitesWithoutAwait.delete(callsite);
 
         extendedPromise.then = function () {
             markCallsiteAwaited();

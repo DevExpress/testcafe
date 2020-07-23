@@ -2,7 +2,7 @@ const expect = require('chai').expect;
 const fs = require('fs');
 const path = require('path');
 
-const dataPath = './data';
+const DATA_PATH = path.join(__dirname, './data');
 
 describe('[API] Assertions', function () {
     it('Should perform .eql() assertion', function () {
@@ -215,7 +215,7 @@ describe('[API] Assertions', function () {
                 });
 
                 expect(snapshotWarnings.length).to.eql(1);
-                expect(snapshotWarnings[0]).to.match(new RegExp(fs.readFileSync(path.join(__dirname, dataPath, 'expected-selector-property-awaited-callsite')).toString().replace(/\r/g, '')));
+                expect(snapshotWarnings[0]).to.match(new RegExp(fs.readFileSync(path.join(DATA_PATH, 'expected-selector-property-awaited-callsite')).toString().replace(/\r/g, '')));
             });
     });
 
