@@ -37,6 +37,12 @@ They are implemented as methods in the [test controller](../../reference/test-ap
 
 The available actions with reproducible usage examples and links to their descriptions are listed below.
 
+> TestCafe is intended to emulate real user behavior, so you cannot interact with elements, that are not visible at that moment.
+>
+> For instance, you can not type into an `input` element with the `display: none` style.
+>
+> When prompted to interact with such an element, TestCafe will be making attempts for the duration of a [timeout](https://devexpress.github.io/testcafe/documentation/guides/basic-guides/select-page-elements.html#selector-timeout) for the action. If an element has not appeared during this period, the test fails. You can interact with the page through the use of [client functions](https://devexpress.github.io/testcafe/documentation/guides/basic-guides/obtain-client-side-info.html#client-function-constructor) (e.g. to set a value for an element that is not visible).
+
 ## Click
 
 Click actions allow you to click an element on a page.
