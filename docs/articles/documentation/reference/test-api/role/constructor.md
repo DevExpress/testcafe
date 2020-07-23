@@ -11,6 +11,8 @@ Creates and initializes a [user role](../../../guides/advanced-guides/authentica
 Role( url, func( t ) [, options] )
 ```
 
+> Important! Relative URLs in `Role` are not supported. Use absolute URLs when you define roles.
+
 Parameter | Type     | Description
 --------- | -------- | --------------------------------------------------------------------------------
 `url`     | String   | The URL of the login page.

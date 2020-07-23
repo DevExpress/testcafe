@@ -41,6 +41,8 @@ Unlike [page models](../concepts/page-model.md) or [helper functions](../../reci
 
 Use the [Role](../../reference/test-api/role/constructor.md) constructor to create and initialize a role. Pass the login page URL and sign-in [actions](../basic-guides/interact-with-the-page.md) to `Role`.
 
+> Important! Relative URLs in `Role` are not supported. Use absolute URLs when you define roles.
+
 ```js
 import { Role } from 'testcafe';
 
