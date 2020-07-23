@@ -7,7 +7,7 @@ author: Pavel Redrukhin, Eugene Titerman
 ---
 # Introducing the TestCafe Jenkins Plugin
 
-TestCafe can capture videos and screenshots so you can debug your tests and examine page UI. You can record all the tests or only those that failed, generate multiple video files or stitch them together, and even single out specific interactions (see [the documentation](https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/screenshots-and-videos.html) for the full list of available options).
+TestCafe can capture videos and screenshots so you can debug your tests and examine page UI. You can record all tests or only those that failed, generate unique video files for each test or record all of them in one take, and single out specific interactions. (For a full list of available options, see the following help topic: [Screenshots and Videos](https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/screenshots-and-videos.html)).
 
 Many TestCafe users take advantage of Jenkins — a CI/CD solution — to automate their tests. Until recently, they had to manually match the screenshots and videos taken by TestCafe to the individual test reports. The newly implemented [TestCafe Jenkins plugin](https://plugins.jenkins.io/testcafe/) simplifies this process. Links to screenshots and videos taken during the test now automatically appear on the Jenkins test results page. There is no need to keep the testing server running — all required files are stored inside the Jenkins build folder.
 
@@ -113,7 +113,7 @@ npx testcafe
 
 ### Step 5. Configure the reporter
 
-Turn on the [JUnit](https://plugins.jenkins.io/junit/) reporter plugin: add the "Publish JUnit test result report" *post-build action*. To display screenshots and videos alongside your test results, select the option "Include links to TestCafe artifacts" from the "Additional test report features" drop-down.
+Turn on the [JUnit](https://plugins.jenkins.io/junit/) reporter plugin: add the "Publish JUnit test result report" *post-build action*. To display screenshots and videos alongside your test results, select the "Include links to TestCafe artifacts" option from the "Additional test report features" drop-down menu.
 
 Important: Don't forget to check the "Retain long standard output/error" box. Otherwise the plugin will automatically truncate information concerning test screenshots and videos.
 
@@ -139,7 +139,7 @@ These artifacts instantly indicate if the Cart button is present on the page.
 
 ## Jenkins Pipeline integration
 
-If you don't want to use the Jenkins GUI to launch these tests, you can always make use of [Jenkins Pipeline](https://www.jenkins.io/doc/book/pipeline/). It lets you declaratively configure your CI/CD setup via a Jenkinsfile, a text file checked into the project's source control repository. Here's a sample Jenkinsfile to be used with TestCafe:
+If you do not wish to use the Jenkins GUI to launch these tests, you can always use the [Jenkins Pipeline](https://www.jenkins.io/doc/book/pipeline/). It lets you declaratively configure your CI/CD setup via a Jenkinsfile - a text file checked into the project's source control repository. The following is a sample Jenkinsfile to be used with TestCafe:
 
 ```java
 pipeline {
