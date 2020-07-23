@@ -78,6 +78,10 @@ Shortcut        | Elements
 
 > The `'backspace'`, `'delete'`, `'left'` and `'right'` key presses in `contentEditable` elements are processed only when text is selected.
 
+<!-- -->
+
+> Key combinations of `Ctrl` + `+` / `Ctrl` + `-` don't zoom the page in our out.
+
 ### Text Field-Based Inputs
 
 TestCafe supports selection and navigation with keystrokes in the following input types:
