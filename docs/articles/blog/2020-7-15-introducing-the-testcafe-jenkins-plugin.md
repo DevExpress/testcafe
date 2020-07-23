@@ -46,23 +46,24 @@ Now let's configure Jenkins to launch this test every time we build our project.
 
 ### Step 1. Install prerequisites
 
-TestCafe requires a working Node.js installation to run. If your testing environment does not contain node.js, [this Jenkins plugin](https://plugins.jenkins.io/nodejs/) can install it for you. Make sure you have Chromium too: TestCafe cannot function without a browser.
+TestCafe requires a working Node.js installation to run. If your testing environment does not contain node.js, [the Node.js Jenkins plugin](https://plugins.jenkins.io/nodejs/) can install it for you. Also ensure that Chromium is installed: TestCafe cannot function without a browser.
 
 ### Step 2. Install the TestCafe Jenkins plugin
 
-To install the TestCafe Jenkins plugin, press the "Manage Plugins" link on the Manage Jenkins page, select the "Available" tab, and enter "testcafe" into the search field. Check the box next to our plugin and press the 'Install without restart' button below it.
+To install the TestCafe Jenkins plugin, click the "Manage Plugins" link on the Manage Jenkins page, select the "Available" tab, and enter "testcafe" into the search field. Check the box next to our plugin and click the 'Install without restart' button below it.
 
 ![Jenkins plugin search UI](/testcafe/images/jenkins-plugin/plugin-search-ui.png)
 
 ### Step 3. Install the required Node packages
 
-Install the main testcafe library, as well as the [testcafe-reporter-jenkins](https://www.npmjs.com/package/testcafe-reporter-jenkins) package. The latter is needed to generate Jenkins-friendly JUnit format reports.
-
-To do this, add the following *build step* to your Jenkins project:
+Add the following *build step* to your Jenkins project:
 
 ```bash
 npm i testcafe testcafe-reporter-jenkins
 ```
+
+This command installs the main testcafe library, as well as the [testcafe-reporter-jenkins](https://www.npmjs.com/package/testcafe-reporter-jenkins) package. The latter is needed to generate Jenkins-friendly JUnit format reports.
+
 
 ### Step 4. Configure the tests
 
@@ -115,19 +116,19 @@ npx testcafe
 
 Turn on the [JUnit](https://plugins.jenkins.io/junit/) reporter plugin: add the "Publish JUnit test result report" *post-build action*. To display screenshots and videos alongside your test results, select the "Include links to TestCafe artifacts" option from the "Additional test report features" drop-down menu.
 
-Important: Don't forget to check the "Retain long standard output/error" box. Otherwise the plugin will automatically truncate information concerning test screenshots and videos.
+Important: Remember to check the "Retain long standard output/error" box. Otherwise, the reporter plugin will automatically truncate the URLs of your videos and screenshots.
 
 ![JUnit reporter configuration screen](/testcafe/images/jenkins-plugin/junit-reporter-configuration.png)
 
 ### Step 6. Run the build
 
-Save the changes to your project and press the "Build now" button on the project page:
+Save the changes to your project and click the "Build now" button on the project page:
 
 ![Jenkins Project menu with the Build Now Button highlighted](/testcafe/images/jenkins-plugin/build-now-button.png)
 
 ## Review the results
 
-After the tests are completed, press the following link on the build page to view the results:
+After the tests are completed, click the following link on the build page to view the results:
 
 ![Test results link](/testcafe/images/jenkins-plugin/test-results-link.png)
 
@@ -167,4 +168,4 @@ Note: The `test-e2e` npm script in this example launches TestCafe. As mentioned 
 
 --
 
-If you enjoyed this guide, you might like our other articles on the subject of debugging: [How to Debug Tests in TestCafe: Quick Guide](https://devexpress.github.io/testcafe/media/team-blog/how-to-debug-tests-in-testcafe-quick-guide.html) and [How to speed up debugging in TestCafe: Tips and Tricks](https://devexpress.github.io/testcafe/media/team-blog/how-to-speed-up-debugging-in-testcafe-tips-and-tricks.html).
+If you enjoyed this guide and would like more tips on debugging, please see the following blog articles: [How to Debug Tests in TestCafe: Quick Guide](https://devexpress.github.io/testcafe/media/team-blog/how-to-debug-tests-in-testcafe-quick-guide.html) and [How to speed up debugging in TestCafe: Tips and Tricks](https://devexpress.github.io/testcafe/media/team-blog/how-to-speed-up-debugging-in-testcafe-tips-and-tricks.html).
