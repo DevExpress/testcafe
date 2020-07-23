@@ -5,3 +5,11 @@ permalink: /documentation/reference/test-api/testcontroller/getcurrentwindow.htm
 ---
 
 # t.getCurrentWindow method
+
+Returns the `window` object corresponding to the current window.
+
+```JavaScript
+t.getCurrentWindow();
+```
+
+The following example shows how to use it 
