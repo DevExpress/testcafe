@@ -3,7 +3,6 @@ const SlConnector                = require('saucelabs-connector');
 const BsConnector                = require('browserstack-connector');
 const caller                     = require('caller');
 const promisifyEvent             = require('promisify-event');
-const os                         = require('os-family');
 const createTestCafe             = require('../../lib');
 const browserProviderPool        = require('../../lib/browser/provider/pool');
 const BrowserConnection          = require('../../lib/browser/connection');
@@ -13,7 +12,6 @@ const RemoteConnector            = require('./remote-connector');
 const getTestError               = require('./get-test-error.js');
 const { createSimpleTestStream } = require('./utils/stream');
 const BrowserConnectionStatus    = require('../../lib/browser/connection/status');
-const detectDisplay              = require('../../lib/utils/detect-display');
 
 let testCafe     = null;
 let browsersInfo = null;
@@ -183,12 +181,6 @@ before(function () {
             return openRemoteBrowsers();
         })
         .then(() => {
-            if (config.useLocalBrowsers && !config.useHeadlessBrowsers && os.linux && !detectDisplay())
-                // NOTE:
-                // We don't have to wait in this case,
-                // because browsers will not be able to start under this configuration
-                return Promise.resolve();
-
             return waitUntilBrowsersConnected();
         })
         .then(() => {
