@@ -174,6 +174,15 @@ does not finish before the callback, suspend the test until the callback fires. 
   >
   > The return value is the only way to obtain data from client functions.
 
+* You can not use iterable destructuring (e.g. [`spread`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax), [`rest`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Rest_parameters) operators) on non-array objects (e.g. `NodeList`, `HTMLCollection`).
+
+<!-- https://github.com/DevExpress/testcafe/issues/1596#issuecomment-314135764-->
+
+* Some of the [newly added](https://tc39.es/ecma262/) JavaScript features do not work properly within client functions. These include, but are not limited to:  
+    * Array methods [`Array.from()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from), [`Array.of()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/of);  
+    * Keyed collections: [`Map`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map), [`Set`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set), [`WeakMap`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap), [`WeakSet`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet);
+    * Property shorthands for imported values.
+
 ## Access Console Messages
 
 The tested web application or a framework it uses may output log, warning, error and information messages into the browser console. TestCafe allows you to access them from test code with the [t.getBrowserConsoleMessages](../../reference/test-api/testcontroller/getbrowserconsolemessages.md) method.
