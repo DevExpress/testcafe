@@ -37,6 +37,15 @@ test('My Test', async t => {
 });
 ```
 
+When dependencies are passed to a client function, [TypeScript](https://www.typescriptlang.org/) cannot find them during compilation. This happens because dependencies are added to the function's scope at runtime and can cause an error:
+
+```sh
+Error: TypeScript compilation failed.
+Cannot find name 'dependencyFoo'.
+```
+
+You can mitigate this by using [`// @ts-ignore`](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-6.html#suppress-errors-in-ts-files-using--ts-ignore-comments) TypeScript feature.
+
 ### options.timeout
 
 **Type**: Number
