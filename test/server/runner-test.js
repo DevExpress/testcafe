@@ -840,26 +840,6 @@ describe('Runner', () => {
 
             expect(runner.configuration.getOption('debugLogger')).to.deep.equal(customLogger);
         });
-
-        it('Should raise an error if "allowMultipleWindows" option is used for legacy tests', () => {
-            return runner
-                .browsers(connection)
-                .src('test/server/data/test-suites/legacy/test.test.js')
-                .run({ allowMultipleWindows: true })
-                .catch(err => {
-                    expect(err.message).eql('You cannot run Legacy API tests in multi-window mode.');
-                });
-        });
-
-        it('Should raise an error if "allowMultipleWindows" option is used non-local browsers', () => {
-            return runner
-                .browsers(connection)
-                .src('test/server/data/test-suites/basic/testfile1.js')
-                .run({ allowMultipleWindows: true })
-                .catch(err => {
-                    expect(err.message).eql('You cannot use multi-window mode in "remote".');
-                });
-        });
     });
 
     describe('.clientScripts', () => {

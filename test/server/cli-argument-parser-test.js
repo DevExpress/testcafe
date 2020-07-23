@@ -654,7 +654,7 @@ describe('CLI argument parser', function () {
             { long: '--disable-page-reloads' },
             { long: '--disable-screenshots' },
             { long: '--screenshots-full-page' },
-            { long: '--allow-multiple-windows', short: '-m' },
+            { long: '--disable-multiple-windows' },
             { long: '--experimental-compiler-service' }
         ];
 
@@ -688,7 +688,7 @@ describe('CLI argument parser', function () {
             '--disable-page-caching',
             '--disable-page-reloads',
             '--disable-screenshots',
-            '--allow-multiple-windows'
+            '--disable-multiple-windows'
         ].join(' ');
 
         return parse(argumentsString)
@@ -708,7 +708,7 @@ describe('CLI argument parser', function () {
                 expect(runOpts.disablePageCaching).eql(true);
                 expect(runOpts.disablePageReloads).eql(true);
                 expect(runOpts.disableScreenshots).eql(true);
-                expect(runOpts.allowMultipleWindows).eql(true);
+                expect(runOpts.disableMultipleWindows).eql(true);
                 expect(runOpts.browsers).to.be.undefined;
             });
     });

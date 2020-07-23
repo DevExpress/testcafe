@@ -84,7 +84,8 @@ const {
     PreviousWindowNotFoundError,
     SwitchToWindowPredicateError,
     CannotCloseWindowWithChildrenError,
-    AllowMultipleWindowsOptionIsNotSpecifiedError
+    MultipleWindowsModeIsDisabledError,
+    MultipleWindowsModeIsNotAvailableInRemoteBrowserError
 } = require('../../lib/errors/test-run');
 
 const untestedErrorTypes = Object.keys(TEST_RUN_ERRORS).map(key => TEST_RUN_ERRORS[key]);
@@ -618,8 +619,12 @@ describe('Error formatting', () => {
             assertErrorMessage('action-function-argument-error', new ActionFunctionArgumentError('predicate', 'number'));
         });
 
-        it('Should format "allowMultipleWindowsOptionIsNotSpecifiedError"', () => {
-            assertErrorMessage('allow-multiple-windows-option-is-not-specified-error', new AllowMultipleWindowsOptionIsNotSpecifiedError('openWindow'));
+        it('Should format "multipleWindowsModeIsDisabledError"', () => {
+            assertErrorMessage('multiple-windows-mode-is-disabled-error', new MultipleWindowsModeIsDisabledError('openWindow'));
+        });
+
+        it('Should format "multipleWindowsModeIsNotAvailableInRemoteBrowserError"', () => {
+            assertErrorMessage('multiple-windows-mode-is-not-available-in-remote-browser-error', new MultipleWindowsModeIsNotAvailableInRemoteBrowserError('openWindow'));
         });
     });
 

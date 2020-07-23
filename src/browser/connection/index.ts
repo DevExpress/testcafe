@@ -59,7 +59,7 @@ export interface BrowserInfo {
 export default class BrowserConnection extends EventEmitter {
     public permanent: boolean;
     public previousActiveWindowId: string | null;
-    private readonly allowMultipleWindows: boolean;
+    private readonly disableMultipleWindows: boolean;
     private readonly HEARTBEAT_TIMEOUT: number;
     private readonly BROWSER_RESTART_TIMEOUT: number;
     public readonly id: string;
@@ -112,12 +112,12 @@ export default class BrowserConnection extends EventEmitter {
 
         this.provider = browserInfo.provider;
 
-        this.permanent            = permanent;
-        this.status               = BrowserConnectionStatus.uninitialized;
-        this.idle                 = true;
-        this.heartbeatTimeout     = null;
-        this.pendingTestRunUrl    = null;
-        this.allowMultipleWindows = allowMultipleWindows;
+        this.permanent              = permanent;
+        this.status                 = BrowserConnectionStatus.uninitialized;
+        this.idle                   = true;
+        this.heartbeatTimeout       = null;
+        this.pendingTestRunUrl      = null;
+        this.disableMultipleWindows = disableMultipleWindows;
 
         this.url           = `${gateway.domain}/browser/connect/${this.id}`;
         this.idleUrl       = `${gateway.domain}/browser/idle/${this.id}`;
@@ -153,7 +153,7 @@ export default class BrowserConnection extends EventEmitter {
 
     private async _runBrowser (): Promise<void> {
         try {
-            await this.provider.openBrowser(this.id, this.url, this.browserInfo.browserName, this.allowMultipleWindows);
+            await this.provider.openBrowser(this.id, this.url, this.browserInfo.browserName, this.disableMultipleWindows);
 
             if (this.status !== BrowserConnectionStatus.ready)
                 await promisifyEvent(this, 'ready');

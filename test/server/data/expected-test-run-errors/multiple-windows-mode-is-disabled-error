@@ -1,5 +1,5 @@
-You should activate multi window mode (enable the "allow-multiple-windows"
-run option) to use the "openWindow" method.
+You disabled multi window mode. Remove the "disable-multiple-windows" run
+option to use the "openWindow" method.
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>

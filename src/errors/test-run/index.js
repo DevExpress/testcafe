@@ -298,9 +298,17 @@ export class RequestHookNotImplementedMethodError extends TestRunErrorBase {
     }
 }
 
-export class AllowMultipleWindowsOptionIsNotSpecifiedError extends TestRunErrorBase {
+export class MultipleWindowsModeIsDisabledError extends TestRunErrorBase {
     constructor (methodName) {
-        super(TEST_RUN_ERRORS.allowMultipleWindowsOptionIsNotSpecifiedError);
+        super(TEST_RUN_ERRORS.multipleWindowsModeIsDisabledError);
+
+        this.methodName = methodName;
+    }
+}
+
+export class MultipleWindowsModeIsNotAvailableInRemoteBrowserError extends TestRunErrorBase {
+    constructor (methodName) {
+        super(TEST_RUN_ERRORS.multipleWindowsModeIsNotAvailableInRemoteBrowserError);
 
         this.methodName = methodName;
     }

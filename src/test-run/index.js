@@ -95,7 +95,8 @@ export default class TestRun extends AsyncEventEmitter {
 
         this.disablePageReloads   = test.disablePageReloads || opts.disablePageReloads && test.disablePageReloads !== false;
         this.disablePageCaching   = test.disablePageCaching || opts.disablePageCaching;
-        this.allowMultipleWindows = opts.allowMultipleWindows;
+
+        this.disableMultipleWindows = opts.disableMultipleWindows;
 
         this.session = SessionController.getSession(this);
 
@@ -924,6 +925,12 @@ export default class TestRun extends AsyncEventEmitter {
     async emitActionEvent (eventName, args) {
         if (!this.preventEmitActionEvents)
             await this.emit(eventName, args);
+    }
+
+    static isMultipleWindowsAllowed (testRun) {
+        const { disableMultipleWindows, test, browserConnection } = testRun;
+
+        return !disableMultipleWindows && !test.isLegacy && !!browserConnection.activeWindowId;
     }
 }
 

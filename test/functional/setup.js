@@ -53,7 +53,7 @@ function getBrowserInfo (settings) {
 
             return browserProviderPool
                 .getBrowserInfo(settings.browserName)
-                .then(browserInfo => new BrowserConnection(testCafe.browserConnectionGateway, browserInfo, true, process.env.ALLOW_MULTIPLE_WINDOWS));
+                .then(browserInfo => new BrowserConnection(testCafe.browserConnectionGateway, browserInfo, true));
         })
         .then(connection => {
             return {
@@ -220,7 +220,7 @@ before(function () {
                     disablePageCaching,
                     disablePageReloads,
                     disableScreenshots,
-                    allowMultipleWindows
+                    disableMultipleWindows
                 } = opts;
 
                 const actualBrowsers = browsersInfo.filter(browserInfo => {
@@ -281,7 +281,7 @@ before(function () {
                         disablePageCaching,
                         disablePageReloads,
                         disableScreenshots,
-                        allowMultipleWindows
+                        disableMultipleWindows
                     })
                     .then(failedCount => {
                         if (customReporters)

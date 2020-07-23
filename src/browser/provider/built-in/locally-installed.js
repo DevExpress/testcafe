@@ -21,7 +21,7 @@ export default {
         delete this.openedBrowsers[browserId];
     },
 
-    async openBrowser (browserId, pageUrl, browserName, allowMultipleWindows) {
+    async openBrowser (browserId, pageUrl, browserName, disableMultipleWindows) {
         const args  = browserName.split(' ');
         const alias = args.shift();
 
@@ -35,7 +35,7 @@ export default {
 
         let activeWindowId = null;
 
-        if (allowMultipleWindows)
+        if (!disableMultipleWindows)
             activeWindowId = this.calculateWindowId();
 
         this.openedBrowsers[browserId] = { activeWindowId };
