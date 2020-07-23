@@ -24,4 +24,4 @@ window | Window | Object referring to an open window
 
 Parameter | Type | Description
 --------- | ---- | ------------
-filterFn | Function | 
+fn | function | 
