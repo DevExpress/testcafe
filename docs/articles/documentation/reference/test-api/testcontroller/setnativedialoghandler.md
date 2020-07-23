@@ -3,7 +3,7 @@ layout: docs
 title: t.setNativeDialogueHandler Method
 permalink: /documentation/reference/test-api/testcontroller/setnativedialoghandler.html
 ---
-# t.setNativeDialogueHandler Method
+# t.setNativeDialogHandler Method
 
 To handle native dialogs invoked during the test run, specify a handler function
 using the `setNativeDialogHandler` method of the
