@@ -333,3 +333,5 @@ When you pass the `:userProfile` flag to a portable browser, also use the [brows
 ```sh
 testcafe chrome:d:\chrome_portable\chrome.exe:userProfile tests/test.js
 ```
+
+> Combining `:userProfile` flag with either `headless` or `emulation` mode can lead to unstable behaviour and is not recommended.
