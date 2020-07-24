@@ -43,7 +43,7 @@ t.SwitchToWindow(filterFn, dependencies);
 Argument                         | Type     | Description
 -------------------------------- | -------- | --------------
 `filterFn`                       | Function | The predicate used to filter windows.
-`dependencies`&#160;*(optional)* | Object   | Variables and objects passed to the `filterFn` function.
+`dependencies` | Object   | Variables and objects passed to the `filterFn` function.
 
 The `filterFn` predicate is executed on the client side and accepts the following parameters:
 
