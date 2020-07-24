@@ -37,5 +37,4 @@ test('Open the documentation page in a new window', async t => {
     await t
         .openWindow('./documentation');
 });
-```
 

@@ -47,7 +47,7 @@ test('Open a new window', async t => {
 
 ## Switch between windows
 
-The t.switchToWindow method lets you switch between browser windows.
+The  t.switchToWindow method lets you switch between browser windows.
 
 It takes an instance of the Window object as an argument:
 

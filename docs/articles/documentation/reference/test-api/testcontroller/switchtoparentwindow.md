@@ -6,7 +6,7 @@ permalink: /documentation/reference/test-api/testcontroller/switchtoparentwindow
 
 # t.switchToParentWindow method
 
-Switches to the window that opened the currently active window.
+Switches to the window that opened, or was open during the opening of, the currently active window.
 
 ```JavaScript
 t.switchToParentWindow()

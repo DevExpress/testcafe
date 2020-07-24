@@ -24,7 +24,5 @@ test('getCurrentWindow', async t => {
     await t.openWindow('https://devexpress.com');
     const devexpress = await t.getCurrentWindow();
     await t.closeWindow(devexpress);
-
 });
 ```
-
