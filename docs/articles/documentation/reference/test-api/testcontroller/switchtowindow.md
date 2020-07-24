@@ -10,7 +10,7 @@ Switches to a specific browser window.
 
 ## t.switchToWindow(window)
 
-Activates the window represented by the window object.
+Activates the window described by the window object.
 
 ```JavaScript
 t.SwitchToWindow(window);
@@ -49,7 +49,31 @@ The `filterFn` predicate is executed on the client side and accepts the followin
 
 Parameter | Description
 ------ | -----
-`url`  | Object describing the URL of a currently displayed web page.
-`title` | The title of a currently displayed web page.
+`url`  | Object describing the URL of the window you're looking for.
+`title` | The title of the window you're looking for.
 
-{% include multiwindow/url-object.md %}
+The `url` object can contain the following properties:
+
+Property | Description | Example
+------ | ----- | -----
+`protocol`  | Protocol used | `'https:`
+`port`  | Port number | `'80'`
+`host`  | Hostname | `'www.devexpress.com'`
+`pathname` | Location relative to the host's root folder | `'/products/testcafestudio/'`
+`href`|  The complete URL | `'https://www.devexpress.com/products/testcafestudio/'`
+
+### Example
+
+```JavaScript
+import { Selector } from 'testcafe';
+
+fixture `Example page`
+    .page('http://www.example.com/');
+
+test('Switching between different windows', async t => {
+    await t.openWindow('https://devexpress.github.io/testcafe')
+        .openWindow('https://devexpress.com')
+        .switchToWindow(w => w.url.host === "devexpress.github.io")
+        .switchToWindow(w => w.title === "Example Domain" && w.url.host === "www.example.com");
+});
+```

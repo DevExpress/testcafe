@@ -17,7 +17,7 @@ url | String | The URL to open. Can be local or remote, absolute or relative.
 ```JavaScript
 import { Selector } from 'testcafe';
 
-fixture `My fixture`
+fixture `Example page`
     .page `http://www.example.com/`;
 
 test('Open the TestCafe website', async t => {

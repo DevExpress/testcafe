@@ -20,7 +20,7 @@ import { Selector, ClientFunction } from 'testcafe';
 fixture `Example page`
     .page('http://www.example.com/');
 
-test('Switch to a parent window', async t => {
+test('Switch to the parent window', async t => {
     await t
         .openWindow('https://devexpress.com')
         .switchToParentWindow();
