@@ -49,7 +49,7 @@ test('Open a new window', async t => {
 
 The t.switchToWindow method lets you switch between browser windows.
 
-It takes an instance of the window object as an argument:
+It takes an instance of the Window object as an argument:
 
 ```JavaScript
 fixture `Example page`
@@ -70,13 +70,13 @@ test('Switch to a specific window', async t => {
 You can also pass a predicate with the description of the window you need:
 
 ```JavaScript
-await t.switchToWindow(w => w.title === 'Example Domain' && w.location.host === 'example.com');
+await t.switchToWindow(w => w.title === 'Example Domain' && w.url.host === 'example.com');
 ```
 
 Use the t.switchToParentWindow method to access the window's parent:
 
 ```JavaScript
-fixture `Devexpress`
+fixture `Example page`
     .page('http://www.example.com/');
 
 test('Switch to a parent window', async t => {
@@ -132,7 +132,7 @@ test('Close a specific window', async t => {
 Likewise, you can pass a predicate with the description of the window you want to close:
 
 ```JavaScript
-await t.closeWindow(w => w.location.host === 'www.example.com');
+await t.closeWindow(w => w.url.host === 'www.example.com');
 ```
 
 Note: You cannot orphan open windows. Trying to close a window with open children will result in an error. 

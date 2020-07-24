@@ -6,10 +6,25 @@ permalink: /documentation/reference/test-api/testcontroller/getcurrentwindow.htm
 
 # t.getCurrentWindow method
 
-Returns the `window` object corresponding to the current window.
+Retrieves the `window` object that contains information about the currently open window.
 
 ```JavaScript
 t.getCurrentWindow();
 ```
 
-The following example shows how to use it 
+### Example
+
+```JavaScript
+import { Selector } from 'testcafe';
+
+fixture `Example page`
+    .page('http://www.example.com/');
+
+test('getCurrentWindow', async t => {
+    await t.openWindow('https://devexpress.com');
+    const devexpress = await t.getCurrentWindow();
+    await t.closeWindow(devexpress);
+
+});
+```
+
