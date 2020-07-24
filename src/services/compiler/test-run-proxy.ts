@@ -23,7 +23,9 @@ class TestRunMock {
         this.ctx        = Object.create(null);
         this.fixtureCtx = fixtureCtx;
 
-        this.controller = new TestController();
+        // TODO: Synchronize these properties with their real counterparts in the main process.
+        // Postponed until (GH-3244). See details in (GH-5250).
+        this.controller =        new TestController(this);
         this.observedCallsites = new ObservedCallsitesStorage();
 
         testRunTracker.activeTestRuns[id] = this;
