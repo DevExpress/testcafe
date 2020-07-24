@@ -5,7 +5,6 @@ permalink: /documentation/reference/test-api/testcontroller/closewindow.html
 ---
 
 # t.closeWindow method
-<<<<<<< HEAD
 
 Closes a browser window. 
 
@@ -61,7 +60,3 @@ test('Closing windows', async t => {
 
 You can't close windows with open children.
 You can't close the last remaining window — it will be automatically closed at the end of the test.
-
-
-=======
->>>>>>> 46c28ed6a346584640d4a4390abd8f19309a828d
