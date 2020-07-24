@@ -6,7 +6,9 @@ permalink: /documentation/guides/advanced-guides/work-with-multiple-windows.html
 
 # Work with Multiple Windows
 
-TestCafe can open, close, and switch between browser windows. This lets users test pop-ups, OAuth login forms, and multi-window web apps.
+The TestCafe API includes methods that open, close, and switch between browser windows. You can work with pop-up windows and OAuth login forms, debug complex multi-window applications, or run multiple instances of the same web app side by side.
+
+>This feature is in beta. You will be unable to take videos and screenshots of child windows. Additionally, multi-window tests can not yet run in cloud browsers.
 
 ## Basic use
 
@@ -23,9 +25,11 @@ const googleButton = Selector('div.login-panel-footer__login-with > button');
 test('Login via Google', async t => {
     await t
         .click(googleButton)
-        .typeText('input[type=email]', 'This text will be entered inside the pop-up');
+        .typeText('input[type=email]', 'This text will be entered inside the login dialog');
 });
 ```
+
+> Whitelist TestCafe pop-up windows before launching your tests in Safari and Internet Explorer. These browsers block all additional windows unless instructed not to.
 
 ## Open a new window
 
@@ -45,6 +49,8 @@ test('Open a new window', async t => {
 });
 ```
 
+>All open browser windows share the same cookies and user storage. Support for per-window user sessions will be available at a later date.
+
 ## Switch between windows
 
 The  t.switchToWindow method lets you switch between browser windows.
@@ -57,8 +63,8 @@ fixture `Example page`
 
 test('Switch to a specific window', async t => {
     const initialWindow = await t.getCurrentWindow();
-    const popUp1 = await t.openWindow('http://example1.com');
-    const popUp2 = await t.openWindow('http://example2.com');
+    const window2 = await t.openWindow('http://example1.com');
+    const window3 = await t.openWindow('http://example2.com');
 
     await t.switchToWindow(initialWindow);
 
@@ -89,7 +95,7 @@ test('Switch to a parent window', async t => {
 });
 ```
 
-Use the t.switchToPreviousWindow method to switch to the window you had open before the current one:
+Use the t.switchToPreviousWindow method to access the second to last open window:
 
 ```JavaScript
 test('Switch back', async t => {
@@ -104,6 +110,8 @@ test('Switch back', async t => {
 ```
 
 ## Close an existing window
+
+>You cannot orphan open windows. Attempting to close a window with open children will result in an error.
 
 Call the t.closeWindow method without any arguments to close the current window:
 
@@ -128,18 +136,3 @@ test('Close a specific window', async t => {
     await t.closeWindow(window1);
 });
 ```
-
-Likewise, you can pass a predicate with the description of the window you want to close:
-
-```JavaScript
-await t.closeWindow(w => w.url.host === 'www.example.com');
-```
-
-Note: You cannot orphan open windows. Trying to close a window with open children will result in an error.
-
-## Current limitations
-
-* Cloud browsers are not supported.
-* You cannot take screenshots and videos of child windows.
-* The current version of TestCafe does not support per-window user sessions.
-* This feature is known to break some legacy tests. [more info?!?!] Include the `--disable-multiple-windows` CLI flag to disable it.

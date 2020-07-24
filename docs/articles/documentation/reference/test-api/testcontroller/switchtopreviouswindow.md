@@ -6,7 +6,7 @@ permalink: /documentation/reference/test-api/testcontroller/switchtopreviouswind
 
 # t.switchToPreviousWindow Method
 
-Switches to the second to last active window.
+Activates the second to last active window.
 
 ```JavaScript
 t.switchToPreviousWindow()

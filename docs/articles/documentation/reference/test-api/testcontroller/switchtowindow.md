@@ -10,13 +10,13 @@ Switches to a specific browser window.
 
 ## t.switchToWindow(window)
 
-Activates the window described by the window object.
+Activates the window corresponding to the window object.
 
 ```JavaScript
 t.SwitchToWindow(window);
 ```
 
-### Example
+**Example**
 
 ```JavaScript
 Import { Selector } from 'testcafe';
@@ -40,9 +40,9 @@ Activates the first window that matches the criteria passed to the `filterFn` fu
 t.SwitchToWindow(filterFn, dependencies);
 ```
 
-Argument                         | Type     | Description
+Parameter | Type     | Description
 -------------------------------- | -------- | --------------
-`filterFn`                       | Function | The predicate used to filter windows.
+`filterFn` | Function | The predicate used to select windows.
 `dependencies` | Object   | Variables and objects passed to the `filterFn` function.
 
 The `filterFn` predicate is executed on the client side and accepts the following parameters:
@@ -52,17 +52,17 @@ Parameter | Description
 `url`  | Object describing the URL of the window you're looking for.
 `title` | The title of the window you're looking for.
 
-The `url` object can contain the following properties:
+The `url` object is modelled after [its Node.js counterpart](https://nodejs.org/api/url.html). It can contain the following properties:
 
 Property | Description | Example
 ------ | ----- | -----
-`protocol`  | Protocol used | `'https:`
-`port`  | Port number | `'80'`
+`protocol`  | Protocol used | `'https:'`
 `host`  | Hostname | `'www.devexpress.com'`
+`port`  | Port number | `'80'`
 `pathname` | Location relative to the host's root folder | `'/products/testcafestudio/'`
 `href`|  The complete URL | `'https://www.devexpress.com/products/testcafestudio/'`
 
-### Example
+**Example**
 
 ```JavaScript
 import { Selector } from 'testcafe';

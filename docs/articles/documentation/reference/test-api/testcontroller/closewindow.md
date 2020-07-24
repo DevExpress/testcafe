@@ -14,15 +14,15 @@ t.closeWindow( [window] )
 
 Parameter | Type | Description
 --------- | ---- | ------------
-window *(optional)* | Window | An open window object. If this parameter is omitted, the currently active window is closed.
+window *(optional)* | Window | The window you want to close. If this parameter is omitted, the currently active window is closed.
 
 > You can not close the last remaining window, or windows with open children.
 
-## Examples
+**Examples:**
 
 The following two examples should produce identical test scenarios.
 
-Closing windows by passing the window object:
+Closing specific windows:
 
 ```JavaScript
 import { Selector } from 'testcafe';
@@ -41,7 +41,7 @@ test('Closing specific windows', async t => {
 });
 ```
 
-Closing the currently active window:
+Calling the closeWindow() function without an argument:
 
 ```JavaScript
 import { Selector } from 'testcafe';
