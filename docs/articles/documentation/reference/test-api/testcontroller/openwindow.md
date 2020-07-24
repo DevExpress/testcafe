@@ -12,7 +12,10 @@ Parameter | Type | Description
 --------- | ---- | ------------
 url | String | The URL to open. Can be local or remote, absolute or relative.
 
-The following example shows how to use the t.openWindow method:
+
+### Examples
+
+The following example show how to use the t.openWindow method:
 
 ```JavaScript
 fixture `My fixture`
@@ -25,7 +28,7 @@ test('Open the TestCafe website', async t => {
 });
 ```
 
-Use a relative path:
+You can also use paths relative to the currently active window's URL:
 
 ```JavaScript
 import { Selector } from 'testcafe';
@@ -37,4 +40,4 @@ test('Open the documentation page in a new window', async t => {
     await t
         .openWindow('./documentation');
 });
-
+```
