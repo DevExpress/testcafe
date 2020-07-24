@@ -18,7 +18,7 @@ window *(optional)* | Window | An open window object. If this parameter is omitt
 
 ### Example
 
-The following two examples generate the same scenario by different means.
+The following two examples generate the same test scenario.
 
 Using the window object:
 
