@@ -1,6 +1,6 @@
 Functions that search for elements in the DOM tree allow you to use a `filterFn` predicate to filter the matched set.
 
-The `filterFn` predicate is executed on the client side and accepts the following parameters:
+The `url` object contains the
 
 Parameter | Description
 ------ | -----

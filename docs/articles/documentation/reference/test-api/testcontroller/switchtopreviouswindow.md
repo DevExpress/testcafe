@@ -6,13 +6,13 @@ permalink: /documentation/reference/test-api/testcontroller/switchtopreviouswind
 
 # t.switchToPreviousWindow Method
 
-Switches to the previously open window.
+Switches to the second to last active window.
 
 ```JavaScript
-t.switchToParentWindow()
+t.switchToPreviousWindow()
 ```
 
-### Example
+## Example
 
 ```JavaScript
 import { Selector, ClientFunction } from 'testcafe';
@@ -24,7 +24,7 @@ test('Switch to the previous window', async t => {
     await t
         .openWindow('https://devexpress.com')
         .switchToPreviousWindow();
-        
+
     const url = await t.eval(() => document.documentURI);
     await t.expect(url).eql('http://example.com/');
 });

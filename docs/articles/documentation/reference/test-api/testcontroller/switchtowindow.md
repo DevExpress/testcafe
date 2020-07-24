@@ -8,9 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/switchtowindow.html
 
 Switches to a specific browser window.
 
-## Syntax
-
-### t.switchToWindow(window)
+## t.switchToWindow(window)
 
 Activates the window represented by the window object.
 
@@ -18,7 +16,7 @@ Activates the window represented by the window object.
 t.SwitchToWindow(window);
 ```
 
-Example:
+### Example
 
 ```JavaScript
 Import { Selector } from 'testcafe';
@@ -34,7 +32,7 @@ test('Switch to a different window', async t => {
 });
 ```
 
-### t.switchToWindow(predicate)
+## t.switchToWindow(predicate)
 
 Activates the first window that matches the criteria passed to the `filterFn` function
 
@@ -47,12 +45,11 @@ Argument                         | Type     | Description
 `filterFn`                       | Function | The predicate used to filter windows.
 `dependencies`&#160;*(optional)* | Object   | Variables and objects passed to the `filterFn` function.
 
-Example:
-
-
 The `filterFn` predicate is executed on the client side and accepts the following parameters:
 
 Parameter | Description
 ------ | -----
-`url`  | The URL of the currently displayed web page.
-`title` | The title of the currently displayed web page.
+`url`  | Object describing the URL of a currently displayed web page.
+`title` | The title of a currently displayed web page.
+
+{% include multiwindow/url-object.md %}

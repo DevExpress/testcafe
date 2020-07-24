@@ -135,7 +135,7 @@ Likewise, you can pass a predicate with the description of the window you want t
 await t.closeWindow(w => w.url.host === 'www.example.com');
 ```
 
-Note: You cannot orphan open windows. Trying to close a window with open children will result in an error. 
+Note: You cannot orphan open windows. Trying to close a window with open children will result in an error.
 
 ## Current limitations
 

@@ -6,7 +6,7 @@ permalink: /documentation/reference/test-api/testcontroller/closewindow.html
 
 # t.closeWindow method
 
-Closes a browser window. 
+Closes a browser window.
 
 ```JavaScript
 t.closeWindow( [window] )
@@ -16,11 +16,13 @@ Parameter | Type | Description
 --------- | ---- | ------------
 window *(optional)* | Window | An open window object. If this parameter is omitted, the currently active window is closed.
 
-### Example
+> You can not close the last remaining window, or windows with open children.
 
-The following two examples generate the same test scenario.
+## Examples
 
-Using the window object:
+The following two examples should produce identical test scenarios.
+
+Closing windows by passing the window object:
 
 ```JavaScript
 import { Selector } from 'testcafe';
@@ -30,10 +32,10 @@ fixture `TestCafe`
 
 test('Closing specific windows', async t => {
     const testcafe =  await t.openWindow('https://devexpress.github.io/testcafe');
-    
+
     await t.openWindow('https://devexpress.com');
     const devexpress = await t.getCurrentWindow();
-    
+
     await t.closeWindow(devexpress)
         .closeWindow(testcafe);
 });
@@ -54,9 +56,3 @@ test('Closing windows', async t => {
         .closeWindow();
 });
 ```
-
-
-### Limitations
-
-You can't close windows with open children.
-You can't close the last remaining window — it will be automatically closed at the end of the test.

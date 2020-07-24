@@ -12,7 +12,7 @@ Retrieves the `window` object that contains information about the currently open
 t.getCurrentWindow();
 ```
 
-### Example
+## Example
 
 ```JavaScript
 import { Selector } from 'testcafe';

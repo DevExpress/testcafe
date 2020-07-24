@@ -12,7 +12,7 @@ Switches to the window that opened, or was active during the opening of, the cur
 t.switchToParentWindow()
 ```
 
-### Example
+## Example
 
 ```JavaScript
 import { Selector, ClientFunction } from 'testcafe';
@@ -24,7 +24,7 @@ test('Switch to a parent window', async t => {
     await t
         .openWindow('https://devexpress.com')
         .switchToParentWindow();
-        
+
     const url = await t.eval(() => document.documentURI);
     await t.expect(url).eql('http://example.com/');
 });
