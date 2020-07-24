@@ -16,7 +16,7 @@ Activates the window corresponding to the window object.
 t.SwitchToWindow(window);
 ```
 
-**Example**
+**Example:**
 
 ```JavaScript
 Import { Selector } from 'testcafe';
@@ -43,7 +43,7 @@ t.SwitchToWindow(filterFn, dependencies);
 Parameter | Type     | Description
 -------------------------------- | -------- | --------------
 `filterFn` | Function | The predicate used to select windows.
-`dependencies` | Object   | Variables and objects passed to the `filterFn` function.
+`dependencies` | Object | Variables and objects passed to the `filterFn` function.
 
 The `filterFn` predicate is executed on the client side and accepts the following parameters:
 
@@ -62,7 +62,7 @@ Property | Description | Example
 `pathname` | Location relative to the host's root folder | `'/products/testcafestudio/'`
 `href`|  The complete URL | `'https://www.devexpress.com/products/testcafestudio/'`
 
-**Example**
+**Example:**
 
 ```JavaScript
 import { Selector } from 'testcafe';

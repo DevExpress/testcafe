@@ -12,7 +12,7 @@ Activates the window that launched, or was active during the launch of, the curr
 t.switchToParentWindow()
 ```
 
-## Example
+**Example:**
 
 ```JavaScript
 import { Selector, ClientFunction } from 'testcafe';

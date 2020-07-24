@@ -14,7 +14,7 @@ t.closeWindow( [window] )
 
 Parameter | Type | Description
 --------- | ---- | ------------
-window *(optional)* | Window | The window you want to close. If this parameter is omitted, the currently active window is closed.
+window *(optional)* | Window | The window you want to close. If this parameter is omitted, the currently active window is selected.
 
 > You can not close the last remaining window, or windows with open children.
 

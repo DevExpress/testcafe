@@ -6,7 +6,7 @@ permalink: /documentation/reference/test-api/testcontroller/getcurrentwindow.htm
 
 # t.getCurrentWindow method
 
-Creates an object that contains information about the currently open window.
+Retrieves a `window` object that represents the currently open window.
 
 ```JavaScript
 t.getCurrentWindow();
