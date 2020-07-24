@@ -15,7 +15,7 @@ url | String | The URL to open. Can be local or remote, absolute or relative.
 
 ### Examples
 
-The following example show how to use the t.openWindow method:
+The following example shows how to use the t.openWindow method:
 
 ```JavaScript
 fixture `My fixture`
