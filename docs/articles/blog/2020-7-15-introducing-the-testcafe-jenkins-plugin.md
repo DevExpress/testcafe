@@ -33,7 +33,7 @@ The third option offers greater speed and stability. We describe it going forwar
 
 First, let's write a simple test that checks if the 'Add to Cart' button exists:
 
-```js
+```JavaScript
 test('`Add To Cart` button should exist', async t => {
     await t
         .click(Selector('button').withText('Add To Cart'));
