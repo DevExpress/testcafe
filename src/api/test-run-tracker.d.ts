@@ -1,10 +1,12 @@
 import ObservedCallsitesStorage from '../test-run/observed-callsites-storage';
 import TestController from './test-controller';
+import WarningLog from '../notifications/warning-log';
 
 export interface TestRun {
     id: string;
     controller: TestController;
     observedCallsites: ObservedCallsitesStorage;
+    warningLog: WarningLog;
 
     executeAction(apiMethodName: string, command: unknown, callsite: unknown): Promise<unknown>;
 }

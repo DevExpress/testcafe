@@ -1,6 +1,8 @@
-const expect = require('chai').expect;
-const fs     = require('fs');
-const path   = require('path');
+const expect             = require('chai').expect;
+const fs                 = require('fs');
+const path               = require('path');
+const escapeStringRegExp = require('escape-string-regexp');
+const WARNING_MESSAGES   = require('../../../../../../lib/notifications/warning-message');
 
 const DATA_PATH = path.join(__dirname, './data');
 
@@ -187,8 +189,7 @@ describe('[API] Assertions', function () {
             only:       'chrome'
         })
             .catch(function () {
-                expect(testReport.warnings[0]).to.match(new RegExp(['You passed a Selector object to \'t\\.expect\\(\\)\'\\.\nIf you want to check ',
-                    'that a matched element exists, pass the \'selector\\.exists\' value instead\\.'].join('')));
+                expect(testReport.warnings[0]).to.match(new RegExp(escapeStringRegExp(WARNING_MESSAGES.assertedSelectorInstance)));
             });
     });
 
@@ -208,16 +209,28 @@ describe('[API] Assertions', function () {
     it('Should raise a warning when trying to await Selector property in assertion', function () {
         return runTests('./testcafe-fixtures/assertions-test.js', 'Await Selector property', { only: 'chrome' })
             .then(() => {
-                const snapshotWarningRegExp = new RegExp([`You passed a DOM snapshot property to the assertion's 't\\.expect\\(\\)' method\\. `,
-                    `The property value is assigned when the snapshot is resolved and this value is no longer updated\\. `,
-                    `To ensure that the assertion verifies an up-to-date value, pass the selector property without 'await'\\.`].join(''));
+                const snapshotWarningRegExp = new RegExp(escapeStringRegExp(WARNING_MESSAGES.excessiveAwaitInAssertion));
 
                 const snapshotWarnings = testReport.warnings.filter(warningStr => {
                     return warningStr.match(snapshotWarningRegExp);
                 });
 
                 expect(snapshotWarnings.length).to.eql(1);
-                expect(snapshotWarnings[0]).to.match(new RegExp(fs.readFileSync(path.join(DATA_PATH, 'expected-selector-property-awaited-callsite')).toString().replace(/\r/g, '')));
+                expect(snapshotWarnings[0]).to.match(new RegExp(escapeStringRegExp(fs.readFileSync(path.join(DATA_PATH, 'expected-selector-property-awaited-callsite')).toString().replace(/\r/g, ''))));
+            });
+    });
+
+    it('Should raise a warning when using DOM Node snapshot property without await', function () {
+        return runTests('./testcafe-fixtures/assertions-test.js', 'Snapshot property without await', { only: 'chrome' })
+            .then(() => {
+                const missingAwaitWarningRegExp = new RegExp(escapeStringRegExp(WARNING_MESSAGES.missingAwaitOnSnapshotProperty));
+
+                const missingAwaitWarnings = testReport.warnings.filter(warningStr => {
+                    return warningStr.match(missingAwaitWarningRegExp);
+                });
+
+                expect(missingAwaitWarnings.length).to.eql(1);
+                expect(missingAwaitWarnings[0]).to.match(new RegExp(escapeStringRegExp(fs.readFileSync(path.join(DATA_PATH, 'expected-missing-await-on-snapshot-callsite')).toString().replace(/\r/g, ''))));
             });
     });
 

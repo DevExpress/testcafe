@@ -1,15 +1,13 @@
 // TODO: Fix https://github.com/DevExpress/testcafe/issues/4139 to get rid of Pinkie
 import Promise from 'pinkie';
-import { renderers } from 'callsite-record';
 import { identity, assign, isNil as isNullOrUndefined, flattenDeep as flatten } from 'lodash';
 import { getCallsiteForMethod } from '../../errors/get-callsite';
 import ClientFunctionBuilder from '../../client-functions/client-function-builder';
 import Assertion from './assertion';
 import { getDelegatedAPIList, delegateAPI } from '../../utils/delegated-api';
 import WARNING_MESSAGE from '../../notifications/warning-message';
-import renderCallsiteSync from '../../utils/render-callsite-sync';
-import createStackFilter from '../../errors/create-stack-filter';
 import getBrowser from '../../utils/get-browser';
+import addWarning from '../../notifications/add-rendered-warning';
 
 import {
     ClickCommand,
@@ -389,7 +387,7 @@ export default class TestController {
         for (const selectorCallsite of selectorCallsiteList) {
             if (selectorCallsite.filename === expectCallsite.filename &&
                 selectorCallsite.lineNum === expectCallsite.lineNum) {
-                this._addWarning(WARNING_MESSAGE.excessiveAwaitInAssertion, selectorCallsite);
+                addWarning(this.warningLog, WARNING_MESSAGE.excessiveAwaitInAssertion, selectorCallsite);
 
                 selectorCallsiteList.delete(selectorCallsite);
             }
@@ -402,20 +400,11 @@ export default class TestController {
         this._checkForExcessiveAwaits(this.testRun.observedCallsites.snapshotPropertyCallsites, callsite);
 
         if (isClientFunction(actual))
-            this._addWarning(WARNING_MESSAGE.assertedClientFunctionInstance, callsite);
+            addWarning(this.warningLog, WARNING_MESSAGE.assertedClientFunctionInstance, callsite);
         else if (isSelector(actual))
-            this._addWarning(WARNING_MESSAGE.assertedSelectorInstance, callsite);
+            addWarning(this.warningLog, WARNING_MESSAGE.assertedSelectorInstance, callsite);
 
         return new Assertion(actual, this, callsite);
-    }
-
-    _addWarning (message, callsite = void 0) {
-        const renderedCallsite = renderCallsiteSync(callsite, {
-            renderer:    renderers.noColor,
-            stackFilter: createStackFilter(Error.stackTraceLimit)
-        });
-
-        this.warningLog.addWarning(message + `\n\n${renderedCallsite}`);
     }
 
     _debug$ () {

@@ -4,12 +4,14 @@ import prerenderCallsite from '../../utils/prerender-callsite';
 import { TestRunDispatcherProtocol } from './protocol';
 import TestController from '../../api/test-controller';
 import ObservedCallsitesStorage from '../../test-run/observed-callsites-storage';
+import WarningLog from '../../notifications/warning-log';
 
 
 class TestRunMock {
     public readonly id: string;
     public readonly controller: TestController;
     public readonly observedCallsites: ObservedCallsitesStorage;
+    public readonly warningLog: WarningLog;
 
     private readonly dispatcher: TestRunDispatcherProtocol;
     private readonly fixtureCtx: unknown;
@@ -27,6 +29,7 @@ class TestRunMock {
         // Postponed until (GH-3244). See details in (GH-5250).
         this.controller =        new TestController(this);
         this.observedCallsites = new ObservedCallsitesStorage();
+        this.warningLog =        new WarningLog();
 
         testRunTracker.activeTestRuns[id] = this;
     }
