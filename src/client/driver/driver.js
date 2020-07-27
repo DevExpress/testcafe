@@ -100,6 +100,7 @@ const Promise        = hammerhead.Promise;
 const messageSandbox = hammerhead.eventSandbox.message;
 const storages       = hammerhead.storages;
 const nativeMethods  = hammerhead.nativeMethods;
+const json           = hammerhead.json;
 const DateCtor       = nativeMethods.date;
 
 const TEST_DONE_SENT_FLAG                  = 'testcafe|driver|test-done-sent-flag';
@@ -458,15 +459,15 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     _getChildWindowValidateResult (arr) {
-        const success = arr.find(item => item.result.success);
+        const success = arrayUtils.find(arr, item => item.result.success);
 
         if (success)
             return success.result;
 
-        let errItem = arr.find(item => item.result.errCode === TEST_RUN_ERRORS.cannotCloseWindowWithChildrenError);
+        let errItem = arrayUtils.find(arr, item => item.result.errCode === TEST_RUN_ERRORS.cannotCloseWindowWithChildrenError);
 
         if (!errItem)
-            errItem = arr.find(item => !!item.result.errCode);
+            errItem = arrayUtils.find(arr, item => !!item.result.errCode);
 
         return errItem ? { errCode: errItem.result.errCode } : void 0;
     }
@@ -570,7 +571,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         if (!this.childWindowDriverLinks.length)
             return Promise.resolve();
 
-        const childWindowToClose = this.childWindowDriverLinks.find(link => link.windowId === msg.windowId);
+        const childWindowToClose = arrayUtils.find(this.childWindowDriverLinks, link => link.windowId === msg.windowId);
 
         if (childWindowToClose)
             return this._closeWindowAndWait(childWindowToClose, msg);
@@ -1063,10 +1064,14 @@ export default class Driver extends serviceUtils.EventEmitter {
         const wnd      = this.parentWindowDriverLink?.getTopOpenedWindow() || window;
         const response = await sendMessageToDriver(new GetWindowsMessage(), wnd, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT, CannotSwitchToWindowError);
 
-        this._onReady(new DriverStatus({
+        // NOTE: we need to use stringify/parse combo to create clear JS array
+        // otherwise the tests with fail in IE11
+        const status = new DriverStatus({
             isCommandResult: true,
-            result:          response.result
-        }));
+            result:          json.parse(json.stringify(response.result))
+        });
+
+        this._onReady(status);
     }
 
     _validateChildWindowCloseCommandExists (windowId, wnd) {
