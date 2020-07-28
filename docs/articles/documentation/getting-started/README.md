@@ -83,7 +83,7 @@ TestCafe automatically opens the chosen browser and starts test execution within
 > Inactive tabs and minimized browser windows switch to a lower resource consumption mode
 > where tests are not guaranteed to execute correctly.
 >
-> Do not adjust page zoom during tests. Stable functionality on zoomed in our out pages is not guaranteed.
+> Do not zoom pages while testing. Tests may be unstable if the page is zoomed in or out.
 
 For more information on how to configure the test run, see [Command Line Interface](../reference/command-line-interface.md).
 

@@ -56,6 +56,7 @@ The `t.pressKey` action only triggers page handlers for most keystrokes. Browser
 Shortcut        | Elements
 --------------- | -----------
 `'ctrl+c'`, `'ctrl+v'` | None. Clipboard operations are *not emulated*.
+`'ctrl++'`, `'ctrl+-'` | None. Zoom is *not performed*.
 `'ctrl+a'`      | [text field-based inputs](#text-field-based-inputs), `<textarea>`, `contentEditable`
 `'backspace'`   | [text field-based inputs](#text-field-based-inputs), `<textarea>`, `contentEditable`
 `'delete'`      | [text field-based inputs](#text-field-based-inputs), `<textarea>`, `contentEditable`
@@ -77,10 +78,6 @@ Shortcut        | Elements
 `'esc'`         | `<select>`
 
 > The `'backspace'`, `'delete'`, `'left'` and `'right'` key presses in `contentEditable` elements are processed only when text is selected.
-
-<!-- -->
-
-> Key combinations of `Ctrl` + `+` / `Ctrl` + `-` don't zoom the page in our out.
 
 ### Text Field-Based Inputs
 
