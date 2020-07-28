@@ -7,7 +7,7 @@ permalink: /documentation/guides/advanced-guides/multiple-browser-windows.html
 
 The TestCafe API includes methods that open, close, and switch between browser windows. You can test websites with pop-up windows and OAuth login forms, debug complex multi-window applications, or run multiple instances of the same web app side by side.
 
->This is a beta feature. Browser support is limited to local instances of Chrome and Firefox. Videos and screenshots of child windows cannot be captured. The available functionality is subject to further revisions. Use at your own risk.
+>This is a beta feature. Not recommended for use in production environments. Browser support is limited to local instances of Chrome and Firefox. Videos and screenshots of child windows cannot be captured. The available functionality is subject to further revisions.
 
 ## Handle client-side window events
 
@@ -46,7 +46,7 @@ test('Open a new window', async t => {
 });
 ```
 
->All open browser windows share the same cookies and user storage. Support for per-window user sessions is not yet available.
+>All open browser windows share a single pool of client-side storage. Only one [user role](https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/authentication.html#user-roles) can be active at a time.
 
 ## Switch between windows
 
