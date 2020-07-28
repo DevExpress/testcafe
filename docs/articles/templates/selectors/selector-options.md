@@ -44,7 +44,7 @@ Error: TypeScript compilation failed.
 Cannot find name 'dependencyFoo'.
 ```
 
-You can mitigate this by using [`// @ts-ignore`](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-6.html#suppress-errors-in-ts-files-using--ts-ignore-comments) TypeScript feature.
+Add the [`// @ts-ignore`](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-6.html#suppress-errors-in-ts-files-using--ts-ignore-comments) TypeScript comment to suppress this error.
 
 ### options.timeout
 
