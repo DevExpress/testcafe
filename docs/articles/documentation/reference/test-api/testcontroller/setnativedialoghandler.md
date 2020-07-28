@@ -1,6 +1,6 @@
 ---
 layout: docs
-title: t.setNativeDialogueHandler Method
+title: t.setNativeDialogHandler Method
 permalink: /documentation/reference/test-api/testcontroller/setnativedialoghandler.html
 ---
 # t.setNativeDialogHandler Method
