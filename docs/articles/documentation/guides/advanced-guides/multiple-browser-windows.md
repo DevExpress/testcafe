@@ -1,6 +1,6 @@
 ---
 layout: docs
-title: Multiple BrowserWindows
+title: Multiple Browser Windows
 permalink: /documentation/guides/advanced-guides/multiple-browser-windows.html
 ---
 # Open, close, and switch between browser windows
