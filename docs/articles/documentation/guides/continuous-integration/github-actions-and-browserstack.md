@@ -37,6 +37,8 @@ Create a job that runs the TestCafe tests.
 
 Provide the [job name](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idname) and specify the [type of machine](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on) that should run the job.
 
+You can [*use a GitHub-hosted machine*](https://docs.github.com/en/actions/reference/virtual-environments-for-github-hosted-runners):
+
 ```yml
 name: End-to-End Tests
 on: [push]
@@ -48,6 +50,28 @@ jobs:
 ```
 
 This job runs on a GitHub-hosted virtual machine with the latest Windows version. `test` is the [job ID](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_id) that must be unique to the `jobs` object.
+
+> You can use a GitHub-hosted virtual machine with *any base OS* to run tests. For the sake of simplicity, all examples listed here run on `windows-latest`.
+
+Alternatively, you can [*host your own runners*](https://docs.github.com/en/actions/hosting-your-own-runners/about-self-hosted-runners) for the job. This might be beneficial if you need more precise control over the environment.
+
+To set up the self-hosted runners, [add them to your repository](https://docs.github.com/en/actions/hosting-your-own-runners/adding-self-hosted-runners#adding-a-self-hosted-runner-to-a-repository).
+
+Afterwards, configure `runs-on` in your workflow `.yml` file:
+
+```yml
+name: End-to-End Tests
+on: [push]
+
+jobs:
+  test:
+    name: Run TestCafe Tests
+    runs-on: [self-hosted, linux]
+```
+
+> Make sure that the intended machine meets the [requirements for self-hosted runner machines](https://docs.github.com/en/actions/hosting-your-own-runners/about-self-hosted-runners#requirements-for-self-hosted-runner-machines).
+>
+>For more information about self-hosted runners in GitHub Actions workflow, refer to [this page](https://docs.github.com/en/actions/hosting-your-own-runners/using-self-hosted-runners-in-a-workflow).
 
 ## Step 3 - Provide BrowserStack Credentials
 
