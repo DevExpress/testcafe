@@ -3,7 +3,7 @@ layout: docs
 title: Multiple Browser Windows
 permalink: /documentation/guides/advanced-guides/multiple-browser-windows.html
 ---
-# Open, close, and switch between browser windows
+# Multiple Browser Windows
 
 The TestCafe API includes methods that open, close, and switch between browser windows. You can test websites with pop-up windows and OAuth login forms, debug complex multi-window applications, or run multiple instances of the same web app side by side.
 
