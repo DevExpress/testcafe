@@ -93,7 +93,7 @@ export default class BrowserConnection extends EventEmitter {
         gateway: BrowserConnectionGateway,
         browserInfo: BrowserInfo,
         permanent: boolean,
-        allowMultipleWindows = false) {
+        disableMultipleWindows = false) {
         super();
 
         this.HEARTBEAT_TIMEOUT       = HEARTBEAT_TIMEOUT;
