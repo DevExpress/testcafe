@@ -8,23 +8,39 @@ permalink: /documentation/reference/test-api/testcontroller/closewindow.html
 
 Closes a browser window.
 
-```JavaScript
+```js
 t.closeWindow( [window] )
 ```
 
 Parameter | Type | Description
 --------- | ---- | ------------
-window *(optional)* | Window | The window you want to close. If this parameter is omitted, the currently active window is selected.
+window *(optional)* | Window | The target window. If this parameter is omitted, the currently active window is selected.
 
-> You can not close the last remaining window, or windows with open children.
+>You can not close the last remaining window, or windows with open children.
 
 **Examples:**
 
-The following two examples should produce identical test scenarios.
+The following two examples produce identical test scenarios.
 
-Closing specific windows:
+The `window` parameter is absent. Each call of the `t.closeWindow` method closes the currently active window:
 
-```JavaScript
+```js
+import { Selector } from 'testcafe';
+
+fixture `TestCafe`
+    .page('http://www.example.com/');
+
+test('Closing windows', async t => {
+    await t.openWindow('https://devexpress.github.io/testcafe');
+        .openWindow('https://devexpress.com');
+        .closeWindow()
+        .closeWindow();
+});
+```
+
+The `window` parameter is present. Each call of the `t.closeWindow` method closes the specified target window:
+
+```js
 import { Selector } from 'testcafe';
 
 fixture `TestCafe`
@@ -38,21 +54,5 @@ test('Closing specific windows', async t => {
 
     await t.closeWindow(devexpress)
         .closeWindow(testcafe);
-});
-```
-
-Calling the closeWindow() function without an argument:
-
-```JavaScript
-import { Selector } from 'testcafe';
-
-fixture `TestCafe`
-    .page('http://www.example.com/');
-
-test('Closing windows', async t => {
-    await t.openWindow('https://devexpress.github.io/testcafe');
-        .openWindow('https://devexpress.com');
-        .closeWindow()
-        .closeWindow();
 });
 ```

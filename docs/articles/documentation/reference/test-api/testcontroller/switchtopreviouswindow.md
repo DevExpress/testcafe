@@ -6,15 +6,15 @@ permalink: /documentation/reference/test-api/testcontroller/switchtopreviouswind
 
 # t.switchToPreviousWindow Method
 
-Activates the second to last active window.
+Activates the most recent of the previously active windows. If no new windows are open or closed, consecutive calls of the method cycle back and forth between the two most recent windows.
 
-```JavaScript
+```js
 t.switchToPreviousWindow()
 ```
 
 ## Example
 
-```JavaScript
+```js
 import { Selector, ClientFunction } from 'testcafe';
 
 fixture `Example page`

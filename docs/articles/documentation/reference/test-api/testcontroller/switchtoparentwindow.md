@@ -8,13 +8,13 @@ permalink: /documentation/reference/test-api/testcontroller/switchtoparentwindow
 
 Activates the window that launched, or was active during the launch of, the currently active window.
 
-```JavaScript
+```js
 t.switchToParentWindow()
 ```
 
 **Example:**
 
-```JavaScript
+```js
 import { Selector, ClientFunction } from 'testcafe';
 
 fixture `Example page`

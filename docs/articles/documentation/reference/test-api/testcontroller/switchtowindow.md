@@ -10,15 +10,15 @@ Switches to a specific browser window.
 
 ## t.switchToWindow(window)
 
-Activates the window corresponding to the window object.
+Activates the window that corresponds to the `window` object.
 
-```JavaScript
+```js
 t.SwitchToWindow(window);
 ```
 
 **Example:**
 
-```JavaScript
+```js
 Import { Selector } from 'testcafe';
 
 fixture `TestCafe`
@@ -36,8 +36,8 @@ test('Switch to a different window', async t => {
 
 Activates the first window that matches the criteria passed to the `filterFn` function
 
-```JavaScript
-t.SwitchToWindow(filterFn, dependencies);
+```js
+t.switchToWindow(filterFn, dependencies);
 ```
 
 Parameter | Type     | Description
@@ -45,14 +45,14 @@ Parameter | Type     | Description
 `filterFn` | Function | The predicate used to select windows.
 `dependencies` | Object | Variables and objects passed to the `filterFn` function.
 
-The `filterFn` predicate is executed on the client side and accepts the following parameters:
+The `filterFn` predicate accepts the following parameters:
 
-Parameter | Description
------- | -----
-`url`  | Object describing the URL of the window you're looking for.
-`title` | The title of the window you're looking for.
+Parameter | Type | Description
+------ | ----- | -----
+`url`  | Object |The URL
+`title` | String | The window title
 
-The `url` object is modelled after [its Node.js counterpart](https://nodejs.org/api/url.html). It can contain the following properties:
+The `url` object has the same structure as [its Node.js counterpart](https://nodejs.org/api/url.html). It can contain the following properties:
 
 Property | Description | Example
 ------ | ----- | -----
@@ -64,7 +64,7 @@ Property | Description | Example
 
 **Example:**
 
-```JavaScript
+```js
 import { Selector } from 'testcafe';
 
 fixture `Example page`

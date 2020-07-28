@@ -6,15 +6,15 @@ permalink: /documentation/reference/test-api/testcontroller/getcurrentwindow.htm
 
 # t.getCurrentWindow method
 
-Retrieves a `window` object that represents the currently open window.
+Retrieves a `window` object that corresponds to the currently open window.
 
-```JavaScript
+```js
 t.getCurrentWindow();
 ```
 
 ## Example
 
-```JavaScript
+```js
 import { Selector } from 'testcafe';
 
 fixture `Example page`

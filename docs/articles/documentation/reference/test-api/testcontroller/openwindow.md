@@ -8,13 +8,17 @@ permalink: /documentation/reference/test-api/testcontroller/openwindow.html
 
 Opens a new browser window.
 
+```js
+t.openWindow( url )
+```
+
 Parameter | Type | Description
 --------- | ---- | ------------
 url | String | The URL to open. Can be local or remote, absolute or relative.
 
 **Example:**
 
-```JavaScript
+```js
 import { Selector } from 'testcafe';
 
 fixture `Example page`
