@@ -1,7 +1,7 @@
 ---
 layout: docs
-title: Open, close, and switch between browser Windows
-permalink: /documentation/guides/advanced-guides/open-close-and-switch-between-browser-windows.html
+title: Multiple BrowserWindows
+permalink: /documentation/guides/advanced-guides/multiple-browser-windows.html
 ---
 # Open, close, and switch between browser windows
 
