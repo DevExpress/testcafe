@@ -261,8 +261,8 @@ export default class BrowserProvider {
         return await this.plugin.isLocalBrowser(browserId, browserName);
     }
 
-    public isHeadlessBrowser (browserId: string): Promise<boolean> {
-        return this.plugin.isHeadlessBrowser(browserId);
+    public isHeadlessBrowser (browserId?: string, browserName?: string): Promise<boolean> {
+        return this.plugin.isHeadlessBrowser(browserId, browserName);
     }
 
     public async openBrowser (browserId: string, pageUrl: string, browserName: string, allowMultipleWindows: boolean): Promise<void> {

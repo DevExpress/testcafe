@@ -32,7 +32,7 @@ describe('Runner', () => {
         }
     };
 
-    const browserMock = { path: '/non/exist' };
+    const browserMock = 'chrome:headless';
 
     before(() => {
         return createTestCafe('127.0.0.1', 1335, 1336)
@@ -938,6 +938,10 @@ describe('Runner', () => {
                         resolve();
                     }, BROWSER_CLOSING_DELAY);
                 });
+            },
+
+            isHeadlessBrowser () {
+                return true;
             }
         };
 

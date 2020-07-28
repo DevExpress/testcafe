@@ -102,5 +102,11 @@ export default {
     [RUNTIME_ERRORS.unexpectedIPCBodyPacket]:                            'Cannot create an IPC message due to an unexpected IPC body packet.',
     [RUNTIME_ERRORS.unexpectedIPCTailPacket]:                            'Cannot create an IPC message due to an unexpected IPC tail packet.',
     [RUNTIME_ERRORS.cannotUseAllowMultipleWindowsOptionForLegacyTests]:  'You cannot run Legacy API tests in multi-window mode.',
-    [RUNTIME_ERRORS.cannotUseAllowMultipleWindowsOptionForSomeBrowsers]: 'You cannot use multi-window mode in {browsers}.'
+    [RUNTIME_ERRORS.cannotUseAllowMultipleWindowsOptionForSomeBrowsers]: 'You cannot use multi-window mode in {browsers}.',
+    [RUNTIME_ERRORS.cannotRunLocalNonHeadlessBrowserWithoutDisplay]:
+        'Your Linux version does not have a graphic subsystem to run {browserAlias} with a GUI. ' +
+        'You can launch the browser in headless mode. ' +
+        'If you use a portable browser version, ' +
+        'specify the browser alias before the path instead of the \'path\' prefix. ' +
+        'For more information, see https://devexpress.github.io/testcafe/documentation/guides/concepts/browsers.html#test-in-headless-mode',
 };

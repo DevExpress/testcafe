@@ -41,8 +41,13 @@ export default {
         return true;
     },
 
-    isHeadlessBrowser (browserId) {
-        return this.openedBrowsers[browserId].config.headless;
+    isHeadlessBrowser (browserId, browserName) {
+        if (browserId)
+            return this.openedBrowsers[browserId].config.headless;
+
+        const config = this._getConfig(browserName);
+
+        return !!config.headless;
     },
 
     _getCropDimensions (viewportWidth, viewportHeight) {

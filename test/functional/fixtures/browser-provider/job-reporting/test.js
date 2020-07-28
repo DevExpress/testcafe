@@ -39,6 +39,10 @@ if (config.useLocalBrowsers) {
                 return Promise.resolve(true);
             },
 
+            isHeadlessBrowser () {
+                return true;
+            },
+
             reportJobResult (browserId, result, data) {
                 const name = this.idNameMap[browserId];
 
