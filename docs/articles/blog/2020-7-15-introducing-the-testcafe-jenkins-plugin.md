@@ -36,7 +36,7 @@ First, let's write a simple test that checks if the 'Add to Cart' button exists:
 ```JavaScript
 test('`Add To Cart` button should exist', async t => {
     await t
-        .click(Selector('button').withText('Add To Cart'));
+        .expect(Selector('button').withText('Add To Cart').visible).ok();
 });
 ```
 
