@@ -40,8 +40,6 @@ The available actions with reproducible usage examples and links to their descri
 > TestCafe is intended to emulate real user behavior, so you cannot interact with elements, that are not [visible](../../reference/test-api/selector/filtervisible.md) at that moment.
 >
 > For instance, you can not type into an `input` element with the `display: none` style.
->
-> When prompted to interact with such an element, TestCafe will be making attempts for the duration of a [timeout](../../guides/basic-guides/select-page-elements.md#selector-timeout) for the action. If an element has not appeared during this period, the test fails. You can interact with the page through the use of [client functions](../../guides/basic-guides/obtain-client-side-info.md#client-function-constructor) (e.g. to set a value for an element that is not visible).
 
 ## Click
 
