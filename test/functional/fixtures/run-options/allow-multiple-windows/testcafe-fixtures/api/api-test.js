@@ -265,7 +265,7 @@ test('Close parent window and catch error', async t => {
     await t.closeWindow(parentWindow);
 });
 
-test('Close the only remaining window', async t => {
+test('Close window without parent', async t => {
     await t.closeWindow();
 });
 
