@@ -55,6 +55,7 @@ import {
     ParentWindowNotFoundError,
     PreviousWindowNotFoundError,
     CannotCloseWindowWithChildrenError,
+    CannotCloseWindowWithoutParentError,
     WindowNotFoundError
 } from '../../shared/errors';
 
@@ -463,7 +464,10 @@ export default class Driver extends serviceUtils.EventEmitter {
         if (success)
             return success.result;
 
-        let errItem = arr.find(item => item.result.errCode === TEST_RUN_ERRORS.cannotCloseWindowWithChildrenError);
+        let errItem = arr.find(item => {
+            return item.result.errCode === TEST_RUN_ERRORS.cannotCloseWindowWithChildrenError ||
+                   item.result.errCode === TEST_RUN_ERRORS.cannotCloseWindowWithoutParent;
+        });
 
         if (!errItem)
             errItem = arr.find(item => !!item.result.errCode);
@@ -517,10 +521,20 @@ export default class Driver extends serviceUtils.EventEmitter {
         if (errCode === TEST_RUN_ERRORS.cannotCloseWindowWithChildrenError)
             return new CannotCloseWindowWithChildrenError();
 
+        if (errCode === TEST_RUN_ERRORS.cannotCloseWindowWithoutParent)
+            return new CannotCloseWindowWithoutParentError();
+
         return new WindowNotFoundError();
     }
 
     _getCloseWindowFoundResult () {
+        if (!this.parentWindowDriverLink) {
+            return Promise.resolve({
+                success: false,
+                errCode: TEST_RUN_ERRORS.cannotCloseWindowWithoutParent
+            });
+        }
+
         if (this.childWindowDriverLinks.length) {
             return Promise.resolve({
                 success: false,

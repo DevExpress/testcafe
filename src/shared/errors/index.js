@@ -332,6 +332,12 @@ export class CannotCloseWindowWithChildrenError extends TestRunErrorBase {
     }
 }
 
+export class CannotCloseWindowWithoutParentError extends TestRunErrorBase {
+    constructor () {
+        super(TEST_RUN_ERRORS.cannotCloseWindowWithoutParent);
+    }
+}
+
 export class SwitchToWindowPredicateError extends TestRunErrorBase {
     constructor (errMsg) {
         super(TEST_RUN_ERRORS.switchToWindowPredicateError);

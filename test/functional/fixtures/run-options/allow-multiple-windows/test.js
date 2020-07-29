@@ -219,6 +219,13 @@ describe('Allow multiple windows', () => {
                 });
         });
 
+        it('Close the only remaining window', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Close the only remaining window', { only: 'chrome', shouldFail: true })
+                .catch(errs => {
+                    expect(errs[0]).to.contain('Cannot close a window without parent.');
+                });
+        });
+
         it('Open window with `disableMultipleWindows` option', () => {
             return runTests('testcafe-fixtures/api/api-test.js', 'Open window with `disableMultipleWindows` option', { only: 'chrome', disableMultipleWindows: true, shouldFail: true })
                 .catch(errs => {

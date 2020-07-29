@@ -379,4 +379,8 @@ export default {
     [TEST_RUN_ERRORS.multipleWindowsModeIsNotSupportedInRemoteBrowserError]: err => `
         Multi window mode is supported in local browsers only. Run tests locally to use the "${err.methodName}" method.
     `,
+
+    [TEST_RUN_ERRORS.cannotCloseWindowWithoutParent]: () => `
+        Cannot close a window without parent.
+    `,
 };
