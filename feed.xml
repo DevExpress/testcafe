@@ -5,9 +5,147 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 15 Jul 2020 18:20:11 +0300</pubDate>
-    <lastBuildDate>Wed, 15 Jul 2020 18:20:11 +0300</lastBuildDate>
+    <pubDate>Wed, 29 Jul 2020 15:32:20 +0300</pubDate>
+    <lastBuildDate>Wed, 29 Jul 2020 15:32:20 +0300</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>Introducing the TestCafe Jenkins Plugin</title>
+        <description>&lt;h1&gt;Introducing the TestCafe Jenkins Plugin&lt;/h1&gt;
+&lt;p&gt;TestCafe can capture videos and screenshots so you can debug your tests and examine page UI. You can record all tests or only those that failed, generate unique video files for each test or record all of them in one take, and single out specific interactions. (For a full list of available options, see the following help topic: &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/screenshots-and-videos.html&quot;&gt;Screenshots and Videos&lt;/a&gt;).&lt;/p&gt;
+
+&lt;p&gt;Many TestCafe users take advantage of Jenkins — a CI/CD solution — to automate their tests. Until recently, they had to manually match the screenshots and videos taken by TestCafe to the individual test reports. The newly implemented &lt;a href=&quot;https://plugins.jenkins.io/testcafe/&quot;&gt;TestCafe Jenkins plugin&lt;/a&gt; simplifies this process. Links to screenshots and videos taken during the test now automatically appear on the Jenkins test results page. There is no need to keep the testing server running — all required files are stored inside the Jenkins build folder.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;With our plugin enabled, the test results page should appear as follows:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/testcafe/images/jenkins-plugin/test-results-page.png&quot; alt=&quot;The updated test results page&quot; title=&quot;&quot;&gt;&lt;/p&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;test-case-the-disappearing-button&quot;&gt;&lt;/a&gt;Test case: the disappearing button &lt;a class=&quot;permalink&quot; href=&quot;#test-case-the-disappearing-button&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Let&amp;#39;s assume that the &amp;#39;Add to Cart&amp;#39; button disappears on the mobile version of your website.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/testcafe/images/jenkins-plugin/button-example.png&quot; alt=&quot;The 'Add To Cart' button is absent from the mobile version of the website&quot; title=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;TestCafe supports the following mobile device emulation methods:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/basic-guides/interact-with-the-page.html#resize-window&quot;&gt;Resize the browser window&lt;/a&gt; during the test&lt;/li&gt;
+&lt;li&gt;Run the test through a &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/concepts/browsers.html#browsers-in-cloud-testing-services&quot;&gt;third-party cloud testing service&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Use &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/concepts/browsers.html#use-chromium-device-emulation&quot;&gt;Chromium&amp;#39;s built-in emulation mode&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The third option offers greater speed and stability. We describe it going forward and recommend that you use it if possible.&lt;/p&gt;
+
+&lt;p&gt;First, let&amp;#39;s write a simple test that checks if the &amp;#39;Add to Cart&amp;#39; button exists:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-JavaScript&quot; data-lang=&quot;JavaScript&quot;&gt;test('`Add To Cart` button should exist', async t =&amp;gt; {
+    await t
+        .expect(Selector('button').withText('Add To Cart').visible).ok();
+});
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Now let&amp;#39;s configure Jenkins to launch this test every time we build our project.&lt;/p&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;basic-setup&quot;&gt;&lt;/a&gt;Basic setup &lt;a class=&quot;permalink&quot; href=&quot;#basic-setup&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;step-1-install-prerequisites&quot;&gt;&lt;/a&gt;Step 1. Install prerequisites &lt;a class=&quot;permalink&quot; href=&quot;#step-1-install-prerequisites&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;TestCafe requires a working Node.js installation to run. If your testing environment does not contain node.js, &lt;a href=&quot;https://plugins.jenkins.io/nodejs/&quot;&gt;the Node.js Jenkins plugin&lt;/a&gt; can install it for you. Also ensure that Chromium is installed: TestCafe cannot function without a browser.&lt;/p&gt;
+&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;step-2-install-the-testcafe-jenkins-plugin&quot;&gt;&lt;/a&gt;Step 2. Install the TestCafe Jenkins plugin &lt;a class=&quot;permalink&quot; href=&quot;#step-2-install-the-testcafe-jenkins-plugin&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;To install the TestCafe Jenkins plugin, click the &amp;quot;Manage Plugins&amp;quot; link on the Manage Jenkins page, select the &amp;quot;Available&amp;quot; tab, and enter &amp;quot;testcafe&amp;quot; into the search field. Check the box next to our plugin and click the &amp;#39;Install without restart&amp;#39; button below it.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/testcafe/images/jenkins-plugin/plugin-search-ui.png&quot; alt=&quot;Jenkins plugin search UI&quot; title=&quot;&quot;&gt;&lt;/p&gt;
+&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;step-3-install-the-required-node-packages&quot;&gt;&lt;/a&gt;Step 3. Install the required Node packages &lt;a class=&quot;permalink&quot; href=&quot;#step-3-install-the-required-node-packages&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Add the following &lt;em&gt;build step&lt;/em&gt; to your Jenkins project:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;npm i testcafe testcafe-reporter-jenkins
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This command installs the main testcafe library, as well as the &lt;a href=&quot;https://www.npmjs.com/package/testcafe-reporter-jenkins&quot;&gt;testcafe-reporter-jenkins&lt;/a&gt; package. The latter is needed to generate Jenkins-friendly JUnit format reports.&lt;/p&gt;
+&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;step-4-configure-the-tests&quot;&gt;&lt;/a&gt;Step 4. Configure the tests &lt;a class=&quot;permalink&quot; href=&quot;#step-4-configure-the-tests&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;You can configure your tests via:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/command-line-interface.html&quot;&gt;command line interface&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;the JavaScript/TypeScript API&lt;/li&gt;
+&lt;li&gt;the .testcaferc.json &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/configuration-file.html&quot;&gt;configuration file&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The last option provides an easy, declarative way to define your test settings. You can store this file in the same folder as your tests. Below is the configuration used in this tutorial:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;browsers&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+        &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;chromium:headless:emulation:device=iPhone 4&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;chromium:headless:emulation:device=iPad Mini&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;chromium:headless&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
+    &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;test/e2e/**/*&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;screenshots&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;takeOnFails&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;fullPage&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+    &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;videoPath&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;videos&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;reporter&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;jenkins&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;output&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;report.xml&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+    &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;appCommand&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;node server.js&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The &lt;em&gt;Browser&lt;/em&gt; array contains the list of browsers TestCafe will use to run our test. The &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/concepts/browsers.html#use-chromium-device-emulation&quot;&gt;TestCafe browser syntax&lt;/a&gt; allows us to specify the mobile devices we want Chromium to emulate.&lt;/p&gt;
+
+&lt;p&gt;The &lt;em&gt;name&lt;/em&gt; property of the &lt;em&gt;reporter&lt;/em&gt; object is set as &lt;em&gt;jenkins&lt;/em&gt;, which ensures that the reports generated by TestCafe can be properly parsed by the server.&lt;/p&gt;
+
+&lt;p&gt;If you decide not to use a config file, be sure to &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/command-line-interface.html#-r-nameoutput---reporter-nameoutput&quot;&gt;manually set&lt;/a&gt; the report format when you launch the tests as follows:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;testcafe chrome test.js &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; jenkins:report.xml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Otherwise, simply run the following command:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;npx testcafe
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;step-5-configure-the-reporter&quot;&gt;&lt;/a&gt;Step 5. Configure the reporter &lt;a class=&quot;permalink&quot; href=&quot;#step-5-configure-the-reporter&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Turn on the &lt;a href=&quot;https://plugins.jenkins.io/junit/&quot;&gt;JUnit&lt;/a&gt; reporter plugin: add the &amp;quot;Publish JUnit test result report&amp;quot; &lt;em&gt;post-build action&lt;/em&gt;. To display screenshots and videos alongside your test results, select the &amp;quot;Include links to TestCafe artifacts&amp;quot; option from the &amp;quot;Additional test report features&amp;quot; drop-down menu.&lt;/p&gt;
+
+&lt;p&gt;Important: Remember to check the &amp;quot;Retain long standard output/error&amp;quot; box. Otherwise, the reporter plugin will automatically truncate the URLs of your videos and screenshots.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/testcafe/images/jenkins-plugin/junit-reporter-configuration.png&quot; alt=&quot;JUnit reporter configuration screen&quot; title=&quot;&quot;&gt;&lt;/p&gt;
+&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;step-6-run-the-build&quot;&gt;&lt;/a&gt;Step 6. Run the build &lt;a class=&quot;permalink&quot; href=&quot;#step-6-run-the-build&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Save the changes to your project and click the &amp;quot;Build now&amp;quot; button on the project page:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/testcafe/images/jenkins-plugin/build-now-button.png&quot; alt=&quot;Jenkins Project menu with the Build Now Button highlighted&quot; title=&quot;&quot;&gt;&lt;/p&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;review-the-results&quot;&gt;&lt;/a&gt;Review the results &lt;a class=&quot;permalink&quot; href=&quot;#review-the-results&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;After the tests are completed, click the following link on the build page to view the results:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/testcafe/images/jenkins-plugin/test-results-link.png&quot; alt=&quot;Test results link&quot; title=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;You will see links to screenshots and videos taken during the test.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/testcafe/images/jenkins-plugin/test-results-view.png&quot; alt=&quot;Test results view&quot; title=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;These artifacts instantly indicate if the Cart button is present on the page.&lt;/p&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;jenkins-pipeline-integration&quot;&gt;&lt;/a&gt;Jenkins Pipeline integration &lt;a class=&quot;permalink&quot; href=&quot;#jenkins-pipeline-integration&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;If you do not wish to use the Jenkins GUI to launch these tests, you can always use the &lt;a href=&quot;https://www.jenkins.io/doc/book/pipeline/&quot;&gt;Jenkins Pipeline&lt;/a&gt;. It lets you declaratively configure your CI/CD setup via a Jenkinsfile - a text file checked into the project&amp;#39;s source control repository. The following is a sample Jenkinsfile to be used with TestCafe:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;n&quot;&gt;pipeline&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;agent&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;any&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;stages&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;stage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;Run&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;E2E&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;tests&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;steps&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;sh&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;npm&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;install&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;sh&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;npm&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;run&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;e2e&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+            &lt;span class=&quot;n&quot;&gt;post&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;always&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+                          &lt;span class=&quot;n&quot;&gt;junit&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;keepLongStdio:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;
+                          &lt;span class=&quot;nl&quot;&gt;testDataPublishers:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;$class&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;TestCafePublisher&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]],&lt;/span&gt;
+                          &lt;span class=&quot;nl&quot;&gt;testResults:&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;xml&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;'&lt;/span&gt;
+                &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+            &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Note: The &lt;code&gt;test-e2e&lt;/code&gt; npm script in this example launches TestCafe. As mentioned earlier in this topic, be sure to manually set the reporter option. For more information on the TestCafe CLI, see the following help topic: &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/command-line-interface.html&quot;&gt;Command Line Interface&lt;/a&gt;.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;p&gt;If you enjoyed this guide and would like more tips on debugging, please see the following blog articles: &lt;a href=&quot;https://devexpress.github.io/testcafe/media/team-blog/how-to-debug-tests-in-testcafe-quick-guide.html&quot;&gt;How to Debug Tests in TestCafe: Quick Guide&lt;/a&gt; and &lt;a href=&quot;https://devexpress.github.io/testcafe/media/team-blog/how-to-speed-up-debugging-in-testcafe-tips-and-tricks.html&quot;&gt;How to speed up debugging in TestCafe: Tips and Tricks&lt;/a&gt;.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 29 Jul 2020 00:00:00 +0300</pubDate>
+        <link>https://devexpress.github.io/testcafe/media/team-blog/introducing-the-testcafe-jenkins-plugin.html</link>
+        <guid isPermaLink="true">https://devexpress.github.io/testcafe/media/team-blog/introducing-the-testcafe-jenkins-plugin.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>Upcoming Webinar: 10 Ways to Simplify Your UI Testing</title>
@@ -733,42 +871,6 @@
         <pubDate>Wed, 07 Aug 2019 00:00:00 +0300</pubDate>
         <link>https://devexpress.github.io/testcafe/blog/testcafe-v1-4-0-released.html</link>
         <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v1-4-0-released.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>TestCafe v1.3.1 Released</title>
-        <description>&lt;h1&gt;TestCafe v1.3.1 Released&lt;/h1&gt;
-&lt;p&gt;This release fixes an issue caused by &lt;code&gt;tsconfig.json&lt;/code&gt; auto-detection.&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-&lt;p&gt;Version 1.3.0 introduced support for &lt;a href=&quot;../documentation/guides/concepts/typescript-and-coffeescript.html#customize-compiler-options&quot;&gt;custom TypeScript configuration files&lt;/a&gt; where you can provide the compiler options. This feature included automatic detection of these configuration files. If the directory from which you run tests contained a &lt;code&gt;tsconfig.json&lt;/code&gt; file, TestCafe would apply it by default.&lt;/p&gt;
-
-&lt;p&gt;However, this behavior caused troubles for users who have already had &lt;code&gt;tsconfig.json&lt;/code&gt; files with conflicting settings in their projects. TestCafe attempted to apply these configurations, which resulted in issues with test compilation.&lt;/p&gt;
-
-&lt;p&gt;In v1.3.1, we have disabled &lt;code&gt;tsconfig.json&lt;/code&gt; auto-detection. Now you must explicitly specify the &lt;code&gt;tsconfig.json&lt;/code&gt; file location to apply the compiler settings. You can do it in one of the following ways:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;../documentation/reference/command-line-interface.html#--ts-config-path-path&quot;&gt;--ts-config-path&lt;/a&gt; command line parameter,&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome my-tests &lt;span class=&quot;nt&quot;&gt;--ts-config-path&lt;/span&gt; /Users/s.johnson/testcafe/tsconfig.json
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;../documentation/reference/testcafe-api/runner/tsconfigpath.html&quot;&gt;runner.tsConfigPath&lt;/a&gt; API method,&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;tsConfigPath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;/Users/s.johnson/testcafe/tsconfig.json&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;../documentation/reference/configuration-file.html#tsconfigpath&quot;&gt;tsConfigPath&lt;/a&gt; configuration file property.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;tsConfigPath&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/Users/s.johnson/testcafe/tsconfig.json&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;We strongly recommend that you upgrade to v1.3.1. We apologize for any inconvenience.&lt;/p&gt;
-</description>
-        <pubDate>Fri, 05 Jul 2019 00:00:00 +0300</pubDate>
-        <link>https://devexpress.github.io/testcafe/blog/testcafe-v1-3-1-released.html</link>
-        <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v1-3-1-released.html</guid>
         
         
       </item>

@@ -304,7 +304,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1594674000 * 1000);
+        var lastPostDate = new Date(1595970000 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -527,7 +527,7 @@ This allows us to implement features you cannot find in Selenium-based tools
 which allows it to work without the WebDriver.
 This proxy injects the driver script that emulates user actions into the tested page.</p>
 
-<p>You can read about this in our <a href="https://testcafe-discuss.devexpress.com/t/why-not-use-selenium/47">forum</a>.</p>
+<p>You can read about this in <a href="../documentation/how-it-works/">How it Works</a>.</p>
 <h3><a class="anchor" id="what-is-the-difference-between-testcafe-studio-and-open-source-testcafe"></a>What is the difference between <a href="https://www.devexpress.com/products/testcafestudio/">TestCafe Studio</a> and <a href="https://devexpress.github.io/testcafe">open-source TestCafe</a>? <a class="permalink" href="#what-is-the-difference-between-testcafe-studio-and-open-source-testcafe">#</a></h3>
 <p>TestCafe Studio is a testing IDE built on top of the open-source TestCafe engine. It simplifies the way you record tests and helps you delegate testing to a QA team that does not want to write JavaScript.</p>
 
