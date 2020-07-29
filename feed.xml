@@ -5,8 +5,8 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 29 Jul 2020 11:46:05 +0300</pubDate>
-    <lastBuildDate>Wed, 29 Jul 2020 11:46:05 +0300</lastBuildDate>
+    <pubDate>Wed, 29 Jul 2020 15:32:20 +0300</pubDate>
+    <lastBuildDate>Wed, 29 Jul 2020 15:32:20 +0300</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
@@ -136,7 +136,7 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Note: The &lt;code&gt;test-e2e&lt;/code&gt; npm script in this example launches TestCafe. As mentioned earlier in this topic, be sure to manually set the reporter option. For more information on the TestCafe CLI, see the following help topic: &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/command-line-interface.html&quot;&gt;Command Line Interface&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;--&lt;/p&gt;
+&lt;hr&gt;
 
 &lt;p&gt;If you enjoyed this guide and would like more tips on debugging, please see the following blog articles: &lt;a href=&quot;https://devexpress.github.io/testcafe/media/team-blog/how-to-debug-tests-in-testcafe-quick-guide.html&quot;&gt;How to Debug Tests in TestCafe: Quick Guide&lt;/a&gt; and &lt;a href=&quot;https://devexpress.github.io/testcafe/media/team-blog/how-to-speed-up-debugging-in-testcafe-tips-and-tricks.html&quot;&gt;How to speed up debugging in TestCafe: Tips and Tricks&lt;/a&gt;.&lt;/p&gt;
 </description>
