@@ -29,45 +29,89 @@ If the tested page does not use HTTPS-specific features (like
 
 ### Use a Self-Signed Certificate
 
-To establish a secure HTTPS-connection, Node.js requires a valid [PKCS12](https://en.wikipedia.org/wiki/PKCS_12) certificate (`.pfx`). To launch tests from the command line, you need to [generate one manually](#generate-a-certificate-manually). In API, use an [automatic module](#generate-a-certificate-automatically), unless you are willing to [use a trusted certificate](#use-a-trusted-certificate).
+To establish a secure HTTPS-connection, Node.js requires a valid [PKCS12](https://en.wikipedia.org/wiki/PKCS_12) certificate (`.pfx`). To launch tests from the command line, you need to [generate one manually](#generate-a-certificate-from-the-command-line). In API, use an [automatic module](#generate-a-certificate-in-your-code), unless you are willing to [use a trusted certificate](#use-a-trusted-certificate).
 
-#### Generate a Certificate Manually
+#### Generate a Certificate From the Command Line
 
-In **bash**, a self-signed `.pfx` can be generated using [OpenSSL](https://www.openssl.org/docs/man1.1.1/man1/openssl-req.html):
+In **bash**, a certificate chain can be generated using [OpenSSL](https://www.openssl.org/docs/man1.1.1/man1/openssl-req.html).
 
-```sh
-openssl req -x509 -newkey rsa:4096 -sha256 -nodes -keyout openssl.key -out openssl.crt -days 999999
-```
+1. Issue your own CA certificate and a CA-signed certificate for the web server:
 
-You will be prompted for additional information, skip the the questions by pressing Enter. As a result, new `.crt` and `.key` files are generated. Generate a `.pfx` by rinning:
+    ```sh
+    openssl genrsa -des3 -out myCA.key 2048
+    ```
 
-```sh
-openssl pkcs12 -export -out path/to/certificate.pfx -inkey openssl.key -in openssl.crt
-```
+    You will be prompted for a non-empty passphrase. Take note of it.  
+2. Generate a root certificate:
 
-In **PowerShell**, use the [New-SelfSignedCertificate](https://docs.microsoft.com/en-us/powershell/module/pkiclient/new-selfsignedcertificate?view=win10-ps) and [Export-PfxCertificate](https://docs.microsoft.com/en-us/powershell/module/pkiclient/export-pfxcertificate?view=win10-ps) Cmdlets to issue a certificate and export it to `.pfx`:
+    ```sh
+    openssl req -x509 -new -nodes -key myCA.key -sha256 -days 1825 -out myCA.pem
+    ```
 
-```sh
-$cert = New-SelfSignedCertificate -DnsName mydemowebapp.net -CertStoreLocation cert:\LocalMachine\My
-$pwd = ConvertTo-SecureString -String "MyPassword" -Force -AsPlainText
-Export-PfxCertificate -Cert $cert -FilePath C:\path\to\certificate.pfx -Password $pwd
-```
+    You will be prompted for additional information, skip the the questions by pressing Enter.
+3. Create a CA-signed domain certificate and a `.csr` sign request:
 
-> To use `New-SelfSignedCertificate` and `Export-PfxCertificate`, launch PowerShell in administrative mode.
+    ```sh
+    openssl genrsa -out testingdomain.key 2048
+    openssl req -new -key testingdomain.key -out testingdomain.csr
+    ```
+
+    You can skip all the questions by pressing Enter, but you might want to set a recognizable CN (Common Name) so that you can easily find this certificate in a list of others later.  
+4. Create a config file `testdomain.ext` with the following contents:
+  
+    ```sh
+    authorityKeyIdentifier=keyid,issuer
+    basicConstraints=CA:FALSE
+    keyUsage = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
+    subjectAltName = @alt_names
+
+    [alt_names]
+    DNS.1 = localhost
+    ```
+
+5. Now create the certificate using our `.csr`, the CA private key (`myCA.key`), the CA certificate (`myCA.pem`), and a config file:
+
+    ```sh
+    openssl x509 -req -in testingdomain.csr -CA myCA.pem -CAkey myCA.key -CAcreateserial -out testingdomain.crt -days 825 -sha256 -extfile testdomain.ext
+    ```
+
+6. Finally, export the certificate to PKCS#12 `.pfx` format:
+
+    ```sh
+    openssl pkcs12 -export -out testingdomain.pfx -inkey testingdomain.key -in testingdomain.crt -certfile myCA.pem
+    ```
+
+In **PowerShell**, [install OpenSSL](https://adamtheautomator.com/openssl-powershell/#Installing_OpenSSL_using_Chocolatey) and [update environment variables](https://adamtheautomator.com/openssl-powershell/#Update_PowerShell_Profile_Environment_Variables). Afterwards, proceed with the instructions [above](#generate-a-certificate-from-the-command-line).
 
 ##### Run Tests
 
 When you run tests from the command line, use the [--ssl](../../reference/command-line-interface.md#--ssl-options) flag to enable HTTPS on a proxy server. Specify options required to initialize [a Node.js HTTPS server](https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener) after this flag in a semicolon-separated string. The most commonly used SSL options are described in the [TLS topic](https://nodejs.org/api/tls.html#tls_tls_createsecurecontext_options) in the Node.js documentation.
 
-The example below uses a previously generated `.pfx` file to establish an HTTPS server.
+The examples below use a previously generated `.pfx` file to establish an HTTPS server.
+
+In ***Chrome*** and ***Chromium-Based*** Browsers use `--allow-insecure-localhost` flag and [`--hostname`](../../reference/command-line-interface.md#--hostname-name) CLI parameter to make Chrome trust the certificate.
 
 ```sh
 testcafe chrome --allow-insecure-localhost --hostname localhost test.js --ssl pfx=path/to/certificate.pfx;rejectUnauthorized=true;
 ```
 
-In this example, `--allow-insecure-localhost` Chrome flag and [`--hostname`](../../reference/command-line-interface.md#--hostname-name) CLI parameter are used together to make Chrome trust the self-signed certificate.
+In ***Firefox*** it is necessary to add your self-signed root authority to the trusted list. Follow the steps:
 
-#### Generate a Certificate Automatically
+1. [Create a new profile](https://support.mozilla.org/en-US/kb/profile-manager-create-remove-switch-firefox-profiles#w_creating-a-profile) in Firefox settings;
+2. [Run Firefox with this profile](https://support.mozilla.org/en-US/kb/profile-manager-create-remove-switch-firefox-profiles#w_manage-profiles-when-firefox-is-open) and [import the CA certificate](https://support.mozilla.org/en-US/questions/1059377) (`myCA.pem`) you generated previously. Make sure to check the **"This certificate can identify websites"** checkbox;
+3. Load this new profile when TestCafe Studio launches Firefox. To do this, add `-P <profile_name>` to the browser's command line arguments. Ensure that **"Use the selected  user profile at startup without asking"** is disabled.
+
+```sh
+testcafe 'firefox -P testing-profile' --hostname localhost assertTest.js --ssl pfx=certificate.pfx;rejectUnauthorized=true;
+```
+
+> The certificate created in the example is valid only for localhost domain, hence the `--hostname` option. If you wish to use another domain for testing, enter it in the `[alt_names]` section of `testdomain.ext` configuration file before creating the certificate.  
+
+<!---->
+
+> Important! For security reasons, use this profile only for testing purposes.
+
+#### Generate a Certificate in Your Code
 
 When you use the programming interface, generate a certificate with the [openssl-self-signed-certificate](https://www.npmjs.com/package/openssl-self-signed-certificate) module, and pass the HTTPS server options to the [createTestCafe](../../reference/testcafe-api/global/createtestcafe.md) function.
 
