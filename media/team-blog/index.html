@@ -442,7 +442,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1594674000 * 1000);
+        var lastPostDate = new Date(1595970000 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -721,6 +721,35 @@
     This section contains articles from the TestCafe team
 </div>
 <div class="post-list">
+
+    
+        
+        
+        
+        
+        <div class="post-preview">
+    
+    <div class="post-title" data-creation-date="1595970000"><a href="/testcafe/media/team-blog/introducing-the-testcafe-jenkins-plugin.html">Introducing the TestCafe Jenkins Plugin</a></div>
+    
+        <div class="post-subtitle">Published by Pavel Redrukhin, Eugene Titerman – Jul 29, 2020</div>
+    
+    
+    <div class="post-extract">
+        
+        <a href="/testcafe/media/team-blog/introducing-the-testcafe-jenkins-plugin.html"><p>
+<p>TestCafe can capture videos and screenshots so you can debug your tests and examine page UI. You can record all tests or only those that failed, generate unique video files for each test or record all of them in one take, and single out specific interactions. (For a full list of available options, see the following help topic: <a href="https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/screenshots-and-videos.html">Screenshots and Videos</a>).</p>
+
+<p>Many TestCafe users take advantage of Jenkins — a CI/CD solution — to automate their tests. Until recently, they had to manually match the screenshots and videos taken by TestCafe to the individual test reports. The newly implemented <a href="https://plugins.jenkins.io/testcafe/">TestCafe Jenkins plugin</a> simplifies this process. Links to screenshots and videos taken during the test now automatically appear on the Jenkins test results page. There is no need to keep the testing server running — all required files are stored inside the Jenkins build folder.</p>
+</p></a>
+    </div>
+    
+    
+    <p class="read-more">
+        <a href="/testcafe/media/team-blog/introducing-the-testcafe-jenkins-plugin.html">Read More</a>
+    </p>
+    
+</div>
+    
 
     
         

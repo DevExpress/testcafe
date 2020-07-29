@@ -443,7 +443,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1594674000 * 1000);
+        var lastPostDate = new Date(1595970000 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -1336,7 +1336,10 @@ To interact with the page, use <a href="interact-with-the-page.html">test action
 <h2><a class="anchor" id="selector-timeout"></a>Selector Timeout <a class="permalink" href="#selector-timeout">#</a></h2>
 <p>When a selector is executed, TestCafe waits for the target node to appear in the DOM until the <em>selector timeout</em> expires.</p>
 
-<p>Use the <a href="../../reference/test-api/selector/constructor.html#optionstimeout">timeout</a> option to specify the selector timeout in test code. To set the timeout when you launch tests, pass it to the <a href="../../reference/testcafe-api/runner/run.html">runner.run</a> API method or the <a href="../../reference/command-line-interface.html#--selector-timeout-ms">--selector-timeout</a> command line option.</p>
+<p>Use the <a href="../../reference/test-api/selector/constructor.html#optionstimeout">timeout</a> option to specify the timeout for a selector in test code.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#elementId</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span> <span class="na">timeout</span><span class="p">:</span> <span class="mi">500</span> <span class="p">}).</span><span class="nx">innerText</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="dl">'</span><span class="s1">text</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">check element text</span><span class="dl">'</span><span class="p">);</span>
+</code></pre></div>
+<p>To set the timeout for all selectors, pass it to the <a href="../../reference/testcafe-api/runner/run.html">runner.run</a> API method or the <a href="../../reference/command-line-interface.html#--selector-timeout-ms">--selector-timeout</a> command line option when you launch tests. This will override the timeout options inside tests (if any).</p>
 
 <p>During the timeout, the selector is re-executed until it returns a DOM node or the timeout is exceeded. If TestCafe cannot find the corresponding node in the DOM, the test fails.</p>
 <blockquote><div class="blockquote-content"><p>Note that you can specify that the node returned by the selector should also be visible. To do this, use the <a href="../../reference/test-api/selector/constructor.html#optionsvisibilitycheck">visibilityCheck</a> option.</p>
