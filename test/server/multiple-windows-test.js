@@ -45,7 +45,7 @@ describe('Multiple windows', () => {
             await testController.openWindow('http://example.com');
         }
         catch (err) {
-            expect(err.code).eql(TEST_RUN_ERRORS.multipleWindowsModeIsNotAvailableInRemoteBrowserError);
+            expect(err.code).eql(TEST_RUN_ERRORS.multipleWindowsModeIsNotSupportedInRemoteBrowserError);
         }
     });
 

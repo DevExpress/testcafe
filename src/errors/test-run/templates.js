@@ -373,10 +373,10 @@ export default {
     `,
 
     [TEST_RUN_ERRORS.multipleWindowsModeIsDisabledError]: err => `
-        You disabled multi window mode. Remove the "disable-multiple-windows" run option to use the "${err.methodName}" method.
+        Multi window mode is disabled. Remove the "--disable-multiple-windows" CLI flag or set the "disableMultipleWindows" option to "false" in the API to use the "${err.methodName}" method.
     `,
 
-    [TEST_RUN_ERRORS.multipleWindowsModeIsNotAvailableInRemoteBrowserError]: err => `
-        Multi window mode is available only in local browsers. Run the test locally to use the "${err.methodName}" method.
+    [TEST_RUN_ERRORS.multipleWindowsModeIsNotSupportedInRemoteBrowserError]: err => `
+        Multi window mode is supported in local browsers only. Run tests locally to use the "${err.methodName}" method.
     `,
 };

@@ -623,7 +623,7 @@ describe('Error formatting', () => {
             assertErrorMessage('multiple-windows-mode-is-disabled-error', new MultipleWindowsModeIsDisabledError('openWindow'));
         });
 
-        it('Should format "multipleWindowsModeIsNotAvailableInRemoteBrowserError"', () => {
+        it('Should format "multipleWindowsModeIsNotSupportedInRemoteBrowserError"', () => {
             assertErrorMessage('multiple-windows-mode-is-not-available-in-remote-browser-error', new MultipleWindowsModeIsNotAvailableInRemoteBrowserError('openWindow'));
         });
     });

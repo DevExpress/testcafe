@@ -308,7 +308,7 @@ export class MultipleWindowsModeIsDisabledError extends TestRunErrorBase {
 
 export class MultipleWindowsModeIsNotAvailableInRemoteBrowserError extends TestRunErrorBase {
     constructor (methodName) {
-        super(TEST_RUN_ERRORS.multipleWindowsModeIsNotAvailableInRemoteBrowserError);
+        super(TEST_RUN_ERRORS.multipleWindowsModeIsNotSupportedInRemoteBrowserError);
 
         this.methodName = methodName;
     }

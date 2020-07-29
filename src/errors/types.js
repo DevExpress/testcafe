@@ -81,7 +81,7 @@ export const TEST_RUN_ERRORS = {
     switchToWindowPredicateError:                          'E78',
     actionFunctionArgumentError:                           'E79',
     multipleWindowsModeIsDisabledError:                    'E80',
-    multipleWindowsModeIsNotAvailableInRemoteBrowserError: 'E81'
+    multipleWindowsModeIsNotSupportedInRemoteBrowserError: 'E81'
 };
 
 export const RUNTIME_ERRORS = {

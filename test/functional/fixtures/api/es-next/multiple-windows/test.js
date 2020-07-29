@@ -6,7 +6,7 @@ if (!config.useLocalBrowsers) {
         it('Should fail on remote', function () {
             return runTests('./testcafe-fixtures/multiple-windows-test.js', 'Should fail on remote', { shouldFail: true })
                 .catch(errs => {
-                    expect(errs[0]).to.contain('Multi window mode is available only in local browsers. Run the test locally to use the "openWindow" method.');
+                    expect(errs[0]).to.contain('Multi window mode is supported in local browsers only. Run tests locally to use the "openWindow" method');
                 });
         });
     });
