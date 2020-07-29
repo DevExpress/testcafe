@@ -357,10 +357,6 @@ export default {
         Cannot find the window specified in the action parameters.
     `,
 
-    [TEST_RUN_ERRORS.allowMultipleWindowsOptionIsNotSpecifiedError]: err => `
-        You should activate multi window mode (enable the "allow-multiple-windows" run option) to use the "${err.methodName}" method.
-    `,
-
     [TEST_RUN_ERRORS.parentWindowNotFoundError]: () => `
         Cannot find the parent window. Make sure that the tested window was opened from another window.
     `,
@@ -374,5 +370,13 @@ export default {
         
         Error details:
         ${escapeHtml(err.errMsg)}
+    `,
+
+    [TEST_RUN_ERRORS.multipleWindowsModeIsDisabledError]: err => `
+        Multi window mode is disabled. Remove the "--disable-multiple-windows" CLI flag or set the "disableMultipleWindows" option to "false" in the API to use the "${err.methodName}" method.
+    `,
+
+    [TEST_RUN_ERRORS.multipleWindowsModeIsNotSupportedInRemoteBrowserError]: err => `
+        Multi window mode is supported in local browsers only. Run tests locally to use the "${err.methodName}" method.
     `,
 };

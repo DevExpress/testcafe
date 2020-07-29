@@ -144,7 +144,7 @@ export default class CLIArgumentParser {
         // NOTE: temporary hide experimental options from --help command
         this.experimental
             .allowUnknownOption()
-            .option('-m, --allow-multiple-windows', 'run TestCafe in the multiple windows mode')
+            .option('--disable-multiple-windows', 'disable multiple windows mode')
             .option('--experimental-compiler-service', 'run compiler in a separate process');
     }
 

@@ -39,6 +39,6 @@ export default {
     disablePageCaching:          'disablePageCaching',
     disableScreenshots:          'disableScreenshots',
     debugLogger:                 'debugLogger',
-    allowMultipleWindows:        'allowMultipleWindows',
+    disableMultipleWindows:      'disableMultipleWindows',
     experimentalCompilerService: 'experimentalCompilerService'
 };

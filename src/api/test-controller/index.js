@@ -54,8 +54,12 @@ import {
 import { WaitCommand, DebugCommand } from '../../test-run/commands/observation';
 import assertRequestHookType from '../request-hooks/assert-type';
 import { createExecutionContext as createContext } from './execution-context';
-import { AllowMultipleWindowsOptionIsNotSpecifiedError } from '../../errors/test-run';
 import { isClientFunction, isSelector } from '../../client-functions/types';
+
+import {
+    MultipleWindowsModeIsDisabledError,
+    MultipleWindowsModeIsNotAvailableInRemoteBrowserError
+} from '../../errors/test-run';
 
 const originalThen = Promise.resolve().then;
 
@@ -137,8 +141,13 @@ export default class TestController {
     }
 
     _validateMultipleWindowCommand (apiMethodName) {
-        if (!this.testRun.allowMultipleWindows)
-            throw new AllowMultipleWindowsOptionIsNotSpecifiedError(apiMethodName);
+        const { disableMultipleWindows, browserConnection } = this.testRun;
+
+        if (disableMultipleWindows)
+            throw new MultipleWindowsModeIsDisabledError(apiMethodName);
+
+        if (!browserConnection.activeWindowId)
+            throw new MultipleWindowsModeIsNotAvailableInRemoteBrowserError(apiMethodName);
     }
 
     getExecutionContext () {

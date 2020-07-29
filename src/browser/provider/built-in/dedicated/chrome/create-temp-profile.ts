@@ -3,7 +3,7 @@ import makeDir from 'make-dir';
 import TempDirectory from '../../../../../utils/temp-directory';
 import { writeFile } from '../../../../../utils/promisified-functions';
 
-export default async function (proxyHostName: string, allowMultipleWindows: boolean): Promise<TempDirectory> {
+export default async function (proxyHostName: string, disableMultipleWindows: boolean): Promise<TempDirectory> {
     const tempDir        = await TempDirectory.createDirectory('chrome-profile');
     const profileDirName = path.join(tempDir.path, 'Default');
 
@@ -27,7 +27,7 @@ export default async function (proxyHostName: string, allowMultipleWindows: bool
                     'automatic_downloads': {
                         [proxyHostName]: { setting: 1 }
                     },
-                    ...allowMultipleWindows && {
+                    ...!disableMultipleWindows && {
                         'popups': {
                             [proxyHostName]: { setting: 1 }
                         }

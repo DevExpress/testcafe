@@ -13,13 +13,14 @@ class TestRunMock extends TestRun {
     constructor () {
         super({ id: 'test-id', name: 'test-name', fixture: { path: 'dummy', id: 'fixture-id', name: 'fixture-name' } }, {}, {}, {}, {});
 
-        this.allowMultipleWindows = true;
+        this.disableMultipleWindows = false;
 
         this.browserConnection = {
             browserInfo: {
                 alias: 'test-browser'
             },
-            isHeadlessBrowser: () => false
+            isHeadlessBrowser: () => false,
+            activeWindowId:    'id'
         };
     }
 

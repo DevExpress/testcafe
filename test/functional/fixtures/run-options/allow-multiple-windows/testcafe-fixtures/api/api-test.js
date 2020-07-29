@@ -265,6 +265,6 @@ test('Close parent window and catch error', async t => {
     await t.closeWindow(parentWindow);
 });
 
-test('Open window without `allowMultipleWindows` option', async t => {
+test('Open window with `disableMultipleWindows` option', async t => {
     await t.openWindow(child1Url);
 });

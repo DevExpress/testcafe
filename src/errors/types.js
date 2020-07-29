@@ -76,11 +76,12 @@ export const TEST_RUN_ERRORS = {
     childWindowClosedBeforeSwitchingError:                 'E72',
     cannotCloseWindowWithChildrenError:                    'E73',
     targetWindowNotFoundError:                             'E74',
-    allowMultipleWindowsOptionIsNotSpecifiedError:         'E75',
     parentWindowNotFoundError:                             'E76',
     previousWindowNotFoundError:                           'E77',
     switchToWindowPredicateError:                          'E78',
     actionFunctionArgumentError:                           'E79',
+    multipleWindowsModeIsDisabledError:                    'E80',
+    multipleWindowsModeIsNotSupportedInRemoteBrowserError: 'E81'
 };
 
 export const RUNTIME_ERRORS = {
@@ -139,7 +140,5 @@ export const RUNTIME_ERRORS = {
     unexpectedIPCHeadPacket:                            'E1052',
     unexpectedIPCBodyPacket:                            'E1053',
     unexpectedIPCTailPacket:                            'E1054',
-    cannotUseAllowMultipleWindowsOptionForLegacyTests:  'E1055',
-    cannotUseAllowMultipleWindowsOptionForSomeBrowsers: 'E1056',
     cannotRunLocalNonHeadlessBrowserWithoutDisplay:     'E1057',
 };
