@@ -165,6 +165,6 @@ pipeline {
 
 Note: The `test-e2e` npm script in this example launches TestCafe. As mentioned earlier in this topic, be sure to manually set the reporter option. For more information on the TestCafe CLI, see the following help topic: [Command Line Interface](https://devexpress.github.io/testcafe/documentation/reference/command-line-interface.html).
 
---
+---
 
 If you enjoyed this guide and would like more tips on debugging, please see the following blog articles: [How to Debug Tests in TestCafe: Quick Guide](https://devexpress.github.io/testcafe/media/team-blog/how-to-debug-tests-in-testcafe-quick-guide.html) and [How to speed up debugging in TestCafe: Tips and Tricks](https://devexpress.github.io/testcafe/media/team-blog/how-to-speed-up-debugging-in-testcafe-tips-and-tricks.html).
