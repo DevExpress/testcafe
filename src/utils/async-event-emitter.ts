@@ -2,23 +2,24 @@ import Emittery from 'emittery';
 
 export default class AsyncEventEmitter extends Emittery {
     public once (event: string, listener?: Function): Promise<any> { // eslint-disable-line @typescript-eslint/no-explicit-any
-        return new Promise((resolve, reject) => {
-            const off = this.on(event, data => {
-                try {
-                    off();
+        if (!listener)
+            return super.once(event);
 
-                    const result = listener ? listener.call(this, data) : data;
+        const unsubscribe = this.on(event, async data => {
+            unsubscribe();
 
-                    resolve(result);
-
-                    return result;
-                }
-                catch (e) {
-                    reject(e);
-
-                    throw e;
-                }
-            });
+            return listener(data);
         });
+
+        return Promise.resolve();
+    }
+
+    public emit (eventName: string, ...args: unknown[]): Promise<void> {
+        const emitPromise = super.emit(eventName, ...args);
+
+        if (eventName !== 'error')
+            emitPromise.catch(reason => this.emit('error', reason));
+
+        return emitPromise;
     }
 }

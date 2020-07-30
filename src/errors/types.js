@@ -141,4 +141,5 @@ export const RUNTIME_ERRORS = {
     unexpectedIPCBodyPacket:                            'E1053',
     unexpectedIPCTailPacket:                            'E1054',
     cannotRunLocalNonHeadlessBrowserWithoutDisplay:     'E1057',
+    uncaughtErrorInReporter:                            'E1058',
 };

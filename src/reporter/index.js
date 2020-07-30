@@ -3,6 +3,7 @@ import { writable as isWritableStream } from 'is-stream';
 import ReporterPluginHost from './plugin-host';
 import formatCommand from './command/format-command';
 import getBrowser from '../utils/get-browser';
+import { ReporterPluginError } from '../errors/runtime';
 
 export default class Reporter {
     constructor (plugin, task, outStream, name) {
@@ -100,10 +101,25 @@ export default class Reporter {
             // fixture, we can report this fixture start.
             nextReportItem = this.reportQueue[0];
 
-            await this.plugin.reportTestDone(reportItem.test.name, reportItem.testRunInfo, reportItem.test.meta);
+            try {
+                await this.plugin.reportTestDone(reportItem.test.name, reportItem.testRunInfo, reportItem.test.meta);
+            }
+            catch (e) {
+                this.task.emit('error', new ReporterPluginError(e));
+            }
 
-            if (nextReportItem && nextReportItem.fixture !== currentFixture)
-                await this.plugin.reportFixtureStart(nextReportItem.fixture.name, nextReportItem.fixture.path, nextReportItem.fixture.meta);
+            if (nextReportItem && nextReportItem.fixture !== currentFixture) {
+                try {
+                    await this.plugin.reportFixtureStart(
+                        nextReportItem.fixture.name,
+                        nextReportItem.fixture.path,
+                        nextReportItem.fixture.meta
+                    );
+                }
+                catch (e) {
+                    this.task.emit('error', new ReporterPluginError(e));
+                }
+            }
         }
     }
 
@@ -168,90 +184,134 @@ export default class Reporter {
         });
     }
 
+    async _onceTaskStartHandler () {
+        const startTime  = new Date();
+        const userAgents = this.task.browserConnectionGroups.map(group => group[0].userAgent);
+        const first      = this.reportQueue[0];
+        const taskProperties = {
+            configuration: this.task.opts
+        };
+
+        try {
+            await this.plugin.reportTaskStart(
+                startTime,
+                userAgents,
+                this.testCount,
+                this.task.testStructure,
+                taskProperties
+            );
+
+            await this.plugin.reportFixtureStart(first.fixture.name, first.fixture.path, first.fixture.meta);
+        }
+        catch (e) {
+            this.task.emit('error', new ReporterPluginError(e));
+        }
+    }
+
+    async _onTaskTestRunStartHandler (testRun) {
+        const reportItem = this._getReportItemForTestRun(testRun);
+
+        reportItem.testRunIds.push(testRun.id);
+
+        if (!reportItem.startTime)
+            reportItem.startTime = new Date();
+
+        reportItem.pendingStarts--;
+
+        if (!reportItem.pendingStarts) {
+            if (this.plugin.reportTestStart) {
+                const testStartInfo = { testRunIds: reportItem.testRunIds, testId: reportItem.test.id };
+
+                try {
+                    await this.plugin.reportTestStart(reportItem.test.name, reportItem.test.meta, testStartInfo);
+                }
+                catch (e) {
+                    this.task.emit('error', new ReporterPluginError(e));
+                }
+            }
+
+            reportItem.pendingTestRunStartPromise.resolve();
+        }
+
+        return reportItem.pendingTestRunStartPromise;
+    }
+
+    async _onTaskTestRunDoneHandler (testRun) {
+        const reportItem                    = this._getReportItemForTestRun(testRun);
+        const isTestRunStoppedTaskExecution = !!testRun.errs.length && this.stopOnFirstFail;
+
+        reportItem.pendingRuns = isTestRunStoppedTaskExecution ? 0 : reportItem.pendingRuns - 1;
+        reportItem.unstable    = reportItem.unstable || testRun.unstable;
+        reportItem.errs        = reportItem.errs.concat(testRun.errs);
+        reportItem.warnings    = testRun.warningLog ? union(reportItem.warnings, testRun.warningLog.messages) : [];
+
+        reportItem.browsers.push(Object.assign({ testRunId: testRun.id }, getBrowser(testRun.browserConnection)));
+
+        if (!reportItem.pendingRuns)
+            await this._resolveReportItem(reportItem, testRun);
+
+        await reportItem.pendingTestRunDonePromise;
+    }
+
+    async _onTaskTestActionStart ({ apiActionName, ...args }) {
+        if (this.plugin.reportTestActionStart) {
+            args = this._prepareReportTestActionEventArgs(args);
+
+            try {
+                await this.plugin.reportTestActionStart(apiActionName, args);
+            }
+            catch (e) {
+                this.task.emit('error', new ReporterPluginError(e));
+            }
+        }
+    }
+
+    async _onTaskTestActionDone ({ apiActionName, ...args }) {
+        if (this.plugin.reportTestActionDone) {
+            args = this._prepareReportTestActionEventArgs(args);
+
+            try {
+                await this.plugin.reportTestActionDone(apiActionName, args);
+            }
+            catch (e) {
+                this.task.emit('error', new ReporterPluginError(e));
+            }
+        }
+    }
+
+    async _onceTaskDoneHandler () {
+        const endTime = new Date();
+
+        const result = {
+            passedCount:  this.passed,
+            failedCount:  this.failed,
+            skippedCount: this.skipped
+        };
+
+        try {
+            await this.plugin.reportTaskDone(endTime, this.passed, this.task.warningLog.messages, result);
+        }
+        catch (e) {
+            this.task.emit('error', new ReporterPluginError(e));
+        }
+
+        this.pendingTaskDonePromise.resolve();
+    }
+
     _assignTaskEventHandlers () {
         const task = this.task;
 
-        task.once('start', async () => {
-            const startTime  = new Date();
-            const userAgents = task.browserConnectionGroups.map(group => group[0].userAgent);
-            const first      = this.reportQueue[0];
-            const taskProperties = {
-                configuration: task.opts
-            };
+        task.once('start', async () => await this._onceTaskStartHandler());
 
-            await this.plugin.reportTaskStart(startTime, userAgents, this.testCount, task.testStructure, taskProperties);
-            await this.plugin.reportFixtureStart(first.fixture.name, first.fixture.path, first.fixture.meta);
-        });
+        task.on('test-run-start', async testRun => await this._onTaskTestRunStartHandler(testRun));
 
-        task.on('test-run-start', async testRun => {
-            const reportItem = this._getReportItemForTestRun(testRun);
+        task.on('test-run-done', async testRun => await this._onTaskTestRunDoneHandler(testRun));
 
-            reportItem.testRunIds.push(testRun.id);
+        task.on('test-action-start', async e => await this._onTaskTestActionStart(e));
 
-            if (!reportItem.startTime)
-                reportItem.startTime = new Date();
+        task.on('test-action-done', async e => await this._onTaskTestActionDone(e));
 
-            reportItem.pendingStarts--;
-
-            if (!reportItem.pendingStarts) {
-                if (this.plugin.reportTestStart) {
-                    const testStartInfo = { testRunIds: reportItem.testRunIds, testId: reportItem.test.id };
-
-                    await this.plugin.reportTestStart(reportItem.test.name, reportItem.test.meta, testStartInfo);
-                }
-
-                reportItem.pendingTestRunStartPromise.resolve();
-            }
-
-            return reportItem.pendingTestRunStartPromise;
-        });
-
-        task.on('test-run-done', async testRun => {
-            const reportItem                    = this._getReportItemForTestRun(testRun);
-            const isTestRunStoppedTaskExecution = !!testRun.errs.length && this.stopOnFirstFail;
-
-            reportItem.pendingRuns = isTestRunStoppedTaskExecution ? 0 : reportItem.pendingRuns - 1;
-            reportItem.unstable    = reportItem.unstable || testRun.unstable;
-            reportItem.errs        = reportItem.errs.concat(testRun.errs);
-            reportItem.warnings    = testRun.warningLog ? union(reportItem.warnings, testRun.warningLog.messages) : [];
-
-            reportItem.browsers.push(Object.assign({ testRunId: testRun.id }, getBrowser(testRun.browserConnection)));
-
-            if (!reportItem.pendingRuns)
-                await this._resolveReportItem(reportItem, testRun);
-
-            await reportItem.pendingTestRunDonePromise;
-        });
-
-        task.on('test-action-start', async ({ apiActionName, ...args }) => {
-            if (this.plugin.reportTestActionStart) {
-                args = this._prepareReportTestActionEventArgs(args);
-
-                await this.plugin.reportTestActionStart(apiActionName, args);
-            }
-        });
-
-        task.on('test-action-done', async ({ apiActionName, ...args }) => {
-            if (this.plugin.reportTestActionDone) {
-                args = this._prepareReportTestActionEventArgs(args);
-
-                await this.plugin.reportTestActionDone(apiActionName, args);
-            }
-        });
-
-        task.once('done', async () => {
-            const endTime = new Date();
-
-            const result = {
-                passedCount:  this.passed,
-                failedCount:  this.failed,
-                skippedCount: this.skipped
-            };
-
-            await this.plugin.reportTaskDone(endTime, this.passed, task.warningLog.messages, result);
-
-            this.pendingTaskDonePromise.resolve();
-        });
+        task.once('done', async () => await this._onceTaskDoneHandler());
     }
 
     async dispose () {

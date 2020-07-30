@@ -115,3 +115,20 @@ export class CompositeError extends Error {
         this.code  = RUNTIME_ERRORS.compositeArgumentsError;
     }
 }
+
+export class ReporterPluginError extends Error {
+    constructor (originalError) {
+        const template     = TEMPLATES[RUNTIME_ERRORS.uncaughtErrorInReporter];
+        const errorMessage = originalError.toString();
+
+        super(renderTemplate(template, errorMessage));
+
+        Object.assign(this, {
+            code: RUNTIME_ERRORS.uncaughtErrorInReporter,
+            data: [errorMessage]
+        });
+
+        // NOTE: stack helps to identify broken reporter plugin
+        this.stack = renderTemplate(template, originalError.stack);
+    }
+}
