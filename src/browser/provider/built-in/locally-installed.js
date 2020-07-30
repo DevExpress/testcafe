@@ -3,9 +3,7 @@ import browserTools from 'testcafe-browser-tools';
 export default {
     isMultiBrowser: true,
 
-    needCleanUpBrowserInfo: true,
-
-    async openBrowser (browserId, pageUrl, browserName,) {
+    async openBrowser (browserId, pageUrl, browserName) {
         const args  = browserName.split(' ');
         const alias = args.shift();
 
