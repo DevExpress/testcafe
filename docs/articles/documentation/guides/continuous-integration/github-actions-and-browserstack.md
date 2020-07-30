@@ -37,7 +37,7 @@ Create a job that runs the TestCafe tests.
 
 Provide the [job name](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idname) and specify the [type of machine](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on) that should run the job.
 
-You can [*use a GitHub-hosted machine*](https://docs.github.com/en/actions/reference/virtual-environments-for-github-hosted-runners):
+You can [**use a GitHub-hosted machine**](https://docs.github.com/en/actions/reference/virtual-environments-for-github-hosted-runners):
 
 ```yml
 name: End-to-End Tests
@@ -51,9 +51,9 @@ jobs:
 
 This job runs on a GitHub-hosted virtual machine with the latest Windows version. `test` is the [job ID](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_id) that must be unique to the `jobs` object.
 
-> You can use a GitHub-hosted virtual machine with *any base OS* to run tests. For the sake of simplicity, all examples listed here run on `windows-latest`.
+> You can use a GitHub-hosted virtual machine with any base OS to run tests. For simplicity, all examples listed here run on `windows-latest`.
 
-Alternatively, you can [*host your own runners*](https://docs.github.com/en/actions/hosting-your-own-runners/about-self-hosted-runners) for the job. This might be beneficial if you need more precise control over the environment.
+Alternatively, you can [**host your own runners**](https://docs.github.com/en/actions/hosting-your-own-runners/about-self-hosted-runners) for the job. This gives you more precise control over the environment.
 
 To set up the self-hosted runners, [add them to your repository](https://docs.github.com/en/actions/hosting-your-own-runners/adding-self-hosted-runners#adding-a-self-hosted-runner-to-a-repository).
 
