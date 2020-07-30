@@ -377,14 +377,14 @@ export default class TestController {
     }
 
     _checkForExessiveAwaits (selectorCallsiteList, expectCallsite) {
-        selectorCallsiteList.forEach(selectorCallsite => {
+        for (const selectorCallsite of selectorCallsiteList) {
             if (selectorCallsite.filename === expectCallsite.filename &&
                 selectorCallsite.lineNum === expectCallsite.lineNum) {
                 this._addWarning(WARNING_MESSAGE.exessiveAwaitInAssertion, selectorCallsite);
 
                 selectorCallsiteList.delete(selectorCallsite);
             }
-        });
+        }
     }
 
     _expect$ (actual) {
