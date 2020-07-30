@@ -157,6 +157,33 @@ const sel = Selector('div').child();
 </html>
 ```
 
+The expression, associated with a selector is evaluated when this selector is used, not when it is created. If page's content changes, subsequent selectors are reevaluated reactively.
+
+```js
+test('Click a button', async t => {
+    const buttons = Selector('button').withText("A button number");
+
+    await t
+        .click(buttons.nth(0))
+        .click(buttons.nth(0))
+        .click(buttons.nth(0))
+});
+```
+
+```html
+<html>
+    <body>
+        <div>
+        <button onclick= "this.textContent= 'Pressed';">A button number 1</button>
+        <button onclick= "this.textContent= 'Pressed';">A button number 2</button>
+        <button onclick= "this.textContent= 'Pressed';">A button number 3</button>
+        </div>
+    </body>
+</html>
+```
+
+This sample page contains three buttons. When clicked, buttons' text is changed. During the test, each [`.click`](../../../documentation/reference/test-api/testcontroller/click.md) affects what element subsequent selectors will be pointing to. As a result, all 3 buttons are pressed.
+
 ## Member Tables
 
 The following methods filter elements from the selector:
