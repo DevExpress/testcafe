@@ -27,7 +27,7 @@ export default function wrapTestFunction (fn: Function): Function {
             for (const callsite of testRun.observedCallsites.callsitesWithoutAwait) {
                 errList.addError(new MissingAwaitError(callsite));
                 testRun.observedCallsites.callsitesWithoutAwait.delete(callsite);
-            };
+            }
         }
 
         if (errList.hasErrors)
