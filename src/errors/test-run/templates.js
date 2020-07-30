@@ -381,6 +381,6 @@ export default {
     `,
 
     [TEST_RUN_ERRORS.cannotCloseWindowWithoutParent]: () => `
-        Cannot close a window without parent.
+        Cannot close the window because it does not have a parent. The parent window was closed or you are attempting to close the root browser window where tests were launched.
     `,
 };
