@@ -911,13 +911,14 @@ You can also disable page caching for an individual [fixture](test-api/fixture/d
 
 ### --disable-multiple-windows
 
-Disables support for multi-window testing.
+Disables support for [multi-window testing](../guides/advanced-guides/multiple-browser-windows.md).
+
 
 ```sh
 testcafe firefox my-tests --disable-multiple-windows
 ```
 
-The `--disable-multiple-windows` option disables multi-window testing capabilities in Chrome and Firefox. Use it if the introduction of this feature breaks your legacy tests.
+The `--disable-multiple-windows` option disables multi-window testing capabilities in Chrome and Firefox. Use this flag if if you encounter compatibility issues with [TestCafe v2015.1](http://testcafe.devexpress.com/documentation) tests.
 
 ### --color
 

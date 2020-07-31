@@ -13,7 +13,7 @@ Switches to a specific browser window.
 Activates the window that corresponds to the `window` object.
 
 ```js
-t.SwitchToWindow(window);
+t.switchToWindow(window);
 ```
 
 Parameter | Type     | Description
