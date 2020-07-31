@@ -33,12 +33,10 @@ export default class Test extends TestingUnit {
             this.clientScripts = this.fixture.clientScripts.slice();
         }
 
-        // @ts-ignore
-        return this.apiOrigin;
+        return this.apiOrigin as unknown as Test;
     }
 
-    // @ts-ignore
-    private _add (name: string, fn: Function): Function {
+    protected _add (name: string, fn: Function): Function {
         assertType(is.string, 'apiOrigin', 'The test name', name);
         assertType(is.function, 'apiOrigin', 'The test body', fn);
         assertType(is.nonNullObject, 'apiOrigin', `The fixture of '${name}' test`, this.fixture);
@@ -69,7 +67,6 @@ export default class Test extends TestingUnit {
     }
 
     private _requestHooks$ (...hooks: RequestHook[]): Function {
-        // @ts-ignore
         if (this.apiMethodWasCalled.requestHooks)
             throw new APIError(OPTION_NAMES.requestHooks, RUNTIME_ERRORS.multipleAPIMethodCallForbidden, OPTION_NAMES.requestHooks);
 
@@ -77,15 +74,13 @@ export default class Test extends TestingUnit {
 
         assertRequestHookType(hooks);
 
-        this.requestHooks = union(this.requestHooks, hooks);
-        // @ts-ignore
+        this.requestHooks                    = union(this.requestHooks, hooks);
         this.apiMethodWasCalled.requestHooks = true;
 
         return this.apiOrigin;
     }
 
     private _clientScripts$ (...scripts: ClientScriptInit[]): Function {
-        // @ts-ignore
         if (this.apiMethodWasCalled.clientScripts)
             throw new APIError(OPTION_NAMES.clientScripts, RUNTIME_ERRORS.multipleAPIMethodCallForbidden, OPTION_NAMES.clientScripts);
 
@@ -93,13 +88,11 @@ export default class Test extends TestingUnit {
 
         assertClientScriptType(scripts);
 
-        this.clientScripts = union(this.clientScripts, scripts);
-        // @ts-ignore
+        this.clientScripts                    = union(this.clientScripts, scripts);
         this.apiMethodWasCalled.clientScripts = true;
 
         return this.apiOrigin;
     }
 }
 
-// @ts-ignore
-TestingUnit._makeAPIListForChildClass(Test);
+TestingUnit.makeAPIListForChildClass(Test);

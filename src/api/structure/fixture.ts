@@ -1,5 +1,4 @@
 import { flattenDeep as flatten } from 'lodash';
-// @ts-ignore
 import { SPECIAL_BLANK_PAGE } from 'testcafe-hammerhead';
 import TestingUnit from './testing-unit';
 import UnitType from './unit-type';
@@ -34,12 +33,10 @@ export default class Fixture extends TestingUnit {
         this.beforeFn     = null;
         this.afterFn      = null;
 
-        // @ts-ignore
-        return this.apiOrigin;
+        return this.apiOrigin as unknown as Fixture;
     }
 
-    // @ts-ignore
-    private _add (name: string, ...rest: unknown[]): Function {
+    protected _add (name: string, ...rest: unknown[]): Function {
         name = handleTagArgs(name, rest);
 
         assertType(is.string, 'apiOrigin', 'The fixture name', name);
@@ -83,7 +80,6 @@ export default class Fixture extends TestingUnit {
     }
 
     private _requestHooks$ (...hooks: RequestHook[]): Function {
-        // @ts-ignore
         if (this.apiMethodWasCalled.requestHooks)
             throw new APIError(OPTION_NAMES.requestHooks, RUNTIME_ERRORS.multipleAPIMethodCallForbidden, OPTION_NAMES.requestHooks);
 
@@ -91,15 +87,13 @@ export default class Fixture extends TestingUnit {
 
         assertRequestHookType(hooks);
 
-        this.requestHooks = hooks;
-        // @ts-ignore
+        this.requestHooks                    = hooks;
         this.apiMethodWasCalled.requestHooks = true;
 
         return this.apiOrigin;
     }
 
     private _clientScripts$ (...scripts: ClientScriptInit[]): Function {
-        // @ts-ignore
         if (this.apiMethodWasCalled.clientScripts)
             throw new APIError(OPTION_NAMES.clientScripts, RUNTIME_ERRORS.multipleAPIMethodCallForbidden, OPTION_NAMES.clientScripts);
 
@@ -107,13 +101,11 @@ export default class Fixture extends TestingUnit {
 
         assertClientScriptType(scripts);
 
-        this.clientScripts = scripts;
-        // @ts-ignore
+        this.clientScripts                    = scripts;
         this.apiMethodWasCalled.clientScripts = true;
 
         return this.apiOrigin;
     }
 }
 
-// @ts-ignore
-TestingUnit._makeAPIListForChildClass(Fixture);
+TestingUnit.makeAPIListForChildClass(Fixture);
