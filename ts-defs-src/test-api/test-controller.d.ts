@@ -82,6 +82,20 @@ interface Browser {
     prettyUserAgent: string;
 }
 
+type WindowSelector = unknown;
+
+interface SwitchToWindowPredicateData {
+    /**
+     * The window title.
+     */
+    title: string;
+
+    /**
+     * The window URL.
+     */
+    url: URL;
+}
+
 interface TestController {
     /**
      * Dictionary that is shared between test hook functions and test code.
@@ -285,6 +299,50 @@ interface TestController {
      * Switches the test's browsing context from an `<iframe>` back to the main window.
      */
     switchToMainWindow(): TestControllerPromise;
+
+    /**
+     * Opens a new browser window.
+     *
+     * @param url - The URL to open. Can be local or remote, absolute or relative.
+     */
+    openWindow(url: string): WindowSelectorPromise;
+
+    /**
+     * Closes a browser window.
+     *
+     * @param window - The target window. If this parameter is omitted, the currently active window is selected.
+     */
+    closeWindow(window?: WindowSelector): TestControllerPromise;
+
+    /**
+     * Retrieves a `window` object that corresponds to the currently open window.
+     */
+    getCurrentWindow(): WindowSelectorPromise;
+
+    /**
+     * Activates the window that corresponds to the `window` object.
+     *
+     * @param window - The target window.
+     */
+    switchToWindow(window: WindowSelector): TestControllerPromise;
+
+    /**
+     * Activates the first window that matches the criteria passed to the `filterFn` function
+     *
+     * @param filterFn - The predicate used to select windows.
+     */
+    switchToWindow(filterFn: (data: SwitchToWindowPredicateData) => boolean): TestControllerPromise;
+
+    /**
+     * Activates the window that launched, or was active during the launch of, the currently active window.
+     */
+    switchToParentWindow(): TestControllerPromise;
+
+    /**
+     * Activates the most recent of the previously active windows.
+     */
+    switchToPreviousWindow(): TestControllerPromise;
+
     /**
      * Executes function on client and returns it's result.
      *
@@ -357,4 +415,7 @@ interface TestController {
 }
 
 interface TestControllerPromise extends TestController, Promise<any> {
+}
+
+interface WindowSelectorPromise extends TestController, Promise<WindowSelector> {
 }
