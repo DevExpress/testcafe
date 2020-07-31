@@ -34,7 +34,7 @@ test('Login via Google', async t => {
 });
 ```
 
-You can use the [t.openWindow]() method to open a child window from test code:
+You can use the [t.openWindow](../documentation/reference/test-api/testcontroller/openwindow.md) method to open a child window from test code:
 
 ```js
 import { Selector, ClientFunction } from 'testcafe';
@@ -50,7 +50,7 @@ test('Open a new window', async t => {
 });
 ```
 
-The [t.switchToWindow]() method enables you to switch between open windows. You can use a window identifier or a predicate to specify the window that should be activated:
+The [t.switchToWindow](../documentation/reference/test-api/testcontroller/switchtowindow.md) method enables you to switch between open windows. You can use a window identifier or a predicate to specify the window that should be activated:
 
 ```js
 fixture `Example page`
@@ -72,9 +72,9 @@ test('Switch to a specific window', async t => {
 });
 ```
 
-The [t.switchToParentWindow]() and [t.switchToPreviousWindow]() methods allow you to switch back to the parent window or the previously active window.
+The [t.switchToParentWindow](../documentation/reference/test-api/testcontroller/switchtoparentwindow.md) and [t.switchToPreviousWindow](../documentation/reference/test-api/testcontroller/switchtopreviouswindow.md) methods allow you to switch back to the parent window or the previously active window.
 
-The [t.closeWindow]() method closes the current window when called without arguments, or the specified window if you pass an identifier or predicate:
+The [t.closeWindow](../documentation/reference/test-api/testcontroller/closewindow.md) method closes the current window when called without arguments, or the specified window if you pass an identifier or predicate:
 
 ```js
 fixture `Example page`
@@ -107,4 +107,7 @@ TestCafe can display difference between values, arrays, objects, and even functi
 
 ## Bug Fixes
 
-* ...
+* TestCafe now throws a descriptive error when it attempts to start the browser UI on Linux without the X11 server ([4461](https://github.com/DevExpress/testcafe/issues/4461))
+* Fixed an exception thrown when you use remote browsers on Linux without X11 or run Windows browsers from WSL2 ([#4742](https://github.com/DevExpress/testcafe/issues/4742))
+* Fixed a syntax error on pages whose code destructures empty function parameters ([testcafe-hammerhead/#2391](https://github.com/DevExpress/testcafe-hammerhead/issues/2391))
+* Fixed a bug when page titles were displayed incorrectly ([testcafe-hammerhead/#2374](https://github.com/DevExpress/testcafe-hammerhead/issues/2374))
