@@ -41,6 +41,6 @@ export default {
     assertedSelectorInstance:           'You passed a Selector object to \'t.expect()\'.\nIf you want to check that a matched element exists, pass the \'selector.exists\' value instead.',
     assertedClientFunctionInstance:     'You passed a ClientFunction object to \'t.expect()\'.\nIf you want to check the function\'s return value, call the client function (\'clientFunction()\') instead.',
     multipleWindowsFoundByPredicate:    'The predicate function passed to the \'switchToWindow\' method matched multiple windows. The first matching window was activated.',
-    excessiveAwaitInAssertion:           'You passed a DOM snapshot property to the assertion\'s \'t.expect()\' method. The property value is assigned when the snapshot is resolved and this value is no longer updated. To ensure that the assertion verifies an up-to-date value, pass the selector property without \'await\'.'
+    excessiveAwaitInAssertion:          'You passed a DOM snapshot property to the assertion\'s \'t.expect()\' method. The property value is assigned when the snapshot is resolved and this value is no longer updated. To ensure that the assertion verifies an up-to-date value, pass the selector property without \'await\'.'
 };
 
