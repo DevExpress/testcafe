@@ -16,6 +16,10 @@ Activates the window that corresponds to the `window` object.
 t.SwitchToWindow(window);
 ```
 
+Parameter | Type     | Description
+-------------------------------- | -------- | --------------
+`window` | Object | Object that corresponds to an open window
+
 **Example:**
 
 ```js
@@ -37,13 +41,12 @@ test('Switch to a different window', async t => {
 Activates the first window that matches the criteria passed to the `filterFn` function
 
 ```js
-t.switchToWindow(filterFn, dependencies);
+t.switchToWindow(filterFn);
 ```
 
 Parameter | Type     | Description
 -------------------------------- | -------- | --------------
 `filterFn` | Function | The predicate used to select windows.
-`dependencies` | Object | Variables and objects passed to the `filterFn` function.
 
 The `filterFn` predicate accepts the following parameters:
 

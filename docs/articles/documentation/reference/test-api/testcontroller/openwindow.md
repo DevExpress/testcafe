@@ -6,7 +6,7 @@ permalink: /documentation/reference/test-api/testcontroller/openwindow.html
 
 # t.openWindow method
 
-Opens a new browser window.
+Opens a new browser window and returns the matching window object.
 
 ```js
 t.openWindow( url )
@@ -27,7 +27,8 @@ fixture `Example page`
 test('Open the TestCafe website', async t => {
     await t
         .openWindow('http://devexpress.github.io/testcafe')
-        .openWindow('./documentation')
-        .openWindow('file://path/to/my/website');
+        .openWindow('./documentation');
+
+    const localWebsite = await t.openWindow('file://path/to/my/website');
 });
 ```
