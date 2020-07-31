@@ -14,15 +14,42 @@ const createStackFilter   = require('../../lib/errors/create-stack-filter.js');
 const assertError         = require('./helpers/assert-runtime-error').assertError;
 const compile             = require('./helpers/compile');
 
-
 const copy   = promisify(fs.copyFile);
 const remove = promisify(fs.unlink);
 
-
 require('source-map-support').install();
 
+const SessionControllerStub = { getSession: () => {
+    return { id: nanoid(7) };
+} };
+
+const TestRun = proxyquire('../../lib/test-run/index', { './session-controller': SessionControllerStub });
+
+class TestRunMock extends TestRun {
+    _addInjectables () {}
+
+    _initRequestHooks () {}
+
+    get id () {
+        return 'id';
+    }
+
+    executeCommand (command) {
+        this.commands.push(command);
+
+        return this.expectedError ? Promise.reject(new Error(this.expectedError)) : Promise.resolve();
+    }
+
+    constructor (expectedError) {
+        super({}, {}, {}, {}, {});
+
+        this.expectedError = expectedError;
+        this.commands = [];
+    }
+}
+
 describe('Compiler', function () {
-    const testRunMock = { id: 'yo' };
+    const testRunMock = new TestRunMock();
 
     this.timeout(20000);
 
@@ -587,18 +614,6 @@ describe('Compiler', function () {
         });
 
         describe('test.fn()', function () {
-            const TestRunMock = function (expectedError) {
-                this.id            = 'PPBqWA9';
-                this.commands      = [];
-                this.expectedError = expectedError;
-            };
-
-            TestRunMock.prototype.executeCommand = function (command) {
-                this.commands.push(command);
-
-                return this.expectedError ? Promise.reject(new Error(this.expectedError)) : Promise.resolve();
-            };
-
             it('Should be resolved if the test passed', function () {
                 const sources = ['test/server/data/test-suites/raw/test.testcafe'];
                 let test      = null;
@@ -656,7 +671,7 @@ describe('Compiler', function () {
 
             return compile(src)
                 .then(function (compiled) {
-                    return compiled.tests[0].fn({ id: 'test' });
+                    return compiled.tests[0].fn(new TestRunMock());
                 })
                 .then(function (compiledClientFn) {
                     expect(normalizeCode(compiledClientFn)).eql(normalizeCode(expected));

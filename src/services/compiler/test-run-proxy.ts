@@ -2,10 +2,14 @@ import testRunTracker from '../../api/test-run-tracker';
 import prerenderCallsite from '../../utils/prerender-callsite';
 
 import { TestRunDispatcherProtocol } from './protocol';
+import TestController from '../../api/test-controller';
+import ObservedCallsitesStorage from '../../test-run/observed-callsites-storage';
 
 
 class TestRunMock {
     public readonly id: string;
+    public readonly controller: TestController;
+    public readonly observedCallsites: ObservedCallsitesStorage;
 
     private readonly dispatcher: TestRunDispatcherProtocol;
     private readonly fixtureCtx: unknown;
@@ -18,6 +22,11 @@ class TestRunMock {
 
         this.ctx        = Object.create(null);
         this.fixtureCtx = fixtureCtx;
+
+        // TODO: Synchronize these properties with their real counterparts in the main process.
+        // Postponed until (GH-3244). See details in (GH-5250).
+        this.controller =        new TestController(this);
+        this.observedCallsites = new ObservedCallsitesStorage();
 
         testRunTracker.activeTestRuns[id] = this;
     }

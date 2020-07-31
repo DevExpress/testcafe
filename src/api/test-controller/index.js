@@ -69,7 +69,6 @@ export default class TestController {
 
         this.testRun               = testRun;
         this.executionChain        = Promise.resolve();
-        this.callsitesWithoutAwait = new Set();
         this.warningLog            = testRun.warningLog;
     }
 
@@ -87,7 +86,8 @@ export default class TestController {
     // await t2.click('#btn3');   // <-- without check it will set callsiteWithoutAwait = null, so we will lost tracking
     _createExtendedPromise (promise, callsite) {
         const extendedPromise     = promise.then(identity);
-        const markCallsiteAwaited = () => this.callsitesWithoutAwait.delete(callsite);
+        const observedCallsites   = this.testRun.observedCallsites;
+        const markCallsiteAwaited = () => observedCallsites.callsitesWithoutAwait.delete(callsite);
 
         extendedPromise.then = function () {
             markCallsiteAwaited();
@@ -110,7 +110,7 @@ export default class TestController {
         this.executionChain.then = originalThen;
         this.executionChain      = this.executionChain.then(executor);
 
-        this.callsitesWithoutAwait.add(callsite);
+        this.testRun.observedCallsites.callsitesWithoutAwait.add(callsite);
 
         this.executionChain = this._createExtendedPromise(this.executionChain, callsite);
 
@@ -385,8 +385,21 @@ export default class TestController {
         return this.testRun.executeAction(name, new GetBrowserConsoleMessagesCommand(), callsite);
     }
 
+    _checkForExcessiveAwaits (selectorCallsiteList, expectCallsite) {
+        for (const selectorCallsite of selectorCallsiteList) {
+            if (selectorCallsite.filename === expectCallsite.filename &&
+                selectorCallsite.lineNum === expectCallsite.lineNum) {
+                this._addWarning(WARNING_MESSAGE.excessiveAwaitInAssertion, selectorCallsite);
+
+                selectorCallsiteList.delete(selectorCallsite);
+            }
+        }
+    }
+
     _expect$ (actual) {
         const callsite = getCallsiteForMethod('expect');
+
+        this._checkForExcessiveAwaits(this.testRun.observedCallsites.snapshotPropertyCallsites, callsite);
 
         if (isClientFunction(actual))
             this._addWarning(WARNING_MESSAGE.assertedClientFunctionInstance, callsite);

@@ -1,6 +1,27 @@
-const expect   = require('chai').expect;
-const fill     = require('lodash/fill');
-const Compiler = require('../../lib/compiler');
+const proxyquire = require('proxyquire');
+const expect     = require('chai').expect;
+const fill       = require('lodash/fill');
+const Compiler   = require('../../lib/compiler');
+
+const SessionControllerStub = { getSession: () => {
+    return { id: 'sessionId' };
+} };
+
+const TestRun = proxyquire('../../lib/test-run/index', { './session-controller': SessionControllerStub });
+
+class TestRunMock extends TestRun {
+    _addInjectables () {}
+
+    _initRequestHooks () {}
+
+    get id () {
+        return 'id';
+    }
+
+    constructor () {
+        super({}, {}, {}, {}, {});
+    }
+}
 
 describe('Test run tracker', function () {
     this.timeout(20000);
@@ -8,7 +29,7 @@ describe('Test run tracker', function () {
     function runTest (testName) {
         const src         = 'test/server/data/test-run-tracking/' + testName;
         const compiler    = new Compiler([src]);
-        const testRunMock = { id: 'dB_J4h0H' };
+        const testRunMock = new TestRunMock();
         const expected    = fill(Array(3), testRunMock.id);
 
         return compiler.getTests()

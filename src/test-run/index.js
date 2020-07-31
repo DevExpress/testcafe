@@ -52,6 +52,7 @@ import processTestFnError from '../errors/process-test-fn-error';
 
 const lazyRequire                 = require('import-lazy')(require);
 const SessionController           = lazyRequire('./session-controller');
+const ObservedCallsitesStorage    = lazyRequire('./observed-callsites-storage');
 const ClientFunctionBuilder       = lazyRequire('../client-functions/client-function-builder');
 const BrowserManipulationQueue    = lazyRequire('./browser-manipulation-queue');
 const TestRunBookmark             = lazyRequire('./bookmark');
@@ -134,6 +135,8 @@ export default class TestRun extends AsyncEventEmitter {
         this.quarantine  = null;
 
         this.debugLogger = this.opts.debugLogger;
+
+        this.observedCallsites = new ObservedCallsitesStorage();
 
         this._addInjectables();
         this._initRequestHooks();

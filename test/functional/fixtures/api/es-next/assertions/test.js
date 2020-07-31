@@ -1,4 +1,8 @@
 const expect = require('chai').expect;
+const fs     = require('fs');
+const path   = require('path');
+
+const DATA_PATH = path.join(__dirname, './data');
 
 describe('[API] Assertions', function () {
     it('Should perform .eql() assertion', function () {
@@ -196,6 +200,22 @@ describe('[API] Assertions', function () {
             .catch(function () {
                 expect(testReport.warnings[0]).to.match(new RegExp(['You passed a ClientFunction object to \'t\\.expect\\(\\)\'\\.\nIf you want to check ',
                     'the function\'s return value, call the client function \\(\'clientFunction\\(\\)\'\\) instead\\.'].join('')));
+            });
+    });
+
+    it('Should raise a warning when trying to await Selector property in assertion', function () {
+        return runTests('./testcafe-fixtures/assertions-test.js', 'Await Selector property', { only: 'chrome' })
+            .then(() => {
+                const snapshotWarningRegExp = new RegExp([`You passed a DOM snapshot property to the assertion's 't\\.expect\\(\\)' method\\. `,
+                    `The property value is assigned when the snapshot is resolved and this value is no longer updated\\. `,
+                    `To ensure that the assertion verifies an up-to-date value, pass the selector property without 'await'\\.`].join(''));
+
+                const snapshotWarnings = testReport.warnings.filter(warningStr => {
+                    return warningStr.match(snapshotWarningRegExp);
+                });
+
+                expect(snapshotWarnings.length).to.eql(1);
+                expect(snapshotWarnings[0]).to.match(new RegExp(fs.readFileSync(path.join(DATA_PATH, 'expected-selector-property-awaited-callsite')).toString().replace(/\r/g, '')));
             });
     });
 
