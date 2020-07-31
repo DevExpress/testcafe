@@ -367,7 +367,7 @@ export default {
 
     [TEST_RUN_ERRORS.switchToWindowPredicateError]: err => `
         An error occurred inside the "switchToWindow" argument function.
-        
+
         Error details:
         ${escapeHtml(err.errMsg)}
     `,
@@ -377,6 +377,6 @@ export default {
     `,
 
     [TEST_RUN_ERRORS.multipleWindowsModeIsNotSupportedInRemoteBrowserError]: err => `
-        Multi window mode is supported in local browsers only. Run tests locally to use the "${err.methodName}" method.
+        Multi window mode is supported in Chrome, Chromium, Edge 84+ and Firefox only. Run tests in these browsers to use the "${err.methodName}" method.
     `,
 };
