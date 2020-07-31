@@ -379,4 +379,8 @@ export default {
     [TEST_RUN_ERRORS.multipleWindowsModeIsNotSupportedInRemoteBrowserError]: err => `
         Multi window mode is supported in Chrome, Chromium, Edge 84+ and Firefox only. Run tests in these browsers to use the "${err.methodName}" method.
     `,
+
+    [TEST_RUN_ERRORS.cannotCloseWindowWithoutParent]: () => `
+        Cannot close the window because it does not have a parent. The parent window was closed or you are attempting to close the root browser window where tests were launched.
+    `,
 };

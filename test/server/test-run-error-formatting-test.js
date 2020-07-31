@@ -85,6 +85,7 @@ const {
     SwitchToWindowPredicateError,
     CannotCloseWindowWithChildrenError,
     MultipleWindowsModeIsDisabledError,
+    CannotCloseWindowWithoutParentError,
     MultipleWindowsModeIsNotAvailableInRemoteBrowserError
 } = require('../../lib/errors/test-run');
 
@@ -597,6 +598,10 @@ describe('Error formatting', () => {
 
         it('Should format "cannotCloseWindowWithChildrenError"', () => {
             assertErrorMessage('cannot-close-window-with-children-error', new CannotCloseWindowWithChildrenError());
+        });
+
+        it('Should format "cannotCloseWindowWithoutParentError"', () => {
+            assertErrorMessage('cannot-close-window-without-parent-error', new CannotCloseWindowWithoutParentError());
         });
 
         it('Should format "windowNotFoundError"', () => {
