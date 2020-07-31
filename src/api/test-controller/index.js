@@ -376,11 +376,11 @@ export default class TestController {
         return this.testRun.executeAction(name, new GetBrowserConsoleMessagesCommand(), callsite);
     }
 
-    _checkForExessiveAwaits (selectorCallsiteList, expectCallsite) {
+    _checkForExcessiveAwaits (selectorCallsiteList, expectCallsite) {
         for (const selectorCallsite of selectorCallsiteList) {
             if (selectorCallsite.filename === expectCallsite.filename &&
                 selectorCallsite.lineNum === expectCallsite.lineNum) {
-                this._addWarning(WARNING_MESSAGE.exessiveAwaitInAssertion, selectorCallsite);
+                this._addWarning(WARNING_MESSAGE.excessiveAwaitInAssertion, selectorCallsite);
 
                 selectorCallsiteList.delete(selectorCallsite);
             }
@@ -390,7 +390,7 @@ export default class TestController {
     _expect$ (actual) {
         const callsite = getCallsiteForMethod('expect');
 
-        this._checkForExessiveAwaits(this.testRun.observedCallsites.snapshotPropertyCallsites, callsite);
+        this._checkForExcessiveAwaits(this.testRun.observedCallsites.snapshotPropertyCallsites, callsite);
 
         if (isClientFunction(actual))
             this._addWarning(WARNING_MESSAGE.assertedClientFunctionInstance, callsite);
