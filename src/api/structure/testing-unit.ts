@@ -12,7 +12,7 @@ import TestFile from './test-file';
 import { Metadata, AuthCredentials } from './interfaces';
 import { Dictionary } from '../../configuration/interfaces';
 
-export default class TestingUnit extends BaseUnit {
+export default abstract class TestingUnit extends BaseUnit {
     public readonly testFile: TestFile;
     public name: string | null;
     public pageUrl: string | null;
@@ -27,7 +27,7 @@ export default class TestingUnit extends BaseUnit {
     public apiMethodWasCalled: FlagList;
     public apiOrigin: Function;
 
-    public constructor (testFile: TestFile, unitType: UnitType) {
+    protected constructor (testFile: TestFile, unitType: UnitType) {
         super(unitType);
 
         this.testFile = testFile;
@@ -56,9 +56,7 @@ export default class TestingUnit extends BaseUnit {
         delegateAPI(this.apiOrigin, this.constructor.API_LIST, { handler: this });
     }
 
-    private _add (...args: unknown[]): never { // eslint-disable-line @typescript-eslint/no-unused-vars
-        throw new Error('Not implemented');
-    }
+    protected abstract _add (...args: unknown[]): unknown;
 
     private _only$getter (): Function {
         this.only = true;
@@ -129,7 +127,7 @@ export default class TestingUnit extends BaseUnit {
         return this.apiOrigin;
     }
 
-    private static _makeAPIListForChildClass (ChildClass: unknown): void {
+    public static makeAPIListForChildClass (ChildClass: unknown): void {
         //@ts-ignore
         ChildClass.API_LIST = TestingUnit.API_LIST.concat(getDelegatedAPIList(ChildClass.prototype));
     }

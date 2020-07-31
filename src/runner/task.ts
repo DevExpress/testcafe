@@ -113,7 +113,7 @@ export default class Task extends AsyncEventEmitter {
             return {
                 fixture: {
                     id:    fixture.id,
-                    name:  fixture.name,
+                    name:  fixture.name as string,
                     tests: testsByGroup.map(test => {
                         return {
                             id:   test.id,

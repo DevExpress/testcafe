@@ -1,5 +1,7 @@
 export default class FlagList {
-    constructor (flags) {
+    [key: string]: any;
+
+    public constructor (flags: string[]) {
         Object.defineProperty(this, '_initialFlagValue', { writable: true, value: false });
 
         flags.forEach(flag => {
@@ -7,7 +9,7 @@ export default class FlagList {
         });
     }
 
-    reset () {
+    public reset (): void {
         Object.getOwnPropertyNames(this)
             .forEach(name => {
                 this[name] = !this._initialFlagValue;
