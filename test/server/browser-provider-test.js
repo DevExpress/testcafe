@@ -1,19 +1,20 @@
-const expect                    = require('chai').expect;
-const { noop, stubFalse }       = require('lodash');
-const nanoid                    = require('nanoid');
-const { rmdirSync, statSync }   = require('fs');
-const { join, dirname }         = require('path');
-const proxyquire                = require('proxyquire');
-const sinon                     = require('sinon');
-const Module                    = require('module');
-const dedent                    = require('dedent');
-const browserProviderPool       = require('../../lib/browser/provider/pool');
-const parseProviderName         = require('../../lib/browser/provider/parse-provider-name');
-const BrowserConnection         = require('../../lib/browser/connection');
-const ProviderCtor              = require('../../lib/browser/provider/');
-const WARNING_MESSAGE           = require('../../lib/notifications/warning-message');
-const BrowserProviderPluginHost = require('../../lib/browser/provider/plugin-host');
-const WarningLog                = require('../../lib/notifications/warning-log');
+const expect                          = require('chai').expect;
+const { noop, stubFalse, pick, omit } = require('lodash');
+const nanoid                          = require('nanoid');
+const { rmdirSync, statSync }         = require('fs');
+const { join, dirname }               = require('path');
+const proxyquire                      = require('proxyquire');
+const sinon                           = require('sinon');
+const Module                          = require('module');
+const dedent                          = require('dedent');
+const browserProviderPool             = require('../../lib/browser/provider/pool');
+const BUILTIN_PROVIDERS               = require('../../lib/browser/provider/built-in');
+const parseProviderName               = require('../../lib/browser/provider/parse-provider-name');
+const BrowserConnection               = require('../../lib/browser/connection');
+const ProviderCtor                    = require('../../lib/browser/provider/');
+const WARNING_MESSAGE                 = require('../../lib/notifications/warning-message');
+const BrowserProviderPluginHost       = require('../../lib/browser/provider/plugin-host');
+const WarningLog                      = require('../../lib/notifications/warning-log');
 
 class BrowserConnectionMock extends BrowserConnection {
     constructor () {
@@ -423,6 +424,24 @@ describe('Browser provider', function () {
             await provider.openBrowser(bc.id);
 
             expect(debugMock.data['testcafe:browser:provider:built-in:remote']).eql('Error: SomeError');
+        });
+    });
+
+    describe('Features', () => {
+        const PROVIDERS_WITH_MULTIWINDOW_MODE = ['chrome', 'chromium', 'chrome-canary', 'edge', 'firefox'];
+
+        it('Should support multiwindow mode in some providers', async () => {
+            const providers = pick(BUILTIN_PROVIDERS, PROVIDERS_WITH_MULTIWINDOW_MODE);
+
+            for (const [name, plugin] of Object.entries(providers))
+                expect(plugin.supportMultipleWindows, `Provider ${name} should support multiple windows`).ok;
+        });
+
+        it('Should not support multiwindow mode in other providers', async () => {
+            const providers = omit(BUILTIN_PROVIDERS, PROVIDERS_WITH_MULTIWINDOW_MODE);
+
+            for (const [name, plugin] of Object.entries(providers))
+                expect(plugin.supportMultipleWindows, `Provider ${name} should not support multiple windows`).not.ok;
         });
     });
 
