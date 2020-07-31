@@ -225,15 +225,7 @@ To determine the cause of this issue, do the following:
 2. Add the [t.debug()](../documentation/guides/basic-guides/debug.md) method before this selector to stop test execution before it reaches this point.
 3. Run the test and wait until the browser stops at the breakpoint.
 
-After this, use the browser's development tools to check that:
-
-* the element is present on the page;
-* the element is visible (TestCafe considers it visible if it does not have `display` set to `none`,
-  `visibility` set to `hidden` or the zero `width` or `height`);
-* the element's part targeted by the action is visible (the center of the element, or a point specified by the [`offsetX` and `offsetY`](../documentation/reference/test-api/testcontroller/click.md#options) parameters);
-* the element is not in an `<iframe>` (if it is, use the
-  [t.switchToIframe](../documentation/guides/basic-guides/interact-with-the-page.md#work-with-iframes) method
-  to switch to the appropriate `<iframe>`).
+After this, use the browser's development tools to check that elements satisfy the [interaction requirements](../documentation/guides/basic-guides/interact-with-the-page.md#interaction-requirements).
 
 Also, try running the test in full screen.
 Use the [t.maximizeWindow](../documentation/reference/test-api/testcontroller/maximizewindow.md)

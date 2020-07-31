@@ -333,3 +333,28 @@ Mouse event | Touch event
 `mousemove` (when hovering or dragging) | `touchmove` (dragging only)
 `mousedown` | `touchstart`
 `mouseup`   | `touchend`
+
+## Interaction Requirements
+
+To be properly targeted by TestCafe, elements have to satisfy several conditions:
+
+* an element has to be within the [window object](https://www.w3schools.com/jsref/obj_window.asp) of the page or in an [`<iframe>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe).  
+
+    To target elements in an `<iframe>`, switch to it with the [`switchToIframe` method](../../reference/test-api/testcontroller/switchtoiframe.md) and back with the [`switchToMainWindow` action](../../reference/test-api/testcontroller/switchtomainwindow.md).
+
+    > There is no designated `scroll` action. TestCafe automatically scrolls to reach items, that are not currently on-screen.
+    >
+    > You can use `hover` action to scroll towards the desired part of the page.
+
+* an element has to be visible- neither of its properties should be set to:
+
+    Property | Value
+    -------- | --------
+    `display`  | `none`
+    `visibility` | `hidden`, `collapse`
+    `width`    | `0`
+    `height`   | `0`
+
+* the part of a targeted element has to be visible.  
+
+    TestCafe actions target a center of the element, or a point specified by the `offsetX` and `offsetY` options of an action. If the target point is obstructed with another element, the action will still execute. In case of [`.click`](../../reference/test-api/testcontroller/click.md), for example, the overlapping element will be clicked instead of a targeted one.
