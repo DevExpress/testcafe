@@ -82,9 +82,9 @@ interface Browser {
     prettyUserAgent: string;
 }
 
-type WindowSelector = unknown;
+type WindowDescriptor = unknown;
 
-interface SwitchToWindowPredicateData {
+interface WindowFilterData {
     /**
      * The window title.
      */
@@ -305,33 +305,33 @@ interface TestController {
      *
      * @param url - The URL to open. Can be local or remote, absolute or relative.
      */
-    openWindow(url: string): WindowSelectorPromise;
+    openWindow(url: string): WindowDescriptorPromise;
 
     /**
      * Closes a browser window.
      *
-     * @param window - The target window. If this parameter is omitted, the currently active window is selected.
+     * @param windowDescriptor - The target window. If this parameter is omitted, the currently active window is selected.
      */
-    closeWindow(window?: WindowSelector): TestControllerPromise;
+    closeWindow(windowDescriptor?: WindowDescriptor): TestControllerPromise;
 
     /**
      * Retrieves a `window` object that corresponds to the currently open window.
      */
-    getCurrentWindow(): WindowSelectorPromise;
+    getCurrentWindow(): WindowDescriptorPromise;
 
     /**
      * Activates the window that corresponds to the `window` object.
      *
-     * @param window - The target window.
+     * @param windowDescriptor - The target window.
      */
-    switchToWindow(window: WindowSelector): TestControllerPromise;
+    switchToWindow(windowDescriptor: WindowDescriptor): TestControllerPromise;
 
     /**
      * Activates the first window that matches the criteria passed to the `filterFn` function
      *
      * @param filterFn - The predicate used to select windows.
      */
-    switchToWindow(filterFn: (data: SwitchToWindowPredicateData) => boolean): TestControllerPromise;
+    switchToWindow(filterFn: (data: WindowFilterData) => boolean): TestControllerPromise;
 
     /**
      * Activates the window that launched, or was active during the launch of, the currently active window.
@@ -417,5 +417,5 @@ interface TestController {
 interface TestControllerPromise extends TestController, Promise<any> {
 }
 
-interface WindowSelectorPromise extends TestController, Promise<WindowSelector> {
+interface WindowDescriptorPromise extends TestController, Promise<WindowDescriptor> {
 }
