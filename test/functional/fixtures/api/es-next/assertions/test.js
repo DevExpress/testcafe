@@ -1,6 +1,6 @@
 const expect = require('chai').expect;
-const fs = require('fs');
-const path = require('path');
+const fs     = require('fs');
+const path   = require('path');
 
 const DATA_PATH = path.join(__dirname, './data');
 
