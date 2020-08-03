@@ -157,7 +157,7 @@ const sel = Selector('div').child();
 </html>
 ```
 
-The expression, associated with a selector is evaluated when this selector is used, not when it is created. If page's content changes, subsequent selectors are reevaluated reactively.
+The expression, associated with a selector is evaluated when this selector is used, not when it is declared. If page's content changes, subsequent selectors are reevaluated reactively.
 
 ```js
 test('Click a button', async t => {
