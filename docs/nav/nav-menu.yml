@@ -242,7 +242,7 @@
         url: /documentation/reference/test-api/testcontroller/clearupload.md
       - name: click
         url: /documentation/reference/test-api/testcontroller/click.md
-      - name: closewindow
+      - name: closeWindow
         url: /documentation/reference/test-api/testcontroller/closewindow.md
       - name: ctx
         url: /documentation/reference/test-api/testcontroller/ctx.md
