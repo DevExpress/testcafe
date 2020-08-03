@@ -11,8 +11,8 @@ This topic describes how to use the [Run TestCafe action](https://github.com/Dev
 
 * [Step 1 - Create a Workflow](#step-1---create-a-workflow)
 * [Step 2 - Create a Job](#step-2---create-a-job)
-* [Step 3 - Add a Step That Fetches The Repository](#step-3---add-a-step-that-fetches-the-repository)
-* [Step 4 - Add a Step That Runs TestCafe](#step-4---add-a-step-that-runs-testcafe)
+* [Step 3 - Add a Step that Fetches the Repository](#step-3---add-a-step-that-fetches-the-repository)
+* [Step 4 - Add a Step that Runs TestCafe](#step-4---add-a-step-that-runs-testcafe)
 * [Action Options](#action-options)
   * [args](#args)
   * [version](#version)
@@ -49,7 +49,7 @@ jobs:
 
 This job runs on a GitHub-hosted virtual machine with the latest Windows version. `test` is the [job ID](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_id) that must be unique to the `jobs` object.
 
-## Step 3 - Add a Step That Fetches The Repository
+## Step 3 - Add a Step that Fetches the Repository
 
 Add a [step](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idsteps) that uses the [checkout](https://github.com/actions/checkout) action to fetch your repository content.
 
@@ -66,7 +66,7 @@ jobs:
         uses: actions/checkout@v1
 ```
 
-## Step 4 - Add a Step That Runs TestCafe
+## Step 4 - Add a Step that Runs TestCafe
 
 Add the [Run TestCafe](https://github.com/DevExpress/testcafe-action) action. Use the [args](#args) parameter to provide TestCafe [command line arguments](../../reference/command-line-interface.md).
 
@@ -118,6 +118,8 @@ The TestCafe version to install.
 
 The following workflow demonstrates how to run TestCafe tests across Node.js versions and operating systems.
 
+{% raw %}
+
 ```yml
 name: Target Multiple Node.js Versions and Operating Systems
 on: [push]
@@ -141,6 +143,8 @@ jobs:
           args: "chrome tests"
 ```
 
+{% endraw %}
+
 This job contains a matrix strategy that duplicates it to run on Windows and Ubuntu virtual machines in three Node.js versions (`8`, `10`, and `12`).
 
-The [setup-node](https://github.com/actions/setup-node) action installs the Node.js version defined in the matrix. Then [checkout](https://github.com/actions/checkout) fetches the code and `testcafe-action` runs tests.
+The [setup-node](https://github.com/actions/setup-node) action installs the Node.js version defined in the matrix. Then, [checkout](https://github.com/actions/checkout) fetches the code and `testcafe-action` runs tests.
