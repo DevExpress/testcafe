@@ -7,7 +7,7 @@ import { AssertionOptions } from '../../test-run/commands/options';
 
 interface AssertionArgs {
     opts: AssertionOptions;
-    message?: string;
+    message?: string | AssertionOptions;
     expected?: unknown;
     expected2?: unknown;
 }
@@ -28,8 +28,17 @@ export default class Assertion {
     }
 
     private _enqueueAssertion (apiMethodName: string, assertionArgs: AssertionArgs): () => Promise<unknown> {
-        const options = assertionArgs.opts || {};
-        const message = assertionArgs.message;
+        let options = assertionArgs.opts || {};
+        let message = assertionArgs.message;
+
+        // NOTE: Assertion options should be specified after the 'message' parameter.
+        // await t.expect(42).eql(43, 'wrong value', { timeout: 10000 });
+        // In case of empty assertion message we allowing to specify assertion option in place of assertion message.
+        // await t.expect(42).eql(43, { timeout: 10000 });
+        if (typeof message === 'object') {
+            options = assertionArgs.message as AssertionOptions;
+            message = void 0;
+        }
 
         return this._testController._enqueueCommand(apiMethodName, AssertionCommand, {
             assertionType: apiMethodName,
