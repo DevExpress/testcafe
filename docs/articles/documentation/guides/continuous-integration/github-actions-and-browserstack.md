@@ -35,7 +35,7 @@ In this example, the workflow runs when you push changes to the repository.
 
 Create a job that runs the TestCafe tests.
 
-Provide the [job name](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idname) and specify the [type of machine](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on) that should run the job.
+Specify the [job name](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idname) and the [type of machine](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on) that should run the job.
 
 You can [**use a GitHub-hosted machine**](https://docs.github.com/en/actions/reference/virtual-environments-for-github-hosted-runners):
 
@@ -71,11 +71,11 @@ jobs:
 
 > Make sure that the intended machine meets the [requirements for self-hosted runner machines](https://docs.github.com/en/actions/hosting-your-own-runners/about-self-hosted-runners#requirements-for-self-hosted-runner-machines).
 >
->For more information about self-hosted runners in GitHub Actions workflow, refer to [this page](https://docs.github.com/en/actions/hosting-your-own-runners/using-self-hosted-runners-in-a-workflow).
+>For more information about self-hosted runners in the GitHub Actions workflow, refer to the following topic: [Using self-hosted runners in a workflow](https://docs.github.com/en/actions/hosting-your-own-runners/using-self-hosted-runners-in-a-workflow).
 
 ## Step 3 - Provide BrowserStack Credentials
 
-In order for TestCafe to use browsers provided by BrowserStack, valid BrowserStack credentials (Username and Access Key) are required. These credentials are unique to your BrowserStack account and can be obtained from the [account settings](https://www.browserstack.com/accounts/settings) page.
+In order for TestCafe to use BrowserStack browsers, valid BrowserStack credentials (Username and Access Key) are required. These credentials are unique to your BrowserStack account and can be obtained from the [account settings](https://www.browserstack.com/accounts/settings) page.
 
 Values should be set to `BROWSERSTACK_USERNAME` and `BROWSERSTACK_ACCESS_KEY` environment variables, respectively. However, for security purposes, you should provide them as [secrets](https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets) in your repository.
 

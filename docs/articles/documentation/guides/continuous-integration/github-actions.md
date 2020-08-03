@@ -147,4 +147,4 @@ jobs:
 
 This job contains a matrix strategy that duplicates it to run on Windows and Ubuntu virtual machines in three Node.js versions (`8`, `10`, and `12`).
 
-The [setup-node](https://github.com/actions/setup-node) action installs the Node.js version defined in the matrix. Then [checkout](https://github.com/actions/checkout) fetches the code and `testcafe-action` runs tests.
+The [setup-node](https://github.com/actions/setup-node) action installs the Node.js version defined in the matrix. Then, [checkout](https://github.com/actions/checkout) fetches the code and `testcafe-action` runs tests.
