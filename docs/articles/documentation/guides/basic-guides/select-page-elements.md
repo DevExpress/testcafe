@@ -582,7 +582,7 @@ does not finish before the callback is executed, suspend the test until the call
 
     Likewise, the return value is the only way to obtain data from selectors.
 
-* You can not use [property shorthands](http://es6-features.org/#PropertyShorthand) to declare `Selector`'s `dependencies` option.
+* You cannot use [property shorthands](http://es6-features.org/#PropertyShorthand) to declare the `Selector`'s `dependencies` option.
 
 ## Examples
 
