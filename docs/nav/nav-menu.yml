@@ -37,6 +37,8 @@
       url: /documentation/guides/advanced-guides/detect-the-client-browser-and-platform.md
     - name: Use TestCafe Docker Image
       url: /documentation/guides/advanced-guides/use-testcafe-docker-image.md
+    - name: Multiple Browser Windows
+      url: /documentation/guides/advanced-guides/multiple-browser-windows.md
   - name: Concepts
     content:
     - name: Browsers
@@ -240,6 +242,8 @@
         url: /documentation/reference/test-api/testcontroller/clearupload.md
       - name: click
         url: /documentation/reference/test-api/testcontroller/click.md
+      - name: closewindow
+        url: /documentation/reference/test-api/testcontroller/closewindow.md
       - name: ctx
         url: /documentation/reference/test-api/testcontroller/ctx.md
       - name: debug
@@ -290,6 +294,8 @@
         url: /documentation/reference/test-api/testcontroller/fixturectx.md
       - name: getBrowserConsoleMessages
         url: /documentation/reference/test-api/testcontroller/getbrowserconsolemessages.md
+      - name: getCurrentWindow
+        url: /documentation/reference/test-api/testcontroller/getcurrentwindow.md
       - name: getNativeDialogHistory
         url: /documentation/reference/test-api/testcontroller/getnativedialoghistory.md
       - name: hover
@@ -298,6 +304,8 @@
         url: /documentation/reference/test-api/testcontroller/maximizewindow.md
       - name: navigateTo
         url: /documentation/reference/test-api/testcontroller/navigateto.md
+      - name: openWindow
+        url: /documentation/reference/test-api/testcontroller/openwindow.md
       - name: pressKey
         url: /documentation/reference/test-api/testcontroller/presskey.md
       - name: removeRequestHooks
@@ -326,6 +334,12 @@
         url: /documentation/reference/test-api/testcontroller/switchtoiframe.md
       - name: switchToMainWindow
         url: /documentation/reference/test-api/testcontroller/switchtomainwindow.md
+      - name: switchToParentWindow
+        url: /documentation/reference/test-api/testcontroller/swithctoparentwindow.md
+      - name: switchToPreviousWindow
+        url: /documentation/reference/test-api/testcontroller/switchtopreviouswindow.md
+      - name: switchToWindow
+        url: /documentation/reference/test-api/testcontroller/switchtowindow.md
       - name: takeElementScreenshot
         url: /documentation/reference/test-api/testcontroller/takeelementscreenshot.md
       - name: takeScreenshot

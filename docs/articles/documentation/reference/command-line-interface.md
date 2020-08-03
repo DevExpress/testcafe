@@ -913,7 +913,6 @@ You can also disable page caching for an individual [fixture](test-api/fixture/d
 
 Disables support for [multi-window testing](../guides/advanced-guides/multiple-browser-windows.md).
 
-
 ```sh
 testcafe firefox my-tests --disable-multiple-windows
 ```
