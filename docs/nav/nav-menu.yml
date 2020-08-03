@@ -335,7 +335,7 @@
       - name: switchToMainWindow
         url: /documentation/reference/test-api/testcontroller/switchtomainwindow.md
       - name: switchToParentWindow
-        url: /documentation/reference/test-api/testcontroller/swithctoparentwindow.md
+        url: /documentation/reference/test-api/testcontroller/switchtoparentwindow.md
       - name: switchToPreviousWindow
         url: /documentation/reference/test-api/testcontroller/switchtopreviouswindow.md
       - name: switchToWindow
