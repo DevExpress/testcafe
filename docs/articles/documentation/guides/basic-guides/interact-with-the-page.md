@@ -353,6 +353,8 @@ To be properly targeted by TestCafe, elements have to satisfy several conditions
 
     TestCafe actions target a center of an element, or a point specified by the `offsetX` and `offsetY` options of an action. If the target point is obstructed with another element, the action will still execute. In case of [`.click`](../../reference/test-api/testcontroller/click.md), for example, the overlapping element will be clicked instead of a targeted one.
 
+### Example: Scroll an Element into View
+
 There is no designated scroll action. TestCafe automatically scrolls to reach items, that are not currently on-screen.
 
 You can use any action (for example, [`hover`](#hover)) to scroll towards the desired part of the page.  
