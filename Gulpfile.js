@@ -20,6 +20,7 @@ const globby                  = require('globby');
 const open                    = require('open');
 const connect                 = require('connect');
 const spawn                   = require('cross-spawn');
+const OS                      = require('os-family');
 const serveStatic             = require('serve-static');
 const markdownlint            = require('markdownlint');
 const minimist                = require('minimist');
@@ -889,7 +890,7 @@ function startDocker () {
     assignIn(process.env, dockerEnv);
 }
 
-function isDockerDesktopRunning () {
+function isDockerDesktopWindowsRunning () {
     try {
         const processInfo = childProcess.execSync('wmic process get Name /format:list').toString();
 
@@ -900,8 +901,29 @@ function isDockerDesktopRunning () {
     }
 }
 
+function isDockerDaemonRunning () {
+    try {
+        const processInfo = childProcess.execSync('ps -ejf | grep dockerd').toString();
+
+        return processInfo.match(/dockerd/);
+    }
+    catch (e) {
+        return false;
+    }
+}
+
+function isDockerRunning () {
+    if (OS.win)
+        return isDockerDesktopWindowsRunning();
+
+    if (OS.linux)
+        return isDockerDaemonRunning();
+
+    throw new Error('Running docker tests is not supported for this OS');
+}
+
 function ensureDockerEnvironment () {
-    if (isDockerDesktopRunning())
+    if (isDockerRunning())
         return;
 
     if (!process.env['DOCKER_HOST']) {
@@ -929,7 +951,7 @@ gulp.task('docker-build', done => {
     done();
 });
 
-gulp.task('docker-test', done => {
+gulp.step('docker-test-run', done => {
     ensureDockerEnvironment();
 
     childProcess.execSync(`docker build --no-cache --build-arg tag=${packageInfo.version} -t docker-server-tests -f test/docker/Dockerfile .`,
@@ -948,6 +970,8 @@ gulp.step('docker-publish-run', done => {
     done();
 });
 
-gulp.task('docker-publish', gulp.series('docker-build', 'docker-test', 'docker-publish-run'));
+gulp.task('docker-test', gulp.series('docker-build', 'docker-test-run'));
+
+gulp.task('docker-publish', gulp.series('docker-test', 'docker-publish-run'));
 
 gulp.task('travis', process.env.GULP_TASK ? gulp.series(process.env.GULP_TASK) : () => {});

@@ -39,6 +39,10 @@ jobs:
         chrome:  stable
       services:
         - xvfb
+    - env: GULP_TASK="docker-test"
+      services:
+        - docker
+
   fast_finish: true
 
 cache:
