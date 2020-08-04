@@ -1,9 +1,9 @@
 import { Selector } from 'testcafe';
 
-const parentUrl = 'http://localhost:3000/fixtures/run-options/allow-multiple-windows/pages/api/parent.html';
-const child1Url = 'http://localhost:3000/fixtures/run-options/allow-multiple-windows/pages/api/child-1.html';
-const child2Url = 'http://localhost:3000/fixtures/run-options/allow-multiple-windows/pages/api/child-2.html';
-const child3Url = 'http://localhost:3000/fixtures/run-options/allow-multiple-windows/pages/api/child-3.html';
+const parentUrl = 'http://localhost:3000/fixtures/multiple-windows/pages/api/parent.html';
+const child1Url = 'http://localhost:3000/fixtures/multiple-windows/pages/api/child-1.html';
+const child2Url = 'http://localhost:3000/fixtures/multiple-windows/pages/api/child-2.html';
+const child3Url = 'http://localhost:3000/fixtures/multiple-windows/pages/api/child-3.html';
 
 fixture `API`
     .page(parentUrl);

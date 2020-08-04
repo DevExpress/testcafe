@@ -1,6 +1,6 @@
 import { Selector, ClientFunction } from 'testcafe';
 
-const page = 'http://localhost:3000/fixtures/run-options/allow-multiple-windows/pages/i4855/index.html';
+const page = 'http://localhost:3000/fixtures/multiple-windows/pages/i4855/index.html';
 
 const getLocation = ClientFunction(() => window.location.href);
 

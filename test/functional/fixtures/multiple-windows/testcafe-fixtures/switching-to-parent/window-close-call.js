@@ -1,7 +1,7 @@
 import { Selector } from 'testcafe';
 
 fixture `fixture`
-    .page('http://localhost:3000/fixtures/run-options/allow-multiple-windows/pages/switching-to-parent/index.html');
+    .page('http://localhost:3000/fixtures/multiple-windows/pages/switching-to-parent/index.html');
 
 test('test', async t => {
     const indexPageInput = Selector('#indexPageInput');

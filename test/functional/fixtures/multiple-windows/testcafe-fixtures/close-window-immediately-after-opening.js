@@ -1,7 +1,7 @@
 import { Selector } from 'testcafe';
 
 fixture `Close window immediately after opening`
-    .page('http://localhost:3000/fixtures/run-options/allow-multiple-windows/pages/close-window-immediately-after-opening/index.html');
+    .page('http://localhost:3000/fixtures/multiple-windows/pages/close-window-immediately-after-opening/index.html');
 
 test('test', async t => {
     await t

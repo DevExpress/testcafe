@@ -1,8 +1,8 @@
 const { expect }     = require('chai');
-const createTestCafe = require('../../../../../lib');
+const createTestCafe = require('../../../../lib');
 const path           = require('path');
 
-describe('Allow multiple windows', () => {
+describe('Multiple windows', () => {
     describe('Switch to the child window', () => {
         it('Click on link', () => {
             return runTests('testcafe-fixtures/switching-to-child/click-on-link.js');
@@ -44,12 +44,12 @@ describe('Allow multiple windows', () => {
     it('Unhandled JavaScript errors', () => {
         return runTests('testcafe-fixtures/handle-errors/handle-js-errors.js', null, { shouldFail: true })
             .catch(errs => {
-                expect(errs[0]).to.contain('A JavaScript error occurred on "http://localhost:3000/fixtures/run-options/allow-multiple-windows/pages/handle-errors/page-with-js-error.html"');
+                expect(errs[0]).to.contain('A JavaScript error occurred on "http://localhost:3000/fixtures/multiple-windows/pages/handle-errors/page-with-js-error.html"');
             });
     });
 
     it('Close the window immediately after opening (GH-3762)', () => {
-        return runTests('testcafe-fixtures/close-window-immediately-after-opeping.js');
+        return runTests('testcafe-fixtures/close-window-immediately-after-opening.js');
     });
 
     it('headless', () => {
