@@ -5,7 +5,7 @@ permalink: /blog/:title.html
 ---
 # TestCafe v1.9.0 Released
 
-We are happy to announce that a beta version of multiple window support ships with `v1.9.0`.
+We are happy to announce that multiple window support ships in a beta form with `v1.9.0`.
 
 <!--more-->
 
