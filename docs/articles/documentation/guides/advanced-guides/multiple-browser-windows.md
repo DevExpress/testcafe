@@ -54,7 +54,7 @@ test('Open a new window', async t => {
 
 The [t.switchToWindow](../../reference/test-api/testcontroller/switchtowindow.md) method lets you switch between browser windows.
 
-It takes a window identifier object as an argument:
+It takes a window descriptor as an argument:
 
 ```js
 fixture `Example page`
@@ -128,7 +128,7 @@ test('Close the current window', async t => {
 
 ```
 
-Pass a window identifier when you call the [t.closeWindow](../../reference/test-api/testcontroller/closewindow.md) method to close a particular window:
+Pass a window descriptor when you call the [t.closeWindow](../../reference/test-api/testcontroller/closewindow.md) method to close a particular window:
 
 ```js
 test('Close a specific window', async t => {
