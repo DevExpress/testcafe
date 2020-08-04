@@ -55,22 +55,22 @@ The [t.switchToWindow](../documentation/reference/test-api/testcontroller/switch
 
 ```js
 fixture `Example page`
-    .page('http://example.com');
+    .page('https://example.com');
 
 test('Switch to a specific window', async t => {
     const initialWindow = await t.getCurrentWindow();
-    const popUp1        = await t.openWindow('http://example1.com');
-    const popUp2        = await t.openWindow('http://example2.com');
+    const popUp1        = await t.openWindow('https://devexpress.com');
+    const popUp2        = await t.openWindow('https://github.com');
 
     await t.switchToWindow(initialWindow);
 
     const url = t.eval(() => document.documentURI);
 
-    await t.expect(url).eql('http://example.com/');
+    await t.expect(url).eql('https://example.com/');
 
     await t
-        .switchToWindow(w => w.url.host === 'www.example1.com')
-        .expect(url).eql('http://www.example1.com/');
+        .switchToWindow(w => w.url.host === 'github.com')
+        .expect(url).eql('https://github.com');
 });
 ```
 
