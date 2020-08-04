@@ -23,7 +23,7 @@ describe('Runner', () => {
     let connection                = null;
     let origRemoteBrowserProvider = null;
 
-    const BROWSER_NAME = `${isAlpine ? 'chromium' : 'chrome'}:headless`;
+    const BROWSER_NAME = `${isAlpine() ? 'chromium' : 'chrome'}:headless`;
 
     const remoteBrowserProviderMock = {
         openBrowser () {

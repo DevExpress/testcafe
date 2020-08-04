@@ -8,7 +8,7 @@ const Test                    = require('../../lib/api/structure/test');
 const browserProviderPool     = require('../../lib/browser/provider/pool');
 
 
-const BROWSER_NAME = isAlpine ? 'chromium' : 'chrome';
+const BROWSER_NAME = isAlpine() ? 'chromium' : 'chrome';
 
 class BrowserConnectionMock extends BrowserConnection {
     constructor (...args) {
