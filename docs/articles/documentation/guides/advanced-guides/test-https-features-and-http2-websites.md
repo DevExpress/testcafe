@@ -8,7 +8,7 @@ redirect_from:
 ---
 # Test HTTPS Features and HTTP/2 Websites
 
-This topic describes how TestCafe works with HTTPS and HTTP/2 websites.
+This topic describes how TestCafe executes tests on HTTPS and HTTP/2 websites.
 
 * [Test HTTPS Websites](#test-https-websites)
   * [Use a Trusted Certificate](#use-a-trusted-certificate)
@@ -25,11 +25,11 @@ If the tested page does not use HTTPS-specific features (like
 [Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API),
 [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API),
 [ApplePaySession](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaysession), or
-[SubtleCrypto](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto)), TestCafe successfully proxies it over HTTP. Otherwise, the tests fail because the page throws JavaScript errors, does not load or loads partially.
+[SubtleCrypto](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto)), TestCafe can proxy it over HTTP. Otherwise, the tests fail because the page throws JavaScript errors, does not load or loads partially.
 
-To establish a secure HTTPS-connection, Node.js requires a valid [PKCS12](https://en.wikipedia.org/wiki/PKCS_12) certificate (`.pfx`). If you have a certificate signed by a trusted authority, we recommend that you [use this certificate](#use-a-trusted-certificate) if your security policy permits. The browsers are then able to open the tested page without workarounds. Alternatively, you can [generate and use a self-signed certificate](#use-a-self-signed-certificate).
+To establish a secure HTTPS-connection, Node.js requires a valid [PKCS12](https://en.wikipedia.org/wiki/PKCS_12) certificate (`.pfx`). We recommend that you [use a certificate signed by a trusted authority](#use-a-trusted-certificate). This allows a browser to open the tested page without workarounds. You can also [generate and use a self-signed certificate](#use-a-self-signed-certificate).
 
-> Before you try HTTPS, launch testcafe with [`--hostname localhost` CLI parameter](../../reference/command-line-interface.md#--hostname-name) or [`hostname: localhost` configuration option](../../reference/configuration-file.md#hostname). Since all modern browsers thread localhost as a secure origin, some built-in browser features that require secure origin (Service workers, GeoAPI) will work. Third-party JS features like ApplePaySession may or may not work depending on implementation.
+> Before you use HTTPS, launch testcafe with [`--hostname localhost` CLI parameter](../../reference/command-line-interface.md#--hostname-name) or [`hostname: localhost` configuration option](../../reference/configuration-file.md#hostname). Most modern browsers thread localhost as a secure origin, and some built-in browser features that require a secure origin (Service workers, GeoAPI) should work. Third-party JS features like ApplePaySession may not work depending on implementation.
 
 ### Use a Trusted Certificate
 
@@ -41,7 +41,7 @@ testcafe chrome  test.js --ssl pfx=path/to/trusted/certificate.pfx;rejectUnautho
 
 ### Use a Self-Signed Certificate
 
-[Generate a self-signed certificate with `openssl`](#generate-a-certificate-from-the-command-line) if you launch tests from the command line. In the API, you can use the [openssl-self-signed-certificate](https://www.npmjs.com/package/openssl-self-signed-certificate) module to [generate a certificate in code](#generate-a-certificate-in-your-code).
+[Generate a self-signed certificate with `openssl`](#generate-a-certificate-from-the-command-line) if you launch tests from the command line. To [generate a certificate in code](#generate-a-certificate-in-your-code), use the `openssl-self-signed-certificate` module.
 
 #### Generate a Certificate From the Command Line
 
@@ -68,8 +68,8 @@ In **bash**, you can use [OpenSSL](https://www.openssl.org/docs/man1.1.1/man1/op
     openssl req -new -key testingdomain.key -out testingdomain.csr
     ```
 
-    You can press Enter to skip the questions, but you might want to set a recognizable CN (Common Name) so that you can easily find this certificate in a list of others later.  
-4. Create a config file `testdomain.ext` with the following contents:
+    You can press Enter to skip the questions, but set a recognizable CN (Common Name) so that you can easily find this certificate in a list of others later.  
+4. Create a config file `testdomain.ext` with the following content:
   
     ```sh
     authorityKeyIdentifier=keyid,issuer
@@ -101,7 +101,7 @@ When you run tests from the command line, use [--ssl](../../reference/command-li
 
 The examples below use a previously generated `.pfx` file to establish an HTTPS server.
 
-In ***Chrome*** and ***Chromium-Based*** Browsers, use `--allow-insecure-localhost` flag and [`--hostname`](../../reference/command-line-interface.md#--hostname-name) CLI parameter to make Chrome trust the certificate when tests run on localhost. If you use a different URL, use `--ignore-certificate-errors` flag.
+In ***Chrome*** and ***Chromium-Based*** Browsers, use the `--allow-insecure-localhost` flag and [`--hostname`](../../reference/command-line-interface.md#--hostname-name) CLI parameter to make Chrome trust the certificate when tests are run on localhost. If you use a different URL, use the `--ignore-certificate-errors` flag.
 
 ```sh
 testcafe chrome --allow-insecure-localhost --hostname localhost test.js --ssl pfx=path/to/certificate.pfx;rejectUnauthorized=true;
@@ -117,15 +117,15 @@ In ***Firefox***, add your self-signed root authority to the trusted list. Follo
 testcafe 'firefox -P testing-profile' --hostname localhost assertTest.js --ssl pfx=certificate.pfx;rejectUnauthorized=true;
 ```
 
-> The certificate created in the example is valid only for localhost domain. This is why the `--hostname` option is used. If you wish to use another domain for testing, enter it in the `[alt_names]` section of `testdomain.ext` configuration file before creating the certificate.  
+> The certificate created in the example is valid only for localhost domain. This is why the `--hostname` option is used. If you want to use another domain for testing, enter it in the `[alt_names]` section of `testdomain.ext` configuration file before creating the certificate.  
 
 <!---->
 
-> Important! For security reasons, use this profile only for testing purposes.
+> Important! For security reasons, only use this profile for testing purposes.
 
 #### Generate a Certificate in Your Code
 
-When you use the programming interface, generate a certificate with the [openssl-self-signed-certificate](https://www.npmjs.com/package/openssl-self-signed-certificate) module, and pass the HTTPS server options to the [createTestCafe](../../reference/testcafe-api/global/createtestcafe.md) function.
+When you use the programming interface, generate a certificate with the [openssl-self-signed-certificate](https://www.npmjs.com/package/openssl-self-signed-certificate) module and pass the HTTPS server options to the [createTestCafe](../../reference/testcafe-api/global/createtestcafe.md) function.
 
 ```js
 const createTestCafe        = require('testcafe');
