@@ -34,7 +34,7 @@ test('Login via Google', async t => {
 });
 ```
 
-You can use the [t.openWindow](../documentation/reference/test-api/testcontroller/openwindow.md) method to open a child window from test code:
+You can use the [t.openWindow](../documentation/reference/test-api/testcontroller/openwindow.md) method to open a child window in test code:
 
 ```js
 import { Selector, ClientFunction } from 'testcafe';
