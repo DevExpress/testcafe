@@ -6,7 +6,7 @@ permalink: /documentation/reference/test-api/testcontroller/getcurrentwindow.htm
 
 # t.getCurrentWindow method
 
-Retrieves a `window identifier` object that corresponds to the currently open window.
+Retrieves a window identifier object that corresponds to the currently open window.
 
 ```js
 t.getCurrentWindow();
