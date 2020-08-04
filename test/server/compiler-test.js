@@ -16,8 +16,9 @@ const TestController      = require('../../lib/api/test-controller');
 const assertError         = require('./helpers/assert-runtime-error').assertError;
 const compile             = require('./helpers/compile');
 
-const copy   = promisify(fs.copyFile);
-const remove = promisify(fs.unlink);
+const copy      = promisify(fs.copyFile);
+const remove    = promisify(fs.unlink);
+const writeFile = promisify(fs.writeFile);
 
 require('source-map-support').install();
 
@@ -346,7 +347,7 @@ describe('Compiler', function () {
             });
         });
 
-        it('Should have definition for all TestController methods', function () {
+        it('Should have definitions for all TestController methods', async function () {
             this.timeout(60000);
 
             const apiMethods = TestController.API_LIST
@@ -367,20 +368,21 @@ describe('Compiler', function () {
 
             const tempTestFilePath = path.join(process.cwd(), `tmp-ts-definitions-test.ts`);
 
-            fs.writeFileSync(tempTestFilePath, testCode);
+            await writeFile(tempTestFilePath, testCode);
 
-            return compile(tempTestFilePath)
-                .catch(err => {
-                    for (const errMsg of possibleErrors) {
-                        if (err.data[0].includes(errMsg))
-                            actualErrors.push(errMsg);
-                    }
-                })
-                .finally(() => {
-                    fs.unlinkSync(tempTestFilePath);
+            try {
+                await compile(tempTestFilePath);
+            }
+            catch (err) {
+                for (const errMsg of possibleErrors) {
+                    if (err.data[0].includes(errMsg))
+                        actualErrors.push(errMsg);
+                }
+            }
 
-                    expect(actualErrors.join('\n')).eql('');
-                });
+            await remove(tempTestFilePath);
+
+            expect(actualErrors.join('\n')).eql('');
         });
 
         it('Should provide API definitions', function () {
