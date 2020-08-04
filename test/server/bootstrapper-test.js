@@ -1,10 +1,14 @@
 const proxyquire              = require('proxyquire');
 const { expect }              = require('chai');
 const { noop }                = require('lodash');
+const isAlpine                = require('./helpers/is-alpine');
 const BrowserConnectionStatus = require('../../lib/browser/connection/status');
 const BrowserConnection       = require('../../lib/browser/connection');
 const Test                    = require('../../lib/api/structure/test');
 const browserProviderPool     = require('../../lib/browser/provider/pool');
+
+
+const BROWSER_NAME = isAlpine ? 'chromium' : 'chrome';
 
 class BrowserConnectionMock extends BrowserConnection {
     constructor (...args) {
@@ -44,7 +48,7 @@ describe('Bootstrapper', () => {
             });
 
             it('Should raise an error when browser is specified as non-headless', async () => {
-                bootstrapper.browsers = [ 'chrome' ];
+                bootstrapper.browsers = [ BROWSER_NAME ];
 
                 try {
                     await bootstrapper.createRunnableConfiguration();
@@ -53,7 +57,7 @@ describe('Bootstrapper', () => {
                 }
                 catch (err) {
                     expect(err.message).eql(
-                        `Your Linux version does not have a graphic subsystem to run chrome with a GUI. ` +
+                        `Your Linux version does not have a graphic subsystem to run ${BROWSER_NAME} with a GUI. ` +
                         `You can launch the browser in headless mode. ` +
                         `If you use a portable browser version, ` +
                         `specify the browser alias before the path instead of the 'path' prefix. ` +
@@ -84,7 +88,7 @@ describe('Bootstrapper', () => {
             });
 
             it('Should not raise an error when browser is specified as headless', async () => {
-                bootstrapper.browsers = [ 'chrome:headless' ];
+                bootstrapper.browsers = [ `${BROWSER_NAME}:headless` ];
 
                 let isErrorThrown = false;
 
