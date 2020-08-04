@@ -9,12 +9,12 @@ permalink: /documentation/reference/test-api/testcontroller/closewindow.html
 Closes a browser window.
 
 ```js
-t.closeWindow( [window] )
+t.closeWindow( [windowIdentifier] )
 ```
 
 Parameter | Type | Description
 --------- | ---- | ------------
-window *(optional)* | Window | The target window. If this parameter is omitted, the currently active window is selected.
+windowIdentifier *(optional)* | Window Identifier | Object that identifies the target window. If this parameter is omitted, the currently active window is selected.
 
 >You can not close the last remaining window, or windows with open children.
 

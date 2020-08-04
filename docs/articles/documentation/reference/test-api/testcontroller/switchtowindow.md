@@ -10,10 +10,10 @@ Switches to a specific browser window.
 
 ## t.switchToWindow(window)
 
-Activates the window that corresponds to the `window` object.
+Activates the window that corresponds to the `windowIdentifier` object.
 
 ```js
-t.switchToWindow(window);
+t.switchToWindow(windowIdentifier);
 ```
 
 Parameter | Type     | Description

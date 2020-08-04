@@ -7,9 +7,9 @@ permalink: /documentation/guides/advanced-guides/multiple-browser-windows.html
 
 The TestCafe API includes methods that open, close, and switch between browser windows. You can test websites with pop-up windows and OAuth login forms, debug complex multi-window applications, or run multiple instances of the same web app side by side.
 
-⚠ This is a **beta** feature. Not recommended for use in production environments. Browser support is limited to local instances of Chrome and Firefox. Videos and screenshots of child windows cannot be captured. The available functionality is subject to further revisions.
+⚠ This is a **beta** feature. Browser support is limited to local instances of Chrome and Firefox. Videos and screenshots of child windows cannot be captured. The available functionality is subject to further revisions. Please refrain from using this feature in production environments.
 
-️🛠️ Use the `--disable-multiple-windows` CLI flag to disable this feature if you encounter compatibility issues with legacy tests.
+️🛠️ Use the `--disable-multiple-windows` CLI flag to disable multi-window capabilities if you encounter compatibility issues with [TestCafe v2015.1](http://testcafe.devexpress.com/documentation) tests.
 
 ## Handle client-side window events
 
@@ -54,7 +54,7 @@ test('Open a new window', async t => {
 
 The [t.switchToWindow](../../reference/test-api/testcontroller/switchtowindow.md) method lets you switch between browser windows.
 
-It takes an instance of the Window object as an argument:
+It takes a window identifier object as an argument:
 
 ```js
 fixture `Example page`
@@ -62,8 +62,8 @@ fixture `Example page`
 
 test('Switch to a specific window', async t => {
     const initialWindow = await t.getCurrentWindow();
-    const window2 = await t.openWindow('http://example1.com');
-    const window3 = await t.openWindow('http://example2.com');
+    const window2 = await t.openWindow('http://devexpress.com');
+    const window3 = await t.openWindow('http://github.com');
 
     await t.switchToWindow(initialWindow);
 
@@ -128,7 +128,7 @@ test('Close the current window', async t => {
 
 ```
 
-Pass a window object when you call the [t.closeWindow](../../reference/test-api/testcontroller/closewindow.md) method to close a particular window:
+Pass a window identifier when you call the [t.closeWindow](../../reference/test-api/testcontroller/closewindow.md) method to close a particular window:
 
 ```js
 test('Close a specific window', async t => {
