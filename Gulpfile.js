@@ -33,6 +33,7 @@ const npmAuditor              = require('npm-auditor');
 const checkLicenses           = require('./test/dependency-licenses-checker');
 const packageInfo             = require('./package');
 const getPublishTags          = require('./docker/get-publish-tags');
+const isDockerDaemonRunning   = require('./docker/is-docker-daemon-running');
 
 const readFile = promisify(fs.readFile);
 
@@ -889,19 +890,8 @@ function startDocker () {
     assignIn(process.env, dockerEnv);
 }
 
-function isDockerDesktopRunning () {
-    try {
-        const processInfo = childProcess.execSync('wmic process get Name /format:list').toString();
-
-        return processInfo.match(/Docker (for Windows|Desktop).exe/);
-    }
-    catch (e) {
-        return false;
-    }
-}
-
 function ensureDockerEnvironment () {
-    if (isDockerDesktopRunning())
+    if (isDockerDaemonRunning())
         return;
 
     if (!process.env['DOCKER_HOST']) {
@@ -929,7 +919,7 @@ gulp.task('docker-build', done => {
     done();
 });
 
-gulp.task('docker-test', done => {
+gulp.step('docker-test-run', done => {
     ensureDockerEnvironment();
 
     childProcess.execSync(`docker build --no-cache --build-arg tag=${packageInfo.version} -t docker-server-tests -f test/docker/Dockerfile .`,
@@ -948,6 +938,10 @@ gulp.step('docker-publish-run', done => {
     done();
 });
 
-gulp.task('docker-publish', gulp.series('docker-build', 'docker-test', 'docker-publish-run'));
+gulp.task('docker-test', gulp.series('docker-build', 'docker-test-run'));
+
+gulp.task('docker-test-travis', gulp.series('build', 'docker-test'));
+
+gulp.task('docker-publish', gulp.series('docker-test', 'docker-publish-run'));
 
 gulp.task('travis', process.env.GULP_TASK ? gulp.series(process.env.GULP_TASK) : () => {});
