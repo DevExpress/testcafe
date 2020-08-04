@@ -39,7 +39,8 @@ jobs:
         chrome:  stable
       services:
         - xvfb
-    - env: GULP_TASK="docker-test"
+    - node_js: "stable"
+      env: GULP_TASK="docker-test-travis"
       services:
         - docker
 
