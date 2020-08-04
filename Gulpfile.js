@@ -20,7 +20,6 @@ const globby                  = require('globby');
 const open                    = require('open');
 const connect                 = require('connect');
 const spawn                   = require('cross-spawn');
-const OS                      = require('os-family');
 const serveStatic             = require('serve-static');
 const markdownlint            = require('markdownlint');
 const minimist                = require('minimist');
@@ -34,6 +33,7 @@ const npmAuditor              = require('npm-auditor');
 const checkLicenses           = require('./test/dependency-licenses-checker');
 const packageInfo             = require('./package');
 const getPublishTags          = require('./docker/get-publish-tags');
+const isDockerDaemonRunning   = require('./docker/is-docker-daemon-running');
 
 const readFile = promisify(fs.readFile);
 
@@ -890,40 +890,8 @@ function startDocker () {
     assignIn(process.env, dockerEnv);
 }
 
-function isDockerDesktopWindowsRunning () {
-    try {
-        const processInfo = childProcess.execSync('wmic process get Name /format:list').toString();
-
-        return processInfo.match(/Docker (for Windows|Desktop).exe/);
-    }
-    catch (e) {
-        return false;
-    }
-}
-
-function isDockerDaemonRunning () {
-    try {
-        const processInfo = childProcess.execSync('ps -ejf | grep dockerd').toString();
-
-        return processInfo.match(/dockerd/);
-    }
-    catch (e) {
-        return false;
-    }
-}
-
-function isDockerRunning () {
-    if (OS.win)
-        return isDockerDesktopWindowsRunning();
-
-    if (OS.linux)
-        return isDockerDaemonRunning();
-
-    throw new Error('Running docker tests is not supported for this OS');
-}
-
 function ensureDockerEnvironment () {
-    if (isDockerRunning())
+    if (isDockerDaemonRunning())
         return;
 
     if (!process.env['DOCKER_HOST']) {
