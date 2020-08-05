@@ -82,7 +82,7 @@ test('Switch to window by url', async t => {
                w.url.host === 'localhost:3000' &&
                w.url.hostname === 'localhost' &&
                w.url.port === '3000' &&
-               w.url.pathname === '/fixtures/run-options/allow-multiple-windows/pages/api/parent.html' &&
+               w.url.pathname === '/fixtures/multiple-windows/pages/api/parent.html' &&
                w.url.searchParams instanceof URLSearchParams;
     });
 
