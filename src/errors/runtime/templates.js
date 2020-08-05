@@ -107,5 +107,6 @@ export default {
         'If you use a portable browser version, ' +
         'specify the browser alias before the path instead of the \'path\' prefix. ' +
         'For more information, see https://devexpress.github.io/testcafe/documentation/guides/concepts/browsers.html#test-in-headless-mode',
-    [RUNTIME_ERRORS.uncaughtErrorInReporter]: 'An uncaught error occured in a reporter:\n{error}',
+
+    [RUNTIME_ERRORS.uncaughtErrorInReporter]: 'An uncaught error occured in the \'{methodName}\' method of the \'{reporterName}\' reporter. Details:\n{originalError}',
 };

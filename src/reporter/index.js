@@ -101,25 +101,29 @@ export default class Reporter {
             // fixture, we can report this fixture start.
             nextReportItem = this.reportQueue[0];
 
-            try {
-                await this.plugin.reportTestDone(reportItem.test.name, reportItem.testRunInfo, reportItem.test.meta);
-            }
-            catch (e) {
-                this.task.emit('error', new ReporterPluginError(e));
-            }
+            await this.dispatchToPlugin({
+                method: 'reportTestDone',
+                args:   [
+                    reportItem.test.name,
+                    reportItem.testRunInfo,
+                    reportItem.test.meta
+                ]
+            });
 
-            if (nextReportItem && nextReportItem.fixture !== currentFixture) {
-                try {
-                    await this.plugin.reportFixtureStart(
-                        nextReportItem.fixture.name,
-                        nextReportItem.fixture.path,
-                        nextReportItem.fixture.meta
-                    );
-                }
-                catch (e) {
-                    this.task.emit('error', new ReporterPluginError(e));
-                }
-            }
+            if (!nextReportItem)
+                continue;
+
+            if (nextReportItem.fixture === currentFixture)
+                continue;
+
+            await this.dispatchToPlugin({
+                method: 'reportFixtureStart',
+                args:   [
+                    nextReportItem.fixture.name,
+                    nextReportItem.fixture.path,
+                    nextReportItem.fixture.meta
+                ]
+            });
         }
     }
 
@@ -184,28 +188,52 @@ export default class Reporter {
         });
     }
 
+    async dispatchToPlugin ({ method, args, optional = false }) {
+        if (!this.plugin[method] && optional)
+            return;
+
+        try {
+            await this.plugin[method](...args);
+        }
+        catch (originalError) {
+            const uncaughError = new ReporterPluginError({
+                name: typeof this.plugin.name === 'string' ? this.plugin.name : 'customReporter',
+                method,
+                originalError
+            });
+
+            this.task.emit('error', uncaughError);
+        }
+    }
+
     async _onceTaskStartHandler () {
         const startTime  = new Date();
         const userAgents = this.task.browserConnectionGroups.map(group => group[0].userAgent);
         const first      = this.reportQueue[0];
+
         const taskProperties = {
             configuration: this.task.opts
         };
 
-        try {
-            await this.plugin.reportTaskStart(
+        await this.dispatchToPlugin({
+            method: 'reportTaskStart',
+            args:   [
                 startTime,
                 userAgents,
                 this.testCount,
                 this.task.testStructure,
                 taskProperties
-            );
+            ]
+        });
 
-            await this.plugin.reportFixtureStart(first.fixture.name, first.fixture.path, first.fixture.meta);
-        }
-        catch (e) {
-            this.task.emit('error', new ReporterPluginError(e));
-        }
+        await this.dispatchToPlugin({
+            method: 'reportFixtureStart',
+            args:   [
+                first.fixture.name,
+                first.fixture.path,
+                first.fixture.meta
+            ]
+        });
     }
 
     async _onTaskTestRunStartHandler (testRun) {
@@ -219,16 +247,17 @@ export default class Reporter {
         reportItem.pendingStarts--;
 
         if (!reportItem.pendingStarts) {
-            if (this.plugin.reportTestStart) {
-                const testStartInfo = { testRunIds: reportItem.testRunIds, testId: reportItem.test.id };
+            const testStartInfo = { testRunIds: reportItem.testRunIds, testId: reportItem.test.id };
 
-                try {
-                    await this.plugin.reportTestStart(reportItem.test.name, reportItem.test.meta, testStartInfo);
-                }
-                catch (e) {
-                    this.task.emit('error', new ReporterPluginError(e));
-                }
-            }
+            await this.dispatchToPlugin({
+                method:   'reportTestStart',
+                optional: true,
+                args:     [
+                    reportItem.test.name,
+                    reportItem.test.meta,
+                    testStartInfo
+                ]
+            });
 
             reportItem.pendingTestRunStartPromise.resolve();
         }
@@ -254,29 +283,29 @@ export default class Reporter {
     }
 
     async _onTaskTestActionStart ({ apiActionName, ...args }) {
-        if (this.plugin.reportTestActionStart) {
-            args = this._prepareReportTestActionEventArgs(args);
+        args = this._prepareReportTestActionEventArgs(args);
 
-            try {
-                await this.plugin.reportTestActionStart(apiActionName, args);
-            }
-            catch (e) {
-                this.task.emit('error', new ReporterPluginError(e));
-            }
-        }
+        await this.dispatchToPlugin({
+            method:   'reportTestActionStart',
+            optional: true,
+            args:     [
+                apiActionName,
+                args
+            ]
+        });
     }
 
     async _onTaskTestActionDone ({ apiActionName, ...args }) {
-        if (this.plugin.reportTestActionDone) {
-            args = this._prepareReportTestActionEventArgs(args);
+        args = this._prepareReportTestActionEventArgs(args);
 
-            try {
-                await this.plugin.reportTestActionDone(apiActionName, args);
-            }
-            catch (e) {
-                this.task.emit('error', new ReporterPluginError(e));
-            }
-        }
+        await this.dispatchToPlugin({
+            method:   'reportTestActionDone',
+            optional: true,
+            args:     [
+                apiActionName,
+                args
+            ]
+        });
     }
 
     async _onceTaskDoneHandler () {
@@ -288,12 +317,15 @@ export default class Reporter {
             skippedCount: this.skipped
         };
 
-        try {
-            await this.plugin.reportTaskDone(endTime, this.passed, this.task.warningLog.messages, result);
-        }
-        catch (e) {
-            this.task.emit('error', new ReporterPluginError(e));
-        }
+        await this.dispatchToPlugin({
+            method: 'reportTaskDone',
+            args:   [
+                endTime,
+                this.passed,
+                this.task.warningLog.messages,
+                result
+            ]
+        });
 
         this.pendingTaskDonePromise.resolve();
     }
