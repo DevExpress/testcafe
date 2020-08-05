@@ -198,8 +198,10 @@ describe('[API] Assertions', function () {
             only:       'chrome'
         })
             .catch(function () {
-                expect(testReport.warnings[0]).to.match(new RegExp(['You passed a ClientFunction object to \'t\\.expect\\(\\)\'\\.\nIf you want to check ',
-                    'the function\'s return value, call the client function \\(\'clientFunction\\(\\)\'\\) instead\\.'].join('')));
+                expect(testReport.warnings[0]).to.contain(
+                    'You passed a ClientFunction object to \'t.expect()\'.\n' +
+                    'If you want to check the function\'s return value, use parentheses to call the function: fnName().'
+                );
             });
     });
 
