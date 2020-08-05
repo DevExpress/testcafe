@@ -5,7 +5,7 @@ permalink: /documentation/guides/advanced-guides/multiple-browser-windows.html
 ---
 # Multiple Browser Windows
 
-The TestCafe API includes methods that open, close, and switch between browser windows. You can test websites with pop-up windows and OAuth login forms, debug complex multi-window applications, or run multiple instances of the same web app side by side.
+The TestCafe API includes methods that open, close, and switch between browser windows. You can test websites with pop-up windows and OAuth login forms, debug complex multi-window applications, or run multiple instances of the same web app side-by-side.
 
 ⚠ This is a **beta** feature. Browser support is limited to local instances of Chrome and Firefox. Videos and screenshots of child windows cannot be captured. The available functionality is subject to further revisions. Please refrain from using this feature in production environments.
 
@@ -54,7 +54,7 @@ test('Open a new window', async t => {
 
 The [t.switchToWindow](../../reference/test-api/testcontroller/switchtowindow.md) method lets you switch between browser windows.
 
-It takes a window descriptor as an argument:
+This method takes a window descriptor as an argument:
 
 ```js
 fixture `Example page`

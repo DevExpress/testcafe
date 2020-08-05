@@ -20,7 +20,7 @@ windowDescriptor *(optional)* | Object | Object that describes the target window
 
 **Examples:**
 
-The following two examples produce identical test scenarios.
+The following two examples produce identical test scenarios:
 
 The `window` parameter is absent. Each call of the `t.closeWindow` method closes the currently active window:
 

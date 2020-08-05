@@ -12,7 +12,7 @@ Activates the most recent of the previously active windows.
 t.switchToPreviousWindow()
 ```
 
-If no new windows are open or closed, consecutive calls of the method cycle back and forth between the two most recent windows.
+If no new windows are open or closed, consecutive method calls cycle between the two most recent windows.
 
 ## Example
 
