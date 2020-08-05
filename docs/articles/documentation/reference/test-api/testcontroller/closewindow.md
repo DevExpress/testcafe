@@ -16,7 +16,7 @@ Parameter | Type | Description
 --------- | ---- | ------------
 windowDescriptor *(optional)* | Object | Object that describes the target window. If this parameter is omitted, the currently active window is selected.
 
->You can not close the last remaining window, or windows with open children.
+>You cannot close the last remaining window or windows with open children.
 
 **Examples:**
 

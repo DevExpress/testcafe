@@ -128,7 +128,7 @@ test('Close the current window', async t => {
 
 ```
 
-Pass a window descriptor when you call the [t.closeWindow](../../reference/test-api/testcontroller/closewindow.md) method to close a particular window:
+Pass a window descriptor when you call the [t.closeWindow](../../reference/test-api/testcontroller/closewindow.md) method to close a window:
 
 ```js
 test('Close a specific window', async t => {

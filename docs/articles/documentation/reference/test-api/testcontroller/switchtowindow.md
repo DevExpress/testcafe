@@ -38,7 +38,7 @@ test('Switch to a different window', async t => {
 
 ## t.switchToWindow(predicate)
 
-Activates the first window that matches the criteria passed to the `filterFn` function
+Activates the first window that matches the criteria passed to the `filterFn` function.
 
 ```js
 t.switchToWindow(filterFn);
