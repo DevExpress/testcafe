@@ -6,7 +6,7 @@ permalink: /documentation/reference/test-api/testcontroller/getcurrentwindow.htm
 
 # t.getCurrentWindow method
 
-Retrieves a window descriptor that corresponds to the currently active window.
+Retrieves a window descriptor that corresponds to the active window.
 
 ```js
 t.getCurrentWindow();

@@ -14,7 +14,7 @@ t.closeWindow( [windowDescriptor] )
 
 Parameter | Type | Description
 --------- | ---- | ------------
-windowDescriptor *(optional)* | Object | Object that describes the target window. If this parameter is omitted, the currently active window is selected.
+windowDescriptor *(optional)* | Object | Object that describes the target window. If this parameter is omitted, the active window is selected.
 
 >You cannot close the last remaining window or windows with open children.
 
@@ -22,7 +22,7 @@ windowDescriptor *(optional)* | Object | Object that describes the target window
 
 The following two examples produce identical test scenarios:
 
-The `window` parameter is absent. Each call of the `t.closeWindow` method closes the currently active window:
+The `window` parameter is absent. Each call of the `t.closeWindow` method closes the active window:
 
 ```js
 import { Selector } from 'testcafe';

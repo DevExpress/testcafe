@@ -9,7 +9,7 @@ The TestCafe API includes methods that open, close, and switch between browser w
 
 ⚠ This is a **beta** feature. Browser support is limited to local instances of Chrome and Firefox. Videos and screenshots of child windows cannot be captured. The available functionality is subject to further revisions. Please refrain from using this feature in production environments.
 
-️🛠️ Use the `--disable-multiple-windows` CLI flag to disable multi-window capabilities if you encounter compatibility issues with [TestCafe v2015.1](http://testcafe.devexpress.com/documentation) tests.
+️🛠️ Use the `--disable-multiple-windows` CLI flag to disable support for multiple browser windows if you encounter compatibility issues with [TestCafe v2015.1](http://testcafe.devexpress.com/documentation) tests.
 
 ## Handle client-side window events
 
@@ -50,6 +50,24 @@ test('Open a new window', async t => {
 
 >All open browser windows share a single pool of client-side storage. Only one [user role](https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/authentication.html#user-roles) can be active at a time.
 
+## Generate window descriptors
+
+Window descriptors are objects that reference individual browser windows. Window descriptors are useful if you have more than two windows open at once, and want to easily distinguish between them.
+
+The [t.openWindow](../../reference/test-api/testcontroller/openwindow.md) method returns a window descriptor for the newly open window.
+
+The [t.getCurrentWindow](.../../reference/test-api/testcontroller/getcurrentwindow.md) method returns a window descriptor for the active window. Use it to generate descriptors for windows that open without a [t.openWindow](../../reference/test-api/testcontroller/openwindow.md) declaration, such as the initial browser window.
+
+```js
+fixture `Example page`
+    .page('http://example.com');
+
+test('Generate window descriptors', async t => {
+    const initialWindow = await t.getCurrentWindow();
+    const window2 = await t.openWindow('http://devexpress.com');
+    });
+```
+
 ## Switch between windows
 
 The [t.switchToWindow](../../reference/test-api/testcontroller/switchtowindow.md) method lets you switch between browser windows.
@@ -72,7 +90,7 @@ test('Switch to a specific window', async t => {
 });
 ```
 
-You can also pass [a predicate](../../reference/test-api/testcontroller/switchtowindow.md#tswitchtowindowpredicate) with the description of the window you need:
+You can also pass [a predicate](../../reference/test-api/testcontroller/switchtowindow.md#tswitchtowindowpredicate) with a description of the window:
 
 ```js
 await t.switchToWindow(w => w.title === 'Example Domain' && w.url.host === 'example.com');
@@ -112,7 +130,7 @@ test('Switch back', async t => {
 
 >You cannot close windows with open children.
 
-Call the [t.closeWindow](../../reference/test-api/testcontroller/closewindow.md) method without parameters to close the currently active window:
+Call the [t.closeWindow](../../reference/test-api/testcontroller/closewindow.md) method without parameters to close the active window:
 
 ```js
 fixture `Example page`
@@ -128,7 +146,7 @@ test('Close the current window', async t => {
 
 ```
 
-Pass a window descriptor when you call the [t.closeWindow](../../reference/test-api/testcontroller/closewindow.md) method to close a window:
+Pass a window descriptor when you call the [t.closeWindow](../../reference/test-api/testcontroller/closewindow.md) method to close a specific window:
 
 ```js
 test('Close a specific window', async t => {

@@ -917,7 +917,7 @@ Disables support for [multi-window testing](../guides/advanced-guides/multiple-b
 testcafe firefox my-tests --disable-multiple-windows
 ```
 
-The `--disable-multiple-windows` option disables multi-window testing capabilities in Chrome and Firefox. Use this flag if you encounter compatibility issues with [TestCafe v2015.1](http://testcafe.devexpress.com/documentation) tests.
+The `--disable-multiple-windows` option disables support for multi-window testing in Chrome and Firefox. Use this flag if you encounter compatibility issues with [TestCafe v2015.1](http://testcafe.devexpress.com/documentation) tests.
 
 ### --color
 
