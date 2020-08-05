@@ -50,13 +50,13 @@ test('Open a new window', async t => {
 
 >All open browser windows share a single pool of client-side storage. Only one [user role](https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/authentication.html#user-roles) can be active at a time.
 
-## Generate window descriptors
+## Obtain window descriptors
 
 Window descriptors are objects that reference individual browser windows. Window descriptors are useful if you have more than two windows open at once, and want to easily distinguish between them.
 
 The [t.openWindow](../../reference/test-api/testcontroller/openwindow.md) method returns a window descriptor for the newly open window.
 
-The [t.getCurrentWindow](.../../reference/test-api/testcontroller/getcurrentwindow.md) method returns a window descriptor for the active window. Use it to generate descriptors for windows that open without a [t.openWindow](../../reference/test-api/testcontroller/openwindow.md) declaration, such as the initial browser window.
+The [t.getCurrentWindow](../../reference/test-api/testcontroller/getcurrentwindow.md) method returns a window descriptor for the active window. Use it to obtain descriptors for windows that open without a [t.openWindow](../../reference/test-api/testcontroller/openwindow.md) declaration, such as the initial browser window.
 
 ```js
 fixture `Example page`
