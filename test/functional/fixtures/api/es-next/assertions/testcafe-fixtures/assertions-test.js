@@ -172,6 +172,7 @@ test('Await Selector property', async t => {
     await t
         .expect(Selector('#el1')).ok()
         .expect(await Selector('#el1')).ok()
+        .expect(Selector('#el1').innerText).eql('')
         .expect(await Selector('#el1').innerText).eql('');
 });
 
