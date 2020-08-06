@@ -52,7 +52,7 @@ test('Open a new window', async t => {
 
 ## Obtain window descriptors
 
-Window descriptors are objects that reference individual browser windows. Window descriptors are useful if you have more than two windows open at once, and want to easily distinguish between them.
+Window descriptors are objects that reference individual browser windows. Window descriptors can be used to distinguish between different windows.
 
 The [t.openWindow](../../reference/test-api/testcontroller/openwindow.md) method returns a window descriptor for the newly open window.
 
