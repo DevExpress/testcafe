@@ -7,13 +7,13 @@ permalink: /documentation/guides/advanced-guides/multiple-browser-windows.html
 
 The TestCafe API includes methods that open, close, and switch between browser windows. You can test websites with pop-up windows and OAuth login forms, debug complex multi-window applications, or run multiple instances of the same web app side-by-side.
 
-⚠ This is a **beta** feature. Browser support is limited to local instances of Chrome and Firefox. Videos and screenshots of child windows cannot be captured. The available functionality is subject to further revisions. Please refrain from using this feature in production environments.
+⚠ This is a **beta** feature. Browser support is limited to local instances of Chrome and Firefox. You cannot capture videos or screenshots of child windows. The available functionality is subject to further revisions. Please do not use this feature in production environments.
 
 ️🛠️ Use the `--disable-multiple-windows` CLI flag to disable support for multiple browser windows if you encounter compatibility issues with [TestCafe v2015.1](http://testcafe.devexpress.com/documentation) tests.
 
 ## Handle client-side window events
 
-When your page launches a new window, the test automatically continues in the newly open window. When that window is closed, the test switches back to its parent.
+When your page launches a new window, the test automatically continues in the newly opened window. When that window is closed, the test switches back to its parent.
 
 ```js
 import { Selector } from 'testcafe';
@@ -48,7 +48,7 @@ test('Open a new window', async t => {
 });
 ```
 
->All open browser windows share a single pool of client-side storage. Only one [user role](https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/authentication.html#user-roles) can be active at a time.
+>All browser windows share the client-side storage. Only one [user role](https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/authentication.html#user-roles) can be active at a time.
 
 ## Obtain window descriptors
 
@@ -56,7 +56,7 @@ Window descriptors are objects that reference individual browser windows. Window
 
 The [t.openWindow](../../reference/test-api/testcontroller/openwindow.md) method returns a window descriptor for the newly open window.
 
-The [t.getCurrentWindow](../../reference/test-api/testcontroller/getcurrentwindow.md) method returns a window descriptor for the active window. Use it to obtain descriptors for windows that open without a [t.openWindow](../../reference/test-api/testcontroller/openwindow.md) declaration, such as the initial browser window.
+The [t.getCurrentWindow](../../reference/test-api/testcontroller/getcurrentwindow.md) method returns a window descriptor for the active window. Use it to obtain descriptors for windows that open without a [t.openWindow](../../reference/test-api/testcontroller/openwindow.md) declaration, for example, the initial browser window.
 
 ```js
 fixture `Example page`
@@ -70,7 +70,7 @@ test('Generate window descriptors', async t => {
 
 ## Switch between windows
 
-The [t.switchToWindow](../../reference/test-api/testcontroller/switchtowindow.md) method lets you switch between browser windows.
+The [t.switchToWindow](../../reference/test-api/testcontroller/switchtowindow.md) method allows you to switch between browser windows.
 
 This method takes a window descriptor as an argument:
 
