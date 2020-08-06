@@ -51,7 +51,7 @@ test('Open a new window', async t => {
 });
 ```
 
-The [t.switchToWindow](../documentation/reference/test-api/testcontroller/switchtowindow.md) method enables you to switch between open windows. You can use a window identifier or a predicate to specify the window that should be activated:
+The [t.switchToWindow](../documentation/reference/test-api/testcontroller/switchtowindow.md) method enables you to switch between open windows. You can use a window descriptor or a predicate to specify the window that should be activated:
 
 ```js
 fixture `Example page`
@@ -76,7 +76,7 @@ test('Switch to a specific window', async t => {
 
 The [t.switchToParentWindow](../documentation/reference/test-api/testcontroller/switchtoparentwindow.md) and [t.switchToPreviousWindow](../documentation/reference/test-api/testcontroller/switchtopreviouswindow.md) methods allow you to switch back to the parent window or the previously active window.
 
-The [t.closeWindow](../documentation/reference/test-api/testcontroller/closewindow.md) method closes the current window when called without arguments, or the specified window if you pass an identifier or predicate:
+The [t.closeWindow](../documentation/reference/test-api/testcontroller/closewindow.md) method closes the current window when called without arguments, or the specified window if you pass a descriptor or predicate:
 
 ```js
 fixture `Example page`
