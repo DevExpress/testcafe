@@ -569,7 +569,7 @@ Selectors need access to the [test controller](../../reference/test-api/testcont
 
 However, if you need to call a selector from a Node.js callback that fires during the test run, you have to bind it to the test controller.
 
-Use the [boundTestRun](../../reference/test-api/selector/with.md#optionsboundtestrun) option for this.
+Use the [`boundTestRun`](../../reference/test-api/selector/with.md#optionsboundtestrun) option for this.
 
 ```js
 import { http } from 'http';
@@ -604,6 +604,10 @@ test('Title changed', async t => {
 
 Use this approach for Node.js callbacks that fire during the test run. To ensure that the test function
 does not finish before the callback is executed, suspend the test until the callback fires. For instance, you can introduce a Promise and wait until it completes synchronously, as shown in the example above.
+
+> The `boundTestRun` option requires the exact same test controller instance that is passed to the function used in a test declaration. It's unable to work with imported test controllers.
+>
+> It is impossible to pass a test controller instance to a function declared in another module or class through the `boundTestRun` option.
 
 ## Limitations
 
