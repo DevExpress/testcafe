@@ -152,7 +152,7 @@ const NODE_MODULE_BINS = path.join(__dirname, 'node_modules/.bin');
 process.env.PATH = NODE_MODULE_BINS + path.delimiter + process.env.PATH + path.delimiter + NODE_MODULE_BINS;
 
 const SETUP_TESTS_GLOB            = 'test/functional/setup.js';
-const MULTIPLE_WINDOWS_TESTS_GLOB = 'test/functional/fixtures/run-options/allow-multiple-windows/test.js';
+const MULTIPLE_WINDOWS_TESTS_GLOB = 'test/functional/fixtures/multiple-windows/test.js';
 const COMPILER_SERVICE_TESTS_GLOB = 'test/functional/fixtures/compiler-service/test.js';
 const LEGACY_TESTS_GLOB           = 'test/functional/legacy-fixtures/**/test.js';
 

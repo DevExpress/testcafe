@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form action="/set-token-and-close" method="post">
+        <input type="text" name="token" value="value123456; path=/fixtures/multiple-windows/pages/cookie-synchronization/cross-domain/cookie-monitor">
+        <input id="setAuthToken" type="submit" value="Set authentification token">
+    </form>
+    <script>
+        document.cookie = 'token=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT';
+    </script>
+</body>
+</html>
