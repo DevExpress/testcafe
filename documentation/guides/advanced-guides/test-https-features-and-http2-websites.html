@@ -808,6 +808,15 @@
 		
     </li>
 
+    <li>
+		    
+		
+
+<a href="/testcafe/documentation/guides/advanced-guides/multiple-browser-windows.html"  >Multiple Browser Windows</a>
+
+		
+    </li>
+
 </ul>
 		
     </li>
@@ -928,6 +937,15 @@
 		    
 		
 
+<a href="/testcafe/documentation/guides/continuous-integration/github-actions-and-browserstack.html"  >GitHub Actions + BrowserStack</a>
+
+		
+    </li>
+
+    <li>
+		    
+		
+
 <a href="/testcafe/documentation/guides/continuous-integration/gitlab.html"  >GitLab</a>
 
 		
@@ -1033,10 +1051,15 @@
 		<div class="post-content">
 
 			<h1>Test HTTPS Features and HTTP/2 Websites</h1>
-<p>This topic describes how TestCafe works with HTTPS and HTTP/2 websites.</p>
+<p>This topic describes how TestCafe executes tests on HTTPS and HTTP/2 websites.</p>
 
 <ul>
-<li><a href="#test-https-websites">Test HTTPS Websites</a></li>
+<li><a href="#test-https-websites">Test HTTPS Websites</a>
+
+<ul>
+<li><a href="#use-a-trusted-certificate">Use a Trusted Certificate</a></li>
+<li><a href="#use-a-self-signed-certificate">Use a Self-Signed Certificate</a></li>
+</ul></li>
 <li><a href="#test-http2-websites">Test HTTP/2 Websites</a></li>
 </ul>
 <h2><a class="anchor" id="test-https-websites"></a>Test HTTPS Websites <a class="permalink" href="#test-https-websites">#</a></h2>
@@ -1048,16 +1071,72 @@
 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API">Service Workers</a>,
 <a href="https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API">Geolocation API</a>,
 <a href="https://developer.apple.com/documentation/apple_pay_on_the_web/applepaysession">ApplePaySession</a>, or
-<a href="https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto">SubtleCrypto</a>), TestCafe successfully proxies it over HTTP. Otherwise, the tests fail because the page throws JavaScript errors, does not load or loads partially. This indicates that you should <a href="#proxy-the-website-over-https">configure the proxy server to use HTTPS</a>.</p>
-<h3><a class="anchor" id="proxy-the-website-over-https"></a>Proxy the Website Over HTTPS <a class="permalink" href="#proxy-the-website-over-https">#</a></h3>
-<p>When you run tests from the command line, use the <a href="../../reference/command-line-interface.html#--ssl-options">--ssl</a> flag to enable HTTPS on a proxy server. Specify options required to initialize <a href="https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener">a Node.js HTTPS server</a> after this flag in a semicolon-separated string. The most commonly used SSL options are described in the <a href="https://nodejs.org/api/tls.html#tls_tls_createsecurecontext_options">TLS topic</a> in the Node.js documentation.</p>
+<a href="https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto">SubtleCrypto</a>), TestCafe can proxy it over HTTP. Otherwise, the tests fail because the page throws JavaScript errors, does not load or loads partially.</p>
 
-<p>The example below uses the PFX encoded private key and certificate chain to create an HTTPS server.</p>
-<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="nt">--ssl</span> <span class="nv">pfx</span><span class="o">=</span>path/to/file.pfx<span class="p">;</span><span class="nv">rejectUnauthorized</span><span class="o">=</span><span class="nb">true</span><span class="p">;</span>...
+<p>To establish a secure HTTPS-connection, Node.js requires a valid <a href="https://en.wikipedia.org/wiki/PKCS_12">PKCS12</a> certificate (<code>.pfx</code>). We recommend that you <a href="#use-a-trusted-certificate">use a certificate signed by a trusted authority</a>. This allows a browser to open the tested page without workarounds. You can also <a href="#use-a-self-signed-certificate">generate and use a self-signed certificate</a>.</p>
+<blockquote><div class="blockquote-content"><p>Before you use HTTPS, launch testcafe with <a href="../../reference/command-line-interface.html#--hostname-name"><code>--hostname localhost</code> CLI parameter</a> or <a href="../../reference/configuration-file.html#hostname"><code>hostname: localhost</code> configuration option</a>. Most modern browsers thread localhost as a secure origin, and some built-in browser features that require a secure origin (Service workers, GeoAPI) should work. Third-party JS features like ApplePaySession may not work depending on implementation.</p>
+</div></blockquote><h3><a class="anchor" id="use-a-trusted-certificate"></a>Use a Trusted Certificate <a class="permalink" href="#use-a-trusted-certificate">#</a></h3>
+<p>To provide a certificate when you launch TestCafe with <a href="../../reference/command-line-interface.html">CLI</a>, use <a href="../../reference/command-line-interface.html#--ssl-options"><code>-ssl</code></a> option:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome  test.js <span class="nt">--ssl</span> <span class="nv">pfx</span><span class="o">=</span>path/to/trusted/certificate.pfx<span class="p">;</span><span class="nv">rejectUnauthorized</span><span class="o">=</span><span class="nb">true</span><span class="p">;</span>
+</code></pre></div><h3><a class="anchor" id="use-a-self-signed-certificate"></a>Use a Self-Signed Certificate <a class="permalink" href="#use-a-self-signed-certificate">#</a></h3>
+<p><a href="#generate-a-certificate-from-the-command-line">Generate a self-signed certificate with <code>openssl</code></a> if you launch tests from the command line. To <a href="#generate-a-certificate-in-your-code">generate a certificate in code</a>, use the <code>openssl-self-signed-certificate</code> module.</p>
+<h4><a class="anchor" id="generate-a-certificate-from-the-command-line"></a>Generate a Certificate From the Command Line <a class="permalink" href="#generate-a-certificate-from-the-command-line">#</a></h4>
+<p>In <strong>bash</strong>, you can use <a href="https://www.openssl.org/docs/man1.1.1/man1/openssl-req.html">OpenSSL</a> to generate a certificate chain.</p>
+
+<ol>
+<li><p>Issue your own CA certificate and a CA-signed certificate for the web server:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">openssl genrsa <span class="nt">-des3</span> <span class="nt">-out</span> myCA.key 2048
 </code></pre></div>
-<p>When you use the programming interface, pass the HTTPS server options to the <a href="../../reference/testcafe-api/global/createtestcafe.html">createTestCafe</a> method.</p>
+<p>You will be prompted for a non-empty passphrase. Take note of it.  </p></li>
+<li><p>Generate a root certificate:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">openssl req <span class="nt">-x509</span> <span class="nt">-new</span> <span class="nt">-nodes</span> <span class="nt">-key</span> myCA.key <span class="nt">-sha256</span> <span class="nt">-days</span> 1825 <span class="nt">-out</span> myCA.pem
+</code></pre></div>
+<p>You will be prompted for additional information, press Enter to skip the questions.</p></li>
+<li><p>Create a CA-signed domain certificate and a <code>.csr</code> sign request:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">openssl genrsa <span class="nt">-out</span> testingdomain.key 2048
+openssl req <span class="nt">-new</span> <span class="nt">-key</span> testingdomain.key <span class="nt">-out</span> testingdomain.csr
+</code></pre></div>
+<p>You can press Enter to skip the questions, but set a recognizable CN (Common Name) so that you can easily find this certificate in a list of others later.  </p></li>
+<li><p>Create a config file <code>testdomain.ext</code> with the following content:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh"><span class="nv">authorityKeyIdentifier</span><span class="o">=</span>keyid,issuer
+<span class="nv">basicConstraints</span><span class="o">=</span>CA:FALSE
+keyUsage <span class="o">=</span> digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment
+subjectAltName <span class="o">=</span> @alt_names
 
-<p>The following example uses the <a href="https://www.npmjs.com/package/openssl-self-signed-certificate">openssl-self-signed-certificate</a> module to generate a self-signed certificate:</p>
+<span class="o">[</span>alt_names]
+DNS.1 <span class="o">=</span> localhost
+</code></pre></div></li>
+<li><p>Now create the certificate from the <code>.csr</code> request, the CA private key (<code>myCA.key</code>), the CA certificate (<code>myCA.pem</code>), and a config file(<code>testdomain.ext</code>):</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">openssl x509 <span class="nt">-req</span> <span class="nt">-in</span> testingdomain.csr <span class="nt">-CA</span> myCA.pem <span class="nt">-CAkey</span> myCA.key <span class="nt">-CAcreateserial</span> <span class="nt">-out</span> testingdomain.crt <span class="nt">-days</span> 825 <span class="nt">-sha256</span> <span class="nt">-extfile</span> testdomain.ext
+</code></pre></div></li>
+<li><p>Finally, export the certificate to PKCS#12 <code>.pfx</code> format:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">openssl pkcs12 <span class="nt">-export</span> <span class="nt">-out</span> testingdomain.pfx <span class="nt">-inkey</span> testingdomain.key <span class="nt">-in</span> testingdomain.crt <span class="nt">-certfile</span> myCA.pem
+</code></pre></div></li>
+</ol>
+
+<p>In <strong>PowerShell</strong>, <a href="https://adamtheautomator.com/openssl-powershell/#Installing_OpenSSL_using_Chocolatey">install OpenSSL</a> and <a href="https://adamtheautomator.com/openssl-powershell/#Update_PowerShell_Profile_Environment_Variables">update environment variables</a>. Afterwards, proceed with the instructions <a href="#generate-a-certificate-from-the-command-line">above</a>.</p>
+<h5><a class="anchor" id="run-tests"></a>Run Tests <a class="permalink" href="#run-tests">#</a></h5>
+<p>When you run tests from the command line, use <a href="../../reference/command-line-interface.html#--ssl-options">--ssl</a> flag to enable HTTPS on a proxy server. Specify options required to initialize <a href="https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener">a Node.js HTTPS server</a> after this flag in a semicolon-separated string. The most commonly used SSL options are described in the <a href="https://nodejs.org/api/tls.html#tls_tls_createsecurecontext_options">TLS topic</a> in the Node.js documentation.</p>
+
+<p>The examples below use a previously generated <code>.pfx</code> file to establish an HTTPS server.</p>
+
+<p>In <strong><em>Chrome</em></strong> and <strong><em>Chromium-Based</em></strong> Browsers, use the <code>--allow-insecure-localhost</code> flag and <a href="../../reference/command-line-interface.html#--hostname-name"><code>--hostname</code></a> CLI parameter to make Chrome trust the certificate when tests are run on localhost. If you use a different URL, use the <code>--ignore-certificate-errors</code> flag.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome <span class="nt">--allow-insecure-localhost</span> <span class="nt">--hostname</span> localhost test.js <span class="nt">--ssl</span> <span class="nv">pfx</span><span class="o">=</span>path/to/certificate.pfx<span class="p">;</span><span class="nv">rejectUnauthorized</span><span class="o">=</span><span class="nb">true</span><span class="p">;</span>
+</code></pre></div>
+<p>In <strong><em>Firefox</em></strong>, add your self-signed root authority to the trusted list. Follow the steps:</p>
+
+<ol>
+<li><a href="https://support.mozilla.org/en-US/kb/profile-manager-create-remove-switch-firefox-profiles#w_creating-a-profile">Create a new profile</a> in Firefox settings;</li>
+<li><a href="https://support.mozilla.org/en-US/kb/profile-manager-create-remove-switch-firefox-profiles#w_manage-profiles-when-firefox-is-open">Run Firefox with this profile</a> and <a href="https://support.mozilla.org/en-US/questions/1059377">import the CA certificate</a> (<code>myCA.pem</code>) you generated previously. Ensure the <strong>This certificate can identify websites</strong> checkbox is checked;</li>
+<li>Load this new profile when TestCafe launches Firefox. To do this, add <code>-P &lt;profile_name&gt;</code> to the browser&#39;s command line arguments.</li>
+</ol>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s1">'firefox -P testing-profile'</span> <span class="nt">--hostname</span> localhost assertTest.js <span class="nt">--ssl</span> <span class="nv">pfx</span><span class="o">=</span>certificate.pfx<span class="p">;</span><span class="nv">rejectUnauthorized</span><span class="o">=</span><span class="nb">true</span><span class="p">;</span>
+</code></pre></div><blockquote><div class="blockquote-content"><p>The certificate created in the example is valid only for localhost domain. This is why the <code>--hostname</code> option is used. If you want to use another domain for testing, enter it in the <code>[alt_names]</code> section of <code>testdomain.ext</code> configuration file before creating the certificate.  </p>
+</div></blockquote>
+<!---->
+<blockquote class="important"><div class="blockquote-content"><p>For security reasons, only use this profile for testing purposes.</p>
+</div></blockquote><h4><a class="anchor" id="generate-a-certificate-in-your-code"></a>Generate a Certificate in Your Code <a class="permalink" href="#generate-a-certificate-in-your-code">#</a></h4>
+<p>When you use the programming interface, generate a certificate with the <a href="https://www.npmjs.com/package/openssl-self-signed-certificate">openssl-self-signed-certificate</a> module and pass the HTTPS server options to the <a href="../../reference/testcafe-api/global/createtestcafe.html">createTestCafe</a> function.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">createTestCafe</span>        <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">);</span>
 <span class="kd">const</span> <span class="nx">selfSignedSertificate</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">openssl-self-signed-certificate</span><span class="dl">'</span><span class="p">);</span>
 
