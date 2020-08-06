@@ -8,14 +8,17 @@ const proxyquire          = require('proxyquire');
 const sinon               = require('sinon');
 const globby              = require('globby');
 const nanoid              = require('nanoid');
+const dedent              = require('dedent');
 const { TEST_RUN_ERRORS } = require('../../lib/errors/types');
 const exportableLib       = require('../../lib/api/exportable-lib');
 const createStackFilter   = require('../../lib/errors/create-stack-filter.js');
+const TestController      = require('../../lib/api/test-controller');
 const assertError         = require('./helpers/assert-runtime-error').assertError;
 const compile             = require('./helpers/compile');
 
-const copy   = promisify(fs.copyFile);
-const remove = promisify(fs.unlink);
+const copy      = promisify(fs.copyFile);
+const remove    = promisify(fs.unlink);
+const writeFile = promisify(fs.writeFile);
 
 require('source-map-support').install();
 
@@ -342,6 +345,44 @@ describe('Compiler', function () {
                 expect(value.stdout).eql('');
                 expect(value.error).is.null;
             });
+        });
+
+        it('Should have definitions for all TestController methods', async function () {
+            this.timeout(60000);
+
+            const apiMethods = TestController.API_LIST
+                .filter(prop => !prop.accessor)
+                .map(prop => prop.apiProp);
+
+            const possibleErrors = apiMethods.map(method => `Property '${method}' does not exist on type 'TestController'`);
+            const actualErrors   = [];
+
+            const testCode = apiMethods
+                .map(prop => dedent`
+                    fixture('${prop}').page('http://example.com');
+                    
+                    test('${prop}', async t => {
+                        await t.${prop}();
+                    });
+                `).join('');
+
+            const tempTestFilePath = path.join(process.cwd(), `tmp-ts-definitions-test.ts`);
+
+            await writeFile(tempTestFilePath, testCode);
+
+            try {
+                await compile(tempTestFilePath);
+            }
+            catch (err) {
+                for (const errMsg of possibleErrors) {
+                    if (err.data[0].includes(errMsg))
+                        actualErrors.push(errMsg);
+                }
+            }
+
+            await remove(tempTestFilePath);
+
+            expect(actualErrors.join('\n')).eql('');
         });
 
         it('Should provide API definitions', function () {
