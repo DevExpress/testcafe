@@ -1378,6 +1378,15 @@
 		    
 		
 
+<a href="/testcafe/documentation/reference/test-api/testcontroller/closewindow.html"  >closeWindow</a>
+
+		
+    </li>
+
+    <li>
+		    
+		
+
 <a href="/testcafe/documentation/reference/test-api/testcontroller/ctx.html"  >ctx</a>
 
 		
@@ -1603,6 +1612,15 @@
 		    
 		
 
+<a href="/testcafe/documentation/reference/test-api/testcontroller/getcurrentwindow.html"  >getCurrentWindow</a>
+
+		
+    </li>
+
+    <li>
+		    
+		
+
 <a href="/testcafe/documentation/reference/test-api/testcontroller/getnativedialoghistory.html"  >getNativeDialogHistory</a>
 
 		
@@ -1631,6 +1649,15 @@
 		
 
 <a href="/testcafe/documentation/reference/test-api/testcontroller/navigateto.html"  >navigateTo</a>
+
+		
+    </li>
+
+    <li>
+		    
+		
+
+<a href="/testcafe/documentation/reference/test-api/testcontroller/openwindow.html"  >openWindow</a>
 
 		
     </li>
@@ -1757,6 +1784,33 @@
 		
 
 <a href="/testcafe/documentation/reference/test-api/testcontroller/switchtomainwindow.html"  >switchToMainWindow</a>
+
+		
+    </li>
+
+    <li>
+		    
+		
+
+<a href="/testcafe/documentation/reference/test-api/testcontroller/switchtoparentwindow.html"  >switchToParentWindow</a>
+
+		
+    </li>
+
+    <li>
+		    
+		
+
+<a href="/testcafe/documentation/reference/test-api/testcontroller/switchtopreviouswindow.html"  >switchToPreviousWindow</a>
+
+		
+    </li>
+
+    <li>
+		    
+		
+
+<a href="/testcafe/documentation/reference/test-api/testcontroller/switchtowindow.html"  >switchToWindow</a>
 
 		
     </li>
@@ -2179,6 +2233,7 @@
 <li><a href="#--sf---stop-on-first-fail">--sf, --stop-on-first-fail</a></li>
 <li><a href="#--ts-config-path-path">--ts-config-path &lt;path&gt;</a></li>
 <li><a href="#--disable-page-caching">--disable-page-caching</a></li>
+<li><a href="#--disable-multiple-windows">--disable-multiple-windows</a></li>
 <li><a href="#--color">--color</a></li>
 <li><a href="#--no-color">--no-color</a></li>
 </ul></li>
@@ -2676,6 +2731,11 @@ See <a href="../guides/advanced-guides/test-https-features-and-http2-websites.ht
 <p>You can also disable page caching for an individual <a href="test-api/fixture/disablepagecaching.html">fixture</a> or <a href="test-api/test/disablepagecaching.html">test</a>.</p>
 
 <p><em>Related configuration file property</em>: <a href="configuration-file.html#disablepagecaching">disablePageCaching</a>.</p>
+<h3><a class="anchor" id="--disable-multiple-windows"></a>--disable-multiple-windows <a class="permalink" href="#--disable-multiple-windows">#</a></h3>
+<p>Disables support for <a href="../guides/advanced-guides/multiple-browser-windows.html">multi-window testing</a>.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe firefox my-tests <span class="nt">--disable-multiple-windows</span>
+</code></pre></div>
+<p>The <code>--disable-multiple-windows</code> option disables support for multi-window testing in Chrome and Firefox. Use this flag if you encounter compatibility issues with <a href="http://testcafe.devexpress.com/documentation">TestCafe v2015.1</a> tests.</p>
 <h3><a class="anchor" id="--color"></a>--color <a class="permalink" href="#--color">#</a></h3>
 <p>Enables colors in the command line.</p>
 
