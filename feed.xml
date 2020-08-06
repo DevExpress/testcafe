@@ -5,8 +5,8 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 06 Aug 2020 16:57:50 +0300</pubDate>
-    <lastBuildDate>Thu, 06 Aug 2020 16:57:50 +0300</lastBuildDate>
+    <pubDate>Thu, 06 Aug 2020 18:01:44 +0300</pubDate>
+    <lastBuildDate>Thu, 06 Aug 2020 18:01:44 +0300</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
@@ -48,7 +48,7 @@
     &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;eql&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;http://example.com&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;The &lt;a href=&quot;../documentation/reference/test-api/testcontroller/switchtowindow.html&quot;&gt;t.switchToWindow&lt;/a&gt; method enables you to switch between open windows. You can use a window identifier or a predicate to specify the window that should be activated:&lt;/p&gt;
+&lt;p&gt;The &lt;a href=&quot;../documentation/reference/test-api/testcontroller/switchtowindow.html&quot;&gt;t.switchToWindow&lt;/a&gt; method enables you to switch between open windows. You can use a window descriptor or a predicate to specify the window that should be activated:&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`Example page`&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;https://example.com&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 
@@ -70,7 +70,7 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;The &lt;a href=&quot;../documentation/reference/test-api/testcontroller/switchtoparentwindow.html&quot;&gt;t.switchToParentWindow&lt;/a&gt; and &lt;a href=&quot;../documentation/reference/test-api/testcontroller/switchtopreviouswindow.html&quot;&gt;t.switchToPreviousWindow&lt;/a&gt; methods allow you to switch back to the parent window or the previously active window.&lt;/p&gt;
 
-&lt;p&gt;The &lt;a href=&quot;../documentation/reference/test-api/testcontroller/closewindow.html&quot;&gt;t.closeWindow&lt;/a&gt; method closes the current window when called without arguments, or the specified window if you pass an identifier or predicate:&lt;/p&gt;
+&lt;p&gt;The &lt;a href=&quot;../documentation/reference/test-api/testcontroller/closewindow.html&quot;&gt;t.closeWindow&lt;/a&gt; method closes the current window when called without arguments, or the specified window if you pass a descriptor or predicate:&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`Example page`&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;http://www.example.com&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 

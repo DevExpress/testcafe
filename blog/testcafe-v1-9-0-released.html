@@ -492,7 +492,7 @@
     <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">url</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="dl">'</span><span class="s1">http://example.com</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>The <a href="../documentation/reference/test-api/testcontroller/switchtowindow.html">t.switchToWindow</a> method enables you to switch between open windows. You can use a window identifier or a predicate to specify the window that should be activated:</p>
+<p>The <a href="../documentation/reference/test-api/testcontroller/switchtowindow.html">t.switchToWindow</a> method enables you to switch between open windows. You can use a window descriptor or a predicate to specify the window that should be activated:</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`Example page`</span>
     <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://example.com</span><span class="dl">'</span><span class="p">);</span>
 
@@ -514,7 +514,7 @@
 </code></pre></div>
 <p>The <a href="../documentation/reference/test-api/testcontroller/switchtoparentwindow.html">t.switchToParentWindow</a> and <a href="../documentation/reference/test-api/testcontroller/switchtopreviouswindow.html">t.switchToPreviousWindow</a> methods allow you to switch back to the parent window or the previously active window.</p>
 
-<p>The <a href="../documentation/reference/test-api/testcontroller/closewindow.html">t.closeWindow</a> method closes the current window when called without arguments, or the specified window if you pass an identifier or predicate:</p>
+<p>The <a href="../documentation/reference/test-api/testcontroller/closewindow.html">t.closeWindow</a> method closes the current window when called without arguments, or the specified window if you pass a descriptor or predicate:</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`Example page`</span>
     <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="dl">'</span><span class="s1">http://www.example.com</span><span class="dl">'</span><span class="p">);</span>
 
