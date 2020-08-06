@@ -44,7 +44,7 @@ test('Open a new window', async t => {
 });
 ```
 
-The [t.switchToWindow](https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/switchtowindow.html) method enables you to switch between open windows. You can use a window identifier or a predicate to specify the window that should be activated:
+The [t.switchToWindow](https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/switchtowindow.html) method enables you to switch between open windows. You can use a window descriptor or a predicate to specify the window that should be activated:
 
 ```js
 fixture `Example page`
@@ -69,7 +69,7 @@ test('Switch to a specific window', async t => {
 
 The [t.switchToParentWindow](https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/switchtoparentwindow.html) and [t.switchToPreviousWindow](https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/switchtopreviouswindow.html) methods allow you to switch back to the parent window or the previously active window.
 
-The [t.closeWindow](https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/closewindow.html) method closes the current window when called without arguments, or the specified window if you pass an identifier or predicate:
+The [t.closeWindow](https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/closewindow.html) method closes the current window when called without arguments, or the specified window if you pass a descriptor or predicate:
 
 ```js
 fixture `Example page`
