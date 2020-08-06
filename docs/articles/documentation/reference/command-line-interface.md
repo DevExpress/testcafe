@@ -67,6 +67,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--sf, --stop-on-first-fail](#--sf---stop-on-first-fail)
   * [--ts-config-path \<path\>](#--ts-config-path-path)
   * [--disable-page-caching](#--disable-page-caching)
+  * [--disable-multiple-windows](#--disable-multiple-windows)
   * [--color](#--color)
   * [--no-color](#--no-color)
 
@@ -907,6 +908,16 @@ When navigation to a cached page occurs in [role code](../guides/advanced-guides
 You can also disable page caching for an individual [fixture](test-api/fixture/disablepagecaching.md) or [test](test-api/test/disablepagecaching.md).
 
 *Related configuration file property*: [disablePageCaching](configuration-file.md#disablepagecaching).
+
+### --disable-multiple-windows
+
+Disables support for [multi-window testing](../guides/advanced-guides/multiple-browser-windows.md).
+
+```sh
+testcafe firefox my-tests --disable-multiple-windows
+```
+
+The `--disable-multiple-windows` option disables support for multi-window testing in Chrome and Firefox. Use this flag if you encounter compatibility issues with [TestCafe v2015.1](http://testcafe.devexpress.com/documentation) tests.
 
 ### --color
 

@@ -25,6 +25,7 @@ permalink: /documentation/guides/
 * [Test HTTPS Features and HTTP/2 Websites](advanced-guides/test-https-features-and-http2-websites.md)
 * [Detect the Client Browser and Platform](advanced-guides/detect-the-client-browser-and-platform.md)
 * [Use TestCafe Docker Image](advanced-guides/use-testcafe-docker-image.md)
+* [Multiple Browser Windows](advanced-guides/multiple-browser-windows.md)
 
 ## Concepts
 
