@@ -708,4 +708,49 @@ describe('Reporter', () => {
                 });
         });
     });
+
+    it('Should raise an error when uncaught exception occured in any reporter method', async () => {
+        const reporterMethods = [
+            'reportTaskStart',
+            'reportFixtureStart',
+            'reportTestStart',
+            'reportTestActionStart',
+            'reportTestActionDone',
+            'reportTestDone',
+            'reportTaskDone'
+        ];
+
+        function createReporterWithBrokenMethod (method) {
+            const base = {
+                async reportTaskStart () {},
+                async reportFixtureStart () {},
+                async reportTestDone () {},
+                async reportTaskDone () {}
+            };
+
+            base[method] = () => {
+                throw new Error('oops');
+            };
+
+            return () => base;
+        }
+
+        for (const method of reporterMethods) {
+            try {
+                await runTests(
+                    'testcafe-fixtures/index-test.js',
+                    'Simple test',
+                    {
+                        reporter:   createReporterWithBrokenMethod(method),
+                        shouldFail: true
+                    }
+                );
+
+                throw new Error('Promise rejection expected');
+            }
+            catch (err) {
+                expect(err.message).startsWith(`An uncaught error occured in the '${method}' method of the 'customReporter' reporter. Details:\nError: oops`);
+            }
+        }
+    });
 });
