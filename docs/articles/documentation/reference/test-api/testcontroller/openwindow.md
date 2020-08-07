@@ -6,7 +6,7 @@ permalink: /documentation/reference/test-api/testcontroller/openwindow.html
 
 # t.openWindow method
 
-Opens a new browser window. Returns the matching window descriptor.
+Opens a new browser window. Returns the matching window descriptor, but can still be chained with other TestController methods.
 
 ```js
 t.openWindow( url ) → Object
@@ -14,7 +14,7 @@ t.openWindow( url ) → Object
 
 Parameter | Type | Description
 --------- | ---- | ------------
-url | String | The URL to open. Can be local or remote, absolute or relative.
+url | String | The URL to open. Can be absolute or relative.
 
 **Example:**
 
@@ -28,7 +28,5 @@ test('Open the TestCafe website', async t => {
     await t
         .openWindow('http://devexpress.github.io/testcafe')
         .openWindow('./documentation');
-
-    const localWebsite = await t.openWindow('file://path/to/my/website');
-});
+z});
 ```
