@@ -574,7 +574,11 @@ does not finish before the callback is executed, suspend the test until the call
 
 ## Limitations
 
-* You cannot use generators or `async/await` syntax within selectors.
+Selectors do not support the following syntax and capabilities:
+
+* Generators or `async/await` syntax,
+
+* [Property shorthands](http://es6-features.org/#PropertyShorthand) in the [dependencies option](../../reference/test-api/clientfunction/constructor.md#optionsdependencies),
 
 * Selectors cannot access variables defined in the outer scope in test code.
   However, you can use arguments to pass data inside the selectors, except for those that are self-invoked.

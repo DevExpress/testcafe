@@ -70,6 +70,10 @@ runner.browsers('firefox:/home/user/apps/firefox.app:userProfile');
 
 > The `path:` prefix does not support postfixes.
 
+<!-- -->
+
+> Combining `:userProfile` flag with either `headless` or `emulation` mode can lead to unstable behaviour and is not recommended.
+
 ## Pass a Remote Browser Connection
 
 ```js

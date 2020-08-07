@@ -78,6 +78,10 @@ If the [browsers](configuration-file.md#browsers) and [src](configuration-file.m
 > Important! Make sure to keep the browser tab that is running tests active. Do not minimize the browser window.
 > Inactive tabs and minimized browser windows switch to a lower resource consumption mode
 > where tests do not always execute correctly.
+>
+> Do not zoom pages while testing. Tests may be unstable if the page is zoomed in or out.
+
+During a test, TestCafe suppresses native dialogs, so they don't block the page. Learn how to handle native dialogs [here](../../documentation/guides/basic-guides/interact-with-the-page.md#handle-native-dialogs).
 
 If a browser stops responding while it executes tests, TestCafe restarts the browser and reruns the current test in a new browser instance.
 If the same problem occurs with this test two more times, the test run finishes and an error is thrown.

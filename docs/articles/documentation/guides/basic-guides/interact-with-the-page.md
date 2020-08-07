@@ -37,6 +37,10 @@ They are implemented as methods in the [test controller](../../reference/test-ap
 
 The available actions with reproducible usage examples and links to their descriptions are listed below.
 
+> TestCafe is intended to emulate real user behavior, so you cannot interact with elements, that are not [visible](../../reference/test-api/selector/filtervisible.md) at that moment.
+>
+> For instance, you can not type into an `input` element with the `display: none` style.
+
 ## Click
 
 Click actions allow you to click an element on a page.
