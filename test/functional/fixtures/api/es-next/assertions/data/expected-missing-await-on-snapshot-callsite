@@ -1,8 +1,5 @@
-   176 |});
-   177 |
-   178 |test('Snapshot property without await', async t => {
-   179 |    await t.expect(Selector('#el1').innerText).eql('');
-   180 |
- > 181 |    Selector('#el1').innerText;
-   182 |});
-   183 |
+   179 |test('Snapshot property without await', async t => {
+   180 |    await t.expect(Selector('#el1').innerText).eql('');
+   181 |
+ > 182 |    Selector('#el1').innerText;
+   183 |});
