@@ -11,7 +11,7 @@ Opens a new browser window. Returns the matching window descriptor, but can stil
 ```js
 t.openWindow( url ) → Object
 ```
-
+'
 Parameter | Type | Description
 --------- | ---- | ------------
 url | String | The URL to open. Can be absolute or relative.
@@ -28,5 +28,5 @@ test('Open the TestCafe website', async t => {
     await t
         .openWindow('http://devexpress.github.io/testcafe')
         .openWindow('./documentation');
-z});
+});
 ```
