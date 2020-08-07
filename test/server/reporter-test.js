@@ -1,9 +1,13 @@
-const { expect }                      = require('chai');
+const chai                            = require('chai');
+const { expect }                      = chai;
 const { chunk, random, noop, sortBy } = require('lodash');
 const Reporter                        = require('../../lib/reporter');
 const Task                            = require('../../lib/runner/task');
 const Videos                          = require('../../lib/video-recorder/videos');
 const delay                           = require('../../lib/utils/delay');
+const { ReporterPluginError }         = require('../../lib/errors/runtime');
+
+chai.use(require('chai-string'));
 
 describe('Reporter', () => {
     // Runnable configuration mocks
@@ -1213,5 +1217,44 @@ describe('Reporter', () => {
                     ]]
                 );
             });
+    });
+
+    it('Should dispatch uncaught exception from any plugin method to Task `error` event', async () => {
+        const reporterMethods = [
+            'reportTaskStart',
+            'reportFixtureStart',
+            'reportTestStart',
+            'reportTestActionStart',
+            'reportTestActionDone',
+            'reportTestDone',
+            'reportTaskDone'
+        ];
+
+        function createBrokenReporter (task) {
+            const reporterObject = {};
+
+            for (const method of reporterMethods) {
+                reporterObject[method] = () => {
+                    throw new Error(`oops`);
+                };
+            }
+
+            return new Reporter(reporterObject, task);
+        }
+
+        const taskMock = new TaskMock();
+
+        taskMock.on('error', e => log.push(e));
+
+        const reporter = createBrokenReporter(taskMock);
+
+        for (const method of reporterMethods) {
+            await reporter.dispatchToPlugin({ method });
+
+            const lastErr = log.pop();
+
+            expect(lastErr instanceof ReporterPluginError).to.be.true;
+            expect(lastErr.message).startsWith(`An uncaught error occured in the '${method}' method of the 'customReporter' reporter. Details:\nError: oops`);
+        }
     });
 });

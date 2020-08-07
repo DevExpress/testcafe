@@ -188,7 +188,7 @@ export default class Reporter {
         });
     }
 
-    async dispatchToPlugin ({ method, args, optional = false }) {
+    async dispatchToPlugin ({ method, args = [], optional = false }) {
         if (!this.plugin[method] && optional)
             return;
 
@@ -282,28 +282,28 @@ export default class Reporter {
         await reportItem.pendingTestRunDonePromise;
     }
 
-    async _onTaskTestActionStart ({ apiActionName, ...args }) {
-        args = this._prepareReportTestActionEventArgs(args);
+    async _onTaskTestActionStart ({ apiActionName, ...restArgs }) {
+        restArgs = this._prepareReportTestActionEventArgs(restArgs);
 
         await this.dispatchToPlugin({
             method:   'reportTestActionStart',
             optional: true,
             args:     [
                 apiActionName,
-                args
+                restArgs
             ]
         });
     }
 
-    async _onTaskTestActionDone ({ apiActionName, ...args }) {
-        args = this._prepareReportTestActionEventArgs(args);
+    async _onTaskTestActionDone ({ apiActionName, ...restArgs }) {
+        restArgs = this._prepareReportTestActionEventArgs(restArgs);
 
         await this.dispatchToPlugin({
             method:   'reportTestActionDone',
             optional: true,
             args:     [
                 apiActionName,
-                args
+                restArgs
             ]
         });
     }
