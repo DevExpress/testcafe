@@ -188,10 +188,7 @@ export default class Reporter {
         });
     }
 
-    async dispatchToPlugin ({ method, args = [], optional = false }) {
-        if (!this.plugin[method] && optional)
-            return;
-
+    async dispatchToPlugin ({ method, args = [] }) {
         try {
             await this.plugin[method](...args);
         }
@@ -247,17 +244,18 @@ export default class Reporter {
         reportItem.pendingStarts--;
 
         if (!reportItem.pendingStarts) {
-            const testStartInfo = { testRunIds: reportItem.testRunIds, testId: reportItem.test.id };
+            if (this.plugin.reportTestStart) {
+                const testStartInfo = { testRunIds: reportItem.testRunIds, testId: reportItem.test.id };
 
-            await this.dispatchToPlugin({
-                method:   'reportTestStart',
-                optional: true,
-                args:     [
-                    reportItem.test.name,
-                    reportItem.test.meta,
-                    testStartInfo
-                ]
-            });
+                await this.dispatchToPlugin({
+                    method: 'reportTestStart',
+                    args:   [
+                        reportItem.test.name,
+                        reportItem.test.meta,
+                        testStartInfo
+                    ]
+                });
+            }
 
             reportItem.pendingTestRunStartPromise.resolve();
         }
@@ -283,29 +281,31 @@ export default class Reporter {
     }
 
     async _onTaskTestActionStart ({ apiActionName, ...restArgs }) {
-        restArgs = this._prepareReportTestActionEventArgs(restArgs);
+        if (this.plugin.reportTestActionStart) {
+            restArgs = this._prepareReportTestActionEventArgs(restArgs);
 
-        await this.dispatchToPlugin({
-            method:   'reportTestActionStart',
-            optional: true,
-            args:     [
-                apiActionName,
-                restArgs
-            ]
-        });
+            await this.dispatchToPlugin({
+                method: 'reportTestActionStart',
+                args:   [
+                    apiActionName,
+                    restArgs
+                ]
+            });
+        }
     }
 
     async _onTaskTestActionDone ({ apiActionName, ...restArgs }) {
-        restArgs = this._prepareReportTestActionEventArgs(restArgs);
+        if (this.plugin.reportTestActionDone) {
+            restArgs = this._prepareReportTestActionEventArgs(restArgs);
 
-        await this.dispatchToPlugin({
-            method:   'reportTestActionDone',
-            optional: true,
-            args:     [
-                apiActionName,
-                restArgs
-            ]
-        });
+            await this.dispatchToPlugin({
+                method: 'reportTestActionDone',
+                args:   [
+                    apiActionName,
+                    restArgs
+                ]
+            });
+        }
     }
 
     async _onceTaskDoneHandler () {
