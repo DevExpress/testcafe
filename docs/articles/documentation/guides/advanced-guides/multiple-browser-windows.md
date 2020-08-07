@@ -23,11 +23,11 @@ fixture `Microsoft DevBlogs Login page`
 
 test('automatically change execution context', async t => {
    await t
-    .click('.login-but') #click the login button
-    .click('.nsl-button-google') #open Google's OAuth window
-    .typeText('#identifierId', 'login@google.com') #enter the username
+    .click('.login-but') // click the login button
+    .click('.nsl-button-google') // open Google's OAuth window
+    .typeText('#identifierId', 'login@google.com') // enter the username
     .click('#identifierNext')
-    .typeText('input[type=password]', 'mypassword') #enter the password
+    .typeText('input[type=password]', 'mypassword') // enter the password
     .click('#passwordNext')
     .expect(Selector('.login-section').textContent).contains('Your first name');  // you're logged in!
 });
