@@ -5,7 +5,7 @@
 The `dependencies` option contains functions, variables, or objects used by the client function internally.
 Properties of the `dependencies` object are added to the client function's scope as variables.
 
-Dependencies, passed to `ClientFunction` must be [Selectors](https://devexpress.github.io/testcafe/documentation/reference/test-api/selector/), [ClientFunctions](https://devexpress.github.io/testcafe/documentation/reference/test-api/clientfunction/) or a serializable object.
+Dependencies passed to `ClientFunction` must be [Selectors](https://devexpress.github.io/testcafe/documentation/reference/test-api/selector/), [ClientFunctions](https://devexpress.github.io/testcafe/documentation/reference/test-api/clientfunction/) or a serializable object.
 
 The following code sample demonstrates a client function (`getArticleHeaderHTML`) that
 calls a [selector](/testcafe/documentation/reference/test-api/selector/) (`articleHeader`) internally.
