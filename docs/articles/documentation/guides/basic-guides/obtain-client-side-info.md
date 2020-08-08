@@ -164,9 +164,9 @@ test('Check client data', async t => {
 This approach only works for Node.js callbacks that fire during a test run. To ensure that the test function
 does not finish before the callback, suspend the test until the callback fires. You can introduce a promise and synchronously wait for it to complete, as shown in the example above.
 
-> The `boundTestRun` option requires the exact same test controller instance that is passed to the function used in a test declaration. It's unable to work with imported test controllers.
+> The `boundTestRun` option requires the same test controller instance that is passed to the function used in a test declaration. It's unable to work with imported test controllers.
 >
-> It is impossible to pass a test controller instance to a function declared in another module or class through the `boundTestRun` option.
+> The `boundTestRun` option is unable to pass a test controller instance to a function declared in another module or class.
 
 ## Client Function Limitations
 

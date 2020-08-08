@@ -37,6 +37,8 @@ Create a job that runs the TestCafe tests.
 
 Provide the [job name](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idname) and specify the [type of machine](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on) that should run the job.
 
+You can [**use a GitHub-hosted machine**](https://docs.github.com/en/actions/reference/virtual-environments-for-github-hosted-runners):
+
 ```yml
 name: End-to-End Tests
 on: [push]
@@ -48,6 +50,32 @@ jobs:
 ```
 
 This job runs on a GitHub-hosted virtual machine with the latest Windows version. `test` is the [job ID](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_id) that must be unique to the `jobs` object.
+
+> You can use a GitHub-hosted virtual machine with a variety of operating systems to run tests, as listed on [this page](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on). For simplicity, all examples in this article run on `windows-latest`.
+
+> Important! Github Actions uses the `macOS Catalina 10.15` virtual environment with the enabled *"System Integrity Protection"* as `macos-latest`. With this setting enabled, TestCafe requires a screen recording permission, which is unobtainable programmatically.  
+>
+> For this reason, TestCafe is unable to run tests on `macos-latest` in GitHub Actions.
+
+Alternatively, you can [**host your own runners**](https://docs.github.com/en/actions/hosting-your-own-runners/about-self-hosted-runners) for the job. This gives you more precise control over the environment.
+
+To set up the self-hosted runners, [add them to your repository](https://docs.github.com/en/actions/hosting-your-own-runners/adding-self-hosted-runners#adding-a-self-hosted-runner-to-a-repository).
+
+Afterwards, configure `runs-on` in your workflow `.yml` file:
+
+```yml
+name: End-to-End Tests
+on: [push]
+
+jobs:
+  test:
+    name: Run TestCafe Tests
+    runs-on: [self-hosted, linux]
+```
+
+> Make sure that the intended machine meets the [requirements for self-hosted runner machines](https://docs.github.com/en/actions/hosting-your-own-runners/about-self-hosted-runners#requirements-for-self-hosted-runner-machines).
+>
+>For more information about self-hosted runners in the GitHub Actions workflow, refer to the following topic: [Using self-hosted runners in a workflow](https://docs.github.com/en/actions/hosting-your-own-runners/using-self-hosted-runners-in-a-workflow).
 
 ## Step 3 - Add a Step that Fetches the Repository
 
