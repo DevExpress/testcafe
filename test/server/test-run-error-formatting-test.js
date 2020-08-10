@@ -279,23 +279,19 @@ describe('Error formatting', () => {
         });
 
         it('Should not throw if the specified decorator was not found', () => {
-            const errorList = new Array();
-
-            let decoratedHTML;
+            const errorList = [];
 
             try {
                 const error = new ExternalAssertionLibraryError(testAssertionErrorArray, testCallsite);
 
                 error.diff = '<div class="unknown-decorator">text</div>';
 
-                const decorator = getErrorAdapter(error);
-
-                decoratedHTML = decorator.formatMessage('', 100);
+                getErrorAdapter(error).formatMessage('', 100);
             }
             catch (e) {
                 errorList.push(e);
             }
-            
+
             expect(errorList.length).eql(0);
         });
 
