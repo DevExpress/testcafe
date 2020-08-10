@@ -279,7 +279,7 @@ describe('Error formatting', () => {
         });
 
         it('Should not throw if the specified decorator was not found', () => {
-            const errorList  = new Array();
+            const errorList = new Array();
 
             let decoratedHTML;
 
