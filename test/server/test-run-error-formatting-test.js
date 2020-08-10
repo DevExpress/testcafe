@@ -299,7 +299,6 @@ describe('Error formatting', () => {
             expect(errorList.length).eql(0);
         });
 
-
         it('Should format "actionIntegerOptionError" message', () => {
             assertErrorMessage('action-integer-option-error', new ActionIntegerOptionError('offsetX', '1.01'));
         });
