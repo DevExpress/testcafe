@@ -53,6 +53,7 @@ This job runs on a GitHub-hosted virtual machine with the latest Windows version
 
 > You can use a GitHub-hosted virtual machine with a variety of operating systems to run tests, as listed on [this page](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on). For simplicity, all examples in this article run on `windows-latest`.
 
+<!-- -->
 > Important! Github Actions uses the `macOS Catalina 10.15` virtual environment with the enabled *"System Integrity Protection"* as `macos-latest`. With this setting enabled, TestCafe requires a screen recording permission, which is unobtainable programmatically.  
 >
 > For this reason, TestCafe is unable to run tests on `macos-latest` in GitHub Actions.

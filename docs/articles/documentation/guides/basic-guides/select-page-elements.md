@@ -136,7 +136,7 @@ This selector does the following:
 </html>
 ```
 
-If a selector matches multiple elements, the subsequent methods return results for all the elements. For instance, the following selector returns the child nodes of all `<div>` tags on the page:
+If a selector matches multiple elements, the subsequent methods return results for all the elements. The following selector returns the child nodes of all `<div>` tags on the page, uncluding their children and so on:
 
 ```js
 const sel = Selector('div').child();
@@ -189,6 +189,10 @@ test('Click a button', async t => {
 ```
 
 This sample page includes three buttons. When clicked, the button text changes. During the test, each [`.click`](../../../documentation/reference/test-api/testcontroller/click.md) affects the next element to which the selector points. All three buttons receive clicks as a result.
+
+If a selector matches multiple elements, the first matching element is used for [actions] or when retrieving [DOM Node Snapshots](../../reference/test-api/domnodestate.md). Use [`.nth`](../../reference/test-api/selector/nth.md) method to enumerate through other matching elements.
+
+You can retrieve the number of matched elements with a [`selector.count`](../../reference/test-api/selector/count.md) property.
 
 ## Member Tables
 
