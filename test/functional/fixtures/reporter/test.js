@@ -740,7 +740,7 @@ describe('Reporter', () => {
                 throw new Error('Promise rejection expected');
             }
             catch (err) {
-                expect(err.message).startsWith(`An uncaught error occured in the '${method}' method of the 'customReporter' reporter. Details:\nError: oops`);
+                expect(err.message).startsWith(`An uncaught error occured in the '${method}' method of the 'function () {}' reporter. Details:\nError: oops`);
             }
         }
     });

@@ -195,7 +195,7 @@ export default class Reporter {
         }
         catch (originalError) {
             const uncaughError = new ReporterPluginError({
-                name: typeof this.plugin.name === 'string' ? this.plugin.name : 'customReporter',
+                name: this.plugin.name,
                 method,
                 originalError
             });

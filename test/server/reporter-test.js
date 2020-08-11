@@ -1230,7 +1230,7 @@ describe('Reporter', () => {
                 };
             }
 
-            return new Reporter(reporterObject, task);
+            return new Reporter(reporterObject, task, null, 'customReporter');
         }
 
         const taskMock = new TaskMock();
@@ -1244,7 +1244,7 @@ describe('Reporter', () => {
 
             const lastErr = log.pop();
 
-            expect(lastErr instanceof ReporterPluginError).to.be.true;
+            expect(lastErr).instanceOf(ReporterPluginError);
             expect(lastErr.message).startsWith(`An uncaught error occured in the '${method}' method of the 'customReporter' reporter. Details:\nError: oops`);
         }
     });

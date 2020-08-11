@@ -20,6 +20,7 @@ import loadClientScripts from '../custom-client-scripts/load';
 import { getConcatenatedValuesString } from '../utils/string';
 
 import { Writable as WritableStream } from 'stream';
+import { ReporterSource, ReporterPluginSource } from '../reporter/interfaces';
 import ClientScript from '../custom-client-scripts/client-script';
 import ClientScriptInit from '../custom-client-scripts/client-script-init';
 import BrowserConnectionGateway from '../browser/connection/gateway';
@@ -28,30 +29,11 @@ import CompilerService from '../services/compiler/host';
 import { Metadata } from '../api/structure/interfaces';
 import Test from '../api/structure/test';
 import detectDisplay from '../utils/detect-display';
+import { getPluginFactory, processReporterName } from '../utils/reporter';
 
 type TestSource = unknown;
 
-type ReporterPlugin = unknown;
-
 type BrowserSource = BrowserConnection | string;
-
-interface ReporterSource {
-    name: string;
-    output?: string | WritableStream;
-}
-
-interface ReporterPluginSource {
-    plugin: ReporterPlugin;
-    outStream?: WritableStream;
-}
-
-interface ReporterPluginFactory {
-    (): ReporterPlugin;
-}
-
-function isReporterPluginFactory (value: string | Function): value is ReporterPluginFactory {
-    return typeof value === 'function';
-}
 
 interface Filter {
     (testName: string, fixtureName: string, fixturePath: string, testMeta: Metadata, fixtureMeta: Metadata): boolean;
@@ -299,34 +281,19 @@ export default class Bootstrapper {
         });
     }
 
-    private _requireReporterPluginFactory (reporterName: string): ReporterPluginFactory {
-        try {
-            return require('testcafe-reporter-' + reporterName);
-        }
-        catch (err) {
-            throw new GeneralError(RUNTIME_ERRORS.cannotFindReporterForAlias, reporterName);
-        }
-    }
-
-    private _getPluginFactory (reporterFactorySource: string | ReporterPluginFactory): ReporterPluginFactory {
-        if (!isReporterPluginFactory(reporterFactorySource))
-            return this._requireReporterPluginFactory(reporterFactorySource);
-
-        return reporterFactorySource;
-    }
-
     private async _getReporterPlugins (): Promise<ReporterPluginSource[]> {
         if (!this.reporters.length)
             Bootstrapper._addDefaultReporter(this.reporters);
 
         return Promise.all(this.reporters.map(async ({ name, output }) => {
-            const pluginFactory = this._getPluginFactory(name);
+            const pluginFactory = getPluginFactory(name);
+            const processedName = processReporterName(name);
             const outStream     = output ? await this._ensureOutStream(output) : void 0;
 
             return {
                 plugin: pluginFactory(),
-                outStream,
-                name
+                name:   processedName,
+                outStream
             };
         }));
     }
