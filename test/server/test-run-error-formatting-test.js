@@ -278,6 +278,15 @@ describe('Error formatting', () => {
             });
         });
 
+        it('Should not throw if the specified decorator was not found', () => {
+            expect(() => {
+                const error = new ExternalAssertionLibraryError(testAssertionErrorArray, testCallsite);
+
+                error.diff = '<div class="unknown-decorator">text</div>';
+
+                getErrorAdapter(error).formatMessage('', 100);
+            }).to.not.throw();
+        });
 
         it('Should format "actionIntegerOptionError" message', () => {
             assertErrorMessage('action-integer-option-error', new ActionIntegerOptionError('offsetX', '1.01'));
