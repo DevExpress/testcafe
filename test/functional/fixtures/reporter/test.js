@@ -1,6 +1,7 @@
-const expect           = require('chai').expect;
-const fs               = require('fs');
-const generateReporter = require('./reporter');
+const expect               = require('chai').expect;
+const fs                   = require('fs');
+const generateReporter     = require('./reporter');
+const ReporterPluginMethod = require('../../../../lib/reporter/plugin-methods');
 
 const {
     createSimpleTestStream,
@@ -710,16 +711,6 @@ describe('Reporter', () => {
     });
 
     it('Should raise an error when uncaught exception occured in any reporter method', async () => {
-        const reporterMethods = [
-            'reportTaskStart',
-            'reportFixtureStart',
-            'reportTestStart',
-            'reportTestActionStart',
-            'reportTestActionDone',
-            'reportTestDone',
-            'reportTaskDone'
-        ];
-
         function createReporterWithBrokenMethod (method) {
             const base = {
                 async reportTaskStart () {},
@@ -735,7 +726,7 @@ describe('Reporter', () => {
             return () => base;
         }
 
-        for (const method of reporterMethods) {
+        for (const method of Object.values(ReporterPluginMethod)) {
             try {
                 await runTests(
                     'testcafe-fixtures/index-test.js',

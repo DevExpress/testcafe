@@ -2,6 +2,7 @@ const chai                            = require('chai');
 const { expect }                      = chai;
 const { chunk, random, noop, sortBy } = require('lodash');
 const Reporter                        = require('../../lib/reporter');
+const ReporterPluginMethod            = require('../../lib/reporter/plugin-methods');
 const Task                            = require('../../lib/runner/task');
 const Videos                          = require('../../lib/video-recorder/videos');
 const delay                           = require('../../lib/utils/delay');
@@ -1220,20 +1221,10 @@ describe('Reporter', () => {
     });
 
     it('Should dispatch uncaught exception from any plugin method to Task `error` event', async () => {
-        const reporterMethods = [
-            'reportTaskStart',
-            'reportFixtureStart',
-            'reportTestStart',
-            'reportTestActionStart',
-            'reportTestActionDone',
-            'reportTestDone',
-            'reportTaskDone'
-        ];
-
         function createBrokenReporter (task) {
             const reporterObject = {};
 
-            for (const method of reporterMethods) {
+            for (const method of Object.values(ReporterPluginMethod)) {
                 reporterObject[method] = () => {
                     throw new Error(`oops`);
                 };
@@ -1248,7 +1239,7 @@ describe('Reporter', () => {
 
         const reporter = createBrokenReporter(taskMock);
 
-        for (const method of reporterMethods) {
+        for (const method of Object.values(ReporterPluginMethod)) {
             await reporter.dispatchToPlugin({ method });
 
             const lastErr = log.pop();

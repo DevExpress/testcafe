@@ -1,6 +1,7 @@
 import { find, sortBy, union } from 'lodash';
 import { writable as isWritableStream } from 'is-stream';
 import ReporterPluginHost from './plugin-host';
+import ReporterPluginMethod from './plugin-methods';
 import formatCommand from './command/format-command';
 import getBrowser from '../utils/get-browser';
 import { ReporterPluginError } from '../errors/runtime';
@@ -102,7 +103,7 @@ export default class Reporter {
             nextReportItem = this.reportQueue[0];
 
             await this.dispatchToPlugin({
-                method: 'reportTestDone',
+                method: ReporterPluginMethod.TestDone,
                 args:   [
                     reportItem.test.name,
                     reportItem.testRunInfo,
@@ -117,7 +118,7 @@ export default class Reporter {
                 continue;
 
             await this.dispatchToPlugin({
-                method: 'reportFixtureStart',
+                method: ReporterPluginMethod.FixtureStart,
                 args:   [
                     nextReportItem.fixture.name,
                     nextReportItem.fixture.path,
@@ -213,7 +214,7 @@ export default class Reporter {
         };
 
         await this.dispatchToPlugin({
-            method: 'reportTaskStart',
+            method: ReporterPluginMethod.TaskStart,
             args:   [
                 startTime,
                 userAgents,
@@ -224,7 +225,7 @@ export default class Reporter {
         });
 
         await this.dispatchToPlugin({
-            method: 'reportFixtureStart',
+            method: ReporterPluginMethod.FixtureStart,
             args:   [
                 first.fixture.name,
                 first.fixture.path,
@@ -248,7 +249,7 @@ export default class Reporter {
                 const testStartInfo = { testRunIds: reportItem.testRunIds, testId: reportItem.test.id };
 
                 await this.dispatchToPlugin({
-                    method: 'reportTestStart',
+                    method: ReporterPluginMethod.TestStart,
                     args:   [
                         reportItem.test.name,
                         reportItem.test.meta,
@@ -285,7 +286,7 @@ export default class Reporter {
             restArgs = this._prepareReportTestActionEventArgs(restArgs);
 
             await this.dispatchToPlugin({
-                method: 'reportTestActionStart',
+                method: ReporterPluginMethod.TestActionStart,
                 args:   [
                     apiActionName,
                     restArgs
@@ -299,7 +300,7 @@ export default class Reporter {
             restArgs = this._prepareReportTestActionEventArgs(restArgs);
 
             await this.dispatchToPlugin({
-                method: 'reportTestActionDone',
+                method: ReporterPluginMethod.TestActionDone,
                 args:   [
                     apiActionName,
                     restArgs
@@ -318,7 +319,7 @@ export default class Reporter {
         };
 
         await this.dispatchToPlugin({
-            method: 'reportTaskDone',
+            method: ReporterPluginMethod.TaskDone,
             args:   [
                 endTime,
                 this.passed,
