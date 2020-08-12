@@ -1,6 +1,14 @@
 import { Writable as WritableStream } from 'stream';
 
-type ReporterPlugin = unknown;
+export interface ReporterPlugin {
+    reportTaskStart(): void;
+    reportFixtureStart(): void;
+    reportTestStart?(): void;
+    reportTestActionStart?(): void;
+    reportTestActionDone?(): void;
+    reportTestDone(): void;
+    reportTaskDone(): void;
+}
 
 export interface ReporterSource {
     name: string;

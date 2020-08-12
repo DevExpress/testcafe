@@ -3,7 +3,7 @@ import Emittery from 'emittery';
 export default class AsyncEventEmitter extends Emittery {
     private readonly captureRejections: boolean;
 
-    public constructor ({ captureRejections = true } = {}) {
+    public constructor ({ captureRejections = false } = {}) {
         super();
 
         this.captureRejections = captureRejections;

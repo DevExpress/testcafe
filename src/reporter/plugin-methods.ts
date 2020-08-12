@@ -1,11 +1,14 @@
-enum ReporterPluginMethod {
-    TaskStart = 'reportTaskStart',
-    FixtureStart = 'reportFixtureStart',
-    TestStart = 'reportTestStart',
-    TestActionStart = 'reportTestActionStart',
-    TestActionDone = 'reportTestActionDone',
-    TestDone = 'reportTestDone',
-    TaskDone = 'reportTaskDone'
-}
+import { ReporterPlugin } from './interfaces';
+import { EnumFromPropertiesOf } from '../utils/types';
+
+const ReporterPluginMethod: EnumFromPropertiesOf<ReporterPlugin> = {
+    reportTaskStart:       'reportTaskStart',
+    reportFixtureStart:    'reportFixtureStart',
+    reportTestStart:       'reportTestStart',
+    reportTestActionStart: 'reportTestActionStart',
+    reportTestActionDone:  'reportTestActionDone',
+    reportTestDone:        'reportTestDone',
+    reportTaskDone:        'reportTaskDone'
+};
 
 export default ReporterPluginMethod;

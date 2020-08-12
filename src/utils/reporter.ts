@@ -22,9 +22,9 @@ export function isReporterPluginFactory (value: string | Function): value is Rep
     return typeof value === 'function';
 }
 
-export function processReporterName (value: string | Function): string {
+export function processReporterName (value: string | ReporterPluginFactory): string {
     if (isReporterPluginFactory(value))
-        return (value as Function).name || 'function () {}';
+        return value.name || 'function () {}';
 
-    return value as string;
+    return value;
 }
