@@ -1245,7 +1245,7 @@ describe('Reporter', () => {
             const lastErr = log.pop();
 
             expect(lastErr).instanceOf(ReporterPluginError);
-            expect(lastErr.message).startsWith(`An uncaught error occured in the '${method}' method of the 'customReporter' reporter. Details:\nError: oops`);
+            expect(lastErr.message).startsWith(`An uncaught error occurred in the "customReporter" reporter's "${method}" method. Error details:\nError: oops`);
         }
     });
 });
