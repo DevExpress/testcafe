@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.9.1 (2020-8-12)
+
+### Bug Fixes
+
+* Pages proxied with TestCafe now expose the correct `File` object for uploaded files ([testcafe-hammerhead/#2338](https://github.com/DevExpress/testcafe-hammerhead/issues/2338))
+
 ## v1.9.0 (2020-8-6)
 
 ### Enhancements
