@@ -7,9 +7,9 @@ permalink: /documentation/guides/advanced-guides/multiple-browser-windows.html
 
 The TestCafe API includes methods that open, close, and switch between browser windows. You can test websites with pop-up windows and OAuth login forms, debug complex multi-window applications, or run multiple instances of the same web app side-by-side.
 
-⚠ This is a **beta** feature. Browser support is limited to local instances of Chrome and Firefox. You cannot capture videos or screenshots of child windows. The available functionality is subject to further revisions. Please do not use this feature in production environments.
+⚠ This is a **beta** feature. Browser support is limited to local instances of Chrome and Firefox. You cannot resize child windows. You cannot take screenshots or videos of child windows. The available functionality is subject to further revisions. Please do not use this feature in production environments.
 
-️🛠️ Use the `--disable-multiple-windows` CLI flag to disable support for multiple browser windows if you encounter compatibility issues with [TestCafe v2015.1](http://testcafe.devexpress.com/documentation) tests.
+️🛠️ Use the `--disable-multiple-windows` CLI flag to disable support for multiple browser windows if you encounter compatibility issues with your tests.
 
 ## Handle client-side window events
 
@@ -18,16 +18,20 @@ When your page launches a new window, the test automatically continues in the ne
 ```js
 import { Selector } from 'testcafe';
 
-fixture `Login page`
-    .page('https://login.wrike.com/login/');
+fixture `Microsoft DevBlogs Login page`
+    .page('https://devblogs.microsoft.com/');
 
-const googleButton = Selector('div.login-panel-footer__login-with > button');
-
-test('Login via Google', async t => {
-    await t
-        .click(googleButton)
-        .typeText('input[type=email]', 'This text will be entered inside the login dialog');
+test('automatically change execution context', async t => {
+   await t
+    .click('.login-but') // click the login button
+    .click('.nsl-button-google') // open Google's OAuth window
+    .typeText('#identifierId', 'login@google.com') // enter the username
+    .click('#identifierNext')
+    .typeText('input[type=password]', 'mypassword') // enter the password
+    .click('#passwordNext')
+    .expect(Selector('.login-section').textContent).contains('Your first name');  // you're logged in!
 });
+
 ```
 
 ## Open a new window
@@ -48,7 +52,7 @@ test('Open a new window', async t => {
 });
 ```
 
->All browser windows share the client-side storage. Only one [user role](https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/authentication.html#user-roles) can be active at a time.
+>Browser windows share the client-side storage. Only one [user role](https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/authentication.html#user-roles) can be active at a time.
 
 ## Obtain window descriptors
 
@@ -56,7 +60,7 @@ Window descriptors are objects that reference individual browser windows. Window
 
 The [t.openWindow](../../reference/test-api/testcontroller/openwindow.md) method returns a window descriptor for the newly open window.
 
-The [t.getCurrentWindow](../../reference/test-api/testcontroller/getcurrentwindow.md) method returns a window descriptor for the active window. Use it to obtain descriptors for windows that open without a [t.openWindow](../../reference/test-api/testcontroller/openwindow.md) declaration, for example, the initial browser window.
+The [t.getCurrentWindow](../../reference/test-api/testcontroller/getcurrentwindow.md) method returns a window descriptor for the active window. Use it to obtain descriptors for windows that open without a [t.openWindow](../../reference/test-api/testcontroller/openwindow.md) call, for example, the initial browser window.
 
 ```js
 fixture `Example page`
@@ -112,7 +116,7 @@ test('Switch to a parent window', async t => {
 });
 ```
 
-Use the [t.switchToPreviousWindow](../../reference/test-api/testcontroller/switchtopreviouswindow.md) method to access the second to last open window:
+Use the [t.switchToPreviousWindow](../../reference/test-api/testcontroller/switchtopreviouswindow.md) method to switch to the previous window:
 
 ```js
 test('Switch back', async t => {

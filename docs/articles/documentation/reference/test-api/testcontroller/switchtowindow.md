@@ -18,7 +18,7 @@ t.switchToWindow(windowDescriptor);
 
 Parameter | Type     | Description
 -------------------------------- | -------- | --------------
-`windowDescriptor` | Object | Object that describes an open browser window.
+`windowDescriptor` | Object | Descriptor object obtained from an open browser window.
 
 **Example:**
 
