@@ -67,3 +67,5 @@ A selector that targets `div` elements with the text `foo` matches both elements
 // and then the child div (.child)
 Selector('div').withText('foo');
 ```
+
+If you want to target elements, containing special HTML characters, refer to [this section](../../../guides/basic-guides/select-page-elements.md#select-elements-containing-special-characters).

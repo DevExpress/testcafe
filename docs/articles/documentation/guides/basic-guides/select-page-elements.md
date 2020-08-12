@@ -923,6 +923,36 @@ test('My test', async t => {
 });
 ```
 
+### Select Elements Containing Special Characters
+
+If your page contains special HTML characters, also known as [HTML entities](https://www.w3schools.com/html/html_entities.asp) (like `&nbsp;`, newline chars), use their [unicode counterparts](https://www.rapidtables.com/code/text/unicode-characters.md) in [`Selector.WithText`](../../reference/test-api/selector/withtext.md) and [`Selector.WithExactText`](../../reference/test-api/selector/withexacttext.md).
+
+**Example**
+
+```html
+<html>
+    <body>
+        <p>Click&nbsp;me</p>
+    </body>
+</html>
+```
+
+```js
+import { Selector } from 'testcafe';
+
+fixture `My fixture`
+    .page `http://localhost/`;
+
+test('My test', async t => {
+    const sel = await Selector('p').withText('Click&nbsp;me') //typed representation, does not work
+    const sel = await Selector('p').withText('Click\u00a0me') //unicode representation, works
+    const sel = await Selector('p').withText('Click\xa0me') //hexadecimal representation, works
+    const sel = await Selector('p').withText('Click\160me') //decimal representation introduced with an octal escape sequence, throws an error
+});
+```
+
+> Important! In [JS "Strict mode"](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode) octal escape sequences inside strings do not work and produce a syntax error.
+
 ### Have a different use case?
 
 If none of the examples fit your requirements and you experience issues, let us know on StackOverflow.

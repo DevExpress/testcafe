@@ -29,3 +29,5 @@ Selector('.container').withExactText('foo');
 ## Notes
 
 `withExactText` selects the element that contains the specified text and its ancestors (if they do not contain any other text). See an example for [withText](withtext.md#notes).
+
+If you want to target elements, containing special HTML characters, refer to [this section](../../../guides/basic-guides/select-page-elements.md#select-elements-containing-special-characters).
