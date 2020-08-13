@@ -99,6 +99,8 @@ within a timeout:
 
 ![TestCafe Smart Assertion Query Mechanism](../../../images/assertions/query-mechanism.png)
 
+> Smart assertions auto retry feature doesn't work with [RequestLogger.requests](../../reference/test-api/requestlogger/requests.md).length property.
+
 **Example:**
 
 The following web page is an example:
