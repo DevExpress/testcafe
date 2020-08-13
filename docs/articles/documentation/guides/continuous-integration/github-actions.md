@@ -53,10 +53,21 @@ This job runs on a GitHub-hosted virtual machine with the latest Windows version
 
 > You can use a GitHub-hosted virtual machine with a variety of operating systems to run tests, as listed on [this page](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on). For simplicity, all examples in this article run on `windows-latest`.
 
-<!-- -->
-> Important! Github Actions uses the `macOS Catalina 10.15` virtual environment with the enabled *"System Integrity Protection"* as `macos-latest`. With this setting enabled, TestCafe requires a screen recording permission, which is unobtainable programmatically.  
->
-> For this reason, TestCafe is unable to run tests on `macos-latest` in GitHub Actions.
+Github Actions uses the `macOS Catalina 10.15` virtual environment with *"System Integrity Protection"* enabled as `macos-latest`. With this setting enabled, TestCafe requires a screen recording permission, which is unobtainable programmatically. For this reason, TestCafe is unable to run tests locally on `macos-latest` in GitHub Actions.
+
+However, tests do run in the remote mode.
+
+**Example**
+
+```sh
+export HOSTNAME=localhost
+export PORT1=1337
+export PORT2=1338
+testcafe remote test.js --hostname ${HOSTNAME} --ports ${PORT1},${PORT2} &
+pid=$!
+open -a Safari http://${HOSTNAME}:${PORT1}/browser/connect
+wait $pid
+```
 
 Alternatively, you can [**host your own runners**](https://docs.github.com/en/actions/hosting-your-own-runners/about-self-hosted-runners) for the job. This gives you more precise control over the environment.
 
