@@ -99,13 +99,6 @@ within a timeout:
 
 ![TestCafe Smart Assertion Query Mechanism](../../../images/assertions/query-mechanism.png)
 
-Smart assertions auto retry feature only works with:
-
-* Promises returned from [`ClientFunctions`](../../reference/test-api/clientfunction/README.md), 
-* [`Selector`](../../reference/test-api/selector/README.md) properties,
-* [`RequestLogger.count`](../../reference/test-api/requestlogger/count.md) properties,
-* [`RequestLogger.contains`](../../reference/test-api/requestlogger/contains.md) properties.
-
 **Example:**
 
 The following web page is an example:
@@ -145,7 +138,16 @@ To set the timeout when you launch tests, pass the timeout value to the [runner.
 method if you use API or specify the [assertion-timeout](../../reference/command-line-interface.md#--assertion-timeout-ms) option
 if you run TestCafe from the command line.
 
-The auto retry feature does not work with [DOM node shapshot properties](./select-page-elements.md#dom-node-snapshot). If you execute the selector as an asynchronous function, its value is immediately resolved, never updates and the test fails:
+### Smart Assertion Limitations
+
+Smart assertions auto retry feature only works with:
+
+* Promises returned from [`ClientFunctions`](../../reference/test-api/clientfunction/README.md),
+* [`Selector`](../../reference/test-api/selector/README.md) properties,
+* [`RequestLogger.count`](../../reference/test-api/requestlogger/count.md) properties,
+* [`RequestLogger.contains`](../../reference/test-api/requestlogger/contains.md) properties.
+
+The auto retry feature does not work with [DOM node shapshot](./select-page-elements.md#dom-node-snapshot) properties. If you execute the selector as an asynchronous function, its value is immediately resolved, doesn't update and the corresponding test fails:
 
 **Example:**
 
@@ -155,12 +157,15 @@ test('Button click', async t => {
 
     await t
         .click(btn)
-        .expect(await btn.textContent).contains('Loading...'); //this assertion fails because selector value never updates according to page behavior
+        .expect(await btn.textContent).contains('Loading...'); //fails because selector value doesn't update according to page behavior
 
     await t
         .click(btn)
-        .expect(btn()).contains({ innerText: 'Loading...'}); //this assertion fails because selector value never updates according to page behavior
-        
+        .expect(btn()).contains({ innerText: 'Loading...'}); //fails because selector value doesn't update according to page behavior
+
+    await t
+        .click(btn)
+        .expect(btn.innerText).eql('Loading...'); //passes because promise returned from the selector eventually updates
 });
 ```
 
