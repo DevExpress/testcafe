@@ -55,7 +55,7 @@ This job runs on a GitHub-hosted virtual machine with the latest Windows version
 
 Github Actions uses the `macOS Catalina 10.15` virtual environment with *"System Integrity Protection"* enabled as `macos-latest`. With this setting enabled, TestCafe requires a screen recording permission, which is unobtainable programmatically. For this reason, TestCafe is unable to run tests locally on `macos-latest` in GitHub Actions.
 
-However, tests do run in the remote mode.
+However, tests can run on macOS VMs if you connect the browser as remote.
 
 **Example**
 
@@ -73,7 +73,7 @@ Alternatively, you can [**host your own runners**](https://docs.github.com/en/ac
 
 To set up the self-hosted runners, [add them to your repository](https://docs.github.com/en/actions/hosting-your-own-runners/adding-self-hosted-runners#adding-a-self-hosted-runner-to-a-repository).
 
-Afterwards, configure `runs-on` in your workflow `.yml` file:
+After that, configure `runs-on` in your workflow `.yml` file:
 
 ```yml
 name: End-to-End Tests

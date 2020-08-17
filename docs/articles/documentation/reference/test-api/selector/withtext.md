@@ -68,4 +68,5 @@ A selector that targets `div` elements with the text `foo` matches both elements
 Selector('div').withText('foo');
 ```
 
-If you want to target elements, containing special HTML characters, refer to [this section](../../../guides/basic-guides/select-page-elements.md#select-elements-containing-special-characters).
+If you want to target elements, containing special HTML characters, refer to the [Select Elements That Contain Special Characters
+](../../../guides/basic-guides/select-page-elements.md#select-elements-containing-special-characters) section.

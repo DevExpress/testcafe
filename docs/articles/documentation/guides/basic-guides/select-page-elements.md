@@ -136,7 +136,7 @@ This selector does the following:
 </html>
 ```
 
-If a selector matches multiple elements, the subsequent methods return results for all the elements. The following selector returns the child nodes of all `<div>` tags on the page, uncluding their children and so on:
+If a selector matches multiple elements, the subsequent methods return results for all the elements. The following selector returns the child nodes of all `<div>` tags on the page, including their children and so on:
 
 ```js
 const sel = Selector('div').child();
@@ -610,8 +610,6 @@ Use this approach for Node.js callbacks that fire during the test run. To ensure
 does not finish before the callback is executed, suspend the test until the callback fires. For instance, you can introduce a Promise and wait until it completes synchronously, as shown in the example above.
 
 > The `boundTestRun` option requires the same test controller instance that is passed to the function used in a test declaration. It's unable to work with imported test controllers.
->
-> The `boundTestRun` option is unable to pass a test controller instance to a function declared in another module or class.
 
 ## Limitations
 
@@ -923,7 +921,7 @@ test('My test', async t => {
 });
 ```
 
-### Select Elements Containing Special Characters
+### Select Elements That Contain Special Characters
 
 If your page contains special HTML characters, also known as [HTML entities](https://www.w3schools.com/html/html_entities.asp) (like `&nbsp;`, newline chars), use their [unicode counterparts](https://www.rapidtables.com/code/text/unicode-characters.md) in [`Selector.WithText`](../../reference/test-api/selector/withtext.md) and [`Selector.WithExactText`](../../reference/test-api/selector/withexacttext.md).
 
@@ -944,10 +942,11 @@ fixture `My fixture`
     .page `http://localhost/`;
 
 test('My test', async t => {
-    const sel = await Selector('p').withText('Click&nbsp;me') //typed representation, does not work
+    const sel = await Selector('p').withText('Click&nbsp;me') //typed representation, not supported
     const sel = await Selector('p').withText('Click\u00a0me') //unicode representation, works
     const sel = await Selector('p').withText('Click\xa0me') //hexadecimal representation, works
-    const sel = await Selector('p').withText('Click\160me') //decimal representation introduced with an octal escape sequence, throws an error
+    const sel = await Selector('p').withText('Click\160me') //decimal representation introduced with an octal escape sequence;
+                                                            // not supported because tests are executed in strict mode
 });
 ```
 

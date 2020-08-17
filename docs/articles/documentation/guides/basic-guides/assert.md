@@ -104,16 +104,11 @@ within a timeout:
 The following web page is an example:
 
 ```html
-<div id="btn"></div>
-<script>
-var btn = document.getElementById('btn');
-
-btn.addEventListener('click', function() {
-    window.setTimeout(function() {
-        btn.innerText = 'Loading...';
-    }, 100);
-});
-</script>
+<html>
+    <body>
+        <div id="btn" onclick="window.setTimeout(() => this.innerText = 'Loading...', 100)">Click me!</div>
+    </body>
+</html>
 ```
 
 Test code for this page can be as follows.
@@ -140,16 +135,24 @@ if you run TestCafe from the command line.
 
 ### Smart Assertion Limitations
 
-Smart assertions auto retry feature only works with:
+Smart assertions auto-retry only works with:
 
-* Promises returned from [`ClientFunctions`](../../reference/test-api/clientfunction/README.md),
-* [`Selector`](../../reference/test-api/selector/README.md) properties,
-* [`RequestLogger.count`](../../reference/test-api/requestlogger/count.md) properties,
-* [`RequestLogger.contains`](../../reference/test-api/requestlogger/contains.md) properties.
+* Promises returned from [ClientFunctions](../../reference/test-api/clientfunction/README.md),
+* [Selector](../../reference/test-api/selector/README.md) properties,
+* [RequestLogger.count](../../reference/test-api/requestlogger/count.md) properties,
+* [RequestLogger.contains](../../reference/test-api/requestlogger/contains.md) properties.
 
-The auto retry feature does not work with [DOM node shapshot](./select-page-elements.md#dom-node-snapshot) properties. If you execute the selector as an asynchronous function, its value is immediately resolved, doesn't update and the corresponding test fails:
+The auto retry feature does not work with [DOM node snapshot](./select-page-elements.md#dom-node-snapshot) properties. If you execute the selector as an asynchronous function, its value is immediately resolved, doesn't update and the corresponding test fails:
 
 **Example:**
+
+```html
+<html>
+    <body>
+        <div id="btn" onclick="window.setTimeout(() => this.innerText = 'Loading...', 100)">Click me!</div>
+    </body>
+</html>
+```
 
 ```js
 test('Button click', async t => {
