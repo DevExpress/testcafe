@@ -99,7 +99,12 @@ within a timeout:
 
 ![TestCafe Smart Assertion Query Mechanism](../../../images/assertions/query-mechanism.png)
 
-> Smart assertions auto retry feature doesn't work with [RequestLogger.requests](../../reference/test-api/requestlogger/requests.md).length property.
+Smart assertions auto retry feature only works with:
+
+* Promises returned from [`ClientFunctions`](../../reference/test-api/clientfunction/README.md), 
+* [`Selector`](../../reference/test-api/selector/README.md) properties,
+* [`RequestLogger.count`](../../reference/test-api/requestlogger/count.md) properties,
+* [`RequestLogger.contains`](../../reference/test-api/requestlogger/contains.md) properties.
 
 **Example:**
 
@@ -139,6 +144,25 @@ You can specify the assertion query timeout in test code with the [options.timeo
 To set the timeout when you launch tests, pass the timeout value to the [runner.run](../../reference/testcafe-api/runner/run.md)
 method if you use API or specify the [assertion-timeout](../../reference/command-line-interface.md#--assertion-timeout-ms) option
 if you run TestCafe from the command line.
+
+The auto retry feature does not work with [DOM node shapshot properties](./select-page-elements.md#dom-node-snapshot). If you execute the selector as an asynchronous function, its value is immediately resolved, never updates and the test fails:
+
+**Example:**
+
+```js
+test('Button click', async t => {
+    const btn = Selector('#btn');
+
+    await t
+        .click(btn)
+        .expect(await btn.textContent).contains('Loading...'); //this assertion fails because selector value never updates according to page behavior
+
+    await t
+        .click(btn)
+        .expect(btn()).contains({ innerText: 'Loading...'}); //this assertion fails because selector value never updates according to page behavior
+        
+});
+```
 
 ## Options
 
