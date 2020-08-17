@@ -336,18 +336,18 @@ Mouse event | Touch event
 
 ## Interaction Requirements
 
-To be properly targeted by TestCafe, elements have to satisfy several conditions:
+TestCafe actions can interact with elements if they satisfy the following conditions:
 
 * an element has to be within the page [`body`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/body) or in an [`<iframe>`](#work-with-iframes).  
 
-* an element has to be visible- neither of its properties should be set to:
+* an element has to be visible - its properties should be set as follows:
 
     Property | Value
     -------- | --------
-    `display`  | `none`
-    `visibility` | `hidden`, `collapse`
-    `width`    | `0`
-    `height`   | `0`
+    `display`  | *not* set to `none`
+    `visibility` | set to `visible` `hidden`, `collapse`
+    `width`    | auto-calculated as or set to > `0`
+    `height`   | auto-calculated as or set to > `0`
 
 * a targeted part of the element has to be visible.  
 
