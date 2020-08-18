@@ -6,6 +6,7 @@ import delay from '../utils/delay';
 import { GeneralError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
 import resolvePathRelativelyCwd from '../utils/resolve-path-relatively-cwd';
+import debugLogger from 'debug';
 
 const MODULES_BIN_DIR = resolvePathRelativelyCwd('./node_modules/.bin');
 
@@ -29,11 +30,15 @@ export default class TestedApp {
     private _killed: boolean;
     public errorPromise: null | Promise<void>;
     private _process: null | ChildProcess;
+    private stdoutLogger: debug.Debugger;
+    private stderrLogger: debug.Debugger;
 
     public constructor () {
-        this._process     = null;
-        this.errorPromise = null;
-        this._killed      = false;
+        this._process          = null;
+        this.errorPromise      = null;
+        this._killed           = false;
+        this.stdoutLogger      = debugLogger('testcafe:tested-app:stdout');
+        this.stderrLogger      = debugLogger('testcafe:tested-app:stderr');
     }
 
     public async start (command: string, initDelay: number): Promise<void> {
@@ -46,7 +51,10 @@ export default class TestedApp {
 
             env[ENV_PATH_KEY] = pathParts.join(pathDelimiter);
 
-            this._process = exec(command, { env }, err => {
+            this._process = exec(command, { env }, (err, stdout, stderr) => {
+                this.stdoutLogger(stdout);
+                this.stderrLogger(stderr);
+
                 if (!this._killed && err) {
                     const message = err.stack || String(err);
 
