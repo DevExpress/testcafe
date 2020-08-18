@@ -135,7 +135,7 @@ Client functions need access to the [test controller](../../reference/test-api/t
 However, if you need to call a client function from a Node.js callback that fires during a test run,
 you need to manually bind this function to the test controller.
 
-You can use the [`boundTestRun`](../../reference/test-api/clientfunction/constructor.md#optionsboundtestrun) option to do this.
+You can use the [boundTestRun](../../reference/test-api/clientfunction/constructor.md#optionsboundtestrun) option to do this.
 
 ```js
 import fs from 'fs';

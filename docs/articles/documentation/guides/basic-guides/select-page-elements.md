@@ -192,7 +192,7 @@ This sample page includes three buttons. When clicked, the button text changes. 
 
 If a selector matches multiple elements, the first matching element is used for [actions] or when retrieving [DOM Node Snapshots](../../reference/test-api/domnodestate.md). Use [`.nth`](../../reference/test-api/selector/nth.md) method to enumerate through other matching elements.
 
-You can retrieve the number of matched elements with a [`selector.count`](../../reference/test-api/selector/count.md) property.
+You can retrieve the number of matched elements with a [selector.count](../../reference/test-api/selector/count.md) property.
 
 ## Member Tables
 
@@ -573,7 +573,7 @@ Selectors need access to the [test controller](../../reference/test-api/testcont
 
 However, if you need to call a selector from a Node.js callback that fires during the test run, you have to bind it to the test controller.
 
-Use the [`boundTestRun`](../../reference/test-api/selector/with.md#optionsboundtestrun) option for this.
+Use the [boundTestRun](../../reference/test-api/selector/with.md#optionsboundtestrun) option for this.
 
 ```js
 import { http } from 'http';
@@ -923,7 +923,7 @@ test('My test', async t => {
 
 ### Select Elements That Contain Special Characters
 
-If your page contains special HTML characters, also known as [HTML entities](https://www.w3schools.com/html/html_entities.asp) (like `&nbsp;`, newline chars), use their [unicode counterparts](https://www.rapidtables.com/code/text/unicode-characters.md) in [`Selector.WithText`](../../reference/test-api/selector/withtext.md) and [`Selector.WithExactText`](../../reference/test-api/selector/withexacttext.md).
+If your page contains special HTML characters, also known as [HTML entities](https://www.w3schools.com/html/html_entities.asp) (like `&nbsp;`, newline chars), use their [unicode counterparts](https://www.rapidtables.com/code/text/unicode-characters.md) in [Selector.WithText](../../reference/test-api/selector/withtext.md) and [Selector.WithExactText](../../reference/test-api/selector/withexacttext.md).
 
 **Example**
 
