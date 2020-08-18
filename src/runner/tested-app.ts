@@ -1,6 +1,7 @@
-import { ChildProcess, spawn } from 'child_process';
+import { ChildProcess } from 'child_process';
 import { delimiter as pathDelimiter } from 'path';
-import promisifyEvent from 'promisify-event';
+import { command as spawnCommand } from 'execa';
+import { noop } from 'lodash';
 import kill from 'tree-kill';
 import OS from 'os-family';
 import delay from '../utils/delay';
@@ -29,17 +30,19 @@ const ENV_PATH_KEY = (function () {
 
 export default class TestedApp {
     private _killed: boolean;
-    public errorPromise: null | Promise<void>;
     private _process: null | ChildProcess;
-    private stdoutLogger: debug.Debugger;
-    private stderrLogger: debug.Debugger;
+    private _stdoutLogger: debug.Debugger;
+    private _stderrLogger: debug.Debugger;
+
+    public errorPromise: null | Promise<void>;
 
     public constructor () {
         this._process          = null;
-        this.errorPromise      = null;
         this._killed           = false;
-        this.stdoutLogger      = debugLogger('testcafe:tested-app:stdout');
-        this.stderrLogger      = debugLogger('testcafe:tested-app:stderr');
+        this._stdoutLogger     = debugLogger('testcafe:tested-app:stdout');
+        this._stderrLogger     = debugLogger('testcafe:tested-app:stderr');
+
+        this.errorPromise      = null;
     }
 
     private async _run (command: string): Promise<void> {
@@ -51,13 +54,13 @@ export default class TestedApp {
 
         env[ENV_PATH_KEY] = pathParts.join(pathDelimiter);
 
-        this._process = spawn(command, { shell: true, env });
+        this._process = spawnCommand(command, { shell: true, env });
 
-        this._process.stdout.on('data', data => this.stdoutLogger(String(data)));
-        this._process.stderr.on('data', data => this.stderrLogger(String(data)));
+        this._process.stdout.on('data', data => this._stdoutLogger(String(data)));
+        this._process.stderr.on('data', data => this._stderrLogger(String(data)));
 
         try {
-            await promisifyEvent(this._process, 'error');
+            await this._process;
         }
         catch (err) {
             if (this._killed)
@@ -70,9 +73,14 @@ export default class TestedApp {
     }
 
     public async start (command: string, initDelay: number): Promise<void> {
+        // NOTE: We should not resolve it if no error was thrown
+        this.errorPromise = this
+            ._run(command)
+            .then(() => new Promise(noop));
+
         await Promise.race([
             delay(initDelay),
-            this._run(command)
+            this.errorPromise
         ]);
     }
 
