@@ -118,6 +118,7 @@ export default class Runner extends EventEmitter {
         }
 
         const browserSetErrorPromise = promisifyEvent(browserSet, 'error');
+        const taskErrorPromise       = promisifyEvent(task, 'error');
         const streamController       = new ReporterStreamController(task, reporters);
 
         const taskDonePromise = task.once('done')
@@ -128,7 +129,8 @@ export default class Runner extends EventEmitter {
 
         const promises = [
             taskDonePromise,
-            browserSetErrorPromise
+            browserSetErrorPromise,
+            taskErrorPromise
         ];
 
         if (testedApp)
@@ -169,6 +171,8 @@ export default class Runner extends EventEmitter {
         }
 
         task.on('done', stopHandlingTestErrors);
+
+        task.on('error', stopHandlingTestErrors);
 
         const onTaskCompleted = () => {
             task.unRegisterClientScriptRouting();

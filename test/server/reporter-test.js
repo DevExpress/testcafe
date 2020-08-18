@@ -1,9 +1,14 @@
-const { expect }                      = require('chai');
+const chai                            = require('chai');
+const { expect }                      = chai;
 const { chunk, random, noop, sortBy } = require('lodash');
 const Reporter                        = require('../../lib/reporter');
+const ReporterPluginMethod            = require('../../lib/reporter/plugin-methods');
 const Task                            = require('../../lib/runner/task');
 const Videos                          = require('../../lib/video-recorder/videos');
 const delay                           = require('../../lib/utils/delay');
+const { ReporterPluginError }         = require('../../lib/errors/runtime');
+
+chai.use(require('chai-string'));
 
 describe('Reporter', () => {
     // Runnable configuration mocks
@@ -1213,5 +1218,34 @@ describe('Reporter', () => {
                     ]]
                 );
             });
+    });
+
+    it('Should dispatch uncaught exception from any plugin method to Task `error` event', async () => {
+        function createBrokenReporter (task) {
+            const reporterObject = {};
+
+            for (const method of Object.values(ReporterPluginMethod)) {
+                reporterObject[method] = () => {
+                    throw new Error(`oops`);
+                };
+            }
+
+            return new Reporter(reporterObject, task, null, 'customReporter');
+        }
+
+        const taskMock = new TaskMock();
+
+        taskMock.on('error', e => log.push(e));
+
+        const reporter = createBrokenReporter(taskMock);
+
+        for (const method of Object.values(ReporterPluginMethod)) {
+            await reporter.dispatchToPlugin({ method });
+
+            const lastErr = log.pop();
+
+            expect(lastErr).instanceOf(ReporterPluginError);
+            expect(lastErr.message).startsWith(`An uncaught error occurred in the "customReporter" reporter's "${method}" method. Error details:\nError: oops`);
+        }
     });
 });

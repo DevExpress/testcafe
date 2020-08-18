@@ -31,7 +31,7 @@ export default class Task extends AsyncEventEmitter {
     public readonly videos?: Videos;
 
     public constructor (tests: Test[], browserConnectionGroups: BrowserConnection[][], proxy: Proxy, opts: Dictionary<OptionValue>) {
-        super();
+        super({ captureRejections: true });
 
         this._timeStamp              = moment();
         this._running                = false;

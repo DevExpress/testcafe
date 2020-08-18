@@ -1,6 +1,7 @@
-const expect           = require('chai').expect;
-const fs               = require('fs');
-const generateReporter = require('./reporter');
+const expect               = require('chai').expect;
+const fs                   = require('fs');
+const generateReporter     = require('./reporter');
+const ReporterPluginMethod = require('../../../../lib/reporter/plugin-methods');
 
 const {
     createSimpleTestStream,
@@ -707,5 +708,40 @@ describe('Reporter', () => {
                     expect(testDoneErrors[0].screenshotPath).eql(testDoneErrors[1].screenshotPath);
                 });
         });
+    });
+
+    it('Should raise an error when uncaught exception occured in any reporter method', async () => {
+        function createReporterWithBrokenMethod (method) {
+            const base = {
+                async reportTaskStart () {},
+                async reportFixtureStart () {},
+                async reportTestDone () {},
+                async reportTaskDone () {}
+            };
+
+            base[method] = () => {
+                throw new Error('oops');
+            };
+
+            return () => base;
+        }
+
+        for (const method of Object.values(ReporterPluginMethod)) {
+            try {
+                await runTests(
+                    'testcafe-fixtures/index-test.js',
+                    'Simple test',
+                    {
+                        reporter:   createReporterWithBrokenMethod(method),
+                        shouldFail: true
+                    }
+                );
+
+                throw new Error('Promise rejection expected');
+            }
+            catch (err) {
+                expect(err.message).startsWith(`An uncaught error occurred in the "function () {}" reporter's "${method}" method. Error details:\nError: oops`);
+            }
+        }
     });
 });
