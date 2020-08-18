@@ -113,6 +113,9 @@ function addSnapshotProperties (obj, getSelector, SelectorBuilder, properties, o
             get: () => {
                 const callsite = getCallsiteForMethod('get');
 
+                if (observedCallsites)
+                    observedCallsites.unawaitedSnapshotCallsites.add(callsite);
+
                 const propertyPromise = ReExecutablePromise.fromFn(async () => {
                     const snapshot = await getSnapshot(getSelector, callsite, SelectorBuilder);
 
@@ -120,8 +123,10 @@ function addSnapshotProperties (obj, getSelector, SelectorBuilder, properties, o
                 });
 
                 propertyPromise.then = function (onFulfilled, onRejected) {
-                    if (observedCallsites)
+                    if (observedCallsites) {
                         observedCallsites.snapshotPropertyCallsites.add(callsite);
+                        observedCallsites.unawaitedSnapshotCallsites.delete(callsite);
+                    }
 
                     this._ensureExecuting();
 

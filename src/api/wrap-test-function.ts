@@ -3,12 +3,28 @@ import testRunTracker from './test-run-tracker';
 import { TestRun } from './test-run-tracker.d';
 import TestCafeErrorList from '../errors/error-list';
 import { MissingAwaitError } from '../errors/test-run';
+import addRenderedWarning from '../notifications/add-rendered-warning';
+import WARNING_MESSAGES from '../notifications/warning-message';
 
 export default function wrapTestFunction (fn: Function): Function {
     return async (testRun: TestRun) => {
         let result       = null;
         const errList    = new TestCafeErrorList();
         const markeredfn = testRunTracker.addTrackingMarkerToFunction(testRun.id, fn);
+
+        function addWarnings (callsiteSet: Set<Record<string, any>>, message: string): void {
+            callsiteSet.forEach(callsite => {
+                addRenderedWarning(testRun.warningLog, message, callsite);
+                callsiteSet.delete(callsite);
+            });
+        }
+
+        function addErrors (callsiteSet: Set<Record<string, any>>, ErrorClass: any): void {
+            callsiteSet.forEach(callsite => {
+                errList.addError(new ErrorClass(callsite));
+                callsiteSet.delete(callsite);
+            });
+        }
 
         testRun.controller = new TestController(testRun);
 
@@ -24,10 +40,8 @@ export default function wrapTestFunction (fn: Function): Function {
         }
 
         if (!errList.hasUncaughtErrorsInTestCode) {
-            for (const callsite of testRun.observedCallsites.callsitesWithoutAwait) {
-                errList.addError(new MissingAwaitError(callsite));
-                testRun.observedCallsites.callsitesWithoutAwait.delete(callsite);
-            }
+            addWarnings(testRun.observedCallsites.unawaitedSnapshotCallsites, WARNING_MESSAGES.missingAwaitOnSnapshotProperty);
+            addErrors(testRun.observedCallsites.callsitesWithoutAwait, MissingAwaitError);
         }
 
         if (errList.hasErrors)
