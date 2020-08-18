@@ -42,7 +42,7 @@ export default class TestedApp {
         this.stderrLogger      = debugLogger('testcafe:tested-app:stderr');
     }
 
-    async _run (command: string):Promise<void> {
+    private async _run (command: string): Promise<void> {
         const env       = Object.assign({}, process.env);
         const path      = env[ENV_PATH_KEY] || '';
         const pathParts = path.split(pathDelimiter);
