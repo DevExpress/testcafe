@@ -1,5 +1,6 @@
-import { ChildProcess, exec } from 'child_process';
+import { ChildProcess, spawn } from 'child_process';
 import { delimiter as pathDelimiter } from 'path';
+import promisifyEvent from 'promisify-event';
 import kill from 'tree-kill';
 import OS from 'os-family';
 import delay from '../utils/delay';
@@ -41,31 +42,37 @@ export default class TestedApp {
         this.stderrLogger      = debugLogger('testcafe:tested-app:stderr');
     }
 
+    async _run (command: string):Promise<void> {
+        const env       = Object.assign({}, process.env);
+        const path      = env[ENV_PATH_KEY] || '';
+        const pathParts = path.split(pathDelimiter);
+
+        pathParts.unshift(MODULES_BIN_DIR);
+
+        env[ENV_PATH_KEY] = pathParts.join(pathDelimiter);
+
+        this._process = spawn(command, { shell: true, env });
+
+        this._process.stdout.on('data', data => this.stdoutLogger(String(data)));
+        this._process.stderr.on('data', data => this.stderrLogger(String(data)));
+
+        try {
+            await promisifyEvent(this._process, 'error');
+        }
+        catch (err) {
+            if (this._killed)
+                return;
+
+            const message = err.stack || String(err);
+
+            throw new GeneralError(RUNTIME_ERRORS.testedAppFailedWithError, message);
+        }
+    }
+
     public async start (command: string, initDelay: number): Promise<void> {
-        this.errorPromise = new Promise((resolve, reject) => {
-            const env       = Object.assign({}, process.env);
-            const path      = env[ENV_PATH_KEY] || '';
-            const pathParts = path.split(pathDelimiter);
-
-            pathParts.unshift(MODULES_BIN_DIR);
-
-            env[ENV_PATH_KEY] = pathParts.join(pathDelimiter);
-
-            this._process = exec(command, { env }, (err, stdout, stderr) => {
-                this.stdoutLogger(stdout);
-                this.stderrLogger(stderr);
-
-                if (!this._killed && err) {
-                    const message = err.stack || String(err);
-
-                    reject(new GeneralError(RUNTIME_ERRORS.testedAppFailedWithError, message));
-                }
-            });
-        });
-
         await Promise.race([
             delay(initDelay),
-            this.errorPromise
+            this._run(command)
         ]);
     }
 
