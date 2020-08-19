@@ -444,7 +444,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1595970000 * 1000);
+        var lastPostDate = new Date(1597784400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -2218,6 +2218,9 @@
 <p>For portable browsers, use the browser alias followed by the path to an executable:</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="dl">'</span><span class="s1">firefox:/home/user/apps/firefox.app:userProfile</span><span class="dl">'</span><span class="p">);</span>
 </code></pre></div><blockquote><div class="blockquote-content"><p>The <code>path:</code> prefix does not support postfixes.</p>
+</div></blockquote>
+<!-- -->
+<blockquote><div class="blockquote-content"><p>Combining <code>:userProfile</code> flag with either <code>headless</code> or <code>emulation</code> mode can lead to unstable behaviour and is not recommended.</p>
 </div></blockquote><h2><a class="anchor" id="pass-a-remote-browser-connection"></a>Pass a Remote Browser Connection <a class="permalink" href="#pass-a-remote-browser-connection">#</a></h2><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">createTestCafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">);</span>
 
 <span class="kd">const</span> <span class="nx">testcafe</span>         <span class="o">=</span> <span class="k">await</span> <span class="nx">createTestCafe</span><span class="p">(</span><span class="dl">'</span><span class="s1">localhost</span><span class="dl">'</span><span class="p">,</span> <span class="mi">1337</span><span class="p">,</span> <span class="mi">1338</span><span class="p">);</span>

@@ -444,7 +444,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1595970000 * 1000);
+        var lastPostDate = new Date(1597784400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -1167,14 +1167,24 @@ you need to manually bind this function to the test controller.</p>
 <p>This approach only works for Node.js callbacks that fire during a test run. To ensure that the test function
 does not finish before the callback, suspend the test until the callback fires. You can introduce a promise and synchronously wait for it to complete, as shown in the example above.</p>
 <h2><a class="anchor" id="client-function-limitations"></a>Client Function Limitations <a class="permalink" href="#client-function-limitations">#</a></h2>
+<p>Client function code does not support the following syntax and capabilities:</p>
+
 <ul>
-<li><p>You cannot use generators or <code>async/await</code> syntax within client functions.</p></li>
-<li><p>Client functions cannot access variables defined in the outer scope.</p></li>
+<li><p>Generators or <code>async/await</code> syntax;</p></li>
+<li><p>Access to variables defined in outer scope;</p></li>
 </ul>
 <blockquote><div class="blockquote-content"><p>You can use arguments to pass data within these functions, except for self-invoking functions that do not accept outside parameters.</p>
 
 <p>The return value is the only way to obtain data from client functions.</p>
-</div></blockquote><h2><a class="anchor" id="access-console-messages"></a>Access Console Messages <a class="permalink" href="#access-console-messages">#</a></h2>
+</div></blockquote>
+<ul>
+<li><p>Iterable destructuring (e.g., <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax"><code>spread</code></a>, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Rest_parameters"><code>rest</code></a> operators) on non-array objects (e.g. <code>NodeList</code>, <code>HTMLCollection</code>);</p></li>
+<li><p><a href="http://es6-features.org/#PropertyShorthand">Property shorthands</a> in the <code>dependencies</code> option;</p></li>
+<li><p>Array methods <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from"><code>Array.from()</code></a>, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/of"><code>Array.of()</code></a>;</p></li>
+<li><p>Keyed collections: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map"><code>Map</code></a>, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set"><code>Set</code></a>, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap"><code>WeakMap</code></a>, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet"><code>WeakSet</code></a>;</p></li>
+<li><p>Property shorthand for imported values.</p></li>
+</ul>
+<h2><a class="anchor" id="access-console-messages"></a>Access Console Messages <a class="permalink" href="#access-console-messages">#</a></h2>
 <p>The tested web application or a framework it uses may output log, warning, error and information messages into the browser console. TestCafe allows you to access them from test code with the <a href="../../reference/test-api/testcontroller/getbrowserconsolemessages.html">t.getBrowserConsoleMessages</a> method.</p>
 
 <p>For instance, consider the React&#39;s typechecking feature, <a href="https://reactjs.org/docs/typechecking-with-proptypes.html">PropTypes</a>. You can use it to check that you assign valid values to the component&#39;s props. If a <code>PropTypes</code> rule is violated, React posts an error into the JavaScript console.</p>

@@ -444,7 +444,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1595970000 * 1000);
+        var lastPostDate = new Date(1597784400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -2245,7 +2245,11 @@
 <blockquote class="important"><div class="blockquote-content"><p>Make sure to keep the browser tab that is running tests active. Do not minimize the browser window.
 Inactive tabs and minimized browser windows switch to a lower resource consumption mode
 where tests do not always execute correctly.</p>
+
+<p>Do not zoom pages while testing. Tests may be unstable if the page is zoomed in or out.</p>
 </div></blockquote>
+<p>During a test, TestCafe suppresses native dialogs, so they don&#39;t block the page. Learn how to handle native dialogs <a href="../../documentation/guides/basic-guides/interact-with-the-page.html#handle-native-dialogs">here</a>.</p>
+
 <p>If a browser stops responding while it executes tests, TestCafe restarts the browser and reruns the current test in a new browser instance.
 If the same problem occurs with this test two more times, the test run finishes and an error is thrown.</p>
 <h2><a class="anchor" id="browser-list"></a>Browser List <a class="permalink" href="#browser-list">#</a></h2>

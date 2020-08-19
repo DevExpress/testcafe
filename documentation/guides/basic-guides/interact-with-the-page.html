@@ -444,7 +444,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1595970000 * 1000);
+        var lastPostDate = new Date(1597784400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -1072,7 +1072,10 @@
 <p>They are implemented as methods in the <a href="../../reference/test-api/testcontroller/">test controller</a> object. You can call them in a chained fashion.</p>
 
 <p>The available actions with reproducible usage examples and links to their descriptions are listed below.</p>
-<h2><a class="anchor" id="click"></a>Click <a class="permalink" href="#click">#</a></h2>
+<blockquote><div class="blockquote-content"><p>TestCafe is intended to emulate real user behavior, so you cannot interact with elements, that are not <a href="../../reference/test-api/selector/filtervisible.html">visible</a> at that moment.</p>
+
+<p>For instance, you can not type into an <code>input</code> element with the <code>display: none</code> style.</p>
+</div></blockquote><h2><a class="anchor" id="click"></a>Click <a class="permalink" href="#click">#</a></h2>
 <p>Click actions allow you to click an element on a page.</p>
 
 <ul>

@@ -444,7 +444,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1595970000 * 1000);
+        var lastPostDate = new Date(1597784400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -1082,7 +1082,8 @@
 <blockquote><div class="blockquote-content"><p>Roles can access authentication data in cookie and browser storage. If your authentication system stores data elsewhere, you may not be able to use roles.</p>
 </div></blockquote><h3><a class="anchor" id="create-and-apply-roles"></a>Create and Apply Roles <a class="permalink" href="#create-and-apply-roles">#</a></h3>
 <p>Use the <a href="../../reference/test-api/role/constructor.html">Role</a> constructor to create and initialize a role. Pass the login page URL and sign-in <a href="../basic-guides/interact-with-the-page.html">actions</a> to <code>Role</code>.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Role</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
+<blockquote class="important"><div class="blockquote-content"><p>Relative URLs in <code>Role</code> are not supported. Use absolute URLs when you define roles.</p>
+</div></blockquote><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Role</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="kd">const</span> <span class="nx">regularAccUser</span> <span class="o">=</span> <span class="nx">Role</span><span class="p">(</span><span class="dl">'</span><span class="s1">http://example.com/login</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="k">await</span> <span class="nx">t</span>

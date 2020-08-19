@@ -444,7 +444,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1595970000 * 1000);
+        var lastPostDate = new Date(1597784400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -2182,7 +2182,7 @@
 </thead><tbody><tr>
 <td><code>windowDescriptor</code></td>
 <td>Object</td>
-<td>Object that describes an open browser window.</td>
+<td>Descriptor object obtained from an open browser window.</td>
 </tr>
 </tbody></table></div>
 <p><strong>Example:</strong></p>

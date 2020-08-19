@@ -444,7 +444,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1595970000 * 1000);
+        var lastPostDate = new Date(1597784400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -2202,6 +2202,8 @@
 <p>The <code>dependencies</code> option contains functions, variables, or objects used by the client function internally.
 Properties of the <code>dependencies</code> object are added to the client function&#39;s scope as variables.</p>
 
+<p>Dependencies passed to <code>ClientFunction</code> must be <a href="https://devexpress.github.io/testcafe/documentation/reference/test-api/selector/">Selectors</a>, <a href="https://devexpress.github.io/testcafe/documentation/reference/test-api/clientfunction/">ClientFunctions</a> or a serializable object.</p>
+
 <p>The following code sample demonstrates a client function (<code>getArticleHeaderHTML</code>) that
 calls a <a href="/testcafe/documentation/reference/test-api/selector/">selector</a> (<code>articleHeader</code>) internally.
 TestCafe passes this selector to <code>getArticleHeaderHTML</code> as a dependency.</p>
@@ -2214,8 +2216,14 @@ TestCafe passes this selector to <code>getArticleHeaderHTML</code> as a dependen
 <span class="p">});</span>
 </code></pre></div><blockquote><div class="blockquote-content"><p>When a client function calls a <a href="/testcafe/documentation/reference/test-api/selector/">selector</a> internally,
 the selector does not wait for the element to appear in the DOM
-and is executed at once, like a client function.</p>
-</div></blockquote><h3><a class="anchor" id="optionsboundtestrun"></a>options.boundTestRun <a class="permalink" href="#optionsboundtestrun">#</a></h3>
+and is executed at once, like a client function.  </p>
+</div></blockquote>
+<p>When dependencies are passed to a client function, <a href="https://www.typescriptlang.org/">TypeScript</a> cannot find them during compilation. This happens because dependencies are added to the function&#39;s scope at runtime and can cause an error:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">Error: TypeScript compilation failed.
+Cannot find name <span class="s1">'dependencyFoo'</span><span class="nb">.</span>
+</code></pre></div>
+<p>Add the <a href="https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-6.html#suppress-errors-in-ts-files-using--ts-ignore-comments"><code>// @ts-ignore</code></a> TypeScript comment to suppress this error.</p>
+<h3><a class="anchor" id="optionsboundtestrun"></a>options.boundTestRun <a class="permalink" href="#optionsboundtestrun">#</a></h3>
 <p><strong>Type</strong>: Object</p>
 
 <p>Use the <code>boundTestRun</code> option to call a client function from a Node.js callback.

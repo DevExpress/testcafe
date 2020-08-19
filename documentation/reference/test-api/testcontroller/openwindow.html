@@ -444,7 +444,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1595970000 * 1000);
+        var lastPostDate = new Date(1597784400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -2170,7 +2170,7 @@
 		<div class="post-content">
 
 			<h1>t.openWindow method</h1>
-<p>Opens a new browser window. Returns the matching window descriptor.</p>
+<p>Opens a new browser window. Returns the matching window descriptor and can be chained with other TestController methods.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">t</span><span class="p">.</span><span class="nx">openWindow</span><span class="p">(</span> <span class="nx">url</span> <span class="p">)</span> <span class="err">→</span> <span class="nb">Object</span>
 </code></pre></div><div class="table-wrapper"><table><thead><tr>
 <th>Parameter</th>
@@ -2180,7 +2180,7 @@
 </thead><tbody><tr>
 <td>url</td>
 <td>String</td>
-<td>The URL to open. Can be local or remote, absolute or relative.</td>
+<td>The URL to open. Can be absolute or relative.</td>
 </tr>
 </tbody></table></div>
 <p><strong>Example:</strong></p>
@@ -2193,8 +2193,6 @@
     <span class="k">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">openWindow</span><span class="p">(</span><span class="dl">'</span><span class="s1">http://devexpress.github.io/testcafe</span><span class="dl">'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">openWindow</span><span class="p">(</span><span class="dl">'</span><span class="s1">./documentation</span><span class="dl">'</span><span class="p">);</span>
-
-    <span class="kd">const</span> <span class="nx">localWebsite</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">openWindow</span><span class="p">(</span><span class="dl">'</span><span class="s1">file://path/to/my/website</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
 
