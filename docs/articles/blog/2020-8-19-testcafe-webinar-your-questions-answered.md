@@ -11,13 +11,18 @@ We recently hosted a webinar on TestCafe and found the response overwhelming. Du
 
 <!--more-->
 
+## Watch the Webinar
+
+<!-- markdownlint-disable MD033 -->
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/kwV_HCE7neM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<!-- markdownlint-enable MD033 -->
+
 ## Webinar Resources
 
 **Does the book (*End-to-End Testing with TestCafe* by Dennis Martinez) go over the examples from the Webinar?**  
 This webinar is based on the book, so you will certainly find details about the examples we showed.
-
-**Where can I watch the webinar recording?**  
-We published the video at [our YouTube channel](https://www.youtube.com/user/DeveloperExpress) and at the [Webinars page](https://www.devexpress.com/support/webinars/).
 
 **Is the webinar available in other languages?**  
 We currently hold online events in English only.
