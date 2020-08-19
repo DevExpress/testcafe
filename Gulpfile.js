@@ -19,7 +19,7 @@ const { promisify }           = require('util');
 const globby                  = require('globby');
 const open                    = require('open');
 const connect                 = require('connect');
-const { command: spawn }      = require('execa');
+const execa                   = require('execa');
 const serveStatic             = require('serve-static');
 const markdownlint            = require('markdownlint');
 const minimist                = require('minimist');
@@ -635,7 +635,7 @@ function buildWebsite (mode, cb) {
 
     const options = { shell: true, stdio: 'inherit', env: spawnEnv };
 
-    spawn('jekyll', ['build', '--source', 'site/src/', '--destination', 'site/deploy'], options)
+    execa('jekyll', ['build', '--source', 'site/src/', '--destination', 'site/deploy'], options)
         .on('exit', cb);
 }
 
