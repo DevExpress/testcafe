@@ -15,9 +15,9 @@ redirect_from:
   - /documentation/test-api/handling-native-dialogs.html
   - /documentation/test-api/working-with-iframes.html
 ---
-# Interact With The Page
+# Interact With the Page
 
-Test API provides a set of **actions** you can use to interact with the page.
+Test API includes a set of **actions** you can use to interact with the page.
 
 * [Click](#click)
 * [Press Key](#press-key)
@@ -33,9 +33,9 @@ Test API provides a set of **actions** you can use to interact with the page.
 * [Resize Window](#resize-window)
 * [Wait](#wait)
 
-They are implemented as methods in the [test controller](../../reference/test-api/testcontroller/README.md) object. You can call them in a chained fashion.
+[Test controller](../../reference/test-api/testcontroller/README.md) object includes them as its methods. You can call them in a chained fashion.
 
-The available actions with reproducible usage examples and links to their descriptions are listed below.
+Below you can find the list of available actions with reproducible examples and links to their descriptions.
 
 ## Click
 
@@ -194,7 +194,7 @@ Actions that allow you to interact with file upload input elements.
 * [Populate File Upload Input](../../reference/test-api/testcontroller/setfilestoupload.md)
 * [Clear File Upload Input](../../reference/test-api/testcontroller/clearupload.md)
 
-> The file upload actions only allow you to manage the list of files you want to upload. These files are uploaded to the server after you initiate upload, for example, when you [click](../../reference/test-api/testcontroller/click.md) the **Upload** or **Submit** button on a page.
+> The file upload actions allow you to manage the list of files you want to upload. The server receives files after you begin upload, for example, when you [click](../../reference/test-api/testcontroller/click.md) the **Upload** or **Submit** button on a page.
 
 **Example**
 
@@ -236,14 +236,11 @@ test('Take Screenshot test', async t => {
 });
 ```
 
-## Work with iframes
+## Work With Iframes
 
 A TestCafe test's [browsing context](https://html.spec.whatwg.org/multipage/browsers.html#windows) is limited to the main window or an `<iframe>`. To use an `<iframe>` in your test,
-switch the context from the main window to this `<iframe>`.
-If several `<iframes>` are used in your test, you need to switch between them.
-limited to either the main window or an `<iframe>`. To use an `<iframe>` in your test,
-you need to switch the context from the main window to this `<iframe>` (and then probably back).
-Likewise, if several `<iframes>` are involved in your test, you will have to switch between them.
+switch the context from the main window to this `<iframe>` (and then probably back).
+If multiple `<iframes>` are present in your test, you should switch between them.
 
 Use the following methods to switch between windows and iframes:
 
@@ -268,12 +265,12 @@ test('Working With iframe test', async t => {
 
 ## Handle Native Dialogs
 
-TestCafe allows you to handle native browser dialogs that are invoked during the test run.
+TestCafe allows you to handle native dialogs that the browser may display during the test run.
 
 You can close [alert](https://developer.mozilla.org/en-US/docs/Web/API/Window/alert) and
 [beforeunload](https://developer.mozilla.org/en-US/docs/Web/Events/beforeunload) dialogs,
 choose an option in [confirm](https://developer.mozilla.org/en-US/docs/Web/API/Window/confirm) dialogs
-or provide text for [prompt](https://developer.mozilla.org/en-US/docs/Web/API/Window/prompt) dialogs.
+or hand over text for [prompt](https://developer.mozilla.org/en-US/docs/Web/API/Window/prompt) dialogs.
 
 * [Set Native Dialog Handler](../../reference/test-api/testcontroller/setnativedialoghandler.md)
 * [Get Native Dialog History](../../reference/test-api/testcontroller/getnativedialoghistory.md)
@@ -330,7 +327,7 @@ On touch devices, TestCafe emulates touch events instead of mouse events.
 
 Mouse event | Touch event
 ----------- | -------------
-`mousemove` (when hovering or dragging) | `touchmove` (dragging only)
+`mousemove` (when hovering or dragging) | `touchmove` (when dragging)
 `mousedown` | `touchstart`
 `mouseup`   | `touchend`
 
@@ -338,27 +335,27 @@ Mouse event | Touch event
 
 TestCafe actions can interact with elements if they satisfy the following conditions:
 
-* an element has to be within the page [`body`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/body) or in an [`<iframe>`](#work-with-iframes).  
+* an element has to be within the page's [`body`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/body) or in an [`<iframe>`](#work-with-iframes). The element may be outside of a browser window- as long as TestCafe can reach it by scrolling.
 
-* an element has to be visible - its properties should be set as follows:
+* an element has to be visible - its properties should be as follows:
 
     Property | Value
     -------- | --------
     `display`  | *not* set to `none`
-    `visibility` | set to `visible` `hidden`, `collapse`
-    `width`    | auto-calculated as or set to > `0`
-    `height`   | auto-calculated as or set to > `0`
+    `visibility` | set to `visible` (the default value)
+    `width`    | auto calculated as or set to > `0`
+    `height`   | auto calculated as or set to > `0`
 
 * a targeted part of the element has to be visible.  
 
-    TestCafe actions target a center of an element, or a point specified by the `offsetX` and `offsetY` options of an action. If the target point is obstructed with another element, the action will still execute. In case of [`.click`](../../reference/test-api/testcontroller/click.md), for example, the overlapping element will be clicked instead of a targeted one.
+    TestCafe actions target a center of an element, or a point specified by the `offsetX` and `offsetY` options of an action. If another element obstructs the target point, the action still executes. The [.click](../../reference/test-api/testcontroller/click.md) action, for example, affects an overlapping element instead of a targeted one.
 
 ### Example: Scroll an Element into View
 
-There is no designated scroll action. TestCafe automatically scrolls to reach items, that are not currently on-screen.
+TestCafe scrolls to reach items, that are on the page but not on-screen, Therefore, there is no designated scroll action.
 
-You can use any action (for example, [`hover`](#hover)) to scroll towards the desired part of the page.  
-If you need to scroll the page without any action, you can use a [ClientFunction](obtain-client-side-info.md).
+You can use any action (for example, [hover](#hover)) to scroll towards the desired part of the page.  
+To scroll the page without any action, you can use a [ClientFunction](obtain-client-side-info.md).
 
 ```js
 import { ClientFunction } from 'testcafe';
