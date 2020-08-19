@@ -784,7 +784,7 @@ The `paragraph` selector obtains [shadowRoot](https://developer.mozilla.org/en-U
 Generally speaking, introducing conditions in tests is not considered good practice because it indicates that your tests are non-deterministic.
 The tested website should guarantee that the test writer knows the page state at any moment. In this case, you need no conditions in test code.
 
-However, in practice, things are a bit different. Some websites contain elements that may be invisible or non-existent at times.
+However, in practice, things are a bit different. Websites may contain elements that are invisible or non-existent at times.
 In this instance, it may be a good idea to check the element availability before taking actions on it.
 
 ```js
@@ -826,7 +826,7 @@ test('My test', async t => {
 
 ### Select Elements With Dynamic IDs
 
-TestCafe selectors should use element identifiers that persist between test runs. However, most JavaScript frameworks generate dynamic IDs for page elements. To identify elements whose `id` attribute changes, use selectors based on the element's class, content, tag name, or position:
+TestCafe selectors should use element identifiers that persist between test runs. However, JavaScript frameworks may generate dynamic IDs for page elements. To identify elements whose `id` attribute changes, use selectors based on the element's class, content, tag name, or position:
 
 * [withText](../../reference/test-api/selector/withtext.md),
 * [withExactText](../../reference/test-api/selector/withexacttext.md),

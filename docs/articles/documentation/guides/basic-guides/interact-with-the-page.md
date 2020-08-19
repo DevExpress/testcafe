@@ -335,9 +335,9 @@ Mouse event | Touch event
 
 TestCafe actions can interact with elements if they satisfy the following conditions:
 
-* an element has to be within the page's [`body`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/body) or in an [`<iframe>`](#work-with-iframes). The element may be outside of a browser window- as long as TestCafe can reach it by scrolling.
+* an element is within the page's [`body`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/body) or in an [`<iframe>`](#work-with-iframes). The element can be outside of a browser window as long as TestCafe can scroll to reach it.
 
-* an element has to be visible - its properties should be as follows:
+* an element is visible - its properties are as follows:
 
     Property | Value
     -------- | --------
@@ -348,11 +348,11 @@ TestCafe actions can interact with elements if they satisfy the following condit
 
 * a targeted part of the element has to be visible.  
 
-    TestCafe actions target a center of an element, or a point specified by the `offsetX` and `offsetY` options of an action. If another element obstructs the target point, the action still executes. The [.click](../../reference/test-api/testcontroller/click.md) action, for example, affects an overlapping element instead of a targeted one.
+    TestCafe actions target a center of an element, or a point specified by the `offsetX` and `offsetY` options of an action. If another element obstructs the target point, the action is executed with the overlapping element (for instance, the [t.click](../../reference/test-api/testcontroller/click.md) action clicks an overlapping block).
 
 ### Example: Scroll an Element into View
 
-TestCafe scrolls to reach items, that are on the page but not on-screen, Therefore, there is no designated scroll action.
+TestCafe scrolls to reach items that are on the page but not on-screen. Therefore, TestCafe API doesn't have a designated scroll action.
 
 You can use any action (for example, [hover](#hover)) to scroll towards the desired part of the page.  
 To scroll the page without any action, you can use a [ClientFunction](obtain-client-side-info.md).
