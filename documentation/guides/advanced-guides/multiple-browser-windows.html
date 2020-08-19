@@ -444,7 +444,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1595970000 * 1000);
+        var lastPostDate = new Date(1597784400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -1053,23 +1053,27 @@
 			<h1>Multiple Browser Windows</h1>
 <p>The TestCafe API includes methods that open, close, and switch between browser windows. You can test websites with pop-up windows and OAuth login forms, debug complex multi-window applications, or run multiple instances of the same web app side-by-side.</p>
 
-<p>⚠ This is a <strong>beta</strong> feature. Browser support is limited to local instances of Chrome and Firefox. You cannot capture videos or screenshots of child windows. The available functionality is subject to further revisions. Please do not use this feature in production environments.</p>
+<p>⚠ This is a <strong>beta</strong> feature. Browser support is limited to local instances of Chrome and Firefox. You cannot resize child windows. You cannot take screenshots or videos of child windows. The available functionality is subject to further revisions. Please do not use this feature in production environments.</p>
 
-<p>️🛠️ Use the <code>--disable-multiple-windows</code> CLI flag to disable support for multiple browser windows if you encounter compatibility issues with <a href="http://testcafe.devexpress.com/documentation">TestCafe v2015.1</a> tests.</p>
+<p>️🛠️ Use the <code>--disable-multiple-windows</code> CLI flag to disable support for multiple browser windows if you encounter compatibility issues with your tests.</p>
 <h2><a class="anchor" id="handle-client-side-window-events"></a>Handle client-side window events <a class="permalink" href="#handle-client-side-window-events">#</a></h2>
 <p>When your page launches a new window, the test automatically continues in the newly opened window. When that window is closed, the test switches back to its parent.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
-<span class="nx">fixture</span> <span class="s2">`Login page`</span>
-    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://login.wrike.com/login/</span><span class="dl">'</span><span class="p">);</span>
+<span class="nx">fixture</span> <span class="s2">`Microsoft DevBlogs Login page`</span>
+    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://devblogs.microsoft.com/</span><span class="dl">'</span><span class="p">);</span>
 
-<span class="kd">const</span> <span class="nx">googleButton</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">div.login-panel-footer__login-with &gt; button</span><span class="dl">'</span><span class="p">);</span>
-
-<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Login via Google</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="k">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">googleButton</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="dl">'</span><span class="s1">input[type=email]</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">This text will be entered inside the login dialog</span><span class="dl">'</span><span class="p">);</span>
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">automatically change execution context</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+   <span class="k">await</span> <span class="nx">t</span>
+    <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="dl">'</span><span class="s1">.login-but</span><span class="dl">'</span><span class="p">)</span> <span class="c1">// click the login button</span>
+    <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="dl">'</span><span class="s1">.nsl-button-google</span><span class="dl">'</span><span class="p">)</span> <span class="c1">// open Google's OAuth window</span>
+    <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="dl">'</span><span class="s1">#identifierId</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">login@google.com</span><span class="dl">'</span><span class="p">)</span> <span class="c1">// enter the username</span>
+    <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="dl">'</span><span class="s1">#identifierNext</span><span class="dl">'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="dl">'</span><span class="s1">input[type=password]</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">mypassword</span><span class="dl">'</span><span class="p">)</span> <span class="c1">// enter the password</span>
+    <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="dl">'</span><span class="s1">#passwordNext</span><span class="dl">'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">.login-section</span><span class="dl">'</span><span class="p">).</span><span class="nx">textContent</span><span class="p">).</span><span class="nx">contains</span><span class="p">(</span><span class="dl">'</span><span class="s1">Your first name</span><span class="dl">'</span><span class="p">);</span>  <span class="c1">// you're logged in!</span>
 <span class="p">});</span>
+
 </code></pre></div><h2><a class="anchor" id="open-a-new-window"></a>Open a new window <a class="permalink" href="#open-a-new-window">#</a></h2>
 <p>Use the <a href="../../reference/test-api/testcontroller/openwindow.html">t.openWindow</a> method to open a new window:</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span><span class="p">,</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
@@ -1083,13 +1087,13 @@
     <span class="kd">const</span> <span class="nx">url</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nb">eval</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">documentURI</span><span class="p">);</span>
     <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">url</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="dl">'</span><span class="s1">http://example.com/</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div><blockquote><div class="blockquote-content"><p>All browser windows share the client-side storage. Only one <a href="https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/authentication.html#user-roles">user role</a> can be active at a time.</p>
+</code></pre></div><blockquote><div class="blockquote-content"><p>Browser windows share the client-side storage. Only one <a href="https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/authentication.html#user-roles">user role</a> can be active at a time.</p>
 </div></blockquote><h2><a class="anchor" id="obtain-window-descriptors"></a>Obtain window descriptors <a class="permalink" href="#obtain-window-descriptors">#</a></h2>
 <p>Window descriptors are objects that reference individual browser windows. Window descriptors can be used to distinguish between different windows.</p>
 
 <p>The <a href="../../reference/test-api/testcontroller/openwindow.html">t.openWindow</a> method returns a window descriptor for the newly open window.</p>
 
-<p>The <a href="../../reference/test-api/testcontroller/getcurrentwindow.html">t.getCurrentWindow</a> method returns a window descriptor for the active window. Use it to obtain descriptors for windows that open without a <a href="../../reference/test-api/testcontroller/openwindow.html">t.openWindow</a> declaration, for example, the initial browser window.</p>
+<p>The <a href="../../reference/test-api/testcontroller/getcurrentwindow.html">t.getCurrentWindow</a> method returns a window descriptor for the active window. Use it to obtain descriptors for windows that open without a <a href="../../reference/test-api/testcontroller/openwindow.html">t.openWindow</a> call, for example, the initial browser window.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`Example page`</span>
     <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="dl">'</span><span class="s1">http://example.com</span><span class="dl">'</span><span class="p">);</span>
 
@@ -1131,7 +1135,7 @@
     <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">url</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="dl">'</span><span class="s1">http://www.example.com/</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>Use the <a href="../../reference/test-api/testcontroller/switchtopreviouswindow.html">t.switchToPreviousWindow</a> method to access the second to last open window:</p>
+<p>Use the <a href="../../reference/test-api/testcontroller/switchtopreviouswindow.html">t.switchToPreviousWindow</a> method to switch to the previous window:</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Switch back</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="k">await</span> <span class="nx">t</span>
         <span class="p">.</span><span class="nx">openWindow</span><span class="p">(</span><span class="dl">'</span><span class="s1">http://www.example.com</span><span class="dl">'</span><span class="p">)</span>

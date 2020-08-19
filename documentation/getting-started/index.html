@@ -399,7 +399,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1595970000 * 1000);
+        var lastPostDate = new Date(1597784400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -662,6 +662,8 @@ Specify this page as a start page for the fixture using the <a href="../guides/b
 <blockquote class="important"><div class="blockquote-content"><p>Make sure to keep the browser tab that is running tests active. Do not minimize the browser window.
 Inactive tabs and minimized browser windows switch to a lower resource consumption mode
 where tests are not guaranteed to execute correctly.</p>
+
+<p>Do not zoom pages while testing. Tests may be unstable if the page is zoomed in or out.</p>
 </div></blockquote>
 <p>For more information on how to configure the test run, see <a href="../reference/command-line-interface.html">Command Line Interface</a>.</p>
 <h2><a class="anchor" id="viewing-the-test-results"></a>Viewing the Test Results <a class="permalink" href="#viewing-the-test-results">#</a></h2>

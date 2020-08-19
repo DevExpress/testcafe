@@ -444,7 +444,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1595970000 * 1000);
+        var lastPostDate = new Date(1597784400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -1365,7 +1365,8 @@ You can use a short name - the <em>browser alias</em> - to identify browsers whe
 </code></pre></div>
 <p>When you pass the <code>:userProfile</code> flag to a portable browser, also use the <a href="#locally-installed-browsers">browser alias</a>. The <code>path:</code> prefix does not work in this case.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome:d:<span class="se">\c</span>hrome_portable<span class="se">\c</span>hrome.exe:userProfile tests/test.js
-</code></pre></div>
+</code></pre></div><blockquote><div class="blockquote-content"><p>It is not recommended that you combine the :userProfile flag with either headless or emulation mode, because this can lead to unstable behavior.</p>
+</div></blockquote>
 
 		</div>
 	</article>

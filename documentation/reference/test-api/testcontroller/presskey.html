@@ -444,7 +444,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1595970000 * 1000);
+        var lastPostDate = new Date(1597784400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -2245,6 +2245,10 @@
 </thead><tbody><tr>
 <td><code>&#39;ctrl+c&#39;</code>, <code>&#39;ctrl+v&#39;</code></td>
 <td>None. Clipboard operations are <em>not emulated</em>.</td>
+</tr>
+<tr>
+<td><code>&#39;ctrl++&#39;</code>, <code>&#39;ctrl+-&#39;</code></td>
+<td>None. Zoom is <em>not performed</em>.</td>
 </tr>
 <tr>
 <td><code>&#39;ctrl+a&#39;</code></td>

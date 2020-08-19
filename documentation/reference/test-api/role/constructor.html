@@ -444,7 +444,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1595970000 * 1000);
+        var lastPostDate = new Date(1597784400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -2172,7 +2172,8 @@
 			<h1>Role Constructor</h1>
 <p>Creates and initializes a <a href="../../../guides/advanced-guides/authentication.html#user-roles">user role</a>.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">Role( url, func( t ) [, options] )
-</code></pre></div><div class="table-wrapper"><table><thead><tr>
+</code></pre></div><blockquote class="important"><div class="blockquote-content"><p>Relative URLs in <code>Role</code> are not supported. Use absolute URLs when you define roles.</p>
+</div></blockquote><div class="table-wrapper"><table><thead><tr>
 <th>Parameter</th>
 <th>Type</th>
 <th>Description</th>

@@ -444,7 +444,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1595970000 * 1000);
+        var lastPostDate = new Date(1597784400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -2308,7 +2308,13 @@
 <span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">My Test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">element</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div><h3><a class="anchor" id="optionstimeout"></a>options.timeout <a class="permalink" href="#optionstimeout">#</a></h3>
+</code></pre></div>
+<p>When dependencies are passed to a client function, <a href="https://www.typescriptlang.org/">TypeScript</a> cannot find them during compilation. This happens because dependencies are added to the function&#39;s scope at runtime and can cause an error:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">Error: TypeScript compilation failed.
+Cannot find name <span class="s1">'dependencyFoo'</span><span class="nb">.</span>
+</code></pre></div>
+<p>Add the <a href="https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-6.html#suppress-errors-in-ts-files-using--ts-ignore-comments"><code>// @ts-ignore</code></a> TypeScript comment to suppress this error.</p>
+<h3><a class="anchor" id="optionstimeout"></a>options.timeout <a class="permalink" href="#optionstimeout">#</a></h3>
 <p><strong>Type</strong>: Number</p>
 
 <p>The time (in milliseconds) allowed for an element returned by the selector to appear in the DOM before the test fails.</p>
