@@ -82,7 +82,7 @@ If the machine that runs Jenkins does not have local browsers installed, you can
 
 [This tutorial](https://devexpress.github.io/testcafe/documentation/guides/continuous-integration/jenkins.html) describes how to integrate TestCafe with Jenkins.
 
-You may also wish to check [the TestCafe plugin for Jenkins]((https://devexpress.github.io/testcafe/media/team-blog/introducing-the-testcafe-jenkins-plugin.html)) that attaches screenshots and videos to the Jenkins test results page.
+You may also wish to check [the TestCafe plugin for Jenkins](https://devexpress.github.io/testcafe/media/team-blog/introducing-the-testcafe-jenkins-plugin.html) that attaches screenshots and videos to the Jenkins test results page.
 
 **Is TestCafe compatible with Angular applications?**  
 Yes, TestCafe has full support for Angular applications. You can use [the Angular selector plugin](https://github.com/DevExpress/testcafe-angular-selectors) that adds selector extensions to make it easier to test Angular applications with TestCafe. These extensions allow you to create a Selector to find elements on the page in a way that is native to Angular applications.
