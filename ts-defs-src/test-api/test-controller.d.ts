@@ -102,6 +102,10 @@ interface TestController {
      */
     ctx: {[key: string]: any};
     /**
+     * Dictionary that holds the information of the current test run
+     */
+    readonly testRun: {[key: string]: any};
+    /**
      * Dictionary that is shared between `fixture.before` and `fixture.after`, test hook functions and test code.
      */
     readonly fixtureCtx: {[key: string]: any};
