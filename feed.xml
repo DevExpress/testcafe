@@ -5,9 +5,40 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 19 Aug 2020 19:25:24 +0300</pubDate>
-    <lastBuildDate>Wed, 19 Aug 2020 19:25:24 +0300</lastBuildDate>
+    <pubDate>Fri, 21 Aug 2020 17:45:09 +0300</pubDate>
+    <lastBuildDate>Fri, 21 Aug 2020 17:45:09 +0300</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>Upcoming Webinar: The Fastest Way to Your Next Test – TestCafe + TestCafe Studio</title>
+        <description>&lt;h1&gt;Upcoming Webinar: The Fastest Way to Your Next Test – TestCafe + TestCafe Studio&lt;/h1&gt;
+&lt;p&gt;In this webinar, our Technical Evangelist Paul Usher will demonstrate the difference between TestCafe and TestCafe Studio. Paul will show you how to write code-based tests more quickly and he&amp;#39;ll explore the power of TestCafe Studio&amp;#39;s integrated visual test recorder (for those who don&amp;#39;t want to manually write test code).&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;Paul&amp;#39;s topics will include:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;How to create and debug tests in TestCafe Studio without writing any code.&lt;/li&gt;
+&lt;li&gt;How to create stable selectors for your tests.&lt;/li&gt;
+&lt;li&gt;The advantages of TestCafe&amp;#39;s Smart Assertion mechanism.&lt;/li&gt;
+&lt;li&gt;How to leverage both TestCafe and TestCafe Studio within your organization.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;end-to-end-web-testing-made-easy&quot;&gt;&lt;/a&gt;End-to-End web testing made easy &lt;a class=&quot;permalink&quot; href=&quot;#end-to-end-web-testing-made-easy&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;TestCafe Open Source and TestCafe Studio are driver free and do not require you to manage complex plug-ins. If you&amp;#39;re ready to test your web apps and want to deliver more reliable solutions to your end-users, be sure to click the link below and register your interest in this live webinar.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Webinar Date:&lt;/strong&gt; Tuesday, September 8, 2020&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Start Time:&lt;/strong&gt; 10AM Pacific Time&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://dxpr.es/34jU51F&quot;&gt;Register&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+</description>
+        <pubDate>Fri, 21 Aug 2020 00:00:00 +0300</pubDate>
+        <link>https://devexpress.github.io/testcafe/media/team-blog/the-fastest-way-to-your-next-test.html</link>
+        <guid isPermaLink="true">https://devexpress.github.io/testcafe/media/team-blog/the-fastest-way-to-your-next-test.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>TestCafe Webinar - Your Questions Answered</title>
@@ -1098,150 +1129,6 @@ Yes, if test actions on the page trigger file download, the browser will downloa
         <pubDate>Thu, 21 Nov 2019 00:00:00 +0300</pubDate>
         <link>https://devexpress.github.io/testcafe/blog/testcafe-v1-7-0-released.html</link>
         <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v1-7-0-released.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>TestCafe v1.6.0 Released</title>
-        <description>&lt;h1&gt;TestCafe v1.6.0 Released&lt;/h1&gt;
-&lt;p&gt;This release adds support for macOS 10.15 Catalina, introduces full-page screenshots and compound screenshot options.&lt;/p&gt;
-
-&lt;!--more--&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;support-for-macos-1015-catalina&quot;&gt;&lt;/a&gt;🌟 Support for macOS 10.15 Catalina &lt;a class=&quot;permalink&quot; href=&quot;#support-for-macos-1015-catalina&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;This version provides compatibility with macOS 10.15. Update TestCafe to v1.6.0 if you run macOS Catalina.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;full-page-screenshots-1520&quot;&gt;&lt;/a&gt;⚙ Full-Page Screenshots (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/1520&quot;&gt;#1520&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#full-page-screenshots-1520&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;TestCafe can now take screenshots that show the full page, including content that is not visible due to overflow.&lt;/p&gt;
-
-&lt;p&gt;Enable the &lt;code&gt;fullPage&lt;/code&gt; option in CLI, API or configuration file to capture the full page on all screenshots. You can also pass this option to &lt;code&gt;t.takeScreenshot&lt;/code&gt; to capture a single full-page screenshot.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Command line interface&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Enable the &lt;a href=&quot;../documentation/reference/command-line-interface.html#fullpage&quot;&gt;fullPage&lt;/a&gt; parameter of the &lt;a href=&quot;../documentation/reference/command-line-interface.html#-s---screenshots-optionvalueoption2value2&quot;&gt;-s (--screenshots)&lt;/a&gt; flag:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome test.js &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;fullPage&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;em&gt;API&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Pass the &lt;code&gt;fullPage&lt;/code&gt; option to &lt;a href=&quot;../documentation/reference/testcafe-api/runner/screenshots.html&quot;&gt;runner.screenshots&lt;/a&gt;:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;screenshots&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;fullPage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;em&gt;Configuration file&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Set the &lt;a href=&quot;../documentation/reference/configuration-file.html#screenshotsfullpage&quot;&gt;screenshots.fullPage&lt;/a&gt; property:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;screenshots&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-        &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;fullPage&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;em&gt;Test code&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Pass the &lt;code&gt;fullPage&lt;/code&gt; option to the &lt;a href=&quot;../documentation/reference/test-api/testcontroller/takescreenshot.html&quot;&gt;t.takeScreenshot&lt;/a&gt; action:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;takeScreenshot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;fullPage&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;compound-screenshot-options&quot;&gt;&lt;/a&gt;⚙ Compound Screenshot Options &lt;a class=&quot;permalink&quot; href=&quot;#compound-screenshot-options&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;The command line interface and configuration file schema have been updated to provide a more concise way to specify the screenshot options.&lt;/p&gt;
-&lt;blockquote&gt;&lt;div class=&quot;blockquote-content&quot;&gt;&lt;p&gt;TestCafe v1.6.0 also supports the existing options to maintain backward compatibility. However, these options are now marked &lt;em&gt;obsolete&lt;/em&gt; in the documentation. In the future updates, we will deprecate them and emit warnings.&lt;/p&gt;
-&lt;/div&gt;&lt;/blockquote&gt;
-&lt;p&gt;&lt;em&gt;Command line interface&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Screenshot options in CLI are now consolidated under the &lt;a href=&quot;../documentation/reference/command-line-interface.html#-s---screenshots-optionvalueoption2value2&quot;&gt;-s (--screenshots)&lt;/a&gt; flag in an &lt;code&gt;option=value&lt;/code&gt; string:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome test.js &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;takeOnFails&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;,pathPattern&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;DATE&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;_&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;TIME&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;/&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;FILE_INDEX&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;.png
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;table-wrapper&quot;&gt;&lt;table&gt;&lt;thead&gt;&lt;tr&gt;
-&lt;th&gt;Old Usage&lt;/th&gt;
-&lt;th&gt;New Usage&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;-s artifacts/screenshots&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;-s path=artifacts/screenshots&lt;/code&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;-S&lt;/code&gt;, &lt;code&gt;--screenshots-on-fails&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;-s takeOnFails=true&lt;/code&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;-p ${DATE}_${TIME}/${FILE_INDEX}.png&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;-s pathPattern=${DATE}_${TIME}/${FILE_INDEX}.png&lt;/code&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;
-&lt;p&gt;&lt;em&gt;Configuration file&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Configuration file properties that specify screenshot options are now combined in the &lt;a href=&quot;../documentation/reference/configuration-file.html#screenshots&quot;&gt;screenshots&lt;/a&gt; object:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;screenshots&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-        &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;path&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;artifacts/screenshots&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-        &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;takeOnFails&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-        &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;pathPattern&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;${DATE}_${TIME}/${FILE_INDEX}.png&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;table-wrapper&quot;&gt;&lt;table&gt;&lt;thead&gt;&lt;tr&gt;
-&lt;th&gt;Old Property&lt;/th&gt;
-&lt;th&gt;New Property&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;screenshotPath&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;screenshots.path&lt;/code&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;takeScreenshotsOnFails&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;screenshots.takeOnFails&lt;/code&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;screenshotPathPattern&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;screenshots.pathPattern&lt;/code&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;default-screenshot-directory&quot;&gt;&lt;/a&gt;⚙ Default Screenshot Directory &lt;a class=&quot;permalink&quot; href=&quot;#default-screenshot-directory&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;TestCafe now saves the screenshots to &lt;code&gt;./screenshots&lt;/code&gt; if the base directory is not specified.&lt;/p&gt;
-
-&lt;p&gt;The &lt;a href=&quot;../documentation/reference/command-line-interface.html#-s---screenshots-optionvalueoption2value2&quot;&gt;--screenshots&lt;/a&gt; CLI flag, the &lt;a href=&quot;../documentation/reference/testcafe-api/runner/screenshots.html&quot;&gt;runner.screenshots&lt;/a&gt; method or the &lt;a href=&quot;../documentation/reference/configuration-file.html#screenshotpath&quot;&gt;screenshotPath&lt;/a&gt; configuration option are not required to take screenshots. For instance, you can run TestCafe with no additional parameters and use the &lt;a href=&quot;../documentation/reference/test-api/testcontroller/takescreenshot.html&quot;&gt;t.takeScreenshot&lt;/a&gt; action in test code:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome test.js
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;em&gt;test.js&lt;/em&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`My fixture`&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`https://example.com`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Take a screenshot&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;takeScreenshot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;The &lt;code&gt;path&lt;/code&gt; argument in &lt;a href=&quot;../documentation/reference/testcafe-api/runner/screenshots.html&quot;&gt;runner.screenshots&lt;/a&gt; is now optional.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;screenshots&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;takeOnFails&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;new-option-to-disable-screenshots&quot;&gt;&lt;/a&gt;⚙ New Option to Disable Screenshots &lt;a class=&quot;permalink&quot; href=&quot;#new-option-to-disable-screenshots&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;We have added an option that allows you to disable taking screenshots. If this option is specified, TestCafe does not take screenshots when a test fails and when the &lt;a href=&quot;../documentation/reference/test-api/testcontroller/takescreenshot.html&quot;&gt;t.takeScreenshot&lt;/a&gt; or &lt;a href=&quot;../documentation/reference/test-api/testcontroller/takeelementscreenshot.html&quot;&gt;t.takeElementScreenshot&lt;/a&gt; action is executed.&lt;/p&gt;
-
-&lt;p&gt;You can disable screenshots with a command line, API or configuration file option:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;../documentation/reference/command-line-interface.html#--disable-screenshots&quot;&gt;--disable-screenshots&lt;/a&gt; command line flag&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome my-tests &lt;span class=&quot;nt&quot;&gt;--disable-screenshots&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;the &lt;code&gt;disableScreenshots&lt;/code&gt; option in the &lt;a href=&quot;../documentation/reference/testcafe-api/runner/run.html&quot;&gt;runner.run&lt;/a&gt; method&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;disableScreenshots&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;../documentation/reference/configuration-file.html#disablescreenshots&quot;&gt;disableScreenshots&lt;/a&gt; configuration file property&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;disableScreenshots&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Fixed an error thrown when you pass the &lt;code&gt;-b&lt;/code&gt; command line flag (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/4294&quot;&gt;#4294&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;TestCafe no longer hangs when Firefox downloads a file (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/2741&quot;&gt;#2741&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;You can now start tests from TypeScript code executed with &lt;code&gt;ts-node&lt;/code&gt; (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/4276&quot;&gt;#4276&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed TypeScript definitions for client script injection API (&lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/4272&quot;&gt;PR #4272&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed TypeScript definitions for &lt;code&gt;disablePageCaching&lt;/code&gt; (&lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/4274&quot;&gt;PR #4274&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed a bug when anchor links did not navigate to their target destinations (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2080&quot;&gt;testcafe-hammerhead/#2080&lt;/a&gt;)&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Wed, 16 Oct 2019 00:00:00 +0300</pubDate>
-        <link>https://devexpress.github.io/testcafe/blog/testcafe-v1-6-0-released.html</link>
-        <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v1-6-0-released.html</guid>
         
         
       </item>

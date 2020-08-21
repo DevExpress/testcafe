@@ -6,7 +6,7 @@
   height: auto; }
   .survey-banner .survey-banner-message {
     line-height: 20px;
-    padding: 10px 30px; }
+    padding: 10px 10px 10px 30px; }
     .survey-banner .survey-banner-message span {
       display: block;
       text-align: left;
