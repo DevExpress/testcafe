@@ -88,9 +88,9 @@ export default abstract class TestingUnit extends BaseUnit {
 
         assertType(is.string, 'page', 'The page URL', this.pageUrl);
 
-        assertUrl(this.pageUrl as string, 'page');
+        assertUrl(this.pageUrl, 'page');
 
-        this.pageUrl = resolvePageUrl(this.pageUrl as string, this.testFile.filename);
+        this.pageUrl = resolvePageUrl(this.pageUrl, this.testFile.filename);
 
         return this.apiOrigin;
     }
