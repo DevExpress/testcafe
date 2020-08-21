@@ -1,5 +1,4 @@
 import { flattenDeep as flatten } from 'lodash';
-import { SPECIAL_BLANK_PAGE } from 'testcafe-hammerhead';
 import TestingUnit from './testing-unit';
 import UnitType from './unit-type';
 import { assertType, is } from '../../errors/runtime/type-assertions';
@@ -16,7 +15,6 @@ import ClientScriptInit from '../../custom-client-scripts/client-script-init';
 
 export default class Fixture extends TestingUnit {
     public path: string;
-    public pageUrl: string;
     public beforeEachFn: Function | null;
     public afterEachFn: Function | null;
     public beforeFn: Function | null;
@@ -25,9 +23,7 @@ export default class Fixture extends TestingUnit {
     public constructor (testFile: TestFile) {
         super(testFile, UnitType.fixture);
 
-        this.path    = testFile.filename;
-        this.pageUrl = SPECIAL_BLANK_PAGE;
-
+        this.path         = testFile.filename;
         this.beforeEachFn = null;
         this.afterEachFn  = null;
         this.beforeFn     = null;

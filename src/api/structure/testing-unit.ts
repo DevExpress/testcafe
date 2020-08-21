@@ -11,11 +11,12 @@ import ClientScriptInit from '../../custom-client-scripts/client-script-init';
 import TestFile from './test-file';
 import { Metadata, AuthCredentials } from './interfaces';
 import { Dictionary } from '../../configuration/interfaces';
+import { SPECIAL_BLANK_PAGE } from 'testcafe-hammerhead';
 
 export default abstract class TestingUnit extends BaseUnit {
     public readonly testFile: TestFile;
     public name: string | null;
-    public pageUrl: string | null;
+    public pageUrl: string;
     public authCredentials: null | AuthCredentials;
     public meta: Metadata;
     public only: boolean;
@@ -33,7 +34,7 @@ export default abstract class TestingUnit extends BaseUnit {
         this.testFile = testFile;
 
         this.name            = null;
-        this.pageUrl         = null;
+        this.pageUrl         = SPECIAL_BLANK_PAGE;
         this.authCredentials = null;
         this.meta            = {};
         this.only            = false;
