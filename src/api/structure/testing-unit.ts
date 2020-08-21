@@ -9,9 +9,8 @@ import UnitType from './unit-type';
 import RequestHook from '../request-hooks/hook';
 import ClientScriptInit from '../../custom-client-scripts/client-script-init';
 import TestFile from './test-file';
-import { Metadata, AuthCredentials } from './interfaces';
+import { AuthCredentials, Metadata } from './interfaces';
 import { Dictionary } from '../../configuration/interfaces';
-import { SPECIAL_BLANK_PAGE } from 'testcafe-hammerhead';
 
 export default abstract class TestingUnit extends BaseUnit {
     public readonly testFile: TestFile;
@@ -28,13 +27,13 @@ export default abstract class TestingUnit extends BaseUnit {
     public apiMethodWasCalled: FlagList;
     public apiOrigin: Function;
 
-    protected constructor (testFile: TestFile, unitType: UnitType) {
+    protected constructor (testFile: TestFile, unitType: UnitType, pageUrl: string) {
         super(unitType);
 
         this.testFile = testFile;
 
         this.name            = null;
-        this.pageUrl         = SPECIAL_BLANK_PAGE;
+        this.pageUrl         = pageUrl;
         this.authCredentials = null;
         this.meta            = {};
         this.only            = false;

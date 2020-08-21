@@ -12,6 +12,7 @@ import { RUNTIME_ERRORS } from '../../errors/types';
 import TestFile from './test-file';
 import RequestHook from '../request-hooks/hook';
 import ClientScriptInit from '../../custom-client-scripts/client-script-init';
+import { SPECIAL_BLANK_PAGE } from 'testcafe-hammerhead';
 
 export default class Fixture extends TestingUnit {
     public path: string;
@@ -21,7 +22,7 @@ export default class Fixture extends TestingUnit {
     public afterFn: Function | null;
 
     public constructor (testFile: TestFile) {
-        super(testFile, UnitType.fixture);
+        super(testFile, UnitType.fixture, SPECIAL_BLANK_PAGE);
 
         this.path         = testFile.filename;
         this.beforeEachFn = null;
