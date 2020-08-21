@@ -354,7 +354,59 @@ TestCafe actions can interact with elements if they satisfy the following condit
 
     TestCafe actions target the center of an element or a point specified by an action's `offsetX` and `offsetY` options. If another element obstructs the target point, the action is executed on the top element (for instance, the [t.click](../../reference/test-api/testcontroller/click.md) action clicks the element over it).
 
-### Example: Scroll an Element into View
+## Examples
+
+### Download Files in IE
+
+TestCafe prevents native browser dialogs, including those before file download. In Internet Explorer, however, a dialog still shows and blocks the test page. It is possible to disable this dialog in browser settings, but it is impossible to dismiss it programmatically. Consider the following example:
+
+```html
+<body>
+    <form method="get" action="./src/file.zip">
+        <button id="downloadButton" type="submit">Download!</button>
+     </form>
+</body>
+```
+
+This sample page includes a button that downloads a file from the `/src` folder on the server. This spawns a pop-up window that blocks the page. To obtain the file, use a [RequestHook](../../reference/test-api/requesthook/README.md):
+
+```js
+import fs from 'fs';
+import { Selector, RequestHook } from 'testcafe';
+
+class MyHook extends RequestHook {
+    constructor (requestFilterRules, responseEventConfigureOpts) {
+        super(requestFilterRules, responseEventConfigureOpts);
+    }
+
+    onRequest (event) {
+    }
+
+    onResponse (event) {
+        const path = 'downloadedFile.zip';
+
+        fs.writeFileSync(path, event.body);
+   }
+}
+
+fixture `fixture`
+    .page `https://localhost:5500/downloadPage.html`;
+
+test.requestHooks(new MyHook({url: /.+\/src\/.+/, method: 'GET' } , {
+    includeHeaders: true,
+    includeBody:    true
+}))
+
+(`test`, async t => {  
+    await t.click(Selector('#downloadButton'));
+
+    await t.wait(10000);
+});
+```
+
+This test introduces a custom `RequestHook` that intercepts `GET` requests to a location [defined with a regular expression](../../../templates/intercept-http-requests/request-filter.md#use-a-regular-expression-to-specify-the-url) and saves the response to the file system as `downloadedFile.zip`.
+
+### Scroll an Element into View
 
 Since TestCafe scrolls to reach items that are on the page but not on-screen, the TestCafe API does not have a dedicated scroll action.
 
