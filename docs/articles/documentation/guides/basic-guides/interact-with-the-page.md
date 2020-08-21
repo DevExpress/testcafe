@@ -358,7 +358,9 @@ TestCafe actions can interact with elements if they satisfy the following condit
 
 ### Download Files in IE
 
-TestCafe prevents native browser dialogs, including those before file download. In Internet Explorer, however, a dialog still shows and blocks the test page. It is possible to disable this dialog in browser settings, but it is impossible to dismiss it programmatically. Consider the following example:
+TestCafe prevents native browser dialogs, including those before file download. In Internet Explorer, however, you should disable this dialog in browser settings, because it cannot be dismissed programmatically.
+
+The following example shows how to download the file once you disable the dialog:
 
 ```html
 <body>
@@ -368,7 +370,7 @@ TestCafe prevents native browser dialogs, including those before file download. 
 </body>
 ```
 
-This sample page includes a button that downloads a file from the `/src` folder on the server. This spawns a pop-up window that blocks the page. To obtain the file, use a [RequestHook](../../reference/test-api/requesthook/README.md):
+This sample page includes a button that downloads a file from the `/src` folder on the server. To obtain the file, use a [RequestHook](../../reference/test-api/requesthook/README.md):
 
 ```js
 import fs from 'fs';
