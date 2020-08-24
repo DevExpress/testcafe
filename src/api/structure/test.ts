@@ -12,6 +12,7 @@ import TestFile from './test-file';
 import Fixture from './fixture';
 import RequestHook from '../request-hooks/hook';
 import ClientScriptInit from '../../custom-client-scripts/client-script-init';
+import { SPECIAL_BLANK_PAGE } from 'testcafe-hammerhead';
 
 export default class Test extends TestingUnit {
     public fixture: Fixture;
@@ -20,10 +21,13 @@ export default class Test extends TestingUnit {
     public afterFn: Function | null;
 
     public constructor (testFile: TestFile) {
-        super(testFile, UnitType.test);
+        // NOTE: 'fixture' directive can be missing
+        const fixture = testFile.currentFixture as Fixture;
+        const pageUrl = fixture && fixture.pageUrl || SPECIAL_BLANK_PAGE;
 
-        this.fixture = testFile.currentFixture as Fixture;
+        super(testFile, UnitType.test, pageUrl);
 
+        this.fixture       = fixture;
         this.fn            = null;
         this.beforeFn      = null;
         this.afterFn       = null;

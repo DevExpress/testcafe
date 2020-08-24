@@ -12,11 +12,11 @@ const WIN_ABSOLUTE_PATH_RE  = /^\w:[/\\]/;
 const RELATIVE_PATH_RE      = /^\.\.?[/\\]/;
 
 
-function isAbsolutePath (url) {
+function isAbsolutePath (url: string): boolean {
     return OS.win ? WIN_ABSOLUTE_PATH_RE.test(url) : ABSOLUTE_PATH_RE.test(url);
 }
 
-function resolveFileUrl (url, testFileName) {
+function resolveFileUrl (url: string, testFileName: string): string {
     const testFileDir = path.dirname(testFileName);
 
     if (RELATIVE_PATH_RE.test(url))
@@ -25,16 +25,16 @@ function resolveFileUrl (url, testFileName) {
     return 'file://' + url;
 }
 
-export function assertUrl (url, callsiteName) {
+export function assertUrl (url: string, callsiteName: string): void {
     const protocol               = url.match(PROTOCOL_RE);
     const hasUnsupportedProtocol = protocol && !SUPPORTED_PROTOCOL_RE.test(url);
     const isWinAbsolutePath      = OS.win && WIN_ABSOLUTE_PATH_RE.test(url);
 
     if (hasUnsupportedProtocol && !isWinAbsolutePath && url !== SPECIAL_BLANK_PAGE)
-        throw new APIError(callsiteName, RUNTIME_ERRORS.unsupportedUrlProtocol, url, protocol[0]);
+        throw new APIError(callsiteName, RUNTIME_ERRORS.unsupportedUrlProtocol, url, protocol && protocol[0]);
 }
 
-export function resolvePageUrl (url, testFileName) {
+export function resolvePageUrl (url: string, testFileName: string): string {
     if (SUPPORTED_PROTOCOL_RE.test(url) || url === SPECIAL_BLANK_PAGE)
         return url;
 
