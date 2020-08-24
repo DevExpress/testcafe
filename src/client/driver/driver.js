@@ -1149,7 +1149,7 @@ export default class Driver extends serviceUtils.EventEmitter {
 
     _onShowAssertionRetriesStatusCommand (command) {
         this.contextStorage.setItem(ASSERTION_RETRIES_TIMEOUT, command.timeout);
-        this.contextStorage.setItem(ASSERTION_RETRIES_START_TIME, Date.now());
+        this.contextStorage.setItem(ASSERTION_RETRIES_START_TIME, nativeMethods.dateNow());
 
         this.statusBar.showWaitingAssertionRetriesStatus(command.timeout);
         this._onReady(new DriverStatus({ isCommandResult: true }));
@@ -1413,7 +1413,7 @@ export default class Driver extends serviceUtils.EventEmitter {
 
             if (assertionRetriesTimeout) {
                 const startTime = this.contextStorage.getItem(ASSERTION_RETRIES_START_TIME);
-                const timeLeft  = assertionRetriesTimeout - (new Date() - startTime);
+                const timeLeft  = assertionRetriesTimeout - (new DateCtor() - startTime);
 
                 if (timeLeft > 0)
                     this.statusBar.showWaitingAssertionRetriesStatus(assertionRetriesTimeout, startTime);

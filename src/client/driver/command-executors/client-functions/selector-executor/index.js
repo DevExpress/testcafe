@@ -1,10 +1,11 @@
-import { Promise } from '../../../deps/hammerhead';
+import { Promise, nativeMethods } from '../../../deps/hammerhead';
 import { delay } from '../../../deps/testcafe-core';
 import ClientFunctionExecutor from '../client-function-executor';
 import { exists, visible } from '../../../utils/element-utils';
 import { createReplicator, FunctionTransform, SelectorNodeTransform } from '../replicator';
 import './filter';
 
+const DateCtor = nativeMethods.date;
 
 const CHECK_ELEMENT_DELAY = 200;
 
@@ -19,7 +20,7 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
         this.getVisibleValueMode    = this.dependencies.filterOptions.getVisibleValueMode;
 
         if (startTime) {
-            const elapsed = new Date() - startTime;
+            const elapsed = new DateCtor() - startTime;
 
             this.timeout = Math.max(this.timeout - elapsed, 0);
         }
@@ -55,7 +56,7 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
             .then(el => {
                 const isElementExists    = exists(el);
                 const isElementVisible   = !this.command.visibilityCheck || visible(el);
-                const isTimeout          = new Date() - startTime >= this.timeout;
+                const isTimeout          = new DateCtor() - startTime >= this.timeout;
 
                 if (isElementExists && isElementVisible)
                     return el;
@@ -76,7 +77,7 @@ export default class SelectorExecutor extends ClientFunctionExecutor {
         if (this.counterMode)
             return super._executeFn(args);
 
-        const startTime = new Date();
+        const startTime = new DateCtor();
         let error       = null;
         let element     = null;
 
