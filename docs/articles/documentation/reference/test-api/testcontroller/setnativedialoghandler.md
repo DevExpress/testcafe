@@ -67,7 +67,9 @@ test('My test', async t => {
 
 ### Handle a Dialog Invoked on Page Load
 
-As soon as this example page loads, an alert blocks it. To set a handler for this alert, you can start the test from an `about:blank` page, add a handler and proceed to the page with an `navigateTo` action.
+When the page in this example loads, it displays an alert dialog. To set a handler for this alert, you can start the test from an `about:blank` page, add a handler and proceed to the page with an `navigateTo` action.
+
+> Important! Use absolute file paths to navigate from an `about:blank` page.
 
 ```html
 <body>

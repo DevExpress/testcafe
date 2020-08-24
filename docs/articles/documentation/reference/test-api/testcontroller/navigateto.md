@@ -32,8 +32,6 @@ test('Navigate to the main page', async t => {
 
 You can use the `file://` scheme or relative paths to navigate to a webpage in a local directory. Relative file paths are resolved from the current page, rather than the test file.
 
-> Important! Relative file paths do not function on an `about:blank` page.
-
 ```js
 fixture `My fixture`
     .page `http://www.example.com/`;

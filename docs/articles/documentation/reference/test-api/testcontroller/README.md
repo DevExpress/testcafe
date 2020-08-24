@@ -27,12 +27,6 @@ test('My Test', async t => {
 
 The test runner uses the test controller to access the internal context required for the test API to operate. When you call [selectors](../../../guides/basic-guides/select-page-elements.md) and [client functions](../../../guides/basic-guides/obtain-client-side-info.md) from Node.js callbacks, pass the test controller explicitly, because the API cannot retrieve it from the context.
 
-> If you explicitly call a test controller, do so in a stack trace that has the test body signature.
->
-> Constructs like `setTimeout`/`setInterval`, Promises and native async functions create a clean stack frame. In it, test controller can't access a test body signature and resolve the test context.
->
-> For this reason, use imported test controllers in a synchronous context.
-
 ## Implicit Test Controller Use
 
 You may need to call the test API from outside the test code. For instance, your [page model](../../../guides/concepts/page-model.md) can contain methods that perform common operations used in different tests (like authentication).
@@ -80,3 +74,5 @@ class Page {
 
 export default new Page();
 ```
+
+> You cannot use an imported test controller in Promises, asynchronous functions, `setTimeout`/`setInterval` callbacks, and other asynchronous routines. These routines do not preserve the original stack frame so that TestCafe cannot obtain the test controller instance.
