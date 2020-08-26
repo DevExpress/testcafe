@@ -75,7 +75,8 @@ await t.switchToWindow(windowDesc);
 The predicate function must contain a description of the window's URL or title. The URL object has the same structure as its [Node.JS counterpart](https://nodejs.org/api/url.html).
 
 ```js
-await t.openWindow('https://devexpress.github.io/testcafe/')
+await t
+    .openWindow('https://devexpress.github.io/testcafe/')
     .switchToWindow(({url}) => url.pathname === '/testcafe');
 ```
 
@@ -86,7 +87,8 @@ fixture('Tasks View')
     .page('https://url.com/add-task');  
   
 test('Add a new task', async t => {  
-    await t.openWindow('https://url.com/tasks') // Open a new window with the task list
+    await t
+        .openWindow('https://url.com/tasks') // Open a new window with the task list
         .openWindow('https://url.com/feed') // Open the notification feed
 
         .switchToWindow(({url}) => url.pathname === '/add-task') // Go back to the new task form
@@ -107,10 +109,10 @@ test('Add a new task', async t => {
 
 The updated API includes a number of useful window management methods.
 
-* [t.openWindow(url: string)](https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/openwindow.html) opens a new window and points it to the specified URL.  
+* [t.openWindow(url)](https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/openwindow.html) opens a new window and points it to the specified URL.  
 * [t.getCurrentWindow()](https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/getcurrentwindow.html) obtains the window descriptor that corresponds to the active window.
 * [t.switchToWindow(windowDescriptor)](https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/switchtowindow.html#tswitchtowindowwindow) activates the window that corresponds to the window descriptor.
-* [t.switchToWindow(\<predicate\>)](https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/switchtowindow.html#tswitchtowindowpredicate) uses the predicate function to find a matching window, and activates it. The predicate can include the window's title and URL.
+* [t.switchToWindow(predicate)](https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/switchtowindow.html#tswitchtowindowpredicate) uses the predicate function to find a matching window, and activates it. The predicate can include the window's title and URL.
 * [t.switchToParentWindow()](https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/switchtoparentwindow.html) activates the parent of the active window.
 * [t.switchToPreviousWindow()](https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/switchtopreviouswindow.html) activates the last active window.
 * [t.closeWindow()](https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/closewindow.html) closes the active window.
