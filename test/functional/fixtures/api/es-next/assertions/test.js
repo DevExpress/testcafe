@@ -80,7 +80,7 @@ describe('[API] Assertions', function () {
         })
             .catch(function (errs) {
                 expect(errs[0]).contains('AssertionError: expected 42 to be a function');
-                expect(errs[0]).contains("> 45 |        .expect(42).typeOf('function');");
+                expect(errs[0]).contains("> 51 |        .expect(42).typeOf('function');");
             });
     });
 
@@ -91,7 +91,7 @@ describe('[API] Assertions', function () {
         })
             .catch(function (errs) {
                 expect(errs[0]).contains('AssertionError: expected 42 not to be a number');
-                expect(errs[0]).contains("> 52 |        .expect(42).notTypeOf('number');");
+                expect(errs[0]).contains("> 64 |        .expect(42).notTypeOf('number');");
             });
     });
 
