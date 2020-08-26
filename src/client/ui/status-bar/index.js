@@ -233,7 +233,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
     }
 
     _animate (show) {
-        const startTime         = Date.now();
+        const startTime         = nativeMethods.dateNow();
         const startOpacityValue = parseInt(styleUtils.get(this.statusBar, 'opacity'), 10) || 0;
         let passedTime        = 0;
         let progress          = 0;
@@ -247,7 +247,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
         }
 
         this.animationInterval = nativeMethods.setInterval.call(window, () => {
-            passedTime = Date.now() - startTime;
+            passedTime = nativeMethods.dateNow() - startTime;
             progress   = Math.min(passedTime / ANIMATION_DELAY, 1);
             delta      = 0.5 - Math.cos(progress * Math.PI) / 2;
 

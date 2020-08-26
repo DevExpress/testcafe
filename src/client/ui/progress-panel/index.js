@@ -76,7 +76,7 @@ export default class ProgressPanel {
     }
 
     _setCurrentProgress () {
-        const progress = Math.round((Date.now() - this.startTime) / this.maxTimeout * 100);
+        const progress = Math.round((nativeMethods.dateNow() - this.startTime) / this.maxTimeout * 100);
 
         this.progressBar.setValue(progress);
     }
@@ -90,7 +90,7 @@ export default class ProgressPanel {
     }
 
     _animate (el, duration, show, complete) {
-        const startTime         = Date.now();
+        const startTime         = nativeMethods.dateNow();
         const startOpacityValue = show ? 0 : 1;
         let passedTime        = 0;
         let progress          = 0;
@@ -104,7 +104,7 @@ export default class ProgressPanel {
         this._stopAnimation();
 
         this.animationInterval = nativeMethods.setInterval.call(window, () => {
-            passedTime = Date.now() - startTime;
+            passedTime = nativeMethods.dateNow() - startTime;
             progress   = Math.min(passedTime / duration, 1);
             delta      = 0.5 - Math.cos(progress * Math.PI) / 2;
 
@@ -133,7 +133,7 @@ export default class ProgressPanel {
     }
 
     show (text, timeout) {
-        this.startTime  = Date.now();
+        this.startTime  = nativeMethods.dateNow();
         this.maxTimeout = timeout;
 
         nativeMethods.nodeTextContentSetter.call(this.titleDiv, text);
@@ -164,7 +164,7 @@ export default class ProgressPanel {
         }
 
         if (success) {
-            if (this.startTime && Date.now() - this.startTime < MIN_SHOWING_TIME) {
+            if (this.startTime && nativeMethods.dateNow() - this.startTime < MIN_SHOWING_TIME) {
                 nativeMethods.setTimeout.call(window, () => {
                     nativeMethods.setTimeout.call(window, () => this._hidePanel(false), SHOWING_DELAY);
                 }, UPDATE_INTERVAL);

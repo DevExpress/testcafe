@@ -21,7 +21,7 @@ export default class DeterminateIndicator {
     }
 
     _setCurrentProgress () {
-        const progress         = (Date.now() - this.startTime) / this.maxTimeout;
+        const progress         = (nativeMethods.dateNow() - this.startTime) / this.maxTimeout;
         const percent          = Math.min(Math.max(progress, 0), 1);
         const progressBarWidth = styleUtils.getWidth(this.progressBar);
         const newWidth         = Math.round(progressBarWidth * percent);
@@ -33,7 +33,7 @@ export default class DeterminateIndicator {
         shadowUI.addClass(this.progressBar, DETERMINATE_STYLE_CLASS);
 
         this.maxTimeout = maxTimeout;
-        this.startTime  = startTime || Date.now();
+        this.startTime  = startTime || nativeMethods.dateNow();
 
         this._setCurrentProgress();
 
