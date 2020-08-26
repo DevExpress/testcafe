@@ -270,7 +270,7 @@ TestCafe allows you to handle native dialogs that the browser may display during
 You can close [alert](https://developer.mozilla.org/en-US/docs/Web/API/Window/alert) and
 [beforeunload](https://developer.mozilla.org/en-US/docs/Web/Events/beforeunload) dialogs,
 choose an option in [confirm](https://developer.mozilla.org/en-US/docs/Web/API/Window/confirm) dialogs
-or hand over text for [prompt](https://developer.mozilla.org/en-US/docs/Web/API/Window/prompt) dialogs.
+or supply text for [prompt](https://developer.mozilla.org/en-US/docs/Web/API/Window/prompt) dialogs.
 
 * [Set Native Dialog Handler](../../reference/test-api/testcontroller/setnativedialoghandler.md)
 * [Get Native Dialog History](../../reference/test-api/testcontroller/getnativedialoghistory.md)
@@ -335,7 +335,7 @@ Mouse event | Touch event
 
 TestCafe actions can interact with elements if they satisfy the following conditions:
 
-* an element is within the page's [`body`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/body) or in an [`<iframe>`](#work-with-iframes). The element can be outside of a browser window as long as TestCafe can scroll to reach it.
+* an element is within the page's [`body`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/body) or in an [`<iframe>`](#work-with-iframes). The element can be invisible for the user. If the element is off-screen, TestCafe attempts to reach it with a scroll.
 
 * an element is visible - its properties are as follows:
 
@@ -343,28 +343,29 @@ TestCafe actions can interact with elements if they satisfy the following condit
     -------- | --------
     `display`  | *not* set to `none`
     `visibility` | set to `visible` (the default value)
-    `width`    | auto calculated as or set to > `0`
-    `height`   | auto calculated as or set to > `0`
+    `width`    | auto calculated as or set to >= 1px
+    `height`   | auto calculated as or set to >= 1px
 
-* a targeted part of the element has to be visible.  
+* an element isn't obstructed or overlapped.  
 
     TestCafe actions target a center of an element, or a point specified by the `offsetX` and `offsetY` options of an action. If another element obstructs the target point, the action is executed with the overlapping element (for instance, the [t.click](../../reference/test-api/testcontroller/click.md) action clicks an overlapping block).
 
 ### Example: Scroll an Element into View
 
-TestCafe scrolls to reach items that are on the page but not on-screen. Therefore, TestCafe API doesn't have a designated scroll action.
+TestCafe scrolls to reach items that are on the page but not on-screen. Therefore, TestCafe API doesn't have a dedicated scroll action.
 
 You can use any action (for example, [hover](#hover)) to scroll towards the desired part of the page.  
-To scroll the page without any action, you can use a [ClientFunction](obtain-client-side-info.md).
+
+If you specifically need to scroll the page without any action, use a [ClientFunction](obtain-client-side-info.md).
 
 ```js
 import { ClientFunction } from 'testcafe';
 
-const browserscroll = ClientFunction(function() {
-    window.scrollBy(0,1000)
+const scrollBy = ClientFunction(() => {
+    window.scrollBy(0, 1000);
 });
 
 test('Test', async t => {
-    await browserscroll();
+      await scrollBy();
 });
 ```

@@ -157,7 +157,7 @@ const sel = Selector('div').child();
 </html>
 ```
 
-The expression, associated with a selector is evaluated when this selector is used, not when it is declared. If page's content changes, subsequent selectors are reevaluated.
+The selector's value evaluates when you call this selector, not when you declare it. If the page's contents change since you've declared the selector, it can point to another element or none.
 
 ```js
 test('Click a button', async t => {
@@ -182,7 +182,7 @@ test('Click a button', async t => {
 </html>
 ```
 
-This sample page contains three buttons. When clicked, buttons' text changes. During the test, each [`.click`](../../../documentation/reference/test-api/testcontroller/click.md) affects what element the next selector points to. All 3 buttons receive clicks as a result.
+This sample page includes three buttons. When clicked, buttons' text changes. During the test, each [`.click`](../../../documentation/reference/test-api/testcontroller/click.md) affects what element the next selector points to. All 3 buttons receive clicks as a result.
 
 ## Member Tables
 
