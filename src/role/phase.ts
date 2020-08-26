@@ -1,7 +1,7 @@
 enum RolePhase {
-    uninitialized =         'uninitialized',
+    uninitialized = 'uninitialized',
     pendingInitialization = 'pendingInitialization',
-    initialized =           'initialized'
+    initialized = 'initialized'
 }
 
 export default RolePhase;

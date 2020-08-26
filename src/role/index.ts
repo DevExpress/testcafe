@@ -20,31 +20,33 @@ class Role extends EventEmitter {
     private readonly _initFn: Function | null;
     public opts: RoleOptions;
     public initErr: null | Error;
+    private _stateSnapshot: StateSnapshot;
 
-    constructor (loginUrl: string | null, initFn: Function | null, options = {}) {
+    public constructor (loginUrl: string | null, initFn: Function | null, options = {}) {
         super();
 
-        this[roleMarker]   = true;
-        this.id            = nanoid(7);
-        this.phase         = loginUrl ? RolePhase.uninitialized : RolePhase.initialized;
-        this.loginUrl      = loginUrl;
-        this._initFn       = initFn;
-        this.opts          = options;
-        this.redirectUrl   = null;
-        this.stateSnapshot = StateSnapshot.empty();
-        this.initErr       = null;
+        // @ts-ignore
+        this[roleMarker]    = true;
+        this.id             = nanoid(7);
+        this.phase          = loginUrl ? RolePhase.uninitialized : RolePhase.initialized;
+        this.loginUrl       = loginUrl;
+        this._initFn        = initFn;
+        this.opts           = options;
+        this.redirectUrl    = null;
+        this._stateSnapshot = StateSnapshot.empty();
+        this.initErr        = null;
     }
 
     private async _storeStateSnapshot (testRun: TestRun): Promise<void> {
         if (this.initErr)
             return;
 
-        this.stateSnapshot = await testRun.getStateSnapshot();
+        this._stateSnapshot = await testRun.getStateSnapshot();
     }
 
     private async _executeInitFn (testRun: TestRun): Promise<void> {
         try {
-            let fn = () => (this._initFn as Function)(testRun);
+            let fn = (): Promise<void> => (this._initFn as Function)(testRun);
 
             fn = testRun.decoratePreventEmitActionEvents(fn, { prevent: false });
             fn = testRun.decorateDisableDebugBreakpoints(fn, { disable: false });
@@ -71,24 +73,24 @@ class Role extends EventEmitter {
         this.emit('initialized');
     }
 
-    async setCurrentUrlAsRedirectUrl(testRun: TestRun): Promise<void> {
+    public async setCurrentUrlAsRedirectUrl (testRun: TestRun): Promise<void> {
         this.redirectUrl = await testRun.getCurrentUrl();
     }
 }
 
-export function createRole (loginPage: string, initFn: Function, options: RoleOptions = { preserveUrl: false}): Role {
-    assertType(is.string, 'Role', '"loginPage" argument', loginPage);
+export function createRole (loginUrl: string, initFn: Function, options: RoleOptions = { preserveUrl: false }): Role {
+    assertType(is.string, 'Role', '"loginUrl" argument', loginUrl);
     assertType(is.function, 'Role', '"initFn" argument', initFn);
 
     if (options.preserveUrl !== void 0)
         assertType(is.boolean, 'Role', '"preserveUrl" option', options.preserveUrl);
 
-    loginPage = resolvePageUrl(loginPage);
-    initFn    = wrapTestFunction(initFn);
+    loginUrl = resolvePageUrl(loginUrl);
+    initFn   = wrapTestFunction(initFn);
 
-    return new Role(loginPage, initFn, options);
+    return new Role(loginUrl, initFn, options);
 }
 
-export function createAnonymousRole () {
+export function createAnonymousRole (): Role {
     return new Role(null, null);
 }

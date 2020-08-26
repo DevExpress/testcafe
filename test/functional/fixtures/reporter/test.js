@@ -440,9 +440,9 @@ describe('Reporter', () => {
                             action:  'done',
                             command: {
                                 role: {
-                                    loginPage: 'http://localhost:3000/fixtures/reporter/pages/index.html',
-                                    options:   { preserveUrl: true },
-                                    phase:     'initialized'
+                                    loginUrl: 'http://localhost:3000/fixtures/reporter/pages/index.html',
+                                    options:  { preserveUrl: true },
+                                    phase:    'initialized'
                                 },
                                 type: 'useRole'
                             }
@@ -505,9 +505,9 @@ describe('Reporter', () => {
                             action:  'done',
                             command: {
                                 role: {
-                                    loginPage: 'http://localhost:3000/fixtures/reporter/pages/index.html',
-                                    options:   {},
-                                    phase:     'initialized'
+                                    loginUrl: 'http://localhost:3000/fixtures/reporter/pages/index.html',
+                                    options:  {},
+                                    phase:    'initialized'
                                 },
                                 type: 'useRole'
                             },
@@ -547,9 +547,9 @@ describe('Reporter', () => {
                             action:  'done',
                             command: {
                                 role: {
-                                    loginPage: 'http://localhost:3000/fixtures/reporter/pages/index.html',
-                                    options:   {},
-                                    phase:     'initialized'
+                                    loginUrl: 'http://localhost:3000/fixtures/reporter/pages/index.html',
+                                    options:  {},
+                                    phase:    'initialized'
                                 },
                                 type: 'useRole'
                             }

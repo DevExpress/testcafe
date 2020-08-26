@@ -673,9 +673,9 @@ module.exports = [
         name:    'useRole',
         command: {
             role: {
-                loginPage: 'http://example.com',
-                options:   { preserveUrl: true },
-                phase:     'uninitialized'
+                loginUrl: 'http://example.com',
+                options:  { preserveUrl: true },
+                phase:    'uninitialized'
             },
             type: 'useRole'
         },

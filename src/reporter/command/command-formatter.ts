@@ -93,9 +93,9 @@ export class CommandFormatter {
     }
 
     private _prepareRole (command: Command): object {
-        const { loginPage, opts, phase } = command.role;
+        const { loginUrl, opts, phase } = command.role;
 
-        return { loginPage, options: opts, phase };
+        return { loginUrl, options: opts, phase };
     }
 
     private _prepareUrl (command: Command): string {
