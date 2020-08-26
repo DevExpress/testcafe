@@ -32,8 +32,6 @@ testingEnvironments[testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers] = {
         accessKey: process.env.BROWSER_STACK_ACCESS_KEY
     },
 
-    retryTestPages: true,
-
     ssl: {
         cert: process.env.SSL_CERT,
         key:  process.env.SSL_PKEY
@@ -72,8 +70,6 @@ testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
         cert: process.env.SSL_CERT,
         key:  process.env.SSL_PKEY
     },
-
-    retryTestPages: true,
 
     browsers: [
         {
