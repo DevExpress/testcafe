@@ -5,9 +5,121 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 21 Aug 2020 17:45:09 +0300</pubDate>
-    <lastBuildDate>Fri, 21 Aug 2020 17:45:09 +0300</lastBuildDate>
+    <pubDate>Wed, 26 Aug 2020 20:14:20 +0300</pubDate>
+    <lastBuildDate>Wed, 26 Aug 2020 20:14:20 +0300</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>How to handle multiple windows</title>
+        <description>&lt;h1&gt;Introducing Multi-window Tests (Beta)&lt;/h1&gt;
+&lt;p&gt;Modern web apps often launch new browser windows to authenticate users through third-party websites or display additional interactive content.&lt;/p&gt;
+
+&lt;p&gt;TestCafe v1.9.0 introduces partial support for multi-window tests. You can now use client-side calls to open and close browser windows. The updated API includes additional window management methods. During the &amp;#39;beta&amp;#39; stage, this functionality is only enabled in local instances of Chrome and Firefox. Keep in mind that this feature is not ready for use in production environments. Both the syntax and capabilities are subject to change.&lt;/p&gt;
+
+&lt;!--more--&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;client-side-window-events&quot;&gt;&lt;/a&gt;Client-side window events &lt;a class=&quot;permalink&quot; href=&quot;#client-side-window-events&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;The TestCafe browser automation driver detects and automatically activates newly launched windows. After the content is loaded, and all asynchronous requests are resolved, the test continues in the new window. When that window is closed, TestCafe switches back to the parent window and resumes the test.&lt;/p&gt;
+
+&lt;p&gt;The sample code below demonstrates an OAuth login scenario. Lines &lt;code&gt;8&lt;/code&gt; through &lt;code&gt;10&lt;/code&gt; run in the external OAuth window.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Login via &amp;lt;Service Name&amp;gt;&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;https://my-page&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Should log in via &amp;lt;Service Name&amp;gt;&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;click&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#login-popup&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;typeText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#username&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;username&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;typeText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#pass&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;mySecret&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;click&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#submit&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#user&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;textContent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;eql&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Hello %Username%!&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//Make sure we are logged in&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;/testcafe/images/blog/2020-8-26-multi-window-scheme-auto-switching.svg&quot; alt=&quot;A scheme that illustrates automatic window switching&quot; title=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;You do not need to write extra code to create basic multi-window tests. When you need to arbitrarily open, close and switch between windows, use the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/multiple-browser-windows.html&quot;&gt;TestCafe API&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;switch-between-windows&quot;&gt;&lt;/a&gt;Switch between windows &lt;a class=&quot;permalink&quot; href=&quot;#switch-between-windows&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;The &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/switchtopreviouswindow.html&quot;&gt;t.switchToPreviousWindow&lt;/a&gt; method activates the last active window. If you only have two windows open, this method will cycle between them. This is useful in a variety of scenarios.&lt;/p&gt;
+
+&lt;p&gt;Imagine, for example, that you&amp;#39;re testing a real estate listings website. You want to make sure that once a new property is added, it appears in the window with all available listings. The following test implements this scenario:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Property List&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;https://url.com/properties&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Open the listings page&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Check the property list&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;openWindow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;https://url.com/addnewproperty&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Open the 'add new property' page in a new window&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;click&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#make-public&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Publish the listing&lt;/span&gt;
+
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;switchToPreviousWindow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Go back to the listings page&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;.property-list li&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;textContent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;eql&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;New &lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Check if the new listing is displayed&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;/testcafe/images/blog/2020-8-26-multi-window-scheme-switchtowindow-scenario.svg&quot; alt=&quot;A scheme that illustrates switching between windows&quot; title=&quot;&quot;&gt;&lt;/p&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;manage-multiple-windows&quot;&gt;&lt;/a&gt;Manage multiple windows &lt;a class=&quot;permalink&quot; href=&quot;#manage-multiple-windows&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Test scenarios with more than two open windows require more precision. The &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/switchtowindow.html&quot;&gt;t.switchToWindow&lt;/a&gt; method can activate any open browser window if you pass a window descriptor object or a predicate function with the window description.&lt;/p&gt;
+
+&lt;p&gt;To obtain a window descriptor, call the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/getcurrentwindow.html&quot;&gt;t.getCurrentWindow&lt;/a&gt; method or save the return value when you open a new window.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;windowDesc&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;openWindow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;https://devexpress.github.io/testcafe/&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;switchToWindow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;windowDesc&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The predicate function must contain a description of the window&amp;#39;s URL or title. The URL object has the same structure as its &lt;a href=&quot;https://nodejs.org/api/url.html&quot;&gt;Node.JS counterpart&lt;/a&gt;.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;openWindow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;https://devexpress.github.io/testcafe/&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;switchToWindow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(({&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;pathname&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;/testcafe&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Imagine you are debugging a task manager app. To ensure that both the task list and the notification feed are updated in real time, use the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/switchtowindow.html&quot;&gt;t.switchToWindow&lt;/a&gt; method.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Tasks View&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;https://url.com/add-task&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;  
+
+&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Add a new task&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;  
+    &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;openWindow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;https://url.com/tasks&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Open a new window with the task list&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;openWindow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;https://url.com/feed&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Open the notification feed&lt;/span&gt;
+
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;switchToWindow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(({&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;pathname&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;/add-task&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Go back to the new task form&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;typeText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#task-description&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Redesign the landing page by 1 Feb&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Fill in the new task form&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;click&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#submit-task&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Submit the task&lt;/span&gt;
+
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;switchToWindow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(({&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;pathname&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;/tasks&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Switch back to the task list&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;.task-item&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;eql&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Check if the new task is displayed&lt;/span&gt;
+
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;switchToWindow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(({&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;url&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;pathname&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;feed&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Switch to the notification feed&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;.message&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;textContent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;eql&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Redesign the landing page by 1 Feb&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// Check for the corresponding notification&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;/testcafe/images/blog/2020-8-26-multi-window-scheme-task-manager.svg&quot; alt=&quot;A scheme that illustrates the task manager example&quot; title=&quot;&quot;&gt;&lt;/p&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;api-overview&quot;&gt;&lt;/a&gt;API overview &lt;a class=&quot;permalink&quot; href=&quot;#api-overview&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;The updated API includes a number of useful window management methods.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/openwindow.html&quot;&gt;t.openWindow(url)&lt;/a&gt; opens a new window and points it to the specified URL.&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/getcurrentwindow.html&quot;&gt;t.getCurrentWindow()&lt;/a&gt; obtains the window descriptor that corresponds to the active window.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/switchtowindow.html#tswitchtowindowwindow&quot;&gt;t.switchToWindow(windowDescriptor)&lt;/a&gt; activates the window that corresponds to the window descriptor.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/switchtowindow.html#tswitchtowindowpredicate&quot;&gt;t.switchToWindow(predicate)&lt;/a&gt; uses the predicate function to find a matching window, and activates it. The predicate can include the window&amp;#39;s title and URL.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/switchtoparentwindow.html&quot;&gt;t.switchToParentWindow()&lt;/a&gt; activates the parent of the active window.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/switchtopreviouswindow.html&quot;&gt;t.switchToPreviousWindow()&lt;/a&gt; activates the last active window.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/closewindow.html&quot;&gt;t.closeWindow()&lt;/a&gt; closes the active window.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/closewindow.html&quot;&gt;t.closeWindow(windowDescriptor)&lt;/a&gt; closes the window that corresponds to the window descriptor.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;try-the-new-api-and-let-us-know-what-you-think&quot;&gt;&lt;/a&gt;Try the new API and let us know what you think &lt;a class=&quot;permalink&quot; href=&quot;#try-the-new-api-and-let-us-know-what-you-think&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;To try the functionality described in this article:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Install TestCafe version 1.9.0 or later;&lt;/li&gt;
+&lt;li&gt;Create a test scenario that incorporates more than one browser window;&lt;/li&gt;
+&lt;li&gt;Include the window management methods from this article in the test.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The TestCafe team is proud to create API that realistically model user behavior. If you find that the new window management capabilities can be modified to better serve your needs, please let us know. Submit your feedback and bug reports to &lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/new/choose&quot;&gt;our GitHub repository&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Refer to the TestCafe help topics for additional information about these methods.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 26 Aug 2020 00:00:00 +0300</pubDate>
+        <link>https://devexpress.github.io/testcafe/media/team-blog/introducing-multi-window-tests-beta.html</link>
+        <guid isPermaLink="true">https://devexpress.github.io/testcafe/media/team-blog/introducing-multi-window-tests-beta.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>Upcoming Webinar: The Fastest Way to Your Next Test – TestCafe + TestCafe Studio</title>
@@ -1005,130 +1117,6 @@ Yes, if test actions on the page trigger file download, the browser will downloa
         <pubDate>Fri, 17 Jan 2020 00:00:00 +0300</pubDate>
         <link>https://devexpress.github.io/testcafe/blog/testcafe-v1-8-0-released.html</link>
         <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v1-8-0-released.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>TestCafe v1.7.0 Released</title>
-        <description>&lt;h1&gt;TestCafe v1.7.0 Released&lt;/h1&gt;
-&lt;p&gt;This release introduces access to the browser and platform information from test code.&lt;/p&gt;
-
-&lt;!--more--&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;identify-the-browser-and-platform-in-test-code-481&quot;&gt;&lt;/a&gt;⚙️ Identify the Browser and Platform in Test Code (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/481&quot;&gt;#481&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#identify-the-browser-and-platform-in-test-code-481&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;TestCafe now allows you to obtain information about the current user agent. These data identify the operating system, platform type, browser, engine, etc.&lt;/p&gt;
-
-&lt;p&gt;Use the &lt;a href=&quot;../documentation/reference/test-api/testcontroller/browser.html&quot;&gt;t.browser&lt;/a&gt; property to access user agent data.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;testcafe&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`My fixture`&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`https://example.com`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;My test&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;browser&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!==&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Chrome&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;div&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;withText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Browser not supported&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;visible&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ok&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;The &lt;a href=&quot;../documentation/reference/test-api/testcontroller/browser.html&quot;&gt;t.browser&lt;/a&gt; object exposes the following properties:&lt;/p&gt;
-&lt;div class=&quot;table-wrapper&quot;&gt;&lt;table&gt;&lt;thead&gt;&lt;tr&gt;
-&lt;th&gt;Property&lt;/th&gt;
-&lt;th&gt;Type&lt;/th&gt;
-&lt;th&gt;Description&lt;/th&gt;
-&lt;th&gt;Example&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;&lt;tbody&gt;&lt;tr&gt;
-&lt;td&gt;&lt;a href=&quot;../documentation/reference/test-api/testcontroller/browser.html#alias&quot;&gt;alias&lt;/a&gt;&lt;/td&gt;
-&lt;td&gt;String&lt;/td&gt;
-&lt;td&gt;The browser alias string specified when tests were launched.&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;firefox:headless&lt;/code&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;a href=&quot;../documentation/reference/test-api/testcontroller/browser.html#name&quot;&gt;name&lt;/a&gt;&lt;/td&gt;
-&lt;td&gt;String&lt;/td&gt;
-&lt;td&gt;The browser name.&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;Chrome&lt;/code&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;a href=&quot;../documentation/reference/test-api/testcontroller/browser.html#version&quot;&gt;version&lt;/a&gt;&lt;/td&gt;
-&lt;td&gt;String&lt;/td&gt;
-&lt;td&gt;The browser version.&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;77.0.3865.120&lt;/code&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;a href=&quot;../documentation/reference/test-api/testcontroller/browser.html#platform&quot;&gt;platform&lt;/a&gt;&lt;/td&gt;
-&lt;td&gt;String&lt;/td&gt;
-&lt;td&gt;The platform type.&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;desktop&lt;/code&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;a href=&quot;../documentation/reference/test-api/testcontroller/browser.html#headless&quot;&gt;headless&lt;/a&gt;&lt;/td&gt;
-&lt;td&gt;Boolean&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;true&lt;/code&gt; if the browser runs in headless mode.&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;false&lt;/code&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;a href=&quot;../documentation/reference/test-api/testcontroller/browser.html#os&quot;&gt;os&lt;/a&gt;&lt;/td&gt;
-&lt;td&gt;Object&lt;/td&gt;
-&lt;td&gt;The name and version of the operating system.&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;{ name: &amp;#39;macOS&amp;#39;, version: &amp;#39;10.15.1&amp;#39; }&lt;/code&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;a href=&quot;../documentation/reference/test-api/testcontroller/browser.html#engine&quot;&gt;engine&lt;/a&gt;&lt;/td&gt;
-&lt;td&gt;Object&lt;/td&gt;
-&lt;td&gt;The name and version of the browser engine.&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;{ name: &amp;#39;Gecko&amp;#39;, version: &amp;#39;20100101&amp;#39; }&lt;/code&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;a href=&quot;../documentation/reference/test-api/testcontroller/browser.html#useragent&quot;&gt;userAgent&lt;/a&gt;&lt;/td&gt;
-&lt;td&gt;String&lt;/td&gt;
-&lt;td&gt;The user agent string.&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/77.0.3865.120 Safari/537.36&lt;/code&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;a href=&quot;../documentation/reference/test-api/testcontroller/browser.html#prettyuseragent&quot;&gt;prettyUserAgent&lt;/a&gt;&lt;/td&gt;
-&lt;td&gt;String&lt;/td&gt;
-&lt;td&gt;Formatted string with the browser&amp;#39;s and operating system&amp;#39;s name and version.&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;Chrome 77.0.3865.75 / macOS 10.14.0&lt;/code&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;
-&lt;p&gt;The following example shows how to create a &lt;a href=&quot;../documentation/reference/test-api/fixture/beforeeach.html&quot;&gt;beforeEach&lt;/a&gt; hook that runs for specific &lt;a href=&quot;../documentation/reference/test-api/testcontroller/browser.html#engine&quot;&gt;browser engines&lt;/a&gt;.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;testcafe&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`My fixture`&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`https://example.com`&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;beforeEach&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;browser&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;engine&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Blink&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;You can also use &lt;a href=&quot;../documentation/reference/test-api/testcontroller/browser.html&quot;&gt;t.browser&lt;/a&gt; to generate the screenshot path based on the &lt;a href=&quot;../documentation/reference/test-api/testcontroller/browser.html#name&quot;&gt;browser name&lt;/a&gt;. This prevents screenshots taken with &lt;a href=&quot;../documentation/reference/test-api/testcontroller/takeelementscreenshot.html&quot;&gt;t.takeElementScreenshot&lt;/a&gt; in different browsers from being overwritten.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;testcafe&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`My fixture`&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`https://example.com`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;My test&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;loginButton&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;div&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;withText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Login&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;takeElementScreenshot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;loginButton&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`auth/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;browser&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;/login-button.png`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;For more information and examples, see &lt;a href=&quot;../documentation/guides/advanced-guides/detect-the-client-browser-and-platform.html&quot;&gt;Identify the Browser and Platform&lt;/a&gt;.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Fixed an error on pages that submit forms immediately after loading (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/4360&quot;&gt;#4360&lt;/a&gt; by &lt;a href=&quot;https://github.com/bill-looby-i&quot;&gt;@bill-looby-i&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;TestCafe now scrolls to elements located inside Shadow DOM roots (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/4222&quot;&gt;#4222&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed an error that occurred when TypeScripts tests that use Node.js globals were run with TestCafe installed globally (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/4437&quot;&gt;#4437&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed the TypeScript definition for the &lt;code&gt;Selector.withAttribute&lt;/code&gt; method&amp;#39;s return type (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/4448&quot;&gt;#4448&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed an issue when custom browser providers could not take screenshots (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/4477&quot;&gt;#4477&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Support pages that use advanced ES6 module export (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2137&quot;&gt;testcafe-hammerhead/#2137&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed compatibility issues with Salesforce Lightning Web Components (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2152&quot;&gt;testcafe-hammerhead/#2152&lt;/a&gt;)&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Thu, 21 Nov 2019 00:00:00 +0300</pubDate>
-        <link>https://devexpress.github.io/testcafe/blog/testcafe-v1-7-0-released.html</link>
-        <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v1-7-0-released.html</guid>
         
         
       </item>
