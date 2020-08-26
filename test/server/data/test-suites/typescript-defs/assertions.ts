@@ -20,3 +20,27 @@ test(".notContains", async t => {
         .expect([42, 34] as number []).notContains(13)
         .expect({ ans: 42, foo: "bar" }).notContains({ foo: "baz" })
 });
+
+test(".typeOf", async t => {
+    await t
+        .expect((() => true)).typeOf('function')
+        .expect({}).typeOf('object')
+        .expect(1).typeOf('number')
+        .expect('string').typeOf('string')
+        .expect(true).typeOf('boolean')
+        .expect(undefined).typeOf('undefined')
+        .expect(null).typeOf('null')
+        .expect(/regex/).typeOf('regex')
+});
+
+test(".notTypeOf", async t => {
+    await t
+        .expect('function').typeOf('function')
+        .expect('object').typeOf('object')
+        .expect('number').typeOf('number')
+        .expect(1).typeOf('string')
+        .expect('boolean').typeOf('boolean')
+        .expect('undefined').typeOf('undefined')
+        .expect('null').typeOf('null')
+        .expect('regex').typeOf('regex')
+});
