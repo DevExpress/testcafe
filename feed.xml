@@ -5,12 +5,12 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 26 Aug 2020 20:14:20 +0300</pubDate>
-    <lastBuildDate>Wed, 26 Aug 2020 20:14:20 +0300</lastBuildDate>
+    <pubDate>Wed, 26 Aug 2020 20:20:30 +0300</pubDate>
+    <lastBuildDate>Wed, 26 Aug 2020 20:20:30 +0300</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
-        <title>How to handle multiple windows</title>
+        <title>Introducing Multi-window Tests (Beta)</title>
         <description>&lt;h1&gt;Introducing Multi-window Tests (Beta)&lt;/h1&gt;
 &lt;p&gt;Modern web apps often launch new browser windows to authenticate users through third-party websites or display additional interactive content.&lt;/p&gt;
 
