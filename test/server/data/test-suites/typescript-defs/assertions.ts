@@ -35,12 +35,12 @@ test(".typeOf", async t => {
 
 test(".notTypeOf", async t => {
     await t
-        .expect('function').typeOf('function')
-        .expect('object').typeOf('object')
-        .expect('number').typeOf('number')
-        .expect(1).typeOf('string')
-        .expect('boolean').typeOf('boolean')
-        .expect('undefined').typeOf('undefined')
-        .expect('null').typeOf('null')
-        .expect('regex').typeOf('regex')
+        .expect('function').notTypeOf('function')
+        .expect('object').notTypeOf('object')
+        .expect('number').notTypeOf('number')
+        .expect(1).notTypeOf('string')
+        .expect('boolean').notTypeOf('boolean')
+        .expect('undefined').notTypeOf('undefined')
+        .expect('null').notTypeOf('null')
+        .expect('regex').notTypeOf('regex')
 });
