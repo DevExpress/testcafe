@@ -231,7 +231,7 @@ export default class Driver extends serviceUtils.EventEmitter {
 
     async _getReadyPromise () {
         if (this.retryTestPages)
-            await browser.enableRetryingTestPages();
+            browser.enableRetryingTestPages();
 
         await eventUtils.documentReady(this.pageLoadTimeout);
 
