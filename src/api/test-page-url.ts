@@ -34,12 +34,12 @@ export function assertUrl (url: string, callsiteName: string): void {
         throw new APIError(callsiteName, RUNTIME_ERRORS.unsupportedUrlProtocol, url, protocol && protocol[0]);
 }
 
-export function resolvePageUrl (url: string, testFileName: string): string {
+export function resolvePageUrl (url: string, testFileName?: string): string {
     if (SUPPORTED_PROTOCOL_RE.test(url) || url === SPECIAL_BLANK_PAGE)
         return url;
 
     if (isAbsolutePath(url) || RELATIVE_PATH_RE.test(url))
-        return resolveFileUrl(url, testFileName);
+        return resolveFileUrl(url, testFileName as string);
 
     const protocol = IMPLICIT_PROTOCOL_RE.test(url) ? 'http:' : 'http://';
 
