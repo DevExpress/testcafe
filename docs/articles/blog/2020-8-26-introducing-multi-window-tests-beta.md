@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Introducing Multi-window Tests (Beta)"
+title: "How to handle multiple windows"
 permalink: /media/team-blog/:title.html
 isTeamBlog: true
 author: Boris Kirov, Eugene Titerman
