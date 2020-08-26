@@ -188,14 +188,14 @@ First, provide your credentials by exporting them:
 
 ```sh
 export BROWSERSTACK_USERNAME="<your_browserstack_username>"
-export BROWSERSTACK_ACCESS_KEY="<your_browserstack_acess_key>"
+export BROWSERSTACK_ACCESS_KEY="<your_browserstack_access_key>"
 ```
 
 **PowerShell**
 
 ```sh
 Set-Variable -Name "BROWSERSTACK_USERNAME" -Value "<your_browserstack_username>"
-Set-Variable -Name "BROWSERSTACK_ACCESS_KEY" -Value "<your_browserstack_acess_key>"
+Set-Variable -Name "BROWSERSTACK_ACCESS_KEY" -Value "<your_browserstack_access_key>"
 ```
 
 Then, run the following command in the console:

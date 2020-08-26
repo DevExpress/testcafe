@@ -358,9 +358,9 @@ TestCafe actions can interact with elements if they satisfy the following condit
 
 ### Download Files in IE
 
-TestCafe prevents native browser dialogs, including those before file download. In Internet Explorer, however, you should disable this dialog in browser settings, because it cannot be dismissed programmatically.
+TestCafe prevents native dialogs before file download in all browsers except Internet Explorer. This dialog prevents automatic file download but does not block the page.
 
-The following example shows how to download the file once you disable the dialog:
+The following example shows how to download the file despite the dialog:
 
 ```html
 <body>
@@ -370,43 +370,35 @@ The following example shows how to download the file once you disable the dialog
 </body>
 ```
 
-This sample page includes a button that downloads a file from the `/src` folder on the server. To obtain the file, use a [RequestHook](../../reference/test-api/requesthook/README.md):
+This sample page includes a button that downloads a file from the `/src` folder on the server. To obtain the file, use a [RequestLogger](../../reference/test-api/requestlogger/README.md):
 
 ```js
-import fs from 'fs';
-import { Selector, RequestHook } from 'testcafe';
+import { RequestLogger } from 'testcafe';
 
-class MyHook extends RequestHook {
-    constructor (requestFilterRules, responseEventConfigureOpts) {
-        super(requestFilterRules, responseEventConfigureOpts);
-    }
-
-    onRequest (event) {
-    }
-
-    onResponse (event) {
-        const path = 'downloadedFile.zip';
-
-        fs.writeFileSync(path, event.body);
-   }
-}
+const fileDownloadLogger = RequestLogger(new RegExp('src/file.zip'), {
+    logResponseBody: true,
+    stringifyResponseBody: true
+});
 
 fixture `fixture`
-    .page `https://localhost:5500/downloadPage.html`;
+    .page `./fileDownload.html`
+    .requestHooks(fileDownloadLogger);
 
-test.requestHooks(new MyHook({url: /.+\/src\/.+/, method: 'GET' } , {
-    includeHeaders: true,
-    includeBody:    true
-}))
+test(`Download a file and verify contents`, async t => {
 
-(`test`, async t => {  
-    await t.click(Selector('#downloadButton'));
+    await t
+        .click('#downloadButton')
 
-    await t.wait(10000);
+    await t
+        .expect(fileDownloadLogger.contains(r => {
+            return  /File contents here/.test(r.response.body) &&   //verify response body
+                    r.response.statusCode === 200;                  //verify response status code
+        }))
+        .ok()
 });
 ```
 
-This test introduces a custom `RequestHook` that intercepts `GET` requests to a location [defined with a regular expression](../../../templates/intercept-http-requests/request-filter.md#use-a-regular-expression-to-specify-the-url) and saves the response to the file system as `downloadedFile.zip`.
+This test introduces a `RequestLogger` that logs requests to a location and received responses. Location is [defined with a regular expression](../../../templates/intercept-http-requests/request-filter.md#use-a-regular-expression-to-specify-the-url). Stringified response body is then evaluated with a regular expression.
 
 ### Scroll an Element into View
 

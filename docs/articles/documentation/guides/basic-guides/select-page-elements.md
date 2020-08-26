@@ -70,7 +70,7 @@ You can use selectors to [inspect elements](#obtain-element-state), define [acti
 * [Use Selectors](#use-selectors)
   * [Check if an Element Exists](#check-if-an-element-exists)
   * [Obtain Element State](#obtain-element-state)
-    * [DOM Node Snapshot](#dom-node-snapshot)
+    * [DOM Node State](#dom-node-state)
   * [Define Action Targets](#define-action-targets)
   * [Define Assertion Actual Value](#define-assertion-actual-value)
 * [Selector Timeout](#selector-timeout)
@@ -277,9 +277,9 @@ test('Obtain Element State', async t => {
 });
 ```
 
-#### DOM Node Snapshot
+#### DOM Node State
 
-To use an object's state multiple times in the test, get the object that contains [all the data](../../reference/test-api/domnodestate.md) in one turnaround to the client. To obtain this object (*DOM Node Snapshot*), call the selector with the `await` keyword:
+To use an object's state multiple times in the test, get the object that contains [all the data](../../reference/test-api/domnodestate.md) in one turnaround to the client. To obtain this object (*DOM Node State*), call the selector with the `await` keyword:
 
 ```js
 import { Selector } from 'testcafe';
@@ -287,7 +287,7 @@ import { Selector } from 'testcafe';
 fixture `My fixture`
     .page `http://devexpress.github.io/testcafe/example/`;
 
-test('DOM Node Snapshot', async t => {
+test('DOM Node State', async t => {
     const sliderHandle         = Selector('#slider').child('span');
     const sliderHandleSnapshot = await sliderHandle();
 

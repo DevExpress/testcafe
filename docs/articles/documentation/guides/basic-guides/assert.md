@@ -142,7 +142,7 @@ Smart assertions auto-retry only works with:
 * [RequestLogger.count](../../reference/test-api/requestlogger/count.md) properties,
 * [RequestLogger.contains](../../reference/test-api/requestlogger/contains.md) properties.
 
-The auto retry feature does not work with [DOM node snapshot](./select-page-elements.md#dom-node-snapshot) properties. If you execute the selector as an asynchronous function, its value is immediately resolved, doesn't update and the corresponding test fails:
+The auto retry feature does not work with [DOM Node state](../../reference/test-api/domnodestate.md) properties. If you execute the selector as an asynchronous function, its value is immediately resolved, doesn't update and the corresponding test fails:
 
 **Example:**
 
