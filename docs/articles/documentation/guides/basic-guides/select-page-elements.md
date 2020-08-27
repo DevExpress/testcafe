@@ -664,7 +664,7 @@ test('Check Label HTML', async t => {
 });
 ```
 
-> Selector's property getters and client functions are asynchronous. If you need their resulting value in your code, use the `await` keyword.
+> Client functions and selector property getters are asynchronous. If you want to use their resulting values in your code, use the `await` keyword.
 >
 > However, you can omit `await` when you pass a selector property or a client function value into an [assertion](assert.md). In this instance, TestCafe uses its [Smart Assertion Query Mechanism](assert.md#smart-assertion-query-mechanism) to wait until the value is available. This makes your tests more stable.
 
