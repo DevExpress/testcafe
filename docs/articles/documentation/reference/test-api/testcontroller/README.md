@@ -31,6 +31,10 @@ The test runner uses the test controller to access the internal context required
 
 You may need to call the test API from outside the test code. For instance, your [page model](../../../guides/concepts/page-model.md) can contain methods that perform common operations used in different tests (e.g., authentication).
 
+> Promises, asynchronous functions, `setTimeout`/`setInterval` callbacks, and other asynchronous routines do not preserve the original stack frame. TestCafe cannot obtain the test controller instance from these routines.
+>
+> For this reason, use imported test controllers in a synchronous context.
+
 ```js
 import { Selector } from 'testcafe';
 
@@ -74,5 +78,3 @@ class Page {
 
 export default new Page();
 ```
-
-> You cannot use an imported test controller in Promises, asynchronous functions, `setTimeout`/`setInterval` callbacks, and other asynchronous routines. These routines do not preserve the original stack frame so that TestCafe cannot obtain the test controller instance.
