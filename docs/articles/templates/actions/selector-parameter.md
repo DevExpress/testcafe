@@ -42,7 +42,7 @@ You can pass any of the following objects as a `selector`.
     });
     ```
 
-* A [DOM node snapshot](/testcafe/documentation/guides/basic-guides/select-page-elements.html#dom-node-snapshot).
+* A [DOM node snapshot](/testcafe/documentation/guides/basic-guides/select-page-elements.html#dom-node-state).
 
     ```js
     import { Selector } from 'testcafe';

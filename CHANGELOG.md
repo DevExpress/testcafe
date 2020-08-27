@@ -3212,7 +3212,7 @@ Then, for each `label` element finds a parent that matches the `div.someClass` s
 ------
 
 Like in jQuery, if you request a [property](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/dom-node-state.html#members-common-across-all-nodes) of the matched set or try evaluate
-a [snapshot](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#dom-node-snapshot), the selector returns values for the first element in the set.
+a [snapshot](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#dom-node-state), the selector returns values for the first element in the set.
 
 ```js
 // Returns id of the first element in the set

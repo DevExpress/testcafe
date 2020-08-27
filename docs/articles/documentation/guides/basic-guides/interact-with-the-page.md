@@ -394,7 +394,7 @@ test(`Download a file and verify contents`, async t => {
 });
 ```
 
-This test introduces a `RequestLogger` that logs requests to a location and received responses. Location is [defined with a regular expression](../../../templates/intercept-http-requests/request-filter.md#use-a-regular-expression-to-specify-the-url). The response body is then checked with a regular expression.
+This test introduces a `RequestLogger` that logs requests to a location and received responses. Location is [defined with a regular expression](../../reference/test-api/requestlogger/constructor.md#use-a-regular-expression-to-specify-the-url). The response body is then checked with a regular expression.
 
 > The response body received from the server is binary. Use the `RequestLogger`'s [stringifyResponseBody option](../../reference/test-api/requestlogger/constructor.md) to convert it to a string.
 

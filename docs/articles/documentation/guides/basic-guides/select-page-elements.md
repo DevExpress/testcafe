@@ -161,7 +161,7 @@ The selector value is evaluated each time you :
 
 * use the selector for an action;
 * assert selector's properties;
-* call the selector directly in code to [get it's state](https://devexpress.github.io/testcafe/documentation/guides/basic-guides/select-page-elements.html#dom-node-snapshot);
+* call the selector directly in code to [get it's state](https://devexpress.github.io/testcafe/documentation/guides/basic-guides/select-page-elements.html#dom-node-state);
 
 If the page content changes after you have declared the selector, it may point to another element, or no element.
 
