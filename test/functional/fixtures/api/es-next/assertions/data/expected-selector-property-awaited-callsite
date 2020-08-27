@@ -1,7 +1,7 @@
-   171 |test('Await Selector property', async t => {
-   172 |    await t
-   173 |        .expect(Selector('#el1')).ok()
-   174 |        .expect(await Selector('#el1')).ok()
-   175 |        .expect(Selector('#el1').innerText).eql('')
- > 176 |        .expect(await Selector('#el1').innerText).eql('');
-   177 |});
+   183 |test('Await Selector property', async t => {
+   184 |    await t
+   185 |        .expect(Selector('#el1')).ok()
+   186 |        .expect(await Selector('#el1')).ok()
+   187 |        .expect(Selector('#el1').innerText).eql('')
+ > 188 |        .expect(await Selector('#el1').innerText).eql('');
+   189 |});

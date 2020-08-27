@@ -102,7 +102,7 @@ describe('[API] Assertions', function () {
         })
             .catch(function (errs) {
                 expect(errs[0]).contains('AssertionError: expected 42 to be above 42');
-                expect(errs[0]).contains('> 58 |        .expect(42).gt(42);');
+                expect(errs[0]).contains('> 70 |        .expect(42).gt(42);');
             });
     });
 
@@ -113,7 +113,7 @@ describe('[API] Assertions', function () {
         })
             .catch(function (errs) {
                 expect(errs[0]).contains('AssertionError: expected 42 to be at least 53');
-                expect(errs[0]).contains('> 65 |        .expect(42).gte(53);');
+                expect(errs[0]).contains('> 77 |        .expect(42).gte(53);');
             });
     });
 
@@ -124,7 +124,7 @@ describe('[API] Assertions', function () {
         })
             .catch(function (errs) {
                 expect(errs[0]).contains('AssertionError: expected 42 to be below 42');
-                expect(errs[0]).contains('> 71 |        .expect(42).lt(42);');
+                expect(errs[0]).contains('> 83 |        .expect(42).lt(42);');
             });
     });
 
@@ -135,7 +135,7 @@ describe('[API] Assertions', function () {
         })
             .catch(function (errs) {
                 expect(errs[0]).contains('AssertionError: expected 42 to be at most 12');
-                expect(errs[0]).contains('> 78 |        .expect(42).lte(12);');
+                expect(errs[0]).contains('> 90 |        .expect(42).lte(12);');
             });
     });
 
@@ -146,7 +146,7 @@ describe('[API] Assertions', function () {
         })
             .catch(function (errs) {
                 expect(errs[0]).contains('AssertionError: expected 4.5 to be within 4.6..7');
-                expect(errs[0]).contains('> 84 |        .expect(4.5).within(4.6, 7);');
+                expect(errs[0]).contains('>  96 |        .expect(4.5).within(4.6, 7);');
             });
     });
 
@@ -157,7 +157,7 @@ describe('[API] Assertions', function () {
         })
             .catch(function (errs) {
                 expect(errs[0]).contains('AssertionError: expected 2.3 to not be within 2..3');
-                expect(errs[0]).contains('> 90 |        .expect(2.3).notWithin(2, 3);');
+                expect(errs[0]).contains('> 102 |        .expect(2.3).notWithin(2, 3);');
             });
     });
 
@@ -168,7 +168,7 @@ describe('[API] Assertions', function () {
         })
             .catch(function (errs) {
                 expect(errs[0]).contains("AssertionError: expected 'yo' to match /[x,z]o/");
-                expect(errs[0]).contains("> 144 |        .expect('yo').match(/[x,z]o/);");
+                expect(errs[0]).contains("> 156 |        .expect('yo').match(/[x,z]o/);");
             });
     });
 
@@ -179,7 +179,7 @@ describe('[API] Assertions', function () {
         })
             .catch(function (errs) {
                 expect(errs[0]).contains("AssertionError: expected '42 hey' not to match /\\d+ hey/");
-                expect(errs[0]).contains("> 150 |        .expect('42 hey').notMatch(/\\d+ hey/);");
+                expect(errs[0]).contains("> 162 |        .expect('42 hey').notMatch(/\\d+ hey/);");
             });
     });
 
@@ -271,7 +271,7 @@ describe('[API] Assertions', function () {
         })
             .catch(function (errs) {
                 expect(errs[1]).contains('A call to an async function is not awaited.');
-                expect(errs[1]).contains('> 124 |    t.expect(42).eql(43); 125 |});');
+                expect(errs[1]).contains('> 136 |    t.expect(42).eql(43); 137 |});');
             });
     });
 
@@ -282,7 +282,7 @@ describe('[API] Assertions', function () {
         })
             .catch(function (errs) {
                 expect(errs[0]).contains('The "timeout" option is expected to be a positive integer, but it was string.');
-                expect(errs[0]).contains("> 128 |    await t.expect(42).eql(43, { timeout: 'hey' });");
+                expect(errs[0]).contains("> 140 |    await t.expect(42).eql(43, { timeout: 'hey' });");
             });
     });
 
@@ -303,7 +303,7 @@ describe('[API] Assertions', function () {
             .catch(errs => {
                 expect(errs.length).eql(1);
                 expect(errs[0]).to.contains('An assertion method is not specified.');
-                expect(errs[0]).to.contains('> 160 |    await t.expect();');
+                expect(errs[0]).to.contains('> 172 |    await t.expect();');
             });
     });
 });
