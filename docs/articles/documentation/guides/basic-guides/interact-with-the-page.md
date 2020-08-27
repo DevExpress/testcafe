@@ -289,7 +289,7 @@ Use resize window actions to maximize a browser window or resize it to fit a spe
 
 > Important! Window resize actions are not supported when you run tests in [remote browsers](../concepts/browsers.md#browsers-on-remote-devices).
 
-**Note**: these actions require .NET 4.0 or newer installed on Windows machines and an [ICCCM/EWMH-compliant window manager](https://en.wikipedia.org/wiki/Comparison_of_X_window_managers) on Linux.
+**Note**: These actions require a Windows machine with .NET 4.0 or newer, or a Linux machine with an [ICCCM/EWMH-compliant window manager](https://en.wikipedia.org/wiki/Comparison_of_X_window_managers).
 
 **Example**
 
@@ -360,7 +360,7 @@ TestCafe actions can interact with elements if they satisfy the following condit
 
 TestCafe prevents native dialogs before file download in all browsers except Internet Explorer. This dialog prevents automatic file download but does not block the page.
 
-The following example shows how to download the file despite the dialog:
+The following example shows how to ignore the dialog and download the file:
 
 ```html
 <body>
@@ -398,7 +398,9 @@ test(`Download a file and verify contents`, async t => {
 });
 ```
 
-This test introduces a `RequestLogger` that logs requests to a location and received responses. Location is [defined with a regular expression](../../../templates/intercept-http-requests/request-filter.md#use-a-regular-expression-to-specify-the-url). Stringified response body is then evaluated with a regular expression.
+This test introduces a `RequestLogger` that logs requests to a location and received responses. Location is [defined with a regular expression](../../../templates/intercept-http-requests/request-filter.md#use-a-regular-expression-to-specify-the-url). The response body is then evaluated with a regular expression.
+
+> The response body received from the server is binary. Use the `RequestLogger`'s [stringifyResponseBody option](../../reference/test-api/requestlogger/constructor.md) to convert it to a string.
 
 ### Scroll an Element into View
 

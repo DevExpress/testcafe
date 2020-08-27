@@ -55,7 +55,7 @@ This job runs on a GitHub-hosted virtual machine with the latest Windows version
 
 Github Actions uses the `macOS Catalina 10.15` virtual environment with *"System Integrity Protection"* enabled as `macos-latest`. With this setting enabled, TestCafe requires a screen recording permission, which is unobtainable programmatically. For this reason, TestCafe is unable to run tests locally on `macos-latest` in GitHub Actions.
 
-However, tests can run on macOS VMs if you connect the browser as remote.
+However, tests can run on macOS virtual machines if you connect the browser as remote.
 
 **Example**
 

@@ -136,7 +136,7 @@ This selector does the following:
 </html>
 ```
 
-If a selector matches multiple elements, the subsequent methods return results for all the elements. The following selector returns the child nodes of all `<div>` tags on the page, including their children and so on:
+If a selector matches multiple elements, the subsequent methods return results for all elements. The following selector returns the child nodes of all `<div>` tags on the page, including their children and their descendants:
 
 ```js
 const sel = Selector('div').child();

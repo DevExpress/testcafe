@@ -83,7 +83,7 @@ network connection speed, etc. In this case, if we perform assertions immediatel
 
 ![Asynchronous Functional Testing](../../../images/assertions/asynchronous-testing.png)
 
-An additional timeout is usually added when performing asynchronous functional tests.
+An additional timeout is usually added when you perform asynchronous functional tests.
 
 ![Asynchronous Functional Testing with Extra Waiting](../../../images/assertions/extra-waiting.png)
 
@@ -126,7 +126,7 @@ test('Button click', async t => {
 });
 ```
 
-The approach described above allows you to create stable tests with fast runtime and reduces the risk of errors.
+The solution described above allows you to create stable tests with improved runtime performance. It also reduces the risk of errors.
 
 You can specify the assertion query timeout in test code with the [options.timeout](#options) option.
 To set the timeout when you launch tests, pass the timeout value to the [runner.run](../../reference/testcafe-api/runner/run.md)
@@ -135,11 +135,11 @@ if you run TestCafe from the command line.
 
 ### Smart Assertion Limitations
 
-Smart assertions auto-retry only works with:
+Smart assertions auto-retry mechanism only works with:
 
-* Promises returned from [ClientFunctions](../../reference/test-api/clientfunction/README.md),
-* [Selector](../../reference/test-api/selector/README.md) properties,
-* [RequestLogger.count](../../reference/test-api/requestlogger/count.md) properties,
+* Promises returned from [ClientFunctions](../../reference/test-api/clientfunction/README.md);
+* [Selector](../../reference/test-api/selector/README.md) properties;
+* [RequestLogger.count](../../reference/test-api/requestlogger/count.md) properties;
 * [RequestLogger.contains](../../reference/test-api/requestlogger/contains.md) properties.
 
 The auto retry feature does not work with [DOM Node state](../../reference/test-api/domnodestate.md) properties. If you execute the selector as an asynchronous function, its value is immediately resolved, doesn't update and the corresponding test fails:

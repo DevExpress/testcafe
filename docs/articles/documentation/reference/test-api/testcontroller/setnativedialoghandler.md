@@ -26,7 +26,7 @@ Argument | Type   | Description
 `text`   | String | Text of the dialog message.
 `url`    | String | The URL of the page that invoked the dialog. Use it to determine if the dialog originated from the main window or an `<iframe>`.
 
-Once the handler is specified, it is triggered each time a native dialog appears in the test whether it originates from the main window or an `<iframe>`.
+Once specified, the handler fires each time a native dialog appears in the test. The dialog can originate from the main window or an `<iframe>`.
 You can specify a new handler at any moment by calling `t.setNativeDialogHandler` once again.
 If a native dialog appears when no handler is set, the test fails with an error.
 
