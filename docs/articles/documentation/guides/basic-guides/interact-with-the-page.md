@@ -327,7 +327,7 @@ On touch devices, TestCafe emulates touch events instead of mouse events.
 
 Mouse event | Touch event
 ----------- | -------------
-`mousemove` (when hovering or dragging) | `touchmove` (when dragging)
+`mousemove` (when you hover or drag) | `touchmove` (when you drag)
 `mousedown` | `touchstart`
 `mouseup`   | `touchend`
 
