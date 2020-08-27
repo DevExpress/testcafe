@@ -289,7 +289,7 @@ Use resize window actions to maximize a browser window or resize it to fit a spe
 
 > Important! Window resize actions are not supported when you run tests in [remote browsers](../concepts/browsers.md#browsers-on-remote-devices).
 
-**Note**: these actions require .NET 4.0 or newer installed on Windows machines and an [ICCCM/EWMH-compliant window manager](https://en.wikipedia.org/wiki/Comparison_of_X_window_managers) on Linux.
+**Note**: These actions require a Windows machine with .NET 4.0 or newer, or a Linux machine with an [ICCCM/EWMH-compliant window manager](https://en.wikipedia.org/wiki/Comparison_of_X_window_managers).
 
 **Example**
 
@@ -354,7 +354,51 @@ TestCafe actions can interact with elements if they satisfy the following condit
 
     TestCafe actions target the center of an element or a point specified by an action's `offsetX` and `offsetY` options. If another element obstructs the target point, the action is executed on the top element (for instance, the [t.click](../../reference/test-api/testcontroller/click.md) action clicks the element over it).
 
-### Example: Scroll an Element into View
+## Examples
+
+### Download Files in IE
+
+TestCafe cannot prevent native dialogs before file download in Internet Explorer. This dialog prevents automatic file download, but does not block the page.
+
+The following example shows how to ignore the dialog and download the file:
+
+```html
+<body>
+    <form method="get" action="./src/file.zip">
+        <button id="downloadButton" type="submit">Download!</button>
+     </form>
+</body>
+```
+
+This sample page includes a button that downloads a file from the `/src` folder on the server. To obtain the file, use a [RequestLogger](../../reference/test-api/requestlogger/README.md):
+
+```js
+import { RequestLogger } from 'testcafe';
+
+const fileDownloadLogger = RequestLogger(new RegExp('src/file.zip'), {
+    logResponseBody: true,
+    stringifyResponseBody: true
+});
+
+fixture `fixture`
+    .page `./fileDownload.html`
+    .requestHooks(fileDownloadLogger);
+
+test(`Download a file and verify contents`, async t => {
+    await t
+        .click('#downloadButton')
+        .expect(fileDownloadLogger.contains(r => {
+            return  /File contents here/.test(r.response.body) &&   //verify response body
+                    r.response.statusCode === 200;                  //verify response status code
+        })).ok()
+});
+```
+
+This test introduces a `RequestLogger` that logs requests to a location and received responses. Location is [defined with a regular expression](../../reference/test-api/requestlogger/constructor.md#use-a-regular-expression-to-specify-the-url). The response body is then checked with a regular expression.
+
+> The response body received from the server is binary. Use the `RequestLogger`'s [stringifyResponseBody option](../../reference/test-api/requestlogger/constructor.md) to convert it to a string.
+
+### Scroll an Element into View
 
 Since TestCafe scrolls to reach items that are on the page but not on-screen, the TestCafe API does not have a dedicated scroll action.
 

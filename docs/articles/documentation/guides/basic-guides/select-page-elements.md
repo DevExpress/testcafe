@@ -70,7 +70,7 @@ You can use selectors to [inspect elements](#obtain-element-state), define [acti
 * [Use Selectors](#use-selectors)
   * [Check if an Element Exists](#check-if-an-element-exists)
   * [Obtain Element State](#obtain-element-state)
-    * [DOM Node Snapshot](#dom-node-snapshot)
+    * [DOM Node State](#dom-node-state)
   * [Define Action Targets](#define-action-targets)
   * [Define Assertion Actual Value](#define-assertion-actual-value)
 * [Selector Timeout](#selector-timeout)
@@ -136,7 +136,7 @@ This selector does the following:
 </html>
 ```
 
-If a selector matches multiple elements, the subsequent methods return results for all the elements. For instance, the following selector returns the child nodes of all `<div>` tags on the page:
+If a selector matches multiple elements, the subsequent methods return results for all elements. The following selector returns the child nodes of all `<div>` tags on the page, including their children and their descendants:
 
 ```js
 const sel = Selector('div').child();
@@ -161,7 +161,7 @@ The selector value is evaluated each time you :
 
 * use the selector for an action;
 * assert selector's properties;
-* call the selector directly in code to [get it's state](https://devexpress.github.io/testcafe/documentation/guides/basic-guides/select-page-elements.html#dom-node-snapshot);
+* call the selector directly in code to [get it's state](#dom-node-state);
 
 If the page content changes after you have declared the selector, it may point to another element, or no element.
 
@@ -189,6 +189,10 @@ test('Click a button', async t => {
 ```
 
 This sample page includes three buttons. When clicked, the button text changes. During the test, each [`.click`](../../../documentation/reference/test-api/testcontroller/click.md) affects the next element to which the selector points. All three buttons receive clicks as a result.
+
+If a selector matches multiple elements, only the first matching element will be used for [actions](./interact-with-the-page.md) or when retrieving the [DOM Node State](../../reference/test-api/domnodestate.md). Use the [.nth](../../reference/test-api/selector/nth.md) method to iterate through other matching elements.
+
+You can use the [selector.count](../../reference/test-api/selector/count.md) property to retrieve the number of matched elements.
 
 ## Member Tables
 
@@ -273,9 +277,9 @@ test('Obtain Element State', async t => {
 });
 ```
 
-#### DOM Node Snapshot
+#### DOM Node State
 
-To use an object's state multiple times in the test, get the object that contains [all the data](../../reference/test-api/domnodestate.md) in one turnaround to the client. To obtain this object (*DOM Node Snapshot*), call the selector with the `await` keyword:
+To use an object's state multiple times in the test, get the object that contains [all data](../../reference/test-api/domnodestate.md) in one turnaround to the client. To obtain this object (*DOM Node State*), call the selector with the `await` keyword:
 
 ```js
 import { Selector } from 'testcafe';
@@ -283,7 +287,7 @@ import { Selector } from 'testcafe';
 fixture `My fixture`
     .page `http://devexpress.github.io/testcafe/example/`;
 
-test('DOM Node Snapshot', async t => {
+test('DOM Node State', async t => {
     const sliderHandle         = Selector('#slider').child('span');
     const sliderHandleSnapshot = await sliderHandle();
 
@@ -605,6 +609,8 @@ test('Title changed', async t => {
 Use this approach for Node.js callbacks that fire during the test run. To ensure that the test function
 does not finish before the callback is executed, suspend the test until the callback fires. For instance, you can introduce a Promise and wait until it completes synchronously, as shown in the example above.
 
+> The `boundTestRun` option requires the same test controller instance that is passed to the function used in the test declaration. It cannot work with imported test controllers.
+
 ## Limitations
 
 Selectors do not support the following syntax and capabilities:
@@ -914,6 +920,37 @@ test('My test', async t => {
     const item      = Selector('[id|="item"]');
 });
 ```
+
+### Select Elements That Contain Special Characters
+
+If your page contains [HTML symbols](https://www.w3schools.com/html/html_symbols.asp) or [HTML entities](https://www.w3schools.com/html/html_entities.asp) (e.g., `&nbsp;`, newline chars), use their [unicode counterparts](https://www.rapidtables.com/code/text/unicode-characters.md) in [Selector.WithText](../../reference/test-api/selector/withtext.md) and [Selector.WithExactText](../../reference/test-api/selector/withexacttext.md).
+
+**Example**
+
+```html
+<html>
+    <body>
+        <p>Click&nbsp;me</p>
+    </body>
+</html>
+```
+
+```js
+import { Selector } from 'testcafe';
+
+fixture `My fixture`
+    .page `http://localhost/`;
+
+test('My test', async t => {
+    const sel = await Selector('p').withText('Click&nbsp;me') //typed representation, not supported
+    const sel = await Selector('p').withText('Click\u00a0me') //unicode representation, works
+    const sel = await Selector('p').withText('Click\xa0me') //hexadecimal representation, works
+    const sel = await Selector('p').withText('Click\160me') //decimal representation introduced with an octal escape sequence;
+                                                            // not supported because tests are executed in strict mode
+});
+```
+
+> Important! In [JS "Strict mode"](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode) octal escape sequences inside strings do not work and produce a syntax error.
 
 ### Have a different use case?
 

@@ -25,11 +25,15 @@ test('My Test', async t => {
 });
 ```
 
-The test runner also uses the test controller to access the internal context required for the test API to operate. When you call [selectors](../../../guides/basic-guides/select-page-elements.md) and [client functions](../../../guides/basic-guides/obtain-client-side-info.md) from Node.js callbacks, pass the test controller explicitly, because the API cannot retrieve it from the context.
+The test runner uses the test controller to access the internal context required for the test API to operate. When you call [selectors](../../../guides/basic-guides/select-page-elements.md) and [client functions](../../../guides/basic-guides/obtain-client-side-info.md) from Node.js callbacks, pass the test controller explicitly, because the API cannot retrieve it from the context.
 
-## Implicit Test Controller Usage
+## Implicit Test Controller Use
 
-In certain scenarios, you may need to call the test API from outside the test code. For instance, your [page model](../../../guides/concepts/page-model.md) can contain methods that perform common operations used in different tests (like authentication).
+You may need to call the test API from outside the test code. For instance, your [page model](../../../guides/concepts/page-model.md) can contain methods that perform common operations used in different tests (e.g., authentication).
+
+> Promises, asynchronous functions, `setTimeout`/`setInterval` callbacks, and other asynchronous routines do not preserve the original stack frame. TestCafe cannot obtain the test controller instance from these routines.
+>
+> For this reason, use imported test controllers in a synchronous context.
 
 ```js
 import { Selector } from 'testcafe';
@@ -53,7 +57,7 @@ export default new Page();
 
 In this example, the page model's `login` method uses the test controller to perform authentication actions.
 
-TestCafe can implicitly resolve the test context when you import the test controller, so you do not have to pass the test controller object explicitly.
+You do not have to pass the test controller object explicitly. TestCafe can implicitly resolve the test context when you import the test controller.
 
 ```js
 import { Selector, t } from 'testcafe';

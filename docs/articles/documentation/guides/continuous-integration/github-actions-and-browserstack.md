@@ -51,7 +51,7 @@ jobs:
 
 This job runs on a GitHub-hosted virtual machine with the latest Windows version. `test` is the [job ID](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_id) that must be unique to the `jobs` object.
 
-> You can use a GitHub-hosted virtual machine with any base OS to run tests. For simplicity, all examples listed here run on `windows-latest`.
+> You can use a GitHub-hosted virtual machine with a variety of operating systems to access remote browsers, as listed on the following page: [GitHub Docs](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on). For simplicity, all examples in this article run on `windows-latest`.
 
 Alternatively, you can [**host your own runners**](https://docs.github.com/en/actions/hosting-your-own-runners/about-self-hosted-runners) for the job. This gives you more precise control over the environment.
 
@@ -179,7 +179,7 @@ jobs:
 
 {% endraw %}
 
-> Note the additional pair of single quotes. The BrowserStack configuration string includes a space, which can be interpreted as a separator by the command line.
+> Note the additional pair of single quotes in the `args` section. The BrowserStack configuration string includes a space, which can be interpreted as a separator by the command line.
 
 **Note**: A full list of available BrowserStack configurations can be obtained through the console.
 First, provide your credentials by exporting them:
@@ -188,14 +188,14 @@ First, provide your credentials by exporting them:
 
 ```sh
 export BROWSERSTACK_USERNAME="<your_browserstack_username>"
-export BROWSERSTACK_ACCESS_KEY="<your_browserstack_acess_key>"
+export BROWSERSTACK_ACCESS_KEY="<your_browserstack_access_key>"
 ```
 
 **PowerShell**
 
 ```sh
 Set-Variable -Name "BROWSERSTACK_USERNAME" -Value "<your_browserstack_username>"
-Set-Variable -Name "BROWSERSTACK_ACCESS_KEY" -Value "<your_browserstack_acess_key>"
+Set-Variable -Name "BROWSERSTACK_ACCESS_KEY" -Value "<your_browserstack_access_key>"
 ```
 
 Then, run the following command in the console:

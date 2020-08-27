@@ -135,7 +135,7 @@ Client functions need access to the [test controller](../../reference/test-api/t
 However, if you need to call a client function from a Node.js callback that fires during a test run,
 you need to manually bind this function to the test controller.
 
-You can use the `boundTestRun` option to do this.
+You can use the [boundTestRun](../../reference/test-api/clientfunction/constructor.md#optionsboundtestrun) option to do this.
 
 ```js
 import fs from 'fs';
@@ -163,6 +163,10 @@ test('Check client data', async t => {
 
 This approach only works for Node.js callbacks that fire during a test run. To ensure that the test function
 does not finish before the callback, suspend the test until the callback fires. You can introduce a promise and synchronously wait for it to complete, as shown in the example above.
+
+> The `boundTestRun` option requires the same test controller instance that is passed to the function used in the test declaration. It cannot work with imported test controllers.
+>
+> For more information on imported test controllers, refer to the following section: [Implicit Test Controller Use](../../reference/test-api/testcontroller/README.md#implicit-test-controller-use).
 
 ## Client Function Limitations
 

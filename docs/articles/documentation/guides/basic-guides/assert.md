@@ -83,7 +83,7 @@ network connection speed, etc. In this case, if we perform assertions immediatel
 
 ![Asynchronous Functional Testing](../../../images/assertions/asynchronous-testing.png)
 
-An additional timeout is usually added when performing asynchronous functional tests.
+An additional timeout is usually added when you perform asynchronous functional tests.
 
 ![Asynchronous Functional Testing with Extra Waiting](../../../images/assertions/extra-waiting.png)
 
@@ -104,16 +104,11 @@ within a timeout:
 The following web page is an example:
 
 ```html
-<div id="btn"></div>
-<script>
-var btn = document.getElementById('btn');
-
-btn.addEventListener('click', function() {
-    window.setTimeout(function() {
-        btn.innerText = 'Loading...';
-    }, 100);
-});
-</script>
+<html>
+    <body>
+        <div id="btn" onclick="window.setTimeout(() => this.innerText = 'Loading...', 100)">Click me!</div>
+    </body>
+</html>
 ```
 
 Test code for this page can be as follows.
@@ -131,12 +126,51 @@ test('Button click', async t => {
 });
 ```
 
-The approach described above allows you to create stable tests with fast runtime and reduces the risk of errors.
+The solution described above allows you to create stable tests with improved runtime performance. It also reduces the risk of errors.
 
 You can specify the assertion query timeout in test code with the [options.timeout](#options) option.
 To set the timeout when you launch tests, pass the timeout value to the [runner.run](../../reference/testcafe-api/runner/run.md)
 method if you use API or specify the [assertion-timeout](../../reference/command-line-interface.md#--assertion-timeout-ms) option
 if you run TestCafe from the command line.
+
+### Smart Assertion Limitations
+
+The smart assertion's auto-retry mechanism only works with:
+
+* Promises returned from [ClientFunctions](../../reference/test-api/clientfunction/README.md);
+* [Selector](../../reference/test-api/selector/README.md) properties;
+* [RequestLogger.count](../../reference/test-api/requestlogger/count.md) properties;
+* [RequestLogger.contains](../../reference/test-api/requestlogger/contains.md) properties.
+
+The auto-retry feature does not work with [DOM Node state](../../reference/test-api/domnodestate.md) properties. If you execute the selector as an asynchronous function, its value is immediately resolved and is not updated. The corresponding test fails as a result.
+
+**Example:**
+
+```html
+<html>
+    <body>
+        <div id="btn" onclick="window.setTimeout(() => this.innerText = 'Loading...', 100)">Click me!</div>
+    </body>
+</html>
+```
+
+```js
+test('Button click', async t => {
+    const btn = Selector('#btn');
+
+    await t
+        .click(btn)
+        .expect(await btn.textContent).contains('Loading...'); //fails because the selector value does not update according to page behavior
+
+    await t
+        .click(btn)
+        .expect(btn()).contains({ innerText: 'Loading...'}); //fails because the selector value does not update according to page behavior
+
+    await t
+        .click(btn)
+        .expect(btn.innerText).eql('Loading...'); //passes because the promise returned from the selector eventually updates
+});
+```
 
 ## Options
 

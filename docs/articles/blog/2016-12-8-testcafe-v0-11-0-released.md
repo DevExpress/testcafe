@@ -30,7 +30,7 @@ Then, for each `label` element finds a parent that matches the `div.someClass` s
 ------
 
 Like in jQuery, if you request a [property](../documentation/reference/test-api/domnodestate.md#members-common-across-all-nodes) of the matched set or try evaluate
-a [snapshot](../documentation/guides/basic-guides/select-page-elements.md#dom-node-snapshot), the selector returns values for the first element in the set.
+a [snapshot](../documentation/guides/basic-guides/select-page-elements.md#dom-node-state), the selector returns values for the first element in the set.
 
 ```js
 // Returns id of the first element in the set

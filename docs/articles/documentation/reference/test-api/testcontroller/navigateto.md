@@ -30,7 +30,7 @@ test('Navigate to the main page', async t => {
 });
 ```
 
-You can use the `file://` scheme or relative paths to navigate to a webpage in a local directory.
+You can use the `file://` scheme or relative paths to navigate to a webpage in a local directory. Relative file paths are resolved from the current page, rather than the test file.
 
 ```js
 fixture `My fixture`
@@ -43,5 +43,5 @@ test('Navigate to local pages', async t => {
 });
 ```
 
-TestCafe automatically waits for the server to respond after a redirect happens.
-The test is resumed if the server does not respond within **15** seconds.
+TestCafe waits for the server to respond after a redirect occurs.
+The test resumes if the server does not respond within **15** seconds.
