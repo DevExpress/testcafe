@@ -335,7 +335,7 @@ Mouse event | Touch event
 
 TestCafe actions can interact with elements if they satisfy the following conditions:
 
-* an element is within the page's [`body`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/body) or in an [`<iframe>`](#work-with-iframes). The element can be invisible to the user. If the element is off-screen, TestCafe attempts to locate it with a scroll.
+* an element is within the `body` element of a page window or an [`<iframe>`](#work-with-iframes) window. The element can be invisible to the user. If an element is outside of the viewport, TestCafe tries to reach it with a scroll.
 
 * an element is visible, with the following properties:
 
@@ -348,7 +348,7 @@ TestCafe actions can interact with elements if they satisfy the following condit
 
 * an element is not obstructed or overlapped.  
 
-    TestCafe actions target a center of an element, or a point specified by the `offsetX` and `offsetY` options of an action. If another element obstructs the target point, the action is executed with the overlapping element (for instance, the [t.click](../../reference/test-api/testcontroller/click.md) action clicks an overlapping block).
+    TestCafe actions target the center of an element or a point specified by an action's `offsetX` and `offsetY` options. If another element obstructs the target point, the action is executed on the top element (for instance, the [t.click](../../reference/test-api/testcontroller/click.md) action clicks the element over it).
 
 ### Example: Scroll an Element into View
 
