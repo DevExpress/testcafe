@@ -135,7 +135,7 @@ if you run TestCafe from the command line.
 
 ### Smart Assertion Limitations
 
-Smart assertions auto-retry mechanism only works with:
+The smart assertion's auto-retry mechanism only works with:
 
 * Promises returned from [ClientFunctions](../../reference/test-api/clientfunction/README.md);
 * [Selector](../../reference/test-api/selector/README.md) properties;
