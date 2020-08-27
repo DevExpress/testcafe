@@ -35,7 +35,7 @@ Test API includes a set of **actions** you can use to interact with the page.
 
 The [test controller](../../reference/test-api/testcontroller/README.md) object includes actions as its methods. You can chain these actions when you call them in code.
 
-Below you can find the list of available actions with reproducible examples and links to their descriptions.
+You can find a list of available actions (with reproducible examples) and links to their descriptions below.
 
 ## Click
 
@@ -194,7 +194,7 @@ Actions that allow you to interact with file upload input elements.
 * [Populate File Upload Input](../../reference/test-api/testcontroller/setfilestoupload.md)
 * [Clear File Upload Input](../../reference/test-api/testcontroller/clearupload.md)
 
-> The file upload actions allow you to manage the list of files you want to upload. The server receives files after you begin upload, for example, when you [click](../../reference/test-api/testcontroller/click.md) the **Upload** or **Submit** button on a page.
+> File upload actions allow you to manage the list of files you wish to upload. A file is uploaded to the server, for example, when you [click](../../reference/test-api/testcontroller/click.md) the **Upload** or **Submit** button on a page.
 
 **Example**
 
@@ -337,7 +337,7 @@ TestCafe actions can interact with elements if they satisfy the following condit
 
 * an element is within the page's [`body`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/body) or in an [`<iframe>`](#work-with-iframes). The element can be invisible to the user. If the element is off-screen, TestCafe attempts to locate it with a scroll.
 
-* an element is visible - its properties are as follows:
+* an element is visible, with the following properties:
 
     Property | Value
     -------- | --------
@@ -346,7 +346,7 @@ TestCafe actions can interact with elements if they satisfy the following condit
     `width`    | auto calculated as >= 1px or set to >= 1px
     `height`   | auto calculated as >= 1px or set to >= 1px
 
-* an element isn't obstructed or overlapped.  
+* an element is not obstructed or overlapped.  
 
     TestCafe actions target a center of an element, or a point specified by the `offsetX` and `offsetY` options of an action. If another element obstructs the target point, the action is executed with the overlapping element (for instance, the [t.click](../../reference/test-api/testcontroller/click.md) action clicks an overlapping block).
 
