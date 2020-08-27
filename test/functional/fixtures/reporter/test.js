@@ -506,7 +506,7 @@ describe('Reporter', () => {
                             command: {
                                 role: {
                                     loginUrl: 'http://localhost:3000/fixtures/reporter/pages/index.html',
-                                    options:  {},
+                                    options:  { 'preserveUrl': false },
                                     phase:    'initialized'
                                 },
                                 type: 'useRole'
@@ -548,7 +548,7 @@ describe('Reporter', () => {
                             command: {
                                 role: {
                                     loginUrl: 'http://localhost:3000/fixtures/reporter/pages/index.html',
-                                    options:  {},
+                                    options:  { 'preserveUrl': false },
                                     phase:    'initialized'
                                 },
                                 type: 'useRole'
