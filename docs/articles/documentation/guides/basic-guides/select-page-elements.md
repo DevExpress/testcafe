@@ -49,7 +49,7 @@ CSS selectors cannot query parent elements:
 </html>
 ```
 
-TestCafe's chainable [Selector](../../reference/test-api/selector/README.md) functions expose methods used to traverse through the DOM tree in jQuery style. The following example illustrates how to overcome CSS limitations with TestCafe selectors:
+TestCafe's chainable [Selector](../../reference/test-api/selector/README.md) functions expose methods used to traverse through the DOM tree in jQuery style. The following example illustrates how to override CSS limitations with TestCafe selectors:
 
 ```js
 const link = Selector('div')
@@ -156,6 +156,39 @@ const sel = Selector('div').child();
     </body>
 </html>
 ```
+
+The selector value is evaluated each time you :
+
+* use the selector for an action;
+* assert selector's properties;
+* call the selector directly in code to [get it's state](https://devexpress.github.io/testcafe/documentation/guides/basic-guides/select-page-elements.html#dom-node-snapshot);
+
+If the page content changes after you have declared the selector, it may point to another element, or no element.
+
+```js
+test('Click a button', async t => {
+    const buttons = Selector('button').withText("A button number");
+
+    await t
+        .click(buttons.nth(0))
+        .click(buttons.nth(0))
+        .click(buttons.nth(0))
+});
+```
+
+```html
+<html>
+    <body>
+        <div>
+        <button onclick= "this.textContent= 'Pressed';">A button number 1</button>
+        <button onclick= "this.textContent= 'Pressed';">A button number 2</button>
+        <button onclick= "this.textContent= 'Pressed';">A button number 3</button>
+        </div>
+    </body>
+</html>
+```
+
+This sample page includes three buttons. When clicked, the button text changes. During the test, each [`.click`](../../../documentation/reference/test-api/testcontroller/click.md) affects the next element to which the selector points. All three buttons receive clicks as a result.
 
 ## Member Tables
 
@@ -460,7 +493,7 @@ const listAngular = await list.getAngular();
 await t.expect(listAngular.testProp).eql(1);
 ```
 
-To learn more, refer to the [plugin repository](https://github.com/DevExpress/testcafe-angular-selectors/blob/master/angular-selector.md).
+For more information, refer to the following page: [GitHub Plugin Repository](https://github.com/DevExpress/testcafe-angular-selectors/blob/master/angular-selector.md).
 
 ### AngularJS
 
@@ -628,7 +661,7 @@ test('Check Label HTML', async t => {
 });
 ```
 
-You can also use a [client function](obtain-client-side-info.md) to obtain a single element property from the client. In this case, you should pass the selector to client function's [dependencies](../../reference/test-api/clientfunction/constructor.md#optionsdependencies) option.
+You can use a [client function](obtain-client-side-info.md) to obtain a single element's property from the client. In this instance, pass the selector to the client function's [dependencies](../../reference/test-api/clientfunction/constructor.md#optionsdependencies) option.
 
 ```js
 import { Selector, ClientFunction } from 'testcafe';
@@ -647,14 +680,14 @@ test('Check Label HTML', async t => {
 });
 ```
 
-> Note that selector's property getters and client functions are asynchronous. If you need their resulting value in your code, use the `await` keyword.
+> Client functions and selector property getters are asynchronous. If you want to use their resulting values in your code, use the `await` keyword.
 >
 > However, you can omit `await` when you pass a selector property or a client function value into an [assertion](assert.md). In this instance, TestCafe uses its [Smart Assertion Query Mechanism](assert.md#smart-assertion-query-mechanism) to wait until the value is available. This makes your tests more stable.
 
-### Get a Page Element Using Custom Logic
+### Use Custom Logic to Get a Page Element
 
-Sometimes CSS selectors are not powerful enough to identify the required page element.
-In this instance, you can introduce a function that picks the desired element.
+CSS selectors are sometimes not powerful enough to identify the page element.
+In this instance, you can introduce a function that selects the desired element.
 
 ```js
 import { Selector } from 'testcafe';
@@ -735,7 +768,7 @@ test('My Test', async t => {
 
 CSS selectors passed to the [Selector](../../reference/test-api/selector/constructor.md) constructor cannot identify elements in the shadow DOM.
 
-To select a shadow element, initialize a selector with client-side code and use the [shadowRoot](https://developer.mozilla.org/en-US/docs/Web/API/Element/shadowRoot) property to get and return the required element from shadow DOM.
+To select a shadow element, initialize a selector with client-side code and use the [shadowRoot](https://developer.mozilla.org/en-US/docs/Web/API/Element/shadowRoot) property to get and return the element from the shadow DOM.
 
 The following example shows the `paragraph` selector that returns `<p>` from the shadow DOM.
 
@@ -764,10 +797,10 @@ The `paragraph` selector obtains [shadowRoot](https://developer.mozilla.org/en-U
 
 ### Check if an Element is Available
 
-Generally speaking, introducing conditions in tests is not considered good practice because it indicates that your tests are non-deterministic.
-The tested website should guarantee that the test writer knows the page state at any moment. If it is so, you need no conditions in test code.
+It is not good practice to introduce conditions in tests, because it indicates that your tests are non-deterministic.
+The tested website should guarantee that the test writer knows the page state at any given moment. In this instance, you do not need to include conditions in test code.
 
-However, in practice, things are usually a bit different. Many websites contain elements that may be invisible or non-existent at times.
+However, in practice, things are a bit different. Websites may contain elements that are invisible or non-existent at times.
 In this instance, it may be a good idea to check the element availability before taking actions on it.
 
 ```js
@@ -788,9 +821,9 @@ test('My test', async t => {
 
 ### Enumerate Elements Identified by a Selector
 
-Another common case is creating a selector that matches several elements to perform certain actions using all of them.
+Another common case is when you create a selector that matches multiple elements - to perform actions on each element.
 
-The following example clicks through a number of check boxes on the example page.
+The following example clicks through a number of check boxes on the sample page.
 
 ```js
 import { Selector } from 'testcafe';
@@ -809,7 +842,7 @@ test('My test', async t => {
 
 ### Select Elements With Dynamic IDs
 
-TestCafe selectors should use element identifiers that persist between test runs. However, many JavaScript frameworks generate dynamic IDs for page elements. To identify elements whose `id` attribute changes, use selectors based on the element's class, content, tag name, or position:
+TestCafe selectors should use element identifiers that persist between test runs. However, JavaScript frameworks may generate dynamic IDs for page elements. To identify elements whose `id` attribute changes, use selectors based on the element's class, content, tag name, or position:
 
 * [withText](../../reference/test-api/selector/withtext.md),
 * [withExactText](../../reference/test-api/selector/withexacttext.md),
@@ -884,5 +917,5 @@ test('My test', async t => {
 
 ### Have a different use case?
 
-If none of the examples fit your requirements and you encounter difficulties, let us know on StackOverflow.
+If none of the examples fit your requirements and you experience issues, let us know on StackOverflow.
 We review and answer questions with the [TestCafe](https://stackoverflow.com/questions/tagged/testcafe) tag.

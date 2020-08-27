@@ -7,7 +7,7 @@ redirect_from:
 ---
 # t.pressKey Method
 
-Presses the specified keyboard keys.
+Presses the specified keyboard keys. Does not require a target element.
 
 ```text
 t.pressKey( keys [, options] )
