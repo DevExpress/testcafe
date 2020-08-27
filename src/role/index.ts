@@ -20,28 +20,28 @@ class Role extends EventEmitter {
     private readonly _initFn: Function | null;
     public opts: RoleOptions;
     public initErr: null | Error;
-    private _stateSnapshot: StateSnapshot;
+    public stateSnapshot: StateSnapshot;
 
     public constructor (loginUrl: string | null, initFn: Function | null, options = {}) {
         super();
 
         // @ts-ignore
-        this[roleMarker]    = true;
-        this.id             = nanoid(7);
-        this.phase          = loginUrl ? RolePhase.uninitialized : RolePhase.initialized;
-        this.loginUrl       = loginUrl;
-        this._initFn        = initFn;
-        this.opts           = options;
-        this.redirectUrl    = null;
-        this._stateSnapshot = StateSnapshot.empty();
-        this.initErr        = null;
+        this[roleMarker]   = true;
+        this.id            = nanoid(7);
+        this.phase         = loginUrl ? RolePhase.uninitialized : RolePhase.initialized;
+        this.loginUrl      = loginUrl;
+        this._initFn       = initFn;
+        this.opts          = options;
+        this.redirectUrl   = null;
+        this.stateSnapshot = StateSnapshot.empty();
+        this.initErr       = null;
     }
 
     private async _storeStateSnapshot (testRun: TestRun): Promise<void> {
         if (this.initErr)
             return;
 
-        this._stateSnapshot = await testRun.getStateSnapshot();
+        this.stateSnapshot = await testRun.getStateSnapshot();
     }
 
     private async _executeInitFn (testRun: TestRun): Promise<void> {
