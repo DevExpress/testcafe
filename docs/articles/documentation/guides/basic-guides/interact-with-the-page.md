@@ -358,7 +358,7 @@ TestCafe actions can interact with elements if they satisfy the following condit
 
 ### Download Files in IE
 
-TestCafe prevents native dialogs before file download in all browsers except Internet Explorer. This dialog prevents automatic file download but does not block the page.
+TestCafe prevents native dialogs before file download in all browsers except Internet Explorer. This dialog prevents automatic file download, but does not block the page.
 
 The following example shows how to ignore the dialog and download the file:
 

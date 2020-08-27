@@ -68,4 +68,4 @@ A selector that targets `div` elements with the text `foo` matches both elements
 Selector('div').withText('foo');
 ```
 
-If you want to target elements with HTML symbols or HTML entities (like `&nbsp;`, newline chars), refer to the [Select Elements That Contain Special Characters](../../../guides/basic-guides/select-page-elements.md#select-elements-that-contain-special-characters) section.
+To target elements with HTML symbols or HTML entities (e.g., `&nbsp;`, newline chars), refer to the following section: [Select Elements That Contain Special Characters](../../../guides/basic-guides/select-page-elements.md#select-elements-that-contain-special-characters).

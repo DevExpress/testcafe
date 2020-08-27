@@ -51,9 +51,9 @@ jobs:
 
 This job runs on a GitHub-hosted virtual machine with the latest Windows version. `test` is the [job ID](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_id) that must be unique to the `jobs` object.
 
-> You can use a GitHub-hosted virtual machine with a variety of operating systems to run tests, as listed on [this page](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on). For simplicity, all examples in this article run on `windows-latest`.
+> You can use a GitHub-hosted virtual machine with a variety of operating systems to run tests, as listed on the following page: [GitHub Docs](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on). For simplicity, all examples in this article run on `windows-latest`.
 
-Github Actions uses the `macOS Catalina 10.15` virtual environment with *"System Integrity Protection"* enabled as `macos-latest`. With this setting enabled, TestCafe requires a screen recording permission, which is unobtainable programmatically. For this reason, TestCafe is unable to run tests locally on `macos-latest` in GitHub Actions.
+Github Actions use the `macOS Catalina 10.15` virtual environment with *"System Integrity Protection"* enabled as `macos-latest`. With this setting enabled, TestCafe requires screen recording permission, which cannot be obtained programmatically. For this reason, TestCafe is unable to run tests with GitHub Actions locally on `macos-latest`.
 
 However, tests can run on macOS virtual machines if you connect the browser as remote.
 

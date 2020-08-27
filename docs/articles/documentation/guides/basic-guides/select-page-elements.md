@@ -190,9 +190,9 @@ test('Click a button', async t => {
 
 This sample page includes three buttons. When clicked, the button text changes. During the test, each [`.click`](../../../documentation/reference/test-api/testcontroller/click.md) affects the next element to which the selector points. All three buttons receive clicks as a result.
 
-If a selector matches multiple elements, the first matching element is used for [actions] or when retrieving [DOM Node Snapshots](../../reference/test-api/domnodestate.md). Use [`.nth`](../../reference/test-api/selector/nth.md) method to enumerate through other matching elements.
+If a selector matches multiple elements, only the first matching element will be used for [actions](./interact-with-the-page.md) or when retrieving the [DOM Node State](../../reference/test-api/domnodestate.md). Use the [.nth](../../reference/test-api/selector/nth.md) method to iterate through other matching elements.
 
-You can retrieve the number of matched elements with a [selector.count](../../reference/test-api/selector/count.md) property.
+You can use the [selector.count](../../reference/test-api/selector/count.md) property to retrieve the number of matched elements.
 
 ## Member Tables
 
@@ -279,7 +279,7 @@ test('Obtain Element State', async t => {
 
 #### DOM Node State
 
-To use an object's state multiple times in the test, get the object that contains [all the data](../../reference/test-api/domnodestate.md) in one turnaround to the client. To obtain this object (*DOM Node State*), call the selector with the `await` keyword:
+To use an object's state multiple times in the test, get the object that contains [all data](../../reference/test-api/domnodestate.md) in one turnaround to the client. To obtain this object (*DOM Node State*), call the selector with the `await` keyword:
 
 ```js
 import { Selector } from 'testcafe';
@@ -609,7 +609,7 @@ test('Title changed', async t => {
 Use this approach for Node.js callbacks that fire during the test run. To ensure that the test function
 does not finish before the callback is executed, suspend the test until the callback fires. For instance, you can introduce a Promise and wait until it completes synchronously, as shown in the example above.
 
-> The `boundTestRun` option requires the same test controller instance that is passed to the function used in a test declaration. It's unable to work with imported test controllers.
+> The `boundTestRun` option requires the same test controller instance that is passed to the function used in the test declaration. It cannot work with imported test controllers.
 
 ## Limitations
 
@@ -923,7 +923,7 @@ test('My test', async t => {
 
 ### Select Elements That Contain Special Characters
 
-If your page contains [HTML symbols](https://www.w3schools.com/html/html_symbols.asp) or [HTML entities](https://www.w3schools.com/html/html_entities.asp) (like `&nbsp;`, newline chars), use their [unicode counterparts](https://www.rapidtables.com/code/text/unicode-characters.md) in [Selector.WithText](../../reference/test-api/selector/withtext.md) and [Selector.WithExactText](../../reference/test-api/selector/withexacttext.md).
+If your page contains [HTML symbols](https://www.w3schools.com/html/html_symbols.asp) or [HTML entities](https://www.w3schools.com/html/html_entities.asp) (e.g., `&nbsp;`, newline chars), use their [unicode counterparts](https://www.rapidtables.com/code/text/unicode-characters.md) in [Selector.WithText](../../reference/test-api/selector/withtext.md) and [Selector.WithExactText](../../reference/test-api/selector/withexacttext.md).
 
 **Example**
 

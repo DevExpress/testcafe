@@ -29,7 +29,7 @@ The test runner uses the test controller to access the internal context required
 
 ## Implicit Test Controller Use
 
-You may need to call the test API from outside the test code. For instance, your [page model](../../../guides/concepts/page-model.md) can contain methods that perform common operations used in different tests (like authentication).
+You may need to call the test API from outside the test code. For instance, your [page model](../../../guides/concepts/page-model.md) can contain methods that perform common operations used in different tests (e.g., authentication).
 
 ```js
 import { Selector } from 'testcafe';

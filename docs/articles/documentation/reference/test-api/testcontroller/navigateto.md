@@ -43,5 +43,5 @@ test('Navigate to local pages', async t => {
 });
 ```
 
-TestCafe waits for the server to respond after a redirect happens.
+TestCafe waits for the server to respond after a redirect occurs.
 The test resumes if the server does not respond within **15** seconds.

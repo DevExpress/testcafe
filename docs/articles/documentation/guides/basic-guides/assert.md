@@ -142,7 +142,7 @@ Smart assertions auto-retry mechanism only works with:
 * [RequestLogger.count](../../reference/test-api/requestlogger/count.md) properties;
 * [RequestLogger.contains](../../reference/test-api/requestlogger/contains.md) properties.
 
-The auto retry feature does not work with [DOM Node state](../../reference/test-api/domnodestate.md) properties. If you execute the selector as an asynchronous function, its value is immediately resolved, doesn't update and the corresponding test fails:
+The auto-retry feature does not work with [DOM Node state](../../reference/test-api/domnodestate.md) properties. If you execute the selector as an asynchronous function, its value is immediately resolved and is not updated. The corresponding test fails as a result.
 
 **Example:**
 
@@ -160,15 +160,15 @@ test('Button click', async t => {
 
     await t
         .click(btn)
-        .expect(await btn.textContent).contains('Loading...'); //fails because selector value doesn't update according to page behavior
+        .expect(await btn.textContent).contains('Loading...'); //fails because the selector value does not update according to page behavior
 
     await t
         .click(btn)
-        .expect(btn()).contains({ innerText: 'Loading...'}); //fails because selector value doesn't update according to page behavior
+        .expect(btn()).contains({ innerText: 'Loading...'}); //fails because the selector value does not update according to page behavior
 
     await t
         .click(btn)
-        .expect(btn.innerText).eql('Loading...'); //passes because promise returned from the selector eventually updates
+        .expect(btn.innerText).eql('Loading...'); //passes because the promise returned from the selector eventually updates
 });
 ```
 
