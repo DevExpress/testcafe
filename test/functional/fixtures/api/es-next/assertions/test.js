@@ -246,7 +246,7 @@ describe('[API] Assertions', function () {
         })
             .catch(function (errs) {
                 expect(errs[0]).contains("AssertionError: expected 'none' to deeply equal 'left'");
-                expect(errs[0]).contains("> 112 |        .expect(el.getStyleProperty('float')).eql('left');");
+                expect(errs[0]).contains("> 124 |        .expect(el.getStyleProperty('float')).eql('left');");
             });
     });
 
