@@ -157,7 +157,7 @@ const sel = Selector('div').child();
 </html>
 ```
 
-The selector's value evaluates when you call this selector, not when you declare it. If the page's contents change since you've declared the selector, it can point to another element or none.
+The selector value is evaluated when you call this selector, not when you declare it. If the page content changes after you have declared the selector, it may point to another element, or no element.
 
 ```js
 test('Click a button', async t => {

@@ -33,7 +33,7 @@ Test API includes a set of **actions** you can use to interact with the page.
 * [Resize Window](#resize-window)
 * [Wait](#wait)
 
-[Test controller](../../reference/test-api/testcontroller/README.md) object includes them as its methods. You can call them in a chained fashion.
+The [test controller](../../reference/test-api/testcontroller/README.md) object includes actions as its methods. You can chain these actions when you call them in code.
 
 Below you can find the list of available actions with reproducible examples and links to their descriptions.
 
@@ -239,7 +239,7 @@ test('Take Screenshot test', async t => {
 ## Work With Iframes
 
 A TestCafe test's [browsing context](https://html.spec.whatwg.org/multipage/browsers.html#windows) is limited to the main window or an `<iframe>`. To use an `<iframe>` in your test,
-switch the context from the main window to this `<iframe>` (and then probably back).
+switch the context from the main window to this `<iframe>`. You may need to switch back to the main window.
 If multiple `<iframes>` are present in your test, you should switch between them.
 
 Use the following methods to switch between windows and iframes:
@@ -335,7 +335,7 @@ Mouse event | Touch event
 
 TestCafe actions can interact with elements if they satisfy the following conditions:
 
-* an element is within the page's [`body`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/body) or in an [`<iframe>`](#work-with-iframes). The element can be invisible for the user. If the element is off-screen, TestCafe attempts to reach it with a scroll.
+* an element is within the page's [`body`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/body) or in an [`<iframe>`](#work-with-iframes). The element can be invisible to the user. If the element is off-screen, TestCafe attempts to locate it with a scroll.
 
 * an element is visible - its properties are as follows:
 
@@ -343,8 +343,8 @@ TestCafe actions can interact with elements if they satisfy the following condit
     -------- | --------
     `display`  | *not* set to `none`
     `visibility` | set to `visible` (the default value)
-    `width`    | auto calculated as or set to >= 1px
-    `height`   | auto calculated as or set to >= 1px
+    `width`    | auto calculated as >= 1px or set to >= 1px
+    `height`   | auto calculated as >= 1px or set to >= 1px
 
 * an element isn't obstructed or overlapped.  
 
@@ -352,7 +352,7 @@ TestCafe actions can interact with elements if they satisfy the following condit
 
 ### Example: Scroll an Element into View
 
-TestCafe scrolls to reach items that are on the page but not on-screen. Therefore, TestCafe API doesn't have a dedicated scroll action.
+Since TestCafe scrolls to reach items that are on the page but not on-screen, the TestCafe API does not have a dedicated scroll action.
 
 You can use any action (for example, [hover](#hover)) to scroll towards the desired part of the page.  
 
