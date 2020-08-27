@@ -358,7 +358,7 @@ TestCafe actions can interact with elements if they satisfy the following condit
 
 ### Download Files in IE
 
-TestCafe prevents native dialogs before file download in all browsers except Internet Explorer. This dialog prevents automatic file download, but does not block the page.
+TestCafe cannot prevent native dialogs before file download in Internet Explorer. This dialog prevents automatic file download, but does not block the page.
 
 The following example shows how to ignore the dialog and download the file:
 
@@ -385,20 +385,16 @@ fixture `fixture`
     .requestHooks(fileDownloadLogger);
 
 test(`Download a file and verify contents`, async t => {
-
     await t
         .click('#downloadButton')
-
-    await t
         .expect(fileDownloadLogger.contains(r => {
             return  /File contents here/.test(r.response.body) &&   //verify response body
                     r.response.statusCode === 200;                  //verify response status code
-        }))
-        .ok()
+        })).ok()
 });
 ```
 
-This test introduces a `RequestLogger` that logs requests to a location and received responses. Location is [defined with a regular expression](../../../templates/intercept-http-requests/request-filter.md#use-a-regular-expression-to-specify-the-url). The response body is then evaluated with a regular expression.
+This test introduces a `RequestLogger` that logs requests to a location and received responses. Location is [defined with a regular expression](../../../templates/intercept-http-requests/request-filter.md#use-a-regular-expression-to-specify-the-url). The response body is then checked with a regular expression.
 
 > The response body received from the server is binary. Use the `RequestLogger`'s [stringifyResponseBody option](../../reference/test-api/requestlogger/constructor.md) to convert it to a string.
 
