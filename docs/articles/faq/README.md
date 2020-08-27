@@ -225,7 +225,7 @@ To determine the cause of this issue, do the following:
 2. Add the [t.debug()](../documentation/guides/basic-guides/debug.md) method before this selector to stop test execution before it reaches this point.
 3. Run the test and wait until the browser stops at the breakpoint.
 
-After this, use the browser's development tools to check that elements satisfy the [interaction requirements](../documentation/guides/basic-guides/interact-with-the-page.md#interaction-requirements).
+Next, use the browser's development tools to ensure that elements satisfy the [interaction requirements](../documentation/guides/basic-guides/interact-with-the-page.md#interaction-requirements).
 
 Also, try running the test in full screen.
 Use the [t.maximizeWindow](../documentation/reference/test-api/testcontroller/maximizewindow.md)

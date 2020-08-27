@@ -35,7 +35,7 @@ Test API includes a set of **actions** you can use to interact with the page.
 
 [Test controller](../../reference/test-api/testcontroller/README.md) object includes them as its methods. You can call them in a chained fashion.
 
-Below you can find the list of available actions with reproducible examples and links to their descriptions.
+You can find a list of available actions (with reproducible examples) and links to their descriptions below.
 
 ## Click
 
@@ -194,7 +194,7 @@ Actions that allow you to interact with file upload input elements.
 * [Populate File Upload Input](../../reference/test-api/testcontroller/setfilestoupload.md)
 * [Clear File Upload Input](../../reference/test-api/testcontroller/clearupload.md)
 
-> The file upload actions allow you to manage the list of files you want to upload. The server receives files after you begin upload, for example, when you [click](../../reference/test-api/testcontroller/click.md) the **Upload** or **Submit** button on a page.
+> File upload actions allow you to manage the list of files you wish to upload. A file is uploaded to the server, for example, when you [click](../../reference/test-api/testcontroller/click.md) the **Upload** or **Submit** button on a page.
 
 **Example**
 
@@ -240,7 +240,7 @@ test('Take Screenshot test', async t => {
 
 A TestCafe test's [browsing context](https://html.spec.whatwg.org/multipage/browsers.html#windows) is limited to the main window or an `<iframe>`. To use an `<iframe>` in your test,
 switch the context from the main window to this `<iframe>` (and then probably back).
-If multiple `<iframes>` are present in your test, you should switch between them.
+If your test contains multiple `<iframes>`, you should switch between them.
 
 Use the following methods to switch between windows and iframes:
 
@@ -337,7 +337,7 @@ TestCafe actions can interact with elements if they satisfy the following condit
 
 * an element is within the page's [`body`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/body) or in an [`<iframe>`](#work-with-iframes). The element can be invisible for the user. If the element is off-screen, TestCafe attempts to reach it with a scroll.
 
-* an element is visible - its properties are as follows:
+* an element is visible, with the following properties:
 
     Property | Value
     -------- | --------
@@ -346,7 +346,7 @@ TestCafe actions can interact with elements if they satisfy the following condit
     `width`    | auto calculated as or set to >= 1px
     `height`   | auto calculated as or set to >= 1px
 
-* an element isn't obstructed or overlapped.  
+* an element is not obstructed or overlapped.  
 
     TestCafe actions target a center of an element, or a point specified by the `offsetX` and `offsetY` options of an action. If another element obstructs the target point, the action is executed with the overlapping element (for instance, the [t.click](../../reference/test-api/testcontroller/click.md) action clicks an overlapping block).
 
