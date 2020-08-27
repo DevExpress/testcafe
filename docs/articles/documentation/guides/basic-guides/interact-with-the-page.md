@@ -343,10 +343,10 @@ TestCafe actions can interact with elements if they satisfy the following condit
     -------- | --------
     `display`  | *not* set to `none`
     `visibility` | set to `visible` (the default value)
-    `width`    | auto calculated as >= 1px or set to >= 1px
-    `height`   | auto calculated as >= 1px or set to >= 1px
+    `width`    | >= 1px
+    `height`   | >= 1px
 
-* an element is not obstructed or overlapped.  
+* an element is not overlapped.  
 
     TestCafe actions target the center of an element or a point specified by an action's `offsetX` and `offsetY` options. If another element obstructs the target point, the action is executed on the top element (for instance, the [t.click](../../reference/test-api/testcontroller/click.md) action clicks the element over it).
 
