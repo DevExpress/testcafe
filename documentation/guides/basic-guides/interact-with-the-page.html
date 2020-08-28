@@ -1052,8 +1052,8 @@
 	<article class="doc">
 		<div class="post-content">
 
-			<h1>Interact With The Page</h1>
-<p>Test API provides a set of <strong>actions</strong> you can use to interact with the page.</p>
+			<h1>Interact With the Page</h1>
+<p>Test API includes a set of <strong>actions</strong> you can use to interact with the page.</p>
 
 <ul>
 <li><a href="#click">Click</a></li>
@@ -1071,9 +1071,9 @@
 <li><a href="#wait">Wait</a></li>
 </ul>
 
-<p>They are implemented as methods in the <a href="../../reference/test-api/testcontroller/">test controller</a> object. You can call them in a chained fashion.</p>
+<p>The <a href="../../reference/test-api/testcontroller/">test controller</a> object includes actions as its methods. You can chain these actions when you call them in code.</p>
 
-<p>The available actions with reproducible usage examples and links to their descriptions are listed below.</p>
+<p>You can find a list of available actions (with reproducible examples) and links to their descriptions below.</p>
 <blockquote><div class="blockquote-content"><p>TestCafe is intended to emulate real user behavior, so you cannot interact with elements, that are not <a href="../../reference/test-api/selector/filtervisible.html">visible</a> at that moment.</p>
 
 <p>For instance, you can not type into an <code>input</code> element with the <code>display: none</code> style.</p>
@@ -1204,7 +1204,7 @@ To select text, use <a href="../../reference/test-api/testcontroller/selecttext.
 <li><a href="../../reference/test-api/testcontroller/setfilestoupload.html">Populate File Upload Input</a></li>
 <li><a href="../../reference/test-api/testcontroller/clearupload.html">Clear File Upload Input</a></li>
 </ul>
-<blockquote><div class="blockquote-content"><p>The file upload actions only allow you to manage the list of files you want to upload. These files are uploaded to the server after you initiate upload, for example, when you <a href="../../reference/test-api/testcontroller/click.html">click</a> the <strong>Upload</strong> or <strong>Submit</strong> button on a page.</p>
+<blockquote><div class="blockquote-content"><p>File upload actions allow you to manage the list of files you wish to upload. A file is uploaded to the server, for example, when you <a href="../../reference/test-api/testcontroller/click.html">click</a> the <strong>Upload</strong> or <strong>Submit</strong> button on a page.</p>
 </div></blockquote>
 <p><strong>Example</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
@@ -1239,13 +1239,10 @@ To select text, use <a href="../../reference/test-api/testcontroller/selecttext.
         <span class="p">.</span><span class="nx">takeScreenshot</span><span class="p">()</span>
         <span class="p">.</span><span class="nx">takeElementScreenshot</span><span class="p">(</span><span class="dl">'</span><span class="s1">.map-container</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div><h2><a class="anchor" id="work-with-iframes"></a>Work with iframes <a class="permalink" href="#work-with-iframes">#</a></h2>
+</code></pre></div><h2><a class="anchor" id="work-with-iframes"></a>Work With Iframes <a class="permalink" href="#work-with-iframes">#</a></h2>
 <p>A TestCafe test&#39;s <a href="https://html.spec.whatwg.org/multipage/browsers.html#windows">browsing context</a> is limited to the main window or an <code>&lt;iframe&gt;</code>. To use an <code>&lt;iframe&gt;</code> in your test,
-switch the context from the main window to this <code>&lt;iframe&gt;</code>.
-If several <code>&lt;iframes&gt;</code> are used in your test, you need to switch between them.
-limited to either the main window or an <code>&lt;iframe&gt;</code>. To use an <code>&lt;iframe&gt;</code> in your test,
-you need to switch the context from the main window to this <code>&lt;iframe&gt;</code> (and then probably back).
-Likewise, if several <code>&lt;iframes&gt;</code> are involved in your test, you will have to switch between them.</p>
+switch the context from the main window to this <code>&lt;iframe&gt;</code>. You may need to switch back to the main window.
+If multiple <code>&lt;iframes&gt;</code> are present in your test, you should switch between them.</p>
 
 <p>Use the following methods to switch between windows and iframes:</p>
 
@@ -1267,12 +1264,12 @@ Likewise, if several <code>&lt;iframes&gt;</code> are involved in your test, you
         <span class="p">.</span><span class="nx">switchToMainWindow</span><span class="p">();</span>
 <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" id="handle-native-dialogs"></a>Handle Native Dialogs <a class="permalink" href="#handle-native-dialogs">#</a></h2>
-<p>TestCafe allows you to handle native browser dialogs that are invoked during the test run.</p>
+<p>TestCafe allows you to handle native dialogs that the browser may display during the test run.</p>
 
 <p>You can close <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/alert">alert</a> and
 <a href="https://developer.mozilla.org/en-US/docs/Web/Events/beforeunload">beforeunload</a> dialogs,
 choose an option in <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/confirm">confirm</a> dialogs
-or provide text for <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/prompt">prompt</a> dialogs.</p>
+or supply text for <a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/prompt">prompt</a> dialogs.</p>
 
 <ul>
 <li><a href="../../reference/test-api/testcontroller/setnativedialoghandler.html">Set Native Dialog Handler</a></li>
@@ -1288,7 +1285,7 @@ or provide text for <a href="https://developer.mozilla.org/en-US/docs/Web/API/Wi
 </ul>
 <blockquote class="important"><div class="blockquote-content"><p>Window resize actions are not supported when you run tests in <a href="../concepts/browsers.html#browsers-on-remote-devices">remote browsers</a>.</p>
 </div></blockquote>
-<p><strong>Note</strong>: these actions require .NET 4.0 or newer installed on Windows machines and an <a href="https://en.wikipedia.org/wiki/Comparison_of_X_window_managers">ICCCM/EWMH-compliant window manager</a> on Linux.</p>
+<p><strong>Note</strong>: These actions require a Windows machine with .NET 4.0 or newer, or a Linux machine with an <a href="https://en.wikipedia.org/wiki/Comparison_of_X_window_managers">ICCCM/EWMH-compliant window manager</a>.</p>
 
 <p><strong>Example</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
@@ -1322,8 +1319,8 @@ or provide text for <a href="https://developer.mozilla.org/en-US/docs/Web/API/Wi
 <th>Touch event</th>
 </tr>
 </thead><tbody><tr>
-<td><code>mousemove</code> (when hovering or dragging)</td>
-<td><code>touchmove</code> (dragging only)</td>
+<td><code>mousemove</code> (when you hover or drag)</td>
+<td><code>touchmove</code> (when you drag)</td>
 </tr>
 <tr>
 <td><code>mousedown</code></td>
@@ -1333,7 +1330,86 @@ or provide text for <a href="https://developer.mozilla.org/en-US/docs/Web/API/Wi
 <td><code>mouseup</code></td>
 <td><code>touchend</code></td>
 </tr>
-</tbody></table></div>
+</tbody></table></div><h2><a class="anchor" id="interaction-requirements"></a>Interaction Requirements <a class="permalink" href="#interaction-requirements">#</a></h2>
+<p>TestCafe actions can interact with elements if they satisfy the following conditions:</p>
+
+<ul>
+<li><p>an element is within the <code>body</code> element of a page window or an <a href="#work-with-iframes"><code>&lt;iframe&gt;</code></a> window. The element can be invisible to the user. If an element is outside of the viewport, TestCafe tries to reach it with a scroll.</p></li>
+<li><p>an element is visible, with the following properties:</p>
+<div class="table-wrapper"><table><thead><tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead><tbody><tr>
+<td><code>display</code></td>
+<td><em>not</em> set to <code>none</code></td>
+</tr>
+<tr>
+<td><code>visibility</code></td>
+<td>set to <code>visible</code> (the default value)</td>
+</tr>
+<tr>
+<td><code>width</code></td>
+<td>&gt;= 1px</td>
+</tr>
+<tr>
+<td><code>height</code></td>
+<td>&gt;= 1px</td>
+</tr>
+</tbody></table></div></li>
+<li><p>an element is not overlapped.  </p>
+
+<p>TestCafe actions target the center of an element or a point specified by an action&#39;s <code>offsetX</code> and <code>offsetY</code> options. If another element obstructs the target point, the action is executed on the top element (for instance, the <a href="../../reference/test-api/testcontroller/click.html">t.click</a> action clicks the element over it).</p></li>
+</ul>
+<h2><a class="anchor" id="examples"></a>Examples <a class="permalink" href="#examples">#</a></h2><h3><a class="anchor" id="download-files-in-ie"></a>Download Files in IE <a class="permalink" href="#download-files-in-ie">#</a></h3>
+<p>TestCafe cannot prevent native dialogs before file download in Internet Explorer. This dialog prevents automatic file download, but does not block the page.</p>
+
+<p>The following example shows how to ignore the dialog and download the file:</p>
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;form</span> <span class="na">method=</span><span class="s">"get"</span> <span class="na">action=</span><span class="s">"./src/file.zip"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;button</span> <span class="na">id=</span><span class="s">"downloadButton"</span> <span class="na">type=</span><span class="s">"submit"</span><span class="nt">&gt;</span>Download!<span class="nt">&lt;/button&gt;</span>
+     <span class="nt">&lt;/form&gt;</span>
+<span class="nt">&lt;/body&gt;</span>
+</code></pre></div>
+<p>This sample page includes a button that downloads a file from the <code>/src</code> folder on the server. To obtain the file, use a <a href="../../reference/test-api/requestlogger/">RequestLogger</a>:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">RequestLogger</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">fileDownloadLogger</span> <span class="o">=</span> <span class="nx">RequestLogger</span><span class="p">(</span><span class="k">new</span> <span class="nb">RegExp</span><span class="p">(</span><span class="dl">'</span><span class="s1">src/file.zip</span><span class="dl">'</span><span class="p">),</span> <span class="p">{</span>
+    <span class="na">logResponseBody</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="na">stringifyResponseBody</span><span class="p">:</span> <span class="kc">true</span>
+<span class="p">});</span>
+
+<span class="nx">fixture</span> <span class="s2">`fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`./fileDownload.html`</span>
+    <span class="p">.</span><span class="nx">requestHooks</span><span class="p">(</span><span class="nx">fileDownloadLogger</span><span class="p">);</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s2">`Download a file and verify contents`</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="dl">'</span><span class="s1">#downloadButton</span><span class="dl">'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">fileDownloadLogger</span><span class="p">.</span><span class="nx">contains</span><span class="p">(</span><span class="nx">r</span> <span class="o">=&gt;</span> <span class="p">{</span>
+            <span class="k">return</span>  <span class="sr">/File contents here/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">r</span><span class="p">.</span><span class="nx">response</span><span class="p">.</span><span class="nx">body</span><span class="p">)</span> <span class="o">&amp;&amp;</span>   <span class="c1">//verify response body</span>
+                    <span class="nx">r</span><span class="p">.</span><span class="nx">response</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">===</span> <span class="mi">200</span><span class="p">;</span>                  <span class="c1">//verify response status code</span>
+        <span class="p">})).</span><span class="nx">ok</span><span class="p">()</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>This test introduces a <code>RequestLogger</code> that logs requests to a location and received responses. Location is <a href="../../reference/test-api/requestlogger/constructor.html#use-a-regular-expression-to-specify-the-url">defined with a regular expression</a>. The response body is then checked with a regular expression.</p>
+<blockquote><div class="blockquote-content"><p>The response body received from the server is binary. Use the <code>RequestLogger</code>&#39;s <a href="../../reference/test-api/requestlogger/constructor.html">stringifyResponseBody option</a> to convert it to a string.</p>
+</div></blockquote><h3><a class="anchor" id="scroll-an-element-into-view"></a>Scroll an Element into View <a class="permalink" href="#scroll-an-element-into-view">#</a></h3>
+<p>Since TestCafe scrolls to reach items that are on the page but not on-screen, the TestCafe API does not have a dedicated scroll action.</p>
+
+<p>You can use any action (for example, <a href="#hover">hover</a>) to scroll towards the desired part of the page.  </p>
+
+<p>If you specifically need to scroll the page without any action, use a <a href="obtain-client-side-info.html">ClientFunction</a>.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">scrollBy</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nb">window</span><span class="p">.</span><span class="nx">scrollBy</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+      <span class="k">await</span> <span class="nx">scrollBy</span><span class="p">();</span>
+<span class="p">});</span>
+</code></pre></div>
 
 		</div>
 	</article>

@@ -517,7 +517,7 @@ Then, for each <code>label</code> element finds a parent that matches the <code>
 <hr>
 
 <p>Like in jQuery, if you request a <a href="../documentation/reference/test-api/domnodestate.html#members-common-across-all-nodes">property</a> of the matched set or try evaluate
-a <a href="../documentation/guides/basic-guides/select-page-elements.html#dom-node-snapshot">snapshot</a>, the selector returns values for the first element in the set.</p>
+a <a href="../documentation/guides/basic-guides/select-page-elements.html#dom-node-state">snapshot</a>, the selector returns values for the first element in the set.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// Returns id of the first element in the set</span>
 <span class="kd">const</span> <span class="nx">id</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">ul</span><span class="dl">'</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="dl">'</span><span class="s1">label</span><span class="dl">'</span><span class="p">).</span><span class="nx">parent</span><span class="p">(</span><span class="dl">'</span><span class="s1">div.someClass</span><span class="dl">'</span><span class="p">).</span><span class="nx">id</span><span class="p">;</span>
 

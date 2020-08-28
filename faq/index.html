@@ -742,17 +742,7 @@ to use the plugin in other projects as well, install it globally.</p>
 <li>Run the test and wait until the browser stops at the breakpoint.</li>
 </ol>
 
-<p>After this, use the browser&#39;s development tools to check that:</p>
-
-<ul>
-<li>the element is present on the page;</li>
-<li>the element is visible (TestCafe considers it visible if it does not have <code>display</code> set to <code>none</code>,
-<code>visibility</code> set to <code>hidden</code> or the zero <code>width</code> or <code>height</code>);</li>
-<li>the element&#39;s part targeted by the action is visible (the center of the element, or a point specified by the <a href="../documentation/reference/test-api/testcontroller/click.html#options"><code>offsetX</code> and <code>offsetY</code></a> parameters);</li>
-<li>the element is not in an <code>&lt;iframe&gt;</code> (if it is, use the
-<a href="../documentation/guides/basic-guides/interact-with-the-page.html#work-with-iframes">t.switchToIframe</a> method
-to switch to the appropriate <code>&lt;iframe&gt;</code>).</li>
-</ul>
+<p>Next, use the browser&#39;s development tools to ensure that elements satisfy the <a href="../documentation/guides/basic-guides/interact-with-the-page.html#interaction-requirements">interaction requirements</a>.</p>
 
 <p>Also, try running the test in full screen.
 Use the <a href="../documentation/reference/test-api/testcontroller/maximizewindow.html">t.maximizeWindow</a>

@@ -1075,7 +1075,7 @@
     <span class="nt">&lt;/body&gt;</span>
 <span class="nt">&lt;/html&gt;</span>
 </code></pre></div>
-<p>TestCafe&#39;s chainable <a href="../../reference/test-api/selector/">Selector</a> functions expose methods used to traverse through the DOM tree in jQuery style. The following example illustrates how to overcome CSS limitations with TestCafe selectors:</p>
+<p>TestCafe&#39;s chainable <a href="../../reference/test-api/selector/">Selector</a> functions expose methods used to traverse through the DOM tree in jQuery style. The following example illustrates how to override CSS limitations with TestCafe selectors:</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">link</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">div</span><span class="dl">'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">child</span><span class="p">(</span><span class="dl">'</span><span class="s1">.my-class</span><span class="dl">'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">child</span><span class="p">(</span><span class="dl">'</span><span class="s1">div</span><span class="dl">'</span><span class="p">)</span>
@@ -1096,7 +1096,7 @@
 <ul>
 <li><a href="#check-if-an-element-exists">Check if an Element Exists</a></li>
 <li><a href="#obtain-element-state">Obtain Element State</a></li>
-<li><a href="#dom-node-snapshot">DOM Node Snapshot</a></li>
+<li><a href="#dom-node-state">DOM Node State</a></li>
 <li><a href="#define-action-targets">Define Action Targets</a></li>
 <li><a href="#define-assertion-actual-value">Define Assertion Actual Value</a></li>
 </ul></li>
@@ -1157,7 +1157,7 @@ To interact with the page, use <a href="interact-with-the-page.html">test action
     <span class="nt">&lt;/body&gt;</span>
 <span class="nt">&lt;/html&gt;</span>
 </code></pre></div>
-<p>If a selector matches multiple elements, the subsequent methods return results for all the elements. For instance, the following selector returns the child nodes of all <code>&lt;div&gt;</code> tags on the page:</p>
+<p>If a selector matches multiple elements, the subsequent methods return results for all elements. The following selector returns the child nodes of all <code>&lt;div&gt;</code> tags on the page, including their children and their descendants:</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">sel</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">div</span><span class="dl">'</span><span class="p">).</span><span class="nx">child</span><span class="p">();</span>
 </code></pre></div><div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;html&gt;</span>
     <span class="nt">&lt;body&gt;</span>
@@ -1171,7 +1171,40 @@ To interact with the page, use <a href="interact-with-the-page.html">test action
         <span class="nt">&lt;/div&gt;</span>
     <span class="nt">&lt;/body&gt;</span>
 <span class="nt">&lt;/html&gt;</span>
-</code></pre></div><h2><a class="anchor" id="member-tables"></a>Member Tables <a class="permalink" href="#member-tables">#</a></h2>
+</code></pre></div>
+<p>The selector value is evaluated each time you :</p>
+
+<ul>
+<li>use the selector for an action;</li>
+<li>assert selector&#39;s properties;</li>
+<li>call the selector directly in code to <a href="#dom-node-state">get it&#39;s state</a>;</li>
+</ul>
+
+<p>If the page content changes after you have declared the selector, it may point to another element, or no element.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Click a button</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">buttons</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">button</span><span class="dl">'</span><span class="p">).</span><span class="nx">withText</span><span class="p">(</span><span class="dl">"</span><span class="s2">A button number</span><span class="dl">"</span><span class="p">);</span>
+
+    <span class="k">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">buttons</span><span class="p">.</span><span class="nx">nth</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">buttons</span><span class="p">.</span><span class="nx">nth</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">buttons</span><span class="p">.</span><span class="nx">nth</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<span class="p">});</span>
+</code></pre></div><div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;html&gt;</span>
+    <span class="nt">&lt;body&gt;</span>
+        <span class="nt">&lt;div&gt;</span>
+        <span class="nt">&lt;button</span> <span class="na">onclick= </span><span class="s">"this.textContent= 'Pressed';"</span><span class="nt">&gt;</span>A button number 1<span class="nt">&lt;/button&gt;</span>
+        <span class="nt">&lt;button</span> <span class="na">onclick= </span><span class="s">"this.textContent= 'Pressed';"</span><span class="nt">&gt;</span>A button number 2<span class="nt">&lt;/button&gt;</span>
+        <span class="nt">&lt;button</span> <span class="na">onclick= </span><span class="s">"this.textContent= 'Pressed';"</span><span class="nt">&gt;</span>A button number 3<span class="nt">&lt;/button&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div>
+<p>This sample page includes three buttons. When clicked, the button text changes. During the test, each <a href="../../../documentation/reference/test-api/testcontroller/click.html"><code>.click</code></a> affects the next element to which the selector points. All three buttons receive clicks as a result.</p>
+
+<p>If a selector matches multiple elements, only the first matching element will be used for <a href="./interact-with-the-page.html">actions</a> or when retrieving the <a href="../../reference/test-api/domnodestate.html">DOM Node State</a>. Use the <a href="../../reference/test-api/selector/nth.html">.nth</a> method to iterate through other matching elements.</p>
+
+<p>You can use the <a href="../../reference/test-api/selector/count.html">selector.count</a> property to retrieve the number of matched elements.</p>
+<h2><a class="anchor" id="member-tables"></a>Member Tables <a class="permalink" href="#member-tables">#</a></h2>
 <p>The following methods filter elements from the selector:</p>
 <div class="table-wrapper"><table><thead><tr>
 <th>Method</th>
@@ -1288,14 +1321,14 @@ To interact with the page, use <a href="interact-with-the-page.html">test action
 
     <span class="kd">const</span> <span class="nx">windowsInputChecked</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">windowsInput</span><span class="p">.</span><span class="nx">checked</span><span class="p">;</span> <span class="c1">// returns true</span>
 <span class="p">});</span>
-</code></pre></div><h4><a class="anchor" id="dom-node-snapshot"></a>DOM Node Snapshot <a class="permalink" href="#dom-node-snapshot">#</a></h4>
-<p>To use an object&#39;s state multiple times in the test, get the object that contains <a href="../../reference/test-api/domnodestate.html">all the data</a> in one turnaround to the client. To obtain this object (<em>DOM Node Snapshot</em>), call the selector with the <code>await</code> keyword:</p>
+</code></pre></div><h4><a class="anchor" id="dom-node-state"></a>DOM Node State <a class="permalink" href="#dom-node-state">#</a></h4>
+<p>To use an object&#39;s state multiple times in the test, get the object that contains <a href="../../reference/test-api/domnodestate.html">all data</a> in one turnaround to the client. To obtain this object (<em>DOM Node State</em>), call the selector with the <code>await</code> keyword:</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="nx">fixture</span> <span class="s2">`My fixture`</span>
     <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://devexpress.github.io/testcafe/example/`</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">DOM Node Snapshot</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">DOM Node State</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="kd">const</span> <span class="nx">sliderHandle</span>         <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#slider</span><span class="dl">'</span><span class="p">).</span><span class="nx">child</span><span class="p">(</span><span class="dl">'</span><span class="s1">span</span><span class="dl">'</span><span class="p">);</span>
     <span class="kd">const</span> <span class="nx">sliderHandleSnapshot</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">sliderHandle</span><span class="p">();</span>
 
@@ -1453,7 +1486,7 @@ To interact with the page, use <a href="interact-with-the-page.html">test action
 
 <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">listAngular</span><span class="p">.</span><span class="nx">testProp</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
 </code></pre></div>
-<p>To learn more, refer to the <a href="https://github.com/DevExpress/testcafe-angular-selectors/blob/master/angular-selector.md">plugin repository</a>.</p>
+<p>For more information, refer to the following page: <a href="https://github.com/DevExpress/testcafe-angular-selectors/blob/master/angular-selector.md">GitHub Plugin Repository</a>.</p>
 <h3><a class="anchor" id="angularjs"></a>AngularJS <a class="permalink" href="#angularjs">#</a></h3>
 <p><code>AngularJSSelector</code> contains a set of static methods to search for an HTML element by the specified binding (<code>byModel</code>, <code>byBinding</code>, etc.).</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">AngularJSSelector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe-angular-selectors</span><span class="dl">'</span><span class="p">;</span>
@@ -1541,7 +1574,8 @@ To interact with the page, use <a href="interact-with-the-page.html">test action
 </code></pre></div>
 <p>Use this approach for Node.js callbacks that fire during the test run. To ensure that the test function
 does not finish before the callback is executed, suspend the test until the callback fires. For instance, you can introduce a Promise and wait until it completes synchronously, as shown in the example above.</p>
-<h2><a class="anchor" id="limitations"></a>Limitations <a class="permalink" href="#limitations">#</a></h2>
+<blockquote><div class="blockquote-content"><p>The <code>boundTestRun</code> option requires the same test controller instance that is passed to the function used in the test declaration. It cannot work with imported test controllers.</p>
+</div></blockquote><h2><a class="anchor" id="limitations"></a>Limitations <a class="permalink" href="#limitations">#</a></h2>
 <p>Selectors do not support the following syntax and capabilities:</p>
 
 <ul>
@@ -1586,7 +1620,7 @@ They cannot take any parameters from the outside.</p>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">label</span><span class="p">.</span><span class="nx">lang</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="dl">'</span><span class="s1">en</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>You can also use a <a href="obtain-client-side-info.html">client function</a> to obtain a single element property from the client. In this case, you should pass the selector to client function&#39;s <a href="../../reference/test-api/clientfunction/constructor.html#optionsdependencies">dependencies</a> option.</p>
+<p>You can use a <a href="obtain-client-side-info.html">client function</a> to obtain a single element&#39;s property from the client. In this instance, pass the selector to the client function&#39;s <a href="../../reference/test-api/clientfunction/constructor.html#optionsdependencies">dependencies</a> option.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span><span class="p">,</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="nx">fixture</span> <span class="s2">`My fixture`</span>
@@ -1601,12 +1635,12 @@ They cannot take any parameters from the outside.</p>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">getLabelHtml</span><span class="p">()).</span><span class="nx">contains</span><span class="p">(</span><span class="dl">'</span><span class="s1">type="checkbox"</span><span class="dl">'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">getLabelHtml</span><span class="p">()).</span><span class="nx">contains</span><span class="p">(</span><span class="dl">'</span><span class="s1">name="remote"</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div><blockquote><div class="blockquote-content"><p>Note that selector&#39;s property getters and client functions are asynchronous. If you need their resulting value in your code, use the <code>await</code> keyword.</p>
+</code></pre></div><blockquote><div class="blockquote-content"><p>Client functions and selector property getters are asynchronous. If you want to use their resulting values in your code, use the <code>await</code> keyword.</p>
 
 <p>However, you can omit <code>await</code> when you pass a selector property or a client function value into an <a href="assert.html">assertion</a>. In this instance, TestCafe uses its <a href="assert.html#smart-assertion-query-mechanism">Smart Assertion Query Mechanism</a> to wait until the value is available. This makes your tests more stable.</p>
-</div></blockquote><h3><a class="anchor" id="get-a-page-element-using-custom-logic"></a>Get a Page Element Using Custom Logic <a class="permalink" href="#get-a-page-element-using-custom-logic">#</a></h3>
-<p>Sometimes CSS selectors are not powerful enough to identify the required page element.
-In this instance, you can introduce a function that picks the desired element.</p>
+</div></blockquote><h3><a class="anchor" id="use-custom-logic-to-get-a-page-element"></a>Use Custom Logic to Get a Page Element <a class="permalink" href="#use-custom-logic-to-get-a-page-element">#</a></h3>
+<p>CSS selectors are sometimes not powerful enough to identify the page element.
+In this instance, you can introduce a function that selects the desired element.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="nx">fixture</span> <span class="s2">`My fixture`</span>
@@ -1685,7 +1719,7 @@ In this instance, you can introduce a function that picks the desired element.</
 </code></pre></div><h3><a class="anchor" id="access-shadow-dom"></a>Access Shadow DOM <a class="permalink" href="#access-shadow-dom">#</a></h3>
 <p>CSS selectors passed to the <a href="../../reference/test-api/selector/constructor.html">Selector</a> constructor cannot identify elements in the shadow DOM.</p>
 
-<p>To select a shadow element, initialize a selector with client-side code and use the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/shadowRoot">shadowRoot</a> property to get and return the required element from shadow DOM.</p>
+<p>To select a shadow element, initialize a selector with client-side code and use the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/shadowRoot">shadowRoot</a> property to get and return the element from the shadow DOM.</p>
 
 <p>The following example shows the <code>paragraph</code> selector that returns <code>&lt;p&gt;</code> from the shadow DOM.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
@@ -1709,10 +1743,10 @@ In this instance, you can introduce a function that picks the desired element.</
 </code></pre></div>
 <p>The <code>paragraph</code> selector obtains <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/shadowRoot">shadowRoot</a> from the <code>#demo1</code> element. The <code>demoPage</code> selector that identifies <code>#demo1</code> is passed as a <a href="../../reference/test-api/selector/constructor.html#optionsdependencies">dependency</a>.</p>
 <h3><a class="anchor" id="check-if-an-element-is-available"></a>Check if an Element is Available <a class="permalink" href="#check-if-an-element-is-available">#</a></h3>
-<p>Generally speaking, introducing conditions in tests is not considered good practice because it indicates that your tests are non-deterministic.
-The tested website should guarantee that the test writer knows the page state at any moment. If it is so, you need no conditions in test code.</p>
+<p>It is not good practice to introduce conditions in tests, because it indicates that your tests are non-deterministic.
+The tested website should guarantee that the test writer knows the page state at any given moment. In this instance, you do not need to include conditions in test code.</p>
 
-<p>However, in practice, things are usually a bit different. Many websites contain elements that may be invisible or non-existent at times.
+<p>However, in practice, things are a bit different. Websites may contain elements that are invisible or non-existent at times.
 In this instance, it may be a good idea to check the element availability before taking actions on it.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
@@ -1728,9 +1762,9 @@ In this instance, it may be a good idea to check the element availability before
     <span class="c1">// ...</span>
 <span class="p">});</span>
 </code></pre></div><h3><a class="anchor" id="enumerate-elements-identified-by-a-selector"></a>Enumerate Elements Identified by a Selector <a class="permalink" href="#enumerate-elements-identified-by-a-selector">#</a></h3>
-<p>Another common case is creating a selector that matches several elements to perform certain actions using all of them.</p>
+<p>Another common case is when you create a selector that matches multiple elements - to perform actions on each element.</p>
 
-<p>The following example clicks through a number of check boxes on the example page.</p>
+<p>The following example clicks through a number of check boxes on the sample page.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="nx">fixture</span> <span class="s2">`My fixture`</span>
@@ -1744,7 +1778,7 @@ In this instance, it may be a good idea to check the element availability before
         <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">checkboxes</span><span class="p">.</span><span class="nx">nth</span><span class="p">(</span><span class="nx">i</span><span class="p">));</span>
 <span class="p">});</span>
 </code></pre></div><h3><a class="anchor" id="select-elements-with-dynamic-ids"></a>Select Elements With Dynamic IDs <a class="permalink" href="#select-elements-with-dynamic-ids">#</a></h3>
-<p>TestCafe selectors should use element identifiers that persist between test runs. However, many JavaScript frameworks generate dynamic IDs for page elements. To identify elements whose <code>id</code> attribute changes, use selectors based on the element&#39;s class, content, tag name, or position:</p>
+<p>TestCafe selectors should use element identifiers that persist between test runs. However, JavaScript frameworks may generate dynamic IDs for page elements. To identify elements whose <code>id</code> attribute changes, use selectors based on the element&#39;s class, content, tag name, or position:</p>
 
 <ul>
 <li><a href="../../reference/test-api/selector/withtext.html">withText</a>,</li>
@@ -1808,8 +1842,30 @@ In this instance, it may be a good idea to check the element availability before
     <span class="kd">const</span> <span class="nx">container</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">[id$="container"]</span><span class="dl">'</span><span class="p">);</span>
     <span class="kd">const</span> <span class="nx">item</span>      <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">[id|="item"]</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div><h3><a class="anchor" id="have-a-different-use-case"></a>Have a different use case? <a class="permalink" href="#have-a-different-use-case">#</a></h3>
-<p>If none of the examples fit your requirements and you encounter difficulties, let us know on StackOverflow.
+</code></pre></div><h3><a class="anchor" id="select-elements-that-contain-special-characters"></a>Select Elements That Contain Special Characters <a class="permalink" href="#select-elements-that-contain-special-characters">#</a></h3>
+<p>If your page contains <a href="https://www.w3schools.com/html/html_symbols.asp">HTML symbols</a> or <a href="https://www.w3schools.com/html/html_entities.asp">HTML entities</a> (e.g., <code>&amp;nbsp;</code>, newline chars), use their <a href="https://www.rapidtables.com/code/text/unicode-characters.md">unicode counterparts</a> in <a href="../../reference/test-api/selector/withtext.html">Selector.WithText</a> and <a href="../../reference/test-api/selector/withexacttext.html">Selector.WithExactText</a>.</p>
+
+<p><strong>Example</strong></p>
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;html&gt;</span>
+    <span class="nt">&lt;body&gt;</span>
+        <span class="nt">&lt;p&gt;</span>Click<span class="ni">&amp;nbsp;</span>me<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://localhost/`</span><span class="p">;</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">My test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">sel</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">p</span><span class="dl">'</span><span class="p">).</span><span class="nx">withText</span><span class="p">(</span><span class="dl">'</span><span class="s1">Click&amp;nbsp;me</span><span class="dl">'</span><span class="p">)</span> <span class="c1">//typed representation, not supported</span>
+    <span class="kd">const</span> <span class="nx">sel</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">p</span><span class="dl">'</span><span class="p">).</span><span class="nx">withText</span><span class="p">(</span><span class="dl">'</span><span class="s1">Click</span><span class="se">\</span><span class="s1">u00a0me</span><span class="dl">'</span><span class="p">)</span> <span class="c1">//unicode representation, works</span>
+    <span class="kd">const</span> <span class="nx">sel</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">p</span><span class="dl">'</span><span class="p">).</span><span class="nx">withText</span><span class="p">(</span><span class="dl">'</span><span class="s1">Click</span><span class="se">\</span><span class="s1">xa0me</span><span class="dl">'</span><span class="p">)</span> <span class="c1">//hexadecimal representation, works</span>
+    <span class="kd">const</span> <span class="nx">sel</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">p</span><span class="dl">'</span><span class="p">).</span><span class="nx">withText</span><span class="p">(</span><span class="dl">'</span><span class="s1">Click</span><span class="se">\</span><span class="s1">160me</span><span class="dl">'</span><span class="p">)</span> <span class="c1">//decimal representation introduced with an octal escape sequence;</span>
+                                                            <span class="c1">// not supported because tests are executed in strict mode</span>
+<span class="p">});</span>
+</code></pre></div><blockquote class="important"><div class="blockquote-content"><p>In <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode">JS &quot;Strict mode&quot;</a> octal escape sequences inside strings do not work and produce a syntax error.</p>
+</div></blockquote><h3><a class="anchor" id="have-a-different-use-case"></a>Have a different use case? <a class="permalink" href="#have-a-different-use-case">#</a></h3>
+<p>If none of the examples fit your requirements and you experience issues, let us know on StackOverflow.
 We review and answer questions with the <a href="https://stackoverflow.com/questions/tagged/testcafe">TestCafe</a> tag.</p>
 
 
