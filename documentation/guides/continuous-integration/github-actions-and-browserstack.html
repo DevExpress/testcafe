@@ -1093,7 +1093,7 @@
     <span class="na">runs-on</span><span class="pi">:</span> <span class="s">windows-latest</span>
 </code></pre></div>
 <p>This job runs on a GitHub-hosted virtual machine with the latest Windows version. <code>test</code> is the <a href="https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_id">job ID</a> that must be unique to the <code>jobs</code> object.</p>
-<blockquote><div class="blockquote-content"><p>You can use a GitHub-hosted virtual machine with any base OS to run tests. For simplicity, all examples listed here run on <code>windows-latest</code>.</p>
+<blockquote><div class="blockquote-content"><p>You can use a GitHub-hosted virtual machine with a variety of operating systems to access remote browsers, as listed on the following page: <a href="https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on">GitHub Docs</a>. For simplicity, all examples in this article run on <code>windows-latest</code>.</p>
 </div></blockquote>
 <p>Alternatively, you can <a href="https://docs.github.com/en/actions/hosting-your-own-runners/about-self-hosted-runners"><strong>host your own runners</strong></a> for the job. This gives you more precise control over the environment.</p>
 
@@ -1180,18 +1180,18 @@
         <span class="na">uses</span><span class="pi">:</span> <span class="s">DevExpress/testcafe-action@latest</span>
         <span class="na">with</span><span class="pi">:</span>
             <span class="na">args</span><span class="pi">:</span> <span class="s2">"</span><span class="s">'browserstack:chrome@84.0:Windows</span><span class="nv"> </span><span class="s">10'</span><span class="nv"> </span><span class="s">tests"</span>
-</code></pre></div><blockquote><div class="blockquote-content"><p>Note the additional pair of single quotes. The BrowserStack configuration string includes a space, which can be interpreted as a separator by the command line.</p>
+</code></pre></div><blockquote><div class="blockquote-content"><p>Note the additional pair of single quotes in the <code>args</code> section. The BrowserStack configuration string includes a space, which can be interpreted as a separator by the command line.</p>
 </div></blockquote>
 <p><strong>Note</strong>: A full list of available BrowserStack configurations can be obtained through the console.
 First, provide your credentials by exporting them:</p>
 
 <p><strong>bash</strong></p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh"><span class="nb">export </span><span class="nv">BROWSERSTACK_USERNAME</span><span class="o">=</span><span class="s2">"&lt;your_browserstack_username&gt;"</span>
-<span class="nb">export </span><span class="nv">BROWSERSTACK_ACCESS_KEY</span><span class="o">=</span><span class="s2">"&lt;your_browserstack_acess_key&gt;"</span>
+<span class="nb">export </span><span class="nv">BROWSERSTACK_ACCESS_KEY</span><span class="o">=</span><span class="s2">"&lt;your_browserstack_access_key&gt;"</span>
 </code></pre></div>
 <p><strong>PowerShell</strong></p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">Set-Variable <span class="nt">-Name</span> <span class="s2">"BROWSERSTACK_USERNAME"</span> <span class="nt">-Value</span> <span class="s2">"&lt;your_browserstack_username&gt;"</span>
-Set-Variable <span class="nt">-Name</span> <span class="s2">"BROWSERSTACK_ACCESS_KEY"</span> <span class="nt">-Value</span> <span class="s2">"&lt;your_browserstack_acess_key&gt;"</span>
+Set-Variable <span class="nt">-Name</span> <span class="s2">"BROWSERSTACK_ACCESS_KEY"</span> <span class="nt">-Value</span> <span class="s2">"&lt;your_browserstack_access_key&gt;"</span>
 </code></pre></div>
 <p>Then, run the following command in the console:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="nt">-b</span> browserstack

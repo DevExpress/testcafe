@@ -2195,7 +2195,7 @@
         <span class="p">.</span><span class="nx">navigateTo</span><span class="p">(</span><span class="dl">'</span><span class="s1">http://devexpress.github.io/testcafe</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>You can use the <code>file://</code> scheme or relative paths to navigate to a webpage in a local directory.</p>
+<p>You can use the <code>file://</code> scheme or relative paths to navigate to a webpage in a local directory. Relative file paths are resolved from the current page, rather than the test file.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
     <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
 
@@ -2205,8 +2205,8 @@
         <span class="p">.</span><span class="nx">navigateTo</span><span class="p">(</span><span class="dl">'</span><span class="s1">../my-project/index.html</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>TestCafe automatically waits for the server to respond after a redirect happens.
-The test is resumed if the server does not respond within <strong>15</strong> seconds.</p>
+<p>TestCafe waits for the server to respond after a redirect occurs.
+The test resumes if the server does not respond within <strong>15</strong> seconds.</p>
 
 
 		</div>

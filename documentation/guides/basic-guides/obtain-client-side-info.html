@@ -1143,7 +1143,7 @@ Use <a href="interact-with-the-page.html">test actions</a> to interact with the 
 <p>However, if you need to call a client function from a Node.js callback that fires during a test run,
 you need to manually bind this function to the test controller.</p>
 
-<p>You can use the <code>boundTestRun</code> option to do this.</p>
+<p>You can use the <a href="../../reference/test-api/clientfunction/constructor.html#optionsboundtestrun">boundTestRun</a> option to do this.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="nx">fs</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">fs</span><span class="dl">'</span><span class="p">;</span>
 <span class="k">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
@@ -1168,7 +1168,10 @@ you need to manually bind this function to the test controller.</p>
 </code></pre></div>
 <p>This approach only works for Node.js callbacks that fire during a test run. To ensure that the test function
 does not finish before the callback, suspend the test until the callback fires. You can introduce a promise and synchronously wait for it to complete, as shown in the example above.</p>
-<h2><a class="anchor" id="client-function-limitations"></a>Client Function Limitations <a class="permalink" href="#client-function-limitations">#</a></h2>
+<blockquote><div class="blockquote-content"><p>The <code>boundTestRun</code> option requires the same test controller instance that is passed to the function used in the test declaration. It cannot work with imported test controllers.</p>
+
+<p>For more information on imported test controllers, refer to the following section: <a href="../../reference/test-api/testcontroller/#implicit-test-controller-use">Implicit Test Controller Use</a>.</p>
+</div></blockquote><h2><a class="anchor" id="client-function-limitations"></a>Client Function Limitations <a class="permalink" href="#client-function-limitations">#</a></h2>
 <p>Client function code does not support the following syntax and capabilities:</p>
 
 <ul>
