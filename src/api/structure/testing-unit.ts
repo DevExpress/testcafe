@@ -1,5 +1,6 @@
+import { pathToFileURL } from 'url';
 import BaseUnit from './base-unit';
-import { assertPageUrl, getUrl, getBaseTestUrl } from '../test-page-url';
+import { assertPageUrl, getUrl } from '../test-page-url';
 import handleTagArgs from '../../utils/handle-tag-args';
 import { delegateAPI, getDelegatedAPIList } from '../../utils/delegated-api';
 import { assertType, is } from '../../errors/runtime/type-assertions';
@@ -88,7 +89,7 @@ export default abstract class TestingUnit extends BaseUnit {
         assertType(is.string, 'page', 'The page URL', this.pageUrl);
         assertPageUrl(this.pageUrl, 'page');
 
-        this.pageUrl = getUrl(this.pageUrl, getBaseTestUrl(this.testFile.filename));
+        this.pageUrl = getUrl(this.pageUrl, pathToFileURL(this.testFile.filename));
 
         return this.apiOrigin;
     }

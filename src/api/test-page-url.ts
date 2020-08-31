@@ -1,4 +1,3 @@
-import { dirname } from 'path';
 import { URL, pathToFileURL } from 'url';
 import OS from 'os-family';
 import { APIError } from '../errors/runtime';
@@ -48,10 +47,6 @@ export function getUrl (url: string, base?: URL): string {
         return pathToFileURL(url).toString();
 
     return ensureProtocol(url);
-}
-
-export function getBaseTestUrl (testPath: string): URL {
-    return pathToFileURL(dirname(testPath));
 }
 
 export function assertPageUrl (url: string, callsiteName: string): void {
