@@ -3,7 +3,7 @@ import nanoid from 'nanoid';
 import RolePhase from './phase';
 import { assertType, is } from '../errors/runtime/type-assertions';
 import wrapTestFunction from '../api/wrap-test-function';
-import { resolvePageUrl } from '../api/test-page-url';
+import { getUrl, assertRoleUrl } from '../api/test-page-url';
 import roleMarker from './marker-symbol';
 import { StateSnapshot } from 'testcafe-hammerhead';
 import TestRun from '../test-run';
@@ -86,7 +86,9 @@ export function createRole (loginUrl: string, initFn: Function, options: RoleOpt
     if (options.preserveUrl !== void 0)
         assertType(is.boolean, 'Role', '"preserveUrl" option', options.preserveUrl);
 
-    loginUrl = resolvePageUrl(loginUrl);
+    assertRoleUrl(loginUrl, 'Role');
+
+    loginUrl = getUrl(loginUrl);
     initFn   = wrapTestFunction(initFn);
 
     return new Role(loginUrl, initFn, options);

@@ -24,7 +24,7 @@ import {
     ForbiddenCharactersInScreenshotPathError
 } from '../../../errors/test-run';
 
-import { assertUrl } from '../../../api/test-page-url';
+import { assertPageUrl } from '../../../api/test-page-url';
 import checkFilePath from '../../../utils/check-file-path';
 
 
@@ -78,7 +78,7 @@ export function nullableStringArgument (argument, val) {
 export function urlArgument (name, val) {
     nonEmptyStringArgument(name, val);
 
-    assertUrl(val.trim(), 'navigateTo');
+    assertPageUrl(val.trim(), 'navigateTo');
 }
 
 export function stringOrStringArrayArgument (argument, val) {

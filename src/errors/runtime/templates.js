@@ -108,5 +108,6 @@ export default {
         'specify the browser alias before the path instead of the \'path\' prefix. ' +
         'For more information, see https://devexpress.github.io/testcafe/documentation/guides/concepts/browsers.html#test-in-headless-mode',
 
-    [RUNTIME_ERRORS.uncaughtErrorInReporter]: 'An uncaught error occurred in the "{reporterName}" reporter\'s "{methodName}" method. Error details:\n{originalError}',
+    [RUNTIME_ERRORS.uncaughtErrorInReporter]:        'An uncaught error occurred in the "{reporterName}" reporter\'s "{methodName}" method. Error details:\n{originalError}',
+    [RUNTIME_ERRORS.roleInitializedWithRelativeUrl]: 'You cannot specify relative login page URLs in the Role constructor. Use an absolute URL.'
 };

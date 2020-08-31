@@ -13,6 +13,14 @@ describe('[API] Generic errors', function () {
                 });
         });
 
+        it('Should handle the relative path in the Role constructor', () => {
+            return runTests('testcafe-fixtures/role-initialized-with-relative-url.js', null,
+                { shouldFail: true, only: 'chrome' })
+                .catch(err => {
+                    expect(err.message).contains('You cannot specify relative login page URLs in the Role constructor. Use an absolute URL.');
+                });
+        });
+
         it('Should handle error thrown by test code', function () {
             return runTests('./testcafe-fixtures/error-in-test-code-test.js', 'Test code throws Error',
                 { shouldFail: true, only: 'chrome' })

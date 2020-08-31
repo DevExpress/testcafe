@@ -1,5 +1,5 @@
 import BaseUnit from './base-unit';
-import { assertUrl, resolvePageUrl } from '../test-page-url';
+import { assertPageUrl, getUrl, getBaseTestUrl } from '../test-page-url';
 import handleTagArgs from '../../utils/handle-tag-args';
 import { delegateAPI, getDelegatedAPIList } from '../../utils/delegated-api';
 import { assertType, is } from '../../errors/runtime/type-assertions';
@@ -86,10 +86,9 @@ export default abstract class TestingUnit extends BaseUnit {
         this.pageUrl = handleTagArgs(url, rest);
 
         assertType(is.string, 'page', 'The page URL', this.pageUrl);
+        assertPageUrl(this.pageUrl, 'page');
 
-        assertUrl(this.pageUrl, 'page');
-
-        this.pageUrl = resolvePageUrl(this.pageUrl, this.testFile.filename);
+        this.pageUrl = getUrl(this.pageUrl, getBaseTestUrl(this.testFile.filename));
 
         return this.apiOrigin;
     }
