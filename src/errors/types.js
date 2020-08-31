@@ -143,4 +143,5 @@ export const RUNTIME_ERRORS = {
     unexpectedIPCTailPacket:                            'E1054',
     cannotRunLocalNonHeadlessBrowserWithoutDisplay:     'E1057',
     uncaughtErrorInReporter:                            'E1058',
+    roleInitializedWithRelativeUrl:                     'E1059'
 };

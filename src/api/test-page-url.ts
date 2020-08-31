@@ -1,4 +1,4 @@
-import path from 'path';
+import { URL, pathToFileURL } from 'url';
 import OS from 'os-family';
 import { APIError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
@@ -11,21 +11,45 @@ const ABSOLUTE_PATH_RE      = /^\/[^/]/;
 const WIN_ABSOLUTE_PATH_RE  = /^\w:[/\\]/;
 const RELATIVE_PATH_RE      = /^\.\.?[/\\]/;
 
+export function isRelative (url: string): boolean {
+    return RELATIVE_PATH_RE.test(url);
+}
 
-function isAbsolutePath (url: string): boolean {
+function isAbsolute (url: string): boolean {
+    // NOTE: path.isAbsolute treats the '//example.com' path as absolute
     return OS.win ? WIN_ABSOLUTE_PATH_RE.test(url) : ABSOLUTE_PATH_RE.test(url);
 }
 
-function resolveFileUrl (url: string, testFileName: string): string {
-    const testFileDir = path.dirname(testFileName);
+export function resolveRelativeUrl (path: string, base: URL): string {
+    const url = new URL(path, base);
 
-    if (RELATIVE_PATH_RE.test(url))
-        url = path.join(testFileDir, url);
-
-    return 'file://' + url;
+    return url.toString();
 }
 
-export function assertUrl (url: string, callsiteName: string): void {
+function ensureProtocol (url: string): string {
+    if (SUPPORTED_PROTOCOL_RE.test(url) || url === SPECIAL_BLANK_PAGE)
+        return url;
+
+    const protocol = IMPLICIT_PROTOCOL_RE.test(url) ? 'http:' : 'http://';
+
+    return protocol + url;
+}
+
+export function getUrl (url: string, base?: URL): string {
+    if (isRelative(url)) {
+        if (!base)
+            throw new Error('Relative urls require a base path');
+
+        return resolveRelativeUrl(url, base);
+    }
+
+    else if (isAbsolute(url))
+        return pathToFileURL(url).toString();
+
+    return ensureProtocol(url);
+}
+
+export function assertPageUrl (url: string, callsiteName: string): void {
     const protocol               = url.match(PROTOCOL_RE);
     const hasUnsupportedProtocol = protocol && !SUPPORTED_PROTOCOL_RE.test(url);
     const isWinAbsolutePath      = OS.win && WIN_ABSOLUTE_PATH_RE.test(url);
@@ -34,14 +58,7 @@ export function assertUrl (url: string, callsiteName: string): void {
         throw new APIError(callsiteName, RUNTIME_ERRORS.unsupportedUrlProtocol, url, protocol && protocol[0]);
 }
 
-export function resolvePageUrl (url: string, testFileName: string): string {
-    if (SUPPORTED_PROTOCOL_RE.test(url) || url === SPECIAL_BLANK_PAGE)
-        return url;
-
-    if (isAbsolutePath(url) || RELATIVE_PATH_RE.test(url))
-        return resolveFileUrl(url, testFileName);
-
-    const protocol = IMPLICIT_PROTOCOL_RE.test(url) ? 'http:' : 'http://';
-
-    return protocol + url;
+export function assertRoleUrl (url: string, callsiteName: string): void {
+    if (isRelative(url))
+        throw new APIError(callsiteName, RUNTIME_ERRORS.roleInitializedWithRelativeUrl);
 }
