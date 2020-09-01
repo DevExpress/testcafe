@@ -15,6 +15,7 @@ export interface TestRunTracker {
     activeTestRuns: { [id: string]: TestRun };
     addTrackingMarkerToFunction(testRunId: string, fn: Function): Function;
     ensureEnabled(): void;
+    resolveContextTestRun(): TestRun;
 }
 
 declare const testRunTracker: TestRunTracker;

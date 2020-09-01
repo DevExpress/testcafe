@@ -1,12 +1,22 @@
-import { ConfigureResponseEventOptions } from 'testcafe-hammerhead';
+import {
+    ConfigureResponseEventOptions,
+    RequestEvent,
+    ResponseEvent
+} from 'testcafe-hammerhead';
 import RequestHook from './hook';
 import parseUserAgent from '../../utils/parse-user-agent';
 import testRunTracker from '../test-run-tracker';
 import ReExecutablePromise from '../../utils/re-executable-promise';
 import { APIError } from '../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../errors/types';
+import {
+    RequestFilterRuleInit,
+    RequestHookLogOptionsInit,
+    RequestHookLogOptions
+} from './interfaces';
+import { Dictionary } from '../../configuration/interfaces';
 
-const DEFAULT_OPTIONS = {
+const DEFAULT_OPTIONS: RequestHookLogOptions = {
     logRequestHeaders:     false,
     logRequestBody:        false,
     stringifyRequestBody:  false,
@@ -15,21 +25,47 @@ const DEFAULT_OPTIONS = {
     stringifyResponseBody: false
 };
 
-class RequestLoggerImplementation extends RequestHook {
-    constructor (requestFilterRuleInit, options) {
-        options = Object.assign({}, DEFAULT_OPTIONS, options);
-        RequestLoggerImplementation._assertLogOptions(options);
+interface OptionallyLoggedPart {
+    headers?: any;
+    body?: Buffer | string;
+}
 
-        const configureResponseEventOptions = new ConfigureResponseEventOptions(options.logResponseHeaders, options.logResponseBody);
+interface LoggedRequestPart extends OptionallyLoggedPart {
+    timestamp: number;
+    url: string;
+    method: string;
+}
+interface LoggedResponsePart extends OptionallyLoggedPart {
+    statusCode: string;
+    timestamp: number;
+}
+
+interface LoggedRequest {
+    id: string;
+    testRunId: string;
+    userAgent: string;
+    request: LoggedRequestPart;
+    response?: LoggedResponsePart;
+}
+
+class RequestLoggerImplementation extends RequestHook {
+    private readonly _options: RequestHookLogOptions;
+    private _internalRequests: Dictionary<LoggedRequest>;
+
+    public constructor (requestFilterRuleInit: RequestFilterRuleInit | RequestFilterRuleInit[] | undefined, options: RequestHookLogOptionsInit) {
+        const effectiveOptions = Object.assign({}, DEFAULT_OPTIONS, options) as RequestHookLogOptions;
+
+        RequestLoggerImplementation._assertLogOptions(effectiveOptions);
+
+        const configureResponseEventOptions = new ConfigureResponseEventOptions(effectiveOptions.logResponseHeaders, effectiveOptions.logResponseBody);
 
         super(requestFilterRuleInit, configureResponseEventOptions);
 
-        this.options = options;
-
+        this._options          = effectiveOptions;
         this._internalRequests = {};
     }
 
-    static _assertLogOptions (logOptions) {
+    private static _assertLogOptions (logOptions: RequestHookLogOptions): void {
         if (!logOptions.logRequestBody && logOptions.stringifyRequestBody)
             throw new APIError('RequestLogger', RUNTIME_ERRORS.requestHookConfigureAPIError, 'RequestLogger', 'Cannot stringify the request body because it is not logged. Specify { logRequestBody: true } in log options.');
 
@@ -37,8 +73,8 @@ class RequestLoggerImplementation extends RequestHook {
             throw new APIError('RequestLogger', RUNTIME_ERRORS.requestHookConfigureAPIError, 'RequestLogger', 'Cannot stringify the response body because it is not logged. Specify { logResponseBody: true } in log options.');
     }
 
-    async onRequest (event) {
-        const loggedReq = {
+    public async onRequest (event: RequestEvent): Promise<void> {
+        const loggedReq: LoggedRequest = {
             id:        event._requestInfo.requestId,
             testRunId: event._requestInfo.sessionId,
             userAgent: parseUserAgent(event._requestInfo.userAgent).prettyUserAgent,
@@ -49,16 +85,16 @@ class RequestLoggerImplementation extends RequestHook {
             }
         };
 
-        if (this.options.logRequestHeaders)
+        if (this._options.logRequestHeaders)
             loggedReq.request.headers = Object.assign({}, event._requestInfo.headers);
 
-        if (this.options.logRequestBody)
-            loggedReq.request.body = this.options.stringifyRequestBody ? event._requestInfo.body.toString() : event._requestInfo.body;
+        if (this._options.logRequestBody)
+            loggedReq.request.body = this._options.stringifyRequestBody ? event._requestInfo.body.toString() : event._requestInfo.body;
 
         this._internalRequests[loggedReq.id] = loggedReq;
     }
 
-    async onResponse (event) {
+    public async onResponse (event: ResponseEvent): Promise<void> {
         const loggedReq = this._internalRequests[event.requestId];
 
         // NOTE: If the 'clear' method is called during a long running request,
@@ -71,17 +107,17 @@ class RequestLoggerImplementation extends RequestHook {
             timestamp:  Date.now()
         };
 
-        if (this.options.logResponseHeaders)
+        if (this._options.logResponseHeaders)
             loggedReq.response.headers = Object.assign({}, event.headers);
 
-        if (this.options.logResponseBody) {
-            loggedReq.response.body = this.options.stringifyResponseBody && event.body
+        if (this._options.logResponseBody) {
+            loggedReq.response.body = this._options.stringifyResponseBody && event.body
                 ? event.body.toString()
                 : event.body;
         }
     }
 
-    _prepareInternalRequestInfo () {
+    private _prepareInternalRequestInfo (): LoggedRequest[] {
         const testRun        = testRunTracker.resolveContextTestRun();
         let preparedRequests = Object.values(this._internalRequests);
 
@@ -91,24 +127,24 @@ class RequestLoggerImplementation extends RequestHook {
         return preparedRequests;
     }
 
-    _getCompletedRequests () {
+    private _getCompletedRequests (): LoggedRequest[] {
         return this._prepareInternalRequestInfo().filter(r => r.response);
     }
 
     // API
-    contains (predicate) {
+    public contains (predicate: (request: LoggedRequest) => boolean): ReExecutablePromise {
         return ReExecutablePromise.fromFn(async () => {
             return !!this._getCompletedRequests().find(predicate);
         });
     }
 
-    count (predicate) {
+    public count (predicate: (request: LoggedRequest) => boolean): ReExecutablePromise {
         return ReExecutablePromise.fromFn(async () => {
             return this._getCompletedRequests().filter(predicate).length;
         });
     }
 
-    clear () {
+    public clear (): void {
         const testRun = testRunTracker.resolveContextTestRun();
 
         if (testRun) {
@@ -121,12 +157,12 @@ class RequestLoggerImplementation extends RequestHook {
             this._internalRequests = {};
     }
 
-    get requests () {
+    public get requests (): LoggedRequest[] {
         return this._prepareInternalRequestInfo();
     }
 }
 
-export default function createRequestLogger (requestFilterRuleInit, logOptions) {
+export default function createRequestLogger (requestFilterRuleInit: RequestFilterRuleInit | RequestFilterRuleInit[] | undefined, logOptions: RequestHookLogOptionsInit): RequestLoggerImplementation {
     return new RequestLoggerImplementation(requestFilterRuleInit, logOptions);
 }
 
