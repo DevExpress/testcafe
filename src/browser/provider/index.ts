@@ -368,6 +368,9 @@ export default class BrowserProvider {
         if (this.plugin.resizeWindowAfterOpeningBrowser)
             await this.plugin.resizeWindowAfterOpeningBrowser(browserId);
 
-        await this._ensureBrowserWindowParameters(browserId);
+        const isHeadlessBrowser = await this.plugin.isHeadlessBrowser(browserId);
+
+        if (!isHeadlessBrowser)
+            await this._ensureBrowserWindowParameters(browserId);
     }
 }
