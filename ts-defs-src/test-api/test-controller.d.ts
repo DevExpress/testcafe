@@ -269,7 +269,7 @@ interface TestController {
      */
     takeElementScreenshot(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
                           path?:    string,
-                          options?: TakeElementScreenshotOptions): TestControllerPromise
+                          options?: TakeElementScreenshotOptions): TestControllerPromise;
     /**
      * Sets the browser window size.
      *
