@@ -9,6 +9,8 @@ author: Ray Navasarkian, Vasily Strelyaev
 
 DevOps teams must make certain that applications ship on time and meet appropriate quality standards. To achieve the latter objective, DevOps must carefully consider what checks to include in the pipeline and what to leave as smoke tests. In this brief article, we argue that end-to-end tests are crucial to product quality and are worth running each time an organization delivers a build. We will illustrate how TestCafe can streamline this process and help you integrate end-to-end tests into your CI/CD workflow with minimum time and effort.
 
+<!--more-->
+
 ## Unit Tests are not Enough
 
 As you know, some organizations/dev teams require use of unit tests. Unit tests allow developers to verify whether "small" portions of a solution work as intended, but do so **independent of the whole**. While it may be tempting to use green unit tests as the prime delivery condition within a CI/CD system, unit tests will always remain granular and limited in scope.
