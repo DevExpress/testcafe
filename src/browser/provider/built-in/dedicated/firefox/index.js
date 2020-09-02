@@ -36,14 +36,13 @@ export default {
         runtimeInfo.browserName = this._getBrowserName();
         runtimeInfo.browserId   = browserId;
 
-        await startLocalFirefox(pageUrl, runtimeInfo);
+        if (!disableMultipleWindows)
+            runtimeInfo.activeWindowId = this.calculateWindowId();
 
         this.openedBrowsers[browserId] = runtimeInfo;
 
+        await startLocalFirefox(pageUrl, runtimeInfo);
         await this.waitForConnectionReady(runtimeInfo.browserId);
-
-        if (!disableMultipleWindows)
-            runtimeInfo.activeWindowId = this.calculateWindowId();
 
         if (runtimeInfo.marionettePort)
             runtimeInfo.marionetteClient = await this._createMarionetteClient(runtimeInfo);

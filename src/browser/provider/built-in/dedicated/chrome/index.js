@@ -50,15 +50,14 @@ export default {
             resizeLocalBrowserWindow: (...args) => this.resizeLocalBrowserWindow(...args)
         };
 
-        await startLocalChrome(pageUrl, runtimeInfo);
-        await this.waitForConnectionReady(browserId);
-
         if (!disableMultipleWindows)
             runtimeInfo.activeWindowId = this.calculateWindowId();
 
-        await cdp.createClient(runtimeInfo);
-
         this.openedBrowsers[browserId] = runtimeInfo;
+
+        await startLocalChrome(pageUrl, runtimeInfo);
+        await this.waitForConnectionReady(browserId);
+        await cdp.createClient(runtimeInfo);
 
         this._setUserAgentMetaInfoForEmulatingDevice(browserId, runtimeInfo.config);
     },

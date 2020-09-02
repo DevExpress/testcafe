@@ -11,7 +11,9 @@ export default {
     supportMultipleWindows: true,
 
     getActiveWindowId (browserId) {
-        return this.openedBrowsers[browserId].activeWindowId;
+        const runtimeInfo = this.openedBrowsers[browserId];
+
+        return runtimeInfo ? runtimeInfo.activeWindowId : null;
     },
 
     setActiveWindowId (browserId, val) {
