@@ -3,7 +3,7 @@ layout: post
 title: "How TestCafe Can Help You to Deliver Faster"
 permalink: /media/team-blog/:title.html
 isTeamBlog: true
-author: Ray Navasarkian, Vasily Strelyaev
+author: Vasily Strelyaev
 ---
 # How TestCafe Can Help You to Deliver Faster
 
