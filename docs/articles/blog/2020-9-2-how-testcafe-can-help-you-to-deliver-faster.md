@@ -52,7 +52,7 @@ You can learn more and about TestCafe and CI system integration via the followin
 * BitBucket Pipelines
 * AppVeyor
 
-Note: For Jenkins, TestCafe can post videos and screenshot it captured during test execution. To enable this functionality, you will need to install the Jenkins plugin and use a dedicated Jenkins reporter.
+Note: For Jenkins, TestCafe can post videos and screenshot it captured during test execution. To enable this functionality, you will need to install [the Jenkins plugin](https://plugins.jenkins.io/testcafe/) and use a dedicated [Jenkins reporter](https://www.npmjs.com/package/testcafe-reporter-jenkins).
 
 ## Docker Image
 
