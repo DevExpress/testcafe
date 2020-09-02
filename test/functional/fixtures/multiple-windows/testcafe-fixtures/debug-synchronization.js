@@ -1,6 +1,5 @@
 import cdp from 'chrome-remote-interface';
 
-
 fixture `Test`
     .page `../pages/debug-synchronization/parent.html`;
 
@@ -79,12 +78,16 @@ test('test', async t => {
     const parentClient = browserInfo.client;
 
     await t.click('#open');
+    console.log('test: open');
 
     const childClient = await waitUntilChildWindowOpens(browserPort);
+    console.log('test: waitUntilChildWindowOpens');
 
     const debugPromise = t.debug();
+    console.log('test: debugPromise');
 
     await waitUntilDebuggingStarts(childClient);
+    console.log('test: waitUntilDebuggingStarts');
 
     await closeRemoteWindow(childClient);
 
