@@ -84,4 +84,4 @@ The GitHub Actions CI service is ideal for projects developed on GitHub. To help
 
 Ready to see TestCafe's capabilities in action? Want to see how quickly you can incorporate test automation into your CI/CD workflow?
 
-[Get Started Today](https://devexpress.github.io/testcafe/documentation/getting-started/) or [Ask Us](https://devexpress.com/ask) for more information. We are here to help.
+[Get Started Today](https://devexpress.github.io/testcafe/documentation/getting-started/) or [Ask Us](https://devexpress.github.io/testcafe/support/) for more information. We are here to help.
