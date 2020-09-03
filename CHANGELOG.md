@@ -13,6 +13,8 @@
 * Added a descriptive message with troubleshooting instructions for the error thrown when the tested web server sends malformed or non-standard headers ([testcafe-hammerhead/#2188](https://github.com/DevExpress/testcafe-hammerhead/issues/2188))
 * Fixed a CSRF error on tested pages that use the `Request` class ([testcafe-hammerhead/#2140](https://github.com/DevExpress/testcafe-hammerhead/issues/2140))
 * `t.hover` now works correctly for tested pages built with the Styled Components framework ([#3830](https://github.com/DevExpress/testcafe/issues/3830))
+* Fixed script processing that could cause unhandled exceptions on some pages ([testcafe-hammerhead/#2417](https://github.com/DevExpress/testcafe-hammerhead/issues/2417))
+* Fixed the 'TypeError: r is not a function' uncaught exception on some pages with an `<iframe>` ([testcafe-hammerhead/#2392](https://github.com/DevExpress/testcafe-hammerhead/issues/2392))
 
 ## v1.9.1 (2020-8-12)
 
