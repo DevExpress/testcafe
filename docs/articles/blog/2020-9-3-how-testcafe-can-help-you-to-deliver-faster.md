@@ -42,15 +42,15 @@ TestCafe ships with five reporters – modules that can generate test execution 
 
 You can learn more and about TestCafe and CI system integration via the following links:
 
-* Jenkins
-* GitHub Actions
-* Travis
-* CircleCI
-* TeamCity
-* GitLab
-* Azure DevOps
-* BitBucket Pipelines
-* AppVeyor
+* [Jenkins](https://devexpress.github.io/testcafe/documentation/guides/continuous-integration/jenkins.html)
+* [GitHub Actions](https://devexpress.github.io/testcafe/documentation/guides/continuous-integration/github-actions.html)
+* [Travis](https://devexpress.github.io/testcafe/documentation/guides/continuous-integration/travis.html)
+* [CircleCI](https://devexpress.github.io/testcafe/documentation/guides/continuous-integration/circleci.html)
+* [TeamCity](https://devexpress.github.io/testcafe/documentation/guides/continuous-integration/teamcity.html)
+* [GitLab](https://devexpress.github.io/testcafe/documentation/guides/continuous-integration/gitlab.html)
+* [Azure DevOps](https://devexpress.github.io/testcafe/documentation/guides/continuous-integration/azure-devops.html)
+* [BitBucket Pipelines](https://devexpress.github.io/testcafe/documentation/guides/continuous-integration/bitbucket-pipelines.html)
+* [AppVeyor](https://devexpress.github.io/testcafe/documentation/guides/continuous-integration/appveyor.html)
 
 Note: For Jenkins, TestCafe can post videos and screenshot it captured during test execution. To enable this functionality, you will need to install [the Jenkins plugin](https://plugins.jenkins.io/testcafe/) and use a dedicated [Jenkins reporter](https://www.npmjs.com/package/testcafe-reporter-jenkins).
 
