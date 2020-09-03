@@ -1,5 +1,21 @@
 # Changelog
 
+## v1.9.2 (2020-9-2)
+
+### Bug Fixes
+
+* TestCafe's TypeScript definitions now allow `null` as an expected value in assertions ([PR #5456](https://github.com/DevExpress/testcafe/pull/5456))
+* Added warnings displayed when a user tries to get a snapshot property value and misses `await` ([PR #5383](https://github.com/DevExpress/testcafe/pull/5383), part of [#5087](https://github.com/DevExpress/testcafe/issues/5087))
+* Tested app's standard output and error streams are forwarded to the TestCafe's debug log now ([#5423](https://github.com/DevExpress/testcafe/issues/5423))
+* Tested apps no longer cause buffer overflow errors when they output too much data to standard streams ([#2857](https://github.com/DevExpress/testcafe/issues/2857))
+* TestCafe now correctly waits for elements on tested pages that mock date functions ([#5447](https://github.com/DevExpress/testcafe/issues/5447))
+* HTTP header overflow errors now occur less frequently due to the increased maximum header size. Enhanced the error message with troubleshooting instructions ([testcafe-hammerhead/#2356](https://github.com/DevExpress/testcafe-hammerhead/issues/2356))
+* Added a descriptive message with troubleshooting instructions for the error thrown when the tested web server sends malformed or non-standard headers ([testcafe-hammerhead/#2188](https://github.com/DevExpress/testcafe-hammerhead/issues/2188))
+* Fixed a CSRF error on tested pages that use the `Request` class ([testcafe-hammerhead/#2140](https://github.com/DevExpress/testcafe-hammerhead/issues/2140))
+* `t.hover` now works correctly for tested pages built with the Styled Components framework ([#3830](https://github.com/DevExpress/testcafe/issues/3830))
+* Fixed script processing that could cause unhandled exceptions on some pages ([testcafe-hammerhead/#2417](https://github.com/DevExpress/testcafe-hammerhead/issues/2417))
+* Fixed the 'TypeError: r is not a function' uncaught exception on some pages with an `<iframe>` ([testcafe-hammerhead/#2392](https://github.com/DevExpress/testcafe-hammerhead/issues/2392))
+
 ## v1.9.1 (2020-8-12)
 
 ### Bug Fixes
