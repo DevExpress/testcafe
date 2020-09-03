@@ -5,8 +5,8 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 03 Sep 2020 12:26:04 +0300</pubDate>
-    <lastBuildDate>Thu, 03 Sep 2020 12:26:04 +0300</lastBuildDate>
+    <pubDate>Thu, 03 Sep 2020 12:53:28 +0300</pubDate>
+    <lastBuildDate>Thu, 03 Sep 2020 12:53:28 +0300</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
@@ -46,15 +46,15 @@
 &lt;p&gt;You can learn more and about TestCafe and CI system integration via the following links:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Jenkins&lt;/li&gt;
-&lt;li&gt;GitHub Actions&lt;/li&gt;
-&lt;li&gt;Travis&lt;/li&gt;
-&lt;li&gt;CircleCI&lt;/li&gt;
-&lt;li&gt;TeamCity&lt;/li&gt;
-&lt;li&gt;GitLab&lt;/li&gt;
-&lt;li&gt;Azure DevOps&lt;/li&gt;
-&lt;li&gt;BitBucket Pipelines&lt;/li&gt;
-&lt;li&gt;AppVeyor&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/continuous-integration/jenkins.html&quot;&gt;Jenkins&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/continuous-integration/github-actions.html&quot;&gt;GitHub Actions&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/continuous-integration/travis.html&quot;&gt;Travis&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/continuous-integration/circleci.html&quot;&gt;CircleCI&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/continuous-integration/teamcity.html&quot;&gt;TeamCity&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/continuous-integration/gitlab.html&quot;&gt;GitLab&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/continuous-integration/azure-devops.html&quot;&gt;Azure DevOps&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/continuous-integration/bitbucket-pipelines.html&quot;&gt;BitBucket Pipelines&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/continuous-integration/appveyor.html&quot;&gt;AppVeyor&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;Note: For Jenkins, TestCafe can post videos and screenshot it captured during test execution. To enable this functionality, you will need to install &lt;a href=&quot;https://plugins.jenkins.io/testcafe/&quot;&gt;the Jenkins plugin&lt;/a&gt; and use a dedicated &lt;a href=&quot;https://www.npmjs.com/package/testcafe-reporter-jenkins&quot;&gt;Jenkins reporter&lt;/a&gt;.&lt;/p&gt;
