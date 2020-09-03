@@ -5,9 +5,83 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 28 Aug 2020 18:30:58 +0300</pubDate>
-    <lastBuildDate>Fri, 28 Aug 2020 18:30:58 +0300</lastBuildDate>
+    <pubDate>Thu, 03 Sep 2020 12:26:04 +0300</pubDate>
+    <lastBuildDate>Thu, 03 Sep 2020 12:26:04 +0300</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>How TestCafe Can Help You to Deliver Faster</title>
+        <description>&lt;h1&gt;How TestCafe Can Help You to Deliver Faster&lt;/h1&gt;
+&lt;p&gt;DevOps teams must make certain that applications ship on time and meet appropriate quality standards. To achieve the latter objective, DevOps must carefully consider what checks to include in the pipeline and what to leave as smoke tests. In this brief article, we argue that end-to-end tests are crucial to product quality and are worth running each time an organization delivers a build. We will illustrate how TestCafe can streamline this process and help you integrate end-to-end tests into your CI/CD workflow with minimum time and effort.&lt;/p&gt;
+
+&lt;!--more--&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;unit-tests-are-not-enough&quot;&gt;&lt;/a&gt;Unit Tests are not Enough &lt;a class=&quot;permalink&quot; href=&quot;#unit-tests-are-not-enough&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;As you know, some organizations/dev teams require use of unit tests. Unit tests allow developers to verify whether &amp;quot;small&amp;quot; portions of a solution work as intended, but do so &lt;strong&gt;independent of the whole&lt;/strong&gt;. While it may be tempting to use green unit tests as the prime delivery condition within a CI/CD system, unit tests will always remain granular and limited in scope.&lt;/p&gt;
+
+&lt;p&gt;Unit tests allow developers to flag problematic code modifications, but unit tests cannot accurately determine whether all parts of a given system are working &lt;strong&gt;together flawlessly&lt;/strong&gt;.  Said differently, unit tests cannot establish whether all usage scenarios are fully tested and meet an organization&amp;#39;s quality standards.&lt;/p&gt;
+
+&lt;p&gt;By contrast, end-to-end tests can check/analyze whether the entire system operates as expected (the whole and not just its parts). End-to-end tests can emulate user actions and determine whether real output matches expected outcomes. Unit tests are important, but we believe that only end-to-end test automation can deliver the reliability users have come to expect from today&amp;#39;s top software organizations.&lt;/p&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;testcafe-end-to-end-testing-made-easy&quot;&gt;&lt;/a&gt;TestCafe – End-to-End Testing Made Easy &lt;a class=&quot;permalink&quot; href=&quot;#testcafe-end-to-end-testing-made-easy&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;TestCafe is an enterprise-ready end-to-end testing framework with an intuitive API. Unlike legacy frameworks such as Selenium, TestCafe is easy to install, run, and integrate within an organization&amp;#39;s CI/CD pipeline. You can install the framework via npm with a single command. Since TestCafe does not require tedious configuration or plugins, it can be wound up in a new CI system within minutes. And yes, with TestCafe, you do not need to locate, install, and configure additional testing software/modules. TestCafe is self-contained and only requires Node.js and your preferred browser (no browser plugins are needed).&lt;/p&gt;
+
+&lt;p&gt;In addition, TestCafe allows you to test next-gen web features with absolute ease. TestCafe supports all major modern browsers (either locally or cloud-based) – across a variety of mobile or desktop devices. TestCafe can execute its tests on macOS, Windows, Linux, iOS, and Android. You can use Chrome, Firefox, Safari, Edge and Internet Explorer when and where appropriate – you can even use headless browsers (a great way to decrease testing time and to execute browser tests on VMs with no graphical system).&lt;/p&gt;
+
+&lt;p&gt;As you&amp;#39;ll see below, we&amp;#39;ve taken care of everything under the hood so you and your team can avoid configuration hassles and the steep learning curve associated with legacy testing frameworks.&lt;/p&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;how-to-integrate-testcafe-in-your-cicd&quot;&gt;&lt;/a&gt;How to Integrate TestCafe in Your CI/CD &lt;a class=&quot;permalink&quot; href=&quot;#how-to-integrate-testcafe-in-your-cicd&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;TestCafe can be incorporated into a pipeline with a few simple steps:  &lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Install Node.js&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Install TestCafe&lt;/strong&gt;. As mentioned earlier, TestCafe can be installed with a simple command: &lt;code&gt;npm install -g testcafe&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Run TestCafe tests&lt;/strong&gt;. Only a single command is required to execute a test (for instance: &lt;code&gt;testcafe chrome:headless ./tests&lt;/code&gt;). With this simple command, TestCafe will auto detect the browser (if installed), launch it, and run your tests automatically.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;TestCafe ships with five reporters – modules that can generate test execution reports for your CI/CD. JSON, JUnit, xUnit, and console output (with rich formatting) are built-in. You can also use reporters developed by the TestCafe user community for &lt;a href=&quot;https://www.npmjs.com/package/testcafe-reporter-nunit&quot;&gt;NUnit&lt;/a&gt;, &lt;a href=&quot;https://www.npmjs.com/package/testcafe-reporter-teamcity&quot;&gt;TeamCity&lt;/a&gt;, &lt;a href=&quot;https://www.npmjs.com/package/testcafe-reporter-slack&quot;&gt;Slack&lt;/a&gt;, etc. Should you require these community plugins, you can:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Install the desired third-party reporter via npm: &lt;code&gt;npm install testcafe testcafe-reporter-nunit&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;Run TestCafe tests much like step 3: &lt;code&gt;testcafe chrome:headless ./tests -r nunit:report.xml&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;You can learn more and about TestCafe and CI system integration via the following links:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Jenkins&lt;/li&gt;
+&lt;li&gt;GitHub Actions&lt;/li&gt;
+&lt;li&gt;Travis&lt;/li&gt;
+&lt;li&gt;CircleCI&lt;/li&gt;
+&lt;li&gt;TeamCity&lt;/li&gt;
+&lt;li&gt;GitLab&lt;/li&gt;
+&lt;li&gt;Azure DevOps&lt;/li&gt;
+&lt;li&gt;BitBucket Pipelines&lt;/li&gt;
+&lt;li&gt;AppVeyor&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Note: For Jenkins, TestCafe can post videos and screenshot it captured during test execution. To enable this functionality, you will need to install &lt;a href=&quot;https://plugins.jenkins.io/testcafe/&quot;&gt;the Jenkins plugin&lt;/a&gt; and use a dedicated &lt;a href=&quot;https://www.npmjs.com/package/testcafe-reporter-jenkins&quot;&gt;Jenkins reporter&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;docker-image&quot;&gt;&lt;/a&gt;Docker Image &lt;a class=&quot;permalink&quot; href=&quot;#docker-image&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;TestCafe is easy to install and requires a very basic environment. Of course, you can wind it up even faster with Docker. To get started, download a pre-configured image from Docker Hub:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;docker pull testcafe/testcafe
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The image is based on ArcLinux and includes Node.js, TestCafe, Chrome, and Firefox. It is ready to execute tests as needed:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;docker run &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; //d/tests:/tests &lt;span class=&quot;nt&quot;&gt;-it&lt;/span&gt; testcafe/testcafe firefox:headless /tests/&lt;span class=&quot;k&quot;&gt;**&lt;/span&gt;/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.js
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You can also use this image on your computer to perform tests on a host machine or remote machines within your network. See the following help topic for additional Docker-related information: &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/use-testcafe-docker-image.html&quot;&gt;Use TestCafe&amp;#39;s Docker Image&lt;/a&gt;&lt;/p&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;github-actions&quot;&gt;&lt;/a&gt;GitHub Actions &lt;a class=&quot;permalink&quot; href=&quot;#github-actions&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;The GitHub Actions CI service is ideal for projects developed on GitHub. To help you quickly integrate TestCafe into your Actions workflows, we created the &lt;a href=&quot;https://github.com/DevExpress/testcafe-action&quot;&gt;Run TestCafe&lt;/a&gt; action. This action installs TestCafe and runs tests on your behalf. To begin, you simply need to add TestCafe command line arguments:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;DevExpress/testcafe-action@latest&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;chrome&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;tests&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;testcafe-adoption-made-easy&quot;&gt;&lt;/a&gt;TestCafe: Adoption Made Easy &lt;a class=&quot;permalink&quot; href=&quot;#testcafe-adoption-made-easy&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Ready to see TestCafe&amp;#39;s capabilities in action? Want to see how quickly you can incorporate test automation into your CI/CD workflow?&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/getting-started/&quot;&gt;Get Started Today&lt;/a&gt; or &lt;a href=&quot;https://devexpress.github.io/testcafe/support/&quot;&gt;Ask Us&lt;/a&gt; for more information. We are here to help.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 03 Sep 2020 00:00:00 +0300</pubDate>
+        <link>https://devexpress.github.io/testcafe/media/team-blog/how-testcafe-can-help-you-to-deliver-faster.html</link>
+        <guid isPermaLink="true">https://devexpress.github.io/testcafe/media/team-blog/how-testcafe-can-help-you-to-deliver-faster.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>Introducing Multi-window Tests (Beta)</title>
@@ -1089,34 +1163,6 @@ Yes, if test actions on the page trigger file download, the browser will downloa
         <pubDate>Mon, 20 Apr 2020 00:00:00 +0300</pubDate>
         <link>https://devexpress.github.io/testcafe/media/team-blog/how-to-scroll-web-pages-using-testcafe.html</link>
         <guid isPermaLink="true">https://devexpress.github.io/testcafe/media/team-blog/how-to-scroll-web-pages-using-testcafe.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>TestCafe v1.8.0 Released</title>
-        <description>&lt;h1&gt;TestCafe v1.8.0 Released&lt;/h1&gt;
-&lt;p&gt;In this release, we have added support for the new Chromium-based Microsoft Edge.&lt;/p&gt;
-
-&lt;!--more--&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;support-for-the-new-microsoft-edge&quot;&gt;&lt;/a&gt;🌟 Support for the New Microsoft Edge &lt;a class=&quot;permalink&quot; href=&quot;#support-for-the-new-microsoft-edge&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;TestCafe v1.8.0 supports the new Microsoft Edge based on Chromium. The new Edge is available under the same &lt;a href=&quot;../documentation/guides/concepts/browsers.html#locally-installed-browsers&quot;&gt;alias&lt;/a&gt;: &lt;code&gt;edge&lt;/code&gt;.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe edge test.js
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;test.js&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;browsers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;edge&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Supported Edge&amp;#39;s features include &lt;a href=&quot;../documentation/guides/concepts/browsers.html#test-in-headless-mode&quot;&gt;headless mode&lt;/a&gt;, &lt;a href=&quot;../documentation/guides/concepts/browsers.html#use-chromium-device-emulation&quot;&gt;mobile device emulation&lt;/a&gt;, and &lt;a href=&quot;../documentation/guides/advanced-guides/screenshots-and-videos.html#record-videos&quot;&gt;video recording&lt;/a&gt;.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Fixed an error thrown when the webpage creates a &lt;code&gt;Proxy&lt;/code&gt; (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2206&quot;&gt;testcafe-hammerhead/#2206&lt;/a&gt;) by &lt;a href=&quot;https://github.com/link89&quot;&gt;@link89&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;Event handlers are no longer cleared after the &lt;code&gt;document.open&lt;/code&gt; function call (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1881&quot;&gt;testcafe-hammerhead/#1881&lt;/a&gt;)&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Fri, 17 Jan 2020 00:00:00 +0300</pubDate>
-        <link>https://devexpress.github.io/testcafe/blog/testcafe-v1-8-0-released.html</link>
-        <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v1-8-0-released.html</guid>
         
         
       </item>
