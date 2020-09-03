@@ -27,7 +27,7 @@ if (config.useLocalBrowsers) {
                     });
             });
 
-            if (!isLinuxWithoutGUI)
+            if (!isLinuxWithoutGUI) {
                 it('non-headless', () => {
                     return testCafe
                         .createRunner()
@@ -40,6 +40,7 @@ if (config.useLocalBrowsers) {
                             expect(failedCount).eql(0);
                         });
                 });
+            }
         });
 
         it('Should provide emulating device for user agent', async () => {
