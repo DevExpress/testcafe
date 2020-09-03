@@ -1373,7 +1373,7 @@ describe('API', function () {
     });
 
     describe('Role', function () {
-        it('Should raise an error if Role "loginPage" is not a string', function () {
+        it('Should raise an error if Role "loginUrl" is not a string', function () {
             const testfile = resolve('test/server/data/test-suites/role-login-page-is-not-a-string/testfile.js');
 
             return compile(testfile)
@@ -1385,7 +1385,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"loginPage" argument is expected to be a string, but it was number.',
+                                 '"loginUrl" argument is expected to be a string, but it was number.',
 
                         callsite: "   1 |import { Role } from 'testcafe';\n" +
                                   '   2 |\n' +

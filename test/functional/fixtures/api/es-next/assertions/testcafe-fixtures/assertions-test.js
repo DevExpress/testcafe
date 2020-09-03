@@ -40,15 +40,27 @@ test('.notContains() assertion', async t => {
 
 test('.typeOf() assertion', async t => {
     await t
+        .expect(() => true).typeOf('function')
+        .expect({}).typeOf('object')
+        .expect(1).typeOf('number')
+        .expect('string').typeOf('string')
+        .expect(true).typeOf('boolean')
         .expect(void 0).typeOf('undefined')
-        .expect('hey').typeOf('string')
+        .expect(null).typeOf('null')
+        .expect(new RegExp('regex')).typeOf('regexp')
         .expect(42).typeOf('function');
 });
 
 test('.notTypeOf() assertion', async t => {
     await t
-        .expect(void 0).notTypeOf('string')
-        .expect('hey').notTypeOf('number')
+        .expect('function').notTypeOf('function')
+        .expect('object').notTypeOf('object')
+        .expect('number').notTypeOf('number')
+        .expect(1).notTypeOf('string')
+        .expect('boolean').notTypeOf('boolean')
+        .expect('undefined').notTypeOf('undefined')
+        .expect('null').notTypeOf('null')
+        .expect('regex').notTypeOf('regexp')
         .expect(42).notTypeOf('number');
 });
 
@@ -158,4 +170,26 @@ test('ClientFunction result assertion', async t => {
 
 test('Assertion without method call', async t => {
     await t.expect();
+});
+
+test('Passing Selector instance into an assertion', async t => {
+    await t.expect(Selector('#el1')).eql(true);
+});
+
+test('Passing ClientFunction instance into an assertion', async t => {
+    await t.expect(ClientFunction(() => true)).eql(true);
+});
+
+test('Await Selector property', async t => {
+    await t
+        .expect(Selector('#el1')).ok()
+        .expect(await Selector('#el1')).ok()
+        .expect(Selector('#el1').innerText).eql('')
+        .expect(await Selector('#el1').innerText).eql('');
+});
+
+test('Snapshot property without await', async t => {
+    await t.expect(Selector('#el1').innerText).eql('');
+
+    Selector('#el1').innerText;
 });

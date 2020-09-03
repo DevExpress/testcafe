@@ -137,6 +137,10 @@ export default {
         The "${err.argumentName}" argument is expected to be a Role instance, but it was ${err.actualValue}.
     `,
 
+    [TEST_RUN_ERRORS.actionFunctionArgumentError]: err => `
+        The "${err.argumentName}" argument is expected to be a function, but it was ${err.actualValue}.
+    `,
+
     [TEST_RUN_ERRORS.actionPositiveIntegerArgumentError]: err => `
         The "${err.argumentName}" argument is expected to be a positive integer, but it was ${err.actualValue}.
     `,
@@ -237,6 +241,10 @@ export default {
 
     [TEST_RUN_ERRORS.externalAssertionLibraryError]: err => `
         ${escapeHtml(err.errMsg)}
+
+        <span class="diff-added">+ expected</span> <span class="diff-removed">- actual</span>
+
+        ${err.diff}
     `,
 
     [TEST_RUN_ERRORS.domNodeClientFunctionResultError]: err => `
@@ -349,7 +357,30 @@ export default {
         Cannot find the window specified in the action parameters.
     `,
 
-    [TEST_RUN_ERRORS.allowMultipleWindowsOptionIsNotSpecifiedError]: err => `
-        You should activate multi window mode (enable the "allow-multiple-windows" run option) to use the "${err.methodName}" method.
+    [TEST_RUN_ERRORS.parentWindowNotFoundError]: () => `
+        Cannot find the parent window. Make sure that the tested window was opened from another window.
+    `,
+
+    [TEST_RUN_ERRORS.previousWindowNotFoundError]: () => `
+        Cannot find the previous window. Make sure that the previous window is opened.
+    `,
+
+    [TEST_RUN_ERRORS.switchToWindowPredicateError]: err => `
+        An error occurred inside the "switchToWindow" argument function.
+
+        Error details:
+        ${escapeHtml(err.errMsg)}
+    `,
+
+    [TEST_RUN_ERRORS.multipleWindowsModeIsDisabledError]: err => `
+        Multi window mode is disabled. Remove the "--disable-multiple-windows" CLI flag or set the "disableMultipleWindows" option to "false" in the API to use the "${err.methodName}" method.
+    `,
+
+    [TEST_RUN_ERRORS.multipleWindowsModeIsNotSupportedInRemoteBrowserError]: err => `
+        Multi window mode is supported in Chrome, Chromium, Edge 84+ and Firefox only. Run tests in these browsers to use the "${err.methodName}" method.
+    `,
+
+    [TEST_RUN_ERRORS.cannotCloseWindowWithoutParent]: () => `
+        Cannot close the window because it does not have a parent. The parent window was closed or you are attempting to close the root browser window where tests were launched.
     `,
 };

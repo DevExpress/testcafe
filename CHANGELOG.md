@@ -1,5 +1,145 @@
 # Changelog
 
+## v1.9.2 (2020-9-2)
+
+### Bug Fixes
+
+* TestCafe's TypeScript definitions now allow `null` as an expected value in assertions ([PR #5456](https://github.com/DevExpress/testcafe/pull/5456))
+* Added warnings displayed when a user tries to get a snapshot property value and misses `await` ([PR #5383](https://github.com/DevExpress/testcafe/pull/5383), part of [#5087](https://github.com/DevExpress/testcafe/issues/5087))
+* Tested app's standard output and error streams are forwarded to the TestCafe's debug log now ([#5423](https://github.com/DevExpress/testcafe/issues/5423))
+* Tested apps no longer cause buffer overflow errors when they output too much data to standard streams ([#2857](https://github.com/DevExpress/testcafe/issues/2857))
+* TestCafe now correctly waits for elements on tested pages that mock date functions ([#5447](https://github.com/DevExpress/testcafe/issues/5447))
+* HTTP header overflow errors now occur less frequently due to the increased maximum header size. Enhanced the error message with troubleshooting instructions ([testcafe-hammerhead/#2356](https://github.com/DevExpress/testcafe-hammerhead/issues/2356))
+* Added a descriptive message with troubleshooting instructions for the error thrown when the tested web server sends malformed or non-standard headers ([testcafe-hammerhead/#2188](https://github.com/DevExpress/testcafe-hammerhead/issues/2188))
+* Fixed a CSRF error on tested pages that use the `Request` class ([testcafe-hammerhead/#2140](https://github.com/DevExpress/testcafe-hammerhead/issues/2140))
+* `t.hover` now works correctly for tested pages built with the Styled Components framework ([#3830](https://github.com/DevExpress/testcafe/issues/3830))
+* Fixed script processing that could cause unhandled exceptions on some pages ([testcafe-hammerhead/#2417](https://github.com/DevExpress/testcafe-hammerhead/issues/2417))
+* Fixed the 'TypeError: r is not a function' uncaught exception on some pages with an `<iframe>` ([testcafe-hammerhead/#2392](https://github.com/DevExpress/testcafe-hammerhead/issues/2392))
+
+## v1.9.1 (2020-8-12)
+
+### Bug Fixes
+
+* Pages proxied with TestCafe now expose the correct `File` object for uploaded files ([testcafe-hammerhead/#2338](https://github.com/DevExpress/testcafe-hammerhead/issues/2338))
+
+## v1.9.0 (2020-8-6)
+
+### Enhancements
+
+#### 🌟 Multi Window Support (Beta)
+
+TestCafe can now automate user actions in multiple windows. You can switch between open windows during the test. Make edits in one window and check that the other window's content changes dynamically to reflect these modifications.
+
+![Testing in multiple windows](docs/articles/images/blog/2020-07-23-multi-window.gif)
+
+When the main window opens a child window, TestCafe automatically switches to this new window and continues test actions there:
+
+```js
+import { Selector } from 'testcafe';
+
+fixture `Login page`
+    .page('https://login.wrike.com/login/');
+
+const googleButton = Selector('div.login-panel-footer__login-with > button');
+
+test('Login via Google', async t => {
+    await t
+        .click(googleButton)
+        .typeText('input[type=email]', 'This text will be entered inside the pop-up');
+});
+```
+
+You can use the [t.openWindow](https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/openwindow.html) method to open a child window in test code:
+
+```js
+import { Selector, ClientFunction } from 'testcafe';
+
+fixture `Test page`
+    .page('https://devexpress.github.io/testcafe/example/');
+
+test('Open a new window', async t => {
+    await t.openWindow('http://example.com');
+
+    const url = await t.eval(() => document.documentURI);
+
+    await t.expect(url).eql('http://example.com');
+});
+```
+
+The [t.switchToWindow](https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/switchtowindow.html) method enables you to switch between open windows. You can use a window descriptor or a predicate to specify the window that should be activated:
+
+```js
+fixture `Example page`
+    .page('https://example.com');
+
+test('Switch to a specific window', async t => {
+    const initialWindow = await t.getCurrentWindow();
+    const popUp1        = await t.openWindow('https://devexpress.com');
+    const popUp2        = await t.openWindow('https://github.com');
+
+    await t.switchToWindow(initialWindow);
+
+    const url = t.eval(() => document.documentURI);
+
+    await t.expect(url).eql('https://example.com/');
+
+    await t
+        .switchToWindow(w => w.url.host === 'github.com')
+        .expect(url).eql('https://github.com');
+});
+```
+
+The [t.switchToParentWindow](https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/switchtoparentwindow.html) and [t.switchToPreviousWindow](https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/switchtopreviouswindow.html) methods allow you to switch back to the parent window or the previously active window.
+
+The [t.closeWindow](https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/closewindow.html) method closes the current window when called without arguments, or the specified window if you pass a descriptor or predicate:
+
+```js
+fixture `Example page`
+    .page('http://www.example.com');
+
+test('Close the current window', async t => {
+    const window1 = await t.openWindow('http://devexpress.com');
+
+    await t.closeWindow();
+
+    const url = await t.eval(() => document.documentURI);
+
+    await t.expect(url).eql('http://www.example.com/');
+});
+
+test('Close a specific window', async t => {
+    const window1 = await t.openWindow('http://devexpress.com');
+
+    await t.closeWindow(window1);
+});
+```
+
+#### Detailed Diffs in Failed Assertions
+
+Test run reports now show the differences between an assertion's actual and expected values:
+
+![A report showing differences between asserted values](docs/articles/images/blog/2020-07-23-rich-diffs.png)
+
+TestCafe can display difference between values, arrays, objects, and even functions.
+
+### Bug Fixes
+
+* TestCafe now throws a descriptive error when it attempts to start the browser UI on Linux without the X11 server ([4461](https://github.com/DevExpress/testcafe/issues/4461))
+* Exception no longer thrown when you use remote browsers on Linux without X11 or run Windows browsers from WSL2 ([#4742](https://github.com/DevExpress/testcafe/issues/4742))
+* Fixed a syntax error on pages whose code destructures empty function parameters ([testcafe-hammerhead/#2391](https://github.com/DevExpress/testcafe-hammerhead/issues/2391))
+* Fixed a bug when page titles were displayed incorrectly ([testcafe-hammerhead/#2374](https://github.com/DevExpress/testcafe-hammerhead/issues/2374))
+
+## v1.8.8 (2020-7-6)
+
+### Bug Fixes
+
+* TestCafe now emits warnings when `ClientFunction` and `Selector` instances are asserted without a call ([#5211](https://github.com/DevExpress/testcafe/pull/5211))
+* Fixed click simulation for Ionic framework elements that use the `disabled` attribute ([#5141](https://github.com/DevExpress/testcafe/issues/5141))
+* Improved compatibility with test pages that use destructuring in the `for..of` loops ([testcafe-hammerhead#2363](https://github.com/DevExpress/testcafe-hammerhead/issues/2363))
+* Improved compatibility with test pages that use destructuring in ternary expressions ([testcafe-hammerhead#2362](https://github.com/DevExpress/testcafe-hammerhead/issues/2362))
+* Improved compatibility with pages that use SVG elements with the `title` tag ([testcafe-hammerhead#2364](https://github.com/DevExpress/testcafe-hammerhead/issues/2364))
+* Fixed the `Failed to execute 'postMessage' on 'Window'` exception for test pages that use the `<iframe>` tags ([testcafe-hammerhead#2165](https://github.com/DevExpress/testcafe-hammerhead/issues/2165))
+
 ## v1.8.7 (2020-6-23)
 
 ### Bug Fixes
@@ -3088,7 +3228,7 @@ Then, for each `label` element finds a parent that matches the `div.someClass` s
 ------
 
 Like in jQuery, if you request a [property](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/dom-node-state.html#members-common-across-all-nodes) of the matched set or try evaluate
-a [snapshot](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#dom-node-snapshot), the selector returns values for the first element in the set.
+a [snapshot](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#dom-node-state), the selector returns values for the first element in the set.
 
 ```js
 // Returns id of the first element in the set

@@ -15,9 +15,9 @@ redirect_from:
   - /documentation/test-api/handling-native-dialogs.html
   - /documentation/test-api/working-with-iframes.html
 ---
-# Interact With The Page
+# Interact With the Page
 
-Test API provides a set of **actions** you can use to interact with the page.
+Test API includes a set of **actions** you can use to interact with the page.
 
 * [Click](#click)
 * [Press Key](#press-key)
@@ -33,9 +33,13 @@ Test API provides a set of **actions** you can use to interact with the page.
 * [Resize Window](#resize-window)
 * [Wait](#wait)
 
-They are implemented as methods in the [test controller](../../reference/test-api/testcontroller/README.md) object. You can call them in a chained fashion.
+The [test controller](../../reference/test-api/testcontroller/README.md) object includes actions as its methods. You can chain these actions when you call them in code.
 
-The available actions with reproducible usage examples and links to their descriptions are listed below.
+You can find a list of available actions (with reproducible examples) and links to their descriptions below.
+
+> TestCafe is intended to emulate real user behavior, so you cannot interact with elements, that are not [visible](../../reference/test-api/selector/filtervisible.md) at that moment.
+>
+> For instance, you can not type into an `input` element with the `display: none` style.
 
 ## Click
 
@@ -194,7 +198,7 @@ Actions that allow you to interact with file upload input elements.
 * [Populate File Upload Input](../../reference/test-api/testcontroller/setfilestoupload.md)
 * [Clear File Upload Input](../../reference/test-api/testcontroller/clearupload.md)
 
-> The file upload actions only allow you to manage the list of files you want to upload. These files are uploaded to the server after you initiate upload, for example, when you [click](../../reference/test-api/testcontroller/click.md) the **Upload** or **Submit** button on a page.
+> File upload actions allow you to manage the list of files you wish to upload. A file is uploaded to the server, for example, when you [click](../../reference/test-api/testcontroller/click.md) the **Upload** or **Submit** button on a page.
 
 **Example**
 
@@ -236,14 +240,11 @@ test('Take Screenshot test', async t => {
 });
 ```
 
-## Work with iframes
+## Work With Iframes
 
 A TestCafe test's [browsing context](https://html.spec.whatwg.org/multipage/browsers.html#windows) is limited to the main window or an `<iframe>`. To use an `<iframe>` in your test,
-switch the context from the main window to this `<iframe>`.
-If several `<iframes>` are used in your test, you need to switch between them.
-limited to either the main window or an `<iframe>`. To use an `<iframe>` in your test,
-you need to switch the context from the main window to this `<iframe>` (and then probably back).
-Likewise, if several `<iframes>` are involved in your test, you will have to switch between them.
+switch the context from the main window to this `<iframe>`. You may need to switch back to the main window.
+If multiple `<iframes>` are present in your test, you should switch between them.
 
 Use the following methods to switch between windows and iframes:
 
@@ -268,12 +269,12 @@ test('Working With iframe test', async t => {
 
 ## Handle Native Dialogs
 
-TestCafe allows you to handle native browser dialogs that are invoked during the test run.
+TestCafe allows you to handle native dialogs that the browser may display during the test run.
 
 You can close [alert](https://developer.mozilla.org/en-US/docs/Web/API/Window/alert) and
 [beforeunload](https://developer.mozilla.org/en-US/docs/Web/Events/beforeunload) dialogs,
 choose an option in [confirm](https://developer.mozilla.org/en-US/docs/Web/API/Window/confirm) dialogs
-or provide text for [prompt](https://developer.mozilla.org/en-US/docs/Web/API/Window/prompt) dialogs.
+or supply text for [prompt](https://developer.mozilla.org/en-US/docs/Web/API/Window/prompt) dialogs.
 
 * [Set Native Dialog Handler](../../reference/test-api/testcontroller/setnativedialoghandler.md)
 * [Get Native Dialog History](../../reference/test-api/testcontroller/getnativedialoghistory.md)
@@ -288,7 +289,7 @@ Use resize window actions to maximize a browser window or resize it to fit a spe
 
 > Important! Window resize actions are not supported when you run tests in [remote browsers](../concepts/browsers.md#browsers-on-remote-devices).
 
-**Note**: these actions require .NET 4.0 or newer installed on Windows machines and an [ICCCM/EWMH-compliant window manager](https://en.wikipedia.org/wiki/Comparison_of_X_window_managers) on Linux.
+**Note**: These actions require a Windows machine with .NET 4.0 or newer, or a Linux machine with an [ICCCM/EWMH-compliant window manager](https://en.wikipedia.org/wiki/Comparison_of_X_window_managers).
 
 **Example**
 
@@ -330,6 +331,89 @@ On touch devices, TestCafe emulates touch events instead of mouse events.
 
 Mouse event | Touch event
 ----------- | -------------
-`mousemove` (when hovering or dragging) | `touchmove` (dragging only)
+`mousemove` (when you hover or drag) | `touchmove` (when you drag)
 `mousedown` | `touchstart`
 `mouseup`   | `touchend`
+
+## Interaction Requirements
+
+TestCafe actions can interact with elements if they satisfy the following conditions:
+
+* an element is within the `body` element of a page window or an [`<iframe>`](#work-with-iframes) window. The element can be invisible to the user. If an element is outside of the viewport, TestCafe tries to reach it with a scroll.
+
+* an element is visible, with the following properties:
+
+    Property | Value
+    -------- | --------
+    `display`  | *not* set to `none`
+    `visibility` | set to `visible` (the default value)
+    `width`    | >= 1px
+    `height`   | >= 1px
+
+* an element is not overlapped.  
+
+    TestCafe actions target the center of an element or a point specified by an action's `offsetX` and `offsetY` options. If another element obstructs the target point, the action is executed on the top element (for instance, the [t.click](../../reference/test-api/testcontroller/click.md) action clicks the element over it).
+
+## Examples
+
+### Download Files in IE
+
+TestCafe cannot prevent native dialogs before file download in Internet Explorer. This dialog prevents automatic file download, but does not block the page.
+
+The following example shows how to ignore the dialog and download the file:
+
+```html
+<body>
+    <form method="get" action="./src/file.zip">
+        <button id="downloadButton" type="submit">Download!</button>
+     </form>
+</body>
+```
+
+This sample page includes a button that downloads a file from the `/src` folder on the server. To obtain the file, use a [RequestLogger](../../reference/test-api/requestlogger/README.md):
+
+```js
+import { RequestLogger } from 'testcafe';
+
+const fileDownloadLogger = RequestLogger(new RegExp('src/file.zip'), {
+    logResponseBody: true,
+    stringifyResponseBody: true
+});
+
+fixture `fixture`
+    .page `./fileDownload.html`
+    .requestHooks(fileDownloadLogger);
+
+test(`Download a file and verify contents`, async t => {
+    await t
+        .click('#downloadButton')
+        .expect(fileDownloadLogger.contains(r => {
+            return  /File contents here/.test(r.response.body) &&   //verify response body
+                    r.response.statusCode === 200;                  //verify response status code
+        })).ok()
+});
+```
+
+This test introduces a `RequestLogger` that logs requests to a location and received responses. Location is [defined with a regular expression](../../reference/test-api/requestlogger/constructor.md#use-a-regular-expression-to-specify-the-url). The response body is then checked with a regular expression.
+
+> The response body received from the server is binary. Use the `RequestLogger`'s [stringifyResponseBody option](../../reference/test-api/requestlogger/constructor.md) to convert it to a string.
+
+### Scroll an Element into View
+
+Since TestCafe scrolls to reach items that are on the page but not on-screen, the TestCafe API does not have a dedicated scroll action.
+
+You can use any action (for example, [hover](#hover)) to scroll towards the desired part of the page.  
+
+If you specifically need to scroll the page without any action, use a [ClientFunction](obtain-client-side-info.md).
+
+```js
+import { ClientFunction } from 'testcafe';
+
+const scrollBy = ClientFunction(() => {
+    window.scrollBy(0, 1000);
+});
+
+test('Test', async t => {
+      await scrollBy();
+});
+```

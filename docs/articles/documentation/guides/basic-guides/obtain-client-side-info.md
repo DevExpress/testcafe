@@ -135,7 +135,7 @@ Client functions need access to the [test controller](../../reference/test-api/t
 However, if you need to call a client function from a Node.js callback that fires during a test run,
 you need to manually bind this function to the test controller.
 
-You can use the `boundTestRun` option to do this.
+You can use the [boundTestRun](../../reference/test-api/clientfunction/constructor.md#optionsboundtestrun) option to do this.
 
 ```js
 import fs from 'fs';
@@ -164,15 +164,31 @@ test('Check client data', async t => {
 This approach only works for Node.js callbacks that fire during a test run. To ensure that the test function
 does not finish before the callback, suspend the test until the callback fires. You can introduce a promise and synchronously wait for it to complete, as shown in the example above.
 
+> The `boundTestRun` option requires the same test controller instance that is passed to the function used in the test declaration. It cannot work with imported test controllers.
+>
+> For more information on imported test controllers, refer to the following section: [Implicit Test Controller Use](../../reference/test-api/testcontroller/README.md#implicit-test-controller-use).
+
 ## Client Function Limitations
 
-* You cannot use generators or `async/await` syntax within client functions.
+Client function code does not support the following syntax and capabilities:
 
-* Client functions cannot access variables defined in the outer scope.
+* Generators or `async/await` syntax;
+
+* Access to variables defined in outer scope;
 
   > You can use arguments to pass data within these functions, except for self-invoking functions that do not accept outside parameters.
   >
   > The return value is the only way to obtain data from client functions.
+
+* Iterable destructuring (e.g., [`spread`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax), [`rest`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Rest_parameters) operators) on non-array objects (e.g. `NodeList`, `HTMLCollection`);
+
+* [Property shorthands](http://es6-features.org/#PropertyShorthand) in the `dependencies` option;
+
+* Array methods [`Array.from()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from), [`Array.of()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/of);
+
+* Keyed collections: [`Map`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map), [`Set`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set), [`WeakMap`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap), [`WeakSet`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet);
+
+* Property shorthand for imported values.
 
 ## Access Console Messages
 

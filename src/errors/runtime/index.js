@@ -115,3 +115,11 @@ export class CompositeError extends Error {
         this.code  = RUNTIME_ERRORS.compositeArgumentsError;
     }
 }
+
+export class ReporterPluginError extends GeneralError {
+    constructor ({ name, method, originalError }) {
+        const code = RUNTIME_ERRORS.uncaughtErrorInReporter;
+
+        super(code, name, method, originalError.stack);
+    }
+}

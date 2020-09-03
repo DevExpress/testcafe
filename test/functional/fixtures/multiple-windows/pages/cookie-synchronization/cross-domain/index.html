@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div style="margin-bottom: 20px">
+        <a id="openLoginPage" target="_blank" href="http://localhost:3001/fixtures/multiple-windows/pages/cookie-synchronization/cross-domain/login.html">Open login page</a>
+    </div>
+    <div>
+        <span id="sameDomainCookieStatus">Cookie not set.</span><br>
+        <span id="crossDomainCookieStatus">Cookie not set</span>
+    </div>
+    <iframe id="cookieMonitor" src="http://localhost:3001/fixtures/multiple-windows/pages/cookie-synchronization/cross-domain/cookie-monitor/index.html" style="width: 1px;height: 1px;"></iframe>
+    <script>
+        function isAutentificationTokenSet () {
+            return document.cookie.indexOf('token') !== -1;
+        }
+
+        window.onmessage = function (e) {
+            var sameDomainCookieStatusSpan  = document.getElementById('sameDomainCookieStatus');
+            var crossDomainCookieStatusSpan = document.getElementById('crossDomainCookieStatus');
+
+            sameDomainCookieStatusSpan.textContent  = 'Cookie is' + (isAutentificationTokenSet() ? '' : "n't") + ' set for the same-domain page.';
+            crossDomainCookieStatusSpan.textContent = JSON.parse(e.data).message;
+        };
+    </script>
+</body>
+</html>

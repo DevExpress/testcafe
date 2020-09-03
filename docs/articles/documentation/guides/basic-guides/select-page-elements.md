@@ -49,7 +49,7 @@ CSS selectors cannot query parent elements:
 </html>
 ```
 
-TestCafe's chainable [Selector](../../reference/test-api/selector/README.md) functions expose methods used to traverse through the DOM tree in jQuery style. The following example illustrates how to overcome CSS limitations with TestCafe selectors:
+TestCafe's chainable [Selector](../../reference/test-api/selector/README.md) functions expose methods used to traverse through the DOM tree in jQuery style. The following example illustrates how to override CSS limitations with TestCafe selectors:
 
 ```js
 const link = Selector('div')
@@ -70,7 +70,7 @@ You can use selectors to [inspect elements](#obtain-element-state), define [acti
 * [Use Selectors](#use-selectors)
   * [Check if an Element Exists](#check-if-an-element-exists)
   * [Obtain Element State](#obtain-element-state)
-    * [DOM Node Snapshot](#dom-node-snapshot)
+    * [DOM Node State](#dom-node-state)
   * [Define Action Targets](#define-action-targets)
   * [Define Assertion Actual Value](#define-assertion-actual-value)
 * [Selector Timeout](#selector-timeout)
@@ -136,7 +136,7 @@ This selector does the following:
 </html>
 ```
 
-If a selector matches multiple elements, the subsequent methods return results for all the elements. For instance, the following selector returns the child nodes of all `<div>` tags on the page:
+If a selector matches multiple elements, the subsequent methods return results for all elements. The following selector returns the child nodes of all `<div>` tags on the page, including their children and their descendants:
 
 ```js
 const sel = Selector('div').child();
@@ -156,6 +156,43 @@ const sel = Selector('div').child();
     </body>
 </html>
 ```
+
+The selector value is evaluated each time you :
+
+* use the selector for an action;
+* assert selector's properties;
+* call the selector directly in code to [get it's state](#dom-node-state);
+
+If the page content changes after you have declared the selector, it may point to another element, or no element.
+
+```js
+test('Click a button', async t => {
+    const buttons = Selector('button').withText("A button number");
+
+    await t
+        .click(buttons.nth(0))
+        .click(buttons.nth(0))
+        .click(buttons.nth(0))
+});
+```
+
+```html
+<html>
+    <body>
+        <div>
+        <button onclick= "this.textContent= 'Pressed';">A button number 1</button>
+        <button onclick= "this.textContent= 'Pressed';">A button number 2</button>
+        <button onclick= "this.textContent= 'Pressed';">A button number 3</button>
+        </div>
+    </body>
+</html>
+```
+
+This sample page includes three buttons. When clicked, the button text changes. During the test, each [`.click`](../../../documentation/reference/test-api/testcontroller/click.md) affects the next element to which the selector points. All three buttons receive clicks as a result.
+
+If a selector matches multiple elements, only the first matching element will be used for [actions](./interact-with-the-page.md) or when retrieving the [DOM Node State](../../reference/test-api/domnodestate.md). Use the [.nth](../../reference/test-api/selector/nth.md) method to iterate through other matching elements.
+
+You can use the [selector.count](../../reference/test-api/selector/count.md) property to retrieve the number of matched elements.
 
 ## Member Tables
 
@@ -240,9 +277,9 @@ test('Obtain Element State', async t => {
 });
 ```
 
-#### DOM Node Snapshot
+#### DOM Node State
 
-To use an object's state multiple times in the test, get the object that contains [all the data](../../reference/test-api/domnodestate.md) in one turnaround to the client. To obtain this object (*DOM Node Snapshot*), call the selector with the `await` keyword:
+To use an object's state multiple times in the test, get the object that contains [all data](../../reference/test-api/domnodestate.md) in one turnaround to the client. To obtain this object (*DOM Node State*), call the selector with the `await` keyword:
 
 ```js
 import { Selector } from 'testcafe';
@@ -250,7 +287,7 @@ import { Selector } from 'testcafe';
 fixture `My fixture`
     .page `http://devexpress.github.io/testcafe/example/`;
 
-test('DOM Node Snapshot', async t => {
+test('DOM Node State', async t => {
     const sliderHandle         = Selector('#slider').child('span');
     const sliderHandleSnapshot = await sliderHandle();
 
@@ -329,7 +366,13 @@ When you pass selector properties instead of values, TestCafe enables [Smart Ass
 
 When a selector is executed, TestCafe waits for the target node to appear in the DOM until the *selector timeout* expires.
 
-Use the [timeout](../../reference/test-api/selector/constructor.md#optionstimeout) option to specify the selector timeout in test code. To set the timeout when you launch tests, pass it to the [runner.run](../../reference/testcafe-api/runner/run.md) API method or the [--selector-timeout](../../reference/command-line-interface.md#--selector-timeout-ms) command line option.
+Use the [timeout](../../reference/test-api/selector/constructor.md#optionstimeout) option to specify the timeout for a selector in test code.
+
+```js
+await t.expect(Selector('#elementId', { timeout: 500 }).innerText).eql('text', 'check element text');
+```
+
+To set the timeout for all selectors, pass it to the [runner.run](../../reference/testcafe-api/runner/run.md) API method or the [--selector-timeout](../../reference/command-line-interface.md#--selector-timeout-ms) command line option when you launch tests. This will override the timeout options inside tests (if any).
 
 During the timeout, the selector is re-executed until it returns a DOM node or the timeout is exceeded. If TestCafe cannot find the corresponding node in the DOM, the test fails.
 
@@ -454,7 +497,7 @@ const listAngular = await list.getAngular();
 await t.expect(listAngular.testProp).eql(1);
 ```
 
-To learn more, refer to the [plugin repository](https://github.com/DevExpress/testcafe-angular-selectors/blob/master/angular-selector.md).
+For more information, refer to the following page: [GitHub Plugin Repository](https://github.com/DevExpress/testcafe-angular-selectors/blob/master/angular-selector.md).
 
 ### AngularJS
 
@@ -566,9 +609,15 @@ test('Title changed', async t => {
 Use this approach for Node.js callbacks that fire during the test run. To ensure that the test function
 does not finish before the callback is executed, suspend the test until the callback fires. For instance, you can introduce a Promise and wait until it completes synchronously, as shown in the example above.
 
+> The `boundTestRun` option requires the same test controller instance that is passed to the function used in the test declaration. It cannot work with imported test controllers.
+
 ## Limitations
 
-* You cannot use generators or `async/await` syntax within selectors.
+Selectors do not support the following syntax and capabilities:
+
+* Generators or `async/await` syntax,
+
+* [Property shorthands](http://es6-features.org/#PropertyShorthand) in the [dependencies option](../../reference/test-api/clientfunction/constructor.md#optionsdependencies),
 
 * Selectors cannot access variables defined in the outer scope in test code.
   However, you can use arguments to pass data inside the selectors, except for those that are self-invoked.
@@ -618,7 +667,7 @@ test('Check Label HTML', async t => {
 });
 ```
 
-You can also use a [client function](obtain-client-side-info.md) to obtain a single element property from the client. In this case, you should pass the selector to client function's [dependencies](../../reference/test-api/clientfunction/constructor.md#optionsdependencies) option.
+You can use a [client function](obtain-client-side-info.md) to obtain a single element's property from the client. In this instance, pass the selector to the client function's [dependencies](../../reference/test-api/clientfunction/constructor.md#optionsdependencies) option.
 
 ```js
 import { Selector, ClientFunction } from 'testcafe';
@@ -637,14 +686,14 @@ test('Check Label HTML', async t => {
 });
 ```
 
-> Note that selector's property getters and client functions are asynchronous. If you need their resulting value in your code, use the `await` keyword.
+> Client functions and selector property getters are asynchronous. If you want to use their resulting values in your code, use the `await` keyword.
 >
 > However, you can omit `await` when you pass a selector property or a client function value into an [assertion](assert.md). In this instance, TestCafe uses its [Smart Assertion Query Mechanism](assert.md#smart-assertion-query-mechanism) to wait until the value is available. This makes your tests more stable.
 
-### Get a Page Element Using Custom Logic
+### Use Custom Logic to Get a Page Element
 
-Sometimes CSS selectors are not powerful enough to identify the required page element.
-In this instance, you can introduce a function that picks the desired element.
+CSS selectors are sometimes not powerful enough to identify the page element.
+In this instance, you can introduce a function that selects the desired element.
 
 ```js
 import { Selector } from 'testcafe';
@@ -725,7 +774,7 @@ test('My Test', async t => {
 
 CSS selectors passed to the [Selector](../../reference/test-api/selector/constructor.md) constructor cannot identify elements in the shadow DOM.
 
-To select a shadow element, initialize a selector with client-side code and use the [shadowRoot](https://developer.mozilla.org/en-US/docs/Web/API/Element/shadowRoot) property to get and return the required element from shadow DOM.
+To select a shadow element, initialize a selector with client-side code and use the [shadowRoot](https://developer.mozilla.org/en-US/docs/Web/API/Element/shadowRoot) property to get and return the element from the shadow DOM.
 
 The following example shows the `paragraph` selector that returns `<p>` from the shadow DOM.
 
@@ -754,10 +803,10 @@ The `paragraph` selector obtains [shadowRoot](https://developer.mozilla.org/en-U
 
 ### Check if an Element is Available
 
-Generally speaking, introducing conditions in tests is not considered good practice because it indicates that your tests are non-deterministic.
-The tested website should guarantee that the test writer knows the page state at any moment. If it is so, you need no conditions in test code.
+It is not good practice to introduce conditions in tests, because it indicates that your tests are non-deterministic.
+The tested website should guarantee that the test writer knows the page state at any given moment. In this instance, you do not need to include conditions in test code.
 
-However, in practice, things are usually a bit different. Many websites contain elements that may be invisible or non-existent at times.
+However, in practice, things are a bit different. Websites may contain elements that are invisible or non-existent at times.
 In this instance, it may be a good idea to check the element availability before taking actions on it.
 
 ```js
@@ -778,9 +827,9 @@ test('My test', async t => {
 
 ### Enumerate Elements Identified by a Selector
 
-Another common case is creating a selector that matches several elements to perform certain actions using all of them.
+Another common case is when you create a selector that matches multiple elements - to perform actions on each element.
 
-The following example clicks through a number of check boxes on the example page.
+The following example clicks through a number of check boxes on the sample page.
 
 ```js
 import { Selector } from 'testcafe';
@@ -799,7 +848,7 @@ test('My test', async t => {
 
 ### Select Elements With Dynamic IDs
 
-TestCafe selectors should use element identifiers that persist between test runs. However, many JavaScript frameworks generate dynamic IDs for page elements. To identify elements whose `id` attribute changes, use selectors based on the element's class, content, tag name, or position:
+TestCafe selectors should use element identifiers that persist between test runs. However, JavaScript frameworks may generate dynamic IDs for page elements. To identify elements whose `id` attribute changes, use selectors based on the element's class, content, tag name, or position:
 
 * [withText](../../reference/test-api/selector/withtext.md),
 * [withExactText](../../reference/test-api/selector/withexacttext.md),
@@ -872,7 +921,38 @@ test('My test', async t => {
 });
 ```
 
+### Select Elements That Contain Special Characters
+
+If your page contains [HTML symbols](https://www.w3schools.com/html/html_symbols.asp) or [HTML entities](https://www.w3schools.com/html/html_entities.asp) (e.g., `&nbsp;`, newline chars), use their [unicode counterparts](https://www.rapidtables.com/code/text/unicode-characters.md) in [Selector.WithText](../../reference/test-api/selector/withtext.md) and [Selector.WithExactText](../../reference/test-api/selector/withexacttext.md).
+
+**Example**
+
+```html
+<html>
+    <body>
+        <p>Click&nbsp;me</p>
+    </body>
+</html>
+```
+
+```js
+import { Selector } from 'testcafe';
+
+fixture `My fixture`
+    .page `http://localhost/`;
+
+test('My test', async t => {
+    const sel = await Selector('p').withText('Click&nbsp;me') //typed representation, not supported
+    const sel = await Selector('p').withText('Click\u00a0me') //unicode representation, works
+    const sel = await Selector('p').withText('Click\xa0me') //hexadecimal representation, works
+    const sel = await Selector('p').withText('Click\160me') //decimal representation introduced with an octal escape sequence;
+                                                            // not supported because tests are executed in strict mode
+});
+```
+
+> Important! In [JS "Strict mode"](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode) octal escape sequences inside strings do not work and produce a syntax error.
+
 ### Have a different use case?
 
-If none of the examples fit your requirements and you encounter difficulties, let us know on StackOverflow.
+If none of the examples fit your requirements and you experience issues, let us know on StackOverflow.
 We review and answer questions with the [TestCafe](https://stackoverflow.com/questions/tagged/testcafe) tag.

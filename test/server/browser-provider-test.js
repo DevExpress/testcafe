@@ -1,16 +1,20 @@
-const expect                  = require('chai').expect;
-const { noop, stubFalse }     = require('lodash');
-const nanoid                  = require('nanoid');
-const { rmdirSync, statSync } = require('fs');
-const { join, dirname }       = require('path');
-const proxyquire              = require('proxyquire');
-const sinon                   = require('sinon');
-const Module                  = require('module');
-const browserProviderPool     = require('../../lib/browser/provider/pool');
-const parseProviderName       = require('../../lib/browser/provider/parse-provider-name');
-const BrowserConnection       = require('../../lib/browser/connection');
-const ProviderCtor            = require('../../lib/browser/provider/');
-const WARNING_MESSAGE         = require('../../lib/notifications/warning-message');
+const expect                          = require('chai').expect;
+const { noop, stubFalse, pick, omit } = require('lodash');
+const nanoid                          = require('nanoid');
+const { rmdirSync, statSync }         = require('fs');
+const { join, dirname }               = require('path');
+const proxyquire                      = require('proxyquire');
+const sinon                           = require('sinon');
+const Module                          = require('module');
+const dedent                          = require('dedent');
+const browserProviderPool             = require('../../lib/browser/provider/pool');
+const BUILTIN_PROVIDERS               = require('../../lib/browser/provider/built-in');
+const parseProviderName               = require('../../lib/browser/provider/parse-provider-name');
+const BrowserConnection               = require('../../lib/browser/connection');
+const ProviderCtor                    = require('../../lib/browser/provider/');
+const WARNING_MESSAGE                 = require('../../lib/notifications/warning-message');
+const BrowserProviderPluginHost       = require('../../lib/browser/provider/plugin-host');
+const WarningLog                      = require('../../lib/notifications/warning-log');
 
 class BrowserConnectionMock extends BrowserConnection {
     constructor () {
@@ -27,8 +31,23 @@ class BrowserConnectionMock extends BrowserConnection {
     }
 }
 
-
 describe('Browser provider', function () {
+    function debugMock (id) {
+        if (!debugMock.data)
+            debugMock.data = {};
+
+        if (!debugMock.data[id])
+            debugMock.data[id] = '';
+
+        return newData => {
+            debugMock.data[id] += newData;
+        };
+    }
+
+    beforeEach(() => {
+        debugMock.data = null;
+    });
+
     describe('Path and arguments handling', function () {
         it('Should parse the path: alias with arguments', async () => {
             const browserInfo = await browserProviderPool.getBrowserInfo('path:/usr/bin/chrome --arg1 --arg2');
@@ -384,5 +403,90 @@ describe('Browser provider', function () {
             });
         });
     });
+
+    describe('Remote provider', () => {
+        it('Should log an error if a browser window was not found', async () => {
+            const bc = new BrowserConnectionMock();
+
+            bc.isReady = () => true;
+
+            const remoteProvider = proxyquire('../../lib/browser/provider/built-in/remote', {
+                'testcafe-browser-tools': {
+                    findWindow () {
+                        throw new Error('SomeError');
+                    }
+                },
+                debug: debugMock
+            });
+
+            const provider = new ProviderCtor(new BrowserProviderPluginHost(remoteProvider));
+
+            await provider.openBrowser(bc.id);
+
+            expect(debugMock.data['testcafe:browser:provider:built-in:remote']).eql('Error: SomeError');
+        });
+    });
+
+    describe('Features', () => {
+        const PROVIDERS_WITH_MULTIWINDOW_MODE = ['chrome', 'chromium', 'chrome-canary', 'edge', 'firefox'];
+
+        it('Should support multiwindow mode in some providers', async () => {
+            const providers = pick(BUILTIN_PROVIDERS, PROVIDERS_WITH_MULTIWINDOW_MODE);
+
+            for (const [name, plugin] of Object.entries(providers))
+                expect(plugin.supportMultipleWindows, `Provider ${name} should support multiple windows`).ok;
+        });
+
+        it('Should not support multiwindow mode in other providers', async () => {
+            const providers = omit(BUILTIN_PROVIDERS, PROVIDERS_WITH_MULTIWINDOW_MODE);
+
+            for (const [name, plugin] of Object.entries(providers))
+                expect(plugin.supportMultipleWindows, `Provider ${name} should not support multiple windows`).not.ok;
+        });
+    });
+
+    describe('Regression', () => {
+        it('Should raise a warning if a browser window was not found', async () => {
+            const bc         = new BrowserConnectionMock();
+            const warningLog = new WarningLog();
+
+            bc.isReady           = () => true;
+            bc.browserInfo.alias = 'chromium';
+            bc.addWarning        = (...args) => warningLog.addWarning(...args);
+
+            const ProviderMock = proxyquire('../../lib/browser/provider', {
+                'testcafe-browser-tools': {
+                    default: {
+                        findWindow () {
+                            throw new Error('SomeError');
+                        }
+                    }
+                },
+
+                'os-family': { win: false, linux: false, mac: false },
+                'debug':     debugMock
+            });
+
+            const provider = new ProviderMock(
+                new BrowserProviderPluginHost({
+                    openBrowser:       noop,
+                    isLocalBrowser:    () => true,
+                    isHeadlessBrowser: () => false,
+                })
+            );
+
+            await provider.openBrowser(bc.id);
+
+            expect(debugMock.data['testcafe:browser:provider']).eql('Error: SomeError');
+            expect(warningLog.messages).eql([dedent`
+                Could not find the "chromium" window. TestCafe is unable to resize the window or take screenshots.
+
+                The following error occurred while TestCafe was searching for the window descriptor:
+
+                SomeError`
+            ]);
+        });
+    });
+
 });
 

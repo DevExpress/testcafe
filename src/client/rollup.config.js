@@ -58,7 +58,7 @@ const CONFIG = CHUNK_NAMES.map(chunk => ({
             }]
         }),
         commonjs(),
-        typescript({ include: ['*.+(j|t)s', '**/*.+(j|t)s', '../**/*.+(j|t)s'] }),
+        typescript({ include: ['*.+(j|t)s', '**/*.+(j|t)s', '../**/*.+(j|t)s'] })
     ]
 }));
 

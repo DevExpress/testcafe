@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
 import Mustache from 'mustache';
 import { pull as remove } from 'lodash';
-import parseUserAgent from '../../utils/parse-user-agent';
+import parseUserAgent, { ParsedUserAgent } from '../../utils/parse-user-agent';
 import { readSync as read } from 'read-file-relative';
 import promisifyEvent from 'promisify-event';
 import nanoid from 'nanoid';
@@ -14,6 +14,8 @@ import { BROWSER_RESTART_TIMEOUT, HEARTBEAT_TIMEOUT } from '../../utils/browser-
 import { Dictionary } from '../../configuration/interfaces';
 import BrowserConnectionGateway from './gateway';
 import BrowserJob from '../../runner/browser-job';
+import WarningLog from '../../notifications/warning-log';
+import BrowserProvider from '../provider';
 
 const IDLE_PAGE_TEMPLATE                         = read('../../client/browser/idle-page/index.html.mustache');
 const connections: Dictionary<BrowserConnection> = {};
@@ -45,9 +47,19 @@ interface ProviderMetaInfoOptions {
     appendToUserAgent?: boolean;
 }
 
+export interface BrowserInfo {
+    alias: string;
+    browserName: string;
+    providerName: string;
+    provider: BrowserProvider;
+    userAgentProviderMetaInfo: string;
+    parsedUserAgent: ParsedUserAgent;
+}
+
 export default class BrowserConnection extends EventEmitter {
     public permanent: boolean;
-    private readonly allowMultipleWindows: boolean;
+    public previousActiveWindowId: string | null;
+    private readonly disableMultipleWindows: boolean;
     private readonly HEARTBEAT_TIMEOUT: number;
     private readonly BROWSER_RESTART_TIMEOUT: number;
     public readonly id: string;
@@ -70,13 +82,18 @@ export default class BrowserConnection extends EventEmitter {
     private readonly statusUrl: string;
     private readonly activeWindowIdUrl: string;
     private statusDoneUrl: string;
+    private warningLog: WarningLog;
 
     public idle: boolean;
 
-    public browserInfo: any;
+    public browserInfo: BrowserInfo;
     public provider: any;
 
-    public constructor (gateway: BrowserConnectionGateway, browserInfo: any, permanent: boolean, allowMultipleWindows = false) {
+    public constructor (
+        gateway: BrowserConnectionGateway,
+        browserInfo: BrowserInfo,
+        permanent: boolean,
+        disableMultipleWindows = false) {
         super();
 
         this.HEARTBEAT_TIMEOUT       = HEARTBEAT_TIMEOUT;
@@ -88,18 +105,19 @@ export default class BrowserConnection extends EventEmitter {
         this.browserConnectionGateway = gateway;
         this.disconnectionPromise     = null;
         this.testRunAborted           = false;
+        this.warningLog               = new WarningLog();
 
         this.browserInfo                           = browserInfo;
         this.browserInfo.userAgentProviderMetaInfo = '';
 
         this.provider = browserInfo.provider;
 
-        this.permanent            = permanent;
-        this.status               = BrowserConnectionStatus.uninitialized;
-        this.idle                 = true;
-        this.heartbeatTimeout     = null;
-        this.pendingTestRunUrl    = null;
-        this.allowMultipleWindows = allowMultipleWindows;
+        this.permanent              = permanent;
+        this.status                 = BrowserConnectionStatus.uninitialized;
+        this.idle                   = true;
+        this.heartbeatTimeout       = null;
+        this.pendingTestRunUrl      = null;
+        this.disableMultipleWindows = disableMultipleWindows;
 
         this.url           = `${gateway.domain}/browser/connect/${this.id}`;
         this.idleUrl       = `${gateway.domain}/browser/idle/${this.id}`;
@@ -122,6 +140,8 @@ export default class BrowserConnection extends EventEmitter {
 
         connections[this.id] = this;
 
+        this.previousActiveWindowId = null;
+
         this.browserConnectionGateway.startServingConnection(this);
 
         process.nextTick(() => this._runBrowser());
@@ -133,7 +153,7 @@ export default class BrowserConnection extends EventEmitter {
 
     private async _runBrowser (): Promise<void> {
         try {
-            await this.provider.openBrowser(this.id, this.url, this.browserInfo.browserName, this.allowMultipleWindows);
+            await this.provider.openBrowser(this.id, this.url, this.browserInfo.browserName, this.disableMultipleWindows);
 
             if (this.status !== BrowserConnectionStatus.ready)
                 await promisifyEvent(this, 'ready');
@@ -276,10 +296,17 @@ export default class BrowserConnection extends EventEmitter {
     public addWarning (...args: any[]): void {
         if (this.currentJob)
             this.currentJob.warningLog.addWarning(...args);
+        else
+            this.warningLog.addWarning(...args);
     }
 
     private _appendToPrettyUserAgent (str: string): void {
         this.browserInfo.parsedUserAgent.prettyUserAgent += ` (${str})`;
+    }
+
+    private _moveWarningLogToJob (job: BrowserJob): void {
+        this.warningLog.copyTo(job.warningLog);
+        this.warningLog.clear();
     }
 
     public setProviderMetaInfo (str: string, options?: ProviderMetaInfoOptions): void {
@@ -323,6 +350,8 @@ export default class BrowserConnection extends EventEmitter {
 
     public addJob (job: BrowserJob): void {
         this.jobQueue.push(job);
+
+        this._moveWarningLogToJob(job);
     }
 
     public removeJob (job: BrowserJob): void {
@@ -423,6 +452,8 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     public set activeWindowId (val) {
+        this.previousActiveWindowId = this.activeWindowId;
+
         this.provider.setActiveWindowId(this.id, val);
     }
 

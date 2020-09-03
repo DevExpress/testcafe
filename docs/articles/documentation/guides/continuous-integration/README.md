@@ -15,6 +15,7 @@ This section describes how to integrate TestCafe into a build process on popular
 * [Bitbucket Pipelines CI](bitbucket-pipelines.md)
 * [CircleCI](circleci.md)
 * [GitHub Actions](github-actions.md)
+* [GitHub Actions + BrowserStack](github-actions-and-browserstack.md)
 * [GitLab](gitlab.md)
 * [Jenkins](jenkins.md)
 * [TeamCity](teamcity.md)

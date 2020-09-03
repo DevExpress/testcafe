@@ -4,8 +4,8 @@ import TempDirectory from '../../../../../utils/temp-directory';
 import { writeFile } from '../../../../../utils/promisified-functions';
 
 export default class EdgeRuntimeInfo extends ChromeRuntimeInfo {
-    protected async createTempProfile (proxyHostName: string, allowMultipleWindows: boolean): Promise<TempDirectory> {
-        const tempDir = await super.createTempProfile(proxyHostName, allowMultipleWindows);
+    protected async createTempProfile (proxyHostName: string, disableMultipleWindows: boolean): Promise<TempDirectory> {
+        const tempDir = await super.createTempProfile(proxyHostName, disableMultipleWindows);
 
         // NOTE: prevents Edge from automatically logging under system credentials
         // and showing the welcome screen

@@ -1,0 +1,7 @@
+   183 |test('Await Selector property', async t => {
+   184 |    await t
+   185 |        .expect(Selector('#el1')).ok()
+   186 |        .expect(await Selector('#el1')).ok()
+   187 |        .expect(Selector('#el1').innerText).eql('')
+ > 188 |        .expect(await Selector('#el1').innerText).eql('');
+   189 |});

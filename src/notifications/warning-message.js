@@ -19,6 +19,11 @@ export default {
     configOptionsWereOverriden:              'The {optionsString} option{suffix} from the configuration file will be ignored.',
     cannotOverrideTypeScriptConfigOptions:   'You cannot override the "{optionName}" compiler option in the TypeScript configuration file.',
 
+    cannotFindWindowDescriptorError: 'Could not find the "{browserAlias}" window. ' +
+                                     'TestCafe is unable to resize the window or take screenshots.\n\n' +
+                                     'The following error occurred while TestCafe was searching ' +
+                                     'for the window descriptor:\n\n{errMessage}',
+
     cannotFindSSLCertFile: 'Unable to find the "{path}" file, specified by the "{option}" ssl option. Error details:\n' +
                            '\n' +
                            '{err}',
@@ -32,6 +37,11 @@ export default {
                                                         'The placeholder{suffix} {verb} replaced with an empty string.',
 
     clientScriptsWithEmptyContent:      'The client script you tried to inject is empty.',
-    clientScriptsWithDuplicatedContent: 'You injected the following client script{suffix} several times:\n {duplicatedScripts}'
+    clientScriptsWithDuplicatedContent: 'You injected the following client script{suffix} several times:\n {duplicatedScripts}',
+    assertedSelectorInstance:           'You passed a Selector object to \'t.expect()\'.\nIf you want to check that a matched element exists, pass the \'selector.exists\' value instead.',
+    assertedClientFunctionInstance:     'You passed a ClientFunction object to \'t.expect()\'.\nIf you want to check the function\'s return value, use parentheses to call the function: fnName().',
+    multipleWindowsFoundByPredicate:    'The predicate function passed to the \'switchToWindow\' method matched multiple windows. The first matching window was activated.',
+    excessiveAwaitInAssertion:          'You passed a DOM snapshot property to the assertion\'s \'t.expect()\' method. The property value is assigned when the snapshot is resolved and this value is no longer updated. To ensure that the assertion verifies an up-to-date value, pass the selector property without \'await\'.',
+    missingAwaitOnSnapshotProperty:     'You used a DOM snapshot property without \'await\'. The property value is assigned when the snapshot is resolved. If you need to use the property value, use \'await\' to resolve the Promise.'
 };
 

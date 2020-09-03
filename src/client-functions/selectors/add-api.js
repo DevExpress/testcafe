@@ -107,17 +107,33 @@ function getDerivativeSelectorArgs (options, selectorFn, apiFn, filter, addition
     return Object.assign({}, options, { selectorFn, apiFn, filter, additionalDependencies });
 }
 
-function addSnapshotProperties (obj, getSelector, SelectorBuilder, properties) {
+function addSnapshotProperties (obj, getSelector, SelectorBuilder, properties, observedCallsites) {
     properties.forEach(prop => {
         Object.defineProperty(obj, prop, {
             get: () => {
                 const callsite = getCallsiteForMethod('get');
 
-                return ReExecutablePromise.fromFn(async () => {
+                if (observedCallsites)
+                    observedCallsites.unawaitedSnapshotCallsites.add(callsite);
+
+                const propertyPromise = ReExecutablePromise.fromFn(async () => {
                     const snapshot = await getSnapshot(getSelector, callsite, SelectorBuilder);
 
                     return snapshot[prop];
                 });
+
+                propertyPromise.then = function (onFulfilled, onRejected) {
+                    if (observedCallsites) {
+                        observedCallsites.snapshotPropertyCallsites.add(callsite);
+                        observedCallsites.unawaitedSnapshotCallsites.delete(callsite);
+                    }
+
+                    this._ensureExecuting();
+
+                    return this._taskPromise.then(onFulfilled, onRejected);
+                };
+
+                return propertyPromise;
             }
         });
     });
@@ -195,10 +211,10 @@ function prepareSnapshotPropertyList (customDOMProperties) {
     return properties;
 }
 
-function addSnapshotPropertyShorthands ({ obj, getSelector, SelectorBuilder, customDOMProperties, customMethods }) {
+function addSnapshotPropertyShorthands ({ obj, getSelector, SelectorBuilder, customDOMProperties, customMethods, observedCallsites }) {
     const properties = prepareSnapshotPropertyList(customDOMProperties);
 
-    addSnapshotProperties(obj, getSelector, SelectorBuilder, properties);
+    addSnapshotProperties(obj, getSelector, SelectorBuilder, properties, observedCallsites);
     addCustomMethods(obj, getSelector, SelectorBuilder, customMethods);
 
     obj.getStyleProperty = prop => {
@@ -718,8 +734,8 @@ function addHierarchicalSelectors (options) {
     };
 }
 
-export function addAPI (selector, getSelector, SelectorBuilder, customDOMProperties, customMethods) {
-    const options = { obj: selector, getSelector, SelectorBuilder, customDOMProperties, customMethods };
+export function addAPI (selector, getSelector, SelectorBuilder, customDOMProperties, customMethods, observedCallsites) {
+    const options = { obj: selector, getSelector, SelectorBuilder, customDOMProperties, customMethods, observedCallsites };
 
     addFilterMethods(options);
     addHierarchicalSelectors(options);

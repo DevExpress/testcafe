@@ -10,7 +10,9 @@ import {
     RequestHookUnhandledError,
     PageLoadError,
     RequestHookNotImplementedMethodError,
-    RoleSwitchInRoleInitializerError
+    RoleSwitchInRoleInitializerError,
+    SwitchToWindowPredicateError,
+    WindowNotFoundError
 } from '../errors/test-run/';
 import PHASE from './phase';
 import CLIENT_MESSAGES from './client-messages';
@@ -40,11 +42,17 @@ import {
     isResizeWindowCommand
 } from './commands/utils';
 
+import {
+    GetCurrentWindowsCommand,
+    SwitchToWindowCommand
+} from './commands/actions';
+
 import { TEST_RUN_ERRORS } from '../errors/types';
 import processTestFnError from '../errors/process-test-fn-error';
 
 const lazyRequire                 = require('import-lazy')(require);
 const SessionController           = lazyRequire('./session-controller');
+const ObservedCallsitesStorage    = lazyRequire('./observed-callsites-storage');
 const ClientFunctionBuilder       = lazyRequire('../client-functions/client-function-builder');
 const BrowserManipulationQueue    = lazyRequire('./browser-manipulation-queue');
 const TestRunBookmark             = lazyRequire('./bookmark');
@@ -86,10 +94,10 @@ export default class TestRun extends AsyncEventEmitter {
         this.speed                = this.opts.speed;
         this.pageLoadTimeout      = this.opts.pageLoadTimeout;
 
-        this.disablePageReloads   = test.disablePageReloads || opts.disablePageReloads && test.disablePageReloads !==
-                                    false;
+        this.disablePageReloads   = test.disablePageReloads || opts.disablePageReloads && test.disablePageReloads !== false;
         this.disablePageCaching   = test.disablePageCaching || opts.disablePageCaching;
-        this.allowMultipleWindows = opts.allowMultipleWindows;
+
+        this.disableMultipleWindows = opts.disableMultipleWindows;
 
         this.session = SessionController.getSession(this);
 
@@ -127,6 +135,8 @@ export default class TestRun extends AsyncEventEmitter {
         this.quarantine  = null;
 
         this.debugLogger = this.opts.debugLogger;
+
+        this.observedCallsites = new ObservedCallsitesStorage();
 
         this._addInjectables();
         this._initRequestHooks();
@@ -737,6 +747,13 @@ export default class TestRun extends AsyncEventEmitter {
         if (command.type === COMMAND_TYPE.getBrowserConsoleMessages)
             return await this._enqueueBrowserConsoleMessagesCommand(command, callsite);
 
+        if (command.type === COMMAND_TYPE.switchToPreviousWindow)
+            command.windowId = this.browserConnection.previousActiveWindowId;
+
+        if (command.type === COMMAND_TYPE.switchToWindowByPredicate)
+            return this._switchToWindowByPredicate(command);
+
+
         return this._enqueueCommand(command, callsite);
     }
 
@@ -874,6 +891,29 @@ export default class TestRun extends AsyncEventEmitter {
         return await getLocation();
     }
 
+    async _switchToWindowByPredicate (command) {
+        const currentWindows = await this.executeCommand(new GetCurrentWindowsCommand({}, this));
+
+        const windows = currentWindows.filter(wnd => {
+            try {
+                const url = new URL(wnd.url);
+
+                return command.findWindow({ url, title: wnd.title });
+            }
+            catch (e) {
+                throw new SwitchToWindowPredicateError(e.message);
+            }
+        });
+
+        if (!windows.length)
+            throw new WindowNotFoundError();
+
+        if (windows.length > 1)
+            this.warningLog.addWarning(WARNING_MESSAGE.multipleWindowsFoundByPredicate);
+
+        await this.executeCommand(new SwitchToWindowCommand({ windowId: windows[0].id }), this);
+    }
+
     _disconnect (err) {
         this.disconnected = true;
 
@@ -888,6 +928,12 @@ export default class TestRun extends AsyncEventEmitter {
     async emitActionEvent (eventName, args) {
         if (!this.preventEmitActionEvents)
             await this.emit(eventName, args);
+    }
+
+    static isMultipleWindowsAllowed (testRun) {
+        const { disableMultipleWindows, test, browserConnection } = testRun;
+
+        return !disableMultipleWindows && !test.isLegacy && !!browserConnection.activeWindowId;
     }
 }
 

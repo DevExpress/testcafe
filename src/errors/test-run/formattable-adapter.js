@@ -41,7 +41,7 @@ export default class TestRunErrorFormattableAdapter {
             if (node.nodeName !== '#document-fragment') {
                 const selector = TestRunErrorFormattableAdapter._getSelector(node);
 
-                msg = decorator[selector](msg, node.attrs);
+                msg = decorator[selector] ? decorator[selector](msg, node.attrs) : msg;
             }
         }
 

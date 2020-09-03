@@ -25,6 +25,7 @@ permalink: /documentation/guides/
 * [Test HTTPS Features and HTTP/2 Websites](advanced-guides/test-https-features-and-http2-websites.md)
 * [Detect the Client Browser and Platform](advanced-guides/detect-the-client-browser-and-platform.md)
 * [Use TestCafe Docker Image](advanced-guides/use-testcafe-docker-image.md)
+* [Multiple Browser Windows](advanced-guides/multiple-browser-windows.md)
 
 ## Concepts
 
@@ -41,6 +42,7 @@ permalink: /documentation/guides/
 * [Bitbucket Pipelines](continuous-integration/bitbucket-pipelines.md)
 * [CircleCI](continuous-integration/circleci.md)
 * [GitHub Actions](continuous-integration/github-actions.md)
+* [GitHub Actions + BrowserStack](continuous-integration/github-actions-and-browserstack.md)
 * [GitLab](continuous-integration/gitlab.md)
 * [Jenkins](continuous-integration/jenkins.md)
 * [TeamCity](continuous-integration/teamcity.md)

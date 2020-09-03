@@ -1,27 +1,9 @@
 import browserTools from 'testcafe-browser-tools';
 
 export default {
-    openedBrowsers: {},
-
     isMultiBrowser: true,
 
-    supportMultipleWindows: true,
-
-    needCleanUpBrowserInfo: true,
-
-    getActiveWindowId (browserId) {
-        return this.openedBrowsers[browserId].activeWindowId;
-    },
-
-    setActiveWindowId (browserId, val) {
-        this.openedBrowsers[browserId].activeWindowId = val;
-    },
-
-    cleanUpBrowserInfo (browserId) {
-        delete this.openedBrowsers[browserId];
-    },
-
-    async openBrowser (browserId, pageUrl, browserName, allowMultipleWindows) {
+    async openBrowser (browserId, pageUrl, browserName) {
         const args  = browserName.split(' ');
         const alias = args.shift();
 
@@ -32,13 +14,6 @@ export default {
             openParameters.cmd = args.join(' ') + (openParameters.cmd ? ' ' + openParameters.cmd : '');
 
         await browserTools.open(openParameters, pageUrl);
-
-        let activeWindowId = null;
-
-        if (allowMultipleWindows)
-            activeWindowId = this.calculateWindowId();
-
-        this.openedBrowsers[browserId] = { activeWindowId };
     },
 
     async isLocalBrowser () {

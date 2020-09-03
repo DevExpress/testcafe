@@ -82,7 +82,7 @@ export default class IndeterminateIndicator {
         const animationTime   = animationOptions.time;
         const animationPoints = animationOptions.points;
         const positions       = animationOptions.positionByCompletePercent;
-        const currentTime     = Date.now() - startTime;
+        const currentTime     = nativeMethods.dateNow() - startTime;
         const timePercent     = currentTime / animationTime;
 
         const completePercent = getCompletePercent(timePercent, animationPoints[0], animationPoints[1]);
@@ -115,7 +115,7 @@ export default class IndeterminateIndicator {
     _startFirstValueAnimation () {
         this._clearFirstValueAnimation();
 
-        const startTime = Date.now();
+        const startTime = nativeMethods.dateNow();
 
         this.animationInterval = nativeMethods.setInterval.call(window, () => {
             IndeterminateIndicator._updateValueAnimation(startTime, this.firstValue, FIRST_VALUE_ANIMATION_OPTIONS);
@@ -125,7 +125,7 @@ export default class IndeterminateIndicator {
     _startSecondValueAnimation () {
         this._clearSecondValueAnimation();
 
-        const startTime = Date.now();
+        const startTime = nativeMethods.dateNow();
 
         this.secondValueAnimationInterval = nativeMethods.setInterval.call(window, () => {
             IndeterminateIndicator._updateValueAnimation(startTime, this.secondValue, SECOND_VALUE_ANIMATION_OPTIONS);

@@ -89,18 +89,25 @@ export default {
                                        '* specify the path to the FFmpeg executable in the FFMPEG_PATH environment variable or the ffmpegPath video option,\n' +
                                        '* install the @ffmpeg-installer/ffmpeg package from npm.',
 
-    [RUNTIME_ERRORS.cannotFindTypescriptConfigurationFile]:              'Unable to find the TypeScript configuration file in "{filePath}"',
-    [RUNTIME_ERRORS.clientScriptInitializerIsNotSpecified]:              'Specify the JavaScript file path, module name or script content to inject a client script.',
-    [RUNTIME_ERRORS.clientScriptBasePathIsNotSpecified]:                 'Specify the base path for the client script file.',
-    [RUNTIME_ERRORS.clientScriptInitializerMultipleContentSources]:      'You cannot combine the file path, module name and script content when you specify a client script to inject.',
-    [RUNTIME_ERRORS.cannotLoadClientScriptFromPath]:                     'Cannot load a client script from {path}.',
-    [RUNTIME_ERRORS.clientScriptModuleEntryPointPathCalculationError]:   'An error occurred when trying to locate the injected client script module:\n\n{errorMessage}.',
-    [RUNTIME_ERRORS.methodIsNotAvailableForAnIPCHost]:                   'This method cannot be called on a service host.',
-    [RUNTIME_ERRORS.tooLargeIPCPayload]:                                 'The specified payload is too large to form an IPC packet.',
-    [RUNTIME_ERRORS.malformedIPCMessage]:                                'Cannot process a malformed IPC message.',
-    [RUNTIME_ERRORS.unexpectedIPCHeadPacket]:                            'Cannot create an IPC message due to an unexpected IPC head packet.',
-    [RUNTIME_ERRORS.unexpectedIPCBodyPacket]:                            'Cannot create an IPC message due to an unexpected IPC body packet.',
-    [RUNTIME_ERRORS.unexpectedIPCTailPacket]:                            'Cannot create an IPC message due to an unexpected IPC tail packet.',
-    [RUNTIME_ERRORS.cannotUseAllowMultipleWindowsOptionForLegacyTests]:  'You cannot run Legacy API tests in multi-window mode.',
-    [RUNTIME_ERRORS.cannotUseAllowMultipleWindowsOptionForSomeBrowsers]: 'You cannot use multi-window mode in {browsers}.'
+    [RUNTIME_ERRORS.cannotFindTypescriptConfigurationFile]:            'Unable to find the TypeScript configuration file in "{filePath}"',
+    [RUNTIME_ERRORS.clientScriptInitializerIsNotSpecified]:            'Specify the JavaScript file path, module name or script content to inject a client script.',
+    [RUNTIME_ERRORS.clientScriptBasePathIsNotSpecified]:               'Specify the base path for the client script file.',
+    [RUNTIME_ERRORS.clientScriptInitializerMultipleContentSources]:    'You cannot combine the file path, module name and script content when you specify a client script to inject.',
+    [RUNTIME_ERRORS.cannotLoadClientScriptFromPath]:                   'Cannot load a client script from {path}.',
+    [RUNTIME_ERRORS.clientScriptModuleEntryPointPathCalculationError]: 'An error occurred when trying to locate the injected client script module:\n\n{errorMessage}.',
+    [RUNTIME_ERRORS.methodIsNotAvailableForAnIPCHost]:                 'This method cannot be called on a service host.',
+    [RUNTIME_ERRORS.tooLargeIPCPayload]:                               'The specified payload is too large to form an IPC packet.',
+    [RUNTIME_ERRORS.malformedIPCMessage]:                              'Cannot process a malformed IPC message.',
+    [RUNTIME_ERRORS.unexpectedIPCHeadPacket]:                          'Cannot create an IPC message due to an unexpected IPC head packet.',
+    [RUNTIME_ERRORS.unexpectedIPCBodyPacket]:                          'Cannot create an IPC message due to an unexpected IPC body packet.',
+    [RUNTIME_ERRORS.unexpectedIPCTailPacket]:                          'Cannot create an IPC message due to an unexpected IPC tail packet.',
+    [RUNTIME_ERRORS.cannotRunLocalNonHeadlessBrowserWithoutDisplay]:
+        'Your Linux version does not have a graphic subsystem to run {browserAlias} with a GUI. ' +
+        'You can launch the browser in headless mode. ' +
+        'If you use a portable browser version, ' +
+        'specify the browser alias before the path instead of the \'path\' prefix. ' +
+        'For more information, see https://devexpress.github.io/testcafe/documentation/guides/concepts/browsers.html#test-in-headless-mode',
+
+    [RUNTIME_ERRORS.uncaughtErrorInReporter]:        'An uncaught error occurred in the "{reporterName}" reporter\'s "{methodName}" method. Error details:\n{originalError}',
+    [RUNTIME_ERRORS.roleInitializedWithRelativeUrl]: 'You cannot specify relative login page URLs in the Role constructor. Use an absolute URL.'
 };

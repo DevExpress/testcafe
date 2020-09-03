@@ -19,7 +19,8 @@ import {
     stringOrStringArrayArgument,
     setSpeedArgument,
     actionRoleArgument,
-    booleanArgument
+    booleanArgument,
+    functionArgument
 } from './validations/argument';
 
 import { SetNativeDialogHandlerCodeWrongTypeError } from '../../errors/test-run';
@@ -76,7 +77,6 @@ function initDialogHandler (name, val, { skipVisibilityCheck, testRun }) {
         builder = new ClientFunctionBuilder(fn, options, { instantiation: methodName, execution: methodName });
 
     return builder.getCommand([]);
-
 }
 
 // Commands
@@ -352,6 +352,17 @@ export class GetCurrentWindowCommand extends CommandBase {
     }
 }
 
+export class GetCurrentWindowsCommand extends CommandBase {
+    constructor (obj, testRun) {
+        super(obj, testRun, TYPE.getCurrentWindows);
+    }
+
+    _getAssignableProperties () {
+        return [
+        ];
+    }
+}
+
 
 export class SwitchToWindowCommand extends CommandBase {
     constructor (obj, testRun) {
@@ -360,8 +371,42 @@ export class SwitchToWindowCommand extends CommandBase {
 
     _getAssignableProperties () {
         return [
-            { name: 'windowId', type: nonEmptyStringArgument, required: true },
+            { name: 'windowId', type: nonEmptyStringArgument, required: true }
         ];
+    }
+}
+
+export class SwitchToWindowByPredicateCommand extends CommandBase {
+    constructor (obj, testRun) {
+        super(obj, testRun, TYPE.switchToWindowByPredicate);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'findWindow', type: functionArgument, required: true }
+        ];
+    }
+}
+
+
+export class SwitchToParentWindowCommand extends CommandBase {
+    constructor (obj, testRun) {
+        super(obj, testRun, TYPE.switchToParentWindow);
+    }
+
+    _getAssignableProperties () {
+        return [
+        ];
+    }
+}
+
+export class SwitchToPreviousWindowCommand extends CommandBase {
+    constructor (obj, testRun) {
+        super(obj, testRun, TYPE.switchToPreviousWindow);
+    }
+
+    _getAssignableProperties () {
+        return [];
     }
 }
 

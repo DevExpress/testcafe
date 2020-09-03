@@ -7,7 +7,7 @@ import OS from 'os-family';
 import { errors, findWindow } from 'testcafe-browser-tools';
 import authenticationHelper from '../cli/authentication-helper';
 import Compiler from '../compiler';
-import BrowserConnection from '../browser/connection';
+import BrowserConnection, { BrowserInfo } from '../browser/connection';
 import browserProviderPool from '../browser/provider/pool';
 import BrowserSet from './browser-set';
 import RemoteBrowserProvider from '../browser/provider/built-in/remote';
@@ -20,46 +20,23 @@ import loadClientScripts from '../custom-client-scripts/load';
 import { getConcatenatedValuesString } from '../utils/string';
 
 import { Writable as WritableStream } from 'stream';
+import { ReporterSource, ReporterPluginSource } from '../reporter/interfaces';
 import ClientScript from '../custom-client-scripts/client-script';
 import ClientScriptInit from '../custom-client-scripts/client-script-init';
-import BrowserProvider from '../browser/provider';
 import BrowserConnectionGateway from '../browser/connection/gateway';
 import { CompilerArguments } from '../compiler/interfaces';
 import CompilerService from '../services/compiler/host';
-import { Metadata, Test } from '../api/structure/interfaces';
+import { Metadata } from '../api/structure/interfaces';
+import Test from '../api/structure/test';
+import detectDisplay from '../utils/detect-display';
+import { getPluginFactory, processReporterName } from '../utils/reporter';
 
 type TestSource = unknown;
 
-type ReporterPlugin = unknown;
-
 type BrowserSource = BrowserConnection | string;
-
-interface ReporterSource {
-    name: string;
-    output?: string | WritableStream;
-}
-
-interface ReporterPluginSource {
-    plugin: ReporterPlugin;
-    outStream?: WritableStream;
-}
-
-interface ReporterPluginFactory {
-    (): ReporterPlugin;
-}
-
-function isReporterPluginFactory (value: string | Function): value is ReporterPluginFactory {
-    return typeof value === 'function';
-}
 
 interface Filter {
     (testName: string, fixtureName: string, fixturePath: string, testMeta: Metadata, fixtureMeta: Metadata): boolean;
-}
-
-interface BrowserInfo {
-    browserName: string;
-    providerName: string;
-    provider: BrowserProvider;
 }
 
 type BrowserInfoSource = BrowserInfo | BrowserConnection;
@@ -112,7 +89,7 @@ export default class Bootstrapper {
     public appInitDelay?: number;
     public tsConfigPath?: string;
     public clientScripts: ClientScriptInit[];
-    public allowMultipleWindows: boolean;
+    public disableMultipleWindows: boolean;
 
     private readonly compilerService?: CompilerService;
 
@@ -127,7 +104,7 @@ export default class Bootstrapper {
         this.appInitDelay             = void 0;
         this.tsConfigPath             = void 0;
         this.clientScripts            = [];
-        this.allowMultipleWindows     = false;
+        this.disableMultipleWindows   = false;
 
         this.compilerService = compilerService;
     }
@@ -185,6 +162,23 @@ export default class Bootstrapper {
         RemoteBrowserProvider.canDetectLocalBrowsers = false;
     }
 
+    private static async _checkThatTestsCanRunWithoutDisplay (browserInfoSource: BrowserInfoSource[]): Promise<void> {
+        for (let browserInfo of browserInfoSource) {
+            if (browserInfo instanceof BrowserConnection)
+                browserInfo = browserInfo.browserInfo;
+
+            const isLocalBrowser    = await browserInfo.provider.isLocalBrowser(void 0, browserInfo.browserName);
+            const isHeadlessBrowser = await browserInfo.provider.isHeadlessBrowser(void 0, browserInfo.browserName);
+
+            if (isLocalBrowser && !isHeadlessBrowser) {
+                throw new GeneralError(
+                    RUNTIME_ERRORS.cannotRunLocalNonHeadlessBrowserWithoutDisplay,
+                    browserInfo.alias
+                );
+            }
+        }
+    }
+
     private async _getBrowserInfo (): Promise<BrowserInfoSource[]> {
         if (!this.browsers.length)
             throw new GeneralError(RUNTIME_ERRORS.browserNotSet);
@@ -199,7 +193,7 @@ export default class Bootstrapper {
             return [];
 
         return browserInfo
-            .map(browser => times(this.concurrency, () => new BrowserConnection(this.browserConnectionGateway, browser, false, this.allowMultipleWindows)));
+            .map(browser => times(this.concurrency, () => new BrowserConnection(this.browserConnectionGateway, browser, false, this.disableMultipleWindows)));
     }
 
     private async _getBrowserConnections (browserInfo: BrowserInfoSource[]): Promise<BrowserSet> {
@@ -216,7 +210,7 @@ export default class Bootstrapper {
     }
 
     private _filterTests (tests: Test[], predicate: Filter): Test[] {
-        return tests.filter(test => predicate(test.name, test.fixture.name, test.fixture.path, test.meta, test.fixture.meta));
+        return tests.filter(test => predicate(test.name as string, test.fixture.name as string, test.fixture.path, test.meta, test.fixture.meta));
     }
 
     private async _compileTests ({ sourceList, compilerOptions }: CompilerArguments): Promise<Test[]> {
@@ -287,34 +281,19 @@ export default class Bootstrapper {
         });
     }
 
-    private _requireReporterPluginFactory (reporterName: string): ReporterPluginFactory {
-        try {
-            return require('testcafe-reporter-' + reporterName);
-        }
-        catch (err) {
-            throw new GeneralError(RUNTIME_ERRORS.cannotFindReporterForAlias, reporterName);
-        }
-    }
-
-    private _getPluginFactory (reporterFactorySource: string | ReporterPluginFactory): ReporterPluginFactory {
-        if (!isReporterPluginFactory(reporterFactorySource))
-            return this._requireReporterPluginFactory(reporterFactorySource);
-
-        return reporterFactorySource;
-    }
-
     private async _getReporterPlugins (): Promise<ReporterPluginSource[]> {
         if (!this.reporters.length)
             Bootstrapper._addDefaultReporter(this.reporters);
 
         return Promise.all(this.reporters.map(async ({ name, output }) => {
-            const pluginFactory = this._getPluginFactory(name);
+            const pluginFactory = getPluginFactory(name);
+            const processedName = processReporterName(name);
             const outStream     = output ? await this._ensureOutStream(output) : void 0;
 
             return {
                 plugin: pluginFactory(),
-                outStream,
-                name
+                name:   processedName,
+                outStream
             };
         }));
     }
@@ -419,6 +398,9 @@ export default class Bootstrapper {
 
         if (OS.mac)
             await Bootstrapper._checkRequiredPermissions(browserInfo);
+
+        if (OS.linux && !detectDisplay())
+            await Bootstrapper._checkThatTestsCanRunWithoutDisplay(browserInfo);
 
         if (await this._canUseParallelBootstrapping(browserInfo))
             return { reporterPlugins, ...await this._bootstrapParallel(browserInfo), commonClientScripts };

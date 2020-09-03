@@ -6,6 +6,7 @@ export const TYPE = {
     closeWindow:              'driver|close-window',
     closeWindowValidation:    'driver|close-window-validation',
     switchToWindowValidation: 'driver|switch-to-window-validation',
+    getWindows:               'driver|get-windows',
     commandExecuted:          'driver|command-executed',
     executeCommand:           'driver|execute-command',
     confirmation:             'driver|confirmation',
@@ -28,7 +29,7 @@ export class EstablishConnectionMessage extends InterDriverMessage {
 }
 
 export class CloseWindowValidationMessage extends InterDriverMessage {
-    constructor (windowId) {
+    constructor ({ windowId }) {
         super(TYPE.closeWindowValidation);
 
         this.windowId = windowId;
@@ -36,26 +37,35 @@ export class CloseWindowValidationMessage extends InterDriverMessage {
 }
 
 export class SwitchToWindowValidationMessage extends InterDriverMessage {
-    constructor (windowId) {
+    constructor ({ windowId, fn }) {
         super(TYPE.switchToWindowValidation);
 
         this.windowId = windowId;
+        this.fn       = fn;
+    }
+}
+
+export class GetWindowsMessage extends InterDriverMessage {
+    constructor () {
+        super(TYPE.getWindows);
     }
 }
 
 export class CloseWindowCommandMessage extends InterDriverMessage {
-    constructor (windowId) {
+    constructor ({ windowId, isCurrentWindow }) {
         super(TYPE.closeWindow);
 
-        this.windowId = windowId;
+        this.windowId        = windowId;
+        this.isCurrentWindow = isCurrentWindow;
     }
 }
 
 export class SwitchToWindowCommandMessage extends InterDriverMessage {
-    constructor (windowId) {
+    constructor ({ windowId, fn }) {
         super(TYPE.switchToWindow);
 
         this.windowId = windowId;
+        this.fn       = fn;
     }
 }
 
@@ -94,8 +104,10 @@ export class SetNativeDialogHandlerMessage extends InterDriverMessage {
 }
 
 export class SetAsMasterMessage extends InterDriverMessage {
-    constructor () {
+    constructor (finalizePendingCommand) {
         super(TYPE.setAsMaster);
+
+        this.finalizePendingCommand = finalizePendingCommand;
     }
 }
 

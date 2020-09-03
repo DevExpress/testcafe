@@ -30,7 +30,7 @@ export default {
         }
     },
 
-    async openBrowser (browserId, pageUrl, configString, allowMultipleWindows) {
+    async openBrowser (browserId, pageUrl, configString, disableMultipleWindows) {
         const runtimeInfo = await getRuntimeInfo(configString);
 
         runtimeInfo.browserName = this._getBrowserName();
@@ -40,7 +40,7 @@ export default {
 
         await this.waitForConnectionReady(runtimeInfo.browserId);
 
-        if (allowMultipleWindows)
+        if (!disableMultipleWindows)
             runtimeInfo.activeWindowId = this.calculateWindowId();
 
         if (runtimeInfo.marionettePort)

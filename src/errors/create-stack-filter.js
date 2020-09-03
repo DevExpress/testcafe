@@ -11,6 +11,7 @@ const REGENERATOR_RUNTIME = BABEL_MODULES_DIR + 'regenerator-runtime' + sep;
 
 const TESTCAFE_LIB        = join(__dirname, '../');
 const TESTCAFE_BIN        = join(__dirname, '../../bin');
+const TESTCAFE_SRC        = join(__dirname, '../../src');
 const TESTCAFE_HAMMERHEAD = `${sep}testcafe-hammerhead${sep}`;
 
 const SOURCE_MAP_SUPPORT = `${sep}source-map-support${sep}`;
@@ -37,7 +38,8 @@ export default function createStackFilter (limit) {
                    filename.indexOf(BABYLON) !== 0 &&
                    filename.indexOf(CORE_JS) !== 0 &&
                    filename.indexOf(REGENERATOR_RUNTIME) !== 0 &&
-                   filename.indexOf(SOURCE_MAP_SUPPORT) < 0;
+                   filename.indexOf(SOURCE_MAP_SUPPORT) < 0 &&
+                   filename.indexOf(TESTCAFE_SRC) !== 0;
 
         if (pass)
             passedFramesCount++;

@@ -1,12 +1,12 @@
 ---
 layout: docs
-title: t.setNativeDialogueHandler Method
+title: t.setNativeDialogHandler Method
 permalink: /documentation/reference/test-api/testcontroller/setnativedialoghandler.html
 ---
-# t.setNativeDialogueHandler Method
+# t.setNativeDialogHandler Method
 
 To handle native dialogs invoked during the test run, specify a handler function
-using the `setNativeDialogHandler` method of the
+with the `setNativeDialogHandler` method of the
 [test controller](README.md).
 
 ```text
@@ -26,18 +26,17 @@ Argument | Type   | Description
 `text`   | String | Text of the dialog message.
 `url`    | String | The URL of the page that invoked the dialog. Use it to determine if the dialog originated from the main window or an `<iframe>`.
 
-Once the handler is specified, it will be triggered each time a native dialog appears in the test whether it originates from the main window or an `<iframe>`.
-You can provide a new handler at any moment by calling `t.setNativeDialogHandler` once again.
+Once specified, the handler fires each time a native dialog appears in the test. The dialog can originate from the main window or an `<iframe>`.
+You can call `t.setNativeDialogHandler` again to specify a new handler at any time.
 If a native dialog appears when no handler is set, the test fails with an error.
 
-You can remove a dialog handler by passing `null` to the `t.setNativeDialogHandler` method.
+To remove a dialog handler, pass `null` to the `t.setNativeDialogHandler` method.
 
-To handle native dialogs that appear during the page load, specify the dialog handler
-before the first test action.
+If a dialog appears on page load, start the test from a different page, add a handler and proceed to the page with the [navigateTo](./navigateto.md) action, as shown in the the following example: [Handle a Dialog Invoked on Page Load](#handle-a-dialog-invoked-on-page-load).
 
-> The handler is executed on the client side, so you cannot use Node.js API in the handler.
+> The handler is executed on the client side, so you cannot use the Node.js API in the handler.
 
-You can control how a dialog is handled by using the handler's return values.
+You can use the handler's return values to control how the dialog is handled.
 If you return nothing, TestCafe performs default handling.
 
 The kind of the value that should be returned depends on the dialog type. See the table below for reference.
@@ -63,6 +62,34 @@ test('My test', async t => {
     await t
         .setNativeDialogHandler(() => true)
         .click('#show-alert-button');
+});
+```
+
+### Handle a Dialog Invoked on Page Load
+
+When the page in this example loads, it displays an alert dialog. To set a handler for this alert, you can start the test from an `about:blank` page, add a handler and proceed to the page with the `navigateTo` action.
+
+> Important! Use absolute file paths to navigate from an `about:blank` page.
+
+```html
+<body>
+    <button id='btn'>Click me</button>
+    <script>
+        alert()
+    </script>
+</body>
+```
+
+```js
+fixture `Select page elements`
+    .page `about:blank`;
+
+test('Handle an alert', async t => {
+
+    await t
+        .setNativeDialogHandler(() => true)
+        .navigateTo('http://127.0.0.1:5500/index3.html')
+        .click('#btn')
 });
 ```
 

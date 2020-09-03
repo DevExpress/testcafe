@@ -3,10 +3,10 @@ import getCustomClientScriptCode from './get-code';
 import CONTENT_TYPES from '../assets/content-types';
 import ClientScript from './client-script';
 import { Proxy } from 'testcafe-hammerhead';
-
+import ClientScriptInit from './client-script-init';
 
 interface Test {
-    clientScripts: ClientScript[];
+    clientScripts: ClientScriptInit[];
 }
 
 interface LegacyTest {
@@ -26,11 +26,11 @@ export function register (proxy: Proxy, tests: Test[]): string[] {
         if (isLegacyTest(test))
             return;
 
-        test.clientScripts.forEach((script: ClientScript) => {
-            const route = getCustomClientScriptUrl(script);
+        test.clientScripts.forEach((script: ClientScriptInit) => {
+            const route = getCustomClientScriptUrl(script as ClientScript);
 
             proxy.GET(route, {
-                content:     getCustomClientScriptCode(script),
+                content:     getCustomClientScriptCode(script as ClientScript),
                 contentType: CONTENT_TYPES.javascript
             });
 

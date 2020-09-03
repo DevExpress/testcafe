@@ -5,6 +5,9 @@ import { getCallsiteForMethod } from '../../errors/get-callsite';
 import ClientFunctionBuilder from '../../client-functions/client-function-builder';
 import Assertion from './assertion';
 import { getDelegatedAPIList, delegateAPI } from '../../utils/delegated-api';
+import WARNING_MESSAGE from '../../notifications/warning-message';
+import getBrowser from '../../utils/get-browser';
+import addWarning from '../../notifications/add-rendered-warning';
 
 import {
     ClickCommand,
@@ -27,6 +30,9 @@ import {
     CloseWindowCommand,
     GetCurrentWindowCommand,
     SwitchToWindowCommand,
+    SwitchToWindowByPredicateCommand,
+    SwitchToParentWindowCommand,
+    SwitchToPreviousWindowCommand,
     SetNativeDialogHandlerCommand,
     GetNativeDialogHistoryCommand,
     GetBrowserConsoleMessagesCommand,
@@ -46,7 +52,12 @@ import {
 import { WaitCommand, DebugCommand } from '../../test-run/commands/observation';
 import assertRequestHookType from '../request-hooks/assert-type';
 import { createExecutionContext as createContext } from './execution-context';
-import { AllowMultipleWindowsOptionIsNotSpecifiedError } from '../../errors/test-run';
+import { isClientFunction, isSelector } from '../../client-functions/types';
+
+import {
+    MultipleWindowsModeIsDisabledError,
+    MultipleWindowsModeIsNotAvailableInRemoteBrowserError
+} from '../../errors/test-run';
 
 const originalThen = Promise.resolve().then;
 
@@ -56,7 +67,7 @@ export default class TestController {
 
         this.testRun               = testRun;
         this.executionChain        = Promise.resolve();
-        this.callsitesWithoutAwait = new Set();
+        this.warningLog            = testRun.warningLog;
     }
 
     // NOTE: we track missing `awaits` by exposing a special custom Promise to user code.
@@ -73,7 +84,8 @@ export default class TestController {
     // await t2.click('#btn3');   // <-- without check it will set callsiteWithoutAwait = null, so we will lost tracking
     _createExtendedPromise (promise, callsite) {
         const extendedPromise     = promise.then(identity);
-        const markCallsiteAwaited = () => this.callsitesWithoutAwait.delete(callsite);
+        const observedCallsites   = this.testRun.observedCallsites;
+        const markCallsiteAwaited = () => observedCallsites.callsitesWithoutAwait.delete(callsite);
 
         extendedPromise.then = function () {
             markCallsiteAwaited();
@@ -96,7 +108,7 @@ export default class TestController {
         this.executionChain.then = originalThen;
         this.executionChain      = this.executionChain.then(executor);
 
-        this.callsitesWithoutAwait.add(callsite);
+        this.testRun.observedCallsites.callsitesWithoutAwait.add(callsite);
 
         this.executionChain = this._createExtendedPromise(this.executionChain, callsite);
 
@@ -127,8 +139,13 @@ export default class TestController {
     }
 
     _validateMultipleWindowCommand (apiMethodName) {
-        if (!this.testRun.allowMultipleWindows)
-            throw new AllowMultipleWindowsOptionIsNotSpecifiedError(apiMethodName);
+        const { disableMultipleWindows, browserConnection } = this.testRun;
+
+        if (disableMultipleWindows)
+            throw new MultipleWindowsModeIsDisabledError(apiMethodName);
+
+        if (!browserConnection.activeWindowId)
+            throw new MultipleWindowsModeIsNotAvailableInRemoteBrowserError(apiMethodName);
     }
 
     getExecutionContext () {
@@ -157,11 +174,7 @@ export default class TestController {
     }
 
     _browser$getter () {
-        return assign({}, this.testRun.browserConnection.browserInfo.parsedUserAgent,
-            {
-                alias:    this.testRun.browserConnection.browserInfo.alias,
-                headless: this.testRun.browserConnection.isHeadlessBrowser()
-            });
+        return getBrowser(this.testRun.browserConnection);
     }
 
     _click$ (selector, options) {
@@ -302,14 +315,42 @@ export default class TestController {
         return this._enqueueCommand(apiMethodName, GetCurrentWindowCommand);
     }
 
-    _switchToWindow$ (window) {
+    _switchToWindow$ (windowSelector) {
         const apiMethodName = 'switchToWindow';
 
         this._validateMultipleWindowCommand(apiMethodName);
 
-        const windowId = window?.id;
+        let command;
+        let args;
 
-        return this._enqueueCommand(apiMethodName, SwitchToWindowCommand, { windowId });
+        if (typeof windowSelector === 'function') {
+            command = SwitchToWindowByPredicateCommand;
+
+            args = { findWindow: windowSelector };
+        }
+        else {
+            command = SwitchToWindowCommand;
+
+            args = { windowId: windowSelector?.id };
+        }
+
+        return this._enqueueCommand(apiMethodName, command, args);
+    }
+
+    _switchToParentWindow$ () {
+        const apiMethodName = 'switchToParentWindow';
+
+        this._validateMultipleWindowCommand(apiMethodName);
+
+        return this._enqueueCommand(apiMethodName, SwitchToParentWindowCommand);
+    }
+
+    _switchToPreviousWindow$ () {
+        const apiMethodName = 'switchToPreviousWindow';
+
+        this._validateMultipleWindowCommand(apiMethodName);
+
+        return this._enqueueCommand(apiMethodName, SwitchToPreviousWindowCommand);
     }
 
     _eval$ (fn, options) {
@@ -342,8 +383,26 @@ export default class TestController {
         return this.testRun.executeAction(name, new GetBrowserConsoleMessagesCommand(), callsite);
     }
 
+    _checkForExcessiveAwaits (selectorCallsiteList, expectCallsite) {
+        for (const selectorCallsite of selectorCallsiteList) {
+            if (selectorCallsite.filename === expectCallsite.filename &&
+                selectorCallsite.lineNum === expectCallsite.lineNum) {
+                addWarning(this.warningLog, WARNING_MESSAGE.excessiveAwaitInAssertion, selectorCallsite);
+
+                selectorCallsiteList.delete(selectorCallsite);
+            }
+        }
+    }
+
     _expect$ (actual) {
         const callsite = getCallsiteForMethod('expect');
+
+        this._checkForExcessiveAwaits(this.testRun.observedCallsites.snapshotPropertyCallsites, callsite);
+
+        if (isClientFunction(actual))
+            addWarning(this.warningLog, WARNING_MESSAGE.assertedClientFunctionInstance, callsite);
+        else if (isSelector(actual))
+            addWarning(this.warningLog, WARNING_MESSAGE.assertedSelectorInstance, callsite);
 
         return new Assertion(actual, this, callsite);
     }

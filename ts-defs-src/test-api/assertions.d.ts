@@ -111,14 +111,14 @@ interface Assertion<E = any> {
      * @param message - An assertion message that will be displayed in the report if the test fails.
      * @param options - Assertion options.
      */
-    typeOf(typeName: 'function' | 'object' | 'number' | 'string' | 'boolean' | 'undefined' | 'regex', message?: string, options?: AssertionOptions): TestControllerPromise;
+    typeOf(typeName: 'function' | 'object' | 'number' | 'string' | 'boolean' | 'undefined' | 'null' | 'regexp', message?: string, options?: AssertionOptions): TestControllerPromise;
     /**
      * Asserts that type of `actual` is `typeName`.
      *
      * @param typeName - The expected type of an `actual` value.
      * @param options - Assertion options.
      */
-    typeOf(typeName: 'function' | 'object' | 'number' | 'string' | 'boolean' | 'undefined' | 'regex', options?: AssertionOptions): TestControllerPromise;
+    typeOf(typeName: 'function' | 'object' | 'number' | 'string' | 'boolean' | 'undefined' | 'null' | 'regexp', options?: AssertionOptions): TestControllerPromise;
     /**
      * Asserts that type of `actual` is not `typeName`.
      *
@@ -126,14 +126,14 @@ interface Assertion<E = any> {
      * @param message - An assertion message that will be displayed in the report if the test fails.
      * @param options - Assertion options.
      */
-    notTypeOf(typeName: 'function' | 'object' | 'number' | 'string' | 'boolean' | 'undefined' | 'regex', message?: string, options?: AssertionOptions): TestControllerPromise;
+    notTypeOf(typeName: 'function' | 'object' | 'number' | 'string' | 'boolean' | 'undefined' | 'null' | 'regexp', message?: string, options?: AssertionOptions): TestControllerPromise;
     /**
      * Asserts that type of `actual` is not `typeName`.
      *
      * @param typeName - An unexpected type of an `actual` value.
      * @param options - Assertion options.
      */
-    notTypeOf(typeName: 'function' | 'object' | 'number' | 'string' | 'boolean' | 'undefined' | 'regex', options?: AssertionOptions): TestControllerPromise;
+    notTypeOf(typeName: 'function' | 'object' | 'number' | 'string' | 'boolean' | 'undefined' | 'null' | 'regexp', options?: AssertionOptions): TestControllerPromise;
     /**
      * Asserts that `actual` is strictly greater than `expected`.
      *

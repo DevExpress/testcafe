@@ -20,4 +20,12 @@ export default class WarningLog {
         if (this.globalLog)
             this.globalLog.addPlainMessage(msg);
     }
+
+    clear () {
+        this.messages = [];
+    }
+
+    copyTo (warningLog) {
+        this.messages.forEach(msg => warningLog.addWarning(msg));
+    }
 }

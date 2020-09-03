@@ -1,6 +1,71 @@
 [
     {
         "type": "article",
+        "source": "Dev Tester",
+        "sourceHomePage": "https://dev-tester.com",
+        "date": "2020-06-23",
+        "title": "End-to-End Testing with TestCafe Book Excerpt: Reporters",
+        "url": "https://dev-tester.com/end-to-end-testing-with-testcafe-book-excerpt-reporters/",
+        "author": "Dennis Martinez",
+        "profileUrl": "https://twitter.com/dennmart",
+        "excerpt": "TestCafe comes with a variety of reporters to display your test results in different ways to fit your needs. Check out how to use them with your test suite."
+    },
+    {
+        "type": "article",
+        "source": "Dev Tester",
+        "sourceHomePage": "https://dev-tester.com",
+        "date": "2020-06-16",
+        "title": "End-to-End Testing with TestCafe Book Excerpt: Smart Assertion Query Mechanism",
+        "url": "https://dev-tester.com/end-to-end-testing-with-testcafe-book-excerpt-smart-assertion-query-mechanism/",
+        "author": "Dennis Martinez",
+        "profileUrl": "https://twitter.com/dennmart",
+        "excerpt": "See how TestCafe intelligently handles asynchronous functionality in websites without explicit waits or timeouts like in other testing frameworks."
+    },
+    {
+        "type": "article",
+        "source": "Dev Tester",
+        "sourceHomePage": "https://dev-tester.com",
+        "date": "2020-06-09",
+        "title": "End-to-End Testing with TestCafe Book Excerpt: User Roles",
+        "url": "https://dev-tester.com/end-to-end-testing-with-testcafe-book-excerpt-user-roles/",
+        "author": "Dennis Martinez",
+        "profileUrl": "https://twitter.com/dennmart",
+        "excerpt": "Learn about TestCafe's built-in roles mechanism to handle authentication, and how it can help you organize and speed up your end-to-end tests."
+    },
+    {
+        "type": "article",
+        "source": "DZone",
+        "sourceHomePage": "https://dzone.com/",
+        "date": "2020-06-03",
+        "title": "TestCafe Integration With Cucumber",
+        "url": "https://dzone.com/articles/testcafe-integration-with-cucumber",
+        "author": "Mohit Kulshreshtha",
+        "excerpt": "Let's look at how to implement the integration of TestCafe with Cucumber."
+    },
+    {
+        "type": "article",
+        "source": "Dev Tester",
+        "sourceHomePage": "https://dev-tester.com",
+        "date": "2020-05-26",
+        "title": "Data-Driven Testing in TestCafe (Part 2) - CSV and Excel",
+        "url": "https://dev-tester.com/data-driven-testing-in-testcafe-part-2-csv-and-excel/",
+        "author": "Dennis Martinez",
+        "profileUrl": "https://twitter.com/dennmart",
+        "excerpt": "Learn how to use CSV and Excel files to drive your TestCafe tests in the second part of this series."
+    },
+    {
+        "type": "article",
+        "source": "jrocha.dev",
+        "sourceHomePage": "https://jrocha.dev/",
+        "date": "2020-05-22",
+        "title": "Automatizando testes com TestCafe Parte 1",
+        "url": "https://jrocha.dev/tutoriais/automatizando-testes-com-testcafe-parte-1/",
+        "author": "Junior Rocha",
+        "lang": "Portuguese",
+        "langCode": "pt"
+    },
+    {
+        "type": "article",
         "source": "Medium",
         "sourceHomePage": "https://medium.com/",
         "date": "2020-05-19",

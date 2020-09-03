@@ -31,7 +31,7 @@ export default class Task extends AsyncEventEmitter {
     public readonly videos?: Videos;
 
     public constructor (tests: Test[], browserConnectionGroups: BrowserConnection[][], proxy: Proxy, opts: Dictionary<OptionValue>) {
-        super();
+        super({ captureRejections: true });
 
         this._timeStamp              = moment();
         this._running                = false;
@@ -113,11 +113,11 @@ export default class Task extends AsyncEventEmitter {
             return {
                 fixture: {
                     id:    fixture.id,
-                    name:  fixture.name,
+                    name:  fixture.name as string,
                     tests: testsByGroup.map(test => {
                         return {
                             id:   test.id,
-                            name: test.name,
+                            name: test.name as string,
                             skip: test.skip
                         };
                     })

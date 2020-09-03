@@ -1,6 +1,6 @@
 import { assertType, is } from '../errors/runtime/type-assertions';
-import ClientScript from './client-script';
+import ClientScriptInit from './client-script-init';
 
-export default function (scripts: ClientScript[]): void {
-    scripts.forEach((script: ClientScript) => assertType([is.string, is.clientScriptInitializer], 'clientScripts', `Client script`, script));
+export default function (scripts: ClientScriptInit[]): void {
+    scripts.forEach((script: ClientScriptInit) => assertType([is.string, is.clientScriptInitializer], 'clientScripts', `Client script`, script));
 }

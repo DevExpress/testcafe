@@ -253,7 +253,20 @@ Use the `userAgent` parameter to substitute a user agent string.
 
 > Important! TestCafe relies on a user agent string to emulate browser behavior. Tests are not guaranteed to run correctly if you specify a user agent that is invalid or [not supported by TestCafe](#browser-support).
 
-You need to escape special characters in the user agent string when you specify it in the command line. These characters include:
+#### JavaScript API
+
+When you launch TestCafe with JavaScript API, provide the user agent string in the [runner.browsers](../../reference/testcafe-api/runner/browsers.md) method parameter. Escape semicolons from the TestCafe argument parser with a double backslash - as shown below:
+
+```js
+runner
+    .src('tests/sample-fixture.js')
+    .browsers('chrome:emulation:userAgent=Mozilla/5.0 (Windows NT 10.0\\; Win64\\; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36')
+    .run();
+```
+
+#### Command Line Interface
+
+You need to escape special characters in the user agent string when you specify it in the command line. These characters include the following:
 
 * `\` (backslash)
 * `'` (single quote)
@@ -320,3 +333,5 @@ When you pass the `:userProfile` flag to a portable browser, also use the [brows
 ```sh
 testcafe chrome:d:\chrome_portable\chrome.exe:userProfile tests/test.js
 ```
+
+> It is not recommended that you combine the :userProfile flag with either headless or emulation mode, because this can lead to unstable behavior.

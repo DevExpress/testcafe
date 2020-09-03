@@ -35,7 +35,7 @@ export default class TestRunBookmark {
             await this.testRun.executeCommand(new SwitchToMainWindowCommand());
 
         if (!this.role.opts.preserveUrl)
-            this.url = await this.testRun.getCurrentUrl();
+            await this.role.setCurrentUrlAsRedirectUrl(this.testRun);
     }
 
     async _restoreDialogHandler () {
@@ -102,9 +102,8 @@ export default class TestRunBookmark {
             await this._restoreDialogHandler();
 
             const preserveUrl = this.role.opts.preserveUrl;
-            const url         = preserveUrl ? this.role.url : this.url;
 
-            await this._restorePage(url, stateSnapshot);
+            await this._restorePage(this.role.redirectUrl, stateSnapshot);
 
             if (!preserveUrl)
                 await this._restoreWorkingFrame();

@@ -10,7 +10,7 @@ interface ParsedComponent {
     version: string;
 }
 
-interface ParsedUserAgent {
+export interface ParsedUserAgent {
     name: string;
     version: string;
     platform: string;

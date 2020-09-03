@@ -19,7 +19,7 @@ const { promisify }           = require('util');
 const globby                  = require('globby');
 const open                    = require('open');
 const connect                 = require('connect');
-const spawn                   = require('cross-spawn');
+const execa                   = require('execa');
 const serveStatic             = require('serve-static');
 const markdownlint            = require('markdownlint');
 const minimist                = require('minimist');
@@ -33,6 +33,7 @@ const npmAuditor              = require('npm-auditor');
 const checkLicenses           = require('./test/dependency-licenses-checker');
 const packageInfo             = require('./package');
 const getPublishTags          = require('./docker/get-publish-tags');
+const isDockerDaemonRunning   = require('./docker/is-docker-daemon-running');
 
 const readFile = promisify(fs.readFile);
 
@@ -151,7 +152,7 @@ const NODE_MODULE_BINS = path.join(__dirname, 'node_modules/.bin');
 process.env.PATH = NODE_MODULE_BINS + path.delimiter + process.env.PATH + path.delimiter + NODE_MODULE_BINS;
 
 const SETUP_TESTS_GLOB            = 'test/functional/setup.js';
-const MULTIPLE_WINDOWS_TESTS_GLOB = 'test/functional/fixtures/run-options/allow-multiple-windows/test.js';
+const MULTIPLE_WINDOWS_TESTS_GLOB = 'test/functional/fixtures/multiple-windows/test.js';
 const COMPILER_SERVICE_TESTS_GLOB = 'test/functional/fixtures/compiler-service/test.js';
 const LEGACY_TESTS_GLOB           = 'test/functional/legacy-fixtures/**/test.js';
 
@@ -632,9 +633,9 @@ function buildWebsite (mode, cb) {
     if (mode)
         spawnEnv.JEKYLL_ENV = mode;
 
-    const options = { stdio: 'inherit', env: spawnEnv };
+    const options = { shell: true, stdio: 'inherit', env: spawnEnv };
 
-    spawn('jekyll', ['build', '--source', 'site/src/', '--destination', 'site/deploy'], options)
+    execa('jekyll', ['build', '--source', 'site/src/', '--destination', 'site/deploy'], options)
         .on('exit', cb);
 }
 
@@ -733,12 +734,9 @@ gulp.task('publish-website', gulp.series('build-website-production', 'website-pu
 
 gulp.task('test-docs-travis', gulp.parallel('test-website-travis', 'lint'));
 
-function testFunctional (src, testingEnvironmentName, { allowMultipleWindows, experimentalCompilerService } = {}) {
+function testFunctional (src, testingEnvironmentName, { experimentalCompilerService } = {}) {
     process.env.TESTING_ENVIRONMENT       = testingEnvironmentName;
     process.env.BROWSERSTACK_USE_AUTOMATE = 1;
-
-    if (allowMultipleWindows)
-        process.env.ALLOW_MULTIPLE_WINDOWS = 'true';
 
     if (experimentalCompilerService)
         process.env.EXPERIMENTAL_COMPILER_SERVICE = 'true';
@@ -831,7 +829,7 @@ gulp.step('test-functional-local-legacy-run', () => {
 gulp.task('test-functional-local-legacy', gulp.series('prepare-tests', 'test-functional-local-legacy-run'));
 
 gulp.step('test-functional-local-multiple-windows-run', () => {
-    return testFunctional(MULTIPLE_WINDOWS_TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localChrome, { allowMultipleWindows: true });
+    return testFunctional(MULTIPLE_WINDOWS_TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localChrome);
 });
 
 gulp.task('test-functional-local-multiple-windows', gulp.series('prepare-tests', 'test-functional-local-multiple-windows-run'));
@@ -892,19 +890,8 @@ function startDocker () {
     assignIn(process.env, dockerEnv);
 }
 
-function isDockerDesktopRunning () {
-    try {
-        const processInfo = childProcess.execSync('wmic process get Name /format:list').toString();
-
-        return processInfo.match(/Docker (for Windows|Desktop).exe/);
-    }
-    catch (e) {
-        return false;
-    }
-}
-
 function ensureDockerEnvironment () {
-    if (isDockerDesktopRunning())
+    if (isDockerDaemonRunning())
         return;
 
     if (!process.env['DOCKER_HOST']) {
@@ -932,7 +919,7 @@ gulp.task('docker-build', done => {
     done();
 });
 
-gulp.task('docker-test', done => {
+gulp.step('docker-test-run', done => {
     ensureDockerEnvironment();
 
     childProcess.execSync(`docker build --no-cache --build-arg tag=${packageInfo.version} -t docker-server-tests -f test/docker/Dockerfile .`,
@@ -951,6 +938,10 @@ gulp.step('docker-publish-run', done => {
     done();
 });
 
-gulp.task('docker-publish', gulp.series('docker-build', 'docker-test', 'docker-publish-run'));
+gulp.task('docker-test', gulp.series('docker-build', 'docker-test-run'));
+
+gulp.task('docker-test-travis', gulp.series('build', 'docker-test'));
+
+gulp.task('docker-publish', gulp.series('docker-test', 'docker-publish-run'));
 
 gulp.task('travis', process.env.GULP_TASK ? gulp.series(process.env.GULP_TASK) : () => {});

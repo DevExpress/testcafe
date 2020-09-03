@@ -21,6 +21,7 @@ import {
     RunTestArguments
 } from './protocol';
 import { CompilerArguments } from '../../compiler/interfaces';
+import Fixture from '../../api/structure/fixture';
 
 sourceMapSupport.install({
     hookRequire:              true,
@@ -56,7 +57,7 @@ class CompilerService implements CompilerProtocol {
     private _getFixtureCtx ({ id }: RunTestArguments): unknown {
         const unit = this.state.units[id];
 
-        const fixtureId = isTest(unit) ? unit.fixture.id : unit.id;
+        const fixtureId = isTest(unit) ? unit.fixture.id : (unit as Fixture).id;
 
         if (!this.state.fixtureCtxs[fixtureId])
             this.state.fixtureCtxs[fixtureId] = Object.create(null);

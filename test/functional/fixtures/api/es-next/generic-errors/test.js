@@ -13,6 +13,14 @@ describe('[API] Generic errors', function () {
                 });
         });
 
+        it('Should handle the relative path in the Role constructor', () => {
+            return runTests('testcafe-fixtures/role-initialized-with-relative-url.js', null,
+                { shouldFail: true, only: 'chrome' })
+                .catch(err => {
+                    expect(err.message).contains('You cannot specify relative login page URLs in the Role constructor. Use an absolute URL.');
+                });
+        });
+
         it('Should handle error thrown by test code', function () {
             return runTests('./testcafe-fixtures/error-in-test-code-test.js', 'Test code throws Error',
                 { shouldFail: true, only: 'chrome' })
@@ -52,19 +60,19 @@ describe('[API] Generic errors', function () {
         it('Should handle Node built-in assertion lib error', function () {
             const NODE_11_ASSERTION_MESSAGE = [
                 'AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:',
-                '+ actual - expected',
-                '',
+                '+ actual',
+                '- expected',
                 '+ \'answer\'',
                 '- \'42\''
-            ].join(' ');
+            ];
 
             const NODE_10_ASSERTION_MESSAGE = [
                 'AssertionError [ERR_ASSERTION]: Input A expected to strictly equal input B:',
-                '+ expected - actual',
-                '',
+                '+ expected',
+                '- actual',
                 '- \'answer\'',
                 '+ \'42\''
-            ].join(' ');
+            ];
 
             const OLD_NODE_ASSERTION_MESSAGE_RE = /AssertionError( \[ERR_ASSERTION])?: 'answer' === '42'/;
 
@@ -73,10 +81,16 @@ describe('[API] Generic errors', function () {
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('> 13 |    assert.strictEqual(\'answer\', \'42\');');
 
-                    if (nodeVersion.major >= 11)
-                        expect(errs[0]).to.contain(NODE_11_ASSERTION_MESSAGE);
-                    else if (nodeVersion.major >= 10)
-                        expect(errs[0]).to.contain(NODE_10_ASSERTION_MESSAGE);
+                    if (nodeVersion.major >= 11) {
+                        NODE_11_ASSERTION_MESSAGE.forEach((item) => {
+                            expect(errs[0]).to.contain(item);
+                        });
+                    }
+                    else if (nodeVersion.major >= 10) {
+                        NODE_10_ASSERTION_MESSAGE.forEach((item) => {
+                            expect(errs[0]).to.contain(item);
+                        });
+                    }
                     else
                         expect(errs[0]).to.match(OLD_NODE_ASSERTION_MESSAGE_RE);
                 });

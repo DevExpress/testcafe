@@ -1,5 +1,5 @@
 import hammerhead from '../deps/hammerhead';
-import { ChildWindowNotFoundError } from '../../../errors/test-run';
+import { ChildWindowNotFoundError } from '../../../shared/errors';
 import { arrayUtils } from '../deps/testcafe-core';
 
 const Promise = hammerhead.Promise;

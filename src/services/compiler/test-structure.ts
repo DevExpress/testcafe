@@ -1,8 +1,10 @@
 import { uniq, keyBy } from 'lodash';
 import { TEST_FUNCTION_PROPERTIES } from './protocol';
 
-import { Fixture, Test, TestFile } from '../../api/structure/interfaces';
-import * as unitTypes from '../../api/structure/unit-types';
+import Test from '../../api/structure/test';
+import Fixture from '../../api/structure/fixture';
+import TestFile from '../../api/structure/test-file';
+import UnitType from '../../api/structure/unit-type';
 
 
 const RECURSIVE_PROPERTIES = ['testFile', 'fixture', 'currentFixture', 'collectedTests'] as const;
@@ -32,11 +34,11 @@ function isProperty<T extends object> (object: T, property: string): property is
 }
 
 export function isTest (value: Unit): value is Test {
-    return value.unitTypeName === unitTypes.TEST;
+    return value.unitType === UnitType.test;
 }
 
 export function isFixture (value: Unit): value is Fixture {
-    return value.unitTypeName === unitTypes.FIXTURE;
+    return value.unitType === UnitType.fixture;
 }
 
 function mapProperties<T extends Readonly<object>, P extends Readonly<string[]>> (object: T, properties: P, mapper: Mapper<T, P[number]>): void {
@@ -80,6 +82,7 @@ export function serialize (units: Units): Units {
     const result: Units = {};
 
     for (const unit of Object.values(units)) {
+        // @ts-ignore
         const copy: Unit = { ...unit };
 
         replaceTestFunctions(copy);

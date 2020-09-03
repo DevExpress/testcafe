@@ -5,6 +5,8 @@ const chai                    = require('chai');
 const { expect }              = chai;
 const request                 = require('request');
 const { noop, times, uniqBy } = require('lodash');
+const consoleWrapper          = require('./helpers/console-wrapper');
+const isAlpine                = require('./helpers/is-alpine');
 const createTestCafe          = require('../../lib/');
 const COMMAND                 = require('../../lib/browser/connection/command');
 const Task                    = require('../../lib/runner/task');
@@ -12,7 +14,6 @@ const BrowserConnection       = require('../../lib/browser/connection');
 const BrowserSet              = require('../../lib/runner/browser-set');
 const browserProviderPool     = require('../../lib/browser/provider/pool');
 const delay                   = require('../../lib/utils/delay');
-const consoleWrapper          = require('./helpers/console-wrapper');
 
 chai.use(require('chai-string'));
 
@@ -21,6 +22,8 @@ describe('Runner', () => {
     let runner                    = null;
     let connection                = null;
     let origRemoteBrowserProvider = null;
+
+    const BROWSER_NAME = `${isAlpine() ? 'chromium' : 'chrome'}:headless`;
 
     const remoteBrowserProviderMock = {
         openBrowser () {
@@ -31,8 +34,6 @@ describe('Runner', () => {
             return Promise.resolve();
         }
     };
-
-    const browserMock = { path: '/non/exist' };
 
     before(() => {
         return createTestCafe('127.0.0.1', 1335, 1336)
@@ -407,7 +408,7 @@ describe('Runner', () => {
             };
 
             return runner
-                .browsers(browserMock)
+                .browsers(BROWSER_NAME)
                 .src('test/server/data/test-suites/basic/testfile1.js',
                     [
                         'test/server/data/test-suites/basic/*.js',
@@ -840,26 +841,6 @@ describe('Runner', () => {
 
             expect(runner.configuration.getOption('debugLogger')).to.deep.equal(customLogger);
         });
-
-        it('Should raise an error if "allowMultipleWindows" option is used for legacy tests', () => {
-            return runner
-                .browsers(connection)
-                .src('test/server/data/test-suites/legacy/test.test.js')
-                .run({ allowMultipleWindows: true })
-                .catch(err => {
-                    expect(err.message).eql('You cannot run Legacy API tests in multi-window mode.');
-                });
-        });
-
-        it('Should raise an error if "allowMultipleWindows" option is used non-local browsers', () => {
-            return runner
-                .browsers(connection)
-                .src('test/server/data/test-suites/basic/testfile1.js')
-                .run({ allowMultipleWindows: true })
-                .catch(err => {
-                    expect(err.message).eql('You cannot use multi-window mode in "remote".');
-                });
-        });
     });
 
     describe('.clientScripts', () => {
@@ -886,7 +867,7 @@ describe('Runner', () => {
             });
 
             return runner
-                .browsers(browserMock)
+                .browsers(BROWSER_NAME)
                 .src([])
                 .run()
                 .then(() => {
@@ -938,6 +919,10 @@ describe('Runner', () => {
                         resolve();
                     }, BROWSER_CLOSING_DELAY);
                 });
+            },
+
+            isHeadlessBrowser () {
+                return true;
             }
         };
 

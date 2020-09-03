@@ -46,4 +46,34 @@ describe('Warning log', () => {
             'Was unable to take a screenshot due to an error.\n\n' + TYPE_ERROR_TEXT
         ]);
     });
+
+    it('Should clear warning messages', () => {
+        const globalLog = new WarningLog();
+        const log       = new WarningLog(globalLog);
+
+        log.addWarning(WARNINGS.screenshotError, TYPE_ERROR_TEXT);
+        log.clear();
+
+        expect(log.messages).eql([]);
+
+        expect(globalLog.messages).eql([
+            'Was unable to take a screenshot due to an error.\n\n' + TYPE_ERROR_TEXT
+        ]);
+    });
+
+    it('Should copy messages to another instance', () => {
+        const firstLog  = new WarningLog();
+        const secondLog = new WarningLog();
+
+        firstLog.addWarning(WARNINGS.screenshotError, TYPE_ERROR_TEXT);
+        firstLog.copyTo(secondLog);
+
+        expect(firstLog.messages).eql([
+            'Was unable to take a screenshot due to an error.\n\n' + TYPE_ERROR_TEXT
+        ]);
+
+        expect(secondLog.messages).eql([
+            'Was unable to take a screenshot due to an error.\n\n' + TYPE_ERROR_TEXT
+        ]);
+    });
 });
