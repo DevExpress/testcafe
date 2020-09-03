@@ -37,11 +37,9 @@ testingEnvironments[testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers] = {
         key:  process.env.SSL_PKEY
     },
 
+    retryTestPages: true,
+
     browsers: [
-        {
-            browserName: 'browserstack:safari@11.1:OS X High Sierra',
-            alias:       'safari'
-        },
         {
             browserName: 'browserstack:chrome@80:OS X High Sierra',
             alias:       'chrome-osx'
