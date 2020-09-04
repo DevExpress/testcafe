@@ -43,6 +43,8 @@ export default {
         const parsedPageUrl = parseUrl(pageUrl);
         const runtimeInfo   = await this._createRunTimeInfo(parsedPageUrl.hostname, configString, disableMultipleWindows);
 
+        this.openedBrowsers[browserId] = runtimeInfo;
+
         runtimeInfo.browserName = this._getBrowserName();
         runtimeInfo.browserId   = browserId;
 
@@ -52,8 +54,6 @@ export default {
 
         if (!disableMultipleWindows)
             runtimeInfo.activeWindowId = this.calculateWindowId();
-
-        this.openedBrowsers[browserId] = runtimeInfo;
 
         await startLocalChrome(pageUrl, runtimeInfo);
         await this.waitForConnectionReady(browserId);

@@ -80,12 +80,6 @@ export default class BrowserProvider {
         return this.localBrowsersInfo[browserId] && this.localBrowsersInfo[browserId].resizeCorrections;
     }
 
-    private _isBrowserIdle (browserId: string): boolean {
-        const connection = BrowserConnection.getById(browserId) as BrowserConnection;
-
-        return connection.idle;
-    }
-
     private async _calculateResizeCorrections (browserId: string): Promise<void> {
         const title = await this.plugin.runInitScript(browserId, GET_TITLE_SCRIPT);
 

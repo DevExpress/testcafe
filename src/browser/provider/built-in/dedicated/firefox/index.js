@@ -33,13 +33,13 @@ export default {
     async openBrowser (browserId, pageUrl, configString, disableMultipleWindows) {
         const runtimeInfo = await getRuntimeInfo(configString);
 
+        this.openedBrowsers[browserId] = runtimeInfo;
+
         runtimeInfo.browserName = this._getBrowserName();
         runtimeInfo.browserId   = browserId;
 
         if (!disableMultipleWindows)
             runtimeInfo.activeWindowId = this.calculateWindowId();
-
-        this.openedBrowsers[browserId] = runtimeInfo;
 
         await startLocalFirefox(pageUrl, runtimeInfo);
         await this.waitForConnectionReady(runtimeInfo.browserId);
@@ -49,7 +49,7 @@ export default {
     },
 
     async closeBrowser (browserId) {
-        const runtimeInfo = this.openedBrowsers[browserId];
+        const runtimeInfo                  = this.openedBrowsers[browserId];
         const { config, marionetteClient } = runtimeInfo;
 
         if (config.headless)
@@ -75,7 +75,7 @@ export default {
     async getVideoFrameData (browserId) {
         const { marionetteClient } = this.openedBrowsers[browserId];
 
-        return await marionetteClient.getScreenshotData();
+        return marionetteClient.getScreenshotData();
     },
 
     async hasCustomActionForBrowser (browserId) {
