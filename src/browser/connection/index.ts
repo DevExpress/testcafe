@@ -474,6 +474,9 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     public async setUpBrowserWindow (): Promise<void> {
+        if (this.status !== BrowserConnectionStatus.opened)
+            await promisifyEvent(this, 'opened');
+
         return this.provider.setUpBrowserWindow(this.id);
     }
 }
