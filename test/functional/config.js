@@ -41,7 +41,7 @@ testingEnvironments[testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers] = {
 
     browsers: [
         {
-            browserName: 'browserstack:safari@13.0:OS X Catalina',
+            browserName: 'browserstack:safari@13.1:OS X Catalina',
             alias:       'safari'
         }
     ]
