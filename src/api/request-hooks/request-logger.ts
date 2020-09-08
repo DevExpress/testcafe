@@ -36,7 +36,7 @@ interface LoggedRequestPart extends OptionallyLoggedPart {
     method: string;
 }
 interface LoggedResponsePart extends OptionallyLoggedPart {
-    statusCode: string;
+    statusCode: number;
     timestamp: number;
 }
 

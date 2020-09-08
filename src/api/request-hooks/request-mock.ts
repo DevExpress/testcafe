@@ -30,7 +30,7 @@ class RequestMock extends RequestHook {
     }
 
     public async onResponse (event: ResponseEvent): Promise<void> {
-        if (event.statusCode === SAME_ORIGIN_CHECK_FAILED_STATUS_CODE.toString())
+        if (event.statusCode === SAME_ORIGIN_CHECK_FAILED_STATUS_CODE)
             (this.warningLog as WarningLog).addWarning(WARNING_MESSAGE.requestMockCORSValidationFailed, RequestMock.name, event._requestFilterRule);
     }
 
