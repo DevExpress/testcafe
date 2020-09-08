@@ -39,7 +39,7 @@ steps:
     
 - bash: |
     npm install --no-progress --loglevel error
-    npm test
+    npx gulp test-funcitonal-travis --dev
   displayName: 'Run tests'
   condition: and(succeeded(), not(variables['isDocCommit']))
   timeoutInMinutes: 60
