@@ -8,10 +8,6 @@ import remotesWizard from './remotes-wizard';
 import correctBrowsersAndSources from './correct-browsers-and-sources';
 import createTestCafe from '../';
 
-// NOTE: Load the provider pool lazily to reduce startup time
-const lazyRequire         = require('import-lazy')(require);
-const browserProviderPool = lazyRequire('../browser/provider/pool');
-
 let showMessageOnExit = true;
 let exitMessageShown  = false;
 let exiting           = false;
@@ -124,25 +120,17 @@ async function runTests (argParser) {
 }
 
 async function listBrowsers (providerName) {
-    const provider = await browserProviderPool.getProvider(providerName);
-
-    if (!provider)
-        throw new GeneralError(RUNTIME_ERRORS.browserProviderNotFound, providerName);
-
-    if (provider.isMultiBrowser) {
-        const browserNames = await provider.getBrowserList();
-
-        await browserProviderPool.dispose();
-
-        if (providerName === 'locally-installed')
+    try {
+        const browserNames = await createTestCafe.listBrowsers(providerName);
+        if (providerName == 'locally-installed')
             console.log(browserNames.join('\n'));
         else
-            console.log(browserNames.map(browserName => `"${providerName}:${browserName}"`).join('\n'));
+            console.log(browserNames.map(n => providerName+':'+n).join('\n'));
+        exit(0);
     }
-    else
-        console.log(`"${providerName}"`);
-
-    exit(0);
+    catch (e) {
+        throw new GeneralError(RUNTIME_ERRORS.browserProviderNotFound, providerName);
+    }
 }
 
 (async function cli () {

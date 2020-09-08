@@ -4,6 +4,7 @@ const SelectorBuilder       = lazyRequire('../../client-functions/selectors/sele
 const role                  = lazyRequire('../../role');
 const createRequestLogger   = lazyRequire('../request-hooks/request-logger');
 const createRequestMock     = lazyRequire('../request-hooks/request-mock');
+const browserProviderPool   = lazyRequire('../../browser/provider/pool');
 
 // NOTE: We can't use lazy require for RequestHook, because it will break base class detection for inherited classes
 let RequestHook = null;
@@ -62,5 +63,16 @@ export default {
             testControllerProxy = require('../test-controller/proxy');
 
         return testControllerProxy;
-    }
+    },
+
+    async listBrowsers(providerName = 'locally-installed') {
+        const provider = await browserProviderPool.getProvider(providerName);
+        browserProviderPool.dispose();
+        if (!provider)
+            throw new Error('provider not found');
+        return provider.isMultiBrowser
+            ? await provider.getBrowserList()
+            : [providerName];
+    },
+
 };
