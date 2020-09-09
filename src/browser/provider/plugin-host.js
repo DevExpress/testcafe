@@ -4,7 +4,6 @@ import promisifyEvent from 'promisify-event';
 import BROWSER_JOB_RESULT from '../../runner/browser-job-result';
 import BrowserConnection from '../connection';
 import WARNING_MESSAGE from '../../notifications/warning-message';
-import { generateUniqueId } from 'testcafe-hammerhead';
 
 const name = Symbol();
 

@@ -83,10 +83,8 @@ export default class TestRun extends AsyncEventEmitter {
 
         this.warningLog = new WarningLog(globalWarningLog);
 
-        this.opts              = opts;
-        this.test              = test;
-        this.browserConnection = browserConnection;
-
+        this.opts  = opts;
+        this.test  = test;
         this.phase = PHASE.initial;
 
         this.driverTaskQueue       = [];
@@ -102,7 +100,10 @@ export default class TestRun extends AsyncEventEmitter {
 
         this.disableMultipleWindows = opts.disableMultipleWindows;
 
-        this.session = SessionController.getSession(this);
+        this.browserConnection = browserConnection;
+        this.session           = SessionController.getSession(this);
+
+        this.browserConnection.activeWindowId = this.session.windowId;
 
         this.consoleMessages = new BrowserConsoleMessages();
 
@@ -143,8 +144,6 @@ export default class TestRun extends AsyncEventEmitter {
 
         this._addInjectables();
         this._initRequestHooks();
-
-        browserConnection.activeWindowId = this.session.windowId;
     }
 
     _addClientScriptContentWarningsIfNecessary () {
@@ -936,7 +935,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     static isMultipleWindowsAllowed (testRun) {
-        const { disableMultipleWindows, test, browserConnection } = testRun;
+        const { disableMultipleWindows, test } = testRun;
 
         return !disableMultipleWindows && !test.isLegacy;
     }
