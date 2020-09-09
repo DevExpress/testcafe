@@ -9,7 +9,6 @@ export default async function (configString) {
     const runtimeInfo    = { config, marionettePort };
 
     runtimeInfo.tempProfileDir = !config.userProfile ? await createTempProfile(runtimeInfo) : null;
-    runtimeInfo.activeWindowId = null;
 
     return runtimeInfo;
 }

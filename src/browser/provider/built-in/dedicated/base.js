@@ -10,14 +10,6 @@ export default {
 
     supportMultipleWindows: true,
 
-    getActiveWindowId (browserId) {
-        return this.openedBrowsers[browserId].activeWindowId;
-    },
-
-    setActiveWindowId (browserId, val) {
-        this.openedBrowsers[browserId].activeWindowId = val;
-    },
-
     _getConfig () {
         throw new Error('Not implemented');
     },

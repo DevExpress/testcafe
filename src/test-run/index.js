@@ -143,6 +143,8 @@ export default class TestRun extends AsyncEventEmitter {
 
         this._addInjectables();
         this._initRequestHooks();
+
+        browserConnection.activeWindowId = this.session.windowId;
     }
 
     _addClientScriptContentWarningsIfNecessary () {
@@ -936,7 +938,7 @@ export default class TestRun extends AsyncEventEmitter {
     static isMultipleWindowsAllowed (testRun) {
         const { disableMultipleWindows, test, browserConnection } = testRun;
 
-        return !disableMultipleWindows && !test.isLegacy && !!browserConnection.activeWindowId;
+        return !disableMultipleWindows && !test.isLegacy;
     }
 }
 

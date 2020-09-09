@@ -4,7 +4,7 @@ const path           = require('path');
 
 describe('Multiple windows', () => {
     describe('Switch to the child window', () => {
-        it('Click on link', () => {
+        it.only('Click on link', () => {
             return runTests('testcafe-fixtures/switching-to-child/click-on-link.js');
         });
 

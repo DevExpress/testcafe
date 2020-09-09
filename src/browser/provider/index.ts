@@ -365,15 +365,4 @@ export default class BrowserProvider {
     public async reportJobResult (browserId: string, status: string, data: any): Promise<void> {
         await this.plugin.reportJobResult(browserId, status, data);
     }
-
-    public getActiveWindowId (browserId: string): string | null {
-        if (!this.plugin.supportMultipleWindows)
-            return null;
-
-        return this.plugin.getActiveWindowId(browserId);
-    }
-
-    public setActiveWindowId (browserId: string, val: string): void {
-        this.plugin.setActiveWindowId(browserId, val);
-    }
 }

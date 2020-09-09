@@ -40,9 +40,6 @@ export default {
 
         await this.waitForConnectionReady(runtimeInfo.browserId);
 
-        if (!disableMultipleWindows)
-            runtimeInfo.activeWindowId = this.calculateWindowId();
-
         if (runtimeInfo.marionettePort)
             runtimeInfo.marionetteClient = await this._createMarionetteClient(runtimeInfo);
 

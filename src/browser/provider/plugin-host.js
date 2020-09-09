@@ -29,10 +29,6 @@ export default class BrowserProviderPluginHost {
         return connection.runInitScript(`(${code})()`);
     }
 
-    calculateWindowId () {
-        return generateUniqueId();
-    }
-
     waitForConnectionReady (browserId) {
         const connection = BrowserConnection.getById(browserId);
 

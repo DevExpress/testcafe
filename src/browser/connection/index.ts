@@ -59,6 +59,7 @@ export interface BrowserInfo {
 export default class BrowserConnection extends EventEmitter {
     public permanent: boolean;
     public previousActiveWindowId: string | null;
+    private currentActiveWindowId: string | null;
     private readonly disableMultipleWindows: boolean;
     private readonly HEARTBEAT_TIMEOUT: number;
     private readonly BROWSER_RESTART_TIMEOUT: number;
@@ -141,6 +142,7 @@ export default class BrowserConnection extends EventEmitter {
         connections[this.id] = this;
 
         this.previousActiveWindowId = null;
+        this.currentActiveWindowId  = null;
 
         this.browserConnectionGateway.startServingConnection(this);
 
@@ -448,13 +450,12 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     public get activeWindowId (): null | string {
-        return this.provider.getActiveWindowId(this.id);
+        return this.currentActiveWindowId;
     }
 
     public set activeWindowId (val) {
         this.previousActiveWindowId = this.activeWindowId;
-
-        this.provider.setActiveWindowId(this.id, val);
+        this.currentActiveWindowId  = val;
     }
 
     public async canUseDefaultWindowActions (): Promise<boolean> {
