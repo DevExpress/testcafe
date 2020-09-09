@@ -5,6 +5,7 @@ import {
     RequestEvent,
     ResponseEvent
 } from 'testcafe-hammerhead';
+
 import { castArray } from 'lodash';
 import { RequestHookNotImplementedMethodError } from '../../errors/test-run';
 import { RequestFilterRuleInit } from './interfaces';
