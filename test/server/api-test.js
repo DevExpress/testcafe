@@ -1688,4 +1688,37 @@ describe('API', function () {
             expect(configuration.getOption(OPTION_NAMES.retryTestPages)).be.true;
         });
     });
+
+    describe('listBrowsers', () => {
+
+        const listBrowsers = require('../../lib/embedding-utils').listBrowsers;
+
+        it('Should return an array of strings', () => {
+            this.timeout(2000);
+            return listBrowsers()
+                .then(browserNames => {
+                    expect(browserNames).to.be.an('array');
+                    if (Array.isArray(browserNames)) {
+                        browserNames.forEach(browserName => {
+                            expect(browserName).to.be.a('string');
+                        });
+                    }
+                })
+                .catch(err => {
+                    expect(err.constructor.name).to.equal('APIError');
+                    throw new Error('Promise resolution expected');
+                });
+        });
+
+        it('Should raise an error if provider name is invalid', function () {
+            return listBrowsers('bad provider name 032940135959086625')
+                .then(() => {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(err => {
+                    expect(err.constructor.name).to.equal('APIError');
+                    expect(err.rawMessage).to.equal('The specified "bad provider name 032940135959086625" browser provider was not found.');
+                });
+        });
+    });
 });

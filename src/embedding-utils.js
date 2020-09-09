@@ -16,6 +16,7 @@ const processTestFnError             = lazyRequire('./errors/process-test-fn-err
 const testRunErrorUtils              = lazyRequire('./errors/test-run/utils');
 const browserProviderPool            = lazyRequire('./browser/provider/pool');
 const BrowserConnection              = lazyRequire('./browser/connection');
+const listBrowsers                   = lazyRequire('./utils/list-browsers');
 
 
 // NOTE: we can't use lazy require for TestRun and Assignable, because it breaks prototype chain for inherited classes
@@ -30,6 +31,7 @@ export default {
     errorTypes,
     testRunErrorUtils,
     BrowserConnection,
+    listBrowsers,
 
     get Assignable () {
         if (!Assignable)

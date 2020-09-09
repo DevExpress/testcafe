@@ -11,6 +11,7 @@ import createTestCafe from '../';
 // NOTE: Load the provider pool lazily to reduce startup time
 const lazyRequire         = require('import-lazy')(require);
 const browserProviderPool = lazyRequire('../browser/provider/pool');
+const listBrowsersApi     = lazyRequire('../utils/list-browsers');
 
 let showMessageOnExit = true;
 let exitMessageShown  = false;
@@ -124,24 +125,29 @@ async function runTests (argParser) {
 }
 
 async function listBrowsers (providerName) {
-    const provider = await browserProviderPool.getProvider(providerName);
 
-    if (!provider)
-        throw new GeneralError(RUNTIME_ERRORS.browserProviderNotFound, providerName);
+    let browserNames;
 
-    if (provider.isMultiBrowser) {
-        const browserNames = await provider.getBrowserList();
-
-        await browserProviderPool.dispose();
-
-        if (providerName === 'locally-installed')
-            console.log(browserNames.join('\n'));
-        else
-            console.log(browserNames.map(browserName => `"${providerName}:${browserName}"`).join('\n'));
+    try {
+        browserNames = await listBrowsersApi(providerName);
     }
-    else
-        console.log(`"${providerName}"`);
+    catch (e) {
+        await browserProviderPool.dispose();
+        throw e.code === RUNTIME_ERRORS.browserProviderNotFound
+            ? new GeneralError(e.code, providerName)
+            : e;
+    }
 
+    const disposePromise = browserProviderPool.dispose();
+
+    if (providerName === 'locally-installed')
+        console.log(browserNames.join('\n'));
+    else if (browserNames.length === 1 && browserNames[0] === providerName)
+        console.log(providerName);
+    else
+        console.log(browserNames.map(browserName => `${providerName}:${browserName}`).join('\n'));
+
+    await disposePromise;
     exit(0);
 }
 
