@@ -208,7 +208,9 @@ gulp.task('lint', () => {
             '!test/functional/fixtures/api/es-next/custom-client-scripts/data/*.js',
             'Gulpfile.js'
         ])
-        .pipe(eslint())
+        .pipe(eslint({
+            fix: process.argv.includes('--fix'),
+        }))
         .pipe(eslint.format(process.env.ESLINT_FORMATTER))
         .pipe(eslint.failAfterError());
 });
