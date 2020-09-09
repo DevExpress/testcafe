@@ -11,6 +11,7 @@ import { RequestHookNotImplementedMethodError } from '../../errors/test-run';
 import { RequestFilterRuleInit } from './interfaces';
 import WarningLog from '../../notifications/warning-log';
 
+
 export default abstract class RequestHook {
     protected requestFilterRules: RequestFilterRuleInit[];
     private _instantiatedRequestFilterRules: RequestFilterRule[];
