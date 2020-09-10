@@ -3,13 +3,20 @@ import Compiler from '../../compiler';
 import TestRunProxy from './test-run-proxy';
 
 import {
-    flatten as flattenTestStructure, isFixture,
+    flatten as flattenTestStructure,
+    isFixture,
     isTest,
-    serialize as serializeTestStructure, Unit,
+    serialize as serializeTestStructure,
+    Unit,
     Units
 } from './test-structure';
 
-import { SERVICE_INPUT_FD, SERVICE_OUTPUT_FD, SERVICE_SYNC_FD } from './io';
+import {
+    SERVICE_INPUT_FD,
+    SERVICE_OUTPUT_FD,
+    SERVICE_SYNC_FD
+} from './io';
+
 import { IPCProxy } from '../utils/ipc/proxy';
 import { ServiceTransport } from '../utils/ipc/transport';
 import sourceMapSupport from 'source-map-support';

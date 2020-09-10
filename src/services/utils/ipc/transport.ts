@@ -1,8 +1,19 @@
-import { AsyncReader, AsyncWriter, SyncReader, SyncWriter } from './io';
+import {
+    AsyncReader,
+    AsyncWriter,
+    SyncReader,
+    SyncWriter
+} from './io';
+
 import EventEmitter from '../../../utils/async-event-emitter';
 import { GeneralError } from '../../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../../errors/types';
-import { IPCPacket, IPCResponsePacket, IPCTransport, isIPCResponsePacket } from './interfaces';
+import {
+    IPCPacket,
+    IPCResponsePacket,
+    IPCTransport,
+    isIPCResponsePacket
+} from './interfaces';
 
 
 export class HostTransport extends EventEmitter implements IPCTransport {

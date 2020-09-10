@@ -1,7 +1,17 @@
 import hammerhead from '../../deps/hammerhead';
-import { KEY_MAPS, domUtils, getSanitizedKey } from '../../deps/testcafe-core';
+import {
+    KEY_MAPS,
+    domUtils,
+    getSanitizedKey
+} from '../../deps/testcafe-core';
+
 import typeText from '../type/type-text';
-import { getChar, getDeepActiveElement, changeLetterCase } from './utils';
+import {
+    getChar,
+    getDeepActiveElement,
+    changeLetterCase
+} from './utils';
+
 import getKeyCode from '../../utils/get-key-code';
 import getKeyIdentifier from '../../utils/get-key-identifier';
 import isLetterKey from '../../utils/is-letter';

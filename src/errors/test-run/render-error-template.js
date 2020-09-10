@@ -1,6 +1,11 @@
 import { renderers } from 'callsite-record';
 import { TEST_RUN_ERRORS } from '../types';
-import { markup, shouldSkipCallsite, formatExpressionMessage } from './utils';
+import {
+    markup,
+    shouldSkipCallsite,
+    formatExpressionMessage
+} from './utils';
+
 import TEMPLATES from './templates';
 
 function getTestCafeErrorInCustomScriptError (err, viewportWidth) {

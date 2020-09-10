@@ -3,7 +3,12 @@ import limitNumber from '../utils/limit-number';
 import renderTemplate from '../utils/render-template';
 import { deleteFile } from '../utils/promisified-functions';
 import { InvalidElementScreenshotDimensionsError } from '../errors/test-run/';
-import { MARK_LENGTH, MARK_RIGHT_MARGIN, MARK_BYTES_PER_PIXEL } from './constants';
+import {
+    MARK_LENGTH,
+    MARK_RIGHT_MARGIN,
+    MARK_BYTES_PER_PIXEL
+} from './constants';
+
 import WARNING_MESSAGES from '../notifications/warning-message';
 
 const MARK_SEED_ERROR_THRESHOLD = 10;

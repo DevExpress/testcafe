@@ -1,6 +1,11 @@
 import Replicator from 'replicator';
 import evalFunction from './eval-function';
-import { NodeSnapshot, ElementSnapshot, ElementActionSnapshot } from './selector-executor/node-snapshots';
+import {
+    NodeSnapshot,
+    ElementSnapshot,
+    ElementActionSnapshot
+} from './selector-executor/node-snapshots';
+
 import { DomNodeClientFunctionResultError, UncaughtErrorInCustomDOMPropertyCode } from '../../../../shared/errors';
 import hammerhead from '../../deps/hammerhead';
 

@@ -10,10 +10,7 @@ import {
     SetPageLoadTimeoutCommand
 } from './commands/actions';
 
-import {
-    CurrentIframeNotFoundError,
-    CurrentIframeIsNotLoadedError
-} from '../errors/test-run';
+import { CurrentIframeNotFoundError, CurrentIframeIsNotLoadedError } from '../errors/test-run';
 
 export default class TestRunBookmark {
     constructor (testRun, role) {

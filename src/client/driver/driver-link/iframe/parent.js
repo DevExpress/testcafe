@@ -1,8 +1,5 @@
 import { eventSandbox } from '../../deps/hammerhead';
-import {
-    EstablishConnectionMessage,
-    CommandExecutedMessage
-} from '../messages';
+import { EstablishConnectionMessage, CommandExecutedMessage } from '../messages';
 import { CurrentIframeIsNotLoadedError } from '../../../../shared/errors';
 import sendMessageToDriver from '../send-message-to-driver';
 import { WAIT_FOR_IFRAME_DRIVER_RESPONSE_TIMEOUT } from '../timeouts';

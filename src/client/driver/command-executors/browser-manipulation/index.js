@@ -1,7 +1,24 @@
-import { transport, eventSandbox, Promise } from '../../deps/hammerhead';
-import { domUtils, scrollController, sendRequestToFrame, delay } from '../../deps/testcafe-core';
+import {
+    transport,
+    eventSandbox,
+    Promise
+} from '../../deps/hammerhead';
+
+import {
+    domUtils,
+    scrollController,
+    sendRequestToFrame,
+    delay
+} from '../../deps/testcafe-core';
+
 import { Scroll as ScrollAutomation } from '../../deps/testcafe-automation';
-import { hide as hideUI, show as showUI, showScreenshotMark, hideScreenshotMark } from '../../deps/testcafe-ui';
+import {
+    hide as hideUI,
+    show as showUI,
+    showScreenshotMark,
+    hideScreenshotMark
+} from '../../deps/testcafe-ui';
+
 import DriverStatus from '../../status';
 import ensureCropOptions from './ensure-crop-options';
 import { ensureElements, createElementDescriptor } from '../../utils/ensure-elements';

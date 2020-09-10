@@ -7,11 +7,22 @@ import { RUNTIME_ERRORS } from '../errors/types';
 import { assertType, is } from '../errors/runtime/type-assertions';
 import getViewPortWidth from '../utils/get-viewport-width';
 import { wordWrap, splitQuotedText } from '../utils/string';
-import { getSSLOptions, getScreenshotOptions, getVideoOptions, getMetaOptions, getGrepOptions } from '../utils/get-options';
+import {
+    getSSLOptions,
+    getScreenshotOptions,
+    getVideoOptions,
+    getMetaOptions,
+    getGrepOptions
+} from '../utils/get-options';
+
 import getFilterFn from '../utils/get-filter-fn';
 import SCREENSHOT_OPTION_NAMES from '../configuration/screenshot-option-names';
 import RUN_OPTION_NAMES from '../configuration/run-option-names';
-import { Dictionary, ReporterOption, RunnerRunOptions } from '../configuration/interfaces';
+import {
+    Dictionary,
+    ReporterOption,
+    RunnerRunOptions
+} from '../configuration/interfaces';
 
 
 const REMOTE_ALIAS_RE = /^remote(?::(\d*))?$/;

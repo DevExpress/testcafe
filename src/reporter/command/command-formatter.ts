@@ -1,8 +1,18 @@
 import { isEmpty } from 'lodash';
 import { ExecuteSelectorCommand, ExecuteClientFunctionCommand } from '../../test-run/commands/observation';
-import { NavigateToCommand, SetNativeDialogHandlerCommand, UseRoleCommand } from '../../test-run/commands/actions';
+import {
+    NavigateToCommand,
+    SetNativeDialogHandlerCommand,
+    UseRoleCommand
+} from '../../test-run/commands/actions';
+
 import { createReplicator, SelectorNodeTransform } from '../../client-functions/replicator';
-import { Command, FormattedCommand, SelectorInfo } from './interfaces';
+import {
+    Command,
+    FormattedCommand,
+    SelectorInfo
+} from './interfaces';
+
 import { Dictionary } from '../../configuration/interfaces';
 import diff from '../../utils/diff';
 

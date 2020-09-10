@@ -1,4 +1,9 @@
-import { Promise, eventSandbox, nativeMethods } from '../deps/hammerhead';
+import {
+    Promise,
+    eventSandbox,
+    nativeMethods
+} from '../deps/hammerhead';
+
 import { delay } from '../deps/testcafe-core';
 import { TYPE as MESSAGE_TYPE } from './messages';
 

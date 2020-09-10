@@ -21,7 +21,12 @@ import {
 } from './default-values';
 
 import OptionSource from './option-source';
-import { Dictionary, FilterOption, ReporterOption, StaticContentCachingOptions } from './interfaces';
+import {
+    Dictionary,
+    FilterOption,
+    ReporterOption,
+    StaticContentCachingOptions
+} from './interfaces';
 
 const CONFIGURATION_FILENAME = '.testcaferc.json';
 
