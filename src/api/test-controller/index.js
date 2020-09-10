@@ -60,7 +60,10 @@ import assertRequestHookType from '../request-hooks/assert-type';
 import { createExecutionContext as createContext } from './execution-context';
 import { isClientFunction, isSelector } from '../../client-functions/types';
 
-import { MultipleWindowsModeIsDisabledError, MultipleWindowsModeIsNotAvailableInRemoteBrowserError } from '../../errors/test-run';
+import {
+    MultipleWindowsModeIsDisabledError,
+    MultipleWindowsModeIsNotAvailableInRemoteBrowserError
+} from '../../errors/test-run';
 
 const originalThen = Promise.resolve().then;
 
