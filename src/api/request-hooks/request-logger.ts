@@ -2,19 +2,23 @@ import {
     ConfigureResponseEventOptions,
     RequestEvent,
     ResponseEvent
-} from 'testcafe-hammerhead';
+
+import RequestHook from './hook';
 import RequestHook from './hook';
 import parseUserAgent from '../../utils/parse-user-agent';
 import testRunTracker from '../test-run-tracker';
 import ReExecutablePromise from '../../utils/re-executable-promise';
 import { APIError } from '../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../errors/types';
+
 import {
     RequestFilterRuleInit,
     RequestHookLogOptionsInit,
     RequestHookLogOptions
 } from './interfaces';
+
 import { Dictionary } from '../../configuration/interfaces';
+
 
 const DEFAULT_OPTIONS: RequestHookLogOptions = {
     logRequestHeaders:     false,
@@ -165,4 +169,3 @@ class RequestLoggerImplementation extends RequestHook {
 export default function createRequestLogger (requestFilterRuleInit: RequestFilterRuleInit | RequestFilterRuleInit[] | undefined, logOptions: RequestHookLogOptionsInit): RequestLoggerImplementation {
     return new RequestLoggerImplementation(requestFilterRuleInit, logOptions);
 }
-

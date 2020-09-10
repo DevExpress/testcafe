@@ -1,4 +1,5 @@
 import RequestHook from './hook';
+
 import {
     ResponseMock,
     RequestEvent,
@@ -6,11 +7,13 @@ import {
     RequestFilterRule,
     SAME_ORIGIN_CHECK_FAILED_STATUS_CODE
 } from 'testcafe-hammerhead';
+
 import { APIError } from '../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../errors/types';
 import WARNING_MESSAGE from '../../notifications/warning-message';
 import WarningLog from '../../notifications/warning-log';
 import { RequestFilterRuleInit } from './interfaces';
+
 
 class RequestMock extends RequestHook {
     private _pendingRequestFilterRuleInit: null | RequestFilterRuleInit;
