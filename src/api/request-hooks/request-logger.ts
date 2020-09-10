@@ -2,6 +2,7 @@ import {
     ConfigureResponseEventOptions,
     RequestEvent,
     ResponseEvent
+} from 'testcafe-hammerhead';
 
 import RequestHook from './hook';
 import RequestHook from './hook';
