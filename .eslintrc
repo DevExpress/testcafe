@@ -67,6 +67,7 @@
     "no-underscore-dangle": 0,
     "no-unneeded-ternary": 2,
     "object-curly-spacing": [2, "always"],
+    "object-curly-newline": [2, { "ImportDeclaration":  { "minProperties": 3, "consistent": true } }],
     "operator-assignment": [2, "always"],
     "quotes": [2, "single", { "avoidEscape": true, "allowTemplateLiterals": true }],
     "keyword-spacing": 2,

@@ -1,5 +1,12 @@
 import { readSync as read } from 'read-file-relative';
-import { respond404, respond500, respondWithJSON, redirect, preventCaching } from '../../utils/http';
+import {
+    respond404,
+    respond500,
+    respondWithJSON,
+    redirect,
+    preventCaching
+} from '../../utils/http';
+
 import RemotesQueue from './remotes-queue';
 import { Proxy } from 'testcafe-hammerhead';
 import { Dictionary } from '../../configuration/interfaces';

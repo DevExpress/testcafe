@@ -1,5 +1,10 @@
 import { spawn, ChildProcess } from 'child_process';
-import { HOST_INPUT_FD, HOST_OUTPUT_FD, HOST_SYNC_FD } from './io';
+import {
+    HOST_INPUT_FD,
+    HOST_OUTPUT_FD,
+    HOST_SYNC_FD
+} from './io';
+
 import { restore as restoreTestStructure } from './test-structure';
 import { default as testRunTracker, TestRun } from '../../api/test-run-tracker';
 import { IPCProxy } from '../utils/ipc/proxy';
@@ -7,7 +12,13 @@ import { HostTransport } from '../utils/ipc/transport';
 import EventEmitter from '../../utils/async-event-emitter';
 import TestCafeErrorList from '../../errors/error-list';
 
-import { CompilerProtocol, RunTestArguments, ExecuteCommandArguments, FunctionProperties } from './protocol';
+import {
+    CompilerProtocol,
+    RunTestArguments,
+    ExecuteCommandArguments,
+    FunctionProperties
+} from './protocol';
+
 import { CompilerArguments } from '../../compiler/interfaces';
 import Test from '../../api/structure/test';
 

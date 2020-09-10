@@ -1,4 +1,9 @@
-import { ClientFunction, Role, Selector, t } from 'testcafe';
+import {
+    ClientFunction,
+    Role,
+    Selector,
+    t
+} from 'testcafe';
 
 const getPageLocation = ClientFunction(() => window.location.toString());
 

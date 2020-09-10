@@ -1,9 +1,6 @@
 import { TEST_RUN_ERRORS } from '../types';
 import * as diff from '../../utils/diff/';
-import {
-    TestRunErrorBase
-} from '../../shared/errors';
-
+import { TestRunErrorBase } from '../../shared/errors';
 export * from '../../shared/errors';
 
 // Base

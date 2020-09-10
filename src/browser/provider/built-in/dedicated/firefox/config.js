@@ -1,4 +1,11 @@
-import { findMatch, isMatchTrue, splitEscaped, parseConfig, getModes, getPathFromParsedModes } from '../../../utils/argument-parsing';
+import {
+    findMatch,
+    isMatchTrue,
+    splitEscaped,
+    parseConfig,
+    getModes,
+    getPathFromParsedModes
+} from '../../../utils/argument-parsing';
 
 
 const AVAILABLE_MODES = ['userProfile', 'headless'];

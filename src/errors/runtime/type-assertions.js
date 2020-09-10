@@ -1,4 +1,9 @@
-import { isFinite as isFiniteNumber, isRegExp, isNil as isNullOrUndefined } from 'lodash';
+import {
+    isFinite as isFiniteNumber,
+    isRegExp,
+    isNil as isNullOrUndefined
+} from 'lodash';
+
 import { APIError, GeneralError } from './';
 import { RUNTIME_ERRORS } from '../types';
 import RequestHook from '../../api/request-hooks/hook';

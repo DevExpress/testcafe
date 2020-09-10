@@ -1,7 +1,13 @@
 import { isAbsolute } from 'path';
 import debug from 'debug';
 import JSON5 from 'json5';
-import { castArray, cloneDeep, isPlainObject, mergeWith } from 'lodash';
+import {
+    castArray,
+    cloneDeep,
+    isPlainObject,
+    mergeWith
+} from 'lodash';
+
 import { stat, readFile } from '../utils/promisified-functions';
 import Option from './option';
 import OptionSource from './option-source';

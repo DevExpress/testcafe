@@ -1,5 +1,10 @@
 import Configuration from './configuration-base';
-import { DEFAULT_TYPESCRIPT_COMPILER_OPTIONS, TYPESCRIPT_COMPILER_NON_OVERRIDABLE_OPTIONS, TYPESCRIPT_BLACKLISTED_OPTIONS } from './default-values';
+import {
+    DEFAULT_TYPESCRIPT_COMPILER_OPTIONS,
+    TYPESCRIPT_COMPILER_NON_OVERRIDABLE_OPTIONS,
+    TYPESCRIPT_BLACKLISTED_OPTIONS
+} from './default-values';
+
 import { intersection, omit } from 'lodash';
 import WARNING_MESSAGES from '../notifications/warning-message';
 import renderTemplate from '../utils/render-template';

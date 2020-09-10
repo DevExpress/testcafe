@@ -1,7 +1,17 @@
 import { PNG } from 'pngjs';
-import { map, flatten, times, constant } from 'lodash';
+import {
+    map,
+    flatten,
+    times,
+    constant
+} from 'lodash';
+
 import generateId from 'nanoid/generate';
-import { MARK_LENGTH, MARK_HEIGHT, MARK_BYTES_PER_PIXEL } from './constants';
+import {
+    MARK_LENGTH,
+    MARK_HEIGHT,
+    MARK_BYTES_PER_PIXEL
+} from './constants';
 
 const ALPHABET = '01';
 
