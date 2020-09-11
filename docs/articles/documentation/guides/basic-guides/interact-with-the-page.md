@@ -193,20 +193,20 @@ test('Drag test', async t => {
 
 ## Upload Files
 
-TestCafe can't test native browser dialogs, including those during files selection. This section describes how to prevent these dialogs and select files for upload.
-
-Use the [t.setFilesToUpload](../../reference/test-api/testcontroller/setfilestoupload.md) action to populate the input with files you want to upload. If your application sends files as soon as you populate the field, the upload occurs when you call the action. Otherwise, [click](../../reference/test-api/testcontroller/click.md) the button responsible for file submit (for example, **Upload** or **Submit**).
-
-> The t.setFilesToUpload action only works with `<input type="file">` elements. To upload files with TestCafe, the webpage has to use such an element for file upload.
->
-> During tests, do not click the button that prompts the user to select files- this causes the test to fail.
-
-Use the [t.clearUpload](../../reference/test-api/testcontroller/clearupload.md) action to clear the field if necessary.
-
 Actions that allow you to interact with file upload input elements:
 
 * [t.setFilesToUpload](../../reference/test-api/testcontroller/setfilestoupload.md)
 * [t.clearUpload](../../reference/test-api/testcontroller/clearupload.md)
+
+You should avoid native browser dialogs because TestCafe can't close or otherwise interact with them. This section describes how to prevent file selection dialogs and select files for upload.
+
+Use the [t.setFilesToUpload](../../reference/test-api/testcontroller/setfilestoupload.md) action to populate the input with the files you want to upload. If your application sends files as soon as you populate the field, the upload occurs when you call the action. Otherwise, [click](../../reference/test-api/testcontroller/click.md) the button responsible for file submit.
+
+> The t.setFilesToUpload action only works with `<input type="file">` elements. To upload files with TestCafe, the webpage has to have such an element.
+>
+> See the [Test File Upload](../../recipes/basics/test-file-upload.md) recipe for more details.
+
+Use the [t.clearUpload](../../reference/test-api/testcontroller/clearupload.md) action to clear the field if necessary.
 
 **Example**
 
