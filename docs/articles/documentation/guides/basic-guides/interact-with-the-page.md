@@ -198,7 +198,7 @@ Actions that allow you to interact with file upload input elements:
 * [t.setFilesToUpload](../../reference/test-api/testcontroller/setfilestoupload.md)
 * [t.clearUpload](../../reference/test-api/testcontroller/clearupload.md)
 
-You should avoid native browser dialogs because TestCafe can't close or otherwise interact with them. This section describes how to prevent file selection dialogs and select files for upload.
+You should avoid native browser dialogs during tests because TestCafe can't close or otherwise interact with them. This section describes how to prevent file selection dialogs and select files for upload.
 
 Use the [t.setFilesToUpload](../../reference/test-api/testcontroller/setfilestoupload.md) action to populate the input with the files you want to upload. If your application sends files as soon as you populate the field, the upload occurs when you call the action. Otherwise, [click](../../reference/test-api/testcontroller/click.md) the button responsible for file submit.
 

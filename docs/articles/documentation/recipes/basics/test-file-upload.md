@@ -5,7 +5,7 @@ permalink: /documentation/recipes/basics/test-file-upload.html
 ---
 # Test File Upload
 
-This recipe shows how to test file upload functionality in your application with TestCafe.
+This recipe shows how to test your application's file upload functionality with TestCafe.
 
 [Full Example Code](https://github.com/DevExpress/testcafe-examples/tree/master/examples/upload-files)
 
@@ -110,6 +110,6 @@ await t
         .click(submitBtn);
 ```
 
-With that, the selected files are submitted to the server. Note that you don't actually click the `<input>` element itself to select files with TestCafe. Such a click would call a native file selection dialog, which TestCafe can't close or otherwise interact with.
+This submits the selected files to the server. Note that with TestCafe you don't need to click the `<input>` element itself and select the files. Such a click would call a native file selection dialog, which TestCafe can't close or otherwise interact with.
 
-If you don't actually need to upload files during test execution, use the [clearUpload](../../reference/test-api/testcontroller/clearupload.md) action to empty the `<input>`.
+You can use the [clearUpload](../../reference/test-api/testcontroller/clearupload.md) action to empty the `<input>`.
