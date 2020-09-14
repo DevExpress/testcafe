@@ -1,3 +1,4 @@
+import { inspect } from 'util';
 import { assign, pull as remove } from 'lodash';
 import clientFunctionBuilderSymbol from '../builder-symbol';
 import { SNAPSHOT_PROPERTIES } from './snapshot-properties';
@@ -10,7 +11,8 @@ import selectorTextFilter from './selector-text-filter';
 import selectorAttributeFilter from './selector-attribute-filter';
 import prepareApiFnArgs from './prepare-api-args';
 
-const VISIBLE_PROP_NAME = 'visible';
+const VISIBLE_PROP_NAME       = 'visible';
+const SNAPSHOT_PROP_PRIMITIVE = `[object ${ReExecutablePromise.name}]`;
 
 const filterNodes = (new ClientFunctionBuilder((nodes, filter, querySelectorRoot, originNode, ...filterArgs) => {
     if (typeof filter === 'number') {
@@ -107,20 +109,31 @@ function getDerivativeSelectorArgs (options, selectorFn, apiFn, filter, addition
     return Object.assign({}, options, { selectorFn, apiFn, filter, additionalDependencies });
 }
 
+function createPrimitiveGetterWrapper (observedCallsites, callsite) {
+    return () => {
+        if (observedCallsites)
+            observedCallsites.unawaitedSnapshotCallsites.add(callsite);
+
+        return SNAPSHOT_PROP_PRIMITIVE;
+    };
+}
+
 function addSnapshotProperties (obj, getSelector, SelectorBuilder, properties, observedCallsites) {
     properties.forEach(prop => {
         Object.defineProperty(obj, prop, {
             get: () => {
                 const callsite = getCallsiteForMethod('get');
 
-                if (observedCallsites)
-                    observedCallsites.unawaitedSnapshotCallsites.add(callsite);
-
                 const propertyPromise = ReExecutablePromise.fromFn(async () => {
                     const snapshot = await getSnapshot(getSelector, callsite, SelectorBuilder);
 
                     return snapshot[prop];
                 });
+
+                const primitiveGetterWrapper = createPrimitiveGetterWrapper(observedCallsites, callsite);
+
+                propertyPromise[Symbol.toPrimitive] = primitiveGetterWrapper;
+                propertyPromise[inspect.custom]     = primitiveGetterWrapper;
 
                 propertyPromise.then = function (onFulfilled, onRejected) {
                     if (observedCallsites) {
