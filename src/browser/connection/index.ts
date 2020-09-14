@@ -12,6 +12,7 @@ import { GeneralError } from '../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../errors/types';
 import { BROWSER_RESTART_TIMEOUT, HEARTBEAT_TIMEOUT } from '../../utils/browser-connection-timeouts';
 import { Dictionary } from '../../configuration/interfaces';
+import BROWSER_JOB_RESULT from '../../runner/browser-job-result';
 import BrowserConnectionGateway from './gateway';
 import BrowserJob from '../../runner/browser-job';
 import WarningLog from '../../notifications/warning-log';
@@ -234,7 +235,8 @@ export default class BrowserConnection extends EventEmitter {
         let isTimeoutExpired                = false;
         let timeout: NodeJS.Timeout | null  = null;
 
-        const restartPromise = this._closeBrowser()
+        const restartPromise = this.reportJobResult(BROWSER_JOB_RESULT.restarted, {})
+            .then(() => this._closeBrowser())
             .then(() => this._runBrowser());
 
         const timeoutPromise = new Promise(resolve => {
