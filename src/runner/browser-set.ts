@@ -20,10 +20,11 @@ const RELEASE_TIMEOUT               = 10000;
 
 export default class BrowserSet extends EventEmitter {
     private readonly _browserConnections: BrowserConnection[];
-    private readonly _browserErrorHandler: (error: Error) => void;
+    private readonly _browserErrorHandler: (error: Error, conection: BrowserConnection) => void;
     private readonly _pendingReleases: Promise<void>[];
     private _connectionsReadyTimeout: null | NodeJS.Timeout;
     public browserConnectionGroups: BrowserConnection[][];
+    private erroredConnections: Set<string>;
 
     public constructor (browserConnectionGroups: BrowserConnection[][]) {
         super();
@@ -32,10 +33,23 @@ export default class BrowserSet extends EventEmitter {
         this.browserConnectionGroups  = browserConnectionGroups;
         this._browserConnections      = flatten(browserConnectionGroups);
         this._connectionsReadyTimeout = null;
+        this.erroredConnections = new Set();
 
-        this._browserErrorHandler = (error: Error) => this.emit('error', error);
+        this._browserErrorHandler = (error: Error, connection: BrowserConnection) => {
+            if (this.erroredConnections.has(connection.id))
+                return;
 
-        this._browserConnections.forEach(bc => bc.on('error', this._browserErrorHandler));
+            this.erroredConnections.add(connection.id);
+
+            // If all the connection errored out, then close the process and execute
+            // the cleanup flow.
+            if (this.erroredConnections.size === this._browserConnections.length)
+                this.emit('error', error);
+        };
+
+        this._browserConnections.forEach(bc => bc.on('error', err => {
+            this._browserErrorHandler(err, bc);
+        }));
 
         // NOTE: We're setting an empty error handler, because Node kills the process on an 'error' event
         // if there is no handler. See: https://nodejs.org/api/events.html#events_class_events_eventemitter
