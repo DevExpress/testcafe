@@ -17,7 +17,6 @@ const SCROLL_MARGIN_INCREASE_STEP = 20;
 const SCROLL_REQUEST_CMD  = 'automation|scroll|request';
 const SCROLL_RESPONSE_CMD = 'automation|scroll|response';
 
-
 // Setup cross-iframe interaction
 messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
     if (e.message.cmd === SCROLL_REQUEST_CMD) {
