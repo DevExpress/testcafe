@@ -14,18 +14,17 @@ chai.use(require('chai-string'));
 if (config.useLocalBrowsers) {
     describe('Browser Provider - Chrome Emulation Mode', () => {
         describe('Should emulate touch event handlers', () => {
-            const checkTouchEmulation = browserAlias => {
-                return testCafe
+            async function checkTouchEmulation (browserAlias) {
+                const failedCount = await testCafe
                     .createRunner()
                     .src(path.join(__dirname, './testcafe-fixtures/index-test.js'))
                     .filter(fixtureName => fixtureName === 'Check presence of touch event handlers')
                     .reporter('minimal', createNullStream())
                     .browsers(browserAlias)
-                    .run()
-                    .then(failedCount => {
-                        expect(failedCount).eql(0);
-                    });
-            };
+                    .run();
+
+                expect(failedCount).eql(0);
+            }
 
             it('headless', () => {
                 return checkTouchEmulation('chrome:headless:emulation:device=iphone 6 --no-sandbox');
@@ -59,4 +58,3 @@ if (config.useLocalBrowsers) {
         });
     });
 }
-
