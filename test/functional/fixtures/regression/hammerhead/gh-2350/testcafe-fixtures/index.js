@@ -10,6 +10,10 @@ const INITIAL_VALUE_EXPECTED_LOG = [
     'body: Test page title'
 ];
 
+const INITIAL_VALUE_SCRIPT_ONLY_IN_BODY_EXPECTED_LOG = [
+    'body: Test page title'
+];
+
 const EMPTY_VALUE_EXPECTED_LOG = [
     'head: ',
     'body: '
@@ -32,6 +36,12 @@ test
     .page('http://localhost:3000/fixtures/regression/hammerhead/gh-2350/pages/initial-value.html')
     ('initial value', async t => {
         await t.expect(getLog()).eql(INITIAL_VALUE_EXPECTED_LOG);
+    });
+
+test
+    .page('http://localhost:3000/fixtures/regression/hammerhead/gh-2350/pages/inital-value-script-only-in-body.html')
+    ('initial value (script tag only in body)', async t => {
+        await t.expect(getLog()).eql(INITIAL_VALUE_SCRIPT_ONLY_IN_BODY_EXPECTED_LOG);
     });
 
 test
