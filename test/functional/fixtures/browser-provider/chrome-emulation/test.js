@@ -12,7 +12,7 @@ const isLinuxWithoutGUI = os.linux && !detectDisplay();
 chai.use(require('chai-string'));
 
 if (config.useLocalBrowsers) {
-    describe.only('Browser Provider - Chrome Emulation Mode', () => {
+    describe('Browser Provider - Chrome Emulation Mode', () => {
         describe('Should emulate touch event handlers', () => {
             const checkTouchEmulation = browserAlias => {
                 return testCafe
@@ -25,7 +25,7 @@ if (config.useLocalBrowsers) {
                     .then(failedCount => {
                         expect(failedCount).eql(0);
                     });
-            }
+            };
 
             it('headless', () => {
                 return checkTouchEmulation('chrome:headless:emulation:device=iphone 6 --no-sandbox');
