@@ -20,15 +20,15 @@ Assume the following HTML:
 </body>
 ```
 
-This application utilizes the [JavaScript File API](https://developer.mozilla.org/en-US/docs/Web/API/File/Using_files_from_web_applications) for file upload. Users would usually perform the following actions to upload files:
+TestCafe's file upload emulation is differrent from what the real user would do to upload files.
+
+To manually upload files with this application, the user needs to perform the following steps:
 
 * Click the 'Choose File' button that opens the 'Choose file' dialog in the browser
 * Select the files
 * Begin the upload
 
-Since TestCafe cannot interact with the native dialog, it uses a custom way to manipulate a list of files to upload.
-
-To upload files, TestCafe requires an `<input>` element with the `type="file"` attribute.
+Since TestCafe cannot interact with the native dialog, it instead directly manipulates the `<input type=file>` elements' state with the `.setFilesToUpload` action.
 
 The sample page includes a `<form>` that contains:
 

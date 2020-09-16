@@ -205,7 +205,6 @@ Use the [t.clearUpload](../../reference/test-api/testcontroller/clearupload.md) 
 See the [Test File Upload](../../recipes/basics/test-file-upload.md) recipe for more details.
 
 > The t.setFilesToUpload action only works with `<input type="file">` HTML elements because browser uses these elements for file upload.
-> The t.setFilesToUpload action only works with `<input type="file">` HTML elements because browser primarily uses these elements for file upload.
 
 **Example**
 
