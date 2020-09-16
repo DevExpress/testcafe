@@ -1,6 +1,5 @@
 import cdp from 'chrome-remote-interface';
 
-
 fixture `Test`
     .page `../pages/debug-synchronization/parent.html`;
 
