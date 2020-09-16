@@ -9,22 +9,22 @@ declare module 'chrome-remote-interface' {
         }
 
         export interface GenericConnectionOptions {
-            port: number
+            port: number;
         }
 
         export interface ConstructorOptions extends GenericConnectionOptions {
-            target: TargetInfo
+            target: TargetInfo;
         }
 
         export interface CloseTabOptions extends GenericConnectionOptions {
-            id: TargetInfo['id']
+            id: TargetInfo['id'];
         }
     }
 
     interface ChromeRemoteInterface {
         (options: chromeRemoteInterface.ConstructorOptions): Promise<chromeRemoteInterface.ProtocolApi>;
         listTabs (options: chromeRemoteInterface.GenericConnectionOptions): Promise<chromeRemoteInterface.TargetInfo[]>;
-        closeTab (options: chromeRemoteInterface.CloseTabOptions): Promise<void>
+        closeTab (options: chromeRemoteInterface.CloseTabOptions): Promise<void>;
     }
 
     const chromeRemoteInterface: ChromeRemoteInterface;

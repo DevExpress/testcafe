@@ -3,6 +3,10 @@ describe("Should provide a valid value for the 'document.title' property", () =>
         return runTests('./testcafe-fixtures/index.js', 'initial value');
     });
 
+    it('Initial value (script tag only in body)', () => {
+        return runTests('./testcafe-fixtures/index.js', 'initial value (script tag only in body)');
+    });
+
     it('Empty value', () => {
         return runTests('./testcafe-fixtures/index.js', 'empty value');
     });

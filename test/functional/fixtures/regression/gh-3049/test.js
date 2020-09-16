@@ -20,11 +20,11 @@ if (isLocalChrome) {
                         .src(path.join(__dirname, './testcafe-fixtures/index.js'))
                         .run();
                 })
-                .then(err => {
+                .then(failedCount => {
                     testCafe.close();
 
-                    if (err)
-                        throw new Error('Error occured');
+                    if (failedCount)
+                        throw new Error('Error occurred');
                 });
         });
     });
