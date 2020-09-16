@@ -20,7 +20,7 @@ Assume the following HTML:
 </body>
 ```
 
-TestCafe's file upload emulation is differrent from what the real user would do to upload files.
+TestCafe's file upload emulation is differrent from what a real user would do to upload files.
 
 To manually upload files with this application, the user needs to perform the following steps:
 
@@ -28,14 +28,14 @@ To manually upload files with this application, the user needs to perform the fo
 * Select the files
 * Begin the upload
 
-Since TestCafe cannot interact with the native dialog, it instead directly manipulates the `<input type=file>` elements' state with the `.setFilesToUpload` action.
+Since TestCafe cannot interact with the native dialog, it manipulates the `<input type=file>` elements' state with the `.setFilesToUpload` action.
 
 The sample page includes a `<form>` that contains:
 
-* `<input>` element that holds the selected files
-* the `submit` button that sends the files to the server.
+* an `<input>` element that holds the selected files
+* a `submit` button that sends the files to the server.
 
-Below you can find full test code and a step-by-step explanation.
+Below is the full test code and a step-by-step explanation.
 
 ```js
 import { Selector } from 'testcafe';
@@ -67,7 +67,7 @@ test('Select files to upload', async t => {
 });
 ```
 
-Use the [setFilesToUpload](../../reference/test-api/testcontroller/setfilestoupload.md) Method to populate the `<input>` with files. Then [click](../../reference/test-api/testcontroller/click.md) the `submit` button.
+Use the [setFilesToUpload](../../reference/test-api/testcontroller/setfilestoupload.md) method to populate the `<input>` with files. Then [click](../../reference/test-api/testcontroller/click.md) the `submit` button.
 
 ```js
 await t
@@ -78,6 +78,6 @@ await t
         .click('#upload-btn');
 ```
 
-This sends the selected files to the server. Note that with TestCafe you don't need to click the `<input type="file">` element itself to select the files. Such a click would call a native file selection dialog, which TestCafe can't close or otherwise interact with.
+This sends the selected files to the server. Note that with TestCafe, you don't need to click the `<input type="file">` element itself to select the files. Such a click calls a native file selection dialog, which TestCafe can't interact with or close.
 
 You can use the [clearUpload](../../reference/test-api/testcontroller/clearupload.md) action to empty the `<input>`.
