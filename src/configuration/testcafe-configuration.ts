@@ -70,7 +70,9 @@ export default class TestCafeConfiguration extends Configuration {
         super(CONFIGURATION_FILENAME);
     }
 
-    public async init (options = {}): Promise<void> {
+    public async init (options?: object): Promise<void> {
+        options = options || {};
+
         await super.init();
 
         const opts = await this._load();
