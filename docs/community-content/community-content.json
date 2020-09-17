@@ -422,17 +422,6 @@
         "type": "article",
         "source": "Jan Hesters' Blog",
         "sourceHomePage": "https://janhesters.com",
-        "date": "2019-08-27",
-        "title": "End-To-End Testing Amplify Apps",
-        "url": "https://janhesters.com/e2e-testing-amplify-apps/",
-        "author": "Jan Hesters",
-        "profileUrl": "https://twitter.com/janhesters",
-        "excerpt": "How do you write E2E tests for Amplify apps? In this tutorial, you will see an example using TestCafe. It is easier than you might think."
-    },
-    {
-        "type": "article",
-        "source": "Jan Hesters' Blog",
-        "sourceHomePage": "https://janhesters.com",
         "date": "2019-08-20",
         "title": "Setting Up a Project With CI/CD Using Amplify",
         "url": "https://janhesters.com/setting-up-a-project-with-ci-cd-using-amplify/",
