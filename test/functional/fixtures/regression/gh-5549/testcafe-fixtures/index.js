@@ -1,3 +1,3 @@
 fixture `Fixture`;
 
-test('test', async t => {});
+test('test', async () => {});
