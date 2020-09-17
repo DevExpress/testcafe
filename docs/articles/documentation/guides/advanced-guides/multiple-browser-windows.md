@@ -13,7 +13,7 @@ The TestCafe API includes methods that open, close, and switch between browser w
 
 * the [--disable-multiple-windows](../../reference/command-line-interface.md#--disable-multiple-windows) command line flag,
 * the `disableMultipleWindows` option in the [runner.run](../../reference/testcafe-api/runner/run.md) method,
-* the [disableMultipleWindows](../../reference/configuration-file.md#disablemultiplewindows) configuration file property
+* the [disableMultipleWindows](../../reference/configuration-file.md#disablemultiplewindows) configuration file property.
 
 ## Handle client-side window events
 
