@@ -5,7 +5,7 @@ permalink: /documentation/reference/test-api/testcontroller/setfilestoupload.htm
 ---
 # t.setFilesToUpload Method
 
-Populates the specified file upload element with file paths. The element must be an `<input>` with the `type="file"` attribute.
+Selects files to upload. Emulates a user's selection in the browser's 'Choose File' dialog. Target element must be an `<input>` with the `type="file"` attribute.
 
 ```text
 t.setFilesToUpload( selector, filePath )
