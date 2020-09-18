@@ -35,7 +35,7 @@ The sample page includes a `<form>` that contains:
 * an `<input>` element that holds the selected files
 * a `submit` button that initiates the file upload to the server.
 
-Below is the full test code and a step-by-step explanation.
+Below is the full test code and a step-by-step explanation of the file upload process in TestCafe.
 
 ```js
 import { Selector } from 'testcafe';
