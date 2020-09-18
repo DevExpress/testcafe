@@ -12,7 +12,7 @@ The TestCafe API includes methods that open, close, and switch between browser w
 ️🛠️ You can disable support for multiple browser windows if you encounter compatibility issues with your tests. Use either of the following settings:
 
 * the [--disable-multiple-windows](../../reference/command-line-interface.md#--disable-multiple-windows) command line flag,
-* the `disableMultipleWindows` option in the [runner.run](../../reference/testcafe-api/runner/run.md) method,
+* the `disableMultipleWindows` [runner.run](../../reference/testcafe-api/runner/run.md) option,
 * the [disableMultipleWindows](../../reference/configuration-file.md#disablemultiplewindows) configuration file property.
 
 ## Handle client-side window events
