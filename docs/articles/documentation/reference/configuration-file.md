@@ -1043,7 +1043,7 @@ Disables support for [multi-window testing](../guides/advanced-guides/multiple-b
 }
 ```
 
-The `disableMultipleWindows` option disables support for multi-window testing in Chrome and Firefox. Use this setting if you encounter compatibility issues with [TestCafe v2015.1](http://testcafe.devexpress.com/documentation) tests.
+The `disableMultipleWindows` option disables support for multi-window testing in Chrome and Firefox. Use this setting if you encounter compatibility issues with your existing tests.
 
 *CLI*: [--disable-multiple-windows](command-line-interface.md#--disable-multiple-windows)  
 *API*: [runner.run({ disableMultipleWindows })](testcafe-api/runner/run.md)
