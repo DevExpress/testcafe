@@ -9,7 +9,7 @@ The TestCafe API includes methods that open, close, and switch between browser w
 
 ⚠ This is a **beta** feature. Browser support is limited to local instances of Chrome and Firefox. You cannot resize child windows. You cannot take screenshots or videos of child windows. The available functionality is subject to further revisions. Please do not use this feature in production environments.
 
-️🛠️ You can disable support for multiple browser windows if you encounter compatibility issues with your tests. Use either of the following settings:
+️🛠️ You can disable support for multiple browser windows if you encounter compatibility issues with your tests. Use one of the following settings:
 
 * the [--disable-multiple-windows](../../reference/command-line-interface.md#--disable-multiple-windows) command line flag,
 * the `disableMultipleWindows` [runner.run](../../reference/testcafe-api/runner/run.md) option,
