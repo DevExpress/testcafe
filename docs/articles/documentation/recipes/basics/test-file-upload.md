@@ -33,7 +33,7 @@ Since TestCafe cannot interact with the native dialog, it manipulates the `<inpu
 The sample page includes a `<form>` that contains:
 
 * an `<input>` element that holds the selected files
-* a `submit` button that sends the files to the server.
+* a `submit` button that initiates the file upload to the server.
 
 Below is the full test code and a step-by-step explanation.
 
@@ -43,7 +43,7 @@ import { Selector } from 'testcafe';
 fixture `My fixture`
     .page `./index.html`
 
-test('Select files to upload', async t => {
+test('Check uploaded files', async t => {
 
     await t
         .setFilesToUpload('#upload-input', [
@@ -62,7 +62,7 @@ import { Selector } from 'testcafe';
 fixture `My fixture`
     .page `./index.html`
 
-test('Select files to upload', async t => {
+test('Check uploaded files', async t => {
     // Here you will put test code.
 });
 ```
@@ -78,6 +78,6 @@ await t
         .click('#upload-btn');
 ```
 
-This sends the selected files to the server. Note that with TestCafe, you don't need to click the `<input type="file">` element itself to select the files. Such a click calls a native file selection dialog, which TestCafe can't interact with or close.
+This sends the selected files to the server. Note that with TestCafe, you don't need to click the `<input type="file">` element itself to select the files.
 
 You can use the [clearUpload](../../reference/test-api/testcontroller/clearupload.md) action to empty the `<input>`.
