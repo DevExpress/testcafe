@@ -67,7 +67,7 @@ test('Check uploaded files', async t => {
 });
 ```
 
-Use the [setFilesToUpload](../../reference/test-api/testcontroller/setfilestoupload.md) method to populate the `<input>` with files. Then [click](../../reference/test-api/testcontroller/click.md) the `submit` button.
+Use the [setFilesToUpload](../../reference/test-api/testcontroller/setfilestoupload.md) method to populate the `<input>` with files. Then, [click](../../reference/test-api/testcontroller/click.md) the `submit` button.
 
 ```js
 await t
