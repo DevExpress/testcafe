@@ -762,6 +762,28 @@ function addHierarchicalSelectors (options) {
 
         return createDerivativeSelectorWithFilter(args);
     };
+
+    // ShadowRoot
+    obj.shadowRoot = (filter, dependencies) => {
+        if (filter !== void 0)
+            assertType([is.string, is.function, is.number], 'shadowRoot', '"filter" argument', filter);
+
+        const apiFn = prepareApiFnArgs('shadowRoot', filter);
+
+        filter = convertFilterToClientFunctionIfNecessary('find', filter, dependencies);
+
+        const selectorFn = () => {
+            /* eslint-disable no-undef */
+            return expandSelectorResults(selector, node => {
+                return (node.shadowRoot === undefined) ? node.shadowRoot : null;
+            });
+            /* eslint-enable no-undef */
+        };
+
+        const args = getDerivativeSelectorArgs(options, selectorFn, apiFn, filter, { expandSelectorResults });
+
+        return createDerivativeSelectorWithFilter(args);
+    };
 }
 
 export function addAPI (selector, getSelector, SelectorBuilder, customDOMProperties, customMethods, observedCallsites) {
