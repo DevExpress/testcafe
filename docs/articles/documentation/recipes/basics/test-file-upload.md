@@ -22,7 +22,7 @@ Assume the following HTML:
 
 TestCafe's file upload emulation is differrent from what a real user would do to upload files.
 
-To manually upload files with this application, the user needs to perform the following steps:
+To manually upload files on this page, the user needs to perform the following steps:
 
 * Click the 'Choose File' button that opens the 'Choose file' dialog in the browser
 * Select the files
