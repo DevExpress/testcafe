@@ -16,6 +16,37 @@
         input2.value = 'input2';
 
         document.body.appendChild(input2);
+        // HTML structure to test ShadowDOM
+        // <div id='hasShadowDOM'>
+        //     #shadowRoot
+        //         <p>Text should be found!</p>
+        //         <div>
+        //             #shadowRoot
+        //                 <p>Nested text should be found!</p>
+        //         </div>
+        // </div>
+        // Below should generate the above HTML structure
+        const div = document.createElement('div');
+        div.id = 'hasShadowDOM';
+        const shadowP = document.createElement('p');
+        const text = document.createTextNode("Text should be found!");
+        shadowP.appendChild(text);
+
+        const shadowDiv = document.createElement('div');
+        const p = document.createElement('p');
+        const text2 = document.createTextNode("Nested text should be found!");
+        p.appendChild(text2);
+
+
+        let shadow = div.attachShadow({mode: 'open'});
+        let nestedShadow = shadowDiv.attachShadow({mode: 'open'});
+
+        nestedShadow.appendChild(p);
+        shadow.appendChild(shadowP);
+        shadow.appendChild(shadowDiv);
+        // attach the div with its elements in its shadowRoot
+        document.body.appendChild(div);
+
     }, 1500);
 </script>
 </body>

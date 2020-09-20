@@ -180,6 +180,59 @@
               }
             }
           ]
+        },
+        {
+          "name": "shadowRoot selector API tests",
+          "commands": [
+            {
+              "type": "click",
+              "note": "client function as argument",
+              "selector": {
+                "type": "js-expr",
+                "value": "Selector(() => document.getElementById('hasShadowDOM'))"
+              },
+              "options": {
+                "offsetX": 10,
+                "offsetY": 10
+              }
+            },
+            {
+              "type": "click",
+              "note": ".shadowRoot()",
+              "selector": {
+                "type": "js-expr",
+                "value": "const el = Selector('#hasShadowDOM', { timeout: 5000 }); Selector(el).shadowRoot();)"
+              },
+              "options": {
+                "offsetX": 10,
+                "offsetY": 10
+              }
+            },
+            {
+              "type": "click",
+              "note": ".child(), .withText(text)",
+              "selector": {
+                "type": "js-expr",
+                "value": "const el = Selector('#hasShadowDOM', { timeout: 5000 }); Selector(el).shadowRoot().child('p').withText('Text should be found!');)"
+              },
+              "options": {
+                "offsetX": 10,
+                "offsetY": 10
+              }
+            },
+            {
+              "type": "click",
+              "note": "Nested shadowRoot, .find(), .withText()",
+              "selector": {
+                "type": "js-expr",
+                "value": "const el = Selector('#hasShadowDOM', { timeout: 5000 }); Selector(el).shadowRoot().find('div').shadowRoot().child('p').withText('Nested text should be found!');)"
+              },
+              "options": {
+                "offsetX": 10,
+                "offsetY": 10
+              }
+            }
+          ]
         }
       ]
     }
