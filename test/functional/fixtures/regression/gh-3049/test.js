@@ -7,7 +7,6 @@ const isLocalChrome = config.useLocalBrowsers && config.browsers.some(browser =>
 if (isLocalChrome) {
     describe('[Regression](GH-3049) - Should increase small browser window', function () {
         it('Run browser with minimal window size', function () {
-
             return createTestCafe('127.0.0.1', 1335, 1336)
                 .then(tc => {
                     testCafe = tc;
