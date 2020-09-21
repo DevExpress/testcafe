@@ -8,7 +8,7 @@ function isScreenshotOption (option: string): option is SCREENSHOT_OPTION_NAMES 
 }
 
 export default async function (options: string | Dictionary<string | number | boolean>): Promise<Dictionary<number | string | boolean>> {
-    const parsedOptions = await baseGetOptions(options, {});
+    const parsedOptions = await baseGetOptions(options);
 
     if (typeof options === 'string' && Object.keys(parsedOptions).some(key => !isScreenshotOption(key)))
         return { path: options };

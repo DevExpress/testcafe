@@ -558,6 +558,12 @@ describe('CLI argument parser', function () {
         });
     });
 
+    it('Compiler options', async () => {
+        const parser = await parse("--compiler-options typescript.options.skipLibCheck=true,typescript.options.lib=['ES5', 'WebWorker']");
+
+        expect(parser.opts.compilerOptions).to.be.ok;
+    });
+
     it('Client scripts', () => {
         return parse('--client-scripts asserts/jquery.js,mockDate.js')
             .then(parser => {
@@ -655,7 +661,8 @@ describe('CLI argument parser', function () {
             { long: '--disable-screenshots' },
             { long: '--screenshots-full-page' },
             { long: '--disable-multiple-windows' },
-            { long: '--experimental-compiler-service' }
+            { long: '--experimental-compiler-service' },
+            { long: '--compiler-options' }
         ];
 
         const parser  = new CliArgumentParser('');

@@ -84,7 +84,6 @@ type ResultCollection<T> = { [P in keyof T]: PromiseResult<T[P]> };
 
 export default class Bootstrapper {
     private readonly browserConnectionGateway: BrowserConnectionGateway;
-
     public concurrency: number;
     public sources: TestSource[];
     public browsers: BrowserSource[];
@@ -95,6 +94,7 @@ export default class Bootstrapper {
     public tsConfigPath?: string;
     public clientScripts: ClientScriptInit[];
     public disableMultipleWindows: boolean;
+    public compilerOptions?: CompilerOptions;
 
     private readonly compilerService?: CompilerService;
 
@@ -110,6 +110,7 @@ export default class Bootstrapper {
         this.tsConfigPath             = void 0;
         this.clientScripts            = [];
         this.disableMultipleWindows   = false;
+        this.compilerOptions          = void 0;
 
         this.compilerService = compilerService;
     }
@@ -231,13 +232,13 @@ export default class Bootstrapper {
     }
 
     private async _getTests (): Promise<Test[]> {
-        const cwd                             = process.cwd();
-        const { sourceList, compilerOptions } = await this._getCompilerArguments(cwd);
+        const cwd        = process.cwd();
+        const sourceList = await parseFileList(this.sources, cwd);
 
         if (!sourceList.length)
             throw new GeneralError(RUNTIME_ERRORS.testFilesNotFound, getConcatenatedValuesString(this.sources, '\n', ''), cwd);
 
-        let tests = await this._compileTests({ sourceList, compilerOptions });
+        let tests = await this._compileTests({ sourceList, compilerOptions: this.compilerOptions });
 
         const testsWithOnlyFlag = tests.filter(test => test.only);
 
@@ -254,18 +255,6 @@ export default class Bootstrapper {
             throw new GeneralError(RUNTIME_ERRORS.noTestsToRunDueFiltering);
 
         return tests;
-    }
-
-    private async _getCompilerArguments (cwd: string): Promise<CompilerArguments> {
-        const sourceList = await parseFileList(this.sources, cwd);
-
-        const compilerOptions = {
-            typeScriptOptions: {
-                tsConfigPath: this.tsConfigPath
-            }
-        };
-
-        return { sourceList, compilerOptions };
     }
 
     private async _ensureOutStream (outStream: string | WritableStream): Promise<WritableStream> {

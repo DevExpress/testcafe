@@ -16,7 +16,9 @@ export default {
     debugInHeadlessError:                    'You cannot debug in headless mode.',
     cannotReadConfigFile:                    'An error has occurred while reading the configuration file.',
     cannotParseConfigFile:                   "Failed to parse the '{path}' file.\n\nThis file is not a well-formed JSON file.",
-    configOptionsWereOverriden:              'The {optionsString} option{suffix} from the configuration file will be ignored.',
+    configOptionsWereOverridden:             'The {optionsString} option{suffix} from the configuration file will be ignored.',
+    deprecatedOptionsReplacement:            "The '{deprecatedOption}' option is deprecated. Use the '{replacement}' option instead.\n",
+    deprecatedOptionsAreUsed:                '{deprecatedOptionReplacements}\nThe deprecated options will be removed in the next major release.',
     cannotOverrideTypeScriptConfigOptions:   'You cannot override the "{optionName}" compiler option in the TypeScript configuration file.',
 
     cannotFindWindowDescriptorError: 'Could not find the "{browserAlias}" window. ' +

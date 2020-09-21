@@ -15,13 +15,26 @@ function convertOptionValueType (value: any): any { /* eslint-disable-line @type
 }
 
 function parseOptionsString (optionsStr: string, optionsSeparator: string, keyValueSeparator: string): OptionKeyValue[] {
+    // let inArray     = false;
+    // let inOption    = false;
+    // let optionKey   = '';
+    // let optionValue = '';
+    //
+    // for (let i = 0; i < optionsStr.length; i ++) {
+    //     if (optionsStr[i] === optionsSeparator) {
+    //
+    //     }
+    //
+    //     i++;
+    // }
+
     return optionsStr
         .split(optionsSeparator)
         .map(keyValueString => keyValueString.split(keyValueSeparator))
         .map(([key, ...value]) => [key, value.length > 1 ? value.join(keyValueSeparator) : value[0]]);
 }
 
-export default async function (sourceOptions: string | Dictionary<string | number | boolean> = '', optionsConfig: GetOptionConfiguration): Promise<Dictionary<any>> { /* eslint-disable-line @typescript-eslint/no-explicit-any */
+export default async function (sourceOptions: string | Dictionary<string | number | boolean> = '', optionsConfig: GetOptionConfiguration = {}): Promise<Dictionary<any>> { /* eslint-disable-line @typescript-eslint/no-explicit-any */
     const {
         optionsSeparator = DEFAULT_OPTIONS_SEPARATOR,
         keyValueSeparator = DEFAULT_KEY_VALUE_SEPARATOR,

@@ -38,3 +38,9 @@ export interface GetOptionConfiguration {
     onOptionParsed?: Function;
 }
 
+export interface TypeScriptCompilerOptions {
+    configPath?: string;
+    customCompilerModulePath?: string;
+    options?: Dictionary<boolean | number>;
+}
+

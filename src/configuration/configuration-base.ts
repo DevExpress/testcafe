@@ -98,11 +98,15 @@ export default class Configuration {
         return option.value;
     }
 
-    public getOptions (): Dictionary<OptionValue> {
-        const result = Object.create(null);
+    public getOptions (predicate?: (name: string, option: Option) => boolean): Dictionary<OptionValue> {
+        const result        = Object.create(null);
+        let includeInResult = true;
 
         Object.entries(this._options).forEach(([name, option]) => {
-            result[name] = option.value;
+            includeInResult = predicate ? predicate(name, option) : true;
+
+            if (includeInResult)
+                result[name] = option.value;
         });
 
         return result;

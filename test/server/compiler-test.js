@@ -15,6 +15,7 @@ const createStackFilter   = require('../../lib/errors/create-stack-filter.js');
 const TestController      = require('../../lib/api/test-controller');
 const assertError         = require('./helpers/assert-runtime-error').assertError;
 const compile             = require('./helpers/compile');
+const Module              = require('module');
 
 const copy      = promisify(fs.copyFile);
 const remove    = promisify(fs.unlink);
@@ -218,7 +219,6 @@ describe('Compiler', function () {
         });
     });
 
-
     describe('TypeScript', function () {
         it('Should compile test defined in separate module if option is enabled', function () {
             const sources = [
@@ -360,7 +360,7 @@ describe('Compiler', function () {
             const testCode = apiMethods
                 .map(prop => dedent`
                     fixture('${prop}').page('http://example.com');
-                    
+
                     test('${prop}', async t => {
                         await t.${prop}();
                     });
@@ -518,8 +518,71 @@ describe('Compiler', function () {
                 await remove(tmpFilePath);
             }
         });
-    });
 
+        it('Should raise an error on wrong path to the custom compiler module', () => {
+            const sources = [
+                'test/server/data/test-suites/typescript-basic/testfile1.ts'
+            ];
+
+            const options = {
+                'typescript': {
+                    'customCompilerModulePath': 'wrong-path-to-typescript-module'
+                }
+            };
+
+            return compile(sources, options)
+                .then(() => {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(err => {
+                    assertError(err, {
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                            'Error: Unable to load the TypeScript compiler.\n' +
+                            "Cannot find module 'wrong-path-to-typescript-module'."
+                    });
+                });
+        });
+
+        it('Should allow to specify path to the custom compiler module', () => {
+            const sources = [
+                'test/server/data/test-suites/typescript-basic/testfile1.ts'
+            ];
+
+            const options = {
+                'typescript': {
+                    'customCompilerModulePath': 'custom-path-to-typescript-module'
+                }
+            };
+
+            let customCompilerModuleIsLoaded = false;
+
+            const storedModuleLoad = Module._load;
+
+            Module._load = function (...args) {
+                const modulePath = args[0];
+
+                if (modulePath === 'custom-path-to-typescript-module') {
+                    args[0] = 'typescript';
+
+                    customCompilerModuleIsLoaded = true;
+                }
+
+                return storedModuleLoad.apply(this, args);
+            };
+
+            return compile(sources, options)
+                .then(() => {
+                    Module._load = storedModuleLoad;
+
+                    expect(customCompilerModuleIsLoaded).to.be.true;
+                })
+                .catch(() => {
+                    Module._load = storedModuleLoad;
+
+                    expect.fail('compilation should be successful.');
+                });
+        });
+    });
 
     describe('CoffeeScript', function () {
         it('Should compile test defined in separate module if option is enabled', function () {
@@ -595,7 +658,6 @@ describe('Compiler', function () {
                 });
         });
     });
-
 
     describe('RAW file', function () {
         it('Should compile test files', function () {
@@ -692,7 +754,6 @@ describe('Compiler', function () {
         });
     });
 
-
     describe('Client function compilation', function () {
         function normalizeCode (code) {
             return code
@@ -741,7 +802,6 @@ describe('Compiler', function () {
             });
         });
     });
-
 
     describe('Errors', function () {
         it("Should raise an error if the specified source file doesn't exists", function () {
@@ -928,7 +988,6 @@ describe('Compiler', function () {
         });
 
     });
-
 
     describe('Regression', function () {
         it('Should successfully compile tests if re-export is used', function () {
