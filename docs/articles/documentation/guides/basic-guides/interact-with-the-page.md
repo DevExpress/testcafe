@@ -198,7 +198,7 @@ Actions that allow you to manipulate the state of file upload input elements:
 * [t.setFilesToUpload](../../reference/test-api/testcontroller/setfilestoupload.md)
 * [t.clearUpload](../../reference/test-api/testcontroller/clearupload.md)
 
-Use the [t.setFilesToUpload](../../reference/test-api/testcontroller/setfilestoupload.md) action to populate the input with the files you want to upload. If your application sends files as soon as you populate the field, the upload occurs when you call this action. Otherwise, begin the upload manually (for example, [click](../../reference/test-api/testcontroller/click.md) the submit button).
+Use the [t.setFilesToUpload](../../reference/test-api/testcontroller/setfilestoupload.md) action to populate the input with the files you want to upload. If your application sends files as soon as you populate the field, the upload occurs when you call this action. Otherwise, you will have to begin the upload manually (for example, [click](../../reference/test-api/testcontroller/click.md) the submit button).
 
 Use the [t.clearUpload](../../reference/test-api/testcontroller/clearupload.md) action to clear the list of files to upload.
 
