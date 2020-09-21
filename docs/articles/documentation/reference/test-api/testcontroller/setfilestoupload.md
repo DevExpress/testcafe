@@ -35,7 +35,7 @@ test('Uploading', async t => {
 
 The `t.setFilesToUpload` action removes all file paths from the input before populating it with new ones.
 
-> If an error occurs while files are being uploaded, the test fails.
+> If an error occurs while files are being uploaded, the test will fail.
 
 The [t.clearUpload](clearupload.md) method allows you to remove files added with `t.setFilesToUpload`.
 
