@@ -389,21 +389,33 @@ export default class TestController {
         return this.testRun.executeAction(name, new GetBrowserConsoleMessagesCommand(), callsite);
     }
 
-    _checkForExcessiveAwaits (selectorCallsiteList, expectCallsite) {
-        for (const selectorCallsite of selectorCallsiteList) {
-            if (selectorCallsite.filename === expectCallsite.filename &&
-                selectorCallsite.lineNum === expectCallsite.lineNum) {
-                addWarning(this.warningLog, WARNING_MESSAGE.excessiveAwaitInAssertion, selectorCallsite);
+    _checkForExcessiveAwaits (selectorCallsites, expectCallsites, expectCallsite) {
+        let thenCallsiteDeleted = false;
 
-                selectorCallsiteList.delete(selectorCallsite);
+        const callsitesToDelete   = [];
+
+        for (const thenCallsite of selectorCallsites) {
+            if (thenCallsite.filename === expectCallsite.filename &&
+                thenCallsite.lineNum === expectCallsite.lineNum) {
+                thenCallsiteDeleted = true;
+
+                callsitesToDelete.push(thenCallsite);
+
+                this.testRun.observedCallsites.snapshotPropertyCallsites.callsitesToWarn.push(thenCallsite);
             }
         }
+
+        for (const callsiteToDelete of callsitesToDelete)
+            selectorCallsites.delete(callsiteToDelete);
+
+        if (!thenCallsiteDeleted)
+            expectCallsites.add(expectCallsite);
     }
 
     _expect$ (actual) {
         const callsite = getCallsiteForMethod('expect');
 
-        this._checkForExcessiveAwaits(this.testRun.observedCallsites.snapshotPropertyCallsites, callsite);
+        this._checkForExcessiveAwaits(this.testRun.observedCallsites.snapshotPropertyCallsites.thenSet, this.testRun.observedCallsites.snapshotPropertyCallsites.expectSet, callsite);
 
         if (isClientFunction(actual))
             addWarning(this.warningLog, WARNING_MESSAGE.assertedClientFunctionInstance, callsite);
