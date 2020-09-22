@@ -5,14 +5,14 @@ os: linux
 dist: xenial
 jobs:
   include:
-    - node_js: "10"
-      env: GULP_TASK="test-server"
-    - node_js: "stable"
-      env: GULP_TASK="test-server"
-    - node_js: "10"
-      env: GULP_TASK="test-client-travis"
-    - node_js: "10"
-      env: GULP_TASK="test-client-travis-mobile"
+#    - node_js: "10"
+#      env: GULP_TASK="test-server"
+#    - node_js: "stable"
+#      env: GULP_TASK="test-server"
+#    - node_js: "10"
+#      env: GULP_TASK="test-client-travis"
+#    - node_js: "10"
+#      env: GULP_TASK="test-client-travis-mobile"
     - node_js: "10"
       env:
         GULP_TASK="test-functional-local-headless-chrome"
@@ -25,24 +25,24 @@ jobs:
         RETRY_FAILED_TESTS="true"
       addons:
         firefox:  latest
-    - node_js: "10"
-      env: GULP_TASK="test-functional-local-legacy"
-      addons:
-        chrome:  stable
-    - node_js: "10"
-      env: GULP_TASK="test-functional-local-compiler-service"
-      addons:
-        chrome:  stable
-    - node_js: "10"
-      env: GULP_TASK="test-functional-local-multiple-windows"
-      addons:
-        chrome:  stable
-      services:
-        - xvfb
-    - node_js: "stable"
-      env: GULP_TASK="docker-test-travis"
-      services:
-        - docker
+#    - node_js: "10"
+#      env: GULP_TASK="test-functional-local-legacy"
+#      addons:
+#        chrome:  stable
+#    - node_js: "10"
+#      env: GULP_TASK="test-functional-local-compiler-service"
+#      addons:
+#        chrome:  stable
+#    - node_js: "10"
+#      env: GULP_TASK="test-functional-local-multiple-windows"
+#      addons:
+#        chrome:  stable
+#      services:
+#        - xvfb
+#    - node_js: "stable"
+#      env: GULP_TASK="docker-test-travis"
+#      services:
+#        - docker
 
   fast_finish: true
 

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    var div1 = document.createElement('div');
+
+    div1.id = 'div1';
+
+    document.body.appendChild(div1);
+
+    setTimeout(function () {
+        var div2 = document.createElement('div');
+
+        div2.id = 'div2';
+
+        document.body.appendChild(div2);
+    }, 200);
+</script>
+text
+</body>
+</html>
