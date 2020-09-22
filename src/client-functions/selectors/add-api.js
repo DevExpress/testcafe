@@ -25,8 +25,8 @@ const filterNodes = (new ClientFunctionBuilder((nodes, filter, querySelectorRoot
     const result = [];
 
     if (typeof filter === 'string') {
-        // NOTE: we can search for elements only in document or element.
-        if (querySelectorRoot.nodeType !== 1 && querySelectorRoot.nodeType !== 9)
+        // NOTE: we can search for elements only in document/element/shadow root.
+        if (querySelectorRoot.nodeType !== 1 && querySelectorRoot.nodeType !== 9 && querySelectorRoot.nodeType !== 11)
             return null;
 
         const matching    = querySelectorRoot.querySelectorAll(filter);
@@ -775,7 +775,7 @@ function addHierarchicalSelectors (options) {
         const selectorFn = () => {
             /* eslint-disable no-undef */
             return expandSelectorResults(selector, node => {
-                return node.shadowRoot !== void 0 ? node.shadowRoot : null;
+                return node.shadowRoot !== void 0 ? [node.shadowRoot] : null;
             });
             /* eslint-enable no-undef */
         };
