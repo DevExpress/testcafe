@@ -1,4 +1,4 @@
-describe.only("Should provide a valid value for the 'document.title' property", () => {
+describe("Should provide a valid value for the 'document.title' property", () => {
     describe('Initial value', () => {
         it('script before and after <title>', () => {
             return runTests('./testcafe-fixtures/index.js', 'script before and after <title>');
