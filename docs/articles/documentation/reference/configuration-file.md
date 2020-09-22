@@ -60,6 +60,7 @@ A configuration file can include the following settings:
 * [stopOnFirstFail](#stoponfirstfail)
 * [tsConfigPath](#tsconfigpath)
 * [disablePageCaching](#disablepagecaching)
+* [disableMultipleWindows](#disablemultiplewindows)
 * [color](#color)
 * [noColor](#nocolor)
 
@@ -1031,6 +1032,21 @@ You can also disable page caching for an individual [fixture](test-api/fixture/d
 
 *CLI*: [--disable-page-caching](command-line-interface.md#--disable-page-caching)  
 *API*: [runner.run({ disablePageCaching })](testcafe-api/runner/run.md)
+
+## disableMultipleWindows
+
+Disables support for [multi-window testing](../guides/advanced-guides/multiple-browser-windows.md).
+
+```json
+{
+    "disableMultipleWindows": true
+}
+```
+
+The `disableMultipleWindows` option disables support for multi-window testing in Chrome and Firefox. Use this setting if you encounter compatibility issues with your existing tests.
+
+*CLI*: [--disable-multiple-windows](command-line-interface.md#--disable-multiple-windows)  
+*API*: [runner.run({ disableMultipleWindows })](testcafe-api/runner/run.md)
 
 ## color
 
