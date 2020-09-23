@@ -163,7 +163,7 @@ class ManipulationExecutor {
     }
 
     _requestManipulation () {
-        if (!isWindowInIframe(window)())
+        if (!isWindowInIframe(window))
             return transport.queuedAsyncServiceMsg(this._createManipulationReadyMessage());
 
         const cropDimensions = this._getAbsoluteCropValues();
@@ -202,7 +202,7 @@ class ManipulationExecutor {
                 return this._runScrollBeforeScreenshot();
             })
             .then(() => {
-                if (!isWindowInIframe(window)())
+                if (!isWindowInIframe(window))
                     return this._hideUI();
 
                 return Promise.resolve();
@@ -216,7 +216,7 @@ class ManipulationExecutor {
 
                 manipulationResult = result;
 
-                if (!isWindowInIframe(window)())
+                if (!isWindowInIframe(window))
                     this._showUI();
 
                 return delay(POSSIBLE_RESIZE_ERROR_DELAY);

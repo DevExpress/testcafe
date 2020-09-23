@@ -168,7 +168,7 @@ export default class PressAutomation {
         const activeElement         = domUtils.getActiveElement();
         const activeElementIsIframe = domUtils.isIframeElement(activeElement);
 
-        if (!isWindowInIframe(window)() && activeElementIsIframe && nativeMethods.contentWindowGetter.call(activeElement)) {
+        if (!isWindowInIframe(window) && activeElementIsIframe && nativeMethods.contentWindowGetter.call(activeElement)) {
             const msg = {
                 cmd:             PRESS_REQUEST_CMD,
                 keyCombinations: this.keyCombinations,

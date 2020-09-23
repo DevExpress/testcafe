@@ -413,7 +413,7 @@ export default class MoveAutomation {
             .then(message => {
                 cursor.activeWindow = window;
 
-                if (iframeUnderCursor || isWindowInIframe(window)())
+                if (iframeUnderCursor || isWindowInIframe(window))
                     return cursor.move(message.x, message.y);
 
                 return null;

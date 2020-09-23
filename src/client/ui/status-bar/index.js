@@ -224,7 +224,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
     }
 
     _createBeforeReady () {
-        if (this.state.created || isWindowInIframe(window)())
+        if (this.state.created || isWindowInIframe(window))
             return;
 
         if (document.body)

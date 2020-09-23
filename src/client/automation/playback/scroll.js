@@ -260,7 +260,7 @@ export default class ScrollAutomation {
 
         return scrollParentsPromise
             .then(() => {
-                if (isWindowInIframe(window)() && !this.skipParentFrames) {
+                if (isWindowInIframe(window) && !this.skipParentFrames) {
                     return sendRequestToFrame({
                         cmd:             SCROLL_REQUEST_CMD,
                         offsetX:         currentOffsetX,
