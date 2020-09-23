@@ -9,7 +9,7 @@ This recipe shows how to test your application's file upload functionality with 
 
 [Full Example Code](https://github.com/DevExpress/testcafe-examples/tree/master/examples/upload-files)
 
-Assume the following HTML:
+In the case of the following HTML:
 
 ```html
 <body>
