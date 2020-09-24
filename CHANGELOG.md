@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.9.4 (2020-9-25)
+
+### Bug Fixes
+
+* Fixed an error thrown when TestCafe tested pages that access `document.title` ([#5559](https://github.com/DevExpress/testcafe/issues/5559), [PR testcafe-hammerhead/#2446](https://github.com/DevExpress/testcafe-hammerhead/pull/2446))
+* Fixed a crash occurred when `null` was passed to the `createTestCafe()` API function ([#5549](https://github.com/DevExpress/testcafe/issues/5549))
+* Fixed an error thrown when the `content-encoding` header value was in the upper case ([testcafe-hammerhead/#2427](https://github.com/DevExpress/testcafe-hammerhead/issues/2427))
+
 ## v1.9.3 (2020-9-17)
 
 ### Bug Fixes
