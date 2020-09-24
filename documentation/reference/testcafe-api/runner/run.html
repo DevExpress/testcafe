@@ -393,7 +393,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1599080400 * 1000);
+        var lastPostDate = new Date(1600894800 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -2206,6 +2206,12 @@ where tests are not guaranteed to execute correctly.</p>
 <td>Prevents TestCafe from taking screenshots. When this option is specified, screenshots are not taken whenever a test fails or when <a href="../../test-api/testcontroller/takescreenshot.html">t.takeScreenshot</a> or <a href="../../test-api/testcontroller/takeelementscreenshot.html">t.takeElementScreenshot</a> is executed.</td>
 <td><code>false</code></td>
 </tr>
+<tr>
+<td><code>disableMultipleWindows</code></td>
+<td>Boolean</td>
+<td>Disables support for <a href="../../../guides/advanced-guides/multiple-browser-windows.html">multi-window testing</a> in Chrome and Firefox. Use this option if you encounter compatibility issues with your existing tests.</td>
+<td></td>
+</tr>
 </tbody></table></div>
 <p>After all tests are finished, call the <a href="../testcafe/close.html">testcafe.close</a> function to stop the TestCafe server.</p>
 
@@ -2224,6 +2230,7 @@ where tests are not guaranteed to execute correctly.</p>
 <li><a href="../../configuration-file.html#stoponfirstfail">stopOnFirstFail</a></li>
 <li><a href="../../configuration-file.html#disablepagecaching">disablePageCaching</a></li>
 <li><a href="../../configuration-file.html#disablescreenshots">disableScreenshots</a></li>
+<li><a href="../../configuration-file.html#disablemultiplewindows">disableMultipleWindows</a></li>
 </ul>
 
 <p><strong>Example</strong></p>

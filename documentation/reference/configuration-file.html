@@ -393,7 +393,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1599080400 * 1000);
+        var lastPostDate = new Date(1600894800 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -2178,6 +2178,7 @@
 <li><a href="#stoponfirstfail">stopOnFirstFail</a></li>
 <li><a href="#tsconfigpath">tsConfigPath</a></li>
 <li><a href="#disablepagecaching">disablePageCaching</a></li>
+<li><a href="#disablemultiplewindows">disableMultipleWindows</a></li>
 <li><a href="#color">color</a></li>
 <li><a href="#nocolor">noColor</a></li>
 </ul>
@@ -2888,6 +2889,16 @@ to slow the test down.</p>
 
 <p><em>CLI</em>: <a href="command-line-interface.html#--disable-page-caching">--disable-page-caching</a><br>
 <em>API</em>: <a href="testcafe-api/runner/run.html">runner.run({ disablePageCaching })</a></p>
+<h2><a class="anchor" id="disablemultiplewindows"></a>disableMultipleWindows <a class="permalink" href="#disablemultiplewindows">#</a></h2>
+<p>Disables support for <a href="../guides/advanced-guides/multiple-browser-windows.html">multi-window testing</a>.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nl">"disableMultipleWindows"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>The <code>disableMultipleWindows</code> option disables support for multi-window testing in Chrome and Firefox. Use this setting if you encounter compatibility issues with your existing tests.</p>
+
+<p><em>CLI</em>: <a href="command-line-interface.html#--disable-multiple-windows">--disable-multiple-windows</a><br>
+<em>API</em>: <a href="testcafe-api/runner/run.html">runner.run({ disableMultipleWindows })</a></p>
 <h2><a class="anchor" id="color"></a>color <a class="permalink" href="#color">#</a></h2>
 <p>Enables colors in the command line.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">

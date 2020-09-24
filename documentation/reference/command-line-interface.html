@@ -393,7 +393,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1599080400 * 1000);
+        var lastPostDate = new Date(1600894800 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -2688,7 +2688,9 @@ See <a href="../guides/advanced-guides/test-https-features-and-http2-websites.ht
 <p>Disables support for <a href="../guides/advanced-guides/multiple-browser-windows.html">multi-window testing</a>.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe firefox my-tests <span class="nt">--disable-multiple-windows</span>
 </code></pre></div>
-<p>The <code>--disable-multiple-windows</code> option disables support for multi-window testing in Chrome and Firefox. Use this flag if you encounter compatibility issues with <a href="http://testcafe.devexpress.com/documentation">TestCafe v2015.1</a> tests.</p>
+<p>The <code>--disable-multiple-windows</code> option disables support for multi-window testing in Chrome and Firefox. Use this flag if you encounter compatibility issues with your existing tests.</p>
+
+<p><em>Related configuration file property</em>: <a href="configuration-file.html#disablemultiplewindows">disableMultipleWindows</a>.</p>
 <h3><a class="anchor" id="--color"></a>--color <a class="permalink" href="#--color">#</a></h3>
 <p>Enables colors in the command line.</p>
 
