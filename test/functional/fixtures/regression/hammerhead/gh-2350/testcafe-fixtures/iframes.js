@@ -4,7 +4,7 @@ fixture `Fixture`
     .page('http://localhost:3000/fixtures/regression/hammerhead/gh-2350/pages/iframes/index.html');
 
 const getNativeTitle = ClientFunction(() => {
-    var hammerhead = window['%hammerhead%'];
+    var hammerhead = window['%hammerhead%']; // eslint-disable-line no-var
 
     return hammerhead.nativeMethods.documentTitleGetter.call(document);
 });
