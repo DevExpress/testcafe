@@ -389,29 +389,21 @@ export default class TestController {
         return this.testRun.executeAction(name, new GetBrowserConsoleMessagesCommand(), callsite);
     }
 
-    _checkForExcessiveAwaits (callsites, expectCallsite) {
-        const key = expectCallsite.filename + ':' + expectCallsite.lineNum;
+    _getCallsiteStackFrameString (callsite) {
+        return callsite.stackFrames[callsite.callsiteFrameIdx].toString();
+    }
 
-        let thenCallsiteDeleted = false;
+    _checkForExcessiveAwaits (snapshotPropertyCallsites, callsiteToCheck) {
+        const key = `${callsiteToCheck.filename}:${callsiteToCheck.lineNum}`;
 
-        if (callsites.has(key)) {
-            const thenCallsites = callsites.get(key).callsites;
-            const warningAdded = callsites.get(key).warningAdded;
+        if (snapshotPropertyCallsites[key] && snapshotPropertyCallsites[key].asserted === false) {
+            for (const propertyCallsite of snapshotPropertyCallsites[key].callsites)
+                this.testRun.observedCallsites.awaitedSnapshotWarnings.set(this._getCallsiteStackFrameString(propertyCallsite), propertyCallsite);
 
-            thenCallsiteDeleted = true;
-
-            callsites.delete(key);
-
-            if (!warningAdded) {
-                for (const thenCallsite of thenCallsites)
-                    addWarning(this.warningLog, WARNING_MESSAGE.excessiveAwaitInAssertion, thenCallsite);
-
-                callsites.set(key, { callsites: thenCallsites, warningAdded: true, asserted: true });
-            }
+            delete snapshotPropertyCallsites[key];
         }
-
-        if (!thenCallsiteDeleted)
-            callsites.set(key, { callsites: [ expectCallsite ], warningAdded: false, asserted: true });
+        else
+            snapshotPropertyCallsites[key] = { asserted: true };
     }
 
     _expect$ (actual) {

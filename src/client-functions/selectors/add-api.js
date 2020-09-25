@@ -118,6 +118,20 @@ function createPrimitiveGetterWrapper (observedCallsites, callsite) {
     };
 }
 
+function checkForExcessiveAwaits (snapshotPropertyCallsites, callsiteToCheck) {
+    const key = `${callsiteToCheck.filename}:${callsiteToCheck.lineNum}`;
+
+    let callsitesToAssert = [ callsiteToCheck ];
+
+    if (snapshotPropertyCallsites[key] && snapshotPropertyCallsites[key].asserted === false)
+        callsitesToAssert = snapshotPropertyCallsites[key].callsites.concat(callsitesToAssert);
+
+    if (snapshotPropertyCallsites[key] && snapshotPropertyCallsites[key].asserted === true)
+        delete snapshotPropertyCallsites[key];
+    else
+        snapshotPropertyCallsites[key] = { callsites: callsitesToAssert, asserted: false };
+}
+
 function addSnapshotProperties (obj, getSelector, SelectorBuilder, properties, observedCallsites) {
     properties.forEach(prop => {
         Object.defineProperty(obj, prop, {
@@ -137,18 +151,7 @@ function addSnapshotProperties (obj, getSelector, SelectorBuilder, properties, o
 
                 propertyPromise.then = function (onFulfilled, onRejected) {
                     if (observedCallsites) {
-                        let callsiteDeleted = false;
-                        let callsites = [ callsite ];
-
-                        const key = callsite.filename + ':' + callsite.lineNum;
-
-                        if (observedCallsites.snapshotPropertyCallsites.has(key) && observedCallsites.snapshotPropertyCallsites.get(key).asserted === false)
-                            callsites = observedCallsites.snapshotPropertyCallsites.get(key).callsites.concat(callsites);
-                        else if (observedCallsites.snapshotPropertyCallsites.delete(key))
-                            callsiteDeleted = true;
-
-                        if (!callsiteDeleted)
-                            observedCallsites.snapshotPropertyCallsites.set(key, { callsites: callsites, warningAdded: false, asserted: false });
+                        checkForExcessiveAwaits(observedCallsites.snapshotPropertyCallsites, callsite);
 
                         observedCallsites.unawaitedSnapshotCallsites.delete(callsite);
                     }
