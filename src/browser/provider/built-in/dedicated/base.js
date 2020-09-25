@@ -65,7 +65,7 @@ export default {
     async takeScreenshot (browserId, path, viewportWidth, viewportHeight, fullPage) {
         const runtimeInfo    = this.openedBrowsers[browserId];
         const browserClient  = this._getBrowserProtocolClient(runtimeInfo);
-        const binaryImage    = await browserClient.getScreenshotData(runtimeInfo, fullPage);
+        const binaryImage    = await browserClient.getScreenshotData(fullPage);
         const cropDimensions = this._getCropDimensions(viewportWidth, viewportHeight);
 
         let pngImage = await readPng(binaryImage);

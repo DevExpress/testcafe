@@ -177,7 +177,7 @@ module.exports = class MarionetteClient {
         });
     }
 
-    async getScreenshotData (_, fullPage) {
+    async getScreenshotData (fullPage) {
         const frameData = await this._getScreenshotRawData(fullPage);
 
         return Buffer.from(frameData.value, 'base64');
