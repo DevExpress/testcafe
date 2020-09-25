@@ -227,7 +227,7 @@ describe('[API] Assertions', function () {
 
         expect(getSnapshotWarnings().length).to.eql(1);
         expect(getSnapshotWarnings()[0]).to.match(createRegExpFromFile('expected-selector-property-awaited-callsite'));
-        });
+    });
 
     it('Should raise a warning when using DOM Node snapshot property without await', async function () {
         await runTests('./testcafe-fixtures/assertions-test.js', 'Snapshot property without await', { only: 'chrome' });
@@ -260,13 +260,13 @@ describe('[API] Assertions', function () {
 
         expect(getSnapshotWarnings().length).to.eql(1);
         expect(getSnapshotWarnings()[0]).contains("> 221 |        await t.expect(await selector.innerText).eql('');");
-        });
+    });
 
     it('Should not raise a warning when reusing selector property assertions in a loop', async function () {
         await runTests('./testcafe-fixtures/assertions-test.js', 'Reused unawaited selector property assertion in a loop', { only: 'chrome' });
 
         expect(testReport.warnings).be.empty;
-        });
+    });
 
     it('Should only raise one warning when reusing awaited selector property assertions in a loop', async function () {
         await runTests('./testcafe-fixtures/assertions-test.js', 'Reused awaited selector property assertion in a loop', { only: 'chrome' });

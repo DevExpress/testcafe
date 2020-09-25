@@ -40,16 +40,6 @@ export default function wrapTestFunction (fn: Function): Function {
         }
 
         if (!errList.hasUncaughtErrorsInTestCode) {
-            const uniqueCallsties = new Set();
-
-            for (const callsite of testRun.observedCallsites.snapshotPropertyCallsites.callsitesToWarn) {
-                if (!uniqueCallsties.has(callsite.stackFrames[callsite.callsiteFrameIdx].toString())) {
-                    addRenderedWarning(testRun.warningLog, WARNING_MESSAGES.excessiveAwaitInAssertion, callsite);
-
-                    uniqueCallsties.add(callsite.stackFrames[callsite.callsiteFrameIdx].toString());
-                }
-            }
-
             addWarnings(testRun.observedCallsites.unawaitedSnapshotCallsites, WARNING_MESSAGES.missingAwaitOnSnapshotProperty);
             addErrors(testRun.observedCallsites.callsitesWithoutAwait, MissingAwaitError);
         }

@@ -389,33 +389,35 @@ export default class TestController {
         return this.testRun.executeAction(name, new GetBrowserConsoleMessagesCommand(), callsite);
     }
 
-    _checkForExcessiveAwaits (selectorCallsites, expectCallsites, expectCallsite) {
+    _checkForExcessiveAwaits (callsites, expectCallsite) {
+        const key = expectCallsite.filename + ':' + expectCallsite.lineNum;
+
         let thenCallsiteDeleted = false;
 
-        const callsitesToDelete   = [];
+        if (callsites.has(key)) {
+            const thenCallsites = callsites.get(key).callsites;
+            const warningAdded = callsites.get(key).warningAdded;
 
-        for (const thenCallsite of selectorCallsites) {
-            if (thenCallsite.filename === expectCallsite.filename &&
-                thenCallsite.lineNum === expectCallsite.lineNum) {
-                thenCallsiteDeleted = true;
+            thenCallsiteDeleted = true;
 
-                callsitesToDelete.push(thenCallsite);
+            callsites.delete(key);
 
-                this.testRun.observedCallsites.snapshotPropertyCallsites.callsitesToWarn.push(thenCallsite);
+            if (!warningAdded) {
+                for (const thenCallsite of thenCallsites)
+                    addWarning(this.warningLog, WARNING_MESSAGE.excessiveAwaitInAssertion, thenCallsite);
+
+                callsites.set(key, { callsites: thenCallsites, warningAdded: true, asserted: true });
             }
         }
 
-        for (const callsiteToDelete of callsitesToDelete)
-            selectorCallsites.delete(callsiteToDelete);
-
         if (!thenCallsiteDeleted)
-            expectCallsites.add(expectCallsite);
+            callsites.set(key, { callsites: [ expectCallsite ], warningAdded: false, asserted: true });
     }
 
     _expect$ (actual) {
         const callsite = getCallsiteForMethod('expect');
 
-        this._checkForExcessiveAwaits(this.testRun.observedCallsites.snapshotPropertyCallsites.thenSet, this.testRun.observedCallsites.snapshotPropertyCallsites.expectSet, callsite);
+        this._checkForExcessiveAwaits(this.testRun.observedCallsites.snapshotPropertyCallsites, callsite);
 
         if (isClientFunction(actual))
             addWarning(this.warningLog, WARNING_MESSAGE.assertedClientFunctionInstance, callsite);

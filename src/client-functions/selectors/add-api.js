@@ -137,19 +137,18 @@ function addSnapshotProperties (obj, getSelector, SelectorBuilder, properties, o
 
                 propertyPromise.then = function (onFulfilled, onRejected) {
                     if (observedCallsites) {
-                        let expectCallsiteDeleted = false;
+                        let callsiteDeleted = false;
+                        let callsites = [ callsite ];
 
-                        for (const expectCallsite of observedCallsites.snapshotPropertyCallsites.expectSet) {
-                            if (expectCallsite.filename === callsite.filename &&
-                                expectCallsite.lineNum === callsite.lineNum) {
-                                expectCallsiteDeleted = true;
+                        const key = callsite.filename + ':' + callsite.lineNum;
 
-                                observedCallsites.snapshotPropertyCallsites.expectSet.delete(expectCallsite);
-                            }
-                        }
+                        if (observedCallsites.snapshotPropertyCallsites.has(key) && observedCallsites.snapshotPropertyCallsites.get(key).asserted === false)
+                            callsites = observedCallsites.snapshotPropertyCallsites.get(key).callsites.concat(callsites);
+                        else if (observedCallsites.snapshotPropertyCallsites.delete(key))
+                            callsiteDeleted = true;
 
-                        if (!expectCallsiteDeleted)
-                            observedCallsites.snapshotPropertyCallsites.thenSet.add(callsite);
+                        if (!callsiteDeleted)
+                            observedCallsites.snapshotPropertyCallsites.set(key, { callsites: callsites, warningAdded: false, asserted: false });
 
                         observedCallsites.unawaitedSnapshotCallsites.delete(callsite);
                     }
