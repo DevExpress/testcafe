@@ -167,17 +167,24 @@ export class Cdp {
     }
 
     public async init (): Promise<void> {
-        const tabs = await this._getTabs();
+        try {
+            const tabs = await this._getTabs();
 
-        this._parentTarget = tabs.find(t => t.url.includes(this._runtimeInfo.browserId));
+            this._parentTarget = tabs.find(t => t.url.includes(this._runtimeInfo.browserId));
 
-        if (!this._parentTarget)
+            if (!this._parentTarget)
+                return;
+
+            const client = await this._createClient();
+
+
+            await this._calculateEmulatedDevicePixelRatio(client);
+
+            await this._setupClient(client);
+        }
+        catch (e) {
             return;
-
-        const client = await this._createClient();
-
-        await this._calculateEmulatedDevicePixelRatio(client);
-        await this._setupClient(client);
+        }
     }
 
     public async getScreenshotData (fullPage?: boolean): Promise<Buffer> {
