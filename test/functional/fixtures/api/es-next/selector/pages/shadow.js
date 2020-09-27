@@ -1,16 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <style>
-        html, body {
-            padding: 0;
-            margin: 0;
-        }
-    </style>
-</head>
-<body>
+/* eslint-disable linebreak-style */
+const shadowHost = document.createElement('div');
+
+shadowHost.id = 'shadow-DOM-container';
+shadowHost.attachShadow({ mode: 'open' });
+document.body.append(shadowHost);
+
+const content = `
 <div id="htmlElement" class="yo hey cool"
      style="width: 40px; height: 30px; padding-top: 2px; padding-left: 2px; border-left: 1px solid black;">
     <span style="display:none;" id="someSpan">
@@ -19,7 +14,7 @@
     Yo
 </div>
 <svg width="400" height="110">
-    <rect class="svg1 svg2" id="svgElement" width="300px" height="100px" style="fill:rgb(0,0,255); stroke-width:0;">
+    <rect class="svg1 svg2" id="svgElement" width="300px" height="100px" style="fill:rgb(0,255,255); stroke-width:0;">
         Hey
     </rect>
 </svg>
@@ -44,48 +39,6 @@
 <div id="invisibleElement" style="display: none; width:500px; height: 500px;"></div>
 
 <input type="button" id="newPage">
-
-<script>
-    document.querySelector('#createElement').addEventListener('click', function () {
-        const div = document.createElement('div');
-
-        div.id = 'newElement';
-
-        window.setTimeout(function () {
-            document.body.appendChild(div);
-        }, 500);
-    });
-
-    document.querySelector('#makeVisible').addEventListener('click', function () {
-        const div = document.querySelector('#invisibleElement');
-
-        window.setTimeout(function () {
-            div.style.display = 'block';
-        }, 500);
-    });
-
-    document.querySelector('#newPage').addEventListener('click', function () {
-        window.setTimeout(function () {
-            document.location = 'http://localhost:3000/fixtures/api/es-next/selector/pages/new-page-element.html';
-        }, 1000);
-    });
-
-    document.addEventListener("DOMContentLoaded", function () {
-        window.setTimeout(function () {
-            const div = document.createElement('div');
-
-            div.id            = 'slowElement';
-            div.style.display = 'none';
-            div.style.width   = '500px';
-            div.style.height  = '500px';
-
-            window.setTimeout(function () {
-                div.style.display = 'block';
-            }, 100);
-        }, 2000);
-    });
-</script>
-
 <section id="container">
 <div id="el1" class="idxEl">This is <script>var yo = 4;</script>element 1.</div>
 <div id="el2" class="idxEl">Hey?! (yo)</div>
@@ -162,40 +115,6 @@
         <p>6</p>
     </div>
 </div>
+`;
 
-<script src="shadow.js"></script>
-<script>
-    window.setTimeout(function () {
-        // HTML structure to test ShadowDOM
-        // <div id='hasShadowDOM'>
-        //     #shadowRoot
-        //         <p>Text should be found!</p>
-        //         <div>
-        //             #shadowRoot
-        //                 <p>Nested text should be found!</p>
-        //         </div>
-        // </div>
-        // Below should generate the above HTML structure
-        const div = document.createElement('div');
-        div.id = 'hasShadowDOM';
-        const shadowP = document.createElement('p');
-        const text = document.createTextNode("Text should be found!");
-        shadowP.appendChild(text);
-
-        const shadowDiv = document.createElement('div');
-        const p = document.createElement('p');
-        const text2 = document.createTextNode("Nested text should be found!");
-        p.appendChild(text2);
-
-        let shadow = div.attachShadow({mode: 'open'});
-        let nestedShadow = shadowDiv.attachShadow({mode: 'open'});
-
-        nestedShadow.appendChild(p);
-        shadow.appendChild(shadowP);
-        shadow.appendChild(shadowDiv);
-        // attach the div with its elements in its shadowRoot
-        document.body.appendChild(div);
-    }, 500);
-</script>
-</body>
-</html>
+document.getElementById('shadow-DOM-container').shadowRoot.innerHTML = content;
