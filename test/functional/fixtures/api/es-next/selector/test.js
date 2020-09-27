@@ -121,6 +121,10 @@ describe('[API] Selector', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Selector "sibling" method', DEFAULT_RUN_OPTIONS);
     });
 
+    it('Should provide .shadowRoot() method', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "shadowRoot" method', DEFAULT_RUN_OPTIONS);
+    });
+
     it('Should provide .nextSibling() method', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Selector "nextSibling" method', DEFAULT_RUN_OPTIONS);
     });

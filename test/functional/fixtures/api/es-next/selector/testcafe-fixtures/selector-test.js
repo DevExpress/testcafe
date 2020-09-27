@@ -774,6 +774,17 @@ test('Selector "sibling" method', async t => {
         .expect(Selector('#el2').sibling().withText('element 4').id).eql('el4');
 });
 
+test('Selector "shadowRoot" method', async t => {
+    const divWithShadowDOM = Selector('#hasShadowDOM').shadowRoot();
+
+    await t
+        .expect(Selector('#hasShadowDOM').shadowRoot().child('p')
+            .withText('found').textContent).contains('Text should be found!');
+    await t
+        .expect(divWithShadowDOM.find('div').shadowRoot().child('p').nth(0)
+            .textContent).contains('Nested text should be found!');
+});
+
 test('Selector "count" and "exists" properties', async t => {
     await t
         .expect(Selector('.idxEl').count).eql(4)
