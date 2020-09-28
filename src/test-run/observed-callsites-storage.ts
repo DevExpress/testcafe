@@ -23,5 +23,5 @@ export default class ObservedCallsitesStorage {
 
 interface SnapshotPropertyCallsite {
     callsites: CallsiteRecord[];
-    callsitesAsserted: boolean;
+    asserted: boolean;
 }

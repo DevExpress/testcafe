@@ -403,7 +403,7 @@ export default class TestController {
             delete snapshotPropertyCallsites[key];
         }
         else
-            snapshotPropertyCallsites[key] = { asserted: true };
+            snapshotPropertyCallsites[key] = { callsites: [], asserted: true };
     }
 
     _expect$ (actual) {
