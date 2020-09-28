@@ -28,7 +28,7 @@ To manually upload files on this page, the user needs to perform the following s
 * Select the files
 * Begin the upload
 
-Since TestCafe cannot interact with the native dialog, it manipulates the `<input type=file>` elements' state with the `.setFilesToUpload` action.
+TestCafe cannot interact with the native dialog. It uses the `.setFilesToUpload` action to directly change the state of the `<input type="file">` element.
 
 The sample page includes a `<form>` that contains:
 
