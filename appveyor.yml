@@ -9,6 +9,9 @@ branches:
   - new-docs
   - /^\(testbot-only\)/
 
+platform:
+  - x64
+
 environment:
   NODEJS_VERSION: "10"
   RETRY_FAILED_TESTS: "true"
