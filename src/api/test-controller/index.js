@@ -389,6 +389,7 @@ export default class TestController {
         return this.testRun.executeAction(name, new GetBrowserConsoleMessagesCommand(), callsite);
     }
 
+    // NOTE: Gets the callsite stackFrame string representation: 'filename:lineNum:colNum'
     _getCallsiteStackFrameString (callsite) {
         return callsite.stackFrames[callsite.callsiteFrameIdx].toString();
     }
@@ -396,6 +397,8 @@ export default class TestController {
     _checkForExcessiveAwaits (snapshotPropertyCallsites, callsiteToCheck) {
         const key = `${callsiteToCheck.filename}:${callsiteToCheck.lineNum}`;
 
+        // NOTE: If there are unasserted callsites, we should add all of them to awaitedSnapshotWarnings.
+        // The warnings themselves are raised after the test run in wrap-test-function
         if (snapshotPropertyCallsites[key] && snapshotPropertyCallsites[key].asserted === false) {
             for (const propertyCallsite of snapshotPropertyCallsites[key].callsites)
                 this.testRun.observedCallsites.awaitedSnapshotWarnings.set(this._getCallsiteStackFrameString(propertyCallsite), propertyCallsite);
