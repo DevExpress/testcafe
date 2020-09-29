@@ -14,6 +14,7 @@ import { getDelegatedAPIList, delegateAPI } from '../../utils/delegated-api';
 import WARNING_MESSAGE from '../../notifications/warning-message';
 import getBrowser from '../../utils/get-browser';
 import addWarning from '../../notifications/add-rendered-warning';
+import { getCallsiteId, getCallsiteStackFrameString } from '../../utils/callsite';
 
 import {
     ClickCommand,
@@ -389,19 +390,14 @@ export default class TestController {
         return this.testRun.executeAction(name, new GetBrowserConsoleMessagesCommand(), callsite);
     }
 
-    // NOTE: Gets the callsite stackFrame string representation: 'filename:lineNum:colNum'
-    _getCallsiteStackFrameString (callsite) {
-        return callsite.stackFrames[callsite.callsiteFrameIdx].toString();
-    }
-
     _checkForExcessiveAwaits (snapshotPropertyCallsites, callsiteToCheck) {
-        const key = `${callsiteToCheck.filename}:${callsiteToCheck.lineNum}`;
+        const key = getCallsiteId(callsiteToCheck);
 
         // NOTE: If there are unasserted callsites, we should add all of them to awaitedSnapshotWarnings.
         // The warnings themselves are raised after the test run in wrap-test-function
         if (snapshotPropertyCallsites[key] && snapshotPropertyCallsites[key].asserted === false) {
             for (const propertyCallsite of snapshotPropertyCallsites[key].callsites)
-                this.testRun.observedCallsites.awaitedSnapshotWarnings.set(this._getCallsiteStackFrameString(propertyCallsite), propertyCallsite);
+                this.testRun.observedCallsites.awaitedSnapshotWarnings.set(getCallsiteStackFrameString(propertyCallsite), propertyCallsite);
 
             delete snapshotPropertyCallsites[key];
         }

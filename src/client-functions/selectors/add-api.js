@@ -10,6 +10,7 @@ import makeRegExp from '../../utils/make-reg-exp';
 import selectorTextFilter from './selector-text-filter';
 import selectorAttributeFilter from './selector-attribute-filter';
 import prepareApiFnArgs from './prepare-api-args';
+import { getCallsiteId } from '../../utils/callsite';
 
 const VISIBLE_PROP_NAME       = 'visible';
 const SNAPSHOT_PROP_PRIMITIVE = `[object ${ReExecutablePromise.name}]`;
@@ -119,7 +120,7 @@ function createPrimitiveGetterWrapper (observedCallsites, callsite) {
 }
 
 function checkForExcessiveAwaits (snapshotPropertyCallsites, callsiteToCheck) {
-    const key = `${callsiteToCheck.filename}:${callsiteToCheck.lineNum}`;
+    const key = getCallsiteId(callsiteToCheck);
 
     let callsitesToAssert = [ callsiteToCheck ];
 

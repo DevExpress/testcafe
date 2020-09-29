@@ -1,10 +1,8 @@
-import { CallsiteRecord } from 'callsite-record';
-
 export default class ObservedCallsitesStorage {
     public callsitesWithoutAwait: Set<Record<string, any>>;
     public unawaitedSnapshotCallsites: Set<Record<string, any>>;
     public snapshotPropertyCallsites: Record<string, SnapshotPropertyCallsite>;
-    public awaitedSnapshotWarnings: Map<string, Record<string, CallsiteRecord>>;
+    public awaitedSnapshotWarnings: Map<string, Record<string, any>>;
 
     public constructor () {
         this.callsitesWithoutAwait      = new Set();
@@ -22,6 +20,6 @@ export default class ObservedCallsitesStorage {
 }
 
 interface SnapshotPropertyCallsite {
-    callsites: CallsiteRecord[];
+    callsites: any[];
     asserted: boolean;
 }
