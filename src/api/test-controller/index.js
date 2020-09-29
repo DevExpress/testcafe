@@ -391,18 +391,18 @@ export default class TestController {
     }
 
     _checkForExcessiveAwaits (snapshotPropertyCallsites, checkedCallsite) {
-        const key = getCallsiteId(checkedCallsite);
+        const callsiteId = getCallsiteId(checkedCallsite);
 
         // NOTE: If there are unasserted callsites, we should add all of them to awaitedSnapshotWarnings.
         // The warnings themselves are raised after the test run in wrap-test-function
-        if (snapshotPropertyCallsites[key] && !snapshotPropertyCallsites[key].checked) {
-            for (const propertyCallsite of snapshotPropertyCallsites[key].callsites)
+        if (snapshotPropertyCallsites[callsiteId] && !snapshotPropertyCallsites[callsiteId].checked) {
+            for (const propertyCallsite of snapshotPropertyCallsites[callsiteId].callsites)
                 this.testRun.observedCallsites.awaitedSnapshotWarnings.set(getCallsiteStackFrameString(propertyCallsite), propertyCallsite);
 
-            delete snapshotPropertyCallsites[key];
+            delete snapshotPropertyCallsites[callsiteId];
         }
         else
-            snapshotPropertyCallsites[key] = { callsites: [], checked: true };
+            snapshotPropertyCallsites[callsiteId] = { callsites: [], checked: true };
     }
 
     _expect$ (actual) {
