@@ -2,7 +2,7 @@ import hammerhead from './deps/hammerhead';
 import testCafeCore from './deps/testcafe-core';
 import testCafeUI from './deps/testcafe-ui';
 import cursor from './cursor';
-import isWindowInIframe from '../../utils/is-window-in-iframe';
+import isIframeWindow from '../../utils/is-window-in-iframe';
 
 const browserUtils  = hammerhead.utils.browser;
 const Promise       = hammerhead.Promise;
@@ -94,7 +94,7 @@ export function fromPoint (x, y, expectedElement) {
             // In this case, you should hide a top window's shadow-ui root to obtain an element.
             let resChain = Promise.resolve(topElement);
 
-            if (!foundElement && isWindowInIframe(window) && x > 0 && y > 0) {
+            if (!foundElement && isIframeWindow(window) && x > 0 && y > 0) {
                 resChain = resChain
                     .then(() => getElementFromPoint(x, y, true))
                     .then(element => {

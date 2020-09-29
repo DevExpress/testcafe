@@ -1,3 +1,3 @@
-export default function isWindowInIframe (window: Window): boolean {
+export default function isIframeWindow (window: Window): boolean {
     return window.top !== window;
 }

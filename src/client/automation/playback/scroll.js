@@ -7,7 +7,7 @@ import {
     scrollController,
     sendRequestToFrame
 } from '../deps/testcafe-core';
-import isWindowInIframe from '../../../utils/is-window-in-iframe';
+import isIframeWindow from '../../../utils/is-window-in-iframe';
 
 const Promise        = hammerhead.Promise;
 const messageSandbox = hammerhead.eventSandbox.message;
@@ -260,7 +260,7 @@ export default class ScrollAutomation {
 
         return scrollParentsPromise
             .then(() => {
-                if (isWindowInIframe(window) && !this.skipParentFrames) {
+                if (isIframeWindow(window) && !this.skipParentFrames) {
                     return sendRequestToFrame({
                         cmd:             SCROLL_REQUEST_CMD,
                         offsetX:         currentOffsetX,

@@ -1,7 +1,7 @@
 import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
 import sendRequestToFrame from '../../core/utils/send-request-to-frame';
-import isWindowInIframe from '../../../utils/is-window-in-iframe';
+import isIframeWindow from '../../../utils/is-window-in-iframe';
 
 const Promise          = hammerhead.Promise;
 const nativeMethods    = hammerhead.nativeMethods;
@@ -58,7 +58,7 @@ export function focusAndSetSelection (element, simulateFocus, caretPos) {
         // NOTE: Safari 13 blocks attempts to focus elements inside a third-party iframe before the user interacts with it
         // https://developer.apple.com/documentation/safari-release-notes/safari-13-release-notes
         // We can work around this restriction by focusing the <iframe> element beforehand
-        if (isWindowInIframe(window))
+        if (isIframeWindow(window))
             await sendRequestToFrame({ cmd: GET_IFRAME_REQUEST_CMD }, GET_IFRAME_RESPONSE_CMD, window.parent);
 
         const activeElement               = domUtils.getActiveElement();

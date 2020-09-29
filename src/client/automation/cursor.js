@@ -1,9 +1,9 @@
 import testCafeCore from './deps/testcafe-core';
 import testCafeUI from './deps/testcafe-ui';
-import isWindowInIframe from '../../utils/is-window-in-iframe';
+import isIframeWindow from '../../utils/is-window-in-iframe';
 
 const domUtils = testCafeCore.domUtils;
-const cursorUI = !isWindowInIframe(window) ? testCafeUI.cursorUI : testCafeUI.iframeCursorUI;
+const cursorUI = !isIframeWindow(window) ? testCafeUI.cursorUI : testCafeUI.iframeCursorUI;
 
 
 // NOTE: the default position should be outside of the page (GH-794)
@@ -41,7 +41,7 @@ export default {
     },
 
     get visible () {
-        return !isWindowInIframe(window) && cursorUI.isVisible();
+        return !isIframeWindow(window) && cursorUI.isVisible();
     },
 
     move (newX, newY) {
@@ -57,7 +57,7 @@ export default {
     },
 
     show () {
-        if (!isWindowInIframe(window))
+        if (!isIframeWindow(window))
             cursorUI.show();
     },
 
