@@ -122,20 +122,16 @@ function createPrimitiveGetterWrapper (observedCallsites, callsite) {
 function checkForExcessiveAwaits (snapshotPropertyCallsites, checkedCallsite) {
     const callsiteId = getCallsiteId(checkedCallsite);
 
-    let callsitesToAssert = [ checkedCallsite ];
-
     // NOTE: If there is an asserted callsite, it means that .expect() was already called.
     // We don't raise a warning and delete the callsite.
     if (snapshotPropertyCallsites[callsiteId] && snapshotPropertyCallsites[callsiteId].checked)
         delete snapshotPropertyCallsites[callsiteId];
     // NOTE: If the calliste already exists, but is not asserted, it means that there are
     // multiple awaited callsites in one assertion. We raise a warning for each of them.
-    else if (snapshotPropertyCallsites[callsiteId] && !snapshotPropertyCallsites[callsiteId].asserted) {
-        callsitesToAssert = snapshotPropertyCallsites[callsiteId].callsites.concat(callsitesToAssert);
-        snapshotPropertyCallsites[callsiteId] = { callsites: callsitesToAssert, checked: false };
-    }
+    else if (snapshotPropertyCallsites[callsiteId] && !snapshotPropertyCallsites[callsiteId].asserted)
+        snapshotPropertyCallsites[callsiteId].callsites.push(checkedCallsite);
     else
-        snapshotPropertyCallsites[callsiteId] = { callsites: callsitesToAssert, checked: false };
+        snapshotPropertyCallsites[callsiteId] = { callsites: [ checkedCallsite ], checked: false };
 }
 
 function addSnapshotProperties (obj, getSelector, SelectorBuilder, properties, observedCallsites) {
