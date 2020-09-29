@@ -119,10 +119,10 @@ function createPrimitiveGetterWrapper (observedCallsites, callsite) {
     };
 }
 
-function checkForExcessiveAwaits (snapshotPropertyCallsites, callsiteToCheck) {
-    const key = getCallsiteId(callsiteToCheck);
+function checkForExcessiveAwaits (snapshotPropertyCallsites, checkedCallsite) {
+    const key = getCallsiteId(checkedCallsite);
 
-    let callsitesToAssert = [ callsiteToCheck ];
+    let callsitesToAssert = [ checkedCallsite ];
 
     // NOTE: If there is an asserted callsite, it means that .expect() was already called.
     // We don't raise a warning and delete the callsite.

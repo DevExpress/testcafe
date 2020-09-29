@@ -390,8 +390,8 @@ export default class TestController {
         return this.testRun.executeAction(name, new GetBrowserConsoleMessagesCommand(), callsite);
     }
 
-    _checkForExcessiveAwaits (snapshotPropertyCallsites, callsiteToCheck) {
-        const key = getCallsiteId(callsiteToCheck);
+    _checkForExcessiveAwaits (snapshotPropertyCallsites, checkedCallsite) {
+        const key = getCallsiteId(checkedCallsite);
 
         // NOTE: If there are unasserted callsites, we should add all of them to awaitedSnapshotWarnings.
         // The warnings themselves are raised after the test run in wrap-test-function
