@@ -16,7 +16,7 @@ image: Visual Studio 2019
 
 environment:
   NODEJS_VERSION: "12"
-  RETRY_FAILED_TESTS: "true"
+  RETRY_FAILED_TESTS: "false"
 
   matrix:
     - GULP_TASK: "test-functional-local-ie"
