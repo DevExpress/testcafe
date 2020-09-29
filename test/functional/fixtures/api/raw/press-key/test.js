@@ -3,7 +3,7 @@ const errorInEachBrowserContains = require('../../../../assertion-helper.js').er
 
 
 describe('[Raw API] Press action', function () {
-    it('Clear input value with shortcuts', function () {
+    it.only('Clear input value with shortcuts', function () {
         return runTests('./testcafe-fixtures/press-key.testcafe', 'Clear input value', { shouldFail: true })
             .catch(function (errs) {
                 errorInEachBrowserContains(errs, 'Input value is ""', 0);
