@@ -12,7 +12,7 @@ branches:
 platform:
   - x64
 
-image: Visual Studio 2015
+image: Visual Studio 2019
 
 environment:
   NODEJS_VERSION: "12"
