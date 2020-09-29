@@ -2,7 +2,13 @@ import VideoRecorder from './recorder';
 import BrowserJob from '../runner/browser-job';
 import { Dictionary } from '../configuration/interfaces';
 import WarningLog from '../notifications/warning-log';
-import { VideoOptions, TestVideoInfo, TestRunVideoInfo, TestRunVideoSavedEventArgs } from './interfaces';
+import {
+    VideoOptions,
+    TestVideoInfo,
+    TestRunVideoInfo,
+    TestRunVideoSavedEventArgs
+} from './interfaces';
+
 import moment from 'moment';
 
 export default class Videos {

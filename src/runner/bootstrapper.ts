@@ -1,7 +1,12 @@
 import path from 'path';
 import fs from 'fs';
 import isCI from 'is-ci';
-import { flatten, chunk, times } from 'lodash';
+import {
+    flatten,
+    chunk,
+    times
+} from 'lodash';
+
 import makeDir from 'make-dir';
 import OS from 'os-family';
 import { errors, findWindow } from 'testcafe-browser-tools';

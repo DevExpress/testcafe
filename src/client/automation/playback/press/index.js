@@ -1,5 +1,12 @@
 import hammerhead from '../../deps/hammerhead';
-import { arrayUtils, domUtils, promiseUtils, delay, getKeyArray, sendRequestToFrame } from '../../deps/testcafe-core';
+import {
+    arrayUtils,
+    domUtils,
+    promiseUtils,
+    delay,
+    getKeyArray,
+    sendRequestToFrame
+} from '../../deps/testcafe-core';
 import KeyPressSimulator from './key-press-simulator';
 import supportedShortcutHandlers from './shortcuts';
 import { getActualKeysAndEventKeyProperties, getDeepActiveElement } from './utils';

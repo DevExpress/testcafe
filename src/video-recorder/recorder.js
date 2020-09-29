@@ -6,7 +6,11 @@ import makeDir from 'make-dir';
 import TempDirectory from '../utils/temp-directory';
 import PathPattern from '../utils/path-pattern';
 import WARNING_MESSAGES from '../notifications/warning-message';
-import { getPluralSuffix, getConcatenatedValuesString, getToBeInPastTense } from '../utils/string';
+import {
+    getPluralSuffix,
+    getConcatenatedValuesString,
+    getToBeInPastTense
+} from '../utils/string';
 
 import TestRunVideoRecorder from './test-run-video-recorder';
 import { EventEmitter } from 'events';

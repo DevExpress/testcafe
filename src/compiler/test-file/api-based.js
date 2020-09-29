@@ -1,4 +1,10 @@
-import { dirname, relative, join, sep as pathSep } from 'path';
+import {
+    dirname,
+    relative,
+    join,
+    sep as pathSep
+} from 'path';
+
 import { readFileSync } from 'fs';
 import stripBom from 'strip-bom';
 import TestFileCompilerBase from './base';

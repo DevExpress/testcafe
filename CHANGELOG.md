@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.9.3 (2020-9-17)
+
+### Bug Fixes
+
+* Fixed the `RequestMock` type definitions to accept any type for the headers ([#5529](https://github.com/DevExpress/testcafe/issues/5529))
+* TestCafe no longer displays a warning about missing `await` when you save a snapshot property to a variable but do not use it later in the test ([#5534](https://github.com/DevExpress/testcafe/issues/5534))
+* Consecutive `document.getElementsByTagName('body')` calls now produce the correct results even if the first call was made before a document body was parsed entirely ([#5322](https://github.com/DevExpress/testcafe/issues/5322))
+
 ## v1.9.2 (2020-9-2)
 
 ### Bug Fixes

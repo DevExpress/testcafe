@@ -1,0 +1,7 @@
+   191 |test('Snapshot property without await', async t => {
+   192 |    await t.expect(Selector('#el1').innerText).eql('');
+   193 |
+   194 |    console.log(Selector('#el1').innerText); //eslint-disable-line
+   195 |
+ > 196 |    const tag = `element: ${Selector('#el1').tagName}`; //eslint-disable-line
+   197 |});

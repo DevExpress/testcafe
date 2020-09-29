@@ -30,7 +30,11 @@ import {
 import DriverStatus from '../status';
 
 import runWithBarriers from '../utils/run-with-barriers';
-import { ensureElements, createElementDescriptor, createAdditionalElementDescriptor } from '../utils/ensure-elements';
+import {
+    ensureElements,
+    createElementDescriptor,
+    createAdditionalElementDescriptor
+} from '../utils/ensure-elements';
 
 import {
     ActionElementIsInvisibleError,

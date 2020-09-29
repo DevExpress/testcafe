@@ -3,7 +3,12 @@ import debug from 'debug';
 import promisifyEvent from 'promisify-event';
 import mapReverse from 'map-reverse';
 import { EventEmitter } from 'events';
-import { flattenDeep as flatten, pull as remove, isFunction } from 'lodash';
+import {
+    flattenDeep as flatten,
+    pull as remove,
+    isFunction
+} from 'lodash';
+
 import Bootstrapper from './bootstrapper';
 import Reporter from '../reporter';
 import Task from './task';
@@ -14,7 +19,13 @@ import { assertType, is } from '../errors/runtime/type-assertions';
 import { renderForbiddenCharsList } from '../errors/test-run/utils';
 import detectFFMPEG from '../utils/detect-ffmpeg';
 import checkFilePath from '../utils/check-file-path';
-import { addRunningTest, removeRunningTest, startHandlingTestErrors, stopHandlingTestErrors } from '../utils/handle-errors';
+import {
+    addRunningTest,
+    removeRunningTest,
+    startHandlingTestErrors,
+    stopHandlingTestErrors
+} from '../utils/handle-errors';
+
 import OPTION_NAMES from '../configuration/option-names';
 import FlagList from '../utils/flag-list';
 import prepareReporters from '../utils/prepare-reporters';

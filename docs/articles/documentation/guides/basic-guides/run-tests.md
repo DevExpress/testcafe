@@ -465,7 +465,7 @@ To save time spent on testing, TestCafe allows you to execute tests *concurrentl
 
 To enable concurrency, use the [-c (--concurrency)](../../reference/command-line-interface.md#-c-n---concurrency-n) command line option or the [runner.concurrency](../../reference/testcafe-api/runner/concurrency.md) API method.
 
-> Important! Concurrent test execution is not supported in Microsoft Edge. This is because there is no known way to start Edge in a new window and make it open a particular URL.
+> Important! Concurrent test execution is not supported in Microsoft Edge Legacy. This is because there is no known way to start Edge in a new window and make it open a particular URL.
 
 The following command invokes three Chrome instances and runs tests concurrently.
 

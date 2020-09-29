@@ -1,4 +1,10 @@
-import { flattenDeep, find, chunk, uniq } from 'lodash';
+import {
+    flattenDeep,
+    find,
+    chunk,
+    uniq
+} from 'lodash';
+
 import stripBom from 'strip-bom';
 import { readFile } from '../utils/promisified-functions';
 import { GeneralError } from '../errors/runtime';

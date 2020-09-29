@@ -1,6 +1,11 @@
 import chalk from 'chalk';
 import indentString from 'indent-string';
-import { identity, escape as escapeHtml, assignIn } from 'lodash';
+import {
+    identity,
+    escape as escapeHtml,
+    assignIn
+} from 'lodash';
+
 import moment from '../utils/moment-loader';
 import OS from 'os-family';
 import { wordWrap, removeTTYColors } from '../utils/string';

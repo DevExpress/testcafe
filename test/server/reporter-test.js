@@ -11,7 +11,6 @@ const { ReporterPluginError }         = require('../../lib/errors/runtime');
 chai.use(require('chai-string'));
 
 describe('Reporter', () => {
-    // Runnable configuration mocks
     const screenshotDir = '/screenshots/1445437598847';
 
     const browserConnectionMocks = [
@@ -21,7 +20,8 @@ describe('Reporter', () => {
                 alias:           'Chrome',
                 parsedUserAgent: { userAgent: 'Chrome' }
             },
-            isHeadlessBrowser: () => false },
+            isHeadlessBrowser: () => false
+        },
         {
             userAgent:   'Firefox',
             browserInfo: {

@@ -82,7 +82,7 @@ interface RequestData {
     /**
      * Request headers in the property-value form. Logged if the `logRequestHeaders` option is set to `true`.
      */
-    headers: object;
+    headers: Record<string, string>;
     /**
      * The response body. Logged if the `logResponseBody` option is set to `true`.
      * A [Buffer](https://nodejs.org/api/buffer.html) or string depending on the `stringifyResponseBody` option.
@@ -102,7 +102,7 @@ interface ResponseData {
     /**
      * Response headers in the property-value form. Logged if the `logResponseHeaders` option is set to true.
      */
-    headers: object;
+    headers: Record<string, string>;
     /**
      * The response body.
      * Logged if the `logResponseBody` option is set to true.
@@ -158,7 +158,7 @@ interface RequestMock {
      * @param statusCode - The response status code.
      * @param headers - Custom headers added to the response in the property-value form.
      */
-    respond(body?: object | string | ((req: RequestOptions, res: ResponseMock) => any), statusCode?: number, headers?: object): RequestMock;
+    respond(body?: object | string | ((req: RequestOptions, res: ResponseMock) => any), statusCode?: number, headers?: Record<string, string>): RequestMock;
 }
 
 interface RequestMockFactory {
@@ -170,7 +170,7 @@ interface RequestMockFactory {
  */
 interface RequestOptions {
     /** The request headers in the property-value form. */
-    headers: Object;
+    headers: Record<string, string>;
     /** The request body. */
     body: Buffer;
     /** The URL to which the request is sent. */
@@ -197,16 +197,16 @@ interface RequestOptions {
      * authentication additionally specifies `workstation` and `domain`.
      * See {@link https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/authentication.html#http-authentication HTTP Authentication}.
      */
-    credentials: object;
+    credentials: Record<string, string>;
     /**
      * If a proxy is used, the property contains information about its `host`, `hostname`, `port`,
      * `proxyAuth`, `authHeader` and `bypassRules`.
      */
-    proxy: object;
+    proxy: Record<string, unknown>;
 }
 
 interface ResponseMock {
-    headers: object;
+    headers: Record<string, string>;
     statusCode: number;
     setBody(value: string): void;
 }

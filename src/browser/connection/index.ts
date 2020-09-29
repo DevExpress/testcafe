@@ -284,10 +284,10 @@ export default class BrowserConnection extends EventEmitter {
         this.disconnectionPromise.reject  = rejectFn as unknown as Function;
     }
 
-    public async processDisconnection (disconnectionThresholdExceedeed: boolean): Promise<void> {
+    public async processDisconnection (disconnectionThresholdExceeded: boolean): Promise<void> {
         const { resolve, reject } = this.disconnectionPromise as DisconnectionPromise<void>;
 
-        if (disconnectionThresholdExceedeed)
+        if (disconnectionThresholdExceeded)
             reject();
         else
             resolve();

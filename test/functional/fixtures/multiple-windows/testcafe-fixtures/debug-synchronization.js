@@ -1,15 +1,14 @@
 import cdp from 'chrome-remote-interface';
 
-
 fixture `Test`
     .page `../pages/debug-synchronization/parent.html`;
 
-const TARGET_CHILD_WINDOW_TITLE  = 'Multiwindow debug test: child';
+const TARGET_CHILD_WINDOW_FILENAME = 'child.html';
 
 async function getChildWindowTarget (port) {
     const targets = await cdp.List({ port });
 
-    return targets.find(({ title }) => title === TARGET_CHILD_WINDOW_TITLE);
+    return targets.find(({ url }) => url.includes(TARGET_CHILD_WINDOW_FILENAME));
 }
 
 async function executeClientFunction (cdpClient, action) {
@@ -44,7 +43,7 @@ async function waitUntilDebuggingStarts (cdpClient) {
 async function getChildClient (port, target) {
     const childClient = await cdp({ port, target });
 
-    await childClient.Runtime.enable;
+    await childClient.Runtime.enable();
 
     return childClient;
 }

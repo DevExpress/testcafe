@@ -85,6 +85,7 @@ import {
     getResult as getExecuteSelectorResult,
     getResultDriverStatus as getExecuteSelectorResultDriverStatus
 } from './command-executors/execute-selector';
+
 import executeChildWindowDriverLinkSelector from './command-executors/execute-child-window-driver-link-selector';
 import ClientFunctionExecutor from './command-executors/client-functions/client-function-executor';
 import ChildWindowDriverLink from './driver-link/window/child';
@@ -1470,17 +1471,15 @@ export default class Driver extends serviceUtils.EventEmitter {
         this.consoleMessages = messages;
     }
 
-    _getDriverRole () {
+    async _getDriverRole () {
         if (!this.windowId)
-            return Promise.resolve(DriverRole.master);
+            return DriverRole.master;
 
-        return browser
-            .getActiveWindowId(this.browserActiveWindowId, hammerhead.createNativeXHR)
-            .then(({ activeWindowId }) => {
-                return activeWindowId === this.windowId ?
-                    DriverRole.master :
-                    DriverRole.replica;
-            });
+        const { activeWindowId } = await browser.getActiveWindowId(this.browserActiveWindowId, hammerhead.createNativeXHR);
+
+        return activeWindowId === this.windowId ?
+            DriverRole.master :
+            DriverRole.replica;
     }
 
     _init () {
@@ -1495,26 +1494,22 @@ export default class Driver extends serviceUtils.EventEmitter {
         this._initConsoleMessages();
     }
 
-    _doFirstPageLoadSetup () {
+    async _doFirstPageLoadSetup () {
         if (this.isFirstPageLoad && this.canUseDefaultWindowActions) {
             // Stub: perform initial setup of the test first page
-
-            return Promise.resolve();
         }
-
-        return Promise.resolve();
     }
 
-    start () {
+    async start () {
         this._init();
 
-        this._doFirstPageLoadSetup()
-            .then(() => this._getDriverRole())
-            .then(role => {
-                if (role === DriverRole.master)
-                    this._startInternal();
-                else
-                    this._initParentWindowLink();
-            });
+        await this._doFirstPageLoadSetup();
+
+        const role = await this._getDriverRole();
+
+        if (role === DriverRole.master)
+            this._startInternal();
+        else
+            this._initParentWindowLink();
     }
 }

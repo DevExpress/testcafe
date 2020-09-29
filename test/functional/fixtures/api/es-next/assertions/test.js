@@ -6,6 +6,14 @@ const WARNING_MESSAGES   = require('../../../../../../lib/notifications/warning-
 
 const DATA_PATH = path.join(__dirname, './data');
 
+function createRegExp (message) {
+    return new RegExp(escapeStringRegExp(message));
+}
+
+function createRegExpFromFile (fileName) {
+    return createRegExp(fs.readFileSync(path.join(DATA_PATH, fileName)).toString().replace(/\r/g, ''));
+}
+
 describe('[API] Assertions', function () {
     it('Should perform .eql() assertion', function () {
         return runTests('./testcafe-fixtures/assertions-test.js', '.eql() assertion', {
@@ -189,7 +197,7 @@ describe('[API] Assertions', function () {
             only:       'chrome'
         })
             .catch(function () {
-                expect(testReport.warnings[0]).to.match(new RegExp(escapeStringRegExp(WARNING_MESSAGES.assertedSelectorInstance)));
+                expect(testReport.warnings[0]).to.match(createRegExp(WARNING_MESSAGES.assertedSelectorInstance));
             });
     });
 
@@ -206,32 +214,37 @@ describe('[API] Assertions', function () {
             });
     });
 
-    it('Should raise a warning when trying to await Selector property in assertion', function () {
-        return runTests('./testcafe-fixtures/assertions-test.js', 'Await Selector property', { only: 'chrome' })
-            .then(() => {
-                const snapshotWarningRegExp = new RegExp(escapeStringRegExp(WARNING_MESSAGES.excessiveAwaitInAssertion));
+    it('Should raise a warning when trying to await Selector property in assertion', async function () {
+        await runTests('./testcafe-fixtures/assertions-test.js', 'Await Selector property', { only: 'chrome' });
 
-                const snapshotWarnings = testReport.warnings.filter(warningStr => {
-                    return warningStr.match(snapshotWarningRegExp);
-                });
+        const snapshotWarningRegExp = createRegExp(WARNING_MESSAGES.excessiveAwaitInAssertion);
 
-                expect(snapshotWarnings.length).to.eql(1);
-                expect(snapshotWarnings[0]).to.match(new RegExp(escapeStringRegExp(fs.readFileSync(path.join(DATA_PATH, 'expected-selector-property-awaited-callsite')).toString().replace(/\r/g, ''))));
-            });
+        const snapshotWarnings = testReport.warnings.filter(warningStr => {
+            return warningStr.match(snapshotWarningRegExp);
+        });
+
+        expect(snapshotWarnings.length).to.eql(1);
+        expect(snapshotWarnings[0]).to.match(createRegExpFromFile('expected-selector-property-awaited-callsite'));
     });
 
-    it('Should raise a warning when using DOM Node snapshot property without await', function () {
-        return runTests('./testcafe-fixtures/assertions-test.js', 'Snapshot property without await', { only: 'chrome' })
-            .then(() => {
-                const missingAwaitWarningRegExp = new RegExp(escapeStringRegExp(WARNING_MESSAGES.missingAwaitOnSnapshotProperty));
+    it('Should raise a warning when using DOM Node snapshot property without await', async function () {
+        await runTests('./testcafe-fixtures/assertions-test.js', 'Snapshot property without await', { only: 'chrome' });
 
-                const missingAwaitWarnings = testReport.warnings.filter(warningStr => {
-                    return warningStr.match(missingAwaitWarningRegExp);
-                });
+        const missingAwaitWarningRegExp = createRegExp(WARNING_MESSAGES.missingAwaitOnSnapshotProperty);
 
-                expect(missingAwaitWarnings.length).to.eql(1);
-                expect(missingAwaitWarnings[0]).to.match(new RegExp(escapeStringRegExp(fs.readFileSync(path.join(DATA_PATH, 'expected-missing-await-on-snapshot-callsite')).toString().replace(/\r/g, ''))));
-            });
+        const missingAwaitWarnings = testReport.warnings.filter(warningStr => {
+            return warningStr.match(missingAwaitWarningRegExp);
+        });
+
+        expect(missingAwaitWarnings.length).to.eql(2);
+        expect(missingAwaitWarnings[0]).to.match(createRegExpFromFile('expected-missing-await-on-snapshot-callsite/console-log'));
+        expect(missingAwaitWarnings[1]).to.match(createRegExpFromFile('expected-missing-await-on-snapshot-callsite/template-expansion'));
+    });
+
+    it('Should not raise a warning when using DOM Node snapshot property without in assignment', async function () {
+        await runTests('./testcafe-fixtures/assertions-test.js', 'Snapshot property without await but valid', { only: 'chrome' });
+
+        expect(testReport.warnings).be.empty;
     });
 
     it('Should retry assertion for selector results', function () {

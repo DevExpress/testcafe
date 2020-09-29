@@ -3,7 +3,14 @@ import SelectorBuilder from '../../client-functions/selectors/selector-builder';
 import ClientFunctionBuilder from '../../client-functions/client-function-builder';
 import functionBuilderSymbol from '../../client-functions/builder-symbol';
 import CommandBase from './base';
-import { ActionOptions, ClickOptions, MouseOptions, TypeOptions, DragToElementOptions } from './options';
+import {
+    ActionOptions,
+    ClickOptions,
+    MouseOptions,
+    TypeOptions,
+    DragToElementOptions
+} from './options';
+
 import { initSelector, initUploadSelector } from './validations/initializers';
 import { executeJsExpression } from '../execute-js-expression';
 import { isJSExpression } from './utils';

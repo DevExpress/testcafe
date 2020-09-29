@@ -1,4 +1,9 @@
-import { pull, remove, chain } from 'lodash';
+import {
+    pull,
+    remove,
+    chain
+} from 'lodash';
+
 import { readSync as read } from 'read-file-relative';
 import promisifyEvent from 'promisify-event';
 import Mustache from 'mustache';
@@ -14,6 +19,7 @@ import {
     SwitchToWindowPredicateError,
     WindowNotFoundError
 } from '../errors/test-run/';
+
 import PHASE from './phase';
 import CLIENT_MESSAGES from './client-messages';
 import COMMAND_TYPE from './commands/type';
@@ -42,10 +48,7 @@ import {
     isResizeWindowCommand
 } from './commands/utils';
 
-import {
-    GetCurrentWindowsCommand,
-    SwitchToWindowCommand
-} from './commands/actions';
+import { GetCurrentWindowsCommand, SwitchToWindowCommand } from './commands/actions';
 
 import { TEST_RUN_ERRORS } from '../errors/types';
 import processTestFnError from '../errors/process-test-fn-error';
