@@ -395,7 +395,7 @@ export default class TestController {
 
         // NOTE: If there are unasserted callsites, we should add all of them to awaitedSnapshotWarnings.
         // The warnings themselves are raised after the test run in wrap-test-function
-        if (snapshotPropertyCallsites[key] && snapshotPropertyCallsites[key].asserted === false) {
+        if (snapshotPropertyCallsites[key] && !snapshotPropertyCallsites[key].asserted) {
             for (const propertyCallsite of snapshotPropertyCallsites[key].callsites)
                 this.testRun.observedCallsites.awaitedSnapshotWarnings.set(getCallsiteStackFrameString(propertyCallsite), propertyCallsite);
 
