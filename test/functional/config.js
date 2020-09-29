@@ -116,7 +116,7 @@ testingEnvironments[testingEnvironmentNames.localChrome] = {
 testingEnvironments[testingEnvironmentNames.localBrowsersIE] = {
     isLocalBrowsers: true,
 
-    retryTestPages: true,
+    retryTestPages: false,
 
     browsers: [
         {

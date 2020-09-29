@@ -4,6 +4,7 @@ fixture `gh-1275`
     .page `http://localhost:3000/fixtures/regression/gh-1275/pages/index.html`;
 
 test('Hide input on blur', async t => {
+    console.log('***')
     console.log(t.browser);
 
     await t
