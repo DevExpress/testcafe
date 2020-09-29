@@ -124,15 +124,16 @@ function checkForExcessiveAwaits (snapshotPropertyCallsites, callsiteToCheck) {
 
     let callsitesToAssert = [ callsiteToCheck ];
 
-    // NOTE: If the calliste already exists, but is not asserted, it means that there are
-    // multiple awaited callsites in one assertion. We raise a warning for each of them.
-    if (snapshotPropertyCallsites[key] && !snapshotPropertyCallsites[key].asserted)
-        callsitesToAssert = snapshotPropertyCallsites[key].callsites.concat(callsitesToAssert);
-
     // NOTE: If there is an asserted callsite, it means that .expect() was already called.
     // We don't raise a warning and delete the callsite.
     if (snapshotPropertyCallsites[key] && snapshotPropertyCallsites[key].asserted)
         delete snapshotPropertyCallsites[key];
+    // NOTE: If the calliste already exists, but is not asserted, it means that there are
+    // multiple awaited callsites in one assertion. We raise a warning for each of them.
+    else if (snapshotPropertyCallsites[key] && !snapshotPropertyCallsites[key].asserted) {
+        callsitesToAssert = snapshotPropertyCallsites[key].callsites.concat(callsitesToAssert);
+        snapshotPropertyCallsites[key] = { callsites: callsitesToAssert, asserted: false };
+    }
     else
         snapshotPropertyCallsites[key] = { callsites: callsitesToAssert, asserted: false };
 }
