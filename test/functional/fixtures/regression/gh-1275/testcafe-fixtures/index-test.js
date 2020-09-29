@@ -5,7 +5,8 @@ fixture `gh-1275`
 
 test('Hide input on blur', async t => {
     console.log('***')
-    console.log(t.browser);
+
+    await t.wait(5000);
 
     await t
         .click('#input1')
