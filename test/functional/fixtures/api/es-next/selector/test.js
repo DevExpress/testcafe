@@ -3,7 +3,6 @@ const expect = require('chai').expect;
 const DEFAULT_SELECTOR_TIMEOUT   = 3000;
 const DEFAULT_RUN_OPTIONS        = { selectorTimeout: DEFAULT_SELECTOR_TIMEOUT };
 const DEFAULT_CHROME_RUN_OPTIONS = { only: 'chrome', selectorTimeout: DEFAULT_SELECTOR_TIMEOUT };
-const SKIP_IE11_RUN_OPTIONS      = { only: ['chrome', 'firefox'], selectorTimeout: DEFAULT_SELECTOR_TIMEOUT };
 
 describe('[API] Selector', function () {
     it('Should provide basic properties in HTMLElement snapshots', function () {
@@ -123,7 +122,7 @@ describe('[API] Selector', function () {
     });
 
     it('Should provide .shadowRoot() method', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "shadowRoot" method', DEFAULT_RUN_OPTIONS);
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "shadowRoot" method', { skip: 'ie,edge', selectorTimeout: DEFAULT_SELECTOR_TIMEOUT });
     });
 
     it('Should provide .nextSibling() method', function () {
@@ -327,151 +326,5 @@ describe('[API] Selector', function () {
                 selectorTimeout: 3000
             });
         });
-    });
-});
-
-describe('[API] Selector shadowRoot()', function () {
-    // it('Should provide basic properties in HTMLElement snapshots', function () {
-    //     return runTests('./testcafe-fixtures/selector-shadow-root-test.js', 'HTMLElement snapshot basic properties', SKIP_IE11_RUN_OPTIONS);
-    // });
-
-    // it('Should provide basic properties in SVGElement snapshots', function () {
-    //     return runTests('./testcafe-fixtures/selector-shadow-root-test.js', 'SVGElement snapshot basic properties', SKIP_IE11_RUN_OPTIONS);
-    // });
-
-    // it('Should provide input-specific properties in element snapshots', function () {
-    //     return runTests('./testcafe-fixtures/selector-shadow-root-test.js', 'Input-specific element snapshot properties', SKIP_IE11_RUN_OPTIONS);
-    // });
-
-    it('Should provide `innerText` property in element snapshots', function () {
-        return runTests('./testcafe-fixtures/selector-shadow-root-test.js', '`innerText` element snapshot property', SKIP_IE11_RUN_OPTIONS);
-    });
-
-    it('Should provide node snapshots for non-element nodes', function () {
-        return runTests('./testcafe-fixtures/selector-shadow-root-test.js', 'Non-element node snapshots', SKIP_IE11_RUN_OPTIONS);
-    });
-
-    it('Should accept string as constructor argument', function () {
-        return runTests('./testcafe-fixtures/selector-shadow-root-test.js', 'String ctor argument', SKIP_IE11_RUN_OPTIONS);
-    });
-
-    it('Should wait for element to appear in DOM', function () {
-        return runTests('./testcafe-fixtures/selector-shadow-root-test.js', 'Wait for element in DOM', SKIP_IE11_RUN_OPTIONS);
-    });
-
-    it('Should return `null` if element does not appear within given time', function () {
-        return runTests('./testcafe-fixtures/selector-shadow-root-test.js', 'Element does not appear', { selectorTimeout: 300 });
-    });
-
-    it('Should check element visibility if option is enabled', function () {
-        return runTests('./testcafe-fixtures/selector-shadow-root-test.js', 'Visibility check', SKIP_IE11_RUN_OPTIONS);
-    });
-
-    it('Should use timeout specified via property', function () {
-        return runTests('./testcafe-fixtures/selector-shadow-root-test.js', 'Timeout', { selectorTimeout: 4000 });
-    });
-
-    // it('Should provide "selector" method in node snapshot', function () {
-    //     return runTests('./testcafe-fixtures/selector-shadow-root-test.js', 'Snapshot `selector` method', SKIP_IE11_RUN_OPTIONS);
-    // });
-
-    it('Should provide "hasClass" method in node snapshot', function () {
-        return runTests('./testcafe-fixtures/selector-shadow-root-test.js', 'Snapshot `hasClass` method', SKIP_IE11_RUN_OPTIONS);
-    });
-
-    it('Should provide "addCustomDOMProperties" method in node snapshot', function () {
-        return runTests('./testcafe-fixtures/selector-shadow-root-test.js', 'Selector `addCustomDOMProperties` method', SKIP_IE11_RUN_OPTIONS);
-    });
-
-    it('Should provide "addCustomMethods" method in node snapshot', function () {
-        return runTests('./testcafe-fixtures/selector-shadow-root-test.js', 'Selector `addCustomMethods` method', SKIP_IE11_RUN_OPTIONS);
-    });
-
-    it('Selector `addCustomMethods` method - Selector mode', function () {
-        return runTests('./testcafe-fixtures/selector-shadow-root-test.js', 'Selector `addCustomMethods` method - Selector mode', SKIP_IE11_RUN_OPTIONS);
-    });
-
-    it('Should wait for element to appear on new page', function () {
-        return runTests('./testcafe-fixtures/selector-shadow-root-test.js', 'Element on new page', SKIP_IE11_RUN_OPTIONS);
-    });
-
-    // it('Should provide snapshot property shorthands on selector', function () {
-    //     return runTests('./testcafe-fixtures/selector-shadow-root-test.js', 'Snapshot properties shorthands on selector', DEFAULT_CHROME_RUN_OPTIONS);
-    // });
-
-    it('Should filter results with `nth()` method', function () {
-        return runTests('./testcafe-fixtures/selector-shadow-root-test.js', 'Selector "nth()" method', DEFAULT_CHROME_RUN_OPTIONS);
-    });
-
-    it('Should filter results with `withText()` method', function () {
-        return runTests('./testcafe-fixtures/selector-shadow-root-test.js', 'Selector "withText" method', DEFAULT_CHROME_RUN_OPTIONS);
-    });
-
-    it('Should filter results with `withExactText()` method', function () {
-        return runTests('./testcafe-fixtures/selector-shadow-root-test.js', 'Selector "withExactText" method', DEFAULT_CHROME_RUN_OPTIONS);
-    });
-
-    it('Should filter results with `withAttribute()` method', function () {
-        return runTests('./testcafe-fixtures/selector-shadow-root-test.js', 'Selector "withAttribute" method', DEFAULT_CHROME_RUN_OPTIONS);
-    });
-
-    it('Should filter results with `filter()` method', function () {
-        return runTests('./testcafe-fixtures/selector-shadow-root-test.js', 'Selector "filter" method', DEFAULT_CHROME_RUN_OPTIONS);
-    });
-
-    it('Should filter using combination of filter methods', function () {
-        return runTests('./testcafe-fixtures/selector-shadow-root-test.js', 'Combination of filter methods', DEFAULT_CHROME_RUN_OPTIONS);
-    });
-
-    it('Should provide methods for filtering by visibility for plain structure of HTML elements', function () {
-        return runTests('./testcafe-fixtures/selector-shadow-root-test.js', 'Selector `filterVisible/filterHidden` methods with plain structure', SKIP_IE11_RUN_OPTIONS);
-    });
-
-    it('Should provide methods for filtering by visibility for hierarchical structure of HTML elements', function () {
-        return runTests('./testcafe-fixtures/selector-shadow-root-test.js', 'Selector `filterVisible/filterHidden` methods with hierarchical structure', SKIP_IE11_RUN_OPTIONS);
-    });
-
-    it('Should provide .find() method', function () {
-        return runTests('./testcafe-fixtures/selector-shadow-root-test.js', 'Selector "find" method', SKIP_IE11_RUN_OPTIONS);
-    });
-
-    it('Should provide .parent() method', function () {
-        return runTests('./testcafe-fixtures/selector-shadow-root-test.js', 'Selector "parent" method', SKIP_IE11_RUN_OPTIONS);
-    });
-
-    it('Should provide .child() method', function () {
-        return runTests('./testcafe-fixtures/selector-shadow-root-test.js', 'Selector "child" method', SKIP_IE11_RUN_OPTIONS);
-    });
-
-    it('Should provide .sibling() method', function () {
-        return runTests('./testcafe-fixtures/selector-shadow-root-test.js', 'Selector "sibling" method', SKIP_IE11_RUN_OPTIONS);
-    });
-
-    it('Should provide .nextSibling() method', function () {
-        return runTests('./testcafe-fixtures/selector-shadow-root-test.js', 'Selector "nextSibling" method', SKIP_IE11_RUN_OPTIONS);
-    });
-
-    it('Should provide .prevSibling() method', function () {
-        return runTests('./testcafe-fixtures/selector-shadow-root-test.js', 'Selector "prevSibling" method', SKIP_IE11_RUN_OPTIONS);
-    });
-
-    it('Should provide "exists" and "count" properties', function () {
-        return runTests('./testcafe-fixtures/selector-shadow-root-test.js', 'Selector "count" and "exists" properties', SKIP_IE11_RUN_OPTIONS);
-    });
-
-    it('Should provide dependencies and index argument to selector filter', function () {
-        return runTests('./testcafe-fixtures/selector-shadow-root-test.js', 'Selector filter dependencies and index argument', DEFAULT_CHROME_RUN_OPTIONS);
-    });
-
-    it('Should provide filter origin argument', function () {
-        return runTests('./testcafe-fixtures/selector-shadow-root-test.js', 'Selector filter origin node argument', DEFAULT_CHROME_RUN_OPTIONS);
-    });
-
-    it('Should provide hasAttribute method', function () {
-        return runTests('./testcafe-fixtures/selector-shadow-root-test.js', 'hasAttribute method', SKIP_IE11_RUN_OPTIONS);
-    });
-
-    it('Should not fail on accessing "visible" property for a non-existing element (GH-2386)', () => {
-        return runTests('./testcafe-fixtures/selector-visible-test.js', null, SKIP_IE11_RUN_OPTIONS);
     });
 });
