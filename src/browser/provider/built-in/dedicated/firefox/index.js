@@ -50,7 +50,7 @@ export default {
     },
 
     async closeBrowser (browserId) {
-        const runtimeInfo                  = this.openedBrowsers[browserId];
+        const runtimeInfo = this.openedBrowsers[browserId];
         const { config, marionetteClient } = runtimeInfo;
 
         if (config.headless)
@@ -76,7 +76,7 @@ export default {
     async getVideoFrameData (browserId) {
         const { marionetteClient } = this.openedBrowsers[browserId];
 
-        return marionetteClient.getScreenshotData();
+        return await marionetteClient.getScreenshotData();
     },
 
     async hasCustomActionForBrowser (browserId) {
