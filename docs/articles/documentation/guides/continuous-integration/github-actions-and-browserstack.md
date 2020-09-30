@@ -37,7 +37,7 @@ Create a job that runs the TestCafe tests.
 
 Specify the [job name](https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idname) and the [type of machine](https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on) that should run the job.
 
-You can [**use a GitHub-hosted machine**](https://docs.github.com/en/free-pro-team@latest/actions/reference/specifications-for-github-hosted-runners:
+You can [**use a GitHub-hosted machine**](https://docs.github.com/en/free-pro-team@latest/actions/reference/specifications-for-github-hosted-runners):
 
 ```yml
 name: End-to-End Tests
