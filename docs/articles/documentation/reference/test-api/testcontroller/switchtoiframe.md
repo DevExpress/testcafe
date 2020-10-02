@@ -45,7 +45,7 @@ You can switch to the main window from the `<iframe>` with the [t.switchToMainWi
 
 TestCafe implements [wait mechanisms](../../../guides/concepts/built-in-wait-mechanisms.md) that automatically suspend the test until all required page elements are loaded and ready for interaction. These mechanisms apply to page loads, animations, XHR requests, iframe initializations, etc. TestCafe waits until the target element is ready, or reports an error if this does not happen within a timeout.
 
-This example shows how to allow more time for an `iframe` to load if the default timeout is not enough.
+This example shows how to allow more time for an `iframe` to load if the [default timeout](../../command-line-interface.md#--selector-timeout-ms) is not enough.
 
 ```js
 fixture `Wait for an iframe to load`

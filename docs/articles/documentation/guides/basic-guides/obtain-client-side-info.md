@@ -72,7 +72,7 @@ test('My Test', async t => {
 
 ### Pass Parameters to Client Functions
 
-This example shows the `getLocationPart` client function that returns a [Location](https://developer.mozilla.org/en-US/docs/Web/API/Location) property value. The property name is passed in the `locationPart` parameter.
+This example shows the `getLocationPart` client function that returns a [Location](https://developer.mozilla.org/en-US/docs/Web/API/Location) property value. The property name is passed as the `locationPart` parameter.
 
 ```js
 import { ClientFunction } from 'testcafe';
