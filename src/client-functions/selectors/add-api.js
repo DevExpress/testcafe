@@ -128,7 +128,7 @@ function checkForExcessiveAwaits (snapshotPropertyCallsites, checkedCallsite) {
         delete snapshotPropertyCallsites[callsiteId];
     // NOTE: If the calliste already exists, but is not asserted, it means that there are
     // multiple awaited callsites in one assertion. We raise a warning for each of them.
-    else if (snapshotPropertyCallsites[callsiteId] && !snapshotPropertyCallsites[callsiteId].asserted)
+    else if (snapshotPropertyCallsites[callsiteId] && !snapshotPropertyCallsites[callsiteId].checked)
         snapshotPropertyCallsites[callsiteId].callsites.push(checkedCallsite);
     else
         snapshotPropertyCallsites[callsiteId] = { callsites: [ checkedCallsite ], checked: false };
