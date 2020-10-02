@@ -1,0 +1,60 @@
+# Why TestCafe?
+
+TestCafe excels where other end-to-end testing solutions fall short.
+
+## One NPM package
+
+TestCafe is a self-sufficient testing solution. All you need to get up and running is a recent version of Node.js, a browser — any browser, and the TestCafe NPM package. No mixing and matching of components, no extra configuration.
+
+## As simple and extendable as JavaScript itself
+
+TestCafe tests are full-fledged Node.js apps. Feel free to extend their functionality with your favourite libraries, and use your favourite preprocessors.
+
+## Complex tests made easy
+
+TestCafe’s intuitive and powerful toolkit makes testing easy, whether you’re working with a landing page or a complex web app.
+
+### Mock Requests
+Emulate HTTP responses to feed your app sample data, troubleshoot connectivity errors and cheat downtime.
+
+### Arbitrary client-side injections
+Execute arbitrary client-side code and see what happens.
+
+### Frames and windows
+Make use of multiple browser windows to test out complex user interactions. Switch to and from iframes with ease and stability.
+
+### Concurrent tests
+Run your tests in multiple browsers at once to quickly uncover browser-specific errors.
+
+## Automate what’s possible
+
+### Automated waiting
+Manual timeouts are a thing of the past. Asynchronous from the ground-up, TestCafe knows when to wait and what to wait for before the test can continue.
+
+### Automated authentication scripts
+Save and activate user roles to easily switch between different user accounts.
+
+### Hooks
+Keep your code clean with hooks — routines that are repeated before and after each test.
+
+## Interactive when you need it
+
+### TestCafe Studio
+A GUI test recorder that makes the power of TestCafe accessible to people with zero programming experience.
+
+### Live mode
+Instantly see how the changes you introduce impact the test.
+
+### Debug mode
+Pause your tests to examine the app and troubleshoot errors.
+
+## Community-driven
+
+### Free and Open Source
+TestCafe is distributed for free under the MIT license.
+
+### Community-driven
+The TestCafe team is quick to respond to GitHub issues and StackOverflow questions. Community suggestions shape the future of the product.
+
+### Support
+Paying customers gain access to priority support and receive bugfixes before these changes go live.
