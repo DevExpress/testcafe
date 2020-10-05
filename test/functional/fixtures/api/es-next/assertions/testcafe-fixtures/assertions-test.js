@@ -201,3 +201,43 @@ test('Snapshot property without await but valid', async t => {
 
     await t.expect(Selector('#el1').innerText).eql('');
 });
+
+test('Reused unawaited selector property assertion from a function', async t => {
+    async function assertionFunction () {
+        const selector = Selector('#el1');
+
+        await t.expect(selector.innerText).eql('');
+    }
+
+    await assertionFunction();
+    await assertionFunction();
+    await assertionFunction();
+});
+
+test('Reused awaited selector property assertion from a function', async t => {
+    async function assertionFunction () {
+        const selector = Selector('#el1');
+
+        await t.expect(await selector.innerText).eql('');
+    }
+
+    await assertionFunction();
+    await assertionFunction();
+    await assertionFunction();
+});
+
+test('Reused unawaited selector property assertion in a loop', async t => {
+    for (let i = 0; i < 3; i++)
+        await t.expect(Selector('#el1').innerText).eql('');
+});
+
+test('Reused awaited selector property assertion in a loop', async t => {
+    for (let i = 0; i < 3; i++)
+        await t.expect(await Selector('#el1').innerText).eql('');
+});
+
+test('Multiple awaited selector properties in one assertion', async t => {
+    const selector = Selector('#el1');
+
+    await t.expect(await selector.innerText + await selector.innerText).eql('');
+});

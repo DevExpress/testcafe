@@ -10,6 +10,7 @@ import makeRegExp from '../../utils/make-reg-exp';
 import selectorTextFilter from './selector-text-filter';
 import selectorAttributeFilter from './selector-attribute-filter';
 import prepareApiFnArgs from './prepare-api-args';
+import { getCallsiteId } from '../../utils/callsite';
 
 const VISIBLE_PROP_NAME       = 'visible';
 const SNAPSHOT_PROP_PRIMITIVE = `[object ${ReExecutablePromise.name}]`;
@@ -118,6 +119,21 @@ function createPrimitiveGetterWrapper (observedCallsites, callsite) {
     };
 }
 
+function checkForExcessiveAwaits (snapshotPropertyCallsites, checkedCallsite) {
+    const callsiteId = getCallsiteId(checkedCallsite);
+
+    // NOTE: If there is an asserted callsite, it means that .expect() was already called.
+    // We don't raise a warning and delete the callsite.
+    if (snapshotPropertyCallsites[callsiteId] && snapshotPropertyCallsites[callsiteId].checked)
+        delete snapshotPropertyCallsites[callsiteId];
+    // NOTE: If the calliste already exists, but is not asserted, it means that there are
+    // multiple awaited callsites in one assertion. We raise a warning for each of them.
+    else if (snapshotPropertyCallsites[callsiteId] && !snapshotPropertyCallsites[callsiteId].checked)
+        snapshotPropertyCallsites[callsiteId].callsites.push(checkedCallsite);
+    else
+        snapshotPropertyCallsites[callsiteId] = { callsites: [ checkedCallsite ], checked: false };
+}
+
 function addSnapshotProperties (obj, getSelector, SelectorBuilder, properties, observedCallsites) {
     properties.forEach(prop => {
         Object.defineProperty(obj, prop, {
@@ -137,7 +153,8 @@ function addSnapshotProperties (obj, getSelector, SelectorBuilder, properties, o
 
                 propertyPromise.then = function (onFulfilled, onRejected) {
                     if (observedCallsites) {
-                        observedCallsites.snapshotPropertyCallsites.add(callsite);
+                        checkForExcessiveAwaits(observedCallsites.snapshotPropertyCallsites, callsite);
+
                         observedCallsites.unawaitedSnapshotCallsites.delete(callsite);
                     }
 
