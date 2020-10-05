@@ -7,6 +7,7 @@ import {
     scrollController,
     sendRequestToFrame
 } from '../deps/testcafe-core';
+import isIframeWindow from '../../../utils/is-window-in-iframe';
 
 const Promise        = hammerhead.Promise;
 const messageSandbox = hammerhead.eventSandbox.message;
@@ -16,7 +17,6 @@ const SCROLL_MARGIN_INCREASE_STEP = 20;
 
 const SCROLL_REQUEST_CMD  = 'automation|scroll|request';
 const SCROLL_RESPONSE_CMD = 'automation|scroll|response';
-
 
 // Setup cross-iframe interaction
 messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
@@ -260,7 +260,7 @@ export default class ScrollAutomation {
 
         return scrollParentsPromise
             .then(() => {
-                if (window.top !== window && !this.skipParentFrames) {
+                if (isIframeWindow(window) && !this.skipParentFrames) {
                     return sendRequestToFrame({
                         cmd:             SCROLL_REQUEST_CMD,
                         offsetX:         currentOffsetX,
