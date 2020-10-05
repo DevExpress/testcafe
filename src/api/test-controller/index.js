@@ -14,6 +14,7 @@ import { getDelegatedAPIList, delegateAPI } from '../../utils/delegated-api';
 import WARNING_MESSAGE from '../../notifications/warning-message';
 import getBrowser from '../../utils/get-browser';
 import addWarning from '../../notifications/add-rendered-warning';
+import { getCallsiteId, getCallsiteStackFrameString } from '../../utils/callsite';
 
 import {
     ClickCommand,
@@ -389,15 +390,19 @@ export default class TestController {
         return this.testRun.executeAction(name, new GetBrowserConsoleMessagesCommand(), callsite);
     }
 
-    _checkForExcessiveAwaits (selectorCallsiteList, expectCallsite) {
-        for (const selectorCallsite of selectorCallsiteList) {
-            if (selectorCallsite.filename === expectCallsite.filename &&
-                selectorCallsite.lineNum === expectCallsite.lineNum) {
-                addWarning(this.warningLog, WARNING_MESSAGE.excessiveAwaitInAssertion, selectorCallsite);
+    _checkForExcessiveAwaits (snapshotPropertyCallsites, checkedCallsite) {
+        const callsiteId = getCallsiteId(checkedCallsite);
 
-                selectorCallsiteList.delete(selectorCallsite);
-            }
+        // NOTE: If there are unasserted callsites, we should add all of them to awaitedSnapshotWarnings.
+        // The warnings themselves are raised after the test run in wrap-test-function
+        if (snapshotPropertyCallsites[callsiteId] && !snapshotPropertyCallsites[callsiteId].checked) {
+            for (const propertyCallsite of snapshotPropertyCallsites[callsiteId].callsites)
+                this.testRun.observedCallsites.awaitedSnapshotWarnings.set(getCallsiteStackFrameString(propertyCallsite), propertyCallsite);
+
+            delete snapshotPropertyCallsites[callsiteId];
         }
+        else
+            snapshotPropertyCallsites[callsiteId] = { callsites: [], checked: true };
     }
 
     _expect$ (actual) {
