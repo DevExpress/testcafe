@@ -1176,5 +1176,38 @@ $(document).ready(function () {
                     startNext();
                 });
         });
+
+        asyncTest('mouse or click events should not be raised if touch event was cancelled', function () {
+            const raisedEvents = [];
+
+            const events = [
+                'ontouchstart',
+                'ontouchend',
+                'ontouchmove',
+                'onmousedown',
+                'onmousemove',
+                'onmouseup',
+                'onclick'
+            ];
+
+            events.forEach(eventName => {
+                $el[0][eventName] = function (e) {
+                    if (eventName === 'ontouchstart')
+                        e.preventDefault();
+
+                    raisedEvents.push(eventName);
+                };
+            });
+
+            const click = new ClickAutomation($el[0], new ClickOptions());
+
+            click
+                .run()
+                .then(function () {
+                    deepEqual(raisedEvents, ['ontouchstart', 'ontouchend']);
+
+                    startNext();
+                });
+        });
     }
 });
