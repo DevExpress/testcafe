@@ -28,4 +28,8 @@ describe("Should provide a valid value for the 'document.title' property", () =>
     it('Set document.title in body', () => {
         return runTests('./testcafe-fixtures/index.js', 'set document.title in body');
     });
+
+    it('Iframes', () => {
+        return runTests('./testcafe-fixtures/iframes.js');
+    });
 });
