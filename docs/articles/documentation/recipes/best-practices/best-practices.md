@@ -10,15 +10,14 @@ This article covers the recommended ways to test with TestCafe and covers the fo
 * Smart Assertions
 * Use of Page Objects
 * Use of Roles for Login
-
 * File structure
 * Clean up between Tests (beforeEach)
-* Testing only e2e scenarios / e2e tests appliance
+* E2E Tests Limitations
 * Selectors strategy
 
 ## Smart Assertions
 
-Since web testing is asynchronous, peripheral factors (like network lag, processor, or memory bottlenecks in containers) can interfere with the assertions and render tests inconclusive (otherwise known as 'flaky').
+In end-to-end web testing, peripheral factors (like network lag, processor, or memory bottlenecks in containers) can interfere with the assertions and render tests inconclusive (otherwise known as 'flaky').
 
 Out of the box, TestCafe includes a [Smart Assertion Query Mechanism](../../guides/basic-guides/assert.md#smart-assertion-query-mechanism), which helps mitigate these effects. This mechanism introduces additional wait time for all the assertions: if an assertion fails, the test doesn't fail straight away. Instead, the assertion retries multiple times within a timeout. That helps to stabilize the tests without a big impact on performance.
 
@@ -49,7 +48,7 @@ test('Assertion with Selector', async t => {
 });
 ```
 
-In this snippet, the `developerName` is initialized with the value of a Selector, but because of the `await` keyword, the value is calculated and assigned only once, when this line executes. This effectively disables the smart assertions query mechanism, which in this case leads to inconclusive results. This test fails.
+In this snippet, the `developerName` is initialized with the value of a Selector, but because of the `await` keyword, the value is calculated once and doesn't ever update. This effectively disables the smart assertions query mechanism, which in this case leads to inconclusive results. This test fails.
 
 To avoid this, initialize the variable with a `Selector API` promise. To do that, omit the `await` keyword:
 
@@ -131,7 +130,7 @@ In this case, TestCafe applies the smart query mechanism and retries the asserti
 
 Use the Page Model in your tests. It helps you abstract the tested page into a single file that you can use to target page elements.
 
-This approach improves the flexibility of your tests - if the UI changes, you only need to change one file to update all the references. Define common operations as your model's methods. Tests are then more readable and less brittle because there is no duplicate code.
+This approach improves the flexibility of your tests - if the UI changes, change one file to update all the references. Define common operations as your model's methods. Tests are then more readable and less brittle because there is no duplicate code.
 
 The page model use is described in more detail in the [Page Model](../../guides/concepts/page-model.md) article.
 
@@ -153,9 +152,7 @@ Follow these guidelines to keep your test structure manageable and "clean":
 
 * Use the `.testcaferc.json` configuration file to fine-tune your tests, which can be useful in CI/CD systems. This file must be located in the root directory of the project. For more information, read the [Configuration File](../../reference/configuration-file.md) article.
 
-* While it's technically possible to define multiple `fixture`s in a single file, it is not recommended. Define one fixture in every test file.
-<!-- OR: -->
-* Don't define multiple `fixture`s in a single file. While technically possible, this is not recommended.
+* Define one `fixture` in every test file. While it's technically possible to define multiple, this is not recommended.
 
 * TestCafe tests are purely functional. As such, they should not be concerned about the implementation details and it is best to isolate them from production code. Keep your test files in a separate directory. You can name this directory appropriately (for instance, `tests`).
 
@@ -190,13 +187,13 @@ State management is an integral and important part of web testing. When your tes
 
 One common strategy is to set up with the previous test's `after` and `afterEach` hooks. While good for cleanup, these hooks create mutual dependence between your tests when used to set up for the following test. The success rate of a test is then influenced by a preceding one, which is not desirable.
 
-Plus, if setup with `before` or `beforeEach` is unsuccessful, the associated test does not run, saving you time. If your setup with `after` and `afterEach` yields an error, the following test runs and probably fails.
+Plus, if the setup with `before` or `beforeEach` is unsuccessful, the associated test does not run, which saves you time. If your setup with `after` and `afterEach` yields an error, the following test runs and probably fails due to the unsuccessful setup.
 
 To fulfill your test's state prerequisites, use the `before` and `beforeEach` hooks. Clean up with the `after` and `afterEach` hooks.
 
 Use the `test.before` and `test.after` hooks to set the state that an individual test requires. Use the `fixture.beforeEach` and `fixture.afterEach` to set common state that is required across the board.
 
-## E2E Tests Application
+## E2E Tests Limitations
 
 TestCafe is a tool built for end-to-end testing. Do not use it to perform non-functional testing (like performance or load testing). Such tests would not yield any conclusive results.
 
@@ -204,7 +201,7 @@ Write less E2E tests. Because end to end tests are slow by nature, their amount 
 
 ## Selectors Strategy
 
-The best ways to work with Selectors are covered in the [TestCafe Studio blog](https://community.devexpress.com/blogs/testcafe/archive/2020/06/10/testcafe-studio-v1-3-0-a-new-way-to-work-with-selectors.aspx#).
+The [TestCafe Studio blog](https://community.devexpress.com/blogs/testcafe/archive/2020/06/10/testcafe-studio-v1-3-0-a-new-way-to-work-with-selectors.aspx#) covers the best ways to work with Selectors.
 
 In general, follow these guidelines when you write the Selectors for your tests.
 
@@ -222,5 +219,5 @@ Use custom attributes (like `data-testid`) that are solely devoted to item selec
 
 Group the Selectors in a page model. It increases the resilience of your tests and helps remove redundant code.
 
-Use the Selectors extension plugins to work with frameworks. These extension allow you to create Selectors that are more native to every framework.
+Use the Selectors extension plugins to work with frameworks. These extensions allow you to create Selectors that are more native to every framework.
 Such plugins are available for the following popular front-end frameworks: [Angular](https://github.com/DevExpress/testcafe-angular-selectors), [React](https://github.com/DevExpress/testcafe-react-selectors), [Vue](https://github.com/DevExpress/testcafe-vue-selectors).
