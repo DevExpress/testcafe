@@ -31,7 +31,6 @@ import {
 
 import CustomizableCompilers from './customizable-compilers';
 import { DEPRECATED_OPTIONS, DEPRECATED_OPTION_NAMES } from './deprecated-options';
-import showDeprecationMessage from '../notifications/deprecation-message';
 
 const CONFIGURATION_FILENAME = '.testcaferc.json';
 
