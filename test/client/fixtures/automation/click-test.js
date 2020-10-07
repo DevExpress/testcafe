@@ -1190,7 +1190,7 @@ $(document).ready(function () {
                 'onclick'
             ];
 
-            events.forEach(eventName => {
+            events.forEach(function (eventName) {
                 $el[0][eventName] = function (e) {
                     if (eventName === 'ontouchstart')
                         e.preventDefault();
