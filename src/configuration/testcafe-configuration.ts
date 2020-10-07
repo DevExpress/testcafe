@@ -30,6 +30,8 @@ import {
 } from './interfaces';
 
 import CustomizableCompilers from './customizable-compilers';
+import { DEPRECATED_OPTIONS, DEPRECATED_OPTION_NAMES } from './deprecated-options';
+import showDeprecationMessage from '../notifications/deprecation-message';
 
 const CONFIGURATION_FILENAME = '.testcaferc.json';
 
@@ -53,15 +55,6 @@ const OPTION_INIT_FLAG_NAMES = [
     OPTION_NAMES.developmentMode,
     OPTION_NAMES.retryTestPages,
 ];
-
-const DEPRECATED_OPTIONS = [
-    {
-        name:        OPTION_NAMES.tsConfigPath.toString(),
-        replacement: `${OPTION_NAMES.compilerOptions}.${CustomizableCompilers.typescript}.configPath`
-    }
-];
-
-const DEPRECATED_OPTION_NAMES = DEPRECATED_OPTIONS.map(deprecatedOption => deprecatedOption.name);
 
 interface TestCafeAdditionalStartOptions {
     retryTestPages: boolean;
@@ -127,10 +120,10 @@ export default class TestCafeConfiguration extends Configuration {
         if (!deprecatedOptionNames.length)
             return;
 
-        const deprecatedOptions = DEPRECATED_OPTIONS.filter(deprecatedOption => deprecatedOptionNames.includes(deprecatedOption.name));
+        const deprecatedOptions = DEPRECATED_OPTIONS.filter(deprecatedOption => deprecatedOptionNames.includes(deprecatedOption.what));
 
         const replacements = deprecatedOptions.reduce((result, current) => {
-            result += renderTemplate(WARNING_MESSAGES.deprecatedOptionsReplacement, current.name, current.replacement);
+            result += renderTemplate(WARNING_MESSAGES.deprecatedOptionsReplacement, current.what, current.useInstead);
 
             return result;
         }, '');
