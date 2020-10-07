@@ -3,7 +3,7 @@ import CustomizableCompilers from './customizable-compilers';
 
 const DEPRECATED_OPTIONS = [
     {
-        what:        OPTION_NAMES.tsConfigPath.toString(),
+        what:       OPTION_NAMES.tsConfigPath.toString(),
         useInstead: `${OPTION_NAMES.compilerOptions}.${CustomizableCompilers.typescript}.configPath`
     }
 ];
