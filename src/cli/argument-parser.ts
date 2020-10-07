@@ -1,4 +1,4 @@
-import { has } from 'lodash';
+import { has, set } from 'lodash';
 import { Command } from 'commander';
 import dedent from 'dedent';
 import { readSync as read } from 'read-file-relative';
@@ -303,8 +303,16 @@ export default class CLIArgumentParser {
     }
 
     private async _parseCompilerOptions (): Promise<void> {
-        if (this.opts.compilerOptions)
-            this.opts.compilerOptions = await getCompilerOptions(this.opts.compilerOptions as string);
+        if (!this.opts.compilerOptions)
+            return;
+
+        const parsedCompilerOptions = await getCompilerOptions(this.opts.compilerOptions as string);
+        const resultCompilerOptions = Object.create(null);
+
+        for (const [key, value] of Object.entries(parsedCompilerOptions))
+            set(resultCompilerOptions, key, value);
+
+        this.opts.compilerOptions = resultCompilerOptions;
     }
 
     private _parseListBrowsers (): void {

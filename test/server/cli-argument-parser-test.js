@@ -559,9 +559,12 @@ describe('CLI argument parser', function () {
     });
 
     it('Compiler options', async () => {
-        const parser = await parse("--compiler-options typescript.options.skipLibCheck=true,typescript.options.lib=['ES5', 'WebWorker']");
+        const parser = await parse('--compiler-options typescript.options.skipLibCheck=true,typescript.configPath=/path-to-tsconfig.json');
 
-        expect(parser.opts.compilerOptions).to.be.ok;
+        const typescriptCompilerOptions = parser.opts.compilerOptions.typescript;
+
+        expect(typescriptCompilerOptions.options.skipLibCheck).eql(true);
+        expect(typescriptCompilerOptions.configPath).eql('/path-to-tsconfig.json');
     });
 
     it('Client scripts', () => {
