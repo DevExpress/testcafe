@@ -7,9 +7,9 @@ interface ScreenshotOptionValue {
     fullPage?: boolean;
 }
 
-type CompilerOptions = {
+interface CompilerOptions {
     [key: string]: object;
-};
+}
 
 type OptionValue = undefined | null | string | boolean | number | string[] | Function | { [key: string]: any } | ScreenshotOptionValue | CompilerOptions;
 
