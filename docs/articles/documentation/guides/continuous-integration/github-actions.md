@@ -22,7 +22,7 @@ This topic describes how to use the [Run TestCafe action](https://github.com/Dev
 
 Create a YAML file (for instance, `testcafe-workflow.yml`) in the `.github/workflows` directory in your repository.
 
-Specify the [workflow name](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#name) and the [event](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#on) that triggers this workflow.
+Specify the [workflow name](https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#name) and the [event](https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#on) that triggers this workflow.
 
 ```yml
 name: End-to-End Tests
@@ -35,9 +35,9 @@ In this example, the workflow runs when you push changes to the repository.
 
 Create a job that runs the TestCafe tests.
 
-Provide the [job name](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idname) and specify the [type of machine](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on) that should run the job.
+Provide the [job name](https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idname) and specify the [type of machine](https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on) that should run the job.
 
-You can [**use a GitHub-hosted machine**](https://docs.github.com/en/actions/reference/virtual-environments-for-github-hosted-runners):
+You can [**use a GitHub-hosted machine**](https://docs.github.com/en/free-pro-team@latest/actions/reference/specifications-for-github-hosted-runners):
 
 ```yml
 name: End-to-End Tests
@@ -49,9 +49,9 @@ jobs:
     runs-on: windows-latest
 ```
 
-This job runs on a GitHub-hosted virtual machine with the latest Windows version. `test` is the [job ID](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_id) that must be unique to the `jobs` object.
+This job runs on a GitHub-hosted virtual machine with the latest Windows version. `test` is the [job ID](https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_id) that must be unique to the `jobs` object.
 
-> You can use a GitHub-hosted virtual machine with a variety of operating systems to run tests, as listed on the following page: [GitHub Docs](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on). For simplicity, all examples in this article run on `windows-latest`.
+> You can use a GitHub-hosted virtual machine with a variety of operating systems to run tests, as listed on the following page: [GitHub Docs](https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on). For simplicity, all examples in this article run on `windows-latest`.
 
 Github Actions use the `macOS Catalina 10.15` virtual environment with *"System Integrity Protection"* enabled as `macos-latest`. With this setting enabled, TestCafe requires screen recording permission, which cannot be obtained programmatically. For this reason, TestCafe is unable to run tests with GitHub Actions locally on `macos-latest`.
 
@@ -69,9 +69,9 @@ open -a Safari http://${HOSTNAME}:${PORT1}/browser/connect
 wait $pid
 ```
 
-Alternatively, you can [**host your own runners**](https://docs.github.com/en/actions/hosting-your-own-runners/about-self-hosted-runners) for the job. This gives you more precise control over the environment.
+Alternatively, you can [**host your own runners**](https://docs.github.com/en/free-pro-team@latest/actions/hosting-your-own-runners/about-self-hosted-runners) for the job. This gives you more precise control over the environment.
 
-To set up the self-hosted runners, [add them to your repository](https://docs.github.com/en/actions/hosting-your-own-runners/adding-self-hosted-runners#adding-a-self-hosted-runner-to-a-repository).
+To set up the self-hosted runners, [add them to your repository](https://docs.github.com/en/free-pro-team@latest/actions/hosting-your-own-runners/adding-self-hosted-runners#adding-a-self-hosted-runner-to-a-repository).
 
 After that, configure `runs-on` in your workflow `.yml` file:
 
@@ -85,13 +85,13 @@ jobs:
     runs-on: [self-hosted, linux]
 ```
 
-> Make sure that the intended machine meets the [requirements for self-hosted runner machines](https://docs.github.com/en/actions/hosting-your-own-runners/about-self-hosted-runners#requirements-for-self-hosted-runner-machines).
+> Make sure that the intended machine meets the [requirements for self-hosted runner machines](https://docs.github.com/en/free-pro-team@latest/actions/hosting-your-own-runners/about-self-hosted-runners#requirements-for-self-hosted-runner-machines).
 >
->For more information about self-hosted runners in the GitHub Actions workflow, refer to the following topic: [Using self-hosted runners in a workflow](https://docs.github.com/en/actions/hosting-your-own-runners/using-self-hosted-runners-in-a-workflow).
+>For more information about self-hosted runners in the GitHub Actions workflow, refer to the following topic: [Using self-hosted runners in a workflow](https://docs.github.com/en/free-pro-team@latest/actions/hosting-your-own-runners/using-self-hosted-runners-in-a-workflow).
 
 ## Step 3 - Add a Step that Fetches the Repository
 
-Add a [step](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idsteps) that uses the [checkout](https://github.com/actions/checkout) action to fetch your repository content.
+Add a [step](https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idsteps) that uses the [checkout](https://github.com/actions/checkout) action to fetch your repository content.
 
 ```yml
 name: End-to-End Tests

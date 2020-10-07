@@ -424,6 +424,8 @@
       url: /documentation/recipes/basics/test-static-html-pages.md
     - name: Test on Remote Computers and Mobile Devices
       url: /documentation/recipes/basics/test-on-remote-computers-and-mobile-devices.md
+    - name: Test File Upload
+      url: /documentation/recipes/basics/test-file-upload.md
   - name: Best Practices
     content:
     - name: Create Helpers

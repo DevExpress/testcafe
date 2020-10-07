@@ -209,6 +209,7 @@
     * [Test &lt;select&gt; Elements](articles/documentation/recipes/basics/test-select-elements.md)
     * [Test Static HTML Pages](articles/documentation/recipes/basics/test-static-html-pages.md)
     * [Test on Remote Computers and Mobile Devices](articles/documentation/recipes/basics/test-on-remote-computers-and-mobile-devices.md)
+    * [Test File Upload](basics/test-file-upload.md)
   * Best Practices
     * [Create Helpers](articles/documentation/recipes/best-practices/create-helpers.md)
     * [Create Data-Driven Tests](articles/documentation/recipes/best-practices/create-data-driven-tests.md)

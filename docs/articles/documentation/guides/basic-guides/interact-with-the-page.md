@@ -193,12 +193,18 @@ test('Drag test', async t => {
 
 ## Upload Files
 
-Actions that allow you to interact with file upload input elements.
+Actions that allow you to manipulate the state of file upload input elements:
 
-* [Populate File Upload Input](../../reference/test-api/testcontroller/setfilestoupload.md)
-* [Clear File Upload Input](../../reference/test-api/testcontroller/clearupload.md)
+* [t.setFilesToUpload](../../reference/test-api/testcontroller/setfilestoupload.md)
+* [t.clearUpload](../../reference/test-api/testcontroller/clearupload.md)
 
-> File upload actions allow you to manage the list of files you wish to upload. A file is uploaded to the server, for example, when you [click](../../reference/test-api/testcontroller/click.md) the **Upload** or **Submit** button on a page.
+Use the [t.setFilesToUpload](../../reference/test-api/testcontroller/setfilestoupload.md) action to populate the input with the files you want to upload. If your application sends files as soon as you populate the field, the upload occurs when you call this action. Otherwise, you will have to begin the upload manually (for example, [click](../../reference/test-api/testcontroller/click.md) the submit button).
+
+Use the [t.clearUpload](../../reference/test-api/testcontroller/clearupload.md) action to clear the list of files to upload.
+
+See the [Test File Upload](../../recipes/basics/test-file-upload.md) recipe for more details.
+
+> The t.setFilesToUpload action only works with `<input type="file">` HTML elements, because browsers use these elements to upload files.
 
 **Example**
 
