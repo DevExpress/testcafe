@@ -79,6 +79,37 @@ $(document).ready(function () {
         $('.' + TEST_ELEMENT_CLASS).remove();
     };
 
+    const preventEventAndClick = function (eventNameToPrevent) {
+        const raisedEvents = [];
+
+        const events = [
+            'ontouchstart',
+            'ontouchend',
+            'ontouchmove',
+            'onmousedown',
+            'onmousemove',
+            'onmouseup',
+            'onclick'
+        ];
+
+        events.forEach(function (eventName) {
+            $el[0][eventName] = function (e) {
+                if (eventName === eventNameToPrevent)
+                    e.preventDefault();
+
+                raisedEvents.push(eventName);
+            };
+        });
+
+        const click = new ClickAutomation($el[0], new ClickOptions());
+
+        return click
+            .run()
+            .then(function () {
+                return raisedEvents;
+            });
+    };
+
     $('<div></div>').css({ width: 1, height: 1500, position: 'absolute' }).appendTo('body');
     $('body').css('height', '1500px');
 
@@ -1177,70 +1208,28 @@ $(document).ready(function () {
                 });
         });
 
-        asyncTest('mouse or click events should not be raised if "touchstart" event was cancelled', function () {
-            const raisedEvents = [];
+        asyncTest('mouse or click events should not be raised if touch events were cancelled', function () {
+            const expectedRaisedEvents = ['ontouchstart', 'ontouchend'];
 
-            const events = [
-                'ontouchstart',
-                'ontouchend',
-                'ontouchmove',
-                'onmousedown',
-                'onmousemove',
-                'onmouseup',
-                'onclick'
-            ];
+            window.async.series({
+                'ontouchstart': function (cb) {
+                    preventEventAndClick('ontouchstart')
+                        .then(function (actualRaisedEvents) {
+                            deepEqual(actualRaisedEvents, expectedRaisedEvents);
 
-            events.forEach(function (eventName) {
-                $el[0][eventName] = function (e) {
-                    if (eventName === 'ontouchstart')
-                        e.preventDefault();
+                            cb();
+                        });
+                },
 
-                    raisedEvents.push(eventName);
-                };
+                'ontouchend': function () {
+                    preventEventAndClick('ontouchend')
+                        .then(function (actualRaisedEvents) {
+                            deepEqual(actualRaisedEvents, expectedRaisedEvents);
+
+                            startNext();
+                        });
+                }
             });
-
-            const click = new ClickAutomation($el[0], new ClickOptions());
-
-            click
-                .run()
-                .then(function () {
-                    deepEqual(raisedEvents, ['ontouchstart', 'ontouchend']);
-
-                    startNext();
-                });
-        });
-
-        asyncTest('mouse or click events should not be raised if "touchend" event was cancelled', function () {
-            const raisedEvents = [];
-
-            const events = [
-                'ontouchstart',
-                'ontouchend',
-                'ontouchmove',
-                'onmousedown',
-                'onmousemove',
-                'onmouseup',
-                'onclick'
-            ];
-
-            events.forEach(function (eventName) {
-                $el[0][eventName] = function (e) {
-                    if (eventName === 'ontouchend')
-                        e.preventDefault();
-
-                    raisedEvents.push(eventName);
-                };
-            });
-
-            const click = new ClickAutomation($el[0], new ClickOptions());
-
-            click
-                .run()
-                .then(function () {
-                    deepEqual(raisedEvents, ['ontouchstart', 'ontouchend']);
-
-                    startNext();
-                });
         });
     }
 });
