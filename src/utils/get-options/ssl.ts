@@ -18,8 +18,8 @@ const MAX_PATH_LENGTH: Dictionary<number> = {
 
 const OS_MAX_PATH_LENGTH = MAX_PATH_LENGTH[os.type()];
 
-const OPTIONS_SEPARATOR          = ';';
-const FILE_OPTION_NAMES          = ['cert', 'key', 'pfx'];
+const OPTIONS_SEPARATOR = ';';
+const FILE_OPTION_NAMES = ['cert', 'key', 'pfx'];
 
 export default async function (optionString: string): Promise<Dictionary<string | boolean | number>> {
     return baseGetOptions(optionString, {
