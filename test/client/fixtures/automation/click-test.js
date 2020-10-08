@@ -1177,7 +1177,7 @@ $(document).ready(function () {
                 });
         });
 
-        asyncTest('mouse or click events should not be raised if touch event was cancelled', function () {
+        asyncTest('mouse or click events should not be raised if "touchstart" event was cancelled', function () {
             const raisedEvents = [];
 
             const events = [
@@ -1193,6 +1193,39 @@ $(document).ready(function () {
             events.forEach(function (eventName) {
                 $el[0][eventName] = function (e) {
                     if (eventName === 'ontouchstart')
+                        e.preventDefault();
+
+                    raisedEvents.push(eventName);
+                };
+            });
+
+            const click = new ClickAutomation($el[0], new ClickOptions());
+
+            click
+                .run()
+                .then(function () {
+                    deepEqual(raisedEvents, ['ontouchstart', 'ontouchend']);
+
+                    startNext();
+                });
+        });
+
+        asyncTest('mouse or click events should not be raised if "touchend" event was cancelled', function () {
+            const raisedEvents = [];
+
+            const events = [
+                'ontouchstart',
+                'ontouchend',
+                'ontouchmove',
+                'onmousedown',
+                'onmousemove',
+                'onmouseup',
+                'onclick'
+            ];
+
+            events.forEach(function (eventName) {
+                $el[0][eventName] = function (e) {
+                    if (eventName === 'ontouchend')
                         e.preventDefault();
 
                     raisedEvents.push(eventName);
