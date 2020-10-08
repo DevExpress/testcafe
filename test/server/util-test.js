@@ -23,6 +23,7 @@ const createTempProfile                = require('../../lib/browser/provider/bui
 const parseUserAgent                   = require('../../lib/utils/parse-user-agent');
 const diff                             = require('../../lib/utils/diff');
 
+
 const {
     buildChromeArgs,
     IN_DOCKER_FLAGS
