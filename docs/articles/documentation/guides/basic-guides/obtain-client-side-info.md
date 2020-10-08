@@ -70,6 +70,27 @@ test('My Test', async t => {
 });
 ```
 
+### Pass Parameters to Client Functions
+
+This example shows the `getLocationPart` client function that returns a [Location](https://developer.mozilla.org/en-US/docs/Web/API/Location) property value. The property name is passed as the `locationPart` parameter.
+
+```js
+import { ClientFunction } from 'testcafe';
+
+fixture `Parameterized Client Functions`
+    .page('https://devexpress.github.io/testcafe/example/');
+
+const getLocationPart = ClientFunction(locationPart => {
+    return window.location[locationPart];
+});
+
+test('Parameterized Client Functions', async t => {
+    await t
+        .expect(getLocationPart('host')).eql('devexpress.github.io')
+        .expect(getLocationPart('pathname')).eql('/testcafe/example/');
+});
+```
+
 ## Overwrite Client Function Options
 
 Overwrite client function options via the ClientFunction's [with](../../reference/test-api/clientfunction/with.md) method.
