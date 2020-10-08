@@ -1,4 +1,6 @@
-import { Selector } from 'testcafe';
+import { Selector, ClientFunction } from 'testcafe';
+
+const reload = ClientFunction(() => window.location.reload());
 
 const parentUrl = 'http://localhost:3000/fixtures/multiple-windows/pages/api/parent.html';
 const child1Url = 'http://localhost:3000/fixtures/multiple-windows/pages/api/child-1.html';
@@ -272,3 +274,52 @@ test('Close window without parent', async t => {
 test('Open window with `disableMultipleWindows` option', async t => {
     await t.openWindow(child1Url);
 });
+
+test('Refresh parent and switch to child', async t => {
+    await t.openWindow(child1Url);
+
+    await t.switchToParentWindow();
+
+    await reload();
+    await reload();
+    await reload();
+
+    await t.switchToPreviousWindow();
+});
+
+test('Refresh parent and remove child', async t => {
+    const child = await t.openWindow(child1Url);
+
+    await t.switchToParentWindow();
+
+    await reload();
+    await reload();
+    await reload();
+
+    await t.closeWindow(child);
+});
+
+test('Refresh child and close', async t => {
+    await t.openWindow(child1Url);
+
+    await reload();
+
+    await t.closeWindow();
+});
+
+test('Refresh child and switch to parent', async t => {
+    await t.openWindow(child1Url);
+
+    await reload();
+
+    await t.switchToParentWindow();
+});
+
+// test(`Switch_PreviousWindow`, async t => {
+//     await t.navigateTo("https://www.verizon.com/").maximizeWindow()
+//     await t.openWindow("https://www.verizon.com/")
+//     await t.switchToPreviousWindow()
+//     await t.click(Selector('[aria-label="Shop Menu List"]').nth(0))
+//     await t.click(Selector('[href="/deals/"]'))
+//     await t.switchToPreviousWindow()
+// })
