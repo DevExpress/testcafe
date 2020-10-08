@@ -22,7 +22,6 @@ const { replaceLeadingSpacesWithNbsp } = require('../../lib/errors/test-run/util
 const createTempProfile                = require('../../lib/browser/provider/built-in/dedicated/chrome/create-temp-profile');
 const parseUserAgent                   = require('../../lib/utils/parse-user-agent');
 const diff                             = require('../../lib/utils/diff');
-const getOptions                       = require('../../lib/utils/get-options/base');
 
 const {
     buildChromeArgs,
@@ -579,13 +578,5 @@ describe('Utils', () => {
 
             expect(preferences.profile.content_settings.exceptions.popups).to.be.undefined;
         });
-    });
-
-    it.skip('getOptions', async () => {
-        getOptions('key1=value1;key2=value2');
-
-        expect(await getOptions('key1=value1;key2=value2')).eql([['key', 'value']]);
-        //expect(getOptions('key=value1,value2')).eql(['key', 'value1,value2']);
-        //expect(getOptions('key=[value1,value2]'));
     });
 });

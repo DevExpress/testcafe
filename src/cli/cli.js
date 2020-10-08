@@ -105,7 +105,8 @@ async function runTests (argParser) {
         .video(opts.video, opts.videoOptions, opts.videoEncodingOptions)
         .screenshots(opts.screenshots)
         .startApp(opts.app, opts.appInitDelay)
-        .clientScripts(argParser.opts.clientScripts);
+        .clientScripts(argParser.opts.clientScripts)
+        .compilerOptions(argParser.opts.compilerOptions);
 
     runner.once('done-bootstrapping', () => log.hideSpinner());
 
