@@ -15,19 +15,6 @@ function convertOptionValueType (value: any): any { /* eslint-disable-line @type
 }
 
 function parseOptionsString (optionsStr: string, optionsSeparator: string, keyValueSeparator: string): OptionKeyValue[] {
-    // let inArray     = false;
-    // let inOption    = false;
-    // let optionKey   = '';
-    // let optionValue = '';
-    //
-    // for (let i = 0; i < optionsStr.length; i ++) {
-    //     if (optionsStr[i] === optionsSeparator) {
-    //
-    //     }
-    //
-    //     i++;
-    // }
-
     return optionsStr
         .split(optionsSeparator)
         .map(keyValueString => keyValueString.split(keyValueSeparator))
