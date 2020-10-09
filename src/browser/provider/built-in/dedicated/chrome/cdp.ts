@@ -161,17 +161,12 @@ export async function createClient (runtimeInfo: RuntimeInfo): Promise<void> {
     let tab    = null;
     let client = null;
 
-    try {
-        tab = await getActiveTab(cdpPort, browserId);
+    tab = await getActiveTab(cdpPort, browserId);
 
-        if (!tab)
-            return;
-
-        client = await remoteChrome({ target: tab, port: cdpPort });
-    }
-    catch (e) {
+    if (!tab)
         return;
-    }
+
+    client = await remoteChrome({ target: tab, port: cdpPort });
 
     runtimeInfo.tab    = tab;
     runtimeInfo.client = client;
