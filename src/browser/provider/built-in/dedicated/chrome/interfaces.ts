@@ -1,4 +1,4 @@
-import { Cdp } from './cdp';
+import { BrowserClient } from './browser-client';
 
 export interface Size {
     width: number;
@@ -27,7 +27,7 @@ export interface RuntimeInfo {
     activeWindowId: string;
     browserId: string;
     cdpPort: number;
-    cdp: Cdp;
+    browserClient: BrowserClient;
     config: Config;
     viewportSize: Size;
     emulatedDevicePixelRatio: number;

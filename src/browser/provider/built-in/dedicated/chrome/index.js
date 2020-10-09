@@ -5,7 +5,7 @@ import ChromeRunTimeInfo from './runtime-info';
 import getConfig from './config';
 import { start as startLocalChrome, stop as stopLocalChrome } from './local-chrome';
 import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../../utils/client-functions';
-import { Cdp } from './cdp';
+import { BrowserClient } from './browser-client';
 
 const MIN_AVAILABLE_DIMENSION = 50;
 
@@ -17,7 +17,7 @@ export default {
     },
 
     _getBrowserProtocolClient (runtimeInfo) {
-        return runtimeInfo.cdp;
+        return runtimeInfo.browserClient;
     },
 
     async _createRunTimeInfo (hostName, configString, disableMultipleWindows) {
@@ -60,9 +60,9 @@ export default {
         if (!disableMultipleWindows)
             runtimeInfo.activeWindowId = this.calculateWindowId();
 
-        const cdp = new Cdp(runtimeInfo);
+        const browserClient = new BrowserClient(runtimeInfo);
 
-        await cdp.init();
+        await browserClient.init();
 
         this.openedBrowsers[browserId] = runtimeInfo;
 
@@ -74,8 +74,8 @@ export default {
     async closeBrowser (browserId) {
         const runtimeInfo = this.openedBrowsers[browserId];
 
-        if (runtimeInfo.cdp.isHeadlessTab())
-            await runtimeInfo.cdp.closeTab();
+        if (runtimeInfo.browserClient.isHeadlessTab())
+            await runtimeInfo.browserClient.closeTab();
         else
             await this.closeLocalBrowser(browserId);
 
@@ -92,24 +92,24 @@ export default {
         const runtimeInfo = this.openedBrowsers[browserId];
 
         if (runtimeInfo.config.mobile)
-            await runtimeInfo.cdp.updateMobileViewportSize();
+            await runtimeInfo.browserClient.updateMobileViewportSize();
         else {
             runtimeInfo.viewportSize.width  = currentWidth;
             runtimeInfo.viewportSize.height = currentHeight;
         }
 
-        await runtimeInfo.cdp.resizeWindow({ width, height });
+        await runtimeInfo.browserClient.resizeWindow({ width, height });
     },
 
     async getVideoFrameData (browserId) {
-        const { cdp } = this.openedBrowsers[browserId];
+        const { browserClient } = this.openedBrowsers[browserId];
 
-        return cdp.getScreenshotData();
+        return browserClient.getScreenshotData();
     },
 
     async hasCustomActionForBrowser (browserId) {
-        const { config, cdp } = this.openedBrowsers[browserId];
-        const client          = await cdp.getActiveClient();
+        const { config, browserClient } = this.openedBrowsers[browserId];
+        const client                    = await browserClient.getActiveClient();
 
         return {
             hasCloseBrowser:                true,

@@ -10,7 +10,7 @@ const getClickCount = ClientFunction(() => {
 test(`Click action with bad network conditions`, async t => {
     const browserConnection = t.testRun.browserConnection;
     const browser           = browserConnection.provider.plugin.openedBrowsers[browserConnection.id];
-    const client            = await browser.cdp.getActiveClient();
+    const client            = await browser.browserClient.getActiveClient();
 
     const networkConditions = {
         offline:            true,

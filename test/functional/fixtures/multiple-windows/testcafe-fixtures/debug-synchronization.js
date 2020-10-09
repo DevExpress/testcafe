@@ -58,13 +58,13 @@ async function resumeRemoteDebugging (cdpClient) {
 test('test', async t => {
     const browserInfo  = t.testRun.browserConnection.provider.plugin.openedBrowsers[t.testRun.browserConnection.id];
     const browserPort  = browserInfo.cdpPort;
-    const parentClient = await browserInfo.cdp.getActiveClient();
+    const parentClient = await browserInfo.browserClient.getActiveClient();
 
     await t.click('#open');
 
     await t.click('body');
 
-    const childClient = await browserInfo.cdp.getActiveClient();
+    const childClient = await browserInfo.browserClient.getActiveClient();
 
     const debugPromise = t.debug();
 

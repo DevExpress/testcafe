@@ -14,7 +14,7 @@ import {
 
 const DOWNLOADS_DIR = path.join(os.homedir(), 'Downloads');
 
-export class Cdp {
+export class BrowserClient {
     private _clients: Dictionary<remoteChrome.ProtocolApi> = {};
     private _runtimeInfo: RuntimeInfo;
     private _parentTarget?: remoteChrome.TargetInfo;
@@ -22,7 +22,7 @@ export class Cdp {
     public constructor (runtimeInfo: RuntimeInfo) {
         this._runtimeInfo = runtimeInfo;
 
-        runtimeInfo.cdp = this;
+        runtimeInfo.browserClient = this;
     }
 
     private get _clientKey (): string {
@@ -66,12 +66,8 @@ export class Cdp {
         if (this._config.emulation)
             await this._setEmulation(client);
 
-        if (this._config.headless) {
-            await client.Page.setDownloadBehavior({
-                behavior:     'allow',
-                downloadPath: DOWNLOADS_DIR
-            });
-        }
+        if (this._config.headless)
+            await this._setupDownloads(client);
     }
 
     private async _setDeviceMetricsOverride (client: remoteChrome.ProtocolApi, width: number, height: number, deviceScaleFactor: number, mobile: boolean): Promise<void> {
@@ -116,6 +112,13 @@ export class Cdp {
         await this.resizeWindow({
             width:  this._config.width,
             height: this._config.height
+        });
+    }
+
+    private async _setupDownloads (client: remoteChrome.ProtocolApi): Promise<void> {
+        await client.Page.setDownloadBehavior({
+            behavior:     'allow',
+            downloadPath: DOWNLOADS_DIR
         });
     }
 
@@ -177,9 +180,7 @@ export class Cdp {
 
             const client = await this._createClient();
 
-
             await this._calculateEmulatedDevicePixelRatio(client);
-
             await this._setupClient(client);
         }
         catch (e) {
