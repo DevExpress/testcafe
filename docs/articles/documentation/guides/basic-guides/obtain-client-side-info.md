@@ -15,6 +15,7 @@ TestCafe allows you to create *client functions* that can return any serializabl
 * [Client Function Constructor](#client-function-constructor)
 * [Run Asynchronous Client Code](#run-asynchronous-client-code)
 * [Execute Client Functions](#execute-client-functions)
+* [Pass Parameters to Client Functions](#pass-parameters-to-client-functions)
 * [Overwrite Client Function Options](#overwrite-client-function-options)
 * [One-Time Client Code Execution](#one-time-client-code-execution)
 * [Import Functions to be Used as Client Function Dependencies](#import-functions-to-be-used-as-client-function-dependencies)
