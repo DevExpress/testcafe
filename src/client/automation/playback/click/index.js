@@ -34,7 +34,9 @@ export default class ClickAutomation extends VisibleElementAutomation {
             mousedownPrevented:      false,
             blurRaised:              false,
             simulateDefaultBehavior: true,
-            clickElement:            null
+            clickElement:            null,
+            touchStartCancelled:     false,
+            touchEndCancelled:       false
         };
     }
 
@@ -57,10 +59,17 @@ export default class ClickAutomation extends VisibleElementAutomation {
         eventUtils.bind(element, 'blur', onblur, true);
     }
 
+    // NOTE:
+    // If `touchstart`, `touchmove`, or `touchend` are canceled, we should not dispatch any mouse event
+    // that would be a consequential result of the prevented touch event
+    _isTouchEventWasCancelled () {
+        return this.eventState.touchStartCancelled || this.eventState.touchEndCancelled;
+    }
+
     _raiseTouchEvents (eventArgs) {
         if (featureDetection.isTouchDevice) {
-            eventSimulator.touchstart(eventArgs.element, eventArgs.options);
-            eventSimulator.touchend(eventArgs.element, eventArgs.options);
+            this.eventState.touchStartCancelled = !eventSimulator.touchstart(eventArgs.element, eventArgs.options);
+            this.eventState.touchEndCancelled   = !eventSimulator.touchend(eventArgs.element, eventArgs.options);
         }
     }
 
@@ -86,7 +95,8 @@ export default class ClickAutomation extends VisibleElementAutomation {
 
                 this._bindBlurHandler(activeElement);
 
-                this.eventState.simulateDefaultBehavior = eventSimulator.mousedown(eventArgs.element, eventArgs.options);
+                if (!this._isTouchEventWasCancelled())
+                    this.eventState.simulateDefaultBehavior = eventSimulator.mousedown(eventArgs.element, eventArgs.options);
 
                 if (this.eventState.simulateDefaultBehavior === false)
                     this.eventState.simulateDefaultBehavior = needCloseSelectDropDown && !this.eventState.mousedownPrevented;
@@ -189,7 +199,8 @@ export default class ClickAutomation extends VisibleElementAutomation {
                 if (!browserUtils.isIE)
                     listeners.addInternalEventListener(window, ['mouseup'], getTimeStamp);
 
-                eventSimulator.mouseup(element, eventArgs.options);
+                if (!this._isTouchEventWasCancelled())
+                    eventSimulator.mouseup(element, eventArgs.options);
 
                 return { timeStamp };
             });
@@ -198,7 +209,8 @@ export default class ClickAutomation extends VisibleElementAutomation {
     _click (eventArgs) {
         const clickCommand = createClickCommand(this.eventState, eventArgs);
 
-        clickCommand.run();
+        if (!this._isTouchEventWasCancelled())
+            clickCommand.run();
 
         return eventArgs;
     }
