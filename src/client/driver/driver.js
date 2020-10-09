@@ -349,6 +349,9 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     _sendStartToRestoreCommand () {
+        if (!this.contextStorage)
+            return;
+
         // NOTE: the situation is possible when the child window responds before the parent window is reloaded,
         // so we should not respond to the child window if the parent window is not reloaded
         this._stopRespondToChildren = true;
