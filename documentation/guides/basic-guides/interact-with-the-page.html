@@ -1145,13 +1145,19 @@ To select text, use <a href="../../reference/test-api/testcontroller/selecttext.
         <span class="p">.</span><span class="nx">drag</span><span class="p">(</span><span class="dl">'</span><span class="s1">#slider</span><span class="dl">'</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">{</span> <span class="na">offsetX</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="na">offsetY</span><span class="p">:</span> <span class="mi">10</span> <span class="p">});</span>
 <span class="p">});</span>
 </code></pre></div><h2><a class="anchor" id="upload-files"></a>Upload Files <a class="permalink" href="#upload-files">#</a></h2>
-<p>Actions that allow you to interact with file upload input elements.</p>
+<p>Actions that allow you to manipulate the state of file upload input elements:</p>
 
 <ul>
-<li><a href="../../reference/test-api/testcontroller/setfilestoupload.html">Populate File Upload Input</a></li>
-<li><a href="../../reference/test-api/testcontroller/clearupload.html">Clear File Upload Input</a></li>
+<li><a href="../../reference/test-api/testcontroller/setfilestoupload.html">t.setFilesToUpload</a></li>
+<li><a href="../../reference/test-api/testcontroller/clearupload.html">t.clearUpload</a></li>
 </ul>
-<blockquote><div class="blockquote-content"><p>File upload actions allow you to manage the list of files you wish to upload. A file is uploaded to the server, for example, when you <a href="../../reference/test-api/testcontroller/click.html">click</a> the <strong>Upload</strong> or <strong>Submit</strong> button on a page.</p>
+
+<p>Use the <a href="../../reference/test-api/testcontroller/setfilestoupload.html">t.setFilesToUpload</a> action to populate the input with the files you want to upload. If your application sends files as soon as you populate the field, the upload occurs when you call this action. Otherwise, you will have to begin the upload manually (for example, <a href="../../reference/test-api/testcontroller/click.html">click</a> the submit button).</p>
+
+<p>Use the <a href="../../reference/test-api/testcontroller/clearupload.html">t.clearUpload</a> action to clear the list of files to upload.</p>
+
+<p>See the <a href="../../recipes/basics/test-file-upload.html">Test File Upload</a> recipe for more details.</p>
+<blockquote><div class="blockquote-content"><p>The t.setFilesToUpload action only works with <code>&lt;input type=&quot;file&quot;&gt;</code> HTML elements, because browsers use these elements to upload files.</p>
 </div></blockquote>
 <p><strong>Example</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
