@@ -1044,6 +1044,22 @@ Use <a href="interact-with-the-page.html">test actions</a> to interact with the 
 <span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">My Test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="kd">const</span> <span class="nx">location</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">getWindowLocation</span><span class="p">();</span>
 <span class="p">});</span>
+</code></pre></div><h3><a class="anchor" id="pass-parameters-to-client-functions"></a>Pass Parameters to Client Functions <a class="permalink" href="#pass-parameters-to-client-functions">#</a></h3>
+<p>This example shows the <code>getLocationPart</code> client function that returns a <a href="https://developer.mozilla.org/en-US/docs/Web/API/Location">Location</a> property value. The property name is passed as the <code>locationPart</code> parameter.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="nx">fixture</span> <span class="s2">`Parameterized Client Functions`</span>
+    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://devexpress.github.io/testcafe/example/</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="kd">const</span> <span class="nx">getLocationPart</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(</span><span class="nx">locationPart</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">[</span><span class="nx">locationPart</span><span class="p">];</span>
+<span class="p">});</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Parameterized Client Functions</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">getLocationPart</span><span class="p">(</span><span class="dl">'</span><span class="s1">host</span><span class="dl">'</span><span class="p">)).</span><span class="nx">eql</span><span class="p">(</span><span class="dl">'</span><span class="s1">devexpress.github.io</span><span class="dl">'</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">getLocationPart</span><span class="p">(</span><span class="dl">'</span><span class="s1">pathname</span><span class="dl">'</span><span class="p">)).</span><span class="nx">eql</span><span class="p">(</span><span class="dl">'</span><span class="s1">/testcafe/example/</span><span class="dl">'</span><span class="p">);</span>
+<span class="p">});</span>
 </code></pre></div><h2><a class="anchor" id="overwrite-client-function-options"></a>Overwrite Client Function Options <a class="permalink" href="#overwrite-client-function-options">#</a></h2>
 <p>Overwrite client function options via the ClientFunction&#39;s <a href="../../reference/test-api/clientfunction/with.html">with</a> method.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">cfWithDependency</span> <span class="o">=</span> <span class="nx">cfWithoutDependency</span><span class="p">.</span><span class="kd">with</span><span class="p">({</span>

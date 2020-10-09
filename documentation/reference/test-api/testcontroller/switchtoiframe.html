@@ -2154,6 +2154,20 @@
 <span class="p">});</span>
 </code></pre></div>
 <p>You can switch to the main window from the <code>&lt;iframe&gt;</code> with the <a href="switchtomainwindow.html">t.switchToMainWindow</a> method.</p>
+<h2><a class="anchor" id="wait-until-an-iframe-is-loaded"></a>Wait Until an &lt;iframe&gt; Is Loaded <a class="permalink" href="#wait-until-an-iframe-is-loaded">#</a></h2>
+<p>TestCafe implements <a href="../../../guides/concepts/built-in-wait-mechanisms.html">wait mechanisms</a> that automatically suspend the test until all required page elements are loaded and ready for interaction. These mechanisms apply to page loads, animations, XHR requests, iframe initializations, etc. TestCafe waits until the target element is ready, or reports an error if this does not happen within a timeout.</p>
+
+<p>This example shows how to allow more time for an <code>iframe</code> to load if the <a href="../../command-line-interface.html#--selector-timeout-ms">default timeout</a> is not enough.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`Wait for an iframe to load`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://js.devexpress.com/Demos/WidgetsGallery/Demo/DataGrid/Overview/jQuery/Light/`</span><span class="p">;</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Wait for an iframe to load</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">iframeSelector</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#demoFrame</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span> <span class="na">timeout</span><span class="p">:</span> <span class="mi">60000</span> <span class="p">});</span>
+
+    <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">switchToIframe</span><span class="p">(</span><span class="nx">iframeSelector</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>In this example, the <a href="../selector/constructor.html#optionstimeout">timeout</a> in the <a href="../selector/constructor.html">Selector constructor</a> options is set to <code>60</code> seconds so that the <code>iframe</code> has one minute to initialize.</p>
 <h2><a class="anchor" id="select-target-elements"></a>Select Target Elements <a class="permalink" href="#select-target-elements">#</a></h2>
 <p>For actions that target DOM elements, use the <code>selector</code> parameter to identify the desired element.</p>
 

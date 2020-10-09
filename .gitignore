@@ -8,3 +8,4 @@ package-lock.json
 Gemfile.lock
 .DS_Store
 .ts-defs
+.vscode

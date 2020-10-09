@@ -2119,7 +2119,7 @@
 		<div class="post-content">
 
 			<h1>t.setFilesToUpload Method</h1>
-<p>Populates the specified file upload input with file paths.</p>
+<p>Sets files to upload. Emulates a user&#39;s selection in the browser&#39;s &#39;Choose File&#39; dialog. Target element must be an <code>&lt;input&gt;</code> with the <code>type=&quot;file&quot;</code> attribute.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">t.setFilesToUpload( selector, filePath )
 </code></pre></div><div class="table-wrapper"><table><thead><tr>
 <th>Parameter</th>
@@ -2134,7 +2134,7 @@
 <tr>
 <td><code>filePath</code></td>
 <td>String &#124; Array</td>
-<td>The path to the uploaded file, or several such paths. Relative paths are resolved against the folder with the test file.</td>
+<td>The path(s) to the uploaded file. Relative paths are resolved against the folder with the test file.</td>
 </tr>
 </tbody></table></div>
 <p>The following example illustrates how to use the <code>t.setFilesToUpload</code> action:</p>
@@ -2152,7 +2152,7 @@
 <span class="p">});</span>
 </code></pre></div>
 <p>The <code>t.setFilesToUpload</code> action removes all file paths from the input before populating it with new ones.</p>
-<blockquote><div class="blockquote-content"><p>If an error occurs while uploading files, the test will fail.</p>
+<blockquote><div class="blockquote-content"><p>If an error occurs while files are being uploaded, the test will fail.</p>
 </div></blockquote>
 <p>The <a href="clearupload.html">t.clearUpload</a> method allows you to remove files added with <code>t.setFilesToUpload</code>.</p>
 <h2><a class="anchor" id="select-target-elements"></a>Select Target Elements <a class="permalink" href="#select-target-elements">#</a></h2>
