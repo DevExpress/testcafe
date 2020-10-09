@@ -13,9 +13,10 @@ const { TEST_RUN_ERRORS } = require('../../lib/errors/types');
 const exportableLib       = require('../../lib/api/exportable-lib');
 const createStackFilter   = require('../../lib/errors/create-stack-filter.js');
 const TestController      = require('../../lib/api/test-controller');
-const assertError         = require('./helpers/assert-runtime-error').assertError;
+const { assertError }     = require('./helpers/assert-runtime-error');
 const compile             = require('./helpers/compile');
 const Module              = require('module');
+const toPosixPath         = require('../../lib/utils/to-posix-path');
 
 const copy      = promisify(fs.copyFile);
 const remove    = promisify(fs.unlink);
@@ -57,9 +58,9 @@ describe('Compiler', function () {
 
     this.timeout(20000);
 
-    // FIXME: Babel errors always contain POSIX-format file paths.
+    // NOTE: TypeScript compiler resolves paths in the POSIX-format.
     function posixResolve (pathname) {
-        return path.resolve(pathname).replace(new RegExp('\\\\', 'g'), '/');
+        return toPosixPath(path.resolve(pathname));
     }
 
     it('Should compile mixed content', function () {
@@ -203,12 +204,13 @@ describe('Compiler', function () {
                 });
         });
 
+        // NOTE: https://github.com/babel/babel/issues/12261
         it('Should strip Flow type declarations if a marker comment presents', function () {
             return compile('test/server/data/test-suites/flow-type-declarations/testfile.js')
-                .then(function (compiled) {
+                .then(compiled => {
                     return compiled.tests[0].fn(testRunMock);
                 })
-                .then(function (results) {
+                .then(results => {
                     expect(results.repeated1).to.equal('yoyoyoyoyoyoyoyoyoyoyoyoyo');
                     expect(results.repeated2).to.equal('yoyoyoyoyoyoyoyoyoyoyoyoyo');
                     expect(results.length).to.equal(5);
@@ -807,18 +809,6 @@ describe('Compiler', function () {
             return testClientFnCompilation('basic');
         });
 
-        it('Should polyfill Babel `Promises` artifacts', function () {
-            return testClientFnCompilation('promises');
-        });
-
-        it('Should polyfill Babel `Object.keys()` artifacts', function () {
-            return testClientFnCompilation('object-keys');
-        });
-
-        it('Should polyfill Babel `JSON.stringify()` artifacts', function () {
-            return testClientFnCompilation('json-stringify');
-        });
-
         describe('Regression', function () {
             it('Should compile ES6 object method (GH-1279)', function () {
                 return testClientFnCompilation('gh1279');
@@ -840,7 +830,7 @@ describe('Compiler', function () {
 
         it('Should raise an error if test dependency has a syntax error', function () {
             const testfile = path.resolve('test/server/data/test-suites/syntax-error-in-dep/testfile.js');
-            const dep      = posixResolve('test/server/data/test-suites/syntax-error-in-dep/dep.js');
+            const dep      = path.resolve('test/server/data/test-suites/syntax-error-in-dep/dep.js');
 
             const stack = [
                 testfile
@@ -855,8 +845,8 @@ describe('Compiler', function () {
                         stackTop: stack,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'SyntaxError: ' + dep + ': Unexpected token, expected { (1:7)'
-                    });
+                                 'SyntaxError: ' + dep + ': Unexpected token, expected "{" (1:7)'
+                    }, true);
                 });
         });
 
@@ -940,7 +930,7 @@ describe('Compiler', function () {
         });
 
         it('Should raise an error if test file has a syntax error', function () {
-            const testfile = posixResolve('test/server/data/test-suites/syntax-error-in-testfile/testfile.js');
+            const testfile = path.resolve('test/server/data/test-suites/syntax-error-in-testfile/testfile.js');
 
             return compile(testfile)
                 .then(function () {
@@ -951,42 +941,42 @@ describe('Compiler', function () {
                         stackTop: null,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'SyntaxError: ' + testfile + ': Unexpected token, expected { (1:7)'
-                    });
+                                 'SyntaxError: ' + testfile + ': Unexpected token, expected "{" (1:7)'
+                    }, true);
                 });
         });
 
         it('Should raise an error if test file has Flow syntax without a marker comment', function () {
             const testfiles = [
-                posixResolve('test/server/data/test-suites/flow-type-declarations/no-flow-marker.js'),
-                posixResolve('test/server/data/test-suites/flow-type-declarations/flower-marker.js')
+                path.resolve('test/server/data/test-suites/flow-type-declarations/no-flow-marker.js'),
+                path.resolve('test/server/data/test-suites/flow-type-declarations/flower-marker.js')
             ];
 
             return compile(testfiles[0])
-                .then(function () {
+                .then(() => {
                     throw new Error('Promise rejection expected');
                 })
-                .catch(function (err) {
+                .catch(err => {
                     assertError(err, {
                         stackTop: null,
 
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'SyntaxError: ' + testfiles[0] + ': Unexpected token, expected ; (1:8)'
-                    });
+                                 'SyntaxError: ' + testfiles[0] + ': Unexpected token, expected ";" (1:8)'
+                    }, true);
 
                     return compile(testfiles[1]);
                 })
-                .then(function () {
+                .then(() => {
                     throw new Error('Promise rejection expected');
                 })
-                .catch(function (err) {
+                .catch(err => {
                     assertError(err, {
                         stackTop: null,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'SyntaxError: ' + testfiles[1] + ': Unexpected token, expected ; (2:8)'
-                    });
+                                 'SyntaxError: ' + testfiles[1] + ': Unexpected token, expected ";" (2:8)'
+                    }, true);
                 });
         });
 
@@ -1009,7 +999,6 @@ describe('Compiler', function () {
                     });
                 });
         });
-
     });
 
     describe('Regression', function () {
@@ -1022,21 +1011,22 @@ describe('Compiler', function () {
 
         it('Incorrect callsite stack in error report if "import" is used (GH-1226)', function () {
             return compile('test/server/data/test-suites/regression-gh-1226/testfile.js')
-                .then(function (compiled) {
+                .then(compiled => {
                     return compiled.tests[0].fn(testRunMock);
                 })
-                .then(function () {
+                .then(() => {
                     throw 'Promise rejection expected';
                 })
-                .catch(function (errList) {
+                .catch(errList => {
                     const stackTraceLimit = 200;
                     const err             = errList.items[0];
                     const stack           = err.callsite.stackFrames.filter(createStackFilter(stackTraceLimit));
 
-                    expect(stack.length).eql(3);
+                    expect(stack.length).eql(4);
                     expect(stack[0].source).to.have.string('helper.js');
                     expect(stack[1].source).to.have.string('helper.js');
-                    expect(stack[2].source).to.have.string('testfile.js');
+                    expect(stack[2].source).to.have.string('helper.js');
+                    expect(stack[3].source).to.have.string('testfile.js');
                 });
         });
 
