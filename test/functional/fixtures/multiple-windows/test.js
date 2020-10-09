@@ -235,5 +235,25 @@ describe('Multiple windows', () => {
                     expect(errs[0]).to.contain('Multi window mode is disabled. Remove the "--disable-multiple-windows" CLI flag or set the "disableMultipleWindows" option to "false" in the API to use the "openWindow" method.');
                 });
         });
+
+        it('Refresh parent and switch to child', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Refresh parent and switch to child', { only: 'chrome' });
+        });
+
+        it('Refresh parent and remove child', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Refresh parent and remove child', { only: 'chrome' });
+        });
+
+        it('Refresh parent with multiple children', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Refresh parent with multiple children', { only: 'chrome' });
+        });
+
+        it('Refresh child and close', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Refresh child and close', { only: 'chrome' });
+        });
+
+        it('Refresh child and switch to parent', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Refresh child and switch to parent', { only: 'chrome' });
+        });
     });
 });

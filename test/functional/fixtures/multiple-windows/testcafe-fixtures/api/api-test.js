@@ -299,6 +299,21 @@ test('Refresh parent and remove child', async t => {
     await t.closeWindow(child);
 });
 
+test('Refresh parent with multiple children', async t => {
+    await t.openWindow(child1Url);
+    await t.switchToParentWindow();
+    await t.openWindow(child1Url);
+    await t.switchToParentWindow();
+    await t.openWindow(child1Url);
+    await t.switchToParentWindow();
+
+    await reload();
+    await reload();
+    await reload();
+
+    await t.switchToPreviousWindow();
+});
+
 test('Refresh child and close', async t => {
     await t.openWindow(child1Url);
 
@@ -314,12 +329,3 @@ test('Refresh child and switch to parent', async t => {
 
     await t.switchToParentWindow();
 });
-
-// test(`Switch_PreviousWindow`, async t => {
-//     await t.navigateTo("https://www.verizon.com/").maximizeWindow()
-//     await t.openWindow("https://www.verizon.com/")
-//     await t.switchToPreviousWindow()
-//     await t.click(Selector('[aria-label="Shop Menu List"]').nth(0))
-//     await t.click(Selector('[href="/deals/"]'))
-//     await t.switchToPreviousWindow()
-// })
