@@ -42,22 +42,22 @@ fixture `My fixture`
 test('Assertion with Selector', async t => {
     const developerNameInput = Selector('#developer-name');
 
+    await t.typeText(developerNameInput, 'Peter');
+
     //an awaited selector doesn't update and produces unstable test results. Avoid it.
-    const developerName      = await Selector('#developer-name').value;
+    const developerName = await Selector('#developer-name').value;
     //
 
-    console.log(developerName);
-
     await t
-        .expect(developerNameInput.value).eql('')
-        .typeText(developerNameInput, 'Peter')
-        .expect(developerName).eql('Peter');
+            .expect(developerName).eql('Peter')
+            .typeText(developerNameInput, 'Jack')
+            .expect(developerName).eql('Jack'); // fails
 });
 ```
 
-In this snippet, the `developerName` is initialized with the value of a Selector, but because of the `await` keyword, the value is calculated once and doesn't update. This disables the smart assertions query mechanism, which in this case leads to inconclusive results. This test fails.
+In this snippet, the `developerName` is initialized with the value of a Selector, but because of the `await` keyword, the value is calculated once and doesn't update. This disables the smart assertions query mechanism, which in this case leads to inconclusive results.
 
-To avoid this, initialize the variable with a `Selector API` promise. To do that, omit the `await` keyword:
+To avoid this, omit the `await` keyword:
 
 ```js
 import { Selector } from 'testcafe';
@@ -67,12 +67,15 @@ fixture `My fixture`
 
 test('Assertion with Selector', async t => {
     const developerNameInput = Selector('#developer-name');
-    const developerName      = Selector('#developer-name').value;
+
+    await t.typeText(developerNameInput, 'Peter');
+
+    const developerName = Selector('#developer-name').value;
 
     await t
-        .expect(developerNameInput.value).eql('')
-        .typeText(developerNameInput, 'Peter')
-        .expect(developerName).eql('Peter');
+            .expect(developerName).eql('Peter')
+            .typeText(developerNameInput, 'Jack')
+            .expect(developerName).eql('Jack'); // passes
 });
 ```
 
@@ -188,7 +191,7 @@ A code example is available in the [testcafe-examples](https://github.com/DevExp
 
 ## Use of Roles for Login
 
-Handle authentication during your tests with [User Roles](../../guides/advanced-guides/authentication.md#user-roles). Roles allow you to wrap login credentials in a reusable object and use it effectively in tests.
+Handle authentication during your tests with [User Roles](../../guides/advanced-guides/authentication.md#user-roles). Roles allow you to wrap authentication logic and credentials in a reusable object.
 
 Define roles with the [Role](../../reference/test-api/role/constructor.md) constructor and include them in your tests with the [t.useRole](../../reference/test-api/testcontroller/userole.md) method. The following example makes use of two user roles:
 
@@ -224,7 +227,7 @@ Follow these guidelines to keep your test structure manageable and "clean":
 
 * Use a page model to store Selectors and compound actions that are used often across your app. For instance, put all actions that are necessary to perform an action into one reusable function.
 
-* Put all the page model files into one directory. If your application is divisible into logical chunks (components or subsystems), split up the associated page model objects into separate files.
+* Put all the page model files into one directory. If your application is divided logically into components or subsystems, split up the associated page model objects into separate files.
 
 > You can find an example of a page model in the [testcafe-examples](https://github.com/DevExpress/testcafe-examples/tree/master/examples/use-page-model) repository.
 
@@ -236,11 +239,11 @@ Follow these guidelines to keep your test structure manageable and "clean":
 
 * TestCafe tests are purely functional. As such, they should not depend on the implementation details and it is best to isolate them from production code. Keep your test files in a separate directory. You can name this directory appropriately (for instance, `tests`).
 
-* In your test folder, group the tests that cover different subsystems of your application. Separate these into subfolders.
+* In your test folder, create subfolders for tests that cover different subsystems of your application.
 
 * Don't write long tests. Shorter test scenarios are easier to debug and can run concurrently.
 
-* Any reused data (for example, large sets of reference values or forms inputs) is better stored in a directory of its own. Consider a descriptive folder name (for instance, `data`).
+* Any reused data (for example, large sets of reference values or forms inputs) is better stored in a dedicated directory. Consider a descriptive folder name (for instance, `data`).
 
 With all the suggestions applied, your project's file structure might look like this:
 
@@ -265,9 +268,9 @@ With all the suggestions applied, your project's file structure might look like 
 
 ## Setup and Teardown
 
-State management is an integral and important part of web testing. When your tests run, there are inevitably leftovers- database or local storage records, cache, or cookies. These require deletion during teardown. Extra steps your app requires to run (like adding records to the database) are performed during setup.
+State management is an integral and important part of web testing. When your tests run, there are inevitably leftovers- database or local storage records, cache, or cookies. This data requires deletion during teardown. Extra steps your app requires to run (like adding records to the database) are performed during setup.
 
-One common strategy is to place the setup actions in the preceding test's `after` and `afterEach` hooks. While good for cleanup, these hooks create mutual dependence between your tests when used to set up for the following test. The success rate of a test is then influenced by a preceding one, which is not desirable.
+One common strategy is to place the setup actions in the preceding test's `after` and `afterEach` hooks. While good for cleanup, these hooks create mutual dependence between your tests when used to set up for the following test. The success of a test is then influenced by a preceding one, which is not desirable.
 
 Plus, if the `before`/`beforeEach` setup is unsuccessful, the corresponding test does not run, which saves you time. If `after`/`afterEach` setup yields an error, the following test runs and probably fails due to the unsuccessful setup.
 
@@ -291,9 +294,9 @@ In general, follow these guidelines when you write the Selectors for your tests.
 
 * Selectors should reflect the user’s point of view. Since TestCafe supports end-to-end testing, it’s a good idea to build selectors that identify elements as an end-user would. For instance, `Selector(‘form’).find(‘[name=”btn-foo-123”]’)` might be stable, but it is written from the programmer’s perspective rather than from the user’s point of view.
 
-Use custom attributes (like `data-testid`) that are solely devoted to item selection with TestCafe on your page. These attributes are unlikely to change during development and enable you to rewrite your Selectors rarer.
+Use custom attributes (like `data-testid`) whose sole purpose is to identify items with TestCafe. These attributes are unlikely to change during development and enable you to rewrite your Selectors rarer.
 
 Group the Selectors in a page model. It increases the resilience of your tests and helps remove redundant code.
 
-Use the Selectors extension plugins to work with frameworks. These extensions allow you to create Selectors that are more native to every framework.
+Use the Selectors extension plugins for pages built with JavaScript frameworks. These extensions allow you to create Selectors that are more native to every framework.
 Such plugins are available for the following popular front-end frameworks: [Angular](https://github.com/DevExpress/testcafe-angular-selectors), [React](https://github.com/DevExpress/testcafe-react-selectors), [Vue](https://github.com/DevExpress/testcafe-vue-selectors).
