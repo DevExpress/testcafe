@@ -12,6 +12,7 @@ exemptLabels:
   - "STATE: Need clarification"
   - "STATE: Need response"
   - "STATE: Stale"
+  - "STATE: won't fix"
   - "support center"
 # Label to use when marking an issue as stale
 staleLabel: "STATE: Stale"
