@@ -4,11 +4,11 @@ TestCafe excels where other end-to-end testing solutions fall short.
 
 ## One NPM package
 
-TestCafe is a self-sufficient testing solution. All you need to get up and running is a recent version of Node.js, a browser — any browser, and the TestCafe NPM package. No mixing and matching of components, no extra configuration.
+TestCafe doesn't require the use of extra tools and frameworks. All you need to get up and running is a recent version of Node.js, a browser — any browser, and the TestCafe NPM package.
 
 ## As simple and extendable as JavaScript itself
 
-TestCafe tests are full-fledged Node.js apps. Feel free to extend their functionality with your favourite libraries, and use your favourite preprocessors.
+TestCafe tests are full-fledged Node.js apps. They are compatible with your favourite JavaScript libraries and preprocessors.
 
 ## Complex tests made easy
 
@@ -17,8 +17,8 @@ TestCafe’s intuitive and powerful toolkit makes testing easy, whether you’re
 ### Mock Requests
 Emulate HTTP responses to feed your app sample data, troubleshoot connectivity errors and cheat downtime.
 
-### Arbitrary client-side injections
-Execute arbitrary client-side code and see what happens.
+### Client-side injections
+Execute custom client-side code to parse the web page, examine its state, or even add extra dependencies.
 
 ### Frames and windows
 Make use of multiple browser windows to test out complex user interactions. Switch to and from iframes with ease and stability.

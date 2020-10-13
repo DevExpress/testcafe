@@ -5,17 +5,15 @@ permalink: /documentation/how-it-works/
 ---
 # How Does TestCafe Work?
 
-TestCafe’s engine is an invisible automation layer that takes over browsers and the web pages they display.
+The automation engine behind TestCafe takes over browsers and the web pages they display to simulate user activity.
 
 ## The Server-Client Architecture
 
-TestCafe is a server-side application with client-side access. 
+The server-client architecture of TestCafe makes it capable of executing both system-level and in-browser code.
 
-TestCafe controls browser processes on a system level. This is necessary to launch browsers, manage browser windows, and have full control over test execution.
-
-TestCafe tests are full-fledged Node.js scripts. They can launch services and applications, read and write system files, make use of your favourite libraries.
-
-At the same time, TestCafe runs client-side automation scripts that simulate user actions, handle asynchronous events, and execute arbitrary JavaScript.
+* TestCafe uses [high-level system APIs](https://github.com/DevExpress/testcafe-browser-tools) to launch and manage browsers. This is necessary to achieve full control over test execution.
+* TestCafe tests are full-fledged Node.js scripts. They can launch services and applications, read and write system files, make use of your favourite libraries.
+* At the same time, TestCafe is capable of performing in-browser actions via client-side automation scripts. This is how TestCafe handles asynchronous events, simulates user activity, and executes custom (user-defined) JavaScript.
 
 Our experience shows that this hybrid approach gives users the best of both worlds. Early in the product’s life, TestCafe ran entirely in the browser. This caused a number of issues. The tests’ capabilities were limited, the application often interfered with page execution, and the sub-optimal logic separation caused browser crashes. Since then, we decoupled the engine, exposed the underlying Node.js API, and implemented a test runner that executes test scripts server-side.
 
@@ -33,12 +31,12 @@ Every TestCafe test begins with an empty slate of a browser. At the end of the r
 
 Tests that run in parallel operate in independent sandboxed environments. This helps prevent server-side collisions.
 
-## Arbitrary Client-Side Injections
+## Client-Side Scripts
 
-To perform common testing tasks, TestCafe translates server-side calls to its API into client-side code. However, some scenarios require the execution of client-side code that TestCafe cannot automatically generate. That’s why the framework provides several ways to execute arbitrary JavaScript.
+To perform common testing tasks, TestCafe translates server-side calls to its API into client-side code. However, some scenarios require the execution of client-side code that TestCafe cannot automatically generate. That’s why the framework provides several ways to execute user-defined JavaScript.
 
 [Client Scripts](/../guides/advanced-guides/inject-client-scripts.md) inject custom JavaScript files into the page.
-[Client Functions](../guides/basic-guides/obtain-client-side-info.md) evaluate arbitrary JavaScript expressions and pass their return value to the server side.
+[Client Functions](../guides/basic-guides/obtain-client-side-info.md) evaluate user-defined JavaScript expressions and pass their return value to the server side.
 The [Selector](../guides/basic-guides/select-page-elements.md) function can launch user-defined client-side code to find a DOM element that cannot be otherwise identified.
 
 However, client-side injections have their limits. Client-side page modifications can disrupt internal TestCafe processes. Client Functions can not return DOM elements. The rule of thumb is to only inject client-side code when you need to pass otherwise unobtainable page data to the server.
