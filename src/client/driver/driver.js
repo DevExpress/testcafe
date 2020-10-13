@@ -1523,7 +1523,7 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     _initParentWindowLink () {
-        if (window.opener && this.windowId)
+        if (window.opener && window.opener !== window && this.windowId)
             this.parentWindowDriverLink = new ParentWindowDriverLink(window);
     }
 
