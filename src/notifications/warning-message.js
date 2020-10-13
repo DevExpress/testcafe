@@ -18,8 +18,8 @@ export default {
     cannotParseConfigFile:                   "Failed to parse the '{path}' file.\n\nThis file is not a well-formed JSON file.",
     configOptionsWereOverridden:             'The {optionsString} option{suffix} from the configuration file will be ignored.',
     deprecatedOptionsReplacement:            "The '{deprecatedOption}' option is deprecated. Use the '{replacement}' option instead.\n",
-    deprecatedOptionsAreUsed:                '{deprecatedOptionReplacements}\nThe deprecated options will be removed in the next major release.',
-    cannotOverrideTypeScriptConfigOptions:   'You cannot override the "{optionName}" compiler option in the TypeScript configuration file.',
+    deprecatedOptionsAreUsed:                '{deprecatedOptionReplacements}The deprecated options will be removed in the next major release.\n',
+    cannotOverrideTypeScriptConfigOptions:   'You cannot override the "{optionName}" compiler option in the TypeScript configuration file.\n',
 
     cannotFindWindowDescriptorError: 'Could not find the "{browserAlias}" window. ' +
                                      'TestCafe is unable to resize the window or take screenshots.\n\n' +

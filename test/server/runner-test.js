@@ -872,9 +872,8 @@ describe('Runner', () => {
                     console.log = savedConsoleLog;
 
                     expect(consoleWrapper.messages.log).eql(
-                        "The 'tsConfigPath' option is deprecated. Use the 'compilerOptions.typescript.configPath' option instead." +
-                        '\n\n' +
-                        'The deprecated options will be removed in the next major release.');
+                        "The 'tsConfigPath' option is deprecated. Use the 'compilerOptions.typescript.configPath' option instead.\n" +
+                        'The deprecated options will be removed in the next major release.\n');
                 });
         });
 

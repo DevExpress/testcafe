@@ -6,6 +6,7 @@ import ESNextTestFileCompiler from '../es-next/compiler';
 import TypescriptConfiguration from '../../../../configuration/typescript-configuration';
 import { GeneralError } from '../../../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../../../errors/types';
+import debug from 'debug';
 
 // NOTE: For type definitions only
 import TypeScript, { CompilerOptionsValue } from 'typescript';
@@ -25,6 +26,8 @@ declare interface RequireCompilerFunction {
 interface RequireCompilers {
     [extension: string]: RequireCompilerFunction;
 }
+
+const DEBUG_LOGGER = debug('testcafe:compiler:typescript');
 
 const RENAMED_DEPENDENCIES_MAP = new Map([['testcafe', APIBasedTestFileCompilerBase.EXPORTABLE_LIB_PATH]]);
 
@@ -111,6 +114,9 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
     private _compileFilesToCache (ts: TypeScriptInstance, filenames: string[]): void {
         const opts    = this._tsConfig.getOptions() as Dictionary<CompilerOptionsValue>;
         const program = ts.createProgram([TypeScriptTestFileCompiler.tsDefsPath, ...filenames], opts);
+
+        DEBUG_LOGGER('options: %O', opts);
+        DEBUG_LOGGER('version: %s', ts.version);
 
         program.getSourceFiles().forEach(sourceFile => {
             // @ts-ignore A hack to allow import globally installed TestCafe in tests
