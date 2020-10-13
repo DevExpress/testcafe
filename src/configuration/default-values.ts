@@ -1,4 +1,5 @@
 import { Dictionary, StaticContentCachingOptions } from './interfaces';
+import CustomizableCompilers from './customizable-compilers';
 
 export const DEFAULT_TIMEOUT = {
     selector:  10000,
@@ -49,3 +50,12 @@ export const TYPESCRIPT_BLACKLISTED_OPTIONS = [
     'outFile',
     'out'
 ];
+
+const DEFAULT_COMPILER_OPTIONS = {
+    [CustomizableCompilers.typescript]: {}
+};
+
+export function getDefaultCompilerOptions (): object {
+    // NOTE: Return the copy of the constant to prevent the modification of object properties
+    return Object.assign({}, DEFAULT_COMPILER_OPTIONS);
+}

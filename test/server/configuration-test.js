@@ -4,6 +4,7 @@ const { expect }    = require('chai');
 const fs            = require('fs');
 const tmp           = require('tmp');
 const nanoid        = require('nanoid');
+const del           = require('del');
 
 const TestCafeConfiguration                   = require('../../lib/configuration/testcafe-configuration');
 const TypeScriptConfiguration                 = require('../../lib/configuration/typescript-configuration');
@@ -59,9 +60,8 @@ describe('TestCafeConfiguration', () => {
         });
     });
 
-    afterEach(() => {
-        if (fs.existsSync(testCafeConfiguration.filePath))
-            fs.unlinkSync(testCafeConfiguration.filePath);
+    afterEach(async () => {
+        await del([testCafeConfiguration.filePath]);
 
         consoleWrapper.unwrap();
         consoleWrapper.messages.clear();
@@ -351,6 +351,27 @@ describe('TestCafeConfiguration', () => {
                 });
         });
 
+        it('tsConfigPath is specified and compiler options are "undefined"', () => {
+            const configuration = new TestCafeConfiguration();
+            let runner          = null;
+
+            return configuration.init()
+                .then(() => {
+                    runner = new RunnerCtor(null, null, configuration);
+
+                    runner
+                        .tsConfigPath('path-to-ts-config')
+                        .compilerOptions(void 0) // emulate command-line run
+                        ._setBootstrapperOptions();
+
+                    expect(runner.configuration.getOption(OptionNames.compilerOptions)).eql({
+                        'typescript': {
+                            configPath: 'path-to-ts-config'
+                        }
+                    });
+                });
+        });
+
         it('both "tsConfigPath" and compiler options are specified', () => {
             const configuration = new TestCafeConfiguration();
             let runner          = null;
@@ -412,6 +433,7 @@ describe('TypeScriptConfiguration', () => {
         return typeScriptConfiguration.init()
             .then(() => {
                 consoleWrapper.unwrap();
+                fs.unlinkSync(tsConfigPath);
 
                 expect(typeScriptConfiguration.getOption('hostname')).eql(void 0);
                 expect(consoleWrapper.messages.log).contains(`Failed to parse the '${typeScriptConfiguration.filePath}' file.`);
@@ -426,9 +448,8 @@ describe('TypeScriptConfiguration', () => {
             consoleWrapper.wrap();
         });
 
-        afterEach(() => {
-            if (fs.existsSync(typeScriptConfiguration.filePath))
-                fs.unlinkSync(typeScriptConfiguration.filePath);
+        afterEach(async () => {
+            await del([typeScriptConfiguration.filePath, customTSConfigFilePath]);
 
             consoleWrapper.unwrap();
             consoleWrapper.messages.clear();

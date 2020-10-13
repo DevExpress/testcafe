@@ -17,7 +17,8 @@ import {
     DEFAULT_SOURCE_DIRECTORIES,
     DEFAULT_DEVELOPMENT_MODE,
     DEFAULT_RETRY_TEST_PAGES,
-    STATIC_CONTENT_CACHING_SETTINGS
+    STATIC_CONTENT_CACHING_SETTINGS,
+    getDefaultCompilerOptions
 } from './default-values';
 
 import OptionSource from './option-source';
@@ -233,14 +234,15 @@ export default class TestCafeConfiguration extends Configuration {
     }
 
     private _prepareCompilerOptions (): void {
-        const compilerOptions = this._ensureOption(OPTION_NAMES.compilerOptions, {
-            [CustomizableCompilers.typescript]: {}
-        }, OptionSource.Configuration);
+        const compilerOptions = this._ensureOption(OPTION_NAMES.compilerOptions, getDefaultCompilerOptions(), OptionSource.Configuration);
+
+        compilerOptions.value = compilerOptions.value || getDefaultCompilerOptions();
 
         const tsConfigPath = this.getOption(OPTION_NAMES.tsConfigPath);
 
         if (tsConfigPath) {
-            let typeScriptCompilerOptions = (compilerOptions.value as CompilerOptions)[CustomizableCompilers.typescript] as TypeScriptCompilerOptions;
+            const compilerOptionValue     = compilerOptions.value as CompilerOptions;
+            let typeScriptCompilerOptions = compilerOptionValue[CustomizableCompilers.typescript] as TypeScriptCompilerOptions;
 
             typeScriptCompilerOptions = Object.assign({
                 configPath: tsConfigPath
