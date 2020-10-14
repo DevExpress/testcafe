@@ -116,6 +116,7 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
         const program = ts.createProgram([TypeScriptTestFileCompiler.tsDefsPath, ...filenames], opts);
 
         DEBUG_LOGGER('options: %O', opts);
+        DEBUG_LOGGER('path: "%s"', this._compilerPath);
         DEBUG_LOGGER('version: %s', ts.version);
 
         program.getSourceFiles().forEach(sourceFile => {
