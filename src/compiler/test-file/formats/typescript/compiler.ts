@@ -115,9 +115,9 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
         const opts    = this._tsConfig.getOptions() as Dictionary<CompilerOptionsValue>;
         const program = ts.createProgram([TypeScriptTestFileCompiler.tsDefsPath, ...filenames], opts);
 
-        DEBUG_LOGGER('options: %O', opts);
         DEBUG_LOGGER('path: "%s"', this._compilerPath);
         DEBUG_LOGGER('version: %s', ts.version);
+        DEBUG_LOGGER('options: %O', opts);
 
         program.getSourceFiles().forEach(sourceFile => {
             // @ts-ignore A hack to allow import globally installed TestCafe in tests
