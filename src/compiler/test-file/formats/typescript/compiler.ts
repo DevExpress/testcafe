@@ -7,6 +7,7 @@ import TypescriptConfiguration from '../../../../configuration/typescript-config
 import { GeneralError } from '../../../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../../../errors/types';
 import debug from 'debug';
+import { isRelative } from '../../../../api/test-page-url';
 
 // NOTE: For type definitions only
 import TypeScript, { CompilerOptionsValue } from 'typescript';
@@ -57,8 +58,26 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
     }
 
     private static _getCompilerPath (compilerOptions?: TypeScriptCompilerOptions): string {
-        return compilerOptions && compilerOptions.customCompilerModulePath ||
-            DEFAULT_TYPESCRIPT_COMPILER_PATH;
+        let compilerPath = compilerOptions && compilerOptions.customCompilerModulePath;
+
+        if (!compilerPath || compilerPath === DEFAULT_TYPESCRIPT_COMPILER_PATH)
+            return DEFAULT_TYPESCRIPT_COMPILER_PATH;
+
+        // NOTE: if the relative path to custom TypeScript compiler module is specified
+        // then we will resolve the path from the root of the 'testcafe' module
+        if (isRelative(compilerPath)) {
+            const testcafeRootFolder = path.resolve(__dirname, '../../../../../');
+
+            compilerPath = path.resolve(testcafeRootFolder, compilerPath);
+        }
+
+        return compilerPath;
+    }
+
+    private static _getFormattedModuleSearchedPaths (pathToModule: string): string {
+        const searchedPaths = require.resolve.paths(pathToModule) || [];
+
+        return searchedPaths.join('\n');
     }
 
     private _loadTypeScriptCompiler (): TypeScriptInstance {
@@ -66,7 +85,7 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
             return require(this._compilerPath);
         }
         catch (err) {
-            throw new GeneralError(RUNTIME_ERRORS.typeScriptCompilerLoadingError, err.message);
+            throw new GeneralError(RUNTIME_ERRORS.typeScriptCompilerLoadingError, err.message, TypeScriptTestFileCompiler._getFormattedModuleSearchedPaths(this._compilerPath));
         }
     }
 
@@ -115,7 +134,6 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
         const opts    = this._tsConfig.getOptions() as Dictionary<CompilerOptionsValue>;
         const program = ts.createProgram([TypeScriptTestFileCompiler.tsDefsPath, ...filenames], opts);
 
-        DEBUG_LOGGER('path: "%s"', this._compilerPath);
         DEBUG_LOGGER('version: %s', ts.version);
         DEBUG_LOGGER('options: %O', opts);
 
@@ -143,6 +161,8 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
     }
 
     public _precompileCode (testFilesInfo: TestFileInfo[]): string[] {
+        DEBUG_LOGGER('path: "%s"', this._compilerPath);
+
         // NOTE: lazy load the compiler
         const ts: TypeScriptInstance = this._loadTypeScriptCompiler();
         const filenames              = testFilesInfo.map(({ filename }) => filename);

@@ -538,49 +538,73 @@ describe('Compiler', function () {
                     assertError(err, {
                         message: 'Cannot prepare tests due to an error.\n\n' +
                             'Error: Unable to load the TypeScript compiler.\n' +
-                            "Cannot find module 'wrong-path-to-typescript-module'"
+                            "Cannot find module 'wrong-path-to-typescript-module'.\n" +
+                            'Searched paths:\n'
                     }, true);
                 });
         });
 
-        it('Should allow to specify path to the custom compiler module', () => {
-            const sources = [
-                'test/server/data/test-suites/typescript-basic/testfile1.ts'
-            ];
+        describe('Should transform path to the custom compiler module', () => {
+            function checkPathTransformation (specifiedPath, expectedPath) {
+                const sources = [
+                    'test/server/data/test-suites/typescript-basic/testfile1.ts'
+                ];
 
-            const options = {
-                'typescript': {
-                    'customCompilerModulePath': 'custom-path-to-typescript-module'
-                }
-            };
+                const options = {
+                    'typescript': { }
+                };
 
-            let customCompilerModuleIsLoaded = false;
+                if (specifiedPath !== null)
+                    options.typescript.customCompilerModulePath = specifiedPath;
 
-            const storedModuleLoad = Module._load;
+                let customCompilerModuleIsLoaded = false;
 
-            Module._load = function (...args) {
-                const modulePath = args[0];
+                const storedModuleLoad = Module._load;
 
-                if (modulePath === 'custom-path-to-typescript-module') {
-                    args[0] = 'typescript';
+                Module._load = function (...args) {
+                    const modulePath = args[0];
 
-                    customCompilerModuleIsLoaded = true;
-                }
+                    if (modulePath === expectedPath) {
+                        args[0] = 'typescript';
 
-                return storedModuleLoad.apply(this, args);
-            };
+                        customCompilerModuleIsLoaded = true;
+                    }
 
-            return compile(sources, options)
-                .then(() => {
-                    Module._load = storedModuleLoad;
+                    return storedModuleLoad.apply(this, args);
+                };
 
-                    expect(customCompilerModuleIsLoaded).to.be.true;
-                })
-                .catch(() => {
-                    Module._load = storedModuleLoad;
+                return compile(sources, options)
+                    .then(() => {
+                        Module._load = storedModuleLoad;
 
-                    expect.fail('compilation should be successful.');
-                });
+                        expect(customCompilerModuleIsLoaded).to.be.true;
+                    })
+                    .catch(() => {
+                        Module._load = storedModuleLoad;
+
+                        expect.fail('compilation should be successful.');
+                    });
+            }
+
+            const repositoryRoot  = path.resolve('./');
+
+            it('Relative', () => {
+                return checkPathTransformation('../typescript', path.resolve(repositoryRoot, '../typescript'));
+            });
+
+            it('Absolute', () => {
+                const absolutePath = path.resolve(repositoryRoot, './dummy-folder');
+
+                return checkPathTransformation(absolutePath, absolutePath);
+            });
+
+            it('Default', () => {
+                return checkPathTransformation('typescript', 'typescript');
+            });
+
+            it('Not specified', () => {
+                return checkPathTransformation(null, 'typescript');
+            });
         });
     });
 
