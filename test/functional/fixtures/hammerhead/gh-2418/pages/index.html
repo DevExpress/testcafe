@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Title</title>
+
+    <script language="javascript" type="text/javascript">
+        function init()
+        {
+            setTimeout(load, 50);
+        }
+
+        function load()
+        {
+            var html = '<!DOCTYPE html>\n' +
+                '<html>\n' +
+                '<head>\n' +
+                '<title>Title</title>\n' +
+                '<link href="some-style.css" rel="stylesheet" type="text/css" />\n' +
+                '<script language="JavaScript" type="text/javascript">\n' +
+                '<' + '/script>\n' +
+                '</head>\n' +
+                '<body class="main-form">\n' +
+                '<script type="text/javascript" src="http://localhost:3000/fixtures/hammerhead/gh-2418/pages/script.js"><' + '/script>' +
+                '</body>' +
+                '</html>';
+
+            var doc = document;
+
+            doc.open('text/html', 'replace');
+            doc.write(html);
+            doc.close();
+        }
+    </script>
+</head>
+<body onload="init();">
+</body>
+</html>
+
