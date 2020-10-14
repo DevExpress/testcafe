@@ -204,6 +204,7 @@ export default class Driver extends serviceUtils.EventEmitter {
 
         this.setCustomCommandHandlers(COMMAND_TYPE.unlockPage, () => this._unlockPageAfterTestIsDone());
 
+        // NOTE: initiate the child links restoring process before the window is reloaded
         listeners.addInternalEventListener(window, ['beforeunload'], () => {
             this._sendStartToRestoreCommand();
         });
@@ -1162,7 +1163,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         }
     }
 
-    async _restoreChildWindowLinks () {
+    _restoreChildWindowLinks () {
         if (!this.contextStorage.getItem(PENDING_CHILD_WINDOW_COUNT))
             return Promise.resolve();
 
@@ -1170,7 +1171,6 @@ export default class Driver extends serviceUtils.EventEmitter {
             this._restoreChildWindowsPromiseResolver = resolve;
         }), RESTORE_CHILD_WINDOWS_TIMEOUT)
             .catch(() => {
-                //
             });
     }
 
@@ -1523,6 +1523,11 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     _initParentWindowLink () {
+        // NOTE: we need to create parentWindowDriverLinks in the following cases:
+        // multiple-windows mode is enabled
+        // current window has parent window
+        // current window parent is not the same as current window
+        // the last case is possible when we have the series of multiple and non-multiple windows tests
         if (window.opener && window.opener !== window && this.windowId)
             this.parentWindowDriverLink = new ParentWindowDriverLink(window);
     }

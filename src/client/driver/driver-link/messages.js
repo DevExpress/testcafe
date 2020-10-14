@@ -132,5 +132,3 @@ export class RestoreChildLinkMessage extends InterDriverMessage {
         this.windowId = windowId;
     }
 }
-
-
