@@ -129,7 +129,8 @@
     "time-limit-promise": "^1.0.2",
     "tmp": "0.0.28",
     "tree-kill": "^1.1.0",
-    "typescript": "^3.3.3"
+    "typescript": "^3.3.3",
+    "unquote": "^1.1.1"
   },
   "devDependencies": {
     "@belym.a.2105/broken-link-checker": "^0.7.9",

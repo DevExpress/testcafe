@@ -558,6 +558,21 @@ describe('CLI argument parser', function () {
         });
     });
 
+    it('Compiler options', async () => {
+        const cmd = '--compiler-options ' +
+            'typescript.options.skipLibCheck=true;' +
+            "typescript.options.lib=ES5,'WebWorker';" +
+            'typescript.configPath=/path-to-tsconfig.json';
+
+        const parser = await parse(cmd);
+
+        const typescriptCompilerOptions = parser.opts.compilerOptions.typescript;
+
+        expect(typescriptCompilerOptions.options.skipLibCheck).eql(true);
+        expect(typescriptCompilerOptions.options.lib).eql(['ES5', 'WebWorker']);
+        expect(typescriptCompilerOptions.configPath).eql('/path-to-tsconfig.json');
+    });
+
     it('Client scripts', () => {
         return parse('--client-scripts asserts/jquery.js,mockDate.js')
             .then(parser => {
@@ -655,7 +670,8 @@ describe('CLI argument parser', function () {
             { long: '--disable-screenshots' },
             { long: '--screenshots-full-page' },
             { long: '--disable-multiple-windows' },
-            { long: '--experimental-compiler-service' }
+            { long: '--experimental-compiler-service' },
+            { long: '--compiler-options' }
         ];
 
         const parser  = new CliArgumentParser('');

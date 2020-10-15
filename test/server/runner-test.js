@@ -14,6 +14,7 @@ const BrowserConnection       = require('../../lib/browser/connection');
 const BrowserSet              = require('../../lib/runner/browser-set');
 const browserProviderPool     = require('../../lib/browser/provider/pool');
 const delay                   = require('../../lib/utils/delay');
+const OptionNames             = require('../../lib/configuration/option-names');
 
 chai.use(require('chai-string'));
 
@@ -271,7 +272,7 @@ describe('Runner', () => {
                 });
         });
 
-        it('Should not display a message about "overriden options" after call "screenshots" method with undefined arguments', () => {
+        it('Should not display a message about "overridden options" after call "screenshots" method with undefined arguments', () => {
             const savedConsoleLog = console.log;
 
             console.log = consoleWrapper.log;
@@ -855,6 +856,48 @@ describe('Runner', () => {
             catch (err) {
                 expect(err.message).startsWith('You cannot call the "clientScripts" method more than once. Pass an array of parameters to this method instead.');
             }
+        });
+    });
+
+    describe('.compilerOptions', () => {
+        it('Should warn about deprecated options', () => {
+            const savedConsoleLog = console.log;
+
+            console.log = consoleWrapper.log;
+
+            return runner
+                .tsConfigPath('path-to-ts-config')
+                .run()
+                .catch(() => {
+                    console.log = savedConsoleLog;
+
+                    expect(consoleWrapper.messages.log).eql(
+                        "The 'tsConfigPath' option is deprecated. Use the 'compilerOptions.typescript.configPath' option instead.\n" +
+                        'The deprecated options will be removed in the next major release.\n');
+                });
+        });
+
+        it('Should raise an error if the compilation options is specified wrongly', async () => {
+            const validateCompilerOptions = (opts, errMsg) => {
+                return runner
+                    .compilerOptions(opts)
+                    .run()
+                    .catch(err => {
+                        expect(err.message).eql(errMsg);
+
+                        delete runner.configuration._options[OptionNames.compilerOptions];
+                    });
+            };
+
+            await validateCompilerOptions({
+                'wrong-compiler-type': {},
+                'typescript':          {}
+            }, "You cannot specify options for the 'wrong-compiler-type' compiler.");
+
+            await validateCompilerOptions({
+                'wrong-compiler-type-1': {},
+                'wrong-compiler-type-2': {}
+            }, "You cannot specify options for the 'wrong-compiler-type-1', 'wrong-compiler-type-2' compilers.");
         });
     });
 

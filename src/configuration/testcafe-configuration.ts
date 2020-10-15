@@ -17,7 +17,8 @@ import {
     DEFAULT_SOURCE_DIRECTORIES,
     DEFAULT_DEVELOPMENT_MODE,
     DEFAULT_RETRY_TEST_PAGES,
-    STATIC_CONTENT_CACHING_SETTINGS
+    STATIC_CONTENT_CACHING_SETTINGS,
+    getDefaultCompilerOptions
 } from './default-values';
 
 import OptionSource from './option-source';
@@ -25,8 +26,12 @@ import {
     Dictionary,
     FilterOption,
     ReporterOption,
-    StaticContentCachingOptions
+    StaticContentCachingOptions,
+    TypeScriptCompilerOptions
 } from './interfaces';
+
+import CustomizableCompilers from './customizable-compilers';
+import { DEPRECATED_OPTIONS, DEPRECATED_OPTION_NAMES } from './deprecated-options';
 
 const CONFIGURATION_FILENAME = '.testcaferc.json';
 
@@ -89,6 +94,7 @@ export default class TestCafeConfiguration extends Configuration {
     public prepare (): void {
         this._prepareFlags();
         this._setDefaultValues();
+        this._prepareCompilerOptions();
     }
 
     public notifyAboutOverriddenOptions (): void {
@@ -98,9 +104,31 @@ export default class TestCafeConfiguration extends Configuration {
         const optionsStr    = getConcatenatedValuesString(this._overriddenOptions);
         const optionsSuffix = getPluralSuffix(this._overriddenOptions);
 
-        Configuration._showConsoleWarning(renderTemplate(WARNING_MESSAGES.configOptionsWereOverriden, optionsStr, optionsSuffix));
+        Configuration._showConsoleWarning(renderTemplate(WARNING_MESSAGES.configOptionsWereOverridden, optionsStr, optionsSuffix));
 
         this._overriddenOptions = [];
+    }
+
+    public notifyAboutDeprecatedOptions (): void {
+        const deprecatedOptionsObj = this.getOptions((name, option) => {
+            return DEPRECATED_OPTION_NAMES.includes(name) &&
+                option.value !== void 0;
+        });
+
+        const deprecatedOptionNames = Object.keys(deprecatedOptionsObj);
+
+        if (!deprecatedOptionNames.length)
+            return;
+
+        const deprecatedOptions = DEPRECATED_OPTIONS.filter(deprecatedOption => deprecatedOptionNames.includes(deprecatedOption.what));
+
+        const replacements = deprecatedOptions.reduce((result, current) => {
+            result += renderTemplate(WARNING_MESSAGES.deprecatedOptionsReplacement, current.what, current.useInstead);
+
+            return result;
+        }, '');
+
+        Configuration._showConsoleWarning(renderTemplate(WARNING_MESSAGES.deprecatedOptionsAreUsed, replacements));
     }
 
     public get startOptions (): TestCafeStartOptions {
@@ -203,6 +231,25 @@ export default class TestCafeConfiguration extends Configuration {
         this._ensureOptionWithValue(OPTION_NAMES.retryTestPages, DEFAULT_RETRY_TEST_PAGES, OptionSource.Configuration);
 
         this._ensureScreenshotPath();
+    }
+
+    private _prepareCompilerOptions (): void {
+        const compilerOptions = this._ensureOption(OPTION_NAMES.compilerOptions, getDefaultCompilerOptions(), OptionSource.Configuration);
+
+        compilerOptions.value = compilerOptions.value || getDefaultCompilerOptions();
+
+        const tsConfigPath = this.getOption(OPTION_NAMES.tsConfigPath);
+
+        if (tsConfigPath) {
+            const compilerOptionValue     = compilerOptions.value as CompilerOptions;
+            let typeScriptCompilerOptions = compilerOptionValue[CustomizableCompilers.typescript] as TypeScriptCompilerOptions;
+
+            typeScriptCompilerOptions = Object.assign({
+                configPath: tsConfigPath
+            }, typeScriptCompilerOptions);
+
+            (compilerOptions.value as CompilerOptions)[CustomizableCompilers.typescript] = typeScriptCompilerOptions;
+        }
     }
 
     public static get FILENAME (): string {

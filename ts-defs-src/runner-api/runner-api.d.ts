@@ -105,6 +105,10 @@ interface VideoEncodingOptions extends Partial<DefaultEncodingOptions> {
     aspect?: string;
 }
 
+type CompilerOptions = {
+    [key in 'typescript']: object;
+};
+
 interface TestCafe {
     /**
      * Creates the test runner that is used to configure and launch test tasks.
@@ -263,6 +267,9 @@ interface Runner {
      * The absolute or relative path to the TypeScript configuration file. Relative paths resolve from the current directory (the directory from which you run TestCafe).
      */
     tsConfigPath(path: string): this;
+
+    /** Specifies custom compiler options for built-in test file compilers **/
+    compilerOptions(compilerOptions: CompilerOptions): this;
 }
 
 interface BrowserConnection {
