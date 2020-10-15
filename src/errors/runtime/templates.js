@@ -110,6 +110,6 @@ export default {
 
     [RUNTIME_ERRORS.uncaughtErrorInReporter]:           'An uncaught error occurred in the "{reporterName}" reporter\'s "{methodName}" method. Error details:\n{originalError}',
     [RUNTIME_ERRORS.roleInitializedWithRelativeUrl]:    'You cannot specify relative login page URLs in the Role constructor. Use an absolute URL.',
-    [RUNTIME_ERRORS.typeScriptCompilerLoadingError]:    'Unable to load the TypeScript compiler.\n{originErrorMessage}.\nSearched paths:\n{searchedPaths}\n',
+    [RUNTIME_ERRORS.typeScriptCompilerLoadingError]:    'Unable to load the TypeScript compiler.\n{originErrorMessage}.',
     [RUNTIME_ERRORS.cannotCustomizeSpecifiedCompilers]: 'You cannot specify options for the {noncustomizableCompilerList} compiler{suffix}.'
 };

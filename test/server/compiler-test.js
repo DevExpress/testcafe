@@ -538,8 +538,7 @@ describe('Compiler', function () {
                     assertError(err, {
                         message: 'Cannot prepare tests due to an error.\n\n' +
                             'Error: Unable to load the TypeScript compiler.\n' +
-                            "Cannot find module 'wrong-path-to-typescript-module'.\n" +
-                            'Searched paths:\n'
+                            "Cannot find module 'wrong-path-to-typescript-module'"
                     }, true);
                 });
         });

@@ -74,18 +74,12 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
         return compilerPath;
     }
 
-    private static _getFormattedModuleSearchedPaths (pathToModule: string): string {
-        const searchedPaths = require.resolve.paths(pathToModule) || [];
-
-        return searchedPaths.join('\n');
-    }
-
     private _loadTypeScriptCompiler (): TypeScriptInstance {
         try {
             return require(this._compilerPath);
         }
         catch (err) {
-            throw new GeneralError(RUNTIME_ERRORS.typeScriptCompilerLoadingError, err.message, TypeScriptTestFileCompiler._getFormattedModuleSearchedPaths(this._compilerPath));
+            throw new GeneralError(RUNTIME_ERRORS.typeScriptCompilerLoadingError, err.message);
         }
     }
 
