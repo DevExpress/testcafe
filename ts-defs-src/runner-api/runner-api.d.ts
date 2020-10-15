@@ -268,7 +268,9 @@ interface Runner {
      */
     tsConfigPath(path: string): this;
 
-    /** Specifies custom compiler options for built-in test file compilers **/
+    /**
+     * Specifies custom compiler options for built-in test file compilers.
+     */
     compilerOptions(compilerOptions: CompilerOptions): this;
 }
 
