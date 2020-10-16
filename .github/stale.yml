@@ -14,6 +14,7 @@ exemptLabels:
   - "STATE: Stale"
   - "STATE: won't fix"
   - "support center"
+  - "TYPE: bug"
 # Label to use when marking an issue as stale
 staleLabel: "STATE: Stale"
 issues:
