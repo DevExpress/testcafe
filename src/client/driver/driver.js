@@ -56,7 +56,8 @@ import {
     PreviousWindowNotFoundError,
     CannotCloseWindowWithChildrenError,
     CannotCloseWindowWithoutParentError,
-    WindowNotFoundError
+    WindowNotFoundError,
+    CannotRestoreChildWindowError
 } from '../../shared/errors';
 
 
@@ -756,26 +757,37 @@ export default class Driver extends serviceUtils.EventEmitter {
             const msg    = e.message;
             const window = e.source;
 
-            if (msg.type === MESSAGE_TYPE.establishConnection)
-                this._addChildIframeDriverLink(msg.id, window);
-            else if (msg.type === MESSAGE_TYPE.setAsMaster)
-                this._handleSetAsMasterMessage(msg, window);
-            else if (msg.type === MESSAGE_TYPE.switchToWindow)
-                this._handleSwitchToWindow(msg, window);
-            else if (msg.type === MESSAGE_TYPE.closeWindow)
-                this._handleCloseWindow(msg, window);
-            else if (msg.type === MESSAGE_TYPE.switchToWindowValidation)
-                this._handleSwitchToWindowValidation(msg, window);
-            else if (msg.type === MESSAGE_TYPE.closeWindowValidation)
-                this._handleCloseWindowValidation(msg, window);
-            else if (msg.type === MESSAGE_TYPE.getWindows)
-                this._handleGetWindows(msg, window);
-            else if (msg.type === MESSAGE_TYPE.closeAllChildWindows)
-                this._handleCloseAllWindowsMessage(msg, window);
-            else if (msg.type === MESSAGE_TYPE.startToRestoreChildLink)
-                this._handleStartToRestoreChildLinkMessage();
-            else if (msg.type === MESSAGE_TYPE.restoreChildLink)
-                this._handleRestoreChildLink(msg, window);
+            switch (msg.type) {
+                case MESSAGE_TYPE.establishConnection:
+                    this._addChildIframeDriverLink(msg.id, window);
+                    break;
+                case MESSAGE_TYPE.setAsMaster:
+                    this._handleSetAsMasterMessage(msg, window);
+                    break;
+                case MESSAGE_TYPE.switchToWindow:
+                    this._handleSwitchToWindow(msg, window);
+                    break;
+                case MESSAGE_TYPE.closeWindow:
+                    this._handleCloseWindow(msg, window);
+                    break;
+                case MESSAGE_TYPE.switchToWindowValidation:
+                    this._handleSwitchToWindowValidation(msg, window);
+                    break;
+                case MESSAGE_TYPE.closeWindowValidation:
+                    this._handleCloseWindowValidation(msg, window);
+                    break;
+                case MESSAGE_TYPE.getWindows:
+                    this._handleGetWindows(msg, window);
+                    break;
+                case MESSAGE_TYPE.closeAllChildWindows:
+                    this._handleCloseAllWindowsMessage(msg, window);
+                    break;
+                case MESSAGE_TYPE.startToRestoreChildLink:
+                    this._handleStartToRestoreChildLinkMessage();
+                    break;
+                case MESSAGE_TYPE.restoreChildLink:
+                    this._handleRestoreChildLink(msg, window);
+            }
         });
     }
 
@@ -1163,15 +1175,20 @@ export default class Driver extends serviceUtils.EventEmitter {
         }
     }
 
-    _restoreChildWindowLinks () {
+    async _restoreChildWindowLinks () {
         if (!this.contextStorage.getItem(PENDING_CHILD_WINDOW_COUNT))
-            return Promise.resolve();
+            return;
 
-        return getTimeLimitedPromise(new Promise(resolve => {
+        const restoreChildWindowsPromise = new Promise(resolve => {
             this._restoreChildWindowsPromiseResolver = resolve;
-        }), RESTORE_CHILD_WINDOWS_TIMEOUT)
-            .catch(() => {
-            });
+        });
+
+        try {
+            await getTimeLimitedPromise(restoreChildWindowsPromise, RESTORE_CHILD_WINDOWS_TIMEOUT);
+        }
+        catch (err) {
+            throw new CannotRestoreChildWindowError();
+        }
     }
 
     _onSwitchToPreviousWindow (command) {
