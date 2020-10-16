@@ -897,7 +897,7 @@ describe('Runner', () => {
             await validateCompilerOptions({
                 'wrong-compiler-type-1': {},
                 'wrong-compiler-type-2': {}
-            }, "You cannot specify options for the 'wrong-compiler-type-1', 'wrong-compiler-type-2' compilers.");
+            }, "You cannot specify options for the 'wrong-compiler-type-1' and 'wrong-compiler-type-2' compilers.");
         });
     });
 

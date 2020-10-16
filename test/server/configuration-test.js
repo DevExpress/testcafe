@@ -316,7 +316,7 @@ describe('TestCafeConfiguration', () => {
                     expect(testCafeConfiguration.getOption('hostname')).eql('anotherHostname');
                     expect(testCafeConfiguration.getOption('port1')).eql('anotherPort1');
                     expect(testCafeConfiguration.getOption('port2')).eql('anotherPort2');
-                    expect(consoleWrapper.messages.log).eql('The "hostname", "port1", "port2" options from the configuration file will be ignored.');
+                    expect(consoleWrapper.messages.log).eql('The "hostname", "port1", and "port2" options from the configuration file will be ignored.');
                 });
         });
 
