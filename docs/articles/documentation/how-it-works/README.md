@@ -23,11 +23,11 @@ You may notice that when you run TestCafe, the URL in the browser’s address ba
 
 The [testcafe-hammerhead](https://github.com/DevExpress/testcafe-hammerhead) proxy intercepts browser requests and adds automation scripts to the requested resources. It then modifies the URLs contained within the resource so that they point to the proxy. That way, neither the client-side code nor the resources it communicates with can tell that the page has been modified. To conceal automation scripts from the rest of the page code, TestCafe mocks the browser API.
 
-The proxying mechanism ensures that the page appears to be hosted at the original URL even to the test code. This is why you can  your website’s URLs as is, and pay no mind to the URL in the browser’s address bar.
+The proxying mechanism ensures that the page appears to be hosted at the original URL even to the test code. This is why you can use your website’s actual URL in tests, and pay no mind to the browser’s address bar.
 
 ## Browser Sandboxing
 
-Every TestCafe test begins with an empty slate of a browser. At the end of the run, TestCafe deletes all browser cookies, empties the storage, and reloads the page, thereby preventing undesirable interference with subsequent tests. You don’t need to write any boilerplate code to reset the app state and reverse the changes your tests make.
+Every TestCafe test begins with an empty slate of a browser. At the end of a run, TestCafe deletes all browser cookies, empties the storage, and reloads the page, thereby preventing undesirable interference with subsequent tests. You don’t need to write any boilerplate code to reset the app state and reverse the changes your tests make.
 
 Tests that run in parallel operate in independent sandboxed environments. This helps prevent server-side collisions.
 

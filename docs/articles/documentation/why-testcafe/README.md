@@ -53,8 +53,8 @@ Pause your tests to examine the app and troubleshoot errors.
 ### Free and Open Source
 TestCafe is distributed for free under the MIT license.
 
-### Community-driven
+### Actively maintained
 The TestCafe team is quick to respond to GitHub issues and StackOverflow questions. Community suggestions shape the future of the product.
 
-### Support
-Paying customers gain access to priority support and receive bugfixes before these changes go live.
+### In-house support
+All TestCafe Studio Pro customers (subscribers and trial users alike) receive prompt, proactive support directly from the package maintainers.
