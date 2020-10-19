@@ -365,9 +365,10 @@ describe('Utils', () => {
     });
 
     it('Get concatenated values string', () => {
-        expect(getConcatenatedValuesString(['param_1'])).eql('"param_1"');
-        expect(getConcatenatedValuesString(['param_1', 'param_2', 'param_3'])).eql('"param_1", "param_2", "param_3"');
-        expect(getConcatenatedValuesString(['1', '2'], ' ')).eql('"1" "2"');
+        expect(getConcatenatedValuesString([1])).eql('"1"');
+        expect(getConcatenatedValuesString(['1', '2'])).eql('"1" and "2"');
+        expect(getConcatenatedValuesString([1, 2, 3])).eql('"1", "2", and "3"');
+        expect(getConcatenatedValuesString([1, 2], '\n')).eql('"1"\n"2"');
     });
 
     describe('Moment Module Loader', () => {
