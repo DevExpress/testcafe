@@ -1,5 +1,5 @@
 # Number of days of inactivity before an issue becomes stale
-daysUntilStale: 1095
+daysUntilStale: 730
 # Number of days of inactivity before a stale issue is closed
 daysUntilClose: 10
 # Issues with these labels will never be considered stale
@@ -11,7 +11,6 @@ exemptLabels:
   - "!IMPORTANT!"
   - "STATE: Need clarification"
   - "STATE: Need response"
-  - "STATE: Stale"
   - "STATE: won't fix"
   - "support center"
   - "TYPE: bug"
