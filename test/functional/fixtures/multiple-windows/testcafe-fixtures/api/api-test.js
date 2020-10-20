@@ -1,4 +1,6 @@
-import { Selector } from 'testcafe';
+import { Selector, ClientFunction } from 'testcafe';
+
+const reload = ClientFunction(() => window.location.reload());
 
 const parentUrl = 'http://localhost:3000/fixtures/multiple-windows/pages/api/parent.html';
 const child1Url = 'http://localhost:3000/fixtures/multiple-windows/pages/api/child-1.html';
@@ -271,4 +273,59 @@ test('Close window without parent', async t => {
 
 test('Open window with `disableMultipleWindows` option', async t => {
     await t.openWindow(child1Url);
+});
+
+test('Refresh parent and switch to child', async t => {
+    await t.openWindow(child1Url);
+
+    await t.switchToParentWindow();
+
+    await reload();
+    await reload();
+    await reload();
+
+    await t.switchToPreviousWindow();
+});
+
+test('Refresh parent and remove child', async t => {
+    const child = await t.openWindow(child1Url);
+
+    await t.switchToParentWindow();
+
+    await reload();
+    await reload();
+    await reload();
+
+    await t.closeWindow(child);
+});
+
+test('Refresh parent with multiple children', async t => {
+    await t.openWindow(child1Url);
+    await t.switchToParentWindow();
+    await t.openWindow(child1Url);
+    await t.switchToParentWindow();
+    await t.openWindow(child1Url);
+    await t.switchToParentWindow();
+
+    await reload();
+    await reload();
+    await reload();
+
+    await t.switchToPreviousWindow();
+});
+
+test('Refresh child and close', async t => {
+    await t.openWindow(child1Url);
+
+    await reload();
+
+    await t.closeWindow();
+});
+
+test('Refresh child and switch to parent', async t => {
+    await t.openWindow(child1Url);
+
+    await reload();
+
+    await t.switchToParentWindow();
 });

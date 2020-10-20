@@ -364,6 +364,18 @@ export class PreviousWindowNotFoundError extends TestRunErrorBase {
     }
 }
 
+export class ChildWindowClosedBeforeSwitchingError extends TestRunErrorBase {
+    constructor () {
+        super(TEST_RUN_ERRORS.childWindowClosedBeforeSwitchingError);
+    }
+}
+
+export class CannotRestoreChildWindowError extends TestRunErrorBase {
+    constructor () {
+        super(TEST_RUN_ERRORS.cannotRestoreChildWindowError);
+    }
+}
+
 export class CurrentIframeNotFoundError extends TestRunErrorBase {
     constructor () {
         super(TEST_RUN_ERRORS.currentIframeNotFoundError);
@@ -395,11 +407,5 @@ export class UncaughtErrorInNativeDialogHandler extends TestRunErrorBase {
         this.dialogType = dialogType;
         this.errMsg     = errMsg;
         this.pageUrl    = url;
-    }
-}
-
-export class ChildWindowClosedBeforeSwitchingError extends TestRunErrorBase {
-    constructor () {
-        super(TEST_RUN_ERRORS.childWindowClosedBeforeSwitchingError);
     }
 }

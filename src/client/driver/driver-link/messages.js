@@ -12,7 +12,9 @@ export const TYPE = {
     confirmation:             'driver|confirmation',
     setNativeDialogHandler:   'driver|set-native-dialog-handler',
     setAsMaster:              'driver|set-as-master',
-    closeAllChildWindows:     'driver|close-all-child-windows'
+    closeAllChildWindows:     'driver|close-all-child-windows',
+    startToRestoreChildLink:  'driver|start-to-restore-child-link',
+    restoreChildLink:         'driver|restore-child-link'
 };
 
 class InterDriverMessage {
@@ -114,5 +116,19 @@ export class SetAsMasterMessage extends InterDriverMessage {
 export class CloseAllChildWindowsMessage extends InterDriverMessage {
     constructor () {
         super(TYPE.closeAllChildWindows);
+    }
+}
+
+export class StartToRestoreChildLinkMessage extends InterDriverMessage {
+    constructor () {
+        super(TYPE.startToRestoreChildLink);
+    }
+}
+
+export class RestoreChildLinkMessage extends InterDriverMessage {
+    constructor (windowId) {
+        super(TYPE.restoreChildLink);
+
+        this.windowId = windowId;
     }
 }
