@@ -270,11 +270,41 @@ With all the suggestions applied, your project's file structure might look like 
 
 State management is an integral and important part of web testing. When your tests run, there are inevitably leftovers- database or local storage records, cache, or cookies. This data requires deletion during teardown. Extra steps your app requires to run (like adding records to the database) are performed during setup.
 
-One common strategy is to place the setup actions in the preceding test's `after` and `afterEach` hooks. While good for cleanup, these hooks create mutual dependence between your tests when used to set up for the following test. The success of a test is then influenced by a preceding one, which is not desirable.
+One way to deal with this is to place the setup actions in the preceding test's `after` and `afterEach` hooks. While good for cleanup, these hooks create mutual dependence between your tests when used to set up for the following test. The success of a test is then influenced by a preceding one, which is not desirable.
 
-Plus, if the `before`/`beforeEach` setup is unsuccessful, the corresponding test does not run, which saves you time. If `after`/`afterEach` setup yields an error, the following test runs and probably fails due to the unsuccessful setup.
+Consider a test that downloads a file and saves it to a folder. Since the file system persists between tests, this file requires deletion when the test is complete. This is better done with an `afterEach` hook:
 
-To fulfill your test's state prerequisites, use the `before` and `beforeEach` hooks. Clean up with the `after` and `afterEach` hooks.
+```js
+fixture `My fixture`
+    .page `http://example.com`
+    .afterEach( async t => {
+        await cleanDir();
+    });
+
+test('My test', async t => {
+    //test actions
+});
+```
+
+While good for cleanup, `after` and `afterEach` hooks create mutual dependence between tests when used to set up for the following test. The success rate of a test is then influenced by a preceding one, which is not desirable. Such tests need to run in a specific order and can't run in parallel.
+
+Use `before` or `beforeEach` to fullfill your test's prerequisites (for example to create a file necessary for a successful test run):
+
+```js
+fixture `Another fixture`
+    .page `http://example.com`
+    .beforeEach( async t => {
+        await setupFileSystem();
+    });
+
+test('Another test', async t => {
+    //test actions
+});
+```
+
+If the `before`/`beforeEach` setup is unsuccessful, the corresponding test does not run, which saves you time. If `after`/`afterEach` setup yields an error, the following test runs and probably fails due to the unsuccessful setup.
+
+To fulfill your test's prerequisites, use the `before` and `beforeEach` hooks. Clean up with the `after` and `afterEach` hooks.
 
 Use the `test.before` and `test.after` hooks to set the state that an individual test requires. Use the `fixture.beforeEach` and `fixture.afterEach` to set common state that is required across the board.
 
