@@ -21,7 +21,7 @@
   "main": "lib/index",
   "types": "ts-defs/index.d.ts",
   "bin": {
-    "testcafe": "bin/testcafe-with-v8-flag-filter.js"
+    "testcafe": "./bin/testcafe-with-v8-flag-filter.js"
   },
   "files": [
     "lib",

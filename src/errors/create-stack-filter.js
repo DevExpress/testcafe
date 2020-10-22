@@ -16,7 +16,8 @@ const TESTCAFE_HAMMERHEAD = `${sep}testcafe-hammerhead${sep}`;
 
 const SOURCE_MAP_SUPPORT = `${sep}source-map-support${sep}`;
 
-const INTERNAL = 'internal/';
+const INTERNAL                   = 'internal/';
+const INTERNAL_PREFIX_IN_NODE_15 = 'node:';
 
 export default function createStackFilter (limit) {
     let passedFramesCount = 0;
@@ -31,6 +32,7 @@ export default function createStackFilter (limit) {
         const pass = filename &&
                    filename.indexOf(sep) > -1 &&
                    filename.indexOf(INTERNAL) !== 0 &&
+                   filename.indexOf(INTERNAL_PREFIX_IN_NODE_15) !== 0 &&
                    filename.indexOf(TESTCAFE_LIB) !== 0 &&
                    filename.indexOf(TESTCAFE_BIN) !== 0 &&
                    filename.indexOf(TESTCAFE_HAMMERHEAD) < 0 &&
