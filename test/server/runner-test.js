@@ -2,7 +2,7 @@
 
 const path                    = require('path');
 const chai                    = require('chai');
-const { expect }              = chai;
+const { expect, assert }      = chai;
 const request                 = require('request');
 const { noop, times, uniqBy } = require('lodash');
 const consoleWrapper          = require('./helpers/console-wrapper');
@@ -10,6 +10,7 @@ const isAlpine                = require('./helpers/is-alpine');
 const createTestCafe          = require('../../lib/');
 const COMMAND                 = require('../../lib/browser/connection/command');
 const Task                    = require('../../lib/runner/task');
+const RequestHook             = require('../../lib/api/request-hooks/hook');
 const BrowserConnection       = require('../../lib/browser/connection');
 const BrowserSet              = require('../../lib/runner/browser-set');
 const browserProviderPool     = require('../../lib/browser/provider/pool');
@@ -855,6 +856,32 @@ describe('Runner', () => {
             }
             catch (err) {
                 expect(err.message).startsWith('You cannot call the "clientScripts" method more than once. Pass an array of parameters to this method instead.');
+            }
+        });
+    });
+
+    describe('.requestHooks', () => {
+        it('Should raise an error for multiple ".requestHooks" method call', () => {
+            try {
+                runner
+                    .requestHooks([])
+                    .requestHooks([]);
+
+                assert.fail('Should raise an appropriate error');
+            }
+            catch (e) {
+                expect(e.message).startsWith('You cannot call the "requestHooks" method more than once. Pass an array of parameters to this method instead.');
+            }
+        });
+
+        it('Should raise an error for invalid requestHooks', () => {
+            try {
+                runner.requestHooks([{}]);
+
+                assert.fail('Should raise an appropriate error');
+            }
+            catch (e) {
+                expect(e.message).startsWith('Cannot prepare tests due to an error.\n\nHook is expected to be a RequestHook subclass, but it was object.');
             }
         });
     });
