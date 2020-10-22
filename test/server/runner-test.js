@@ -10,7 +10,6 @@ const isAlpine                = require('./helpers/is-alpine');
 const createTestCafe          = require('../../lib/');
 const COMMAND                 = require('../../lib/browser/connection/command');
 const Task                    = require('../../lib/runner/task');
-const RequestHook             = require('../../lib/api/request-hooks/hook');
 const BrowserConnection       = require('../../lib/browser/connection');
 const BrowserSet              = require('../../lib/runner/browser-set');
 const browserProviderPool     = require('../../lib/browser/provider/pool');
