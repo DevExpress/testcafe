@@ -198,6 +198,7 @@ before(function () {
                 const screenshotPath              = opts && opts.setScreenshotPath ? config.testScreenshotsDir : '';
                 const videoPath                   = opts && opts.setVideoPath ? config.testVideosDir : '';
                 const clientScripts               = opts && opts.clientScripts || [];
+                const requestHooks                = opts && opts.requestHooks || [];
                 const compilerOptions             = opts && opts.compilerOptions;
 
                 const {
@@ -270,6 +271,7 @@ before(function () {
                     .video(videoPath, videoOptions, videoEncodingOptions)
                     .startApp(appCommand, appInitDelay)
                     .clientScripts(clientScripts)
+                    .requestHooks(requestHooks)
                     .compilerOptions(compilerOptions)
                     .run({
                         skipJsErrors,

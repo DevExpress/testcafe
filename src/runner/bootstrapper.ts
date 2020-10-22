@@ -35,6 +35,7 @@ import { Metadata } from '../api/structure/interfaces';
 import Test from '../api/structure/test';
 import detectDisplay from '../utils/detect-display';
 import { getPluginFactory, processReporterName } from '../utils/reporter';
+import RequestHook from '../api/request-hooks/hook';
 
 type TestSource = unknown;
 
@@ -63,6 +64,7 @@ interface BasicRuntimeResources {
 interface RuntimeResources extends BasicRuntimeResources {
     reporterPlugins: ReporterPluginSource[];
     commonClientScripts: ClientScript[];
+    commonRequestHooks: RequestHook[];
 }
 
 type PromiseResult<T, E extends Error = Error> = PromiseSuccess<T> | PromiseError<E>;
@@ -93,6 +95,7 @@ export default class Bootstrapper {
     public appInitDelay?: number;
     public tsConfigPath?: string;
     public clientScripts: ClientScriptInit[];
+    public requestHooks: RequestHook[];
     public disableMultipleWindows: boolean;
     public compilerOptions?: CompilerOptions;
 
@@ -109,6 +112,7 @@ export default class Bootstrapper {
         this.appInitDelay             = void 0;
         this.tsConfigPath             = void 0;
         this.clientScripts            = [];
+        this.requestHooks             = [];
         this.disableMultipleWindows   = false;
         this.compilerOptions          = void 0;
 
@@ -383,6 +387,7 @@ export default class Bootstrapper {
     public async createRunnableConfiguration (): Promise<RuntimeResources> {
         const reporterPlugins     = await this._getReporterPlugins();
         const commonClientScripts = await loadClientScripts(this.clientScripts);
+        const commonRequestHooks = this.requestHooks.slice();
 
         // NOTE: If a user forgot to specify a browser, but has specified a path to tests, the specified path will be
         // considered as the browser argument, and the tests path argument will have the predefined default value.
@@ -397,8 +402,8 @@ export default class Bootstrapper {
             await Bootstrapper._checkThatTestsCanRunWithoutDisplay(browserInfo);
 
         if (await this._canUseParallelBootstrapping(browserInfo))
-            return { reporterPlugins, ...await this._bootstrapParallel(browserInfo), commonClientScripts };
+            return { reporterPlugins, ...await this._bootstrapParallel(browserInfo), commonClientScripts, commonRequestHooks };
 
-        return { reporterPlugins, ...await this._bootstrapSequence(browserInfo), commonClientScripts };
+        return { reporterPlugins, ...await this._bootstrapSequence(browserInfo), commonClientScripts, commonRequestHooks };
     }
 }

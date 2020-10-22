@@ -75,7 +75,8 @@ class BootstrapperMock extends LiveModeBootstrapper {
             tests:               [],
             browserSet:          {},
             testedApp:           {},
-            commonClientScripts: []
+            commonClientScripts: [],
+            commonRequestHooks:  [],
         });
     }
 }

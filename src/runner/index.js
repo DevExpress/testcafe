@@ -34,6 +34,7 @@ import { setUniqueUrls } from '../custom-client-scripts/utils';
 import ReporterStreamController from './reporter-stream-controller';
 import CustomizableCompilers from '../configuration/customizable-compilers';
 import { getConcatenatedValuesString, getPluralSuffix } from '../utils/string';
+import assertRequestHookType from '../api/request-hooks/assert-type';
 
 const DEBUG_LOGGER = debug('testcafe:runner');
 
@@ -389,6 +390,7 @@ export default class Runner extends EventEmitter {
         this.bootstrapper.clientScripts          = this.configuration.getOption(OPTION_NAMES.clientScripts) || this.bootstrapper.clientScripts;
         this.bootstrapper.disableMultipleWindows = this.configuration.getOption(OPTION_NAMES.disableMultipleWindows);
         this.bootstrapper.compilerOptions        = this.configuration.getOption(OPTION_NAMES.compilerOptions);
+        this.bootstrapper.requestHooks           = this.configuration.getOption(OPTION_NAMES.requestHooks) || this.bootstrapper.requestHooks;
     }
 
     async _prepareClientScripts (tests, clientScripts) {
@@ -402,6 +404,12 @@ export default class Runner extends EventEmitter {
 
             test.clientScripts = setUniqueUrls(loadedTestClientScripts);
         }));
+    }
+
+    async _prependRequestHooks (tests, requestHooks) {
+        tests.forEach(test => {
+            test.requestHooks = requestHooks.concat(test.requestHooks);
+        });
     }
 
     // API
@@ -523,6 +531,22 @@ export default class Runner extends EventEmitter {
         return this;
     }
 
+    requestHooks (...requestHooks) {
+        if (this.apiMethodWasCalled.requestHooks)
+            throw new GeneralError(RUNTIME_ERRORS.multipleAPIMethodCallForbidden, OPTION_NAMES.requestHooks);
+
+        requestHooks = this._prepareArrayParameter(requestHooks);
+        assertRequestHookType(requestHooks);
+
+        this.configuration.mergeOptions({
+            [OPTION_NAMES.requestHooks]: requestHooks
+        });
+
+        this.apiMethodWasCalled.requestHooks = true;
+
+        return this;
+    }
+
     compilerOptions (opts) {
         this.configuration.mergeOptions({
             [OPTION_NAMES.compilerOptions]: opts
@@ -539,7 +563,8 @@ export default class Runner extends EventEmitter {
         const runTaskPromise = Promise.resolve()
             .then(() => this._validateRunOptions())
             .then(() => this._createRunnableConfiguration())
-            .then(async ({ reporterPlugins, browserSet, tests, testedApp, commonClientScripts }) => {
+            .then(async ({ reporterPlugins, browserSet, tests, testedApp, commonClientScripts, commonRequestHooks }) => {
+                this._prependRequestHooks(tests, commonRequestHooks);
                 await this._prepareClientScripts(tests, commonClientScripts);
 
                 return this._runTask(reporterPlugins, browserSet, tests, testedApp);
