@@ -40,7 +40,7 @@ Keep your code clean with hooks — routines that are repeated before and after 
 ## Interactive when you need it
 
 ### TestCafe Studio
-A GUI test recorder that makes the power of TestCafe accessible to people with zero programming experience.
+Use a GUI test recorder that makes the power of TestCafe accessible to people with zero programming experience.
 
 ### Live mode
 Instantly see how the changes you introduce impact the test.
