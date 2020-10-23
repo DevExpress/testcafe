@@ -1,4 +1,3 @@
-
 // {{#allowReferences}}
 // NOTE: Must be added manually to the top of the index.d.ts template
 /// <reference types="node" />
@@ -7,7 +6,7 @@
 /// <reference path="../test-api/action-options.d.ts" />
 // {{/allowReferences}}
 
-type TlsOptions = import('tls').TlsOptions;
+type TlsOptions = import("tls").TlsOptions;
 
 interface ScreenshotsOptions extends TakeScreenshotOptions {
     /**
@@ -55,7 +54,7 @@ interface DefaultEncodingOptions {
      * **IMPORTANT:** must be specified before configuring the source
      * @default 1
      */
-    'use_wallclock_as_timestamps': number;
+    use_wallclock_as_timestamps: number;
     /**
      * **NOTE:** use stdin as a source
      * @default 'pipe:0'
@@ -65,7 +64,7 @@ interface DefaultEncodingOptions {
      * **NOTE:** use the H.264 video codec
      * @default 'libx264'
      */
-    'c:v': string;
+    "c:v": string;
     /**
      * **NOTE:** use the `ultrafast` compression preset
      * @default 'ultrafast'
@@ -76,7 +75,7 @@ interface DefaultEncodingOptions {
      * **NOTE:** use the yuv420p pixel format (the most widely supported)
      * @default 'yuv420p'
      */
-    'pix_fmt': string;
+    pix_fmt: string;
     /**
      * **NOTE:** scale input frames to make the frame height divisible by 2 (yuv420p's requirement)
      * @default 'scale=trunc(iw/2)*2:trunc(ih/2)*2'
@@ -106,7 +105,7 @@ interface VideoEncodingOptions extends Partial<DefaultEncodingOptions> {
 }
 
 type CompilerOptions = {
-    [key in 'typescript']: object;
+    [key in "typescript"]: object;
 };
 
 interface TestCafe {
@@ -129,6 +128,8 @@ interface TestCafe {
      * Stops the TestCafe server. Forcibly closes all connections and pending test runs immediately.
      */
     close(): Promise<void>;
+
+    browserConnectionGateway: BrowserConnectionGateway;
 }
 
 interface Runner {
@@ -187,7 +188,11 @@ interface Runner {
      * @param takeOnFails - Specifies if screenshots should be taken automatically when a test fails.
      * @param pathPattern - The pattern to compose screenshot files' relative path and name.
      */
-    screenshots(path: string, takeOnFails?: boolean, pathPattern?: string): this;
+    screenshots(
+        path: string,
+        takeOnFails?: boolean,
+        pathPattern?: string
+    ): this;
 
     /**
      *
@@ -206,7 +211,11 @@ interface Runner {
      * @param options - Video options
      * @param encodingOptions - Video encoding options
      */
-    video(path: string, options?: VideoOptions, encodingOptions?: VideoEncodingOptions): this;
+    video(
+        path: string,
+        options?: VideoOptions,
+        encodingOptions?: VideoEncodingOptions
+    ): this;
 
     /**
      * Configures TestCafe's reporting feature.
@@ -221,7 +230,11 @@ interface Runner {
      *
      * @param reporters An array of reporters
      */
-    reporter(reporters: Array<string | { name: string, output?: string | NodeJS.WritableStream }>): this;
+    reporter(
+        reporters: Array<
+            string | { name: string; output?: string | NodeJS.WritableStream }
+        >
+    ): this;
 
     /**
      * Specifies that tests should run concurrently.
@@ -251,7 +264,7 @@ interface Runner {
      *
      * @param scripts - Scripts that should be added to the tested pages.
      */
-    clientScripts (scripts: ClientScript | ClientScript[]): this;
+    clientScripts(scripts: ClientScript | ClientScript[]): this;
 
     /**
      * Runs tests according to the current configuration. Returns the number of failed tests.
@@ -283,7 +296,7 @@ interface BrowserConnection {
     /**
      * Fires when a remote browser connects to the TestCafe server.
      */
-    once(event: 'ready', callback: Function): void;
+    once(event: "ready", callback: Function): void;
 }
 
 interface RunOptions {
@@ -345,4 +358,10 @@ interface TestCafeFactory {
         sslOptions?: TlsOptions,
         developmentMode?: boolean
     ): Promise<TestCafe>;
+}
+
+interface BrowserConnectionGateway {
+    domain: string;
+    connectUrl: string;
+    retryTestPages?: boolean;
 }
