@@ -54,8 +54,9 @@ export default {
 
         await this.waitForConnectionReady(browserId);
 
-        runtimeInfo.viewportSize   = await this.runInitScript(browserId, GET_WINDOW_DIMENSIONS_INFO_SCRIPT);
-        runtimeInfo.activeWindowId = null;
+        runtimeInfo.viewportSize      = await this.runInitScript(browserId, GET_WINDOW_DIMENSIONS_INFO_SCRIPT);
+        runtimeInfo.activeWindowId    = null;
+        runtimeInfo.windowDescriptors = {};
 
         if (!disableMultipleWindows)
             runtimeInfo.activeWindowId = this.calculateWindowId();
@@ -120,6 +121,25 @@ export default {
             hasGetVideoFrameData:           !!client,
             hasCanResizeWindowToDimensions: false
         };
+    },
+
+    getPageTitle (browserId) {
+        const runtimeInfo     = this.openedBrowsers[browserId];
+        const isIdlePageShown = !Object.keys(runtimeInfo.windowDescriptors).length;
+
+        return isIdlePageShown ? browserId : runtimeInfo.activeWindowId;
+    },
+
+    getWindowDescriptor (browserId) {
+        const runtimeInfo = this.openedBrowsers[browserId];
+
+        return runtimeInfo.windowDescriptors[runtimeInfo.activeWindowId];
+    },
+
+    _setWindowDescriptor (browserId, windowDescriptor) {
+        const runtimeInfo = this.openedBrowsers[browserId];
+
+        runtimeInfo.windowDescriptors[runtimeInfo.activeWindowId] = windowDescriptor;
     },
 
     async _ensureWindowIsExpanded (browserId, { height, width, availableHeight, availableWidth, outerWidth, outerHeight }) {

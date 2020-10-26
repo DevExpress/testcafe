@@ -1,11 +1,14 @@
 // NOTE: to preserve callsites, add new tests AFTER the existing ones
 import { ClientFunction } from 'testcafe';
 import { expect } from 'chai';
-import { saveWindowState, restoreWindowState } from '../../../../../window-helpers';
 
+import {
+    saveWindowState,
+    restoreWindowState,
+    getWindowHeight,
+    getWindowWidth
+} from '../../../../../window-helpers';
 
-const getWindowWidth  = ClientFunction(() => window.innerWidth);
-const getWindowHeight = ClientFunction(() => window.innerHeight);
 
 const setWindowOnresizeHandler = ClientFunction(() => {
     window.onresize = function () {

@@ -1,5 +1,13 @@
 import { Selector, ClientFunction } from 'testcafe';
 
+import {
+    saveWindowState,
+    restoreWindowState,
+    getWindowHeight,
+    getWindowWidth
+} from '../../../../window-helpers';
+
+
 const reload = ClientFunction(() => window.location.reload());
 
 const parentUrl = 'http://localhost:3000/fixtures/multiple-windows/pages/api/parent.html';
@@ -328,4 +336,35 @@ test('Refresh child and switch to parent', async t => {
     await reload();
 
     await t.switchToParentWindow();
+});
+
+fixture `Resize multiple windows`
+    .page(parentUrl)
+    .beforeEach(async t => {
+        await saveWindowState(t);
+    })
+    .afterEach(async t => {
+        await restoreWindowState(t);
+    });
+
+test('Resize child window', async t => {
+    await t.resizeWindow(400, 400);
+    await t.expect(await getWindowWidth()).eql(400);
+    await t.expect(await getWindowHeight()).eql(400);
+
+    await t.openWindow(child1Url);
+
+    await t.resizeWindow(200, 200);
+    await t.expect(await getWindowWidth()).eql(200);
+    await t.expect(await getWindowHeight()).eql(200);
+
+    await t.switchToParentWindow();
+
+    await t.expect(await getWindowWidth()).eql(400);
+    await t.expect(await getWindowHeight()).eql(400);
+
+    await t.resizeWindow(300, 300);
+
+    await t.expect(await getWindowWidth()).eql(300);
+    await t.expect(await getWindowHeight()).eql(300);
 });
