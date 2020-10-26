@@ -10,7 +10,8 @@ import {
 } from './test-run';
 
 
-const INTERNAL = 'internal/';
+const INTERNAL                   = 'internal/';
+const INTERNAL_PREFIX_IN_NODE_15 = 'node:';
 
 function isAssertionErrorCallsiteFrame (frame) {
     const filename = frame.getFileName();
@@ -19,6 +20,7 @@ function isAssertionErrorCallsiteFrame (frame) {
     return filename &&
            filename.indexOf(sep) > -1 &&
            filename.indexOf(INTERNAL) !== 0 &&
+           filename.indexOf(INTERNAL_PREFIX_IN_NODE_15) !== 0 &&
            filename.indexOf(`${sep}node_modules${sep}`) < 0;
 }
 
