@@ -7,7 +7,7 @@ jobs:
   include:
     - node_js: "10"
       env: GULP_TASK="test-server"
-    - node_js: "14"
+    - node_js: "stable"
       env: GULP_TASK="test-server"
     - node_js: "10"
       env: GULP_TASK="test-client-travis"
@@ -39,7 +39,7 @@ jobs:
         chrome:  stable
       services:
         - xvfb
-    - node_js: "14"
+    - node_js: "stable"
       env: GULP_TASK="docker-test-travis"
       services:
         - docker
