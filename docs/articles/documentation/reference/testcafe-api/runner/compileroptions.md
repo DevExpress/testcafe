@@ -5,7 +5,7 @@ permalink: /documentation/reference/testcafe-api/runner/compileroptions.html
 ---
 # Runner.compilerOptions Method
 
-Customizes the settings of the [TypeScript compiler](../../../guides/concepts/typescript-and-coffeescript.md#customize-compiler-options) .
+Customizes the settings of the [TypeScript compiler](../../../guides/concepts/typescript-and-coffeescript.md#customize-compiler-options).
 
 ```text
 async compilerOptions([{format, [options]}]) → this
