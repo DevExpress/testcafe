@@ -14,7 +14,7 @@ TestCafe allows you to write tests with [TypeScript](https://www.typescriptlang.
 Using TypeScript brings you all the advantages of strongly typed languages: rich coding assistance,
 painless scalability, check-as-you-type code verification and much more.
 
-> TestCafe automatically compiles TypeScript before running tests, so you do not need to compile the TypeScript code.
+> TestCafe automatically compiles TypeScript tests before launching them, so you do not need to compile the TypeScript code.
 
 TestCafe bundles the TypeScript declaration file with the npm package, so you do not need to install it separately.
 
@@ -32,8 +32,7 @@ Text editors with code completion capabilities (e.g. VS Code, Sublime Text, WebS
 
 ![Writing Tests with TypeScript](../../../images/typescript-support.png)
 
-> If installed [globally](../basic-guides/install-testcafe.md#global-installation), TestCafe will successfully compile and run your tests written in TypeScript.
-However, your IDE will not be able to find the TestCafe declaration file and provide code completion.
+> If installed [globally](../basic-guides/install-testcafe.md#global-installation), TestCafe will successfully compile and run your tests written in TypeScript. However, your IDE will not be able to find the TestCafe declaration file and provide code completion.
 
 The TestCafe syntax is identical for both JavaScript and TypeScript.
 
@@ -47,9 +46,9 @@ When you run a TypeScript test, Testcafe outputs the compilation errors that it 
 
 ### Customize Compiler Options
 
-TestCafe users can modify their TypeScript [compiler options](https://www.typescriptlang.org/docs/handbook/compiler-options.html) in order to enable features such as JSX compilation, and support for React type aliases.
+TestCafe users can modify the settings of the [TypeScript compiler](https://www.typescriptlang.org/docs/handbook/compiler-options.html) to enable features such as JSX compilation, and support for React type aliases.
 
-Use one of the following three ways to modify the TypeScript compiler settings:
+Use one of the following three ways to modify the compiler settings:
 
 * the [--compiler-options](../../reference/command-line-interface.md#--compiler-options) command line parameter,
 

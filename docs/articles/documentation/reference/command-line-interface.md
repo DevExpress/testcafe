@@ -169,7 +169,7 @@ testcafe remote:3 tests/sample-fixture.js
 
 TestCafe provides URLs you should open in your remote device's browsers.
 
-> If you run tests [concurrently](#-c-n---concurrency-n),
+>If you run tests [concurrently](#-c-n---concurrency-n),
 > specify the total number of all browsers' instances after the `remote:` keyword.
 
 You can also use the [--qr-code](#--qr-code) option to display QR-codes that represent the same URLs.
@@ -896,7 +896,7 @@ Deprecated as of [TestCafe v.X.X.X] in favour of the --compiler-options paramete
 
 ### --compiler-options \<options\>
 
-Specifies which `options` to pass to the TypeScript compiler.
+Modifies TypeScript compilation settings.
 
 To list multiple parameters, separate them with semicolons. Enclose values that contain spaces in quotes.
 
