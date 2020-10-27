@@ -288,4 +288,14 @@ describe('Multiple windows', () => {
             return runTests('testcafe-fixtures/api/api-test.js', 'Refresh child and switch to parent', { only: 'chrome' });
         });
     });
+
+    describe('Resize', () => {
+        it('Resize multiple windows', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Resize multiple windows', { only: 'chrome' });
+        });
+
+        it('Maximize multiple windows', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Maximize multiple windows', { only: 'chrome' });
+        });
+    });
 });

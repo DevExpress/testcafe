@@ -347,7 +347,7 @@ fixture `Resize multiple windows`
         await restoreWindowState(t);
     });
 
-test('Resize child window', async t => {
+test('Resize multiple windows', async t => {
     await t.resizeWindow(400, 400);
     await t.expect(await getWindowWidth()).eql(400);
     await t.expect(await getWindowHeight()).eql(400);
@@ -367,4 +367,34 @@ test('Resize child window', async t => {
 
     await t.expect(await getWindowWidth()).eql(300);
     await t.expect(await getWindowHeight()).eql(300);
+});
+
+test('Maximize multiple windows', async t => {
+    const e = 10;
+
+    const parentWidth  = await getWindowWidth();
+    const parentHeight = await getWindowHeight();
+
+    await t.openWindow(child1Url);
+
+    const childWidth  = await getWindowWidth();
+    const childHeight = await getWindowHeight();
+
+    await t.maximizeWindow();
+
+    const maxChildWidth  = await getWindowWidth();
+    const maxChildHeight = await getWindowHeight();
+
+    await t.expect(maxChildWidth).gte(childWidth + e);
+    await t.expect(maxChildHeight).gte(childHeight + e);
+
+    await t.switchToParentWindow();
+
+    await t.maximizeWindow();
+
+    const maxParentWidth  = await getWindowWidth();
+    const maxParentHeight = await getWindowHeight();
+
+    await t.expect(maxParentWidth).gte(parentWidth + e);
+    await t.expect(maxParentHeight).gte(parentHeight + e);
 });

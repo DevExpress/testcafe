@@ -209,6 +209,8 @@ export default class BrowserProvider {
     }
 
     private async _resizeLocalBrowserWindow (browserId: string, width: number, height: number, currentWidth: number, currentHeight: number): Promise<void> {
+        await this._ensureBrowserWindowDescriptor(browserId);
+
         const resizeCorrections = this._getResizeCorrections(browserId);
 
         if (resizeCorrections && await browserTools.isMaximized(this._getWindowDescriptor(browserId))) {
@@ -233,6 +235,8 @@ export default class BrowserProvider {
     }
 
     private async _maximizeLocalBrowserWindow (browserId: string): Promise<void> {
+        await this._ensureBrowserWindowDescriptor(browserId);
+
         await browserTools.maximize(this._getWindowDescriptor(browserId));
     }
 
@@ -322,8 +326,6 @@ export default class BrowserProvider {
     }
 
     public async resizeWindow (browserId: string, width: number, height: number, currentWidth: number, currentHeight: number): Promise<void> {
-        await this._ensureBrowserWindowDescriptor(browserId);
-
         const canUseDefaultWindowActions = await this.canUseDefaultWindowActions(browserId);
         const customActionsInfo          = await this.hasCustomActionForBrowser(browserId);
         const hasCustomResizeWindow      = customActionsInfo.hasResizeWindow;
