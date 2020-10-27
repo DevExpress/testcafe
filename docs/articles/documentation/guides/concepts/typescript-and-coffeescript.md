@@ -22,22 +22,22 @@ TestCafe bundles the TypeScript declaration file with the npm package, so you do
 
 To start writing tests with TypeScript, install TestCafe into your project directory. For more information, see [Install TestCafe](../basic-guides/install-testcafe.md#local-installation).
 
-When writing test in TypeScript, you must import the TestCafe module first.
+Import the testcafe module in the beginning of each TypeScript file:
 
 ```js
 import { Selector } from 'testcafe';
 ```
 
-After importing a `testcafe` module, an IDE (e.g. VS Code, Sublime Text, WebStorm, etc.) will load TestCafe declaration
-file and will show you code completion hints for TestCafe API:
+Text editors with code completion capabilities (e.g. VS Code, Sublime Text, WebStorm, etc.) load the TestCafe declaration file when you import the testcafe module.
 
 ![Writing Tests with TypeScript](../../../images/typescript-support.png)
 
 > If installed [globally](../basic-guides/install-testcafe.md#global-installation), TestCafe will successfully compile and run your tests written in TypeScript.
-In this case, your IDE will not be able to find the TestCafe declaration file and provide code completion.
+However, your IDE will not be able to find the TestCafe declaration file and provide code completion.
 
-Now, you can write tests in the same manner as in JavaScript.
-When you run a test, Testcafe will output if there are any compilation errors.
+The TestCafe syntax is identical for both JavaScript and TypeScript.
+
+When you run a TypeScript test, Testcafe outputs the compilation errors that it encounters.
 
 > [Extending selectors](../basic-guides/select-page-elements.md#extend-selectors-with-custom-properties-and-methods)
 > in TypeScript differs from extending selectors in JavaScript. Refer to the
@@ -47,47 +47,46 @@ When you run a test, Testcafe will output if there are any compilation errors.
 
 ### Customize Compiler Options
 
-TestCafe allows you to specify [TypeScript compiler options](https://www.typescriptlang.org/docs/handbook/compiler-options.html) in the `tsconfig.json` file. You can use these options to enable the JSX compilation, set aliases to React typings, or customize other compiler settings.
+TestCafe users can modify their TypeScript [compiler options](https://www.typescriptlang.org/docs/handbook/compiler-options.html) in order to enable features such as JSX compilation, and support for React type aliases.
 
-To apply a custom TypeScript configuration file, specify its location in one of the following ways:
+Use one of the following three ways to modify the TypeScript compiler settings:
 
-* the [--ts-config-path](../../reference/command-line-interface.md#--ts-config-path-path) command line parameter,
+* the [--compiler-options](../../reference/command-line-interface.md#--compiler-options) command line parameter,
 
     ```sh
-    testcafe chrome my-tests --ts-config-path /Users/s.johnson/testcafe/tsconfig.json
+    testcafe chrome my-tests --compiler-options 
+    typescript.options.lib=ES5,WebWorker;typescript.typesRoot='this value contains spaces'
     ```
 
-* the [runner.tsConfigPath](../../reference/testcafe-api/runner/tsconfigpath.md) API method,
+* the [runner.compilerOptions](../../reference/testcafe-api/runner/compileroptions.md) API method,
 
     ```js
-    runner.tsConfigPath('/Users/s.johnson/testcafe/tsconfig.json');
-    ```
+    runner.compilerOptions([
+        {
+              format: "typescript",
+              customCompilerModulePath: '../node_modules/typescript-v4',
+              ....
+        }
+   ]);
+   ```
 
-* the [tsConfigPath](../../reference/configuration-file.md#tsconfigpath) configuration file property.
+* the [compilerOptions](../../reference/configuration-file.md#compilerOptions) configuration file property.
 
     ```json
     {
-        "tsConfigPath": "/Users/s.johnson/testcafe/tsconfig.json"
+    compilerOptions: {
+        "typescript": {
+           configPath: '<path to tsconfig.json>'
+           customCompilerModulePath: 'path to custom Typescript compiler module' 
+           options: {experimentalDecorators:  true}
+           }
+        }
     }
     ```
 
-In `tsconfig.json`, define the `compilerOptions` property and specify the compiler options in this property:
+See the full list of available options in the [TypeScript Compiler Options](https://www.typescriptlang.org/docs/handbook/compiler-options.html) topic.
 
-```json
-{
-    "compilerOptions": {
-        "jsx": "react",
-        "jsxFactory": "myFactory",
-        "alwaysStrict": true
-    }
-}
-```
-
-See the available options in the [TypeScript Compiler Options](https://www.typescriptlang.org/docs/handbook/compiler-options.html) topic.
-
-> Important! You cannot override the `module`, `moduleResolution`, and `target` options.
-
-TestCafe passes the following options to the TypeScript compiler unless you override them in `tsconfig.json`:
+TestCafe passes the following options to the TypeScript compiler unless you override them:
 
 Option                    | Value
 ------------------------- | ------
@@ -100,7 +99,7 @@ Option                    | Value
 `suppressOutputPathCheck` | `true`
 `skipLibCheck`            | `true`
 
-> TestCafe enables the `skipLibCheck` option for performance reasons. If you need to check types in your declaration files, set `skipLibCheck` to `false` in `tsconfig.json`.
+> TestCafe enables the `skipLibCheck` option for performance reasons. If you need to check types in your declaration files, set `skipLibCheck` to `false`.
 
 ## CoffeeScript Support
 

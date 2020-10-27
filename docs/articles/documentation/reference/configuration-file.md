@@ -59,6 +59,7 @@ A configuration file can include the following settings:
 * [qrCode](#qrcode)
 * [stopOnFirstFail](#stoponfirstfail)
 * [tsConfigPath](#tsconfigpath)
+* [compilerOptions](#compileroptions)
 * [disablePageCaching](#disablepagecaching)
 * [disableMultipleWindows](#disablemultiplewindows)
 * [color](#color)
@@ -1003,18 +1004,36 @@ Stops a test run if any test fails.
 
 ## tsConfigPath
 
-Enables TestCafe to use a custom [TypeScript configuration file](../guides/concepts/typescript-and-coffeescript.md#customize-compiler-options) and specifies its location.
-
-```json
-{
-    "tsConfigPath": "/Users/s.johnson/testcafe/tsconfig.json"
-}
-```
-
-You can specify an absolute or relative path. Relative paths are resolved against the current directory (the directory from which you run TestCafe).
+Deprecated as of [TestCafe version X.X.X.] in favour of the compilerOptions setting.
 
 *CLI*: [--ts-config-path](command-line-interface.md#--ts-config-path-path)  
 *API*: [runner.tsConfigPath](testcafe-api/runner/tsconfigpath.md)
+
+## compilerOptions
+
+Configure the [TypeScript compiler](../guides/concepts/typescript-and-coffeescript.md#customize-compiler-options).  The [official TypeScript documentation](https://www.typescriptlang.org/docs/handbook/compiler-options.html) contains the full list of configurable options.
+
+```json
+{
+   { compilerOptions: 
+     { "typescript": 
+       { configPath: '<path to tsconfig.json>';
+         customCompilerModulePath: 'path to custom Typescript compiler module';
+         options: 
+           { experimentalDecorators: true } 
+       } 
+     } 
+   } 
+}
+```
+
+Set the typescript.configPath compiler option to load TypeScript compilation settings from a dedicated [tsconfig.json](https://www.typescriptlang.org/tsconfig/) file.
+
+> TestCafe resolves user-specified relative paths against the TestCafe installation folder.
+
+*CLI*: [--compiler-options](command-line-interface.md#--compiler-options)  
+*API*: [runner.compilerOptions](testcafe-api/runner/compileroptions.md)
+
 
 ## disablePageCaching
 

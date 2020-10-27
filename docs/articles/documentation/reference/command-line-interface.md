@@ -66,6 +66,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--qr-code](#--qr-code)
   * [--sf, --stop-on-first-fail](#--sf---stop-on-first-fail)
   * [--ts-config-path \<path\>](#--ts-config-path-path)
+  * [--compiler-options \<options\>](#--compiler-options)
   * [--disable-page-caching](#--disable-page-caching)
   * [--disable-multiple-windows](#--disable-multiple-windows)
   * [--color](#--color)
@@ -889,15 +890,44 @@ testcafe chrome my-tests --sf
 
 ### --ts-config-path \<path\>
 
-Enables TestCafe to use a custom [TypeScript configuration file](../guides/concepts/typescript-and-coffeescript.md#customize-compiler-options) and specifies its location.
-
-```sh
-testcafe chrome my-tests --ts-config-path /Users/s.johnson/testcafe/tsconfig.json
-```
-
-You can specify an absolute or relative path. Relative paths are resolved against the current directory (the directory from which you run TestCafe).
+Deprecated as of [TestCafe v.X.X.X] in favour of the --compiler-options parameter.
 
 *Related configuration file property*: [tsConfigPath](configuration-file.md#tsconfigpath).
+
+### --compiler-options \<options\>
+
+Specifies which `options` to pass to the TypeScript compiler.
+
+To list multiple parameters, separate them with semicolons. Enclose values that contain spaces in quotes.
+
+```sh
+testcafe chrome my-tests --compiler-options typescript.options.lib=ES5,WebWorker;typescript.typesRoot='this value contains spaces'
+```
+
+The `--ts-config-path` option is now deprecated. Specify the `typescript.configPath` compiler option to load an external TypeScript configuration file:
+
+```sh
+testcafe chrome my-tests --compiler-options typescript.configPath = 'config file path'
+```
+
+Be careful when setting the value of the typescript.customCompilerModulePath compiler option. TestCafe resolves relative paths against its own installation folder. 
+
+Here’s how to enable the typescript 4 compiler included with your project instead of the typescript 3 compiler that ships with TestCafe.
+
+If your folder structure looks like this:
+```js
+ project-folder/
+         node_modules/typescript@4
+         node_modules/testcafe/node_modules/typescript@3.
+```
+
+You need to go up one level to set a relative customCompilerModulePath:
+```js
+testcafe chrome test.ts --compiler-options typescript.customCompilerModulePath=../typescript@4
+```
+
+*Related configuration file property*: [compilerOptions](configuration-file.md#compileroptions).
+*Related API method*: [runner.compilerOptions](testcafe-api/runner/compileroptions.md)
 
 ### --disable-page-caching
 
