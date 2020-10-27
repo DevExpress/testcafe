@@ -1,7 +1,7 @@
 ---
 layout: docs
 title: Best Practices
-permalink: /documentation/recipes/best-practices/best-practices.html
+permalink: /documentation/guides/basic-guides/best-practices.html
 ---
 # Best Practices
 

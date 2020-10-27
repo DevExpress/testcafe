@@ -21,6 +21,8 @@
       url: /documentation/guides/basic-guides/run-tests.md
     - name: Debug
       url: /documentation/guides/basic-guides/debug.md
+    - name: Best Practices
+      url: /documentation/guides/basic-guides/best-practices.md
   - name: Advanced Guides
     content:
     - name: Authentication
