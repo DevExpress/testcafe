@@ -55,9 +55,9 @@ test('Assertion with Selector', async t => {
 });
 ```
 
-In this snippet, the `developerName` is initialized with the value of a Selector, but because of the `await` keyword, the value is calculated once and doesn't update. This disables the smart assertions query mechanism, which in this case leads to inconclusive results.
+In this snippet, the `developerName` is initialized with the value of a Selector, but because of the `await` keyword, the value is calculated once and doesn't update. This disables the smart assertions query mechanism and leads to inconclusive results.
 
-To avoid this, omit the `await` keyword:
+To enable the mechanism, omit the `await` keyword:
 
 ```js
 import { Selector } from 'testcafe';
@@ -79,7 +79,7 @@ test('Assertion with Selector', async t => {
 });
 ```
 
-The `developerName` is now initialized with a re-executable Selector API promise. When a test controller receives this promise, it enables the smart assertion query mechanism and TestCafe can wait for the value to update.
+The `developerName` is now initialized with a re-executable Selector API promise. When a test controller receives this promise, it enables the smart assertion query mechanism so TestCafe can wait for the value to update.
 
 > The smart assertion query mechanism works with Client Functions and promises created by TestCafe Selector API. Use the `await` keyword with user-created promises and promises returned from third-party libraries.
 
@@ -107,7 +107,7 @@ test('Assertion with ClientFunction', async t => {
 });
 ```
 
-In this example, the client function obtains the value of a drop-down element. This value is then passed to the `t.expect` method. Since the client function is awaited when it's assigned to the variable, the value gets resolved instantly and never updates. The smart assertion query mechanism doesn't apply and the test fails.
+In this example, the client function obtains the value of a drop-down element. This value is then passed to the `t.expect` method. Since `getValue()` is called with await, the return value gets resolved instantly and never updates. The smart assertion query mechanism doesn't apply and the test fails.
 
 To solve the issue, pass the client function without the `await` keyword:
 
