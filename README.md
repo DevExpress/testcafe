@@ -1,4 +1,4 @@
-[![Try TestCafe Studio](https://raw.github.com/DevExpress/testcafe/master/media/testcafe-studio-banner.png?style=centerme)](https://www.devexpress.com/products/testcafestudio/?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-banner)
+[![Try TestCafe Studio](https://raw.github.com/DevExpress/testcafe/master/media/testcafe-studio-banner.png)](https://www.devexpress.com/products/testcafestudio/?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-banner)
 
 <p align="center">
     <a href="https://devexpress.github.io/testcafe">
@@ -23,10 +23,9 @@
   <a href="https://devexpress.github.io/testcafe/support/">Support</a>
 </p>
 
-* **Works in all popular environments**: TestCafe runs on Windows, macOS, and Linux. It supports [all major browsers](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/browser-support.html), be they GUI, headless, mobile, remote or cloud-based.
-* **1 minute to set up**: The TestCafe NPM package contains everything you need to start testing.
-You [do not need to install WebDriver](https://devexpress.github.io/testcafe/faq/#i-have-heard-that-testcafe-does-not-use-selenium-how-does-it-operate) or additional software packages. Install TestCafe with a single command, and you are ready to test: `npm install -g testcafe`
-* **Extendable**: Feel  [Plugins](#plugins) provide custom reports, integration with other tools, IDE integration, etc. You can use the plugins made by the GitHub community or make your own.
+* **Versatile**: Run your tests in desktop, mobile, headless, remote, and even [cloud-based browsers](https://devexpress.github.io/testcafe/documentation/guides/concepts/browsers.html#browser-support) from Windows, macOS, and Linux.
+* **Selenium? I hardly know him!**: TestCafe is a [self-sufficient](https://devexpress.github.io/testcafe/faq/#i-have-heard-that-testcafe-does-not-use-selenium-how-does-it-operate) testing solution. Install the TestCafe NPM package and you’re good to go:  `npm install -g testcafe`
+* **A vibrant ecosystem**: Supercharge your testing experience with an ever-growing number of [TestCafe Plugins](#plugins). Use your favourite JavaScript libraries to write complex tests with ease.
 * **Free and open source**: TestCafe is free to use under the [MIT license](https://github.com/DevExpress/testcafe/blob/master/LICENSE). 
 
 ![Install TestCafe and Run a Test](https://raw.githubusercontent.com/DevExpress/testcafe/master/media/install-and-run-test.gif)
@@ -354,8 +353,3 @@ Code released under the [MIT license](LICENSE).
 ## Creators
 
 Developer Express Inc. ([https://devexpress.com](https://devexpress.com))
-
-img[src$="centerme"] {
-  display:block;
-  margin: 0 auto;
-}
