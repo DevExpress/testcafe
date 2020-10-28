@@ -1,7 +1,5 @@
 <p align="center">
-  <a href="https://www.devexpress.com/products/testcafestudio/?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-banner">
-    <img src="https://raw.github.com/DevExpress/testcafe/master/media/testcafe-studio-banner.png" alt="Try TestCafe Studio IDE" />
-  </a>
+[![Try TestCafe Studio](https://raw.github.com/DevExpress/testcafe/master/media/testcafe-studio-banner.png)](https://www.devexpress.com/products/testcafestudio/?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-banner)
 </p>
 
 <p align="center">
@@ -27,9 +25,11 @@
   <a href="https://devexpress.github.io/testcafe/support/">Support</a>
 </p>
 
-* **Works on all popular environments**: TestCafe runs on Windows, MacOS, and Linux. It supports desktop, mobile, remote and cloud [browsers](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/browser-support.html) (UI or headless).
-* **1 minute to set up**: You [do not need WebDriver](https://devexpress.github.io/testcafe/faq/#i-have-heard-that-testcafe-does-not-use-selenium-how-does-it-operate) or any other testing software. Install TestCafe with one command, and you are ready to test: `npm install -g testcafe`
-* **Free and open source**: TestCafe is free to use under the [MIT license](https://github.com/DevExpress/testcafe/blob/master/LICENSE). [Plugins](#plugins) provide custom reports, integration with other tools, launching tests from IDE, etc. You can use the plugins made by the GitHub community or make your own.
+* **Works in all popular environments**: TestCafe runs on Windows, macOS, and Linux. It supports [all major browsers](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/browser-support.html), be they GUI, headless, mobile, remote or cloud-based.
+* **1 minute to set up**: The TestCafe NPM package contains everything you need to start testing.
+You [do not need to install WebDriver](https://devexpress.github.io/testcafe/faq/#i-have-heard-that-testcafe-does-not-use-selenium-how-does-it-operate) or additional software packages. Install TestCafe with a single command, and you are ready to test: `npm install -g testcafe`
+* **Extendable**: Feel  [Plugins](#plugins) provide custom reports, integration with other tools, IDE integration, etc. You can use the plugins made by the GitHub community or make your own.
+* **Free and open source**: TestCafe is free to use under the [MIT license](https://github.com/DevExpress/testcafe/blob/master/LICENSE). 
 
 ![Install TestCafe and Run a Test](https://raw.githubusercontent.com/DevExpress/testcafe/master/media/install-and-run-test.gif)
 
