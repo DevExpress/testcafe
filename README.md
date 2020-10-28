@@ -1,7 +1,4 @@
-
-
-<p> [![Try TestCafe Studio](https://raw.github.com/DevExpress/testcafe/master/media/testcafe-studio-banner.png)](https://www.devexpress.com/products/testcafestudio/?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-banner) </p>
-
+[![Try TestCafe Studio](https://raw.github.com/DevExpress/testcafe/master/media/testcafe-studio-banner.png?style=centerme)](https://www.devexpress.com/products/testcafestudio/?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-banner)
 
 <p align="center">
     <a href="https://devexpress.github.io/testcafe">
@@ -357,3 +354,8 @@ Code released under the [MIT license](LICENSE).
 ## Creators
 
 Developer Express Inc. ([https://devexpress.com](https://devexpress.com))
+
+img[src$="centerme"] {
+  display:block;
+  margin: 0 auto;
+}
