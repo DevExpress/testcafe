@@ -306,7 +306,7 @@ If the `before`/`beforeEach` setup is unsuccessful, the corresponding test does 
 
 To fulfill your test's prerequisites, use the `before` and `beforeEach` hooks. Clean up with the `after` and `afterEach` hooks.
 
-Use the `test.before` and `test.after` hooks to set a state that an individual test requires. Use the `fixture.beforeEach` and `fixture.afterEach` to set a common state that is required across the board.
+Use the `test.before` and `test.after` hooks to set a state that an individual test requires. Use the `fixture.beforeEach` and `fixture.afterEach` to set a common state that all the tests in the suite require.
 
 ## Selectors Strategy
 
@@ -324,7 +324,7 @@ In general, follow these guidelines when you write the Selectors for your tests.
 
 * Selectors should reflect the user’s point of view. Since TestCafe supports end-to-end testing, it’s a good idea to build selectors that identify elements as an end-user would. For instance, `Selector(‘form’).find(‘[name=”btn-foo-123”]’)` might be stable, but it is written from the programmer’s perspective rather than from the user’s point of view.
 
-Use custom attributes (like `data-testid`) whose sole purpose is to identify items with TestCafe. These attributes are unlikely to change during development and enable you to rewrite your Selectors rarer.
+* Use custom attributes (like `data-testid`) whose sole purpose is to identify items with TestCafe. These attributes are unlikely to change during development and enable you to rewrite your Selectors rarer.
 
 Group the Selectors in a page model. It increases the resilience of your tests and helps remove redundant code.
 
