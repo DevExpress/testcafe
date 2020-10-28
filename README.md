@@ -1,7 +1,5 @@
 
-![Try TestCafe Studio](https://raw.github.com/DevExpress/testcafe/master/media/testcafe-studio-banner.png)
-
-(https://www.devexpress.com/products/testcafestudio/?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-banner)
+[![Try TestCafe Studio](https://raw.github.com/DevExpress/testcafe/master/media/testcafe-studio-banner.png)](https://www.devexpress.com/products/testcafestudio/?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-banner)
 
 
 <p align="center">
