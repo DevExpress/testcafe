@@ -348,25 +348,25 @@ fixture `Resize multiple windows`
     });
 
 test('Resize multiple windows', async t => {
-    await t.resizeWindow(400, 400);
-    await t.expect(await getWindowWidth()).eql(400);
-    await t.expect(await getWindowHeight()).eql(400);
+    await t.resizeWindow(600, 600);
+    await t.expect(await getWindowWidth()).eql(600);
+    await t.expect(await getWindowHeight()).eql(600);
 
     await t.openWindow(child1Url);
 
-    await t.resizeWindow(200, 200);
-    await t.expect(await getWindowWidth()).eql(200);
-    await t.expect(await getWindowHeight()).eql(200);
+    await t.resizeWindow(550, 550);
+    await t.expect(await getWindowWidth()).eql(550);
+    await t.expect(await getWindowHeight()).eql(550);
 
     await t.switchToParentWindow();
 
-    await t.expect(await getWindowWidth()).eql(400);
-    await t.expect(await getWindowHeight()).eql(400);
+    await t.expect(await getWindowWidth()).eql(600);
+    await t.expect(await getWindowHeight()).eql(600);
 
-    await t.resizeWindow(300, 300);
+    await t.resizeWindow(500, 500);
 
-    await t.expect(await getWindowWidth()).eql(300);
-    await t.expect(await getWindowHeight()).eql(300);
+    await t.expect(await getWindowWidth()).eql(500);
+    await t.expect(await getWindowHeight()).eql(500);
 });
 
 test('Maximize multiple windows', async t => {
