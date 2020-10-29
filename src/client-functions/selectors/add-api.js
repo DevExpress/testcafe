@@ -764,23 +764,18 @@ function addHierarchicalSelectors (options) {
     };
 
     // ShadowRoot
-    obj.shadowRoot = (filter, dependencies) => {
-        if (filter !== void 0)
-            assertType([is.string, is.function, is.number], 'shadowRoot', '"filter" argument', filter);
-
-        const apiFn = prepareApiFnArgs('shadowRoot', filter);
-
-        filter = convertFilterToClientFunctionIfNecessary('find', filter, dependencies);
+    obj.shadowRoot = () => {
+        const apiFn = prepareApiFnArgs('shadowRoot');
 
         const selectorFn = () => {
             /* eslint-disable no-undef */
             return expandSelectorResults(selector, node => {
-                return node.shadowRoot !== void 0 ? [node.shadowRoot] : null;
+                return !node.shadowRoot ? null : [node.shadowRoot];
             });
             /* eslint-enable no-undef */
         };
 
-        const args = getDerivativeSelectorArgs(options, selectorFn, apiFn, filter, { expandSelectorResults });
+        const args = getDerivativeSelectorArgs(options, selectorFn, apiFn, void 0, { expandSelectorResults });
 
         return createDerivativeSelectorWithFilter(args);
     };
