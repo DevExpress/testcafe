@@ -904,15 +904,15 @@ To list multiple parameters, separate them with semicolons. Enclose values that 
 testcafe chrome my-tests --compiler-options typescript.options.lib=ES5,WebWorker;typescript.typesRoot='this value contains spaces'
 ```
 
-The `--ts-config-path` option is now deprecated. Specify the `typescript.configPath` compiler option to load an external TypeScript configuration file:
+Specify the `typescript.configPath` compiler option to load an external TypeScript configuration file:
 
 ```sh
 testcafe chrome my-tests --compiler-options typescript.configPath = 'config file path'
 ```
 
-Be careful when setting the value of the typescript.customCompilerModulePath compiler option. TestCafe resolves relative paths against its own installation folder. 
+Be careful when setting the value of the `typescript.customCompilerModulePath` compiler option. TestCafe resolves relative paths against its own installation folder. 
 
-Here’s how to enable the typescript 4 compiler included with your project instead of the typescript 3 compiler that ships with TestCafe.
+Here’s how to enable the `typescript@4` compiler from your project’s dependencies instead of the `typescript@3` compiler that ships with TestCafe.
 
 If your folder structure looks like this:
 ```js
@@ -921,7 +921,7 @@ If your folder structure looks like this:
          node_modules/testcafe/node_modules/typescript@3.
 ```
 
-You need to go up one level to set a relative customCompilerModulePath:
+The following line is the correct customCompilerModulePath declaration:
 ```js
 testcafe chrome test.ts --compiler-options typescript.customCompilerModulePath=../typescript@4
 ```

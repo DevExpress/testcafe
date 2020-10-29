@@ -14,7 +14,8 @@ TestCafe allows you to write tests with [TypeScript](https://www.typescriptlang.
 Using TypeScript brings you all the advantages of strongly typed languages: rich coding assistance,
 painless scalability, check-as-you-type code verification and much more.
 
-> TestCafe automatically compiles TypeScript tests before launching them, so you do not need to compile the TypeScript code.
+> You do not need to manually compile TypeScript tests. TestCafe does this automatically on launch.
+
 
 TestCafe bundles the TypeScript declaration file with the npm package, so you do not need to install it separately.
 
@@ -22,7 +23,7 @@ TestCafe bundles the TypeScript declaration file with the npm package, so you do
 
 To start writing tests with TypeScript, install TestCafe into your project directory. For more information, see [Install TestCafe](../basic-guides/install-testcafe.md#local-installation).
 
-Import the testcafe module in the beginning of each TypeScript file:
+Import the`testcafe` module in the beginning of each TypeScript file:
 
 ```js
 import { Selector } from 'testcafe';
@@ -46,9 +47,7 @@ When you run a TypeScript test, Testcafe outputs the compilation errors that it 
 
 ### Customize Compiler Options
 
-TestCafe users can modify the settings of the [TypeScript compiler](https://www.typescriptlang.org/docs/handbook/compiler-options.html) to enable features such as JSX compilation, and support for React type aliases.
-
-Use one of the following three ways to modify the compiler settings:
+TestCafe users can modify [the settings](https://www.typescriptlang.org/docs/handbook/compiler-options.html) of the TypeScript compiler in one of the following three ways:
 
 * the [--compiler-options](../../reference/command-line-interface.md#--compiler-options) command line parameter,
 
@@ -60,13 +59,11 @@ Use one of the following three ways to modify the compiler settings:
 * the [runner.compilerOptions](../../reference/testcafe-api/runner/compileroptions.md) API method,
 
     ```js
-    runner.compilerOptions([
-        {
-              format: "typescript",
-              customCompilerModulePath: '../node_modules/typescript-v4',
-              ....
-        }
-   ]);
+    runner.compilerOptions({
+    "typescript": {
+        customCompilerModulePath: '../node_modules/typescript-v4',
+        …
+     }});
    ```
 
 * the [compilerOptions](../../reference/configuration-file.md#compilerOptions) configuration file property.
@@ -122,4 +119,4 @@ test 'Test', (t) =>
         .expect(nameInput.value).eql 'Parker';
 ```
 
-You can run CoffeeScript tests in the same manner as JavaScript tests. TestCafe automatically compiles the CoffeeScript code, so you do not need to compile it manually.
+You do not need to manually compile CoffeeScript tests. TestCafe does this automatically on launch.
