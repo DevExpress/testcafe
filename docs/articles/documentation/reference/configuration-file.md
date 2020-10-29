@@ -1013,20 +1013,6 @@ Deprecated as of [TestCafe version X.X.X.] in favour of the compilerOptions sett
 
 Configures the [TypeScript compiler](../guides/concepts/typescript-and-coffeescript.md#customize-compiler-options). 
 
-```json
-{
-   { compilerOptions: 
-     { "typescript": 
-       { configPath: '<path to tsconfig.json>';
-         customCompilerModulePath: 'path to custom Typescript compiler module';
-         options: 
-           { experimentalDecorators: true } 
-       } 
-     } 
-   } 
-}
-```
-
 Set the `typescript.configPath` parameter to load TypeScript compilation settings from a dedicated [tsconfig.json](https://www.typescriptlang.org/tsconfig/) file.
 
 ```json 
@@ -1037,7 +1023,7 @@ Set the `typescript.configPath` parameter to load TypeScript compilation setting
 }
 ```
 
-Set the `typescript.compilerModulePath` parameter to call an external TypeScript compiler.
+Set the `typescript.compilerModulePath` parameter to load an external TypeScript compiler.
 
 ```json
 {

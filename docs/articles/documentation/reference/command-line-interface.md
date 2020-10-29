@@ -66,7 +66,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--qr-code](#--qr-code)
   * [--sf, --stop-on-first-fail](#--sf---stop-on-first-fail)
   * [--ts-config-path \<path\>](#--ts-config-path-path)
-  * [--compiler-options \<options\>](#--compiler-options)
+  * [--compiler-options \<options\>](#--compiler-options-options)
   * [--disable-page-caching](#--disable-page-caching)
   * [--disable-multiple-windows](#--disable-multiple-windows)
   * [--color](#--color)
