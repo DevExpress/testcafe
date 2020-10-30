@@ -1,0 +1,16 @@
+name: functional
+on: [push, pull_request]
+
+jobs:
+  test:
+    name: functional
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v1
+      - name: Npm install
+        run: npm install
+      - name: Build
+        run: gulp fast-build
+      - name: Run TestCafe Tests
+        run: gulp test-functional-local-multiple-windows
