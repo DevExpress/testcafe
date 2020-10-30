@@ -289,7 +289,15 @@ describe('Multiple windows', () => {
         });
     });
 
-    describe('Resize', () => {
+    describe.only('Resize', () => {
+        it('1', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', '1', { only: 'chrome', disableMultipleWindows: true });
+        });
+
+        it('2', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', '1', { only: 'chrome', disableMultipleWindows: false });
+        });
+
         it('Resize multiple windows', () => {
             return runTests('testcafe-fixtures/api/api-test.js', 'Resize multiple windows', { only: 'chrome' });
         });

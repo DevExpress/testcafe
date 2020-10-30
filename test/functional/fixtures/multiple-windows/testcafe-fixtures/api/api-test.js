@@ -347,6 +347,27 @@ fixture `Resize multiple windows`
         await restoreWindowState(t);
     });
 
+test('1', async t => {
+    console.log(await getWindowWidth());
+    console.log(await getWindowHeight());
+
+    await t.resizeWindow(700, 700);
+
+    console.log(await getWindowWidth());
+    console.log(await getWindowHeight());
+});
+
+test('2', async t => {
+    console.log(await getWindowWidth());
+    console.log(await getWindowHeight());
+
+    await t.resizeWindow(700, 700);
+
+    console.log(await getWindowWidth());
+    console.log(await getWindowHeight());
+});
+
+
 test('Resize multiple windows', async t => {
     console.log(await getWindowWidth());
     console.log(await getWindowHeight());
