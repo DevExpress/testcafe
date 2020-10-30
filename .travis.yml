@@ -37,8 +37,14 @@ jobs:
       env: GULP_TASK="test-functional-local-multiple-windows"
       addons:
         chrome:  stable
+        apt:
+          packages:
+            - fluxbox
       services:
         - xvfb
+      before_script:
+        - fluxbox >/dev/null 2>&1 &
+        - sleep 3
     - node_js: "stable"
       env: GULP_TASK="docker-test-travis"
       services:
