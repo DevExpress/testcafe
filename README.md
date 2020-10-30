@@ -13,7 +13,7 @@
 </p>
 
 <p align="center">
-<i>A Node.js tool to automate end-to-end web testing.<br/>Write tests in JS or TypeScript, run them and view results.</i>
+<i>A Node.js tool to automate end-to-end web testing. <br/>Write tests in JS or TypeScript, run them and view results.</i>
 </p>
 
 <p align="center">
@@ -23,10 +23,10 @@
   <a href="https://devexpress.github.io/testcafe/support/">Support</a>
 </p>
 
-* **Versatile**: Run your tests in desktop, mobile, headless, remote, and even [cloud-based browsers](https://devexpress.github.io/testcafe/documentation/guides/concepts/browsers.html#browser-support) from Windows, macOS, and Linux.
-* **Selenium? I hardly know him!**: TestCafe is a [self-sufficient](https://devexpress.github.io/testcafe/faq/#i-have-heard-that-testcafe-does-not-use-selenium-how-does-it-operate) testing solution. Install the TestCafe NPM package and you’re good to go:  `npm install -g testcafe`
+* **Versatile**: Run your tests in desktop, mobile, headless, remote, and [cloud-based browsers](https://devexpress.github.io/testcafe/documentation/guides/concepts/browsers.html#browser-support) on Windows, macOS, and Linux.
+* **1 minute to set up**: TestCafe does not rely on [WebDriver](https://devexpress.github.io/testcafe/faq/#i-have-heard-that-testcafe-does-not-use-selenium-how-does-it-operate) or any other testing software. Install the NPM package and you’re good to go:  `npm install -g testcafe`
 * **A vibrant ecosystem**: Supercharge your testing experience with an ever-growing number of [TestCafe Plugins](#plugins). Use your favourite JavaScript libraries to write complex tests with ease.
-* **Free and open source**: TestCafe is free to use under the [MIT license](https://github.com/DevExpress/testcafe/blob/master/LICENSE). 
+* **Free and open source**: TestCafe is free to use under the [MIT license](https://github.com/DevExpress/testcafe/blob/master/LICENSE).
 
 ![Install TestCafe and Run a Test](https://raw.githubusercontent.com/DevExpress/testcafe/master/media/install-and-run-test.gif)
 
@@ -50,48 +50,27 @@
 * [License](#license)
 * [Creators](#creators)
 
-## Features
+## End-to-end endgame
 
-**Stable tests and no manual timeouts**<br/>
-TestCafe automatically waits for page loads and XHRs before the test starts and after each action.
-It also features smart test actions and assertions that wait for page elements to appear.
-You can change the maximum wait time.
-If elements load faster, tests skip the timeout and continue.
+**No manual time-outs**<br/>
+Asynchronous from the ground up, TestCafe knows when to wait and what to wait for before the tests can continue.
 
-**Rapid test development tool**<br/>
-Changes in test code immediately restart the test, and you see the results instantly.<br/>
-See how it works in the [TestCafe Live repository](https://github.com/DevExpress/testcafe-live).
+**Complex scenarios made easy**<br/>
+From landing pages to flight simulators — TestCafe can test it all. Manage iframes and windows, inject custom client-side code, and emulate HTTP responses to take your tests to the next level.
 
-**Latest JS and TypeScript support**<br/>
-TestCafe supports the latest JavaScript features, including ES2017 (for example, async/await).
-You can also [use TypeScript](https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.html)
-if you prefer a strongly typed language.
+**As simple and extendable as JavaScript itself**<br/>
+TestCafe tests are full-fledged Node.js apps. Feel free to use your favorite JavaScript libraries and
+[preprocessors](https://devexpress.github.io/testcafe/documentation/guides/concepts/typescript-and-coffeescript.html).
 
-**Detects JS errors in your code**<br/>
-TestCafe reports JS errors that it finds on the webpage.
-Tests automatically fail because of that.
-However, you can disable this.
+**Interactive**<br/>
+Take full control over test execution with [Debug mode](https://devexpress.github.io/testcafe/documentation/guides/basic-guides/debug.html). Enable [Live mode](https://devexpress.github.io/testcafe/documentation/guides/basic-guides/run-tests.html) to reload your tests as you make changes.
 
-**Concurrent test launch**<br/>
-TestCafe can open multiple instances of the same browser to run parallel
-tests which decreases test execution time.
-
-**PageObject pattern support**<br/>
-The TestCafe's [Test API](https://devexpress.github.io/testcafe/documentation/test-api/)
-includes a high-level selector library, assertions, etc.
-You can combine them to implement readable tests with the [PageObject pattern](https://devexpress.github.io/testcafe/documentation/recipes/using-page-model.html).
-
-```js
-const macOSInput = Selector('.column').find('label').withText('MacOS').child('input');
-```
-
-**Easy to include in a continuous integration system**<br/>
-You can run TestCafe from a console, and its reports can be viewed in a CI system's interface
-(TeamCity, Jenkins, Travis & etc.)
+**Integrate and deliver**<br/>
+Automate your tests with popular [CI/CD solutions](https://devexpress.github.io/testcafe/documentation/guides/continuous-integration/). Make it beautiful with [custom reporter plugins](https://www.npmjs.com/search?q=testcafe-reporter).
 
 ## TestCafe Studio: IDE for End-to-End Web Testing
 
-TestCafe works great for JavaScript developers, but at some point you will need to delegate testing tasks to your Q&A department. If that's the case and you are looking for a codeless way to record and maintain tests compatible with your existing infrastructure, check out [TestCafe Studio](https://www.devexpress.com/products/testcafestudio/?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-ide) - a testing IDE built on top of the open-source TestCafe.
+Delegate testing duties to employees with zero programming experience by purchasing [TestCafe Studio](https://www.devexpress.com/products/testcafestudio/?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-ide) – the end-to-end IDE. Watch [this presentation](https://www.youtube.com/watch?v=3ZsYj1my-us) BLABLABLAB WEBINAR
 
 Read the following article to learn how TestCafe Studio could fit into your workflow: [What's Better than TestCafe? TestCafe Studio](https://www.devexpress.com/products/testcafestudio/qa-end-to-end-web-testing.xml).
 
@@ -155,7 +134,7 @@ TestCafe opens the browser and starts executing the test.
 
 ### Viewing the Results
 
-TestCafe outputs the results into a command shell by default. See [Reporters](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/reporters.html)
+TestCafe outputs test results into a command shell by default. See [Reporters](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/reporters.html)
 for more information. You can also use [plugins](#plugins) to customize the reports.
 
 ![Test Report](docs/articles/images/report.png)
