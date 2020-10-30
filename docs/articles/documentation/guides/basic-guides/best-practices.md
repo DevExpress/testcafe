@@ -46,7 +46,6 @@ test('Assertion with Selector', async t => {
 
     //an awaited selector doesn't update and produces unstable test results. Avoid it.
     const developerName = await Selector('#developer-name').value;
-    //
 
     await t
             .expect(developerName).eql('Peter')
@@ -81,7 +80,7 @@ test('Assertion with Selector', async t => {
 
 The `developerName` is now initialized with a re-executable Selector API promise. When a test controller receives this promise, it enables the smart assertion query mechanism so TestCafe can wait for the value to update.
 
-> The smart assertion query mechanism works with Client Functions and promises created by TestCafe Selector API. Use the `await` keyword with user-created promises and promises returned from third-party libraries.
+> The smart assertion query mechanism works with Client Functions and promises created by TestCafe Selector and RequestLogger APIs. Use the `await` keyword with user-created promises and promises returned from third-party libraries.
 
 This rule applies to ClientFunctions as well.
 
@@ -94,16 +93,17 @@ fixture `My fixture`
     .page `http://devexpress.github.io/testcafe/example/`;
 
 test('Assertion with ClientFunction', async t => {
-    const getValue        = ClientFunction(() => document.getElementById('preferred-interface').value)
     const interfaceSelect = Selector('#preferred-interface');
     const interfaceOption = interfaceSelect.find('option');
-    const value           = await getValue();
 
+    const getValue        = ClientFunction(() => document.getElementById('preferred-interface').value);
+    const value           = await getValue();
 
     await t
         .click(interfaceSelect)
         .click(interfaceOption.withText('JavaScript API'))
-        .expect(value).eql('JavaScript API')
+        .expect(value).eql('JavaScript API');
+        //fails
 });
 ```
 
@@ -193,7 +193,7 @@ A code example is available in the [testcafe-examples](https://github.com/DevExp
 
 Handle authentication during your tests with [User Roles](../../guides/advanced-guides/authentication.md#user-roles). Roles allow you to wrap authentication logic and credentials in a reusable object.
 
-Define roles with the [Role](../../reference/test-api/role/constructor.md) constructor and include them in your tests with the [t.useRole](../../reference/test-api/testcontroller/userole.md) method. The following example makes use of two user roles:
+Define roles in a separate file with the [Role](../../reference/test-api/role/constructor.md) constructor and include them in your tests with the [t.useRole](../../reference/test-api/testcontroller/userole.md) method. The following example makes use of two user roles:
 
 ```js
 import { Role } from 'testcafe';
@@ -211,7 +211,8 @@ const admin = Role('http://example.com/login', async t => {
         .typeText('#password', 'adminpass')
         .click('#sign-in');
 
-fixture `My Fixture`;
+fixture `My Fixture`
+    .page('./my-page.html');
 
 test('My test', async t => {
     await t
@@ -326,7 +327,7 @@ In general, follow these guidelines when you write the Selectors for your tests.
 
 * Use custom attributes (like `data-testid`) whose sole purpose is to identify items with TestCafe. These attributes are unlikely to change during development and enable you to rewrite your Selectors rarer.
 
-Group the Selectors in a page model. It increases the resilience of your tests and helps remove redundant code.
+Group the Selectors in a [page model](#use-of-page-objects). It increases the resilience of your tests and helps remove redundant code.
 
 Use the Selectors extension plugins for pages built with JavaScript frameworks. These extensions allow you to create Selectors that are more native to every framework.
 Such plugins are available for the following popular front-end frameworks: [Angular](https://github.com/DevExpress/testcafe-angular-selectors), [React](https://github.com/DevExpress/testcafe-react-selectors), [Vue](https://github.com/DevExpress/testcafe-vue-selectors).
