@@ -159,6 +159,7 @@ export default class BrowserProvider {
     }
 
     private async _ensureBrowserWindowDescriptor (browserId: string): Promise<void> {
+        console.log('_ensureBrowserWindowDescriptor');
         if (this._getWindowDescriptor(browserId))
             return;
 
@@ -174,6 +175,9 @@ export default class BrowserProvider {
 
             try {
                 windowDescriptor = await this._findWindow(browserId);
+
+                console.log(browserId);
+                console.log(windowDescriptor);
             }
             catch (err) {
                 // NOTE: We can suppress the error here since we can just disable window manipulation functions
@@ -209,6 +213,7 @@ export default class BrowserProvider {
     }
 
     private async _resizeLocalBrowserWindow (browserId: string, width: number, height: number, currentWidth: number, currentHeight: number): Promise<void> {
+        console.log('_resizeLocalBrowserWindow: ' + browserId);
         await this._ensureBrowserWindowDescriptor(browserId);
 
         const resizeCorrections = this._getResizeCorrections(browserId);
@@ -217,6 +222,12 @@ export default class BrowserProvider {
             width -= resizeCorrections.width;
             height -= resizeCorrections.height;
         }
+
+        console.log('browserTools.resize');
+        console.log(currentWidth);
+        console.log(currentHeight);
+        console.log(width);
+        console.log(height);
 
         await browserTools.resize(this._getWindowDescriptor(browserId), currentWidth, currentHeight, width, height);
     }
