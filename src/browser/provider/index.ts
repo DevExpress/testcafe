@@ -229,7 +229,11 @@ export default class BrowserProvider {
         console.log(width);
         console.log(height);
 
-        await browserTools.resize(this._getWindowDescriptor(browserId), currentWidth, currentHeight, width, height);
+        console.log(this._getWindowDescriptor(browserId));
+
+        const kekeke = await browserTools.resize(this._getWindowDescriptor(browserId), currentWidth, currentHeight, width, height);
+
+        console.log(kekeke);
     }
 
     private async _takeLocalBrowserScreenshot (browserId: string, screenshotPath: string): Promise<void> {
