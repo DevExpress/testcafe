@@ -7,29 +7,29 @@ permalink: /documentation/guides/basic-guides/best-practices.html
 
 This article describes the recommended ways to test with TestCafe and covers the following topics:
 
-* [E2E Tests Scope](#e2e-tests-scope)
+* [E2E Test Scope](#e2e-tests-scope)
 * [Smart Assertions](#smart-assertions)
 * [Use of Page Objects](#use-of-page-objects)
 * [Use of Roles for Login](#use-of-roles-for-login)
-* [File structure](#file-structure)
-* [Setup And Teardown](#setup-and-teardown)
-* [Selectors strategy](#selectors-strategy)
+* [File Structure](#file-structure)
+* [Setup and Teardown](#setup-and-teardown)
+* [Selector Strategy](#selectors-strategy)
 
-## E2E Tests Scope
+## E2E Test Scope
 
-During the functional (also known as 'end-to-end') testing the application is tested from beginning to end. This is in contrast with unit or integration tests, which focus on a specific part (or integration between parts) of the application.
+During the functional (also known as 'end-to-end') testing, the application is tested from beginning to end. This is in contrast to unit or integration tests, which focus on a specific part (or integration between parts) of the application.
 
 TestCafe is a tool built for functional testing. Do not use it to perform non-functional testing (like performance or load testing). Such tests would not yield any conclusive results.
 
-In your end-to-end tests, try to replicate real user's actions. Don't test exceptions - these are better tested with unit and integration tests. Test the general business logic of your application and abstain from rare use cases and edge scenarios.
+In your end-to-end tests, try to replicate real user actions. Don't test exceptions - these are better tested with unit and integration tests. Test the general business logic of your application and refrain from rare scenarios and edge cases.
 
-Write less E2E tests. End-to-end tests are slow by nature, their amount should be drastically lower than that of unit or integration tests.
+Write fewer E2E tests. End-to-end tests are slow by nature, so the number of tests should be drastically lower than that of unit or integration tests.
 
 ## Smart Assertions
 
-In end-to-end web testing, unpredictable factors (like network lag, processor, or memory bottlenecks in containers) can interfere with the assertions and produce inconsistent test results. Such tests are inconclusive (sometimes called 'flaky').
+In end-to-end web testing, unpredictable factors (like network lag, processor speed, or memory bottlenecks in containers) can interfere with the assertions and produce inconsistent test results. Such tests are inconclusive (sometimes called 'flaky').
 
-TestCafe includes a [Smart Assertion Query Mechanism](../../guides/basic-guides/assert.md#smart-assertion-query-mechanism). This mechanism introduces wait time for all the assertions: if an assertion fails, it retries multiple times within a timeout. That reduces random impact and stabilizes the tests without performance trade-offs.
+TestCafe includes a [Smart Assertion Query Mechanism](../../guides/basic-guides/assert.md#smart-assertion-query-mechanism). This mechanism introduces wait time for all the assertions; if an assertion fails, it retries multiple times within a timeout. That reduces random impact and stabilizes the tests without performance trade-offs.
 
 The following example demonstrates a common mistake:
 
@@ -131,7 +131,7 @@ test('Assertion with ClientFunction', async t => {
 });
 ```
 
-In this case, TestCafe applies the smart query mechanism and retries the assertion multiple times. This test responds to the changes that happen on the page and is more conclusive.
+In this case, TestCafe applies the smart query mechanism and retries the assertion multiple times. This test responds to the changes that occur on the page and is more conclusive.
 
 ## Use of Page Objects
 
@@ -165,7 +165,7 @@ export default new Page();
 
 The page object holds references to the desired elements on the page. Common operations are defined as an object's method.
 
-This useful abstraction improves the flexibility of your tests - if the UI changes, change one file to update all the references. A test with this model can look like this:
+This useful abstraction improves the flexibility of your tests - if the UI changes, change one file to update all references. A test with this model can look like this:
 
 ```js
 import page from './page-model'
@@ -183,9 +183,9 @@ test('Use a Page Model', async () => {
 });
 ```
 
-The page model object handles the identification of items and common operations. Tests are then more readable and less brittle because there is no duplicate code. Notice how this test doesn't require a test controller (`t`) since the page object handles all the actions.
+The page model object handles the identification of items and common operations. Tests are then more readable and less brittle because there is no duplicate code. Notice how this test doesn't require a test controller (`t`) since the page object handles all actions.
 
-The [Page Model](../../guides/concepts/page-model.md) article covers the use of page objects in greater detail.
+The [Page Model](../../guides/concepts/page-model.md) topic describes page object use in greater detail.
 
 A code example is available in the [testcafe-examples](https://github.com/DevExpress/testcafe-examples/tree/master/examples/use-page-model) repository.
 
@@ -242,7 +242,7 @@ See the [Authentication](../../guides/advanced-guides/authentication.md) article
 
 Follow these guidelines to keep your test structure manageable and "clean":
 
-* Use a page model to store Selectors and compound actions that are used across your app often. For instance, a page model function can contain all steps that are necessary to perform an action.
+* Use a page model to store Selectors and compound actions that are often used across your app. For instance, a page model function can contain all steps that are necessary to perform an action.
 
 * Put all the page model files into one directory. If your application is divided logically into components or subsystems, split up the associated page model objects into separate files.
 
@@ -262,7 +262,7 @@ Follow these guidelines to keep your test structure manageable and "clean":
 
 * Don't write long tests. Shorter test scenarios are easier to debug and can run concurrently.
 
-* Any reused data (for example, large sets of reference values or forms inputs) is better stored in a dedicated directory. Consider a descriptive folder name (for instance, `data`).
+* Any reused data (for example, large sets of reference values or form inputs) is better stored in a dedicated directory. Consider a descriptive folder name (for instance, `data`).
 
 With all the suggestions applied, your project's file structure might look like this:
 
@@ -309,7 +309,7 @@ test('My test', async t => {
 
 While good for cleanup, `after` and `afterEach` hooks create mutual dependence between tests when used to set up for a following test. The success rate of a test is then influenced by a preceding one, which is not desirable. Such tests need to run in a specific order and can't run in parallel.
 
-Use `before` or `beforeEach` to fullfill your test's prerequisites (for example to create a file necessary for a successful test run):
+Use `before` or `beforeEach` to fullfill your test's prerequisites (for example, to create a file necessary for a successful test run):
 
 ```js
 fixture `Another fixture`
@@ -345,9 +345,9 @@ In general, follow these guidelines when you write the Selectors for your tests.
 
 * Selectors should reflect the user’s point of view. Since TestCafe supports end-to-end testing, it’s a good idea to build selectors that identify elements as an end-user would. For instance, `Selector(‘form’).find(‘[name=”btn-foo-123”]’)` might be stable, but it is written from the programmer’s perspective rather than from the user’s point of view.
 
-* Use custom attributes (like `data-testid`) whose sole purpose is to identify items with TestCafe. These attributes are unlikely to change during development and enable you to rewrite your Selectors rarer.
+* Use custom attributes (like `data-testid`) whose sole purpose is to identify items with TestCafe. These attributes are unlikely to change during development, so you don't need to rewrite your Selectors as frequently.
 
 Group the Selectors in a [page model](#use-of-page-objects). It increases the resilience of your tests and helps remove redundant code.
 
 Use the Selectors extension plugins for pages built with JavaScript frameworks. These extensions allow you to create Selectors that are more native to every framework.
-Such plugins are available for the following popular front-end frameworks: [Angular](https://github.com/DevExpress/testcafe-angular-selectors), [React](https://github.com/DevExpress/testcafe-react-selectors), [Vue](https://github.com/DevExpress/testcafe-vue-selectors).
+Such plugins are available for the following popular front-end frameworks: [Angular](https://github.com/DevExpress/testcafe-angular-selectors), [React](https://github.com/DevExpress/testcafe-react-selectors), and [Vue](https://github.com/DevExpress/testcafe-vue-selectors).
