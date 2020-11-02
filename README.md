@@ -37,6 +37,7 @@
 ## Table of contents
 
 * [Features](#features)
+* [How It Works](#how-it-works)
 * [TestCafe Studio: TestCafe for non-programmers](#testcafe-studio-ide-for-end-to-end-web-testing)
 * [Getting Started](#getting-started)
 * [Documentation](#documentation)
@@ -68,19 +69,21 @@ Take full control over test execution with [Debug mode](https://devexpress.githu
 **Integrate and deliver**<br/>
 Automate your tests with popular [CI/CD solutions](https://devexpress.github.io/testcafe/documentation/guides/continuous-integration/). Make it beautiful with [custom reporter plugins](https://www.npmjs.com/search?q=testcafe-reporter).
 
+Read the [Why TestCafe?](https://devexpress.github.io/testcafe/documentation/why-testcafe) article to learn more about the features that make our product special.
+
 ## How It Works
 
 The server-client architecture of TestCafe makes it capable of executing both system-level and in-browser code.
 
 * TestCafe uses high-level system APIs to launch and manage browsers. This is necessary to achieve full control over test execution.
 * TestCafe tests are full-fledged Node.js scripts. They can launch services and applications, read and write system files, make use of your favourite libraries.
-* At the same time, TestCafe is capable of performing in-browser actions via client-side automation scripts. This is how TestCafe handles asynchronous events, simulates user activity, and executes custom (user-defined) JavaScript.
+* At the same time, TestCafe is capable of performing in-browser actions via client-side automation scripts. This is how TestCafe handles asynchronous events, simulates user activity, and executes user-defined JavaScript.
 
 Read the full [How It Works](https://devexpress.github.io/testcafe/documentation/how-it-works/) article to learn more about the inner workings of TestCafe.
 
 ## TestCafe Studio: TestCafe for non-programmers
 
-No programming experience? No problem. [TestCafe Studio](https://www.devexpress.com/products/testcafestudio/?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-ide) — the end-to-end testing IDE — lets you delegate testing duties to non-technical employees. To learn how TestCafe Studio can fit into your workflow, read [this article](https://www.devexpress.com/products/testcafestudio/qa-end-to-end-web-testing.xml) or watch the latest [webinar](https://www.youtube.com/watch?v=3ZsYj1my-us) by our resident evangelist Paul Usher.
+No programming experience? No problem. [TestCafe Studio](https://www.devexpress.com/products/testcafestudio/?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-ide) — the end-to-end testing IDE — lets you delegate testing duties to non-technical employees. To learn how TestCafe Studio can fit your unique workflow, read [this article](https://www.devexpress.com/products/testcafestudio/qa-end-to-end-web-testing.xml) or watch the latest [webinar](https://www.youtube.com/watch?v=3ZsYj1my-us) by our resident evangelist Paul Usher.
 
 ![Get Started with TestCafe Studio](https://raw.githubusercontent.com/DevExpress/testcafe/master/media/testcafe-studio-get-started.gif)
 
@@ -88,13 +91,11 @@ No programming experience? No problem. [TestCafe Studio](https://www.devexpress.
 <i>Record and Run a Test in TestCafe Studio</i>
 </p>
 
-
-
 ## Getting Started
 
 ### Installation
 
-TestCafe requires [Node.js](https://nodejs.org/en/) version 6 and up. Install TestCafe with the following [Node Package Manager](https://www.npmjs.com/) command:
+TestCafe requires [Node.js](https://nodejs.org/en/) version 6 and up. Install TestCafe with the following [npm](https://www.npmjs.com/) command:
 
 ```sh
 npm install -g testcafe
@@ -102,11 +103,11 @@ npm install -g testcafe
 
 ### Your First Test
 
-Let’s write a simple test that provides user input and checks how our [sample page](https://devexpress.github.io/testcafe/example) responds. 
-
 TestCafe tests are standalone JavaScript and TypeScript files. **Create a file** with either extension and open it in a text editor.
 
-Import the Selector module in the beginning of the test file: 
+Let’s write a simple test that provides user input and checks how our [sample page](https://devexpress.github.io/testcafe/example) responds. 
+
+Import the Selector module: 
 ```js
 import { Selector } from 'testcafe';
 ```
@@ -122,10 +123,10 @@ Call the `test` function. One of its arguments is an asynchronous function that 
 ```js
 test('My first test', async t => {
     await t
-          // types text into the input field
-        .typeText('#developer-name', 'John Smith') 
-         // clicks the submit button
-         .click('#submit-button') 
+        .typeText('#developer-name', 'John Smith')  // types text into the input field
+         .click('#submit-button') // clicks the submit button
+         
+         
          // checks the value of the header
         .expect(Selector('#article-header').innerText).eql('Thank you, John Smith!'); 
 });
@@ -141,17 +142,17 @@ testcafe chrome test1.js
 > Do not minimize the browser window. Tests are not guaranteed to execute correctly
 > in inactive tabs and minimized browser windows because they switch to a lower resource consumption mode.
 
-### Viewing the Results
+### View the Results
 
-TestCafe outputs test results into a command shell by default. See [Reporters](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/reporters.html) for more information. You can also use [plugins](#plugins) to customize the reports.
+The CLI version of TestCafe outputs test results and errors into the console, unless the user specifies a different [reporter](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/reporters.html).
 
 ![Test Report](docs/articles/images/report.png)
 
-Read the [Getting Started](https://devexpress.github.io/testcafe/documentation/getting-started/) page for a more detailed guide.
+Read the full [Getting Started](https://devexpress.github.io/testcafe/documentation/getting-started/) guide for more details.
 
 ## Documentation
 
-Go to our website for full [documentation](https://devexpress.github.io/testcafe/documentation/getting-started/) on TestCafe.
+Visit the TestCafe website, or open the `/docs` folder in this repository, to read our [documentation](https://devexpress.github.io/testcafe/documentation/getting-started/).
 
 ## Get Help
 
@@ -159,24 +160,22 @@ Join the TestCafe community on Stack Overflow to get help. Ask and answer [quest
 
 ## Issue Tracker
 
-Use our GitHub issues page to [report bugs](https://github.com/DevExpress/testcafe/issues/new?template=bug-report.md) and [suggest improvements](https://github.com/DevExpress/testcafe/issues/new?template=feature_request.md).
+Create new GitHub issues to [report bugs](https://github.com/DevExpress/testcafe/issues/new?template=bug-report.md) and [suggest improvements](https://github.com/DevExpress/testcafe/issues/new?template=feature_request.md).
 
 ## Stay in Touch
 
-Follow us on [Twitter](https://twitter.com/DXTestCafe). We post TestCafe news and updates, several times a week.
+Follow us on [Twitter](https://twitter.com/DXTestCafe) to get the latest TestCafe news. 
 
 ## Contributing
 
 Read our [Contributing Guide](https://github.com/DevExpress/testcafe/blob/master/CONTRIBUTING.md) to learn how to contribute to the project.
 
-To create your own plugin for TestCafe, you can use these plugin generators:
+If you want to create a new TestCafe plugin, check out these Yeoman-based plugin generators:
 
-* [Build a browser provider](https://devexpress.github.io/testcafe/documentation/extending-testcafe/browser-provider-plugin/)
-  to set up tests on your on-premises server farm, to use a cloud testing platform, or to start your local browsers in a special way. Use this [Yeoman generator](https://www.npmjs.com/package/generator-testcafe-browser-provider) to write only a few lines of code.
-* To [build a custom reporter](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/)
-  with your formatting and style, check out this [generator](https://www.npmjs.com/package/generator-testcafe-reporter).
+* The [browser provider plugin generator](https://www.npmjs.com/package/generator-testcafe-browser-provider) will help you create a [browser provider plugin](https://devexpress.github.io/testcafe/documentation/extending-testcafe/browser-provider-plugin/) with just a few lines of code. Browser provider plugins allow TestCafe to interface with in-house browser farms, custom cloud testing platforms, or just start your local browsers in a specific way.
+* The [reporter generator](https://www.npmjs.com/package/generator-testcafe-reporter) simplifies the process of [building a custom reporter](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/) with your own formatting and style.
 
-If you want your plugin to be listed below, [send us a note in a Github issue](https://github.com/DevExpress/testcafe/issues/new).
+If you want to include your plugin in this repository’s README, [create a Github issue to notify us](https://github.com/DevExpress/testcafe/issues/new).
 
 Thank you to all the people who already contributed to TestCafe!
 
@@ -313,13 +312,13 @@ TestCafe developers and community members made these plugins:
 | [Run Configuration Manager](https://docs.devexpress.com/TestCafeStudio/400189/user-interface/run-configurations-dialog?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-diff) | &nbsp; | &#10003; |
 | [IDE-like GUI](https://docs.devexpress.com/TestCafeStudio/400181/user-interface/code-editor?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-diff) | &nbsp; | &#10003; |
 
-\* You can use open-source TestCafe to run TestCafe Studio tests in CI systems.
+\* You can use the open-source version of TestCafe to run TestCafe Studio tests in CI systems.
 
 ## Badge
 
 Show everyone you are using TestCafe: ![Tested with TestCafe](https://img.shields.io/badge/tested%20with-TestCafe-2fa4cf.svg)
 
-To display this badge, add the following code to your repository readme:
+To display this badge, add the following code to your repository’s README.md:
 
 ```html
 <a href="https://github.com/DevExpress/testcafe">
@@ -329,7 +328,7 @@ To display this badge, add the following code to your repository readme:
 
 ## Thanks to BrowserStack
 
-We are grateful to BrowserStack for providing the infrastructure that we use to test code in this repository.
+We are grateful to BrowserStack for providing the infrastructure that we use to test the code in this repository.
 
 <a href="https://www.browserstack.com/"><img alt="BrowserStack Logo" src="https://raw.github.com/DevExpress/testcafe/master/media/BrowserStack.png"/></a>
 
