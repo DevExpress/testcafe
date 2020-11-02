@@ -23,8 +23,8 @@
   <a href="https://devexpress.github.io/testcafe/support/">Support</a>
 </p>
 
-* **Versatile**: Run tests in desktop, mobile, remote, and [cloud-based browsers](https://devexpress.github.io/testcafe/documentation/guides/concepts/browsers.html#browser-support) from Windows, macOS, and Linux. 
-* **1 minute to set up**: TestCafe does not rely on [WebDriver](https://devexpress.github.io/testcafe/faq/#i-have-heard-that-testcafe-does-not-use-selenium-how-does-it-operate) or any other testing software. Install the TestCafe NPM package and you’re good to go:  `npm install -g testcafe`
+* **End-to-end endgame**: Run tests in desktop, mobile, remote, and [cloud-based browsers](https://devexpress.github.io/testcafe/documentation/guides/concepts/browsers.html#browser-support) from Windows, macOS, and Linux. 
+* **1 minute to set up**: TestCafe does not rely on [WebDriver](https://devexpress.github.io/testcafe/faq/#i-have-heard-that-testcafe-does-not-use-selenium-how-does-it-operate) or any other testing software. Install the NPM package and you’re good to go:  `npm install -g testcafe`
 * **Vibrant ecosystem**: Supercharge your testing experience with an ever-growing number of [TestCafe Plugins](#plugins). Use your favourite JavaScript libraries to write complex tests with ease.
 * **Free and open source**: TestCafe is free to use under the [MIT license](https://github.com/DevExpress/testcafe/blob/master/LICENSE).
 
@@ -68,6 +68,16 @@ Take full control over test execution with [Debug mode](https://devexpress.githu
 **Integrate and deliver**<br/>
 Automate your tests with popular [CI/CD solutions](https://devexpress.github.io/testcafe/documentation/guides/continuous-integration/). Make it beautiful with [custom reporter plugins](https://www.npmjs.com/search?q=testcafe-reporter).
 
+## How It Works
+
+The server-client architecture of TestCafe makes it capable of executing both system-level and in-browser code.
+
+* TestCafe uses high-level system APIs to launch and manage browsers. This is necessary to achieve full control over test execution.
+* TestCafe tests are full-fledged Node.js scripts. They can launch services and applications, read and write system files, make use of your favourite libraries.
+* At the same time, TestCafe is capable of performing in-browser actions via client-side automation scripts. This is how TestCafe handles asynchronous events, simulates user activity, and executes custom (user-defined) JavaScript.
+
+Read the full [How It Works](https://devexpress.github.io/testcafe/documentation/how-it-works/) article to learn more about the inner workings of TestCafe.
+
 ## TestCafe Studio: TestCafe for non-programmers
 
 No programming experience? No problem. [TestCafe Studio](https://www.devexpress.com/products/testcafestudio/?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-ide) — the end-to-end testing IDE — lets you delegate testing duties to non-technical employees. To learn how TestCafe Studio can fit into your workflow, read [this article](https://www.devexpress.com/products/testcafestudio/qa-end-to-end-web-testing.xml) or watch the latest [webinar](https://www.youtube.com/watch?v=3ZsYj1my-us) by our resident evangelist Paul Usher.
@@ -78,7 +88,7 @@ No programming experience? No problem. [TestCafe Studio](https://www.devexpress.
 <i>Record and Run a Test in TestCafe Studio</i>
 </p>
 
-## How It Works
+
 
 ## Getting Started
 
