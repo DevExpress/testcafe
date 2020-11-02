@@ -23,21 +23,22 @@
   <a href="https://devexpress.github.io/testcafe/support/">Support</a>
 </p>
 
-* **Versatile**: Run your tests in desktop, mobile, headless, remote, and [cloud-based browsers](https://devexpress.github.io/testcafe/documentation/guides/concepts/browsers.html#browser-support) on Windows, macOS, and Linux.
+* **Versatile**: Run tests in desktop, mobile, remote, and [cloud-based browsers](https://devexpress.github.io/testcafe/documentation/guides/concepts/browsers.html#browser-support) from Windows, macOS, and Linux. 
 * **1 minute to set up**: TestCafe does not rely on [WebDriver](https://devexpress.github.io/testcafe/faq/#i-have-heard-that-testcafe-does-not-use-selenium-how-does-it-operate) or any other testing software. Install the NPM package and you’re good to go:  `npm install -g testcafe`
-* **A vibrant ecosystem**: Supercharge your testing experience with an ever-growing number of [TestCafe Plugins](#plugins). Use your favourite JavaScript libraries to write complex tests with ease.
+* **The best of both worlds**: TestCafe controls browsers via system level APIs, and
+* **Vibrant ecosystem**: Supercharge your testing experience with an ever-growing number of [TestCafe Plugins](#plugins). Use your favourite JavaScript libraries to write complex tests with ease.
 * **Free and open source**: TestCafe is free to use under the [MIT license](https://github.com/DevExpress/testcafe/blob/master/LICENSE).
 
 ![Install TestCafe and Run a Test](https://raw.githubusercontent.com/DevExpress/testcafe/master/media/install-and-run-test.gif)
 
 <p align="center">
 <i>Running a sample test in Safari</i>
-</p>
+</p> 
 
 ## Table of contents
 
 * [Features](#features)
-* [TestCafe Studio: IDE for End-to-End Web Testing](#testcafe-studio-ide-for-end-to-end-web-testing)
+* [TestCafe Studio: TestCafe for non-programmers](#testcafe-studio-ide-for-end-to-end-web-testing)
 * [Getting Started](#getting-started)
 * [Documentation](#documentation)
 * [Get Help](#get-help)
@@ -50,7 +51,7 @@
 * [License](#license)
 * [Creators](#creators)
 
-## End-to-end endgame
+## Features
 
 **No manual time-outs**<br/>
 Asynchronous from the ground up, TestCafe knows when to wait and what to wait for before the tests can continue.
@@ -68,11 +69,9 @@ Take full control over test execution with [Debug mode](https://devexpress.githu
 **Integrate and deliver**<br/>
 Automate your tests with popular [CI/CD solutions](https://devexpress.github.io/testcafe/documentation/guides/continuous-integration/). Make it beautiful with [custom reporter plugins](https://www.npmjs.com/search?q=testcafe-reporter).
 
-## TestCafe Studio: IDE for End-to-End Web Testing
+## TestCafe Studio: TestCafe for non-programmers
 
-Delegate testing duties to employees with zero programming experience by purchasing [TestCafe Studio](https://www.devexpress.com/products/testcafestudio/?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-ide) – the end-to-end IDE. Watch [this presentation](https://www.youtube.com/watch?v=3ZsYj1my-us) BLABLABLAB WEBINAR
-
-Read the following article to learn how TestCafe Studio could fit into your workflow: [What's Better than TestCafe? TestCafe Studio](https://www.devexpress.com/products/testcafestudio/qa-end-to-end-web-testing.xml).
+No programming experience? No problem. [TestCafe Studio](https://www.devexpress.com/products/testcafestudio/?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-ide) — the end-to-end testing IDE — lets you delegate testing duties to non-technical employees. To learn how TestCafe Studio can fit into your workflow, read [this article](https://www.devexpress.com/products/testcafestudio/qa-end-to-end-web-testing.xml) or watch the latest [webinar](https://www.youtube.com/watch?v=3ZsYj1my-us) by our resident evangelist Paul Usher.
 
 ![Get Started with TestCafe Studio](https://raw.githubusercontent.com/DevExpress/testcafe/master/media/testcafe-studio-get-started.gif)
 
@@ -84,35 +83,40 @@ Read the following article to learn how TestCafe Studio could fit into your work
 
 ### Installation
 
-Ensure that [Node.js](https://nodejs.org/) (version 6 or newer) and [npm](https://www.npmjs.com/) are installed on your computer before running it:
+TestCafe runs on [Node.js](https://nodejs.org/en/) (version 6 and up).  
+Install TestCafe with the following [Node Package Manager](https://www.npmjs.com/) command:
 
 ```sh
 npm install -g testcafe
 ```
 
-### Creating the Test
+### Writing a test
 
-As an example, we are going to test the [https://devexpress.github.io/testcafe/example](https://devexpress.github.io/testcafe/example) page.
+Let’s write a simple test that provides user input and checks how our [sample page](https://devexpress.github.io/testcafe/example) responds. 
 
-Create a `.js` or `.ts` file on your computer.
-Note that it needs to have a specific structure: tests must be organized into fixtures.
-You can paste the following code to see the test in action:
+####  File format
+TestCafe tests are standalone JavaScript and TypeScript files. Create a file with either extension and open it in a text editor.
+
+#### Import required modules
+The TestCafe library contains several modules. For the purposes of this example, we’re only going to import the Selector module: `import { Selector } from 'testcafe';`. This module contains methods that select page elements.
+
+#### Test Structure
+Tests are grouped into fixtures. Declare a `fixture` with the location of the page we’re going to test: 
+```
+fixture `Getting Started`
+    .page `https://devexpress.github.io/testcafe/example`; 
+```
+
+#### The test itself
+
+Call the `test` function to declare a new test. Provide it with two arguments: a string with the test’s name, and an asynchronous function with the test’s actions.
 
 ```js
-import { Selector } from 'testcafe'; // first import testcafe selectors
-
-fixture `Getting Started`// declare the fixture
-    .page `https://devexpress.github.io/testcafe/example`;  // specify the start page
-
-
-//then create a test and place your code there
 test('My first test', async t => {
     await t
-        .typeText('#developer-name', 'John Smith')
-        .click('#submit-button')
-
-        // Use the assertion to check if the actual header text is equal to the expected one
-        .expect(Selector('#article-header').innerText).eql('Thank you, John Smith!');
+        .typeText('#developer-name', 'John Smith') // types text into the input field
+        .click('#submit-button') // clicks the submit button
+        .expect(Selector('#article-header').innerText).eql('Thank you, John Smith!');  // checks the value of the header
 });
 ```
 
