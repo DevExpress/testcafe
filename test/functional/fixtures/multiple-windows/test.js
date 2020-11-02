@@ -287,5 +287,9 @@ describe('Multiple windows', () => {
         it('Refresh child and switch to parent', () => {
             return runTests('testcafe-fixtures/api/api-test.js', 'Refresh child and switch to parent', { only: 'chrome' });
         });
+
+        it.only('Resize window test', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Resize window test', { only: 'chrome' });
+        });
     });
 });

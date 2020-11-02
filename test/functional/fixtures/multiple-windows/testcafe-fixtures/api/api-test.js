@@ -329,3 +329,13 @@ test('Refresh child and switch to parent', async t => {
 
     await t.switchToParentWindow();
 });
+
+const getDimensions = ClientFunction(() => {
+    return { width: window.innerWidth, height: window.innerHeight };
+});
+
+test('Resize window test', async t => {
+    console.log(await getDimensions());
+    await t.resizeWindow(500, 500);
+    console.log(await getDimensions());
+});
