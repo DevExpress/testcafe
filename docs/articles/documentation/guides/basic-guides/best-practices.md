@@ -323,7 +323,7 @@ test('Another test', async t => {
 
 If the `before`/`beforeEach` setup is unsuccessful, the corresponding test does not run, which saves you time. If `after`/`afterEach` setup yields an error, the following test runs and probably fails due to the unsuccessful setup.
 
-To fulfill your test's prerequisites, use the `before` and `beforeEach` hooks. Clean up with the `after` and `afterEach` hooks.
+To fulfill your test's prerequisites, use the `before` and `beforeEach` hooks. Clean the environment up with the `after` and `afterEach` hooks.
 
 Use the `test.before` and `test.after` hooks to set a state that an individual test requires. Use the `fixture.beforeEach` and `fixture.afterEach` to set a common state that all the tests in the suite require.
 
