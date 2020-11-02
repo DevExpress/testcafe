@@ -24,8 +24,7 @@
 </p>
 
 * **Versatile**: Run tests in desktop, mobile, remote, and [cloud-based browsers](https://devexpress.github.io/testcafe/documentation/guides/concepts/browsers.html#browser-support) from Windows, macOS, and Linux. 
-* **1 minute to set up**: TestCafe does not rely on [WebDriver](https://devexpress.github.io/testcafe/faq/#i-have-heard-that-testcafe-does-not-use-selenium-how-does-it-operate) or any other testing software. Install the NPM package and you’re good to go:  `npm install -g testcafe`
-* **The best of both worlds**: TestCafe controls browsers via system level APIs, and
+* **1 minute to set up**: TestCafe does not rely on [WebDriver](https://devexpress.github.io/testcafe/faq/#i-have-heard-that-testcafe-does-not-use-selenium-how-does-it-operate) or any other testing software. Install the TestCafe NPM package and you’re good to go:  `npm install -g testcafe`
 * **Vibrant ecosystem**: Supercharge your testing experience with an ever-growing number of [TestCafe Plugins](#plugins). Use your favourite JavaScript libraries to write complex tests with ease.
 * **Free and open source**: TestCafe is free to use under the [MIT license](https://github.com/DevExpress/testcafe/blob/master/LICENSE).
 
@@ -79,67 +78,62 @@ No programming experience? No problem. [TestCafe Studio](https://www.devexpress.
 <i>Record and Run a Test in TestCafe Studio</i>
 </p>
 
+## How It Works
+
 ## Getting Started
 
 ### Installation
 
-TestCafe runs on [Node.js](https://nodejs.org/en/) (version 6 and up).  
-Install TestCafe with the following [Node Package Manager](https://www.npmjs.com/) command:
+TestCafe requires [Node.js](https://nodejs.org/en/) version 6 and up. Install TestCafe with the following [Node Package Manager](https://www.npmjs.com/) command:
 
 ```sh
 npm install -g testcafe
 ```
 
-### Writing a test
+### Your First Test
 
 Let’s write a simple test that provides user input and checks how our [sample page](https://devexpress.github.io/testcafe/example) responds. 
 
-####  File format
-TestCafe tests are standalone JavaScript and TypeScript files. Create a file with either extension and open it in a text editor.
+TestCafe tests are standalone JavaScript and TypeScript files. **Create a file** with either extension and open it in a text editor.
 
-#### Import required modules
-The TestCafe library contains several modules. For the purposes of this example, we’re only going to import the Selector module: `import { Selector } from 'testcafe';`. This module contains methods that select page elements.
-
-#### Test Structure
-Tests are grouped into fixtures. Declare a `fixture` with the location of the page we’re going to test: 
+Import the Selector module in the beginning of the test file: 
+```js
+import { Selector } from 'testcafe';
 ```
+
+Declare a `fixture` with the location of the page we’re going to test: 
+```js
 fixture `Getting Started`
     .page `https://devexpress.github.io/testcafe/example`; 
 ```
 
-#### The test itself
-
-Call the `test` function to declare a new test. Provide it with two arguments: a string with the test’s name, and an asynchronous function with the test’s actions.
+Call the `test` function. One of its arguments is an asynchronous function that contains test code.
 
 ```js
 test('My first test', async t => {
     await t
-        .typeText('#developer-name', 'John Smith') // types text into the input field
-        .click('#submit-button') // clicks the submit button
-        .expect(Selector('#article-header').innerText).eql('Thank you, John Smith!');  // checks the value of the header
+          // types text into the input field
+        .typeText('#developer-name', 'John Smith') 
+         // clicks the submit button
+         .click('#submit-button') 
+         // checks the value of the header
+        .expect(Selector('#article-header').innerText).eql('Thank you, John Smith!'); 
 });
 ```
 
 ### Running the Test
-
-Call the following command in a command shell.
-Specify the [target browser](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#browser-list)
-and [file path](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#file-pathglob-pattern).
+Run the `testcafe` shell command. Specify the [target browser](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#browser-list) and [the location of the test file](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#file-pathglob-pattern).
 
 ```sh
 testcafe chrome test1.js
 ```
 
-TestCafe opens the browser and starts executing the test.
-
-> Important! Make sure to stay in the browser tab that is running tests.
 > Do not minimize the browser window. Tests are not guaranteed to execute correctly
 > in inactive tabs and minimized browser windows because they switch to a lower resource consumption mode.
 
 ### Viewing the Results
 
-TestCafe outputs test results into a command shell by default. See [Reporters](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/reporters.html)
-for more information. You can also use [plugins](#plugins) to customize the reports.
+TestCafe outputs test results into a command shell by default. See [Reporters](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/reporters.html) for more information. You can also use [plugins](#plugins) to customize the reports.
 
 ![Test Report](docs/articles/images/report.png)
 
