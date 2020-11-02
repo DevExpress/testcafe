@@ -193,7 +193,9 @@ A code example is available in the [testcafe-examples](https://github.com/DevExp
 
 Handle authentication during your tests with [User Roles](../../guides/advanced-guides/authentication.md#user-roles). Roles allow you to wrap authentication logic and credentials in a reusable object.
 
-Define roles in a separate file with the [Role](../../reference/test-api/role/constructor.md) constructor and include them in your tests with the [t.useRole](../../reference/test-api/testcontroller/userole.md) method. The following example makes use of two user roles:
+Define roles in a separate file with the [Role](../../reference/test-api/role/constructor.md) constructor and include them in your tests with the [t.useRole](../../reference/test-api/testcontroller/userole.md) method. The following example makes use of two user roles.
+
+`/tests/roles/roles.js:`
 
 ```js
 import { Role } from 'testcafe';
@@ -210,13 +212,27 @@ const admin = Role('http://example.com/login', async t => {
         .typeText('#login', 'Admin')
         .typeText('#password', 'adminpass')
         .click('#sign-in');
+});
+
+export { regularUser, admin };
+```
+
+`/tests/test_group1.js/test1.js:`
+
+```js
+import { regularUser, admin } from '../../roles/roles.js';
 
 fixture `My Fixture`
-    .page('./my-page.html');
+    .page('../../my-page.html');
 
-test('My test', async t => {
+test('Regular user test', async t => {
     await t
-        .useRole(role);
+        .useRole(regularUser);
+});
+
+test('Admin test', async t => {
+    await t
+        .useRole(admin);
 });
 ```
 
@@ -232,11 +248,13 @@ Follow these guidelines to keep your test structure manageable and "clean":
 
 > You can find an example of a page model in the [testcafe-examples](https://github.com/DevExpress/testcafe-examples/tree/master/examples/use-page-model) repository.
 
+* Keep all [Roles](#use-of-roles-for-login) in a separate file. This enables TestCafe to detect when the same Role is reused and further optimize the process.
+
 * Create a `testcaferc.json` file in the root directory of the project. It enables you to fine-tune your tests, which can be useful in CI/CD systems. For more information, read the [Configuration File](../../reference/configuration-file.md) article.
 
 * Define one `fixture` in every test file. While it's technically possible to define multiple, it may lead to confusion as your suite grows.
 
-* A `fixture`s should aggregate tests that relate to each other by meaning or testing scenario.
+* A `fixture` should aggregate tests that relate to each other by meaning or testing scenario.
 
 * TestCafe tests are purely functional. As such, they should not depend on the implementation details and it is best to isolate them from production code. Keep your test files in a separate directory. You can name this directory appropriately (for instance, `tests`).
 
@@ -264,6 +282,8 @@ With all the suggestions applied, your project's file structure might look like 
     ├── |- helpers/
     │   └── |- helper1.js
     │       |- helper2.js
+    ├── |- roles/
+    │   └── |- roles.js
     └── |-data
 ```
 
