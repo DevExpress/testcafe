@@ -44,7 +44,7 @@ test('Assertion with Selector', async t => {
 
     await t.typeText(developerNameInput, 'Peter');
 
-    //an awaited selector doesn't update and produces unstable test results. Avoid it.
+    //the selector prefixed with the "await" operator doesn't update and produces unstable test results. Avoid it.
     const developerName = await Selector('#developer-name').value;
 
     await t
