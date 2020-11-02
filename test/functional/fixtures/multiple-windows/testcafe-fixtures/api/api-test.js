@@ -370,6 +370,8 @@ test('Resize multiple windows', async t => {
 });
 
 test('Maximize multiple windows', async t => {
+    // NOTE: to be sure that window is is maximized we check
+    // that the width/height value increased at least on 10px
     const e = 10;
 
     const parentWidth  = await getWindowWidth();
@@ -385,8 +387,8 @@ test('Maximize multiple windows', async t => {
     const maxChildWidth  = await getWindowWidth();
     const maxChildHeight = await getWindowHeight();
 
-    await t.expect(maxChildWidth).gte(childWidth + e);
-    await t.expect(maxChildHeight).gte(childHeight + e);
+    await t.expect(maxChildWidth).gt(childWidth + e);
+    await t.expect(maxChildHeight).gt(childHeight + e);
 
     await t.switchToParentWindow();
 
@@ -395,6 +397,6 @@ test('Maximize multiple windows', async t => {
     const maxParentWidth  = await getWindowWidth();
     const maxParentHeight = await getWindowHeight();
 
-    await t.expect(maxParentWidth).gte(parentWidth + e);
-    await t.expect(maxParentHeight).gte(parentHeight + e);
+    await t.expect(maxParentWidth).gt(parentWidth + e);
+    await t.expect(maxParentHeight).gt(parentHeight + e);
 });
