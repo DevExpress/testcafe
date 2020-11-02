@@ -27,7 +27,9 @@ test('My Test', async t => {
 });
 ```
 
-> Since the `eval` method returns a value, and not an object, you cannot chain other methods of the test controller after 'eval'.
+> Important! The `eval` method returns a value and not an object. Always place `eval` in a separate call.
+>
+> Do not combine (precede or chain) `eval` with other actions.
 
 ## Options
 
