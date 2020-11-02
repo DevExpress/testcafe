@@ -291,9 +291,7 @@ With all the suggestions applied, your project's file structure might look like 
 
 State management is an integral and important part of web testing. When your tests run, there are inevitably leftovers - database or local storage records, cache, or cookies. This data requires deletion during teardown. Extra steps your app requires to run (like adding records to the database) are performed during setup.
 
-One way to deal with this is to place the setup actions in the preceding test's `after` and `afterEach` hooks. While good for cleanup, these hooks create mutual dependence between your tests when used to set up for a following test. The success of a test is then influenced by a preceding one, which is not desirable.
-
-Consider a test that downloads a file and saves it to a folder. Since the file system persists between tests, this file requires deletion when the test is complete. This is better done with an `afterEach` hook:
+Consider a test that downloads a file and saves it to a folder. Since the file system persists between tests, this file requires deletion when the test completes. This is better done with an `afterEach` hook:
 
 ```js
 fixture `My fixture`
@@ -307,7 +305,7 @@ test('My test', async t => {
 });
 ```
 
-While good for cleanup, `after` and `afterEach` hooks create mutual dependence between tests when used to set up for a following test. The success rate of a test is then influenced by a preceding one, which is not desirable. Such tests need to run in a specific order and can't run in parallel.
+While good for cleanup, `after` and `afterEach` hooks create mutual dependence between your tests when used to set up for the next test. The success rate of a test is then influenced by the preceding test, which is not desirable. Such tests need to run in a specific order and can't run in parallel.
 
 Use `before` or `beforeEach` to fullfill your test's prerequisites (for example, to create a file necessary for a successful test run):
 
