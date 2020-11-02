@@ -204,6 +204,10 @@ interface SelectorAPI {
      */
     hasAttribute(attributeName: string): Promise<boolean>;
     /**
+     * Creates a selector that returns an element's `shadowRoot`.
+     */
+    shadowRoot(): Selector;
+    /**
      * Creates a selector that returns an element by its index in the matching set.
      *
      * @param index - A zero-based index of the element. If negative, then counted from the end of the matching set.

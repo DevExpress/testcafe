@@ -1084,3 +1084,33 @@ test('Selector `addCustomMethods` method - Selector mode', async t => {
 
     await t.expect(await nonExistingElement()).eql(null);
 });
+
+fixture `Selector "shadowRoot" method`
+    .page `http://localhost:3000/fixtures/api/es-next/selector/pages/shadow.html`;
+
+test('Selector "shadowRoot" method - children are found', async t => {
+    const shadowRoot = Selector('div').shadowRoot();
+
+    await t.expect(shadowRoot.child('p').withText('Text should be found!').exists).ok();
+    await t.expect(shadowRoot.find('div').shadowRoot().child('p').withText('Nested text should be found!').exists).ok();
+
+    await t.click(shadowRoot.child('p').withText('Text should be found!'));
+});
+
+test('Selector "shadowRoot" method - shadow root not found', async t => {
+    const shadowRoot = Selector('p').shadowRoot();
+
+    await t.click(shadowRoot.find('div'));
+});
+
+test('Selector "shadowRoot" method - content property', async t => {
+    const shadowRoot = Selector('div').shadowRoot();
+
+    await t.expect(shadowRoot.textContent).contains('Text should be found!');
+});
+
+test('Cannot use "shadowRoot" as a target', async t => {
+    const shadowRoot = Selector('div').shadowRoot();
+
+    await t.click(shadowRoot);
+});

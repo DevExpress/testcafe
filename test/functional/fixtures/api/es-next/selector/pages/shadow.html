@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!--
+<div>                                            // shadowDOMContainer
+    #shadow-root                                 //
+        <p>                                      // shadowRootParagraph
+            Text should be found!                // shadowText
+        </p>                                     //
+        <div>                                    // shadowRootDiv
+            #shadow-root                         //
+                <p>                              // nestedShadowRootParagraph
+                    Nested text should be found  // nestedShadowText
+                </p>
+        </div>
+</div>
+<p>                                              // elementWithoutShadowDOM
+</p>
+-->
+
+<script>
+    const shadowDOMContainer        = document.createElement('div');
+    const shadowRootParagraph       = document.createElement('p');
+    const shadowRootDiv             = document.createElement('div');
+    const nestedShadowRootParagraph = document.createElement('p');
+    const elementWithoutShadowDOM   = document.createElement('p');
+    const shadowText                = document.createTextNode('Text should be found!');
+    const nestedShadowText          = document.createTextNode('Nested text should be found!');
+
+    shadowRootParagraph.appendChild(shadowText);
+    nestedShadowRootParagraph.appendChild(nestedShadowText);
+
+    const shadow       = shadowDOMContainer.attachShadow({ mode: 'open' });
+    const nestedShadow = shadowRootDiv.attachShadow({ mode: 'open' });
+
+    nestedShadow.appendChild(nestedShadowRootParagraph);
+    shadow.appendChild(shadowRootParagraph);
+    shadow.appendChild(shadowRootDiv);
+
+    document.body.appendChild(shadowDOMContainer);
+    document.body.appendChild(elementWithoutShadowDOM);
+</script>
+</body>
+</html>

@@ -121,8 +121,30 @@ describe('[API] Selector', function () {
         return runTests('./testcafe-fixtures/selector-test.js', 'Selector "sibling" method', DEFAULT_RUN_OPTIONS);
     });
 
-    it('Should provide .nextSibling() method', function () {
-        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "nextSibling" method', DEFAULT_RUN_OPTIONS);
+    it('Selector "shadowRoot" method - children are found', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "shadowRoot" method - children are found', Object.assign({ skip: ['ie', 'edge'] }, DEFAULT_RUN_OPTIONS));
+    });
+
+    it('Selector "shadowRoot" method - shadow root not found', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "shadowRoot" method - shadow root not found', Object.assign({ shouldFail: true, skip: ['ie', 'edge'] }, DEFAULT_RUN_OPTIONS))
+            .catch(function (errs) {
+                expect(errs[0]).contains('The specified selector does not match any element in the DOM tree.');
+                expect(errs[0]).contains('| Selector(\'p\')');
+                expect(errs[0]).contains('> |   .shadowRoot()');
+                expect(errs[0]).contains('|   .find(\'div\')');
+            });
+    });
+
+    it('Selector "shadowRoot" method - content property', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Selector "shadowRoot" method - content property', Object.assign({ skip: ['ie', 'edge'] }, DEFAULT_RUN_OPTIONS));
+    });
+
+    it('Cannot use "shadowRoot" as a target', function () {
+        return runTests('./testcafe-fixtures/selector-test.js', 'Cannot use "shadowRoot" as a target', Object.assign({ shouldFail: true, skip: ['ie', 'edge'] }, DEFAULT_RUN_OPTIONS))
+            .catch(function (errs) {
+                expect(errs[0]).contains('The specified selector is expected to match a DOM element, but it matches a document fragment node.');
+                expect(errs[0]).contains('> 1115 |    await t.click(shadowRoot);');
+            });
     });
 
     it('Should provide .prevSibling() method', function () {
