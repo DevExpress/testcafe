@@ -27,7 +27,7 @@ The proxying mechanism ensures that the page appears to be hosted at the origina
 
 ## Browser Sandboxing
 
-Every TestCafe test begins with an empty slate of a browser. At the end of a run, TestCafe deletes all browser cookies, empties the storage, and reloads the page, thereby preventing undesirable interference with subsequent tests. You don’t need to write any boilerplate code to reset the app state and reverse the changes your tests make.
+At the end of each run, TestCafe deletes all browser cookies, empties the storage, and reloads the page, thereby preventing undesirable interference with subsequent tests. You don’t need to write any boilerplate code to reset the app state and reverse the changes your tests make.
 
 Tests that run in parallel operate in independent sandboxed environments. This helps prevent server-side collisions.
 
