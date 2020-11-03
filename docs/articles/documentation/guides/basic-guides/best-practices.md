@@ -193,7 +193,7 @@ A code example is available in the [testcafe-examples](https://github.com/DevExp
 
 Handle authentication during your tests with [User Roles](../../guides/advanced-guides/authentication.md#user-roles). Roles allow you to wrap authentication logic and credentials in a reusable object.
 
-Define roles in a separate file with the [Role](../../reference/test-api/role/constructor.md) constructor and include them in your tests with the [t.useRole](../../reference/test-api/testcontroller/userole.md) method. The following example makes use of two user roles.
+Define roles in a separate file with the [Role](../../reference/test-api/role/constructor.md) constructor and include them in your tests with the [t.useRole](../../reference/test-api/testcontroller/userole.md) method. The following example uses two user roles.
 
 `/tests/roles/roles.js:`
 
@@ -325,11 +325,11 @@ If the `before`/`beforeEach` setup is unsuccessful, the corresponding test does 
 
 To fulfill your test's prerequisites, use the `before` and `beforeEach` hooks. Clean the environment up with the `after` and `afterEach` hooks.
 
-Use the `test.before` and `test.after` hooks to set a state that an individual test requires. Use the `fixture.beforeEach` and `fixture.afterEach` to set a common state that all the tests in the suite require.
+Use the `test.before` and `test.after` hooks to set a state that an individual test requires. Use `fixture.beforeEach` and `fixture.afterEach` to set a common state that all the tests in the suite require.
 
-## Selectors Strategy
+## Selector Strategy
 
-The [TestCafe Studio blog](https://community.devexpress.com/blogs/testcafe/archive/2020/06/10/testcafe-studio-v1-3-0-a-new-way-to-work-with-selectors.aspx#) covers the best ways to work with Selectors.
+The [TestCafe Studio blog](https://community.devexpress.com/blogs/testcafe/archive/2020/06/10/testcafe-studio-v1-3-0-a-new-way-to-work-with-selectors.aspx#) explains the best ways to work with Selectors.
 
 In general, follow these guidelines when you write the Selectors for your tests.
 
