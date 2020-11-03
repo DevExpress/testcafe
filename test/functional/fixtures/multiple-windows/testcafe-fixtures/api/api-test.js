@@ -1,5 +1,13 @@
 import { Selector, ClientFunction } from 'testcafe';
 
+import {
+    saveWindowState,
+    restoreWindowState,
+    getWindowHeight,
+    getWindowWidth
+} from '../../../../window-helpers';
+
+
 const reload = ClientFunction(() => window.location.reload());
 
 const parentUrl = 'http://localhost:3000/fixtures/multiple-windows/pages/api/parent.html';
@@ -328,4 +336,67 @@ test('Refresh child and switch to parent', async t => {
     await reload();
 
     await t.switchToParentWindow();
+});
+
+fixture `Resize multiple windows`
+    .page(parentUrl)
+    .beforeEach(async t => {
+        await saveWindowState(t);
+    })
+    .afterEach(async t => {
+        await restoreWindowState(t);
+    });
+
+test('Resize multiple windows', async t => {
+    await t.resizeWindow(600, 600);
+    await t.expect(await getWindowWidth()).eql(600);
+    await t.expect(await getWindowHeight()).eql(600);
+
+    await t.openWindow(child1Url);
+
+    await t.resizeWindow(550, 550);
+    await t.expect(await getWindowWidth()).eql(550);
+    await t.expect(await getWindowHeight()).eql(550);
+
+    await t.switchToParentWindow();
+
+    await t.expect(await getWindowWidth()).eql(600);
+    await t.expect(await getWindowHeight()).eql(600);
+
+    await t.resizeWindow(500, 500);
+
+    await t.expect(await getWindowWidth()).eql(500);
+    await t.expect(await getWindowHeight()).eql(500);
+});
+
+test('Maximize multiple windows', async t => {
+    // NOTE: to be sure that window is is maximized we check
+    // that the width/height value increased at least on 10px
+    const e = 10;
+
+    const parentWidth  = await getWindowWidth();
+    const parentHeight = await getWindowHeight();
+
+    await t.openWindow(child1Url);
+
+    const childWidth  = await getWindowWidth();
+    const childHeight = await getWindowHeight();
+
+    await t.maximizeWindow();
+
+    const maxChildWidth  = await getWindowWidth();
+    const maxChildHeight = await getWindowHeight();
+
+    await t.expect(maxChildWidth).gt(childWidth + e);
+    await t.expect(maxChildHeight).gt(childHeight + e);
+
+    await t.switchToParentWindow();
+
+    await t.maximizeWindow();
+
+    const maxParentWidth  = await getWindowWidth();
+    const maxParentHeight = await getWindowHeight();
+
+    await t.expect(maxParentWidth).gt(parentWidth + e);
+    await t.expect(maxParentHeight).gt(parentHeight + e);
 });

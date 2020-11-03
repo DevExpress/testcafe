@@ -18,7 +18,7 @@ describe('[API] Resize window actions', function () {
                 })
                     .catch(function (errs) {
                         expect(errs[0]).to.contains('The "height" argument is expected to be a positive integer, but it was -5.');
-                        expect(errs[0]).to.contains(' > 45 |    await t.resizeWindow(500, -5);');
+                        expect(errs[0]).to.contains(' > 48 |    await t.resizeWindow(500, -5);');
                     });
             });
 
@@ -27,7 +27,7 @@ describe('[API] Resize window actions', function () {
                     .catch(function (errs) {
                         errorInEachBrowserContains(errs, 'A JavaScript error occurred on "http://localhost:3000/fixtures/api/es-next/resize-window/pages/index.html"', 0);
                         errorInEachBrowserContains(errs, 'Resize error', 0);
-                        errorInEachBrowserContains(errs, '> 73 |    await t.resizeWindow(500, 500);', 0);
+                        errorInEachBrowserContains(errs, '> 76 |    await t.resizeWindow(500, 500);', 0);
                     });
             });
         });
@@ -48,7 +48,7 @@ describe('[API] Resize window actions', function () {
                 })
                     .catch(function (errs) {
                         expect(errs[0]).to.contains('The "device" argument specifies an unsupported "iPhone555" device. For a list of supported devices, refer to "https://github.com/DevExpress/device-specs/blob/master/viewport-sizes.json"');
-                        expect(errs[0]).to.contains(' > 67 |    await t.resizeWindowToFitDevice(\'iPhone555\');');
+                        expect(errs[0]).to.contains(' > 70 |    await t.resizeWindowToFitDevice(\'iPhone555\');');
                     });
             });
 
@@ -57,7 +57,7 @@ describe('[API] Resize window actions', function () {
                     .catch(function (errs) {
                         errorInEachBrowserContains(errs, 'A JavaScript error occurred on "http://localhost:3000/fixtures/api/es-next/resize-window/pages/index.html"', 0);
                         errorInEachBrowserContains(errs, 'Resize error', 0);
-                        errorInEachBrowserContains(errs, '> 79 |    await t.resizeWindowToFitDevice(\'iPhone\');', 0);
+                        errorInEachBrowserContains(errs, '> 82 |    await t.resizeWindowToFitDevice(\'iPhone\');', 0);
                     });
             });
         });
@@ -67,7 +67,7 @@ describe('[API] Resize window actions', function () {
                 return runTests('./testcafe-fixtures/resize-window-test.js', 'Too big size', { shouldFail: true })
                     .catch(function (errs) {
                         errorInEachBrowserContains(errs, 'Unable to resize the window because the specified size exceeds the screen size. On macOS, a window cannot be larger than the screen.', 0);
-                        errorInEachBrowserContains(errs, '> 84 |    await t.resizeWindow(hugeWidth, hugeHeight);', 0);
+                        errorInEachBrowserContains(errs, '> 87 |    await t.resizeWindow(hugeWidth, hugeHeight);', 0);
                     });
             });
         }
