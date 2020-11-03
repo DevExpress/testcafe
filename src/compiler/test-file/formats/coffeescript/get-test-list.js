@@ -1,5 +1,5 @@
 import CoffeeScript from 'coffeescript';
-import { transform } from 'babel-core';
+import { transform } from '@babel/core';
 import ESNextTestFileCompiler from '../es-next/compiler.js';
 import { EsNextTestFileParser } from '../es-next/get-test-list';
 

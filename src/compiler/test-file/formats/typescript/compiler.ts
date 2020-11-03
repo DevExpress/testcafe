@@ -8,6 +8,7 @@ import { GeneralError } from '../../../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../../../errors/types';
 import debug from 'debug';
 import { isRelative } from '../../../../api/test-page-url';
+import EXPORTABLE_LIB_PATH from '../../exportble-lib-path';
 
 // NOTE: For type definitions only
 import TypeScript, { CompilerOptionsValue } from 'typescript';
@@ -30,7 +31,7 @@ interface RequireCompilers {
 
 const DEBUG_LOGGER = debug('testcafe:compiler:typescript');
 
-const RENAMED_DEPENDENCIES_MAP = new Map([['testcafe', APIBasedTestFileCompilerBase.EXPORTABLE_LIB_PATH]]);
+const RENAMED_DEPENDENCIES_MAP = new Map([['testcafe', EXPORTABLE_LIB_PATH]]);
 
 const DEFAULT_TYPESCRIPT_COMPILER_PATH = 'typescript';
 

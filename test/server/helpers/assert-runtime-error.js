@@ -17,20 +17,19 @@ function assertStack (err, expected) {
     if (expected.stackTop) {
         const expectedStackTop = castArray(expected.stackTop);
 
-        parsedStack.forEach(function (frame, idx) {
-            const filename   = frame.fileName;
-            const isInternal = frame.fileName.indexOf('internal/') === 0 ||
-                               frame.fileName.indexOf('node:') === 0 &&
-                               frame.fileName.indexOf(sep) < 0;
+        parsedStack.forEach((frame, idx) => {
+            const { fileName } = frame;
+            const isInternal   = fileName.startsWith('internal/') ||
+                                 fileName.startsWith('node:') &&
+                                 !fileName.includes(sep);
 
             // NOTE: assert that stack is clean from internals
             expect(isInternal).to.be.false;
-            expect(filename).not.to.contain(sep + 'babel-');
-            expect(filename).not.to.contain(sep + 'babylon' + sep);
-            expect(filename).not.to.contain(sep + 'core-js' + sep);
+            expect(fileName).not.to.contain(sep + 'babel-');
+            expect(fileName).not.to.contain(sep + '@babel' + sep);
 
             if (expectedStackTop[idx])
-                expect(filename).eql(expectedStackTop[idx]);
+                expect(fileName).eql(expectedStackTop[idx]);
         });
     }
     else {
