@@ -107,18 +107,18 @@ TestCafe tests are standalone JavaScript and TypeScript files. **Create a file**
 
 Let’s write a simple test that provides user input and checks how our [sample page](https://devexpress.github.io/testcafe/example) responds. 
 
-Import the Selector module: 
+**Import** the Selector module: 
 ```js
 import { Selector } from 'testcafe';
 ```
 
-Declare a `fixture` with the location of the page we’re going to test: 
+**Declare a `fixture`** with the location of the page we’re going to test: 
 ```js
 fixture `Getting Started`
     .page `https://devexpress.github.io/testcafe/example`; 
 ```
 
-Call the `test` function. One of its arguments is an asynchronous function that contains test code.
+**Call the `test` function**. One of its arguments is an asynchronous function that contains test code.
 
 ```js
 test('My first test', async t => {
@@ -172,10 +172,10 @@ Read our [Contributing Guide](https://github.com/DevExpress/testcafe/blob/master
 
 If you want to create a new TestCafe plugin, check out these Yeoman-based plugin generators:
 
-* The [browser provider plugin generator](https://www.npmjs.com/package/generator-testcafe-browser-provider) will help you create a [browser provider plugin](https://devexpress.github.io/testcafe/documentation/extending-testcafe/browser-provider-plugin/) with just a few lines of code. Browser provider plugins allow TestCafe to interface with in-house browser farms, custom cloud testing platforms, or just start your local browsers in a specific way.
+* The [browser provider plugin generator](https://www.npmjs.com/package/generator-testcafe-browser-provider) will help you create a [browser provider plugin](https://devexpress.github.io/testcafe/documentation/extending-testcafe/browser-provider-plugin/) with just a few lines of code. Browser provider plugins allow TestCafe to interface with in-house browser farms, access custom cloud testing platforms, or just start your local browsers in an unorthodox way.
 * The [reporter generator](https://www.npmjs.com/package/generator-testcafe-reporter) simplifies the process of [building a custom reporter](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/) with your own formatting and style.
 
-If you want to include your plugin in this repository’s README, [create a Github issue to notify us](https://github.com/DevExpress/testcafe/issues/new).
+If you want your plugin to be featured on this page, [notify our team](https://github.com/DevExpress/testcafe/issues/new) with a GitHub issue.
 
 Thank you to all the people who already contributed to TestCafe!
 
@@ -233,7 +233,7 @@ Thank you to all the people who already contributed to TestCafe!
 
 ## Plugins
 
-TestCafe developers and community members made these plugins:
+These are some of the plugins created by the TestCafe team and community:
 
 * **Browser Providers**<br/>
   Use TestCafe with cloud browser providers and emulators.
@@ -299,9 +299,9 @@ TestCafe developers and community members made these plugins:
 | No need for WebDriver, browser plugins or other tools | &#10003; | &#10003; |
 | Cross-platform and cross-browser out of the box | &#10003; | &#10003; |
 | Write tests in the latest JavaScript or TypeScript | &#10003; | &#10003; |
-| Clear and flexible [API](https://devexpress.github.io/testcafe/documentation/test-api/) supports ES6 and [PageModel pattern](https://devexpress.github.io/testcafe/documentation/recipes/using-page-model.html) | &#10003; | &#10003; |
+| Clear and flexible [API](https://devexpress.github.io/testcafe/documentation/test-api/) with ES6 and [PageModel pattern support](https://devexpress.github.io/testcafe/documentation/recipes/using-page-model.html) | &#10003; | &#10003; |
 | Stable tests due to the [Smart Assertion Query Mechanism](https://devexpress.github.io/testcafe/documentation/test-api/assertions/#smart-assertion-query-mechanism) | &#10003; | &#10003; |
-| Tests run fast due to intelligent [Automatic Waiting Mechanism](https://devexpress.github.io/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html) and [Concurrent Test Execution](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/concurrent-test-execution.html) | &#10003; | &#10003; |
+| Tests run fast due to the intelligent [Automatic Waiting Mechanism](https://devexpress.github.io/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html) and [Concurrent Test Execution](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/concurrent-test-execution.html) | &#10003; | &#10003; |
 | Custom reporter plugins | &#10003; | &#10003; |
 | Use third-party Node.js modules in test scripts | &#10003; | &#10003; |
 | Integration with popular CI systems | &#10003; | &nbsp;&#10003;\* |
@@ -312,13 +312,11 @@ TestCafe developers and community members made these plugins:
 | [Run Configuration Manager](https://docs.devexpress.com/TestCafeStudio/400189/user-interface/run-configurations-dialog?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-diff) | &nbsp; | &#10003; |
 | [IDE-like GUI](https://docs.devexpress.com/TestCafeStudio/400181/user-interface/code-editor?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-diff) | &nbsp; | &#10003; |
 
-\* You can use the open-source version of TestCafe to run TestCafe Studio tests in CI systems.
+\* Use the open-source version of TestCafe to run TestCafe Studio tests in CI systems.
 
 ## Badge
 
-Show everyone you are using TestCafe: ![Tested with TestCafe](https://img.shields.io/badge/tested%20with-TestCafe-2fa4cf.svg)
-
-To display this badge, add the following code to your repository’s README.md:
+Show your support for TestCafe with this repository badge: ![Tested with TestCafe](https://img.shields.io/badge/tested%20with-TestCafe-2fa4cf.svg)
 
 ```html
 <a href="https://github.com/DevExpress/testcafe">
