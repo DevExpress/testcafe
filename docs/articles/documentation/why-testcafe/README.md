@@ -29,7 +29,7 @@ Run your tests in multiple browsers at once to quickly uncover browser-specific 
 ## Automate what’s possible
 
 ### Automated waiting
-Manual timeouts are a thing of the past. Asynchronous from the ground-up, TestCafe knows when to wait and what to wait for before the test can continue.
+Manual timeouts are a thing of the past. Asynchronous from the ground-up, TestCafe knows when to wait and what to wait for before a test can continue.
 
 ### Automated authentication scripts
 Save and activate user roles to easily switch between different user accounts.

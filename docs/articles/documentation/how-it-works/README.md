@@ -9,11 +9,11 @@ The automation engine behind TestCafe takes over browsers and the web pages they
 
 ## The Server-Client Architecture
 
-The server-client architecture of TestCafe makes it capable of executing both system-level and in-browser code.
+The server-client architecture of TestCafe allows it to execute system-level and in-browser code.
 
 * TestCafe uses [high-level system APIs](https://github.com/DevExpress/testcafe-browser-tools) to launch and manage browsers. This is necessary to achieve full control over test execution.
 * TestCafe tests are full-fledged Node.js scripts. They can launch services and applications, read and write system files, make use of your favourite libraries.
-* At the same time, TestCafe is capable of performing in-browser actions via client-side automation scripts. This is how TestCafe handles asynchronous events, simulates user activity, and executes custom (user-defined) JavaScript.
+* At the same time, TestCafe is capable of performing in-browser actions with client-side automation scripts. This is how TestCafe handles asynchronous events, simulates user activity, and executes custom (user-defined) JavaScript.
 
 Our experience shows that this hybrid approach gives users the best of both worlds. Early versions of TestCafe ran entirely in the browser. This caused a number of issues. The tests’ capabilities were limited, the application often interfered with page execution, and the sub-optimal logic separation caused browser crashes. Since then, we decoupled the engine, exposed the underlying Node.js API, and implemented a test runner that executes test scripts server-side.
 
@@ -21,13 +21,13 @@ Our experience shows that this hybrid approach gives users the best of both worl
 
 You may notice that when you run TestCafe, the URL in the browser’s address bar does not match that of your website. This happens because TestCafe runs an under-the-hood reverse proxy.
 
-The [testcafe-hammerhead](https://github.com/DevExpress/testcafe-hammerhead) proxy intercepts browser requests and adds automation scripts to the requested resources. It then modifies the URLs contained within the resource so that they point to the proxy. That way, neither the client-side code nor the resources it communicates with can tell that the page has been modified. To conceal automation scripts from the rest of the page code, TestCafe mocks the browser API.
+The [testcafe-hammerhead](https://github.com/DevExpress/testcafe-hammerhead) proxy intercepts browser requests and adds automation scripts to the requested resources. It then modifies the URLs contained within the resource, so that they point to the proxy. This way, neither the client-side code, nor the resources it communicates with, can tell that the page has been modified. To conceal automation scripts from the rest of the page code, TestCafe mocks the browser API.
 
 The proxying mechanism ensures that the page appears to be hosted at the original URL even to the test code. This is why you can use your website’s actual URL in tests, and pay no mind to the browser’s address bar.
 
 ## Browser Sandboxing
 
-At the end of each run, TestCafe deletes all browser cookies, empties the storage, and reloads the page, thereby preventing undesirable interference with subsequent tests. You don’t need to write any boilerplate code to reset the app state and reverse the changes your tests make.
+At the end of each run, TestCafe deletes all browser cookies, empties the storage, and reloads the page, thereby preventing undesirable interference with subsequent tests. You don’t need to write boilerplate code to reset the app state and reverse the changes your tests make.
 
 Tests that run in parallel operate in independent sandboxed environments. This helps prevent server-side collisions.
 
