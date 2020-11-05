@@ -21,7 +21,7 @@ function parseOptionsString (optionsStr: string, optionsSeparator: string, keyVa
         .map(([key, ...value]) => [key, value.length > 1 ? value.join(keyValueSeparator) : value[0]]);
 }
 
-export default async function (sourceOptions: string | Dictionary<string | number | boolean> = '', optionsConfig: GetOptionConfiguration): Promise<Dictionary<any>> { /* eslint-disable-line @typescript-eslint/no-explicit-any */
+export default async function (sourceOptions: string | Dictionary<string | number | boolean> = '', optionsConfig: GetOptionConfiguration = {}): Promise<Dictionary<any>> { /* eslint-disable-line @typescript-eslint/no-explicit-any */
     const {
         optionsSeparator = DEFAULT_OPTIONS_SEPARATOR,
         keyValueSeparator = DEFAULT_KEY_VALUE_SEPARATOR,

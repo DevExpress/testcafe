@@ -1,4 +1,4 @@
-import { has } from 'lodash';
+import { has, set } from 'lodash';
 import { Command } from 'commander';
 import dedent from 'dedent';
 import { readSync as read } from 'read-file-relative';
@@ -12,7 +12,8 @@ import {
     getScreenshotOptions,
     getVideoOptions,
     getMetaOptions,
-    getGrepOptions
+    getGrepOptions,
+    getCompilerOptions
 } from '../utils/get-options';
 
 import getFilterFn from '../utils/get-filter-fn';
@@ -66,6 +67,7 @@ interface CommandLineOptions {
     screenshotsOnFails?: boolean;
     videoOptions?: string | Dictionary<number | string | boolean>;
     videoEncodingOptions?: string | Dictionary<number | string | boolean>;
+    compilerOptions?: string | Dictionary<number | string | boolean>;
 }
 
 export default class CLIArgumentParser {
@@ -147,6 +149,7 @@ export default class CLIArgumentParser {
             .option('--disable-page-reloads', 'disable page reloads between tests')
             .option('--disable-screenshots', 'disable screenshots')
             .option('--screenshots-full-page', 'enable full-page screenshots')
+            .option('--compiler-options <option=value[,...]>', 'specify test file compiler options')
 
             // NOTE: these options will be handled by chalk internally
             .option('--color', 'force colors in command line')
@@ -299,6 +302,19 @@ export default class CLIArgumentParser {
             this.opts.videoEncodingOptions = await getVideoOptions(this.opts.videoEncodingOptions as string);
     }
 
+    private async _parseCompilerOptions (): Promise<void> {
+        if (!this.opts.compilerOptions)
+            return;
+
+        const parsedCompilerOptions = await getCompilerOptions(this.opts.compilerOptions as string);
+        const resultCompilerOptions = Object.create(null);
+
+        for (const [key, value] of Object.entries(parsedCompilerOptions))
+            set(resultCompilerOptions, key, value);
+
+        this.opts.compilerOptions = resultCompilerOptions;
+    }
+
     private _parseListBrowsers (): void {
         const listBrowserOption = this.opts.listBrowsers;
 
@@ -338,6 +354,7 @@ export default class CLIArgumentParser {
         await this._parseFilteringOptions();
         await this._parseScreenshotOptions();
         await this._parseVideoOptions();
+        await this._parseCompilerOptions();
         await this._parseSslOptions();
         await this._parseReporters();
     }

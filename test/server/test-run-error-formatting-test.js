@@ -86,7 +86,8 @@ const {
     CannotCloseWindowWithChildrenError,
     MultipleWindowsModeIsDisabledError,
     CannotCloseWindowWithoutParentError,
-    MultipleWindowsModeIsNotAvailableInRemoteBrowserError
+    MultipleWindowsModeIsNotAvailableInRemoteBrowserError,
+    CannotRestoreChildWindowError
 } = require('../../lib/errors/test-run');
 
 const untestedErrorTypes = Object.keys(TEST_RUN_ERRORS).map(key => TEST_RUN_ERRORS[key]);
@@ -639,6 +640,10 @@ describe('Error formatting', () => {
 
         it('Should format "multipleWindowsModeIsNotSupportedInRemoteBrowserError"', () => {
             assertErrorMessage('multiple-windows-mode-is-not-available-in-remote-browser-error', new MultipleWindowsModeIsNotAvailableInRemoteBrowserError('openWindow'));
+        });
+
+        it('Should format "cannotRestoreChildWindowError"', () => {
+            assertErrorMessage('cannot-restore-child-window-error', new CannotRestoreChildWindowError());
         });
     });
 

@@ -368,3 +368,7 @@ exports.SCREENSHOTS_PATH = SCREENSHOTS_PATH;
 
 exports.THUMBNAILS_DIR_NAME = THUMBNAILS_DIR_NAME;
 
+exports.hasPixel = hasPixel;
+
+exports.GREEN_PIXEL = GREEN_PIXEL;
+exports.RED_PIXEL   = RED_PIXEL;

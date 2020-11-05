@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 type TemplateArguments = any[];
 
 interface ScreenshotOptionValue {
@@ -8,5 +7,9 @@ interface ScreenshotOptionValue {
     fullPage?: boolean;
 }
 
-type OptionValue = undefined | null | string | boolean | number | string[] | Function | { [key: string]: any } | ScreenshotOptionValue;
+interface CompilerOptions {
+    [key: string]: object;
+}
+
+type OptionValue = undefined | null | string | boolean | number | string[] | Function | { [key: string]: any } | ScreenshotOptionValue | CompilerOptions;
 

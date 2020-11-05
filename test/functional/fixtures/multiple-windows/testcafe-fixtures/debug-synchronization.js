@@ -40,23 +40,6 @@ async function waitUntilDebuggingStarts (cdpClient) {
         debuggingState = await getRemoteDebuggingState(cdpClient);
 }
 
-async function getChildClient (port, target) {
-    const childClient = await cdp({ port, target });
-
-    await childClient.Runtime.enable();
-
-    return childClient;
-}
-
-async function waitUntilChildWindowOpens (port) {
-    let childTarget = await getChildWindowTarget(port);
-
-    while (!childTarget)
-        childTarget = await getChildWindowTarget(port);
-
-    return getChildClient(port, childTarget);
-}
-
 async function waitUntilChildWindowCloses (port) {
     let childTarget = await getChildWindowTarget(port);
 
@@ -75,11 +58,13 @@ async function resumeRemoteDebugging (cdpClient) {
 test('test', async t => {
     const browserInfo  = t.testRun.browserConnection.provider.plugin.openedBrowsers[t.testRun.browserConnection.id];
     const browserPort  = browserInfo.cdpPort;
-    const parentClient = browserInfo.client;
+    const parentClient = await browserInfo.browserClient.getActiveClient();
 
     await t.click('#open');
 
-    const childClient = await waitUntilChildWindowOpens(browserPort);
+    await t.click('body');
+
+    const childClient = await browserInfo.browserClient.getActiveClient();
 
     const debugPromise = t.debug();
 

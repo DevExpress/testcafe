@@ -15,6 +15,7 @@ TestCafe allows you to create *client functions* that can return any serializabl
 * [Client Function Constructor](#client-function-constructor)
 * [Run Asynchronous Client Code](#run-asynchronous-client-code)
 * [Execute Client Functions](#execute-client-functions)
+* [Pass Parameters to Client Functions](#pass-parameters-to-client-functions)
 * [Overwrite Client Function Options](#overwrite-client-function-options)
 * [One-Time Client Code Execution](#one-time-client-code-execution)
 * [Import Functions to be Used as Client Function Dependencies](#import-functions-to-be-used-as-client-function-dependencies)
@@ -67,6 +68,27 @@ fixture `My fixture`
 
 test('My Test', async t => {
     const location = await getWindowLocation();
+});
+```
+
+### Pass Parameters to Client Functions
+
+This example shows the `getLocationPart` client function that returns a [Location](https://developer.mozilla.org/en-US/docs/Web/API/Location) property value. The property name is passed as the `locationPart` parameter.
+
+```js
+import { ClientFunction } from 'testcafe';
+
+fixture `Parameterized Client Functions`
+    .page('https://devexpress.github.io/testcafe/example/');
+
+const getLocationPart = ClientFunction(locationPart => {
+    return window.location[locationPart];
+});
+
+test('Parameterized Client Functions', async t => {
+    await t
+        .expect(getLocationPart('host')).eql('devexpress.github.io')
+        .expect(getLocationPart('pathname')).eql('/testcafe/example/');
 });
 ```
 

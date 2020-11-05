@@ -71,8 +71,34 @@ export default class BrowserProvider {
         };
     }
 
+    private async _findWindow (browserId: string): Promise<string> {
+        const pageTitle = this._getPageTitle(browserId);
+
+        return browserTools.findWindow(pageTitle);
+    }
+
+    private _getPageTitle (browserId: string): string {
+        if (this.plugin.getPageTitle)
+            return this.plugin.getPageTitle(browserId);
+
+        return browserId;
+    }
+
     private _getWindowDescriptor (browserId: string): string | null {
+        if (this.plugin.getWindowDescriptor)
+            return this.plugin.getWindowDescriptor(browserId);
+
         return this.localBrowsersInfo[browserId] && this.localBrowsersInfo[browserId].windowDescriptor;
+    }
+
+    private _setWindowDescriptor (browserId: string, windowDescriptor: string | null): void {
+        if (this.plugin._setWindowDescriptor) {
+            this.plugin._setWindowDescriptor(browserId, windowDescriptor);
+
+            return;
+        }
+
+        this.localBrowsersInfo[browserId].windowDescriptor = windowDescriptor;
     }
 
     private _getMaxScreenSize (browserId: string): Size | null {
@@ -147,7 +173,7 @@ export default class BrowserProvider {
             let windowDescriptor = null;
 
             try {
-                windowDescriptor = await browserTools.findWindow(browserId);
+                windowDescriptor = await this._findWindow(browserId);
             }
             catch (err) {
                 // NOTE: We can suppress the error here since we can just disable window manipulation functions
@@ -160,7 +186,7 @@ export default class BrowserProvider {
                 );
             }
 
-            this.localBrowsersInfo[browserId].windowDescriptor = windowDescriptor;
+            this._setWindowDescriptor(browserId, windowDescriptor);
         }
     }
 
@@ -183,6 +209,8 @@ export default class BrowserProvider {
     }
 
     private async _resizeLocalBrowserWindow (browserId: string, width: number, height: number, currentWidth: number, currentHeight: number): Promise<void> {
+        await this._ensureBrowserWindowDescriptor(browserId);
+
         const resizeCorrections = this._getResizeCorrections(browserId);
 
         if (resizeCorrections && await browserTools.isMaximized(this._getWindowDescriptor(browserId))) {
@@ -207,6 +235,8 @@ export default class BrowserProvider {
     }
 
     private async _maximizeLocalBrowserWindow (browserId: string): Promise<void> {
+        await this._ensureBrowserWindowDescriptor(browserId);
+
         await browserTools.maximize(this._getWindowDescriptor(browserId));
     }
 

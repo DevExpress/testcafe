@@ -1,50 +1,38 @@
-import loadBabelLibs from '../../../load-babel-libs';
+import loadBabelLibs from '../../../babel/load-libs';
 import APIBasedTestFileCompilerBase from '../../api-based';
 
-const BABEL_RUNTIME_RE = /^babel-runtime(\\|\/|$)/;
 const FLOW_MARKER_RE   = /^\s*\/\/\s*@flow\s*\n|^\s*\/\*\s*@flow\s*\*\//;
+
+function isFlowCode (code) {
+    return FLOW_MARKER_RE.test(code);
+}
 
 export default class ESNextTestFileCompiler extends APIBasedTestFileCompilerBase {
     static getBabelOptions (filename, code) {
-        const { presetStage2, presetFlow, transformRuntime, transformClassProperties, presetEnv, presetReact } = loadBabelLibs();
+        const {
+            presetStage2,
+            presetFlow,
+            transformRuntime,
+            presetEnvForTestCode,
+            presetReact,
+            moduleResolver
+        } = loadBabelLibs();
 
-        // NOTE: passPrePreset and complex presets is a workaround for https://github.com/babel/babel/issues/2877
-        // Fixes https://github.com/DevExpress/testcafe/issues/969
-        return {
-            passPerPreset: true,
-            presets:       [
-                {
-                    passPerPreset: false,
-                    presets:       [{ plugins: [transformRuntime] }, presetStage2, presetEnv, presetReact]
-                },
-                FLOW_MARKER_RE.test(code) ? {
-                    passPerPreset: false,
-                    presets:       [{ plugins: [transformClassProperties] }, presetFlow]
-                } : {}
-            ],
+        const opts = {
+            presets:       [presetStage2, presetEnvForTestCode, presetReact],
+            plugins:       [transformRuntime, moduleResolver],
             filename:      filename,
             retainLines:   true,
             sourceMaps:    'inline',
             ast:           false,
             babelrc:       false,
-            highlightCode: false,
-
-            resolveModuleSource: source => {
-                if (source === 'testcafe')
-                    return APIBasedTestFileCompilerBase.EXPORTABLE_LIB_PATH;
-
-                if (BABEL_RUNTIME_RE.test(source)) {
-                    try {
-                        return require.resolve(source);
-                    }
-                    catch (err) {
-                        return source;
-                    }
-                }
-
-                return source;
-            }
+            highlightCode: false
         };
+
+        if (isFlowCode(code))
+            opts.presets.push(presetFlow);
+
+        return opts;
     }
 
     _compileCode (code, filename) {

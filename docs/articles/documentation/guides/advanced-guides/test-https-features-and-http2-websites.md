@@ -29,7 +29,7 @@ If the tested page does not use HTTPS-specific features (like
 
 To establish a secure HTTPS-connection, Node.js requires a valid [PKCS12](https://en.wikipedia.org/wiki/PKCS_12) certificate (`.pfx`). We recommend that you [use a certificate signed by a trusted authority](#use-a-trusted-certificate). This allows a browser to open the tested page without workarounds. You can also [generate and use a self-signed certificate](#use-a-self-signed-certificate).
 
-> Before you use HTTPS, launch testcafe with [`--hostname localhost` CLI parameter](../../reference/command-line-interface.md#--hostname-name) or [`hostname: localhost` configuration option](../../reference/configuration-file.md#hostname). Most modern browsers thread localhost as a secure origin, and some built-in browser features that require a secure origin (Service workers, GeoAPI) should work. Third-party JS features like ApplePaySession may not work depending on implementation.
+> Before you use HTTPS, launch testcafe with [`--hostname localhost` CLI parameter](../../reference/command-line-interface.md#--hostname-name) or [`hostname: localhost` configuration option](../../reference/configuration-file.md#hostname). Most modern browsers treat localhost as a secure origin, and some built-in browser features that require a secure origin (Service workers, GeoAPI) should work. Third-party JS features like ApplePaySession may not work depending on implementation.
 
 ### Use a Trusted Certificate
 

@@ -14,6 +14,14 @@ function createRegExpFromFile (fileName) {
     return createRegExp(fs.readFileSync(path.join(DATA_PATH, fileName)).toString().replace(/\r/g, ''));
 }
 
+const snapshotWarningRegExp = createRegExp(WARNING_MESSAGES.excessiveAwaitInAssertion);
+
+function getSnapshotWarnings () {
+    return testReport.warnings.filter(warningStr => {
+        return warningStr.match(snapshotWarningRegExp);
+    });
+}
+
 describe('[API] Assertions', function () {
     it('Should perform .eql() assertion', function () {
         return runTests('./testcafe-fixtures/assertions-test.js', '.eql() assertion', {
@@ -217,14 +225,8 @@ describe('[API] Assertions', function () {
     it('Should raise a warning when trying to await Selector property in assertion', async function () {
         await runTests('./testcafe-fixtures/assertions-test.js', 'Await Selector property', { only: 'chrome' });
 
-        const snapshotWarningRegExp = createRegExp(WARNING_MESSAGES.excessiveAwaitInAssertion);
-
-        const snapshotWarnings = testReport.warnings.filter(warningStr => {
-            return warningStr.match(snapshotWarningRegExp);
-        });
-
-        expect(snapshotWarnings.length).to.eql(1);
-        expect(snapshotWarnings[0]).to.match(createRegExpFromFile('expected-selector-property-awaited-callsite'));
+        expect(getSnapshotWarnings().length).to.eql(1);
+        expect(getSnapshotWarnings()[0]).to.match(createRegExpFromFile('expected-selector-property-awaited-callsite'));
     });
 
     it('Should raise a warning when using DOM Node snapshot property without await', async function () {
@@ -241,10 +243,44 @@ describe('[API] Assertions', function () {
         expect(missingAwaitWarnings[1]).to.match(createRegExpFromFile('expected-missing-await-on-snapshot-callsite/template-expansion'));
     });
 
-    it('Should not raise a warning when using DOM Node snapshot property without in assignment', async function () {
+    it('Should not raise a warning when using DOM Node snapshot property without await in assignment', async function () {
         await runTests('./testcafe-fixtures/assertions-test.js', 'Snapshot property without await but valid', { only: 'chrome' });
 
         expect(testReport.warnings).be.empty;
+    });
+
+    it('Should not raise a warning when reusing selector property assertions from a function', async function () {
+        await runTests('./testcafe-fixtures/assertions-test.js', 'Reused unawaited selector property assertion from a function', { only: 'chrome' });
+
+        expect(testReport.warnings).be.empty;
+    });
+
+    it('Should only raise one warning when reusing awaited selector property assertions from a function', async function () {
+        await runTests('./testcafe-fixtures/assertions-test.js', 'Reused awaited selector property assertion from a function', { only: 'chrome' });
+
+        expect(getSnapshotWarnings().length).to.eql(1);
+        expect(getSnapshotWarnings()[0]).contains("> 221 |        await t.expect(await selector.innerText).eql('');");
+    });
+
+    it('Should not raise a warning when reusing selector property assertions in a loop', async function () {
+        await runTests('./testcafe-fixtures/assertions-test.js', 'Reused unawaited selector property assertion in a loop', { only: 'chrome' });
+
+        expect(testReport.warnings).be.empty;
+    });
+
+    it('Should only raise one warning when reusing awaited selector property assertions in a loop', async function () {
+        await runTests('./testcafe-fixtures/assertions-test.js', 'Reused awaited selector property assertion in a loop', { only: 'chrome' });
+
+        expect(getSnapshotWarnings().length).to.eql(1);
+        expect(getSnapshotWarnings()[0]).contains("> 236 |        await t.expect(await Selector('#el1').innerText).eql('');");
+    });
+
+    it('Should raise multiple warnings when awaiting multiple selector properties in one assertion', async function () {
+        await runTests('./testcafe-fixtures/assertions-test.js', 'Multiple awaited selector properties in one assertion', { only: 'chrome' });
+
+        expect(getSnapshotWarnings().length).to.eql(2);
+        expect(getSnapshotWarnings()[0]).contains("> 242 |    await t.expect(await selector.innerText + await selector.innerText).eql('');");
+        expect(getSnapshotWarnings()[1]).contains("> 242 |    await t.expect(await selector.innerText + await selector.innerText).eql('');");
     });
 
     it('Should retry assertion for selector results', function () {

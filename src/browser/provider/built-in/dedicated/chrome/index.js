@@ -4,8 +4,8 @@ import dedicatedProviderBase from '../base';
 import ChromeRunTimeInfo from './runtime-info';
 import getConfig from './config';
 import { start as startLocalChrome, stop as stopLocalChrome } from './local-chrome';
-import * as cdp from './cdp';
 import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../../utils/client-functions';
+import { BrowserClient } from './browser-client';
 
 const MIN_AVAILABLE_DIMENSION = 50;
 
@@ -16,8 +16,8 @@ export default {
         return getConfig(name);
     },
 
-    _getBrowserProtocolClient () {
-        return cdp;
+    _getBrowserProtocolClient (runtimeInfo) {
+        return runtimeInfo.browserClient;
     },
 
     async _createRunTimeInfo (hostName, configString, disableMultipleWindows) {
@@ -54,13 +54,16 @@ export default {
 
         await this.waitForConnectionReady(browserId);
 
-        runtimeInfo.viewportSize   = await this.runInitScript(browserId, GET_WINDOW_DIMENSIONS_INFO_SCRIPT);
-        runtimeInfo.activeWindowId = null;
+        runtimeInfo.viewportSize      = await this.runInitScript(browserId, GET_WINDOW_DIMENSIONS_INFO_SCRIPT);
+        runtimeInfo.activeWindowId    = null;
+        runtimeInfo.windowDescriptors = {};
 
         if (!disableMultipleWindows)
             runtimeInfo.activeWindowId = this.calculateWindowId();
 
-        await cdp.createClient(runtimeInfo);
+        const browserClient = new BrowserClient(runtimeInfo);
+
+        await browserClient.init();
 
         this.openedBrowsers[browserId] = runtimeInfo;
 
@@ -72,8 +75,8 @@ export default {
     async closeBrowser (browserId) {
         const runtimeInfo = this.openedBrowsers[browserId];
 
-        if (cdp.isHeadlessTab(runtimeInfo))
-            await cdp.closeTab(runtimeInfo);
+        if (runtimeInfo.browserClient.isHeadlessTab())
+            await runtimeInfo.browserClient.closeTab();
         else
             await this.closeLocalBrowser(browserId);
 
@@ -90,21 +93,24 @@ export default {
         const runtimeInfo = this.openedBrowsers[browserId];
 
         if (runtimeInfo.config.mobile)
-            await cdp.updateMobileViewportSize(runtimeInfo);
+            await runtimeInfo.browserClient.updateMobileViewportSize();
         else {
             runtimeInfo.viewportSize.width  = currentWidth;
             runtimeInfo.viewportSize.height = currentHeight;
         }
 
-        await cdp.resizeWindow({ width, height }, runtimeInfo);
+        await runtimeInfo.browserClient.resizeWindow({ width, height });
     },
 
     async getVideoFrameData (browserId) {
-        return await cdp.getScreenshotData(this.openedBrowsers[browserId]);
+        const { browserClient } = this.openedBrowsers[browserId];
+
+        return browserClient.getScreenshotData();
     },
 
     async hasCustomActionForBrowser (browserId) {
-        const { config, client } = this.openedBrowsers[browserId];
+        const { config, browserClient } = this.openedBrowsers[browserId];
+        const client                    = await browserClient.getActiveClient();
 
         return {
             hasCloseBrowser:                true,
@@ -115,6 +121,25 @@ export default {
             hasGetVideoFrameData:           !!client,
             hasCanResizeWindowToDimensions: false
         };
+    },
+
+    getPageTitle (browserId) {
+        const runtimeInfo     = this.openedBrowsers[browserId];
+        const isIdlePageShown = !Object.keys(runtimeInfo.windowDescriptors).length;
+
+        return isIdlePageShown ? browserId : runtimeInfo.activeWindowId;
+    },
+
+    getWindowDescriptor (browserId) {
+        const runtimeInfo = this.openedBrowsers[browserId];
+
+        return runtimeInfo.windowDescriptors[runtimeInfo.activeWindowId];
+    },
+
+    _setWindowDescriptor (browserId, windowDescriptor) {
+        const runtimeInfo = this.openedBrowsers[browserId];
+
+        runtimeInfo.windowDescriptors[runtimeInfo.activeWindowId] = windowDescriptor;
     },
 
     async _ensureWindowIsExpanded (browserId, { height, width, availableHeight, availableWidth, outerWidth, outerHeight }) {

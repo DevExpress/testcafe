@@ -28,11 +28,15 @@ export default class TypescriptConfiguration extends Configuration {
 
         this.basePath = process.cwd();
 
+        this._ensureDefaultOptions();
+    }
+
+    private _ensureDefaultOptions (): void {
         for (const option in DEFAULT_TYPESCRIPT_COMPILER_OPTIONS)
             this._ensureOptionWithValue(option, DEFAULT_TYPESCRIPT_COMPILER_OPTIONS[option], OptionSource.Configuration);
     }
 
-    public async init (): Promise<void> {
+    public async init (customCompilerOptions?: object): Promise<void> {
         const opts = await this._load() as TypescriptConfigurationOptions;
 
         if (opts && opts.compilerOptions) {
@@ -40,6 +44,9 @@ export default class TypescriptConfiguration extends Configuration {
 
             this.mergeOptions(parsedOpts);
         }
+
+        if (customCompilerOptions)
+            this.mergeOptions(customCompilerOptions);
 
         this._notifyThatOptionsCannotBeOverridden();
     }
@@ -73,7 +80,7 @@ export default class TypescriptConfiguration extends Configuration {
     }
 
     protected _setOptionValue (option: Option, value: OptionValue): void {
-        if (TYPESCRIPT_COMPILER_NON_OVERRIDABLE_OPTIONS.indexOf(option.name) === -1)
+        if (!TYPESCRIPT_COMPILER_NON_OVERRIDABLE_OPTIONS.includes(option.name))
             super._setOptionValue(option, value);
         else
             this._addOverriddenOptionIfNecessary(option.value, value, option.source, option.name);

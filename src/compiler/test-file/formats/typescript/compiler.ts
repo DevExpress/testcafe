@@ -4,19 +4,18 @@ import OS from 'os-family';
 import APIBasedTestFileCompilerBase from '../../api-based';
 import ESNextTestFileCompiler from '../es-next/compiler';
 import TypescriptConfiguration from '../../../../configuration/typescript-configuration';
+import { GeneralError } from '../../../../errors/runtime';
+import { RUNTIME_ERRORS } from '../../../../errors/types';
+import debug from 'debug';
+import { isRelative } from '../../../../api/test-page-url';
+import EXPORTABLE_LIB_PATH from '../../exportble-lib-path';
 
 // NOTE: For type definitions only
 import TypeScript, { CompilerOptionsValue } from 'typescript';
-import { Dictionary } from '../../../../configuration/interfaces';
+import { Dictionary, TypeScriptCompilerOptions } from '../../../../configuration/interfaces';
 
 
 declare type TypeScriptInstance = typeof TypeScript;
-
-interface CompilerOptions {
-    typeScriptOptions?: {
-        tsConfigPath: string;
-    };
-}
 
 interface TestFileInfo {
     filename: string;
@@ -30,19 +29,59 @@ interface RequireCompilers {
     [extension: string]: RequireCompilerFunction;
 }
 
-const RENAMED_DEPENDENCIES_MAP = new Map([['testcafe', APIBasedTestFileCompilerBase.EXPORTABLE_LIB_PATH]]);
+const DEBUG_LOGGER = debug('testcafe:compiler:typescript');
+
+const RENAMED_DEPENDENCIES_MAP = new Map([['testcafe', EXPORTABLE_LIB_PATH]]);
+
+const DEFAULT_TYPESCRIPT_COMPILER_PATH = 'typescript';
 
 export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompilerBase {
     private static tsDefsPath = TypeScriptTestFileCompiler._getTSDefsPath();
 
-    private tsConfig: TypescriptConfiguration;
+    private readonly _tsConfig: TypescriptConfiguration;
+    private readonly _compilerPath: string;
+    private readonly _customCompilerOptions?: object;
 
-    public constructor (compilerOptions: CompilerOptions = {}) {
+    public constructor (compilerOptions?: TypeScriptCompilerOptions) {
         super();
 
-        const tsConfigPath = compilerOptions.typeScriptOptions ? compilerOptions.typeScriptOptions.tsConfigPath : null;
+        // NOTE: At present, it's necessary create an instance TypeScriptTestFileCompiler
+        // to collect a list of supported test file extensions.
+        // So all compilers creates 2 times: first time - for collecting all supported file extensions,
+        // second one - for compiling tests.
+        // In future, need to rewrite 'getSupportedExtension' method as static.
 
-        this.tsConfig = new TypescriptConfiguration(tsConfigPath);
+        const configPath = compilerOptions && compilerOptions.configPath || null;
+
+        this._customCompilerOptions = compilerOptions && compilerOptions.options;
+        this._tsConfig              = new TypescriptConfiguration(configPath);
+        this._compilerPath          = TypeScriptTestFileCompiler._getCompilerPath(compilerOptions);
+    }
+
+    private static _getCompilerPath (compilerOptions?: TypeScriptCompilerOptions): string {
+        let compilerPath = compilerOptions && compilerOptions.customCompilerModulePath;
+
+        if (!compilerPath || compilerPath === DEFAULT_TYPESCRIPT_COMPILER_PATH)
+            return DEFAULT_TYPESCRIPT_COMPILER_PATH;
+
+        // NOTE: if the relative path to custom TypeScript compiler module is specified
+        // then we will resolve the path from the root of the 'testcafe' module
+        if (isRelative(compilerPath)) {
+            const testcafeRootFolder = path.resolve(__dirname, '../../../../../');
+
+            compilerPath = path.resolve(testcafeRootFolder, compilerPath);
+        }
+
+        return compilerPath;
+    }
+
+    private _loadTypeScriptCompiler (): TypeScriptInstance {
+        try {
+            return require(this._compilerPath);
+        }
+        catch (err) {
+            throw new GeneralError(RUNTIME_ERRORS.typeScriptCompilerLoadingError, err.message);
+        }
     }
 
     private static _normalizeFilename (filename: string): string {
@@ -58,9 +97,9 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
         return TypeScriptTestFileCompiler._normalizeFilename(path.resolve(__dirname, '../../../../../ts-defs/index.d.ts'));
     }
 
-    private static _reportErrors (diagnostics: Readonly<TypeScript.Diagnostic[]>): void {
+    private _reportErrors (diagnostics: Readonly<TypeScript.Diagnostic[]>): void {
         // NOTE: lazy load the compiler
-        const ts: TypeScriptInstance = require('typescript');
+        const ts: TypeScriptInstance = this._loadTypeScriptCompiler();
         let errMsg = 'TypeScript compilation failed.\n';
 
         diagnostics.forEach(d => {
@@ -80,15 +119,18 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
     }
 
     public _compileCodeForTestFiles (testFilesInfo: TestFileInfo[]): Promise<string[]> {
-        return this.tsConfig.init()
+        return this._tsConfig.init(this._customCompilerOptions)
             .then(() => {
                 return super._compileCodeForTestFiles(testFilesInfo);
             });
     }
 
     private _compileFilesToCache (ts: TypeScriptInstance, filenames: string[]): void {
-        const opts    = this.tsConfig.getOptions() as Dictionary<CompilerOptionsValue>;
+        const opts    = this._tsConfig.getOptions() as Dictionary<CompilerOptionsValue>;
         const program = ts.createProgram([TypeScriptTestFileCompiler.tsDefsPath, ...filenames], opts);
+
+        DEBUG_LOGGER('version: %s', ts.version);
+        DEBUG_LOGGER('options: %O', opts);
 
         program.getSourceFiles().forEach(sourceFile => {
             // @ts-ignore A hack to allow import globally installed TestCafe in tests
@@ -98,7 +140,7 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
         const diagnostics = ts.getPreEmitDiagnostics(program);
 
         if (diagnostics.length)
-            TypeScriptTestFileCompiler._reportErrors(diagnostics);
+            this._reportErrors(diagnostics);
 
         // NOTE: The first argument of emit() is a source file to be compiled. If it's undefined, all files in
         // <program> will be compiled. <program> contains a file specified in createProgram() plus all its dependencies.
@@ -114,9 +156,10 @@ export default class TypeScriptTestFileCompiler extends APIBasedTestFileCompiler
     }
 
     public _precompileCode (testFilesInfo: TestFileInfo[]): string[] {
-        // NOTE: lazy load the compiler
-        const ts: TypeScriptInstance = require('typescript');
+        DEBUG_LOGGER('path: "%s"', this._compilerPath);
 
+        // NOTE: lazy load the compiler
+        const ts: TypeScriptInstance = this._loadTypeScriptCompiler();
         const filenames              = testFilesInfo.map(({ filename }) => filename);
         const normalizedFilenames    = filenames.map(filename => TypeScriptTestFileCompiler._normalizeFilename(filename));
         const normalizedFilenamesMap = zipObject(normalizedFilenames, filenames);

@@ -3,6 +3,7 @@ import testCafeCore from './../deps/testcafe-core';
 import ProgressBar from './progress-bar';
 import uiRoot from '../ui-root';
 import MESSAGES from './messages';
+import isIframeWindow from '../../../utils/is-window-in-iframe';
 
 
 const Promise          = hammerhead.Promise;
@@ -223,7 +224,7 @@ export default class StatusBar extends serviceUtils.EventEmitter {
     }
 
     _createBeforeReady () {
-        if (this.state.created || window !== window.top)
+        if (this.state.created || isIframeWindow(window))
             return;
 
         if (document.body)

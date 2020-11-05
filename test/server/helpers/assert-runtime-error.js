@@ -1,7 +1,8 @@
-const sep         = require('path').sep;
-const stripAnsi   = require('strip-ansi');
-const expect      = require('chai').expect;
-const stackParser = require('error-stack-parser');
+const { sep }       = require('path');
+const stripAnsi     = require('strip-ansi');
+const { expect }    = require('chai');
+const stackParser   = require('error-stack-parser');
+const { castArray } = require('lodash');
 
 
 function assertStack (err, expected) {
@@ -14,21 +15,21 @@ function assertStack (err, expected) {
     const parsedStack = stackParser.parse(err);
 
     if (expected.stackTop) {
-        const expectedStackTop = Array.isArray(expected.stackTop) ? expected.stackTop : [expected.stackTop];
+        const expectedStackTop = castArray(expected.stackTop);
 
-        parsedStack.forEach(function (frame, idx) {
-            const filename   = frame.fileName;
-            const isInternal = frame.fileName.indexOf('internal/') === 0 ||
-                               frame.fileName.indexOf(sep) < 0;
+        parsedStack.forEach((frame, idx) => {
+            const { fileName } = frame;
+            const isInternal   = fileName.startsWith('internal/') ||
+                                 fileName.startsWith('node:') &&
+                                 !fileName.includes(sep);
 
             // NOTE: assert that stack is clean from internals
             expect(isInternal).to.be.false;
-            expect(filename).not.to.contain(sep + 'babel-');
-            expect(filename).not.to.contain(sep + 'babylon' + sep);
-            expect(filename).not.to.contain(sep + 'core-js' + sep);
+            expect(fileName).not.to.contain(sep + 'babel-');
+            expect(fileName).not.to.contain(sep + '@babel' + sep);
 
             if (expectedStackTop[idx])
-                expect(filename).eql(expectedStackTop[idx]);
+                expect(fileName).eql(expectedStackTop[idx]);
         });
     }
     else {
@@ -40,11 +41,11 @@ function assertStack (err, expected) {
 function assertRuntimeError (err, expected, messageContainsStack) {
     // NOTE: https://github.com/nodejs/node/issues/27388
     if (messageContainsStack)
-        expect(err.message.indexOf(expected.message)).eql(0);
+        expect(err.message.startsWith(expected.message)).to.be.true;
     else
         expect(err.message).eql(expected.message);
 
-    expect(err.stack.indexOf(expected.message)).eql(0);
+    expect(err.stack.startsWith(expected.message)).to.be.true;
 
     assertStack(err, expected);
 }
@@ -53,7 +54,7 @@ function assertAPIError (err, expected) {
     assertRuntimeError(err, expected);
 
     expect(expected.callsite).to.not.empty;
-    expect(err.stack.indexOf(expected.message + '\n\n' + expected.callsite)).eql(0);
+    expect(err.stack.startsWith(expected.message + '\n\n' + expected.callsite)).to.be.true;
     expect(stripAnsi(err.coloredStack)).eql(err.stack);
 }
 

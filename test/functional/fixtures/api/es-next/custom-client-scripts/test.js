@@ -39,8 +39,8 @@ describe('Custom client scripts', () => {
                 expect(testReport.warnings).eql([
                     'The client script you tried to inject is empty.',
                     'You injected the following client scripts several times:\n' +
-                    ' "{ content: \'1\' }",\n' +
-                    ` "{ path: '${path.resolve('test/functional/fixtures/api/es-next/custom-client-scripts/data/set-flag1.js')}' }"`
+                    '"{ content: \'1\' }"\n' +
+                    `"{ path: '${path.resolve('test/functional/fixtures/api/es-next/custom-client-scripts/data/set-flag1.js')}' }"`
                 ]);
             });
     });

@@ -16,8 +16,10 @@ export default {
     debugInHeadlessError:                    'You cannot debug in headless mode.',
     cannotReadConfigFile:                    'An error has occurred while reading the configuration file.',
     cannotParseConfigFile:                   "Failed to parse the '{path}' file.\n\nThis file is not a well-formed JSON file.",
-    configOptionsWereOverriden:              'The {optionsString} option{suffix} from the configuration file will be ignored.',
-    cannotOverrideTypeScriptConfigOptions:   'You cannot override the "{optionName}" compiler option in the TypeScript configuration file.',
+    configOptionsWereOverridden:             'The {optionsString} option{suffix} from the configuration file will be ignored.',
+    deprecatedOptionsReplacement:            "The '{deprecatedOption}' option is deprecated. Use the '{replacement}' option instead.\n",
+    deprecatedOptionsAreUsed:                '{deprecatedOptionReplacements}The deprecated options will be removed in the next major release.\n',
+    cannotOverrideTypeScriptConfigOptions:   'You cannot override the "{optionName}" compiler option in the TypeScript configuration file.\n',
 
     cannotFindWindowDescriptorError: 'Could not find the "{browserAlias}" window. ' +
                                      'TestCafe is unable to resize the window or take screenshots.\n\n' +
@@ -37,7 +39,7 @@ export default {
                                                         'The placeholder{suffix} {verb} replaced with an empty string.',
 
     clientScriptsWithEmptyContent:      'The client script you tried to inject is empty.',
-    clientScriptsWithDuplicatedContent: 'You injected the following client script{suffix} several times:\n {duplicatedScripts}',
+    clientScriptsWithDuplicatedContent: 'You injected the following client script{suffix} several times:\n{duplicatedScripts}',
     assertedSelectorInstance:           'You passed a Selector object to \'t.expect()\'.\nIf you want to check that a matched element exists, pass the \'selector.exists\' value instead.',
     assertedClientFunctionInstance:     'You passed a ClientFunction object to \'t.expect()\'.\nIf you want to check the function\'s return value, use parentheses to call the function: fnName().',
     multipleWindowsFoundByPredicate:    'The predicate function passed to the \'switchToWindow\' method matched multiple windows. The first matching window was activated.',

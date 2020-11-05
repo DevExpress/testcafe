@@ -26,6 +26,7 @@ import runWithBarriers from '../../utils/run-with-barriers';
 import MESSAGE from '../../../../test-run/client-messages';
 import COMMAND_TYPE from '../../../../test-run/commands/type';
 import { ScrollOptions, ElementScreenshotOptions } from '../../../../test-run/commands/options';
+import isIframeWindow from '../../../../utils/is-window-in-iframe';
 
 
 const messageSandbox = eventSandbox.message;
@@ -162,7 +163,7 @@ class ManipulationExecutor {
     }
 
     _requestManipulation () {
-        if (window.top === window)
+        if (!isIframeWindow(window))
             return transport.queuedAsyncServiceMsg(this._createManipulationReadyMessage());
 
         const cropDimensions = this._getAbsoluteCropValues();
@@ -201,7 +202,7 @@ class ManipulationExecutor {
                 return this._runScrollBeforeScreenshot();
             })
             .then(() => {
-                if (window.top === window)
+                if (!isIframeWindow(window))
                     return this._hideUI();
 
                 return Promise.resolve();
@@ -215,7 +216,7 @@ class ManipulationExecutor {
 
                 manipulationResult = result;
 
-                if (window.top === window)
+                if (!isIframeWindow(window))
                     this._showUI();
 
                 return delay(POSSIBLE_RESIZE_ERROR_DELAY);

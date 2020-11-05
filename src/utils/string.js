@@ -83,8 +83,30 @@ export function getPluralSuffix (array) {
     return array.length > 1 ? 's' : '';
 }
 
+function getDisplayedItemText (item, quote) {
+    return `${quote}${item}${quote}`;
+}
+
 export function getConcatenatedValuesString (array, separator = DEFAULT_CONCATENATED_VALUES.SEPARATOR, quoteChar = DEFAULT_CONCATENATED_VALUES.QUOTE_CHAR) {
-    return array.map(item => `${quoteChar}${item}${quoteChar}`).join(separator);
+    const clonedArray = [...array];
+
+    if (separator === '\n')
+        return clonedArray.map(item => getDisplayedItemText(item, quoteChar)).join(separator);
+
+    else if (clonedArray.length === 1)
+        return getDisplayedItemText(clonedArray[0], quoteChar);
+
+    else if (clonedArray.length === 2) {
+        const item1 = array[0];
+        const item2 = array[1];
+
+        return `${getDisplayedItemText(item1, quoteChar)} and ${getDisplayedItemText(item2, quoteChar)}`;
+    }
+
+    const lastItem        = clonedArray.pop();
+    const otherItemString = clonedArray.map(item => getDisplayedItemText(item, quoteChar)).join(separator);
+
+    return `${otherItemString}, and ${getDisplayedItemText(lastItem, quoteChar)}`;
 }
 
 export function getToBeInPastTense (array) {

@@ -1,7 +1,7 @@
 import hammerhead from 'testcafe-hammerhead';
-import asyncToGenerator from 'babel-runtime/helpers/asyncToGenerator';
+import asyncToGenerator from '@babel/runtime/helpers/asyncToGenerator';
 import { noop } from 'lodash';
-import loadBabelLibs from './load-babel-libs';
+import loadBabelLibs from './babel/load-libs';
 import { ClientFunctionAPIError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
 
@@ -12,32 +12,11 @@ const TRAILING_SEMICOLON_RE          = /;\s*$/;
 const REGENERATOR_FOOTPRINTS_RE      = /(_index\d+\.default|_regenerator\d+\.default|regeneratorRuntime)\.wrap\(function _callee\$\(_context\)/;
 const ASYNC_TO_GENERATOR_OUTPUT_CODE = asyncToGenerator(noop).toString();
 
-const babelArtifactPolyfills = {
-    'Promise': {
-        re:                 /_promise(\d+)\.default/,
-        getCode:            match => `var _promise${match[1]} = { default: Promise };`,
-        removeMatchingCode: false
-    },
-
-    'Object.keys()': {
-        re:                 /_keys(\d+)\.default/,
-        getCode:            match => `var _keys${match[1]} = { default: Object.keys };`,
-        removeMatchingCode: false
-    },
-
-    'JSON.stringify()': {
-        re:                 /_stringify(\d+)\.default/,
-        getCode:            match => `var _stringify${match[1]} = { default: JSON.stringify };`,
-        removeMatchingCode: false
-    }
-};
-
-
 function getBabelOptions () {
-    const { presetFallback, transformForOfAsArray } = loadBabelLibs();
+    const { presetEnvForClientFunction, transformForOfAsArray } = loadBabelLibs();
 
     return {
-        presets:       [{ plugins: [transformForOfAsArray] }, presetFallback],
+        presets:       [{ plugins: [transformForOfAsArray] }, presetEnvForClientFunction],
         sourceMaps:    false,
         retainLines:   true,
         ast:           false,
@@ -55,27 +34,6 @@ function downgradeES (fnCode) {
     return compiled.code
         .replace(USE_STRICT_RE, '')
         .trim();
-}
-
-function addBabelArtifactsPolyfills (fnCode, dependenciesDefinition) {
-    let modifiedFnCode = fnCode;
-
-    const polyfills = Object
-        .values(babelArtifactPolyfills)
-        .reduce((polyfillsCode, polyfill) => {
-            const match = fnCode.match(polyfill.re);
-
-            if (match) {
-                if (polyfill.removeMatchingCode)
-                    modifiedFnCode = modifiedFnCode.replace(polyfill.re, '');
-
-                return polyfillsCode + polyfill.getCode(match);
-            }
-
-            return polyfillsCode;
-        }, '');
-
-    return `(function(){${dependenciesDefinition}${polyfills} return ${modifiedFnCode}})();`;
 }
 
 function getDependenciesDefinition (dependencies) {
@@ -120,5 +78,5 @@ export default function compileClientFunction (fnCode, dependencies, instantiati
 
     const dependenciesDefinition = dependencies ? getDependenciesDefinition(dependencies) : '';
 
-    return addBabelArtifactsPolyfills(fnCode, dependenciesDefinition);
+    return `(function(){${dependenciesDefinition} return ${fnCode}})();`;
 }

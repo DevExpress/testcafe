@@ -153,7 +153,7 @@ export default class TestRun extends AsyncEventEmitter {
 
         if (duplicatedContent.length) {
             const suffix                            = getPluralSuffix(duplicatedContent);
-            const duplicatedContentClientScriptsStr = getConcatenatedValuesString(duplicatedContent, ',\n ');
+            const duplicatedContentClientScriptsStr = getConcatenatedValuesString(duplicatedContent, '\n');
 
             this.warningLog.addWarning(WARNING_MESSAGE.clientScriptsWithDuplicatedContent, suffix, duplicatedContentClientScriptsStr);
         }

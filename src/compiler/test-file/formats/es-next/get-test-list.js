@@ -1,5 +1,5 @@
 import { assign, merge } from 'lodash';
-import { transform } from 'babel-core';
+import { transform } from '@babel/core';
 import ESNextTestFileCompiler from './compiler';
 import { TestFileParserBase } from '../../test-file-parser-base';
 

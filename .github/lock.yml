@@ -11,6 +11,7 @@ skipCreatedBefore: false
 exemptLabels:
    - "STATE: Need response"
    - "STATE: Need clarification"
+   - "STATE: Stale"
 
 # Label to add before locking, such as `outdated`. Set to `false` to disable
 lockLabel: "STATE: Auto-locked"

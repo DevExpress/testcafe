@@ -46,6 +46,7 @@ export const isTextEditableElementAndEditingAllowed = hammerhead.utils.dom.isTex
 export const isContentEditableElement               = hammerhead.utils.dom.isContentEditableElement;
 export const isDomElement                           = hammerhead.utils.dom.isDomElement;
 export const isShadowUIElement                      = hammerhead.utils.dom.isShadowUIElement;
+export const isShadowRoot                           = hammerhead.utils.dom.isShadowRoot;
 export const isElementFocusable                     = hammerhead.utils.dom.isElementFocusable;
 export const isHammerheadAttr                       = hammerhead.utils.dom.isHammerheadAttr;
 export const isElementReadOnly                      = hammerhead.utils.dom.isElementReadOnly;

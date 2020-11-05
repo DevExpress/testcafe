@@ -10,7 +10,7 @@ const getClickCount = ClientFunction(() => {
 test(`Click action with bad network conditions`, async t => {
     const browserConnection = t.testRun.browserConnection;
     const browser           = browserConnection.provider.plugin.openedBrowsers[browserConnection.id];
-    const cdp               = browser.client;
+    const client            = await browser.browserClient.getActiveClient();
 
     const networkConditions = {
         offline:            true,
@@ -19,12 +19,12 @@ test(`Click action with bad network conditions`, async t => {
         uploadThroughput:   100000
     };
 
-    await cdp.Network.emulateNetworkConditions(networkConditions);
+    await client.Network.emulateNetworkConditions(networkConditions);
 
     setTimeout(() => {
         networkConditions.offline = false;
 
-        cdp.Network.emulateNetworkConditions(networkConditions);
+        client.Network.emulateNetworkConditions(networkConditions);
     }, 5000);
 
     const expectedClickCount = 10;

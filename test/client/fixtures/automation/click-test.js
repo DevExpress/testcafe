@@ -79,6 +79,37 @@ $(document).ready(function () {
         $('.' + TEST_ELEMENT_CLASS).remove();
     };
 
+    const preventEventAndClick = function (eventNameToPrevent) {
+        const raisedEvents = [];
+
+        const events = [
+            'ontouchstart',
+            'ontouchend',
+            'ontouchmove',
+            'onmousedown',
+            'onmousemove',
+            'onmouseup',
+            'onclick'
+        ];
+
+        events.forEach(function (eventName) {
+            $el[0][eventName] = function (e) {
+                if (eventName === eventNameToPrevent)
+                    e.preventDefault();
+
+                raisedEvents.push(eventName);
+            };
+        });
+
+        const click = new ClickAutomation($el[0], new ClickOptions());
+
+        return click
+            .run()
+            .then(function () {
+                return raisedEvents;
+            });
+    };
+
     $('<div></div>').css({ width: 1, height: 1500, position: 'absolute' }).appendTo('body');
     $('body').css('height', '1500px');
 
@@ -1175,6 +1206,30 @@ $(document).ready(function () {
 
                     startNext();
                 });
+        });
+
+        asyncTest('mouse or click events should not be raised if touch events were cancelled', function () {
+            const expectedRaisedEvents = ['ontouchstart', 'ontouchend'];
+
+            window.async.series({
+                'ontouchstart': function (cb) {
+                    preventEventAndClick('ontouchstart')
+                        .then(function (actualRaisedEvents) {
+                            deepEqual(actualRaisedEvents, expectedRaisedEvents);
+
+                            cb();
+                        });
+                },
+
+                'ontouchend': function () {
+                    preventEventAndClick('ontouchend')
+                        .then(function (actualRaisedEvents) {
+                            deepEqual(actualRaisedEvents, expectedRaisedEvents);
+
+                            startNext();
+                        });
+                }
+            });
         });
     }
 });

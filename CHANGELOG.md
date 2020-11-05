@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.9.4 (2020-10-2)
+
+### Bug Fixes
+
+* Fixed an error thrown when TestCafe tested pages that access `document.title` ([#5559](https://github.com/DevExpress/testcafe/issues/5559), [PR testcafe-hammerhead/#2451](https://github.com/DevExpress/testcafe-hammerhead/pull/2451), [PR testcafe-hammerhead/#2446](https://github.com/DevExpress/testcafe-hammerhead/pull/2446))
+* Fixed a crash occurred when `null` was passed to the `createTestCafe()` API function ([#5549](https://github.com/DevExpress/testcafe/issues/5549))
+* Fixed an error thrown when the `content-encoding` header value was in the upper case ([testcafe-hammerhead/#2427](https://github.com/DevExpress/testcafe-hammerhead/issues/2427))
+* Fixed a crash that occurred in IE11 when Web Workers were used ([PR testcafe-hammerhead/#2441](https://github.com/DevExpress/testcafe-hammerhead/pull/2441) by [@danielroe](https://github.com/danielroe))
+* HTML nodes are now ordered correctly on tested web pages with Shadow UI ([PR testcafe-hammerhead/#2447](https://github.com/DevExpress/testcafe-hammerhead/pull/2447))
+
 ## v1.9.3 (2020-9-17)
 
 ### Bug Fixes
@@ -3195,7 +3205,7 @@ Get it to ensure that ESLint does not fail on TestCafe test code.
 * Onclick event handler is now executed correctly during click automation in specific cases ([#1138](https://github.com/DevExpress/testcafe/issues/1138))
 * The `application/pdf` mime type is no longer recognized as a page ([testcafe-hammerhead#1014](https://github.com/DevExpress/testcafe-hammerhead/issues/1014))
 * Limited support for the `frameset` tag is implemented ([testcafe-hammerhead#1009](https://github.com/DevExpress/testcafe-hammerhead/issues/1009))
-* `Function.prototype.toString` is now proxied correctly when it is overriden in a user script ([testcafe-hammerhead#999](https://github.com/DevExpress/testcafe-hammerhead/issues/999))
+* `Function.prototype.toString` is now proxied correctly when it is overridden in a user script ([testcafe-hammerhead#999](https://github.com/DevExpress/testcafe-hammerhead/issues/999))
 * Script processing no longer hangs on chained assignments ([testcafe-hammerhead#866](https://github.com/DevExpress/testcafe-hammerhead/issues/866))
 * `formaction` attribute is now processed ([testcafe-hammerhead#988](https://github.com/DevExpress/testcafe-hammerhead/issues/988))
 * `document.styleSheets` is now overrided ([testcafe-hammerhead#1000](https://github.com/DevExpress/testcafe-hammerhead/issues/1000))

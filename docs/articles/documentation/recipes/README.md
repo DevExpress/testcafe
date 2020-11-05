@@ -14,6 +14,7 @@ This section provides examples and recipes of how to use TestCafe in different s
 * [Test \<select\> Elements](basics/test-select-elements.md)
 * [Test Static HTML Pages](basics/test-static-html-pages.md)
 * [Test on Remote Computers and Mobile Devices](basics/test-on-remote-computers-and-mobile-devices.md)
+* [Test File Upload](basics/test-file-upload.md)
 
 **Best Practices**
 

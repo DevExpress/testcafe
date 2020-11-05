@@ -11,6 +11,7 @@ import KeyPressSimulator from './key-press-simulator';
 import supportedShortcutHandlers from './shortcuts';
 import { getActualKeysAndEventKeyProperties, getDeepActiveElement } from './utils';
 import AutomationSettings from '../../settings';
+import isIframeWindow from '../../../../utils/is-window-in-iframe';
 
 const Promise        = hammerhead.Promise;
 const browserUtils   = hammerhead.utils.browser;
@@ -167,7 +168,7 @@ export default class PressAutomation {
         const activeElement         = domUtils.getActiveElement();
         const activeElementIsIframe = domUtils.isIframeElement(activeElement);
 
-        if (window.top === window && activeElementIsIframe && nativeMethods.contentWindowGetter.call(activeElement)) {
+        if (!isIframeWindow(window) && activeElementIsIframe && nativeMethods.contentWindowGetter.call(activeElement)) {
             const msg = {
                 cmd:             PRESS_REQUEST_CMD,
                 keyCombinations: this.keyCombinations,

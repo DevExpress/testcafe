@@ -423,7 +423,7 @@ $(document).ready(function () {
     asyncTest('GH-4068 - Type to element wrapped in label', function () {
         const input1 = document.createElement('input');
         const input2 = document.createElement('input');
-        const label  =  document.createElement('label');
+        const label  = document.createElement('label');
 
         input1.className = TEST_ELEMENT_CLASS;
         input2.className = TEST_ELEMENT_CLASS;

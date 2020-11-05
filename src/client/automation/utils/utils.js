@@ -1,5 +1,7 @@
 import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
+import sendRequestToFrame from '../../core/utils/send-request-to-frame';
+import isIframeWindow from '../../../utils/is-window-in-iframe';
 
 const Promise          = hammerhead.Promise;
 const nativeMethods    = hammerhead.nativeMethods;
@@ -11,6 +13,20 @@ const textSelection   = testCafeCore.textSelection;
 const domUtils        = testCafeCore.domUtils;
 const styleUtils      = testCafeCore.styleUtils;
 
+const messageSandbox = hammerhead.eventSandbox.message;
+
+const GET_IFRAME_REQUEST_CMD  = 'automation|iframe|request';
+const GET_IFRAME_RESPONSE_CMD = 'automation|iframe|response';
+
+messageSandbox.on(messageSandbox.SERVICE_MSG_RECEIVED_EVENT, e => {
+    if (e.message.cmd === GET_IFRAME_REQUEST_CMD) {
+        const iframeElement = domUtils.findIframeByWindow(e.source);
+
+        focusBlurSandbox.focus(iframeElement, () => {
+            messageSandbox.sendServiceMsg({ cmd: GET_IFRAME_RESPONSE_CMD }, e.source);
+        }, false);
+    }
+});
 
 function setCaretPosition (element, caretPos) {
     const isTextEditable    = domUtils.isTextEditableElement(element);
@@ -38,7 +54,13 @@ function setCaretPosition (element, caretPos) {
 }
 
 export function focusAndSetSelection (element, simulateFocus, caretPos) {
-    return new Promise(resolve => {
+    return new Promise(async resolve => {
+        // NOTE: Safari 13 blocks attempts to focus elements inside a third-party iframe before the user interacts with it
+        // https://developer.apple.com/documentation/safari-release-notes/safari-13-release-notes
+        // We can work around this restriction by focusing the <iframe> element beforehand
+        if (isIframeWindow(window))
+            await sendRequestToFrame({ cmd: GET_IFRAME_REQUEST_CMD }, GET_IFRAME_RESPONSE_CMD, window.parent);
+
         const activeElement               = domUtils.getActiveElement();
         const isTextEditable              = domUtils.isTextEditableElement(element);
         const labelWithForAttr            = domUtils.closest(element, 'label[for]');

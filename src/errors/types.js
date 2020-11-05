@@ -82,7 +82,8 @@ export const TEST_RUN_ERRORS = {
     actionFunctionArgumentError:                           'E79',
     multipleWindowsModeIsDisabledError:                    'E80',
     multipleWindowsModeIsNotSupportedInRemoteBrowserError: 'E81',
-    cannotCloseWindowWithoutParent:                        'E82'
+    cannotCloseWindowWithoutParent:                        'E82',
+    cannotRestoreChildWindowError:                         'E83'
 };
 
 export const RUNTIME_ERRORS = {
@@ -143,5 +144,7 @@ export const RUNTIME_ERRORS = {
     unexpectedIPCTailPacket:                            'E1054',
     cannotRunLocalNonHeadlessBrowserWithoutDisplay:     'E1057',
     uncaughtErrorInReporter:                            'E1058',
-    roleInitializedWithRelativeUrl:                     'E1059'
+    roleInitializedWithRelativeUrl:                     'E1059',
+    typeScriptCompilerLoadingError:                     'E1060',
+    cannotCustomizeSpecifiedCompilers:                  'E1061'
 };
