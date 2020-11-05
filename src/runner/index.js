@@ -242,6 +242,15 @@ export default class Runner extends EventEmitter {
             throw new GeneralError(RUNTIME_ERRORS.invalidConcurrencyFactor);
     }
 
+    _validateRequestTimeoutOption (optionName) {
+        const requestTimeout = this.configuration.getOption(optionName);
+
+        if (requestTimeout === void 0)
+            return;
+
+        assertType(is.nonNegativeNumber, null, `"${optionName}" option`, requestTimeout);
+    }
+
     _validateProxyBypassOption () {
         let proxyBypass = this.configuration.getOption(OPTION_NAMES.proxyBypass);
 
@@ -354,6 +363,8 @@ export default class Runner extends EventEmitter {
         this._validateConcurrencyOption();
         this._validateProxyBypassOption();
         this._validateCompilerOptions();
+        this._validateRequestTimeoutOption(OPTION_NAMES.pageRequestTimeout);
+        this._validateRequestTimeoutOption(OPTION_NAMES.ajaxRequestTimeout);
     }
 
     _createRunnableConfiguration () {

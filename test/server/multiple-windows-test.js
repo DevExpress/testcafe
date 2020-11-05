@@ -50,10 +50,8 @@ describe('Multiple windows', () => {
     });
 
     it('`allowMultipleWindows` is passed to session', async () => {
-        expect(new TestRunMock().session.allowMultipleWindows).eql(true);
-
-        expect(new TestRunMock({ disableMultipleWindows: true }).session.allowMultipleWindows).eql(false);
-        expect(new TestRunMock({ isLegacy: true }).session.allowMultipleWindows).eql(false);
-        expect(new TestRunMock({ activeWindowId: null }).session.allowMultipleWindows).eql(false);
+        expect(new TestRunMock().session.options.allowMultipleWindows).eql(true);
+        expect(new TestRunMock({ disableMultipleWindows: true }).session.options.allowMultipleWindows).eql(false);
+        expect(new TestRunMock({ activeWindowId: null }).session.options.allowMultipleWindows).eql(false);
     });
 });

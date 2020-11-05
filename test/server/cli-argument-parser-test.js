@@ -166,6 +166,32 @@ describe('CLI argument parser', function () {
         });
     });
 
+    describe('Request timeout', () => {
+        describe('Page request timeout', () => {
+            it('Should parse the option as integer value', async () => {
+                const parser = await parse('--page-request-timeout 1000');
+
+                expect(parser.opts.pageRequestTimeout).eql(1000);
+            });
+
+            it('Should raise an error on invalid option value', () => {
+                return assertRaisesError('--page-request-timeout str', 'Page request timeout is expected to be a non-negative number, but it was "str".');
+            });
+        });
+
+        describe('Ajax request timeout', () => {
+            it('Should parse the option as integer value', async () => {
+                const parser = await parse('--ajax-request-timeout 1000');
+
+                expect(parser.opts.ajaxRequestTimeout).eql(1000);
+            });
+
+            it('Should raise an error on invalid option value', () => {
+                return assertRaisesError('--ajax-request-timeout str', 'Ajax request timeout is expected to be a non-negative number, but it was "str".');
+            });
+        });
+    });
+
     describe('Speed', function () {
         it('Should parse "--speed" option as a number', function () {
             return parse('--speed 0.01')
@@ -681,7 +707,9 @@ describe('CLI argument parser', function () {
             { long: '--screenshots-full-page' },
             { long: '--disable-multiple-windows' },
             { long: '--experimental-compiler-service' },
-            { long: '--compiler-options' }
+            { long: '--compiler-options' },
+            { long: '--page-request-timeout' },
+            { long: '--ajax-request-timeout' }
         ];
 
         const parser  = new CliArgumentParser('');

@@ -101,6 +101,8 @@ export default class TestRun extends AsyncEventEmitter {
 
         this.disableMultipleWindows = opts.disableMultipleWindows;
 
+        this.requestTimeout = this._getRequestTimeout(test, opts);
+
         this.session = SessionController.getSession(this);
 
         this.consoleMessages = new BrowserConsoleMessages();
@@ -142,6 +144,13 @@ export default class TestRun extends AsyncEventEmitter {
 
         this._addInjectables();
         this._initRequestHooks();
+    }
+
+    _getRequestTimeout (test, opts) {
+        return {
+            page: opts.pageRequestTimeout || test.timeouts && test.timeouts.pageRequestTimeout,
+            ajax: opts.ajaxRequestTimeout || test.timeouts && test.timeouts.ajaxRequestTimeout
+        };
     }
 
     _addClientScriptContentWarningsIfNecessary () {

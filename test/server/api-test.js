@@ -656,6 +656,30 @@ describe('API', function () {
                     });
                 });
         });
+
+        it('Should raise an error if "test.timeouts" method takes a wrong argument', () => {
+            const testfile = resolve('test/server/data/test-suites/test-timeouts/testfile.js');
+
+            return compile(testfile)
+                .then(() => {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(err => {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                            'test.timeouts is expected to be a test timeouts initializer, but it was number.',
+
+                        callsite: '   1 |fixture `Test timeouts`;\n' +
+                            '   2 |\n' +
+                            '   3 |test\n' +
+                            ' > 4 |    .timeouts(20000)\n' +
+                            '   5 |    (\'test\', async () => {});\n' +
+                            '   6 |'
+                    });
+                });
+        });
     });
 
     describe('Selector', function () {
