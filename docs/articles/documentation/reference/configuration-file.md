@@ -1017,8 +1017,8 @@ Specifies test compilation settings. At the moment, only configures the [TypeScr
 {
     "compilerOptions": {
          "typescript": {
-              "customCompilerModulePath": "path to custom Typescript compiler module";
-              "options": { "experimentalDecorators": "true";  "newLine": "crlf"}
+              "customCompilerModulePath": "path to custom Typescript compiler module",
+              "options": { "experimentalDecorators": "true",  "newLine": "crlf"}
     }
 }
 ```
@@ -1039,8 +1039,8 @@ Set the `typescript.compilerModulePath` parameter to load an external TypeScript
 
 ```json
 {
-   compilerOptions: {
-       "typescript":   { "customCompilerModulePath"; "path to custom Typescript compiler module“;  } 
+   “compilerOptions“: {
+       "typescript":   { "customCompilerModulePath": "path to custom Typescript compiler module“;  } 
     }
 }
 ```
