@@ -5,18 +5,18 @@ permalink: /documentation/reference/testcafe-api/runner/compileroptions.html
 ---
 # Runner.compilerOptions Method
 
-Configures the [TypeScript compiler](../../../guides/concepts/typescript-and-coffeescript.md#customize-compiler-options).
+Configures compiler options. Currently, the `compilerOptions` method only supports the [TypeScript compiler](../../../guides/concepts/typescript-and-coffeescript.md#customize-compiler-options).
 
 ```text
 async compilerOptions(options) → this
 ```
 
+The `Runner.compilerOptions` method accepts all compiler options listed in the [official TypeScript documentation](https://www.typescriptlang.org/docs/handbook/compiler-options.html), as well as two additional options:
+
 Parameter | Type   | Description
 --------- | ------ | ---------------------
 `customCompilerModulePath` |  String | The absolute or relative path to the TypeScript compiler module.
 `configPath` | String | The absolute or relative path to the TypeScript configuration file.
-
-The `Runner.compilerOptions` method accepts all compiler options listed in the [official TypeScript documentation](https://www.typescriptlang.org/docs/handbook/compiler-options.html) as parameters.
 
 > TestCafe resolves user-specified relative paths against the TestCafe installation folder.
 

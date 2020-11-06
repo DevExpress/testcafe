@@ -890,40 +890,36 @@ testcafe chrome my-tests --sf
 
 ### --ts-config-path \<path\>
 
-Deprecated as of [TestCafe v.X.X.X] in favour of the --compiler-options parameter.
+Deprecated as of [TestCafe v.X.X.X] in favour of the `--compiler-options` parameter.
 
 *Related configuration file property*: [tsConfigPath](configuration-file.md#tsconfigpath).
 
 ### --compiler-options \<options\>
 
-Modifies TypeScript compilation settings.
+Configures compiler options. Currently, the `--compiler-options` parameter only allows you to configure the [TypeScript compiler](../../../guides/concepts/typescript-and-coffeescript.md#customize-compiler-options).
+
+The `--compiler-options` parameter accepts all compiler options listed in the [official TypeScript documentation](https://www.typescriptlang.org/docs/handbook/compiler-options.html), as well as two additional options: `typescript.configPath` and `typescript.customCompilerModulePath`.
+
+Specify the `typescript.configPath` compiler option to load an external TypeScript configuration file:
+
+```sh
+testcafe chrome my-tests --compiler-options typescript.configPath='config file path'
+```
+
+Specify the `typescript.customCompilerModulePath` compiler option to enable an external Typescript compiler.
+
+The example below demonstrates how to enable the `typescript@4` compiler from your project’s dependencies instead of the `typescript@3` compiler that ships with TestCafe.
+
+```js
+testcafe chrome test.ts --compiler-options typescript.customCompilerModulePath=../typescript@4
+```
+
+TestCafe resolves relative paths against its own installation folder.
 
 To list multiple parameters, separate them with semicolons. Enclose values that contain spaces in quotes.
 
 ```sh
 testcafe chrome my-tests --compiler-options typescript.options.lib=ES5,WebWorker;typescript.typesRoot='this value contains spaces'
-```
-
-Specify the `typescript.configPath` compiler option to load an external TypeScript configuration file:
-
-```sh
-testcafe chrome my-tests --compiler-options typescript.configPath = 'config file path'
-```
-
-Be careful when setting the value of the `typescript.customCompilerModulePath` compiler option. TestCafe resolves relative paths against its own installation folder. 
-
-Here’s how to enable the `typescript@4` compiler from your project’s dependencies instead of the `typescript@3` compiler that ships with TestCafe.
-
-If your folder structure looks like this:
-```js
- project-folder/
-         node_modules/typescript@4
-         node_modules/testcafe/node_modules/typescript@3.
-```
-
-The following line is the correct customCompilerModulePath declaration:
-```js
-testcafe chrome test.ts --compiler-options typescript.customCompilerModulePath=../typescript@4
 ```
 
 *Related configuration file property*: [compilerOptions](configuration-file.md#compileroptions).
