@@ -1023,7 +1023,7 @@ Specifies test compilation settings. At the moment, only configures the [TypeScr
 }
 ```
 
-Populate the `"typescript": "options" {}` object with [TypeScript compiler options](https://www.typescriptlang.org/docs/handbook/compiler-options.html).
+Populate the `typescript.options` object with [TypeScript compiler options](https://www.typescriptlang.org/docs/handbook/compiler-options.html).
 
 Set the `typescript.configPath` parameter to load TypeScript compilation settings from a dedicated [tsconfig.json](https://www.typescriptlang.org/tsconfig/) file.
 
@@ -1040,7 +1040,7 @@ Set the `typescript.compilerModulePath` parameter to load an external TypeScript
 ```json
 {
    "compilerOptions": {
-       "typescript":   { "customCompilerModulePath": "path to custom Typescript compiler module";  } 
+       "typescript":   { "customCompilerModulePath": "path to custom Typescript compiler module" } 
     }
 }
 ```
