@@ -1039,8 +1039,8 @@ Set the `typescript.compilerModulePath` parameter to load an external TypeScript
 
 ```json
 {
-   “compilerOptions“: {
-       "typescript":   { "customCompilerModulePath": "path to custom Typescript compiler module“;  } 
+   "compilerOptions": {
+       "typescript":   { "customCompilerModulePath": "path to custom Typescript compiler module";  } 
     }
 }
 ```
