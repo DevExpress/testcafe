@@ -1011,7 +1011,19 @@ Deprecated as of [TestCafe version X.X.X.] in favour of the `compilerOptions` se
 
 ## compilerOptions
 
-Configures compiler options. Currently, the `compilerOptions` object can only contain the settings of the [TypeScript compiler](../guides/concepts/typescript-and-coffeescript.md#customize-compiler-options).
+Specifies test compilation settings. At the moment, only configures the [TypeScript compiler](../../../guides/concepts/typescript-and-coffeescript.md#customize-compiler-options).
+
+```json 
+{
+    "compilerOptions": {
+         "typescript": {
+              "customCompilerModulePath": "path to custom Typescript compiler module";
+              "options": { "experimentalDecorators": "true";  "newLine": "crlf"}
+    }
+}
+```
+
+Populate the `"typescript": "options" {}` object with [TypeScript compiler options](https://www.typescriptlang.org/docs/handbook/compiler-options.html).
 
 Set the `typescript.configPath` parameter to load TypeScript compilation settings from a dedicated [tsconfig.json](https://www.typescriptlang.org/tsconfig/) file.
 
@@ -1028,23 +1040,13 @@ Set the `typescript.compilerModulePath` parameter to load an external TypeScript
 ```json
 {
    compilerOptions: {
-       "typescript":   { 'customCompilerModulePath': 'path to custom Typescript compiler module';  } 
+       "typescript":   { "customCompilerModulePath"; "path to custom Typescript compiler module“;  } 
     }
 }
 ```
 
 > TestCafe resolves user-specified relative paths against the TestCafe installation folder.
 
-Populate the `options` object with [TypeScript compiler options](https://www.typescriptlang.org/docs/handbook/compiler-options.html).
-
-```json 
-{
-    "compilerOptions": {
-         "typescript": { 
-              options: { 'experimentalDecorators': 'true';  'newLine': 'crlf' }
-    }
-}
-```
 
 *CLI*: [--compiler-options](command-line-interface.md#--compiler-options)  
 *API*: [runner.compilerOptions](testcafe-api/runner/compileroptions.md)

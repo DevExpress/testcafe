@@ -5,13 +5,13 @@ permalink: /documentation/reference/testcafe-api/runner/compileroptions.html
 ---
 # Runner.compilerOptions Method
 
-Configures compiler options. Currently, the `compilerOptions` method only supports the [TypeScript compiler](../../../guides/concepts/typescript-and-coffeescript.md#customize-compiler-options).
+Specifies test compilation settings. At the moment, only configures the [TypeScript compiler](../../../guides/concepts/typescript-and-coffeescript.md#customize-compiler-options).
 
 ```text
 async compilerOptions(options) → this
 ```
 
-The `Runner.compilerOptions` method accepts all compiler options listed in the [official TypeScript documentation](https://www.typescriptlang.org/docs/handbook/compiler-options.html), as well as two additional options:
+The `Runner.compilerOptions` method accepts all compiler options listed in the [official TypeScript documentation](https://www.typescriptlang.org/docs/handbook/compiler-options.html), as well as two additional parameters:
 
 Parameter | Type   | Description
 --------- | ------ | ---------------------

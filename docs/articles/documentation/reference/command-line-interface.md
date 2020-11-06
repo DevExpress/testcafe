@@ -890,13 +890,17 @@ testcafe chrome my-tests --sf
 
 ### --ts-config-path \<path\>
 
-Deprecated as of [TestCafe v.X.X.X] in favour of the `--compiler-options` parameter.
+Deprecated as of [TestCafe v.X.X.X] in favour of the [`--compiler-options`](#--compiler-options-options) parameter.
 
 *Related configuration file property*: [tsConfigPath](configuration-file.md#tsconfigpath).
 
 ### --compiler-options \<options\>
 
-Configures compiler options. Currently, the `--compiler-options` parameter only allows you to configure the [TypeScript compiler](../../../guides/concepts/typescript-and-coffeescript.md#customize-compiler-options).
+Specifies test compilation settings. At the moment, only configures the [TypeScript compiler](../../../guides/concepts/typescript-and-coffeescript.md#customize-compiler-options).
+
+```sh
+testcafe chrome my-tests --compiler-options typescript.options.lib=ES5,WebWorker;typescript.typesRoot=’this value contains spaces'
+```
 
 The `--compiler-options` parameter accepts all compiler options listed in the [official TypeScript documentation](https://www.typescriptlang.org/docs/handbook/compiler-options.html), as well as two additional options: `typescript.configPath` and `typescript.customCompilerModulePath`.
 
@@ -908,19 +912,15 @@ testcafe chrome my-tests --compiler-options typescript.configPath='config file p
 
 Specify the `typescript.customCompilerModulePath` compiler option to enable an external Typescript compiler.
 
+> TestCafe resolves relative paths against its own installation folder.
+
 The example below demonstrates how to enable the `typescript@4` compiler from your project’s dependencies instead of the `typescript@3` compiler that ships with TestCafe.
 
 ```js
 testcafe chrome test.ts --compiler-options typescript.customCompilerModulePath=../typescript@4
 ```
 
-TestCafe resolves relative paths against its own installation folder.
-
 To list multiple parameters, separate them with semicolons. Enclose values that contain spaces in quotes.
-
-```sh
-testcafe chrome my-tests --compiler-options typescript.options.lib=ES5,WebWorker;typescript.typesRoot='this value contains spaces'
-```
 
 *Related configuration file property*: [compilerOptions](configuration-file.md#compileroptions).
 *Related API method*: [runner.compilerOptions](testcafe-api/runner/compileroptions.md)
