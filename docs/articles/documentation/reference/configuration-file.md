@@ -1048,7 +1048,7 @@ Set the `typescript.compilerModulePath` parameter to load an external TypeScript
 > TestCafe resolves user-specified relative paths against the TestCafe installation folder.
 
 
-*CLI*: [--compiler-options](command-line-interface.md#--compiler-options)  
+*CLI*: [--compiler-options](command-line-interface.md#--compiler-options-options)  
 *API*: [runner.compilerOptions](testcafe-api/runner/compileroptions.md)
 
 ## disablePageCaching
