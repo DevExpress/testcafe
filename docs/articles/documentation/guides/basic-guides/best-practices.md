@@ -7,13 +7,13 @@ permalink: /documentation/guides/basic-guides/best-practices.html
 
 This article describes the recommended ways to test with TestCafe and covers the following topics:
 
-* [E2E Test Scope](#e2e-tests-scope)
+* [E2E Test Scope](#e2e-test-scope)
 * [Smart Assertions](#smart-assertions)
 * [Use of Page Objects](#use-of-page-objects)
 * [Use of Roles for Login](#use-of-roles-for-login)
 * [File Structure](#file-structure)
 * [Setup and Teardown](#setup-and-teardown)
-* [Selector Strategy](#selectors-strategy)
+* [Selector Strategy](#selector-strategy)
 
 ## E2E Test Scope
 
@@ -329,7 +329,7 @@ Use the `test.before` and `test.after` hooks to set a state that an individual t
 
 ## Selector Strategy
 
-The [TestCafe Studio blog](https://community.devexpress.com/blogs/testcafe/archive/2020/06/10/testcafe-studio-v1-3-0-a-new-way-to-work-with-selectors.aspx#) explains the best ways to work with Selectors.
+The [TestCafe Studio blog](https://community.devexpress.com/blogs/testcafe/archive/2020/06/10/testcafe-studio-v1-3-0-a-new-way-to-work-with-selectors.aspx) explains the best ways to work with Selectors.
 
 In general, follow these guidelines when you write the Selectors for your tests.
 
