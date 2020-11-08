@@ -5,7 +5,7 @@ permalink: /documentation/guides/basic-guides/best-practices.html
 ---
 # Best Practices
 
-This article describes the recommended ways to test with TestCafe and covers the following topics:
+This article describes the recommended ways to test with TestCafe. The main topics are as follows:
 
 * [E2E Test Scope](#e2e-test-scope)
 * [Smart Assertions](#smart-assertions)
@@ -246,7 +246,7 @@ Follow these guidelines to keep your test structure manageable and "clean":
 
 * Put all the page model files into one directory. If your application is divided logically into components or subsystems, split up the associated page model objects into separate files.
 
-> You can find an example of a page model in the [testcafe-examples](https://github.com/DevExpress/testcafe-examples/tree/master/examples/use-page-model) repository.
+> You can find a page model example in the [testcafe-examples](https://github.com/DevExpress/testcafe-examples/tree/master/examples/use-page-model) repository.
 
 * Keep all [Roles](#use-of-roles-for-login) in a separate file. This enables TestCafe to detect when the same Role is reused and further optimize the process.
 
