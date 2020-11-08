@@ -10,7 +10,7 @@ redirect_from:
 Navigates to the specified URL.
 
 ```text
-t.navigateTo( url )
+t.navigateTo(url) → this
 ```
 
 Parameter | Type   | Description

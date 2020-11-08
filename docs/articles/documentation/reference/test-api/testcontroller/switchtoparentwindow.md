@@ -8,8 +8,8 @@ permalink: /documentation/reference/test-api/testcontroller/switchtoparentwindow
 
 Activates the window that launched or was active during the launch of the active window.
 
-```js
-t.switchToParentWindow()
+```text
+t.switchToParentWindow() → this
 ```
 
 **Example:**

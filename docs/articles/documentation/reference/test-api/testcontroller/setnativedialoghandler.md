@@ -10,7 +10,7 @@ with the `setNativeDialogHandler` method of the
 [test controller](README.md).
 
 ```text
-t.setNativeDialogHandler( fn(type, text, url) [, options] )
+t.setNativeDialogHandler(fn(type, text, url) [, options]) → this
 ```
 
 Parameter  | Type                           | Description

@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/ctx.html
 Allows you to access the *test context*. Use it to share variables between test hook functions and test code.
 
 ```text
-t.ctx
+t.ctx → Object
 ```
 
 Assign the object you want to share to `t.ctx` or create a property as in the following example:

@@ -13,7 +13,7 @@ Switches to a specific browser window.
 Activates the window that corresponds to the window descriptor.
 
 ```js
-t.switchToWindow(windowDescriptor);
+t.switchToWindow(windowDescriptor) → this
 ```
 
 Parameter | Type     | Description

@@ -8,8 +8,8 @@ permalink: /documentation/reference/test-api/testcontroller/getcurrentwindow.htm
 
 Retrieves a window descriptor that corresponds to the active window.
 
-```js
-t.getCurrentWindow();
+```text
+t.getCurrentWindow() → this
 ```
 
 ## Example

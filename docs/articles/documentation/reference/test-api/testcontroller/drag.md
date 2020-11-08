@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/drag.html
 Drags an element to a specified offset.
 
 ```text
-t.drag( selector, dragOffsetX, dragOffsetY [, options] )
+t.drag(selector, dragOffsetX, dragOffsetY [, options]) → this
 ```
 
 Parameter              | Type                                              | Description

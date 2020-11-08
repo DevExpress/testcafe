@@ -9,7 +9,7 @@ permalink: /documentation/reference/test-api/testcontroller/closewindow.html
 Closes a browser window.
 
 ```js
-t.closeWindow( [windowDescriptor] )
+t.closeWindow([windowDescriptor]) → this
 ```
 
 Parameter | Type | Description

@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/resizewindow.html
 Resizes a window to fit the parameters entered by user.
 
 ```text
-t.resizeWindow( width, height )
+t.resizeWindow(width, height) → this
 ```
 
 Parameter  | Type    | Description

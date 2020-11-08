@@ -22,3 +22,6 @@ export async function restoreWindowState (t) {
     else
         await t.resizeWindow(t.ctx._savedWindowState.width, t.ctx._savedWindowState.height);
 }
+
+export const getWindowWidth  = ClientFunction(() => window.innerWidth);
+export const getWindowHeight = ClientFunction(() => window.innerHeight);

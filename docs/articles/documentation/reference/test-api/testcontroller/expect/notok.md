@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/expect/notok.html
 Asserts that `actual` is false.
 
 ```text
-await t.expect( actual ).notOk( message, options );
+await t.expect(actual).notOk(message, options) → this
 ```
 
 Parameter              | Type                                              | Description

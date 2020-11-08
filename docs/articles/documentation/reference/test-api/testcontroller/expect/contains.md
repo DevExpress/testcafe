@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/expect/contains.html
 Asserts that `actual` contains `expected`.
 
 ```text
-await t.expect( actual ).contains( expected, message, options );
+await t.expect(actual).contains(expected, message, options) → this
 ```
 
 Parameter              | Type                                              | Description

@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/takeelementscreensho
 Takes a screenshot of the specified page element.
 
 ```text
-t.takeElementScreenshot(selector[, path][, options])
+t.takeElementScreenshot(selector[, path][, options]) → this
 ```
 
 Parameter                | Type   | Description

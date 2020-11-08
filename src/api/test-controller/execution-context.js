@@ -2,9 +2,9 @@ import { createContext } from 'vm';
 import Module from 'module';
 import path from 'path';
 import exportableLib from '../exportable-lib';
+import NODE_MODULES from '../../shared/node-modules-folder-name';
 
-const OPTIONS_KEY      = Symbol('options');
-const NODE_MODULES_DIR = 'node_modules';
+const OPTIONS_KEY = Symbol('options');
 
 function getModuleBasePaths (currentPath) {
     const nodePaths = [];
@@ -14,7 +14,7 @@ function getModuleBasePaths (currentPath) {
         currentPath = parentDir;
         parentDir   = path.dirname(currentPath);
 
-        nodePaths.push(path.join(currentPath, NODE_MODULES_DIR));
+        nodePaths.push(path.join(currentPath, NODE_MODULES));
     }
 
     return nodePaths;

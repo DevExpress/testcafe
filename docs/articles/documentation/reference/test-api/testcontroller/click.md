@@ -10,7 +10,7 @@ redirect_from:
 Clicks an element on a page.
 
 ```text
-t.click( selector [, options] )
+t.click(selector [, options]) → this
 ```
 
 Parameter              | Type                                              | Description

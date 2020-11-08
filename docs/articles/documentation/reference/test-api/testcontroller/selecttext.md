@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/selecttext.html
 Selects text in input elements of various types.
 
 ```text
-t.selectText( selector [, startPos] [, endPos] [, options] )
+t.selectText(selector [, startPos] [, endPos] [, options]) → this
 ```
 
 Parameter               | Type                                              | Description                                                                                                                                          | Default

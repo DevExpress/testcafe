@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/removerequesthooks.h
 Removes the attached [request hooks](../../../guides/advanced-guides/intercept-http-requests.md) from the test.
 
 ```text
-t.removeRequestHooks(...hooks)
+t.removeRequestHooks(...hooks) → this
 ```
 
 Parameter | Type | Description

@@ -19,9 +19,11 @@ const testFileWithExternalUnexistingModulePath = path.resolve('test/server/data/
 const externalModulePath         = path.resolve('test/server/data/test-suites/live/module.js');
 const externalCommonJsModulePath = path.resolve('test/server/data/test-suites/live/commonjs-module.js');
 
+const DOCKER_TESTCAFE_FOLDER_REGEXP = /^\/usr\/lib\/node_modules\/testcafe/;
+
 class FileWatcherMock extends FileWatcher {
     addFile (controller, file) {
-        if (file.replace(/^\/usr\/lib\/node_modules\/testcafe/, '').indexOf('node_modules') > -1)
+        if (!FileWatcher.shouldWatchFile(file.replace(DOCKER_TESTCAFE_FOLDER_REGEXP, '')))
             return;
 
         this.files = this.files || [];

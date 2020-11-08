@@ -10,7 +10,7 @@ redirect_from:
 Types the specified text into an input element.
 
 ```text
-t.typeText( selector, text [, options] )
+t.typeText(selector, text [, options]) → this
 ```
 
 Parameter              | Type                                              | Description

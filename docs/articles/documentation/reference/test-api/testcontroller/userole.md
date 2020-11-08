@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/userole.html
 Activates the role.
 
 ```text
-t.useRole( role )
+t.useRole(role) → this
 ```
 
 Parameter | Type   | Description

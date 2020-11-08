@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/expect/gte.html
 Asserts that `actual` is greater than or equal to `expected`.
 
 ```text
-await t.expect( actual ).gte( expected, message, options );
+await t.expect(actual).gte(expected, message, options) → this
 ```
 
 Parameter              | Type                                              | Description

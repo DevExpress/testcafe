@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/clearupload.html
 Removes all file paths from the specified file upload input.
 
 ```text
-t.clearUpload( selector )
+t.clearUpload(selector) → this
 ```
 
 Parameter  | Type                                              | Description

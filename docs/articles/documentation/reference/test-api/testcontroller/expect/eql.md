@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/expect/eql.html
 Asserts that `actual` is equal to `expected`.
 
 ```text
-await t.expect( actual ).eql( expected, message, options );
+await t.expect(actual).eql(expected, message, options) → this
 ```
 
 Parameter              | Type                                              | Description
