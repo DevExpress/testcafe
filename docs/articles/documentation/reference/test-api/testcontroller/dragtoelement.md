@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/dragtoelement.html
 Drags an element onto another web page element.
 
 ```text
-t.dragToElement( selector, destinationSelector [, options] )
+t.dragToElement(selector, destinationSelector [, options]) → this
 ```
 
 Parameter              | Type                                              | Description

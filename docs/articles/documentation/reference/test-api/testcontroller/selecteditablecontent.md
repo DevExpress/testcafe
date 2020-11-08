@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/selecteditableconten
 Selects editable content on a web page.
 
 ```text
-t.selectEditableContent( startSelector, endSelector [, options] )
+t.selectEditableContent(startSelector, endSelector [, options]) → this
 ```
 
 Parameter       | Type                                              | Description

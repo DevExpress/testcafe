@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/resizewindowtofitdev
 Resizes the window to fit the screen of the specified mobile device.
 
 ```text
-t.resizeWindowToFitDevice( deviceName [, options] )
+t.resizeWindowToFitDevice(deviceName [, options]) → this
 ```
 
 Parameter              | Type   | Description

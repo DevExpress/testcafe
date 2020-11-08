@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/settestspeed.html
 Specifies the test execution speed.
 
 ```text
-t.setTestSpeed( factor )
+t.setTestSpeed(factor) → this
 ```
 
 Parameter  | Type      | Description

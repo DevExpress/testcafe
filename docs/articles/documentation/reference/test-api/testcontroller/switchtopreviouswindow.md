@@ -8,8 +8,8 @@ permalink: /documentation/reference/test-api/testcontroller/switchtopreviouswind
 
 Activates the most recent of the previously active windows.
 
-```js
-t.switchToPreviousWindow()
+```text
+t.switchToPreviousWindow()  → this
 ```
 
 If no new windows are open or closed, consecutive method calls cycle between the two most recent windows.

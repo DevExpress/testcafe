@@ -10,7 +10,7 @@ redirect_from:
 Pauses a test for a specified period of time.
 
 ```text
-t.wait( timeout )
+t.wait(timeout) → this
 ```
 
 Parameter | Type    | Description

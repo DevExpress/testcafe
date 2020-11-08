@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/setfilestoupload.htm
 Sets files to upload. Emulates a user's selection in the browser's 'Choose File' dialog. Target element must be an `<input>` with the `type="file"` attribute.
 
 ```text
-t.setFilesToUpload( selector, filePath )
+t.setFilesToUpload(selector, filePath) → this
 ```
 
 Parameter  | Type                                              | Description

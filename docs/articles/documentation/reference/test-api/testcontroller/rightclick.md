@@ -10,7 +10,7 @@ redirect_from:
 Right-clicks an element on a page.
 
 ```text
-t.rightClick( selector [, options] )
+t.rightClick(selector [, options]) → this
 ```
 
 Parameter              | Type                                              | Description

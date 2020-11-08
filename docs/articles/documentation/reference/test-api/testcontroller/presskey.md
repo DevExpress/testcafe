@@ -10,7 +10,7 @@ redirect_from:
 Presses the specified keyboard keys. Does not require a target element.
 
 ```text
-t.pressKey( keys [, options] )
+t.pressKey(keys [, options]) → this
 ```
 
 Parameter | Type   | Description

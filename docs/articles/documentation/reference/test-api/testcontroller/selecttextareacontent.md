@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/selecttextareaconten
 Selects `<textarea>` content.
 
 ```text
-t.selectTextAreaContent( selector [, startLine] [, startPos] [, endLine] [, endPos] [, options] )
+t.selectTextAreaContent(selector [, startLine] [, startPos] [, endLine] [, endPos] [, options]) → this
 ```
 
 Parameter  | Type                                              | Description                                                                                                                                   | Default

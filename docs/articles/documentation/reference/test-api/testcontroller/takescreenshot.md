@@ -8,8 +8,8 @@ permalink: /documentation/reference/test-api/testcontroller/takescreenshot.html
 Takes screenshot of the entire page.
 
 ```text
-t.takeScreenshot( [options] )
-obsolete: t.takeScreenshot( [path] )
+t.takeScreenshot([options]) → this
+obsolete: t.takeScreenshot([path]) → this
 ```
 
 The `options` object can include the following properties:

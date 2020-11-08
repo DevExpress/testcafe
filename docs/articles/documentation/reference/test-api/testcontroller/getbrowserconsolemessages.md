@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/getbrowserconsolemes
 Returns messages posted to the browser console.
 
 ```text
-t.getBrowserConsoleMessages()
+t.getBrowserConsoleMessages() → Promise
 ```
 
 This method returns an object that contains the following fields.

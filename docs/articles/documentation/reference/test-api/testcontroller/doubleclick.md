@@ -10,7 +10,7 @@ redirect_from:
 Double-clicks an element on a page.
 
 ```text
-t.doubleClick( selector [, options] )
+t.doubleClick(selector [, options]) → this
 ```
 
 Parameter              | Type                                              | Description

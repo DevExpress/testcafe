@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/eval.html
 Creates a client function and executes it immediately (without saving).
 
 ```text
-t.eval( fn [, options] )
+t.eval(fn [, options]) → Promise
 ```
 
 Parameter              | Type     | Description
@@ -27,7 +27,9 @@ test('My Test', async t => {
 });
 ```
 
-> Since the `eval` method returns a value, and not an object, you cannot chain other methods of the test controller after 'eval'.
+> Since `eval` returns a promise-wrapped value instead of local context, you cannot chain other methods of the test controller after `eval`.
+>
+> Always place `eval` in a separate call.
 
 ## Options
 

@@ -10,7 +10,7 @@ redirect_from:
 Hovers the mouse pointer over a web page element.
 
 ```text
-t.hover( selector [, options] )
+t.hover(selector [, options]) → this
 ```
 
 Parameter              | Type                                              | Description
