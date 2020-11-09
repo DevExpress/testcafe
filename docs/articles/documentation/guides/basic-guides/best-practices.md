@@ -254,7 +254,7 @@ Follow these guidelines to keep your test structure manageable and "clean":
 
 * Define one `fixture` in every test file. While it's technically possible to define multiple, it may lead to confusion as your suite grows.
 
-* A `fixture` should aggregate related tests. For example, put all your authentication-related tests into one fixture.
+* A `fixture` should aggregate related tests. For example, place all authentication-related tests into one fixture.
 
 * TestCafe tests are purely functional. As such, they should not depend on the implementation details and it is best to isolate them from production code. Keep your test files in a separate directory. You can name this directory appropriately (for instance, `tests`).
 
