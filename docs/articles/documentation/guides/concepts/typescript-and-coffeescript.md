@@ -73,7 +73,7 @@ TestCafe users can modify [the settings](https://www.typescriptlang.org/docs/han
         "typescript": {
            "configPath": "<path to tsconfig.json>"
            "customCompilerModulePath": "path to custom Typescript compiler module"
-           “options”: {"experimentalDecorators":  "true"}
+           "options": {"experimentalDecorators":  "true"}
            }
         }
     }
