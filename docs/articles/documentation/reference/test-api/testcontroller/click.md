@@ -7,7 +7,7 @@ redirect_from:
 ---
 # t.click Method
 
-Clicks an element on a page.
+Clicks an element on a page. Can be chained with other `TestController` methods.
 
 ```text
 t.click(selector [, options]) → this

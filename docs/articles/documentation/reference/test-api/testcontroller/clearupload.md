@@ -5,7 +5,7 @@ permalink: /documentation/reference/test-api/testcontroller/clearupload.html
 ---
 # t.clearUpload Method
 
-Removes all file paths from the specified file upload input.
+Removes all file paths from the specified file upload input. Can be chained with other `TestController` methods.
 
 ```text
 t.clearUpload(selector) → this

@@ -6,7 +6,7 @@ permalink: /documentation/reference/test-api/testcontroller/switchtopreviouswind
 
 # t.switchToPreviousWindow Method
 
-Activates the most recent of the previously active windows.
+Activates the most recent of the previously active windows. Can be chained with other `TestController` methods.
 
 ```text
 t.switchToPreviousWindow()  → this

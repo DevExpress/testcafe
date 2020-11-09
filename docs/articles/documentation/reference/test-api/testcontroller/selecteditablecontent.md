@@ -5,7 +5,7 @@ permalink: /documentation/reference/test-api/testcontroller/selecteditableconten
 ---
 # t.selectEditableContent Method
 
-Selects editable content on a web page.
+Selects editable content on a web page. Can be chained with other `TestController` methods.
 
 ```text
 t.selectEditableContent(startSelector, endSelector [, options]) → this

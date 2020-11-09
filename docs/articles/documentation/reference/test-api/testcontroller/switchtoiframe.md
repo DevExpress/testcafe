@@ -5,7 +5,7 @@ permalink: /documentation/reference/test-api/testcontroller/switchtoiframe.html
 ---
 # t.switchToIframe Method
 
-Switches to an \<iframe\>.
+Switches to an \<iframe\>. Can be chained with other `TestController` methods.
 
 ```text
 t.switchToIframe(selector) → this

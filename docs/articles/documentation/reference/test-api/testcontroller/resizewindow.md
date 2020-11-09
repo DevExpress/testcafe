@@ -5,7 +5,7 @@ permalink: /documentation/reference/test-api/testcontroller/resizewindow.html
 ---
 ## t.resizeWindow Method
 
-Resizes a window to fit the parameters entered by user.
+Resizes a window to fit the parameters entered by user. Can be chained with other `TestController` methods.
 
 ```text
 t.resizeWindow(width, height) → this

@@ -5,7 +5,7 @@ permalink: /documentation/reference/test-api/testcontroller/setpageloadtimeout.h
 ---
 # t.setPageLoadTimeout Method
 
-Defines the time passed after the `DOMContentLoaded` event within which the `window.load` event should be raised.
+Defines the time passed after the `DOMContentLoaded` event within which the `window.load` event should be raised. Can be chained with other `TestController` methods.
 
 ```text
 t.setPageLoadTimeout(duration) → this

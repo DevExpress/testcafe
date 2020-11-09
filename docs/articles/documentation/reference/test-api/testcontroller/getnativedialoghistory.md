@@ -5,7 +5,7 @@ permalink: /documentation/reference/test-api/testcontroller/getnativedialoghisto
 ---
 # t.getNativeDialogHistory Method
 
-Provides a history of the invoked native dialogs.
+Provides a history of the invoked native dialogs. Returns a promise-wrapped value and cannot be chained with other methods of the test controller.
 
 ```text
 t.getNativeDialogHistory() → Promise

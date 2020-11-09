@@ -5,7 +5,7 @@ permalink: /documentation/reference/test-api/testcontroller/userole.html
 ---
 # TestController.useRole Method
 
-Activates the role.
+Activates the role. Can be chained with other `TestController` methods.
 
 ```text
 t.useRole(role) → this

@@ -4,9 +4,9 @@ title: t.openWindow Method
 permalink: /documentation/reference/test-api/testcontroller/openwindow.html
 ---
 
-# t.openWindow method
+# t.openWindow Method
 
-Opens a new browser window. Returns the matching window descriptor and can be chained with other TestController methods.
+Opens a new browser window. Returns the matching window descriptor and can be chained with other `TestController` methods.
 
 ```text
 t.openWindow( url ) → this

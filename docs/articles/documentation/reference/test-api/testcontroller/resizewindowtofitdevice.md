@@ -5,7 +5,7 @@ permalink: /documentation/reference/test-api/testcontroller/resizewindowtofitdev
 ---
 # t.resizeWindowToFitDevice Method
 
-Resizes the window to fit the screen of the specified mobile device.
+Resizes the window to fit the screen of the specified mobile device. Can be chained with other `TestController` methods.
 
 ```text
 t.resizeWindowToFitDevice(deviceName [, options]) → this

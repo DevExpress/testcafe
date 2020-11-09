@@ -5,7 +5,7 @@ permalink: /documentation/reference/test-api/testcontroller/settestspeed.html
 ---
 # t.setTestSpeed Method
 
-Specifies the test execution speed.
+Specifies the test execution speed. Can be chained with other `TestController` methods.
 
 ```text
 t.setTestSpeed(factor) → this

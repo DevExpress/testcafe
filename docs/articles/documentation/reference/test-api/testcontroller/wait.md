@@ -7,7 +7,7 @@ redirect_from:
 ---
 # t.wait Method
 
-Pauses a test for a specified period of time.
+Pauses a test for a specified period of time. Can be chained with other `TestController` methods.
 
 ```text
 t.wait(timeout) → this

@@ -5,7 +5,7 @@ permalink: /documentation/reference/test-api/testcontroller/drag.html
 ---
 # t.drag Method
 
-Drags an element to a specified offset.
+Drags an element to a specified offset. Can be chained with other `TestController` methods.
 
 ```text
 t.drag(selector, dragOffsetX, dragOffsetY [, options]) → this

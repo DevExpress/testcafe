@@ -7,7 +7,7 @@ redirect_from:
 ---
 # t.typeText Method
 
-Types the specified text into an input element.
+Types the specified text into an input element. Can be chained with other `TestController` methods.
 
 ```text
 t.typeText(selector, text [, options]) → this

@@ -7,7 +7,7 @@ redirect_from:
 ---
 # t.navigateTo Method
 
-Navigates to the specified URL.
+Navigates to the specified URL. Can be chained with other `TestController` methods.
 
 ```text
 t.navigateTo(url) → this

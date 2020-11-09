@@ -5,7 +5,7 @@ permalink: /documentation/reference/test-api/testcontroller/selecttextareaconten
 ---
 # t.selectTextAreaContent Method
 
-Selects `<textarea>` content.
+Selects `<textarea>` content.  Can be chained with other `TestController` methods.
 
 ```text
 t.selectTextAreaContent(selector [, startLine] [, startPos] [, endLine] [, endPos] [, options]) → this

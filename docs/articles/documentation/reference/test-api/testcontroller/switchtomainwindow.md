@@ -5,7 +5,7 @@ permalink: /documentation/reference/test-api/testcontroller/switchtomainwindow.h
 ---
 # t.switchToMainWindow Action
 
-Switches the test's browsing context from an `<iframe>` back to the main window.
+Switches the test's browsing context from an `<iframe>` back to the main window. Can be chained with other `TestController` methods.
 
 ```text
 t.switchToMainWindow() → this

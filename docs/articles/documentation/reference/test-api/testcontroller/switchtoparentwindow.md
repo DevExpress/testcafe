@@ -6,7 +6,7 @@ permalink: /documentation/reference/test-api/testcontroller/switchtoparentwindow
 
 # t.switchToParentWindow method
 
-Activates the window that launched or was active during the launch of the active window.
+Activates the window that launched or was active during the launch of the active window. Can be chained with other `TestController` methods.
 
 ```text
 t.switchToParentWindow() → this

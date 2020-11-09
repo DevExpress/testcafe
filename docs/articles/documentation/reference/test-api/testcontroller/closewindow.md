@@ -6,9 +6,9 @@ permalink: /documentation/reference/test-api/testcontroller/closewindow.html
 
 # t.closeWindow method
 
-Closes a browser window.
+Closes a browser window. Can be chained with other `TestController` methods.
 
-```js
+```text
 t.closeWindow([windowDescriptor]) → this
 ```
 

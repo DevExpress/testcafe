@@ -5,7 +5,7 @@ permalink: /documentation/reference/test-api/testcontroller/takeelementscreensho
 ---
 # t.takeElementScreenshot Method
 
-Takes a screenshot of the specified page element.
+Takes a screenshot of the specified page element. Can be chained with other `TestController` methods.
 
 ```text
 t.takeElementScreenshot(selector[, path][, options]) → this
