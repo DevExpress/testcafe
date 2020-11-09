@@ -16,7 +16,6 @@ painless scalability, check-as-you-type code verification and much more.
 
 > You do not need to manually compile TypeScript tests. TestCafe does this automatically on launch.
 
-
 TestCafe bundles the TypeScript declaration file with the npm package, so you do not need to install it separately.
 
 ### Write Tests with TypeScript
@@ -52,7 +51,7 @@ TestCafe users can modify [the settings](https://www.typescriptlang.org/docs/han
 * the [--compiler-options](../../reference/command-line-interface.md#--compiler-options) command line parameter,
 
     ```sh
-    testcafe chrome my-tests --compiler-options 
+    testcafe chrome my-tests --compiler-options
     typescript.options.lib=ES5,WebWorker;typescript.typesRoot='this value contains spaces'
     ```
 
@@ -73,7 +72,7 @@ TestCafe users can modify [the settings](https://www.typescriptlang.org/docs/han
     compilerOptions: {
         "typescript": {
            configPath: '<path to tsconfig.json>'
-           customCompilerModulePath: 'path to custom Typescript compiler module' 
+           customCompilerModulePath: 'path to custom Typescript compiler module'
            options: {experimentalDecorators:  true}
            }
         }

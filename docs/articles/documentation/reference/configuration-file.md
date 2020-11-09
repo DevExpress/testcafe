@@ -1013,7 +1013,7 @@ Deprecated as of [TestCafe version X.X.X.] in favour of the `compilerOptions` se
 
 Specifies test compilation settings. At the moment, only configures the [TypeScript compiler](../../../guides/concepts/typescript-and-coffeescript.md#customize-compiler-options).
 
-```json 
+```json
 {
     "compilerOptions": {
          "typescript": {
@@ -1027,7 +1027,7 @@ Populate the `typescript.options` object with [TypeScript compiler options](http
 
 Set the `typescript.configPath` parameter to load TypeScript compilation settings from a dedicated [tsconfig.json](https://www.typescriptlang.org/tsconfig/) file.
 
-```json 
+```json
 {
     "compilerOptions": {
          "typescript": { "configPath": "path-to-custom-ts-config.json"}
@@ -1040,15 +1040,14 @@ Set the `typescript.compilerModulePath` parameter to load an external TypeScript
 ```json
 {
    "compilerOptions": {
-       "typescript":   { "customCompilerModulePath": "path to custom Typescript compiler module" } 
+       "typescript":   { "customCompilerModulePath": "path to custom Typescript compiler module" }
     }
 }
 ```
 
 > TestCafe resolves user-specified relative paths against the TestCafe installation folder.
 
-
-*CLI*: [--compiler-options](command-line-interface.md#--compiler-options-options)  
+*CLI*: [--compiler-options](command-line-interface.md#--compiler-options-options)
 *API*: [runner.compilerOptions](testcafe-api/runner/compileroptions.md)
 
 ## disablePageCaching

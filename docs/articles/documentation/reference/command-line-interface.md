@@ -902,7 +902,7 @@ Specifies test compilation settings. At the moment, only configures the [TypeScr
 testcafe chrome my-tests --compiler-options typescript.options.lib=ES5,WebWorker;typescript.typesRoot=’this value contains spaces'
 ```
 
-The `--compiler-options` parameter accepts the compiler options listed in the [official TypeScript documentation](https://www.typescriptlang.org/docs/handbook/compiler-options.html), as well as two additional options: `typescript.configPath` and `typescript.customCompilerModulePath`. 
+The `--compiler-options` parameter accepts the compiler options listed in the [official TypeScript documentation](https://www.typescriptlang.org/docs/handbook/compiler-options.html), as well as two additional options: `typescript.configPath` and `typescript.customCompilerModulePath`.
 
 Specify the `typescript.configPath` compiler option to load an external TypeScript configuration file:
 
@@ -919,8 +919,6 @@ testcafe chrome test.ts --compiler-options typescript.customCompilerModulePath=.
 > TestCafe resolves relative paths against its own installation folder.
 
 To list multiple parameters, separate them with semicolons. Enclose values that contain spaces in quotes.
-
-
 
 *Related configuration file property*: [compilerOptions](configuration-file.md#compileroptions).
 *Related API method*: [runner.compilerOptions](testcafe-api/runner/compileroptions.md)
