@@ -93,13 +93,6 @@ jobs:
   test:
     name: Run TestCafe Tests
     runs-on: windows-latest
-    steps:
-      - name: Check out the repository
-        uses: actions/checkout@v1
-      - name: Run tests
-        uses: DevExpress/testcafe-action@latest
-        with:
-            args: "'browserstack:chrome@84.0:Windows 10' tests"
 ```
 
 {% endraw %}
@@ -171,6 +164,8 @@ jobs:
     steps:
       - name: Check out the repository
         uses: actions/checkout@v1
+      - name: Install TestCafe BrowserStack plugin
+        run: npm install testcafe-browser-provider-browserstack
       - name: Run tests
         uses: DevExpress/testcafe-action@latest
         with:
