@@ -13,6 +13,7 @@
     * [Obtain Client-Side Info](articles/documentation/guides/basic-guides/obtain-client-side-info.md)
     * [Run Tests](articles/documentation/guides/basic-guides/run-tests.md)
     * [Debug](articles/documentation/guides/basic-guides/debug.md)
+    * [Best Practices](articles/documentation/guides/basic-guides/best-practices.md)
   * Advanced Guides
     * [Authentication](articles/documentation/guides/advanced-guides/authentication.md)
     * [Screenshots and Videos](articles/documentation/guides/advanced-guides/screenshots-and-videos.md)

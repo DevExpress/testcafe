@@ -55,9 +55,7 @@ This command takes the following parameters:
 
     Files referenced in tests (page models, utilities, Node.js modules) should be located in the mapped host directory or its subdirectories. Otherwise, they could not be accessed from the container.
 
-    If you are running a Windows machine with Docker Toolbox, note that Docker containers can only access the `C:\Users` directory by default. If you need to run tests from other directories, share these directories as described in the [Docker documentation](https://docs.docker.com/toolbox/toolbox_install_windows/#optional-add-shared-directories).
-
-    In modern Docker for Windows, you also need to share a drive to reach it from Docker containers. For more information, see [Docker for Windows documentation](https://docs.docker.com/docker-for-windows/#file-sharing).
+    Share a drive to reach it from Docker containers. For more information, see the [Docker for Windows documentation](https://docs.docker.com/docker-for-windows/#file-sharing).
 
 * `-it testcafe/testcafe` - runs TestCafe in the interactive mode with the console enabled;
 * `${TESTCAFE_ARGS}` - arguments passed to the `testcafe` command. You can use any arguments from the TestCafe [command line interface](../../reference/command-line-interface.md);
