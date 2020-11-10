@@ -530,17 +530,6 @@
     },
     {
         "type": "article",
-        "source": "ndz-dev",
-        "sourceHomePage": "https://blog.ndz-dev.com",
-        "date": "2019-01-08",
-        "title": "Découverte de TestCafé & Installation",
-        "url": "https://blog.ndz-dev.com/decouverte-de-test-cafe/",
-        "author": "Neplaz Dimitri",
-        "lang": "French",
-        "langCode": "fr"
-    },
-    {
-        "type": "article",
         "source": "Imaginea",
         "sourceHomePage": "https://blog.imaginea.com",
         "date": "2018-12-03",
