@@ -896,7 +896,7 @@ Deprecated as of [TestCafe v.X.X.X] in favour of the [`--compiler-options`](#--c
 
 ### --compiler-options \<options\>
 
-Specifies test compilation settings. At the moment, only configures the [TypeScript compiler](../../../guides/concepts/typescript-and-coffeescript.md#customize-compiler-options).
+Specifies test compilation settings. The current version of TestCafe can only configure the [TypeScript compiler](../../../guides/concepts/typescript-and-coffeescript.md#customize-compiler-options).
 
 ```sh
 testcafe chrome my-tests --compiler-options typescript.options.lib=ES5,WebWorker;typescript.typesRoot=’this value contains spaces'
