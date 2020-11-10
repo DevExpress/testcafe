@@ -36,7 +36,7 @@ Tests that run in parallel operate in independent sandboxed environments. This h
 To perform common testing tasks, TestCafe translates server-side calls to its API into client-side code. However, some scenarios require the execution of client-side code that TestCafe cannot automatically generate. That’s why the framework offers multiple ways to execute user-defined JavaScript.
 
 [Client Scripts](/../guides/advanced-guides/inject-client-scripts.md) inject custom JavaScript files, such as temporary extra dependencies, into the page.
-[Client Functions](../guides/basic-guides/obtain-client-side-info.md) evaluate user-defined JavaScript expressions and pass their return value to the server side. They are useful when you want to examine the page or access the browser’s URL.
+[Client Functions](../guides/basic-guides/obtain-client-side-info.md) evaluate user-defined JavaScript expressions and pass their return value to the server side. They are useful when you want to examine the page or access the website’s URL.
 The [Selector](../guides/basic-guides/select-page-elements.md) function can launch user-defined client-side code to find a DOM element that cannot be otherwise identified.
 
 However, client-side injections have their limits. Client-side page modifications can disrupt internal TestCafe processes. Client Functions can not return DOM elements. The rule of thumb is to only inject client-side code when you need to pass otherwise unobtainable page data to the server.
