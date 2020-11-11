@@ -11,8 +11,8 @@ redirect_from:
 ## TypeScript Support
 
 TestCafe allows you to write tests with [TypeScript](https://www.typescriptlang.org/) - a typed superset of JavaScript.
-Using TypeScript brings you all the advantages of strongly typed languages: rich coding assistance,
-painless scalability, check-as-you-type code verification and much more.
+TypeScript comes with rich coding assistance,
+painless scalability, check-as-you-type code verification, and much more.
 
 > You do not need to manually compile TypeScript tests. TestCafe does this automatically on launch.
 
@@ -28,7 +28,7 @@ Import the`testcafe` module in the beginning of each TypeScript file:
 import { Selector } from 'testcafe';
 ```
 
-Text editors with code completion capabilities (e.g. VS Code, Sublime Text, WebStorm, etc.) load the TestCafe declaration file when you import the testcafe module.
+Text editors with code completion capabilities (e.g., VS Code, Sublime Text, WebStorm, etc.) load the TestCafe declaration file when the testcafe module is imported.
 
 ![Writing Tests with TypeScript](../../../images/typescript-support.png)
 
