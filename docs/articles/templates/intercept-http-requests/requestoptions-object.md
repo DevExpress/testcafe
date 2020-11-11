@@ -13,4 +13,4 @@ Property      | Type    | Description
 `method`      | String  | The string specifying the HTTP request method. Default: *'GET'*.
 `credentials` | Object  | Credentials that were used for authentication in the current session with NTLM or Basic authentication. For HTTP Basic authentication, these are `username` and `password`. NTLM authentication additionally specifies `workstation` and `domain`. See [HTTP Authentication](/testcafe/documentation/guides/advanced-guides/authentication.html#http-authentication).
 `proxy`       | Object  | If a proxy is used, the property contains information about its `host`, `hostname`, `port`, `proxyAuth`, `authHeader` and `bypassRules`.
-`isAjax`      | Boolean | Specifies whether the request is AJAX.
+`isAjax`      | Boolean | Specifies whether the request is AJAX (xhr or fetch).

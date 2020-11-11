@@ -204,7 +204,7 @@ interface RequestOptions {
      */
     proxy: Record<string, unknown>;
     /**
-     * Specifies whether the request is AJAX.
+     * Specifies whether the request is AJAX (xhr or fetch).
      */
     isAjax: Boolean;
 }
