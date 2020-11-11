@@ -203,6 +203,10 @@ interface RequestOptions {
      * `proxyAuth`, `authHeader` and `bypassRules`.
      */
     proxy: Record<string, unknown>;
+    /**
+     * Specifies whether the request is AJAX.
+     */
+    isAjax: Boolean;
 }
 
 interface ResponseMock {
