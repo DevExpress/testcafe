@@ -136,7 +136,7 @@
     "testcafe-reporter-xunit": "^2.1.0",
     "time-limit-promise": "^1.0.2",
     "tmp": "0.0.28",
-    "tree-kill": "^1.1.0",
+    "tree-kill": "^1.2.2",
     "typescript": "^3.3.3",
     "unquote": "^1.1.1"
   },
