@@ -34,9 +34,9 @@ Text editors with code completion capabilities (e.g., VS Code, Sublime Text, Web
 
 > If installed [globally](../basic-guides/install-testcafe.md#global-installation), TestCafe will successfully compile and run your tests written in TypeScript. However, your IDE will not be able to find the TestCafe declaration file and provide code completion.
 
-The TestCafe syntax is identical for both JavaScript and TypeScript.
+The TestCafe syntax is identical for both JavaScript and TypeScript. 
 
-When you run a TypeScript test, Testcafe outputs the compilation errors that it encounters.
+TestCafe test reports include information about TypeScript compilation errors.
 
 > [Extending selectors](../basic-guides/select-page-elements.md#extend-selectors-with-custom-properties-and-methods)
 > in TypeScript differs from extending selectors in JavaScript. Refer to the
