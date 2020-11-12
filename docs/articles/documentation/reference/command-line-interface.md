@@ -890,7 +890,7 @@ testcafe chrome my-tests --sf
 
 ### --ts-config-path \<path\>
 
-Deprecated as of [TestCafe v.X.X.X] in favour of the [`--compiler-options`](#--compiler-options-options) parameter.
+Deprecated as of TestCafe v.1.10.0 in favour of the [`--compiler-options`](#--compiler-options-options) parameter.
 
 *Related configuration file property*: [tsConfigPath](configuration-file.md#tsconfigpath).
 
@@ -904,13 +904,13 @@ testcafe chrome my-tests --compiler-options typescript.options.lib=ES5,WebWorker
 
 The `--compiler-options` parameter accepts the compiler options listed in the [official TypeScript documentation](https://www.typescriptlang.org/docs/handbook/compiler-options.html), as well as two additional options: `typescript.configPath` and `typescript.customCompilerModulePath`.
 
-Specify the `typescript.configPath` compiler option to load an external TypeScript configuration file:
+Specify the `typescript.configPath` compiler option to import compiler settings from a dedicated TypeScript configuration file:
 
 ```sh
 testcafe chrome my-tests --compiler-options typescript.configPath='config file path'
 ```
 
-Specify the `typescript.customCompilerModulePath` compiler option to enable an external Typescript compiler.
+TestCafe ships with a `typescript@3` compiler. Specify the `typescript.customCompilerModulePath` option to compile your tests with a different compiler.
 
 ```js
 testcafe chrome test.ts --compiler-options typescript.customCompilerModulePath=../typescript@4

@@ -1004,7 +1004,7 @@ Stops a test run if any test fails.
 
 ## tsConfigPath
 
-Deprecated as of [TestCafe version X.X.X.] in favour of the `compilerOptions` setting.
+Deprecated as of TestCafe v.1.10.0 in favour of the `compilerOptions` setting.
 
 *CLI*: [--ts-config-path](command-line-interface.md#--ts-config-path-path)  
 *API*: [runner.tsConfigPath](testcafe-api/runner/tsconfigpath.md)
