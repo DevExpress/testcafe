@@ -1,5 +1,38 @@
 # Changelog
 
+## v1.10.0 (2020-11-XX)
+
+### Enhancements
+
+* Supported the resize action for the Multi Window mode in Chrome ([PR #5661](https://github.com/DevExpress/testcafe/pull/5661))
+* Enabled screenshots for the Multi Window mode in Chrome ([PR #5567](https://github.com/DevExpress/testcafe/pull/5567))
+* Added `shadowRoot` as a chainable `Selector` method ([PR #5560](https://github.com/DevExpress/testcafe/pull/5560)) by @mostlyfabulous)
+* Implemented the Compiler Options ([#5519](https://github.com/DevExpress/testcafe/issues/5519))
+
+### Bug Fixes
+
+* Added the `tzdata` package in the Docker image ([#5572](https://github.com/DevExpress/testcafe/issues/5572))
+* Fixed the `tree-kill` vulnerability from old version ([PR #5690](https://github.com/DevExpress/testcafe/pull/5690) by @augustomezencio-hotmart)
+* Fixed window searching issues ([#5463](https://github.com/DevExpress/testcafe/issues/5463), [#5597](https://github.com/DevExpress/testcafe/issues/5597))
+* Fixed the items change list formatting in messages ([PR #5636](https://github.com/DevExpress/testcafe/pull/5636))
+* Fixed the `compilerOptions` tooltip ([PR #5634](https://github.com/DevExpress/testcafe/pull/5634))
+* Fixed touch events canceling behavior ([#5380](https://github.com/DevExpress/testcafe/issues/5380))
+* Fixed cross-domain `iframe` focusing in Safari ([#4793](https://github.com/DevExpress/testcafe/issues/4793))
+* Fixed the excessive await warning interaction with repeated logic ([#5449](https://github.com/DevExpress/testcafe/issues/5449), [#5389](https://github.com/DevExpress/testcafe/issues/5389))
+* Fixed a protocol of the cross-domain iframe for the https proxy mode ([PR testcafe-hammerhead/#2478](https://github.com/DevExpress/testcafe-hammerhead/pull/2478))
+* Fixed headers setting([#5025](https://github.com/DevExpress/testcafe/issues/5025))
+* Fixed storages not updating after the 'beforeunload' event with the MSAL.js library ([#4834](https://github.com/DevExpress/testcafe/issues/4834))
+* Added the `iframe` `srcdoc` attribute processing ([testcafe-hammerhead/#1237](https://github.com/DevExpress/testcafe-hammerhead/issues/1237))
+* Fixed quotation in the `HPE_INVALID_HEADER_TOKEN` message ([PR testcafe-hammerhead/#2468](https://github.com/DevExpress/testcafe-hammerhead/pull/2468))
+* Fixed an error related to the response headers in fetch requests ([testcafe-hammerhead/#2334](https://github.com/DevExpress/testcafe-hammerhead/issues/2334))
+* Fixed `document.title` getting for `iframe` without `src` in Firefox ([PR testcafe-hammerhead/#2466](https://github.com/DevExpress/testcafe-hammerhead/pull/2466))
+* Fixed quotation in the header overflow error message (`HPE_HEADER_OVERFLOW`) ([PR testcafe-hammerhead/#2462](https://github.com/DevExpress/testcafe-hammerhead/pull/2462))
+* Fixed the `document.body` shadow UI state ([PR testcafe-hammerhead/#2454](https://github.com/DevExpress/testcafe-hammerhead/pull/2454))
+* Fixed an error related to the Service Workers `fetch` events ([testcafe-hammerhead/#2412](https://github.com/DevExpress/testcafe-hammerhead/issues/2412))
+* Fixed the authentication failure in the 1.8.5+ versions ([testcafe-hammerhead/#2344](https://github.com/DevExpress/testcafe-hammerhead/issues/2344))
+* Fixed location wrapping in `iframe` without the `src` attribute ([PR testcafe-hammerhead/#2448](https://github.com/DevExpress/testcafe-hammerhead/pull/2448))
+* Fixed string representation of native functions wrappers ([testcafe-hammerhead/#2394](https://github.com/DevExpress/testcafe-hammerhead/issues/2394))
+
 ## v1.9.4 (2020-10-2)
 
 ### Bug Fixes
