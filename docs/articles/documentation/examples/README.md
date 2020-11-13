@@ -28,7 +28,6 @@ Example | Description
 [Scroll Elements Into View](https://github.com/DevExpress/testcafe-examples/tree/master/examples/scroll) | Scroll the page manually during tests.
 [Select a Table Row by Cell Content](https://github.com/DevExpress/testcafe-examples/tree/master/examples/select-table-row-by-cell-content) | Select a table row based on the content of its cells.
 [Submit a Form](https://github.com/DevExpress/testcafe-examples/tree/master/examples/submit-a-form) | Submit a form with DOM API.
-[Select Files To Upload](https://github.com/DevExpress/testcafe-examples/tree/master/examples/upload-files) | Add files to an `<input type="file">`.
 [Check If an Image Has Loaded](https://github.com/DevExpress/testcafe-examples/tree/master/examples/check-if-image-loaded) | Check whether an image on the page has loaded.
 [Simulate the Web Page Losing Focus](https://github.com/DevExpress/testcafe-examples/tree/master/examples/blur-window) | Simulate the web page losing focus.
 
@@ -40,9 +39,19 @@ Example | Description
 [Create Data-Driven Tests](https://github.com/DevExpress/testcafe-examples/tree/master/examples/create-data-driven-tests) | Create a test that performs parameterized actions.
 [Use Page Model](https://github.com/DevExpress/testcafe-examples/tree/master/examples/use-page-model) | Extract element selectors and common operations with these elements to a page model.
 [Pass Parameters to Tests](https://github.com/DevExpress/testcafe-examples/tree/master/examples/pass-parameters-to-tests) | Pass parameters to TestCafe tests.
-[Extended Client-Side Error Tracking](https://github.com/DevExpress/testcafe-examples/tree/master/detached-examples/extended-error-tracking) | Filter client-side errors that occur during a test.
-[Set a Custom Referrer](https://github.com/DevExpress/testcafe-examples/tree/master/examples/set-a-custom-referrer) | Set a custom [referrer](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referer) for the specified requests during tests.
+
+## Upload/Download
+
+Example | Description
+------- | ------------
 [Check the Downloaded File Name and Content](https://github.com/DevExpress/testcafe-examples/tree/master/examples/check-downloaded-file-name-and-content) | Check the name and the content of a file downloaded during a test.
+[Select Files To Upload](https://github.com/DevExpress/testcafe-examples/tree/master/examples/upload-files) | Add files to an `<input type="file">`.
+
+## Control HTTP Requests
+
+Example | Description
+------- | ------------
+[Set a Custom Referrer](https://github.com/DevExpress/testcafe-examples/tree/master/examples/set-a-custom-referrer) | Set a custom [referrer](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referer) for the specified requests during tests.
 
 ## Interoperability
 
@@ -50,6 +59,7 @@ Example | Description
 ------- | ------------
 [Inject Custom Client Scripts](https://github.com/DevExpress/testcafe-examples/tree/master/examples/client-scripts) | Inject Node.js modules into the tested webpage.
 [Import Third-Party Modules](https://github.com/DevExpress/testcafe-examples/tree/master/examples/import-third-party-modules) | Import a third-party Node.js module into test code.
+[Extended Client-Side Error Tracking](https://github.com/DevExpress/testcafe-examples/tree/master/detached-examples/extended-error-tracking) | Filter client-side errors that occur during a test.
 
 ## Browser API Mocks
 
