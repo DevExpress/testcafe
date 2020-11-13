@@ -774,32 +774,34 @@ test('My Test', async t => {
 
 CSS selectors passed to the [Selector](../../reference/test-api/selector/constructor.md) constructor cannot identify elements in the shadow DOM.
 
-To select a shadow element, initialize a selector with client-side code and use the [shadowRoot](https://developer.mozilla.org/en-US/docs/Web/API/Element/shadowRoot) property to get and return the element from the shadow DOM.
+To access and traverse the shadow DOM attached to an element, identify the element with a `Selector` and use the [Selector.shadowRoot](../../reference/test-api/selector/shadowroot.md) method to
+target the shadow root of the element. To traverse the shadow DOM tree from there, use other `Selector` methods.
+
+> Important! You can not target an element returned by `shadowRoot()` or use it in assertions.
+>
+> Only use this element as an entry point to shadow DOM.
 
 The following example shows the `paragraph` selector that returns `<p>` from the shadow DOM.
 
 ```js
-import { Selector } from 'testcafe';
+import { Selector } from 'testcafe'
 
-fixture `My fixture`
-    .page `https://chrisbateman.github.io/guide-to-web-components/demos/shadow-dom.htm`;
+fixture `Target Shadow DOM elements`
+    .page('https://devexpress.github.io/testcafe/example')
 
-const demoPage = Selector('#demo1');
+test('Get text within shadow tree', async t => {
+    const shadowRoot = Selector('div').withAttribute('id', 'shadow-host').shadowRoot();
+    const paragraph  = shadowRoot.child('p');
 
-const paragraph = Selector(() => {
-    return demoPageSelector().shadowRoot.querySelectorAll('p');
-}, { dependencies: { demoPageSelector: demoPage } });
+    await t.expect(paragraph.textContent).eql('This paragraph is in the shadow tree');
 
-test('Get text within shadow root', async t => {
-    await t.click(paragraph.nth(0));
-
-    var text = await paragraph.nth(0).textContent;
-
-    await t.expect(paragraph.nth(0).textContent).eql('These paragraphs are in a shadow root.');
+    await t.click(shadowRoot);
+    // causes a error
+    // do not target the shadow root directly or use it in assertions
 });
 ```
 
-The `paragraph` selector obtains [shadowRoot](https://developer.mozilla.org/en-US/docs/Web/API/Element/shadowRoot) from the `#demo1` element. The `demoPage` selector that identifies `#demo1` is passed as a [dependency](../../reference/test-api/selector/constructor.md#optionsdependencies).
+The `shadowRoot` selector obtains the root node of the shadow DOM from the `div` element. The `paragraph` selector that selects `p` is passed to a `t.expect` method.
 
 ### Check if an Element is Available
 
