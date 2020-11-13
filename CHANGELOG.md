@@ -20,7 +20,7 @@
 * Fixed cross-domain `iframe` focusing in Safari ([#4793](https://github.com/DevExpress/testcafe/issues/4793))
 * Fixed the excessive await warning interaction with repeated logic ([#5449](https://github.com/DevExpress/testcafe/issues/5449), [#5389](https://github.com/DevExpress/testcafe/issues/5389))
 * Fixed a protocol of the cross-domain iframe for the https proxy mode ([PR testcafe-hammerhead/#2478](https://github.com/DevExpress/testcafe-hammerhead/pull/2478))
-* Fixed headers setting([#5025](https://github.com/DevExpress/testcafe/issues/5025))
+* Fixed headers setting ([#5025](https://github.com/DevExpress/testcafe/issues/5025))
 * Fixed storages not updating after the 'beforeunload' event with the MSAL.js library ([#4834](https://github.com/DevExpress/testcafe/issues/4834))
 * Added the `iframe` `srcdoc` attribute processing ([testcafe-hammerhead/#1237](https://github.com/DevExpress/testcafe-hammerhead/issues/1237))
 * Fixed quotation in the `HPE_INVALID_HEADER_TOKEN` message ([PR testcafe-hammerhead/#2468](https://github.com/DevExpress/testcafe-hammerhead/pull/2468))
