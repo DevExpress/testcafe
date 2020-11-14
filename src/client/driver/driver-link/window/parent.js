@@ -14,7 +14,7 @@ export default class ParentWindowDriverLink {
         while (topOpened.opener)
             topOpened = topOpened.opener;
 
-        return topOpened;
+        return topOpened.top;
     }
 
     _setAsMaster (wnd, finalizePendingCommand) {
