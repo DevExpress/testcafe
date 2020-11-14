@@ -775,7 +775,7 @@ test('My Test', async t => {
 CSS selectors passed to the [Selector](../../reference/test-api/selector/constructor.md) constructor cannot identify elements in the shadow DOM.
 
 To access and traverse the shadow DOM attached to an element, identify the element with a `Selector` and use the [Selector.shadowRoot](../../reference/test-api/selector/shadowroot.md) method to
-target the shadow root of the element. To traverse the shadow DOM tree from there, use other `Selector` methods.
+target the [shadow root](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot) of the element. Use other `Selector` methods to traverse the shadow tree from there.
 
 > Important! You can not target an element returned by `shadowRoot()` or use it in assertions.
 >
@@ -796,7 +796,7 @@ test('Get text within shadow tree', async t => {
     await t.expect(paragraph.textContent).eql('This paragraph is in the shadow tree');
 
     await t.click(shadowRoot);
-    // causes a error
+    // causes an error
     // do not target the shadow root directly or use it in assertions
 });
 ```

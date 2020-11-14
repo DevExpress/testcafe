@@ -34,7 +34,7 @@ test('Get text within shadow tree', async t => {
     await t.expect(paragraph.textContent).eql('This paragraph is in the shadow tree');
 
     await t.click(shadowRoot);
-    // causes a error
+    // causes an error
     // do not target the shadow root directly or use it in assertions
 });
 ```
