@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/eval.html
 Creates a client function and executes it immediately (without saving). Returns a promise-wrapped value and cannot be chained with other methods of the test controller.
 
 ```text
-t.eval(fn [, options]) → Promise
+t.eval(fn [, options]) → Promise<any>
 ```
 
 Parameter              | Type     | Description

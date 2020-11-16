@@ -9,7 +9,7 @@ permalink: /documentation/reference/test-api/testcontroller/closewindow.html
 Closes a browser window. Can be chained with other `TestController` methods.
 
 ```text
-t.closeWindow([windowDescriptor]) → this
+t.closeWindow([windowDescriptor]) → this | Promise<any>
 ```
 
 Parameter | Type | Description

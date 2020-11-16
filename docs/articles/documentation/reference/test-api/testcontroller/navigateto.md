@@ -10,7 +10,7 @@ redirect_from:
 Navigates to the specified URL. Can be chained with other `TestController` methods.
 
 ```text
-t.navigateTo(url) → this
+t.navigateTo(url) → this | Promise<any>
 ```
 
 Parameter | Type   | Description

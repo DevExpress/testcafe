@@ -10,7 +10,7 @@ with the `setNativeDialogHandler` method of the
 [test controller](README.md). This method can be chained with other `TestController` methods.
 
 ```text
-t.setNativeDialogHandler(fn(type, text, url) [, options]) → this
+t.setNativeDialogHandler(fn(type, text, url) [, options]) → this | Promise<any>
 ```
 
 Parameter  | Type                           | Description

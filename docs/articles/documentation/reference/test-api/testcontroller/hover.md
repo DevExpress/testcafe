@@ -10,7 +10,7 @@ redirect_from:
 Hovers the mouse pointer over a web page element. Can be chained with other `TestController` methods.
 
 ```text
-t.hover(selector [, options]) → this
+t.hover(selector [, options]) → this | Promise<any>
 ```
 
 Parameter              | Type                                              | Description

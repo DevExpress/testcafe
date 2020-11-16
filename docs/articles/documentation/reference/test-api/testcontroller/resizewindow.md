@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/resizewindow.html
 Resizes a window to fit the parameters entered by user. Can be chained with other `TestController` methods.
 
 ```text
-t.resizeWindow(width, height) → this
+t.resizeWindow(width, height) → this | Promise<any>
 ```
 
 Parameter  | Type    | Description

@@ -10,7 +10,7 @@ redirect_from:
 Right-clicks an element on a page. Can be chained with other `TestController` methods.
 
 ```text
-t.rightClick(selector [, options]) → this
+t.rightClick(selector [, options]) → this | Promise<any>
 ```
 
 Parameter              | Type                                              | Description

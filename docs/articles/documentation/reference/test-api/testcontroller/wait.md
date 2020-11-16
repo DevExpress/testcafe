@@ -10,7 +10,7 @@ redirect_from:
 Pauses a test for a specified period of time. Can be chained with other `TestController` methods.
 
 ```text
-t.wait(timeout) → this
+t.wait(timeout) → this | Promise<any>
 ```
 
 Parameter | Type    | Description

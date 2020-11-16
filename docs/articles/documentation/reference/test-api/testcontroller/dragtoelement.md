@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/dragtoelement.html
 Drags an element onto another web page element. Can be chained with other `TestController` methods.
 
 ```text
-t.dragToElement(selector, destinationSelector [, options]) → this
+t.dragToElement(selector, destinationSelector [, options]) → this | Promise<any>
 ```
 
 Parameter              | Type                                              | Description

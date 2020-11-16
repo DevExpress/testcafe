@@ -8,8 +8,8 @@ permalink: /documentation/reference/test-api/testcontroller/takescreenshot.html
 Takes screenshot of the entire page. Can be chained with other `TestController` methods.
 
 ```text
-t.takeScreenshot([options]) → this
-obsolete: t.takeScreenshot([path]) → this
+t.takeScreenshot([options]) → this | Promise<any>
+obsolete: t.takeScreenshot([path]) → this | Promise<any>
 ```
 
 The `options` object can include the following properties:

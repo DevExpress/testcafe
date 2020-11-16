@@ -9,7 +9,7 @@ permalink: /documentation/reference/test-api/testcontroller/switchtopreviouswind
 Activates the most recent of the previously active windows. Can be chained with other `TestController` methods.
 
 ```text
-t.switchToPreviousWindow()  → this
+t.switchToPreviousWindow()  → this | Promise<any>
 ```
 
 If no new windows are open or closed, consecutive method calls cycle between the two most recent windows.

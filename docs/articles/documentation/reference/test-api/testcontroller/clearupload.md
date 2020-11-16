@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/clearupload.html
 Removes all file paths from the specified file upload input. Can be chained with other `TestController` methods.
 
 ```text
-t.clearUpload(selector) → this
+t.clearUpload(selector) → this | Promise<any>
 ```
 
 Parameter  | Type                                              | Description

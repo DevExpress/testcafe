@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/maximizewindow.html
 Maximizes the browser window. Can be chained with other `TestController` methods.
 
 ```text
-t.maximizeWindow() → this
+t.maximizeWindow() → this | Promise<any>
 ```
 
 The following example shows how to use the `t.maximizeWindow` action.

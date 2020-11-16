@@ -10,7 +10,7 @@ redirect_from:
 Types the specified text into an input element. Can be chained with other `TestController` methods.
 
 ```text
-t.typeText(selector, text [, options]) → this
+t.typeText(selector, text [, options]) → this | Promise<any>
 ```
 
 Parameter              | Type                                              | Description

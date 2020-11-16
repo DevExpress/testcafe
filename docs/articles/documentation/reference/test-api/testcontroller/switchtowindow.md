@@ -13,7 +13,7 @@ Switches to a specific browser window. Can be chained with other `TestController
 Activates the window that corresponds to the window descriptor.
 
 ```text
-t.switchToWindow(windowDescriptor) → this
+t.switchToWindow(windowDescriptor) → this | Promise<any>
 ```
 
 Parameter | Type     | Description

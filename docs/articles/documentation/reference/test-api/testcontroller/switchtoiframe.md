@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/switchtoiframe.html
 Switches to an \<iframe\>. Can be chained with other `TestController` methods.
 
 ```text
-t.switchToIframe(selector) → this
+t.switchToIframe(selector) → this | Promise<any>
 ```
 
 Switches the test's browsing context to the specified `<iframe>`.

@@ -10,7 +10,7 @@ redirect_from:
 Double-clicks an element on a page. Can be chained with other `TestController` methods.
 
 ```text
-t.doubleClick(selector [, options]) → this
+t.doubleClick(selector [, options]) → this | Promise<any>
 ```
 
 Parameter              | Type                                              | Description

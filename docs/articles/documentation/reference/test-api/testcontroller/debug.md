@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/debug.html
 Pauses the test and allows you to use the browser's developer tools. Can be chained with other `TestController` methods.
 
 ```text
-t.debug() → this
+t.debug() → this | Promise<any>
 ```
 
 When test execution reaches `t.debug`, it pauses so that you can open the browser's developer tools

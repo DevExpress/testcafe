@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/getnativedialoghisto
 Returns a history of the invoked native dialogs. Cannot be chained with other methods of the test controller.
 
 ```text
-t.getNativeDialogHistory() → Promise
+t.getNativeDialogHistory() → Promise<Array>
 ```
 
 `t.getNativeDialogHistory` returns a stack of history entries (that is, an array in which the latest dialog has an index of `0`).
