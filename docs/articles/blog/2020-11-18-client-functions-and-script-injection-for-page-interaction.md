@@ -9,6 +9,8 @@ author: Arseniy Rubtsov, Vasily Strelyaev
 
 *You will learn how to run custom JavaScript code on the tested pages, how to use objects like the page model in this code, how to wait for an arbitrary event in the browser, and the fastest way to run a one-liner or an entire JS module.*
 
+<!--more-->
+
 End-to-end tests emulate how users interact with the application. In theory, this interaction consists of simple actions like a mouse click on an element, a key press, drag-and-drop, or file upload. The TestCafe API allows you to perform these basic actions with a single line of code. However, real-world applications tend to be more complicated than a static entry form. Some applications cannot be tested without closer interaction with tested pages. In this article, we review several examples and show how knowledge of TestCafe's internal architecture allows you to test complex or poorly designed pages with the help of client functions and script injection.
 
 ## Use Client Functions to Run Code in the Browser
@@ -59,7 +61,7 @@ On the surface, your JavaScript programming experience may tell you that the tes
 
 The TestCafe framework is based on a client-server architecture. The test code runs in a Node.js process (server) and uses a proxy server to interact with the browser (client).
 
-![TestCafe's client-server architecture](https://devexpress.github.io/testcafe/images/proxy-connection-protocols.svg)
+![TestCafe's client-server architecture](../../images/testcafe-nodejs-process.svg)
 
 Considering this fact, you can expect that:
 
@@ -72,8 +74,6 @@ We can simplify TestCafe's client-server interactions as follows:
 * On the server, the TestCafe API exposes methods that execute actions and user code in the browser. When the API is triggered, TestCafe creates commands and passes them to the proxy: TestCafe Hammerhead.  
 * TestCafe Hammerhead transmits commands from the server to the browser and sends back the results when they are ready.
 * On the client, TestCafe scripts receive these commands and execute them in the same way the browser handles user actions.
-
-![Client-server Interactions](https://devexpress.github.io/testcafe/images/how-it-works.svg)
 
 ### Pass Variables to Client Functions
 
