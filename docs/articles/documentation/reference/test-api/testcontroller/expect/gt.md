@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/expect/gt.html
 Asserts that `actual` is greater than `expected`.
 
 ```text
-await t.expect(actual).gt(expected, message, options) → this | Promise <unknown>
+await t.expect(actual).gt(expected, message, options) → this | Promise<unknown>
 ```
 
 Parameter              | Type                                              | Description
