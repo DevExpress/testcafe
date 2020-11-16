@@ -13,6 +13,8 @@ LambdaTest is a cloud testing platform that offers access to a wide variety of b
 
 On Wednesday, December 2nd, TestCafe Technical Evangelist Paul Usher will join Mudit Singh, Director of Product & Growth at LambdaTest, for an exclusive, beginner-friendly webinar.
 
+<!--more-->
+
 You'll learn:
 
 * The basics of TestCafe
@@ -23,8 +25,8 @@ An interactive Q&A session will follow the presentation.
 
 Can't attend the webinar? Register and we'll email you the video recording.
 
-Webinar Date: Wednesday, December 2, 2020
+**Webinar Date**: Wednesday, December 2, 2020
 
-Start Time: 10AM Pacific Time
+**Start Time**: 10AM Pacific Time
 
-[Register](https://www.lambdatest.com/webinar/how-to-get-true-cross-browser-test-coverage-with-testCafe-and-lambdatest-webinar)
+**[Register](https://www.lambdatest.com/webinar/how-to-get-true-cross-browser-test-coverage-with-testCafe-and-lambdatest-webinar)**
