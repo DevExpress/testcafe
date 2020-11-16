@@ -15,6 +15,7 @@ permalink: /documentation/guides/
 * [Obtain Client-Side Info](basic-guides/obtain-client-side-info.md)
 * [Run Tests](basic-guides/run-tests.md)
 * [Debug](basic-guides/debug.md)
+* [Best Practices](basic-guides/best-practices.md)
 
 ## Advanced Guides
 
