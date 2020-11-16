@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/expect/typeof.html
 Asserts that the `actual` type is `typeName`.
 
 ```text
-await t.expect(actual).typeOf(typeName, message, options) → this
+await t.expect(actual).typeOf(typeName, message, options) → this | Promise <unknown>
 ```
 
 Parameter              | Type                                              | Description
