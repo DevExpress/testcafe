@@ -15,7 +15,7 @@ Use `shadowRoot` to access the element's shadow root. Returns `null` if the shad
 
 Chain other `Selector` methods onto it to traverse the shadow tree.
 
-> You can not perform actions with a node returned by `shadowRoot()` or use it in assertions.
+> You cannot perform actions with a node returned by `shadowRoot()` or use it in assertions.
 >
 > Only use this element as an entry point for shadow DOM.
 

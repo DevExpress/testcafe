@@ -777,7 +777,7 @@ CSS selectors passed to the [Selector](../../reference/test-api/selector/constru
 To access and traverse the shadow DOM attached to an element, identify the element with a `Selector` and use the [Selector.shadowRoot](../../reference/test-api/selector/shadowroot.md) method to
 target the [shadow root](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot) of the element. Use other `Selector` methods to traverse the shadow tree from there.
 
-> You can not perform actions with a node returned by `shadowRoot()` or use it in assertions.
+> You cannot perform actions with a node returned by `shadowRoot()` or use it in assertions.
 >
 > Only use this element as an entry point to shadow DOM.
 
