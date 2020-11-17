@@ -393,7 +393,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1600894800 * 1000);
+        var lastPostDate = new Date(1605560400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -677,6 +677,15 @@
 		
 
 <a href="/testcafe/documentation/guides/basic-guides/debug.html"  >Debug</a>
+
+		
+    </li>
+
+    <li>
+		    
+		
+
+<a href="/testcafe/documentation/guides/basic-guides/best-practices.html"  >Best Practices</a>
 
 		
     </li>
@@ -1023,7 +1032,7 @@
 <a href="https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto">SubtleCrypto</a>), TestCafe can proxy it over HTTP. Otherwise, the tests fail because the page throws JavaScript errors, does not load or loads partially.</p>
 
 <p>To establish a secure HTTPS-connection, Node.js requires a valid <a href="https://en.wikipedia.org/wiki/PKCS_12">PKCS12</a> certificate (<code>.pfx</code>). We recommend that you <a href="#use-a-trusted-certificate">use a certificate signed by a trusted authority</a>. This allows a browser to open the tested page without workarounds. You can also <a href="#use-a-self-signed-certificate">generate and use a self-signed certificate</a>.</p>
-<blockquote><div class="blockquote-content"><p>Before you use HTTPS, launch testcafe with <a href="../../reference/command-line-interface.html#--hostname-name"><code>--hostname localhost</code> CLI parameter</a> or <a href="../../reference/configuration-file.html#hostname"><code>hostname: localhost</code> configuration option</a>. Most modern browsers thread localhost as a secure origin, and some built-in browser features that require a secure origin (Service workers, GeoAPI) should work. Third-party JS features like ApplePaySession may not work depending on implementation.</p>
+<blockquote><div class="blockquote-content"><p>Before you use HTTPS, launch testcafe with <a href="../../reference/command-line-interface.html#--hostname-name"><code>--hostname localhost</code> CLI parameter</a> or <a href="../../reference/configuration-file.html#hostname"><code>hostname: localhost</code> configuration option</a>. Most modern browsers treat localhost as a secure origin, and some built-in browser features that require a secure origin (Service workers, GeoAPI) should work. Third-party JS features like ApplePaySession may not work depending on implementation.</p>
 </div></blockquote><h3><a class="anchor" id="use-a-trusted-certificate"></a>Use a Trusted Certificate <a class="permalink" href="#use-a-trusted-certificate">#</a></h3>
 <p>To provide a certificate when you launch TestCafe with <a href="../../reference/command-line-interface.html">CLI</a>, use <a href="../../reference/command-line-interface.html#--ssl-options"><code>-ssl</code></a> option:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome  test.js <span class="nt">--ssl</span> <span class="nv">pfx</span><span class="o">=</span>path/to/trusted/certificate.pfx<span class="p">;</span><span class="nv">rejectUnauthorized</span><span class="o">=</span><span class="nb">true</span><span class="p">;</span>

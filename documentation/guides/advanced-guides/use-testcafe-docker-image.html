@@ -393,7 +393,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1600894800 * 1000);
+        var lastPostDate = new Date(1605560400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -677,6 +677,15 @@
 		
 
 <a href="/testcafe/documentation/guides/basic-guides/debug.html"  >Debug</a>
+
+		
+    </li>
+
+    <li>
+		    
+		
+
+<a href="/testcafe/documentation/guides/basic-guides/best-practices.html"  >Best Practices</a>
 
 		
     </li>
@@ -1032,9 +1041,7 @@ Therefore, you can avoid manual installation of browsers and the testing framewo
 </code></pre></div>
 <p>Files referenced in tests (page models, utilities, Node.js modules) should be located in the mapped host directory or its subdirectories. Otherwise, they could not be accessed from the container.</p>
 
-<p>If you are running a Windows machine with Docker Toolbox, note that Docker containers can only access the <code>C:\Users</code> directory by default. If you need to run tests from other directories, share these directories as described in the <a href="https://docs.docker.com/toolbox/toolbox_install_windows/#optional-add-shared-directories">Docker documentation</a>.</p>
-
-<p>In modern Docker for Windows, you also need to share a drive to reach it from Docker containers. For more information, see <a href="https://docs.docker.com/docker-for-windows/#file-sharing">Docker for Windows documentation</a>.</p></li>
+<p>Share a drive to reach it from Docker containers. For more information, see the <a href="https://docs.docker.com/docker-for-windows/#file-sharing">Docker for Windows documentation</a>.</p></li>
 <li><p><code>-it testcafe/testcafe</code> - runs TestCafe in the interactive mode with the console enabled;</p></li>
 <li><p><code>${TESTCAFE_ARGS}</code> - arguments passed to the <code>testcafe</code> command. You can use any arguments from the TestCafe <a href="../../reference/command-line-interface.html">command line interface</a>;</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh"><span class="nt">-it</span> testcafe/testcafe chromium,firefox /tests/test.js

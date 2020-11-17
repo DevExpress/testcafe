@@ -393,7 +393,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1600894800 * 1000);
+        var lastPostDate = new Date(1605560400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -2248,22 +2248,22 @@
 <tr>
 <td><code>url</code></td>
 <td>String</td>
-<td>The URL to which the request is sent.</td>
+<td>The URL of the resource.</td>
 </tr>
 <tr>
 <td><code>protocol</code></td>
 <td>String</td>
-<td>The protocol to use. Default: <em>http:</em>.</td>
+<td>The request protocol. Default: <em>http:</em>.</td>
 </tr>
 <tr>
 <td><code>hostname</code></td>
 <td>String</td>
-<td>The alias for the host.</td>
+<td>The domain name or IP address of the destination server. Default: <em>localhost</em>.</td>
 </tr>
 <tr>
 <td><code>host</code></td>
 <td>String</td>
-<td>The domain name or IP address of the server to issue the request to. Default: <em>localhost</em>.</td>
+<td>The domain name or IP address of the destination server, including the listening port. Default: <em>localhost:80</em>.</td>
 </tr>
 <tr>
 <td><code>port</code></td>
@@ -2273,22 +2273,27 @@
 <tr>
 <td><code>path</code></td>
 <td>String</td>
-<td>The request path. Should include query string if any. E.G. <em>&#39;/index.html?page=12&#39;</em>. An exception is thrown when the request path contains illegal characters. Currently, only spaces are rejected but that may change in the future. Default: <em>&#39;/&#39;</em>.</td>
+<td>The request path. Should include query string if any. For example, <em>&#39;/index.html?page=12&#39;</em>. An exception is thrown when the request path contains illegal characters (e.g., spaces). Default: <em>&#39;/&#39;</em>.</td>
 </tr>
 <tr>
 <td><code>method</code></td>
 <td>String</td>
-<td>The string specifying the HTTP request method. Default: <em>&#39;GET&#39;</em>.</td>
+<td>The HTTP request method. Default: <em>&#39;GET&#39;</em>.</td>
 </tr>
 <tr>
 <td><code>credentials</code></td>
 <td>Object</td>
-<td>Credentials that were used for authentication in the current session using NTLM or Basic authentication. For HTTP Basic authentication, these are <code>username</code> and <code>password</code>. NTLM authentication additionally specifies <code>workstation</code> and <code>domain</code>. See <a href="/testcafe/documentation/guides/advanced-guides/authentication.html#http-authentication">HTTP Authentication</a>.</td>
+<td>Credentials that were used for authentication in the current session with NTLM or Basic authentication. For HTTP Basic authentication, these are <code>username</code> and <code>password</code>. NTLM authentication additionally specifies <code>workstation</code> and <code>domain</code>. See <a href="/testcafe/documentation/guides/advanced-guides/authentication.html#http-authentication">HTTP Authentication</a>.</td>
 </tr>
 <tr>
 <td><code>proxy</code></td>
 <td>Object</td>
 <td>If a proxy is used, the property contains information about its <code>host</code>, <code>hostname</code>, <code>port</code>, <code>proxyAuth</code>, <code>authHeader</code> and <code>bypassRules</code>.</td>
+</tr>
+<tr>
+<td><code>isAjax</code></td>
+<td>Boolean</td>
+<td>Specifies whether the request is an AJAX request (xhr or fetch).</td>
 </tr>
 </tbody></table></div>
 

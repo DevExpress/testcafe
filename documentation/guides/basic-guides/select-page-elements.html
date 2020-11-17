@@ -393,7 +393,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1600894800 * 1000);
+        var lastPostDate = new Date(1605560400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -677,6 +677,15 @@
 		
 
 <a href="/testcafe/documentation/guides/basic-guides/debug.html"  >Debug</a>
+
+		
+    </li>
+
+    <li>
+		    
+		
+
+<a href="/testcafe/documentation/guides/basic-guides/best-practices.html"  >Best Practices</a>
 
 		
     </li>
@@ -1790,7 +1799,7 @@ In this instance, it may be a good idea to check the element availability before
     <span class="kd">const</span> <span class="nx">item</span>      <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">[id|="item"]</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div><h3><a class="anchor" id="select-elements-that-contain-special-characters"></a>Select Elements That Contain Special Characters <a class="permalink" href="#select-elements-that-contain-special-characters">#</a></h3>
-<p>If your page contains <a href="https://www.w3schools.com/html/html_symbols.asp">HTML symbols</a> or <a href="https://www.w3schools.com/html/html_entities.asp">HTML entities</a> (e.g., <code>&amp;nbsp;</code>, newline chars), use their <a href="https://www.rapidtables.com/code/text/unicode-characters.md">unicode counterparts</a> in <a href="../../reference/test-api/selector/withtext.html">Selector.WithText</a> and <a href="../../reference/test-api/selector/withexacttext.html">Selector.WithExactText</a>.</p>
+<p>If your page contains <a href="https://www.w3schools.com/html/html_symbols.asp">HTML symbols</a> or <a href="https://www.w3schools.com/html/html_entities.asp">HTML entities</a> (e.g., <code>&amp;nbsp;</code>, newline chars), use their <a href="https://en.wikipedia.org/wiki/List_of_Unicode_characters#Latin-1_Supplement">unicode counterparts</a> in <a href="../../reference/test-api/selector/withtext.html">Selector.WithText</a> and <a href="../../reference/test-api/selector/withexacttext.html">Selector.WithExactText</a>.</p>
 
 <p><strong>Example</strong></p>
 <div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;html&gt;</span>

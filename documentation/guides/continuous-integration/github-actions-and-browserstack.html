@@ -393,7 +393,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1600894800 * 1000);
+        var lastPostDate = new Date(1605560400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -677,6 +677,15 @@
 		
 
 <a href="/testcafe/documentation/guides/basic-guides/debug.html"  >Debug</a>
+
+		
+    </li>
+
+    <li>
+		    
+		
+
+<a href="/testcafe/documentation/guides/basic-guides/best-practices.html"  >Best Practices</a>
 
 		
     </li>
@@ -1072,13 +1081,6 @@
   <span class="na">test</span><span class="pi">:</span>
     <span class="na">name</span><span class="pi">:</span> <span class="s">Run TestCafe Tests</span>
     <span class="na">runs-on</span><span class="pi">:</span> <span class="s">windows-latest</span>
-    <span class="na">steps</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Check out the repository</span>
-        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v1</span>
-      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Run tests</span>
-        <span class="na">uses</span><span class="pi">:</span> <span class="s">DevExpress/testcafe-action@latest</span>
-        <span class="na">with</span><span class="pi">:</span>
-            <span class="na">args</span><span class="pi">:</span> <span class="s2">"</span><span class="s">'browserstack:chrome@84.0:Windows</span><span class="nv"> </span><span class="s">10'</span><span class="nv"> </span><span class="s">tests"</span>
 </code></pre></div><h2><a class="anchor" id="step-4---add-a-step-that-fetches-the-repository"></a>Step 4 - Add a Step that Fetches the Repository <a class="permalink" href="#step-4---add-a-step-that-fetches-the-repository">#</a></h2>
 <p>Add a <a href="https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idsteps">step</a> that uses the <a href="https://github.com/actions/checkout">checkout</a> action to fetch your repository content.</p>
 <div class="highlight"><pre><code class="language-yml" data-lang="yml"><span class="na">name</span><span class="pi">:</span> <span class="s">End-to-End Tests</span>
@@ -1123,6 +1125,8 @@
     <span class="na">steps</span><span class="pi">:</span>
       <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Check out the repository</span>
         <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v1</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Install TestCafe BrowserStack plugin</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="s">npm install testcafe-browser-provider-browserstack</span>
       <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Run tests</span>
         <span class="na">uses</span><span class="pi">:</span> <span class="s">DevExpress/testcafe-action@latest</span>
         <span class="na">with</span><span class="pi">:</span>

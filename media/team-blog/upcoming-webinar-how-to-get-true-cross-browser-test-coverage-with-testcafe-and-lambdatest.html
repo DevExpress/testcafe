@@ -16,15 +16,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>Roadmap | TestCafe</title>
+  <title>Upcoming Webinar: How to Get True Cross-Browser Test Coverage with TestCafe and LambdaTest | TestCafe</title>
 
-  <meta name="description" content="">
+  <meta name="description" content="Upcoming Webinar: How to Get True Cross-Browser Test Coverage with TestCafe and LambdaTestVenture into automated cross-browser cloud testing with TestCafe an...">
   <meta name="viewport" content="width=device-width">
 
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://devexpress.github.io/testcafe/roadmap/" />
-  <meta property="og:title" content="Roadmap | TestCafe" />
+  <meta property="og:url" content="https://devexpress.github.io/testcafe/media/team-blog/upcoming-webinar-how-to-get-true-cross-browser-test-coverage-with-testcafe-and-lambdatest.html" />
+  <meta property="og:title" content="Upcoming Webinar: How to Get True Cross-Browser Test Coverage with TestCafe and LambdaTest | TestCafe" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-twitter-card-icon.png" />
@@ -37,7 +37,7 @@
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
   <link rel="stylesheet" href="/testcafe/css/banner.css">
-  <link rel="canonical" href="https://devexpress.github.io/testcafe/roadmap/">
+  <link rel="canonical" href="https://devexpress.github.io/testcafe/media/team-blog/upcoming-webinar-how-to-get-true-cross-browser-test-coverage-with-testcafe-and-lambdatest.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="https://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -80,6 +80,18 @@
 
   
 
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
+  <link rel="stylesheet" href="/testcafe/css/docs.css">
+    
+    <link rel="stylesheet" href="/testcafe/css/community.css">
+    
+  <style>
+      .ps-container > .ps-scrollbar-x-rail,
+      .ps-container > .ps-scrollbar-y-rail {
+          opacity: 0.6;
+      }
+  </style>
   
 
   
@@ -175,11 +187,131 @@
     
 
   
+    <script defer type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/js/perfect-scrollbar.min.js"></script>
+    <script defer type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.3.min.js"></script>
+
+    <script>
+        var MIN_BODY_WIDTH = 1230;
+        var FOOTER_HEIGHT  = 225;
+
+        var nav     = null;
+        var article = null;
+
+        function getHeaderHeight () {
+            return 76;
+        }
+
+        function setNavTopPosition () {
+            var headerHeight = getHeaderHeight();
+            var top          = null;
+
+            if (document.body.clientWidth > MIN_BODY_WIDTH) {
+                if (nav.style.top !== headerHeight + 'px') {
+                    nav.style.top = headerHeight + 'px';
+                    Ps.update(nav);
+                }
+            }
+            else {
+                top = window.pageYOffset <= headerHeight ? headerHeight - window.pageYOffset + 'px' : '0';
+
+                if (nav.style.top !== top) {
+                    nav.style.top = top;
+                    Ps.update(nav);
+                }
+            }
+        }
+
+        function setNavBottomPosition () {
+            var footerVisibleHeight = FOOTER_HEIGHT - document.body.scrollHeight + window.pageYOffset +
+                                      document.body.clientHeight;
+
+            if (footerVisibleHeight > 0) {
+                if (nav.style.bottom !== footerVisibleHeight + 'px') {
+                    nav.style.bottom = footerVisibleHeight + 'px';
+                    Ps.update(nav);
+                }
+            }
+            else if (nav.style.bottom !== '0') {
+                nav.style.bottom = '0';
+                Ps.update(nav);
+            }
+        }
+
+        function updateNavMenuPosition () {
+            nav.style.marginLeft = '-' + window.pageXOffset + 'px';
+
+            setNavBottomPosition();
+            setNavTopPosition();
+        }
+
+        function changeBodyHeight () {
+            if (document.body.style.height !== window.innerHeight + 'px')
+                document.body.style.height = window.innerHeight + 'px';
+        }
+
+        function initScrollBar() {
+            Ps.initialize(nav);
+
+            window.addEventListener('resize', function () {
+                Ps.update(nav);
+            });
+        }
+
+        function initNav() {
+            initScrollBar();
+            updateNavMenuPosition();
+            window.addEventListener('scroll', updateNavMenuPosition);
+            window.addEventListener('resize', updateNavMenuPosition);
+        }
+
+        function scrollToActiveItem() {
+            var activeItem = document.querySelector('.doc-nav .active');
+            var scrollContainer = document.querySelector('.ps-container');
+
+            if (scrollContainer && activeItem) {
+                scrollContainer.scrollTop = activeItem.offsetTop;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function (e) {
+            if (isMobileDevice)
+                return;
+
+            nav     = document.querySelector('.doc-nav');
+            article = document.querySelector('.doc');
+
+            if (nav)
+                initNav(nav);
+
+            scrollToActiveItem();
+        });
+    </script>
+    
     
     <script>
-        if (document.images) {
-            img1 = new Image();
-            img1.src = '/testcafe/images/test-cafe-logo.png';
+        if (isMobileDevice) {
+            linkCss('/testcafe/css/banner.mobile.css');
+            linkCss('/testcafe/css/docs.mobile.css');           
+            
+            if (false == false) {
+                document.addEventListener('DOMContentLoaded', function (e) {
+                    var docNavPanel = document.querySelector('.doc-nav-panel');
+                    var docNav      = document.querySelector('.doc-nav');
+
+                    docNavPanel.addEventListener('click', function (e) {
+                        if (docNav.className.indexOf('active') !== -1) {
+                            docNav.className = docNav.className.replace(' active', '');
+                            document.documentElement.style.overflowY = 'scroll';
+                            document.body.style.overflowY = 'initial';
+                        }
+                        else {
+                            docNav.className += ' active';
+                            document.documentElement.style.overflowY = 'hidden';
+                            document.body.style.overflowY = 'hidden';
+                        }
+                    });
+                });
+            }
         }
     </script>
   
@@ -195,7 +327,7 @@
 
                 var bodyMinimized          = document.body.clientWidth === MIN_BODY_WIDTH;
                 var docContentMargin       = bodyMinimized ? CONTENT_MARGIN_WITHOUT_DOC_MENU : CONTENT_MARGIN_WITH_DOC_MENU;
-                var isCommunitySection     = false;
+                var isCommunitySection     = true;
                 var contentMarginCommunity = isMobileDevice ? CONTENT_MARGIN_COMMUNITY_MOBILE : CONTENT_MARGIN_COMMUNITY_DESKTOP;
                 var contentMargin          = isCommunitySection ? contentMarginCommunity : docContentMargin;
 
@@ -284,7 +416,7 @@
         </div>
       
         
-        <div class="site-nav-tab" id="blog-link-tab">
+        <div class="site-nav-tab active" id="blog-link-tab">
           <a class="page-link" id="blog-link" href="/testcafe/media/team-blog/"><span>Blog</span></a>
         </div>
       
@@ -448,76 +580,63 @@
 
       <div class="container">
     <main>
-	<article class="faq">
-		<div class="post-content">
-
-			<h1>Roadmap</h1>
-<p>This roadmap includes the most important features planned for the upcoming releases.</p>
-
-<p>This list is not exhaustive and will be updated with more entries as we receive your feedback.</p>
-
-<p>Please vote on the features you want us to implement first to help us prioritize our work. (Follow each link to leave a reaction on GitHub.)</p>
-<h2><a class="anchor" id="highlighted-features"></a>Highlighted Features <a class="permalink" href="#highlighted-features">#</a></h2><div class="table-wrapper"><table><thead><tr>
-<th>Feature</th>
-<th>Status</th>
-</tr>
-</thead><tbody><tr>
-<td><a href="https://github.com/DevExpress/testcafe/issues/912">Testing in Multiple Browser Windows</a></td>
-<td><strong>In Progress</strong></td>
-</tr>
-<tr>
-<td><a href="https://github.com/DevExpress/testcafe/issues/4288">API Testing</a></td>
-<td>Planned</td>
-</tr>
-</tbody></table></div><h2><a class="anchor" id="api"></a>API <a class="permalink" href="#api">#</a></h2><div class="table-wrapper"><table><thead><tr>
-<th>Feature</th>
-<th>Status</th>
-</tr>
-</thead><tbody><tr>
-<td><a href="https://github.com/DevExpress/testcafe/issues/3131">Configuration File</a></td>
-<td><strong>Implemented</strong></td>
-</tr>
-<tr>
-<td><a href="https://github.com/DevExpress/testcafe/issues/1520">Screenshots of the Entire Page</a></td>
-<td><strong>Implemented</strong></td>
-</tr>
-<tr>
-<td><a href="https://github.com/DevExpress/testcafe/issues/481">Browser Information in Test Code</a></td>
-<td><strong>Implemented</strong></td>
-</tr>
-</tbody></table></div><h2><a class="anchor" id="debugging"></a>Debugging <a class="permalink" href="#debugging">#</a></h2><div class="table-wrapper"><table><thead><tr>
-<th>Feature</th>
-<th>Status</th>
-</tr>
-</thead><tbody><tr>
-<td><a href="https://github.com/DevExpress/testcafe/issues/2151">Video Recording</a></td>
-<td><strong>Implemented</strong></td>
-</tr>
-<tr>
-<td><a href="https://github.com/DevExpress/testcafe/issues/3215">Live Mode</a></td>
-<td><strong>Implemented</strong></td>
-</tr>
-<tr>
-<td><a href="https://github.com/DevExpress/testcafe/issues/3244">Selector Debug Panel</a></td>
-<td><strong>In Progress</strong></td>
-</tr>
-</tbody></table></div><h2><a class="anchor" id="ecosystem-integrations"></a>Ecosystem / Integrations <a class="permalink" href="#ecosystem-integrations">#</a></h2><div class="table-wrapper"><table><thead><tr>
-<th>Feature</th>
-<th>Status</th>
-</tr>
-</thead><tbody><tr>
-<td><a href="https://github.com/DevExpress/testcafe/issues/1845">Custom TypeScript Compilation Options</a></td>
-<td><strong>Implemented</strong></td>
-</tr>
-<tr>
-<td><a href="https://github.com/DevExpress/testcafe/issues/4289">Jenkins Plugin</a></td>
-<td><strong>Implemented</strong></td>
-</tr>
-</tbody></table></div>
-
+    <div class="post">
+        <div class="post-date">
+            NOV 17, 2020
         </div>
-    </article>
+        <article class="post-content">
+            <h1>Upcoming Webinar: How to Get True Cross-Browser Test Coverage with TestCafe and LambdaTest</h1>
+<p>Venture into automated cross-browser cloud testing with TestCafe and LambdaTest.  </p>
+
+<p>LambdaTest is a cloud testing platform that offers access to a wide variety of browsers and operating systems. With over 2000 unique testing setups, it is the perfect solutions provider for a testing framework like TestCafe.</p>
+
+<p>On Wednesday, December 2nd, TestCafe Technical Evangelist Paul Usher will join Mudit Singh, Director of Product &amp; Growth at LambdaTest, for an exclusive, beginner-friendly webinar.</p>
+
+<!--more-->
+
+<p>You&#39;ll learn:</p>
+
+<ul>
+<li>The basics of TestCafe</li>
+<li>How to run your first automated test</li>
+<li>How TestCafe integrates with LambdaTest for better browser coverage</li>
+</ul>
+
+<p>An interactive Q&amp;A session will follow the presentation.</p>
+
+<p>Can&#39;t attend the webinar? Register and we&#39;ll email you the video recording.</p>
+
+<p><strong>Webinar Date</strong>: Wednesday, December 2, 2020</p>
+
+<p><strong>Start Time</strong>: 10AM Pacific Time</p>
+
+<p><strong><a href="https://www.lambdatest.com/webinar/how-to-get-true-cross-browser-test-coverage-with-testCafe-and-lambdatest-webinar">Register</a></strong></p>
+
+        </article>
+        <div id="back-to-posts-link">
+            <p><a href="../../media/team-blog/">Back to Post List</a></p>
+        </div>
+        <!-- <div id="disqus_thread"></div> -->
+    </div>
 </main>
+
+<!-- 
+<script>
+    var disqus_config = function () {
+        this.page.url = 'https://devexpress.github.io/testcafe/media/team-blog/upcoming-webinar-how-to-get-true-cross-browser-test-coverage-with-testcafe-and-lambdatest.html';
+        this.page.identifier = '/media/team-blog/upcoming-webinar-how-to-get-true-cross-browser-test-coverage-with-testcafe-and-lambdatest';
+    };
+    (function() {
+        var d = document, s = d.createElement('script');
+        
+        s.src = '//testcafe-blog.disqus.com/embed.js';
+        
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+ -->
 </div>
 
     </div>
