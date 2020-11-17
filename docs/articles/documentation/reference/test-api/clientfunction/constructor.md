@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/clientfunction/constructor.html
 Creates a [client function](../../../guides/basic-guides/obtain-client-side-info.md).
 
 ```text
-ClientFunction( fn [, options] )
+ClientFunction(fn [, options]) → ClientFunction
 ```
 
 Parameter              | Type     | Description

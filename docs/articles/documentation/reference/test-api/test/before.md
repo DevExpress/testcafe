@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/test/before.html
 Executes the specified code before the test starts (the *before* test hook).
 
 ```text
-test.before( fn(t) )
+test.before( fn(t) ) → this
 ```
 
 Parameter | Type     | Description

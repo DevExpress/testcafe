@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/test/clientscripts.html
 [Injects scripts](../../../guides/advanced-guides/inject-client-scripts.md) into all pages visited during the test.
 
 ```text
-test.clientScripts( script[, script2[, ...[, scriptN]]] )
+test.clientScripts( script[, script2[, ...[, scriptN]]] ) → this
 ```
 
 Parameter | Type     | Description

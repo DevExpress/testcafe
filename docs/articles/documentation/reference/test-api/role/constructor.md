@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/role/constructor.html
 Creates and initializes a [user role](../../../guides/advanced-guides/authentication.md#user-roles).
 
 ```text
-Role( url, func( t ) [, options] )
+Role(url, func(t) [, options])
 ```
 
 > Important! Relative URLs in `Role` are not supported. Use absolute URLs when you define roles.

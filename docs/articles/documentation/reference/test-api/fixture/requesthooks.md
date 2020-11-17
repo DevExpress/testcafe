@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/fixture/requesthooks.html
 Attaches the [request hooks](../../../guides/advanced-guides/intercept-http-requests.md) to the fixture.
 
 ```text
-fixture.requestHooks(...hooks)
+fixture.requestHooks(...hooks) → this
 ```
 
 Parameter | Type | Description

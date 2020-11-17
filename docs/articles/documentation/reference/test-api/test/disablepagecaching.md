@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/test/disablepagecaching.html
 Disables page caching. Use it if the browser storages are reset after the test navigates to a cached page.  See [Troubleshooting: Test Actions Fail After Authentication](../../../guides/advanced-guides/authentication.md#test-actions-fail-after-authentication) for more information.
 
 ```text
-test.disablePageCaching
+test.disablePageCaching → this
 ```
 
 **Example**

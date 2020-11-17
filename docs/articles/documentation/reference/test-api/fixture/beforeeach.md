@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/fixture/beforeeach.html
 Executes the code before each test in the fixture starts (the *before each* fixture hook).
 
 ```text
-fixture.beforeEach( fn(t) )
+fixture.beforeEach( fn(t) ) → this
 ```
 
 Parameter | Type     | Description

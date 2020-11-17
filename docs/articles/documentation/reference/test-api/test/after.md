@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/test/after.html
 Executes the specified code after the test finishes (the *after* test hook).
 
 ```text
-test.after( fn(t) )
+test.after( fn(t) ) → this
 ```
 
 Parameter | Type     | Description

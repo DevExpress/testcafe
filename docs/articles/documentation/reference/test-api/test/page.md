@@ -8,8 +8,8 @@ permalink: /documentation/reference/test-api/test/page.html
 Specifies the page where the test starts.
 
 ```text
-test.page( url )
-test.page `url`
+test.page( url ) → this
+test.page `url` → this
 ```
 
 Parameter | Type   | Description

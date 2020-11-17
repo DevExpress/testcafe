@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/requestlogger/count.html
 Returns the number of requests that match the predicate.
 
 ```text
-count( predicate(Request) ) → Promise<Numeric>
+count( predicate(Request) ) → Promise<number>
 ```
 
 > If you use the `contains(predicate)` or `count(predicate)` methods in assertions, TestCafe uses the [Smart Assertion Query Mechanism](../../../guides/basic-guides/assert.md#smart-assertion-query-mechanism).
