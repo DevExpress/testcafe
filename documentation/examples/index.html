@@ -59,6 +59,13 @@
      var isMobileDevice = !!md.mobile();
   </script>
   <script>
+      var SUMMER_2019_SURVEY_COMPLETED_FLAG            = 'summer-2019-survey-completed';
+      var SUMMER_2019_SURVEY_PAGE_OPEN_DATE_FLAG       = 'summer-2019-survey-page-open-date';
+      var SUMMER_2019_SURVEY_BANNER_DISMISSED_FLAG     = 'summer-2019-survey-banner-dismissed';
+      var DECEMBER_2020_WEBINAR_BANNER_DISMISSED_FLAG  = 'december-2020-webinar-banner-dismissed';
+      var DECEMBER_2020_WEBINAR_OPEN_DATE_FLAG         = 'december-2020-webinar-page-open-date';
+  </script>
+  <script>
       document.addEventListener('DOMContentLoaded', function (e) {
           hljs.initHighlightingOnLoad();
       });
@@ -199,7 +206,13 @@
         var article = null;
 
         function getHeaderHeight () {
-            return 126;
+            var DOCS_HEADER_HEIGHT   = 126;
+            var SURVEY_HEADER_HEIGHT = 32;
+
+            var surveyBanner          = document.querySelector('.survey-banner');
+            var isSurveyBannerVisible = surveyBanner && surveyBanner.className.indexOf('hidden') === -1;
+
+            return isSurveyBannerVisible ? DOCS_HEADER_HEIGHT + SURVEY_HEADER_HEIGHT : DOCS_HEADER_HEIGHT;
         }
 
         function setNavTopPosition () {
@@ -317,7 +330,7 @@
     </script>
   
     <script>
-        function initHeader(siteHeader, contentWrapper, docTopMenu, article, gs) {
+        function initHeader(siteHeader, contentWrapper, docTopMenu, article, gs, surveyBanner) {
             var MIN_BODY_WIDTH = 1230;
 
             function updateHeader() {
@@ -339,6 +352,9 @@
                 if(docTopMenu)
                     docTopMenu.style.position = bodyMinimized ? 'static' : '';
 
+                if(surveyBanner)
+                    surveyBanner.style.position = bodyMinimized ? 'static' : '';
+
                 if(contentWrapper)
                     contentWrapper.style.paddingTop = bodyMinimized ? '0' : '';
 
@@ -358,9 +374,10 @@
             var docTopMenu     = document.querySelector('.doc-top-nav');
             var article        = document.querySelector('.doc');
             var gs             = document.querySelector('.gs');
+            var surveyBanner   = document.querySelector('.survey-banner');
 
             if(siteHeader)
-                initHeader(siteHeader, contentWrapper, docTopMenu, article, gs);
+                initHeader(siteHeader, contentWrapper, docTopMenu, article, gs, surveyBanner);
         });
     </script>
 </head>
@@ -382,7 +399,43 @@
 
     <div class="page-content-wrapper">
 
-      
+      <div class="survey-banner hidden">
+    <div class="survey-banner-message">
+        <span class="desktop-text">Join us on Wednesday, December 2nd at 10 AM PST for a live webinar on how to get true cross-browser test coverage with TestCafe and LambdaTest. </span><span class="mobile-text">Join us on December 2nd for a live webinar.</span> <a href="https://www.lambdatest.com/webinar/how-to-get-true-cross-browser-test-coverage-with-testCafe-and-lambdatest-webinar" target="_blank"><span>Register</span></a>
+    </div>
+  <div class="survey-banner-close-button"></div>
+</div>
+<script>
+  var wasWebinarBannerDismissed = window.localStorage.getItem(DECEMBER_2020_WEBINAR_BANNER_DISMISSED_FLAG);
+  var webinarOpenDate           = window.localStorage.getItem(DECEMBER_2020_WEBINAR_OPEN_DATE_FLAG);
+
+  if(!wasWebinarBannerDismissed && !webinarOpenDate) {
+      var surveyBanner      = document.querySelector('.survey-banner');
+      var surveyLink        = document.querySelector('.survey-banner a');
+      var surveyBannerClose = document.querySelector('.survey-banner-close-button');
+
+      function hideSurveyBanner() {
+          surveyBanner.className = surveyBanner.className += ' hidden';
+
+          var navExists = !!document.querySelector('.doc-nav');
+
+          if (!isMobileDevice && typeof updateNavMenuPosition !== 'undefined' && navExists)
+              updateNavMenuPosition();
+      }
+
+      surveyBanner.className = surveyBanner.className.replace(/hidden/,'');
+
+      surveyBannerClose.addEventListener('click', function () {
+          hideSurveyBanner();
+          window.localStorage.setItem(DECEMBER_2020_WEBINAR_BANNER_DISMISSED_FLAG, true);
+      });
+
+      surveyLink.addEventListener('click', function () {
+          hideSurveyBanner();
+      });
+  }
+</script>
+
 
 <script>
     var TEAM_BLOG_LAST_VISITED_FLAG = 'team-blog-last-visited';
@@ -393,7 +446,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1600894800 * 1000);
+        var lastPostDate = new Date(1605560400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -631,8 +684,40 @@
 <td>Open a <code>&lt;select&gt;</code> element&#39;s drop-down list, click an item, and verify the value.</td>
 </tr>
 <tr>
-<td><a href="https://github.com/DevExpress/testcafe-examples/tree/master/examples/page-manipulation">Page Reload</a></td>
-<td>Execute custom code on the page to obtain data or manipulate the page state.</td>
+<td><a href="https://github.com/DevExpress/testcafe-examples/tree/master/examples/page-manipulation">Page Manipulation</a></td>
+<td>Execute custom code on the page to obtain data or manipulate the page state (for instance, to reload the page).</td>
+</tr>
+<tr>
+<td><a href="https://github.com/DevExpress/testcafe-examples/tree/master/examples/change-element-style">Change Element&#39;s Style</a></td>
+<td>Modify an element&#39;s style from test code.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/DevExpress/testcafe-examples/tree/master/examples/check-if-opened-with-testcafe">Check Whether Web Page Is Opened With TestCafe</a></td>
+<td>Use code to check whether the application is opened with TestCafe</td>
+</tr>
+<tr>
+<td><a href="https://github.com/DevExpress/testcafe-examples/tree/master/examples/iterate-over-list-elements">Iterate Over a List of Elements</a></td>
+<td>Iterate over a list of elements and use their values in assertions.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/DevExpress/testcafe-examples/tree/master/examples/scroll">Scroll Elements Into View</a></td>
+<td>Scroll the page manually during tests.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/DevExpress/testcafe-examples/tree/master/examples/select-table-row-by-cell-content">Select a Table Row by Cell Content</a></td>
+<td>Select a table row based on the content of its cells.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/DevExpress/testcafe-examples/tree/master/examples/submit-a-form">Submit a Form</a></td>
+<td>Submit a form with DOM API.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/DevExpress/testcafe-examples/tree/master/examples/check-if-image-loaded">Check If an Image Has Loaded</a></td>
+<td>Check whether an image on the page has loaded.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/DevExpress/testcafe-examples/tree/master/examples/blur-window">Simulate the Web Page Losing Focus</a></td>
+<td>Simulate the web page losing focus.</td>
 </tr>
 </tbody></table></div><h2><a class="anchor" id="test-organization"></a>Test Organization <a class="permalink" href="#test-organization">#</a></h2><div class="table-wrapper"><table><thead><tr>
 <th>Example</th>
@@ -650,6 +735,30 @@
 <td><a href="https://github.com/DevExpress/testcafe-examples/tree/master/examples/use-page-model">Use Page Model</a></td>
 <td>Extract element selectors and common operations with these elements to a page model.</td>
 </tr>
+<tr>
+<td><a href="https://github.com/DevExpress/testcafe-examples/tree/master/examples/pass-parameters-to-tests">Pass Parameters to Tests</a></td>
+<td>Pass parameters to TestCafe tests.</td>
+</tr>
+</tbody></table></div><h2><a class="anchor" id="uploaddownload"></a>Upload/Download <a class="permalink" href="#uploaddownload">#</a></h2><div class="table-wrapper"><table><thead><tr>
+<th>Example</th>
+<th>Description</th>
+</tr>
+</thead><tbody><tr>
+<td><a href="https://github.com/DevExpress/testcafe-examples/tree/master/examples/check-downloaded-file-name-and-content">Check the Downloaded File Name and Content</a></td>
+<td>Check the name and the content of a file downloaded during a test.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/DevExpress/testcafe-examples/tree/master/examples/upload-files">Select Files To Upload</a></td>
+<td>Add files to an <code>&lt;input type=&quot;file&quot;&gt;</code>.</td>
+</tr>
+</tbody></table></div><h2><a class="anchor" id="control-http-requests"></a>Control HTTP Requests <a class="permalink" href="#control-http-requests">#</a></h2><div class="table-wrapper"><table><thead><tr>
+<th>Example</th>
+<th>Description</th>
+</tr>
+</thead><tbody><tr>
+<td><a href="https://github.com/DevExpress/testcafe-examples/tree/master/examples/set-a-custom-referrer">Set a Custom Referrer</a></td>
+<td>Set a custom <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referer">referrer</a> for the specified requests during tests.</td>
+</tr>
 </tbody></table></div><h2><a class="anchor" id="interoperability"></a>Interoperability <a class="permalink" href="#interoperability">#</a></h2><div class="table-wrapper"><table><thead><tr>
 <th>Example</th>
 <th>Description</th>
@@ -662,6 +771,10 @@
 <td><a href="https://github.com/DevExpress/testcafe-examples/tree/master/examples/import-third-party-modules">Import Third-Party Modules</a></td>
 <td>Import a third-party Node.js module into test code.</td>
 </tr>
+<tr>
+<td><a href="https://github.com/DevExpress/testcafe-examples/tree/master/detached-examples/extended-error-tracking">Extended Client-Side Error Tracking</a></td>
+<td>Filter client-side errors that occur during a test.</td>
+</tr>
 </tbody></table></div><h2><a class="anchor" id="browser-api-mocks"></a>Browser API Mocks <a class="permalink" href="#browser-api-mocks">#</a></h2><div class="table-wrapper"><table><thead><tr>
 <th>Example</th>
 <th>Description</th>
@@ -673,6 +786,10 @@
 <tr>
 <td><a href="https://github.com/DevExpress/testcafe-examples/tree/master/examples/mock-geolocation-api">Mock Geolocation API</a></td>
 <td>Substitutes the current location with a mock location.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/DevExpress/testcafe-examples/tree/master/detached-examples/mock-camera-microphone-access">Mock Camera/Microphone Access</a></td>
+<td>Use mock data for the microphone and camera.</td>
 </tr>
 </tbody></table></div><h2><a class="anchor" id="wait-mechanisms"></a>Wait Mechanisms <a class="permalink" href="#wait-mechanisms">#</a></h2><div class="table-wrapper"><table><thead><tr>
 <th>Example</th>

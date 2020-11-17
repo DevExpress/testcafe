@@ -28,6 +28,25 @@
                 $("#submit-button").attr("disabled", !$("#developer-name").val());
             }
 
+            function setupShadowDom() {
+                const supportsShadowDOMV1 = !!HTMLElement.prototype.attachShadow;
+                const host                = document.getElementById("shadow-host");
+
+                if (supportsShadowDOMV1) {
+                    const p = document.createElement("p");
+
+                    p.innerText     = "This paragraph is in the shadow tree";
+                    p.style.display = "none";
+                    p.id            = "shadow-paragraph";
+
+                    const root = host.attachShadow({ mode: "open" });
+
+                    root.appendChild(p);
+                }
+                else
+                    console.log("Shadow DOM V1 not supported by the browser. Skipping...");
+            }
+
             $("#slider").slider({ min: 1, max: 10, disabled: true, value: $("#testcafe-rank").val() });
 
             refreshFeedbackFormState();
@@ -52,12 +71,13 @@
 
 
             $("#main-form").on("submit", function (event) {
-                $('#testcafe-rank').val($("#slider").slider("value"));
-                sessionStorage.setItem('developer-name', $("#developer-name").val());
+                $("#testcafe-rank").val($("#slider").slider("value"));
+                sessionStorage.setItem("developer-name", $("#developer-name").val());
                 window.location.href = window.location.href + "thank-you.html";
                 event.preventDefault();
             });
 
+            $(document).ready(setupShadowDom);
         });
     </script>
 </head>
@@ -68,6 +88,7 @@
     <header>
         <h1>Example</h1>
         <p>This webpage is used as a sample in TestCafe tutorials.</p>
+        <div id="shadow-host"></div>
     </header>
     <div class="row">
 <div class="column col-1">

@@ -59,6 +59,13 @@
      var isMobileDevice = !!md.mobile();
   </script>
   <script>
+      var SUMMER_2019_SURVEY_COMPLETED_FLAG            = 'summer-2019-survey-completed';
+      var SUMMER_2019_SURVEY_PAGE_OPEN_DATE_FLAG       = 'summer-2019-survey-page-open-date';
+      var SUMMER_2019_SURVEY_BANNER_DISMISSED_FLAG     = 'summer-2019-survey-banner-dismissed';
+      var DECEMBER_2020_WEBINAR_BANNER_DISMISSED_FLAG  = 'december-2020-webinar-banner-dismissed';
+      var DECEMBER_2020_WEBINAR_OPEN_DATE_FLAG         = 'december-2020-webinar-page-open-date';
+  </script>
+  <script>
       document.addEventListener('DOMContentLoaded', function (e) {
           hljs.initHighlightingOnLoad();
       });
@@ -199,7 +206,13 @@
         var article = null;
 
         function getHeaderHeight () {
-            return 126;
+            var DOCS_HEADER_HEIGHT   = 126;
+            var SURVEY_HEADER_HEIGHT = 32;
+
+            var surveyBanner          = document.querySelector('.survey-banner');
+            var isSurveyBannerVisible = surveyBanner && surveyBanner.className.indexOf('hidden') === -1;
+
+            return isSurveyBannerVisible ? DOCS_HEADER_HEIGHT + SURVEY_HEADER_HEIGHT : DOCS_HEADER_HEIGHT;
         }
 
         function setNavTopPosition () {
@@ -317,7 +330,7 @@
     </script>
   
     <script>
-        function initHeader(siteHeader, contentWrapper, docTopMenu, article, gs) {
+        function initHeader(siteHeader, contentWrapper, docTopMenu, article, gs, surveyBanner) {
             var MIN_BODY_WIDTH = 1230;
 
             function updateHeader() {
@@ -339,6 +352,9 @@
                 if(docTopMenu)
                     docTopMenu.style.position = bodyMinimized ? 'static' : '';
 
+                if(surveyBanner)
+                    surveyBanner.style.position = bodyMinimized ? 'static' : '';
+
                 if(contentWrapper)
                     contentWrapper.style.paddingTop = bodyMinimized ? '0' : '';
 
@@ -358,9 +374,10 @@
             var docTopMenu     = document.querySelector('.doc-top-nav');
             var article        = document.querySelector('.doc');
             var gs             = document.querySelector('.gs');
+            var surveyBanner   = document.querySelector('.survey-banner');
 
             if(siteHeader)
-                initHeader(siteHeader, contentWrapper, docTopMenu, article, gs);
+                initHeader(siteHeader, contentWrapper, docTopMenu, article, gs, surveyBanner);
         });
     </script>
 </head>
@@ -382,7 +399,43 @@
 
     <div class="page-content-wrapper">
 
-      
+      <div class="survey-banner hidden">
+    <div class="survey-banner-message">
+        <span class="desktop-text">Join us on Wednesday, December 2nd at 10 AM PST for a live webinar on how to get true cross-browser test coverage with TestCafe and LambdaTest. </span><span class="mobile-text">Join us on December 2nd for a live webinar.</span> <a href="https://www.lambdatest.com/webinar/how-to-get-true-cross-browser-test-coverage-with-testCafe-and-lambdatest-webinar" target="_blank"><span>Register</span></a>
+    </div>
+  <div class="survey-banner-close-button"></div>
+</div>
+<script>
+  var wasWebinarBannerDismissed = window.localStorage.getItem(DECEMBER_2020_WEBINAR_BANNER_DISMISSED_FLAG);
+  var webinarOpenDate           = window.localStorage.getItem(DECEMBER_2020_WEBINAR_OPEN_DATE_FLAG);
+
+  if(!wasWebinarBannerDismissed && !webinarOpenDate) {
+      var surveyBanner      = document.querySelector('.survey-banner');
+      var surveyLink        = document.querySelector('.survey-banner a');
+      var surveyBannerClose = document.querySelector('.survey-banner-close-button');
+
+      function hideSurveyBanner() {
+          surveyBanner.className = surveyBanner.className += ' hidden';
+
+          var navExists = !!document.querySelector('.doc-nav');
+
+          if (!isMobileDevice && typeof updateNavMenuPosition !== 'undefined' && navExists)
+              updateNavMenuPosition();
+      }
+
+      surveyBanner.className = surveyBanner.className.replace(/hidden/,'');
+
+      surveyBannerClose.addEventListener('click', function () {
+          hideSurveyBanner();
+          window.localStorage.setItem(DECEMBER_2020_WEBINAR_BANNER_DISMISSED_FLAG, true);
+      });
+
+      surveyLink.addEventListener('click', function () {
+          hideSurveyBanner();
+      });
+  }
+</script>
+
 
 <script>
     var TEAM_BLOG_LAST_VISITED_FLAG = 'team-blog-last-visited';
@@ -393,7 +446,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1600894800 * 1000);
+        var lastPostDate = new Date(1605560400 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -2248,22 +2301,22 @@
 <tr>
 <td><code>url</code></td>
 <td>String</td>
-<td>The URL to which the request is sent.</td>
+<td>The URL of the resource.</td>
 </tr>
 <tr>
 <td><code>protocol</code></td>
 <td>String</td>
-<td>The protocol to use. Default: <em>http:</em>.</td>
+<td>The request protocol. Default: <em>http:</em>.</td>
 </tr>
 <tr>
 <td><code>hostname</code></td>
 <td>String</td>
-<td>The alias for the host.</td>
+<td>The domain name or IP address of the destination server. Default: <em>localhost</em>.</td>
 </tr>
 <tr>
 <td><code>host</code></td>
 <td>String</td>
-<td>The domain name or IP address of the server to issue the request to. Default: <em>localhost</em>.</td>
+<td>The domain name or IP address of the destination server, including the listening port. Default: <em>localhost:80</em>.</td>
 </tr>
 <tr>
 <td><code>port</code></td>
@@ -2273,22 +2326,27 @@
 <tr>
 <td><code>path</code></td>
 <td>String</td>
-<td>The request path. Should include query string if any. E.G. <em>&#39;/index.html?page=12&#39;</em>. An exception is thrown when the request path contains illegal characters. Currently, only spaces are rejected but that may change in the future. Default: <em>&#39;/&#39;</em>.</td>
+<td>The request path. Should include query string if any. For example, <em>&#39;/index.html?page=12&#39;</em>. An exception is thrown when the request path contains illegal characters (e.g., spaces). Default: <em>&#39;/&#39;</em>.</td>
 </tr>
 <tr>
 <td><code>method</code></td>
 <td>String</td>
-<td>The string specifying the HTTP request method. Default: <em>&#39;GET&#39;</em>.</td>
+<td>The HTTP request method. Default: <em>&#39;GET&#39;</em>.</td>
 </tr>
 <tr>
 <td><code>credentials</code></td>
 <td>Object</td>
-<td>Credentials that were used for authentication in the current session using NTLM or Basic authentication. For HTTP Basic authentication, these are <code>username</code> and <code>password</code>. NTLM authentication additionally specifies <code>workstation</code> and <code>domain</code>. See <a href="/testcafe/documentation/guides/advanced-guides/authentication.html#http-authentication">HTTP Authentication</a>.</td>
+<td>Credentials that were used for authentication in the current session with NTLM or Basic authentication. For HTTP Basic authentication, these are <code>username</code> and <code>password</code>. NTLM authentication additionally specifies <code>workstation</code> and <code>domain</code>. See <a href="/testcafe/documentation/guides/advanced-guides/authentication.html#http-authentication">HTTP Authentication</a>.</td>
 </tr>
 <tr>
 <td><code>proxy</code></td>
 <td>Object</td>
 <td>If a proxy is used, the property contains information about its <code>host</code>, <code>hostname</code>, <code>port</code>, <code>proxyAuth</code>, <code>authHeader</code> and <code>bypassRules</code>.</td>
+</tr>
+<tr>
+<td><code>isAjax</code></td>
+<td>Boolean</td>
+<td>Specifies whether the request is an AJAX request (xhr or fetch).</td>
 </tr>
 </tbody></table></div>
 
