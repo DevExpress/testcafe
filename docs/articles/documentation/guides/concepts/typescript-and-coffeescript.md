@@ -22,7 +22,7 @@ TestCafe bundles the TypeScript declaration file with the npm package, so you do
 
 To start writing tests with TypeScript, install TestCafe into your project directory. For more information, see [Install TestCafe](../basic-guides/install-testcafe.md#local-installation).
 
-If your autocompletion-capable text editor (e.g., VS Code, Sublime Text, WebStorm, etc.) does not auto-complete TestCafe keywords, `import` the TestCafe library in one of your tests. The following statement will help the text editor locate the TestCafe declaration file:
+If your text editor supports code completion (e.g., VSCode, Sublime Text, WebStorm, etc.) but does not auto-complete TestCafe keywords, it needs to be made aware of the TypeScript declarations that ship with TestCafe. Include the following `import` statement in one of your test files:
 
 ```js
 import { Selector } from 'testcafe';
@@ -33,7 +33,7 @@ import { Selector } from 'testcafe';
 ![Writing Tests with TypeScript](../../../images/typescript-support.png)
 
 
-The TestCafe syntax is identical for both JavaScript and TypeScript.
+The syntax of TestCafe is identical for both JavaScript and TypeScript.
 
 Whenever TestCafe encounters TypeScript compilation errors, it includes corresponding error messages in the test report.
 
