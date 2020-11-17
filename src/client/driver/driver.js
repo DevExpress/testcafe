@@ -762,6 +762,8 @@ export default class Driver extends serviceUtils.EventEmitter {
     }
 
     _handleChildWindowIsOpenedInIFrame () {
+        // NOTE: when the child window is opened in iframe we need to wait until the
+        // child window is fully loaded
         this._pendingChildWindowInIFrame = new Promise(resolve => {
             this._resolvePendingChildWindowInIframe = resolve;
         });

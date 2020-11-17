@@ -5,24 +5,7 @@
     <title>Frame</title>
 
     <script>
-        function createOverlay () {
-            var div = window.top.document.querySelector('div');
-
-            div.style.height   = 0;
-            div.style.overflow = 'hidden';
-
-            div = document.createElement('div');
-
-            div.style.position = 'fixed';
-            div.style.top      = 0;
-            div.style.bottom   = 0;
-            div.style.left     = 0;
-            div.style.right    = 0;
-
-            div.style.backgroundColor = 'red';
-
-            // window.top.document.body.appendChild(div);
-
+        function hideIframe () {
             var iframe = window.top.document.querySelector('iframe');
 
             iframe.style.visibility = 'hidden';
@@ -30,7 +13,7 @@
     </script>
 </head>
 <body>
-    <a onclick="createOverlay()" href="./child.html" target="_blank">open window</a>
+    <a onclick="hideIframe()" href="./child.html" target="_blank">open window</a>
 
     <button>frame</button>
 </body>
