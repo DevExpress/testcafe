@@ -301,13 +301,22 @@ describe('Multiple windows', () => {
 
     describe('Emulation', () => {
         it('Should resize window when emulating device', async () => {
-            const failedCount = await testCafe
-                .createRunner()
-                .src(path.join(__dirname, './testcafe-fixtures/features/emulation.js'))
-                .browsers('chrome:emulation:device=iphone X')
-                .run();
+            return createTestCafe('127.0.0.1', 1335, 1336)
+                .then(tc => {
+                    testCafe = tc;
+                })
+                .then(() => {
+                    return testCafe
+                        .createRunner()
+                        .src(path.join(__dirname, './testcafe-fixtures/features/emulation.js'))
+                        .browsers('chrome:emulation:device=iphone X')
+                        .run();
+                })
+                .then(failedCount => {
+                    expect(failedCount).eql(0);
 
-            expect(failedCount).eql(0);
+                    return testCafe.close();
+                });
         });
     });
 });
