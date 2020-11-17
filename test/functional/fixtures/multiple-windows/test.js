@@ -298,4 +298,16 @@ describe('Multiple windows', () => {
             return runTests('testcafe-fixtures/api/api-test.js', 'Maximize multiple windows', { only: 'chrome' });
         });
     });
+
+    describe('Emulation', () => {
+        it('Should resize window when emulating device', async () => {
+            const failedCount = await testCafe
+                .createRunner()
+                .src(path.join(__dirname, './testcafe-fixtures/features/emulation.js'))
+                .browsers('chrome:emulation:device=iphone X')
+                .run();
+
+            expect(failedCount).eql(0);
+        });
+    });
 });
