@@ -1,3 +1,6 @@
+.survey-banner:not(.hidden) ~ .doc-top-nav + .container {
+  padding-top: 107px; }
+
 .doc-top-nav {
   display: block;
   position: fixed;
