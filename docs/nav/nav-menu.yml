@@ -63,6 +63,8 @@
       url: /documentation/guides/continuous-integration/bitbucket-pipelines.md
     - name: CircleCI
       url: /documentation/guides/continuous-integration/circleci.md
+    - name: CircleCI + LambdaTest
+      url: /documentation/guides/continuous-integration/circleci-and-lambdatest.md
     - name: GitHub Actions
       url: /documentation/guides/continuous-integration/github-actions.md
     - name: GitHub Actions + BrowserStack
