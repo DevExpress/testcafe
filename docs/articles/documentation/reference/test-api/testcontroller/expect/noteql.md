@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/expect/noteql.html
 Assert that `actual` is not equal to `value`.
 
 ```text
-await t.expect(actual).notEql(value, message, options) → this | Promise<unknown>
+t.expect(actual).notEql(value, message, options) → this | Promise<unknown>
 ```
 
 Parameter              | Type                                              | Description

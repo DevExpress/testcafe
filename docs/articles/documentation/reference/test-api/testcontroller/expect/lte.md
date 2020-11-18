@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/expect/lte.html
 Asserts that `actual` is less than or equal to `expected`.
 
 ```text
-await t.expect(actual).lte(expected, message, options) → this | Promise<unknown>
+t.expect(actual).lte(expected, message, options) → this | Promise<unknown>
 ```
 
 Parameter              | Type                                              | Description
