@@ -27,11 +27,9 @@ test('My Test', async t => {
 });
 ```
 
-> Important! `eval` returns a promise-wrapped value instead of a local context. You cannot chain other methods of the test controller after `eval`.
+> Important! Always place `eval` in a separate call.
 >
-> Do not chain `eval` on to other methods of the test controller.
->
-> Always place `eval` in a separate call.
+> `eval` returns a promise-wrapped value instead of a local context so you cannot chain other methods of the test controller after `eval`. If you chain `eval` on to other methods of the test controller, their promises don't ever resolve which breaks the execution order.
 
 ```js
 fixture `My fixture`
