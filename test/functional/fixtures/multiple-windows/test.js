@@ -304,7 +304,7 @@ describe('Multiple windows', () => {
             return runTests('testcafe-fixtures/iframe.js', 'Open child window if iframe', { only: 'chrome' });
         });
     });
-    
+
     describe('Emulation', () => {
         it('Should resize window when emulating device', async () => {
             return createTestCafe('127.0.0.1', 1335, 1336)
