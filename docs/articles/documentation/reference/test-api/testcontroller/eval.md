@@ -27,9 +27,34 @@ test('My Test', async t => {
 });
 ```
 
-> Important! Since `eval` returns a promise-wrapped value instead of a local context, you cannot chain other methods of the test controller after `eval`.
+> Important! `eval` returns a promise-wrapped value instead of a local context. You cannot chain other methods of the test controller after `eval`.
+>
+> Do not chain `eval` on to other methods of the test controller.
 >
 > Always place `eval` in a separate call.
+
+```js
+fixture `My fixture`
+    .page `https://devexpress.github.io/testcafe/example/`
+
+const timeout = 1000;
+
+test ('My Test', async t => {
+
+    await t
+    .wait(timeout)
+    .eval(() => location.reload(true));
+    // The timeout is skipped and the action executes right away.
+    // Do not chain eval on to other methods of the test controller
+});
+
+test ('My Test', async t => {
+
+    await t.wait(timeout);
+    await t.eval(() => location.reload(true));
+    // Passes after a timeout
+});
+```
 
 ## Options
 
