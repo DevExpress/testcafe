@@ -5,9 +5,226 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 17 Nov 2020 15:43:44 +0300</pubDate>
-    <lastBuildDate>Tue, 17 Nov 2020 15:43:44 +0300</lastBuildDate>
+    <pubDate>Wed, 18 Nov 2020 13:49:58 +0300</pubDate>
+    <lastBuildDate>Wed, 18 Nov 2020 13:49:58 +0300</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>Client Functions and Script Injection for Page Interaction</title>
+        <description>&lt;h1&gt;Client Functions and Script Injection for Page Interaction&lt;/h1&gt;
+&lt;p&gt;&lt;em&gt;You will learn how to run custom JavaScript code on the tested pages, how to use objects like the page model in this code, how to wait for an arbitrary event in the browser, and the fastest way to run a one-liner or an entire JS module.&lt;/em&gt;&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;End-to-end tests emulate how users interact with the application. In theory, this interaction consists of simple actions like a mouse click on an element, a key press, drag-and-drop, or file upload. The TestCafe API allows you to perform these basic actions with a single line of code. However, real-world applications tend to be more complicated than a static entry form. Some applications cannot be tested without closer interaction with tested pages. In this article, we review several examples and show how knowledge of TestCafe&amp;#39;s internal architecture allows you to test complex or poorly designed pages with the help of client functions and script injection.&lt;/p&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;use-client-functions-to-run-code-in-the-browser&quot;&gt;&lt;/a&gt;Use Client Functions to Run Code in the Browser &lt;a class=&quot;permalink&quot; href=&quot;#use-client-functions-to-run-code-in-the-browser&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Let&amp;#39;s assume you need to click an element, but another element on the same page overlaps the first one due to design or implementation choices. If you simply call &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/click.html&quot;&gt;t.click&lt;/a&gt;, TestCafe waits for the target element to appear in the foreground. When a predefined timeout expires, TestCafe will eventually click the overlapping element. If the test author intended this click, the test completes successfully. However, the entire timeout period is wasted on aimless waiting. You can hide the overlapping element and avoid this pause if you run the following code:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Hide element&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;    &lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;hideElement&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ClientFunction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;        &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;querySelector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#id&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;display&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;none&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt; &lt;/span&gt; 
+&lt;span class=&quot;err&quot;&gt;    &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;hideElement&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt; &lt;/span&gt; 
+&lt;span class=&quot;err&quot;&gt;    &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#id&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;visible&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;notOk&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You may also want to update that code and store the element ID in a variable:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Hide element&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;elementId&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#id&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;hideElement&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ClientFunction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;       &lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;querySelector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;elementId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;display&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;none&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt; &lt;/span&gt; 
+&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;hideElement&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt; &lt;/span&gt; 
+&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;elementId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;visible&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;notOk&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;A variable is a good idea and it can be used, but not in this manner. The test above would fail with an error:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;My Fixture
+ × Hide element
+
+   1) An error occurred in ClientFunction code:
+
+      ReferenceError: elementId is not defined
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;On the surface, your JavaScript programming experience may tell you that the test is fine. Let&amp;#39;s look into TestCafe&amp;#39;s underlying mechanisms in greater detail to see why the test fails.&lt;/p&gt;
+&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;under-the-hood&quot;&gt;&lt;/a&gt;Under the Hood &lt;a class=&quot;permalink&quot; href=&quot;#under-the-hood&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;The TestCafe framework is based on a client-server architecture. The test code runs in a Node.js process (server) and uses a proxy server to interact with the browser (client).&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../../images/testcafe-nodejs-process.svg&quot; alt=&quot;TestCafe's client-server architecture&quot; title=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;Considering this fact, you can expect that:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The test code has no direct access to the browser context.&lt;/li&gt;
+&lt;li&gt;TestCafe interacts with the browser asynchronously (which is why missing &lt;code&gt;await&lt;/code&gt; issues are often posted in GitHub and StackOverflow).&lt;/li&gt;
+&lt;li&gt;The server-side TestCafe process and the client-side browser can only exchange serialized data.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;We can simplify TestCafe&amp;#39;s client-server interactions as follows:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;On the server, the TestCafe API exposes methods that execute actions and user code in the browser. When the API is triggered, TestCafe creates commands and passes them to the proxy: TestCafe Hammerhead.&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;TestCafe Hammerhead transmits commands from the server to the browser and sends back the results when they are ready.&lt;/li&gt;
+&lt;li&gt;On the client, TestCafe scripts receive these commands and execute them in the same way the browser handles user actions.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;pass-variables-to-client-functions&quot;&gt;&lt;/a&gt;Pass Variables to Client Functions &lt;a class=&quot;permalink&quot; href=&quot;#pass-variables-to-client-functions&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;em&gt;Create parameterized functions or use page model properties on the client side.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Let&amp;#39;s get back to our code that tries and fails to introduce a variable.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Hide element&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;elementId&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#id&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt; 
+&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;hideElement&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ClientFunction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;       &lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;querySelector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;elementId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;display&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;none&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt; &lt;/span&gt; 
+&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;hideElement&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt; &lt;/span&gt; 
+&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;elementId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;visible&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;notOk&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This function has to be executed in the browser. As we mentioned earlier, only serialized data can travel between the client and the server. This is why TestCafe serializes this function (i.e., converts it to a string). This string is then evaluated when received on the browser side. You can now see why closures do not work for client functions.&lt;/p&gt;
+
+&lt;p&gt;What&amp;#39;s the solution then? Before TestCafe converts the function to a string, a separate serializer module processes arguments passed to &lt;code&gt;ClientFunction()&lt;/code&gt;. This is the same module that serializes all data that travel between the client and the server. This means that you can easily pass parameters to the client function and they arrive safely.&lt;/p&gt;
+
+&lt;p&gt;In addition, you can also find the &lt;code&gt;dependencies&lt;/code&gt; property among the options that can be passed to the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/clientfunction/constructor.html&quot;&gt;ClientFunction&lt;/a&gt; constructor.&lt;/p&gt;
+
+&lt;p&gt;TestCafe offers two options to access variables declared in test code.&lt;/p&gt;
+
+&lt;p&gt;The first option is to pass the variable as an argument:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Hide element&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;elementId&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#id&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt; &lt;/span&gt; 
+&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;hideElement&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ClientFunction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;targetId&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;       &lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;querySelector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;targetId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;display&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;none&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt; &lt;/span&gt; 
+&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;hideElement&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;elementId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt; &lt;/span&gt; 
+&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;elementId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;visible&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;notOk&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;But what if the element has no ID, so that it&amp;#39;s not easy to find in the DOM tree? The second option is to pass a selector to the client function. Use the &lt;code&gt;dependencies&lt;/code&gt; option in the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/clientfunction/constructor.html&quot;&gt;ClientFunction&lt;/a&gt; constructor:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Hide element&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;elementSelector&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#populate&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt; &lt;/span&gt; 
+&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;hideElement&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ClientFunction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;       &lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;elementSelector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;display&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;none&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;dependencies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;elementSelector&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt; &lt;/span&gt; 
+&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;hideElement&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt; &lt;/span&gt; 
+&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;elementSelector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;visible&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;notOk&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Note that client functions and selectors have a lot in common. Methods that create and run selectors derive from similar methods of client functions. To execute a complex selector query, you can pass a function to the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/selector/constructor.html&quot;&gt;Selector&lt;/a&gt; constructor, as you do for client functions. The main difference between them is the return type. Selectors should return &lt;code&gt;DOMNode&lt;/code&gt;, while client functions should return any serializable value, or a Promise that resolves to such value.&lt;/p&gt;
+&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;wait-for-a-custom-condition&quot;&gt;&lt;/a&gt;Wait for a Custom Condition &lt;a class=&quot;permalink&quot; href=&quot;#wait-for-a-custom-condition&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;em&gt;You can specify when TestCafe considers a page loaded.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Now let&amp;#39;s see why you may want a client function to return a Promise.&lt;/p&gt;
+
+&lt;p&gt;TestCafe is designed to wait for the &lt;code&gt;DOMContentLoaded&lt;/code&gt; and &lt;code&gt;load&lt;/code&gt; events, as well as XHR requests (allowing three seconds for the latter), before tests begin. In rare instances, the wait time may be over before all scripts on the page are initialized. The following client function pauses the test until a custom condition is fulfilled (you can replace it with your own script completion indicator).&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Wait for scripts&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;waitForScripts&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ClientFunction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;waitTimeout&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;       &lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;checkCondition&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;c1&quot;&gt;// Replace this line with a custom condition.&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;           &lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;       &lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;err&quot;&gt;       &lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Promise&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;resolve&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;reject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;           &lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;timeout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;interval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;err&quot;&gt;           &lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;timeout&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;setTimeout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;               &lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;clearInterval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;interval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;               &lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;reject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Timeout is exceeded.&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;           &lt;/span&gt; &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;waitTimeout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;err&quot;&gt;           &lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;interval&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;setInterval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;               &lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;checkCondition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;                   &lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;clearTimeout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;timeout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;                   &lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;clearInterval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;interval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;                   &lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;resolve&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;               &lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;           &lt;/span&gt; &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;       &lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+
+&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;waitForScripts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Even if a browser does not support Promises, this client function still works because TestCafe automatically adds the necessary polyfills when it processes this code.&lt;/p&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;inject-scripts-to-add-code-permanently&quot;&gt;&lt;/a&gt;Inject Scripts to Add Code Permanently &lt;a class=&quot;permalink&quot; href=&quot;#inject-scripts-to-add-code-permanently&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Client functions are useful to interact with the tested page when necessary. You can even run a client function without saving it to a variable. However, everything you change in this function on the tested page is reverted once a redirect or page reload occurs. To modify the page permanently, inject client scripts into the tested page. The injected scripts are added to the &lt;code&gt;&amp;lt;head&amp;gt;&lt;/code&gt; tag.&lt;/p&gt;
+&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;scripts-that-persist-throughout-testing&quot;&gt;&lt;/a&gt;Scripts that Persist Throughout Testing &lt;a class=&quot;permalink&quot; href=&quot;#scripts-that-persist-throughout-testing&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Should you need to hide a banner, or modify an attribute for some element, you can organize client code that does it in a separate file:&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;script.js&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;DOMContentLoaded&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;    &lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;element&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;querySelector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;your-selector&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;err&quot;&gt;    &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;element&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;setAttribute&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;foo-bar&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;baz&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Next, use your favorite API to attach this file in all tests (which eliminates repetitive &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/fixture/beforeeach.html&quot;&gt;beforeEach&lt;/a&gt; hooks):&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Command Line Interface&lt;/em&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome test.js &lt;span class=&quot;nt&quot;&gt;--client-scripts&lt;/span&gt; script.js
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;em&gt;API&lt;/em&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;clientScripts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;script.js&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;em&gt;Configuration file&lt;/em&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;  
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;clientScripts&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;script.js&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;injected-scripts-run-first&quot;&gt;&lt;/a&gt;Injected Scripts Run First &lt;a class=&quot;permalink&quot; href=&quot;#injected-scripts-run-first&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;TestCafe adds the injected scripts to its automation code, so that they run before any other script on the page. You can therefore use injected scripts to alter the page behavior. For instance, you can override the &lt;code&gt;window.open&lt;/code&gt; method for all tests as follows:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;mockWindowOpen&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;window.open = function () { };&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`My App`&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`https://devexpress.github.io/testcafe/example/`&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;clientScripts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;na&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;mockWindowOpen&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;My test 1&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;async&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;/* ... */&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;My test 2&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;async&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;/* ... */&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Your code remains almost unchanged. TestCafe only wraps it to catch exceptions.&lt;/p&gt;
+&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;checking-other-head-scripts-for-errors&quot;&gt;&lt;/a&gt;Checking Other &amp;lt;head&amp;gt; Scripts for Errors &lt;a class=&quot;permalink&quot; href=&quot;#checking-other-head-scripts-for-errors&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Due to their location inside the &lt;code&gt;&amp;lt;head&amp;gt;&lt;/code&gt; tags, injected scripts also allow you to access information that is not obtainable by other means.&lt;/p&gt;
+
+&lt;p&gt;Consider a scenario where you need to obtain unhandled exceptions thrown in another script in the &lt;code&gt;&amp;lt;head&amp;gt;&lt;/code&gt; section. The TestCafe API contains the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/getbrowserconsolemessages.html&quot;&gt;t.getBrowserConsoleMessages&lt;/a&gt; method that returns messages printed in the console. However, this method can only access messages posted by the &lt;code&gt;console.log&lt;/code&gt;, &lt;code&gt;console.warn&lt;/code&gt;, and &lt;code&gt;console.error&lt;/code&gt; methods in page code. The &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/getbrowserconsolemessages.html&quot;&gt;t.getBrowserConsoleMessages&lt;/a&gt; method does not fetch errors thrown by the browser. You could try to use a client function to catch the exception, but client functions are executed after all &lt;code&gt;&amp;lt;head&amp;gt;&lt;/code&gt; scripts are completed.&lt;/p&gt;
+
+&lt;p&gt;With script injection, you can add the following code:&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;script.js&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;unhandledErrors&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[];&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;onerror&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;    &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;unhandledErrors&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;In test code, you can create a client function to access messages in &lt;code&gt;window.unhandledErrors&lt;/code&gt;:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Get Unhandled Errors&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;errors&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;await&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;eval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(()&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;unhandledErrors&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;clientScripts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;script.js&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;conclusion&quot;&gt;&lt;/a&gt;Conclusion &lt;a class=&quot;permalink&quot; href=&quot;#conclusion&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Client functions and script injection extend TestCafe&amp;#39;s capabilities so that you can interact with the page directly. These features can configure your application at low levels to prepare it for testing, or fetch data about its execution in a custom manner. You can think of even more ways to use client functions and injected scripts. We hope this brief overview of the TestCafe architecture and sample usage scenarios help improve your understanding of these tools so that you can use them more effectively.&lt;/p&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;related-topics&quot;&gt;&lt;/a&gt;Related Topics &lt;a class=&quot;permalink&quot; href=&quot;#related-topics&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/inject-client-scripts.html&quot;&gt;Inject Client Scripts&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/basic-guides/obtain-client-side-info.html&quot;&gt;Obtain Client-Side Info&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/basic-guides/select-page-elements.html&quot;&gt;Select Page Elements&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Wed, 18 Nov 2020 00:00:00 +0300</pubDate>
+        <link>https://devexpress.github.io/testcafe/media/team-blog/client-functions-and-script-injection-for-page-interaction.html</link>
+        <guid isPermaLink="true">https://devexpress.github.io/testcafe/media/team-blog/client-functions-and-script-injection-for-page-interaction.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>Upcoming Webinar: How to Get True Cross-Browser Test Coverage with TestCafe and LambdaTest</title>
@@ -1057,77 +1274,6 @@ Yes, if test actions on the page trigger file download, the browser will downloa
         <pubDate>Tue, 14 Jul 2020 00:00:00 +0300</pubDate>
         <link>https://devexpress.github.io/testcafe/media/team-blog/10-ways-to-simplify-your-ui-testing.html</link>
         <guid isPermaLink="true">https://devexpress.github.io/testcafe/media/team-blog/10-ways-to-simplify-your-ui-testing.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>How to Speed up Debugging in TestCafe: Tips and Tricks</title>
-        <description>&lt;h1&gt;How to Speed up Debugging in TestCafe: Tips and Tricks&lt;/h1&gt;
-&lt;p&gt;In the previous post, we talked about the approaches you can follow to debug TestCafe tests. In this post, we will focus on best practices that help you save time while debugging.  We will also mention a few things to keep in mind in order to write easy-to-debug tests.&lt;/p&gt;
-
-&lt;!--more--&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;tips-on-how-to-debug-tests&quot;&gt;&lt;/a&gt;Tips on how to debug tests &lt;a class=&quot;permalink&quot; href=&quot;#tips-on-how-to-debug-tests&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;If you know which test throws an error, run this test separately.&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;If you only need to check one test, do not wait until all tests pass. TestCafe can run any single test separately. Add the &lt;a href=&quot;../../documentation/reference/command-line-interface.html#-t-name---test-name&quot;&gt;--test shell argument&lt;/a&gt; or use the &lt;a href=&quot;../../documentation/reference/test-api/test/only.html&quot;&gt;test.only&lt;/a&gt; method in test code. (Be sure to remove &lt;code&gt;.only&lt;/code&gt; before you commit changes.)&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome ./tests &lt;span class=&quot;nt&quot;&gt;--test&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;My test name&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;My first test&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;cm&quot;&gt;/* ... */&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;only&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;strong&gt;Use live mode when you edit tests.&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;If you find yourself running a test repeatedly while you write or debug it, try live mode. In this mode, TestCafe watches the test file and restarts the test automatically after you save changes. To enable live mode, run the test with the &lt;a href=&quot;../../documentation/reference/command-line-interface.html#-l---live&quot;&gt;--live flag&lt;/a&gt;.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome ./tests &lt;span class=&quot;nt&quot;&gt;--live&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;strong&gt;To identify an issue visually, decrease the test speed.&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;By default, tests are executed at full speed – with minimum delays between actions and assertions. This makes it difficult to identify problems visually during a test run. To slow the test down, use the &lt;a href=&quot;../../documentation/reference/command-line-interface.html#--speed-factor&quot;&gt;--speed flag&lt;/a&gt;. The argument value is between &lt;code&gt;1&lt;/code&gt; (fastest) and &lt;code&gt;0.01&lt;/code&gt; (slowest).&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome ./tests &lt;span class=&quot;nt&quot;&gt;--speed&lt;/span&gt; 0.1
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;strong&gt;Use TestCafe Studio to determine why a selector does not work.&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;TestCafe may report that a selector does not return any element, although you have written it correctly. The reason may be an invisible DOM element that matches the same selector expression. To get a better understanding of the issue, record a similar test in TestCafe Studio and compare your selector to the selector that is generated.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;If a test fails on CI, use screenshots and videos to clarify the reason.&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;You do not have to run a test locally to determine the reason why a test fails on CI. TestCafe can take a screenshot when the test fails and record a video of the test run. To enable screenshots and video recording, use the &lt;a href=&quot;../../documentation/reference/command-line-interface.html#-s---screenshots-on-fails&quot;&gt;--screenshots-on-fail&lt;/a&gt; and &lt;a href=&quot;../../documentation/reference/command-line-interface.html#--video-basepath&quot;&gt;--video&lt;/a&gt; CLI options. See the following help topic for details: &lt;a href=&quot;../../documentation/guides/advanced-guides/screenshots-and-videos.html&quot;&gt;Screenshots and Videos&lt;/a&gt;.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;tips-on-how-to-write-tests-that-are-easy-to-debug&quot;&gt;&lt;/a&gt;Tips on how to write tests that are easy to debug &lt;a class=&quot;permalink&quot; href=&quot;#tips-on-how-to-write-tests-that-are-easy-to-debug&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Tests should be easy to run locally.&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;If it is difficult to run a test locally, developers are likely to delay test fixes, so that they turn &amp;#39;green&amp;#39; only shortly before the release. These delays may complicate the debug process.&lt;/p&gt;
-
-&lt;p&gt;Developers can easily reproduce test scenarios locally and maintain &amp;#39;green&amp;#39; tests if the following is true:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Tests are isolated from each other.&lt;/li&gt;
-&lt;li&gt;The workstation environment is similar to the test environment.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Ideally, a developer must be able to run any test locally with a single command, which requires the following:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;The product test build is easy to run in a Docker container (or by another approach that emulates the test environment).&lt;/li&gt;
-&lt;li&gt;Test data is seeded in test code (for example, within the &lt;code&gt;before&lt;/code&gt; and &lt;code&gt;after&lt;/code&gt; hooks).&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;Tests should be independent.&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;If subsequent tests use data produced by previous tests, you can expect the following two issues:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;When a previous test fails, all dependent tests will also fail.&lt;/li&gt;
-&lt;li&gt;You cannot debug a test until all previous tests are complete.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;To simplify debugging in the future, be sure to avoid dependencies between tests.&lt;/p&gt;
-
-&lt;p&gt;For more best practice tips, see the following help topic: &lt;a href=&quot;https://devexpress.github.io/testcafe/media/team-blog/how-to-scroll-web-pages-using-testcafe.html&quot;&gt;How to Scroll Web Pages Using TestCafe&lt;/a&gt;.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 30 Jun 2020 00:00:00 +0300</pubDate>
-        <link>https://devexpress.github.io/testcafe/media/team-blog/how-to-speed-up-debugging-in-testcafe-tips-and-tricks.html</link>
-        <guid isPermaLink="true">https://devexpress.github.io/testcafe/media/team-blog/how-to-speed-up-debugging-in-testcafe-tips-and-tricks.html</guid>
         
         
       </item>
