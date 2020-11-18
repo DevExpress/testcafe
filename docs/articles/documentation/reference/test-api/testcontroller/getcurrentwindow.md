@@ -9,7 +9,7 @@ permalink: /documentation/reference/test-api/testcontroller/getcurrentwindow.htm
 Retrieves a window descriptor that corresponds to the active window. Can be chained with other `TestController` methods.
 
 ```text
-t.getCurrentWindow() → Object
+t.getCurrentWindow() → this | Promise<unknown>
 ```
 
 ## Example
