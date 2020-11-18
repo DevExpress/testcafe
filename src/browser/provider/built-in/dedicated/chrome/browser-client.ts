@@ -5,6 +5,7 @@ import os from 'os';
 import remoteChrome from 'chrome-remote-interface';
 import debug from 'debug';
 import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../../utils/client-functions';
+import WARNING_MESSAGE from '../../../../../notifications/warning-message';
 
 import {
     Config,
@@ -12,7 +13,10 @@ import {
     TouchConfigOptions,
     Size
 } from './interfaces';
+import debug from 'debug';
+import { elapsed, elapsedInSeconds } from '../../../../../utils/elapsed';
 
+const DEBUG_SCOPE = (id: string): string => `testcafe:browser:provider:built-in:chrome:browser-client:${id}`;
 const DOWNLOADS_DIR = path.join(os.homedir(), 'Downloads');
 
 const debugLog = debug('testcafe:browser:provider:built-in:dedicated:chrome');
@@ -21,9 +25,11 @@ export class BrowserClient {
     private _clients: Dictionary<remoteChrome.ProtocolApi> = {};
     private _runtimeInfo: RuntimeInfo;
     private _parentTarget?: remoteChrome.TargetInfo;
+    private readonly debugLogger: debug.Debugger;
 
     public constructor (runtimeInfo: RuntimeInfo) {
         this._runtimeInfo = runtimeInfo;
+        this.debugLogger  = debug(DEBUG_SCOPE(runtimeInfo.browserId));
 
         runtimeInfo.browserClient = this;
     }
@@ -58,7 +64,16 @@ export class BrowserClient {
 
         this._clients[this._clientKey] = client;
 
+        const timePretty = elapsed();
+        const timeInSec  = elapsedInSeconds();
+
         await Page.enable();
+
+        this.debugLogger(`Page.enable took ${timePretty()}`);
+
+        if (timeInSec() > 60)
+            this._runtimeInfo.providerMethods.reportWarning(WARNING_MESSAGE.browserProviderDropOfPerformance, this._runtimeInfo.browserName);
+
         await Network.enable({});
         await Runtime.enable();
 
@@ -74,6 +89,9 @@ export class BrowserClient {
     }
 
     private async _setDeviceMetricsOverride (client: remoteChrome.ProtocolApi, width: number, height: number, deviceScaleFactor: number, mobile: boolean): Promise<void> {
+        const timePretty = elapsed();
+        const timeInSec  = elapsedInSeconds();
+
         await client.Emulation.setDeviceMetricsOverride({
             width,
             height,
@@ -82,6 +100,11 @@ export class BrowserClient {
             // @ts-ignore
             fitWindow: false
         });
+
+        this.debugLogger(`Emulation.setDeviceMetricsOverride took ${timePretty()}`);
+
+        if (timeInSec() > 30)
+            this._runtimeInfo.providerMethods.reportWarning(WARNING_MESSAGE.browserProviderDropOfPerformance, this._runtimeInfo.browserName);
     }
 
     private async _setUserAgentEmulation (client: remoteChrome.ProtocolApi): Promise<void> {
@@ -158,7 +181,15 @@ export class BrowserClient {
         if (client && config.emulation) {
             await this._setDeviceMetricsOverride(client, viewportSize.width, viewportSize.height, emulatedDevicePixelRatio, config.mobile);
 
+            const timePretty = elapsed();
+            const timeInSec  = elapsedInSeconds();
+
             await client.Emulation.setVisibleSize({ width: viewportSize.width, height: viewportSize.height });
+
+            this.debugLogger(`Emulation.setVisibleSize took ${timePretty()}`);
+
+            if (timeInSec() > 30)
+                this._runtimeInfo.providerMethods.reportWarning(WARNING_MESSAGE.browserProviderDropOfPerformance, this._runtimeInfo.browserName);
         }
     }
 

@@ -5,6 +5,8 @@ import { getCallsiteForMethod } from '../get-callsite';
 import renderTemplate from '../../utils/render-template';
 import renderCallsiteSync from '../../utils/render-callsite-sync';
 import { RUNTIME_ERRORS } from '../types';
+import BrowserConnectionStatus from '../../browser/connection/status';
+import WarningLog from '../../notifications/warning-log';
 
 const ERROR_SEPARATOR = '\n\n';
 
@@ -127,5 +129,26 @@ export class ReporterPluginError extends GeneralError {
 export class TimeoutError extends GeneralError {
     constructor () {
         super(RUNTIME_ERRORS.timeLimitedPromiseTimeoutExpired);
+    }
+}
+
+export class BrowserConnectionError extends GeneralError {
+    constructor (originalError, connections) {
+        const code = RUNTIME_ERRORS.browserConnectionError;
+
+        const numOfConnections       = connections.length;
+        const numofOpenedConnections = connections.filter(bc => bc.status === BrowserConnectionStatus.opened).length;
+
+        const warningLog = new WarningLog();
+
+        for (const connection of connections)
+            connection.warningLog.copyTo(warningLog);
+
+        let warnings = '';
+
+        if (warningLog.messages.length > 0)
+            warnings += `\nWarnings:\n${warningLog.messages.join('\n')}`;
+
+        super(code, originalError.message, numofOpenedConnections, numOfConnections, warnings);
     }
 }

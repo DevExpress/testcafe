@@ -11,7 +11,6 @@ const createTestCafe          = require('../../lib/');
 const COMMAND                 = require('../../lib/browser/connection/command');
 const Task                    = require('../../lib/runner/task');
 const BrowserConnection       = require('../../lib/browser/connection');
-const BrowserSet              = require('../../lib/runner/browser-set');
 const browserProviderPool     = require('../../lib/browser/provider/pool');
 const delay                   = require('../../lib/utils/delay');
 const OptionNames             = require('../../lib/configuration/option-names');
@@ -652,10 +651,10 @@ describe('Runner', () => {
                 });
         });
 
-        it('Should raise an error if the browser connections are not ready', function () {
-            const origGetReadyTimeout = BrowserSet.prototype._getReadyTimeout;
+        it('Should raise an error if the browser connections are not opened', function () {
+            const origGetOpenedTimeout = BrowserConnection.prototype.getOpenedTimeout;
 
-            BrowserSet.prototype._getReadyTimeout = () => {
+            BrowserConnection.prototype.getOpenedTimeout = () => {
                 return Promise.resolve(100);
             };
 
@@ -663,7 +662,7 @@ describe('Runner', () => {
             const testCallback = this.test.callback;
 
             this.test.callback = err => {
-                BrowserSet.prototype._getReadyTimeout       = origGetReadyTimeout;
+                BrowserConnection.prototype.getOpenedTimeout = origGetOpenedTimeout;
                 testCallback(err);
             };
 
@@ -680,10 +679,11 @@ describe('Runner', () => {
                     throw new Error('Promise rejection expected');
                 })
                 .catch(err => {
-                    BrowserSet.prototype._getReadyTimeout = origGetReadyTimeout;
+                    BrowserConnection.prototype.getOpenedTimeout = origGetOpenedTimeout;
 
                     expect(err.message).eql('Unable to establish one or more of the specified browser connections. ' +
-                                            'This can be caused by network issues or remote device failure.');
+                                            'This can be caused by network issues or remote device failure.\n' +
+                                            '0 of the total 1 browser connections have established.\n\n');
                 });
         });
 
@@ -702,7 +702,8 @@ describe('Runner', () => {
                             })
                             .catch(err => {
                                 expect(err.message).eql('The following browsers disconnected: ' +
-                                                        'Chrome 41.0.2227.1 / macOS 10.10.1. Tests will not be run.');
+                                                        'Chrome 41.0.2227.1 / macOS 10.10.1. Tests will not be run.\n' +
+                                                        '0 of the total 1 browser connections have established.\n\n');
                             })
                             .then(done)
                             .catch(done);
@@ -748,7 +749,8 @@ describe('Runner', () => {
                 .catch(err => {
                     expect(err.message).eql('The Chrome 41.0.2227.1 / macOS 10.10.1 browser disconnected. ' +
                                             'This problem may appear when a browser hangs or is closed, ' +
-                                            'or due to network issues.');
+                                            'or due to network issues.\n' +
+                                            '0 of the total 2 browser connections have established.\n\n');
                 });
         });
 
@@ -1222,5 +1224,40 @@ describe('Runner', () => {
         expect(runner.configuration.getOption('src')).eql(['/path-to-test']);
         expect(runner.configuration.getOption('browsers')).eql(['ie']);
         expect(runner.configuration.getOption('reporter')).eql([ { name: 'json', output: void 0 } ]);
+    });
+
+    it('Browser connection error message should include warnings from browser providers', () => {
+        const warningProvider = {
+            openBrowser (browserId, _, browserName) {
+                this.reportWarning(browserId, `some warning from "${browserName}"`);
+
+                const currentConnection = BrowserConnection.getById(browserId);
+
+                currentConnection.emit('error', new Error('I have failed :('));
+
+                return Promise.resolve();
+            },
+
+            closeBrowser () {
+                return Promise.resolve();
+            }
+        };
+
+        browserProviderPool.addProvider('warningProvider', warningProvider);
+
+        return runner
+            .src('./test/server/data/test-suites/basic/testfile1.js')
+            .browsers(['warningProvider:browser-alias1', 'warningProvider:browser-alias2'])
+            .run()
+            .catch(err => {
+                expect(err.message).eql('I have failed :(\n' +
+                                        '0 of the total 2 browser connections have established.\n\n' +
+                                        'Warnings:\n' +
+                                        'some warning from "browser-alias1"\n' +
+                                        'some warning from "browser-alias2"\n');
+            })
+            .finally(() => {
+                browserProviderPool.removeProvider('warningProvider');
+            });
     });
 });

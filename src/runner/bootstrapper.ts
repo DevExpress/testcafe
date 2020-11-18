@@ -9,6 +9,7 @@ import {
 
 import makeDir from 'make-dir';
 import OS from 'os-family';
+import debug from 'debug';
 import { errors, findWindow } from 'testcafe-browser-tools';
 import authenticationHelper from '../cli/authentication-helper';
 import Compiler from '../compiler';
@@ -35,6 +36,9 @@ import { Metadata } from '../api/structure/interfaces';
 import Test from '../api/structure/test';
 import detectDisplay from '../utils/detect-display';
 import { getPluginFactory, processReporterName } from '../utils/reporter';
+import { elapsed } from '../utils/elapsed';
+
+const DEBUG_SCOPE = 'testcafe:bootstrapper';
 
 type TestSource = unknown;
 
@@ -97,6 +101,7 @@ export default class Bootstrapper {
     public compilerOptions?: CompilerOptions;
 
     private readonly compilerService?: CompilerService;
+    private readonly debugLogger: debug.Debugger;
 
     public constructor (browserConnectionGateway: BrowserConnectionGateway, compilerService?: CompilerService) {
         this.browserConnectionGateway = browserConnectionGateway;
@@ -111,6 +116,7 @@ export default class Bootstrapper {
         this.clientScripts            = [];
         this.disableMultipleWindows   = false;
         this.compilerOptions          = void 0;
+        this.debugLogger              = debug(DEBUG_SCOPE);
 
         this.compilerService = compilerService;
     }
@@ -212,7 +218,7 @@ export default class Bootstrapper {
 
         browserConnections = browserConnections.concat(chunk(remotes, this.concurrency));
 
-        return await BrowserSet.from(browserConnections);
+        return BrowserSet.from(browserConnections);
     }
 
     private _filterTests (tests: Test[], predicate: Filter): Test[] {
@@ -238,7 +244,11 @@ export default class Bootstrapper {
         if (!sourceList.length)
             throw new GeneralError(RUNTIME_ERRORS.testFilesNotFound, getConcatenatedValuesString(this.sources, '\n', ''), cwd);
 
+        const timePretty = elapsed();
+
         let tests = await this._compileTests({ sourceList, compilerOptions: this.compilerOptions });
+
+        this.debugLogger(`tests compilation took ${timePretty()}`);
 
         const testsWithOnlyFlag = tests.filter(test => test.only);
 

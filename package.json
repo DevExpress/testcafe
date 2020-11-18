@@ -115,6 +115,7 @@
     "pify": "^2.3.0",
     "pinkie": "^2.0.4",
     "pngjs": "^3.3.1",
+    "pretty-hrtime": "^1.0.3",
     "promisify-event": "^1.0.0",
     "qrcode-terminal": "^0.10.0",
     "read-file-relative": "^1.2.0",

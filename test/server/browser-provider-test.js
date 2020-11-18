@@ -18,7 +18,17 @@ const WarningLog                      = require('../../lib/notifications/warning
 
 class BrowserConnectionMock extends BrowserConnection {
     constructor () {
-        super({ startServingConnection: () => {} }, { openBrowser: () => {} });
+        const browserConnectionGatewayMock = {
+            startServingConnection: noop,
+            stopServingConnection:  noop
+        };
+
+        const providerMock = {
+            openBrowser:    noop,
+            isLocalBrowser: noop
+        };
+
+        super(browserConnectionGatewayMock, { provider: providerMock });
 
         this.ready = true;
     }

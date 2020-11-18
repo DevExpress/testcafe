@@ -17,11 +17,16 @@ import BrowserConnectionGateway from './gateway';
 import BrowserJob from '../../runner/browser-job';
 import WarningLog from '../../notifications/warning-log';
 import BrowserProvider from '../provider';
+import { elapsed } from '../../utils/elapsed';
+
+const DEBUG_SCOPE = (id: string): string => `testcafe:browser:connection:${id}`;
 
 import {
     BROWSER_RESTART_TIMEOUT,
     BROWSER_CLOSE_TIMEOUT,
-    HEARTBEAT_TIMEOUT
+    HEARTBEAT_TIMEOUT,
+    LOCAL_BROWSER_OPENED_TIMEOUT,
+    REMOTE_BROWSER_OPENED_TIMEOUT
 } from '../../utils/browser-connection-timeouts';
 
 const getBrowserConnectionDebugScope = (id: string): string => `testcafe:browser:connection:${id}`;
@@ -92,8 +97,10 @@ export default class BrowserConnection extends EventEmitter {
     private readonly statusUrl: string;
     private readonly activeWindowIdUrl: string;
     private statusDoneUrl: string;
-    private warningLog: WarningLog;
     private readonly debugLogger: debug.Debugger;
+    private readonly timePretty: () => string;
+
+    public readonly warningLog: WarningLog;
 
     public idle: boolean;
 
@@ -146,11 +153,10 @@ export default class BrowserConnection extends EventEmitter {
         this.statusUrl     = `${gateway.domain}${this.statusRelativeUrl}`;
         this.statusDoneUrl = `${gateway.domain}${this.statusDoneRelativeUrl}`;
 
-        this.on('error', err => {
-            this.debugLogger(err);
-            this._forceIdle();
-            this.close();
-        });
+        this.debugLogger = debug(DEBUG_SCOPE(this.id));
+        this.timePretty  = elapsed();
+
+        this._setEventHandlers();
 
         connections[this.id] = this;
 
@@ -159,6 +165,24 @@ export default class BrowserConnection extends EventEmitter {
         this.browserConnectionGateway.startServingConnection(this);
 
         process.nextTick(() => this._runBrowser());
+    }
+
+    private _setEventHandlers (): void {
+        this.on('error', e => {
+            this.debugLogger(e);
+            this._forceIdle();
+            this.close();
+        });
+
+        for (const name in BrowserConnectionStatus) {
+            const status = BrowserConnectionStatus[name as keyof typeof BrowserConnectionStatus];
+
+            this.on(status, () => {
+                this.status = status;
+
+                this.debugLogger(`status changed to '${status}' after ${this.timePretty()}`);
+            });
+        }
     }
 
     private static _generateId (): string {
@@ -172,7 +196,6 @@ export default class BrowserConnection extends EventEmitter {
             if (this.status !== BrowserConnectionStatus.ready)
                 await promisifyEvent(this, 'ready');
 
-            this.status = BrowserConnectionStatus.opened;
             this.emit('opened');
         }
         catch (err) {
@@ -300,6 +323,12 @@ export default class BrowserConnection extends EventEmitter {
         this.disconnectionPromise.reject  = rejectFn as unknown as Function;
     }
 
+    public async getOpenedTimeout (): Promise<number> {
+        const isLocalBrowser = await this.provider.isLocalBrowser(this.id, this.browserInfo.browserName);
+
+        return isLocalBrowser ? LOCAL_BROWSER_OPENED_TIMEOUT : REMOTE_BROWSER_OPENED_TIMEOUT;
+    }
+
     public async processDisconnection (disconnectionThresholdExceeded: boolean): Promise<void> {
         const { resolve, reject } = this.disconnectionPromise as DisconnectionPromise<void>;
 
@@ -378,23 +407,20 @@ export default class BrowserConnection extends EventEmitter {
         remove(this.jobQueue, job);
     }
 
-    public close (): void {
+    public async close (): Promise<void> {
         if (this.status === BrowserConnectionStatus.closing || this.status === BrowserConnectionStatus.closed)
             return;
 
-        this.status = BrowserConnectionStatus.closing;
+        this.emit(BrowserConnectionStatus.closing);
 
-        this._closeBrowser()
-            .then(() => {
-                this.browserConnectionGateway.stopServingConnection(this);
-                clearTimeout(this.heartbeatTimeout as NodeJS.Timeout);
+        await this._closeBrowser();
 
-                delete connections[this.id];
+        this.browserConnectionGateway.stopServingConnection(this);
+        clearTimeout(this.heartbeatTimeout as NodeJS.Timeout);
 
-                this.status = BrowserConnectionStatus.closed;
+        delete connections[this.id];
 
-                this.emit('closed');
-            });
+        this.emit(BrowserConnectionStatus.closed);
     }
 
     public establish (userAgent: string): void {

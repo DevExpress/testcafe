@@ -116,5 +116,6 @@ export default {
     [RUNTIME_ERRORS.cannotEnableRetryTestPagesOption]:
         'Cannot enable the \'retryTestPages\' option. Apply one of the following two solutions:\n' +
         '-- set \'localhost\' as the value of the \'hostname\' option\n' +
-        '-- run TestCafe over HTTPS\n'
+        '-- run TestCafe over HTTPS\n',
+    [RUNTIME_ERRORS.browserConnectionError]:            '{originalErr}\n{openedConnectionsNum} of the total {totalConnectionsNum} browser connections have established.\n{warnings}\n'
 };
