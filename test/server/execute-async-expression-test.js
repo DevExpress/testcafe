@@ -12,19 +12,10 @@ const TestController = require('../../lib/api/test-controller');
 const COMMAND_TYPE   = require('../../lib/test-run/commands/type');
 const markerSymbol   = require('../../lib/test-run/marker-symbol');
 
-const assertTestRunError = require('./helpers/assert-test-run-error');
+const assertTestRunError         = require('./helpers/assert-test-run-error');
+const { createSimpleTestStream } = require('../functional/utils/stream');
 
 let callsite = 0;
-
-class StubStream {
-    constructor () {
-        this.data = '';
-    }
-
-    write (chunk) {
-        this.data += chunk.toString();
-    }
-}
 
 class TestRunMock extends TestRun {
     _addInjectables () {}
@@ -42,7 +33,7 @@ class TestRunMock extends TestRun {
         this.controller      = new TestController(this);
         this.driverTaskQueue = [];
         this.emit            = noop;
-        this.stubStream      = new StubStream();
+        this.stubStream      = createSimpleTestStream();
 
         const stubModule = require('log-update-async-hook').create(this.stubStream);
 
