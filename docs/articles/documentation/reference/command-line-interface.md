@@ -899,10 +899,11 @@ Deprecated as of TestCafe v.1.10.0 in favour of the [`--compiler-options`](#--co
 Specifies test compilation settings. The current version of TestCafe can only configure the [TypeScript compiler](../../../guides/concepts/typescript-and-coffeescript.md#customize-compiler-options).
 
 ```sh
-testcafe chrome my-tests --compiler-options typescript.options.lib=ES5,WebWorker;typescript.typesRoot=’this value contains spaces'
+testcafe chrome my-tests --compiler-options typescript.options.lib=lib.es5.d.ts,lib.webworker.d.ts;typescript.typesRoot='this value contains spaces'
 ```
 
 The `--compiler-options` parameter accepts the compiler options listed in the [official TypeScript documentation](https://www.typescriptlang.org/docs/handbook/compiler-options.html), as well as two additional options: `typescript.configPath` and `typescript.customCompilerModulePath`.
+
 
 Specify the `typescript.configPath` compiler option to import compiler settings from a dedicated TypeScript configuration file:
 
@@ -917,6 +918,8 @@ testcafe chrome test.ts --compiler-options typescript.customCompilerModulePath=.
 ```
 
 > TestCafe resolves relative paths against its own installation folder.
+
+The `typescript.options.lib` option looks for files in the compiler’s `node_modules/typescript/lib` folder. Include the *full* name of the library file (for example: `lib.webworker.d.ts`) to enable that library during compilation.
 
 To list multiple parameters, separate them with semicolons. Enclose values that contain spaces in quotes.
 
