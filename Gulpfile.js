@@ -32,8 +32,9 @@ const listBrowsers                  = require('testcafe-browser-tools').getInsta
 const npmAuditor                    = require('npm-auditor');
 const checkLicenses                 = require('./test/dependency-licenses-checker');
 const packageInfo                   = require('./package');
-const getPublishTags                = require('./docker/get-publish-tags');
-const isDockerDaemonRunning         = require('./docker/is-docker-daemon-running');
+const ensureDockerEnvironment       = require('./gulp/docker/ensure-docker-environment');
+const getDockerPublishInfo          = require('./gulp/docker/get-publish-info');
+const runFunctionalTestInDocker     = require('./gulp/docker/run-functional-test-via-command-line');
 const { exitDomains, enterDomains } = require('./gulp/helpers/domain');
 const getTimeout                    = require('./gulp/helpers/get-timeout');
 
@@ -146,8 +147,7 @@ const CLIENT_TESTS_SAUCELABS_SETTINGS = {
 
 const CLIENT_TEST_LOCAL_BROWSERS_ALIASES = ['ie', 'edge', 'chrome', 'firefox', 'safari'];
 
-const PUBLISH_TAGS = getPublishTags(packageInfo);
-const PUBLISH_REPO = 'testcafe/testcafe';
+const { PUBLISH_TAGS, PUBLISH_REPO } = getDockerPublishInfo(packageInfo);
 
 const NODE_MODULE_BINS = path.join(__dirname, 'node_modules/.bin');
 
@@ -206,7 +206,7 @@ gulp.task('lint', () => {
             'src/**/*.js',
             'src/**/*.ts',
             'test/**/*.js',
-            'gulp/helpers/**/*',
+            'gulp/**/*.js',
             '!test/client/vendor/**/*.*',
             '!test/functional/fixtures/api/es-next/custom-client-scripts/data/*.js',
             'Gulpfile.js'
@@ -851,71 +851,6 @@ gulp.step('test-functional-local-compiler-service-run', () => {
 
 gulp.task('test-functional-local-compiler-service', gulp.series('prepare-tests', 'test-functional-local-compiler-service-run'));
 
-function getDockerEnv (machineName) {
-    return childProcess
-        .execSync('docker-machine env --shell bash ' + machineName)
-        .toString()
-        .split('\n')
-        .map(line => {
-            return line.match(/export\s*(.*)="(.*)"$/);
-        })
-        .filter(match => {
-            return !!match;
-        })
-        .reduce((env, match) => {
-            env[match[1]] = match[2];
-            return env;
-        }, {});
-}
-
-function isDockerMachineRunning (machineName) {
-    try {
-        return childProcess.execSync('docker-machine status ' + machineName).toString().match(/Running/);
-    }
-    catch (e) {
-        return false;
-    }
-}
-
-function isDockerMachineExist (machineName) {
-    try {
-        childProcess.execSync('docker-machine status ' + machineName);
-        return true;
-    }
-    catch (e) {
-        return !e.message.match(/Host does not exist/);
-    }
-}
-
-function startDocker () {
-    const dockerMachineName = process.env['DOCKER_MACHINE_NAME'] || 'default';
-
-    if (!isDockerMachineExist(dockerMachineName))
-        childProcess.execSync('docker-machine create -d virtualbox ' + dockerMachineName);
-
-    if (!isDockerMachineRunning(dockerMachineName))
-        childProcess.execSync('docker-machine start ' + dockerMachineName);
-
-    const dockerEnv = getDockerEnv(dockerMachineName);
-
-    assignIn(process.env, dockerEnv);
-}
-
-function ensureDockerEnvironment () {
-    if (isDockerDaemonRunning())
-        return;
-
-    if (!process.env['DOCKER_HOST']) {
-        try {
-            startDocker();
-        }
-        catch (e) {
-            throw new Error('Unable to initialize Docker environment. Use Docker terminal to run this task.\n' +
-                e.stack);
-        }
-    }
-}
-
 gulp.task('docker-build', done => {
     childProcess.execSync('npm pack', { env: process.env }).toString();
 
@@ -930,26 +865,40 @@ gulp.task('docker-build', done => {
     done();
 });
 
-gulp.step('docker-test-run', done => {
+gulp.step('docker-server-test-run', done => {
     ensureDockerEnvironment();
 
     childProcess.execSync(`docker build --no-cache --build-arg tag=${packageInfo.version} -t docker-server-tests -f test/docker/Dockerfile .`,
         { stdio: 'inherit', env: process.env });
 
+    childProcess.execSync('docker image rm docker-server-tests', { stdio: 'inherit', env: process.env });
+
     done();
 });
 
-gulp.step('docker-publish-run', done => {
-    PUBLISH_TAGS.forEach(tag => {
-        childProcess.execSync(`docker push ${PUBLISH_REPO}:${tag}`, { stdio: 'inherit', env: process.env });
+gulp.step('docker-functional-test-run', () => {
+    ensureDockerEnvironment();
 
-        childProcess.execSync(`docker pull ${PUBLISH_REPO}:${tag}`, { stdio: 'inherit', env: process.env });
+    return runFunctionalTestInDocker(PUBLISH_REPO, packageInfo);
+});
+
+gulp.step('docker-publish-run', done => {
+    const PUBLISH_COMMANDS = [
+        'docker push',
+        'docker pull',
+        'docker image rm'
+    ];
+
+    PUBLISH_TAGS.forEach(tag => {
+        PUBLISH_COMMANDS.forEach(command => {
+            childProcess.execSync(`${command} ${PUBLISH_REPO}:${tag}`, { stdio: 'inherit', env: process.env });
+        });
     });
 
     done();
 });
 
-gulp.task('docker-test', gulp.series('docker-build', 'docker-test-run'));
+gulp.task('docker-test', gulp.series('docker-build', 'docker-server-test-run', 'docker-functional-test-run'));
 
 gulp.task('docker-test-travis', gulp.series('build', 'docker-test'));
 
