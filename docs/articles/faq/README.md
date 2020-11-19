@@ -13,6 +13,7 @@ permalink: /faq/
   * [Can I use third-party modules in tests?](#can-i-use-third-party-modules-in-tests)
   * [How do I work with configuration files and environment variables?](#how-do-i-work-with-configuration-files-and-environment-variables)
   * [How do I identify elements with dynamic IDs?](#how-do-i-identify-elements-with-dynamic-ids)
+  * [Can I use TestCafe to test React Native apps?](#can-i-use-testcafe-to-test-react-native-apps)
 * [Troubleshooting](#troubleshooting)
   * [I have installed TestCafe, but I cannot run it. What should I do?](#i-have-installed-testcafe-but-i-cannot-run-it-what-should-i-do)
   * [When I run a TestCafe test, I get an unexpected error. What can cause that?](#when-i-run-a-testcafe-test-i-get-an-unexpected-error-what-can-cause-that)
@@ -148,6 +149,10 @@ Alternatively, you can use [environment variables](../documentation/recipes/acce
 TestCafe selectors should use element identifiers that persist between test runs. However, many JavaScript frameworks generate dynamic IDs for page elements. To identify elements whose `id` attribute changes, use selectors based on the element's class, content, tag name, or position.
 
 See the [Select Elements With Dynamic IDs](../documentation/guides/basic-guides/select-page-elements.md#select-elements-with-dynamic-ids) example for details.
+
+### Can I use TestCafe to test ReactNative apps?
+
+No. You can use TestCafe to test anything that runs in a browser — including Progressive Web Applications and Electron apps. TestCafe can not automate native mobile applications, because they do not run in a browser.
 
 ## Troubleshooting
 
