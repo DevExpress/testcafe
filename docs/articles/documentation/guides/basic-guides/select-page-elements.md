@@ -781,7 +781,7 @@ target the [shadow root](https://developer.mozilla.org/en-US/docs/Web/API/Shadow
 >
 > Only use this element as an entry point to shadow DOM.
 
-The following example shows the `paragraph` selector that returns `<p>` from the shadow DOM.
+The following example shows the `paragraph` selector that returns `<p>` from the shadow DOM:
 
 ```js
 import { Selector } from 'testcafe'

@@ -13,7 +13,7 @@ selector.shadowRoot() → Selector
 
 Use `shadowRoot` to access the element's shadow root. Returns `null` if the shadow DOM is not `open`.
 
-Chain other `Selector` methods onto it to traverse the shadow tree.
+Chain other `Selector` methods to it to traverse the shadow tree.
 
 > You cannot perform actions with a node returned by `shadowRoot()` or use it in assertions.
 >
