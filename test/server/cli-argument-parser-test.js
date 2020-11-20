@@ -558,19 +558,27 @@ describe('CLI argument parser', function () {
         });
     });
 
-    it('Compiler options', async () => {
-        const cmd = '--compiler-options ' +
-            'typescript.options.skipLibCheck=true;' +
-            "typescript.options.lib=ES5,'WebWorker';" +
-            'typescript.configPath=/path-to-tsconfig.json';
+    describe('Compiler options', () => {
+        it('Basic', async () => {
+            const cmd = '--compiler-options ' +
+                'typescript.options.skipLibCheck=true;' +
+                "typescript.options.lib=ES5,'WebWorker';" +
+                'typescript.configPath=/path-to-tsconfig.json';
 
-        const parser = await parse(cmd);
+            const parser = await parse(cmd);
 
-        const typescriptCompilerOptions = parser.opts.compilerOptions.typescript;
+            const typescriptCompilerOptions = parser.opts.compilerOptions.typescript;
 
-        expect(typescriptCompilerOptions.options.skipLibCheck).eql(true);
-        expect(typescriptCompilerOptions.options.lib).eql(['ES5', 'WebWorker']);
-        expect(typescriptCompilerOptions.configPath).eql('/path-to-tsconfig.json');
+            expect(typescriptCompilerOptions.options.skipLibCheck).eql(true);
+            expect(typescriptCompilerOptions.options.lib).eql(['ES5', 'WebWorker']);
+            expect(typescriptCompilerOptions.configPath).eql('/path-to-tsconfig.json');
+        });
+
+        it('Array option with a single element', async () => {
+            const parser = await parse('--compiler-options typescript.options.lib=ES5');
+
+            expect(parser.opts.compilerOptions.typescript.options.lib).eql(['ES5']);
+        });
     });
 
     it('Client scripts', () => {

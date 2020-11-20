@@ -11,9 +11,9 @@ const TestRun        = proxyquire('../../lib/test-run/index', { './session-contr
 const TestController = require('../../lib/api/test-controller');
 const COMMAND_TYPE   = require('../../lib/test-run/commands/type');
 const markerSymbol   = require('../../lib/test-run/marker-symbol');
-const debugLogger    = require('../../lib/notifications/debug-logger');
 
-const assertTestRunError = require('./helpers/assert-test-run-error');
+const assertTestRunError         = require('./helpers/assert-test-run-error');
+const { createSimpleTestStream } = require('../functional/utils/stream');
 
 let callsite = 0;
 
@@ -33,7 +33,14 @@ class TestRunMock extends TestRun {
         this.controller      = new TestController(this);
         this.driverTaskQueue = [];
         this.emit            = noop;
-        this.debugLogger     = debugLogger;
+        this.stubStream      = createSimpleTestStream();
+
+        const stubModule = require('log-update-async-hook').create(this.stubStream);
+
+        this.debugLogger = proxyquire('../../lib/notifications/debug-logger', { 'log-update-async-hook': stubModule } );
+
+        this.debugLogger._overrideStream(this.stubStream);
+        this.debugLogger.streamsOverridden = true;
 
         this[markerSymbol] = true;
 
@@ -300,16 +307,9 @@ describe('Code steps', () => {
 
         it('debug', async () => {
             const testRun = new TestRunMock();
-            let debugMsg  = '';
             let err       = null;
 
             testRun._enqueueCommand = () => Promise.resolve();
-
-            const initialWrite = process.stdout.write;
-
-            process.stdout.write = chunk => {
-                debugMsg += chunk.toString();
-            };
 
             try {
                 await executeAsyncExpression('await t.debug();', testRun);
@@ -318,11 +318,9 @@ describe('Code steps', () => {
                 err = e;
             }
 
-            process.stdout.write = initialWrite;
-
             expect(err).eql(null);
-            expect(debugMsg).contains('Chrome');
-            expect(debugMsg).contains('DEBUGGER PAUSE');
+            expect(testRun.stubStream.data).contains('Chrome');
+            expect(testRun.stubStream.data).contains('DEBUGGER PAUSE');
         });
     });
 });

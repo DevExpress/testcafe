@@ -925,7 +925,7 @@ test('My test', async t => {
 
 ### Select Elements That Contain Special Characters
 
-If your page contains [HTML symbols](https://www.w3schools.com/html/html_symbols.asp) or [HTML entities](https://www.w3schools.com/html/html_entities.asp) (e.g., `&nbsp;`, newline chars), use their [unicode counterparts](https://www.rapidtables.com/code/text/unicode-characters.md) in [Selector.WithText](../../reference/test-api/selector/withtext.md) and [Selector.WithExactText](../../reference/test-api/selector/withexacttext.md).
+If your page contains [HTML symbols](https://www.w3schools.com/html/html_symbols.asp) or [HTML entities](https://www.w3schools.com/html/html_entities.asp) (e.g., `&nbsp;`, newline chars), use their [unicode counterparts](https://en.wikipedia.org/wiki/List_of_Unicode_characters#Latin-1_Supplement) in [Selector.WithText](../../reference/test-api/selector/withtext.md) and [Selector.WithExactText](../../reference/test-api/selector/withexacttext.md).
 
 **Example**
 
