@@ -94,7 +94,7 @@ Open the **Environment Variables** category and click **Add Environment Variable
 
 ![Click the Add Environment Variable button in Project Settings](../../../images/circleci-lambdatest/add-env-variable.png)
 
-In a separate browser tab or window, open the LambdaTest app and click **Automation** in the navigation bar:
+In a separate browser tab or window, open the [LambdaTest app](https://www.lambdatest.com/) and click **Automation** in the navigation bar:
 
 ![Navigate to the Automation page in the LambdaTest app](../../../images/circleci-lambdatest/lambdatest-automation.png)
 
