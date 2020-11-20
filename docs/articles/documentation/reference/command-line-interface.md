@@ -904,6 +904,7 @@ testcafe chrome my-tests --compiler-options typescript.options.lib=lib.es5.d.ts,
 
 The `--compiler-options` parameter accepts the compiler options listed in the [official TypeScript documentation](https://www.typescriptlang.org/docs/handbook/compiler-options.html), as well as two additional options: `typescript.configPath` and `typescript.customCompilerModulePath`.
 
+To list multiple parameters, separate them with semicolons. Enclose values that contain spaces in quotes.
 
 Specify the `typescript.configPath` compiler option to import compiler settings from a dedicated TypeScript configuration file:
 
@@ -919,9 +920,7 @@ testcafe chrome test.ts --compiler-options typescript.customCompilerModulePath=.
 
 > TestCafe resolves relative paths against its own installation folder.
 
-The `typescript.options.lib` option looks for files in the compiler’s `node_modules/typescript/lib` folder. Include the *full* name of the library file (for example: `lib.webworker.d.ts`) to enable that library during compilation.
-
-To list multiple parameters, separate them with semicolons. Enclose values that contain spaces in quotes.
+The values of the `typescript.options.lib` compiler option should be identical to the names of the corresponding library files from your compiler’s `node_modules/typescript/lib` folder (for example: `lib.webworker.d.ts`).
 
 *Related configuration file property*: [compilerOptions](configuration-file.md#compileroptions).
 *Related API method*: [runner.compilerOptions](testcafe-api/runner/compileroptions.md)
