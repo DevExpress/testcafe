@@ -150,7 +150,7 @@ TestCafe selectors should use element identifiers that persist between test runs
 
 See the [Select Elements With Dynamic IDs](../documentation/guides/basic-guides/select-page-elements.md#select-elements-with-dynamic-ids) example for details.
 
-### Can I use TestCafe to test ReactNative apps?
+### Can I use TestCafe to test React Native apps?
 
 No. You can use TestCafe to test anything that runs in a browser — including Progressive Web Applications and Electron apps. TestCafe can not automate native mobile applications, because they do not run in a browser.
 
