@@ -8,17 +8,25 @@ permalink: /documentation/why-testcafe/
 
 TestCafe excels where other end-to-end testing solutions fall short.
 
-## One NPM package
+## Comprehensive and easy to set up
 
-TestCafe doesn't require the use of extra tools and frameworks. All you need to get up and running is a recent version of Node.js, a browser — any browser, and the TestCafe NPM package.
+TestCafe does not depend on Selenium or other testing software. TestCafe runs on the popular Node.js platform, and makes use of the browsers that you already have. For many users, the installation process consists of a single step:
 
-## As simple and extendable as JavaScript itself
+```js
+npm install -g testcafe
+```
 
-TestCafe tests are full-fledged Node.js apps. They are compatible with your favourite JavaScript libraries and preprocessors.
+## Human-readable JavaScript tests
 
-## Complex tests made easy
+TestCafe is a JavaScript framework. But you don’t need to be a JavaScript guru to write TestCafe tests. The core components of our API are intuitive and only require a basic knowledge of the language.
 
-TestCafe’s intuitive and powerful toolkit makes testing easy, whether you’re working with a landing page or a complex web app.
+## A first class citizen of the Node.js ecosystem
+
+If you want to take your testing experience to the next level, you can always integrate additional JavaScript libraries and preprocessors into TestCafe tests.
+
+## Powerful but simple
+
+The advanced features of the TestCafe API can help you test complex, security-sensitive web applications.
 
 ### Mock Requests
 
