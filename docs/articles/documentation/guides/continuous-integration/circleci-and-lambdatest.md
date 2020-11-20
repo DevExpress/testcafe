@@ -33,7 +33,7 @@ Find `testcafe-ci-demo` and click **Set Up project**.
 
 ## Step 3 - Configure the Build
 
-On the project configuration page, select **Node** as the target platform and paste the following configuration:
+On the project configuration page, open a drop-down list and select **Node** as the target platform. Paste the following configuration:
 
 ```yaml
 version: 2.1
