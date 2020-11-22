@@ -20,15 +20,34 @@ function createConnection (browser) {
         .then(browserInfo => new BrowserConnection(testCafe.browserConnectionGateway, browserInfo, false));
 }
 
-function run (pathToTest, filter) {
+const initializeConnectionLowHeartbeatTimeout = connection => {
+    connection.HEARTBEAT_TIMEOUT = 4000;
+};
+
+const initializeConnectionHangOnRestart = connection => {
+    initializeConnectionLowHeartbeatTimeout(connection);
+
+    connection.BROWSER_CLOSE_TIMEOUT = 10000;
+
+    const closeBrowser = connection.provider.closeBrowser;
+
+    connection.provider = new connection.provider.constructor(connection.provider.plugin);
+
+    connection.provider.closeBrowser = connectionId => {
+        return closeBrowser.call(connection.provider, connectionId)
+            .then(() => {
+                return new Promise(() => {});
+            });
+    };
+};
+
+function run (pathToTest, filter, initializeConnection = initializeConnectionLowHeartbeatTimeout) {
     const src          = path.join(__dirname, pathToTest);
     const browserNames = config.currentEnvironment.browsers.map(browser => browser.browserName || browser.alias);
 
     return Promise.all(browserNames.map(browser => createConnection(browser)))
         .then(connections => {
-            connections.forEach(connection => {
-                connection.HEARTBEAT_TIMEOUT = 4000;
-            });
+            connections.forEach(connection => initializeConnection(connection));
 
             return connections;
         })
@@ -59,6 +78,13 @@ describe('Browser reconnect', function () {
                 })
                 .catch(err => {
                     expect(err.message).contains('browser disconnected. This problem may appear when a browser hangs or is closed, or due to network issues');
+                });
+        });
+
+        it('Should restart browser on timeout if the `closeBrowser` method hangs', function () {
+            return run('./testcafe-fixtures/index-test.js', 'Should restart browser on timeout if the `closeBrowser` method hangs', initializeConnectionHangOnRestart)
+                .then(() => {
+                    expect(errors.length).eql(0);
                 });
         });
     }
