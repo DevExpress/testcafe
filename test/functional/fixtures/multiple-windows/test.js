@@ -298,4 +298,25 @@ describe('Multiple windows', () => {
             return runTests('testcafe-fixtures/api/api-test.js', 'Maximize multiple windows', { only: 'chrome' });
         });
     });
+
+    describe('Emulation', () => {
+        it('Should resize window when emulating device', async () => {
+            return createTestCafe('127.0.0.1', 1335, 1336)
+                .then(tc => {
+                    testCafe = tc;
+                })
+                .then(() => {
+                    return testCafe
+                        .createRunner()
+                        .src(path.join(__dirname, './testcafe-fixtures/features/emulation.js'))
+                        .browsers('chrome:emulation:device=iphone X')
+                        .run();
+                })
+                .then(failedCount => {
+                    expect(failedCount).eql(0);
+
+                    return testCafe.close();
+                });
+        });
+    });
 });

@@ -63,9 +63,9 @@ export default {
 
         const browserClient = new BrowserClient(runtimeInfo);
 
-        await browserClient.init();
-
         this.openedBrowsers[browserId] = runtimeInfo;
+
+        await browserClient.init();
 
         await this._ensureWindowIsExpanded(browserId, runtimeInfo.viewportSize);
 
