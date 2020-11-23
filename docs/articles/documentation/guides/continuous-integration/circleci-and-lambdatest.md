@@ -21,7 +21,7 @@ Install TestCafe [locally](../basic-guides/install-testcafe.md#local-installatio
 
 Log in to CircleCI using your GitHub account.
 
-If this is the first time you are using CircleCI, you will start from an empty workspace. Click the **Add Project** button to create your first project.
+If this is the first time you use CircleCI, you will start from an empty workspace. Click the **Add Project** button to create your first project.
 
 ![Click the Add Project Button](../../../images/circleci-lambdatest/add-project.png)
 
