@@ -78,7 +78,7 @@ After you pasted the YAML, click **Add Config**.
 
 ![Click Add Config to save the configuration](../../../images/circleci-lambdatest/circleci-config.png)
 
-CircleCI creates the `circleci-project-setup` branch in the repo and commits the `.circleci/config.yml` file to this branch. In this tutorial, you will commit and push your further changes to `circleci-project-setup`.
+CircleCI creates the `circleci-project-setup` branch in the repo and commits the `.circleci/config.yml` file to this branch. In this tutorial, we commit and push further changes to `circleci-project-setup`.
 
 ## Step 4 - Specify LambdaTest Credentials
 
