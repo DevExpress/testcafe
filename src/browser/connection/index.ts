@@ -249,7 +249,7 @@ export default class BrowserConnection extends EventEmitter {
         let isTimeoutExpired                = false;
         let timeout: NodeJS.Timeout | null  = null;
 
-        const restartPromise = timeLimit(this._closeBrowser(), this.BROWSER_CLOSE_TIMEOUT, { resolveWith: void 0, rejectWith: new TimeoutError() })
+        const restartPromise = timeLimit(this._closeBrowser(), this.BROWSER_CLOSE_TIMEOUT, { rejectWith: new TimeoutError() })
             .catch(err => this.debugLogger(err))
             .then(() => this._runBrowser());
 
