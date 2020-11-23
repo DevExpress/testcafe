@@ -158,7 +158,7 @@ For more information on how to configure a test run with the `testcafe` command,
 
 Once you commit the `package.json` changes in the previous step, the build is triggered against `circleci-project-setup`. The CircleCI Dashboard shows the results in the pipeline.
 
-Click the job name to see the details.
+Click the job name to show the details.
 
 ![View the pipeline in the Dashboard](../../../images/circleci-lambdatest/view-pipeline.png)
 
