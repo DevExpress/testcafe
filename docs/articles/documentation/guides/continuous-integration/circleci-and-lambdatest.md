@@ -115,7 +115,7 @@ In the same manner, copy the *access key* from LambdaTest and create the `LT_ACC
 Install the following npm packages locally in your project directory:
 
 * [testcafe-browser-provider-lambdatest](https://www.npmjs.com/package/testcafe-browser-provider-lambdatest) – the LambdaTest browser provider that enables TestCafe to run tests in the LambdaTest cloud,
-* [testcafe-reporter-xunit](https://www.npmjs.com/package/testcafe-reporter-xunit) – the JUnit XML reporter that generates test run reports in the XML format. CircleCI can process XML reports and display test results in the UI.
+* [testcafe-reporter-xunit](https://www.npmjs.com/package/testcafe-reporter-xunit) – the JUnit XML reporter that generates test run reports in XML format. CircleCI can process XML reports and display test results in the UI.
 
 Run the following command to install both packages:
 
