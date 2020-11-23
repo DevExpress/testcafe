@@ -37,5 +37,6 @@ Method                                                              | Descriptio
 [sibling](sibling.md)             | Selects sibling elements.
 [nextSibling](nextsibling.md)     | Selects succeeding sibling elements.
 [prevSibling](prevsibling.md)     | Selects preceding sibling elements.
+[shadowRoot](shadowroot.md)       | Selects the shadow root hosted by the element.
 
 For more information, see [Select Page Elements](../../../guides/basic-guides/select-page-elements.md).
