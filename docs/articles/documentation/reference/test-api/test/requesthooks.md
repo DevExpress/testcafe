@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/test/requesthooks.html
 Attaches the [request hooks](../../../guides/advanced-guides/intercept-http-requests.md) to the test.
 
 ```text
-test.requestHooks(...hooks)
+test.requestHooks(...hooks) → this
 ```
 
 Parameter | Type | Description

@@ -6,14 +6,14 @@ permalink: /documentation/reference/test-api/testcontroller/switchtowindow.html
 
 # t.switchToWindow method
 
-Switches to a specific browser window.
+Switches to a specific browser window. Can be chained with other `TestController` methods.
 
 ## t.switchToWindow(window)
 
 Activates the window that corresponds to the window descriptor.
 
-```js
-t.switchToWindow(windowDescriptor);
+```text
+t.switchToWindow(windowDescriptor) → this | Promise<any>
 ```
 
 Parameter | Type     | Description

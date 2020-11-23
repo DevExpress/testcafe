@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/expect/notcontains.h
 Asserts that `actual` does not contain `expected`.
 
 ```text
-await t.expect( actual ).notContains( expected, message, options );
+t.expect(actual).notContains(expected, message, options)  → this | Promise<unknown>
 ```
 
 Parameter              | Type                                              | Description

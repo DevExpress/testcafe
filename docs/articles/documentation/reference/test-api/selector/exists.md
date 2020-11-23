@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/selector/exists.html
 Determines if at least one matching element exists.
 
 ```text
-Selector().exists → Promise<Boolean>
+Selector().exists → Promise<boolean>
 ```
 
 Selector can return a single matching DOM element on the page, multiple elements, or nothing. Use the `exists` property to check whether matching elements exist.

@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/global/test.html
 Declares a test.
 
 ```text
-test( testName, fn(t) )
+test( testName, fn(t) ) → this
 ```
 
 Parameter  | Type     | Description

@@ -8,10 +8,10 @@ permalink: /documentation/reference/test-api/clientfunction/with.html
 Overwrites [client function options](../clientfunction/constructor.md#options).
 
 ```text
-clientFunction.with( options ) → ClientFunction
+clientFunction.with(options) → ClientFunction
 ```
 
-`with` returns a new client function with a different set of options. This includes options from the original function and new `options` that overwrite the original.
+`with` returns a new client function with a different set of options. This includes options from the original function and new `options` that overwrite them.
 
 The sample below shows how to overwrite client function options.
 

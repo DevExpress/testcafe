@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/expect/ok.html
 Asserts that `actual` is true.
 
 ```text
-await t.expect( actual ).ok( message, options );
+t.expect(actual).ok(message, options) → this | Promise<unknown>
 ```
 
 Parameter              | Type                                              | Description

@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/expect/notmatch.html
 Asserts that `actual` does not match the `re` regular expression.
 
 ```text
-await t.expect( actual ).notMatch( re, message, options );
+t.expect(actual).notMatch(re, message, options) → this | Promise<unknown>
 ```
 
 Parameter              | Type                                              | Description

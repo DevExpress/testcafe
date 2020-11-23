@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/fixture/after.html
 Executes the code after the fixture finishes (the *after* fixture hook).
 
 ```text
-fixture.after( fn(ctx) )
+fixture.after( fn(ctx) ) → this
 ```
 
 Parameter | Type     | Description

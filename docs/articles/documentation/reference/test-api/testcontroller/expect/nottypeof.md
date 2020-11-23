@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/expect/nottypeof.htm
 Asserts that the `actual` type is not `typeName`.
 
 ```text
-await t.expect( actual ).notTypeOf( typeName, message, options );
+t.expect(actual).notTypeOf(typeName, message, options) → this | Promise<unknown>
 ```
 
 Parameter              | Type                                              | Description

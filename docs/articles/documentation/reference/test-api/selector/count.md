@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/selector/count.html
 Returns the number of elements that match the selector.
 
 ```text
-Selector().count → Promise<Number>
+Selector().count → Promise<number>
 ```
 
 Selectors can return a single matching DOM element on the page, multiple elements or nothing. Use the `count` property to determine the number of matching elements.

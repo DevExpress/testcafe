@@ -8,8 +8,8 @@ permalink: /documentation/reference/test-api/test/meta.html
 Specifies the [test's metadata](../../../guides/basic-guides/organize-tests.md#specify-test-metadata).
 
 ```text
-test.meta( name, value )
-test.meta( metadata )
+test.meta( name, value ) → this
+test.meta( metadata ) → this
 ```
 
 Parameter  | Type   | Description

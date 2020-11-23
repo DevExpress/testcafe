@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/fixture/aftereach.html
 Executes the code after each test in the fixture finishes (the *after each* fixture hook).
 
 ```text
-fixture.afterEach( fn(t) )
+fixture.afterEach( fn(t) ) → this
 ```
 
 Parameter | Type     | Description

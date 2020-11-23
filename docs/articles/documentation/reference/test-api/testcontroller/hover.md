@@ -7,10 +7,10 @@ redirect_from:
 ---
 # t.hover Method
 
-Hovers the mouse pointer over a web page element.
+Hovers the mouse pointer over a web page element. Can be chained with other `TestController` methods.
 
 ```text
-t.hover( selector [, options] )
+t.hover(selector [, options]) → this | Promise<any>
 ```
 
 Parameter              | Type                                              | Description

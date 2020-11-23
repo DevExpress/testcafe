@@ -5,10 +5,10 @@ permalink: /documentation/reference/test-api/testcontroller/getbrowserconsolemes
 ---
 # t.getBrowserConsoleMessages Method
 
-Returns messages posted to the browser console.
+Returns messages posted to the browser console. Cannot be chained with other methods of the test controller.
 
 ```text
-t.getBrowserConsoleMessages()
+t.getBrowserConsoleMessages() → Promise<Object>
 ```
 
 This method returns an object that contains the following fields.

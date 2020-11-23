@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/test/httpauth.html
 Specifies the credentials for HTTP [Basic](https://en.wikipedia.org/wiki/Basic_access_authentication) and [Windows (NTLM)](https://en.wikipedia.org/wiki/Integrated_Windows_Authentication) authentication.
 
 ```text
-test.httpAuth( credentials )
+test.httpAuth(credentials) → this
 ```
 
 {% include authentication/http-credentials.md %}

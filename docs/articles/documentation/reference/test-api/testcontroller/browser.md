@@ -8,8 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/browser.html
 Returns information about the current user agent: the operating system, platform type, browser, engine, etc.
 
 ```text
-t.browser
-```
+t.browser → Object
 
 ```js
 import { Selector } from 'testcafe';

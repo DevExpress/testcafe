@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/requestmock/respond.html
 Specifies the mock response.
 
 ```text
-requestMock.onRequestTo().respond([body] [, statusCode] [, headers])
+requestMock.onRequestTo().respond([body] [, statusCode] [, headers]) → this
 ```
 
 Parameter | Type | Description   | Default

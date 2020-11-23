@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/fixture/skip.html
 Indicates that TestCafe should not run the fixture.
 
 ```text
-fixture.skip
+fixture.skip `Fixture name` → this
 ```
 
 You can also use the [test.skip](../test/skip.md) method to skip individual tests:

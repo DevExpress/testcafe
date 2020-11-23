@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/expect/lt.html
 Asserts that `actual` is less than `expected`.
 
 ```text
-await t.expect( actual ).lt( expected, message, options );
+t.expect(actual).lt(expected, message, options) → this | Promise<unknown>
 ```
 
 Parameter              | Type                                              | Description

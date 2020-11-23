@@ -4,12 +4,12 @@ title: t.getCurrentWindow Method
 permalink: /documentation/reference/test-api/testcontroller/getcurrentwindow.html
 ---
 
-# t.getCurrentWindow method
+# t.getCurrentWindow Method
 
-Retrieves a window descriptor that corresponds to the active window.
+Retrieves a window descriptor that corresponds to the active window. Can be chained with other `TestController` methods.
 
-```js
-t.getCurrentWindow();
+```text
+t.getCurrentWindow() → this | Promise<unknown>
 ```
 
 ## Example

@@ -7,10 +7,10 @@ permalink: /documentation/reference/test-api/testcontroller/setnativedialoghandl
 
 To handle native dialogs invoked during the test run, specify a handler function
 with the `setNativeDialogHandler` method of the
-[test controller](README.md).
+[test controller](README.md). This method can be chained with other `TestController` methods.
 
 ```text
-t.setNativeDialogHandler( fn(type, text, url) [, options] )
+t.setNativeDialogHandler(fn(type, text, url) [, options]) → this | Promise<any>
 ```
 
 Parameter  | Type                           | Description

@@ -8,8 +8,8 @@ permalink: /documentation/reference/test-api/fixture/page.html
 Specifies the page where all tests in the fixture start.
 
 ```text
-fixture.page( url )
-fixture.page `url`
+fixture.page( url ) → this
+fixture.page `url` → this
 ```
 
 Parameter | Type   | Description

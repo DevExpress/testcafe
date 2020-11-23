@@ -7,10 +7,10 @@ redirect_from:
 ---
 # t.rightClick Method
 
-Right-clicks an element on a page.
+Right-clicks an element on a page. Can be chained with other `TestController` methods.
 
 ```text
-t.rightClick( selector [, options] )
+t.rightClick(selector [, options]) → this | Promise<any>
 ```
 
 Parameter              | Type                                              | Description

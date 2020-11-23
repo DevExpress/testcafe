@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/requestlogger/contains.html
 Returns whether the logger contains a request that matches the predicate.
 
 ```text
-contains( predicate(Request) ) → Promise<Boolean>
+contains( predicate(Request) ) → Promise<boolean>
 ```
 
 > If you use the `contains(predicate)` or `count(predicate)` methods in assertions, TestCafe uses the [Smart Assertion Query Mechanism](../../../guides/basic-guides/assert.md#smart-assertion-query-mechanism).

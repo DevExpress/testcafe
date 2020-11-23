@@ -6,10 +6,10 @@ permalink: /documentation/reference/test-api/testcontroller/switchtopreviouswind
 
 # t.switchToPreviousWindow Method
 
-Activates the most recent of the previously active windows.
+Activates the previously active window. Can be chained with other `TestController` methods.
 
-```js
-t.switchToPreviousWindow()
+```text
+t.switchToPreviousWindow()  → this | Promise<any>
 ```
 
 If no new windows are open or closed, consecutive method calls cycle between the two most recent windows.

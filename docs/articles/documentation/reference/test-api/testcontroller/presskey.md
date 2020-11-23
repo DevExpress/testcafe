@@ -7,10 +7,10 @@ redirect_from:
 ---
 # t.pressKey Method
 
-Presses the specified keyboard keys. Does not require a target element.
+Presses the specified keyboard keys. Does not require a target element and can be chained with other `TestController` methods.
 
 ```text
-t.pressKey( keys [, options] )
+t.pressKey(keys [, options]) → this | Promise<any>
 ```
 
 Parameter | Type   | Description

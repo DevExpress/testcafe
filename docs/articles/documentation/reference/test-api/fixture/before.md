@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/fixture/before.html
 Executes code before the fixture starts (the *before* fixture hook).
 
 ```text
-fixture.before( fn(ctx) )
+fixture.before( fn(ctx) ) → this
 ```
 
 Parameter | Type     | Description

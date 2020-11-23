@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/expect/match.html
 Asserts that `actual` matches the `re` regular expression.
 
 ```text
-await t.expect( actual ).match( re, message, options );
+t.expect(actual).match(re, message, options) → this | Promise<unknown>
 ```
 
 Parameter              | Type                                              | Description

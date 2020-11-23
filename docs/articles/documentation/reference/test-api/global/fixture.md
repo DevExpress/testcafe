@@ -8,8 +8,8 @@ permalink: /documentation/reference/test-api/global/fixture.html
 Declares a fixture.
 
 ```text
-fixture( fixtureName )
-fixture `fixtureName`
+fixture( fixtureName ) → this
+fixture `fixtureName` → this
 ```
 
 Parameter     | Type   | Description

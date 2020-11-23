@@ -5,10 +5,10 @@ permalink: /documentation/reference/test-api/testcontroller/maximizewindow.html
 ---
 # t.maximizeWindow Method
 
-Maximizes the browser window.
+Maximizes the browser window. Can be chained with other `TestController` methods.
 
 ```text
-t.maximizeWindow( )
+t.maximizeWindow() → this | Promise<any>
 ```
 
 The following example shows how to use the `t.maximizeWindow` action.

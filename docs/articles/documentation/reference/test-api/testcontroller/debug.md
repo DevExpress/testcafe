@@ -5,10 +5,10 @@ permalink: /documentation/reference/test-api/testcontroller/debug.html
 ---
 # t.debug Method
 
-Pauses the test and allows you to use the browser's developer tools.
+Pauses the test and allows you to use the browser's developer tools. Can be chained with other `TestController` methods.
 
 ```text
-t.debug()
+t.debug() → this | Promise<any>
 ```
 
 When test execution reaches `t.debug`, it pauses so that you can open the browser's developer tools

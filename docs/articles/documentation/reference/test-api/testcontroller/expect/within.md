@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/testcontroller/expect/within.html
 Asserts that `actual` is within a range from `start` to `finish`. Bounds are inclusive.
 
 ```text
-await t.expect( actual ).within( start, finish, message, options );
+t.expect(actual).within(start, finish, message, options) → this | Promise<unknown>
 ```
 
 Parameter              | Type                                              | Description

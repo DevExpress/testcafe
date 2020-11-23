@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/requestmock/onrequestto.html
 Specifies which requests should be mocked with a response that follows in the [respond](respond.md) method.
 
 ```text
-requestMock.onRequestTo(filter)
+requestMock.onRequestTo(filter) → this
 ```
 
 Parameters | Type | Description | Default

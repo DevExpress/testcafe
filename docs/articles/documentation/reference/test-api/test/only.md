@@ -8,7 +8,7 @@ permalink: /documentation/reference/test-api/test/only.html
 Specifies that TestCafe should skip all other tests and run only this test.
 
 ```text
-test.only
+test.only → this
 ```
 
 You can also use the [fixture.only](../fixture/only.md) method to run individual fixtures separately.

@@ -5,10 +5,10 @@ permalink: /documentation/reference/test-api/testcontroller/dragtoelement.html
 ---
 # t.dragToElement Method
 
-Drags an element onto another web page element.
+Drags an element onto another web page element. Can be chained with other `TestController` methods.
 
 ```text
-t.dragToElement( selector, destinationSelector [, options] )
+t.dragToElement(selector, destinationSelector [, options]) → this | Promise<any>
 ```
 
 Parameter              | Type                                              | Description

@@ -5,10 +5,10 @@ permalink: /documentation/reference/test-api/testcontroller/selecttext.html
 ---
 # t.selectText Method
 
-Selects text in input elements of various types.
+Selects text in input elements of various types. Can be chained with other `TestController` methods.
 
 ```text
-t.selectText( selector [, startPos] [, endPos] [, options] )
+t.selectText(selector [, startPos] [, endPos] [, options]) → this | Promise<any>
 ```
 
 Parameter               | Type                                              | Description                                                                                                                                          | Default

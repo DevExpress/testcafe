@@ -8,8 +8,8 @@ permalink: /documentation/reference/test-api/fixture/meta.html
 Specifies the [fixture's metadata](../../../guides/basic-guides/organize-tests.md#specify-test-metadata).
 
 ```text
-fixture.meta( name, value )
-fixture.meta( metadata )
+fixture.meta(name, value) → this
+fixture.meta(metadata) → this
 ```
 
 Parameter  | Type   | Description

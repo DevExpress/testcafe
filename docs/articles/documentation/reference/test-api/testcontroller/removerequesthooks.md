@@ -5,10 +5,10 @@ permalink: /documentation/reference/test-api/testcontroller/removerequesthooks.h
 ---
 # TestController.removeRequestHooks Method
 
-Removes the attached [request hooks](../../../guides/advanced-guides/intercept-http-requests.md) from the test.
+Removes the attached [request hooks](../../../guides/advanced-guides/intercept-http-requests.md) from the test. Can be chained with other `TestController` methods.
 
 ```text
-t.removeRequestHooks(...hooks)
+t.removeRequestHooks(...hooks) → this | Promise<any>
 ```
 
 Parameter | Type | Description
