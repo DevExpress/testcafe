@@ -23,11 +23,17 @@ Log in to CircleCI using your GitHub account.
 
 If this is the first time you use CircleCI, you will start from an empty workspace. Click the **Add Project** button to create your first project.
 
-![Click the Add Project Button](../../../images/circleci-lambdatest/add-project.png)
+<img srcset="/testcafe/images/circleci-lambdatest/add-project.png,
+            /testcafe/images/circleci-lambdatest/add-project@2x.png 2x"
+        src="/testcafe/images/circleci-lambdatest/add-project.png"
+        alt="Click the Add Project Button"/>
 
 This shows a list of GitHub projects associated with your account. Find `testcafe-ci-demo` and click **Set Up project**.
 
-![Set Up Project](../../../images/circleci-lambdatest/set-up-project.png)
+<img srcset="/testcafe/images/circleci-lambdatest/set-up-project.png,
+            /testcafe/images/circleci-lambdatest/set-up-project@2x.png 2x"
+        src="/testcafe/images/circleci-lambdatest/set-up-project.png"
+        alt="Set Up Project"/>
 
 ## Step 3 - Configure the Build
 
@@ -74,7 +80,10 @@ Property                | Description
 
 After you pasted the YAML, click **Add Config**.
 
-![Click Add Config to save the configuration](../../../images/circleci-lambdatest/circleci-config.png)
+<img srcset="/testcafe/images/circleci-lambdatest/circleci-config.png,
+            /testcafe/images/circleci-lambdatest/circleci-config@2x.png 2x"
+        src="/testcafe/images/circleci-lambdatest/circleci-config.png"
+        alt="Click Add Config to save the configuration"/>
 
 CircleCI creates the `circleci-project-setup` branch in the repo and commits the `.circleci/config.yml` file to this branch. In this tutorial, we commit and push further changes to `circleci-project-setup`.
 
@@ -84,27 +93,48 @@ CircleCI allows you to assign sensitive information, like user credentials or ac
 
 Open the **Dashboard** view and select the `testcafe-ci-demo` project from the drop-down list:
 
-![Select a project from the drop-down list](../../../images/circleci-lambdatest/select-project.png)
+<img srcset="/testcafe/images/circleci-lambdatest/select-project.png,
+            /testcafe/images/circleci-lambdatest/select-project@2x.png 2x"
+        src="/testcafe/images/circleci-lambdatest/select-project.png"
+        alt="Select a project from the drop-down list"/>
 
 Click **Project Settings**:
 
-![Click the Project Settings button](../../../images/circleci-lambdatest/project-settings.png)
+<img srcset="/testcafe/images/circleci-lambdatest/project-settings.png,
+            /testcafe/images/circleci-lambdatest/project-settings@2x.png 2x"
+        src="/testcafe/images/circleci-lambdatest/project-settings.png"
+        alt="Click the Project Settings button"/>
 
 Open the **Environment Variables** category and click **Add Environment Variable**:
 
-![Click the Add Environment Variable button in Project Settings](../../../images/circleci-lambdatest/add-env-variable.png)
+<img srcset="/testcafe/images/circleci-lambdatest/add-env-variable.png,
+            /testcafe/images/circleci-lambdatest/add-env-variable@2x.png 2x"
+        src="/testcafe/images/circleci-lambdatest/add-env-variable.png"
+        alt="Click the Add Environment Variable button in Project Settings"/>
 
 In a separate browser tab or window, open the [LambdaTest app](https://www.lambdatest.com/) and click **Automation** in the navigation bar:
 
-![Navigate to the Automation page in the LambdaTest app](../../../images/circleci-lambdatest/lambdatest-automation.png)
+<img srcset="/testcafe/images/circleci-lambdatest/lambdatest-automation.png,
+            /testcafe/images/circleci-lambdatest/lambdatest-automation@2x.png 2x"
+        src="/testcafe/images/circleci-lambdatest/lambdatest-automation.png"
+        alt="Navigate to the Automation page in the LambdaTest app"/>
 
-Click ![Key icon](../../../images/circleci-lambdatest/lambdatest-key-icon.png) to display the access key info. Copy the *username*:
+Click <img srcset="/testcafe/images/circleci-lambdatest/lambdatest-key-icon.png,
+            /testcafe/images/circleci-lambdatest/lambdatest-key-icon@2x.png 2x"
+        src="/testcafe/images/circleci-lambdatest/lambdatest-key-icon.png"
+        alt="Key icon"/> to display the access key info. Copy the *username*:
 
-![Copy the username from LambdaTest Access Key Info](../../../images/circleci-lambdatest/lambdatest-credentials.png)
+<img srcset="/testcafe/images/circleci-lambdatest/lambdatest-credentials.png,
+            /testcafe/images/circleci-lambdatest/lambdatest-credentials@2x.png 2x"
+        src="/testcafe/images/circleci-lambdatest/lambdatest-credentials.png"
+        alt="Copy the username from LambdaTest Access Key Info"/>
 
 In CircleCI, enter `LT_USERNAME` as the variable name, paste the copied value below, and click **Add Environment Variable**:
 
-![Add the LT_USERNAME environment variable in CircleCI](../../../images/circleci-lambdatest/specify-secret-variable.png)
+<img srcset="/testcafe/images/circleci-lambdatest/specify-secret-variable.png,
+            /testcafe/images/circleci-lambdatest/specify-secret-variable@2x.png 2x"
+        src="/testcafe/images/circleci-lambdatest/specify-secret-variable.png"
+        alt="Add the LT_USERNAME environment variable in CircleCI"/>
 
 In the same manner, copy the *access key* from LambdaTest and create the `LT_ACCESS_KEY` environment variable in CircleCI to store this key.
 
@@ -158,11 +188,17 @@ Once you commit the `package.json` changes in the previous step, the build is tr
 
 Click the job name to show the details.
 
-![View the pipeline in the Dashboard](../../../images/circleci-lambdatest/view-pipeline.png)
+<img srcset="/testcafe/images/circleci-lambdatest/view-pipeline.png,
+            /testcafe/images/circleci-lambdatest/view-pipeline@2x.png 2x"
+        src="/testcafe/images/circleci-lambdatest/view-pipeline.png"
+        alt="View the pipeline in the Dashboard"/>
 
 The job view displays information about the completed job including the run duration, latest commit, and build log:
 
-![Job details in the Dashboard](../../../images/circleci-lambdatest/view-job.png)
+<img srcset="/testcafe/images/circleci-lambdatest/view-job.png,
+            /testcafe/images/circleci-lambdatest/view-job@2x.png 2x"
+        src="/testcafe/images/circleci-lambdatest/view-job.png"
+        alt="Job details in the Dashboard"/>
 
 ## Next Steps
 
