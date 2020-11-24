@@ -335,6 +335,10 @@ interface RunOptions {
      * Defines whether to disable page caching during test execution.
      */
     disablePageCaching: boolean;
+    /**
+     * Prevents TestCafe from taking screenshots. When this option is specified, screenshots are not taken whenever a test fails or when t.takeScreenshot or t.takeElementScreenshot is executed.
+     */
+    disableScreenshots: boolean;
 }
 
 interface TestCafeFactory {
