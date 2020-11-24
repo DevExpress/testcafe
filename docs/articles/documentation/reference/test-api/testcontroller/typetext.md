@@ -17,7 +17,7 @@ Parameter                   | Type                                              
 --------------------------- | ------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------
 `selector`                  | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element that receives input focus. See [Select Target Elements](#select-target-elements).
 `text`                      | String                                            | The text to be typed into the specified webpage element.
-`options`&#160;*(optional)* | Object                                            | A set of options with additional parameters for the action. See [Options](#options). If this parameter is omitted, TestCafe sets the cursor to the end of the text before typing. This preserves the text that is already in the input box.
+`options`&#160;*(optional)* | Object                                            | A set of options with additional parameters for the action. See [Options](#options). If this parameter is omitted, TestCafe moves the cursor to the end of the text before typing. This preserves the text that is already in the input box.
 
 The `t.typeText` action [clicks](click.md) the specified element before text is typed if this element is not focused. If the target element is not focused after the click, `t.typeText` does not type text.
 
@@ -44,7 +44,7 @@ test('Type and Replace', async t => {
 
 ## Typing Into DateTime, Color, and Range Inputs
 
-Some HTML5 inputs, like `DateTime`, `Color` or `Range`, require specifically formatted values.
+Some HTML5 inputs, like `DateTime`, `Color` or `Range`, require formatted values.
 
 The following table lists value formats expected by these inputs.
 
@@ -58,7 +58,7 @@ Time       | `hh:mm`            | `'15:30'`
 Color      | `#rrggbb` (hex)    | `'#FF8040'`
 Range      | `n`                | `'45'`
 
-The following example uses `t.typeText` to fill `color`, `datetime-local` and `range` input fields.
+The following example uses `t.typeText` to fill `color`, `datetime-local` and `range` input fields:
 
 ```js
 import { Selector } from 'testcafe'
