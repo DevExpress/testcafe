@@ -50,8 +50,7 @@ TestCafe users can modify [the settings](https://www.typescriptlang.org/docs/han
 * the [--compiler-options](../../reference/command-line-interface.md#--compiler-options) command line parameter,
 
     ```sh
-    testcafe chrome my-tests --compiler-options
-    typescript.options.lib=lib.es5.d.ts,lib.webworker.d.ts;typescript.typesRoot='this value contains spaces'
+    testcafe chrome my-tests --compiler-options typescript.options.lib=lib.es5.d.ts,lib.webworker.d.ts;typescript.typesRoot='this value contains spaces'
     ```
 
 * the [runner.compilerOptions](../../reference/testcafe-api/runner/compileroptions.md) API method,
