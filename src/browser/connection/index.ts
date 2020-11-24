@@ -24,7 +24,7 @@ import {
     HEARTBEAT_TIMEOUT
 } from '../../utils/browser-connection-timeouts';
 
-const DEBUG_SCOPE = (id: string): string => `testcafe:browser:connection:${id}`;
+const getBrowserConnectionDebugScope = (id: string): string => `testcafe:browser:connection:${id}`;
 
 const IDLE_PAGE_TEMPLATE                         = read('../../client/browser/idle-page/index.html.mustache');
 const connections: Dictionary<BrowserConnection> = {};
@@ -118,7 +118,7 @@ export default class BrowserConnection extends EventEmitter {
         this.disconnectionPromise     = null;
         this.testRunAborted           = false;
         this.warningLog               = new WarningLog();
-        this.debugLogger              = debug(DEBUG_SCOPE(this.id));
+        this.debugLogger              = debug(getBrowserConnectionDebugScope(this.id));
 
         this.browserInfo                           = browserInfo;
         this.browserInfo.userAgentProviderMetaInfo = '';
