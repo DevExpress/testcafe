@@ -902,7 +902,9 @@ describe('Runner', () => {
     });
 
     describe('Regression', () => {
-        it('Should not have unhandled rejections in runner (GH-825)', () => {
+        it('Should not have unhandled rejections in runner (GH-825)', function () {
+            this.timeout(3000);
+
             let rejectionReason = null;
 
             process.on('unhandledRejection', reason => {

@@ -57,6 +57,7 @@ const DEV_MODE      = 'dev' in ARGS;
 const QR_CODE       = 'qr-code' in ARGS;
 const SKIP_BUILD    = process.env.SKIP_BUILD || 'skip-build' in ARGS;
 const BROWSER_ALIAS = ARGS['browser-alias'];
+const IS_DEBUG_MODE = typeof v8debug !== 'undefined' || /--debug|--inspect/.test(process.execArgv.join(' '));
 
 const CLIENT_TESTS_PATH        = 'test/client/fixtures';
 const CLIENT_TESTS_LEGACY_PATH = 'test/client/legacy-fixtures';
@@ -385,7 +386,7 @@ gulp.step('test-server-run', () => {
         return gulp
             .src('test/server/*-test.js', { read: false })
             .pipe(mocha({
-                timeout: typeof v8debug !== 'undefined' || !!process.debugPort ? Infinity : 2000 // NOTE: disable timeouts in debug
+                timeout: IS_DEBUG_MODE ? Infinity : 2000 // NOTE: disable timeouts in debug
             }));
     }
     finally {
@@ -766,7 +767,7 @@ function testFunctional (src, testingEnvironmentName, { experimentalCompilerServ
 
     const opts = {
         reporter: 'mocha-reporter-spec-with-retries',
-        timeout:  typeof v8debug === 'undefined' ? 3 * 60 * 1000 : Infinity // NOTE: disable timeouts in debug
+        timeout:  IS_DEBUG_MODE ? Infinity : 3 * 60 * 1000 // NOTE: disable timeouts in debug
     };
 
     if (process.env.RETRY_FAILED_TESTS === 'true')
