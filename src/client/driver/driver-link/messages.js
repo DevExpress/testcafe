@@ -1,20 +1,22 @@
 import generateId from '../generate-id';
 
 export const TYPE = {
-    establishConnection:      'driver|establish-connection',
-    switchToWindow:           'driver|switch-to-window',
-    closeWindow:              'driver|close-window',
-    closeWindowValidation:    'driver|close-window-validation',
-    switchToWindowValidation: 'driver|switch-to-window-validation',
-    getWindows:               'driver|get-windows',
-    commandExecuted:          'driver|command-executed',
-    executeCommand:           'driver|execute-command',
-    confirmation:             'driver|confirmation',
-    setNativeDialogHandler:   'driver|set-native-dialog-handler',
-    setAsMaster:              'driver|set-as-master',
-    closeAllChildWindows:     'driver|close-all-child-windows',
-    startToRestoreChildLink:  'driver|start-to-restore-child-link',
-    restoreChildLink:         'driver|restore-child-link'
+    establishConnection:         'driver|establish-connection',
+    switchToWindow:              'driver|switch-to-window',
+    closeWindow:                 'driver|close-window',
+    closeWindowValidation:       'driver|close-window-validation',
+    switchToWindowValidation:    'driver|switch-to-window-validation',
+    getWindows:                  'driver|get-windows',
+    commandExecuted:             'driver|command-executed',
+    executeCommand:              'driver|execute-command',
+    confirmation:                'driver|confirmation',
+    setNativeDialogHandler:      'driver|set-native-dialog-handler',
+    setAsMaster:                 'driver|set-as-master',
+    closeAllChildWindows:        'driver|close-all-child-windows',
+    startToRestoreChildLink:     'driver|start-to-restore-child-link',
+    restoreChildLink:            'driver|restore-child-link',
+    childWindowIsLoadedInIFrame: 'driver|child-window-is-loaded-in-iframe',
+    childWindowIsOpenedInIFrame: 'driver|child-window-is-opened-in-iframe'
 };
 
 class InterDriverMessage {
@@ -130,5 +132,19 @@ export class RestoreChildLinkMessage extends InterDriverMessage {
         super(TYPE.restoreChildLink);
 
         this.windowId = windowId;
+    }
+}
+
+export class ChildWindowIsLoadedInFrameMessage extends InterDriverMessage {
+    constructor (windowId) {
+        super(TYPE.childWindowIsLoadedInIFrame);
+
+        this.windowId = windowId;
+    }
+}
+
+export class ChildWindowIsOpenedInFrameMessage extends InterDriverMessage {
+    constructor () {
+        super(TYPE.childWindowIsOpenedInIFrame);
     }
 }

@@ -299,6 +299,12 @@ describe('Multiple windows', () => {
         });
     });
 
+    describe('iFrames', () => {
+        it('Should switch to child window if it is opened in iFrame', () => {
+            return runTests('testcafe-fixtures/iframe.js', 'Open child window if iframe', { only: 'chrome' });
+        });
+    });
+
     describe('Emulation', () => {
         it('Should resize window when emulating device', async () => {
             return createTestCafe('127.0.0.1', 1335, 1336)

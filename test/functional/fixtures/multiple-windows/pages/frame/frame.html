@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Frame</title>
+
+    <script>
+        function hideIframe () {
+            var iframe = window.top.document.querySelector('iframe');
+
+            iframe.style.visibility = 'hidden';
+        }
+    </script>
+</head>
+<body>
+    <a onclick="hideIframe()" href="./child.html" target="_blank">open window</a>
+
+    <button>frame</button>
+</body>
+</html>
