@@ -11,7 +11,7 @@ This topic describes how to integrate TestCafe into the [CircleCI](https://circl
 
 In this tutorial, we fetch tests from a GitHub repository: [testcafe-ci-demo](https://github.com/DevExpress-Examples/testcafe-ci-demo). Fork this repository before you start.
 
-> If you use a different version control system, make sure CircleCI supports it. To learn which systems it supports, refer to the [CircleCI Integrations](https://circleci.com/integrations/) page.
+> If you use a different version control system, make sure CircleCI supports it. For information on which systems you can use, refer to the [CircleCI Integrations](https://circleci.com/integrations/) page.
 
 ## Step 1 - Install TestCafe and Create Tests
 
@@ -25,9 +25,7 @@ If this is the first time you use CircleCI, you will start from an empty workspa
 
 ![Click the Add Project Button](../../../images/circleci-lambdatest/add-project.png)
 
-You will see the list of GitHub projects associated with your account.
-
-Find `testcafe-ci-demo` and click **Set Up project**.
+This shows a list of GitHub projects associated with your account. Find `testcafe-ci-demo` and click **Set Up project**.
 
 ![Set Up Project](../../../images/circleci-lambdatest/set-up-project.png)
 
@@ -166,6 +164,8 @@ The job view displays information about the completed job including the run dura
 
 ![Job details in the Dashboard](../../../images/circleci-lambdatest/view-job.png)
 
-## Conclusion
+## Next Steps
 
-A testing configuration for CircleCI and LambdaTest is now set up in the `circleci-project-setup` branch. In a real-world project, you would now create a pull request to merge the configuration into the `master` branch.
+A testing configuration for CircleCI and LambdaTest is set up in the `circleci-project-setup` branch. You can now create a pull request to merge the configuration into the `master` branch.
+
+> Please do not open pull requests to merge the sample code from this tutorial to the [DevExpress-Examples/testcafe-ci-demo](https://github.com/DevExpress-Examples/testcafe-ci-demo) repository.
