@@ -345,6 +345,8 @@ describe('TestCafe Live', function () {
     });
 
     it('same runner runs twice', function () {
+        this.timeout(6000);
+
         runner = new RunnerMock(testCafe, {})
             .browsers('chrome');
 
