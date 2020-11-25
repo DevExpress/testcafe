@@ -2174,8 +2174,8 @@
 			<h1>t.setNativeDialogHandler Method</h1>
 <p>To handle native dialogs invoked during the test run, specify a handler function
 with the <code>setNativeDialogHandler</code> method of the
-<a href=".">test controller</a>.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">t.setNativeDialogHandler( fn(type, text, url) [, options] )
+<a href=".">test controller</a>. This method can be chained with other <code>TestController</code> methods.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">t.setNativeDialogHandler(fn(type, text, url) [, options]) → this | Promise&lt;any&gt;
 </code></pre></div><div class="table-wrapper"><table><thead><tr>
 <th>Parameter</th>
 <th>Type</th>

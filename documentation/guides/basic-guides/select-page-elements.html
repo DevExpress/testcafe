@@ -939,6 +939,15 @@
 		    
 		
 
+<a href="/testcafe/documentation/guides/continuous-integration/circleci-and-lambdatest.html"  >CircleCI + LambdaTest</a>
+
+		
+    </li>
+
+    <li>
+		    
+		
+
 <a href="/testcafe/documentation/guides/continuous-integration/github-actions.html"  >GitHub Actions</a>
 
 		
@@ -1728,29 +1737,30 @@ In this instance, you can introduce a function that selects the desired element.
 </code></pre></div><h3><a class="anchor" id="access-shadow-dom"></a>Access Shadow DOM <a class="permalink" href="#access-shadow-dom">#</a></h3>
 <p>CSS selectors passed to the <a href="../../reference/test-api/selector/constructor.html">Selector</a> constructor cannot identify elements in the shadow DOM.</p>
 
-<p>To select a shadow element, initialize a selector with client-side code and use the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/shadowRoot">shadowRoot</a> property to get and return the element from the shadow DOM.</p>
+<p>To access and traverse the shadow DOM attached to an element, identify the element with a <code>Selector</code> and use the <a href="../../reference/test-api/selector/shadowroot.html">Selector.shadowRoot</a> method to
+target the <a href="https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot">shadow root</a> of the element. Use other <code>Selector</code> methods to traverse the shadow tree from there.</p>
+<blockquote><div class="blockquote-content"><p>You cannot perform actions with a node returned by <code>shadowRoot()</code> or use it in assertions.</p>
 
-<p>The following example shows the <code>paragraph</code> selector that returns <code>&lt;p&gt;</code> from the shadow DOM.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
+<p>Only use this element as an entry point to shadow DOM.</p>
+</div></blockquote>
+<p>The following example shows the <code>paragraph</code> selector that returns <code>&lt;p&gt;</code> from the shadow DOM:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span>
 
-<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://chrisbateman.github.io/guide-to-web-components/demos/shadow-dom.htm`</span><span class="p">;</span>
+<span class="nx">fixture</span> <span class="s2">`Target Shadow DOM elements`</span>
+    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://devexpress.github.io/testcafe/example</span><span class="dl">'</span><span class="p">)</span>
 
-<span class="kd">const</span> <span class="nx">demoPage</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#demo1</span><span class="dl">'</span><span class="p">);</span>
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Get text within shadow tree</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">shadowRoot</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">div</span><span class="dl">'</span><span class="p">).</span><span class="nx">withAttribute</span><span class="p">(</span><span class="dl">'</span><span class="s1">id</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">shadow-host</span><span class="dl">'</span><span class="p">).</span><span class="nx">shadowRoot</span><span class="p">();</span>
+    <span class="kd">const</span> <span class="nx">paragraph</span>  <span class="o">=</span> <span class="nx">shadowRoot</span><span class="p">.</span><span class="nx">child</span><span class="p">(</span><span class="dl">'</span><span class="s1">p</span><span class="dl">'</span><span class="p">);</span>
 
-<span class="kd">const</span> <span class="nx">paragraph</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="k">return</span> <span class="nx">demoPageSelector</span><span class="p">().</span><span class="nx">shadowRoot</span><span class="p">.</span><span class="nx">querySelectorAll</span><span class="p">(</span><span class="dl">'</span><span class="s1">p</span><span class="dl">'</span><span class="p">);</span>
-<span class="p">},</span> <span class="p">{</span> <span class="na">dependencies</span><span class="p">:</span> <span class="p">{</span> <span class="na">demoPageSelector</span><span class="p">:</span> <span class="nx">demoPage</span> <span class="p">}</span> <span class="p">});</span>
+    <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">paragraph</span><span class="p">.</span><span class="nx">textContent</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="dl">'</span><span class="s1">This paragraph is in the shadow tree</span><span class="dl">'</span><span class="p">);</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Get text within shadow root</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">paragraph</span><span class="p">.</span><span class="nx">nth</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span>
-
-    <span class="kd">var</span> <span class="nx">text</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">paragraph</span><span class="p">.</span><span class="nx">nth</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="nx">textContent</span><span class="p">;</span>
-
-    <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">paragraph</span><span class="p">.</span><span class="nx">nth</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="nx">textContent</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="dl">'</span><span class="s1">These paragraphs are in a shadow root.</span><span class="dl">'</span><span class="p">);</span>
+    <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">shadowRoot</span><span class="p">);</span>
+    <span class="c1">// causes an error</span>
+    <span class="c1">// do not target the shadow root directly or use it in assertions</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>The <code>paragraph</code> selector obtains <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/shadowRoot">shadowRoot</a> from the <code>#demo1</code> element. The <code>demoPage</code> selector that identifies <code>#demo1</code> is passed as a <a href="../../reference/test-api/selector/constructor.html#optionsdependencies">dependency</a>.</p>
+<p>The <code>shadowRoot</code> selector obtains the root node of the shadow DOM from the <code>div</code> element. The <code>paragraph</code> selector that selects <code>p</code> is passed to a <code>t.expect</code> method.</p>
 <h3><a class="anchor" id="check-if-an-element-is-available"></a>Check if an Element is Available <a class="permalink" href="#check-if-an-element-is-available">#</a></h3>
 <p>It is not good practice to introduce conditions in tests, because it indicates that your tests are non-deterministic.
 The tested website should guarantee that the test writer knows the page state at any given moment. In this instance, you do not need to include conditions in test code.</p>

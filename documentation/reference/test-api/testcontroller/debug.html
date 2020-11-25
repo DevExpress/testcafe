@@ -2172,8 +2172,8 @@
 		<div class="post-content">
 
 			<h1>t.debug Method</h1>
-<p>Pauses the test and allows you to use the browser&#39;s developer tools.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">t.debug()
+<p>Pauses the test and allows you to use the browser&#39;s developer tools. Can be chained with other <code>TestController</code> methods.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">t.debug() → this | Promise&lt;any&gt;
 </code></pre></div>
 <p>When test execution reaches <code>t.debug</code>, it pauses so that you can open the browser&#39;s developer tools
 and check the web page state, DOM element location, their CSS styles, etc.</p>
