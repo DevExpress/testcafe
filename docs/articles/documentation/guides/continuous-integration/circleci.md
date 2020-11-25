@@ -142,4 +142,3 @@ Use the **Start building** button to trigger a build.
 Go to the **Builds** section and choose a build to view its results.
 
 ![Test Results](../../../images/circle-ci/fail-report.png)
-
