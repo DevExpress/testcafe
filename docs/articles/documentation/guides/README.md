@@ -42,6 +42,7 @@ permalink: /documentation/guides/
 * [Azure DevOps](continuous-integration/azure-devops.md)
 * [Bitbucket Pipelines](continuous-integration/bitbucket-pipelines.md)
 * [CircleCI](continuous-integration/circleci.md)
+* [CircleCI + LambdaTest](continuous-integration/circleci-and-lambdatest.md)
 * [GitHub Actions](continuous-integration/github-actions.md)
 * [GitHub Actions + BrowserStack](continuous-integration/github-actions-and-browserstack.md)
 * [GitLab](continuous-integration/gitlab.md)
