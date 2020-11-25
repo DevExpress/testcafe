@@ -55,12 +55,14 @@ On the project configuration page, select **Node** as the target platform and pa
 version: 2.1
 orbs:
   node: circleci/node@4.1.0
+  browser-tools: circleci/browser-tools@1.1.0
 jobs:
   test:
     docker:
-      - image: circleci/node:latest-browsers
+      - image: cimg/node:lts-browsers
     steps:
       - checkout
+      - browser-tools/install-browser-tools
       - node/install-packages
       - run:
           command: npm run test
@@ -79,12 +81,14 @@ Property                | Description
 `version`               | The CircleCI version that should be used for this project.
 `orbs`                  | Imports CircleCI [orbs](https://circleci.com/docs/2.0/orb-intro/)–reusable parts of build configurations stored in a CircleCI registry.
 `node`                  | Imports the [circleci/node](https://circleci.com/developer/orbs/orb/circleci/node) orb v4.1.0 under the name `node`.
+`browser-tools`         | Imports the [circleci/browser-tools](https://circleci.com/developer/orbs/orb/circleci/browser-tools) orb v1.1.0 under the name `browser-tools`.
 `jobs`                  | The section that specifies [jobs](https://circleci.com/docs/2.0/jobs-steps/#jobs-overview).
 `test`                  | The job's name.
 `docker`                | An [executor](https://circleci.com/docs/2.0/configuration-reference/#docker--machine--macos--windows-executor) that defines that defines the environment in which this job runs. The `docker` executor specifies that the job should run inside a docker container.
-`image`                 | Specifies the docker image to use. `circleci/node:latest-browsers` is a pre-built CircleCI docker image with the latest version of node and browsers pre-installed. For the full list of available images, see [Pre-Built CircleCI Docker Images](https://circleci.com/docs/2.0/circleci-images/#nodejs).
+`image`                 | Specifies the docker image to use. `cimg/node:lts-browsers` is a pre-built CircleCI docker image with the `lts` version of node and browser dependencies pre-installed. For the full list of available images, see [Pre-Built CircleCI Docker Images](https://circleci.com/developer/images/image/cimg/node).
 `steps`                 | The job's [steps](https://circleci.com/docs/2.0/jobs-steps/#steps-overview).
 `checkout`              | Checks out code from the `testcafe-ci-demo` repository. This is a pre-defined step (see [checkout](https://circleci.com/docs/2.0/configuration-reference/#checkout)).
+`browser-tools/install-browser-tools` | A step from the `browser-tools` orb that installs browsers and browser drivers on the machine. This step installs Chrome, Firefox, ChromeDriver and GeckoDriver.
 `node/install-packages` | A step from the `node` orb that installs the project's dependencies (see [install-packages](https://circleci.com/developer/orbs/orb/circleci/node#commands-install-packages)).
 `run`                   | The [run](https://circleci.com/docs/2.0/configuration-reference/#run) step invokes shell commands. In this example, `run` executes the `npm test` script.
 `store_test_results`    | Uploads test results to the specified directory (see [store_test_results](https://circleci.com/docs/2.0/configuration-reference/#store_test_results)).
