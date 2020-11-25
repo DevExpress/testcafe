@@ -32,7 +32,6 @@ import { Selector } from 'testcafe';
 
 ![Writing Tests with TypeScript](../../../images/typescript-support.png)
 
-
 The syntax of TestCafe is identical for both JavaScript and TypeScript.
 
 Whenever TestCafe encounters TypeScript compilation errors, it includes corresponding error messages in the test report.
