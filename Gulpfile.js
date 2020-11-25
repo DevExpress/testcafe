@@ -376,12 +376,42 @@ gulp.task('build', DEV_MODE ? gulp.registry().get('fast-build') : gulp.parallel(
 // Test
 gulp.step('prepare-tests', gulp.registry().get(SKIP_BUILD ? 'lint' : 'build'));
 
+function exitDomains () {
+    const domains = [];
+
+    while (process.domain) {
+        domains.push(process.domain);
+
+        process.domain.exit();
+    }
+
+    return domains;
+}
+
+function enterDomains (domains) {
+    let domain = domains.pop();
+
+    while (domain) {
+        domain.enter();
+
+        domain = domains.pop();
+    }
+}
+
 gulp.step('test-server-run', () => {
-    return gulp
-        .src('test/server/*-test.js', { read: false })
-        .pipe(mocha({
-            timeout: typeof v8debug !== 'undefined' || !!process.debugPort ? Infinity : 2000 // NOTE: disable timeouts in debug
-        }));
+    // HACK: We have to exit from all Gulp's error domains to avoid conflicts with error handling inside mocha
+    const domains = exitDomains();
+
+    try {
+        return gulp
+            .src('test/server/*-test.js', { read: false })
+            .pipe(mocha({
+                timeout: typeof v8debug !== 'undefined' || !!process.debugPort ? Infinity : 2000 // NOTE: disable timeouts in debug
+            }));
+    }
+    finally {
+        enterDomains(domains);
+    }
 });
 
 gulp.step('test-server-bootstrap', gulp.series('prepare-tests', 'test-server-run'));
