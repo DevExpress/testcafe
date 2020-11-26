@@ -35,6 +35,7 @@ const packageInfo                   = require('./package');
 const getPublishTags                = require('./docker/get-publish-tags');
 const isDockerDaemonRunning         = require('./docker/is-docker-daemon-running');
 const { exitDomains, enterDomains } = require('./gulp/helpers/domain');
+const getTimeout                    = require('./gulp/helpers/get-timeout');
 
 const readFile = promisify(fs.readFile);
 
@@ -57,7 +58,6 @@ const DEV_MODE      = 'dev' in ARGS;
 const QR_CODE       = 'qr-code' in ARGS;
 const SKIP_BUILD    = process.env.SKIP_BUILD || 'skip-build' in ARGS;
 const BROWSER_ALIAS = ARGS['browser-alias'];
-const IS_DEBUG_MODE = typeof v8debug !== 'undefined' || /--debug|--inspect/.test(process.execArgv.join(' '));
 
 const CLIENT_TESTS_PATH        = 'test/client/fixtures';
 const CLIENT_TESTS_LEGACY_PATH = 'test/client/legacy-fixtures';
@@ -206,6 +206,7 @@ gulp.task('lint', () => {
             'src/**/*.js',
             'src/**/*.ts',
             'test/**/*.js',
+            'gulp/helpers/**/*',
             '!test/client/vendor/**/*.*',
             '!test/functional/fixtures/api/es-next/custom-client-scripts/data/*.js',
             'Gulpfile.js'
@@ -386,7 +387,7 @@ gulp.step('test-server-run', () => {
         return gulp
             .src('test/server/*-test.js', { read: false })
             .pipe(mocha({
-                timeout: IS_DEBUG_MODE ? Infinity : 2000 // NOTE: disable timeouts in debug
+                timeout: getTimeout(2000)
             }));
     }
     finally {
@@ -767,7 +768,7 @@ function testFunctional (src, testingEnvironmentName, { experimentalCompilerServ
 
     const opts = {
         reporter: 'mocha-reporter-spec-with-retries',
-        timeout:  IS_DEBUG_MODE ? Infinity : 3 * 60 * 1000 // NOTE: disable timeouts in debug
+        timeout:  getTimeout(3 * 60 * 1000)
     };
 
     if (process.env.RETRY_FAILED_TESTS === 'true')
