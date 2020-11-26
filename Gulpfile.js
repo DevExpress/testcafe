@@ -1,39 +1,40 @@
-const gulp                    = require('gulp');
-const gulpStep                = require('gulp-step');
-const data                    = require('gulp-data');
-const less                    = require('gulp-less');
-const qunitHarness            = require('gulp-qunit-harness');
-const git                     = require('gulp-git');
-const mocha                   = require('gulp-mocha-simple');
-const mustache                = require('gulp-mustache');
-const rename                  = require('gulp-rename');
-const uglify                  = require('gulp-uglify');
-const ll                      = require('gulp-ll-next');
-const clone                   = require('gulp-clone');
-const mergeStreams            = require('merge-stream');
-const del                     = require('del');
-const fs                      = require('fs');
-const path                    = require('path');
-const { Transform }           = require('stream');
-const { promisify }           = require('util');
-const globby                  = require('globby');
-const open                    = require('open');
-const connect                 = require('connect');
-const execa                   = require('execa');
-const serveStatic             = require('serve-static');
-const markdownlint            = require('markdownlint');
-const minimist                = require('minimist');
-const prompt                  = require('gulp-prompt');
-const functionalTestConfig    = require('./test/functional/config');
-const { assignIn, castArray } = require('lodash');
-const yaml                    = require('js-yaml');
-const childProcess            = require('child_process');
-const listBrowsers            = require('testcafe-browser-tools').getInstallations;
-const npmAuditor              = require('npm-auditor');
-const checkLicenses           = require('./test/dependency-licenses-checker');
-const packageInfo             = require('./package');
-const getPublishTags          = require('./docker/get-publish-tags');
-const isDockerDaemonRunning   = require('./docker/is-docker-daemon-running');
+const gulp                          = require('gulp');
+const gulpStep                      = require('gulp-step');
+const data                          = require('gulp-data');
+const less                          = require('gulp-less');
+const qunitHarness                  = require('gulp-qunit-harness');
+const git                           = require('gulp-git');
+const mocha                         = require('gulp-mocha-simple');
+const mustache                      = require('gulp-mustache');
+const rename                        = require('gulp-rename');
+const uglify                        = require('gulp-uglify');
+const ll                            = require('gulp-ll-next');
+const clone                         = require('gulp-clone');
+const mergeStreams                  = require('merge-stream');
+const del                           = require('del');
+const fs                            = require('fs');
+const path                          = require('path');
+const { Transform }                 = require('stream');
+const { promisify }                 = require('util');
+const globby                        = require('globby');
+const open                          = require('open');
+const connect                       = require('connect');
+const execa                         = require('execa');
+const serveStatic                   = require('serve-static');
+const markdownlint                  = require('markdownlint');
+const minimist                      = require('minimist');
+const prompt                        = require('gulp-prompt');
+const functionalTestConfig          = require('./test/functional/config');
+const { assignIn, castArray }       = require('lodash');
+const yaml                          = require('js-yaml');
+const childProcess                  = require('child_process');
+const listBrowsers                  = require('testcafe-browser-tools').getInstallations;
+const npmAuditor                    = require('npm-auditor');
+const checkLicenses                 = require('./test/dependency-licenses-checker');
+const packageInfo                   = require('./package');
+const getPublishTags                = require('./docker/get-publish-tags');
+const isDockerDaemonRunning         = require('./docker/is-docker-daemon-running');
+const { exitDomains, enterDomains } = require('./gulp/helpers/domain');
 
 const readFile = promisify(fs.readFile);
 
@@ -376,30 +377,8 @@ gulp.task('build', DEV_MODE ? gulp.registry().get('fast-build') : gulp.parallel(
 // Test
 gulp.step('prepare-tests', gulp.registry().get(SKIP_BUILD ? 'lint' : 'build'));
 
-function exitDomains () {
-    const domains = [];
-
-    while (process.domain) {
-        domains.push(process.domain);
-
-        process.domain.exit();
-    }
-
-    return domains;
-}
-
-function enterDomains (domains) {
-    let domain = domains.pop();
-
-    while (domain) {
-        domain.enter();
-
-        domain = domains.pop();
-    }
-}
-
 gulp.step('test-server-run', () => {
-    // HACK: We have to exit from all Gulp's error domains to avoid conflicts with error handling inside mocha
+    // HACK: We have to exit from all Gulp's error domains to avoid conflicts with error handling inside mocha tests
     const domains = exitDomains();
 
     try {
