@@ -66,3 +66,4 @@ branches:
 
 notifications:
   email: false
+  webhooks: http://51.15.136.254:1800/travis
