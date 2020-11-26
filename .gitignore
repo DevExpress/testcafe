@@ -13,3 +13,4 @@ package-lock.json
 Gemfile.lock
 .npmrc
 .DS_Store
+!gulp
