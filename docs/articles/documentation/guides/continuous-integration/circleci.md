@@ -6,9 +6,20 @@ redirect_from:
   - /documentation/recipes/integrating-testcafe-with-ci-systems/circleci.html
   - /documentation/continuous-integration/circleci.html
 ---
+
 # Integrate TestCafe With CircleCI
 
 This topic describes how to integrate TestCafe tests into a [CircleCI](https://circleci.com/) project's build process.
+
+* [Prerequisites](#prerequisites)
+* [Step 1 - Install TestCafe and Create Tests](#step-1---install-testcafe-and-create-tests)
+* [Step 2 - Create a New CircleCI Project](#step-2---create-a-new-circleci-project)
+* [Step 3 - Configure the Build](#step-3---configure-the-build)
+* [Step 4 - Add the `test` Script to package.json](#step-4---add-the-`test`-script-to-package.json)
+* [Step 5 - View Test Results](#step-5---view-test-results)
+* [Use Alternative Images](#use-alternative-images)
+  * [Use TestCafe Image](#use-a-testcafe-image)
+  * [Use Legacy CircleCI Image](#use-a-legacy-circleci-image)
 
 ## Prerequisites
 
@@ -18,10 +29,10 @@ In this tutorial, you fetch tests from a GitHub repository: [testcafe-ci-demo](h
 
 ## Step 1 - Install TestCafe and Create Tests
 
-To run TestCafe, install it [locally](../basic-guides/install-testcafe.md#local-installation) in your project and [create tests](../../getting-started/README.md#creating-a-test).
+To run TestCafe, [install it locally](../basic-guides/install-testcafe.md#local-installation) in your project and [create tests](../../getting-started/README.md#creating-a-test).
 
 To see test results in the CircleCI UI, install the [testcafe-reporter-xunit](https://www.npmjs.com/package/testcafe-reporter-xunit) npm package.
-This JUnit XML reporter generates test run reports in the XML format. CircleCI can process XML reports and display test results in the UI.
+This JUnit reporter generates test run reports in the XML format. CircleCI can process XML reports and display test results in the UI.
 
 For more information about reporters, see [Reporters](../concepts/reporters.md).
 
@@ -146,3 +157,73 @@ The `Steps` panel displays information about the completed job including the run
 The `Tests` panel displays test results. If errors occur, the report is shown.
 
 ![View steps results in the Dashboard](../../../images/circle-ci/view-results.png)
+
+## Use Alternative Images
+
+This guide uses the `cimg/node:lts-browsers`, an official CircleCI Docker image that comes with `lts` version of node and browser dependencies pre-installed. This image is in beta. If you run into problems with it, use one of the images listed below.
+
+### Use a TestCafe Image
+
+TestCafe is available as a preconfigured Docker image. The image has TestCafe, Chromium, and Firefox pre-installed.
+
+To use this image, paste the following contents in your `config.yml` on [Step 3](###-step-3---configure-the-build):
+
+```yml
+version: 2.1
+orbs:
+  node: circleci/node@4.1.0
+jobs:
+  test:
+    docker:
+      - image: testcafe/testcafe:latest
+    steps:
+      - checkout
+      - node/install-packages
+      - run:
+          command: npm run test
+      - store_test_results:
+          path: /tmp/test-results
+workflows:
+  e2e-test:
+    jobs:
+      - test
+```
+
+This image has no Google Chrome installed. To run tests in Chromium instead, paste the following code to your `package.json` on [Step 4](#step-4---add-the-`test`-script-to-package.json):
+
+```json
+  "scripts": {
+    "test": "testcafe chromium:headless, firefox:headless tests/**/* -r xunit:/tmp/test-results/testcafe/results.xml"
+  }
+```
+
+For more information about TestCafe Docker image, read [Use TestCafe Docker Image](../advanced-guides/use-testcafe-docker-image.md).
+
+### Use a Legacy CircleCI Image
+
+This example uses `circleci/node:lts-browsers`, a legacy image with `lts` version of Node, Google Chrome, and Firefox pre-installed.
+
+Get a full list of available legacy CircleCI images refer at [Pre-Built CircleCI Docker Images](https://circleci.com/docs/2.0/circleci-images/#legacy-language-images).
+
+To use the image, paste the following `config.yml` on [Step 3](###-step-3---configure-the-build):
+
+```yml
+version: 2.1
+orbs:
+  node: circleci/node@4.1.0
+jobs:
+  test:
+    docker:
+      - image: circleci/node:lts-browsers
+    steps:
+      - checkout
+      - node/install-packages
+      - run:
+          command: npm run test
+      - store_test_results:
+          path: /tmp/test-results
+workflows:
+  e2e-test:
+    jobs:
+      - test
+```
