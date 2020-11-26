@@ -2172,9 +2172,9 @@
 		<div class="post-content">
 
 			<h1>t.takeScreenshot Method</h1>
-<p>Takes screenshot of the entire page.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">t.takeScreenshot( [options] )
-obsolete: t.takeScreenshot( [path] )
+<p>Takes screenshot of the entire page. Can be chained with other <code>TestController</code> methods.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">t.takeScreenshot([options]) → this | Promise&lt;any&gt;
+obsolete: t.takeScreenshot([path]) → this | Promise&lt;any&gt;
 </code></pre></div>
 <p>The <code>options</code> object can include the following properties:</p>
 <div class="table-wrapper"><table><thead><tr>

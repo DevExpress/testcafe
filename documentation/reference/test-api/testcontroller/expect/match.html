@@ -2173,7 +2173,7 @@
 
 			<h1>t.expect.match Method</h1>
 <p>Asserts that <code>actual</code> matches the <code>re</code> regular expression.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">await t.expect( actual ).match( re, message, options );
+<div class="highlight"><pre><code class="language-text" data-lang="text">t.expect(actual).match(re, message, options) → this | Promise&lt;unknown&gt;
 </code></pre></div><div class="table-wrapper"><table><thead><tr>
 <th>Parameter</th>
 <th>Type</th>

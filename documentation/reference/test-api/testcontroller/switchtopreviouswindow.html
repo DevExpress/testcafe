@@ -2172,8 +2172,8 @@
 		<div class="post-content">
 
 			<h1>t.switchToPreviousWindow Method</h1>
-<p>Activates the most recent of the previously active windows.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">t</span><span class="p">.</span><span class="nx">switchToPreviousWindow</span><span class="p">()</span>
+<p>Activates the previously active window. Can be chained with other <code>TestController</code> methods.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">t.switchToPreviousWindow()  → this | Promise&lt;any&gt;
 </code></pre></div>
 <p>If no new windows are open or closed, consecutive method calls cycle between the two most recent windows.</p>
 <h2><a class="anchor" id="example"></a>Example <a class="permalink" href="#example">#</a></h2><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span><span class="p">,</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>

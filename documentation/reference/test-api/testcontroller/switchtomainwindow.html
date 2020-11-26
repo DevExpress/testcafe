@@ -2172,8 +2172,8 @@
 		<div class="post-content">
 
 			<h1>t.switchToMainWindow Action</h1>
-<p>Switches the test&#39;s browsing context from an <code>&lt;iframe&gt;</code> back to the main window.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">t.switchToMainWindow()
+<p>Switches the test&#39;s browsing context from an <code>&lt;iframe&gt;</code> back to the main window. Can be chained with other <code>TestController</code> methods.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">t.switchToMainWindow() → this | Promise&lt;any&gt;
 </code></pre></div>
 <p>The example below demonstrates how to use <code>t.switchToMainWindow</code> action.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>

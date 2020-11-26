@@ -2172,8 +2172,8 @@
 		<div class="post-content">
 
 			<h1>t.eval Method</h1>
-<p>Creates a client function and executes it immediately (without saving).</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">t.eval( fn [, options] )
+<p>Creates a client function and executes it immediately (without saving). Returns a promise-wrapped value and cannot be chained with other methods of the test controller.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">t.eval(fn [, options]) → Promise&lt;any&gt;
 </code></pre></div><div class="table-wrapper"><table><thead><tr>
 <th>Parameter</th>
 <th>Type</th>
@@ -2197,8 +2197,30 @@
 <span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">My Test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="kd">const</span> <span class="nx">docURI</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nb">eval</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">documentURI</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div><blockquote><div class="blockquote-content"><p>Since the <code>eval</code> method returns a value, and not an object, you cannot chain other methods of the test controller after &#39;eval&#39;.</p>
-</div></blockquote><h2><a class="anchor" id="options"></a>Options <a class="permalink" href="#options">#</a></h2><h3><a class="anchor" id="optionsdependencies"></a>options.dependencies <a class="permalink" href="#optionsdependencies">#</a></h3>
+</code></pre></div><blockquote class="important"><div class="blockquote-content"><p>Always place <code>eval</code> in a separate call.</p>
+
+<p><code>eval</code> returns a promise-wrapped value instead of a local context so you cannot chain other methods of the test controller after <code>eval</code>. If you chain <code>eval</code> on to other methods of the test controller, their promises don&#39;t ever resolve which breaks the execution order.</p>
+</div></blockquote><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://devexpress.github.io/testcafe/example/`</span>
+
+<span class="kd">const</span> <span class="nx">timeout</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">;</span>
+
+<span class="nx">test</span> <span class="p">(</span><span class="dl">'</span><span class="s1">My Test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+
+    <span class="k">await</span> <span class="nx">t</span>
+    <span class="p">.</span><span class="nx">wait</span><span class="p">(</span><span class="nx">timeout</span><span class="p">)</span>
+    <span class="p">.</span><span class="nb">eval</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">location</span><span class="p">.</span><span class="nx">reload</span><span class="p">(</span><span class="kc">true</span><span class="p">));</span>
+    <span class="c1">// The timeout is skipped and the action executes right away.</span>
+    <span class="c1">// Do not chain eval on to other methods of the test controller</span>
+<span class="p">});</span>
+
+<span class="nx">test</span> <span class="p">(</span><span class="dl">'</span><span class="s1">My Test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+
+    <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">wait</span><span class="p">(</span><span class="nx">timeout</span><span class="p">);</span>
+    <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nb">eval</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nx">location</span><span class="p">.</span><span class="nx">reload</span><span class="p">(</span><span class="kc">true</span><span class="p">));</span>
+    <span class="c1">// Passes after a timeout</span>
+<span class="p">});</span>
+</code></pre></div><h2><a class="anchor" id="options"></a>Options <a class="permalink" href="#options">#</a></h2><h3><a class="anchor" id="optionsdependencies"></a>options.dependencies <a class="permalink" href="#optionsdependencies">#</a></h3>
 <p><strong>Type</strong>: Object</p>
 
 <p>The <code>dependencies</code> option contains functions, variables, or objects used by the client function internally.

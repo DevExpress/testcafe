@@ -2173,16 +2173,18 @@
 
 			<h1>t.browser Property</h1>
 <p>Returns information about the current user agent: the operating system, platform type, browser, engine, etc.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">t.browser
-</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-text" data-lang="text">t.browser → Object
 
-<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://example.com`</span><span class="p">;</span>
+```js
+import { Selector } from 'testcafe';
 
-<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">My test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">t</span><span class="p">.</span><span class="nx">browser</span><span class="p">.</span><span class="nx">name</span> <span class="o">!==</span> <span class="dl">'</span><span class="s1">Chrome</span><span class="dl">'</span><span class="p">)</span>
-        <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">div</span><span class="dl">'</span><span class="p">).</span><span class="nx">withText</span><span class="p">(</span><span class="dl">'</span><span class="s1">Browser not supported</span><span class="dl">'</span><span class="p">).</span><span class="nx">visible</span><span class="p">).</span><span class="nx">ok</span><span class="p">();</span>
-<span class="p">});</span>
+fixture `My fixture`
+    .page `https://example.com`;
+
+test('My test', async t =&gt; {
+    if (t.browser.name !== 'Chrome')
+        await t.expect(Selector('div').withText('Browser not supported').visible).ok();
+});
 </code></pre></div>
 <p><code>t.browser</code> exposes the following properties:</p>
 <div class="table-wrapper"><table><thead><tr>

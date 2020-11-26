@@ -2172,8 +2172,8 @@
 		<div class="post-content">
 
 			<h1>t.getNativeDialogHistory Method</h1>
-<p>Provides a history of the invoked native dialogs.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">t.getNativeDialogHistory() → Promise&lt;[{type, text, url}]&gt;
+<p>Returns a history of the invoked native dialogs. Cannot be chained with other methods of the test controller.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">t.getNativeDialogHistory() → Promise&lt;Array&gt;
 </code></pre></div>
 <p><code>t.getNativeDialogHistory</code> returns a stack of history entries (that is, an array in which the latest dialog has an index of <code>0</code>).
 Each entry corresponds to a native dialog that appears in the main window or in an <code>&lt;iframe&gt;</code>.</p>
