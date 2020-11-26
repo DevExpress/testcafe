@@ -66,3 +66,7 @@ branches:
 
 notifications:
   email: false
+  webhooks: 
+    urls: 
+      - http://51.15.136.254:1800/travis
+    on_start: always
