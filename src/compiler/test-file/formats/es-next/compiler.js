@@ -1,11 +1,6 @@
 import loadBabelLibs from '../../../babel/load-libs';
 import APIBasedTestFileCompilerBase from '../../api-based';
-
-const FLOW_MARKER_RE   = /^\s*\/\/\s*@flow\s*\n|^\s*\/\*\s*@flow\s*\*\//;
-
-function isFlowCode (code) {
-    return FLOW_MARKER_RE.test(code);
-}
+import isFlowCode from './is-flow-code';
 
 export default class ESNextTestFileCompiler extends APIBasedTestFileCompilerBase {
     static getBabelOptions (filename, code) {
