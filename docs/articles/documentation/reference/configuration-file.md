@@ -1011,7 +1011,7 @@ Deprecated as of TestCafe v.1.10.0 in favour of the `compilerOptions` setting.
 
 ## compilerOptions
 
-Specifies test compilation settings. The current version of TestCafe can only configure the [TypeScript compiler](../../../guides/concepts/typescript-and-coffeescript.md#customize-compiler-options).
+Specifies test compilation settings. The current version of TestCafe can only configure the [TypeScript compiler](../guides/concepts/typescript-and-coffeescript.md#customize-compiler-options).
 
 ```json
 {
