@@ -378,6 +378,31 @@ During the timeout, the selector is re-executed until it returns a DOM node or t
 
 > Note that you can specify that the node returned by the selector should also be visible. To do this, use the [visibilityCheck](../../reference/test-api/selector/constructor.md#optionsvisibilitycheck) option.
 
+Selector timeouts have no effect on methods [Selector.exists](../../reference/test-api/selector/exists.md) and [Selector.count](../../reference/test-api/selector/count.md). These methods execute immediately regardless of a timeout. To apply a timeout to `exists` and `count` assertions, pass a timeout to the assertion method (`expect.ok`, `expect.notOk`, etc.).
+
+```js
+import { Selector } from 'testcafe';
+
+fixture `My fixture`
+    .page `http://www.example.com/`;
+
+test('Test timeouts', async t => {
+    const timedOutSelector  = Selector('#element-id', {timeout: 10000});
+    const immediateSelector = Selector('#element-id');
+
+    await t.expect(timedOutSelector.exists).ok();
+    await t.expect(immediateSelector.exists).ok();
+    await t.expect(timedOutSelector.count).eql(1);
+    await t.expect(immediateSelector.count).eql(1);
+    //these assertions execute immediately regardless of the selector timeout
+
+    await t.expect(immediateSelector.exists).ok({timeout: 10000});
+    await t.expect(timedOutSelector.exists).ok({timeout: 10000});
+    await t.expect(immediateSelector.count).eql(1, 'count elements', {timeout: 10000});
+    await t.expect(timedOutSelector.count).eql(1, 'count elements', {timeout: 10000});
+    //these assertions retry within the assertion timeout specified
+```
+
 ## Debug Selectors
 
 TestCafe outputs information about failed selectors to test run reports.
