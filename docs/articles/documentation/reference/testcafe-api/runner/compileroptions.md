@@ -31,4 +31,4 @@ Parameter | Type   | Description
  ```
 
 *Related configuration file property*: [compilerOptions](../../configuration-file.md#compileroptions)  
-*Related CLI parameter*: [--compiler-options](../../command-line-interface.md#--compiler-options)
+*Related CLI parameter*: [--compiler-options](../../command-line-interface.md#--compiler-options-options)
