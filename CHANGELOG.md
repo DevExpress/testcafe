@@ -6,13 +6,15 @@
 
 * Supported the resize action for the Multi Window mode in Chrome ([PR #5661](https://github.com/DevExpress/testcafe/pull/5661))
 * Enabled screenshots for the Multi Window mode in Chrome ([PR #5567](https://github.com/DevExpress/testcafe/pull/5567))
-* Added `shadowRoot` as a chainable `Selector` method ([PR #5560](https://github.com/DevExpress/testcafe/pull/5560)) by @mostlyfabulous)
+* Added `shadowRoot` as a chainable `Selector` method ([PR #5560](https://github.com/DevExpress/testcafe/pull/5560)) by [@mostlyfabulous](https://github.com/mostlyfabulous))
 * Implemented the Compiler Options ([#5519](https://github.com/DevExpress/testcafe/issues/5519))
 
 ### Bug Fixes
 
+* Fixed PayPal login issues ([#5033](https://github.com/DevExpress/testcafe/issues/5033))
+* Fixed device emulation in Chrome ([#5712](https://github.com/DevExpress/testcafe/issues/5712))
 * Added the `tzdata` package in the Docker image ([#5572](https://github.com/DevExpress/testcafe/issues/5572))
-* Fixed the `tree-kill` vulnerability from old version ([PR #5690](https://github.com/DevExpress/testcafe/pull/5690) by @augustomezencio-hotmart)
+* Fixed the `tree-kill` vulnerability from old version ([PR #5690](https://github.com/DevExpress/testcafe/pull/5690) by [@augustomezencio-hotmart](https://github.com/augustomezencio-hotmart))
 * Fixed window searching issues ([#5463](https://github.com/DevExpress/testcafe/issues/5463), [#5597](https://github.com/DevExpress/testcafe/issues/5597))
 * Fixed the items change list formatting in messages ([PR #5636](https://github.com/DevExpress/testcafe/pull/5636))
 * Fixed the `compilerOptions` tooltip ([PR #5634](https://github.com/DevExpress/testcafe/pull/5634))
@@ -29,7 +31,7 @@
 * Fixed quotation in the header overflow error message (`HPE_HEADER_OVERFLOW`) ([PR testcafe-hammerhead/#2462](https://github.com/DevExpress/testcafe-hammerhead/pull/2462))
 * Fixed the `document.body` shadow UI state ([PR testcafe-hammerhead/#2454](https://github.com/DevExpress/testcafe-hammerhead/pull/2454))
 * Fixed an error related to the Service Workers `fetch` events ([testcafe-hammerhead/#2412](https://github.com/DevExpress/testcafe-hammerhead/issues/2412))
-* Fixed the authentication failure in the 1.8.5+ versions ([testcafe-hammerhead/#2344](https://github.com/DevExpress/testcafe-hammerhead/issues/2344))
+* Fixed an authentication failure in the 1.8.5+ versions ([testcafe-hammerhead/#2344](https://github.com/DevExpress/testcafe-hammerhead/issues/2344))
 * Fixed location wrapping in `iframe` without the `src` attribute ([PR testcafe-hammerhead/#2448](https://github.com/DevExpress/testcafe-hammerhead/pull/2448))
 * Fixed string representation of native functions wrappers ([testcafe-hammerhead/#2394](https://github.com/DevExpress/testcafe-hammerhead/issues/2394))
 
