@@ -6,10 +6,7 @@ const os           = require('os');
 const osFamily     = require('os-family');
 
 function correctPathOnWindows (tmpDir) {
-    const parsedPath             = path.parse(tmpDir);
-    const newRoot                = '//' + parsedPath.root.replace(':', '');
-    const modifiedTmpDir         = tmpDir.replace(parsedPath.root, newRoot);
-    const modifiedTmpDirSegments = modifiedTmpDir.split(path.sep);
+    const modifiedTmpDirSegments = tmpDir.split(path.sep);
     const userNameTmpDirPart     = modifiedTmpDirSegments[2];
 
     if (userNameTmpDirPart.includes('~')) {

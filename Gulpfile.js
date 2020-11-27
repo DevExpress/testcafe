@@ -886,7 +886,7 @@ gulp.step('docker-publish-run', done => {
     const PUBLISH_COMMANDS = [
         'docker push',
         'docker pull',
-        'docker image rm'
+        'docker image rm -f'
     ];
 
     PUBLISH_TAGS.forEach(tag => {
