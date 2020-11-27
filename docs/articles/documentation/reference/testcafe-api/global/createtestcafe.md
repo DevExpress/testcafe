@@ -63,7 +63,7 @@ await runner
     // For Chrome, this is '--allow-insecure-localhost'.
     .browsers('chrome --allow-insecure-localhost')
     .run();
-    
+
 await testcafe.close();
 ```
 
