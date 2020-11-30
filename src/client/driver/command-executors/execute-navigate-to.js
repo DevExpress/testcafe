@@ -1,9 +1,5 @@
 import { navigateTo, Promise } from '../deps/hammerhead';
-import {
-    RequestBarrier,
-    pageUnloadBarrier,
-    browser
-} from '../deps/testcafe-core';
+import { RequestBarrier, pageUnloadBarrier } from '../deps/testcafe-core';
 
 import DriverStatus from '../status';
 

@@ -1,5 +1,4 @@
 import loadAssets from '../../load-assets';
-import { readSync as read } from 'read-file-relative';
 import {
     respond404,
     respond500,

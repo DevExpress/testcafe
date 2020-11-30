@@ -3,7 +3,6 @@ import timeLimit from 'time-limit-promise';
 import { EventEmitter } from 'events';
 import Mustache from 'mustache';
 import { pull as remove } from 'lodash';
-import timeLimit from 'time-limit-promise';
 import parseUserAgent, { ParsedUserAgent } from '../../utils/parse-user-agent';
 import { readSync as read } from 'read-file-relative';
 import promisifyEvent from 'promisify-event';
@@ -112,10 +111,7 @@ export default class BrowserConnection extends EventEmitter {
         this.BROWSER_CLOSE_TIMEOUT   = BROWSER_CLOSE_TIMEOUT;
         this.BROWSER_RESTART_TIMEOUT = BROWSER_RESTART_TIMEOUT;
 
-        this.id = BrowserConnection._generateId();
-
-        this.debugLogger = debug(DEBUG_SCOPE(this.id));
-
+        this.id                       = BrowserConnection._generateId();
         this.jobQueue                 = [];
         this.initScriptsQueue         = [];
         this.browserConnectionGateway = gateway;
@@ -177,7 +173,6 @@ export default class BrowserConnection extends EventEmitter {
                 await promisifyEvent(this, 'ready');
 
             this.status = BrowserConnectionStatus.opened;
-
             this.emit('opened');
         }
         catch (err) {
