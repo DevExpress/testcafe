@@ -1,16 +1,10 @@
-const http                  = require('https');
-const path                  = require('path');
-const config                = require('../../../config');
-const createTestCafe        = require('../../../../../lib');
-const selfSignedSertificate = require('openssl-self-signed-certificate');
+const http           = require('http');
+const path           = require('path');
+const config         = require('../../../config');
+const createTestCafe = require('../../../../../lib');
 
-const ERROR_RESPONSE_COUNT        = 10;
-const SIGNIFICANT_REQUEST_TIMEOUT = 100;
-
-const sslOptions = {
-    key:  selfSignedSertificate.key,
-    cert: selfSignedSertificate.cert
-};
+const ERROR_RESPONSE_COUNT        = 8;
+const SIGNIFICANT_REQUEST_TIMEOUT = 200;
 
 let previousRequestTime = null;
 
@@ -34,7 +28,7 @@ function createServer () {
         }
     };
 
-    const server = http.createServer(sslOptions, requestListener);
+    const server = http.createServer(requestListener);
 
     server.listen(1340);
 
@@ -42,16 +36,12 @@ function createServer () {
 }
 
 async function run () {
-    const testcafe = await createTestCafe('localhost', 1335, 1336, sslOptions, true, true);
+    const testcafe = await createTestCafe('localhost', 1335, 1336, void 0, true, true);
     const runner   = testcafe.createRunner();
 
     await runner
         .src(path.join(__dirname, './testcafe-fixtures/index.js'))
-
-        // Browsers restrict self-signed certificate usage unless you
-        // explicitly set a flag specific to each browser.
-        // For Chrome, this is '--allow-insecure-localhost'.
-        .browsers('chrome --allow-insecure-localhost --ignore-certificate-errors')
+        .browsers('chrome --headless')
         .run();
 
     await testcafe.close();
