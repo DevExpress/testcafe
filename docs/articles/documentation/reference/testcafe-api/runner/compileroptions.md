@@ -5,7 +5,7 @@ permalink: /documentation/reference/testcafe-api/runner/compileroptions.html
 ---
 # Runner.compilerOptions Method
 
-Specifies test compilation settings. The current version of TestCafe can only configure the [TypeScript compiler](../../../guides/concepts/typescript-and-coffeescript.md#customize-compiler-options).
+Specifies test compilation settings. The current version of TestCafe can only configure the [TypeScript compiler](../guides/concepts/typescript-and-coffeescript.md#customize-compiler-options).
 
 ```text
 async compilerOptions(options) → this
