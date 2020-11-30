@@ -36,10 +36,10 @@ steps:
 - task: DeleteFiles@1
   inputs:
     Contents: node_modules
-    
+
 - bash: |
     npm install --no-progress --loglevel error
-    npx gulp travis --dev
+    npm test
   displayName: 'Run tests'
   condition: and(succeeded(), not(variables['isDocCommit']))
   timeoutInMinutes: 60
