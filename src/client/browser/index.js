@@ -131,18 +131,19 @@ async function tryGetStatus (...args) {
 }
 
 export async function checkStatus (...args) {
-    let { error, ...result } = await tryGetStatus(...args);
+    let error  = null;
+    let result = null;
 
-    for (let i = 0; error && i < MAX_STATUS_RETRY; i++) {
-        delay(STATUS_RETRY_DELAY);
+    for (let i = 0; i < MAX_STATUS_RETRY; i++) {
+        ({ error, result } = await tryGetStatus(...args));
 
-        ({ error, ...result } = await tryGetStatus(...args));
+        if (!error)
+            return result;
+
+        await delay(STATUS_RETRY_DELAY);
     }
 
-    if (error)
-        throw error;
-
-    return result;
+    throw error;
 }
 
 export async function enableRetryingTestPages () {

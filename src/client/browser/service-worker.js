@@ -17,24 +17,22 @@ async function tryGetResponse (request) {
 }
 
 async function getResponse (request) {
-    let { error, response } = await tryGetResponse(request);
-    let retryAttempt        = 0;
+    let error    = null;
+    let response = null;
 
-    while (error && retryAttempt < MAX_RETRY) {
+    for (let i = 0; i < MAX_RETRY; i++) {
+        ({ error, response } = await tryGetResponse(request));
+
+        if (!error)
+            return response;
+
         // eslint-disable-next-line no-console
         console.error(error.stack || error);
 
-        retryAttempt += 1;
-
         await delay(RETRY_DELAY);
-
-        ({ error, response } = await tryGetResponse(request));
     }
 
-    if (error)
-        throw error;
-
-    return response;
+    throw error;
 }
 
 self.addEventListener('fetch', event => {
