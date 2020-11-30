@@ -11,6 +11,8 @@
 
 ### Bug Fixes
 
+* Fixed browser restarting in BrowserStack ([#5238](https://github.com/DevExpress/testcafe/issues/5238))
+* Fixed issues related to running tests in Docker container ([#5709](https://github.com/DevExpress/testcafe/issues/5709))
 * Fixed PayPal login issues ([#5033](https://github.com/DevExpress/testcafe/issues/5033))
 * Fixed device emulation in Chrome ([#5712](https://github.com/DevExpress/testcafe/issues/5712))
 * Added the `tzdata` package in the Docker image ([#5572](https://github.com/DevExpress/testcafe/issues/5572))
