@@ -135,7 +135,7 @@ export async function checkStatus (...args) {
     let result = null;
 
     for (let i = 0; i < MAX_STATUS_RETRY; i++) {
-        ({ error, result } = await tryGetStatus(...args));
+        ({ error, ...result } = await tryGetStatus(...args));
 
         if (!error)
             return result;
