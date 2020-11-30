@@ -51,7 +51,7 @@ async function run () {
         // Browsers restrict self-signed certificate usage unless you
         // explicitly set a flag specific to each browser.
         // For Chrome, this is '--allow-insecure-localhost'.
-        .browsers('chrome --headless --allow-insecure-localhost --ignore-certificate-errors')
+        .browsers('chrome --allow-insecure-localhost --ignore-certificate-errors')
         .run();
 
     await testcafe.close();
