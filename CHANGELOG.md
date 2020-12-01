@@ -38,14 +38,14 @@ In previous versions, you used the following methods to specify TypeScript compi
     }
     ```
 
-In v1.10.0, we introduced a new API designed to accept options for more compilers (for instance, Babel) in the future releases. The new API is also easier to use as it allows you to specify compiler options without configuration JSON files.
+In v1.10.0, we introduced a new easy-to-use API that allows you to specify the compiler options in the command line, API or TestCafe configuration file, without creating a separate JSON file. The new API is also designed to accept options for more compilers (for instance, Babel) in the future releases.
 
 The API consists of the following members:
 
 * the [--compiler-options](https://devexpress.github.io/testcafe/documentation/reference/command-line-interface.html#--compiler-options-options) command line flag
 
     ```sh
-    testcafe chrome my-tests --compiler-options typescript.configPath='path/to/config.json'
+    testcafe chrome my-tests --compiler-options typescript.experimentalDecorators=true
     ```
 
 * the [runner.compilerOptions](https://devexpress.github.io/testcafe/documentation/reference/testcafe-api/runner/compileroptions.html) method
@@ -53,7 +53,7 @@ The API consists of the following members:
     ```js
     runner.compilerOptions({
         typescript: {
-            configPath: 'path/to/config.json'
+            experimentalDecorators: true
         }
     });
     ```
@@ -64,16 +64,16 @@ The API consists of the following members:
     {
         "compilerOptions": {
             "typescript": {
-                "configPath": "path/to/config.json"
+                "experimentalDecorators": true
             }
         }
     }
     ```
 
-You can also specify the compiler options in the command line, API or TestCafe configuration file, without creating a separate JSON file with the compiler configuration.
+If you prefer to keep compiler settings in a configuration file, you can use the new API to specify the path to this file:
 
 ```sh
-testcafe chrome my-tests --compiler-options typescript.experimentalDecorators=true
+testcafe chrome my-tests --compiler-options typescript.configPath='path/to/config.json'
 ```
 
 In v1.10.0, you can customize TypeScript compiler options only.
@@ -82,7 +82,7 @@ For more information, see [TypeScript and CoffeeScript](https://devexpress.githu
 
 #### Added a Selector Method to Access Shadow DOM ([PR #5560](https://github.com/DevExpress/testcafe/pull/5560) by [@mostlyfabulous](https://github.com/mostlyfabulous))
 
-This release introduces the [selector.shadowRoot](https://devexpress.github.io/testcafe/documentation/reference/test-api/selector/shadowroot.html) method. This method returns a shadow DOM root hosted in the selector's matched element.
+This release introduces the [selector.shadowRoot](https://devexpress.github.io/testcafe/documentation/reference/test-api/selector/shadowroot.html) method that allows you to easily access and interact with the shadow DOM elements. This method returns a shadow DOM root hosted in the selector's matched element.
 
 ```js
 import { Selector } from 'testcafe'
