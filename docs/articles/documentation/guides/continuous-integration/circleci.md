@@ -111,7 +111,8 @@ This config is commited to the new `circleci-project-setup` branch. Merge this f
 
 ```sh
 git checkout master
-git merge circleci-project-setup
+git pull
+git merge origin/circleci-project-setup
 ```
 
 ## Step 4 - Add the Test Script to package.json
