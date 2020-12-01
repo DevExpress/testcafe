@@ -46,7 +46,7 @@ Whenever TestCafe encounters TypeScript compilation errors, it includes correspo
 
 TestCafe users can modify [the settings](https://www.typescriptlang.org/docs/handbook/compiler-options.html) of the TypeScript compiler in one of the following three ways:
 
-* the [--compiler-options](../../reference/command-line-interface.md#--compiler-options) command line parameter,
+* the [--compiler-options](../../reference/command-line-interface.md#--compiler-options-options) command line parameter,
 
     ```sh
     testcafe chrome my-tests --compiler-options typescript.options.lib=lib.es5.d.ts,lib.webworker.d.ts;typescript.typesRoot='this value contains spaces'
@@ -62,7 +62,7 @@ TestCafe users can modify [the settings](https://www.typescriptlang.org/docs/han
      }});
    ```
 
-* the [compilerOptions](../../reference/configuration-file.md#compilerOptions) configuration file property.
+* the [compilerOptions](../../reference/configuration-file.md#compileroptions) configuration file property.
 
     ```json
     {
