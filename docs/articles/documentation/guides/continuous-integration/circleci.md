@@ -94,7 +94,7 @@ Property                | Description
 `jobs`                  | The section that specifies [jobs](https://circleci.com/docs/2.0/jobs-steps/#jobs-overview).
 `test`                  | The job's name.
 `docker`                | An [executor](https://circleci.com/docs/2.0/configuration-reference/#docker--machine--macos--windows-executor) that defines that defines the environment in which this job runs. The `docker` executor specifies that the job should run inside a docker container.
-`image`                 | Specifies the docker image to use. `cimg/node:lts-browsers` is a pre-built CircleCI docker image with the `lts` version of node and browser dependencies pre-installed. For the full list of available images, see [Pre-Built CircleCI Docker Images](https://circleci.com/developer/images/image/cimg/node).
+`image`                 | Specifies the docker image to use. `cimg/node:lts-browsers` is a pre-built CircleCI docker image with the `lts` version of Node.js and browser dependencies pre-installed. For the full list of available images, see [Pre-Built CircleCI Docker Images](https://circleci.com/developer/images/image/cimg/node).
 `steps`                 | The job's [steps](https://circleci.com/docs/2.0/jobs-steps/#steps-overview).
 `checkout`              | Checks out code from the `testcafe-ci-demo` repository. This is a pre-defined step (see [checkout](https://circleci.com/docs/2.0/configuration-reference/#checkout)).
 `browser-tools/install-browser-tools` | A step from the `browser-tools` orb that installs browsers and browser drivers on the machine. This step installs Chrome, Firefox, ChromeDriver and GeckoDriver.
@@ -158,7 +158,7 @@ The `Tests` panel displays test results. If errors occur, the report is shown.
 
 ## Use Alternative Images
 
-This guide uses the `cimg/node:lts-browsers`, an official CircleCI Docker image that comes with `lts` version of node and browser dependencies pre-installed. This image is in beta. If you run into problems with it, use one of the images listed below.
+This guide uses the `cimg/node:lts-browsers`, an official CircleCI Docker image that comes with `lts` version of Node.js and browser dependencies pre-installed. This image is in beta. If you run into problems with it, use one of the images listed below.
 
 ### Use a TestCafe Image
 
@@ -199,7 +199,7 @@ For more information about TestCafe Docker image, read [Use TestCafe Docker Imag
 
 ### Use a Legacy CircleCI Image
 
-The following example uses `circleci/node:lts-browsers`, a legacy image with `lts` version of Node, Google Chrome, and Firefox pre-installed.
+The following example uses `circleci/node:lts-browsers`, a legacy image with `lts` version of Node.js, Google Chrome, and Firefox pre-installed.
 
 Get a full list of available legacy CircleCI images at [Pre-Built CircleCI Docker Images](https://circleci.com/docs/2.0/circleci-images/#legacy-language-images).
 
@@ -230,6 +230,6 @@ Since this image has Chrome and Firefox installed, add the following command to 
 
 ```json
 "scripts": {
-  "test": "testcafe chrome:headless tests/**/* -r xunit:/tmp/test-results/testcafe/results.xml"
+  "test": "testcafe chrome:headless, firefox:headless tests/**/* -r xunit:/tmp/test-results/testcafe/results.xml"
 }
 ```
