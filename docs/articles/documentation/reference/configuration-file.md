@@ -59,6 +59,7 @@ A configuration file can include the following settings:
 * [qrCode](#qrcode)
 * [stopOnFirstFail](#stoponfirstfail)
 * [tsConfigPath](#tsconfigpath)
+* [compilerOptions](#compileroptions)
 * [disablePageCaching](#disablepagecaching)
 * [disableMultipleWindows](#disablemultiplewindows)
 * [color](#color)
@@ -1003,18 +1004,51 @@ Stops a test run if any test fails.
 
 ## tsConfigPath
 
-Enables TestCafe to use a custom [TypeScript configuration file](../guides/concepts/typescript-and-coffeescript.md#customize-compiler-options) and specifies its location.
-
-```json
-{
-    "tsConfigPath": "/Users/s.johnson/testcafe/tsconfig.json"
-}
-```
-
-You can specify an absolute or relative path. Relative paths are resolved against the current directory (the directory from which you run TestCafe).
+Deprecated as of TestCafe v.1.10.0 in favour of the `compilerOptions` setting.
 
 *CLI*: [--ts-config-path](command-line-interface.md#--ts-config-path-path)  
 *API*: [runner.tsConfigPath](testcafe-api/runner/tsconfigpath.md)
+
+## compilerOptions
+
+Specifies test compilation settings. The current version of TestCafe can only configure the [TypeScript compiler](../guides/concepts/typescript-and-coffeescript.md#customize-compiler-options).
+
+```json
+{
+    "compilerOptions": {
+         "typescript": {
+              "customCompilerModulePath": "path to custom Typescript compiler module",
+              "options": { "experimentalDecorators": "true",  "newLine": "crlf"}
+    }
+}
+```
+
+Populate the `typescript.options` object with [TypeScript compiler options](https://www.typescriptlang.org/docs/handbook/compiler-options.html).
+
+Set the `typescript.configPath` parameter to load TypeScript compilation settings from a dedicated [tsconfig.json](https://www.typescriptlang.org/tsconfig/) file.
+
+```json
+{
+    "compilerOptions": {
+         "typescript": { "configPath": "path-to-custom-ts-config.json"}
+    }
+}
+```
+
+Set the `typescript.compilerModulePath` parameter to load an external TypeScript compiler.
+
+```json
+{
+   "compilerOptions": {
+       "typescript":   { "customCompilerModulePath": "path to custom Typescript compiler module" }
+    }
+}
+```
+
+> TestCafe resolves user-specified relative paths against the TestCafe installation folder.
+
+*CLI*: [--compiler-options](command-line-interface.md#--compiler-options-options)
+*API*: [runner.compilerOptions](testcafe-api/runner/compileroptions.md)
 
 ## disablePageCaching
 
