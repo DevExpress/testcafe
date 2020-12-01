@@ -33,7 +33,7 @@ const browserProvider = config.currentEnvironment.provider;
 const isBrowserStack  = browserProvider === config.browserProviderNames.browserstack;
 
 config.browsers = environment.browsers;
-
+//
 const REQUESTED_MACHINES_COUNT = environment.browsers.length;
 
 const REMOTE_CONNECTORS_MAP = {
