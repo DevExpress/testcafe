@@ -370,11 +370,14 @@ gulp.step('images', () => {
         .pipe(gulp.dest('lib'));
 });
 
-gulp.step('package-content', gulp.parallel('ts-defs', 'server-scripts', 'client-scripts', 'styles', 'images', 'templates'));
+//NOTE: Executing tasks in parallel can cause out-of-memory errors on Azure Pipelines
+const buildTasks = process.env.TF_BUILD ? gulp.series : gulp.parallel;
+
+gulp.step('package-content', buildTasks('ts-defs', 'server-scripts', 'client-scripts', 'styles', 'images', 'templates'));
 
 gulp.task('fast-build', gulp.series('clean', 'package-content'));
 
-gulp.task('build', DEV_MODE ? gulp.registry().get('fast-build') : gulp.parallel('lint', 'fast-build'));
+gulp.task('build', DEV_MODE ? gulp.registry().get('fast-build') : buildTasks('lint', 'fast-build'));
 
 // Test
 gulp.step('prepare-tests', gulp.registry().get(SKIP_BUILD ? 'lint' : 'build'));
