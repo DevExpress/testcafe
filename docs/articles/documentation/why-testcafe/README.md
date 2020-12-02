@@ -20,7 +20,7 @@ npm install -g testcafe
 
 TestCafe is a JavaScript framework. But you don’t need to be a JavaScript guru to write TestCafe tests. The core components of our API are intuitive and only require a basic knowledge of the language.
 
-## A first class citizen of the Node.js ecosystem
+## A first-class citizen in the Node.js ecosystem
 
 If you want to take your testing experience to the next level, you can always integrate additional JavaScript libraries and preprocessors into TestCafe tests.
 
@@ -30,7 +30,7 @@ The advanced features of the TestCafe API can help you test complex, security-se
 
 ### Mock Requests
 
-Emulate HTTP responses to feed your app sample data, troubleshoot connectivity errors and cheat downtime.
+Emulate HTTP responses to feed sample data to your app, troubleshoot connectivity errors, and cheat downtime.
 
 ### Client-side injections
 
@@ -48,7 +48,7 @@ Run your tests in multiple browsers at once to quickly uncover browser-specific 
 
 ### Automated waiting
 
-Manual timeouts are a thing of the past. Asynchronous from the ground-up, TestCafe knows when to wait and what to wait for before a test can continue.
+Manual timeouts are a thing of the past. Asynchronous from the ground up, TestCafe knows when to wait and what to wait for before a test can continue.
 
 ### Automated authentication scripts
 
@@ -96,8 +96,8 @@ The automation engine behind TestCafe takes over browsers and the web pages they
 The server-client architecture of TestCafe allows it to execute system-level and in-browser code.
 
 * TestCafe uses [high-level system APIs](https://github.com/DevExpress/testcafe-browser-tools) to launch and manage browsers. This is necessary to achieve full control over test execution.
-* TestCafe tests are full-fledged Node.js scripts. They can launch services and applications, read and write system files, make use of your favourite libraries.
-* At the same time, TestCafe is capable of performing in-browser actions with client-side automation scripts. This is how TestCafe handles asynchronous events, simulates user activity, and executes custom (user-defined) JavaScript.
+* TestCafe tests are Node.js scripts. They can launch services and applications, read and write system files, make use of your favorite libraries.
+* TestCafe uses client-side automation scripts to execute in-browser actions. This is how our testing library handles asynchronous events, simulates user activity, and executes user-defined JavaScript.
 
 Our experience shows that this hybrid approach gives users the best of both worlds. Early versions of TestCafe ran entirely in the browser. This caused a number of issues. The tests’ capabilities were limited, the application often interfered with page execution, and the sub-optimal logic separation caused browser crashes. Since then, we decoupled the engine, exposed the underlying Node.js API, and implemented a test runner that executes test scripts server-side.
 
