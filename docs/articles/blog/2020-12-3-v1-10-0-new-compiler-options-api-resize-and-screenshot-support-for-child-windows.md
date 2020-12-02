@@ -15,7 +15,7 @@ permalink: /blog/:title.html
 
 You can now use the following actions in Google Chrome when you switch the test context to a [child window](../documentation/guides/advanced-guides/multiple-browser-windows.md):
 
-* [t.maximizeWindow](../documentation/reference/test-api/testcontroller/maximize.md)
+* [t.maximizeWindow](../documentation/reference/test-api/testcontroller/maximizewindow.md)
 * [t.resizeWindow](../documentation/reference/test-api/testcontroller/resizewindow.md)
 * [t.resizeWindowToFitDevice](../documentation/reference/test-api/testcontroller/resizewindowtofitdevice.md)
 * [t.takeElementScreenshot](../documentation/reference/test-api/testcontroller/takeelementscreenshot.md)
