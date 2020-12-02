@@ -38,7 +38,7 @@ In previous versions, you used the following methods to specify TypeScript compi
     }
     ```
 
-In v1.10.0, we introduced a new easy-to-use API that allows you to specify the compiler options in the command line, API or TestCafe configuration file, without creating a separate JSON file. The new API is also designed to accept options for more compilers (for instance, Babel) in the future releases.
+In v1.10.0, we introduced a new easy-to-use API that allows you to specify the compiler options in the command line, API or TestCafe configuration file, without creating a separate JSON file. The new API is also designed to accept options for more compilers (for instance, Babel) in future releases.
 
 The API consists of the following members:
 
