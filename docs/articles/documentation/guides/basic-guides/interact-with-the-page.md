@@ -362,16 +362,6 @@ TestCafe actions can interact with elements if they satisfy the following condit
 
 ## Examples
 
-### Disable the 'Close Multiple Tabs' Popup in IE
-
-Internet Explorer displays a native dialog when you try to close a browser window with more than one tab opened. This dialog blocks the page and halts tests. Disable this popup before you run tests.
-
-To disable the popup, manually open multiple tabs in one window of Internet Explorer. In the dialog window that appears, check `Always close all tabs` and click `Close all tabs`. IE saves this setting and the popup does not appear again.
-
-![Disable the `Close Multiple Tabs` Popup in IE](../../../images/close-window-popup-IE.png)
-
-Repeat this action on any new machine where you run tests.
-
 ### Download Files in IE
 
 TestCafe cannot prevent native dialogs before file download in Internet Explorer. This dialog prevents automatic file download, but does not block the page.

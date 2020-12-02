@@ -56,6 +56,8 @@ TestCafe also allows you to create a [configuration file](../../reference/config
   * [How Live Mode Works](#how-live-mode-works)
   * [Console Shortcuts in Live Mode](#console-shortcuts-in-live-mode)
 * [Quarantine Mode](#quarantine-mode)
+* [Troubleshooting](#troubleshooting)
+  * [Disable the 'Close Multiple Tabs' Popup in IE](#disable-the-close-multiple-tabs-popup-in-ie)
 
 > Important! Front-end development tools (such as React DevTools or Vue DevTools) can interfere with TestCafe and cause errors. Do not open them while you run or debug TestCafe tests.
 
@@ -663,3 +665,15 @@ await runner
 > Note that quarantine mode increases the test task's duration because failed tests are executed three to five times.
 
 See Martin Fowler's [Eradicating Non-Determinism in Tests](http://martinfowler.com/articles/nonDeterminism.html) article for more information about non-deterministic tests.
+
+## Troubleshooting
+
+### Disable the 'Close Multiple Tabs' Popup in IE
+
+Internet Explorer displays a native dialog when you try to close a browser window with more than one tab opened. This dialog blocks the page and halts tests. Disable this popup before you run tests.
+
+To disable the popup, manually open multiple tabs in one window of Internet Explorer and close the browser. In the dialog window that appears, check `Always close all tabs` and click `Close all tabs`. IE saves this setting and the popup does not appear again.
+
+![Disable the `Close Multiple Tabs` Popup in IE](../../../images/close-window-popup-IE.png)
+
+Repeat this action on any new machine where you run tests.
