@@ -16,15 +16,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>t.resizeWindowToFitDevice Method | TestCafe</title>
+  <title>Runner.compilerOptions Method | TestCafe</title>
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
 
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/resizewindowtofitdevice.html" />
-  <meta property="og:title" content="t.resizeWindowToFitDevice Method | TestCafe" />
+  <meta property="og:url" content="https://devexpress.github.io/testcafe/documentation/reference/testcafe-api/runner/compileroptions.html" />
+  <meta property="og:title" content="Runner.compilerOptions Method | TestCafe" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-twitter-card-icon.png" />
@@ -37,7 +37,7 @@
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
   <link rel="stylesheet" href="/testcafe/css/banner.css">
-  <link rel="canonical" href="https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/resizewindowtofitdevice.html">
+  <link rel="canonical" href="https://devexpress.github.io/testcafe/documentation/reference/testcafe-api/runner/compileroptions.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="https://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -1642,7 +1642,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/reference/test-api/testcontroller/resizewindowtofitdevice.html" class="active" >resizeWindowToFitDevice</a>
+<a href="/testcafe/documentation/reference/test-api/testcontroller/resizewindowtofitdevice.html"  >resizeWindowToFitDevice</a>
 
 		
     </li>
@@ -2118,54 +2118,37 @@
 	<article class="doc">
 		<div class="post-content">
 
-			<h1>t.resizeWindowToFitDevice Method</h1>
-<p>Resizes the window to fit the screen of the specified mobile device. Can be chained with other <code>TestController</code> methods.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">t.resizeWindowToFitDevice(deviceName [, options]) → this | Promise&lt;any&gt;
-</code></pre></div><div class="table-wrapper"><table><thead><tr>
+			<h1>Runner.compilerOptions Method</h1>
+<p>Specifies test compilation settings. The current version of TestCafe can only configure the <a href="/testcafe/documentation/guides/concepts/typescript-and-coffeescript.html#customize-compiler-options">TypeScript compiler</a>.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">async compilerOptions(options) → this
+</code></pre></div>
+<p>The <code>Runner.compilerOptions</code> method accepts all compiler options listed in the <a href="https://www.typescriptlang.org/docs/handbook/compiler-options.html">official TypeScript documentation</a>, as well as two additional parameters:</p>
+<div class="table-wrapper"><table><thead><tr>
 <th>Parameter</th>
 <th>Type</th>
 <th>Description</th>
 </tr>
 </thead><tbody><tr>
-<td><code>deviceName</code></td>
+<td><code>customCompilerModulePath</code></td>
 <td>String</td>
-<td>The name of the device. See the list of supported devices in <a href="https://github.com/DevExpress/device-specs/blob/master/viewport-sizes.json">this repository</a>.</td>
+<td>The absolute or relative path to the TypeScript compiler module.</td>
 </tr>
 <tr>
-<td><code>options</code>&#160;<em>(optional)</em></td>
-<td>Object</td>
-<td>Provide additional information about the device.</td>
+<td><code>configPath</code></td>
+<td>String</td>
+<td>The absolute or relative path to the TypeScript configuration file.</td>
 </tr>
-</tbody></table></div>
-<p>The <code>options</code> object can contain the following properties.</p>
-<div class="table-wrapper"><table><thead><tr>
-<th>Property</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead><tbody><tr>
-<td><code>portraitOrientation</code></td>
-<td>Boolean</td>
-<td><code>true</code> for portrait screen orientation; <code>false</code> for landscape.</td>
-</tr>
-</tbody></table></div>
-<p>The example below shows how to use the <code>t.resizeWindowToFitDevice</code> action.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
-
-<span class="kd">const</span> <span class="nx">header</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#header</span><span class="dl">'</span><span class="p">);</span>
-
-<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
-
-<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Header is displayed on Xperia Z in portrait</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="k">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">resizeWindowToFitDevice</span><span class="p">(</span><span class="dl">'</span><span class="s1">Sony Xperia Z</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span>
-            <span class="na">portraitOrientation</span><span class="p">:</span> <span class="kc">true</span>
-        <span class="p">})</span>
-        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">header</span><span class="p">.</span><span class="nx">getStyleProperty</span><span class="p">(</span><span class="dl">'</span><span class="s1">display</span><span class="dl">'</span><span class="p">)).</span><span class="nx">notEql</span><span class="p">(</span><span class="dl">'</span><span class="s1">none</span><span class="dl">'</span><span class="p">);</span>
-<span class="p">});</span>
+</tbody></table></div><blockquote><div class="blockquote-content"><p>TestCafe resolves user-specified relative paths against the TestCafe installation folder.</p>
+</div></blockquote><div class="highlight"><pre><code class="language-js" data-lang="js">   <span class="nx">runner</span><span class="p">.</span><span class="nx">compilerOptions</span><span class="p">({</span>
+    <span class="dl">"</span><span class="s2">typescript</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="na">customCompilerModulePath</span><span class="p">:</span> <span class="dl">'</span><span class="s1">../node_modules/typescript-v4</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">configPath</span><span class="p">:</span> <span class="dl">'</span><span class="s1">custom-ts-config.json</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">experimentalDecorators</span><span class="p">:</span> <span class="kc">true</span>
+     <span class="p">...</span>
+     <span class="p">}});</span>
 </code></pre></div>
-<p>You can resize window to specified dimensions with <a href="resizewindow.html">t.resizeWindow</a> method and maximize window with <a href="maximizewindow.html">t.maximizeWindow</a> method.</p>
+<p><em>Related configuration file property</em>: <a href="../../configuration-file.html#compileroptions">compilerOptions</a><br>
+<em>Related CLI parameter</em>: <a href="../../command-line-interface.html#--compiler-options-options">--compiler-options</a></p>
 
 
 		</div>

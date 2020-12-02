@@ -59,13 +59,6 @@
      var isMobileDevice = !!md.mobile();
   </script>
   <script>
-      var SUMMER_2019_SURVEY_COMPLETED_FLAG            = 'summer-2019-survey-completed';
-      var SUMMER_2019_SURVEY_PAGE_OPEN_DATE_FLAG       = 'summer-2019-survey-page-open-date';
-      var SUMMER_2019_SURVEY_BANNER_DISMISSED_FLAG     = 'summer-2019-survey-banner-dismissed';
-      var DECEMBER_2020_WEBINAR_BANNER_DISMISSED_FLAG  = 'december-2020-webinar-banner-dismissed';
-      var DECEMBER_2020_WEBINAR_OPEN_DATE_FLAG         = 'december-2020-webinar-page-open-date';
-  </script>
-  <script>
       document.addEventListener('DOMContentLoaded', function (e) {
           hljs.initHighlightingOnLoad();
       });
@@ -201,7 +194,7 @@
     </script>
   
     <script>
-        function initHeader(siteHeader, contentWrapper, docTopMenu, article, gs, surveyBanner) {
+        function initHeader(siteHeader, contentWrapper, docTopMenu, article, gs) {
             var MIN_BODY_WIDTH = 1230;
 
             function updateHeader() {
@@ -223,9 +216,6 @@
                 if(docTopMenu)
                     docTopMenu.style.position = bodyMinimized ? 'static' : '';
 
-                if(surveyBanner)
-                    surveyBanner.style.position = bodyMinimized ? 'static' : '';
-
                 if(contentWrapper)
                     contentWrapper.style.paddingTop = bodyMinimized ? '0' : '';
 
@@ -245,10 +235,9 @@
             var docTopMenu     = document.querySelector('.doc-top-nav');
             var article        = document.querySelector('.doc');
             var gs             = document.querySelector('.gs');
-            var surveyBanner   = document.querySelector('.survey-banner');
 
             if(siteHeader)
-                initHeader(siteHeader, contentWrapper, docTopMenu, article, gs, surveyBanner);
+                initHeader(siteHeader, contentWrapper, docTopMenu, article, gs);
         });
     </script>
 </head>
@@ -270,43 +259,7 @@
 
     <div class="page-content-wrapper">
 
-      <div class="survey-banner hidden">
-    <div class="survey-banner-message">
-        <span class="desktop-text">Join us on Wednesday, December 2nd at 10 AM PST for a live webinar on how to get true cross-browser test coverage with TestCafe and LambdaTest. </span><span class="mobile-text">Join us on December 2nd for a live webinar.</span> <a href="https://www.lambdatest.com/webinar/how-to-get-true-cross-browser-test-coverage-with-testCafe-and-lambdatest-webinar" target="_blank"><span>Register</span></a>
-    </div>
-  <div class="survey-banner-close-button"></div>
-</div>
-<script>
-  var wasWebinarBannerDismissed = window.localStorage.getItem(DECEMBER_2020_WEBINAR_BANNER_DISMISSED_FLAG);
-  var webinarOpenDate           = window.localStorage.getItem(DECEMBER_2020_WEBINAR_OPEN_DATE_FLAG);
-
-  if(!wasWebinarBannerDismissed && !webinarOpenDate) {
-      var surveyBanner      = document.querySelector('.survey-banner');
-      var surveyLink        = document.querySelector('.survey-banner a');
-      var surveyBannerClose = document.querySelector('.survey-banner-close-button');
-
-      function hideSurveyBanner() {
-          surveyBanner.className = surveyBanner.className += ' hidden';
-
-          var navExists = !!document.querySelector('.doc-nav');
-
-          if (!isMobileDevice && typeof updateNavMenuPosition !== 'undefined' && navExists)
-              updateNavMenuPosition();
-      }
-
-      surveyBanner.className = surveyBanner.className.replace(/hidden/,'');
-
-      surveyBannerClose.addEventListener('click', function () {
-          hideSurveyBanner();
-          window.localStorage.setItem(DECEMBER_2020_WEBINAR_BANNER_DISMISSED_FLAG, true);
-      });
-
-      surveyLink.addEventListener('click', function () {
-          hideSurveyBanner();
-      });
-  }
-</script>
-
+      
 
 <script>
     var TEAM_BLOG_LAST_VISITED_FLAG = 'team-blog-last-visited';
