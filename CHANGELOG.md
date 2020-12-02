@@ -6,7 +6,7 @@
 
 #### Window Resize and Screenshot Support for Child Windows in Chrome ([PR #5661](https://github.com/DevExpress/testcafe/pull/5661), [PR #5567](https://github.com/DevExpress/testcafe/pull/5567))
 
-You can now use the following actions in Google Chrome when the test context is switched to a [child window](https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/multiple-browser-windows.html):
+You can now use the following actions in Google Chrome when you switch the test context to a [child window](https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/multiple-browser-windows.html):
 
 * [t.maximizeWindow](https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/maximize.html)
 * [t.resizeWindow](https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/resizewindow.html)
