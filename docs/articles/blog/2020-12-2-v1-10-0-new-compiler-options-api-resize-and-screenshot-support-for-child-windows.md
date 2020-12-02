@@ -5,7 +5,7 @@ permalink: /blog/:title.html
 ---
 # v1.10.0: New Compiler Options API, Resize and Screenshot Support for Child Windows
 
-and the selector API for shadow DOM access, plus multiple bugfixes.
+...and the selector API for shadow DOM access, plus multiple bugfixes.
 
 <!--more-->
 
