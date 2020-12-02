@@ -110,7 +110,7 @@ Note that you must chain other [selector methods](https://devexpress.github.io/t
 * Fixed an excessive warning displayed when an assertion is executed in a loop or against an element returned by a `selector.xxxSibling` method ([#5449](https://github.com/DevExpress/testcafe/issues/5449), [#5389](https://github.com/DevExpress/testcafe/issues/5389))
 * Cross-domain `iframe` source links now have the correct protocol when SSL is used ([PR testcafe-hammerhead/#2478](https://github.com/DevExpress/testcafe-hammerhead/pull/2478))
 * A page error is no longer emitted if the destination server responded with the `304` status ([#5025](https://github.com/DevExpress/testcafe/issues/5025))
-* Fixed an issue when TestCafe could not authenticate to websites that use MSAL ([#4834](https://github.com/DevExpress/testcafe/issues/4834))
+* Fixed an issue when TestCafe could not authenticate websites that use MSAL ([#4834](https://github.com/DevExpress/testcafe/issues/4834))
 * The `srcdoc` attributes for `iframes` are now processed ([testcafe-hammerhead/#1237](https://github.com/DevExpress/testcafe-hammerhead/issues/1237))
 * The `authorization` header is now preserved in response headers of fetch requests ([testcafe-hammerhead/#2334](https://github.com/DevExpress/testcafe-hammerhead/issues/2334))
 * The `document.title` for an `iframe` without `src` can now be correctly obtained in Firefox ([PR testcafe-hammerhead/#2466](https://github.com/DevExpress/testcafe-hammerhead/pull/2466))
