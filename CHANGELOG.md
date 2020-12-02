@@ -82,7 +82,7 @@ For more information, see [TypeScript and CoffeeScript](https://devexpress.githu
 
 #### Added a Selector Method to Access Shadow DOM ([PR #5560](https://github.com/DevExpress/testcafe/pull/5560) by [@mostlyfabulous](https://github.com/mostlyfabulous))
 
-This release introduces the [selector.shadowRoot](https://devexpress.github.io/testcafe/documentation/reference/test-api/selector/shadowroot.html) method that allows you to easily access and interact with the shadow DOM elements. This method returns a shadow DOM root hosted in the selector's matched element.
+This release introduces the [selector.shadowRoot](https://devexpress.github.io/testcafe/documentation/reference/test-api/selector/shadowroot.html) method that allows you to access and interact with the shadow DOM elements. This method returns a shadow DOM root hosted in the selector's matched element.
 
 ```js
 import { Selector } from 'testcafe'
