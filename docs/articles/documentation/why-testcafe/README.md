@@ -8,7 +8,7 @@ permalink: /documentation/why-testcafe/
 
 TestCafe excels where other end-to-end testing solutions fall short.
 
-## Comprehensive and easy to set up
+## No 3rd-Party Dependencies
 
 TestCafe does not depend on Selenium or other testing software. TestCafe runs on the popular Node.js platform, and makes use of the browsers that you already have. For many users, the installation process consists of a single step:
 
@@ -18,11 +18,11 @@ npm install -g testcafe
 
 ## Human-readable JavaScript tests
 
-TestCafe is a JavaScript framework. But you don’t need to be a JavaScript guru to write TestCafe tests. The core components of our API are intuitive and only require a basic knowledge of the language.
+The core components of our Node.js API are easy to use, even with little to no prior knowledge of JavaScript.
 
 ## A first-class citizen in the Node.js ecosystem
 
-If you want to take your testing experience to the next level, you can always integrate additional JavaScript libraries and preprocessors into TestCafe tests.
+Like all Node.js scripts, TestCafe tests can leverage the capabilities of third-party JavaScript libraries and preprocessors.
 
 ## Powerful but simple
 
@@ -44,7 +44,7 @@ Make use of multiple browser windows to test out complex user interactions. Swit
 
 Run your tests in multiple browsers at once to quickly uncover browser-specific errors.
 
-## Automate what’s possible
+## Made with automation in mind
 
 ### Automated waiting
 
@@ -68,7 +68,7 @@ Use a GUI test recorder that makes the power of TestCafe accessible to people wi
 
 Instantly see how the changes you introduce impact the test.
 
-### Debug mode
+### Debugging assistance
 
 Pause your tests to examine the app and troubleshoot errors.
 
@@ -89,7 +89,7 @@ All TestCafe Studio Pro customers (subscribers and trial users alike) receive pr
 
 ## How Does TestCafe Work?
 
-The automation engine behind TestCafe takes over browsers and the web pages they display to simulate user activity.
+To simulate user activity, the automation engine behind TestCafe takes over browsers and the web pages they display.
 
 ### The Server-Client Architecture
 
@@ -120,7 +120,7 @@ Tests that run in parallel operate in independent sandboxed environments. This h
 To perform common testing tasks, TestCafe translates server-side calls to its API into client-side code. However, some scenarios require the execution of client-side code that TestCafe cannot automatically generate. That’s why the framework offers multiple ways to execute user-defined JavaScript.
 
 [Client Scripts](/../guides/advanced-guides/inject-client-scripts.md) inject custom JavaScript files, such as temporary extra dependencies, into the page.
-[Client Functions](../guides/basic-guides/obtain-client-side-info.md) evaluate user-defined JavaScript expressions and pass their return value to the server side. They are useful when you want to examine the page or access the website’s URL.
+[Client Functions](../guides/basic-guides/obtain-client-side-info.md) evaluate user-defined JavaScript expressions and pass their return value to the server side. They are useful when you want to examine the page or access its URL.
 The [Selector](../guides/basic-guides/select-page-elements.md) function can launch user-defined client-side code to find a DOM element that cannot be otherwise identified.
 
-However, client-side injections have their limits. Client-side page modifications can disrupt internal TestCafe processes. Client Functions can not return DOM elements. The rule of thumb is to only inject client-side code when you need to pass otherwise unobtainable page data to the server.
+> The TestCafe documentation describes the limitations of user-defined client-side scripts.
