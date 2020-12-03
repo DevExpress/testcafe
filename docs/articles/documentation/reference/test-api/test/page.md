@@ -31,7 +31,13 @@ test
 
 If the start page is not specified, the default URL is `about:blank`.
 
-You can use the `file://` scheme or relative paths to test web pages in local directories.
+You can use the `file://hostname/path` scheme or relative paths to test web pages in local and network directories.
+
+```js
+test
+    .page `file://NETWORK-LOCATION/my-website/index.html`
+    ('My test', async t => { });
+```
 
 ```js
 test
