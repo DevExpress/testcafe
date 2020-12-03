@@ -1,0 +1,6 @@
+{
+  "globals": {
+    "test": true,
+    "fixture": true
+  }
+}

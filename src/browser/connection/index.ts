@@ -1,3 +1,5 @@
+import debug from 'debug';
+import timeLimit from 'time-limit-promise';
 import { EventEmitter } from 'events';
 import Mustache from 'mustache';
 import { pull as remove } from 'lodash';
@@ -8,14 +10,21 @@ import nanoid from 'nanoid';
 import COMMAND from './command';
 import BrowserConnectionStatus from './status';
 import HeartbeatStatus from './heartbeat-status';
-import { GeneralError } from '../../errors/runtime';
+import { GeneralError, TimeoutError } from '../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../errors/types';
-import { BROWSER_RESTART_TIMEOUT, HEARTBEAT_TIMEOUT } from '../../utils/browser-connection-timeouts';
 import { Dictionary } from '../../configuration/interfaces';
 import BrowserConnectionGateway from './gateway';
 import BrowserJob from '../../runner/browser-job';
 import WarningLog from '../../notifications/warning-log';
 import BrowserProvider from '../provider';
+
+import {
+    BROWSER_RESTART_TIMEOUT,
+    BROWSER_CLOSE_TIMEOUT,
+    HEARTBEAT_TIMEOUT
+} from '../../utils/browser-connection-timeouts';
+
+const getBrowserConnectionDebugScope = (id: string): string => `testcafe:browser:connection:${id}`;
 
 const IDLE_PAGE_TEMPLATE                         = read('../../client/browser/idle-page/index.html.mustache');
 const connections: Dictionary<BrowserConnection> = {};
@@ -61,6 +70,7 @@ export default class BrowserConnection extends EventEmitter {
     public previousActiveWindowId: string | null;
     private readonly disableMultipleWindows: boolean;
     private readonly HEARTBEAT_TIMEOUT: number;
+    private readonly BROWSER_CLOSE_TIMEOUT: number;
     private readonly BROWSER_RESTART_TIMEOUT: number;
     public readonly id: string;
     private readonly jobQueue: BrowserJob[];
@@ -83,6 +93,7 @@ export default class BrowserConnection extends EventEmitter {
     private readonly activeWindowIdUrl: string;
     private statusDoneUrl: string;
     private warningLog: WarningLog;
+    private readonly debugLogger: debug.Debugger;
 
     public idle: boolean;
 
@@ -97,6 +108,7 @@ export default class BrowserConnection extends EventEmitter {
         super();
 
         this.HEARTBEAT_TIMEOUT       = HEARTBEAT_TIMEOUT;
+        this.BROWSER_CLOSE_TIMEOUT   = BROWSER_CLOSE_TIMEOUT;
         this.BROWSER_RESTART_TIMEOUT = BROWSER_RESTART_TIMEOUT;
 
         this.id                       = BrowserConnection._generateId();
@@ -106,6 +118,7 @@ export default class BrowserConnection extends EventEmitter {
         this.disconnectionPromise     = null;
         this.testRunAborted           = false;
         this.warningLog               = new WarningLog();
+        this.debugLogger              = debug(getBrowserConnectionDebugScope(this.id));
 
         this.browserInfo                           = browserInfo;
         this.browserInfo.userAgentProviderMetaInfo = '';
@@ -133,7 +146,8 @@ export default class BrowserConnection extends EventEmitter {
         this.statusUrl     = `${gateway.domain}${this.statusRelativeUrl}`;
         this.statusDoneUrl = `${gateway.domain}${this.statusDoneRelativeUrl}`;
 
-        this.on('error', () => {
+        this.on('error', err => {
+            this.debugLogger(err);
             this._forceIdle();
             this.close();
         });
@@ -179,6 +193,7 @@ export default class BrowserConnection extends EventEmitter {
         }
         catch (err) {
             // NOTE: A warning would be really nice here, but it can't be done while log is stored in a task.
+            this.debugLogger(err);
         }
     }
 
@@ -234,7 +249,8 @@ export default class BrowserConnection extends EventEmitter {
         let isTimeoutExpired                = false;
         let timeout: NodeJS.Timeout | null  = null;
 
-        const restartPromise = this._closeBrowser()
+        const restartPromise = timeLimit(this._closeBrowser(), this.BROWSER_CLOSE_TIMEOUT, { rejectWith: new TimeoutError() })
+            .catch(err => this.debugLogger(err))
             .then(() => this._runBrowser());
 
         const timeoutPromise = new Promise(resolve => {
@@ -247,7 +263,7 @@ export default class BrowserConnection extends EventEmitter {
             }, this.BROWSER_RESTART_TIMEOUT);
         });
 
-        Promise.race([ restartPromise, timeoutPromise ])
+        return Promise.race([ restartPromise, timeoutPromise ])
             .then(() => {
                 clearTimeout(timeout as NodeJS.Timeout);
 

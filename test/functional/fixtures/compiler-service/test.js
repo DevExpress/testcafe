@@ -20,7 +20,7 @@ describe('Compiler service', () => {
             await runTests('testcafe-fixtures/error-test.js', 'Throw an error', { shouldFail: true });
         }
         catch (err) {
-            expect(err).deep.equal([
+            expect(err[0].startsWith([
                 `The specified selector does not match any element in the DOM tree. ` +
                 ` > | Selector('#not-exists') ` +
                 ` [[user-agent]] ` +
@@ -32,7 +32,7 @@ describe('Compiler service', () => {
                 ` > 6 |    await t.click('#not-exists');` +
                 ` 7 |});` +
                 ` 8 |  at <anonymous> (${path.join(__dirname, 'testcafe-fixtures/error-test.js')}:6:13)`
-            ]);
+            ])).to.be.true;
         }
     });
 });

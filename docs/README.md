@@ -34,6 +34,7 @@
     * [Azure DevOps](articles/documentation/guides/continuous-integration/azure-devops.md)
     * [Bitbucket Pipelines](articles/documentation/guides/continuous-integration/bitbucket-pipelines.md)
     * [CircleCI](articles/documentation/guides/continuous-integration/circleci.md)
+    * [CircleCI + LambdaTest](articles/documentation/guides/continuous-integration/circleci-and-lambdatest.md)
     * [GitHub Actions](articles/documentation/guides/continuous-integration/github-actions.md)
     * [GitHub Actions + BrowserStack](articles/documentation/guides/continuous-integration/github-actions-and-browserstack.md)
     * [GitLab](articles/documentation/guides/continuous-integration/gitlab.md)
@@ -210,7 +211,7 @@
     * [Test &lt;select&gt; Elements](articles/documentation/recipes/basics/test-select-elements.md)
     * [Test Static HTML Pages](articles/documentation/recipes/basics/test-static-html-pages.md)
     * [Test on Remote Computers and Mobile Devices](articles/documentation/recipes/basics/test-on-remote-computers-and-mobile-devices.md)
-    * [Test File Upload](basics/test-file-upload.md)
+    * [Test File Upload](articles/documentation/recipes/basics/test-file-upload.md)
   * Best Practices
     * [Create Helpers](articles/documentation/recipes/best-practices/create-helpers.md)
     * [Create Data-Driven Tests](articles/documentation/recipes/best-practices/create-data-driven-tests.md)

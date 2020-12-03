@@ -446,7 +446,9 @@ describe('Browser provider', function () {
     });
 
     describe('Regression', () => {
-        it('Should raise a warning if a browser window was not found', async () => {
+        it('Should raise a warning if a browser window was not found', async function () {
+            this.timeout(3000);
+
             const bc         = new BrowserConnectionMock();
             const warningLog = new WarningLog();
 

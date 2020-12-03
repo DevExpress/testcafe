@@ -794,3 +794,11 @@ test('messages formatting', async t => {
         .expect(messages.warn.length).eql(0)
         .expect(messages.error.length).eql(0);
 });
+
+test('action result coercion', async t => {
+    function test (): Promise<void> {
+        return t.expect(1).ok();
+    }
+
+    test();
+});
