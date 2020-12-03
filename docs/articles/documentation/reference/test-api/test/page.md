@@ -39,11 +39,15 @@ test
     ('My test', async t => { });
 ```
 
+For local files omit the `hostname`:
+
 ```js
 test
     .page `file:///user/my-website/index.html`
     ('My test', async t => { });
 ```
+
+Relative paths are resolved against a file with tests:
 
 ```js
 test
