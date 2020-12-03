@@ -15,11 +15,11 @@ This topic describes how to integrate TestCafe tests into a [CircleCI](https://c
 * [Step 1 - Install TestCafe and Create Tests](#step-1---install-testcafe-and-create-tests)
 * [Step 2 - Create a New CircleCI Project](#step-2---create-a-new-circleci-project)
 * [Step 3 - Configure the Build](#step-3---configure-the-build)
-* [Step 4 - Add the Test Script to package.json](#step-4---add-the-test-script-to-package.json)
+* [Step 4 - Add the Test Script to package.json](#step-4---add-the-test-script-to-packagejson)
 * [Step 5 - View Test Results](#step-5---view-test-results)
 * [Use Alternative Images](#use-alternative-images)
-  * [Use TestCafe Image](#use-a-testcafe-image)
-  * [Use Legacy CircleCI Image](#use-a-legacy-circleci-image)
+  * [Use a TestCafe Image](#use-a-testcafe-image)
+  * [Use a Legacy CircleCI Image](#use-a-legacy-circleci-image)
 
 ## Prerequisites
 
@@ -165,7 +165,7 @@ This guide uses the `cimg/node:lts-browsers`, an official CircleCI Docker image 
 
 TestCafe is available as a part of a preconfigured Docker image. The image includes TestCafe, Chromium, and Firefox.
 
-To use this image, paste the following contents in your `config.yml` on [Step 3](###-step-3---configure-the-build):
+To use this image, paste the following contents in your `config.yml` on [Step 3](#-step-3---configure-the-build):
 
 ```yml
 version: 2.1
@@ -204,7 +204,7 @@ The following example uses `circleci/node:lts-browsers`, a legacy image with `lt
 
 A full list of legacy CircleCI images are available at [Pre-Built CircleCI Docker Images](https://circleci.com/docs/2.0/circleci-images/#legacy-language-images).
 
-To use the legacy image, paste the following `config.yml` on [Step 3](###-step-3---configure-the-build):
+To use the legacy image, paste the following `config.yml` on [Step 3](#step-3---configure-the-build):
 
 ```yml
 version: 2.1
