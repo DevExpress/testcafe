@@ -284,7 +284,7 @@ According to users' feedback, the following CI systems work best with TestCafe:
 * [CircleCI](../documentation/guides/continuous-integration/circleci.md)
 * [AppVeyor](../documentation/guides/continuous-integration/appveyor.md)
 
-### TestCafe can't open a website served over a VPN
+### TestCafe is unable to open a website served over a VPN
 
 If the tested website is served via OpenVPN, TestCafe may be unable to detect an IP address from where to retrieve the website. In this case, the following error occurs:
 
