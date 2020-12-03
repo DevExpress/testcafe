@@ -378,7 +378,7 @@ During the timeout, the selector is re-executed until it returns a DOM node or t
 
 > You can specify that the selector should only return visible nodes. To do this, use the [visibilityCheck](../../reference/test-api/selector/constructor.md#optionsvisibilitycheck) option.
 
-Selector timeouts have no effect on [Selector.exists](../../reference/test-api/selector/exists.md) and [Selector.count](../../reference/test-api/selector/count.md) properties. These properties are evaluated immediately regardless of a timeout. To apply a timeout to `exists` and `count` assertions, pass a timeout to the assertion method (`expect.ok`, `expect.eql`, etc.).
+Selector timeouts have no effect on [Selector.exists](../../reference/test-api/selector/exists.md) and [Selector.count](../../reference/test-api/selector/count.md) properties. These properties are evaluated immediately regardless of a timeout. To apply a timeout to `exists` and `count` assertions, pass the timeout to the assertion method (`expect.ok`, `expect.eql`, etc.).
 
 ```js
 import { Selector } from 'testcafe';
