@@ -52,7 +52,7 @@ If this is the first time you use CircleCI, you will start from an empty workspa
 
 ![Click the Add Project Button](../../../images/circle-ci/add-project.png)
 
-This shows a list of GitHub projects associated with your account, find `testcafe-ci-demo` and click **Set Up project**.
+Find `testcafe-ci-demo` and click **Set Up project**.
 
 ![Set Up Project](../../../images/circle-ci/set-up-project.png)
 
@@ -89,8 +89,8 @@ Property                | Description
 ----------------------- | ----
 `version`               | The CircleCI version that should be used for this project.
 `orbs`                  | Imports CircleCI [orbs](https://circleci.com/docs/2.0/orb-intro/)–reusable parts of build configurations stored in a CircleCI registry.
-`node`                  | Imports the [circleci/node](https://circleci.com/developer/orbs/orb/circleci/node) orb v4.1.0 under the name `node`.
-`browser-tools`         | Imports the [circleci/browser-tools](https://circleci.com/developer/orbs/orb/circleci/browser-tools) orb v1.1.0 under the name `browser-tools`.
+`node`                  | Imports the [circleci/node](https://circleci.com/developer/orbs/orb/circleci/node) orb v4.1.0 under `node`.
+`browser-tools`         | Imports the [circleci/browser-tools](https://circleci.com/developer/orbs/orb/circleci/browser-tools) orb v1.1.0 under `browser-tools`.
 `jobs`                  | The section that specifies [jobs](https://circleci.com/docs/2.0/jobs-steps/#jobs-overview).
 `test`                  | The job's name.
 `docker`                | An [executor](https://circleci.com/docs/2.0/configuration-reference/#docker--machine--macos--windows-executor) that defines the environment in which this job runs. The `docker` executor specifies that the job should run inside a docker container.
@@ -204,7 +204,7 @@ The following example uses `circleci/node:lts-browsers`, a legacy image with `lt
 
 A full list of legacy CircleCI images are available at [Pre-Built CircleCI Docker Images](https://circleci.com/docs/2.0/circleci-images/#legacy-language-images).
 
-To use the image, paste the following `config.yml` on [Step 3](###-step-3---configure-the-build):
+To use the legacy image, paste the following `config.yml` on [Step 3](###-step-3---configure-the-build):
 
 ```yml
 version: 2.1
