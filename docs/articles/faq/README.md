@@ -283,17 +283,3 @@ According to users' feedback, the following CI systems work best with TestCafe:
 * [TravisCI](../documentation/guides/continuous-integration/travis.md)
 * [CircleCI](../documentation/guides/continuous-integration/circleci.md)
 * [AppVeyor](../documentation/guides/continuous-integration/appveyor.md)
-
-### TestCafe is unable to open a website served over VPN
-
-If the tested website is served via OpenVPN, TestCafe may be unable to detect an IP address from where to retrieve the website. In this case, the following error occurs:
-
-```text
-<browsername> can't open the page "https://localhost:<port>/browser/connect/<windowid>" because <browsername> can't establish a secure connection to the server "localhost"
-```
-
-This can happen when the machine is connected to multiple networks (for example, if you use a VPN). To explicitly state that the tested website should be served on the local machine, launch TestCafe with the `--hostname localhost` CLI option:
-
-```sh
-testcafe "chrome --hostname localhost" test.js
-```
