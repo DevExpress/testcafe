@@ -86,6 +86,32 @@ test
     });
 ```
 
+TestCafe can run tests against `html` files. To specify the absolute location of a file, use the `file://hostname/path` URL pattern in `fixture.page` and `test.page`:
+
+```js
+test
+    .page `file://NETWORK-LOCATION/path/to/file.html`;
+    ('My test', async t => { });
+```
+
+For local files omit the `hostname`:
+
+```js
+test
+    .page `file:///C:/path/to/file.html`;
+    ('My test', async t => { });
+```
+
+You can use relative URLs to locate files.
+
+```js
+test
+    .page `./file.html`;
+    ('My test', async t => { });
+```
+
+> Relative paths are resolved against a file with tests.
+
 ## Specify Test Metadata
 
 TestCafe allows you to specify additional information for tests in the form of *key-value metadata*. You can display this information in the reports and use it to filter tests.
