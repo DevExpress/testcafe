@@ -185,6 +185,7 @@ permalink: /documentation/reference/
 * [startApp](testcafe-api/runner/startapp.md)
 * [stop](testcafe-api/runner/stop.md)
 * [tsConfigPath](testcafe-api/runner/tsconfigpath.md)
+* [compilerOptions](testcafe-api/runner/compileroptions.md)
 * [useProxy](testcafe-api/runner/useproxy.md)
 * [video](testcafe-api/runner/video.md)
 

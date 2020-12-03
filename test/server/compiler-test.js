@@ -1022,11 +1022,15 @@ describe('Compiler', function () {
                     const err             = errList.items[0];
                     const stack           = err.callsite.stackFrames.filter(createStackFilter(stackTraceLimit));
 
-                    expect(stack.length).eql(4);
-                    expect(stack[0].source).to.have.string('helper.js');
-                    expect(stack[1].source).to.have.string('helper.js');
-                    expect(stack[2].source).to.have.string('helper.js');
-                    expect(stack[3].source).to.have.string('testfile.js');
+                    expect(stack.length).eql(8);
+
+                    const lastStackItem = stack.pop();
+
+                    stack.forEach(stackItem => {
+                        expect(stackItem.source).to.have.string('helper.js');
+                    });
+
+                    expect(lastStackItem.source).to.have.string('testfile.js');
                 });
         });
 

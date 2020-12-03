@@ -1163,7 +1163,9 @@ describe('Reporter', () => {
         expect(reporter.plugin.chalk.enabled).to.be.false;
     });
 
-    it('Should provide videos info to the reporter', () => {
+    it('Should provide videos info to the reporter', function () {
+        this.timeout(3000);
+
         const videoLog = [];
         const taskMock = new TaskMock();
 

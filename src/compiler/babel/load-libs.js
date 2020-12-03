@@ -26,9 +26,13 @@ function getModuleResolverOpts () {
     };
 }
 
+
 function getTransformRuntimeOpts () {
+    // NOTE: We are forced to import helpers to each compiled file
+    // because of '@babel/plugin-transform-runtime' plugin cannot correctly resolve path
+    // to the helpers from the '@babel/runtime' module.
     return {
-        absoluteRuntime: true
+        'helpers': false
     };
 }
 

@@ -123,3 +123,9 @@ export class ReporterPluginError extends GeneralError {
         super(code, name, method, originalError.stack);
     }
 }
+
+export class TimeoutError extends GeneralError {
+    constructor () {
+        super(RUNTIME_ERRORS.timeLimitedPromiseTimeoutExpired);
+    }
+}

@@ -66,6 +66,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--qr-code](#--qr-code)
   * [--sf, --stop-on-first-fail](#--sf---stop-on-first-fail)
   * [--ts-config-path \<path\>](#--ts-config-path-path)
+  * [--compiler-options \<options\>](#--compiler-options-options)
   * [--disable-page-caching](#--disable-page-caching)
   * [--disable-multiple-windows](#--disable-multiple-windows)
   * [--color](#--color)
@@ -889,15 +890,40 @@ testcafe chrome my-tests --sf
 
 ### --ts-config-path \<path\>
 
-Enables TestCafe to use a custom [TypeScript configuration file](../guides/concepts/typescript-and-coffeescript.md#customize-compiler-options) and specifies its location.
-
-```sh
-testcafe chrome my-tests --ts-config-path /Users/s.johnson/testcafe/tsconfig.json
-```
-
-You can specify an absolute or relative path. Relative paths are resolved against the current directory (the directory from which you run TestCafe).
+Deprecated as of TestCafe v.1.10.0 in favour of the [`--compiler-options`](#--compiler-options-options) parameter.
 
 *Related configuration file property*: [tsConfigPath](configuration-file.md#tsconfigpath).
+
+### --compiler-options \<options\>
+
+Specifies test compilation settings. The current version of TestCafe can only configure the [TypeScript compiler](/testcafe/documentation/guides/concepts/typescript-and-coffeescript.md#customize-compiler-options).
+
+```sh
+testcafe chrome my-tests --compiler-options typescript.options.lib=lib.es5.d.ts,lib.webworker.d.ts;typescript.typesRoot='this value contains spaces'
+```
+
+The `--compiler-options` parameter accepts the compiler options listed in the [official TypeScript documentation](https://www.typescriptlang.org/docs/handbook/compiler-options.html), as well as two additional options: `typescript.configPath` and `typescript.customCompilerModulePath`.
+
+To list multiple parameters, separate them with semicolons. Enclose values that contain spaces in quotes.
+
+Specify the `typescript.configPath` compiler option to import compiler settings from a dedicated TypeScript configuration file:
+
+```sh
+testcafe chrome my-tests --compiler-options typescript.configPath='config file path'
+```
+
+TestCafe ships with a `typescript@3` compiler. Specify the `typescript.customCompilerModulePath` option to compile your tests with a different compiler.
+
+```js
+testcafe chrome test.ts --compiler-options typescript.customCompilerModulePath=../typescript@4
+```
+
+> TestCafe resolves relative paths against its own installation folder.
+
+The values of the `typescript.options.lib` compiler option should be identical to the names of the corresponding library files from your compiler’s `node_modules/typescript/lib` folder (for example: `lib.webworker.d.ts`).
+
+*Related configuration file property*: [compilerOptions](configuration-file.md#compileroptions).
+*Related API method*: [runner.compilerOptions](testcafe-api/runner/compileroptions.md)
 
 ### --disable-page-caching
 
