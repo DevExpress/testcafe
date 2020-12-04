@@ -284,13 +284,12 @@ According to users' feedback, the following CI systems work best with TestCafe:
 * [CircleCI](../documentation/guides/continuous-integration/circleci.md)
 * [AppVeyor](../documentation/guides/continuous-integration/appveyor.md)
 
-### 'Browser can't open the page: can't establish a secure connection to the server'
+### 'The browser can't open the page: can't establish a secure connection to the server'
 
-If the tested website is served via OpenVPN, TestCafe may be unable to detect an IP address from where to retrieve the website. In this case, the following error occurs:
+If the tested website is served via VPN, TestCafe may be unable to detect an IP address from where to retrieve the website. In this case, the following error occurs:
 
 ```text
-<browsername> can't open the page "https://localhost:<port>/browser/connect/<windowid>"
-because <browsername> can't establish a secure connection to the server "localhost"
+<browsername> can't open the page because <browsername> can't establish a secure connection to the server.
 ```
 
 This can happen when the machine is connected to multiple networks (for example, if you use a VPN).
@@ -299,5 +298,5 @@ In this case TestCafe may not be able to detect an IP address that should be use
 To explicitly state that the tested website should be served on the local machine, launch TestCafe with the `--hostname localhost` CLI option:
 
 ```sh
-testcafe "chrome --hostname localhost" test.js
+testcafe chrome test.js --hostname localhost
 ```
