@@ -165,7 +165,7 @@ This guide uses the `cimg/node:lts-browsers`, an official CircleCI Docker image 
 
 TestCafe is available as a part of a preconfigured Docker image. The image includes TestCafe, Chromium, and Firefox.
 
-To use this image, paste the following contents in your `config.yml` on [Step 3](#-step-3---configure-the-build):
+To use this image, paste the following contents in your `config.yml` on [Step 3](#step-3---configure-the-build):
 
 ```yml
 version: 2.1
@@ -188,7 +188,7 @@ workflows:
       - test
 ```
 
-This image does not have Google Chrome. To run tests in Chromium instead, paste the following code in your `package.json` on [Step 4](#step-4---add-the-test-script-to-package.json):
+This image does not have Google Chrome. To run tests in Chromium instead, paste the following code in your `package.json` on [Step 4](#step-4---add-the-test-script-to-packagejson):
 
 ```json
   "scripts": {
@@ -227,7 +227,7 @@ workflows:
       - test
 ```
 
-Since this image has Chrome and Firefox installed, add the following command to the `package.json` file on [Step 4](#step-4---add-the-test-script-to-package.json) to run tests in these browsers:
+Since this image has Chrome and Firefox installed, add the following command to the `package.json` file on [Step 4](#step-4---add-the-test-script-to-packagejson) to run tests in these browsers:
 
 ```json
 "scripts": {
