@@ -98,7 +98,7 @@ Property                | Description
 `steps`                 | The job's [steps](https://circleci.com/docs/2.0/jobs-steps/#steps-overview).
 `checkout`              | Checks out code from the `testcafe-ci-demo` repository. This is a pre-defined step (see [checkout](https://circleci.com/docs/2.0/configuration-reference/#checkout)).
 `browser-tools/install-browser-tools` | A step from the `browser-tools` orb that installs browsers and browser drivers on the machine. This step installs Chrome, Firefox, ChromeDriver, and GeckoDriver.
-`node/install-packages` | A step from the `node` orb that installs the project's dependencies (see [install-packages](https://circleci.com/developer/orbs/orb/circleci/node#commands-install-packages)).
+`node/install-packages` | A step from the `node` orb that installs the project's dependencies (see [install-packages](https://circleci.com/developer/orbs/orb/circleci/node)).
 `run`                   | The [run](https://circleci.com/docs/2.0/configuration-reference/#run) step invokes shell commands. In this example, `run` executes the `npm test` script.
 `store_test_results`    | Uploads test results to the specified directory (see [store_test_results](https://circleci.com/docs/2.0/configuration-reference/#store_test_results)).
 `workflows`             | A [workflow](https://circleci.com/docs/2.0/workflows/) that runs the `test` job.
