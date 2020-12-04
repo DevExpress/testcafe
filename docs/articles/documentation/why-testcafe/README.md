@@ -24,7 +24,7 @@ The core components of our Node.js API are easy to use, even with little to no p
 
 Like all Node.js scripts, TestCafe tests can leverage the capabilities of third-party JavaScript libraries and preprocessors.
 
-## Powerful but simple
+## No compromises
 
 The advanced features of the TestCafe API can help you test complex, security-sensitive web applications.
 
@@ -91,7 +91,7 @@ All TestCafe Studio Pro customers (subscribers and trial users alike) receive pr
 
 To simulate user activity, the automation engine behind TestCafe takes over browsers and the web pages they display.
 
-### The Server-Client Architecture
+### Client-Server Architecture
 
 The server-client architecture of TestCafe allows it to execute system-level and in-browser code.
 
