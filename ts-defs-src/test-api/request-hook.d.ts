@@ -1,4 +1,4 @@
-
+import { RequestFilterRule as RequestFilterRuleOptions } from 'testcafe-hammerhead';
 // Request Hook
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -14,6 +14,7 @@ interface RequestHook {
     onResponse(responseEvent: object): Promise<void>;
 }
 
+type RequestFilterRule = ConstructorParameters<typeof RequestFilterRuleOptions>[0];
 
 interface RequestHookConstructor {
     /**
@@ -22,7 +23,7 @@ interface RequestHookConstructor {
      * @param responseEventConfigureOpts - defines whether to pass the response headers and body to the onResponse method
      * @returns {RequestHook}
      */
-    new (requestFilterRules?: Array<any>, responseEventConfigureOpts?: object): RequestHook;
+    new (requestFilterRules?: RequestFilterRule | RequestFilterRule[], responseEventConfigureOpts?: object): RequestHook;
 }
 
 // Request Logger
@@ -133,7 +134,7 @@ interface RequestLogger extends RequestHook {
     /**
      * Returns an array of logged requests.
      */
-    requests: Array<LoggedRequest>;
+    requests: LoggedRequest[];
 }
 
 interface RequestLoggerFactory {
@@ -206,7 +207,7 @@ interface RequestOptions {
     /**
      * Specifies whether the request is an AJAX request (xhr or fetch).
      */
-    isAjax: Boolean;
+    isAjax: boolean;
 }
 
 interface ResponseMock {
