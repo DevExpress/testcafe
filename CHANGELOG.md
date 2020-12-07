@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.10.0 (2020-12-3)
+## v1.10.0 (2020-12-7)
 
 ### Enhancements
 
@@ -108,6 +108,13 @@ Note that you should chain other [selector methods](https://devexpress.github.io
 * Fixed an issue when touch and mouse events fired on mobile devices even though the mouse event was prevented in page code ([#5380](https://github.com/DevExpress/testcafe/issues/5380))
 * Cross-domain `iframes` are now focused correctly in Safari ([#4793](https://github.com/DevExpress/testcafe/issues/4793))
 * Fixed an excessive warning displayed when an assertion is executed in a loop or against an element returned by a `selector.xxxSibling` method ([#5449](https://github.com/DevExpress/testcafe/issues/5449), [#5389](https://github.com/DevExpress/testcafe/issues/5389))
+* Fixed an issue related to the local storage values converting ([testcafe-hammerhead/#2313](https://github.com/DevExpress/testcafe-hammerhead/issues/2313))
+* Fixed an issue related to URL resolving in iframes ([testcafe-hammerhead/#2461](https://github.com/DevExpress/testcafe-hammerhead/issues/2461))
+* Fixed long CSS files processing ([testcafe-hammerhead/#2475](https://github.com/DevExpress/testcafe-hammerhead/issues/2475))
+* Fixed issue when the client JavaScript file is processed in a wrong way ([testcafe-hammerhead/#2442](https://github.com/DevExpress/testcafe-hammerhead/issues/2442))
+* Fixed an issue related to Adobe Launch Analytics requests ([testcafe-hammerhead/#2453](https://github.com/DevExpress/testcafe-hammerhead/issues/2453))
+* Supported Web Workers created by Blob URLs ([testcafe-hammerhead/#1221](https://github.com/DevExpress/testcafe-hammerhead/issues/1221))
+* Fixed an issue when network requests are not received by server ([testcafe-hammerhead/#2467](https://github.com/DevExpress/testcafe-hammerhead/issues/2467))
 * Cross-domain `iframe` source links now have the correct protocol when SSL is used ([PR testcafe-hammerhead/#2478](https://github.com/DevExpress/testcafe-hammerhead/pull/2478))
 * A page error is no longer emitted if the destination server responded with the `304` status ([#5025](https://github.com/DevExpress/testcafe/issues/5025))
 * Fixed an issue when TestCafe could not authenticate websites that use MSAL ([#4834](https://github.com/DevExpress/testcafe/issues/4834))
