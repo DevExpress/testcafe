@@ -12,6 +12,7 @@ import { Proxy } from 'testcafe-hammerhead';
 import { Dictionary } from '../../configuration/interfaces';
 import BrowserConnection from './index';
 import { IncomingMessage, ServerResponse } from 'http';
+import SERVICE_ROUTES from './service-routes';
 
 
 export default class BrowserConnectionGateway {
@@ -64,13 +65,13 @@ export default class BrowserConnectionGateway {
         this._dispatch('/browser/active-window-id/{id}', proxy, BrowserConnectionGateway._onGetActiveWindowIdRequest);
         this._dispatch('/browser/active-window-id/{id}', proxy, BrowserConnectionGateway._onSetActiveWindowIdRequest, 'POST');
 
-        proxy.GET('/browser/connect', (req: IncomingMessage, res: ServerResponse) => this._connectNextRemoteBrowser(req, res));
-        proxy.GET('/browser/connect/', (req: IncomingMessage, res: ServerResponse) => this._connectNextRemoteBrowser(req, res));
+        proxy.GET(SERVICE_ROUTES.connect, (req: IncomingMessage, res: ServerResponse) => this._connectNextRemoteBrowser(req, res));
+        proxy.GET(SERVICE_ROUTES.connectWithTrailingSlash, (req: IncomingMessage, res: ServerResponse) => this._connectNextRemoteBrowser(req, res));
 
-        proxy.GET('/service-worker.js', { content: serviceWorkerScript, contentType: 'application/x-javascript' });
-        proxy.GET('/browser/assets/index.js', { content: idlePageScript, contentType: 'application/x-javascript' });
-        proxy.GET('/browser/assets/styles.css', { content: idlePageStyle, contentType: 'text/css' });
-        proxy.GET('/browser/assets/logo.svg', { content: idlePageLogo, contentType: 'image/svg+xml' });
+        proxy.GET(SERVICE_ROUTES.serviceWorker, { content: serviceWorkerScript, contentType: 'application/x-javascript' });
+        proxy.GET(SERVICE_ROUTES.assets.index, { content: idlePageScript, contentType: 'application/x-javascript' });
+        proxy.GET(SERVICE_ROUTES.assets.styles, { content: idlePageStyle, contentType: 'text/css' });
+        proxy.GET(SERVICE_ROUTES.assets.logo, { content: idlePageLogo, contentType: 'image/svg+xml' });
     }
 
     // Helpers

@@ -3,6 +3,7 @@
 import COMMAND from '../../browser/connection/command';
 import HeartbeatStatus from '../../browser/connection/heartbeat-status';
 import { HEARTBEAT_INTERVAL } from '../../utils/browser-connection-timeouts';
+import SERVICE_ROUTES from '../../browser/connection/service-routes';
 
 /*eslint-disable no-restricted-properties*/
 const LOCATION_HREF   = document.location.href;
@@ -12,7 +13,7 @@ const LOCATION_ORIGIN = document.location.origin;
 const STATUS_RETRY_DELAY = 1000;
 const MAX_STATUS_RETRY   = 5;
 
-const SERVICE_WORKER_LOCATION = LOCATION_ORIGIN + `/service-worker.js`;
+const SERVICE_WORKER_LOCATION = LOCATION_ORIGIN + SERVICE_ROUTES.serviceWorker;
 
 let allowInitScriptExecution = false;
 let heartbeatIntervalId      = null;
