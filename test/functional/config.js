@@ -33,8 +33,6 @@ testingEnvironments[testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers] = {
         accessKey: process.env.BROWSER_STACK_ACCESS_KEY
     },
 
-    retryTestPages: true,
-
     browsers: [
         {
             browserName: 'browserstack:safari@11.1:OS X High Sierra',
@@ -62,11 +60,6 @@ testingEnvironments[testingEnvironmentNames.mobileBrowsers] = {
     browserstack: {
         username:  process.env.BROWSER_STACK_USERNAME,
         accessKey: process.env.BROWSER_STACK_ACCESS_KEY
-    },
-
-    ssl: {
-        cert: process.env.SSL_CERT,
-        key:  process.env.SSL_PKEY
     },
 
     browsers: [
@@ -118,8 +111,6 @@ testingEnvironments[testingEnvironmentNames.localChrome] = {
 
 testingEnvironments[testingEnvironmentNames.localBrowsersIE] = {
     isLocalBrowsers: true,
-
-    retryTestPages: true,
 
     browsers: [
         {
