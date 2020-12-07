@@ -31,7 +31,7 @@ test
 
 If the start page is not specified, the default URL is `about:blank`.
 
-You can use the `file://hostname/path` [URI scheme](https://en.wikipedia.org/wiki/File_URI_scheme) or relative paths to test web pages in local and network directories.
+You can use the [file URI scheme](https://en.wikipedia.org/wiki/File_URI_scheme) or relative paths to test web pages in local and network directories.
 
 ```js
 test
