@@ -5,8 +5,8 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 03 Dec 2020 14:01:04 +0300</pubDate>
-    <lastBuildDate>Thu, 03 Dec 2020 14:01:04 +0300</lastBuildDate>
+    <pubDate>Mon, 07 Dec 2020 12:16:29 +0300</pubDate>
+    <lastBuildDate>Mon, 07 Dec 2020 12:16:29 +0300</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
@@ -110,7 +110,7 @@
 &lt;li&gt;Native function wrappers are now converted to strings correctly (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2394&quot;&gt;testcafe-hammerhead/#2394&lt;/a&gt;)&lt;/li&gt;
 &lt;/ul&gt;
 </description>
-        <pubDate>Thu, 03 Dec 2020 00:00:00 +0300</pubDate>
+        <pubDate>Mon, 07 Dec 2020 00:00:00 +0300</pubDate>
         <link>https://devexpress.github.io/testcafe/blog/v1-10-0-new-compiler-options-api-resize-and-screenshot-support-for-child-windows.html</link>
         <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/v1-10-0-new-compiler-options-api-resize-and-screenshot-support-for-child-windows.html</guid>
         

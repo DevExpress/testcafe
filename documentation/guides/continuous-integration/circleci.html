@@ -1017,115 +1017,238 @@
 	<article class="doc">
 		<div class="post-content">
 
-			<h1>Integrate TestCafe with CircleCI</h1>
-<p>This topic describes how to integrate TestCafe tests into a <a href="https://circleci.com/">CircleCI</a> project&#39;s build process.</p>
-<h2><a class="anchor" id="prerequisites"></a>Prerequisites <a class="permalink" href="#prerequisites">#</a></h2>
-<p>In this tutorial, we will fetch tests from a GitHub repository: <a href="https://github.com/DevExpress-Examples/testcafe-ci-demo">testcafe-ci-demo</a>. Fork this repository before we start.</p>
-<blockquote><div class="blockquote-content"><p>If you use a different version control system, make sure CircleCI supports it. To learn which systems it supports, refer to the <a href="https://circleci.com/docs/2.0/first-steps/">First Steps</a> document.</p>
-</div></blockquote><h2><a class="anchor" id="step-1---create-a-new-circleci-project"></a>Step 1 - Create a New CircleCI Project <a class="permalink" href="#step-1---create-a-new-circleci-project">#</a></h2>
-<p>Log in to CircleCI using your GitHub account.</p>
-
-<p>If this is the first time you are using CircleCI, you will start from an empty workspace. Create your first project by clicking the <strong>Add Project</strong> button.</p>
-
-<p><img src="../../../images/circle-ci/add-new-project.png" alt="Clicking the Add Project Button" title=""></p>
-
-<p>You will see the list of GitHub projects associated with your account.</p>
-
-<p>Find <code>testcafe-ci-demo</code> and click <strong>Setup project</strong>.</p>
-
-<p><img src="../../../images/circle-ci/set-up-project.png" alt="Set Up Project" title=""></p>
-
-<p>The <em>Setup Project</em> screen will appear.</p>
-
-<p>In the <strong>Operating System</strong> section, select <em>Linux</em>. Then select <em>2.0</em> in the <strong>Platform</strong> section.</p>
-
-<p><img src="../../../images/circle-ci/os-and-platform.png" alt="Select OS and Platform" title=""></p>
-
-<p>In the <strong>Language</strong> section, select <em>Node</em>.</p>
-
-<p><img src="../../../images/circle-ci/language.png" alt="Select Language" title=""></p>
-<h2><a class="anchor" id="step-2---configuring-the-build"></a>Step 2 - Configuring the Build <a class="permalink" href="#step-2---configuring-the-build">#</a></h2>
-<p>Create a <code>.circleci</code> directory in the <code>testcafe-ci-demo</code> repository fork and add a <code>config.yml</code> file there.</p>
-
-<p>Use the content CircleCI provides by default with two changes:</p>
+			<h1>Integrate TestCafe With CircleCI</h1>
+<p>This topic describes how to integrate TestCafe tests into a <a href="https://circleci.com/">CircleCI</a> project.</p>
 
 <ul>
-<li><p>Since you are going to perform browser testing, you need a virtual machine image that has all popular browsers pre-installed. So use the following image</p>
-<div class="highlight"><pre><code class="language-yml" data-lang="yml"><span class="c1"># Replace '10.14' with the latest Node.js LTS version</span>
-<span class="c1"># available on Docker Hub</span>
-<span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">circleci/node:10.14-browsers</span>
-</code></pre></div>
-<p>Replace <code>10.14</code> with the latest available Node.js LTS version. See the <a href="https://hub.docker.com/r/circleci/node/tags/">image&#39;s page</a> on Docker Hub for the list of available versions.</p></li>
-<li><p>Add a step that imports test results to the end of the YAML. The results will be displayed in the <strong>Test Summary</strong> section.</p>
-<div class="highlight"><pre><code class="language-yml" data-lang="yml"><span class="pi">-</span> <span class="na">store_test_results</span><span class="pi">:</span>
-    <span class="na">path</span><span class="pi">:</span> <span class="s">/tmp/test-results</span>
-</code></pre></div></li>
+<li><a href="#prerequisites">Prerequisites</a></li>
+<li><a href="#step-1---install-testcafe-and-create-tests">Step 1 - Install TestCafe and Create Tests</a></li>
+<li><a href="#step-2---create-a-new-circleci-project">Step 2 - Create a New CircleCI Project</a></li>
+<li><a href="#step-3---configure-the-build">Step 3 - Configure the Build</a></li>
+<li><a href="#step-4---add-the-test-script-to-packagejson">Step 4 - Add the Test Script to package.json</a></li>
+<li><a href="#step-5---view-test-results">Step 5 - View Test Results</a></li>
+<li><a href="#use-alternative-images">Use Alternative Images</a>
+
+<ul>
+<li><a href="#use-a-testcafe-image">Use a TestCafe Image</a></li>
+<li><a href="#use-a-legacy-circleci-image">Use a Legacy CircleCI Image</a></li>
+</ul></li>
 </ul>
+<h2><a class="anchor" id="prerequisites"></a>Prerequisites <a class="permalink" href="#prerequisites">#</a></h2>
+<p>In this tutorial, you fetch tests from a GitHub repository: <a href="https://github.com/DevExpress-Examples/testcafe-ci-demo">testcafe-ci-demo</a>. Fork this repository before you begin.</p>
+<blockquote><div class="blockquote-content"><p>If you use a different version control system, make sure it supports CircleCI. For information on which systems you can use, refer to the <a href="https://circleci.com/integrations/">CircleCI Integrations</a> page.</p>
+</div></blockquote><h2><a class="anchor" id="step-1---install-testcafe-and-create-tests"></a>Step 1 - Install TestCafe and Create Tests <a class="permalink" href="#step-1---install-testcafe-and-create-tests">#</a></h2>
+<p>To run TestCafe, <a href="../basic-guides/install-testcafe.html#local-installation">install it locally</a> in your project and <a href="../../getting-started/#creating-a-test">create tests</a>.</p>
 
-<p>The resulting YAML will look as follows.</p>
-<div class="highlight"><pre><code class="language-yml" data-lang="yml">
-<span class="na">version</span><span class="pi">:</span> <span class="m">2</span>
-<span class="na">jobs</span><span class="pi">:</span>
-  <span class="na">build</span><span class="pi">:</span>
-    <span class="na">docker</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">circleci/node:10.14-browsers</span>
+<p>To see test results in the CircleCI UI, install the <a href="https://www.npmjs.com/package/testcafe-reporter-xunit">testcafe-reporter-xunit</a> npm package.
+This JUnit reporter generates test run reports in XML format. CircleCI can process XML reports and display test results in the UI.</p>
 
-    <span class="na">working_directory</span><span class="pi">:</span> <span class="s">~/repo</span>
+<p>For more information about reporters, see <a href="../concepts/reporters.html">Reporters</a>.</p>
 
-    <span class="na">steps</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s">checkout</span>
-      <span class="pi">-</span> <span class="na">restore_cache</span><span class="pi">:</span>
-          <span class="na">keys</span><span class="pi">:</span>
-          <span class="pi">-</span> <span class="s">v1-dependencies-{{ checksum "package.json" }}</span>
-          <span class="pi">-</span> <span class="s">v1-dependencies-</span>
-
-      <span class="pi">-</span> <span class="na">run</span><span class="pi">:</span> <span class="s">yarn install</span>
-
-      <span class="pi">-</span> <span class="na">save_cache</span><span class="pi">:</span>
-          <span class="na">paths</span><span class="pi">:</span>
-            <span class="pi">-</span> <span class="s">node_modules</span>
-          <span class="na">key</span><span class="pi">:</span> <span class="s">v1-dependencies-{{ checksum "package.json" }}</span>
-
-      <span class="pi">-</span> <span class="na">run</span><span class="pi">:</span> <span class="s">yarn test</span>
-
-      <span class="pi">-</span> <span class="na">store_test_results</span><span class="pi">:</span>
-          <span class="na">path</span><span class="pi">:</span> <span class="s">/tmp/test-results</span>
-
-</code></pre></div>
-<p>Next, add <code>testcafe</code> and <code>testcafe-reporter-xunit</code> to project&#39;s development dependencies. Open the repository root and execute the following command:</p>
+<p>Run the following command to install the packages locally in your project directory:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">npm <span class="nb">install</span> <span class="nt">--save-dev</span> testcafe testcafe-reporter-xunit
 </code></pre></div>
-<p>This command installs the <code>testcafe</code> and <code>testcafe-reporter-xunit</code> modules locally and adds them to <code>package.json</code>.</p>
-<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
-  </span><span class="nl">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="nl">"testcafe"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="p">,</span><span class="w">
-      </span><span class="nl">"testcafe-reporter-xunit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="w">
-  </span><span class="p">}</span><span class="w">
+<p>Commit the <code>package-lock.json</code> file generated by npm to the repository. This file allows CircleCI to use a fast <code>npm ci</code> command to install the dependencies.</p>
+<h2><a class="anchor" id="step-2---create-a-new-circleci-project"></a>Step 2 - Create a New CircleCI Project <a class="permalink" href="#step-2---create-a-new-circleci-project">#</a></h2>
+<p>Log into CircleCI with your GitHub account.</p>
+
+<p>If this is the first time you use CircleCI, you will start from an empty workspace. Click the <strong>Add Project</strong> button to create your first project.</p>
+
+<p><img src="../../../images/circle-ci/add-project.png" alt="Click the Add Project Button" title=""></p>
+
+<p>Find <code>testcafe-ci-demo</code> and click <strong>Set Up project</strong>.</p>
+
+<p><img src="../../../images/circle-ci/set-up-project.png" alt="Set Up Project" title=""></p>
+<h2><a class="anchor" id="step-3---configure-the-build"></a>Step 3 - Configure the Build <a class="permalink" href="#step-3---configure-the-build">#</a></h2>
+<p>On the project configuration page, select <strong>Node</strong> as the target platform and paste the following configuration:</p>
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="na">version</span><span class="pi">:</span> <span class="m">2.1</span>
+<span class="na">orbs</span><span class="pi">:</span>
+  <span class="na">node</span><span class="pi">:</span> <span class="s">circleci/node@4.1.0</span>
+  <span class="na">browser-tools</span><span class="pi">:</span> <span class="s">circleci/browser-tools@1.1.0</span>
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">test</span><span class="pi">:</span>
+    <span class="na">docker</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">cimg/node:lts-browsers</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">checkout</span>
+      <span class="pi">-</span> <span class="s">browser-tools/install-browser-tools</span>
+      <span class="pi">-</span> <span class="s">node/install-packages</span>
+      <span class="pi">-</span> <span class="na">run</span><span class="pi">:</span>
+          <span class="na">command</span><span class="pi">:</span> <span class="s">npm run test</span>
+      <span class="pi">-</span> <span class="na">store_test_results</span><span class="pi">:</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s">/tmp/test-results</span>
+<span class="na">workflows</span><span class="pi">:</span>
+  <span class="na">e2e-test</span><span class="pi">:</span>
+    <span class="na">jobs</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">test</span>
+</code></pre></div>
+<p>The table below describes the YAML properties used in this example:</p>
+<div class="table-wrapper"><table><thead><tr>
+<th>Property</th>
+<th>Description</th>
+</tr>
+</thead><tbody><tr>
+<td><code>version</code></td>
+<td>The CircleCI version that should be used for this project.</td>
+</tr>
+<tr>
+<td><code>orbs</code></td>
+<td>Imports CircleCI <a href="https://circleci.com/docs/2.0/orb-intro/">orbs</a>–reusable parts of build configurations stored in a CircleCI registry.</td>
+</tr>
+<tr>
+<td><code>node</code></td>
+<td>Imports the <a href="https://circleci.com/developer/orbs/orb/circleci/node">circleci/node</a> orb v4.1.0 under <code>node</code>.</td>
+</tr>
+<tr>
+<td><code>browser-tools</code></td>
+<td>Imports the <a href="https://circleci.com/developer/orbs/orb/circleci/browser-tools">circleci/browser-tools</a> orb v1.1.0 under <code>browser-tools</code>.</td>
+</tr>
+<tr>
+<td><code>jobs</code></td>
+<td>The section that specifies <a href="https://circleci.com/docs/2.0/jobs-steps/#jobs-overview">jobs</a>.</td>
+</tr>
+<tr>
+<td><code>test</code></td>
+<td>The job&#39;s name.</td>
+</tr>
+<tr>
+<td><code>docker</code></td>
+<td>An <a href="https://circleci.com/docs/2.0/configuration-reference/#docker--machine--macos--windows-executor">executor</a> that defines the environment in which this job runs. The <code>docker</code> executor specifies that the job should run inside a docker container.</td>
+</tr>
+<tr>
+<td><code>image</code></td>
+<td>Specifies the docker image to use. <code>cimg/node:lts-browsers</code> is a pre-built CircleCI docker image that includes the <code>lts</code> version of Node.js and browser dependencies. For a list of available images, see <a href="https://circleci.com/developer/images/image/cimg/node">Pre-Built CircleCI Docker Images</a>.</td>
+</tr>
+<tr>
+<td><code>steps</code></td>
+<td>The job&#39;s <a href="https://circleci.com/docs/2.0/jobs-steps/#steps-overview">steps</a>.</td>
+</tr>
+<tr>
+<td><code>checkout</code></td>
+<td>Checks out code from the <code>testcafe-ci-demo</code> repository. This is a pre-defined step (see <a href="https://circleci.com/docs/2.0/configuration-reference/#checkout">checkout</a>).</td>
+</tr>
+<tr>
+<td><code>browser-tools/install-browser-tools</code></td>
+<td>A step from the <code>browser-tools</code> orb that installs browsers and browser drivers on the machine. This step installs Chrome, Firefox, ChromeDriver, and GeckoDriver.</td>
+</tr>
+<tr>
+<td><code>node/install-packages</code></td>
+<td>A step from the <code>node</code> orb that installs the project&#39;s dependencies (see <a href="https://circleci.com/developer/orbs/orb/circleci/node">install-packages</a>).</td>
+</tr>
+<tr>
+<td><code>run</code></td>
+<td>The <a href="https://circleci.com/docs/2.0/configuration-reference/#run">run</a> step invokes shell commands. In this example, <code>run</code> executes the <code>npm test</code> script.</td>
+</tr>
+<tr>
+<td><code>store_test_results</code></td>
+<td>Uploads test results to the specified directory (see <a href="https://circleci.com/docs/2.0/configuration-reference/#store_test_results">store<em>test</em>results</a>).</td>
+</tr>
+<tr>
+<td><code>workflows</code></td>
+<td>A <a href="https://circleci.com/docs/2.0/workflows/">workflow</a> that runs the <code>test</code> job.</td>
+</tr>
+</tbody></table></div>
+<p>After you paste the YAML, click <strong>Add Config</strong>.</p>
+
+<p><img src="../../../images/circle-ci/circleci-config.png" alt="Click Add Config to save the configuration" title=""></p>
+
+<p>This config is commited to the new <code>circleci-project-setup</code> branch. Merge this file into your working branch.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">git checkout master
+git pull
+git merge origin/circleci-project-setup
+</code></pre></div><h2><a class="anchor" id="step-4---add-the-test-script-to-packagejson"></a>Step 4 - Add the Test Script to package.json <a class="permalink" href="#step-4---add-the-test-script-to-packagejson">#</a></h2>
+<p>To specify how CircleCI should launch TestCafe, add the <code>test</code> script to the project&#39;s <code>package.json</code> file. Use the <code>testcafe</code> command in the script to run tests in Chrome in the headless mode. Add the <code>-r</code> flag to use the JUnit XML reporter.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="nl">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testcafe chrome:headless tests/**/* -r xunit:/tmp/test-results/testcafe/results.xml"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
-<p>Provide a command to run tests in the <code>scripts</code> section.</p>
+<p>After you install the dependencies and specify the <code>test</code> script, <code>package.json</code> should look as follows:</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
   </span><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testcafe chrome:headless tests/**/* -r xunit:/tmp/test-results/res.xml"</span><span class="w">
+    </span><span class="nl">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testcafe chrome:headless tests/**/* -r xunit:/tmp/test-results/testcafe/results.xml"</span><span class="w">
   </span><span class="p">},</span><span class="w">
   </span><span class="nl">"devDependencies"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="nl">"testcafe"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="p">,</span><span class="w">
-      </span><span class="nl">"testcafe-reporter-xunit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="w">
+    </span><span class="nl">"testcafe"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"testcafe-reporter-xunit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"*"</span><span class="w">
   </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
-<p>The <code>test</code> command runs tests from the <code>tests</code> directory in the headless Chrome. Reports are saved in the xUnit format at <code>/tmp/test-results/res.xml</code>.</p>
+<p>For more information on how to configure a test run with the <code>testcafe</code> command, see <a href="../../reference/command-line-interface.html">Command Line Interface</a>.</p>
+<h2><a class="anchor" id="step-5---view-test-results"></a>Step 5 - View Test Results <a class="permalink" href="#step-5---view-test-results">#</a></h2>
+<p>Commit the changes to trigger the build. CircleCI Dashboard shows the results in the pipeline.</p>
 
-<p>Finally, push all changes to GitHub.</p>
-<h2><a class="anchor" id="step-3---running-the-build"></a>Step 3 - Running the Build <a class="permalink" href="#step-3---running-the-build">#</a></h2>
-<p>Use the <strong>Start building</strong> button to trigger a build.</p>
+<p>Click the job name to show the details.</p>
 
-<p><img src="../../../images/circle-ci/start-building.png" alt="Starting Build" title=""></p>
-<h2><a class="anchor" id="step-4---viewing-test-results"></a>Step 4 - Viewing Test Results <a class="permalink" href="#step-4---viewing-test-results">#</a></h2>
-<p>Go to the <strong>Builds</strong> section and choose a build to view its results.</p>
+<p><img src="../../../images/circle-ci/view-pipeline.png" alt="View the pipeline in the Dashboard" title=""></p>
 
-<p><img src="../../../images/circle-ci/fail-report.png" alt="Test Results" title=""></p>
+<p>The <code>Steps</code> panel displays information about the completed job including the run duration, latest commit, and build log:</p>
 
+<p><img src="../../../images/circle-ci/view-steps.png" alt="Job details in the Dashboard" title=""></p>
+
+<p>The <code>Tests</code> panel displays test results. If errors occur, the report is shown.</p>
+
+<p><img src="../../../images/circle-ci/view-results.png" alt="View steps results in the Dashboard" title=""></p>
+<h2><a class="anchor" id="use-alternative-images"></a>Use Alternative Images <a class="permalink" href="#use-alternative-images">#</a></h2>
+<p>This guide uses the <code>cimg/node:lts-browsers</code>, an official CircleCI Docker image that includes the <code>lts</code> version of Node.js and browser dependencies. This image is in beta. If you encounter issues, use one of the images listed below.</p>
+<h3><a class="anchor" id="use-a-testcafe-image"></a>Use a TestCafe Image <a class="permalink" href="#use-a-testcafe-image">#</a></h3>
+<p>TestCafe is available as a part of a preconfigured Docker image. The image includes TestCafe, Chromium, and Firefox.</p>
+
+<p>To use this image, paste the following contents in your <code>config.yml</code> on <a href="#step-3---configure-the-build">Step 3</a>:</p>
+<div class="highlight"><pre><code class="language-yml" data-lang="yml"><span class="na">version</span><span class="pi">:</span> <span class="m">2.1</span>
+<span class="na">orbs</span><span class="pi">:</span>
+  <span class="na">node</span><span class="pi">:</span> <span class="s">circleci/node@4.1.0</span>
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">test</span><span class="pi">:</span>
+    <span class="na">docker</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">testcafe/testcafe:latest</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">checkout</span>
+      <span class="pi">-</span> <span class="s">node/install-packages</span>
+      <span class="pi">-</span> <span class="na">run</span><span class="pi">:</span>
+          <span class="na">command</span><span class="pi">:</span> <span class="s">npm run test</span>
+      <span class="pi">-</span> <span class="na">store_test_results</span><span class="pi">:</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s">/tmp/test-results</span>
+<span class="na">workflows</span><span class="pi">:</span>
+  <span class="na">e2e-test</span><span class="pi">:</span>
+    <span class="na">jobs</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">test</span>
+</code></pre></div>
+<p>This image does not have Google Chrome. To run tests in Chromium instead, paste the following code in your <code>package.json</code> on <a href="#step-4---add-the-test-script-to-packagejson">Step 4</a>:</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="w">  </span><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testcafe chromium:headless, firefox:headless tests/**/* -r xunit:/tmp/test-results/testcafe/results.xml"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>For more information about TestCafe Docker image, read <a href="../advanced-guides/use-testcafe-docker-image.html">Use TestCafe Docker Image</a>.</p>
+<h3><a class="anchor" id="use-a-legacy-circleci-image"></a>Use a Legacy CircleCI Image <a class="permalink" href="#use-a-legacy-circleci-image">#</a></h3>
+<p>The following example uses <code>circleci/node:lts-browsers</code>, a legacy image with <code>lts</code> version of Node.js, Google Chrome, and Firefox:</p>
+
+<p>A full list of legacy CircleCI images are available at <a href="https://circleci.com/docs/2.0/circleci-images/#legacy-language-images">Pre-Built CircleCI Docker Images</a>.</p>
+
+<p>To use the legacy image, paste the following <code>config.yml</code> on <a href="#step-3---configure-the-build">Step 3</a>:</p>
+<div class="highlight"><pre><code class="language-yml" data-lang="yml"><span class="na">version</span><span class="pi">:</span> <span class="m">2.1</span>
+<span class="na">orbs</span><span class="pi">:</span>
+  <span class="na">node</span><span class="pi">:</span> <span class="s">circleci/node@4.1.0</span>
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">test</span><span class="pi">:</span>
+    <span class="na">docker</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">circleci/node:lts-browsers</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">checkout</span>
+      <span class="pi">-</span> <span class="s">node/install-packages</span>
+      <span class="pi">-</span> <span class="na">run</span><span class="pi">:</span>
+          <span class="na">command</span><span class="pi">:</span> <span class="s">npm run test</span>
+      <span class="pi">-</span> <span class="na">store_test_results</span><span class="pi">:</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s">/tmp/test-results</span>
+<span class="na">workflows</span><span class="pi">:</span>
+  <span class="na">e2e-test</span><span class="pi">:</span>
+    <span class="na">jobs</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">test</span>
+</code></pre></div>
+<p>Since this image has Chrome and Firefox installed, add the following command to the <code>package.json</code> file on <a href="#step-4---add-the-test-script-to-packagejson">Step 4</a> to run tests in these browsers:</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="nl">"scripts"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="nl">"test"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testcafe chrome:headless, firefox:headless tests/**/* -r xunit:/tmp/test-results/testcafe/results.xml"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
 
 		</div>
 	</article>
