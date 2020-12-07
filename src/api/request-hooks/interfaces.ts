@@ -1,4 +1,6 @@
-export type RequestFilterRuleInit = unknown;
+import { RequestFilterRuleOptions } from 'testcafe-hammerhead';
+
+export type RequestFilterRuleInit = RequestFilterRuleOptions;
 
 export interface RequestHookLogOptions {
     logRequestHeaders: boolean;
