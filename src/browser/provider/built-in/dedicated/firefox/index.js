@@ -33,8 +33,9 @@ export default {
     async openBrowser (browserId, pageUrl, configString, disableMultipleWindows) {
         const runtimeInfo = await getRuntimeInfo(configString);
 
-        runtimeInfo.browserName = this._getBrowserName();
-        runtimeInfo.browserId   = browserId;
+        runtimeInfo.browserName       = this._getBrowserName();
+        runtimeInfo.browserId         = browserId;
+        runtimeInfo.windowDescriptors = {};
 
         await startLocalFirefox(pageUrl, runtimeInfo);
 

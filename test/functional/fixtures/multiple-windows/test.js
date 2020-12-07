@@ -291,11 +291,11 @@ describe('Multiple windows', () => {
 
     describe('Resize', () => {
         it('Resize multiple windows', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Resize multiple windows', { only: 'chrome' });
+            return runTests('testcafe-fixtures/api/api-test.js', 'Resize multiple windows', { only: ['chrome', 'firefox'] });
         });
 
         it('Maximize multiple windows', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Maximize multiple windows', { only: 'chrome' });
+            return runTests('testcafe-fixtures/api/api-test.js', 'Maximize multiple windows', { only: ['chrome', 'firefox'] });
         });
     });
 
