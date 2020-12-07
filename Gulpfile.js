@@ -581,7 +581,7 @@ gulp.task('clean-website', () => {
 });
 
 gulp.step('fetch-assets-repo', cb => {
-    git.clone('https://github.com/DevExpress/testcafe-gh-page-assets.git', { args: 'site' }, cb);
+    git.clone('https://github.com/DevExpress/testcafe-gh-page-assets.git', { args: 'site' }, cb); 
 });
 
 gulp.step('put-in-articles', () => {
@@ -620,6 +620,12 @@ gulp.step('put-in-courses', () => {
         .pipe(gulp.dest('site/src/_data'));
 });
 
+gulp.step('put-in-books', () => {
+    return gulp
+        .src('docs/books/**/*')
+        .pipe(gulp.dest('site/src/_data'));
+});
+
 gulp.step('put-in-tweets', () => {
     return gulp
         .src('docs/tweets/**/*')
@@ -632,7 +638,7 @@ gulp.step('put-in-templates', () => {
         .pipe(gulp.dest('site/src/_includes'));
 });
 
-gulp.step('put-in-website-content', gulp.parallel('put-in-articles', 'put-in-navigation', 'put-in-posts', 'put-in-publications', 'put-in-tweets', 'put-in-templates', 'put-in-community-content', 'put-in-courses'));
+gulp.step('put-in-website-content', gulp.parallel('put-in-articles', 'put-in-navigation', 'put-in-posts', 'put-in-publications', 'put-in-tweets', 'put-in-templates', 'put-in-community-content', 'put-in-courses', 'put-in-books'));
 
 gulp.step('prepare-website-content', gulp.series('clean-website', 'fetch-assets-repo', 'put-in-website-content'));
 
