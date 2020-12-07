@@ -670,7 +670,7 @@ See Martin Fowler's [Eradicating Non-Determinism in Tests](http://martinfowler.c
 
 ### Disable the 'Close Multiple Tabs' Popup in IE
 
-Internet Explorer displays a native dialog when you try to close a browser window with more than one tab opened. This dialog blocks the page and halts tests. Disable this popup before you run tests.
+Internet Explorer displays a dialog when you try to close a browser window with more than one tab opened. This dialog blocks the page and pauses tests. Disable this popup before you run tests.
 
 To disable the popup, manually open multiple tabs in one window of Internet Explorer and close the browser. In the dialog window that appears, check `Always close all tabs` and click `Close all tabs`. IE saves this setting and the popup does not appear again.
 
