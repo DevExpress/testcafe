@@ -128,7 +128,7 @@
     "strip-bom": "^2.0.0",
     "testcafe-browser-tools": "2.0.13",
     "testcafe-hammerhead": "17.1.25",
-    "testcafe-legacy-api": "4.0.0",
+    "testcafe-legacy-api": "https://github.com/DevExpress/testcafe-legacy-api/files/5656451/testcafe-legacy-api-4.2.0.tar.gz",
     "testcafe-reporter-json": "^2.1.0",
     "testcafe-reporter-list": "^2.1.0",
     "testcafe-reporter-minimal": "^2.1.0",
