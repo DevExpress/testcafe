@@ -379,15 +379,21 @@ test('Maximize multiple windows', async t => {
     const parentWidth  = await getWindowWidth();
     const parentHeight = await getWindowHeight();
 
+    console.log(`${t.browser.alias}: parent: ${parentWidth} ${parentHeight}`);
+
     await t.openWindow(child1Url);
 
     const childWidth  = await getWindowWidth();
     const childHeight = await getWindowHeight();
 
+    console.log(`${t.browser.alias}: child: ${parentWidth} ${parentHeight}`);
+
     await t.maximizeWindow();
 
     const maxChildWidth  = await getWindowWidth();
     const maxChildHeight = await getWindowHeight();
+
+    console.log(`${t.browser.alias}: child max: ${parentWidth} ${parentHeight}`);
 
     await t.expect(maxChildWidth).gt(childWidth + e);
     await t.expect(maxChildHeight).gt(childHeight + e);
@@ -398,6 +404,8 @@ test('Maximize multiple windows', async t => {
 
     const maxParentWidth  = await getWindowWidth();
     const maxParentHeight = await getWindowHeight();
+
+    console.log(`${t.browser.alias}: parent max: ${parentWidth} ${parentHeight}`);
 
     await t.expect(maxParentWidth).gt(parentWidth + e);
     await t.expect(maxParentHeight).gt(parentHeight + e);
