@@ -26,7 +26,7 @@ Like all Node.js scripts, TestCafe tests can leverage the capabilities of third-
 
 ## No compromises
 
-The advanced features of the TestCafe API can help you test complex, security-sensitive web applications.
+The advanced features of TestCafe help you test complex, security-sensitive web applications.
 
 ### Mock Requests
 
@@ -93,19 +93,19 @@ To simulate user activity, the automation engine behind TestCafe takes over brow
 
 ### Client-Server Architecture
 
-The server-client architecture of TestCafe allows it to execute system-level and in-browser code.
+TestCafe's hybrid client-server architecture lets it execute both system-level and in-browser code.
 
-* TestCafe uses [high-level system APIs](https://github.com/DevExpress/testcafe-browser-tools) to launch and manage browsers. This is necessary to achieve full control over test execution.
+* TestCafe uses [high-level system APIs](https://github.com/DevExpress/testcafe-browser-tools) to launch and manage browsers. This is necessary to control the test execution process.
 * TestCafe tests are Node.js scripts. They can launch services and applications, read and write system files, make use of your favorite libraries.
 * TestCafe uses client-side automation scripts to execute in-browser actions. This is how our testing library handles asynchronous events, simulates user activity, and executes user-defined JavaScript.
 
-Our experience shows that this hybrid approach gives users the best of both worlds. Early versions of TestCafe ran entirely in the browser. This caused a number of issues. The tests’ capabilities were limited, the application often interfered with page execution, and the sub-optimal logic separation caused browser crashes. Since then, we decoupled the engine, exposed the underlying Node.js API, and implemented a test runner that executes test scripts server-side.
+Early versions of TestCafe ran entirely in the browser. Moving to a hybrid architecture allowed us to improve the tests' stability and expand the framework's range of testing capabilities. 
 
 ### Page Proxying: Bridging the Client-Server Gap
 
 You may notice that when you run TestCafe, the URL in the browser’s address bar does not match that of your website. This happens because TestCafe runs an under-the-hood reverse proxy.
 
-The [testcafe-hammerhead](https://github.com/DevExpress/testcafe-hammerhead) proxy intercepts browser requests and adds automation scripts to the requested resources. It then modifies the URLs contained within the resource, so that they point to the proxy. This way, neither the client-side code, nor the resources it communicates with, can tell that the page has been modified. To conceal automation scripts from the rest of the page code, TestCafe mocks the browser API.
+The [testcafe-hammerhead](https://github.com/DevExpress/testcafe-hammerhead) proxy intercepts browser requests and injects automation scripts into the requested pages. When the proxy receives data, it changes all the URLs on the resource so that they point to the proxy. This means that neither the client-side code nor other resources in use can tell that the page has been modified. To conceal automation scripts from the rest of the page code, TestCafe also intercepts some of the requests to the browser API.
 
 The proxying mechanism ensures that the page appears to be hosted at the original URL even to the test code.
 
@@ -117,7 +117,7 @@ Tests that run in parallel operate in independent sandboxed environments. This h
 
 ### Client-Side Scripts
 
-To perform common testing tasks, TestCafe translates server-side calls to its API into client-side code. However, some scenarios require the execution of client-side code that TestCafe cannot automatically generate. That’s why the framework offers multiple ways to execute user-defined JavaScript.
+TestCafe translates server-side test code into client-side JavaScript, and injects it into the browsers that it controls. This process enables the framework to perform common in-browser actions. Some testing scenarios, however, require the execution of custom client-side code. There are three ways to do it with TestCafe:
 
 [Client Scripts](/../guides/advanced-guides/inject-client-scripts.md) inject custom JavaScript files, such as temporary extra dependencies, into the page.
 [Client Functions](../guides/basic-guides/obtain-client-side-info.md) evaluate user-defined JavaScript expressions and pass their return value to the server side. They are useful when you want to examine the page or access its URL.
