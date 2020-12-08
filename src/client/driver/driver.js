@@ -61,7 +61,7 @@ import {
 } from '../../shared/errors';
 
 
-import BrowserConsoleMessages from '../../test-run/browser-console-messages';
+import BrowserConsoleMessages from './client-browser-console-messages';
 import NativeDialogTracker from './native-dialog-tracker';
 
 import {
