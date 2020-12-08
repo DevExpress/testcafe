@@ -348,9 +348,9 @@ fixture `Resize multiple windows`
     });
 
 test('Resize multiple windows', async t => {
-    await t.resizeWindow(600, 600);
-    await t.expect(await getWindowWidth()).eql(600);
-    await t.expect(await getWindowHeight()).eql(600);
+    await t.resizeWindow(900, 900);
+    await t.expect(await getWindowWidth()).eql(900);
+    await t.expect(await getWindowHeight()).eql(900);
 
     await t.openWindow(child1Url);
 
@@ -360,8 +360,8 @@ test('Resize multiple windows', async t => {
 
     await t.switchToParentWindow();
 
-    await t.expect(await getWindowWidth()).eql(600);
-    await t.expect(await getWindowHeight()).eql(600);
+    await t.expect(await getWindowWidth()).eql(900);
+    await t.expect(await getWindowHeight()).eql(900);
 
     await t.resizeWindow(500, 500);
 

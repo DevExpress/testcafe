@@ -57,7 +57,7 @@ describe('Multiple windows', () => {
     it('Unhandled JavaScript errors', () => {
         return runTests('testcafe-fixtures/handle-errors/handle-js-errors.js', null, { shouldFail: true })
             .catch(errs => {
-                expect(errs[0]).to.contain('A JavaScript error occurred on "http://localhost:3000/fixtures/multiple-windows/pages/handle-errors/page-with-js-error.html"');
+                assertionHelper.errorInEachBrowserContains(errs, 'A JavaScript error occurred on "http://localhost:3000/fixtures/multiple-windows/pages/handle-errors/page-with-js-error.html"', 0);
             });
     });
 
@@ -94,7 +94,7 @@ describe('Multiple windows', () => {
     });
 
     it('Should correctly synchronize a cookie from a new same-domain window', () => {
-        return runTests('testcafe-fixtures/cookie-synchronization/same-domain.js');
+        return runTests('testcafe-fixtures/cookie-synchronization/same-domain.js', null, { only: 'chrome' });
     });
 
     it('Should continue debugging when a child window closes', () => {
@@ -122,49 +122,49 @@ describe('Multiple windows', () => {
 
     describe('API', () => {
         it('Open child window', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Open child window', { only: 'chrome' });
+            return runTests('testcafe-fixtures/api/api-test.js', 'Open child window');
         });
 
         it('Open slow child window ', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Open slow child window', { only: 'chrome' });
+            return runTests('testcafe-fixtures/api/api-test.js', 'Open slow child window');
         });
 
         it('Close current window', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Close current window', { only: 'chrome' });
+            return runTests('testcafe-fixtures/api/api-test.js', 'Close current window');
         });
 
         it('Get current window', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Get current window', { only: 'chrome' });
+            return runTests('testcafe-fixtures/api/api-test.js', 'Get current window');
         });
 
         it('Switch to parent window', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to parent window', { only: 'chrome', speed: 0.01 });
+            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to parent window', { speed: 0.01 });
         });
 
         it('Switch to unexisting parent window', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to unexisting parent window', { only: 'chrome', shouldFail: true })
+            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to unexisting parent window', { shouldFail: true })
                 .catch(errs => {
                     expect(errs[0]).to.contain('Cannot find the parent window. Make sure that the tested window was opened from another window.');
                 });
         });
 
         it('Switch to unexisting window', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to unexisting window', { only: 'chrome', shouldFail: true })
+            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to unexisting window', { shouldFail: true })
                 .catch(errs => {
                     expect(errs[0]).to.contain('Cannot find the window specified in the action parameters.');
                 });
         });
 
         it('Switch to child window', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to child window', { only: 'chrome' });
+            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to child window');
         });
 
         it('Switch to window by url', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to window by url', { only: 'chrome' });
+            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to window by url');
         });
 
         it('Switch to window by title', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to window by title', { only: 'chrome' });
+            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to window by title');
         });
 
         it('Multiple windows are found warning', () => {
@@ -176,83 +176,83 @@ describe('Multiple windows', () => {
         });
 
         it('Switch to window by predicate with error', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to window by predicate with error', { only: 'chrome', shouldFail: true })
+            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to window by predicate with error', { shouldFail: true })
                 .catch(errs => {
                     expect(errs[0]).to.contain('An error occurred inside the "switchToWindow" argument function.  Error details: Cannot read property \'field\' of undefined');
                 });
         });
 
         it('Switch to previous window', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to previous window', { only: 'chrome' });
+            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to previous window');
         });
 
         it('Switch to previous closed window', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to previous closed window', { only: 'chrome', shouldFail: true })
+            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to previous closed window', { shouldFail: true })
                 .catch(errs => {
                     expect(errs[0]).to.contain('Cannot find the previous window. Make sure that the previous window is opened.');
                 });
         });
 
         it('Switch to other child', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to other child', { only: 'chrome' });
+            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to other child');
         });
 
         it('Switch to deep child', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to deep child', { only: 'chrome' });
+            return runTests('testcafe-fixtures/api/api-test.js', 'Switch to deep child');
         });
 
         it('Close specific window from parent', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Close specific window from parent', { only: 'chrome' });
+            return runTests('testcafe-fixtures/api/api-test.js', 'Close specific window from parent');
         });
 
         it('Close window and check master did not changed', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Close window and check master did not changed', { only: 'chrome' });
+            return runTests('testcafe-fixtures/api/api-test.js', 'Close window and check master did not changed');
         });
 
         it('Close specific window from child', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Close specific window from child', { only: 'chrome', shouldFail: true })
+            return runTests('testcafe-fixtures/api/api-test.js', 'Close specific window from child', { shouldFail: true })
                 .catch(errs => {
                     expect(errs[0]).to.contain('Cannot find the window specified in the action parameters.');
                 });
         });
 
         it('Close specific window and switch to it', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Close specific window and switch to it', { only: 'chrome', shouldFail: true })
+            return runTests('testcafe-fixtures/api/api-test.js', 'Close specific window and switch to it', { shouldFail: true })
                 .catch(errs => {
                     expect(errs[0]).to.contain('Cannot find the window specified in the action parameters.');
                 });
         });
 
         it('Close parent window and catch error', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Close parent window and catch error', { only: 'chrome', shouldFail: true })
+            return runTests('testcafe-fixtures/api/api-test.js', 'Close parent window and catch error', { shouldFail: true })
                 .catch(errs => {
                     expect(errs[0]).to.contain('Cannot close a window that has an open child window.');
                 });
         });
 
         it('Close unexisting window', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Close unexisting window', { only: 'chrome', shouldFail: true })
+            return runTests('testcafe-fixtures/api/api-test.js', 'Close unexisting window', { shouldFail: true })
                 .catch(errs => {
                     expect(errs[0]).to.contain('Cannot find the window specified in the action parameters');
                 });
         });
 
         it('Close unexisting child window', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Close unexisting child window', { only: 'chrome', shouldFail: true })
+            return runTests('testcafe-fixtures/api/api-test.js', 'Close unexisting child window', { shouldFail: true })
                 .catch(errs => {
                     expect(errs[0]).to.contain('Cannot find the window specified in the action parameters.');
                 });
         });
 
         it('Close closed window', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Close closed window', { only: 'chrome', shouldFail: true })
+            return runTests('testcafe-fixtures/api/api-test.js', 'Close closed window', { shouldFail: true })
                 .catch(errs => {
                     expect(errs[0]).to.contain('Cannot find the window specified in the action parameters.');
                 });
         });
 
         it('Close window without parent', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Close window without parent', { only: 'chrome', shouldFail: true })
+            return runTests('testcafe-fixtures/api/api-test.js', 'Close window without parent', { shouldFail: true })
                 .catch(errs => {
                     expect(errs[0]).to.contain(
                         'Cannot close the window because it does not have a parent. The parent window was closed ' +
@@ -262,46 +262,46 @@ describe('Multiple windows', () => {
         });
 
         it('Open window with `disableMultipleWindows` option', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Open window with `disableMultipleWindows` option', { only: 'chrome', disableMultipleWindows: true, shouldFail: true })
+            return runTests('testcafe-fixtures/api/api-test.js', 'Open window with `disableMultipleWindows` option', { disableMultipleWindows: true, shouldFail: true })
                 .catch(errs => {
                     expect(errs[0]).to.contain('Multi window mode is disabled. Remove the "--disable-multiple-windows" CLI flag or set the "disableMultipleWindows" option to "false" in the API to use the "openWindow" method.');
                 });
         });
 
         it('Refresh parent and switch to child', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Refresh parent and switch to child', { only: 'chrome' });
+            return runTests('testcafe-fixtures/api/api-test.js', 'Refresh parent and switch to child');
         });
 
         it('Refresh parent and remove child', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Refresh parent and remove child', { only: 'chrome' });
+            return runTests('testcafe-fixtures/api/api-test.js', 'Refresh parent and remove child');
         });
 
         it('Refresh parent with multiple children', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Refresh parent with multiple children', { only: 'chrome' });
+            return runTests('testcafe-fixtures/api/api-test.js', 'Refresh parent with multiple children');
         });
 
         it('Refresh child and close', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Refresh child and close', { only: 'chrome' });
+            return runTests('testcafe-fixtures/api/api-test.js', 'Refresh child and close');
         });
 
         it('Refresh child and switch to parent', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Refresh child and switch to parent', { only: 'chrome' });
+            return runTests('testcafe-fixtures/api/api-test.js', 'Refresh child and switch to parent');
         });
     });
 
     describe('Resize', () => {
         it('Resize multiple windows', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Resize multiple windows', { only: ['chrome', 'firefox'] });
+            return runTests('testcafe-fixtures/api/api-test.js', 'Resize multiple windows');
         });
 
         it('Maximize multiple windows', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Maximize multiple windows', { only: ['chrome', 'firefox'] });
+            return runTests('testcafe-fixtures/api/api-test.js', 'Maximize multiple windows');
         });
     });
 
     describe('iFrames', () => {
         it('Should switch to child window if it is opened in iFrame', () => {
-            return runTests('testcafe-fixtures/iframe.js', 'Open child window if iframe', { only: 'chrome' });
+            return runTests('testcafe-fixtures/iframe.js', 'Open child window if iframe');
         });
     });
 
