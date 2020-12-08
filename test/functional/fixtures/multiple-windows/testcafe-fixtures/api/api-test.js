@@ -374,6 +374,8 @@ test('Maximize multiple windows', async t => {
     // that the width/height value increased at least on 10px
     const e = 10;
 
+    await t.resizeWindow(900, 900);
+
     const parentWidth  = await getWindowWidth();
     const parentHeight = await getWindowHeight();
 
