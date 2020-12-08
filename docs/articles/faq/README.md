@@ -292,7 +292,6 @@ If your computer is connected to multiple networks (for instance, uses a VPN con
 <browsername> can't open the page because <browsername> can't establish a secure connection to the server.
 ```
 
-
 To explicitly state that the proxy should be hosted on the local machine, launch TestCafe with the `--hostname localhost` CLI option:
 
 ```sh
