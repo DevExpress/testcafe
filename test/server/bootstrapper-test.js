@@ -154,9 +154,10 @@ describe('Bootstrapper', () => {
             bootstrapper.TESTS_COMPILATION_UPPERBOUND = 0;
 
             const provider = {
-                openBrowser:    noop,
-                isLocalBrowser: noop,
-                closeBrowser:   noop
+                openBrowser:       noop,
+                isLocalBrowser:    noop,
+                isHeadlessBrowser: () => true,
+                closeBrowser:      noop
             };
 
             bootstrapper.browsers = [ new BrowserConnection(browserConnectionGateway, { provider }) ];
