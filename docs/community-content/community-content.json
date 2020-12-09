@@ -1,6 +1,70 @@
 [
     {
         "type": "article",
+        "source": "platformos.com",
+        "sourceHomePage": "https://www.platformos.com/",
+        "date": "2020-11-26",
+        "title": "How to Test Slack Notifications",
+        "url": "https://www.platformos.com/blog/post/how-to-test-slack-notifications",
+        "author": "Paweł Kowalski"
+    },
+    {
+        "type": "article",
+        "source": "Dev Tester",
+        "sourceHomePage": "https://dev-tester.com",
+        "date": "2020-08-18",
+        "title": "How to Send Your TestCafe Test Results to TestRail",
+        "url": "https://dev-tester.com/how-to-send-your-testcafe-test-results-to-testrail/",
+        "author": "Dennis Martinez",
+        "profileUrl": "https://twitter.com/dennmart",
+        "excerpt": "You can automatically send the results of your TestCafe test execution to the TestRail test case management tool. Read this article to learn how."
+    },
+    {
+        "type": "article",
+        "source": "markus.oberlehner.net",
+        "sourceHomePage": "https://markus.oberlehner.net/",
+        "date": "2020-08-16",
+        "title": "Cross-Browser Acceptance Tests with LambdaTest and TestCafe",
+        "url": "https://markus.oberlehner.net/blog/cross-browser-acceptance-tests-with-lambdatest-and-testcafe/",
+        "author": "Markus Oberlehner",
+        "profileUrl": "https://twitter.com/maoberlehner",
+        "excerpt": "In this article, we will take a closer look at how we can run automated cross-browser acceptance tests in real browsers on LambdaTest using TestCafe as our test framework. LambdaTest is a modern and fast browser testing service with powerful features when it comes to automated cross-browser testing. It provides advanced features like Selenium Grid to automate Selenium testing in the cloud."
+    },
+    {
+        "type": "article",
+        "source": "dev.to",
+        "sourceHomePage": "https://dev.to/",
+        "date": "2020-08-03",
+        "title": "Easy e2e Testing with TestCafe",
+        "url": "https://dev.to/prasadmudedla/easy-e2e-testing-with-testcafe-4k25",
+        "author": "Prasad Mudedla",
+        "profileUrl": "https://github.com/prasadmudedla",
+        "excerpt": "TestCafe is a new, open-source, Node.js based e2e testing framework. It's an excellent alternative to Selenium-based tools since it injects itself into the website as JS scripts, so it's more stable and faster. This allows TestCafe to run on any browser, including mobile devices and cloud services as well. It doesn't need Selenium to start your browser window, execute the tests in it and provide useful test report after the execution."
+    },
+    {
+        "type": "article",
+        "source": "Dev Tester",
+        "sourceHomePage": "https://dev-tester.com",
+        "date": "2020-07-21",
+        "title": "Getting Drone CI Up and Running With TestCafe Quickly",
+        "url": "https://dev-tester.com/getting-drone-ci-up-and-running-with-testcafe-quickly/",
+        "author": "Dennis Martinez",
+        "profileUrl": "https://twitter.com/dennmart",
+        "excerpt": "Learn how easy you can set up Drone CI, a self-hosted continuous integration service, and how to use it to run your TestCafe test suite."
+    },
+    {
+        "type": "article",
+        "source": "Dev Tester",
+        "sourceHomePage": "https://dev-tester.com",
+        "date": "2020-06-30",
+        "title": "End-to-End Testing with TestCafe Book Excerpt: Intercepting HTTP Requests",
+        "url": "https://dev-tester.com/end-to-end-testing-with-testcafe-book-excerpt-intercepting-http-requests/",
+        "author": "Dennis Martinez",
+        "profileUrl": "https://twitter.com/dennmart",
+        "excerpt": "Intercepting HTTP requests lets you take control over what happens during asynchronous calls to other servers. Learn how this is done in TestCafe."
+    },
+    {
+        "type": "article",
         "source": "Dev Tester",
         "sourceHomePage": "https://dev-tester.com",
         "date": "2020-06-23",

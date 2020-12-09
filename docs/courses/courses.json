@@ -1,5 +1,13 @@
 [
     {
+        "title": "E2E Web Testing with TestCafe",
+        "source": "Test Automation University",
+        "sourceHomePage": "https://testautomationu.applitools.com/",
+        "date": "2020-10-16",
+        "url": "https://testautomationu.applitools.com/testcafe-tutorial",
+        "author": "Moataz Nabil"
+    },
+    {
         "title": "Automated Software Testing with TestCafe",
         "source": "Udemy",
         "sourceHomePage": "https://www.udemy.com/",
