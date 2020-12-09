@@ -13,6 +13,8 @@ const TRAILING_SEMICOLON_RE          = /;\s*$/;
 const REGENERATOR_FOOTPRINTS_RE      = /(_index\d+\.default|_regenerator\d+\.default|regeneratorRuntime)\.wrap\(function _callee\$\(_context\)/;
 const ASYNC_TO_GENERATOR_OUTPUT_CODE = formatBabelProducedCode(asyncToGenerator(noop).toString());
 
+const CLIENT_FUNCTION_BODY_WRAPPER = code => `const func = (${code});`;
+const CLIENT_FUNCTION_WRAPPER      = ({ code, dependencies }) => `(function(){${dependencies} ${code} return func;})();`;
 
 function getBabelOptions () {
     const { presetEnvForClientFunction, transformForOfAsArray } = loadBabelLibs();
@@ -72,6 +74,9 @@ export default function compileClientFunction (fnCode, dependencies, instantiati
 
     fnCode = makeFnCodeSuitableForParsing(fnCode);
 
+
+    fnCode = CLIENT_FUNCTION_BODY_WRAPPER(fnCode);
+
     // NOTE: we need to recompile ES6 code for the browser if we are on newer versions of Node.
     fnCode = downgradeES(fnCode);
     fnCode = hammerhead.processScript(fnCode, false);
@@ -85,5 +90,5 @@ export default function compileClientFunction (fnCode, dependencies, instantiati
 
     const dependenciesDefinition = dependencies ? getDependenciesDefinition(dependencies) : '';
 
-    return `(function(){${dependenciesDefinition} return ${fnCode}})();`;
+    return CLIENT_FUNCTION_WRAPPER({ code: fnCode, dependencies: dependenciesDefinition });
 }

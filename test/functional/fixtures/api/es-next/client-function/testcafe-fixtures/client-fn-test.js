@@ -229,3 +229,17 @@ test('DOM node return value', async () => {
 
     await getSomeNodes();
 });
+
+test('For-of loops', async t => {
+    const getTagNames = ClientFunction(() => {
+        const elements = document.querySelectorAll('body');
+        const result   = [];
+
+        for (const element of elements)
+            result.push(element.tagName);
+
+        return result;
+    });
+
+    await t.expect(getTagNames()).eql(['BODY']);
+});
