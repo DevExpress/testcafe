@@ -550,7 +550,7 @@ export default class TestRun extends AsyncEventEmitter {
         const currentTaskRejectedByError = pageError && this._handlePageErrorStatus(pageError);
 
         if (this.disconnected)
-            return new Promise((_, reject) => reject());
+            return Promise.reject(new Error('Disconnected before driver request could be handled'));
 
         this.consoleMessages.concat(driverStatus.consoleMessages);
 
