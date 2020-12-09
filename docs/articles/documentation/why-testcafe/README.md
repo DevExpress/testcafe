@@ -58,15 +58,15 @@ Save and activate user roles to easily switch between different user accounts.
 
 Keep your code clean with hooks — routines that are repeated before and after each test.
 
-## Interactive when you need it
+## Helps you help yourself
 
 ### TestCafe Studio
 
-Use a GUI test recorder that makes the power of TestCafe accessible to people with zero programming experience.
+The GUI and the test recorder built into TestCafe Studio make our product accessible to people with zero programming experience.
 
-### Live mode
+### TestCafe Live
 
-Instantly see how the changes you introduce impact the test.
+Enable the built-in [Live Mode](https://devexpress.github.io/testcafe/documentation/guides/basic-guides/run-tests.html#live-mode) to reload your test every time you make changes to the test file.
 
 ### Debugging assistance
 
