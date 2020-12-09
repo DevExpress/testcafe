@@ -23,3 +23,7 @@ export interface ReportedTestStructureItem {
     fixture: ReportedFixtureItem;
 }
 
+export interface BrowserSetOptions {
+    concurrency: number;
+    browserInitTimeout?: number;
+}

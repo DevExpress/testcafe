@@ -14,7 +14,12 @@ import {
     Size
 } from './interfaces';
 import debug from 'debug';
-import { elapsed, elapsedInSeconds } from '../../../../../utils/elapsed';
+import prettyTime from 'pretty-hrtime';
+import {
+    PAGE_ENABLE_TIME_UPPERBOUND,
+    SET_DEVICE_METRICS_OVERRIDE_TIME_UPPERBOUND,
+    SET_VISIBLE_SIZE_TIME_UPPERBOUND
+} from './elapsed-upperbounds';
 
 const DEBUG_SCOPE = (id: string): string => `testcafe:browser:provider:built-in:chrome:browser-client:${id}`;
 const DOWNLOADS_DIR = path.join(os.homedir(), 'Downloads');
@@ -64,14 +69,17 @@ export class BrowserClient {
 
         this._clients[this._clientKey] = client;
 
-        const timePretty = elapsed();
-        const timeInSec  = elapsedInSeconds();
+        const timeElapsedStart = process.hrtime();
 
         await Page.enable();
 
-        this.debugLogger(`Page.enable took ${timePretty()}`);
+        const timeElapsedFinish = process.hrtime(timeElapsedStart);
 
-        if (timeInSec() > 60)
+        this.debugLogger(`Page.enable took ${prettyTime(timeElapsedFinish)}`);
+
+        const [ elapsedSeconds ] = timeElapsedFinish;
+
+        if (elapsedSeconds > PAGE_ENABLE_TIME_UPPERBOUND)
             this._runtimeInfo.providerMethods.reportWarning(WARNING_MESSAGE.browserProviderDropOfPerformance, this._runtimeInfo.browserName);
 
         await Network.enable({});
@@ -89,8 +97,7 @@ export class BrowserClient {
     }
 
     private async _setDeviceMetricsOverride (client: remoteChrome.ProtocolApi, width: number, height: number, deviceScaleFactor: number, mobile: boolean): Promise<void> {
-        const timePretty = elapsed();
-        const timeInSec  = elapsedInSeconds();
+        const timeElapsedStart = process.hrtime();
 
         await client.Emulation.setDeviceMetricsOverride({
             width,
@@ -101,9 +108,13 @@ export class BrowserClient {
             fitWindow: false
         });
 
-        this.debugLogger(`Emulation.setDeviceMetricsOverride took ${timePretty()}`);
+        const timeElapsedFinish = process.hrtime(timeElapsedStart);
 
-        if (timeInSec() > 30)
+        this.debugLogger(`Emulation.setDeviceMetricsOverride took ${prettyTime(timeElapsedFinish)}`);
+
+        const [ elapsedSeconds ] = timeElapsedFinish;
+
+        if (elapsedSeconds > SET_DEVICE_METRICS_OVERRIDE_TIME_UPPERBOUND)
             this._runtimeInfo.providerMethods.reportWarning(WARNING_MESSAGE.browserProviderDropOfPerformance, this._runtimeInfo.browserName);
     }
 
@@ -181,14 +192,17 @@ export class BrowserClient {
         if (client && config.emulation) {
             await this._setDeviceMetricsOverride(client, viewportSize.width, viewportSize.height, emulatedDevicePixelRatio, config.mobile);
 
-            const timePretty = elapsed();
-            const timeInSec  = elapsedInSeconds();
+            const timeElapsedStart = process.hrtime();
 
             await client.Emulation.setVisibleSize({ width: viewportSize.width, height: viewportSize.height });
 
-            this.debugLogger(`Emulation.setVisibleSize took ${timePretty()}`);
+            const timeElapsedFinish = process.hrtime(timeElapsedStart);
 
-            if (timeInSec() > 30)
+            this.debugLogger(`Emulation.setVisibleSize took ${prettyTime(timeElapsedFinish)}`);
+
+            const [ elapsedSeconds ] = timeElapsedFinish;
+
+            if (elapsedSeconds > SET_VISIBLE_SIZE_TIME_UPPERBOUND)
                 this._runtimeInfo.providerMethods.reportWarning(WARNING_MESSAGE.browserProviderDropOfPerformance, this._runtimeInfo.browserName);
         }
     }

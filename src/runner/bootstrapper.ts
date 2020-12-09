@@ -10,6 +10,7 @@ import {
 import makeDir from 'make-dir';
 import OS from 'os-family';
 import debug from 'debug';
+import prettyTime from 'pretty-hrtime';
 import { errors, findWindow } from 'testcafe-browser-tools';
 import authenticationHelper from '../cli/authentication-helper';
 import Compiler from '../compiler';
@@ -36,7 +37,7 @@ import { Metadata } from '../api/structure/interfaces';
 import Test from '../api/structure/test';
 import detectDisplay from '../utils/detect-display';
 import { getPluginFactory, processReporterName } from '../utils/reporter';
-import { elapsed } from '../utils/elapsed';
+import { BrowserSetOptions } from './interfaces';
 
 const DEBUG_SCOPE = 'testcafe:bootstrapper';
 
@@ -99,6 +100,7 @@ export default class Bootstrapper {
     public clientScripts: ClientScriptInit[];
     public disableMultipleWindows: boolean;
     public compilerOptions?: CompilerOptions;
+    public browserInitTimeout?: number;
 
     private readonly compilerService?: CompilerService;
     private readonly debugLogger: debug.Debugger;
@@ -208,6 +210,13 @@ export default class Bootstrapper {
             .map(browser => times(this.concurrency, () => new BrowserConnection(this.browserConnectionGateway, browser, false, this.disableMultipleWindows)));
     }
 
+    private _getBrowserSetOptions (): BrowserSetOptions {
+        return {
+            concurrency:        this.concurrency,
+            browserInitTimeout: this.browserInitTimeout
+        };
+    }
+
     private async _getBrowserConnections (browserInfo: BrowserInfoSource[]): Promise<BrowserSet> {
         const { automated, remotes } = Bootstrapper._splitBrowserInfo(browserInfo);
 
@@ -218,7 +227,7 @@ export default class Bootstrapper {
 
         browserConnections = browserConnections.concat(chunk(remotes, this.concurrency));
 
-        return BrowserSet.from(browserConnections);
+        return BrowserSet.from(browserConnections, this._getBrowserSetOptions());
     }
 
     private _filterTests (tests: Test[], predicate: Filter): Test[] {
@@ -244,11 +253,13 @@ export default class Bootstrapper {
         if (!sourceList.length)
             throw new GeneralError(RUNTIME_ERRORS.testFilesNotFound, getConcatenatedValuesString(this.sources, '\n', ''), cwd);
 
-        const timePretty = elapsed();
+        const compilationTimeStart = process.hrtime();
 
         let tests = await this._compileTests({ sourceList, compilerOptions: this.compilerOptions });
 
-        this.debugLogger(`tests compilation took ${timePretty()}`);
+        const compilationTimeElapsed = process.hrtime(compilationTimeStart);
+
+        this.debugLogger(`tests compilation took ${prettyTime(compilationTimeElapsed)}`);
 
         const testsWithOnlyFlag = tests.filter(test => test.only);
 

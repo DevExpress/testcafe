@@ -4,7 +4,7 @@ import createStackFilter from '../create-stack-filter';
 import { getCallsiteForMethod } from '../get-callsite';
 import renderTemplate from '../../utils/render-template';
 import renderCallsiteSync from '../../utils/render-callsite-sync';
-import { RUNTIME_ERRORS } from '../types';
+import { CONNECTION_ERROR_HINTS, RUNTIME_ERRORS } from '../types';
 import BrowserConnectionStatus from '../../browser/connection/status';
 import WarningLog from '../../notifications/warning-log';
 
@@ -133,22 +133,33 @@ export class TimeoutError extends GeneralError {
 }
 
 export class BrowserConnectionError extends GeneralError {
-    constructor (originalError, connections) {
+    constructor (originalError, connections, browserSetOpts) {
         const code = RUNTIME_ERRORS.browserConnectionError;
 
-        const numOfConnections       = connections.length;
-        const numofOpenedConnections = connections.filter(bc => bc.status === BrowserConnectionStatus.opened).length;
+        const notOpenedConnections     = connections.filter(bc => bc.status !== BrowserConnectionStatus.opened);
+        const allConnectionsNum        = connections.length;
+        const notOpenedConnectionsNum  = notOpenedConnections.length;
+
+        const LIST_PREFIX = '\n- ';
+
+        const notOpenedConnectionsList = LIST_PREFIX + notOpenedConnections.map(bc => bc.browserInfo.alias).join(LIST_PREFIX);
 
         const warningLog = new WarningLog();
 
         for (const connection of connections)
             connection.warningLog.copyTo(warningLog);
 
-        let warnings = '';
+        let hints = '\nHints:';
 
         if (warningLog.messages.length > 0)
-            warnings += `\nWarnings:\n${warningLog.messages.join('\n')}`;
+            hints += LIST_PREFIX + warningLog.messages.join(LIST_PREFIX);
 
-        super(code, originalError.message, numofOpenedConnections, numOfConnections, warnings);
+        if (browserSetOpts.concurrency > 3)
+            hints += LIST_PREFIX + renderTemplate(TEMPLATES[CONNECTION_ERROR_HINTS.toHighConcurrencyFactor], browserSetOpts.concurrency);
+
+        hints += LIST_PREFIX + renderTemplate(TEMPLATES[CONNECTION_ERROR_HINTS.useBrowserInitOption]);
+        hints += LIST_PREFIX + renderTemplate(TEMPLATES[CONNECTION_ERROR_HINTS.restErrorCauses]);
+
+        super(code, originalError.message, notOpenedConnectionsNum, allConnectionsNum, notOpenedConnectionsList, hints);
     }
 }

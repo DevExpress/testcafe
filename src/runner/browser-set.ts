@@ -13,9 +13,7 @@ import { BrowserConnectionError, GeneralError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
 import BrowserConnection from '../browser/connection';
 import BrowserConnectionStatus from '../browser/connection/status';
-import debug from 'debug';
-
-const DEBUG_SCOPE = 'testcafe:runner:browser-set';
+import { BrowserSetOptions } from './interfaces';
 
 const RELEASE_TIMEOUT = 10000;
 
@@ -23,16 +21,16 @@ export default class BrowserSet extends EventEmitter {
     private readonly _browserConnections: BrowserConnection[];
     private readonly _browserErrorHandler: (error: Error) => void;
     private readonly _pendingReleases: Promise<void>[];
-    private readonly debugLogger: debug.Debugger;
+    private readonly _options: BrowserSetOptions;
     public browserConnectionGroups: BrowserConnection[][];
 
-    public constructor (browserConnectionGroups: BrowserConnection[][]) {
+    public constructor (browserConnectionGroups: BrowserConnection[][], options: BrowserSetOptions) {
         super();
 
         this._pendingReleases         = [];
         this.browserConnectionGroups  = browserConnectionGroups;
         this._browserConnections      = flatten(browserConnectionGroups);
-        this.debugLogger             = debug(DEBUG_SCOPE);
+        this._options                 = options;
 
         this._browserErrorHandler = (error: Error) => this.emit('error', error);
 
@@ -62,11 +60,11 @@ export default class BrowserSet extends EventEmitter {
 
         for (const bc of this._browserConnections) {
             if (bc.status !== BrowserConnectionStatus.opened) {
-                const openedTimeout = await bc.getOpenedTimeout();
+                const openedTimeout = this._options.browserInitTimeout || await bc.getDefaultBrowserInitTimeout();
                 const timeoutErr    = new GeneralError(RUNTIME_ERRORS.cannotEstablishBrowserConnection);
                 const openedOrError = Promise.race([
                     promisifyEvent(this, 'error'),
-                    promisifyEvent(bc, BrowserConnectionStatus.opened)
+                    promisifyEvent(bc, 'opened')
                 ]);
 
                 const openedConnection = getTimeLimitedPromise(openedOrError, openedTimeout, { rejectWith: timeoutErr });
@@ -87,17 +85,17 @@ export default class BrowserSet extends EventEmitter {
             throw new GeneralError(RUNTIME_ERRORS.cannotRunAgainstDisconnectedBrowsers, disconnectedUserAgents.join(', '));
     }
 
-    private async _prepareConnections (): Promise<void> {
+    public async prepareConnections (): Promise<void> {
         await this._checkForDisconnections();
         await this._waitConnectionsOpened();
     }
 
-    // API
-    public static async from (browserConnections: BrowserConnection[][]): Promise<BrowserSet> {
-        const browserSet = new BrowserSet(browserConnections);
+    // NOTE: creates and prepares BrowserSet instance with given browser connections
+    public static async from (browserConnections: BrowserConnection[][], opts: BrowserSetOptions): Promise<BrowserSet> {
+        const browserSet = new BrowserSet(browserConnections, opts);
 
         try {
-            const prepareConnections = browserSet._prepareConnections();
+            const prepareConnections = browserSet.prepareConnections();
             const browserSetError    = promisifyEvent(browserSet, 'error');
 
             await Promise.race([ prepareConnections, browserSetError ]);
@@ -105,13 +103,17 @@ export default class BrowserSet extends EventEmitter {
             return browserSet;
         }
         catch (e) {
-            const browserConnectionError = new BrowserConnectionError(e, browserSet.getConnections());
+            let finalError = e;
+
+            if (e.code === RUNTIME_ERRORS.cannotEstablishBrowserConnection)
+                finalError = new BrowserConnectionError(e, browserSet.getConnections(), opts);
 
             await browserSet.dispose();
 
-            throw browserConnectionError;
+            throw finalError;
         }
     }
+
     private getConnections (): BrowserConnection[] {
         return this._browserConnections;
     }
