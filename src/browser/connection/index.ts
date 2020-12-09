@@ -410,7 +410,9 @@ export default class BrowserConnection extends EventEmitter {
         await this._closeBrowser();
 
         this.browserConnectionGateway.stopServingConnection(this);
-        clearTimeout(this.heartbeatTimeout as NodeJS.Timeout);
+
+        if (this.heartbeatTimeout)
+            clearTimeout(this.heartbeatTimeout);
 
         delete connections[this.id];
 
@@ -427,7 +429,9 @@ export default class BrowserConnection extends EventEmitter {
     }
 
     public heartbeat (): HeartbeatStatusResult {
-        clearTimeout(this.heartbeatTimeout as NodeJS.Timeout);
+        if (this.heartbeatTimeout)
+            clearTimeout(this.heartbeatTimeout);
+
         this._waitForHeartbeat();
 
         return {

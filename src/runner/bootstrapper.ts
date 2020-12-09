@@ -38,6 +38,8 @@ import Test from '../api/structure/test';
 import detectDisplay from '../utils/detect-display';
 import { getPluginFactory, processReporterName } from '../utils/reporter';
 import { BrowserSetOptions } from './interfaces';
+import WarningLog from '../notifications/warning-log';
+import WARNING_MESSAGES from '../notifications/warning-message';
 
 const DEBUG_SCOPE = 'testcafe:bootstrapper';
 
@@ -104,6 +106,9 @@ export default class Bootstrapper {
 
     private readonly compilerService?: CompilerService;
     private readonly debugLogger: debug.Debugger;
+    private readonly warningLog: WarningLog;
+
+    private TESTS_COMPILATION_UPPERBOUND: number;
 
     public constructor (browserConnectionGateway: BrowserConnectionGateway, compilerService?: CompilerService) {
         this.browserConnectionGateway = browserConnectionGateway;
@@ -119,6 +124,9 @@ export default class Bootstrapper {
         this.disableMultipleWindows   = false;
         this.compilerOptions          = void 0;
         this.debugLogger              = debug(DEBUG_SCOPE);
+        this.warningLog               = new WarningLog();
+
+        this.TESTS_COMPILATION_UPPERBOUND = 60;
 
         this.compilerService = compilerService;
     }
@@ -213,7 +221,8 @@ export default class Bootstrapper {
     private _getBrowserSetOptions (): BrowserSetOptions {
         return {
             concurrency:        this.concurrency,
-            browserInitTimeout: this.browserInitTimeout
+            browserInitTimeout: this.browserInitTimeout,
+            warningLog:         this.warningLog
         };
     }
 
@@ -260,6 +269,11 @@ export default class Bootstrapper {
         const compilationTimeElapsed = process.hrtime(compilationTimeStart);
 
         this.debugLogger(`tests compilation took ${prettyTime(compilationTimeElapsed)}`);
+
+        const [ elapsedSeconds ] = compilationTimeElapsed;
+
+        if (elapsedSeconds > this.TESTS_COMPILATION_UPPERBOUND)
+            this.warningLog.addWarning(WARNING_MESSAGES.testsCompilationTakesTooLong, prettyTime(compilationTimeElapsed));
 
         const testsWithOnlyFlag = tests.filter(test => test.only);
 

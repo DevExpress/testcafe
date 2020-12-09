@@ -151,6 +151,9 @@ export class BrowserConnectionError extends GeneralError {
 
         let hints = '\nHints:';
 
+        if (browserSetOpts.warningLog.messages.length > 0)
+            hints += LIST_PREFIX + browserSetOpts.warningLog.messages.join(LIST_PREFIX);
+
         if (warningLog.messages.length > 0)
             hints += LIST_PREFIX + warningLog.messages.join(LIST_PREFIX);
 
