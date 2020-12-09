@@ -15,7 +15,7 @@ Topics they covered:
 * How to run your first automated test
 * How to integrate TestCafe with LambdaTest for better browser coverage
 
-Thank you to everyone who attend the webinar!  
+Thank you to everyone who attended the webinar!  
 
 ## Watch the webinar
 
