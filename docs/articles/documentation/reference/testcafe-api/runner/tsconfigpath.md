@@ -5,6 +5,8 @@ permalink: /documentation/reference/testcafe-api/runner/tsconfigpath.html
 ---
 # Runner.tsConfigPath Method
 
+> Deprecated as of TestCafe v.1.10.0 in favour of the [Runner.compilerOptions](compileroptions.md) method.
+
 Enables TestCafe to use a custom [TypeScript configuration file](../../../guides/concepts/typescript-and-coffeescript.md#customize-compiler-options) and specifies its location.
 
 ```text
