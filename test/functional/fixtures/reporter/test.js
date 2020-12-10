@@ -419,7 +419,7 @@ describe('Reporter', () => {
                                         1,
                                         true
                                     ],
-                                    code: '(function(){ return (function (bool) {return function () {return bool;};});})();'
+                                    code: '(function(){ var func = function func(bool) {return function () {return bool;};}; return func;})();'
                                 },
                                 type: 'execute-client-function'
                             }
@@ -571,7 +571,7 @@ describe('Reporter', () => {
                             command: {
                                 clientFn: {
                                     args: [],
-                                    code: '(function(){ return (function () {return document.getElementById(\'#target\');});})();'
+                                    code: '(function(){ var func = function func() {return document.getElementById(\'#target\');}; return func;})();'
                                 },
                                 type: 'execute-client-function'
                             }
