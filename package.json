@@ -71,7 +71,6 @@
     "async-exit-hook": "^1.1.2",
     "babel-plugin-module-resolver": "^4.0.0",
     "babel-plugin-syntax-trailing-function-commas": "^6.22.0",
-    "babel-plugin-transform-for-of-as-array": "^1.1.1",
     "bin-v8-flags-filter": "^1.1.2",
     "bowser": "^2.8.1",
     "callsite": "^1.0.0",

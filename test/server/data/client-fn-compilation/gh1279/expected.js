@@ -1,5 +1,7 @@
 (function () {
-    return function fn_123$$ () {
+    var func = function fn_123$$ () {
         return true;
     };
+
+    return func;
 })();
