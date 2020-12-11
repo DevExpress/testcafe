@@ -9,6 +9,8 @@ author: TestCafe Team
 
 Last week, TestCafe Technical Evangelist [Paul Usher](https://twitter.com/paul__usher) and [Mudit Singh](https://twitter.com/muditsingh5000), Director of Product & Growth at LambdaTest, hosted a webinar where they demonstrated automated cross-browser cloud testing with TestCafe and LambdaTest in detail.
 
+<!--more-->
+
 Topics they covered:
 
 * The basics of TestCafe
