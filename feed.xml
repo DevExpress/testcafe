@@ -5,114 +5,34 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 07 Dec 2020 12:16:29 +0300</pubDate>
-    <lastBuildDate>Mon, 07 Dec 2020 12:16:29 +0300</lastBuildDate>
+    <pubDate>Fri, 11 Dec 2020 14:12:17 +0300</pubDate>
+    <lastBuildDate>Fri, 11 Dec 2020 14:12:17 +0300</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
-        <title>v1.10.0: New Compiler Options API, Resize and Screenshot Support for Child Windows</title>
-        <description>&lt;h1&gt;v1.10.0: New Compiler Options API, Resize and Screenshot Support for Child Windows&lt;/h1&gt;
-&lt;p&gt;...and the selector API for shadow DOM access, plus multiple bugfixes.&lt;/p&gt;
+        <title>Webinar Recording: How to Get True Cross-Browser Test Coverage with TestCafe and LambdaTest</title>
+        <description>&lt;h1&gt;Webinar Recording: How to Get True Cross-Browser Test Coverage with TestCafe and LambdaTest&lt;/h1&gt;
+&lt;p&gt;Last week, TestCafe Technical Evangelist &lt;a href=&quot;https://twitter.com/paul__usher&quot;&gt;Paul Usher&lt;/a&gt; and &lt;a href=&quot;https://twitter.com/muditsingh5000&quot;&gt;Mudit Singh&lt;/a&gt;, Director of Product &amp;amp; Growth at LambdaTest, hosted a webinar where they demonstrated automated cross-browser cloud testing with TestCafe and LambdaTest in detail.&lt;/p&gt;
 
-&lt;!--more--&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;window-resize-and-screenshot-support-for-child-windows-in-chrome-pr-5661-pr-5567&quot;&gt;&lt;/a&gt;Window Resize and Screenshot Support for Child Windows in Chrome (&lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/5661&quot;&gt;PR #5661&lt;/a&gt;, &lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/5567&quot;&gt;PR #5567&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#window-resize-and-screenshot-support-for-child-windows-in-chrome-pr-5661-pr-5567&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;You can now use the following actions in Google Chrome when you switch the test context to a &lt;a href=&quot;../documentation/guides/advanced-guides/multiple-browser-windows.html&quot;&gt;child window&lt;/a&gt;:&lt;/p&gt;
+&lt;p&gt;Topics they covered:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;../documentation/reference/test-api/testcontroller/maximizewindow.html&quot;&gt;t.maximizeWindow&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;../documentation/reference/test-api/testcontroller/resizewindow.html&quot;&gt;t.resizeWindow&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;../documentation/reference/test-api/testcontroller/resizewindowtofitdevice.html&quot;&gt;t.resizeWindowToFitDevice&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;../documentation/reference/test-api/testcontroller/takeelementscreenshot.html&quot;&gt;t.takeElementScreenshot&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;../documentation/reference/test-api/testcontroller/takescreenshot.html&quot;&gt;t.takeScreenshot&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;new-api-to-specify-compiler-options-5519&quot;&gt;&lt;/a&gt;New API to Specify Compiler Options (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/5519&quot;&gt;#5519&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#new-api-to-specify-compiler-options-5519&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;In previous versions, you used the following methods to specify TypeScript compiler options:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;../documentation/reference/command-line-interface.html#--ts-config-path-path&quot;&gt;--ts-config-path&lt;/a&gt; command line flag&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome my-tests &lt;span class=&quot;nt&quot;&gt;--ts-config-path&lt;/span&gt; path/to/config.json
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;../documentation/reference/testcafe-api/runner/tsconfigpath.html&quot;&gt;runner.tsConfigPath&lt;/a&gt; method&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;tsConfigPath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;path/to/config.json&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;../documentation/reference/configuration-file.html#tsconfigpath&quot;&gt;tsConfigPath&lt;/a&gt; configuration file property&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;tsConfigPath&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;path/to/config.json&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;The basics of TestCafe&lt;/li&gt;
+&lt;li&gt;How to run your first automated test&lt;/li&gt;
+&lt;li&gt;How to integrate TestCafe with LambdaTest for better browser coverage&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;In v1.10.0, we introduced a new easy-to-use API that allows you to specify the compiler options in the command line, API or TestCafe configuration file, without creating a separate JSON file. The new API is also designed to accept options for more compilers (for instance, Babel) in future releases.&lt;/p&gt;
+&lt;p&gt;Thank you to everyone who attended the webinar!  &lt;/p&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;watch-the-webinar&quot;&gt;&lt;/a&gt;Watch the webinar &lt;a class=&quot;permalink&quot; href=&quot;#watch-the-webinar&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;!-- markdownlint-disable MD033 --&gt;
 
-&lt;p&gt;The API consists of the following members:&lt;/p&gt;
+&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/JH4WaoSORDI&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen&gt;&lt;/iframe&gt;
 
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;../documentation/reference/command-line-interface.html#--compiler-options-options&quot;&gt;--compiler-options&lt;/a&gt; command line flag&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome my-tests &lt;span class=&quot;nt&quot;&gt;--compiler-options&lt;/span&gt; typescript.experimentalDecorators&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;../documentation/reference/testcafe-api/runner/compileroptions.html&quot;&gt;runner.compilerOptions&lt;/a&gt; method&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;compilerOptions&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;typescript&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;experimentalDecorators&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;../documentation/reference/configuration-file.html#compileroptions&quot;&gt;compilerOptions&lt;/a&gt; configuration file property&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;compilerOptions&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-        &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;typescript&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-            &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;experimentalDecorators&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-        &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;If you prefer to keep compiler settings in a configuration file, you can use the new API to specify the path to this file:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome my-tests &lt;span class=&quot;nt&quot;&gt;--compiler-options&lt;/span&gt; typescript.configPath&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'path/to/config.json'&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;In v1.10.0, you can customize TypeScript compiler options only.&lt;/p&gt;
-
-&lt;p&gt;For more information, see &lt;a href=&quot;../documentation/guides/concepts/typescript-and-coffeescript.html&quot;&gt;TypeScript and CoffeeScript&lt;/a&gt;.&lt;/p&gt;
-&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;added-a-selector-method-to-access-shadow-dom-pr-5560-by-mostlyfabulous&quot;&gt;&lt;/a&gt;Added a Selector Method to Access Shadow DOM (&lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/5560&quot;&gt;PR #5560&lt;/a&gt; by &lt;a href=&quot;https://github.com/mostlyfabulous&quot;&gt;@mostlyfabulous&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#added-a-selector-method-to-access-shadow-dom-pr-5560-by-mostlyfabulous&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;This release introduces the &lt;a href=&quot;../documentation/reference/test-api/selector/shadowroot.html&quot;&gt;selector.shadowRoot&lt;/a&gt; method that allows you to access and interact with the shadow DOM elements. This method returns a shadow DOM root hosted in the selector&amp;#39;s matched element.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;testcafe&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`Target Shadow DOM elements`&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;https://devexpress.github.io/testcafe/example&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Get text within shadow tree&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;shadowRoot&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;div&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;withAttribute&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;shadow-host&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;shadowRoot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;paragraph&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;shadowRoot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;child&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;paragraph&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;textContent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;eql&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;This paragraph is in the shadow tree&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Note that you should chain other &lt;a href=&quot;../documentation/guides/basic-guides/select-page-elements.html#member-tables&quot;&gt;selector methods&lt;/a&gt; to &lt;a href=&quot;../documentation/reference/test-api/selector/shadowroot.html&quot;&gt;selector.shadowRoot&lt;/a&gt; to access elements in the shadow DOM. You cannot interact with the root element (an error occurs if you specify &lt;code&gt;selector.shadowRoot&lt;/code&gt; as an action&amp;#39;s target element).&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Browsers now restart correctly on BrowserStack when the connection is lost (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/5238&quot;&gt;#5238&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed an error that occurs if a child window is opened in an &lt;code&gt;iframe&lt;/code&gt; (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/5033&quot;&gt;#5033&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;TestCafe can now switch between the child and parent windows after the parent window is reloaded (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/5463&quot;&gt;#5463&lt;/a&gt;, &lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/5597&quot;&gt;#5597&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed an issue when touch and mouse events fired on mobile devices even though the mouse event was prevented in page code (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/5380&quot;&gt;#5380&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Cross-domain &lt;code&gt;iframes&lt;/code&gt; are now focused correctly in Safari (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/4793&quot;&gt;#4793&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed an excessive warning displayed when an assertion is executed in a loop or against an element returned by a &lt;code&gt;selector.xxxSibling&lt;/code&gt; method (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/5449&quot;&gt;#5449&lt;/a&gt;, &lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/5389&quot;&gt;#5389&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Cross-domain &lt;code&gt;iframe&lt;/code&gt; source links now have the correct protocol when SSL is used (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/pull/2478&quot;&gt;PR testcafe-hammerhead/#2478&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;A page error is no longer emitted if the destination server responded with the &lt;code&gt;304&lt;/code&gt; status (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/5025&quot;&gt;#5025&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed an issue when TestCafe could not authenticate websites that use MSAL (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/4834&quot;&gt;#4834&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;The &lt;code&gt;srcdoc&lt;/code&gt; attributes for &lt;code&gt;iframes&lt;/code&gt; are now processed (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1237&quot;&gt;testcafe-hammerhead/#1237&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;The &lt;code&gt;authorization&lt;/code&gt; header is now preserved in response headers of fetch requests (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2334&quot;&gt;testcafe-hammerhead/#2334&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;The &lt;code&gt;document.title&lt;/code&gt; for an &lt;code&gt;iframe&lt;/code&gt; without &lt;code&gt;src&lt;/code&gt; can now be correctly obtained in Firefox (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/pull/2466&quot;&gt;PR testcafe-hammerhead/#2466&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;TestCafe UI is now displayed correctly if the tested page&amp;#39;s body content is added dynamically (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/pull/2454&quot;&gt;PR testcafe-hammerhead/#2454&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Service Workers now receive &lt;code&gt;fetch&lt;/code&gt; events (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2412&quot;&gt;testcafe-hammerhead/#2412&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed the case of headers sent to the web app server (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2344&quot;&gt;testcafe-hammerhead/#2344&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Location&lt;/code&gt; objects in &lt;code&gt;iframes&lt;/code&gt; without &lt;code&gt;src&lt;/code&gt; now contain the correct data (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/pull/2448&quot;&gt;PR testcafe-hammerhead/#2448&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Native function wrappers are now converted to strings correctly (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2394&quot;&gt;testcafe-hammerhead/#2394&lt;/a&gt;)&lt;/li&gt;
-&lt;/ul&gt;
+&lt;!-- markdownlint-enable MD033 --&gt;
 </description>
-        <pubDate>Mon, 07 Dec 2020 00:00:00 +0300</pubDate>
-        <link>https://devexpress.github.io/testcafe/blog/v1-10-0-new-compiler-options-api-resize-and-screenshot-support-for-child-windows.html</link>
-        <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/v1-10-0-new-compiler-options-api-resize-and-screenshot-support-for-child-windows.html</guid>
+        <pubDate>Fri, 11 Dec 2020 00:00:00 +0300</pubDate>
+        <link>https://devexpress.github.io/testcafe/media/team-blog/webinar-recording-how-to-get-true-cross-browser-test-coverage-with-testcafe-and-lambdatest.html</link>
+        <guid isPermaLink="true">https://devexpress.github.io/testcafe/media/team-blog/webinar-recording-how-to-get-true-cross-browser-test-coverage-with-testcafe-and-lambdatest.html</guid>
         
         
       </item>
