@@ -393,7 +393,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1605646800 * 1000);
+        var lastPostDate = new Date(1607634000 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -1070,6 +1070,11 @@
 <li><a href="#console-shortcuts-in-live-mode">Console Shortcuts in Live Mode</a></li>
 </ul></li>
 <li><a href="#quarantine-mode">Quarantine Mode</a></li>
+<li><a href="#troubleshooting">Troubleshooting</a>
+
+<ul>
+<li><a href="#disable-the-close-multiple-tabs-popup-in-ie">Disable the &#39;Close Multiple Tabs&#39; Popup in IE</a></li>
+</ul></li>
 </ul>
 <blockquote class="important"><div class="blockquote-content"><p>Front-end development tools (such as React DevTools or Vue DevTools) can interfere with TestCafe and cause errors. Do not open them while you run or debug TestCafe tests.</p>
 </div></blockquote><h2><a class="anchor" id="specify-tests-to-run"></a>Specify Tests to Run <a class="permalink" href="#specify-tests-to-run">#</a></h2>
@@ -1451,6 +1456,14 @@ should divide by the concurrency parameter <code>n</code>. Otherwise, an excepti
 </code></pre></div><blockquote><div class="blockquote-content"><p>Note that quarantine mode increases the test task&#39;s duration because failed tests are executed three to five times.</p>
 </div></blockquote>
 <p>See Martin Fowler&#39;s <a href="http://martinfowler.com/articles/nonDeterminism.html">Eradicating Non-Determinism in Tests</a> article for more information about non-deterministic tests.</p>
+<h2><a class="anchor" id="troubleshooting"></a>Troubleshooting <a class="permalink" href="#troubleshooting">#</a></h2><h3><a class="anchor" id="disable-the-close-multiple-tabs-popup-in-ie"></a>Disable the &#39;Close Multiple Tabs&#39; Popup in IE <a class="permalink" href="#disable-the-close-multiple-tabs-popup-in-ie">#</a></h3>
+<p>Internet Explorer displays a dialog when you try to close a browser window with more than one opened tab. This dialog blocks the page and pauses tests. Disable this dialog before you run tests.</p>
+
+<p>To disable this dialog, open multiple tabs in one Internet Explorer window and close the browser. Check <code>Always close all tabs</code> and click <code>Close all tabs</code>. IE saves this setting and the dialog does not appear again.</p>
+
+<p><img src="../../../images/close-window-popup-IE.png" alt="Disable the `Close Multiple Tabs` Popup in IE" title=""></p>
+
+<p>Repeat this action on any new machine where you run tests.</p>
 
 
 		</div>

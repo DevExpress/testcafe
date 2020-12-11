@@ -393,7 +393,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1605646800 * 1000);
+        var lastPostDate = new Date(1607634000 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -2145,11 +2145,18 @@ test.page `url` → this
 </code></pre></div>
 <p>If the start page is not specified, the default URL is <code>about:blank</code>.</p>
 
-<p>You can use the <code>file://</code> scheme or relative paths to test web pages in local directories.</p>
+<p>You can use the <a href="https://en.wikipedia.org/wiki/File_URI_scheme">file URI scheme</a> or relative paths to test web pages in local and network directories.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">test</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`file://NETWORK-LOCATION/my-website/index.html`</span>
+    <span class="p">(</span><span class="dl">'</span><span class="s1">My test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="p">});</span>
+</code></pre></div>
+<p>For local files omit the <code>hostname</code>:</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">test</span>
     <span class="p">.</span><span class="nx">page</span> <span class="s2">`file:///user/my-website/index.html`</span>
     <span class="p">(</span><span class="dl">'</span><span class="s1">My test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="p">});</span>
-</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">test</span>
+</code></pre></div>
+<p>Relative paths are resolved against a file with tests:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">test</span>
     <span class="p">.</span><span class="nx">page</span> <span class="s2">`../my-project/index.html`</span>
     <span class="p">(</span><span class="dl">'</span><span class="s1">My test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="p">});</span>
 </code></pre></div>

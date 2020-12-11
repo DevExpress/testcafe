@@ -393,7 +393,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1605646800 * 1000);
+        var lastPostDate = new Date(1607634000 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -1361,8 +1361,30 @@ To interact with the page, use <a href="interact-with-the-page.html">test action
 <p>To set the timeout for all selectors, pass it to the <a href="../../reference/testcafe-api/runner/run.html">runner.run</a> API method or the <a href="../../reference/command-line-interface.html#--selector-timeout-ms">--selector-timeout</a> command line option when you launch tests. This will override the timeout options inside tests (if any).</p>
 
 <p>During the timeout, the selector is re-executed until it returns a DOM node or the timeout is exceeded. If TestCafe cannot find the corresponding node in the DOM, the test fails.</p>
-<blockquote><div class="blockquote-content"><p>Note that you can specify that the node returned by the selector should also be visible. To do this, use the <a href="../../reference/test-api/selector/constructor.html#optionsvisibilitycheck">visibilityCheck</a> option.</p>
-</div></blockquote><h2><a class="anchor" id="debug-selectors"></a>Debug Selectors <a class="permalink" href="#debug-selectors">#</a></h2>
+<blockquote><div class="blockquote-content"><p>You can specify that the selector should only return visible nodes. To do this, use the <a href="../../reference/test-api/selector/constructor.html#optionsvisibilitycheck">visibilityCheck</a> option.</p>
+</div></blockquote>
+<p>Selector timeouts have no effect on <a href="../../reference/test-api/selector/exists.html">Selector.exists</a> and <a href="../../reference/test-api/selector/count.html">Selector.count</a> properties. These properties are evaluated immediately regardless of a timeout. To apply a timeout to <code>exists</code> and <code>count</code> assertions, pass the timeout to the assertion method (<code>expect.ok</code>, <code>expect.eql</code>, etc.).</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="nx">fixture</span> <span class="s2">`My fixture`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">timedOutSelector</span>  <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#element-id</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span><span class="na">timeout</span><span class="p">:</span> <span class="mi">10000</span><span class="p">});</span>
+<span class="kd">const</span> <span class="nx">immediateSelector</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#element-id</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Test timeouts</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">timedOutSelector</span><span class="p">.</span><span class="nx">exists</span><span class="p">).</span><span class="nx">ok</span><span class="p">();</span>
+    <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">immediateSelector</span><span class="p">.</span><span class="nx">exists</span><span class="p">).</span><span class="nx">ok</span><span class="p">();</span>
+    <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">timedOutSelector</span><span class="p">.</span><span class="nx">count</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">immediateSelector</span><span class="p">.</span><span class="nx">count</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="c1">//these assertions execute immediately regardless of the selector timeout</span>
+
+    <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">immediateSelector</span><span class="p">.</span><span class="nx">exists</span><span class="p">).</span><span class="nx">ok</span><span class="p">({</span><span class="na">timeout</span><span class="p">:</span> <span class="mi">10000</span><span class="p">});</span>
+    <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">timedOutSelector</span><span class="p">.</span><span class="nx">exists</span><span class="p">).</span><span class="nx">ok</span><span class="p">({</span><span class="na">timeout</span><span class="p">:</span> <span class="mi">10000</span><span class="p">});</span>
+    <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">immediateSelector</span><span class="p">.</span><span class="nx">count</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="dl">'</span><span class="s1">count elements</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span><span class="na">timeout</span><span class="p">:</span> <span class="mi">10000</span><span class="p">});</span>
+    <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">timedOutSelector</span><span class="p">.</span><span class="nx">count</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="dl">'</span><span class="s1">count elements</span><span class="dl">'</span><span class="p">,</span> <span class="p">{</span><span class="na">timeout</span><span class="p">:</span> <span class="mi">10000</span><span class="p">});</span>
+    <span class="c1">//these assertions retry within the assertion timeout specified</span>
+</code></pre></div><h2><a class="anchor" id="debug-selectors"></a>Debug Selectors <a class="permalink" href="#debug-selectors">#</a></h2>
 <p>TestCafe outputs information about failed selectors to test run reports.</p>
 
 <p>When you try to use a selector that does not match any DOM element, the test fails and an error is thrown. The error message indicates which selector has failed.</p>

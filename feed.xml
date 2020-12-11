@@ -5,9 +5,39 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 02 Dec 2020 20:37:29 +0300</pubDate>
-    <lastBuildDate>Wed, 02 Dec 2020 20:37:29 +0300</lastBuildDate>
+    <pubDate>Fri, 11 Dec 2020 14:38:45 +0300</pubDate>
+    <lastBuildDate>Fri, 11 Dec 2020 14:38:45 +0300</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
+    
+      <item>
+        <title>Webinar Recording: How to Get True Cross-Browser Test Coverage with TestCafe and LambdaTest</title>
+        <description>&lt;h1&gt;Webinar Recording: How to Get True Cross-Browser Test Coverage with TestCafe and LambdaTest&lt;/h1&gt;
+&lt;p&gt;Last week, TestCafe Technical Evangelist &lt;a href=&quot;https://twitter.com/paul__usher&quot;&gt;Paul Usher&lt;/a&gt; and &lt;a href=&quot;https://twitter.com/muditsingh5000&quot;&gt;Mudit Singh&lt;/a&gt;, Director of Product &amp;amp; Growth at LambdaTest, hosted a webinar where they demonstrated automated cross-browser cloud testing with TestCafe and LambdaTest in detail.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;Topics they covered:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The basics of TestCafe&lt;/li&gt;
+&lt;li&gt;How to run your first automated test&lt;/li&gt;
+&lt;li&gt;How to integrate TestCafe with LambdaTest for better browser coverage&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Thank you to everyone who attended the webinar!  &lt;/p&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;watch-the-webinar&quot;&gt;&lt;/a&gt;Watch the webinar &lt;a class=&quot;permalink&quot; href=&quot;#watch-the-webinar&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;!-- markdownlint-disable MD033 --&gt;
+
+&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/JH4WaoSORDI&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen&gt;&lt;/iframe&gt;
+
+&lt;!-- markdownlint-enable MD033 --&gt;
+</description>
+        <pubDate>Fri, 11 Dec 2020 00:00:00 +0300</pubDate>
+        <link>https://devexpress.github.io/testcafe/media/team-blog/webinar-recording-how-to-get-true-cross-browser-test-coverage-with-testcafe-and-lambdatest.html</link>
+        <guid isPermaLink="true">https://devexpress.github.io/testcafe/media/team-blog/webinar-recording-how-to-get-true-cross-browser-test-coverage-with-testcafe-and-lambdatest.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>Client Functions and Script Injection for Page Interaction</title>
@@ -1242,38 +1272,6 @@ Yes, if test actions on the page trigger file download, the browser will downloa
         <pubDate>Wed, 29 Jul 2020 00:00:00 +0300</pubDate>
         <link>https://devexpress.github.io/testcafe/media/team-blog/introducing-the-testcafe-jenkins-plugin.html</link>
         <guid isPermaLink="true">https://devexpress.github.io/testcafe/media/team-blog/introducing-the-testcafe-jenkins-plugin.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Upcoming Webinar: 10 Ways to Simplify Your UI Testing</title>
-        <description>&lt;h1&gt;Upcoming Webinar: 10 Ways to Simplify Your UI Testing&lt;/h1&gt;
-&lt;p&gt;In this free webinar, our Technical Evangelist &lt;a href=&quot;https://twitter.com/paul__usher&quot;&gt;Paul Usher&lt;/a&gt; will show you how to easily incorporate UI testing in your development workflow. Paul will demonstrate how TestCafe can fit in any organization and how its features can be leveraged to deliver high quality web apps that always meet end-user expectations.&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-&lt;p&gt;In this webinar, you’ll learn:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;How to setup TestCafe and start testing in under 10 minutes.&lt;/li&gt;
-&lt;li&gt;How to create customizable tests that can easily evolve as business requirements change.&lt;/li&gt;
-&lt;li&gt;The purpose of Custom Selectors and why they make web testing so much easier.&lt;/li&gt;
-&lt;li&gt;The purpose of the Page Model approach and why it helps increase productivity.&lt;/li&gt;
-&lt;li&gt;And you&amp;#39;ll learn how to master use of Smart Assertions.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;experience-the-testcafe-difference&quot;&gt;&lt;/a&gt;Experience the TestCafe Difference &lt;a class=&quot;permalink&quot; href=&quot;#experience-the-testcafe-difference&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;TestCafe Open Source and TestCafe Studio are driver free and do not require you to manage complex plug-ins. If you’re ready to test your web apps and want to deliver more reliable solutions to your end-users, be sure to click the link below and register your interest in this live webinar.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Webinar Date:&lt;/strong&gt; Wednesday, July 29, 2020&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Start Time:&lt;/strong&gt; 10AM Pacific Time&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://dxpr.es/10_ways_to_simplify_ui_testing&quot;&gt;Register&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
-</description>
-        <pubDate>Tue, 14 Jul 2020 00:00:00 +0300</pubDate>
-        <link>https://devexpress.github.io/testcafe/media/team-blog/10-ways-to-simplify-your-ui-testing.html</link>
-        <guid isPermaLink="true">https://devexpress.github.io/testcafe/media/team-blog/10-ways-to-simplify-your-ui-testing.html</guid>
         
         
       </item>
