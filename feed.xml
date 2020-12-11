@@ -5,14 +5,16 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 11 Dec 2020 14:12:17 +0300</pubDate>
-    <lastBuildDate>Fri, 11 Dec 2020 14:12:17 +0300</lastBuildDate>
+    <pubDate>Fri, 11 Dec 2020 14:16:49 +0300</pubDate>
+    <lastBuildDate>Fri, 11 Dec 2020 14:16:49 +0300</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
         <title>Webinar Recording: How to Get True Cross-Browser Test Coverage with TestCafe and LambdaTest</title>
         <description>&lt;h1&gt;Webinar Recording: How to Get True Cross-Browser Test Coverage with TestCafe and LambdaTest&lt;/h1&gt;
 &lt;p&gt;Last week, TestCafe Technical Evangelist &lt;a href=&quot;https://twitter.com/paul__usher&quot;&gt;Paul Usher&lt;/a&gt; and &lt;a href=&quot;https://twitter.com/muditsingh5000&quot;&gt;Mudit Singh&lt;/a&gt;, Director of Product &amp;amp; Growth at LambdaTest, hosted a webinar where they demonstrated automated cross-browser cloud testing with TestCafe and LambdaTest in detail.&lt;/p&gt;
+
+&lt;!--more--&gt;
 
 &lt;p&gt;Topics they covered:&lt;/p&gt;
 
