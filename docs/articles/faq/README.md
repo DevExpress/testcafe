@@ -152,7 +152,7 @@ See the [Select Elements With Dynamic IDs](../documentation/guides/basic-guides/
 
 ### Can I use TestCafe to test React Native apps?
 
-No. You can use TestCafe to test anything that runs in a browser — including Progressive Web Applications and Electron apps. TestCafe can not automate native mobile applications, because they do not run in a browser.
+You can only use TestCafe to test something that runs in a browser, including Progressive Web Applications and Electron apps. TestCafe cannot automate native mobile applications because they do not run in a browser.
 
 ## Troubleshooting
 
