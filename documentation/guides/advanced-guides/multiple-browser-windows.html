@@ -1020,7 +1020,7 @@
 			<h1>Multiple Browser Windows</h1>
 <p>The TestCafe API includes methods that open, close, and switch between browser windows. You can test websites with pop-up windows and OAuth login forms, debug complex multi-window applications, or run multiple instances of the same web app side-by-side.</p>
 
-<p>⚠ This is a <strong>beta</strong> feature. Browser support is limited to local instances of Chrome and Firefox. You cannot resize child windows. You cannot take screenshots or videos of child windows. The available functionality is subject to further revisions. Please do not use this feature in production environments.</p>
+<p>⚠ This is a <strong>beta</strong> feature. Browser support is limited to local instances of Chrome and Firefox. You can resize child windows or make screenshots of them in Chrome only. You cannot record videos of child windows. The available functionality is subject to further revisions. Please do not use this feature in production environments.</p>
 
 <p>️🛠️ You can disable support for multiple browser windows if you encounter compatibility issues with your tests. Use one of the following settings:</p>
 
@@ -1029,7 +1029,7 @@
 <li>the <code>disableMultipleWindows</code> <a href="../../reference/testcafe-api/runner/run.html">runner.run</a> option,</li>
 <li>the <a href="../../reference/configuration-file.html#disablemultiplewindows">disableMultipleWindows</a> configuration file property.</li>
 </ul>
-<h2><a class="anchor" id="handle-client-side-window-events"></a>Handle client-side window events <a class="permalink" href="#handle-client-side-window-events">#</a></h2>
+<h2><a class="anchor" id="automatic-switch-to-new-windows"></a>Automatic Switch to New Windows <a class="permalink" href="#automatic-switch-to-new-windows">#</a></h2>
 <p>When your page launches a new window, the test automatically continues in the newly opened window. When that window is closed, the test switches back to its parent.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
@@ -1047,7 +1047,7 @@
     <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">.login-section</span><span class="dl">'</span><span class="p">).</span><span class="nx">textContent</span><span class="p">).</span><span class="nx">contains</span><span class="p">(</span><span class="dl">'</span><span class="s1">Your first name</span><span class="dl">'</span><span class="p">);</span>  <span class="c1">// you're logged in!</span>
 <span class="p">});</span>
 
-</code></pre></div><h2><a class="anchor" id="open-a-new-window"></a>Open a new window <a class="permalink" href="#open-a-new-window">#</a></h2>
+</code></pre></div><h2><a class="anchor" id="open-a-new-window"></a>Open a New Window <a class="permalink" href="#open-a-new-window">#</a></h2>
 <p>Use the <a href="../../reference/test-api/testcontroller/openwindow.html">t.openWindow</a> method to open a new window:</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span><span class="p">,</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
@@ -1061,7 +1061,7 @@
     <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">url</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="dl">'</span><span class="s1">http://example.com/</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div><blockquote><div class="blockquote-content"><p>Browser windows share the client-side storage. Only one <a href="https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/authentication.html#user-roles">user role</a> can be active at a time.</p>
-</div></blockquote><h2><a class="anchor" id="obtain-window-descriptors"></a>Obtain window descriptors <a class="permalink" href="#obtain-window-descriptors">#</a></h2>
+</div></blockquote><h2><a class="anchor" id="obtain-window-descriptors"></a>Obtain Window Descriptors <a class="permalink" href="#obtain-window-descriptors">#</a></h2>
 <p>Window descriptors are objects that reference individual browser windows. Window descriptors can be used to distinguish between different windows.</p>
 
 <p>The <a href="../../reference/test-api/testcontroller/openwindow.html">t.openWindow</a> method returns a window descriptor for the newly open window.</p>
@@ -1074,7 +1074,7 @@
     <span class="kd">const</span> <span class="nx">initialWindow</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">getCurrentWindow</span><span class="p">();</span>
     <span class="kd">const</span> <span class="nx">window2</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">openWindow</span><span class="p">(</span><span class="dl">'</span><span class="s1">http://devexpress.com</span><span class="dl">'</span><span class="p">);</span>
     <span class="p">});</span>
-</code></pre></div><h2><a class="anchor" id="switch-between-windows"></a>Switch between windows <a class="permalink" href="#switch-between-windows">#</a></h2>
+</code></pre></div><h2><a class="anchor" id="switch-between-windows"></a>Switch Between Windows <a class="permalink" href="#switch-between-windows">#</a></h2>
 <p>The <a href="../../reference/test-api/testcontroller/switchtowindow.html">t.switchToWindow</a> method allows you to switch between browser windows.</p>
 
 <p>This method takes a window descriptor as an argument:</p>
@@ -1118,7 +1118,7 @@
     <span class="kd">const</span> <span class="nx">url</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nb">eval</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">documentURI</span><span class="p">);</span>
     <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">url</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="dl">'</span><span class="s1">http://www.example.com/</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div><h2><a class="anchor" id="close-an-existing-window"></a>Close an existing window <a class="permalink" href="#close-an-existing-window">#</a></h2><blockquote><div class="blockquote-content"><p>You cannot close windows with open children.</p>
+</code></pre></div><h2><a class="anchor" id="close-an-existing-window"></a>Close an Existing Window <a class="permalink" href="#close-an-existing-window">#</a></h2><blockquote><div class="blockquote-content"><p>You cannot close windows with open children.</p>
 </div></blockquote>
 <p>Call the <a href="../../reference/test-api/testcontroller/closewindow.html">t.closeWindow</a> method without parameters to close the active window:</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span> <span class="s2">`Example page`</span>
