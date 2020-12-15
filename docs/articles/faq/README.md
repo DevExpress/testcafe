@@ -286,13 +286,13 @@ According to users' feedback, the following CI systems work best with TestCafe:
 
 ### 'The browser can't open the page: can't establish a secure connection to the server'
 
-If your computer is connected to multiple networks (for instance, uses a VPN connection), TestCafe may host its internal proxy server on an IP that cannot be routed correctly due to VPN. In this case, the following error occurs:
+If your computer is connected to multiple networks (for instance, if it uses a VPN connection), TestCafe may be unable to open the testing pages.
 
 ```text
 <browsername> can't open the page because <browsername> can't establish a secure connection to the server.
 ```
 
-To explicitly state that the proxy should be hosted on the local machine, launch TestCafe with the `--hostname localhost` CLI option:
+To fix the issue, launch TestCafe with the `--hostname localhost` CLI option:
 
 ```sh
 testcafe chrome test.js --hostname localhost
