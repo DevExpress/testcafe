@@ -463,6 +463,7 @@
 <li><a href="#can-i-use-third-party-modules-in-tests">Can I use third-party modules in tests?</a></li>
 <li><a href="#how-do-i-work-with-configuration-files-and-environment-variables">How do I work with configuration files and environment variables?</a></li>
 <li><a href="#how-do-i-identify-elements-with-dynamic-ids">How do I identify elements with dynamic IDs?</a></li>
+<li><a href="#can-i-use-testcafe-to-test-react-native-apps">Can I use TestCafe to test React Native apps?</a></li>
 </ul></li>
 <li><a href="#troubleshooting">Troubleshooting</a>
 
@@ -636,6 +637,8 @@ which means it should work with any browser with HTML5 support released in the l
 <p>TestCafe selectors should use element identifiers that persist between test runs. However, many JavaScript frameworks generate dynamic IDs for page elements. To identify elements whose <code>id</code> attribute changes, use selectors based on the element&#39;s class, content, tag name, or position.</p>
 
 <p>See the <a href="../documentation/guides/basic-guides/select-page-elements.html#select-elements-with-dynamic-ids">Select Elements With Dynamic IDs</a> example for details.</p>
+<h3><a class="anchor" id="can-i-use-testcafe-to-test-react-native-apps"></a>Can I use TestCafe to test React Native apps? <a class="permalink" href="#can-i-use-testcafe-to-test-react-native-apps">#</a></h3>
+<p>You can only use TestCafe to test something that runs in a browser, including Progressive Web Applications and Electron apps. TestCafe cannot automate native mobile applications because they do not run in a browser.</p>
 <h2><a class="anchor" id="troubleshooting"></a>Troubleshooting <a class="permalink" href="#troubleshooting">#</a></h2><h3><a class="anchor" id="i-have-installed-testcafe-but-i-cannot-run-it-what-should-i-do"></a>I have installed TestCafe but I cannot run it. What should I do? <a class="permalink" href="#i-have-installed-testcafe-but-i-cannot-run-it-what-should-i-do">#</a></h3>
 <p><strong>Check your firewall.</strong> First, make sure that your firewall does not block the ports TestCafe uses.
 TestCafe chooses free ports automatically by default. Use the

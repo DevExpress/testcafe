@@ -260,7 +260,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1605646800 * 1000);
+        var lastPostDate = new Date(1607634000 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -450,7 +450,7 @@
     <main>
     <div class="post">
         <div class="post-date">
-            DEC  7, 2020
+            DEC 15, 2020
         </div>
         <article class="post-content">
             <h1>v1.10.0: New Compiler Options API, Resize and Screenshot Support for Child Windows</h1>
