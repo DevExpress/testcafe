@@ -7,7 +7,7 @@ permalink: /documentation/guides/advanced-guides/multiple-browser-windows.html
 
 The TestCafe API includes methods that open, close, and switch between browser windows. You can test websites with pop-up windows and OAuth login forms, debug complex multi-window applications, or run multiple instances of the same web app side-by-side.
 
-⚠ This is a **beta** feature. Browser support is limited to local instances of Chrome and Firefox. You cannot resize child windows. You cannot take screenshots or videos of child windows. The available functionality is subject to further revisions. Please do not use this feature in production environments.
+⚠ This is a **beta** feature. Browser support is limited to local instances of Chrome and Firefox. You can resize child windows or make screenshots of them in Chrome only. You cannot record videos of child windows. The available functionality is subject to further revisions. Please do not use this feature in production environments.
 
 ️🛠️ You can disable support for multiple browser windows if you encounter compatibility issues with your tests. Use one of the following settings:
 
@@ -15,7 +15,7 @@ The TestCafe API includes methods that open, close, and switch between browser w
 * the `disableMultipleWindows` [runner.run](../../reference/testcafe-api/runner/run.md) option,
 * the [disableMultipleWindows](../../reference/configuration-file.md#disablemultiplewindows) configuration file property.
 
-## Handle client-side window events
+## Automatic Switch to New Windows
 
 When your page launches a new window, the test automatically continues in the newly opened window. When that window is closed, the test switches back to its parent.
 
@@ -38,7 +38,7 @@ test('automatically change execution context', async t => {
 
 ```
 
-## Open a new window
+## Open a New Window
 
 Use the [t.openWindow](../../reference/test-api/testcontroller/openwindow.md) method to open a new window:
 
@@ -58,7 +58,7 @@ test('Open a new window', async t => {
 
 >Browser windows share the client-side storage. Only one [user role](https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/authentication.html#user-roles) can be active at a time.
 
-## Obtain window descriptors
+## Obtain Window Descriptors
 
 Window descriptors are objects that reference individual browser windows. Window descriptors can be used to distinguish between different windows.
 
@@ -76,7 +76,7 @@ test('Generate window descriptors', async t => {
     });
 ```
 
-## Switch between windows
+## Switch Between Windows
 
 The [t.switchToWindow](../../reference/test-api/testcontroller/switchtowindow.md) method allows you to switch between browser windows.
 
@@ -134,7 +134,7 @@ test('Switch back', async t => {
 });
 ```
 
-## Close an existing window
+## Close an Existing Window
 
 >You cannot close windows with open children.
 
