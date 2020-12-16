@@ -33,6 +33,10 @@ steps:
   inputs:
     versionSpec: '10.x'
 
+- task: DeleteFiles@1
+  inputs:
+    Contents: node_modules
+
 - bash: |
     npm install --no-progress --loglevel error
     npm test

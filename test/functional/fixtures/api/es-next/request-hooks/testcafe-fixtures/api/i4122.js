@@ -1,6 +1,6 @@
 import { RequestHook } from 'testcafe';
 import path from 'path';
-import config from '../../../../../../config';
+
 
 const ReExecutablePromise = require(path.resolve('./lib/utils/re-executable-promise'));
 const pageUrl             = 'http://localhost:3000/fixtures/api/es-next/request-hooks/pages/index.html';
@@ -40,7 +40,7 @@ test('test', async t => {
         .expect(fixtureHook.done).ok()
         .expect(testHook.done).ok();
 
-    const expectedLog = config.retryTestPages ? 'fixtureHook,testHook,fixtureHook,testHook' : 'fixtureHook,testHook';
+    const expectedLog = 'fixtureHook,testHook';
 
     await t.expect(log.toString()).eql(expectedLog);
 }).requestHooks(testHook);

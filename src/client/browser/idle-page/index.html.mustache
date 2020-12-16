@@ -27,7 +27,9 @@
 </div>
 
 <script type="text/javascript">
-    new IdlePage('{{{statusUrl}}}', '{{{heartbeatUrl}}}', '{{{initScriptUrl}}}', { retryTestPages: {{{retryTestPages}}} });
+    var idlePage = new IdlePage('{{{statusUrl}}}', '{{{heartbeatUrl}}}', '{{{initScriptUrl}}}', { retryTestPages: {{{retryTestPages}}} });
+
+    idlePage.start();
 </script>
 </body>
 </html>
