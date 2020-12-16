@@ -286,10 +286,10 @@ According to users' feedback, the following CI systems work best with TestCafe:
 
 ### 'The browser can't open the page: can't establish a secure connection to the server'
 
-If your computer is connected to multiple networks (for instance, if it uses a VPN connection), TestCafe may detect the host IP incorrectly and thus may be unable to open the testing pages.
+If your computer is connected to multiple networks (for instance, if it uses a VPN connection), TestCafe may incorrectly detect the host IP and not open the tested pages.
 
 ```text
-<browsername> can't open the page because <browsername> can't establish a secure connection to the server.
+<browsername> cannot open the page because <browsername> is unable to establish a secure connection to the server.
 ```
 
 To fix the issue, launch TestCafe with the `--hostname localhost` CLI option:
