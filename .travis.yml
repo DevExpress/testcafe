@@ -37,6 +37,7 @@ jobs:
       env: GULP_TASK="test-functional-local-multiple-windows"
       addons:
         chrome:  stable
+        firefox:  latest
         apt:
           packages:
             - fluxbox

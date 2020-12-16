@@ -18,6 +18,25 @@ export default {
         this.openedBrowsers[browserId].activeWindowId = val;
     },
 
+    getPageTitle (browserId) {
+        const runtimeInfo     = this.openedBrowsers[browserId];
+        const isIdlePageShown = !Object.keys(runtimeInfo.windowDescriptors).length;
+
+        return isIdlePageShown ? browserId : runtimeInfo.activeWindowId;
+    },
+
+    getWindowDescriptor (browserId) {
+        const runtimeInfo = this.openedBrowsers[browserId];
+
+        return runtimeInfo.windowDescriptors[runtimeInfo.activeWindowId];
+    },
+
+    setWindowDescriptor (browserId, windowDescriptor) {
+        const runtimeInfo = this.openedBrowsers[browserId];
+
+        runtimeInfo.windowDescriptors[runtimeInfo.activeWindowId] = windowDescriptor;
+    },
+
     _getConfig () {
         throw new Error('Not implemented');
     },

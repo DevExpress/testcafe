@@ -18,51 +18,51 @@ async function assertScreenshotColor (fileName, pixel) {
 describe('Multiple windows', () => {
     describe('Switch to the child window', () => {
         it('Click on link', () => {
-            return runTests('testcafe-fixtures/switching-to-child/click-on-link.js');
+            return runTests('testcafe-fixtures/switching-to-child/click-on-link.js', null, { only: 'chrome' });
         });
 
         it('Form submit', () => {
-            return runTests('testcafe-fixtures/switching-to-child/form-submit.js');
+            return runTests('testcafe-fixtures/switching-to-child/form-submit.js', null, { only: 'chrome' });
         });
 
         it('window.open', () => {
-            return runTests('testcafe-fixtures/switching-to-child/call-window-open.js');
+            return runTests('testcafe-fixtures/switching-to-child/call-window-open.js', null, { only: 'chrome' });
         });
 
         it('Nested pages', () => {
-            return runTests('testcafe-fixtures/switching-to-child/nested-pages.js');
+            return runTests('testcafe-fixtures/switching-to-child/nested-pages.js', null, { only: 'chrome' });
         });
 
         it('Cross domain', () => {
-            return runTests('testcafe-fixtures/switching-to-child/cross-domain.js');
+            return runTests('testcafe-fixtures/switching-to-child/cross-domain.js', null, { only: 'chrome' });
         });
     });
 
     describe('Switch to the parent window', () => {
         it('"window.close" method call', () => {
-            return runTests('testcafe-fixtures/switching-to-parent/window-close-call.js');
+            return runTests('testcafe-fixtures/switching-to-parent/window-close-call.js', null, { only: 'chrome' });
         });
     });
 
     describe('Cookie synchonization', () => {
         it('cross-domain', () => {
-            return runTests('testcafe-fixtures/cookie-synchronization/cross-domain.js');
+            return runTests('testcafe-fixtures/cookie-synchronization/cross-domain.js', null, { only: 'chrome' });
         });
     });
 
     it('Console messages', () => {
-        return runTests('testcafe-fixtures/console/console-test.js');
+        return runTests('testcafe-fixtures/console/console-test.js', null, { only: 'chrome' });
     });
 
     it('Unhandled JavaScript errors', () => {
-        return runTests('testcafe-fixtures/handle-errors/handle-js-errors.js', null, { shouldFail: true })
+        return runTests('testcafe-fixtures/handle-errors/handle-js-errors.js', null, { only: 'chrome', shouldFail: true })
             .catch(errs => {
                 expect(errs[0]).to.contain('A JavaScript error occurred on "http://localhost:3000/fixtures/multiple-windows/pages/handle-errors/page-with-js-error.html"');
             });
     });
 
     it('Close the window immediately after opening (GH-3762)', () => {
-        return runTests('testcafe-fixtures/close-window-immediately-after-opening.js');
+        return runTests('testcafe-fixtures/close-window-immediately-after-opening.js', null, { only: 'chrome' });
     });
 
     it('headless', () => {
@@ -85,16 +85,16 @@ describe('Multiple windows', () => {
 
     describe('Should not finalize some commands on driver starting (GH-4855)', () => {
         it('ExecuteSelectorCommand', () => {
-            return runTests('testcafe-fixtures/i4855.js', 'ExecuteSelectorCommand');
+            return runTests('testcafe-fixtures/i4855.js', 'ExecuteSelectorCommand', { only: 'chrome' });
         });
 
         it('ExecuteClientFunctionCommand', () => {
-            return runTests('testcafe-fixtures/i4855.js', 'ExecuteClientFunctionCommand');
+            return runTests('testcafe-fixtures/i4855.js', 'ExecuteClientFunctionCommand', { only: 'chrome' });
         });
     });
 
     it('Should correctly synchronize a cookie from a new same-domain window', () => {
-        return runTests('testcafe-fixtures/cookie-synchronization/same-domain.js');
+        return runTests('testcafe-fixtures/cookie-synchronization/same-domain.js', null, { only: 'chrome' });
     });
 
     it('Should continue debugging when a child window closes', () => {
@@ -289,16 +289,6 @@ describe('Multiple windows', () => {
         });
     });
 
-    describe('Resize', () => {
-        it('Resize multiple windows', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Resize multiple windows', { only: 'chrome' });
-        });
-
-        it('Maximize multiple windows', () => {
-            return runTests('testcafe-fixtures/api/api-test.js', 'Maximize multiple windows', { only: 'chrome' });
-        });
-    });
-
     describe('iFrames', () => {
         it('Should switch to child window if it is opened in iFrame', () => {
             return runTests('testcafe-fixtures/iframe.js', 'Open child window if iframe', { only: 'chrome' });
@@ -323,6 +313,42 @@ describe('Multiple windows', () => {
 
                     return testCafe.close();
                 });
+        });
+    });
+
+    describe('Resize', () => {
+        function runTestsResize (browser) {
+            return createTestCafe('127.0.0.1', 1335, 1336)
+                .then(tc => {
+                    testCafe = tc;
+                })
+                .then(() => {
+                    return testCafe
+                        .createRunner()
+                        .src(path.join(__dirname, './testcafe-fixtures/api/api-test.js'))
+                        .filter(testName => testName === 'Resize multiple windows')
+                        .browsers(browser)
+                        .run();
+                })
+                .then(failedCount => {
+                    expect(failedCount).eql(0);
+
+                    return testCafe.close();
+                });
+        }
+
+        it('Resize multiple windows', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Resize multiple windows');
+        });
+
+        it('Maximize multiple windows', () => {
+            return runTests('testcafe-fixtures/api/api-test.js', 'Maximize multiple windows');
+        });
+
+        it('Resize headless', () => {
+            return runTestsResize('firefox:headless').then(() => {
+                return runTestsResize('chrome:headless');
+            });
         });
     });
 });
