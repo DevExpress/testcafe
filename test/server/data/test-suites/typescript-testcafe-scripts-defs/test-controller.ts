@@ -789,3 +789,11 @@ const getInputValue = ClientFunction(() => (<HTMLInputElement>document.getElemen
         .expect(messages.warn.length).eql(0)
         .expect(messages.error.length).eql(0);
 })();
+
+(async () => {
+    function test (): Promise<void> {
+        return t.expect(1).ok();
+    }
+
+    test();
+})();

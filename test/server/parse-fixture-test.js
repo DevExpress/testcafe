@@ -40,6 +40,14 @@ function testFixtureParser (dir, expectedStructure, fileParser, codeParser) {
             .then(function (structure) {
                 expect(structure).eql(expected);
                 expect(codeParser(fileContent)).eql(expected);
+
+                Object.values(structure).forEach(fixture => {
+                    expect(fixture.loc).not.undefined;
+
+                    fixture.tests.forEach(test => {
+                        expect(test.loc).not.undefined;
+                    });
+                });
             });
     });
 
