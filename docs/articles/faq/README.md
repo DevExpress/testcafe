@@ -288,3 +288,17 @@ According to users' feedback, the following CI systems work best with TestCafe:
 * [TravisCI](../documentation/guides/continuous-integration/travis.md)
 * [CircleCI](../documentation/guides/continuous-integration/circleci.md)
 * [AppVeyor](../documentation/guides/continuous-integration/appveyor.md)
+
+### 'The browser can't open the page: can't establish a secure connection to the server'
+
+If your computer is connected to multiple networks (for instance, if it uses a VPN connection), TestCafe may incorrectly detect the host IP and not open the tested pages.
+
+```text
+<browsername> cannot open the page because <browsername> is unable to establish a secure connection to the server.
+```
+
+To fix the issue, launch TestCafe with the `--hostname localhost` CLI option:
+
+```sh
+testcafe chrome test.js --hostname localhost
+```
