@@ -50,6 +50,7 @@ TestCafe also allows you to create a [configuration file](../../reference/config
 * [Specify the Report Format](#specify-the-report-format)
 * [Customize Screenshot and Video Settings](#customize-screenshot-and-video-settings)
 * [Run Tests Concurrently](#run-tests-concurrently)
+  * [Use Concurrency on Remote Devices](#use-concurrency-on-remote-devices)
 * [Stage the Tested App](#stage-the-tested-app)
 * [Provide a Proxy URL](#provide-a-proxy-url)
 * [Live Mode](#live-mode)
@@ -497,19 +498,21 @@ In this case, tests are distributed across four Safari instances and the same te
 
 > If an uncaught error or unhandled promise rejection occurs on the server during test execution, all tests running concurrently will fail.
 
-When you run tests on [remote devices](../../reference/command-line-interface.md#remote-browsers),
-create connections for each instance of each browser you test against. When using
-the command line interface, specify this number after the `remote:` keyword. In API, create
-a [browser connection](../../reference/testcafe-api/browserconnection/README.md) for each instance.
+### Use Concurrency on Remote Devices
 
-On a remote device, invoke all the required instances manually. The total number of instances
-should divide by the concurrency parameter `n`. Otherwise, an exception will be thrown.
+When you run tests on [remote devices](../../reference/command-line-interface.md#remote-browsers),
+create browser connections for each instance of each browser you test against. The total number of instances is *c\*n*, where `c` is the concurrency factor and `n` is the number of browsers.
+
+In the command line interface, specify the number of browser instances after the `remote:` keyword.  For example, use `-c 2 remote:6` to run tests in Chrome, Firefox, and Edge, with two instances for each browser.If you use the API, create a [browser connection](../../reference/testcafe-api/browserconnection/README.md) for each instance in code.
+
+Launch all the required browser instances manually on a remote device. The total number of instances
+should divide by the concurrency factor `c`. Otherwise, an exception is thrown.
 
 ```sh
 testcafe -c 2 remote:4 tests/test.js
 ```
 
-If you test against multiple remote browsers, open and connect all instances of one browser before connecting the next browser.
+If you test against multiple remote browsers, open and connect all instances of one browser before you connect the next browser.
 
 ## Stage the Tested App
 
