@@ -52,3 +52,11 @@ test
         .expect(warn).eql([])
         .expect(info).eql([]);
 });
+
+test
+    .page('http://localhost:3000/fixtures/api/es-next/console/pages/i5600.html')
+    ("page with overridden 'Object.keys' method (GH-5600)", async t => {
+        const { log } = await t.getBrowserConsoleMessages();
+
+        await t.expect(log.toString()).eql('console message 1');
+    });

@@ -10,4 +10,8 @@ describe('[API] t.getBrowserConsoleMessages()', function () {
     it('Should return empty collections if there are no messages', () => {
         return runTests('./testcafe-fixtures/console-test.js', 'empty collections (GH-4662)');
     });
+
+    it("Should correctly work with a page with overridden 'Object.keys' method (GH-5600)", () => {
+        return runTests('./testcafe-fixtures/console-test.js', "page with overridden 'Object.keys' method (GH-5600)");
+    });
 });
