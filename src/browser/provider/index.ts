@@ -92,8 +92,8 @@ export default class BrowserProvider {
     }
 
     private _setWindowDescriptor (browserId: string, windowDescriptor: string | null): void {
-        if (this.plugin._setWindowDescriptor) {
-            this.plugin._setWindowDescriptor(browserId, windowDescriptor);
+        if (this.plugin.setWindowDescriptor) {
+            this.plugin.setWindowDescriptor(browserId, windowDescriptor);
 
             return;
         }

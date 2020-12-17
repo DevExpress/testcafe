@@ -12,7 +12,7 @@ const MAX_RESIZE_RETRY_COUNT = 2;
 const HEADER_SEPARATOR       = ':';
 
 module.exports = class MarionetteClient {
-    constructor (port = 2828, host = '127.0.0.1') {
+    constructor (port = 2828, runtimeInfo, host = '127.0.0.1') {
         this.currentPacketNumber = 1;
         this.events              = new EventEmitter();
         this.port                = port;
@@ -22,12 +22,19 @@ module.exports = class MarionetteClient {
         this.getPacketPromise    = Promise.resolve();
         this.sendPacketPromise   = Promise.resolve();
 
+        this._runtimeInfo   = runtimeInfo;
+        this._windowHandles = {};
+
         this.protocolInfo = {
             applicationType:    '',
             marionetteProtocol: '',
         };
 
         this.sessionInfo = null;
+    }
+
+    get activeWindowId () {
+        return this._runtimeInfo.activeWindowId;
     }
 
     async _attemptToConnect (port, host) {
@@ -125,6 +132,51 @@ module.exports = class MarionetteClient {
         throw new Error(`${error.error}${error.message ? ': ' + error.message : ''}`);
     }
 
+    async _switchToWindow (windowHandle) {
+        await this._getResponse({
+            command:    COMMANDS.switchToWindow,
+            parameters: { handle: windowHandle }
+        });
+    }
+
+    async _getActiveWindowHandle () {
+        const windowHandles = await this._getResponse({
+            command: COMMANDS.getWindowHandles
+        });
+
+        for (const handle of windowHandles) {
+            await this._switchToWindow(handle);
+
+            const title = await this._getResponse({ command: COMMANDS.getTitle });
+
+            if (title.value.includes(this.activeWindowId))
+                return handle;
+        }
+
+        return null;
+    }
+
+    async _ensureActiveWindow () {
+        let handle = this._windowHandles[this.activeWindowId];
+
+        if (handle) {
+            await this._switchToWindow(handle);
+
+            return;
+        }
+
+        handle = await this._getActiveWindowHandle();
+
+        if (handle)
+            this._windowHandles[this.activeWindowId] = handle;
+    }
+
+    async _request (packet) {
+        await this._ensureActiveWindow();
+
+        return this._getResponse(packet);
+    }
+
     async _getResponse (packet) {
         const packetNumber = this.currentPacketNumber;
 
@@ -142,7 +194,7 @@ module.exports = class MarionetteClient {
     }
 
     async _getScreenshotRawData (fullPage = false) {
-        return await this._getResponse({
+        return await this._request({
             command:    COMMANDS.takeScreenshot,
             parameters: {
                 full:   fullPage,
@@ -171,7 +223,7 @@ module.exports = class MarionetteClient {
     }
 
     async executeScript (code) {
-        return await this._getResponse({
+        return await this._request({
             command:    COMMANDS.executeScript,
             parameters: { script: `return (${code})()` }
         });
@@ -188,9 +240,9 @@ module.exports = class MarionetteClient {
         let attemptCounter      = 0;
 
         while (attemptCounter++ < MAX_RESIZE_RETRY_COUNT && (pageRect.width !== width || pageRect.height !== height)) {
-            const currentRect = await this._getResponse({ command: COMMANDS.getWindowRect });
+            const currentRect = await this._request({ command: COMMANDS.getWindowRect });
 
-            await this._getResponse({
+            await this._request({
                 command: COMMANDS.setWindowRect,
 
                 parameters: {
@@ -206,7 +258,7 @@ module.exports = class MarionetteClient {
     }
 
     async quit () {
-        await this._getResponse({ command: COMMANDS.quit });
+        await this._request({ command: COMMANDS.quit });
     }
 };
 

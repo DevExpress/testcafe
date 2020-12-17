@@ -123,25 +123,6 @@ export default {
         };
     },
 
-    getPageTitle (browserId) {
-        const runtimeInfo     = this.openedBrowsers[browserId];
-        const isIdlePageShown = !Object.keys(runtimeInfo.windowDescriptors).length;
-
-        return isIdlePageShown ? browserId : runtimeInfo.activeWindowId;
-    },
-
-    getWindowDescriptor (browserId) {
-        const runtimeInfo = this.openedBrowsers[browserId];
-
-        return runtimeInfo.windowDescriptors[runtimeInfo.activeWindowId];
-    },
-
-    _setWindowDescriptor (browserId, windowDescriptor) {
-        const runtimeInfo = this.openedBrowsers[browserId];
-
-        runtimeInfo.windowDescriptors[runtimeInfo.activeWindowId] = windowDescriptor;
-    },
-
     async _ensureWindowIsExpanded (browserId, { height, width, availableHeight, availableWidth, outerWidth, outerHeight }) {
         if (height < MIN_AVAILABLE_DIMENSION || width < MIN_AVAILABLE_DIMENSION) {
             const newHeight = Math.max(availableHeight, MIN_AVAILABLE_DIMENSION);
