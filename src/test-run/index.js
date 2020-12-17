@@ -148,8 +148,8 @@ export default class TestRun extends AsyncEventEmitter {
 
     _getRequestTimeout (test, opts) {
         return {
-            page: opts.pageRequestTimeout || test.timeouts && test.timeouts.pageRequestTimeout,
-            ajax: opts.ajaxRequestTimeout || test.timeouts && test.timeouts.ajaxRequestTimeout
+            page: opts.pageRequestTimeout || test.timeouts?.pageRequestTimeout,
+            ajax: opts.ajaxRequestTimeout || test.timeouts?.ajaxRequestTimeout
         };
     }
 
