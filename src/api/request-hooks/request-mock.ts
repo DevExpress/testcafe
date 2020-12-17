@@ -1,5 +1,12 @@
 import RequestHook from './hook';
-import { ResponseMock, RequestEvent, ResponseEvent, RequestFilterRule } from 'testcafe-hammerhead';
+
+import {
+    ResponseMock,
+    RequestEvent,
+    ResponseEvent,
+    RequestFilterRule
+} from 'testcafe-hammerhead';
+
 import { APIError } from '../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../errors/types';
 import WARNING_MESSAGE from '../../notifications/warning-message';
@@ -25,7 +32,7 @@ class RequestMock extends RequestHook {
 
     public async onResponse (event: ResponseEvent): Promise<void> {
         if (event.isSameOriginPolicyFailed)
-            this.warningLog!.addWarning(WARNING_MESSAGE.requestMockCORSValidationFailed, RequestMock.name, event._requestFilterRule);
+            this.warningLog?.addWarning(WARNING_MESSAGE.requestMockCORSValidationFailed, RequestMock.name, event._requestFilterRule);
     }
 
     // API
