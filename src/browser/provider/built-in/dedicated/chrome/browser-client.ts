@@ -48,18 +48,23 @@ export class BrowserClient {
         return tabs[0];
     }
 
-    private async _createClient (): Promise<remoteChrome.ProtocolApi> {
-        const target                     = await this._getActiveTab();
-        const client                     = await remoteChrome({ target, port: this._runtimeInfo.cdpPort });
-        const { Page, Network, Runtime } = client;
+    private async _createClient (): Promise<remoteChrome.ProtocolApi | null> {
+        try {
+            const target                     = await this._getActiveTab();
+            const client                     = await remoteChrome({ target, port: this._runtimeInfo.cdpPort });
+            const { Page, Network, Runtime } = client;
 
-        this._clients[this._clientKey] = client;
+            this._clients[this._clientKey] = client;
 
-        await Page.enable();
-        await Network.enable({});
-        await Runtime.enable();
+            await Page.enable();
+            await Network.enable({});
+            await Runtime.enable();
 
-        return client;
+            return client;
+        }
+        catch (err) {
+            return null;
+        }
     }
 
     private async _setupClient (client: remoteChrome.ProtocolApi): Promise<void> {
@@ -161,12 +166,14 @@ export class BrowserClient {
     }
 
     public async getActiveClient (): Promise<remoteChrome.ProtocolApi> {
-        const client = this._clients[this._clientKey];
+        let client = this._clients[this._clientKey];
 
         if (client)
             return client;
 
-        return this._createClient();
+        client = await this._createClient() as remoteChrome.ProtocolApi;
+
+        return client;
     }
 
     public async init (): Promise<void> {
@@ -178,7 +185,7 @@ export class BrowserClient {
             if (!this._parentTarget)
                 return;
 
-            const client = await this._createClient();
+            const client = await this._createClient() as remoteChrome.ProtocolApi;
 
             await this._calculateEmulatedDevicePixelRatio(client);
             await this._setupClient(client);
