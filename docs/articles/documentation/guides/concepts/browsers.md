@@ -334,7 +334,7 @@ When you pass the `:userProfile` flag to a portable browser, also use the [brows
 testcafe chrome:d:\chrome_portable\chrome.exe:userProfile tests/test.js
 ```
 
-Set the [cdpPort](#emulator-parameters) property to `9222` if you use the `:userProfile` flag and video recording:
+Set the [cdpPort](#emulator-parameters) property to `9222` if you use the `:userProfile` flag and video recording in Chrome:
 
 ```sh
 testcafe chrome:userProfile:emulation:cdpPort=9222 test.js --video artifacts/videos
