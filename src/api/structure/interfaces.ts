@@ -8,3 +8,8 @@ export interface AuthCredentials {
     domain?: string;
     workstation?: string;
 }
+
+export interface TestTimeouts {
+    pageRequestTimeout?: number;
+    ajaxRequestTimeout?: number;
+}

@@ -41,7 +41,9 @@ enum OptionNames {
     debugLogger = 'debugLogger',
     disableMultipleWindows = 'disableMultipleWindows',
     experimentalCompilerService = 'experimentalCompilerService',
-    compilerOptions = 'compilerOptions'
+    compilerOptions = 'compilerOptions',
+    pageRequestTimeout = 'pageRequestTimeout',
+    ajaxRequestTimeout = 'ajaxRequestTimeout'
 }
 
 export default OptionNames;
