@@ -556,7 +556,9 @@ describe('TypeScriptConfiguration', () => {
                 });
         });
 
-        it('TestCafe config + TypeScript config', () => {
+        it('TestCafe config + TypeScript config', function () {
+            this.timeout(3000);
+
             let runner = null;
 
             createTestCafeConfigurationFile({
@@ -590,7 +592,9 @@ describe('TypeScriptConfiguration', () => {
         });
 
         describe('Should warn message on rewrite a non-overridable property', () => {
-            it('TypeScript config', () => {
+            it('TypeScript config', function () {
+                this.timeout(3000);
+
                 let runner = null;
 
                 createConfigFile(customTSConfigFilePath, {
