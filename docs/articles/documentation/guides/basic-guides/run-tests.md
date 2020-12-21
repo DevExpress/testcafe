@@ -35,7 +35,7 @@ finally {
 TestCafe also allows you to create a [configuration file](../../reference/configuration-file.md) where you can define test run settings. You can then omit these settings in the command line or API to use values from the configuration file.
 
 * [Specify Tests to Run](#specify-tests-to-run)
-  * [Run Tests From Multiple Sources](#run-tests-from-multiple-sources)
+  * [Run Tests from Multiple Sources](#run-tests-from-multiple-sources)
   * [Use Glob Patterns](#use-glob-patterns)
   * [Filter Tests and Fixtures by Name](#filter-tests-and-fixtures-by-name)
   * [Filter Tests and Fixtures by Metadata](#filter-tests-and-fixtures-by-metadata)
@@ -52,7 +52,7 @@ TestCafe also allows you to create a [configuration file](../../reference/config
 * [Run Tests Concurrently](#run-tests-concurrently)
   * [Use Concurrency on Remote Devices](#use-concurrency-on-remote-devices)
 * [Stage the Tested App](#stage-the-tested-app)
-* [Provide a Proxy URL](#provide-a-proxy-url)
+* [Specify a Proxy URL](#specify-a-proxy-url)
 * [Live Mode](#live-mode)
   * [How Live Mode Works](#how-live-mode-works)
   * [Console Shortcuts in Live Mode](#console-shortcuts-in-live-mode)
@@ -81,7 +81,7 @@ await runner
 
 *Related configuration file property:* [src](../../reference/configuration-file.md#src)
 
-### Run Tests From Multiple Sources
+### Run Tests from Multiple Sources
 
 You can specify multiple test files or directories:
 
@@ -548,7 +548,7 @@ await runner
 
 *Related configuration file property:* [appInitDelay](../../reference/configuration-file.md#appinitdelay)
 
-## Provide a Proxy URL
+## Specify a Proxy URL
 
 If your network uses a proxy to access the internet, specify the proxy URL to TestCafe. Use the [--proxy](../../reference/command-line-interface.md#--proxy-host) command line argument or the [runner.useProxy](../../reference/testcafe-api/runner/useproxy.md) API method:
 
@@ -645,7 +645,7 @@ The quarantine mode is designed to isolate *non-deterministic* tests (that is, t
 
 When the quarantine mode is enabled, tests run according to the following logic:
 
-1. A test runs at the first time. If it passes, TestCafe proceeds to the next test.
+1. A test runs for the first time. If it passes, TestCafe proceeds to the next test.
 2. If the test fails, it runs again until it passes or fails three times.
 3. The most frequent outcome is recorded as the test result.
 4. If the test result differs between test runs, the test is marked as unstable.
