@@ -351,6 +351,10 @@ export default class BrowserConnection extends EventEmitter {
         return userAgent;
     }
 
+    public get retryTestPages (): boolean {
+        return this.browserConnectionGateway.retryTestPages;
+    }
+
     public get hasQueuedJobs (): boolean {
         return !!this.jobQueue.length;
     }

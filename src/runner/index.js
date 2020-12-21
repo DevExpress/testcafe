@@ -34,6 +34,7 @@ import { setUniqueUrls } from '../custom-client-scripts/utils';
 import ReporterStreamController from './reporter-stream-controller';
 import CustomizableCompilers from '../configuration/customizable-compilers';
 import { getConcatenatedValuesString, getPluralSuffix } from '../utils/string';
+import isLocalhost from '../utils/is-localhost';
 
 const DEBUG_LOGGER = debug('testcafe:runner');
 
@@ -355,6 +356,25 @@ export default class Runner extends EventEmitter {
         throw new GeneralError(RUNTIME_ERRORS.cannotCustomizeSpecifiedCompilers, compilerListStr, pluralSuffix);
     }
 
+    _validateRetryTestPagesOption () {
+        const retryTestPagesOption = this.configuration.getOption(OPTION_NAMES.retryTestPages);
+
+        if (!retryTestPagesOption)
+            return;
+
+        const ssl = this.configuration.getOption(OPTION_NAMES.ssl);
+
+        if (ssl)
+            return;
+
+        const hostname = this.configuration.getOption(OPTION_NAMES.hostname);
+
+        if (isLocalhost(hostname))
+            return;
+
+        throw new GeneralError(RUNTIME_ERRORS.cannotEnableRetryTestPagesOption);
+    }
+
     async _validateRunOptions () {
         this._validateDebugLogger();
         this._validateScreenshotOptions();
@@ -363,6 +383,7 @@ export default class Runner extends EventEmitter {
         this._validateConcurrencyOption();
         this._validateProxyBypassOption();
         this._validateCompilerOptions();
+        this._validateRetryTestPagesOption();
         this._validateRequestTimeoutOption(OPTION_NAMES.pageRequestTimeout);
         this._validateRequestTimeoutOption(OPTION_NAMES.ajaxRequestTimeout);
     }

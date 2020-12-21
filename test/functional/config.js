@@ -1,7 +1,5 @@
-const os = require('os');
-
 const isTravisEnvironment = !!process.env.TRAVIS;
-const hostname            = isTravisEnvironment ? os.hostname() : '127.0.0.1';
+const hostname            = '127.0.0.1';
 
 const browserProviderNames = {
     sauceLabs:    'sauceLabs',

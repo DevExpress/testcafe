@@ -350,6 +350,64 @@ describe('Runner', () => {
         });
     });
 
+    describe('--retry-test-pages', () => {
+        it('hostname is not localhost and ssl is disabled', () => {
+            runner.configuration.mergeOptions({ [OptionNames.retryTestPages]: true });
+            runner.configuration.mergeOptions({ [OptionNames.hostname]: 'http://example.com' });
+
+            console.log(runner.configuration.getOption('hostname'));
+
+            return runner
+                .browsers(connection)
+                .src('test/server/data/test-suites/basic/testfile2.js')
+                .run()
+                .then(() => {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(err => {
+                    expect(err.message).eql(
+                        'Cannot enable the \'retryTestPages\' option. To enable the \'retryTestPages\' option please do one of the following:\n' +
+                        '-- specify the \'localhost\' value for the \'hostname\' option\n' +
+                        '-- run TestCafe over HTTPS protocol\n'
+                    );
+                });
+        });
+
+        it('hostname is localhost and ssl is disabled', () => {
+            runner.configuration.mergeOptions({ [OptionNames.retryTestPages]: true });
+
+            runner._runTask = () => {
+                throw new Error('Promise rejection expected');
+            };
+
+            return runner
+                .browsers(connection)
+                .src('test/server/data/test-suites/basic/testfile2.js')
+                .run()
+                .catch(err => {
+                    expect(err.message).eql('Promise rejection expected');
+                });
+        });
+
+        it('hostname is not localhost and ssl is enabled', () => {
+            runner.configuration.mergeOptions({ [OptionNames.retryTestPages]: true });
+            runner.configuration.mergeOptions({ [OptionNames.hostname]: 'http://example.com' });
+            runner.configuration.mergeOptions({ [OptionNames.ssl]: 'ssl' });
+
+            runner._runTask = () => {
+                throw new Error('Promise rejection expected');
+            };
+
+            return runner
+                .browsers(connection)
+                .src('test/server/data/test-suites/basic/testfile2.js')
+                .run()
+                .catch(err => {
+                    expect(err.message).eql('Promise rejection expected');
+                });
+        });
+    });
+
     describe('.video()', () => {
         it('Should throw an error if video options are specified without a base video path', () => {
             return runner

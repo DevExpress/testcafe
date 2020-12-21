@@ -146,5 +146,6 @@ export const RUNTIME_ERRORS = {
     uncaughtErrorInReporter:                            'E1058',
     roleInitializedWithRelativeUrl:                     'E1059',
     typeScriptCompilerLoadingError:                     'E1060',
-    cannotCustomizeSpecifiedCompilers:                  'E1061'
+    cannotCustomizeSpecifiedCompilers:                  'E1061',
+    cannotEnableRetryTestPagesOption:                   'E1062'
 };
