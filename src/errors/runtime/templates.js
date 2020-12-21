@@ -120,6 +120,6 @@ export default {
     [RUNTIME_ERRORS.browserConnectionError]:            '{originalErr}\n{notOpenedConnectionsNum} of {allConnectionsNum} browser connections have not been established:{notOpenedConnectionsList}\n{hintsList}',
     [CONNECTION_ERROR_HINTS.toHighConcurrencyFactor]:   'The error can be due to a concurrency factor that is too high for the host machine’s performance (the factor value {concurrencyFactor} was specified). ' +
                                                         'Try to decrease the concurrency factor or ensure more system resources are available on the host machine.',
-    [CONNECTION_ERROR_HINTS.useBrowserInitOption]: 'Use the \'--browser-init-timeout\' option to allow more time for the browser to start.',
+    [CONNECTION_ERROR_HINTS.useBrowserInitOption]: 'Use the \'--browser-init-timeout\' option to allow more time for the browser to start. Currently, the timeout is {browserInitTimeoutMsg}.',
     [CONNECTION_ERROR_HINTS.restErrorCauses]:      'The error can also be caused by network issues or remote device failure. Make sure that the connection is stable and the remote device can be reached.'
 };

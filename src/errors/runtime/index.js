@@ -7,6 +7,7 @@ import renderCallsiteSync from '../../utils/render-callsite-sync';
 import { CONNECTION_ERROR_HINTS, RUNTIME_ERRORS } from '../types';
 import BrowserConnectionStatus from '../../browser/connection/status';
 import WarningLog from '../../notifications/warning-log';
+import { getUsedBrowserInitTimeoutMsg } from '../../utils/string';
 
 const ERROR_SEPARATOR = '\n\n';
 
@@ -160,7 +161,9 @@ export class BrowserConnectionError extends GeneralError {
         if (browserSetOpts.concurrency > 3)
             hints += LIST_PREFIX + renderTemplate(TEMPLATES[CONNECTION_ERROR_HINTS.toHighConcurrencyFactor], browserSetOpts.concurrency);
 
-        hints += LIST_PREFIX + renderTemplate(TEMPLATES[CONNECTION_ERROR_HINTS.useBrowserInitOption]);
+        const timeoutMsg = getUsedBrowserInitTimeoutMsg(browserSetOpts.browserInitTimeout);
+
+        hints += LIST_PREFIX + renderTemplate(TEMPLATES[CONNECTION_ERROR_HINTS.useBrowserInitOption], timeoutMsg);
         hints += LIST_PREFIX + renderTemplate(TEMPLATES[CONNECTION_ERROR_HINTS.restErrorCauses]);
 
         super(code, originalError.message, notOpenedConnectionsNum, allConnectionsNum, notOpenedConnectionsList, hints);

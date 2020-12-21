@@ -671,7 +671,8 @@ describe('Runner', () => {
                                             '1 of 1 browser connections have not been established:\n' +
                                             '- remote\n\n' +
                                             'Hints:\n' +
-                                            '- Use the \'--browser-init-timeout\' option to allow more time for the browser to start.\n' +
+                                            '- Use the \'--browser-init-timeout\' option to allow more time for the browser to start. ' +
+                                            'Currently, the timeout is 0.1 seconds for all browsers.\n' +
                                             '- The error can also be caused by network issues or remote device failure. ' +
                                             'Make sure that the connection is stable and the remote device can be reached.');
                 });
@@ -1250,6 +1251,31 @@ describe('Runner', () => {
                 .catch(err => {
                     expect(err.message).contains('- some warning from "browser-alias1"');
                     expect(err.message).contains('- some warning from "browser-alias2"');
+                });
+        });
+
+        it('Should include timeout with the default values when "browser-init-timeout" is not specified', function () {
+            return runner
+                .src('./test/server/data/test-suites/basic/testfile1.js')
+                .browsers(['warningProvider:browser-alias1', 'warningProvider:browser-alias2'])
+                .run()
+                .then(() => {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(err => {
+                    expect(err.message).eql(
+                        'Unable to establish one or more of the specified browser connections.\n' +
+                        '2 of 2 browser connections have not been established:\n' +
+                        '- warningProvider:browser-alias1\n' +
+                        '- warningProvider:browser-alias2\n\n' +
+                        'Hints:\n' +
+                        '- some warning from "browser-alias1"\n' +
+                        '- some warning from "browser-alias2"\n' +
+                        '- Use the \'--browser-init-timeout\' option to allow more time for the browser to start. ' +
+                        'Currently, the timeout is 2 minutes for local browsers and 6 minutes for remotes.\n' +
+                        '- The error can also be caused by network issues or remote device failure. ' +
+                        'Make sure that the connection is stable and the remote device can be reached.'
+                    );
                 });
         });
 

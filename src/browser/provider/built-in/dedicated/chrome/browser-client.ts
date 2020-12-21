@@ -62,6 +62,25 @@ export class BrowserClient {
         return tabs[0];
     }
 
+    private async guardTimeExecution (inspectedMethodName: string, fn: () => Promise<void>, timeLimit: number): Promise<void> {
+        const timeElapsedStart = process.hrtime();
+
+        await fn();
+
+        const timeElapsedFinish = process.hrtime(timeElapsedStart);
+
+        this.debugLogger(`${inspectedMethodName} took ${prettyTime(timeElapsedFinish)}`);
+
+        const [ elapsedSeconds ] = timeElapsedFinish;
+
+        if (elapsedSeconds > timeLimit) {
+            this._runtimeInfo.providerMethods.reportWarning(
+                WARNING_MESSAGE.browserProviderDropOfPerformance,
+                this._runtimeInfo.browserName
+            );
+        }
+    }
+
     private async _createClient (): Promise<remoteChrome.ProtocolApi> {
         const target                     = await this._getActiveTab();
         const client                     = await remoteChrome({ target, port: this._runtimeInfo.cdpPort });
@@ -69,18 +88,9 @@ export class BrowserClient {
 
         this._clients[this._clientKey] = client;
 
-        const timeElapsedStart = process.hrtime();
-
-        await Page.enable();
-
-        const timeElapsedFinish = process.hrtime(timeElapsedStart);
-
-        this.debugLogger(`Page.enable took ${prettyTime(timeElapsedFinish)}`);
-
-        const [ elapsedSeconds ] = timeElapsedFinish;
-
-        if (elapsedSeconds > PAGE_ENABLE_TIME_UPPERBOUND)
-            this._runtimeInfo.providerMethods.reportWarning(WARNING_MESSAGE.browserProviderDropOfPerformance, this._runtimeInfo.browserName);
+        await this.guardTimeExecution('Page.enable', async () => {
+            await Page.enable();
+        }, PAGE_ENABLE_TIME_UPPERBOUND);
 
         await Network.enable({});
         await Runtime.enable();
@@ -97,25 +107,16 @@ export class BrowserClient {
     }
 
     private async _setDeviceMetricsOverride (client: remoteChrome.ProtocolApi, width: number, height: number, deviceScaleFactor: number, mobile: boolean): Promise<void> {
-        const timeElapsedStart = process.hrtime();
-
-        await client.Emulation.setDeviceMetricsOverride({
-            width,
-            height,
-            deviceScaleFactor,
-            mobile,
-            // @ts-ignore
-            fitWindow: false
-        });
-
-        const timeElapsedFinish = process.hrtime(timeElapsedStart);
-
-        this.debugLogger(`Emulation.setDeviceMetricsOverride took ${prettyTime(timeElapsedFinish)}`);
-
-        const [ elapsedSeconds ] = timeElapsedFinish;
-
-        if (elapsedSeconds > SET_DEVICE_METRICS_OVERRIDE_TIME_UPPERBOUND)
-            this._runtimeInfo.providerMethods.reportWarning(WARNING_MESSAGE.browserProviderDropOfPerformance, this._runtimeInfo.browserName);
+        await this.guardTimeExecution('Emulation.setDeviceMetricsOverride', async () => {
+            await client.Emulation.setDeviceMetricsOverride({
+                width,
+                height,
+                deviceScaleFactor,
+                mobile,
+                // @ts-ignore
+                fitWindow: false
+            });
+        }, SET_DEVICE_METRICS_OVERRIDE_TIME_UPPERBOUND);
     }
 
     private async _setUserAgentEmulation (client: remoteChrome.ProtocolApi): Promise<void> {
@@ -192,18 +193,9 @@ export class BrowserClient {
         if (client && config.emulation) {
             await this._setDeviceMetricsOverride(client, viewportSize.width, viewportSize.height, emulatedDevicePixelRatio, config.mobile);
 
-            const timeElapsedStart = process.hrtime();
-
-            await client.Emulation.setVisibleSize({ width: viewportSize.width, height: viewportSize.height });
-
-            const timeElapsedFinish = process.hrtime(timeElapsedStart);
-
-            this.debugLogger(`Emulation.setVisibleSize took ${prettyTime(timeElapsedFinish)}`);
-
-            const [ elapsedSeconds ] = timeElapsedFinish;
-
-            if (elapsedSeconds > SET_VISIBLE_SIZE_TIME_UPPERBOUND)
-                this._runtimeInfo.providerMethods.reportWarning(WARNING_MESSAGE.browserProviderDropOfPerformance, this._runtimeInfo.browserName);
+            await this.guardTimeExecution('Emulation.setVisibleSize', async () => {
+                await client.Emulation.setVisibleSize({ width: viewportSize.width, height: viewportSize.height });
+            }, SET_VISIBLE_SIZE_TIME_UPPERBOUND);
         }
     }
 
