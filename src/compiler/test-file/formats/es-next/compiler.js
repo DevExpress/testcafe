@@ -1,6 +1,7 @@
 import loadBabelLibs from '../../../babel/load-libs';
 import APIBasedTestFileCompilerBase from '../../api-based';
 import isFlowCode from './is-flow-code';
+import BASE_BABEL_OPTIONS from '../../../babel/get-base-babel-options';
 
 export default class ESNextTestFileCompiler extends APIBasedTestFileCompilerBase {
     static getBabelOptions (filename, code) {
@@ -13,16 +14,12 @@ export default class ESNextTestFileCompiler extends APIBasedTestFileCompilerBase
             moduleResolver
         } = loadBabelLibs();
 
-        const opts = {
-            presets:       [presetStage2, presetEnvForTestCode, presetReact],
-            plugins:       [transformRuntime, moduleResolver],
-            filename:      filename,
-            retainLines:   true,
-            sourceMaps:    'inline',
-            ast:           false,
-            babelrc:       false,
-            highlightCode: false
-        };
+        const opts = Object.assign({}, BASE_BABEL_OPTIONS, {
+            presets:    [presetStage2, presetEnvForTestCode, presetReact],
+            plugins:    [transformRuntime, moduleResolver],
+            sourceMaps: 'inline',
+            filename
+        });
 
         if (isFlowCode(code))
             opts.presets.push(presetFlow);
