@@ -58,7 +58,7 @@ Save and activate user roles to easily switch between different user accounts.
 
 Keep your code clean with hooks — routines that are repeated before and after each test.
 
-## Helps you help yourself
+## Superior User Experience
 
 ### TestCafe Studio
 
@@ -66,7 +66,7 @@ The GUI and the test recorder built into TestCafe Studio make our product access
 
 ### TestCafe Live
 
-Enable the built-in [Live Mode](https://devexpress.github.io/testcafe/documentation/guides/basic-guides/run-tests.html#live-mode) to reload your test every time you make changes to the test file.
+Enable the built-in [Live Mode](https://devexpress.github.io/testcafe/documentation/guides/basic-guides/run-tests.html#live-mode) to restart your test every time you make changes to the test file.
 
 ### Debugging assistance
 
@@ -99,9 +99,9 @@ TestCafe's hybrid client-server architecture lets it execute both system-level a
 * TestCafe tests are Node.js scripts. They can launch services and applications, read and write system files, make use of your favorite libraries.
 * TestCafe uses client-side automation scripts to execute in-browser actions. This is how our testing library handles asynchronous events, simulates user activity, and executes user-defined JavaScript.
 
-Early versions of TestCafe ran entirely in the browser. Moving to a hybrid architecture allowed us to improve the tests' stability and expand the framework's range of testing capabilities. 
+Early versions of TestCafe ran entirely in the browser. A hybrid architecture allowed us to improve test stability and extend the framework's testing capabilities. 
 
-### Page Proxying: Bridging the Client-Server Gap
+### Page Proxying
 
 You may notice that when you run TestCafe, the URL in the browser’s address bar does not match that of your website. This happens because TestCafe runs an under-the-hood reverse proxy.
 
