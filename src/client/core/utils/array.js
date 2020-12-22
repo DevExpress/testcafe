@@ -62,6 +62,10 @@ export function reduce (arr, callback, initialValue) {
     return nativeReduce.call(arr, callback, initialValue);
 }
 
+export function unshift (arr, ...items) {
+    return nativeSplice.call(arr, 0, 0, ...items);
+}
+
 export function remove (arr, item) {
     const index = indexOf(arr, item);
 
