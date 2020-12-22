@@ -102,18 +102,30 @@ describe('Multiple windows', () => {
     });
 
     it('Should make screenshots of different windows', () => {
-        return runTests('testcafe-fixtures/features/screenshots.js', null, { only: 'chrome', setScreenshotPath: true })
+        return runTests('testcafe-fixtures/features/screenshots.js', null, { setScreenshotPath: true })
             .then(() => {
-                return assertScreenshotColor('0.png', RED_PIXEL);
+                return assertScreenshotColor('chrome0.png', RED_PIXEL);
             })
             .then(() => {
-                return assertScreenshotColor('1.png', GREEN_PIXEL);
+                return assertScreenshotColor('chrome1.png', GREEN_PIXEL);
             })
             .then(() => {
-                return assertScreenshotColor('2.png', RED_PIXEL);
+                return assertScreenshotColor('chrome2.png', RED_PIXEL);
             })
             .then(() => {
-                return assertScreenshotColor('3.png', GREEN_PIXEL);
+                return assertScreenshotColor('chrome3.png', GREEN_PIXEL);
+            })
+            .then(() => {
+                return assertScreenshotColor('firefox0.png', RED_PIXEL);
+            })
+            .then(() => {
+                return assertScreenshotColor('firefox1.png', GREEN_PIXEL);
+            })
+            .then(() => {
+                return assertScreenshotColor('firefox2.png', RED_PIXEL);
+            })
+            .then(() => {
+                return assertScreenshotColor('firefox3.png', GREEN_PIXEL);
             })
             .then(() => {
                 assertionHelper.removeScreenshotDir();

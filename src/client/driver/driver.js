@@ -419,7 +419,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         status.isPendingWindowSwitching = !!this.contextStorage.getItem(this.PENDING_WINDOW_SWITCHING_FLAG);
     }
 
-    _sendStatusRequest (status) {
+    async _sendStatusRequest (status) {
         const statusRequestOptions = {
             cmd:              TEST_RUN_MESSAGES.ready,
             status:           status,
@@ -427,15 +427,18 @@ export default class Driver extends serviceUtils.EventEmitter {
             allowRejecting:   true
         };
 
-        const requestAttempt = () => getTimeLimitedPromise(transport.asyncServiceMsg(statusRequestOptions), SEND_STATUS_REQUEST_TIME_LIMIT);
-        const retryRequest   = () => delay(SEND_STATUS_REQUEST_RETRY_DELAY).then(requestAttempt);
+        for (let i = 0; i < SEND_STATUS_REQUEST_RETRY_COUNT; i++) {
+            try {
+                const result = await getTimeLimitedPromise(transport.asyncServiceMsg(statusRequestOptions), SEND_STATUS_REQUEST_TIME_LIMIT);
 
-        let statusPromise = requestAttempt();
+                return result;
+            }
+            catch (err) {
+                await delay(SEND_STATUS_REQUEST_RETRY_DELAY);
+            }
+        }
 
-        for (let i = 0; i < SEND_STATUS_REQUEST_RETRY_COUNT; i++)
-            statusPromise = statusPromise.catch(retryRequest);
-
-        return statusPromise;
+        return null;
     }
 
     _sendStatus (status) {
