@@ -4,25 +4,19 @@ const expect         = require('chai').expect;
 const config         = require('../../../config');
 const createTestCafe = require('../../../../../lib');
 
+const { createReporter } = require('../../../utils/reporter');
+
 const ERROR_RESPONSE_COUNT        = 8;
 const SIGNIFICANT_REQUEST_TIMEOUT = 200;
 
 let previousRequestTime = null;
 let warnings            = [];
 
-function customReporter () {
-    return () => {
-        return {
-            async reportTestActionDone () { },
-            async reportTaskStart () { },
-            async reportFixtureStart () { },
-            async reportTestDone () { },
-            async reportTaskDone (endTime, passed, warns) {
-                warnings = warns;
-            }
-        };
-    };
-}
+const customReporter = createReporter({
+    async reportTaskDone (endTime, passed, warns) {
+        warnings = warns;
+    }
+});
 
 function createServer () {
     let requestCounter = 0;
@@ -89,7 +83,7 @@ describe('[Regression](GH-5239)', function () {
                 retryTestPages: true,
                 browsers:       'ie',
                 src:            './testcafe-fixtures/warnings-test.js',
-                reporter:       customReporter()
+                reporter:       customReporter
             })
                 .then(() => {
                     expect(warnings).eql([
