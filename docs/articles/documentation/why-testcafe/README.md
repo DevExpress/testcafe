@@ -86,8 +86,7 @@ The TestCafe team is quick to respond to GitHub issues and StackOverflow questio
 
 All TestCafe Studio Pro customers (subscribers and trial users alike) receive prompt, proactive support directly from the package maintainers.
 
-
-## How Does TestCafe Work?
+## A Solution Like No Other
 
 To simulate user activity, the automation engine behind TestCafe takes over browsers and the web pages they display.
 
@@ -124,3 +123,7 @@ TestCafe translates server-side test code into client-side JavaScript, and injec
 The [Selector](../guides/basic-guides/select-page-elements.md) function can launch user-defined client-side code to find a DOM element that cannot be otherwise identified.
 
 > The TestCafe documentation describes the limitations of user-defined client-side scripts.
+
+## Try it for yourself
+
+Try TestCafe for yourself and see how the features it packs can make *your* life easier. Create your first test in under 5 minutes by following our [Getting Started Guide](https://devexpress.github.io/testcafe/documentation/getting-started/). 
