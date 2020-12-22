@@ -152,7 +152,7 @@ export class BrowserClient {
         viewportSize.width = newWidth;
         viewportSize.height = newHeight;
 
-        const client = await this.getActiveClient();
+        const client = await this.getActiveClient() as remoteChrome.ProtocolApi;
 
         if (config.emulation) {
             await this._setDeviceMetricsOverride(client, viewportSize.width, viewportSize.height, emulatedDevicePixelRatio, config.mobile);
@@ -165,15 +165,13 @@ export class BrowserClient {
         return !!this._parentTarget && this._config.headless;
     }
 
-    public async getActiveClient (): Promise<remoteChrome.ProtocolApi> {
-        let client = this._clients[this._clientKey];
+    public async getActiveClient (): Promise<remoteChrome.ProtocolApi | null> {
+        const client = this._clients[this._clientKey];
 
         if (client)
             return client;
 
-        client = await this._createClient() as remoteChrome.ProtocolApi;
-
-        return client;
+        return this._createClient();
     }
 
     public async init (): Promise<void> {
@@ -201,7 +199,7 @@ export class BrowserClient {
 
         const { config, emulatedDevicePixelRatio } = this._runtimeInfo;
 
-        const client = await this.getActiveClient();
+        const client = await this.getActiveClient() as remoteChrome.ProtocolApi;
 
         if (fullPage) {
             const { contentSize, visualViewport } = await client.Page.getLayoutMetrics();
@@ -241,7 +239,7 @@ export class BrowserClient {
     }
 
     public async updateMobileViewportSize (): Promise<void> {
-        const client                      = await this.getActiveClient();
+        const client                      = await this.getActiveClient() as remoteChrome.ProtocolApi;
         const windowDimensionsQueryResult = await this._evaluateRuntime(client, `(${GET_WINDOW_DIMENSIONS_INFO_SCRIPT})()`, true);
 
         const windowDimensions = windowDimensionsQueryResult.result.value;
