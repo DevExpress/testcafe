@@ -20,6 +20,7 @@ import {
 import AutomationSettings from './settings';
 import { getOffsetOptions } from './utils/offsets';
 import { getNextFocusableElement } from './playback/press/utils';
+import SHORTCUT_TYPE from './playback/press/shortcut-type';
 import { getSelectionCoordinatesByPosition } from './playback/select/utils';
 import { fromPoint as getElementFromPoint } from './get-element';
 import calculateSelectTextArguments from './playback/select/calculate-select-text-arguments';
@@ -52,6 +53,7 @@ exports.getOffsetOptions             = getOffsetOptions;
 exports.calculateSelectTextArguments = calculateSelectTextArguments;
 exports.cursor                       = cursor;
 exports.getNextFocusableElement      = getNextFocusableElement;
+exports.SHORTCUT_TYPE                = SHORTCUT_TYPE;
 
 exports.getSelectionCoordinatesByPosition = getSelectionCoordinatesByPosition;
 
