@@ -1,6 +1,4 @@
 import indentString from 'indent-string';
-import humanizeDuration from 'humanize-duration';
-import { LOCAL_BROWSER_INIT_TIMEOUT, REMOTE_BROWSER_INIT_TIMEOUT } from './browser-connection-timeouts';
 
 const DEFAULT_CONCATENATED_VALUES = {
     SEPARATOR:  ', ',
@@ -115,15 +113,6 @@ export function getToBeInPastTense (array) {
     return array.length > 1 ? 'were' : 'was';
 }
 
-export function getUsedBrowserInitTimeoutMsg (browserInitTimeout) {
-    if (browserInitTimeout) {
-        const browserInitTimeoutStr = humanizeDuration(browserInitTimeout);
-
-        return `${browserInitTimeoutStr} for all browsers`;
-    }
-
-    const localInitTimeoutStr  = humanizeDuration(LOCAL_BROWSER_INIT_TIMEOUT);
-    const remoteInitTimeoutStr = humanizeDuration(REMOTE_BROWSER_INIT_TIMEOUT);
-
-    return `${localInitTimeoutStr} for local browsers and ${remoteInitTimeoutStr} for remotes`;
+export function createList (array, PREFIX = '- ', SEPARATOR = '\n') {
+    return array.map(option => PREFIX + option).join(SEPARATOR);
 }

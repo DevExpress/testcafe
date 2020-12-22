@@ -117,7 +117,7 @@ export default {
         'Cannot enable the \'retryTestPages\' option. Apply one of the following two solutions:\n' +
         '-- set \'localhost\' as the value of the \'hostname\' option\n' +
         '-- run TestCafe over HTTPS\n',
-    [RUNTIME_ERRORS.browserConnectionError]:            '{originalErr}\n{notOpenedConnectionsNum} of {allConnectionsNum} browser connections have not been established:{notOpenedConnectionsList}\n{hintsList}',
+    [RUNTIME_ERRORS.browserConnectionError]:            '{originErrorMessage}\n{numOfNotOpenedConnection} of {numOfAllConnections} browser connections have not been established:\n{listOfNotOpenedConnections}\n\nHints:\n{listOfHints}',
     [CONNECTION_ERROR_HINTS.tooHighConcurrencyFactor]:  'The error can be due to a concurrency factor that is too high for the host machine’s performance (the factor value {concurrencyFactor} was specified). ' +
                                                         'Try to decrease the concurrency factor or ensure more system resources are available on the host machine.',
     [CONNECTION_ERROR_HINTS.useBrowserInitOption]: 'Use the \'--browser-init-timeout\' option to allow more time for the browser to start. Currently, the timeout is {browserInitTimeoutMsg}.',

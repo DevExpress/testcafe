@@ -4,10 +4,7 @@ import createStackFilter from '../create-stack-filter';
 import { getCallsiteForMethod } from '../get-callsite';
 import renderTemplate from '../../utils/render-template';
 import renderCallsiteSync from '../../utils/render-callsite-sync';
-import { CONNECTION_ERROR_HINTS, RUNTIME_ERRORS } from '../types';
-import BrowserConnectionStatus from '../../browser/connection/status';
-import WarningLog from '../../notifications/warning-log';
-import { getUsedBrowserInitTimeoutMsg } from '../../utils/string';
+import { RUNTIME_ERRORS } from '../types';
 
 const ERROR_SEPARATOR = '\n\n';
 
@@ -134,38 +131,7 @@ export class TimeoutError extends GeneralError {
 }
 
 export class BrowserConnectionError extends GeneralError {
-    constructor (originalError, connections, browserSetOpts) {
-        const code = RUNTIME_ERRORS.browserConnectionError;
-
-        const notOpenedConnections     = connections.filter(bc => bc.status !== BrowserConnectionStatus.opened);
-        const allConnectionsNum        = connections.length;
-        const notOpenedConnectionsNum  = notOpenedConnections.length;
-
-        const LIST_PREFIX = '\n- ';
-
-        const notOpenedConnectionsList = LIST_PREFIX + notOpenedConnections.map(bc => bc.browserInfo.alias).join(LIST_PREFIX);
-
-        const warningLog = new WarningLog();
-
-        for (const connection of connections)
-            connection.warningLog.copyTo(warningLog);
-
-        let hints = '\nHints:';
-
-        if (browserSetOpts.warningLog.messages.length > 0)
-            hints += LIST_PREFIX + browserSetOpts.warningLog.messages.join(LIST_PREFIX);
-
-        if (warningLog.messages.length > 0)
-            hints += LIST_PREFIX + warningLog.messages.join(LIST_PREFIX);
-
-        if (browserSetOpts.concurrency > 3)
-            hints += LIST_PREFIX + renderTemplate(TEMPLATES[CONNECTION_ERROR_HINTS.tooHighConcurrencyFactor], browserSetOpts.concurrency);
-
-        const timeoutMsg = getUsedBrowserInitTimeoutMsg(browserSetOpts.browserInitTimeout);
-
-        hints += LIST_PREFIX + renderTemplate(TEMPLATES[CONNECTION_ERROR_HINTS.useBrowserInitOption], timeoutMsg);
-        hints += LIST_PREFIX + renderTemplate(TEMPLATES[CONNECTION_ERROR_HINTS.restErrorCauses]);
-
-        super(code, originalError.message, notOpenedConnectionsNum, allConnectionsNum, notOpenedConnectionsList, hints);
+    constructor (...args) {
+        super(RUNTIME_ERRORS.browserConnectionError, ...args);
     }
 }
