@@ -55,25 +55,23 @@ export default class BrowserSet extends EventEmitter {
         await bc.close();
     }
 
-    private async _waitConnectionsOpened (): Promise<any[]> {
-        const openedConnections: Promise<any>[] = [];
+    private async _waitConnectionOpened (bc: BrowserConnection): Promise<BrowserConnection> {
+        const openedTimeout = this._options.browserInitTimeout || await bc.getDefaultBrowserInitTimeout();
+        const timeoutErr    = new GeneralError(RUNTIME_ERRORS.cannotEstablishBrowserConnection);
+        const openedOrError = Promise.race([
+            promisifyEvent(this, 'error'),
+            promisifyEvent(bc, 'opened')
+        ]);
 
-        for (const bc of this._browserConnections) {
-            if (bc.status !== BrowserConnectionStatus.opened) {
-                const openedTimeout = this._options.browserInitTimeout || await bc.getDefaultBrowserInitTimeout();
-                const timeoutErr    = new GeneralError(RUNTIME_ERRORS.cannotEstablishBrowserConnection);
-                const openedOrError = Promise.race([
-                    promisifyEvent(this, 'error'),
-                    promisifyEvent(bc, 'opened')
-                ]);
+        return getTimeLimitedPromise(openedOrError, openedTimeout, { rejectWith: timeoutErr });
+    }
 
-                const openedConnection = getTimeLimitedPromise(openedOrError, openedTimeout, { rejectWith: timeoutErr });
-
-                openedConnections.push(openedConnection);
-            }
-        }
-
-        return Promise.all(openedConnections);
+    private async _waitConnectionsOpened (): Promise<BrowserConnection[]> {
+        return Promise.all(
+            this._browserConnections
+                .filter(bc => bc.status !== BrowserConnectionStatus.opened)
+                .map(notOpenedConnection => this._waitConnectionOpened(notOpenedConnection))
+        );
     }
 
     private _checkForDisconnections (): void {

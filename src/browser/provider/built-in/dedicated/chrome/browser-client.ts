@@ -15,11 +15,8 @@ import {
 } from './interfaces';
 import debug from 'debug';
 import prettyTime from 'pretty-hrtime';
-import {
-    PAGE_ENABLE_TIME_UPPERBOUND,
-    SET_DEVICE_METRICS_OVERRIDE_TIME_UPPERBOUND,
-    SET_VISIBLE_SIZE_TIME_UPPERBOUND
-} from './elapsed-upperbounds';
+import { SlowCDPMethod, ELAPSED_TIME_UPPERBOUNDS } from './elapsed-upperbounds';
+import guardTimeExecution from '../../../../../utils/guard-time-execution';
 
 const DEBUG_SCOPE = (id: string): string => `testcafe:browser:provider:built-in:chrome:browser-client:${id}`;
 const DOWNLOADS_DIR = path.join(os.homedir(), 'Downloads');
@@ -62,18 +59,12 @@ export class BrowserClient {
         return tabs[0];
     }
 
-    private async guardTimeExecution (inspectedMethodName: string, fn: () => Promise<void>, timeLimit: number): Promise<void> {
-        const timeElapsedStart = process.hrtime();
+    private _checkDropOfPerformance (method: SlowCDPMethod, elapsedTime: [number, number]): void {
+        this.debugLogger(`CDP method '${method}' took ${prettyTime(elapsedTime)}`);
 
-        await fn();
+        const [ elapsedSeconds ] = elapsedTime;
 
-        const timeElapsedFinish = process.hrtime(timeElapsedStart);
-
-        this.debugLogger(`${inspectedMethodName} took ${prettyTime(timeElapsedFinish)}`);
-
-        const [ elapsedSeconds ] = timeElapsedFinish;
-
-        if (elapsedSeconds > timeLimit) {
+        if (elapsedSeconds > ELAPSED_TIME_UPPERBOUNDS[method]) {
             this._runtimeInfo.providerMethods.reportWarning(
                 WARNING_MESSAGE.browserProviderDropOfPerformance,
                 this._runtimeInfo.browserName
@@ -88,9 +79,10 @@ export class BrowserClient {
 
         this._clients[this._clientKey] = client;
 
-        await this.guardTimeExecution('Page.enable', async () => {
-            await Page.enable();
-        }, PAGE_ENABLE_TIME_UPPERBOUND);
+        await guardTimeExecution(
+            async () => await Page.enable(),
+            elapsedTime => this._checkDropOfPerformance(SlowCDPMethod.PageEnable, elapsedTime)
+        );
 
         await Network.enable({});
         await Runtime.enable();
@@ -107,16 +99,19 @@ export class BrowserClient {
     }
 
     private async _setDeviceMetricsOverride (client: remoteChrome.ProtocolApi, width: number, height: number, deviceScaleFactor: number, mobile: boolean): Promise<void> {
-        await this.guardTimeExecution('Emulation.setDeviceMetricsOverride', async () => {
-            await client.Emulation.setDeviceMetricsOverride({
-                width,
-                height,
-                deviceScaleFactor,
-                mobile,
-                // @ts-ignore
-                fitWindow: false
-            });
-        }, SET_DEVICE_METRICS_OVERRIDE_TIME_UPPERBOUND);
+        await guardTimeExecution(
+            async () => {
+                await client.Emulation.setDeviceMetricsOverride({
+                    width,
+                    height,
+                    deviceScaleFactor,
+                    mobile,
+                    // @ts-ignore
+                    fitWindow: false
+                });
+            },
+            elapsedTime => this._checkDropOfPerformance(SlowCDPMethod.SetDeviceMetricsOverride, elapsedTime)
+        );
     }
 
     private async _setUserAgentEmulation (client: remoteChrome.ProtocolApi): Promise<void> {
@@ -193,9 +188,10 @@ export class BrowserClient {
         if (client && config.emulation) {
             await this._setDeviceMetricsOverride(client, viewportSize.width, viewportSize.height, emulatedDevicePixelRatio, config.mobile);
 
-            await this.guardTimeExecution('Emulation.setVisibleSize', async () => {
-                await client.Emulation.setVisibleSize({ width: viewportSize.width, height: viewportSize.height });
-            }, SET_VISIBLE_SIZE_TIME_UPPERBOUND);
+            await guardTimeExecution(
+                async () => await client.Emulation.setVisibleSize({ width: viewportSize.width, height: viewportSize.height }),
+                elapsedTime => this._checkDropOfPerformance(SlowCDPMethod.SetVisibleSize, elapsedTime)
+            );
         }
     }
 

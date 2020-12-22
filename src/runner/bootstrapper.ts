@@ -40,6 +40,7 @@ import { getPluginFactory, processReporterName } from '../utils/reporter';
 import { BrowserSetOptions } from './interfaces';
 import WarningLog from '../notifications/warning-log';
 import WARNING_MESSAGES from '../notifications/warning-message';
+import guardTimeExecution from '../utils/guard-time-execution';
 
 const DEBUG_SCOPE = 'testcafe:bootstrapper';
 
@@ -262,18 +263,17 @@ export default class Bootstrapper {
         if (!sourceList.length)
             throw new GeneralError(RUNTIME_ERRORS.testFilesNotFound, getConcatenatedValuesString(this.sources, '\n', ''), cwd);
 
-        const compilationTimeStart = process.hrtime();
+        let tests = await guardTimeExecution(
+            async () => await this._compileTests({ sourceList, compilerOptions: this.compilerOptions }),
+            elapsedTime => {
+                this.debugLogger(`tests compilation took ${prettyTime(elapsedTime)}`);
 
-        let tests = await this._compileTests({ sourceList, compilerOptions: this.compilerOptions });
+                const [ elapsedSeconds ] = elapsedTime;
 
-        const compilationTimeElapsed = process.hrtime(compilationTimeStart);
-
-        this.debugLogger(`tests compilation took ${prettyTime(compilationTimeElapsed)}`);
-
-        const [ elapsedSeconds ] = compilationTimeElapsed;
-
-        if (elapsedSeconds > this.TESTS_COMPILATION_UPPERBOUND)
-            this.warningLog.addWarning(WARNING_MESSAGES.testsCompilationTakesTooLong, prettyTime(compilationTimeElapsed));
+                if (elapsedSeconds > this.TESTS_COMPILATION_UPPERBOUND)
+                    this.warningLog.addWarning(WARNING_MESSAGES.testsCompilationTakesTooLong, prettyTime(elapsedTime));
+            }
+        );
 
         const testsWithOnlyFlag = tests.filter(test => test.only);
 

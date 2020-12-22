@@ -152,7 +152,7 @@ export const RUNTIME_ERRORS = {
 };
 
 export const CONNECTION_ERROR_HINTS = {
-    toHighConcurrencyFactor: 'H1',
-    useBrowserInitOption:    'H2',
-    restErrorCauses:         'H3'
+    tooHighConcurrencyFactor: 'H1',
+    useBrowserInitOption:     'H2',
+    restErrorCauses:          'H3'
 };

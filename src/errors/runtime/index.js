@@ -159,7 +159,7 @@ export class BrowserConnectionError extends GeneralError {
             hints += LIST_PREFIX + warningLog.messages.join(LIST_PREFIX);
 
         if (browserSetOpts.concurrency > 3)
-            hints += LIST_PREFIX + renderTemplate(TEMPLATES[CONNECTION_ERROR_HINTS.toHighConcurrencyFactor], browserSetOpts.concurrency);
+            hints += LIST_PREFIX + renderTemplate(TEMPLATES[CONNECTION_ERROR_HINTS.tooHighConcurrencyFactor], browserSetOpts.concurrency);
 
         const timeoutMsg = getUsedBrowserInitTimeoutMsg(browserSetOpts.browserInitTimeout);
 
