@@ -125,7 +125,7 @@ const passwordsWithoutDigits = generator.generateMultiple(5, {
     strict: true
 });
 
-const invalidPasswords = shortPasswords.concat(passwordsWithoutUppercase, passwordsWithoutDigits);
+const invalidPasswords = shortPasswords.concat(passwordsWithoutUppercase, passwordsWithoutLowercase, passwordsWithoutDigits);
 ```
 
 Now that we have our fake credentials, we can test the web form.
