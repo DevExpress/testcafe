@@ -679,7 +679,7 @@
     <span class="na">strict</span><span class="p">:</span> <span class="kc">true</span>
 <span class="p">});</span>
 
-<span class="kd">const</span> <span class="nx">invalidPasswords</span> <span class="o">=</span> <span class="nx">shortPasswords</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="nx">passwordsWithoutUppercase</span><span class="p">,</span> <span class="nx">passwordsWithoutDigits</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">invalidPasswords</span> <span class="o">=</span> <span class="nx">shortPasswords</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="nx">passwordsWithoutUppercase</span><span class="p">,</span> <span class="nx">passwordsWithoutLowercase</span><span class="p">,</span> <span class="nx">passwordsWithoutDigits</span><span class="p">);</span>
 </code></pre></div>
 <p>Now that we have our fake credentials, we can test the web form.</p>
 
