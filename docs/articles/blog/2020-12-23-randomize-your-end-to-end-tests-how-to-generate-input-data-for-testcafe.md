@@ -9,6 +9,8 @@ author: Vladimir Airikh, Eugene Titerman
 
 User input can be truly unpredictable, so it's important to use a wide sample of random input data when testing web forms. In this article, we'll take a look at three Node libraries that generate data: [nanoid](https://github.com/ai/nanoid), [faker](https://github.com/marak/Faker.js/), and [generate-password](https://github.com/brendanashworth/generate-password). We'll see how TestCafe can leverage their features to help you improve your test coverage.
 
+<!--more-->
+
 The [farfurix/generating-input-data](https://github.com/Farfurix/Generating-input-data) git repo contains the custom demo page and the test examples created specifically for this article. Clone the repository to follow along.
 
 ## The Basics (nanoid)
