@@ -14,7 +14,7 @@ import { RUNTIME_ERRORS } from '../errors/types';
 import BrowserConnection from '../browser/connection';
 import BrowserConnectionStatus from '../browser/connection/status';
 import { BrowserSetOptions } from './interfaces';
-import { createHints } from '../utils/browser-connection-error-hints';
+import getHints from '../browser/connection/get-hints';
 import { createList } from '../utils/string';
 
 const RELEASE_TIMEOUT = 10000;
@@ -103,26 +103,9 @@ export default class BrowserSet extends EventEmitter {
             return browserSet;
         }
         catch (e) {
-            let finalError = e;
-
-            if (e.code === RUNTIME_ERRORS.cannotEstablishBrowserConnection) {
-                const allConnections       = browserSet.getConnections();
-                const notOpenedConnections = allConnections.filter(bc => bc.status !== BrowserConnectionStatus.opened);
-
-                const numOfAllConnections       = allConnections.length;
-                const numOfNotOpenedConnections = notOpenedConnections.length;
-
-                const listOfNotOpenedConnections = createList(notOpenedConnections.map(bc => bc.browserInfo.alias));
-                const listOfHints                = createList(createHints(allConnections, opts));
-
-                finalError = new BrowserConnectionError(
-                    e.message,
-                    numOfNotOpenedConnections,
-                    numOfAllConnections,
-                    listOfNotOpenedConnections,
-                    listOfHints
-                );
-            }
+            const finalError = e.code === RUNTIME_ERRORS.cannotEstablishBrowserConnection
+                ? browserSet.createBrowserConnectionError(e)
+                : e;
 
             await browserSet.dispose();
 
@@ -130,8 +113,22 @@ export default class BrowserSet extends EventEmitter {
         }
     }
 
-    private getConnections (): BrowserConnection[] {
-        return this._browserConnections;
+    public createBrowserConnectionError (error: Error): BrowserConnectionError {
+        const notOpenedConnections = this._browserConnections.filter(bc => bc.status !== BrowserConnectionStatus.opened);
+
+        const numOfAllConnections       = this._browserConnections.length;
+        const numOfNotOpenedConnections = notOpenedConnections.length;
+
+        const listOfNotOpenedConnections = createList(notOpenedConnections.map(bc => bc.browserInfo.alias));
+        const listOfHints                = createList(getHints(this._browserConnections, this._options));
+
+        return new BrowserConnectionError(
+            error.message,
+            numOfNotOpenedConnections,
+            numOfAllConnections,
+            listOfNotOpenedConnections,
+            listOfHints
+        );
     }
 
     public releaseConnection (bc: BrowserConnection): Promise<void> {

@@ -150,9 +150,3 @@ export const RUNTIME_ERRORS = {
     cannotEnableRetryTestPagesOption:                   'E1062',
     browserConnectionError:                             'E1063'
 };
-
-export const CONNECTION_ERROR_HINTS = {
-    tooHighConcurrencyFactor: 'H1',
-    useBrowserInitOption:     'H2',
-    restErrorCauses:          'H3'
-};

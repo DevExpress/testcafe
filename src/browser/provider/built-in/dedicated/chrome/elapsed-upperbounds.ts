@@ -1,4 +1,4 @@
-export enum SlowCDPMethod {
+export enum CheckedCDPMethod {
     PageEnable = 'PageEnable',
     SetDeviceMetricsOverride = 'Emulation.SetDeviceMetricsOverride',
     SetVisibleSize = 'Emulation.SetVisibleSize'
@@ -6,7 +6,7 @@ export enum SlowCDPMethod {
 
 // NOTE: CDP calls heuristic time upperbounds in seconds
 export const ELAPSED_TIME_UPPERBOUNDS = {
-    [SlowCDPMethod.PageEnable]:               30,
-    [SlowCDPMethod.SetDeviceMetricsOverride]: 30,
-    [SlowCDPMethod.SetVisibleSize]:           30
+    [CheckedCDPMethod.PageEnable]:               30,
+    [CheckedCDPMethod.SetDeviceMetricsOverride]: 30,
+    [CheckedCDPMethod.SetVisibleSize]:           30
 };

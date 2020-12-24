@@ -15,7 +15,7 @@ import {
 } from './interfaces';
 import debug from 'debug';
 import prettyTime from 'pretty-hrtime';
-import { SlowCDPMethod, ELAPSED_TIME_UPPERBOUNDS } from './elapsed-upperbounds';
+import { CheckedCDPMethod, ELAPSED_TIME_UPPERBOUNDS } from './elapsed-upperbounds';
 import guardTimeExecution from '../../../../../utils/guard-time-execution';
 
 const DEBUG_SCOPE = (id: string): string => `testcafe:browser:provider:built-in:chrome:browser-client:${id}`;
@@ -59,7 +59,7 @@ export class BrowserClient {
         return tabs[0];
     }
 
-    private _checkDropOfPerformance (method: SlowCDPMethod, elapsedTime: [number, number]): void {
+    private _checkDropOfPerformance (method: CheckedCDPMethod, elapsedTime: [number, number]): void {
         this.debugLogger(`CDP method '${method}' took ${prettyTime(elapsedTime)}`);
 
         const [ elapsedSeconds ] = elapsedTime;
@@ -81,7 +81,7 @@ export class BrowserClient {
 
         await guardTimeExecution(
             async () => await Page.enable(),
-            elapsedTime => this._checkDropOfPerformance(SlowCDPMethod.PageEnable, elapsedTime)
+            elapsedTime => this._checkDropOfPerformance(CheckedCDPMethod.PageEnable, elapsedTime)
         );
 
         await Network.enable({});
@@ -110,7 +110,7 @@ export class BrowserClient {
                     fitWindow: false
                 });
             },
-            elapsedTime => this._checkDropOfPerformance(SlowCDPMethod.SetDeviceMetricsOverride, elapsedTime)
+            elapsedTime => this._checkDropOfPerformance(CheckedCDPMethod.SetDeviceMetricsOverride, elapsedTime)
         );
     }
 
@@ -189,8 +189,10 @@ export class BrowserClient {
             await this._setDeviceMetricsOverride(client, viewportSize.width, viewportSize.height, emulatedDevicePixelRatio, config.mobile);
 
             await guardTimeExecution(
-                async () => await client.Emulation.setVisibleSize({ width: viewportSize.width, height: viewportSize.height }),
-                elapsedTime => this._checkDropOfPerformance(SlowCDPMethod.SetVisibleSize, elapsedTime)
+                async () => {
+                    await client.Emulation.setVisibleSize({ width: viewportSize.width, height: viewportSize.height });
+                },
+                elapsedTime => this._checkDropOfPerformance(CheckedCDPMethod.SetVisibleSize, elapsedTime)
             );
         }
     }

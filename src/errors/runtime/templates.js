@@ -3,7 +3,8 @@
 // Do not use any browser or node-specific API!
 // -------------------------------------------------------------
 
-import { CONNECTION_ERROR_HINTS, RUNTIME_ERRORS } from '../types';
+import { RUNTIME_ERRORS } from '../types';
+import BrowserConnectionErrorHint from '../../browser/connection/hints';
 
 const DOCUMENTATION_LINKS = {
     TEST_SOURCE_PARAMETER: 'https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#file-pathglob-pattern',
@@ -117,9 +118,10 @@ export default {
         'Cannot enable the \'retryTestPages\' option. Apply one of the following two solutions:\n' +
         '-- set \'localhost\' as the value of the \'hostname\' option\n' +
         '-- run TestCafe over HTTPS\n',
-    [RUNTIME_ERRORS.browserConnectionError]:            '{originErrorMessage}\n{numOfNotOpenedConnection} of {numOfAllConnections} browser connections have not been established:\n{listOfNotOpenedConnections}\n\nHints:\n{listOfHints}',
-    [CONNECTION_ERROR_HINTS.tooHighConcurrencyFactor]:  'The error can be due to a concurrency factor that is too high for the host machine’s performance (the factor value {concurrencyFactor} was specified). ' +
-                                                        'Try to decrease the concurrency factor or ensure more system resources are available on the host machine.',
-    [CONNECTION_ERROR_HINTS.useBrowserInitOption]: 'Use the \'--browser-init-timeout\' option to allow more time for the browser to start. Currently, the timeout is {browserInitTimeoutMsg}.',
-    [CONNECTION_ERROR_HINTS.restErrorCauses]:      'The error can also be caused by network issues or remote device failure. Make sure that the connection is stable and the remote device can be reached.'
+
+    [RUNTIME_ERRORS.browserConnectionError]:               '{originErrorMessage}\n{numOfNotOpenedConnection} of {numOfAllConnections} browser connections have not been established:\n{listOfNotOpenedConnections}\n\nHints:\n{listOfHints}',
+    [BrowserConnectionErrorHint.TooHighConcurrencyFactor]: 'The error can be due to a concurrency factor that is too high for the host machine’s performance (the factor value {concurrencyFactor} was specified). ' +
+                                                           'Try to decrease the concurrency factor or ensure more system resources are available on the host machine.',
+    [BrowserConnectionErrorHint.UseBrowserInitOption]: 'Use the \'--browser-init-timeout\' option to allow more time for the browser to start. Currently, the timeout is {browserInitTimeoutMsg}.',
+    [BrowserConnectionErrorHint.RestErrorCauses]:      'The error can also be caused by network issues or remote device failure. Make sure that the connection is stable and the remote device can be reached.'
 };
