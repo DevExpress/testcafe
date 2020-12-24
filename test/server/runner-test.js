@@ -366,9 +366,9 @@ describe('Runner', () => {
                 })
                 .catch(err => {
                     expect(err.message).eql(
-                        'Cannot enable the \'retryTestPages\' option. To enable the \'retryTestPages\' option please do one of the following:\n' +
-                        '-- specify the \'localhost\' value for the \'hostname\' option\n' +
-                        '-- run TestCafe over HTTPS protocol\n'
+                        'Cannot enable the \'retryTestPages\' option. Apply one of the following two solutions:\n' +
+                        '-- set \'localhost\' as the value of the \'hostname\' option\n' +
+                        '-- run TestCafe over HTTPS\n'
                     );
                 });
         });

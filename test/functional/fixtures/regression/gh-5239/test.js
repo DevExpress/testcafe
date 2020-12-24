@@ -87,8 +87,7 @@ describe('[Regression](GH-5239)', function () {
             })
                 .then(() => {
                     expect(warnings).eql([
-                        'The \'retryTestPages\' option was not enabled in the "ie" browser. ' +
-                        'Please ensure your browser supports Service Worker API (https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API)\n'
+                        'Cannot enable the \'retryTestPages\' option in "ie". Please ensure that your version of "ie" supports the Service Worker API (https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API).\n'
                     ]);
                 });
         });

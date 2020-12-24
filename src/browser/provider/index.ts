@@ -251,7 +251,7 @@ export default class BrowserProvider {
             const isServiceWorkerEnabled = await this.plugin.runInitScript(browserId, GET_IS_SERVICE_WORKER_ENABLED);
 
             if (!isServiceWorkerEnabled)
-                connection.addWarning(WARNING_MESSAGE.retryTestPagesIsNotSupported, connection.browserInfo.alias);
+                connection.addWarning(WARNING_MESSAGE.retryTestPagesIsNotSupported, connection.browserInfo.alias, connection.browserInfo.alias);
         }
     }
 

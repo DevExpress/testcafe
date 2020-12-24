@@ -4,6 +4,6 @@ const LOCALHOST_NAMES = [
     '[::1]'
 ];
 
-export default function (hostname) {
+export default function (hostname: string): boolean {
     return LOCALHOST_NAMES.includes(hostname);
 }
