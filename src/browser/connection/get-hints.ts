@@ -20,7 +20,7 @@ function getUsedTimeoutMsg (browserInitTimeout?: number): string {
     const localInitTimeoutStr  = humanizeDuration(LOCAL_BROWSER_INIT_TIMEOUT);
     const remoteInitTimeoutStr = humanizeDuration(REMOTE_BROWSER_INIT_TIMEOUT);
 
-    return `${localInitTimeoutStr} for local browsers and ${remoteInitTimeoutStr} for remotes`;
+    return `${localInitTimeoutStr} for local browsers and ${remoteInitTimeoutStr} for remote browsers`;
 }
 
 export default function getHints (connections: BrowserConnection[], opts: BrowserSetOptions): string[] {
