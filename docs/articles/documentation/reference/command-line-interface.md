@@ -68,6 +68,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--ts-config-path \<path\>](#--ts-config-path-path)
   * [--compiler-options \<options\>](#--compiler-options-options)
   * [--disable-page-caching](#--disable-page-caching)
+  * [--retry-test-pages](#--retry-test-pages)
   * [--disable-multiple-windows](#--disable-multiple-windows)
   * [--color](#--color)
   * [--no-color](#--no-color)
@@ -938,6 +939,16 @@ When navigation to a cached page occurs in [role code](../guides/advanced-guides
 You can also disable page caching for an individual [fixture](test-api/fixture/disablepagecaching.md) or [test](test-api/test/disablepagecaching.md).
 
 *Related configuration file property*: [disablePageCaching](configuration-file.md#disablepagecaching).
+
+### --retry-test-pages
+
+If enabled, TestCafe retries failed requests for the starting test page. If a request does not succeed within 10 retries, test fails.
+
+```sh
+testcafe firefox my-tests --retry-test-pages
+```
+
+If this option is enabled, TestCafe registers a Service Worker that retries failed network requests. This option requires a secure connection. [Enable HTTPS](../guides/advanced-guides/test-https-features-and-http2-websites.md) or set hostname to `localhost` with the [--hostname \<name\>](#--hostname-name) option.
 
 ### --disable-multiple-windows
 
