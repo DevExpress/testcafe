@@ -48,7 +48,7 @@ export class BrowserClient {
         return tabs[0];
     }
 
-    private async _createClient (): Promise<remoteChrome.ProtocolApi | null> {
+    private async _createClient (): Promise<remoteChrome.ProtocolApi | void> {
         try {
             const target                     = await this._getActiveTab();
             const client                     = await remoteChrome({ target, port: this._runtimeInfo.cdpPort });
@@ -63,7 +63,7 @@ export class BrowserClient {
             return client;
         }
         catch (err) {
-            return null;
+            return void 0;
         }
     }
 
@@ -132,6 +132,9 @@ export class BrowserClient {
     }
 
     private async _calculateEmulatedDevicePixelRatio (client: remoteChrome.ProtocolApi): Promise<void> {
+        if (!client)
+            return;
+
         const devicePixelRatioQueryResult = await client.Runtime.evaluate({ expression: 'window.devicePixelRatio' });
 
         this._runtimeInfo.originalDevicePixelRatio = devicePixelRatioQueryResult.result.value;
@@ -152,9 +155,9 @@ export class BrowserClient {
         viewportSize.width = newWidth;
         viewportSize.height = newHeight;
 
-        const client = await this.getActiveClient() as remoteChrome.ProtocolApi;
+        const client = await this.getActiveClient();
 
-        if (config.emulation) {
+        if (client && config.emulation) {
             await this._setDeviceMetricsOverride(client, viewportSize.width, viewportSize.height, emulatedDevicePixelRatio, config.mobile);
 
             await client.Emulation.setVisibleSize({ width: viewportSize.width, height: viewportSize.height });
@@ -165,7 +168,7 @@ export class BrowserClient {
         return !!this._parentTarget && this._config.headless;
     }
 
-    public async getActiveClient (): Promise<remoteChrome.ProtocolApi | null> {
+    public async getActiveClient (): Promise<remoteChrome.ProtocolApi | void> {
         const client = this._clients[this._clientKey];
 
         if (client)
@@ -183,10 +186,12 @@ export class BrowserClient {
             if (!this._parentTarget)
                 return;
 
-            const client = await this._createClient() as remoteChrome.ProtocolApi;
+            const client = await this._createClient();
 
-            await this._calculateEmulatedDevicePixelRatio(client);
-            await this._setupClient(client);
+            if (client) {
+                await this._calculateEmulatedDevicePixelRatio(client);
+                await this._setupClient(client);
+            }
         }
         catch (e) {
             return;
@@ -199,7 +204,10 @@ export class BrowserClient {
 
         const { config, emulatedDevicePixelRatio } = this._runtimeInfo;
 
-        const client = await this.getActiveClient() as remoteChrome.ProtocolApi;
+        const client = await this.getActiveClient();
+
+        if (!client)
+            return Buffer.alloc(0);
 
         if (fullPage) {
             const { contentSize, visualViewport } = await client.Page.getLayoutMetrics();
@@ -239,7 +247,11 @@ export class BrowserClient {
     }
 
     public async updateMobileViewportSize (): Promise<void> {
-        const client                      = await this.getActiveClient() as remoteChrome.ProtocolApi;
+        const client = await this.getActiveClient();
+
+        if (!client)
+            return;
+
         const windowDimensionsQueryResult = await this._evaluateRuntime(client, `(${GET_WINDOW_DIMENSIONS_INFO_SCRIPT})()`, true);
 
         const windowDimensions = windowDimensionsQueryResult.result.value;
