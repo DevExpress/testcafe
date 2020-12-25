@@ -335,6 +335,14 @@ interface RunOptions {
      * Defines whether to disable page caching during test execution.
      */
     disablePageCaching: boolean;
+    /**
+     * Specifies the timeout in milliseconds to complete the request for the page's HTML
+     */
+    pageRequestTimeout: number;
+    /**
+     * Specifies the timeout in milliseconds to complete the AJAX requests (XHR or fetch)
+     */
+    ajaxRequestTimeout: number;
 }
 
 interface TestCafeFactory {
@@ -343,6 +351,7 @@ interface TestCafeFactory {
         port1?: number,
         port2?: number,
         sslOptions?: TlsOptions,
-        developmentMode?: boolean
+        developmentMode?: boolean,
+        retryTestPages?: boolean
     ): Promise<TestCafe>;
 }
