@@ -14,7 +14,7 @@ import { RUNTIME_ERRORS } from '../errors/types';
 import BrowserConnection from '../browser/connection';
 import BrowserConnectionStatus from '../browser/connection/status';
 import { BrowserSetOptions } from './interfaces';
-import getHints from '../browser/connection/get-hints';
+import getBrowserConnectionHints from '../browser/connection/get-hints';
 import { createList } from '../utils/string';
 
 const RELEASE_TIMEOUT = 10000;
@@ -120,7 +120,7 @@ export default class BrowserSet extends EventEmitter {
         const numOfNotOpenedConnections = notOpenedConnections.length;
 
         const listOfNotOpenedConnections = createList(notOpenedConnections.map(bc => bc.browserInfo.alias));
-        const listOfHints                = createList(getHints(this._browserConnections, this._options));
+        const listOfHints                = createList(getBrowserConnectionHints(this._browserConnections, this._options));
 
         return new BrowserConnectionError(
             error.message,

@@ -2,7 +2,7 @@ import { flattenDeep, uniq } from 'lodash';
 import humanizeDuration from 'humanize-duration';
 import { BrowserSetOptions } from '../../runner/interfaces';
 import BrowserConnection from './';
-import BrowserConnectionErrorHint from './hints';
+import BrowserConnectionErrorHint from './error-hints';
 import { LOCAL_BROWSER_INIT_TIMEOUT, REMOTE_BROWSER_INIT_TIMEOUT } from '../../utils/browser-connection-timeouts';
 import renderTemplate from '../../utils/render-template';
 import TEMPLATES from '../../errors/runtime/templates';

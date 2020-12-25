@@ -4,7 +4,7 @@
 // -------------------------------------------------------------
 
 import { RUNTIME_ERRORS } from '../types';
-import BrowserConnectionErrorHint from '../../browser/connection/hints';
+import BrowserConnectionErrorHint from '../../browser/connection/error-hints';
 
 const DOCUMENTATION_LINKS = {
     TEST_SOURCE_PARAMETER: 'https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#file-pathglob-pattern',
