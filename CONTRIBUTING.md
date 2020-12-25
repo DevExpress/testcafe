@@ -1,6 +1,6 @@
 # Contributing to TestCafe
 
-TestCafe would not be possible without active support from the community. We appreciate and encourage your contributions, no matter how big  or small.
+TestCafe would not be possible without active support from the community. We appreciate and encourage your contributions, no matter how big or small.
 
 Review our contribution guidelines:
 
@@ -35,24 +35,45 @@ Follow the steps below when submitting your code.
 
 2. If you are going to address an existing issue, check the comment thread to make sure that nobody is working on it at the moment.
 
-3. Leave a comment saying that you are willing to fix this issue, and if possible, provide details on how you are going to do this.
+3. Leave a comment saying that you are willing to fix this issue, and include details on how you are going to do this.
 
 4. Core team members may need to discuss the details of the proposed fix with you. As soon as you get the green light from them,
-  leave a comment saying that you are currently working on this issue.
+  leave a comment saying that you started your work on this issue.
 
-5. Fork TestCafe and create a branch in your fork. Name this branch with an issue number, for example `gh852`, `gh853`.
-  
-    > If you are going to update the documentation follow the steps described in [Contribute to Documentation](#contribute-to-documentation).
+5. Install [Node.js](https://nodejs.org/en/) on your development machine.
 
-6. Commit your changes into the branch.
+6. Fork TestCafe. Clone the fork to your machine and create a new branch. Name this branch with an issue number, for example, `gh852`, `gh853`.
 
-7. Add regression tests to the appropriate sections if you are fixing a bug. You can find these sections by searching for `Regression` in the code.
+    > To contribute to the docs, follow the [Contribute to Documentation](#contribute-to-documentation) guide.
 
-    Add unit and/or functional tests if you are developing a new functionality.
+7. Install dependencies. In the root directory of your local copy run:
 
-8. Fetch upstream changes and rebase your branch onto `master`.
+    ```sh
+    npm install
+    ```
 
-9. Run tests before submitting a pull request to ensure that everything works properly.
+    or (for [Yarn](https://yarnpkg.com/) users)
+
+    ```sh
+    yarn
+    ```
+
+8. Write some code and commit your changes to the branch.
+
+    You can build TestCafe and launch it without running tests.
+
+    ```sh
+    gulp build
+    node bin/testcafe.js [...args]
+    ```
+
+9. Add regression tests to appropriate sections if you are fixing a bug. To find these sections, search for `Regression` in the code.
+
+    Add unit and/or functional tests if you are developing new functionality.
+
+10. Fetch upstream changes and rebase your branch onto `master`.
+
+11. Before you submit a pull request, run tests to ensure that everything works.
 
     ```sh
     gulp test-server
@@ -60,9 +81,9 @@ Follow the steps below when submitting your code.
     gulp test-client-local
     ```
 
-10. Push changes to your fork.
+12. Push changes to your fork.
 
-11. Submit a pull request. If you are also updating the documentation, submit a separate pull request as described in [Contribute to Documentation](#contribute-to-documentation).
+13. Submit a pull request. To make changes to the documentation, submit a separate pull request as described in [Contribute to Documentation](#contribute-to-documentation).
 
     The pull request name should describe what has been done and contain
     the [closes](https://github.com/blog/1506-closing-issues-via-pull-requests) directive
@@ -76,13 +97,13 @@ If you want to fix a bug in the current documentation or make an enhancement tha
 
 1. Fork TestCafe and create a branch in your fork. Name this branch with an issue number followed by the `docs` postfix, e.g. `gh852-docs`.
 
-2. Commit your changes into the branch.
+2. Commit your changes to the branch.
 
-    > Note that links in the documentation should point to `.md` files in the repository, so that the documentation is browsable on GitHub. When the website is built, all links are automatically modified to HTML links.
+    > Note that links in the documentation should point to `.md` files in the repository so that the documentation is browsable on GitHub. When the website is built, all links are automatically modified to HTML links.
 
 3. Fetch upstream changes and rebase your branch onto `master`.
 
-4. Run tests before submitting a pull request to ensure that Markdown is styled properly and there is no broken links.
+4. Run tests before submitting a pull request to ensure that Markdown is styled properly and there are no broken links.
 
     ```sh
     gulp test-website
@@ -119,11 +140,11 @@ Do the following to fetch this branch and commit to it.
     git checkout -b new-branch new-docs
     ```
 
-5. Commit your changes into this branch.
+5. Commit your changes to this branch.
 
-    > Note that links in the documentation should point to `.md` files in the repository, so that the documentation is browsable on GitHub. When the website is built, all links are automatically modified to HTML links.
+    > Note that links in the documentation should point to `.md` files in the repository so that the documentation is browsable on GitHub. When the website is built, all links are automatically modified to HTML links.
 
-6. Run tests before submitting a pull request to ensure that Markdown is styled properly and there is no broken links.
+6. Run tests before submitting a pull request to ensure that Markdown is styled properly and there are no broken links.
 
     ```sh
     gulp test-website
