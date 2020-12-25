@@ -1,7 +1,7 @@
 const os = require('os');
 
-const isTravisEnvironment = !!process.env.TRAVIS;
-const hostname            = isTravisEnvironment ? os.hostname() : '127.0.0.1';
+const isAzureEnvironment = !!process.env.TF_BUILD;
+const hostname           = isAzureEnvironment ? os.hostname() : '127.0.0.1';
 
 const browserProviderNames = {
     sauceLabs:    'sauceLabs',
@@ -228,7 +228,7 @@ module.exports = {
         return this.currentEnvironment.retryTestPages;
     },
 
-    isTravisEnvironment,
+    isAzureEnvironment,
 
     testingEnvironmentNames,
     testingEnvironments,

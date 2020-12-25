@@ -5,7 +5,11 @@ import { dirname } from 'path';
 import makeDir from 'make-dir';
 import BrowserConnection from '../connection';
 import delay from '../../utils/delay';
-import { GET_TITLE_SCRIPT, GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from './utils/client-functions';
+import {
+    GET_IS_SERVICE_WORKER_ENABLED,
+    GET_TITLE_SCRIPT,
+    GET_WINDOW_DIMENSIONS_INFO_SCRIPT
+} from './utils/client-functions';
 import WARNING_MESSAGE from '../../notifications/warning-message';
 import { Dictionary } from '../../configuration/interfaces';
 import { WindowDimentionsInfo } from '../interfaces';
@@ -240,6 +244,17 @@ export default class BrowserProvider {
         await browserTools.maximize(this._getWindowDescriptor(browserId));
     }
 
+    private async _ensureRetryTestPagesWarning (browserId: string): Promise<void> {
+        const connection = BrowserConnection.getById(browserId) as BrowserConnection;
+
+        if (connection?.retryTestPages) {
+            const isServiceWorkerEnabled = await this.plugin.runInitScript(browserId, GET_IS_SERVICE_WORKER_ENABLED);
+
+            if (!isServiceWorkerEnabled)
+                connection.addWarning(WARNING_MESSAGE.retryTestPagesIsNotSupported, connection.browserInfo.alias, connection.browserInfo.alias);
+        }
+    }
+
     public async canUseDefaultWindowActions (browserId: string): Promise<boolean> {
         const isLocalBrowser    = await this.plugin.isLocalBrowser(browserId);
         const isHeadlessBrowser = await this.plugin.isHeadlessBrowser(browserId);
@@ -297,6 +312,8 @@ export default class BrowserProvider {
 
     public async openBrowser (browserId: string, pageUrl: string, browserName: string, disableMultipleWindows: boolean): Promise<void> {
         await this.plugin.openBrowser(browserId, pageUrl, browserName, disableMultipleWindows);
+
+        await this._ensureRetryTestPagesWarning(browserId);
 
         if (await this.canUseDefaultWindowActions(browserId))
             await this._ensureBrowserWindowParameters(browserId);

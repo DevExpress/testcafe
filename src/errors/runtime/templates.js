@@ -111,5 +111,10 @@ export default {
     [RUNTIME_ERRORS.uncaughtErrorInReporter]:           'An uncaught error occurred in the "{reporterName}" reporter\'s "{methodName}" method. Error details:\n{originalError}',
     [RUNTIME_ERRORS.roleInitializedWithRelativeUrl]:    'You cannot specify relative login page URLs in the Role constructor. Use an absolute URL.',
     [RUNTIME_ERRORS.typeScriptCompilerLoadingError]:    'Unable to load the TypeScript compiler.\n{originErrorMessage}.',
-    [RUNTIME_ERRORS.cannotCustomizeSpecifiedCompilers]: 'You cannot specify options for the {noncustomizableCompilerList} compiler{suffix}.'
+    [RUNTIME_ERRORS.cannotCustomizeSpecifiedCompilers]: 'You cannot specify options for the {noncustomizableCompilerList} compiler{suffix}.',
+
+    [RUNTIME_ERRORS.cannotEnableRetryTestPagesOption]:
+        'Cannot enable the \'retryTestPages\' option. Apply one of the following two solutions:\n' +
+        '-- set \'localhost\' as the value of the \'hostname\' option\n' +
+        '-- run TestCafe over HTTPS\n'
 };
