@@ -954,13 +954,13 @@ The `--disable-multiple-windows` option disables support for multi-window testin
 
 ### --retry-test-pages
 
-If enabled, TestCafe retries failed requests for the starting test page. If a request does not succeed within ten retries, the test fails.
+If this option is enabled, TestCafe registers a Service Worker that retries failed network requests for the starting test page. If a request does not succeed within ten retries, the test fails.
 
 ```sh
 testcafe firefox my-tests --retry-test-pages
 ```
 
-If this option is enabled, TestCafe registers a Service Worker that retries failed network requests for the starting test page. This option requires a secure connection. [Enable HTTPS](../guides/advanced-guides/test-https-features-and-http2-websites.md#test-https-websites) or use the [--hostname localhost>](#--hostname-name) option.
+This option requires a secure connection. [Enable HTTPS](../guides/advanced-guides/test-https-features-and-http2-websites.md#test-https-websites) or use the [--hostname localhost>](#--hostname-name) option.
 
 *Related configuration file property*: [retryTestPages](./configuration-file.md#retrytestpages)
 
