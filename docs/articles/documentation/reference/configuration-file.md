@@ -1082,6 +1082,21 @@ The `disableMultipleWindows` option disables support for multi-window testing in
 *CLI*: [--disable-multiple-windows](command-line-interface.md#--disable-multiple-windows)  
 *API*: [runner.run({ disableMultipleWindows })](testcafe-api/runner/run.md)
 
+## retryTestPages
+
+If enabled, TestCafe retries failed requests for the starting test page. If a request does not succeed within ten retries, the test fails.
+
+```json
+{
+    "retryTestPages": true
+}
+```
+
+*CLI*: [--retry-test-pages](./command-line-interface.md#--retry-test-pages)
+*API*: [runner.run({ retryTestPages })](testcafe-api/runner/run.md)
+
+If this option is enabled, TestCafe registers a Service Worker that retries failed network requests for the starting test page. This option requires a secure connection. [Enable HTTPS](../guides/advanced-guides/test-https-features-and-http2-websites.md#test-https-websites) or use the [--hostname localhost>](#--hostname-name) option.
+
 ## color
 
 Enables colors in the command line.

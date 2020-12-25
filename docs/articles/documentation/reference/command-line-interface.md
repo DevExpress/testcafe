@@ -68,8 +68,8 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--ts-config-path \<path\>](#--ts-config-path-path)
   * [--compiler-options \<options\>](#--compiler-options-options)
   * [--disable-page-caching](#--disable-page-caching)
-  * [--retry-test-pages](#--retry-test-pages)
   * [--disable-multiple-windows](#--disable-multiple-windows)
+  * [--retry-test-pages](#--retry-test-pages)
   * [--color](#--color)
   * [--no-color](#--no-color)
 
@@ -940,16 +940,6 @@ You can also disable page caching for an individual [fixture](test-api/fixture/d
 
 *Related configuration file property*: [disablePageCaching](configuration-file.md#disablepagecaching).
 
-### --retry-test-pages
-
-If enabled, TestCafe retries failed requests for the starting test page. If a request does not succeed within 10 retries, test fails.
-
-```sh
-testcafe firefox my-tests --retry-test-pages
-```
-
-If this option is enabled, TestCafe registers a Service Worker that retries failed network requests. This option requires a secure connection. [Enable HTTPS](../guides/advanced-guides/test-https-features-and-http2-websites.md) or set hostname to `localhost` with the [--hostname \<name\>](#--hostname-name) option.
-
 ### --disable-multiple-windows
 
 Disables support for [multi-window testing](../guides/advanced-guides/multiple-browser-windows.md).
@@ -961,6 +951,18 @@ testcafe firefox my-tests --disable-multiple-windows
 The `--disable-multiple-windows` option disables support for multi-window testing in Chrome and Firefox. Use this flag if you encounter compatibility issues with your existing tests.
 
 *Related configuration file property*: [disableMultipleWindows](configuration-file.md#disablemultiplewindows).
+
+### --retry-test-pages
+
+If enabled, TestCafe retries failed requests for the starting test page. If a request does not succeed within ten retries, the test fails.
+
+```sh
+testcafe firefox my-tests --retry-test-pages
+```
+
+If this option is enabled, TestCafe registers a Service Worker that retries failed network requests for the starting test page. This option requires a secure connection. [Enable HTTPS](../guides/advanced-guides/test-https-features-and-http2-websites.md#test-https-websites) or use the [--hostname localhost>](#--hostname-name) option.
+
+*Related configuration file property*: [retryTestPages](./configuration-file.md#retrytestpages)
 
 ### --color
 
