@@ -120,7 +120,8 @@ class WebsiteTester {
             const siteChecker = new blc.SiteChecker({
                 excludeLinksToSamePage: false,
                 excludedKeywords:       ['*linkedin.com*'],
-                requestMethod:          'get'
+                requestMethod:          'get',
+                userAgent:              'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36'
             },
             {
                 link: result => linkTests.push(this._getBrokenLink(result)),
