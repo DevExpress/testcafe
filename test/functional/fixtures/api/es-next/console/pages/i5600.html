@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GH 5600</title>
+</head>
+<body>
+    <script>
+        Object.keys = function () {
+            throw new Error('');
+        }
+
+        console.log('console message 1');
+    </script>
+</body>
+</html>

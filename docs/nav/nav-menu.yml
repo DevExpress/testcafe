@@ -205,6 +205,8 @@
         url: /documentation/reference/test-api/selector/parent.md
       - name: prevSibling
         url: /documentation/reference/test-api/selector/prevsibling.md
+      - name: shadowRoot
+        url: /documentation/reference/test-api/selector/shadowroot.md
       - name: sibling
         url: /documentation/reference/test-api/selector/sibling.md
       - name: with

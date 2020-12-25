@@ -370,11 +370,14 @@ gulp.step('images', () => {
         .pipe(gulp.dest('lib'));
 });
 
-gulp.step('package-content', gulp.parallel('ts-defs', 'server-scripts', 'client-scripts', 'styles', 'images', 'templates'));
+//NOTE: Executing tasks in parallel can cause out-of-memory errors on Azure Pipelines
+const buildTasks = process.env.TF_BUILD ? gulp.series : gulp.parallel;
+
+gulp.step('package-content', buildTasks('ts-defs', 'server-scripts', 'client-scripts', 'styles', 'images', 'templates'));
 
 gulp.task('fast-build', gulp.series('clean', 'package-content'));
 
-gulp.task('build', DEV_MODE ? gulp.registry().get('fast-build') : gulp.parallel('lint', 'fast-build'));
+gulp.task('build', DEV_MODE ? gulp.registry().get('fast-build') : buildTasks('lint', 'fast-build'));
 
 // Test
 gulp.step('prepare-tests', gulp.registry().get(SKIP_BUILD ? 'lint' : 'build'));
@@ -620,6 +623,12 @@ gulp.step('put-in-courses', () => {
         .pipe(gulp.dest('site/src/_data'));
 });
 
+gulp.step('put-in-books', () => {
+    return gulp
+        .src('docs/books/**/*')
+        .pipe(gulp.dest('site/src/_data'));
+});
+
 gulp.step('put-in-tweets', () => {
     return gulp
         .src('docs/tweets/**/*')
@@ -632,7 +641,7 @@ gulp.step('put-in-templates', () => {
         .pipe(gulp.dest('site/src/_includes'));
 });
 
-gulp.step('put-in-website-content', gulp.parallel('put-in-articles', 'put-in-navigation', 'put-in-posts', 'put-in-publications', 'put-in-tweets', 'put-in-templates', 'put-in-community-content', 'put-in-courses'));
+gulp.step('put-in-website-content', gulp.parallel('put-in-articles', 'put-in-navigation', 'put-in-posts', 'put-in-publications', 'put-in-tweets', 'put-in-templates', 'put-in-community-content', 'put-in-courses', 'put-in-books'));
 
 gulp.step('prepare-website-content', gulp.series('clean-website', 'fetch-assets-repo', 'put-in-website-content'));
 
@@ -840,7 +849,7 @@ gulp.step('test-functional-local-legacy-run', () => {
 gulp.task('test-functional-local-legacy', gulp.series('prepare-tests', 'test-functional-local-legacy-run'));
 
 gulp.step('test-functional-local-multiple-windows-run', () => {
-    return testFunctional(MULTIPLE_WINDOWS_TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localChrome);
+    return testFunctional(MULTIPLE_WINDOWS_TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localBrowsersChromeFirefox);
 });
 
 gulp.task('test-functional-local-multiple-windows', gulp.series('prepare-tests', 'test-functional-local-multiple-windows-run'));

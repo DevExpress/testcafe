@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Index page</title>
+</head>
+<body>
+    <a id="redirect-to-page" href="page.html?delay=5000">Redirect to a page</a>
+    <button id="send-xhr">Send an xhr request</button>
+    <div>
+        <span id="send-xhr-status">Not send</span>
+    </div>
+    <script>
+        var sendXhrBtn    = document.getElementById('send-xhr');
+        var sendXhrStatus = document.getElementById('send-xhr-status');
+
+        fetch('page.html?delay=1000')
+            .then(res => res.text())
+            .then(() => {
+                sendXhrStatus.textContent = 'Done';
+            })
+            .catch(err => {
+                sendXhrStatus.textContent = err.toString();
+            })
+    </script>
+</body>
+</html>

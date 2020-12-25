@@ -13,12 +13,14 @@ import Fixture from './fixture';
 import RequestHook from '../request-hooks/hook';
 import ClientScriptInit from '../../custom-client-scripts/client-script-init';
 import { SPECIAL_BLANK_PAGE } from 'testcafe-hammerhead';
+import { TestTimeouts } from './interfaces';
 
 export default class Test extends TestingUnit {
     public fixture: Fixture;
     public fn: Function | null;
     public beforeFn: Function | null;
     public afterFn: Function | null;
+    public timeouts: TestTimeouts | null;
 
     public constructor (testFile: TestFile) {
         // NOTE: 'fixture' directive can be missing
@@ -27,10 +29,11 @@ export default class Test extends TestingUnit {
 
         super(testFile, UnitType.test, pageUrl);
 
-        this.fixture       = fixture;
-        this.fn            = null;
-        this.beforeFn      = null;
-        this.afterFn       = null;
+        this.fixture  = fixture;
+        this.fn       = null;
+        this.beforeFn = null;
+        this.afterFn  = null;
+        this.timeouts = null;
 
         if (this.fixture) {
             this.requestHooks  = this.fixture.requestHooks.slice();
@@ -94,6 +97,14 @@ export default class Test extends TestingUnit {
 
         this.clientScripts                    = union(this.clientScripts, scripts);
         this.apiMethodWasCalled.clientScripts = true;
+
+        return this.apiOrigin;
+    }
+
+    private _timeouts$ (timeouts: TestTimeouts): Function {
+        assertType(is.testTimeouts, 'timeouts', 'test.timeouts', timeouts);
+
+        this.timeouts = timeouts;
 
         return this.apiOrigin;
     }

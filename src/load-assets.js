@@ -22,6 +22,12 @@ export default function (developmentMode) {
         uiSprite:     loadAsset('./client/ui/sprite.png', true),
         uiSpriteSvg:  loadAsset('./client/ui/sprite.svg', true),
 
+        idlePageScript: loadAsset('./client/browser/idle-page/index.js'),
+        idlePageStyle:  loadAsset('./client/browser/idle-page/styles.css'),
+        idlePageLogo:   loadAsset('./client/browser/idle-page/logo.svg', true),
+
+        serviceWorkerScript: loadAsset('./client/browser/service-worker.js'),
+
         automationScript: loadAsset(`./client/automation/index.${scriptNameSuffix}`),
 
         // NOTE: Load the legacy client script lazily to reduce startup time

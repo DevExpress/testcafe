@@ -2,7 +2,8 @@
     var _typeof = function (obj) {
         return typeof obj;
     };
-    return (function () {
+    var func = (function () {
         return typeof someObj === "undefined" ? "undefined" : _typeof(someObj);
     });
+    return func;
 })();

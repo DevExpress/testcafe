@@ -81,6 +81,7 @@ permalink: /documentation/reference/
 * [nth](test-api/selector/nth.md)
 * [parent](test-api/selector/parent.md)
 * [prevSibling](test-api/selector/prevsibling.md)
+* [shadowRoot](test-api/selector/shadowroot.md)
 * [sibling](test-api/selector/sibling.md)
 * [with](test-api/selector/with.md)
 * [withAttribute](test-api/selector/withattribute.md)

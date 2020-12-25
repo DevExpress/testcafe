@@ -13,6 +13,7 @@ permalink: /faq/
   * [Can I use third-party modules in tests?](#can-i-use-third-party-modules-in-tests)
   * [How do I work with configuration files and environment variables?](#how-do-i-work-with-configuration-files-and-environment-variables)
   * [How do I identify elements with dynamic IDs?](#how-do-i-identify-elements-with-dynamic-ids)
+  * [Can I use TestCafe to test React Native apps?](#can-i-use-testcafe-to-test-react-native-apps)
 * [Troubleshooting](#troubleshooting)
   * [I have installed TestCafe, but I cannot run it. What should I do?](#i-have-installed-testcafe-but-i-cannot-run-it-what-should-i-do)
   * [When I run a TestCafe test, I get an unexpected error. What can cause that?](#when-i-run-a-testcafe-test-i-get-an-unexpected-error-what-can-cause-that)
@@ -149,6 +150,10 @@ TestCafe selectors should use element identifiers that persist between test runs
 
 See the [Select Elements With Dynamic IDs](../documentation/guides/basic-guides/select-page-elements.md#select-elements-with-dynamic-ids) example for details.
 
+### Can I use TestCafe to test React Native apps?
+
+You can only use TestCafe to test something that runs in a browser, including Progressive Web Applications and Electron apps. TestCafe cannot automate native mobile applications because they do not run in a browser.
+
 ## Troubleshooting
 
 ### I have installed TestCafe but I cannot run it. What should I do?
@@ -283,3 +288,17 @@ According to users' feedback, the following CI systems work best with TestCafe:
 * [TravisCI](../documentation/guides/continuous-integration/travis.md)
 * [CircleCI](../documentation/guides/continuous-integration/circleci.md)
 * [AppVeyor](../documentation/guides/continuous-integration/appveyor.md)
+
+### 'The browser can't open the page: can't establish a secure connection to the server'
+
+If your computer is connected to multiple networks (for instance, if it uses a VPN connection), TestCafe may incorrectly detect the host IP and not open the tested pages.
+
+```text
+<browsername> cannot open the page because <browsername> is unable to establish a secure connection to the server.
+```
+
+To fix the issue, launch TestCafe with the `--hostname localhost` CLI option:
+
+```sh
+testcafe chrome test.js --hostname localhost
+```

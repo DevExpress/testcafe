@@ -1,7 +1,8 @@
 import {
     isFinite as isFiniteNumber,
     isRegExp,
-    isNil as isNullOrUndefined
+    isNil as isNullOrUndefined,
+    castArray
 } from 'lodash';
 
 import { APIError, GeneralError } from './';
@@ -29,6 +30,12 @@ function getNumberTypeActualValueMsg (value, type) {
         return Infinity;
 
     return value;
+}
+
+function hasSomePropInObject (obj, props) {
+    return !!obj &&
+        typeof obj === 'object' &&
+        props.some(prop => prop in obj);
 }
 
 export const is = {
@@ -93,15 +100,20 @@ export const is = {
 
     clientScriptInitializer: {
         name:      'client script initializer',
-        predicate: value => typeof value === 'object' && ['path', 'content', 'module'].some(prop => value && prop in value)
+        predicate: obj => hasSomePropInObject(obj, ['path', 'content', 'module'])
+    },
+
+    testTimeouts: {
+        name:      'test timeouts initializer',
+        predicate: obj => hasSomePropInObject(obj, ['pageRequestTimeout', 'ajaxRequestTimeout', 'speed'])
     }
 };
 
 export function assertType (types, callsiteName, what, value) {
-    types = Array.isArray(types) ? types : [types];
+    types = castArray(types);
 
     let pass            = false;
-    const actualType      = typeof value;
+    const actualType    = typeof value;
     let actualMsg       = actualType;
     let expectedTypeMsg = '';
     const last            = types.length - 1;

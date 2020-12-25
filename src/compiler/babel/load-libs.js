@@ -11,7 +11,7 @@ function getPresetEnvForTestCodeOpts () {
 function getPresetEnvForClientFunctionOpts () {
     return {
         loose:   true,
-        exclude: ['transform-typeof-symbol']
+        exclude: ['transform-typeof-symbol', 'transform-for-of']
     };
 }
 
@@ -26,6 +26,11 @@ function getModuleResolverOpts () {
     };
 }
 
+function getTransformForOfOptions () {
+    // NOTE: allowArrayLike is required to allow iterating non-iterable objects (e.g. NodeList)
+    // to preserve compatibility with older TestCafe code
+    return { loose: true, allowArrayLike: true };
+}
 
 function getTransformRuntimeOpts () {
     // NOTE: We are forced to import helpers to each compiled file
@@ -51,7 +56,7 @@ export default function loadLibs () {
         presetStage2:               require('./preset-stage-2'),
         presetFlow:                 require('@babel/preset-flow'),
         transformRuntime:           [require('@babel/plugin-transform-runtime'), getTransformRuntimeOpts()],
-        transformForOfAsArray:      require('babel-plugin-transform-for-of-as-array').default,
+        transformForOfAsArray:      [require('@babel/plugin-transform-for-of'), getTransformForOfOptions()],
         presetEnvForClientFunction: [require('@babel/preset-env'), getPresetEnvForClientFunctionOpts()],
         presetEnvForTestCode:       [require('@babel/preset-env'), getPresetEnvForTestCodeOpts()],
         moduleResolver:             [require('babel-plugin-module-resolver'), getModuleResolverOpts()],

@@ -38,6 +38,10 @@ describe('[API] ClientFunction', function () {
         return runTests('./testcafe-fixtures/client-fn-test.js', 'Babel artifacts polyfills');
     });
 
+    it('Should correctly compile for-of loops', () => {
+        return runTests('./testcafe-fixtures/client-fn-test.js', 'For-of loops');
+    });
+
     it('Should execute ClientFunction with dependencies', function () {
         return runTests('./testcafe-fixtures/client-fn-test.js', 'ClientFunction with dependencies');
     });

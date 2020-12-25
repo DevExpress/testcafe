@@ -566,7 +566,7 @@ module.exports = [
         command: {
             dialogHandler: {
                 args: [],
-                code: '(function(){ return (function () {return true;});})();'
+                code: '(function(){ var func = function func() {return true;}; return func;})();'
             },
             type: 'set-native-dialog-handler'
         },

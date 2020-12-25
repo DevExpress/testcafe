@@ -57,6 +57,8 @@ interface CommandLineOptions {
     selectorTimeout?: string | number;
     speed?: string | number;
     pageLoadTimeout?: string | number;
+    pageRequestTimeout?: string | number;
+    ajaxRequestTimeout?: string | number;
     concurrency?: string | number;
     ports?: string | number[];
     providerName?: string;
@@ -131,6 +133,8 @@ export default class CLIArgumentParser {
             .option('--selector-timeout <ms>', 'specify the time within which selectors make attempts to obtain a node to be returned')
             .option('--assertion-timeout <ms>', 'specify the time within which assertion should pass')
             .option('--page-load-timeout <ms>', 'specify the time within which TestCafe waits for the `window.load` event to fire on page load before proceeding to the next test action')
+            .option('--page-request-timeout <ms>', "specifies the timeout in milliseconds to complete the request for the page's HTML")
+            .option('--ajax-request-timeout <ms>', 'specifies the timeout in milliseconds to complete the AJAX requests (XHR or fetch)')
             .option('--speed <factor>', 'set the speed of test execution (0.01 ... 1)')
             .option('--ports <port1,port2>', 'specify custom port numbers')
             .option('--hostname <name>', 'specify the hostname')
@@ -147,6 +151,7 @@ export default class CLIArgumentParser {
             .option('--cs, --client-scripts <paths>', 'inject scripts into tested pages', this._parseList, [])
             .option('--disable-page-caching', 'disable page caching during test execution')
             .option('--disable-page-reloads', 'disable page reloads between tests')
+            .option('--retry-test-pages', 'retry network requests to test pages during test execution')
             .option('--disable-screenshots', 'disable screenshots')
             .option('--screenshots-full-page', 'enable full-page screenshots')
             .option('--compiler-options <option=value[,...]>', 'specify test file compiler options')
@@ -224,6 +229,24 @@ export default class CLIArgumentParser {
 
             this.opts.pageLoadTimeout = parseInt(this.opts.pageLoadTimeout as string, 10);
         }
+    }
+
+    private _parsePageRequestTimeout (): void {
+        if (!this.opts.pageRequestTimeout)
+            return;
+
+        assertType(is.nonNegativeNumberString, null, 'Page request timeout', this.opts.pageRequestTimeout);
+
+        this.opts.pageRequestTimeout = parseInt(this.opts.pageRequestTimeout as string, 10);
+    }
+
+    private _parseAjaxRequestTimeout (): void {
+        if (!this.opts.ajaxRequestTimeout)
+            return;
+
+        assertType(is.nonNegativeNumberString, null, 'Ajax request timeout', this.opts.ajaxRequestTimeout);
+
+        this.opts.ajaxRequestTimeout = parseInt(this.opts.ajaxRequestTimeout as string, 10);
     }
 
     private _parseSpeed (): void {
@@ -344,6 +367,8 @@ export default class CLIArgumentParser {
         this._parseSelectorTimeout();
         this._parseAssertionTimeout();
         this._parsePageLoadTimeout();
+        this._parsePageRequestTimeout();
+        this._parseAjaxRequestTimeout();
         this._parseAppInitDelay();
         this._parseSpeed();
         this._parsePorts();

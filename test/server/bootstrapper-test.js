@@ -47,7 +47,9 @@ describe('Bootstrapper', () => {
                 bootstrapper = setupBootstrapper();
             });
 
-            it('Should raise an error when browser is specified as non-headless', async () => {
+            it('Should raise an error when browser is specified as non-headless', async function () {
+                this.timeout(3000);
+
                 bootstrapper.browsers = [ BROWSER_NAME ];
 
                 try {

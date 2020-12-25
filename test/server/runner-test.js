@@ -842,6 +842,29 @@ describe('Runner', () => {
 
             expect(runner.configuration.getOption('debugLogger')).to.deep.equal(customLogger);
         });
+
+        it('Should raise an error if request timeout options have wrong type', async () => {
+            let errorCount = 0;
+
+            const checkIncorrectRequestTimeout = (optionName, optionValue, expectedErrorMessage) => {
+                return runner
+                    .run({ [optionName]: optionValue })
+                    .catch(err => {
+                        errorCount++;
+
+                        expect(err.message).eql(expectedErrorMessage);
+
+                        delete runner.configuration._options[optionName];
+                    });
+            };
+
+            await checkIncorrectRequestTimeout(OptionNames.pageRequestTimeout, true, '"pageRequestTimeout" option is expected to be a non-negative number, but it was boolean.');
+            await checkIncorrectRequestTimeout(OptionNames.pageRequestTimeout, -1, '"pageRequestTimeout" option is expected to be a non-negative number, but it was -1.');
+            await checkIncorrectRequestTimeout(OptionNames.ajaxRequestTimeout, true, '"ajaxRequestTimeout" option is expected to be a non-negative number, but it was boolean.');
+            await checkIncorrectRequestTimeout(OptionNames.ajaxRequestTimeout, -1, '"ajaxRequestTimeout" option is expected to be a non-negative number, but it was -1.');
+
+            expect(errorCount).eql(4);
+        });
     });
 
     describe('.clientScripts', () => {

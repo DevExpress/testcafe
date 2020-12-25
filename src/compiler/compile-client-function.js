@@ -5,26 +5,24 @@ import loadBabelLibs from './babel/load-libs';
 import { ClientFunctionAPIError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
 import formatBabelProducedCode from './babel/format-babel-produced-code';
+import BASE_BABEL_OPTIONS from './babel/get-base-babel-options';
 
 const ANONYMOUS_FN_RE                = /^function\s*\*?\s*\(/;
 const ES6_OBJ_METHOD_NAME_RE         = /^(\S+?)\s*\(/;
 const USE_STRICT_RE                  = /^('|")use strict('|");?/;
 const TRAILING_SEMICOLON_RE          = /;\s*$/;
-const REGENERATOR_FOOTPRINTS_RE      = /(_index\d+\.default|_regenerator\d+\.default|regeneratorRuntime)\.wrap\(function _callee\$\(_context\)/;
+const REGENERATOR_FOOTPRINTS_RE      = /(_index\d+\.default|_regenerator\d+\.default|regeneratorRuntime)\.wrap\(function func\$\(_context\)/;
 const ASYNC_TO_GENERATOR_OUTPUT_CODE = formatBabelProducedCode(asyncToGenerator(noop).toString());
 
+const CLIENT_FUNCTION_BODY_WRAPPER = code => `const func = (${code});`;
+const CLIENT_FUNCTION_WRAPPER      = ({ code, dependencies }) => `(function(){${dependencies} ${code} return func;})();`;
 
 function getBabelOptions () {
     const { presetEnvForClientFunction, transformForOfAsArray } = loadBabelLibs();
 
-    return {
-        presets:       [{ plugins: [transformForOfAsArray] }, presetEnvForClientFunction],
-        sourceMaps:    false,
-        retainLines:   true,
-        ast:           false,
-        babelrc:       false,
-        highlightCode: false
-    };
+    return Object.assign({}, BASE_BABEL_OPTIONS, {
+        presets: [{ plugins: [transformForOfAsArray] }, presetEnvForClientFunction]
+    });
 }
 
 function downgradeES (fnCode) {
@@ -72,6 +70,9 @@ export default function compileClientFunction (fnCode, dependencies, instantiati
 
     fnCode = makeFnCodeSuitableForParsing(fnCode);
 
+
+    fnCode = CLIENT_FUNCTION_BODY_WRAPPER(fnCode);
+
     // NOTE: we need to recompile ES6 code for the browser if we are on newer versions of Node.
     fnCode = downgradeES(fnCode);
     fnCode = hammerhead.processScript(fnCode, false);
@@ -85,5 +86,5 @@ export default function compileClientFunction (fnCode, dependencies, instantiati
 
     const dependenciesDefinition = dependencies ? getDependenciesDefinition(dependencies) : '';
 
-    return `(function(){${dependenciesDefinition} return ${fnCode}})();`;
+    return CLIENT_FUNCTION_WRAPPER({ code: fnCode, dependencies: dependenciesDefinition });
 }
