@@ -13,10 +13,10 @@
         btnSendFetch.addEventListener('click', function () {
             fetch('http://dummy-url.com/get')
                 .then(res => {
-                    return res.text();
-                })
-                .then(() => {
                     document.getElementById('requestStatusText').textContent = 'Sent';
+                })
+                .catch(() => {
+                    document.getElementById('requestStatusText').textContent = 'CORS failed';
                 });
         });
     </script>
