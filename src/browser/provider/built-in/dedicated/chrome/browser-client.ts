@@ -3,6 +3,7 @@ import Protocol from 'devtools-protocol';
 import path from 'path';
 import os from 'os';
 import remoteChrome from 'chrome-remote-interface';
+import debug from 'debug';
 import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../../utils/client-functions';
 
 import {
@@ -13,6 +14,8 @@ import {
 } from './interfaces';
 
 const DOWNLOADS_DIR = path.join(os.homedir(), 'Downloads');
+
+const debugLog = debug('testcafe:browser:provider:built-in:dedicated:chrome');
 
 export class BrowserClient {
     private _clients: Dictionary<remoteChrome.ProtocolApi> = {};
@@ -48,23 +51,18 @@ export class BrowserClient {
         return tabs[0];
     }
 
-    private async _createClient (): Promise<remoteChrome.ProtocolApi | void> {
-        try {
-            const target                     = await this._getActiveTab();
-            const client                     = await remoteChrome({ target, port: this._runtimeInfo.cdpPort });
-            const { Page, Network, Runtime } = client;
+    private async _createClient (): Promise<remoteChrome.ProtocolApi> {
+        const target                     = await this._getActiveTab();
+        const client                     = await remoteChrome({ target, port: this._runtimeInfo.cdpPort });
+        const { Page, Network, Runtime } = client;
 
-            this._clients[this._clientKey] = client;
+        this._clients[this._clientKey] = client;
 
-            await Page.enable();
-            await Network.enable({});
-            await Runtime.enable();
+        await Page.enable();
+        await Network.enable({});
+        await Runtime.enable();
 
-            return client;
-        }
-        catch (err) {
-            return void 0;
-        }
+        return client;
     }
 
     private async _setupClient (client: remoteChrome.ProtocolApi): Promise<void> {
@@ -169,12 +167,17 @@ export class BrowserClient {
     }
 
     public async getActiveClient (): Promise<remoteChrome.ProtocolApi | void> {
-        const client = this._clients[this._clientKey];
+        try {
+            if (!this._clients[this._clientKey])
+                this._clients[this._clientKey] = await this._createClient();
+        }
+        catch (err) {
+            debugLog(err);
 
-        if (client)
-            return client;
+            return void 0;
+        }
 
-        return this._createClient();
+        return this._clients[this._clientKey];
     }
 
     public async init (): Promise<void> {
@@ -186,7 +189,7 @@ export class BrowserClient {
             if (!this._parentTarget)
                 return;
 
-            const client = await this._createClient();
+            const client = await this.getActiveClient();
 
             if (client) {
                 await this._calculateEmulatedDevicePixelRatio(client);
