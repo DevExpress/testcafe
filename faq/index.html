@@ -260,7 +260,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1607634000 * 1000);
+        var lastPostDate = new Date(1609102800 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -753,7 +753,13 @@ Use quarantine mode to perform additional attempts to execute this test.
 <li><a href="../documentation/guides/continuous-integration/circleci.html">CircleCI</a></li>
 <li><a href="../documentation/guides/continuous-integration/appveyor.html">AppVeyor</a></li>
 </ul>
-
+<h3><a class="anchor" id="the-browser-cant-open-the-page-cant-establish-a-secure-connection-to-the-server"></a>&#39;The browser can&#39;t open the page: can&#39;t establish a secure connection to the server&#39; <a class="permalink" href="#the-browser-cant-open-the-page-cant-establish-a-secure-connection-to-the-server">#</a></h3>
+<p>If your computer is connected to multiple networks (for instance, if it uses a VPN connection), TestCafe may incorrectly detect the host IP and not open the tested pages.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">&lt;browsername&gt; cannot open the page because &lt;browsername&gt; is unable to establish a secure connection to the server.
+</code></pre></div>
+<p>To fix the issue, launch TestCafe with the <code>--hostname localhost</code> CLI option:</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js <span class="nt">--hostname</span> localhost
+</code></pre></div>
 
         </div>
     </article>

@@ -393,7 +393,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1607634000 * 1000);
+        var lastPostDate = new Date(1609102800 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -1317,8 +1317,8 @@ You can use a short name - the <em>browser alias</em> - to identify browsers whe
 <tr>
 <td><code>cdpPort</code> <em>(optional)</em></td>
 <td>Number</td>
-<td>A port (0-65535) used for Chrome Debugging Protocol.</td>
-<td><code>9222</code> if you load a user profile with the <a href="#user-profiles">:userProfile</a> or <code>--user-data-dir</code> flag. Otherwise, TestCafe automatically assigns a free port.</td>
+<td>A port (0-65535) used for Chrome Debugging Protocol. Specify port <code>9222</code> if you use the <a href="#user-profiles">:userProfile</a> or <code>--user-data-dir</code> flag to load a user profile.</td>
+<td>TestCafe automatically assigns a free port.</td>
 </tr>
 </tbody></table></div><h2><a class="anchor" id="user-profiles"></a>User Profiles <a class="permalink" href="#user-profiles">#</a></h2>
 <p>By default, TestCafe launches Chromium, Google Chrome, Microsoft Edge (Chromium-based, version 79 and above) and Mozilla Firefox with a clean profile (i.e. without extensions, bookmarks and other profile settings) - to minimize profile parameter influence on test runs.</p>
@@ -1332,7 +1332,10 @@ You can use a short name - the <em>browser alias</em> - to identify browsers whe
 </code></pre></div>
 <p>When you pass the <code>:userProfile</code> flag to a portable browser, also use the <a href="#locally-installed-browsers">browser alias</a>. The <code>path:</code> prefix does not work in this case.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome:d:<span class="se">\c</span>hrome_portable<span class="se">\c</span>hrome.exe:userProfile tests/test.js
-</code></pre></div><blockquote><div class="blockquote-content"><p>It is not recommended that you combine the :userProfile flag with either headless or emulation mode, because this can lead to unstable behavior.</p>
+</code></pre></div>
+<p>If you use the <code>:userProfile</code> flag, set the <a href="#emulator-parameters">cdpPort</a> property to <code>9222</code>  to record videos in Chrome and Chromium-based browsers.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome:userProfile:emulation:cdpPort<span class="o">=</span>9222 test.js <span class="nt">--video</span> artifacts/videos
+</code></pre></div><blockquote><div class="blockquote-content"><p>It is not recommended that you combine the <code>:userProfile</code> flag with either headless or emulation mode, because this can lead to unstable behavior.</p>
 </div></blockquote>
 
 		</div>

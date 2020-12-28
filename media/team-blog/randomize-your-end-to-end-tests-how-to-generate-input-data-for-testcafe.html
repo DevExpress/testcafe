@@ -16,15 +16,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>Import Third-Party Modules | TestCafe</title>
+  <title>Randomize Your End-to-End Tests: How to Generate Input Data for TestCafe | TestCafe</title>
 
-  <meta name="description" content="">
+  <meta name="description" content="Randomize Your End-to-End Tests: How to Generate Input Data for TestCafeUser input can be truly unpredictable, so it&#39;s important to use a wide sample of ...">
   <meta name="viewport" content="width=device-width">
 
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://devexpress.github.io/testcafe/documentation/recipes/integrations/import-third-party-modules.html" />
-  <meta property="og:title" content="Import Third-Party Modules | TestCafe" />
+  <meta property="og:url" content="https://devexpress.github.io/testcafe/media/team-blog/randomize-your-end-to-end-tests-how-to-generate-input-data-for-testcafe.html" />
+  <meta property="og:title" content="Randomize Your End-to-End Tests: How to Generate Input Data for TestCafe | TestCafe" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-twitter-card-icon.png" />
@@ -37,7 +37,7 @@
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
   <link rel="stylesheet" href="/testcafe/css/banner.css">
-  <link rel="canonical" href="https://devexpress.github.io/testcafe/documentation/recipes/integrations/import-third-party-modules.html">
+  <link rel="canonical" href="https://devexpress.github.io/testcafe/media/team-blog/randomize-your-end-to-end-tests-how-to-generate-input-data-for-testcafe.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="https://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -83,6 +83,8 @@
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
   <link rel="stylesheet" href="/testcafe/css/docs.css">
+    
+    <link rel="stylesheet" href="/testcafe/css/community.css">
     
   <style>
       .ps-container > .ps-scrollbar-x-rail,
@@ -160,9 +162,6 @@
                 docMenuItem.appendChild(docMenuItemIcon);
 
                 
-                    docMenuItem.className += ' expanded';
-                    docTopNav.className += ' expanded';
-                
 
                 docMenuItem.addEventListener('click', function (e) {
                     if (docTopNav.className.indexOf('expanded') !== -1) {
@@ -199,7 +198,7 @@
         var article = null;
 
         function getHeaderHeight () {
-            return 126;
+            return 76;
         }
 
         function setNavTopPosition () {
@@ -328,7 +327,7 @@
 
                 var bodyMinimized          = document.body.clientWidth === MIN_BODY_WIDTH;
                 var docContentMargin       = bodyMinimized ? CONTENT_MARGIN_WITHOUT_DOC_MENU : CONTENT_MARGIN_WITH_DOC_MENU;
-                var isCommunitySection     = false;
+                var isCommunitySection     = true;
                 var contentMarginCommunity = isMobileDevice ? CONTENT_MARGIN_COMMUNITY_MOBILE : CONTENT_MARGIN_COMMUNITY_DESKTOP;
                 var contentMargin          = isCommunitySection ? contentMarginCommunity : docContentMargin;
 
@@ -412,12 +411,12 @@
     <nav class="site-nav">
       
         
-        <div class="site-nav-tab active">
+        <div class="site-nav-tab">
           <a class="page-link" href="/testcafe/documentation/getting-started/"><span>Docs</span></a>
         </div>
       
         
-        <div class="site-nav-tab" id="blog-link-tab">
+        <div class="site-nav-tab active" id="blog-link-tab">
           <a class="page-link" id="blog-link" href="/testcafe/media/team-blog/"><span>Blog</span></a>
         </div>
       
@@ -562,7 +561,7 @@
           <a href="/testcafe/documentation/reference/">Reference</a>
         </div>
       
-        <div class="doc-top-nav-tab active" >
+        <div class="doc-top-nav-tab " >
           <a href="/testcafe/documentation/recipes/">Recipes</a>
         </div>
       
@@ -580,293 +579,169 @@
 
 
       <div class="container">
-    
-
-	
-	
-
-	
-	
-
-	
-	
-
-	
-	
-	<div class="doc-nav-panel">
-		<div class="toggle-nav-button"></div>
-		<div class="doc-nav-panel-header">
-			<div class="doc-nav-panel-heading">Documentation</div>
-			<div class="doc-nav-panel-title">Recipes</div>
-		</div>
-	</div>
-	<nav class="doc-nav">	
-		<div class="doc-nav-content">
-			<ul>
-				<li>
-				<ul>
-
-    <li>
-		    
-		
-
-<span>Basics</span>
-
-		
-			<ul>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/recipes/basics/test-select-elements.html"  >Test &lt;select&gt; Elements</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/recipes/basics/test-static-html-pages.html"  >Test Static HTML Pages</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/recipes/basics/test-on-remote-computers-and-mobile-devices.html"  >Test on Remote Computers and Mobile Devices</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/recipes/basics/test-file-upload.html"  >Test File Upload</a>
-
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-
-<span>Best Practices</span>
-
-		
-			<ul>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/recipes/best-practices/create-helpers.html"  >Create Helpers</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/recipes/best-practices/create-data-driven-tests.html"  >Create Data-Driven Tests</a>
-
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-
-<span>Integrations</span>
-
-		
-			<ul>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/recipes/integrations/import-third-party-modules.html" class="active" >Import Third-Party Modules</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/recipes/integrations/use-testing-library-api.html"  >Testing Library API</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/recipes/integrations/use-angular-cli-builder.html"  >Angular CLI Builder</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/recipes/integrations/gulp.html"  >Gulp</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/recipes/integrations/grunt.html"  >Grunt</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/recipes/integrations/test-websites-that-use-recaptcha.html"  >Test Websites That Use reCAPTCHA</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/recipes/integrations/find-code-issues-with-flow-type-checker.html"  >Flow Type Checker</a>
-
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-
-<span>Configuration</span>
-
-		
-			<ul>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/recipes/configuration/access-environment-variables-in-tests.html"  >Access Environment Variables in Tests</a>
-
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-    <li>
-		    
-		
-
-<span>Debugging</span>
-
-		
-			<ul>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/recipes/debugging/chrome-dev-tools.html"  >Chrome Developer Tools</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/recipes/debugging/visual-studio-code.html"  >Visual Studio Code</a>
-
-		
-    </li>
-
-    <li>
-		    
-		
-
-<a href="/testcafe/documentation/recipes/debugging/webstorm.html"  >WebStorm</a>
-
-		
-    </li>
-
-</ul>
-		
-    </li>
-
-</ul>
-				</li>
-			</ul>
-		</div>
-	</nav>
-	
-	
-
-
-<main>
-	<article class="doc">
-		<div class="post-content">
-
-			<h1>Import Third-Party Modules</h1>
-<p>This example shows how to import a Node.js module to TestCafe tests.</p>
-
-<p><a href="https://github.com/DevExpress/testcafe-examples/tree/master/examples/import-third-party-modules">Full Example Code</a></p>
-
-<p>You can import a module to a test file with the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import">import</a> statement or <a href="https://nodejs.org/api/modules.html#modules_require_id">require</a> function:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="nx">nanoid</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">nanoid</span><span class="dl">'</span><span class="p">;</span>
-</code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">nanoid</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">nanoid</span><span class="dl">'</span><span class="p">);</span>
-</code></pre></div>
-<p>Then you can use this module in test code:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="nx">nanoid</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">nanoid</span><span class="dl">'</span><span class="p">;</span>
-
-<span class="nx">fixture</span> <span class="s2">`My Fixture`</span>
-    <span class="p">.</span><span class="nx">page</span> <span class="s2">`https://example.com`</span><span class="p">;</span>
-
-<span class="nx">test</span><span class="p">(</span><span class="s2">`My Test`</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="kd">const</span> <span class="nx">randomCredentials</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="na">username</span><span class="p">:</span> <span class="dl">'</span><span class="s1">user</span><span class="dl">'</span> <span class="o">+</span> <span class="nx">nanoid</span><span class="p">(),</span>
-        <span class="na">email</span><span class="p">:</span> <span class="dl">'</span><span class="s1">testuser</span><span class="dl">'</span> <span class="o">+</span> <span class="nx">nanoid</span><span class="p">()</span> <span class="o">+</span> <span class="dl">'</span><span class="s1">@mycompany.com</span><span class="dl">'</span><span class="p">,</span>
-        <span class="na">password</span><span class="p">:</span> <span class="nx">nanoid</span><span class="p">()</span>
-    <span class="p">};</span>
-
-    <span class="c1">// ...</span>
+    <main>
+    <div class="post">
+        <div class="post-date">
+            DEC 28, 2020
+        </div>
+        <article class="post-content">
+            <h1>Randomize Your End-to-End Tests: How to Generate Input Data for TestCafe</h1>
+<p>User input can be truly unpredictable, so it&#39;s important to use a wide sample of random input data when testing web forms. In this article, we&#39;ll take a look at three Node libraries that generate data: <a href="https://github.com/ai/nanoid">nanoid</a>, <a href="https://github.com/marak/Faker.js/">faker</a>, and <a href="https://github.com/brendanashworth/generate-password">generate-password</a>. We&#39;ll see how TestCafe can leverage their features to help you improve your test coverage.</p>
+
+<!--more-->
+
+<p>The <a href="https://github.com/Farfurix/Generating-input-data">farfurix/generating-input-data</a> git repo contains the custom demo page and the test examples created specifically for this article. Clone the repository to follow along.</p>
+<h2><a class="anchor" id="the-basics-nanoid"></a>The Basics (nanoid) <a class="permalink" href="#the-basics-nanoid">#</a></h2>
+<p><a href="https://devexpress.github.io/testcafe/example/">This example page</a> contains a text input field. We can use the <code>t.typeText</code> method to populate it:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="nx">fixture</span> <span class="s2">`Random Input Data: example 1`</span>
+    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://devexpress.github.io/testcafe/example/</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Generate a random name</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="dl">'</span><span class="s1">#developer-name</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Developer Name</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
+<p><code>Nanoid</code> generates random strings when you call the <code>nanoid()</code> method. We can call this method to randomize our input data.</p>
 
-		</div>
-	</article>
+<p>Import the <code>nanoid</code> module in the beginning of the file:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">nanoid</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">nanoid</span><span class="dl">'</span><span class="p">;</span>
+</code></pre></div>
+<p>Declare a constant with a randomly generated name:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">randomDeveloperName</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">testuser_</span><span class="dl">'</span> <span class="o">+</span> <span class="nx">nanoid</span><span class="p">();</span>
+</code></pre></div>
+<p>Replace the <code>&#39;Developer Name&#39;</code> string with the constant we just declared:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">await</span> <span class="nx">t</span>
+    <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="dl">'</span><span class="s1">#developer-name</span><span class="dl">'</span><span class="p">,</span> <span class="nx">randomDeveloperName</span><span class="p">);</span>
+</code></pre></div>
+<p>Now every time you run the test, the input value will be unique.</p>
+<h2><a class="anchor" id="input-validation-faker-generate-password"></a>Input validation (faker, generate-password) <a class="permalink" href="#input-validation-faker-generate-password">#</a></h2>
+<p>Imagine a more complicated scenario: testing a sign-up form&#39;s ability to validate user passwords. We need to make sure that the password chosen by the user contains:</p>
 
+<ul>
+<li>At least eight symbols</li>
+<li>At least one digit</li>
+<li>A lowercase letter</li>
+<li>An uppercase letter.</li>
+</ul>
+
+<p>First, we&#39;re going to need a valid email address to serve as our username. <code>Faker</code> — a Node.js library that specializes in generating realistic-looking data, such as home addresses, business details, and emails — can help us. Import the library and call the <code>faker.internet.email()</code> method to create a valid email address.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="nx">faker</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">faker</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">validEmail</span> <span class="o">=</span> <span class="nx">faker</span><span class="p">.</span><span class="nx">internet</span><span class="p">.</span><span class="nx">email</span><span class="p">();</span>
+</code></pre></div>
+<p>The <code>generate-password</code> library will give us the passwords we need. We can set password requirements by passing arguments to the generate method of the generator object. Let&#39;s import the library:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="nx">generator</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">generate-password</span><span class="dl">'</span><span class="p">;</span>
+</code></pre></div>
+<p>We&#39;re ready to create an array of random, yet valid, passwords. The <code>faker</code> library will, once again, prove itself useful — this time, it will help us determine the password length.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">let</span> <span class="nx">validPasswords</span> <span class="o">=</span> <span class="p">[];</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">let</span> <span class="nx">newRandomPassword</span> <span class="o">=</span> <span class="nx">generator</span><span class="p">.</span><span class="nx">generate</span><span class="p">({</span>
+        <span class="na">length</span><span class="p">:</span> <span class="nx">faker</span><span class="p">.</span><span class="nx">random</span><span class="p">.</span><span class="nx">number</span><span class="p">({</span> <span class="dl">'</span><span class="s1">min</span><span class="dl">'</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="dl">'</span><span class="s1">max</span><span class="dl">'</span><span class="p">:</span> <span class="mi">20</span> <span class="p">}),</span> <span class="c1">// 10-20 characters long</span>
+        <span class="na">numbers</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="na">uppercase</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="na">lowercase</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="na">strict</span><span class="p">:</span> <span class="kc">true</span>
+    <span class="p">});</span>
+
+    <span class="nx">validPasswords</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">newRandomPassword</span><span class="p">);</span>
+<span class="p">};</span>
+</code></pre></div>
+<p>It&#39;s just as easy to generate invalid credentials. Let&#39;s use the <code>generateMultiple</code> method to generate invalid passwords of varying length:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="c1">// These passwords are too short</span>
+<span class="kd">const</span> <span class="nx">shortPasswords</span> <span class="o">=</span> <span class="nx">generator</span><span class="p">.</span><span class="nx">generateMultiple</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="p">{</span>
+    <span class="na">length</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+    <span class="na">numbers</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="na">strict</span><span class="p">:</span> <span class="kc">true</span>
+<span class="p">});</span>
+
+<span class="c1">// These passwords lack uppercase characters</span>
+<span class="kd">const</span> <span class="nx">passwordsWithoutUppercase</span> <span class="o">=</span> <span class="nx">generator</span><span class="p">.</span><span class="nx">generateMultiple</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="p">{</span>
+    <span class="na">length</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+    <span class="na">numbers</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="na">uppercase</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="na">strict</span><span class="p">:</span> <span class="kc">true</span>
+<span class="p">});</span>
+
+<span class="c1">// These passwords lack lowercase characters</span>
+<span class="kd">const</span> <span class="nx">passwordsWithoutLowercase</span> <span class="o">=</span> <span class="nx">generator</span><span class="p">.</span><span class="nx">generateMultiple</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="p">{</span>
+    <span class="na">length</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+    <span class="na">numbers</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="na">lowercase</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="na">strict</span><span class="p">:</span> <span class="kc">true</span>
+<span class="p">});</span>
+
+<span class="c1">// These passwords lack digits</span>
+<span class="kd">const</span> <span class="nx">passwordsWithoutDigits</span> <span class="o">=</span> <span class="nx">generator</span><span class="p">.</span><span class="nx">generateMultiple</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="p">{</span>
+    <span class="na">length</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+    <span class="na">strict</span><span class="p">:</span> <span class="kc">true</span>
+<span class="p">});</span>
+
+<span class="kd">const</span> <span class="nx">invalidPasswords</span> <span class="o">=</span> <span class="nx">shortPasswords</span><span class="p">.</span><span class="nx">concat</span><span class="p">(</span><span class="nx">passwordsWithoutUppercase</span><span class="p">,</span> <span class="nx">passwordsWithoutLowercase</span><span class="p">,</span> <span class="nx">passwordsWithoutDigits</span><span class="p">);</span>
+</code></pre></div>
+<p>Now that we have our fake credentials, we can test the web form.</p>
+
+<p>The first test will feed the form valid passwords. To do this, let&#39;s iterate over the <code>validPasswords</code> array and enter the data it contains into the form. A confirmation of the password&#39;s validity should appear every time we click the <code>#submit</code> button.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Successful password validation</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">const</span> <span class="nx">validPassword</span> <span class="k">of</span> <span class="nx">validPasswords</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">await</span> <span class="nx">t</span>
+            <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="dl">'</span><span class="s1">#email</span><span class="dl">'</span><span class="p">,</span> <span class="nx">validEmail</span><span class="p">,</span> <span class="p">{</span> <span class="na">replace</span><span class="p">:</span><span class="kc">true</span> <span class="p">})</span>
+            <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="dl">'</span><span class="s1">#password</span><span class="dl">'</span><span class="p">,</span> <span class="nx">validPassword</span><span class="p">,</span> <span class="p">{</span> <span class="na">replace</span><span class="p">:</span> <span class="kc">true</span> <span class="p">})</span>
+            <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="dl">'</span><span class="s1">#submit</span><span class="dl">'</span><span class="p">)</span>
+            <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#password-status</span><span class="dl">'</span><span class="p">).</span><span class="nx">value</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="dl">'</span><span class="s1">Valid password with a length of </span><span class="dl">'</span> <span class="o">+</span> <span class="nx">validPassword</span><span class="p">.</span><span class="nx">length</span><span class="p">);</span>
+    <span class="p">};</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>The second test will iterate over the <code>invalidPasswords</code> array. The main difference between this test and the previous is the content of the password status message. The message should read: &quot;Invalid password&quot;.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Invalid password warning</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">const</span> <span class="nx">invalidPassword</span> <span class="k">of</span> <span class="nx">invalidPasswords</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">await</span> <span class="nx">t</span>
+            <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="dl">'</span><span class="s1">#email</span><span class="dl">'</span><span class="p">,</span> <span class="nx">validEmail</span><span class="p">,</span> <span class="p">{</span> <span class="na">replace</span><span class="p">:</span> <span class="kc">true</span> <span class="p">})</span>
+            <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="dl">'</span><span class="s1">#password</span><span class="dl">'</span><span class="p">,</span> <span class="nx">invalidPassword</span><span class="p">,</span> <span class="p">{</span> <span class="na">replace</span><span class="p">:</span> <span class="kc">true</span> <span class="p">})</span>
+            <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="nx">submit</span><span class="p">)</span>
+            <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#password-status</span><span class="dl">'</span><span class="p">).</span><span class="nx">value</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="dl">'</span><span class="s1">Invalid password</span><span class="dl">'</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>The <a href="https://github.com/Farfurix/Generating-input-data">farfurix/generating-input-data</a> git repo contains full versions of the examples above, as well as a demo page to run these tests against.</p>
+
+<p>As we just demonstrated, it&#39;s easy to use third-party data generators in conjunction with TestCafe to randomize your tests&#39; user input. Just remember: not all data generators are created equal. Select one based on your website&#39;s unique needs.</p>
+
+<p>Related Topics:</p>
+
+<ul>
+<li><a href="https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/intercept-http-requests.html">Intercept HTTP Requests</a></li>
+<li><a href="https://devexpress.github.io/testcafe/documentation/guides/basic-guides/obtain-client-side-info.html">Obtain Client-Side Info</a></li>
+<li><a href="https://devexpress.github.io/testcafe/documentation/guides/basic-guides/interact-with-the-page.html">Interact with the Page</a></li>
+</ul>
+
+        </article>
+        <div id="back-to-posts-link">
+            <p><a href="../../media/team-blog/">Back to Post List</a></p>
+        </div>
+        <!-- <div id="disqus_thread"></div> -->
+    </div>
 </main>
+
+<!-- 
+<script>
+    var disqus_config = function () {
+        this.page.url = 'https://devexpress.github.io/testcafe/media/team-blog/randomize-your-end-to-end-tests-how-to-generate-input-data-for-testcafe.html';
+        this.page.identifier = '/media/team-blog/randomize-your-end-to-end-tests-how-to-generate-input-data-for-testcafe';
+    };
+    (function() {
+        var d = document, s = d.createElement('script');
+        
+        s.src = '//testcafe-blog.disqus.com/embed.js';
+        
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+ -->
 </div>
 
     </div>
