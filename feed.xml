@@ -5,8 +5,8 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 23 Dec 2020 18:13:54 +0300</pubDate>
-    <lastBuildDate>Wed, 23 Dec 2020 18:13:54 +0300</lastBuildDate>
+    <pubDate>Mon, 28 Dec 2020 13:12:05 +0300</pubDate>
+    <lastBuildDate>Mon, 28 Dec 2020 13:12:05 +0300</lastBuildDate>
     <generator>Jekyll v3.8.6</generator>
     
       <item>
@@ -143,7 +143,7 @@
 &lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/basic-guides/interact-with-the-page.html&quot;&gt;Interact with the Page&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
-        <pubDate>Wed, 23 Dec 2020 00:00:00 +0300</pubDate>
+        <pubDate>Mon, 28 Dec 2020 00:00:00 +0300</pubDate>
         <link>https://devexpress.github.io/testcafe/media/team-blog/randomize-your-end-to-end-tests-how-to-generate-input-data-for-testcafe.html</link>
         <guid isPermaLink="true">https://devexpress.github.io/testcafe/media/team-blog/randomize-your-end-to-end-tests-how-to-generate-input-data-for-testcafe.html</guid>
         
