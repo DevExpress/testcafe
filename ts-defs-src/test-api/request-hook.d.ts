@@ -87,7 +87,7 @@ interface RequestData {
      * The response body. Logged if the `logResponseBody` option is set to `true`.
      * A [Buffer](https://nodejs.org/api/buffer.html) or string depending on the `stringifyResponseBody` option.
      */
-    body: string | any;
+    body: string | Buffer;
     /**
      * The timestamp that specifies when the request was intercepted.
      */
@@ -106,9 +106,9 @@ interface ResponseData {
     /**
      * The response body.
      * Logged if the `logResponseBody` option is set to true.
-     * A Buffer or string depending on the `stringifyResponseBody` option.
+     * A [Buffer](https://nodejs.org/api/buffer.html) or string depending on the `stringifyResponseBody` option.
      */
-    body: string | any;
+    body: string | Buffer;
     /**
      * The timestamp that specifies when the response was intercepted.
      */
