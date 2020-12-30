@@ -76,7 +76,7 @@ describe('Browser reconnect', function () {
             let errLog = '';
 
             return new Promise(resolve => {
-                const proc = spawn(`node ${path.join(__dirname, 'run-log-error-on-disconnect-test.js')}`, { shell: true, env: { DEBUG: 'hammerhead:*' } });
+                const proc = spawn(`node ${path.join(__dirname, 'run-log-error-on-disconnect-test.js')}`, { shell: true, env: { ...process.env, DEBUG: 'hammerhead:*' } });
 
                 proc.stderr.on('data', data => {
                     errLog += data.toString('utf-8');
