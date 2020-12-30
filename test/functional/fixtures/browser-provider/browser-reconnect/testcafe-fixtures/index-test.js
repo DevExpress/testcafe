@@ -67,5 +67,5 @@ test('Should log error on browser disconnect', async t => {
 
     setTimeout(() => {
         t.testRun.browserConnection.emit('error', new Error('force error'));
-    }, 3000);
+    }, 5000);
 });

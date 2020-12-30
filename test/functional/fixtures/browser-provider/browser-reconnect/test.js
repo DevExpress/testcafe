@@ -73,12 +73,10 @@ describe('Browser reconnect', function () {
         });
 
         it('Should log error on browser disconnect', function () {
-            process.env.DEBUG = 'hammerhead:*';
-
             let errLog = '';
 
             return new Promise(resolve => {
-                const proc = spawn(`node ${path.join(__dirname, 'run-log-error-on-disconnect-test.js')}`, { shell: true });
+                const proc = spawn(`node ${path.join(__dirname, 'run-log-error-on-disconnect-test.js')}`, { shell: true, env: { DEBUG: 'hammerhead:*' } });
 
                 proc.stderr.on('data', data => {
                     errLog += data.toString('utf-8');
@@ -87,7 +85,7 @@ describe('Browser reconnect', function () {
                 proc.on('close', resolve);
             })
                 .then(() => {
-                    expect(errLog).contains('The requested "chrome" browser was disconnected during the test execution');
+                    expect(errLog).contains('The requested "chrome:headless" browser was disconnected during the test execution');
                 });
         });
 
