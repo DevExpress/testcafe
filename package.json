@@ -80,7 +80,7 @@
     "chrome-remote-interface": "^0.25.3",
     "coffeescript": "^2.3.1",
     "commander": "^2.8.1",
-    "debug": "^2.2.0",
+    "debug": "^4.3.1",
     "dedent": "^0.4.0",
     "del": "^3.0.0",
     "device-specs": "^1.0.0",
