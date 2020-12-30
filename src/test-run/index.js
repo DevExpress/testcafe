@@ -11,6 +11,7 @@ import AsyncEventEmitter from '../utils/async-event-emitter';
 import TestRunDebugLog from './debug-log';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
 import TestCafeErrorList from '../errors/error-list';
+import { GeneralError } from '../errors/runtime';
 import {
     RequestHookUnhandledError,
     PageLoadError,
@@ -49,7 +50,7 @@ import {
 
 import { GetCurrentWindowsCommand, SwitchToWindowCommand } from './commands/actions';
 
-import { TEST_RUN_ERRORS } from '../errors/types';
+import { RUNTIME_ERRORS, TEST_RUN_ERRORS } from '../errors/types';
 import processTestFnError from '../errors/process-test-fn-error';
 
 const lazyRequire                 = require('import-lazy')(require);
@@ -552,9 +553,6 @@ export default class TestRun extends AsyncEventEmitter {
         const pageError                  = this.pendingPageError || driverStatus.pageError;
         const currentTaskRejectedByError = pageError && this._handlePageErrorStatus(pageError);
 
-        if (this.disconnected)
-            return Promise.reject(new Error('Disconnected before driver request could be handled'));
-
         this.consoleMessages.concat(driverStatus.consoleMessages);
 
         if (!currentTaskRejectedByError && driverStatus.isCommandResult) {
@@ -953,6 +951,9 @@ ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
     this.emit('connected');
 
     this._clearPendingRequest();
+
+    if (this.disconnected)
+        return Promise.reject(new GeneralError(RUNTIME_ERRORS.testRunRequestInDisconnectedBrowser, this.browserConnection.browserInfo.alias));
 
     // NOTE: the driver sends the status for the second time if it didn't get a response at the
     // first try. This is possible when the page was unloaded after the driver sent the status.
