@@ -954,7 +954,7 @@ The `--disable-multiple-windows` option disables support for multi-window testin
 
 ### --retry-test-pages
 
-If this option is enabled, TestCafe retries failed network requests for webpages it navigates. The retry limit is ten times.
+If this option is enabled, TestCafe retries failed network requests for webpages visited during tests. The retry limit is ten times.
 
 ```sh
 testcafe firefox my-tests --retry-test-pages
