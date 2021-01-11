@@ -85,7 +85,7 @@ describe('Browser reconnect', function () {
                 proc.on('close', resolve);
             })
                 .then(() => {
-                    expect(errLog).contains('The requested "chrome:headless" browser was disconnected during the test execution');
+                    expect(errLog).contains('The requested "chrome:headless" browser has disconnected during the test execution');
                 });
         });
 
