@@ -60,12 +60,16 @@ Follow the steps below when submitting your code.
 
 8. Write some code and commit your changes to the branch.
 
-    You can build TestCafe and launch it without running tests.
+    To build TestCafe and launch it without running tests, run:
 
     ```sh
     gulp build
-    node bin/testcafe.js [...args]
+    node bin/testcafe.js chrome ./tests
     ```
+
+    In this example, `chrome` is a [browser alias](./docs/articles/documentation/reference/command-line-interface.md#browser-list) and `./tests` is a path to the [directory with tests](./docs/articles/documentation/reference/command-line-interface.md#file-pathglob-pattern). You can use other [CLI arguments](./docs/articles/documentation/reference/command-line-interface.md) as needed.
+
+    > If you run into dependency errors during a build, check that you have appropriate versions of dependencies installed. Clone TestCafe repository into an empty directory (or delete the `node_modules` directory) and install the dependencies.
 
 9. Add regression tests to appropriate sections if you are fixing a bug. To find these sections, search for `Regression` in the code.
 
@@ -95,11 +99,11 @@ Follow the steps below when submitting your code.
 
 If you want to fix a bug in the current documentation or make an enhancement that relates to the existing functionality, follow the instructions below.
 
-1. Fork TestCafe and create a branch in your fork. Name this branch with an issue number followed by the `docs` postfix, e.g. `gh852-docs`.
+1. Fork TestCafe and create a branch in your fork. Name this branch with an issue number followed by the `docs` postfix, for example `gh852-docs`.
 
 2. Commit your changes to the branch.
 
-    > Note that links in the documentation should point to `.md` files in the repository so that the documentation is browsable on GitHub. When the website is built, all links are automatically modified to HTML links.
+    > Links in the documentation should point to `.md` files in the repository so that the documentation is browsable on GitHub. When the website is built, all links are automatically modified to HTML links.
 
 3. Fetch upstream changes and rebase your branch onto `master`.
 
@@ -142,7 +146,7 @@ Do the following to fetch this branch and commit to it.
 
 5. Commit your changes to this branch.
 
-    > Note that links in the documentation should point to `.md` files in the repository so that the documentation is browsable on GitHub. When the website is built, all links are automatically modified to HTML links.
+    > Links in the documentation should point to `.md` files in the repository so that the documentation is browsable on GitHub. When the website is built, all links are automatically modified to HTML links.
 
 6. Run tests before submitting a pull request to ensure that Markdown is styled properly and there are no broken links.
 
