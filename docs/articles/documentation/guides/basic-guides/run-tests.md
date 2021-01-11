@@ -504,7 +504,7 @@ When you run tests on [remote devices](../../reference/command-line-interface.md
 
 In the command line interface, specify the number of browser instances after the `remote:` keyword.  For example, use `-c 2 remote:6` to run tests in Chrome, Firefox, and Edge, with two instances of each browser. If you use the API, create a [browser connection](../../reference/testcafe-api/browserconnection/README.md) for each instance in code.
 
-Launch all the required browser instances manually on a remote device. The total number of instances should divide by the concurrency factor `c`. Otherwise, an exception is thrown.
+Launch all the required browser instances manually on a remote device. The total number of instances should be divisible by the concurrency factor `c`. Otherwise, an exception is thrown.
 
 ```sh
 testcafe -c 2 remote:4 tests/test.js
