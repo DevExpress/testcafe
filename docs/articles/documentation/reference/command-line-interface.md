@@ -960,7 +960,7 @@ If this option is enabled, TestCafe retries failed network requests for webpages
 testcafe firefox my-tests --retry-test-pages
 ```
 
-This feature uses [Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API) internally and requires a secure connection.
+This feature uses [Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API) and requires a secure connection.
 To run TestCafe over a secure connection, [setup HTTPS](../guides/advanced-guides/test-https-features-and-http2-websites.md#test-https-websites) or use the [--hostname localhost](#--hostname-name) option.
 
 *Related configuration file property*: [retryTestPages](./configuration-file.md#retrytestpages)
