@@ -13,7 +13,6 @@ import {
     TouchConfigOptions,
     Size
 } from './interfaces';
-import debug from 'debug';
 import prettyTime from 'pretty-hrtime';
 import { CheckedCDPMethod, ELAPSED_TIME_UPPERBOUNDS } from './elapsed-upperbounds';
 import guardTimeExecution from '../../../../../utils/guard-time-execution';
