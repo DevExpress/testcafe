@@ -148,6 +148,6 @@ export const RUNTIME_ERRORS = {
     typeScriptCompilerLoadingError:                     'E1060',
     cannotCustomizeSpecifiedCompilers:                  'E1061',
     cannotEnableRetryTestPagesOption:                   'E1062',
-    browserConnectionError:                             'E1063'
+    browserConnectionError:                             'E1063',
     testRunRequestInDisconnectedBrowser:                'E1064'
 };
