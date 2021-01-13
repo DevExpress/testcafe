@@ -22,10 +22,10 @@ Join the TestCafe community on Stack Overflow: ask and answer [questions with th
 
 ## Reporting a Problem
 
-If you encounter a bug when using TestCafe, please file an issue in our [GitHub repository](https://github.com/DevExpress/testcafe/issues).
-We recommend searching through the existing issues to see if the problem has already been reported or addressed.
+If you run into a bug with TestCafe, please file an issue in the [GitHub repository](https://github.com/DevExpress/testcafe/issues).
+Search through the existing issues to see if the problem has already been reported or addressed.
 
-When you create a new issue, the template text is automatically added to its body. You should complete all the sections in this template to help us understand the issue you are describing. Missing information could delay the processing time.
+When you create a new issue, the template text is automatically added to its body. Complete all the sections in this template to help us understand the issue you are describing. Missing information could delay the processing time.
 
 ## Code Contribution
 
@@ -33,20 +33,16 @@ Follow the steps below when submitting your code.
 
 1. Search the [list of issues](https://github.com/DevExpress/testcafe/issues) to see if there is an issue for the bug or feature you are going to work on or create a new one.
 
-2. If you are going to address an existing issue, check the comment thread to make sure that nobody is working on it at the moment.
+2. To address an existing issue, check the comment thread to make sure that nobody is working on it at the moment. Leave a comment saying that you are willing to fix this issue, and include details on how you are going to do this. Core team members may need to discuss the details of the proposed fix with you. After the green light from them,
+leave a comment saying that you started your work on this issue.
 
-3. Leave a comment saying that you are willing to fix this issue, and include details on how you are going to do this.
+3. Install [Node.js](https://nodejs.org/en/), [Google Chrome](https://www.google.com/chrome/) and [Firefox](https://www.mozilla.org/en-US/firefox/new/) on your development machine.
 
-4. Core team members may need to discuss the details of the proposed fix with you. As soon as you get the green light from them,
-  leave a comment saying that you started your work on this issue.
-
-5. Install [Node.js](https://nodejs.org/en/) on your development machine.
-
-6. Fork TestCafe. Clone the fork to your machine and create a new branch. Name this branch with an issue number, for example, `gh852`, `gh853`.
+4. Fork TestCafe. Clone the fork to your machine and create a new branch. Name this branch with an issue number, for example, `gh852`, `gh853`.
 
     > To contribute to the docs, follow the [Contribute to Documentation](#contribute-to-documentation) guide.
 
-7. Install dependencies. In the root directory of your local copy run:
+5. Install dependencies. In the root directory of your local copy run:
 
     ```sh
     npm install
@@ -58,9 +54,9 @@ Follow the steps below when submitting your code.
     yarn
     ```
 
-8. Write some code and commit your changes to the branch.
+6. Write some code and commit your changes to the branch.
 
-    To build TestCafe and launch it without running tests, run:
+    You can build TestCafe and launch it without running tests:
 
     ```sh
     gulp build
@@ -71,13 +67,13 @@ Follow the steps below when submitting your code.
 
     > If you run into dependency errors during a build, check that you have appropriate versions of dependencies installed. Clone TestCafe repository into an empty directory (or delete the `node_modules` directory) and install the dependencies.
 
-9. Add regression tests to appropriate sections if you are fixing a bug. To find these sections, search for `Regression` in the code.
+7. Add regression tests to appropriate sections if you are fixing a bug. To find these sections, search for `Regression` in the code.
 
-    Add unit and/or functional tests if you are developing new functionality.
+    For new functionality, add unit and/or functional tests.
 
-10. Fetch upstream changes and rebase your branch onto `master`.
+8. Fetch upstream changes and rebase your branch onto `master`.
 
-11. Before you submit a pull request, run tests to ensure that everything works.
+9. Before you submit a pull request, run tests to check that everything works.
 
     ```sh
     gulp test-server
@@ -85,13 +81,51 @@ Follow the steps below when submitting your code.
     gulp test-client-local
     ```
 
-12. Push changes to your fork.
+    It is required that your [code is linted](#build-instructions) and all tests pass before you submit a pull request.
 
-13. Submit a pull request. To make changes to the documentation, submit a separate pull request as described in [Contribute to Documentation](#contribute-to-documentation).
+10. Push changes to your fork and submit a pull request.
 
-    The pull request name should describe what has been done and contain
+     > To contribute to the docs, follow the [Contribute to Documentation](#contribute-to-documentation) guide.
+
+    The pull request name should describe the changes you implemented. The pull request description should contain
     the [closes](https://github.com/blog/1506-closing-issues-via-pull-requests) directive
     with an appropriate issue number.
+
+## Build Instructions
+
+TestCafe repository includes multiple gulp tasks to build the project.
+
+During development, run the fast build:
+
+```sh
+gulp fast-build
+```
+
+Lint your code before you submit a pull request. The `build` task runs `eslint` to lint your code:
+
+```sh
+gulp build
+```
+
+After the build, run `npm pack` to pack TestCafe as a `tgz` package in the current folder.
+
+```sh
+npm pack
+```
+
+To install this package with NPM, run:
+
+```sh
+npm install testcafe-x.y.z.tgz
+```
+
+Where `x.y.z` is the current TestCafe version, for example, `1.10.1`.
+
+Build artifacts are stored in `/lib`. Build tasks remove this folder before they run. To remove the folder manually, run:
+
+```sh
+gulp clean
+```
 
 ## Contribute to Documentation
 
