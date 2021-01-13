@@ -196,7 +196,7 @@ function _typeTextToContentEditable (element, text) {
         nextTick()
             .then(() => {
                 if (needRaiseInputEvent)
-                    eventSimulator.input(element);
+                    eventSimulator.input(element, text);
 
                 listeners.removeInternalEventListener(window, ['input'], onInput);
                 listeners.removeInternalEventListener(window, ['textinput'], onTextInput);
@@ -277,7 +277,7 @@ function _typeTextToTextEditable (element, text) {
     }
 
     // NOTE: We should simulate the 'input' event after typing a char (B253410, T138385)
-    eventSimulator.input(element);
+    eventSimulator.input(element, text);
 }
 
 function _typeTextToNonTextEditable (element, text, caretPos) {
@@ -290,7 +290,7 @@ function _typeTextToNonTextEditable (element, text, caretPos) {
         domUtils.setElementValue(element, text);
 
     eventSimulator.change(element);
-    eventSimulator.input(element);
+    eventSimulator.input(element, text);
 }
 
 export default function (element, text, caretPos) {
