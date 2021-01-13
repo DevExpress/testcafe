@@ -25,15 +25,15 @@ Join the TestCafe community on Stack Overflow: ask and answer [questions with th
 If you run into a bug with TestCafe, please file an issue in the [GitHub repository](https://github.com/DevExpress/testcafe/issues).
 Search through the existing issues to see if the problem has already been reported or addressed.
 
-When you create a new issue, the template text is automatically added to its body. Complete all the sections in this template to help us understand the issue you are describing. Missing information could delay the processing time.
+When you create a new issue, the template text is automatically added to its body. Complete all the sections in this template to help us understand the problem you are describing. Missing information could delay the processing time.
 
 ## Code Contribution
 
 Follow the steps below when submitting your code.
 
-1. Search the [list of issues](https://github.com/DevExpress/testcafe/issues) to see if there is an issue for the bug or feature you are going to work on or create a new one.
+1. Search the [list of issues](https://github.com/DevExpress/testcafe/issues) to see if there is an issue for the bug or feature you plan to work on or create a new one.
 
-2. To address an existing issue, check the comment thread to make sure that nobody is working on it at the moment. Leave a comment saying that you are willing to fix this issue, and include details on how you are going to do this. Core team members may need to discuss the details of the proposed fix with you. After the green light from them,
+2. To address an already described issue, check the comment thread to make sure that nobody is working on it at the moment. Leave a comment saying that you are willing to fix this issue, and include details on how you plan to do this. Core team members may need to discuss the details of the proposed fix with you. After the green light from them,
 leave a comment saying that you started your work on this issue.
 
 3. Install [Node.js](https://nodejs.org/en/), [Google Chrome](https://www.google.com/chrome/) and [Firefox](https://www.mozilla.org/en-US/firefox/new/) on your development machine.
@@ -42,7 +42,7 @@ leave a comment saying that you started your work on this issue.
 
     > To contribute to the docs, follow the [Contribute to Documentation](#contribute-to-documentation) guide.
 
-5. Install dependencies. In the root directory of your local copy run:
+5. Install dependencies. In the root directory of your local copy, run:
 
     ```sh
     npm install
@@ -54,7 +54,7 @@ leave a comment saying that you started your work on this issue.
     yarn
     ```
 
-6. Write some code and commit your changes to the branch.
+6. Write code and commit your changes to the branch.
 
     You can build TestCafe and launch it without running tests:
 
@@ -71,11 +71,11 @@ leave a comment saying that you started your work on this issue.
 
 7. Add regression tests to appropriate sections if you are fixing a bug. To find these sections, search for `Regression` in the code.
 
-    For new functionality, add unit and/or functional tests.
+    For new functionality, add unit/functional tests.
 
 8. Fetch upstream changes and rebase your branch onto `master`.
 
-9. Before you submit a pull request, run tests to check that everything works.
+9. Run tests to check that everything works.
 
     ```sh
     gulp test-server
@@ -83,15 +83,16 @@ leave a comment saying that you started your work on this issue.
     gulp test-client-local
     ```
 
-    It is required that your [code is linted](#build-instructions) and all tests pass before you submit a pull request.
+10. Push changes to your fork and open a pull request.
 
-10. Push changes to your fork and submit a pull request.
+Before you submit your pull request, it has to satisfy the following conditions:
 
-     > To contribute to the docs, follow the [Contribute to Documentation](#contribute-to-documentation) guide.
+* The pull request name should describe the changes you implemented.
+* The pull request description should contain the [closes](https://github.com/blog/1506-closing-issues-via-pull-requests) directive with an appropriate issue number.
+* All tests must be passing
+* Code must be linted without errors (see [Build Instructions](#build-instructions))
 
-    The pull request name should describe the changes you implemented. The pull request description should contain
-    the [closes](https://github.com/blog/1506-closing-issues-via-pull-requests) directive
-    with an appropriate issue number.
+Please keep in mind that we might **suspend or reject** pull requests that fail to meet these requirements.
 
 ## Build Instructions
 
@@ -103,7 +104,7 @@ During development, run the fast build:
 gulp fast-build
 ```
 
-Lint your code before you submit a pull request. The `build` task runs `eslint` to lint your code:
+Before you submit a pull request, lint your code. The `build` task runs `eslint` to lint your code:
 
 ```sh
 gulp build
@@ -123,7 +124,7 @@ npm install testcafe-x.y.z.tgz
 
 Where `x.y.z` is the current TestCafe version, for example, `1.10.1`.
 
-Build artifacts are stored in `/lib`. Build tasks remove this folder before they run. To remove the folder manually, run:
+The `/lib` directory stores build artifacts. Build tasks remove this folder before they run. To remove the folder manually, run:
 
 ```sh
 gulp clean
@@ -135,7 +136,7 @@ gulp clean
 
 If you want to fix a bug in the current documentation or make an enhancement that relates to the existing functionality, follow the instructions below.
 
-1. Fork TestCafe and create a branch in your fork. Name this branch with an issue number followed by the `docs` postfix, for example `gh852-docs`.
+1. Fork TestCafe and create a branch in your fork. Name this branch with an issue number followed by the `docs` postfix, for example, `gh852-docs`.
 
 2. Commit your changes to the branch.
 
