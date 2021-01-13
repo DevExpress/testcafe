@@ -1084,7 +1084,7 @@ The `disableMultipleWindows` option disables support for multi-window testing in
 
 ## retryTestPages
 
-If this option is enabled, TestCafe retries failed network requests for webpages visited during tests. The retry limit is ten times.
+If this option is enabled, TestCafe retries failed network requests for webpages visited during tests. The retry functionality is limited to ten tries.
 
 ```json
 {
