@@ -86,7 +86,7 @@ The TestCafe team is quick to respond to GitHub issues and StackOverflow questio
 
 All TestCafe Studio Pro customers (subscribers and trial users alike) receive prompt, proactive support directly from the package maintainers.
 
-## A Solution Like No Other
+## An Architecture Like No Other
 
 To simulate user activity, the automation engine behind TestCafe takes over browsers and the web pages they display.
 
