@@ -2,6 +2,8 @@
 layout: docs
 title: Why TestCafe?
 permalink: /documentation/why-testcafe/
+redirect_from:
+  - /documentation/how-it-works/
 ---
 
 # Why TestCafe?
