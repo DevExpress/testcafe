@@ -126,4 +126,4 @@ The [Selector](../guides/basic-guides/select-page-elements.md) function can laun
 
 ## Try it for yourself
 
-Try TestCafe for yourself and see how the features it packs can make *your* life easier. Create your first test in under 5 minutes by following our [Getting Started Guide](https://devexpress.github.io/testcafe/documentation/getting-started/). 
+Try TestCafe for yourself and see how the features it packs can make *your* life easier. Create your first test in under 5 minutes by following our [Getting Started Guide](https://devexpress.github.io/testcafe/documentation/getting-started/).
