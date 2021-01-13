@@ -5,6 +5,7 @@ import os from 'os';
 import remoteChrome from 'chrome-remote-interface';
 import debug from 'debug';
 import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../../utils/client-functions';
+import WARNING_MESSAGE from '../../../../../notifications/warning-message';
 
 import {
     Config,
@@ -12,7 +13,11 @@ import {
     TouchConfigOptions,
     Size
 } from './interfaces';
+import prettyTime from 'pretty-hrtime';
+import { CheckedCDPMethod, ELAPSED_TIME_UPPERBOUNDS } from './elapsed-upperbounds';
+import guardTimeExecution from '../../../../../utils/guard-time-execution';
 
+const DEBUG_SCOPE = (id: string): string => `testcafe:browser:provider:built-in:chrome:browser-client:${id}`;
 const DOWNLOADS_DIR = path.join(os.homedir(), 'Downloads');
 
 const debugLog = debug('testcafe:browser:provider:built-in:dedicated:chrome');
@@ -21,9 +26,11 @@ export class BrowserClient {
     private _clients: Dictionary<remoteChrome.ProtocolApi> = {};
     private _runtimeInfo: RuntimeInfo;
     private _parentTarget?: remoteChrome.TargetInfo;
+    private readonly debugLogger: debug.Debugger;
 
     public constructor (runtimeInfo: RuntimeInfo) {
         this._runtimeInfo = runtimeInfo;
+        this.debugLogger  = debug(DEBUG_SCOPE(runtimeInfo.browserId));
 
         runtimeInfo.browserClient = this;
     }
@@ -51,6 +58,19 @@ export class BrowserClient {
         return tabs[0];
     }
 
+    private _checkDropOfPerformance (method: CheckedCDPMethod, elapsedTime: [number, number]): void {
+        this.debugLogger(`CDP method '${method}' took ${prettyTime(elapsedTime)}`);
+
+        const [ elapsedSeconds ] = elapsedTime;
+
+        if (elapsedSeconds > ELAPSED_TIME_UPPERBOUNDS[method]) {
+            this._runtimeInfo.providerMethods.reportWarning(
+                WARNING_MESSAGE.browserProviderDropOfPerformance,
+                this._runtimeInfo.browserName
+            );
+        }
+    }
+
     private async _createClient (): Promise<remoteChrome.ProtocolApi> {
         const target                     = await this._getActiveTab();
         const client                     = await remoteChrome({ target, port: this._runtimeInfo.cdpPort });
@@ -58,7 +78,11 @@ export class BrowserClient {
 
         this._clients[this._clientKey] = client;
 
-        await Page.enable();
+        await guardTimeExecution(
+            async () => await Page.enable(),
+            elapsedTime => this._checkDropOfPerformance(CheckedCDPMethod.PageEnable, elapsedTime)
+        );
+
         await Network.enable({});
         await Runtime.enable();
 
@@ -74,14 +98,19 @@ export class BrowserClient {
     }
 
     private async _setDeviceMetricsOverride (client: remoteChrome.ProtocolApi, width: number, height: number, deviceScaleFactor: number, mobile: boolean): Promise<void> {
-        await client.Emulation.setDeviceMetricsOverride({
-            width,
-            height,
-            deviceScaleFactor,
-            mobile,
-            // @ts-ignore
-            fitWindow: false
-        });
+        await guardTimeExecution(
+            async () => {
+                await client.Emulation.setDeviceMetricsOverride({
+                    width,
+                    height,
+                    deviceScaleFactor,
+                    mobile,
+                    // @ts-ignore
+                    fitWindow: false
+                });
+            },
+            elapsedTime => this._checkDropOfPerformance(CheckedCDPMethod.SetDeviceMetricsOverride, elapsedTime)
+        );
     }
 
     private async _setUserAgentEmulation (client: remoteChrome.ProtocolApi): Promise<void> {
@@ -158,7 +187,12 @@ export class BrowserClient {
         if (client && config.emulation) {
             await this._setDeviceMetricsOverride(client, viewportSize.width, viewportSize.height, emulatedDevicePixelRatio, config.mobile);
 
-            await client.Emulation.setVisibleSize({ width: viewportSize.width, height: viewportSize.height });
+            await guardTimeExecution(
+                async () => {
+                    await client.Emulation.setVisibleSize({ width: viewportSize.width, height: viewportSize.height });
+                },
+                elapsedTime => this._checkDropOfPerformance(CheckedCDPMethod.SetVisibleSize, elapsedTime)
+            );
         }
     }
 

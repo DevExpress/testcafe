@@ -320,6 +320,10 @@ interface RunOptions {
      */
     pageLoadTimeout: number;
     /**
+     * Specifies the time (in milliseconds) TestCafe waits for the browser to start
+     */
+    browserInitTimeout: number;
+    /**
      * Specifies the test execution speed. A number between 1 (fastest) and 0.01 (slowest). If an individual action's speed is also specified, the action speed setting overrides the test speed.
      */
     speed: number;

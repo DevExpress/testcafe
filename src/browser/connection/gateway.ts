@@ -210,8 +210,9 @@ export default class BrowserConnectionGateway {
             this._remotesQueue.remove(connection);
     }
 
-    public close (): void {
-        Object.keys(this._connections).forEach(id => this._connections[id].close());
+    public async close (): Promise<void> {
+        for (const id in this._connections)
+            await this._connections[id].close();
     }
 }
 

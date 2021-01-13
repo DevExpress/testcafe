@@ -147,5 +147,6 @@ export const RUNTIME_ERRORS = {
     roleInitializedWithRelativeUrl:                     'E1059',
     typeScriptCompilerLoadingError:                     'E1060',
     cannotCustomizeSpecifiedCompilers:                  'E1061',
-    cannotEnableRetryTestPagesOption:                   'E1062'
+    cannotEnableRetryTestPagesOption:                   'E1062',
+    browserConnectionError:                             'E1063'
 };
