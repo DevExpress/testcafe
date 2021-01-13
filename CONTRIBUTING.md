@@ -65,6 +65,8 @@ leave a comment saying that you started your work on this issue.
 
     In this example, `chrome` is a [browser alias](./docs/articles/documentation/reference/command-line-interface.md#browser-list) and `./tests` is a path to the [directory with tests](./docs/articles/documentation/reference/command-line-interface.md#file-pathglob-pattern). You can use other [CLI arguments](./docs/articles/documentation/reference/command-line-interface.md) as needed.
 
+    See more build instructions in [Build Instructions](#build-instructions).
+
     > If you run into dependency errors during a build, check that you have appropriate versions of dependencies installed. Clone TestCafe repository into an empty directory (or delete the `node_modules` directory) and install the dependencies.
 
 7. Add regression tests to appropriate sections if you are fixing a bug. To find these sections, search for `Regression` in the code.
