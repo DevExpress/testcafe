@@ -98,7 +98,7 @@ TestCafe's hybrid client-server architecture lets it execute both system-level a
 * TestCafe tests are Node.js scripts. They can launch services and applications, read and write system files, make use of your favorite libraries.
 * TestCafe uses client-side automation scripts to execute in-browser actions. This is how our testing library handles asynchronous events, simulates user activity, and executes user-defined JavaScript.
 
-Early versions of TestCafe ran entirely in the browser. A hybrid architecture allowed us to improve test stability and extend the framework's testing capabilities. 
+Early versions of TestCafe ran entirely in the browser. A hybrid architecture allowed us to improve test stability and extend the framework's testing capabilities.
 
 ### Page Proxying
 
