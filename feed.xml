@@ -5,9 +5,9 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 28 Dec 2020 13:12:05 +0300</pubDate>
-    <lastBuildDate>Mon, 28 Dec 2020 13:12:05 +0300</lastBuildDate>
-    <generator>Jekyll v3.8.6</generator>
+    <pubDate>Wed, 13 Jan 2021 20:47:16 +0300</pubDate>
+    <lastBuildDate>Wed, 13 Jan 2021 20:47:16 +0300</lastBuildDate>
+    <generator>Jekyll v3.9.0</generator>
     
       <item>
         <title>Randomize Your End-to-End Tests: How to Generate Input Data for TestCafe</title>
