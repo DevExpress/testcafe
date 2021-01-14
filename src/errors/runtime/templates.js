@@ -16,7 +16,7 @@ export default {
     [RUNTIME_ERRORS.cannotRunLiveModeRunnerMultipleTimes]: 'Cannot run a live mode runner multiple times.',
     [RUNTIME_ERRORS.browserDisconnected]:                  'The {userAgent} browser disconnected. This problem may appear when a browser hangs or is closed, or due to network issues.',
     [RUNTIME_ERRORS.cannotRunAgainstDisconnectedBrowsers]: 'The following browsers disconnected: {userAgents}. Tests will not be run.',
-    [RUNTIME_ERRORS.testRunRequestInDisconnectedBrowser]:  'The requested "{browser}" browser has disconnected during the test execution',
+    [RUNTIME_ERRORS.testRunRequestInDisconnectedBrowser]:  '"{browser}" has disconnected during test execution',
     [RUNTIME_ERRORS.cannotEstablishBrowserConnection]:     'Unable to establish one or more of the specified browser connections.',
     [RUNTIME_ERRORS.cannotFindBrowser]:                    'Unable to find the browser. "{browser}" is not a browser alias or path to an executable file.',
     [RUNTIME_ERRORS.browserProviderNotFound]:              'The specified "{providerName}" browser provider was not found.',
