@@ -108,7 +108,7 @@ Read the following article to learn how TestCafe Studio could fit into your work
 
 ### Installation
 
-Ensure that [Node.js](https://nodejs.org/) (version 6 or newer) and [npm](https://www.npmjs.com/) are installed on your computer before running it:
+Ensure that [Node.js](https://nodejs.org/) ([Current or Active LTS](https://github.com/nodejs/Release#release-phases) is recommended, version 10 at minimum) and [npm](https://www.npmjs.com/) are installed on your computer before running it:
 
 ```sh
 npm install -g testcafe
