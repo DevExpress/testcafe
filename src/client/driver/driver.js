@@ -1651,6 +1651,9 @@ export default class Driver extends serviceUtils.EventEmitter {
 
         const role = await this._getDriverRole();
 
+        if (this.role === DriverRole.master)
+            return;
+
         if (role === DriverRole.master)
             this._startInternal();
     }
