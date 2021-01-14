@@ -11,10 +11,11 @@ const createTestCafe          = require('../../lib/');
 const COMMAND                 = require('../../lib/browser/connection/command');
 const Task                    = require('../../lib/runner/task');
 const BrowserConnection       = require('../../lib/browser/connection');
-const BrowserSet              = require('../../lib/runner/browser-set');
 const browserProviderPool     = require('../../lib/browser/provider/pool');
 const delay                   = require('../../lib/utils/delay');
 const OptionNames             = require('../../lib/configuration/option-names');
+const { GeneralError } = require('../../lib/errors/runtime');
+const { RUNTIME_ERRORS } = require('../../lib/errors/types');
 
 chai.use(require('chai-string'));
 
@@ -350,6 +351,64 @@ describe('Runner', () => {
         });
     });
 
+    describe('--retry-test-pages', () => {
+        it('hostname is not localhost and ssl is disabled', () => {
+            runner.configuration.mergeOptions({ [OptionNames.retryTestPages]: true });
+            runner.configuration.mergeOptions({ [OptionNames.hostname]: 'http://example.com' });
+
+            console.log(runner.configuration.getOption('hostname'));
+
+            return runner
+                .browsers(connection)
+                .src('test/server/data/test-suites/basic/testfile2.js')
+                .run()
+                .then(() => {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(err => {
+                    expect(err.message).eql(
+                        'Cannot enable the \'retryTestPages\' option. Apply one of the following two solutions:\n' +
+                        '-- set \'localhost\' as the value of the \'hostname\' option\n' +
+                        '-- run TestCafe over HTTPS\n'
+                    );
+                });
+        });
+
+        it('hostname is localhost and ssl is disabled', () => {
+            runner.configuration.mergeOptions({ [OptionNames.retryTestPages]: true });
+
+            runner._runTask = () => {
+                throw new Error('Promise rejection expected');
+            };
+
+            return runner
+                .browsers(connection)
+                .src('test/server/data/test-suites/basic/testfile2.js')
+                .run()
+                .catch(err => {
+                    expect(err.message).eql('Promise rejection expected');
+                });
+        });
+
+        it('hostname is not localhost and ssl is enabled', () => {
+            runner.configuration.mergeOptions({ [OptionNames.retryTestPages]: true });
+            runner.configuration.mergeOptions({ [OptionNames.hostname]: 'http://example.com' });
+            runner.configuration.mergeOptions({ [OptionNames.ssl]: 'ssl' });
+
+            runner._runTask = () => {
+                throw new Error('Promise rejection expected');
+            };
+
+            return runner
+                .browsers(connection)
+                .src('test/server/data/test-suites/basic/testfile2.js')
+                .run()
+                .catch(err => {
+                    expect(err.message).eql('Promise rejection expected');
+                });
+        });
+    });
+
     describe('.video()', () => {
         it('Should throw an error if video options are specified without a base video path', () => {
             return runner
@@ -594,21 +653,7 @@ describe('Runner', () => {
                 });
         });
 
-        it('Should raise an error if the browser connections are not ready', function () {
-            const origGetReadyTimeout = BrowserSet.prototype._getReadyTimeout;
-
-            BrowserSet.prototype._getReadyTimeout = () => {
-                return Promise.resolve(100);
-            };
-
-            //NOTE: Restore original in prototype in test timeout callback
-            const testCallback = this.test.callback;
-
-            this.test.callback = err => {
-                BrowserSet.prototype._getReadyTimeout       = origGetReadyTimeout;
-                testCallback(err);
-            };
-
+        it('Should raise an error if the browser connections are not opened', function () {
             return testCafe
                 .createBrowserConnection()
                 .then(brokenConnection => {
@@ -616,16 +661,20 @@ describe('Runner', () => {
                         .browsers(brokenConnection)
                         .reporter('list')
                         .src('test/server/data/test-suites/basic/testfile2.js')
-                        .run();
+                        .run({ browserInitTimeout: 100 });
                 })
                 .then(() => {
                     throw new Error('Promise rejection expected');
                 })
                 .catch(err => {
-                    BrowserSet.prototype._getReadyTimeout = origGetReadyTimeout;
-
-                    expect(err.message).eql('Unable to establish one or more of the specified browser connections. ' +
-                                            'This can be caused by network issues or remote device failure.');
+                    expect(err.message).eql('Unable to establish one or more of the specified browser connections.\n' +
+                                            '1 of 1 browser connections have not been established:\n' +
+                                            '- remote\n\n' +
+                                            'Hints:\n' +
+                                            '- Use the \'--browser-init-timeout\' option to allow more time for the browser to start. ' +
+                                            'The timeout is set to 0.1 seconds for all browsers.\n' +
+                                            '- The error can also be caused by network issues or remote device failure. ' +
+                                            'Make sure that the connection is stable and the remote device can be reached.');
                 });
         });
 
@@ -1164,5 +1213,85 @@ describe('Runner', () => {
         expect(runner.configuration.getOption('src')).eql(['/path-to-test']);
         expect(runner.configuration.getOption('browsers')).eql(['ie']);
         expect(runner.configuration.getOption('reporter')).eql([ { name: 'json', output: void 0 } ]);
+    });
+
+    describe('"Unable to establish one or more of the specifed browser connections" error message', function () {
+        const warningProvider = {
+            openBrowser (browserId, _, browserName) {
+                this.reportWarning(browserId, `some warning from "${browserName}"`);
+
+                const currentConnection = BrowserConnection.getById(browserId);
+
+                currentConnection.emit('error', new GeneralError(RUNTIME_ERRORS.cannotEstablishBrowserConnection));
+
+                return Promise.resolve();
+            },
+
+            closeBrowser () {
+                return Promise.resolve();
+            }
+        };
+
+        beforeEach(function () {
+            browserProviderPool.addProvider('warningProvider', warningProvider);
+        });
+
+        afterEach(function () {
+            browserProviderPool.removeProvider('warningProvider');
+        });
+
+        it('Should include warnings from browser providers', function () {
+            return runner
+                .src('./test/server/data/test-suites/basic/testfile1.js')
+                .browsers(['warningProvider:browser-alias1', 'warningProvider:browser-alias2'])
+                .run()
+                .then(() => {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(err => {
+                    expect(err.message).contains('- some warning from "browser-alias1"');
+                    expect(err.message).contains('- some warning from "browser-alias2"');
+                });
+        });
+
+        it('Should include timeout with the default values when "browser-init-timeout" is not specified', function () {
+            return runner
+                .src('./test/server/data/test-suites/basic/testfile1.js')
+                .browsers(['warningProvider:browser-alias1', 'warningProvider:browser-alias2'])
+                .run()
+                .then(() => {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(err => {
+                    expect(err.message).eql(
+                        'Unable to establish one or more of the specified browser connections.\n' +
+                        '2 of 2 browser connections have not been established:\n' +
+                        '- warningProvider:browser-alias1\n' +
+                        '- warningProvider:browser-alias2\n\n' +
+                        'Hints:\n' +
+                        '- some warning from "browser-alias1"\n' +
+                        '- some warning from "browser-alias2"\n' +
+                        '- Use the \'--browser-init-timeout\' option to allow more time for the browser to start. ' +
+                        'The timeout is set to 2 minutes for local browsers and 6 minutes for remote browsers.\n' +
+                        '- The error can also be caused by network issues or remote device failure. ' +
+                        'Make sure that the connection is stable and the remote device can be reached.'
+                    );
+                });
+        });
+
+        it('Should include hint about used concurrency factor if it\'s greater than 3', function () {
+            return runner
+                .src('./test/server/data/test-suites/basic/testfile1.js')
+                .browsers(['warningProvider:browser-alias1'])
+                .concurrency(4)
+                .run({ browserInitTimeout: 100 })
+                .then(() => {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(err => {
+                    expect(err.message).contains('The error can be due to a concurrency factor that is too high for the host machine’s performance (the factor value 4 was specified). ' +
+                                                 'Try to decrease the concurrency factor or ensure more system resources are available on the host machine.');
+                });
+        });
     });
 });

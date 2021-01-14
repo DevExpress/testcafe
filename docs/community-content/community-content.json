@@ -119,17 +119,6 @@
     },
     {
         "type": "article",
-        "source": "jrocha.dev",
-        "sourceHomePage": "https://jrocha.dev/",
-        "date": "2020-05-22",
-        "title": "Automatizando testes com TestCafe Parte 1",
-        "url": "https://jrocha.dev/tutoriais/automatizando-testes-com-testcafe-parte-1/",
-        "author": "Junior Rocha",
-        "lang": "Portuguese",
-        "langCode": "pt"
-    },
-    {
-        "type": "article",
         "source": "Medium",
         "sourceHomePage": "https://medium.com/",
         "date": "2020-05-19",

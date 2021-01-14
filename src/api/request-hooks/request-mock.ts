@@ -4,14 +4,12 @@ import {
     ResponseMock,
     RequestEvent,
     ResponseEvent,
-    RequestFilterRule,
-    SAME_ORIGIN_CHECK_FAILED_STATUS_CODE
+    RequestFilterRule
 } from 'testcafe-hammerhead';
 
 import { APIError } from '../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../errors/types';
 import WARNING_MESSAGE from '../../notifications/warning-message';
-import WarningLog from '../../notifications/warning-log';
 import { RequestFilterRuleInit } from './interfaces';
 
 
@@ -33,8 +31,8 @@ class RequestMock extends RequestHook {
     }
 
     public async onResponse (event: ResponseEvent): Promise<void> {
-        if (event.statusCode === SAME_ORIGIN_CHECK_FAILED_STATUS_CODE)
-            (this.warningLog as WarningLog).addWarning(WARNING_MESSAGE.requestMockCORSValidationFailed, RequestMock.name, event._requestFilterRule);
+        if (event.isSameOriginPolicyFailed)
+            this.warningLog?.addWarning(WARNING_MESSAGE.requestMockCORSValidationFailed, RequestMock.name, event._requestFilterRule);
     }
 
     // API

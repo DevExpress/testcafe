@@ -5,7 +5,7 @@ permalink: /documentation/guides/continuous-integration/github-actions-and-brows
 ---
 # Run Tests on BrowserStack with GitHub Actions
 
-This topic describes how to use the [Run TestCafe action](https://github.com/DevExpress/testcafe-action) to integrate TestCafe into the [GitHub Actions](https://docs.github.com/en/actions/automating-your-workflow-with-github-actions) build process. Tests are executed in the [BrowserStack](https://automate.browserstack.com/) cloud testing service.
+This topic describes how to use the [Run TestCafe action](https://github.com/DevExpress/testcafe-action) to integrate TestCafe into the [GitHub Actions](https://docs.github.com/en/actions/automating-your-workflow-with-github-actions) build process. Tests are executed in the [BrowserStack](https://browserstack.com/) cloud testing service.
 
 * [Step 1 - Create a Workflow](#step-1---create-a-workflow)
 * [Step 2 - Create a Job](#step-2---create-a-job)
@@ -75,7 +75,7 @@ jobs:
 
 ## Step 3 - Provide BrowserStack Credentials
 
-In order for TestCafe to use BrowserStack browsers, valid BrowserStack credentials (Username and Access Key) are required. These credentials are unique to your BrowserStack account and can be obtained from the [account settings](https://www.browserstack.com/accounts/settings) page.
+In order for TestCafe to use BrowserStack browsers, valid BrowserStack credentials (Username and Access Key) are required. These credentials are unique to your BrowserStack account and can be obtained from the **Account Settings** page.
 
 Values should be set to `BROWSERSTACK_USERNAME` and `BROWSERSTACK_ACCESS_KEY` environment variables, respectively. However, for security purposes, you should provide them as [secrets](https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets) in your repository.
 

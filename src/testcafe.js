@@ -110,7 +110,7 @@ export default class TestCafe {
         if (this.compilerService)
             this.compilerService.stop();
 
-        this.browserConnectionGateway.close();
+        await this.browserConnectionGateway.close();
         this.proxy.close();
     }
 }

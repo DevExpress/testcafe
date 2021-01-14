@@ -1,4 +1,5 @@
 const path                = require('path');
+const { spawn }           = require('child_process');
 const { expect }          = require('chai');
 const config              = require('../../../config');
 const browserProviderPool = require('../../../../../lib/browser/provider/pool');
@@ -68,6 +69,23 @@ describe('Browser reconnect', function () {
             return run('./testcafe-fixtures/index-test.js', 'Should restart browser when it does not respond')
                 .then(() => {
                     expect(errors.length).eql(0);
+                });
+        });
+
+        it('Should log error on browser disconnect', function () {
+            let errLog = '';
+
+            return new Promise(resolve => {
+                const proc = spawn(`node ${path.join(__dirname, 'run-log-error-on-disconnect-test.js')}`, { shell: true, env: { ...process.env, DEBUG: 'hammerhead:*' } });
+
+                proc.stderr.on('data', data => {
+                    errLog += data.toString('utf-8');
+                });
+
+                proc.on('close', resolve);
+            })
+                .then(() => {
+                    expect(errLog).contains('"chrome:headless" has disconnected during test execution');
                 });
         });
 

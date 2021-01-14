@@ -44,6 +44,9 @@ export default {
     assertedClientFunctionInstance:     'You passed a ClientFunction object to \'t.expect()\'.\nIf you want to check the function\'s return value, use parentheses to call the function: fnName().',
     multipleWindowsFoundByPredicate:    'The predicate function passed to the \'switchToWindow\' method matched multiple windows. The first matching window was activated.',
     excessiveAwaitInAssertion:          'You passed a DOM snapshot property to the assertion\'s \'t.expect()\' method. The property value is assigned when the snapshot is resolved and this value is no longer updated. To ensure that the assertion verifies an up-to-date value, pass the selector property without \'await\'.',
-    missingAwaitOnSnapshotProperty:     'You used a DOM snapshot property without \'await\'. The property value is assigned when the snapshot is resolved. If you need to use the property value, use \'await\' to resolve the Promise.'
+    missingAwaitOnSnapshotProperty:     'You used a DOM snapshot property without \'await\'. The property value is assigned when the snapshot is resolved. If you need to use the property value, use \'await\' to resolve the Promise.',
+    retryTestPagesIsNotSupported:       'Cannot enable the \'retryTestPages\' option in "{browserAlias}". Please ensure that your version of "{browserAlias}" supports the Service Worker API (https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API).\n',
+    browserProviderDropOfPerformance:   'We detected \'{browserName}\' runs slowly. Try to free up or allocate more system resources on its host machine.',
+    testsCompilationTakesTooLong:       'Tests took too long to compile ({compileTime}). Ensure the test code has no excessive imports.'
 };
 
