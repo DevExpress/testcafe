@@ -54,6 +54,8 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--selector-timeout \<ms\>](#--selector-timeout-ms)
   * [--assertion-timeout \<ms\>](#--assertion-timeout-ms)
   * [--page-load-timeout \<ms\>](#--page-load-timeout-ms)
+  * [--ajax-request-timeout \<ms\>](#ajax-request-timeout-ms)
+  * [--page-request-timeout \<ms\>](#page-request-timeout-ms)
   * [--speed \<factor\>](#--speed-factor)
   * [--cs \<path\[,path2,...\]\>, --client-scripts \<path\[,path2,...\]\>](#--cs-pathpath2---client-scripts-pathpath2)
   * [--ports \<port1,port2\>](#--ports-port1port2)
@@ -717,6 +719,18 @@ testcafe ie my-tests --page-load-timeout 0
 ```
 
 *Related configuration file property*: [pageLoadTimeout](configuration-file.md#pageloadtimeout).
+
+### --ajax-request-timeout \<ms\>
+
+Specifies wait time (in milliseconds) for fetch/XHR requests. If no response is received within the specified period, an error is thrown.
+
+**Default value**: `120000`
+
+### --page-request-timeout \<ms\>
+
+Specifies time (in milliseconds) to wait for an HTML page. If a server doesn't respond within the specified period, an error is thrown.
+
+**Default value**: `25000`
 
 ### --speed \<factor\>
 
