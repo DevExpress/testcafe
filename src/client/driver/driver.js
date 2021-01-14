@@ -1651,6 +1651,9 @@ export default class Driver extends serviceUtils.EventEmitter {
 
         const role = await this._getDriverRole();
 
+        // NOTE: the child window can become master during the preceding async requests
+        // in this case we do not need to call the `_startInternal` method again
+        // since it was called during the `_handleSetAsMasterMessage` method.
         if (this.role === DriverRole.master)
             return;
 
