@@ -2,6 +2,8 @@
 layout: docs
 title: Why TestCafe?
 permalink: /documentation/why-testcafe/
+redirect_from:
+  - /documentation/how-it-works/
 ---
 
 # Why TestCafe?
@@ -118,7 +120,7 @@ Tests that run in parallel operate in independent sandboxed environments. This h
 
 TestCafe translates server-side test code into client-side JavaScript, and injects it into the browsers that it controls. This process enables the framework to perform common in-browser actions. Some testing scenarios, however, require the execution of custom client-side code. There are three ways to do it with TestCafe:
 
-[Client Scripts](/../guides/advanced-guides/inject-client-scripts.md) inject custom JavaScript files, such as temporary extra dependencies, into the page.
+[Client Scripts](../guides/advanced-guides/inject-client-scripts.md) inject custom JavaScript files, such as temporary extra dependencies, into the page.
 [Client Functions](../guides/basic-guides/obtain-client-side-info.md) evaluate user-defined JavaScript expressions and pass their return value to the server side. They are useful when you want to examine the page or access its URL.
 The [Selector](../guides/basic-guides/select-page-elements.md) function can launch user-defined client-side code to find a DOM element that cannot be otherwise identified.
 
