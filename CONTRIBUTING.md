@@ -56,7 +56,7 @@ leave a comment saying that you started your work on this issue.
 
 6. Write code and commit your changes to the branch.
 
-    You can build TestCafe and launch it without running tests:
+    You can build TestCafe and launch it manually:
 
     ```sh
     gulp build
@@ -96,9 +96,7 @@ Please keep in mind that we might **suspend or reject** pull requests that fail 
 
 ## Build Instructions
 
-TestCafe repository includes multiple gulp tasks to build the project.
-
-During development, run the fast build:
+During development, run the fast build to save time:
 
 ```sh
 gulp fast-build
