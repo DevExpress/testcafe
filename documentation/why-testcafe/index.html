@@ -16,15 +16,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>Introducing Multi-window Tests (Beta) | TestCafe</title>
+  <title>Why TestCafe? | TestCafe</title>
 
-  <meta name="description" content="Introducing Multi-window Tests (Beta)Modern web apps often launch new browser windows to authenticate users through third-party websites or display additiona...">
+  <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
 
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://devexpress.github.io/testcafe/media/team-blog/introducing-multi-window-tests-beta.html" />
-  <meta property="og:title" content="Introducing Multi-window Tests (Beta) | TestCafe" />
+  <meta property="og:url" content="https://devexpress.github.io/testcafe/documentation/why-testcafe/" />
+  <meta property="og:title" content="Why TestCafe? | TestCafe" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-twitter-card-icon.png" />
@@ -37,7 +37,7 @@
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
   <link rel="stylesheet" href="/testcafe/css/banner.css">
-  <link rel="canonical" href="https://devexpress.github.io/testcafe/media/team-blog/introducing-multi-window-tests-beta.html">
+  <link rel="canonical" href="https://devexpress.github.io/testcafe/documentation/why-testcafe/">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="https://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -83,8 +83,6 @@
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/0.6.12/css/perfect-scrollbar.min.css">
   <link rel="stylesheet" href="/testcafe/css/docs.css">
-    
-    <link rel="stylesheet" href="/testcafe/css/community.css">
     
   <style>
       .ps-container > .ps-scrollbar-x-rail,
@@ -162,6 +160,9 @@
                 docMenuItem.appendChild(docMenuItemIcon);
 
                 
+                    docMenuItem.className += ' expanded';
+                    docTopNav.className += ' expanded';
+                
 
                 docMenuItem.addEventListener('click', function (e) {
                     if (docTopNav.className.indexOf('expanded') !== -1) {
@@ -198,7 +199,7 @@
         var article = null;
 
         function getHeaderHeight () {
-            return 76;
+            return 126;
         }
 
         function setNavTopPosition () {
@@ -293,7 +294,7 @@
             linkCss('/testcafe/css/banner.mobile.css');
             linkCss('/testcafe/css/docs.mobile.css');           
             
-            if (false == false) {
+            if (true == false) {
                 document.addEventListener('DOMContentLoaded', function (e) {
                     var docNavPanel = document.querySelector('.doc-nav-panel');
                     var docNav      = document.querySelector('.doc-nav');
@@ -327,7 +328,7 @@
 
                 var bodyMinimized          = document.body.clientWidth === MIN_BODY_WIDTH;
                 var docContentMargin       = bodyMinimized ? CONTENT_MARGIN_WITHOUT_DOC_MENU : CONTENT_MARGIN_WITH_DOC_MENU;
-                var isCommunitySection     = true;
+                var isCommunitySection     = false;
                 var contentMarginCommunity = isMobileDevice ? CONTENT_MARGIN_COMMUNITY_MOBILE : CONTENT_MARGIN_COMMUNITY_DESKTOP;
                 var contentMargin          = isCommunitySection ? contentMarginCommunity : docContentMargin;
 
@@ -411,12 +412,12 @@
     <nav class="site-nav">
       
         
-        <div class="site-nav-tab">
+        <div class="site-nav-tab active">
           <a class="page-link" href="/testcafe/documentation/getting-started/"><span>Docs</span></a>
         </div>
       
         
-        <div class="site-nav-tab active" id="blog-link-tab">
+        <div class="site-nav-tab" id="blog-link-tab">
           <a class="page-link" id="blog-link" href="/testcafe/media/team-blog/"><span>Blog</span></a>
         </div>
       
@@ -565,7 +566,7 @@
           <a href="/testcafe/documentation/recipes/">Recipes</a>
         </div>
       
-        <div class="doc-top-nav-tab " >
+        <div class="doc-top-nav-tab active" >
           <a href="/testcafe/documentation/why-testcafe/">Why TestCafe</a>
         </div>
       
@@ -579,140 +580,100 @@
 
 
       <div class="container">
-    <main>
-    <div class="post">
-        <div class="post-date">
-            AUG 26, 2020
-        </div>
-        <article class="post-content">
-            <h1>Introducing Multi-window Tests (Beta)</h1>
-<p>Modern web apps often launch new browser windows to authenticate users through third-party websites or display additional interactive content.</p>
+    
 
-<p>TestCafe v1.9.0 introduces partial support for multi-window tests. You can now use client-side calls to open and close browser windows. The updated API includes additional window management methods. During the &#39;beta&#39; stage, this functionality is only enabled in local instances of Chrome and Firefox. Keep in mind that this feature is not ready for use in production environments. Both the syntax and capabilities are subject to change.</p>
+	
+	
 
-<!--more-->
-<h2><a class="anchor" id="client-side-window-events"></a>Client-side window events <a class="permalink" href="#client-side-window-events">#</a></h2>
-<p>The TestCafe browser automation driver detects and automatically activates newly launched windows. After the content is loaded, and all asynchronous requests are resolved, the test continues in the new window. When that window is closed, TestCafe switches back to the parent window and resumes the test.</p>
+	
+	
 
-<p>The sample code below demonstrates an OAuth login scenario. Lines <code>8</code> through <code>10</code> run in the external OAuth window.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span><span class="p">(</span><span class="dl">'</span><span class="s1">Login via &lt;Service Name&gt;</span><span class="dl">'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://my-page</span><span class="dl">'</span><span class="p">);</span>
+	
+	
 
-<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Should log in via &lt;Service Name&gt;</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="k">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="dl">'</span><span class="s1">#login-popup</span><span class="dl">'</span><span class="p">)</span>
+	
+	
+	
 
-        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="dl">'</span><span class="s1">#username</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">username</span><span class="dl">'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="dl">'</span><span class="s1">#pass</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">mySecret</span><span class="dl">'</span><span class="p">)</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="dl">'</span><span class="s1">#submit</span><span class="dl">'</span><span class="p">)</span>
 
-        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#user</span><span class="dl">'</span><span class="p">).</span><span class="nx">textContent</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="dl">'</span><span class="s1">Hello %Username%!</span><span class="dl">'</span><span class="p">);</span> <span class="c1">//Make sure we are logged in</span>
-<span class="p">});</span>
-</code></pre></div>
-<p><img src="/testcafe/images/blog/2020-8-26-multi-window-scheme-auto-switching.svg" alt="A scheme that illustrates automatic window switching" title=""></p>
+<main>
+	<article class="post gs">
+		<div class="post-content">
 
-<p>You do not need to write extra code to create basic multi-window tests. When you need to arbitrarily open, close and switch between windows, use the <a href="https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/multiple-browser-windows.html">TestCafe API</a>.</p>
-<h2><a class="anchor" id="switch-between-windows"></a>Switch between windows <a class="permalink" href="#switch-between-windows">#</a></h2>
-<p>The <a href="https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/switchtopreviouswindow.html">t.switchToPreviousWindow</a> method activates the last active window. If you only have two windows open, this method will cycle between them. This is useful in a variety of scenarios.</p>
-
-<p>Imagine, for example, that you&#39;re testing a real estate listings website. You want to make sure that once a new property is added, it appears in the window with all available listings. The following test implements this scenario:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span><span class="p">(</span><span class="dl">'</span><span class="s1">Property List</span><span class="dl">'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://url.com/properties</span><span class="dl">'</span><span class="p">);</span> <span class="c1">// Open the listings page</span>
-
-<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Check the property list</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="k">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">openWindow</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://url.com/addnewproperty</span><span class="dl">'</span><span class="p">)</span> <span class="c1">// Open the 'add new property' page in a new window</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="dl">'</span><span class="s1">#make-public</span><span class="dl">'</span><span class="p">)</span> <span class="c1">// Publish the listing</span>
-
-        <span class="p">.</span><span class="nx">switchToPreviousWindow</span><span class="p">()</span> <span class="c1">// Go back to the listings page</span>
-        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">.property-list li</span><span class="dl">'</span><span class="p">).</span><span class="nx">textContent</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="dl">'</span><span class="s1">New </span><span class="dl">'</span><span class="p">);</span> <span class="c1">// Check if the new listing is displayed</span>
-<span class="p">});</span>  
-</code></pre></div>
-<p><img src="/testcafe/images/blog/2020-8-26-multi-window-scheme-switchtowindow-scenario.svg" alt="A scheme that illustrates switching between windows" title=""></p>
-<h2><a class="anchor" id="manage-multiple-windows"></a>Manage multiple windows <a class="permalink" href="#manage-multiple-windows">#</a></h2>
-<p>Test scenarios with more than two open windows require more precision. The <a href="https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/switchtowindow.html">t.switchToWindow</a> method can activate any open browser window if you pass a window descriptor object or a predicate function with the window description.</p>
-
-<p>To obtain a window descriptor, call the <a href="https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/getcurrentwindow.html">t.getCurrentWindow</a> method or save the return value when you open a new window.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">windowDesc</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">openWindow</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://devexpress.github.io/testcafe/</span><span class="dl">'</span><span class="p">);</span>
-<span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nx">switchToWindow</span><span class="p">(</span><span class="nx">windowDesc</span><span class="p">);</span>
-</code></pre></div>
-<p>The predicate function must contain a description of the window&#39;s URL or title. The URL object has the same structure as its <a href="https://nodejs.org/api/url.html">Node.JS counterpart</a>.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">await</span> <span class="nx">t</span>
-    <span class="p">.</span><span class="nx">openWindow</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://devexpress.github.io/testcafe/</span><span class="dl">'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">switchToWindow</span><span class="p">(({</span><span class="nx">url</span><span class="p">})</span> <span class="o">=&gt;</span> <span class="nx">url</span><span class="p">.</span><span class="nx">pathname</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">/testcafe</span><span class="dl">'</span><span class="p">);</span>
-</code></pre></div>
-<p>Imagine you are debugging a task manager app. To ensure that both the task list and the notification feed are updated in real time, use the <a href="https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/switchtowindow.html">t.switchToWindow</a> method.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span><span class="p">(</span><span class="dl">'</span><span class="s1">Tasks View</span><span class="dl">'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://url.com/add-task</span><span class="dl">'</span><span class="p">);</span>  
-
-<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Add a new task</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>  
-    <span class="k">await</span> <span class="nx">t</span>
-        <span class="p">.</span><span class="nx">openWindow</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://url.com/tasks</span><span class="dl">'</span><span class="p">)</span> <span class="c1">// Open a new window with the task list</span>
-        <span class="p">.</span><span class="nx">openWindow</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://url.com/feed</span><span class="dl">'</span><span class="p">)</span> <span class="c1">// Open the notification feed</span>
-
-        <span class="p">.</span><span class="nx">switchToWindow</span><span class="p">(({</span><span class="nx">url</span><span class="p">})</span> <span class="o">=&gt;</span> <span class="nx">url</span><span class="p">.</span><span class="nx">pathname</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">/add-task</span><span class="dl">'</span><span class="p">)</span> <span class="c1">// Go back to the new task form</span>
-        <span class="p">.</span><span class="nx">typeText</span><span class="p">(</span><span class="dl">'</span><span class="s1">#task-description</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">Redesign the landing page by 1 Feb</span><span class="dl">'</span><span class="p">)</span> <span class="c1">// Fill in the new task form</span>
-        <span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="dl">'</span><span class="s1">#submit-task</span><span class="dl">'</span><span class="p">)</span> <span class="c1">// Submit the task</span>
-
-        <span class="p">.</span><span class="nx">switchToWindow</span><span class="p">(({</span><span class="nx">url</span><span class="p">})</span> <span class="o">=&gt;</span> <span class="nx">url</span><span class="p">.</span><span class="nx">pathname</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">/tasks</span><span class="dl">'</span><span class="p">)</span> <span class="c1">// Switch back to the task list</span>
-        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">.task-item</span><span class="dl">'</span><span class="p">).</span><span class="nx">count</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1">// Check if the new task is displayed</span>
-
-        <span class="p">.</span><span class="nx">switchToWindow</span><span class="p">(({</span><span class="nx">url</span><span class="p">})</span> <span class="o">=&gt;</span> <span class="nx">url</span><span class="p">.</span><span class="nx">pathname</span> <span class="o">===</span> <span class="dl">'</span><span class="s1">feed</span><span class="dl">'</span><span class="p">)</span> <span class="c1">// Switch to the notification feed</span>
-        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">.message</span><span class="dl">'</span><span class="p">).</span><span class="nx">textContent</span><span class="p">).</span><span class="nx">eql</span><span class="p">(</span><span class="dl">'</span><span class="s1">Redesign the landing page by 1 Feb</span><span class="dl">'</span><span class="p">);</span> <span class="c1">// Check for the corresponding notification</span>
-<span class="p">});</span>  
-</code></pre></div>
-<p><img src="/testcafe/images/blog/2020-8-26-multi-window-scheme-task-manager.svg" alt="A scheme that illustrates the task manager example" title=""></p>
-<h2><a class="anchor" id="api-overview"></a>API overview <a class="permalink" href="#api-overview">#</a></h2>
-<p>The updated API includes a number of useful window management methods.</p>
+			<h1>Why TestCafe?</h1>
+<p>TestCafe excels where other end-to-end testing solutions fall short.</p>
+<h2><a class="anchor" id="no-3rd-party-dependencies"></a>No 3rd-Party Dependencies <a class="permalink" href="#no-3rd-party-dependencies">#</a></h2>
+<p>TestCafe does not depend on Selenium or other testing software. TestCafe runs on the popular Node.js platform, and makes use of the browsers that you already have. For many users, the installation process consists of a single step:</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">npm</span> <span class="nx">install</span> <span class="o">-</span><span class="nx">g</span> <span class="nx">testcafe</span>
+</code></pre></div><h2><a class="anchor" id="human-readable-javascript-tests"></a>Human-readable JavaScript tests <a class="permalink" href="#human-readable-javascript-tests">#</a></h2>
+<p>The core components of our Node.js API are easy to use, even with little to no prior knowledge of JavaScript.</p>
+<h2><a class="anchor" id="a-first-class-citizen-in-the-nodejs-ecosystem"></a>A first-class citizen in the Node.js ecosystem <a class="permalink" href="#a-first-class-citizen-in-the-nodejs-ecosystem">#</a></h2>
+<p>Like all Node.js scripts, TestCafe tests can leverage the capabilities of third-party JavaScript libraries and preprocessors.</p>
+<h2><a class="anchor" id="no-compromises"></a>No compromises <a class="permalink" href="#no-compromises">#</a></h2>
+<p>The advanced features of TestCafe help you test complex, security-sensitive web applications.</p>
+<h3><a class="anchor" id="mock-requests"></a>Mock Requests <a class="permalink" href="#mock-requests">#</a></h3>
+<p>Emulate HTTP responses to feed sample data to your app, troubleshoot connectivity errors, and cheat downtime.</p>
+<h3><a class="anchor" id="client-side-injections"></a>Client-side injections <a class="permalink" href="#client-side-injections">#</a></h3>
+<p>Execute custom client-side code to parse the web page, examine its state, or even add extra dependencies.</p>
+<h3><a class="anchor" id="frames-and-windows"></a>Frames and windows <a class="permalink" href="#frames-and-windows">#</a></h3>
+<p>Make use of multiple browser windows to test out complex user interactions. Switch to and from iframes with ease and stability.</p>
+<h3><a class="anchor" id="concurrent-tests"></a>Concurrent tests <a class="permalink" href="#concurrent-tests">#</a></h3>
+<p>Run your tests in multiple browsers at once to quickly uncover browser-specific errors.</p>
+<h2><a class="anchor" id="made-with-automation-in-mind"></a>Made with automation in mind <a class="permalink" href="#made-with-automation-in-mind">#</a></h2><h3><a class="anchor" id="automated-waiting"></a>Automated waiting <a class="permalink" href="#automated-waiting">#</a></h3>
+<p>Manual timeouts are a thing of the past. Asynchronous from the ground up, TestCafe knows when to wait and what to wait for before a test can continue.</p>
+<h3><a class="anchor" id="automated-authentication-scripts"></a>Automated authentication scripts <a class="permalink" href="#automated-authentication-scripts">#</a></h3>
+<p>Save and activate user roles to easily switch between different user accounts.</p>
+<h3><a class="anchor" id="hooks"></a>Hooks <a class="permalink" href="#hooks">#</a></h3>
+<p>Keep your code clean with hooks — routines that are repeated before and after each test.</p>
+<h2><a class="anchor" id="superior-user-experience"></a>Superior User Experience <a class="permalink" href="#superior-user-experience">#</a></h2><h3><a class="anchor" id="testcafe-studio"></a>TestCafe Studio <a class="permalink" href="#testcafe-studio">#</a></h3>
+<p>The GUI and the test recorder built into TestCafe Studio make our product accessible to people with zero programming experience.</p>
+<h3><a class="anchor" id="testcafe-live"></a>TestCafe Live <a class="permalink" href="#testcafe-live">#</a></h3>
+<p>Enable the built-in <a href="https://devexpress.github.io/testcafe/documentation/guides/basic-guides/run-tests.html#live-mode">Live Mode</a> to restart your test every time you make changes to the test file.</p>
+<h3><a class="anchor" id="debugging-assistance"></a>Debugging assistance <a class="permalink" href="#debugging-assistance">#</a></h3>
+<p>Pause your tests to examine the app and troubleshoot errors.</p>
+<h2><a class="anchor" id="community-driven"></a>Community-driven <a class="permalink" href="#community-driven">#</a></h2><h3><a class="anchor" id="free-and-open-source"></a>Free and Open Source <a class="permalink" href="#free-and-open-source">#</a></h3>
+<p>TestCafe is distributed for free under the MIT license.</p>
+<h3><a class="anchor" id="actively-maintained"></a>Actively maintained <a class="permalink" href="#actively-maintained">#</a></h3>
+<p>The TestCafe team is quick to respond to GitHub issues and StackOverflow questions. Community suggestions shape the future of the product.</p>
+<h3><a class="anchor" id="in-house-support"></a>In-house support <a class="permalink" href="#in-house-support">#</a></h3>
+<p>All TestCafe Studio Pro customers (subscribers and trial users alike) receive prompt, proactive support directly from the package maintainers.</p>
+<h2><a class="anchor" id="an-architecture-like-no-other"></a>An Architecture Like No Other <a class="permalink" href="#an-architecture-like-no-other">#</a></h2>
+<p>To simulate user activity, the automation engine behind TestCafe takes over browsers and the web pages they display.</p>
+<h3><a class="anchor" id="client-server-architecture"></a>Client-Server Architecture <a class="permalink" href="#client-server-architecture">#</a></h3>
+<p>TestCafe&#39;s hybrid client-server architecture lets it execute both system-level and in-browser code.</p>
 
 <ul>
-<li><a href="https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/openwindow.html">t.openWindow(url)</a> opens a new window and points it to the specified URL.<br></li>
-<li><a href="https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/getcurrentwindow.html">t.getCurrentWindow()</a> obtains the window descriptor that corresponds to the active window.</li>
-<li><a href="https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/switchtowindow.html#tswitchtowindowwindow">t.switchToWindow(windowDescriptor)</a> activates the window that corresponds to the window descriptor.</li>
-<li><a href="https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/switchtowindow.html#tswitchtowindowpredicate">t.switchToWindow(predicate)</a> uses the predicate function to find a matching window, and activates it. The predicate can include the window&#39;s title and URL.</li>
-<li><a href="https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/switchtoparentwindow.html">t.switchToParentWindow()</a> activates the parent of the active window.</li>
-<li><a href="https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/switchtopreviouswindow.html">t.switchToPreviousWindow()</a> activates the last active window.</li>
-<li><a href="https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/closewindow.html">t.closeWindow()</a> closes the active window.</li>
-<li><a href="https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/closewindow.html">t.closeWindow(windowDescriptor)</a> closes the window that corresponds to the window descriptor.</li>
-</ul>
-<h2><a class="anchor" id="try-the-new-api-and-let-us-know-what-you-think"></a>Try the new API and let us know what you think <a class="permalink" href="#try-the-new-api-and-let-us-know-what-you-think">#</a></h2>
-<p>To try the functionality described in this article:</p>
-
-<ul>
-<li>Install TestCafe version 1.9.0 or later;</li>
-<li>Create a test scenario that incorporates more than one browser window;</li>
-<li>Include the window management methods from this article in the test.</li>
+<li>TestCafe uses <a href="https://github.com/DevExpress/testcafe-browser-tools">high-level system APIs</a> to launch and manage browsers. This is necessary to control the test execution process.</li>
+<li>TestCafe tests are Node.js scripts. They can launch services and applications, read and write system files, make use of your favorite libraries.</li>
+<li>TestCafe uses client-side automation scripts to execute in-browser actions. This is how our testing library handles asynchronous events, simulates user activity, and executes user-defined JavaScript.</li>
 </ul>
 
-<p>The TestCafe team is proud to create API that realistically model user behavior. If you find that the new window management capabilities can be modified to better serve your needs, please let us know. Submit your feedback and bug reports to <a href="https://github.com/DevExpress/testcafe/issues/new/choose">our GitHub repository</a>.</p>
+<p>Early versions of TestCafe ran entirely in the browser. A hybrid architecture allowed us to improve test stability and extend the framework&#39;s testing capabilities.</p>
+<h3><a class="anchor" id="page-proxying"></a>Page Proxying <a class="permalink" href="#page-proxying">#</a></h3>
+<p>You may notice that when you run TestCafe, the URL in the browser’s address bar does not match that of your website. This happens because TestCafe runs an under-the-hood reverse proxy.</p>
 
-<p>Refer to the TestCafe help topics for additional information about these methods.</p>
+<p>The <a href="https://github.com/DevExpress/testcafe-hammerhead">testcafe-hammerhead</a> proxy intercepts browser requests and injects automation scripts into the requested pages. When the proxy receives data, it changes all the URLs on the resource so that they point to the proxy. This means that neither the client-side code nor other resources in use can tell that the page has been modified. To conceal automation scripts from the rest of the page code, TestCafe also intercepts some of the requests to the browser API.</p>
 
-        </article>
-        <div id="back-to-posts-link">
-            <p><a href="../../media/team-blog/">Back to Post List</a></p>
-        </div>
-        <!-- <div id="disqus_thread"></div> -->
-    </div>
+<p>The proxying mechanism ensures that the page appears to be hosted at the original URL even to the test code.</p>
+<h3><a class="anchor" id="browser-sandboxing"></a>Browser Sandboxing <a class="permalink" href="#browser-sandboxing">#</a></h3>
+<p>At the end of each run, TestCafe deletes all browser cookies, empties the storage, and reloads the page, thereby preventing undesirable interference with subsequent tests. You don’t need to write boilerplate code to reset the app state and reverse the changes your tests make.</p>
+
+<p>Tests that run in parallel operate in independent sandboxed environments. This helps prevent server-side collisions.</p>
+<h3><a class="anchor" id="client-side-scripts"></a>Client-Side Scripts <a class="permalink" href="#client-side-scripts">#</a></h3>
+<p>TestCafe translates server-side test code into client-side JavaScript, and injects it into the browsers that it controls. This process enables the framework to perform common in-browser actions. Some testing scenarios, however, require the execution of custom client-side code. There are three ways to do it with TestCafe:</p>
+
+<p><a href="../guides/advanced-guides/inject-client-scripts.html">Client Scripts</a> inject custom JavaScript files, such as temporary extra dependencies, into the page.
+<a href="../guides/basic-guides/obtain-client-side-info.html">Client Functions</a> evaluate user-defined JavaScript expressions and pass their return value to the server side. They are useful when you want to examine the page or access its URL.
+The <a href="../guides/basic-guides/select-page-elements.html">Selector</a> function can launch user-defined client-side code to find a DOM element that cannot be otherwise identified.</p>
+<blockquote><div class="blockquote-content"><p>The TestCafe documentation describes the limitations of user-defined client-side scripts.</p>
+</div></blockquote><h2><a class="anchor" id="try-it-for-yourself"></a>Try it for yourself <a class="permalink" href="#try-it-for-yourself">#</a></h2>
+<p>Try TestCafe for yourself and see how the features it packs can make <em>your</em> life easier. Create your first test in under 5 minutes by following our <a href="https://devexpress.github.io/testcafe/documentation/getting-started/">Getting Started Guide</a>.</p>
+
+
+		</div>
+	</article>
+
 </main>
-
-<!-- 
-<script>
-    var disqus_config = function () {
-        this.page.url = 'https://devexpress.github.io/testcafe/media/team-blog/introducing-multi-window-tests-beta.html';
-        this.page.identifier = '/media/team-blog/introducing-multi-window-tests-beta';
-    };
-    (function() {
-        var d = document, s = d.createElement('script');
-        
-        s.src = '//testcafe-blog.disqus.com/embed.js';
-        
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
- -->
 </div>
 
     </div>
