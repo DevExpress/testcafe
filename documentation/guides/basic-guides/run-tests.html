@@ -1042,7 +1042,7 @@
 <li><a href="#specify-tests-to-run">Specify Tests to Run</a>
 
 <ul>
-<li><a href="#run-tests-from-multiple-sources">Run Tests From Multiple Sources</a></li>
+<li><a href="#run-tests-from-multiple-sources">Run Tests from Multiple Sources</a></li>
 <li><a href="#use-glob-patterns">Use Glob Patterns</a></li>
 <li><a href="#filter-tests-and-fixtures-by-name">Filter Tests and Fixtures by Name</a></li>
 <li><a href="#filter-tests-and-fixtures-by-metadata">Filter Tests and Fixtures by Metadata</a></li>
@@ -1060,9 +1060,13 @@
 </ul></li>
 <li><a href="#specify-the-report-format">Specify the Report Format</a></li>
 <li><a href="#customize-screenshot-and-video-settings">Customize Screenshot and Video Settings</a></li>
-<li><a href="#run-tests-concurrently">Run Tests Concurrently</a></li>
+<li><a href="#run-tests-concurrently">Run Tests Concurrently</a>
+
+<ul>
+<li><a href="#use-concurrency-on-remote-devices">Use Concurrency on Remote Devices</a></li>
+</ul></li>
 <li><a href="#stage-the-tested-app">Stage the Tested App</a></li>
-<li><a href="#provide-a-proxy-url">Provide a Proxy URL</a></li>
+<li><a href="#specify-a-proxy-url">Specify a Proxy URL</a></li>
 <li><a href="#live-mode">Live Mode</a>
 
 <ul>
@@ -1088,7 +1092,7 @@
     <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
 </code></pre></div>
 <p><em>Related configuration file property:</em> <a href="../../reference/configuration-file.html#src">src</a></p>
-<h3><a class="anchor" id="run-tests-from-multiple-sources"></a>Run Tests From Multiple Sources <a class="permalink" href="#run-tests-from-multiple-sources">#</a></h3>
+<h3><a class="anchor" id="run-tests-from-multiple-sources"></a>Run Tests from Multiple Sources <a class="permalink" href="#run-tests-from-multiple-sources">#</a></h3>
 <p>You can specify multiple test files or directories:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe safari ./js-tests/fixture.js ./studio-tests/fixture.testcafe
 </code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">await</span> <span class="nx">runner</span>
@@ -1339,17 +1343,15 @@
 </code></pre></div>
 <p>In this case, tests are distributed across four Safari instances and the same tests are also run in four Firefox instances.</p>
 <blockquote><div class="blockquote-content"><p>If an uncaught error or unhandled promise rejection occurs on the server during test execution, all tests running concurrently will fail.</p>
-</div></blockquote>
-<p>When you run tests on <a href="../../reference/command-line-interface.html#remote-browsers">remote devices</a>,
-create connections for each instance of each browser you test against. When using
-the command line interface, specify this number after the <code>remote:</code> keyword. In API, create
-a <a href="../../reference/testcafe-api/browserconnection/">browser connection</a> for each instance.</p>
+</div></blockquote><h3><a class="anchor" id="use-concurrency-on-remote-devices"></a>Use Concurrency on Remote Devices <a class="permalink" href="#use-concurrency-on-remote-devices">#</a></h3>
+<p>When you run tests on <a href="../../reference/command-line-interface.html#remote-browsers">remote devices</a>, create browser connections for each instance of each browser you test against. The total number of instances is <em>c*n</em>, where <code>c</code> is the concurrency factor and <code>n</code> is the number of browsers.</p>
 
-<p>On a remote device, invoke all the required instances manually. The total number of instances
-should divide by the concurrency parameter <code>n</code>. Otherwise, an exception will be thrown.</p>
+<p>In the command line interface, specify the number of browser instances after the <code>remote:</code> keyword.  For example, use <code>-c 2 remote:6</code> to run tests in Chrome, Firefox, and Edge, with two instances of each browser. If you use the API, create a <a href="../../reference/testcafe-api/browserconnection/">browser connection</a> for each instance in code.</p>
+
+<p>Launch all the required browser instances manually on a remote device. The total number of instances should be divisible by the concurrency factor <code>c</code>. Otherwise, an exception is thrown.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="nt">-c</span> 2 remote:4 tests/test.js
 </code></pre></div>
-<p>If you test against multiple remote browsers, open and connect all instances of one browser before connecting the next browser.</p>
+<p>If you test against multiple remote browsers, open and connect all instances of one browser before you connect the next browser.</p>
 <h2><a class="anchor" id="stage-the-tested-app"></a>Stage the Tested App <a class="permalink" href="#stage-the-tested-app">#</a></h2>
 <p>TestCafe can execute a specified shell command before it starts tests. For instance, you can run a command that starts a local web server and deploys the tested app. TestCafe automatically terminates the process when tests are finished.</p>
 
@@ -1372,7 +1374,7 @@ should divide by the concurrency parameter <code>n</code>. Otherwise, an excepti
     <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
 </code></pre></div>
 <p><em>Related configuration file property:</em> <a href="../../reference/configuration-file.html#appinitdelay">appInitDelay</a></p>
-<h2><a class="anchor" id="provide-a-proxy-url"></a>Provide a Proxy URL <a class="permalink" href="#provide-a-proxy-url">#</a></h2>
+<h2><a class="anchor" id="specify-a-proxy-url"></a>Specify a Proxy URL <a class="permalink" href="#specify-a-proxy-url">#</a></h2>
 <p>If your network uses a proxy to access the internet, specify the proxy URL to TestCafe. Use the <a href="../../reference/command-line-interface.html#--proxy-host">--proxy</a> command line argument or the <a href="../../reference/testcafe-api/runner/useproxy.html">runner.useProxy</a> API method:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome ./my-tests/ <span class="nt">--proxy</span> proxy.mycompany.com
 </code></pre></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">await</span> <span class="nx">runner</span>
@@ -1441,7 +1443,7 @@ should divide by the concurrency parameter <code>n</code>. Otherwise, an excepti
 <p>When the quarantine mode is enabled, tests run according to the following logic:</p>
 
 <ol>
-<li>A test runs at the first time. If it passes, TestCafe proceeds to the next test.</li>
+<li>A test runs for the first time. If it passes, TestCafe proceeds to the next test.</li>
 <li>If the test fails, it runs again until it passes or fails three times.</li>
 <li>The most frequent outcome is recorded as the test result.</li>
 <li>If the test result differs between test runs, the test is marked as unstable.</li>
