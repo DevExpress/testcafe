@@ -65,8 +65,8 @@
 
     //TestCafe setup
     const testCafeLegacyRunner = getTestCafeModule('testCafeLegacyRunner');
-    const tcSettings           = testCafeLegacyRunner.get('./settings');
-    const sandboxedJQuery      = testCafeLegacyRunner.get('./sandboxed-jquery');
+    const tcSettings           = testCafeLegacyRunner.SETTINGS;
+    const sandboxedJQuery      = testCafeLegacyRunner.sandboxedJQuery;
 
     tcSettings.get().REFERER          = 'https://example.com';
     tcSettings.get().SELECTOR_TIMEOUT = 10000;
