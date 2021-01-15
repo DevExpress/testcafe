@@ -3,6 +3,7 @@ const path           = require('path');
 const expect         = require('chai').expect;
 const config         = require('../../../config');
 const createTestCafe = require('../../../../../lib');
+const enableDestroy  = require('server-destroy');
 
 const { createReporter } = require('../../../utils/reporter');
 
@@ -42,6 +43,8 @@ function createServer () {
 
     server.listen(1340);
 
+    enableDestroy(server);
+
     return server;
 }
 
@@ -72,7 +75,7 @@ describe('[Regression](GH-5239)', function () {
 
             return run({ retryTestPages: true, browsers: 'chrome --headless', src: './testcafe-fixtures/index.js' })
                 .then(() => {
-                    return server.close();
+                    server.destroy();
                 });
         });
     }

@@ -166,7 +166,8 @@ export default class CLIArgumentParser {
         this.experimental
             .allowUnknownOption()
             .option('--disable-multiple-windows', 'disable multiple windows mode')
-            .option('--experimental-compiler-service', 'run compiler in a separate process');
+            .option('--experimental-compiler-service', 'run compiler in a separate process')
+            .option('--cache', 'cache web assets between test runs');
     }
 
     private _parseList (val: string): string[] {
