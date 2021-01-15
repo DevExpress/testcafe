@@ -34,6 +34,7 @@ Parameter         | Type    | Description                                       
 `disablePageCaching` | Boolean | Prevents the browser from caching page content. When navigation to a cached page occurs in [role code](../../../guides/advanced-guides/authentication.md), local and session storage content is not preserved. Set `disablePageCaching` to `true` to retain the storage items after navigation. For more information, see [Troubleshooting: Test Actions Fail After Authentication](../../../guides/advanced-guides/authentication.md#test-actions-fail-after-authentication). You can also disable page caching for an individual [fixture](../../test-api/fixture/disablepagecaching.md) or [test](../../test-api/test/disablepagecaching.md). | `false`
 `disableScreenshots` | Boolean | Prevents TestCafe from taking screenshots. When this option is specified, screenshots are not taken whenever a test fails or when [t.takeScreenshot](../../test-api/testcontroller/takescreenshot.md) or [t.takeElementScreenshot](../../test-api/testcontroller/takeelementscreenshot.md) is executed. | `false`
 `disableMultipleWindows` | Boolean | Disables support for [multi-window testing](../../../guides/advanced-guides/multiple-browser-windows.md) in Chrome and Firefox. Use this option if you encounter compatibility issues with your existing tests.
+`retryTestPages` | Boolean | Enables retries for failed network requests for webpages visited during tests. Requires a secure connection. See the [related configuration file property](../../configuration-file.md#retrytestpages) for more details.
 
 After all tests are finished, call the [testcafe.close](../testcafe/close.md) function to stop the TestCafe server.
 
@@ -52,6 +53,7 @@ After all tests are finished, call the [testcafe.close](../testcafe/close.md) fu
 * [disablePageCaching](../../configuration-file.md#disablepagecaching)
 * [disableScreenshots](../../configuration-file.md#disablescreenshots)
 * [disableMultipleWindows](../../configuration-file.md#disablemultiplewindows)
+* [retryTestPages](../../configuration-file.md#retrytestpages)
 
 **Example**
 
