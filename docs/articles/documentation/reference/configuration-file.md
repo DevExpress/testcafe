@@ -1092,7 +1092,7 @@ If this option is enabled, TestCafe retries failed network requests for webpages
 }
 ```
 
-This feature uses [Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API) and requires a secure connection.
+This feature uses [Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API) that require a secure connection.
 To run TestCafe over a secure connection, [setup HTTPS](../guides/advanced-guides/test-https-features-and-http2-websites.md#test-https-websites) or use the [--hostname localhost](command-line-interface.md#--hostname-name) option.
 
 *CLI*: [--retry-test-pages](./command-line-interface.md#--retry-test-pages)
