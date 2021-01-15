@@ -48,7 +48,7 @@ leave a comment saying that you started your work on this issue.
     npm install
     ```
 
-    or (for [Yarn](https://yarnpkg.com/) users)
+    or (for [Yarn](https://yarnpkg.com/) users):
 
     ```sh
     yarn
