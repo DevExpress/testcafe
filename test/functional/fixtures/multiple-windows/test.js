@@ -120,6 +120,10 @@ describe('Multiple windows', () => {
             });
     });
 
+    it('Should recreate close window watcher after new child window is opened', () => {
+        return runTests('testcafe-fixtures/i5857.js');
+    });
+
     describe('API', () => {
         it('Open child window', () => {
             return runTests('testcafe-fixtures/api/api-test.js', 'Open child window', { only: 'chrome' });
