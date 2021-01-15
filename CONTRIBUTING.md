@@ -89,10 +89,10 @@ Before you submit your pull request, it has to satisfy the following conditions:
 
 * The pull request name should describe the changes you implemented.
 * The pull request description should contain the [closes](https://github.com/blog/1506-closing-issues-via-pull-requests) directive with an appropriate issue number.
-* All tests must be passing
+* All existing and new tests must be passing
 * Code must be linted without errors (see [Build Instructions](#build-instructions))
 
-Please keep in mind that we might **suspend or reject** pull requests that fail to meet these requirements.
+Please keep in mind that the team may **suspend or reject** pull requests that fail to meet these requirements.
 
 ## Build Instructions
 
