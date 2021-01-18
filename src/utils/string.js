@@ -112,3 +112,7 @@ export function getConcatenatedValuesString (array, separator = DEFAULT_CONCATEN
 export function getToBeInPastTense (array) {
     return array.length > 1 ? 'were' : 'was';
 }
+
+export function createList (array, PREFIX = '- ', SEPARATOR = '\n') {
+    return array.map(option => PREFIX + option).join(SEPARATOR);
+}

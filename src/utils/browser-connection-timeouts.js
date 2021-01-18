@@ -7,6 +7,9 @@ export const HEARTBEAT_TIMEOUT       = 2 * 60 * 1000;
 export const BROWSER_RESTART_TIMEOUT = 60 * 1000;
 export const BROWSER_CLOSE_TIMEOUT   = BROWSER_RESTART_TIMEOUT / 2;
 
+export const LOCAL_BROWSER_INIT_TIMEOUT  = 2 * 60 * 1000;
+export const REMOTE_BROWSER_INIT_TIMEOUT = 6 * 60 * 1000;
+
 export const HEARTBEAT_INTERVAL = 2 * 1000;
 
 export const CHECK_IFRAME_DRIVER_LINK_DELAY       = 500;

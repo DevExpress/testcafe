@@ -4,6 +4,7 @@
 // -------------------------------------------------------------
 
 import { RUNTIME_ERRORS } from '../types';
+import BrowserConnectionErrorHint from '../../browser/connection/error-hints';
 
 const DOCUMENTATION_LINKS = {
     TEST_SOURCE_PARAMETER: 'https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#file-pathglob-pattern',
@@ -15,7 +16,8 @@ export default {
     [RUNTIME_ERRORS.cannotRunLiveModeRunnerMultipleTimes]: 'Cannot run a live mode runner multiple times.',
     [RUNTIME_ERRORS.browserDisconnected]:                  'The {userAgent} browser disconnected. This problem may appear when a browser hangs or is closed, or due to network issues.',
     [RUNTIME_ERRORS.cannotRunAgainstDisconnectedBrowsers]: 'The following browsers disconnected: {userAgents}. Tests will not be run.',
-    [RUNTIME_ERRORS.cannotEstablishBrowserConnection]:     'Unable to establish one or more of the specified browser connections. This can be caused by network issues or remote device failure.',
+    [RUNTIME_ERRORS.testRunRequestInDisconnectedBrowser]:  '"{browser}" has disconnected during test execution',
+    [RUNTIME_ERRORS.cannotEstablishBrowserConnection]:     'Unable to establish one or more of the specified browser connections.',
     [RUNTIME_ERRORS.cannotFindBrowser]:                    'Unable to find the browser. "{browser}" is not a browser alias or path to an executable file.',
     [RUNTIME_ERRORS.browserProviderNotFound]:              'The specified "{providerName}" browser provider was not found.',
     [RUNTIME_ERRORS.browserNotSet]:                        'No browser selected to test against.',
@@ -111,5 +113,16 @@ export default {
     [RUNTIME_ERRORS.uncaughtErrorInReporter]:           'An uncaught error occurred in the "{reporterName}" reporter\'s "{methodName}" method. Error details:\n{originalError}',
     [RUNTIME_ERRORS.roleInitializedWithRelativeUrl]:    'You cannot specify relative login page URLs in the Role constructor. Use an absolute URL.',
     [RUNTIME_ERRORS.typeScriptCompilerLoadingError]:    'Unable to load the TypeScript compiler.\n{originErrorMessage}.',
-    [RUNTIME_ERRORS.cannotCustomizeSpecifiedCompilers]: 'You cannot specify options for the {noncustomizableCompilerList} compiler{suffix}.'
+    [RUNTIME_ERRORS.cannotCustomizeSpecifiedCompilers]: 'You cannot specify options for the {noncustomizableCompilerList} compiler{suffix}.',
+
+    [RUNTIME_ERRORS.cannotEnableRetryTestPagesOption]:
+        'Cannot enable the \'retryTestPages\' option. Apply one of the following two solutions:\n' +
+        '-- set \'localhost\' as the value of the \'hostname\' option\n' +
+        '-- run TestCafe over HTTPS\n',
+
+    [RUNTIME_ERRORS.browserConnectionError]:               '{originErrorMessage}\n{numOfNotOpenedConnection} of {numOfAllConnections} browser connections have not been established:\n{listOfNotOpenedConnections}\n\nHints:\n{listOfHints}',
+    [BrowserConnectionErrorHint.TooHighConcurrencyFactor]: 'The error can be due to a concurrency factor that is too high for the host machine’s performance (the factor value {concurrencyFactor} was specified). ' +
+                                                           'Try to decrease the concurrency factor or ensure more system resources are available on the host machine.',
+    [BrowserConnectionErrorHint.UseBrowserInitOption]: 'Use the \'--browser-init-timeout\' option to allow more time for the browser to start. The timeout is set to {browserInitTimeoutMsg}.',
+    [BrowserConnectionErrorHint.RestErrorCauses]:      'The error can also be caused by network issues or remote device failure. Make sure that the connection is stable and the remote device can be reached.'
 };

@@ -26,6 +26,7 @@ export interface RunnerRunOptions {
     selectorTimeout?: number;
     assertionTimeout?: number;
     pageLoadTimeout?: number;
+    browserInitTimeout?: number;
     speed?: number;
     stopOnFirstFail?: number;
     disableMultipleWindows: boolean;

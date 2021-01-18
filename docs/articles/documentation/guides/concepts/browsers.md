@@ -309,7 +309,7 @@ Parameter                      | Type   | Description             | Default
 `orientation` *(optional)*  | `vertical` &#124; `horizontal` | The device orientation | `vertical`
 `userAgent` *(optional)*    | String  | The user agent string | The user agent string of the selected `device` or the browser.
 `touch` *(optional)*        | Boolean | Enables or disables touch event emulation. | `true` if a touch-supported device is set via the `device` property or your system supports touch events. Otherwise, `false`.
-`cdpPort` *(optional)*      | Number  | A port (0-65535) used for Chrome Debugging Protocol. | `9222` if you load a user profile with the [:userProfile](#user-profiles) or `--user-data-dir` flag. Otherwise, TestCafe automatically assigns a free port.
+`cdpPort` *(optional)*      | Number  | A port (0-65535) used for Chrome Debugging Protocol. Specify port `9222` if you use the [:userProfile](#user-profiles) or `--user-data-dir` flag to load a user profile. | TestCafe automatically assigns a free port.
 
 ## User Profiles
 
@@ -334,4 +334,10 @@ When you pass the `:userProfile` flag to a portable browser, also use the [brows
 testcafe chrome:d:\chrome_portable\chrome.exe:userProfile tests/test.js
 ```
 
-> It is not recommended that you combine the :userProfile flag with either headless or emulation mode, because this can lead to unstable behavior.
+If you use the `:userProfile` flag, set the [cdpPort](#emulator-parameters) property to `9222`  to record videos in Chrome and Chromium-based browsers.
+
+```sh
+testcafe chrome:userProfile:emulation:cdpPort=9222 test.js --video artifacts/videos
+```
+
+> It is not recommended that you combine the `:userProfile` flag with either headless or emulation mode, because this can lead to unstable behavior.

@@ -11,5 +11,5 @@ fixture `Failed CORS validation`
 test('Failed CORS validation', async t => {
     await t
         .click('#btnSendFetch')
-        .expect(Selector('#requestStatusText').textContent).eql('Sent');
+        .expect(Selector('#requestStatusText').textContent).eql('CORS failed');
 });
