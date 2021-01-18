@@ -1240,7 +1240,10 @@ export default class Driver extends serviceUtils.EventEmitter {
             await getTimeLimitedPromise(restoreChildWindowsPromise, RESTORE_CHILD_WINDOWS_TIMEOUT);
         }
         catch (err) {
-            throw new CannotRestoreChildWindowError();
+            this._onReady(new DriverStatus({
+                isCommandResult: true,
+                executionError:  new CannotRestoreChildWindowError()
+            }));
         }
     }
 

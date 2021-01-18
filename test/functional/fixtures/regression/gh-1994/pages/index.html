@@ -1,42 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>gh-1999</title>
+    <title>Title</title>
 </head>
 <body>
-
-<input id="targetRecreate" value="input" style="visibility: hidden;"/>
-<input id="targetRemove" value="input" style="visibility: hidden;"/>
-
+<a href="child.html" target="_blank">Open new window</a>
 <script>
-
-    function inputRecreate() {
-        const input = document.getElementById('targetRecreate');
-        const parent = input.parentNode;
-
-        parent.removeChild(input);
-
-        const newInput = document.createElement('input');
-
-        newInput.id = 'targetRecreate';
-        newInput.value = 'new input recreate';
-
-        document.body.appendChild(newInput);
+    window.onmessage = function () {
+        window.location.reload();
     }
-    
-    function  inputRemove() {
-        const input = document.getElementById('targetRemove');
-        const parent = input.parentNode;
-
-        parent.removeChild(input);
-    }
-
-    window.setTimeout(function () {
-        inputRecreate();
-        inputRemove();
-    }, 500);
-
 </script>
 </body>
 </html>

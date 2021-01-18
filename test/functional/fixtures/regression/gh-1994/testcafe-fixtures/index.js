@@ -1,12 +1,11 @@
-fixture `GH-1994 - The element that matches the specified selector is not visible`
-    .page `http://localhost:3000/fixtures/regression/gh-1994/pages/index.html`;
+import { Selector } from 'testcafe';
 
-test(`Recreate invisible element and click`, async t => {
-    await t
-        .click('#targetRecreate');
-});
+fixture `Fixture`
+    .page('http://localhost:8080/index.html');
 
-test(`Remove invisible element and click`, async t => {
+test('test', async t => {
     await t
-        .click('#targetRemove');
+        .click('a')
+        .click('button')
+        .expect(Selector('sdf').exists).ok();
 });
