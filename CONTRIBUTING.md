@@ -1,6 +1,6 @@
 # Contributing to TestCafe
 
-TestCafe would not be possible without active support from the community. We appreciate and encourage your contributions, no matter how big or small.
+TestCafe would not be possible without active support from the community. We appreciate and encourage your contributions.
 
 Review our contribution guidelines:
 
@@ -33,14 +33,14 @@ Follow the steps below when submitting your code.
 
 1. Search the [list of issues](https://github.com/DevExpress/testcafe/issues) to see if there is an issue for the bug or feature you plan to work on or create a new one.
 
-2. To address an already described issue, check the comment thread to make sure that nobody is working on it at the moment. Leave a comment saying that you are willing to fix this issue, and include details on how you plan to do this. Core team members may need to discuss the details of the proposed fix with you. After the green light from them,
-leave a comment saying that you started your work on this issue.
+2. To address an already described issue, check the comment thread to make sure that nobody is working on it at the moment. Leave a comment saying that you are willing to fix this issue, and include details on how you plan to do this. Core team members may need to discuss the details of the proposed fix with you. After a green light from them,
+leave a comment confirming that you have began your work on said issue.
 
 3. Install [Node.js](https://nodejs.org/en/), [Google Chrome](https://www.google.com/chrome/) and [Firefox](https://www.mozilla.org/en-US/firefox/new/) on your development machine.
 
 4. Fork TestCafe. Clone the fork to your machine and create a new branch. Name this branch with an issue number, for example, `gh852`, `gh853`.
 
-    > To contribute to the docs, follow the [Contribute to Documentation](#contribute-to-documentation) guide.
+    > To contribute to docs, follow the [Contribute to Documentation](#contribute-to-documentation) guide.
 
 5. Install dependencies. In the root directory of your local copy, run:
 
@@ -65,7 +65,7 @@ leave a comment saying that you started your work on this issue.
 
     In this example, `chrome` is a [browser alias](./docs/articles/documentation/reference/command-line-interface.md#browser-list) and `./tests` is a path to the [directory with tests](./docs/articles/documentation/reference/command-line-interface.md#file-pathglob-pattern). You can use other [CLI arguments](./docs/articles/documentation/reference/command-line-interface.md) as needed.
 
-    See more build instructions in [Build Instructions](#build-instructions).
+    For additional guidance, see [Build Instructions](#build-instructions).
 
     > If you run into dependency errors during a build, check that you have appropriate versions of dependencies installed. Clone TestCafe repository into an empty directory (or delete the `node_modules` directory) and install the dependencies.
 
@@ -138,7 +138,7 @@ If you want to fix a bug in the current documentation or make an enhancement tha
 
 2. Commit your changes to the branch.
 
-    > Links in the documentation should point to `.md` files in the repository so that the documentation is browsable on GitHub. When the website is built, all links are automatically modified to HTML links.
+    > Links in the documentation should point to `.md` files in the repository, so that the documentation is browsable on GitHub. When the website is built, all links are automatically modified to HTML links.
 
 3. Fetch upstream changes and rebase your branch onto `master`.
 
@@ -181,7 +181,7 @@ Do the following to fetch this branch and commit to it.
 
 5. Commit your changes to this branch.
 
-    > Links in the documentation should point to `.md` files in the repository so that the documentation is browsable on GitHub. When the website is built, all links are automatically modified to HTML links.
+    > Links in the documentation should point to `.md` files in the repository, so that the documentation is browsable on GitHub. When the website is built, all links are automatically modified to HTML links.
 
 6. Run tests before submitting a pull request to ensure that Markdown is styled properly and there are no broken links.
 
