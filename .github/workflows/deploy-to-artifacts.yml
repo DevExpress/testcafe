@@ -1,0 +1,161 @@
+name: Deploy To Artifacts
+
+on:
+  workflow_dispatch:
+    inputs:
+      sha:
+        description: 'The commit ref or SHA'     
+        required: true
+        default: 'master'
+      merged_sha:
+        description: 'The merge commit SHA'  
+      base_sha:
+        description: 'The base commit SHA'
+      base_ref:
+        description: 'The base commit ref'   
+  
+jobs:
+  pre:
+    runs-on: ubuntu-latest
+    environment: CI
+    steps: 
+      - uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.ACTIVE_TOKEN}}
+          script: |
+            await github.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.payload.inputs.sha,
+              context: context.workflow,
+              state: 'pending',
+              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+            });
+  build:
+    runs-on: ubuntu-latest
+    environment: CI 
+    needs: pre  
+    outputs:
+      sha: ${{steps.prep.outputs.sha}} 
+    steps:
+      - id: prep
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{ secrets.ACTIVE_TOKEN }}
+          script: |            
+            core.setOutput('sha', context.payload.inputs.merged_sha || context.payload.inputs.sha);
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{steps.prep.outputs.sha}}
+      - run: |
+          npm i
+          npx gulp build
+          npm pack
+      - id: package-name
+        uses: actions/github-script@v3
+        with:
+          script: |
+            const { name, version } = require(require('path').join(process.env.GITHUB_WORKSPACE, 'package.json'));
+            
+            core.setOutput('packageName', `${name}-${version}`);
+            core.setOutput('imageName', `${name}/${name}:${version}`);
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: npm
+          path: |
+            ${{steps.package-name.outputs.packageName}}.tgz
+            package-lock.json
+      - run: |
+          npx gulp docker-build
+          docker save -o ${{steps.package-name.outputs.packageName}}.tar ${{steps.package-name.outputs.imageName}} 
+      - uses: actions/upload-artifact@v2
+        with:
+          name: docker
+          path: ${{steps.package-name.outputs.packageName}}.tar
+  changes:
+    runs-on: ubuntu-latest
+    needs: pre
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.inputs.sha }}
+          fetch-depth: 0
+      - run: |
+          git reset --soft `git merge-base "${{github.event.inputs.base_sha}}" HEAD`
+          git diff --name-only --cached > changes.txt
+      - uses: actions/upload-artifact@v2
+        with:
+          name: changes
+          path: changes.txt
+  test:
+    runs-on: ubuntu-latest
+    needs: [build, changes]
+    environment: CI
+    steps:  
+      - uses: actions/download-artifact@v2
+        with:
+          name: changes
+      - uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.ACTIVE_TOKEN}}
+          script: |
+            async function dispatchWorkflow (workflowName) {
+              await github.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: 'master',
+                workflow_id: workflowName,
+                inputs: { sha: '${{needs.build.outputs.sha}}', deploy_run_id: '${{github.run_id}}' }
+              });
+            }
+            
+            const fileList = require('fs').readFileSync('changes.txt').toString().split('\n').filter(line => line);
+            
+            const tasks = [];
+            
+            if (fileList.some(file => file.match(/^.github|^docs|^Gemfile/)))
+              tasks.push('test-docs.yml');
+            
+            if (fileList.some(file => file.match(/^.github|^bin|^docker|^gulp|^src|^test|^ts-defs-src|^Gulpfile.js|^package.json/)))
+              tasks.push('test-client-desktop.yml');
+            
+            await Promise.all(tasks.map(task => dispatchWorkflow(task)));
+            
+  post:
+    runs-on: ubuntu-latest
+    environment: CI
+    needs: test
+    steps: 
+      - uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.ACTIVE_TOKEN}}
+          script: |
+            await github.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.payload.inputs.sha,
+              context: context.workflow,
+              state: 'success',
+              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}#artifacts`
+            });
+  failure:
+    runs-on: ubuntu-latest
+    environment: CI
+    needs: test
+    if: failure() || cancelled()
+    steps: 
+      - uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.ACTIVE_TOKEN}}
+          script: |
+            await github.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.payload.inputs.sha,
+              context: context.workflow,
+              state: 'failure',
+              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+            });
+          
+  

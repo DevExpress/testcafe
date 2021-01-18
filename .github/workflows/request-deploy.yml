@@ -1,0 +1,93 @@
+name: Request Deployment
+
+on:
+  push:
+    branches: [ master ]
+  pull_request_target:
+    branches: [ master ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  authenticate:
+    runs-on:     ubuntu-latest
+    environment: authentication
+    if: ${{ github.event_name == 'pull_request_target' && github.event.pull_request.author_association == 'NONE' }} 
+
+    steps:
+      - name: Check permissions
+        uses: actions/github-script@v3
+        with:
+          script: |
+            console.log("${{github.event_name}}", await github.repos.listCommitStatusesForRef({ 
+              repo: context.repo.repo, 
+              owner: context.repo.owner, 
+              ref: '9e1ca0defd42f7b3de88188f4d32d8c172c86242' 
+            }))
+  
+  request-deploy:
+    runs-on: ubuntu-latest
+    environment: CI
+    needs: authenticate
+    if: ${{ !cancelled() && (needs.authenticate.result == 'success' || needs.authenticate.result == 'skipped') }}
+    
+    steps:
+      - name: Request Deployment
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.ACTIVE_TOKEN}}
+          script: |
+            const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+            
+            async function getPullRequestHeadCommit (pr) {           
+              if (!pr)
+                throw new Error('Failed to retrieve the PR information');
+              
+              for (let i = 0; i < 30 && pr.mergeable === null; i++) {
+                console.log('Waiting for the merge commit...');
+                
+                await delay(3000);
+                                
+                (
+                  { data: pr } = await github.pulls.get({
+                    owner: pr.base.repo.owner.login,
+                    repo: pr.base.repo.name,
+                    pull_number: pr.number
+                  })
+                );
+              }
+              
+              if (!pr.mergeable)
+                throw new Error('PR cannot be merged');
+              
+              const sha = pr.head.sha;
+              //await github.git.createRef({
+              //  owner: pr.base.repo.owner.login,
+              //  repo: pr.base.repo.name,
+              //  sha,
+              //  ref: `refs/tags/pr-${pr.number}`,
+              //  force: true
+              //});
+              return { sha, merged_sha: pr.merge_commit_sha, base_sha: pr.base.sha, base_ref: pr.base.ref };
+            }
+            
+            async function getTargetCommit(context) {
+              if (context.eventName === 'push' && context.payload.head_commit)
+                return { sha: context.payload.after, base_sha: context.payload.before };
+              
+              if (context.eventName === 'pull_request_target')
+                return getPullRequestHeadCommit(context.payload.pull_request);
+              
+              throw new Error('Failed to detect a target commit');
+            }
+            
+            const inputs = await getTargetCommit(context);
+            
+            await github.actions.createWorkflowDispatch({
+              ref: 'master',
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'deploy-to-artifacts.yml',
+              inputs
+            });
+         

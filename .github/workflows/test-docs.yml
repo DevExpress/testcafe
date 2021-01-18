@@ -1,0 +1,67 @@
+name: Test Docs
+
+on:
+  workflow_dispatch:
+    inputs:
+      sha:
+        desciption: "The test commit SHA or ref"
+        required: true
+        default: "master"
+      deploy_run_id:
+        description: "The ID of a deployment workspace run with artifacts"
+jobs:  
+  test:
+    runs-on: ubuntu-latest
+    environment: CI
+    env:
+      JEKYLL_ENV: testing
+    steps:
+      - uses: actions/github-script@v3
+        with:
+          script: |
+            await github.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.payload.inputs.sha,
+              context: context.workflow,
+              state: 'pending',
+              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+            });
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{github.event.inputs.sha}}
+          
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.5.1
+      
+      - run: npm install
+      - run: bundle install
+      
+      - run: npx gulp test-docs-travis
+      - uses: actions/github-script@v3
+        with:
+          script: |
+            await github.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.payload.inputs.sha,
+              context: context.workflow,
+              state: 'success',
+              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+            });
+      - uses: actions/github-script@v3
+        if: failure() || cancelled()
+        with:
+          script: |
+            await github.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.payload.inputs.sha,
+              context: context.workflow,
+              state: 'failure',
+              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+            });
