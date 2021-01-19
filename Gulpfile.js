@@ -852,7 +852,7 @@ gulp.step('test-functional-local-multiple-windows-run', () => {
     return testFunctional(MULTIPLE_WINDOWS_TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localBrowsersChromeFirefox);
 });
 
-gulp.task('test-functional-local-multiple-windows', gulp.series('prepare-tests', 'test-functional-local-multiple-windows-run'));
+gulp.task('test-functional-local-multiple-windows', gulp.series('test-functional-local-multiple-windows-run'));
 
 gulp.step('test-functional-local-compiler-service-run', () => {
     return testFunctional(COMPILER_SERVICE_TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localHeadlessChrome, { experimentalCompilerService: true });
