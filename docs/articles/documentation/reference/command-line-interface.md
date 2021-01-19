@@ -735,7 +735,7 @@ testcafe chrome my-tests --ajax-request-timeout 40000
 
 ### --page-request-timeout \<ms\>
 
-Specifies time (in milliseconds) to wait for a server to serve an HTML page. If a page isn't served within the specified period, an error is thrown.
+Specifies time (in milliseconds) to wait for a server to serve an HTML page. If the page isn't served within the specified period, an error is thrown.
 
 ```sh
 testcafe chrome my-tests --page-request-timeout 8000

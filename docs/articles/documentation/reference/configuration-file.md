@@ -727,7 +727,7 @@ Specifies wait time (in milliseconds) for fetch/XHR requests. If no response is 
 
 ### pageRequestTimeout
 
-Specifies time (in milliseconds) to wait for a server to serve an HTML page. If a page isn't served within the specified period, an error is thrown.
+Specifies time (in milliseconds) to wait for a server to serve an HTML page. If the page isn't served within the specified period, an error is thrown.
 
 ```json
 {
