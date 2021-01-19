@@ -48,6 +48,8 @@ A configuration file can include the following settings:
 * [selectorTimeout](#selectortimeout)
 * [assertionTimeout](#assertiontimeout)
 * [pageLoadTimeout](#pageloadtimeout)
+* [ajaxRequestTimeout](#ajaxrequesttimeout)
+* [pageRequestTimeout](#ajaxrequesttimeout)
 * [speed](#speed)
 * [clientScripts](#clientscripts)
 * [port1, port2](#port1-port2)
