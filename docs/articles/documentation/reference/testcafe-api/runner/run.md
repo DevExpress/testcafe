@@ -29,6 +29,7 @@ Parameter         | Type    | Description                                       
 `selectorTimeout` | Number  | Specifies the time (in milliseconds) within which [selectors](../../../guides/basic-guides/select-page-elements.md) make attempts to obtain a node to be returned. See [Selector Timeout](../../../guides/basic-guides/select-page-elements.md#selector-timeout). | `10000`
 `assertionTimeout` | Number  | Specifies the time (in milliseconds) within which TestCafe makes attempts  to successfully execute an [assertion](../../../guides/basic-guides/assert.md) if [a selector property](../../../guides/basic-guides/select-page-elements.md#define-assertion-actual-value) or a [client function](../../../guides/basic-guides/obtain-client-side-info.md) was passed as an actual value. See [Smart Assertion Query Mechanism](../../../guides/basic-guides/assert.md#smart-assertion-query-mechanism). | `3000`
 `pageLoadTimeout` | Number  |  Specifies the time (in milliseconds) TestCafe waits for the `window.load` event to fire after the `DOMContentLoaded` event. After the timeout passes or the `window.load` event is raised (whichever happens first), TestCafe starts the test. You can set this timeout to `0` to skip waiting for `window.load`. | `3000`
+`browserInitTimeout` | Number | Specifies the time (in milliseconds) TestCafe waits for every of the specified browsers to connect. | `120000` for [local browsers](../../command-line-interface.md#local-browsers), `360000` for [remote browsers](../../command-line-interface.md#remote-browsers)
 `speed`           | Number  | Specifies the test execution speed. A number between `1` (fastest) and `0.01` (slowest). If an individual action's speed is also specified, the action speed setting overrides the test speed. | `1`
 `stopOnFirstFail`    | Boolean | Defines whether to stop a test run if a test fails. You do not need to wait for all the tests to finish to focus on the first error. | `false`
 `disablePageCaching` | Boolean | Prevents the browser from caching page content. When navigation to a cached page occurs in [role code](../../../guides/advanced-guides/authentication.md), local and session storage content is not preserved. Set `disablePageCaching` to `true` to retain the storage items after navigation. For more information, see [Troubleshooting: Test Actions Fail After Authentication](../../../guides/advanced-guides/authentication.md#test-actions-fail-after-authentication). You can also disable page caching for an individual [fixture](../../test-api/fixture/disablepagecaching.md) or [test](../../test-api/test/disablepagecaching.md). | `false`
@@ -48,6 +49,7 @@ After all tests are finished, call the [testcafe.close](../testcafe/close.md) fu
 * [selectorTimeout](../../configuration-file.md#selectortimeout)
 * [assertionTimeout](../../configuration-file.md#assertiontimeout)
 * [pageLoadTimeout](../../configuration-file.md#pageloadtimeout)
+* [browserInitTimeout](../../configuration-file.md#browserinittimeout)
 * [speed](../../configuration-file.md#speed)
 * [stopOnFirstFail](../../configuration-file.md#stoponfirstfail)
 * [disablePageCaching](../../configuration-file.md#disablepagecaching)
