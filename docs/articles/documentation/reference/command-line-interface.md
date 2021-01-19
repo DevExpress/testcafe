@@ -725,6 +725,10 @@ testcafe ie my-tests --page-load-timeout 0
 
 Specifies wait time (in milliseconds) for fetch/XHR requests. If no response is received within the specified period, an error is thrown.
 
+```sh
+testcafe chrome my-tests --ajax-request-timeout 40000
+```
+
 **Default value**: `120000`
 
 *Related configuration file property*: [ajaxRequestTimeout](configuration-file.md#ajaxrequesttimeout)
@@ -732,6 +736,10 @@ Specifies wait time (in milliseconds) for fetch/XHR requests. If no response is 
 ### --page-request-timeout \<ms\>
 
 Specifies time (in milliseconds) to wait for a server to serve an HTML page. If a page isn't served within the specified period, an error is thrown.
+
+```sh
+testcafe chrome my-tests --page-request-timeout 8000
+```
 
 **Default value**: `25000`
 
