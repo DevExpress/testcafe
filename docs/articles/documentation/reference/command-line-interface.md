@@ -727,11 +727,15 @@ Specifies wait time (in milliseconds) for fetch/XHR requests. If no response is 
 
 **Default value**: `120000`
 
+*Related configuration file property*: [ajaxRequestTimeout](configuration-file.md#ajaxrequesttimeout)
+
 ### --page-request-timeout \<ms\>
 
 Specifies time (in milliseconds) to wait for a server to serve an HTML page. If a page isn't served within the specified period, an error is thrown.
 
 **Default value**: `25000`
+
+*Related configuration file property*: [pageRequestTimeout](configuration-file.md#pagerequesttimeout)
 
 ### --speed \<factor\>
 
