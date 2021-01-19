@@ -54,6 +54,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--selector-timeout \<ms\>](#--selector-timeout-ms)
   * [--assertion-timeout \<ms\>](#--assertion-timeout-ms)
   * [--page-load-timeout \<ms\>](#--page-load-timeout-ms)
+  * [--browser-init-timeout \<ms\>](#--browser-init-timeout-ms)
   * [--speed \<factor\>](#--speed-factor)
   * [--cs \<path\[,path2,...\]\>, --client-scripts \<path\[,path2,...\]\>](#--cs-pathpath2---client-scripts-pathpath2)
   * [--ports \<port1,port2\>](#--ports-port1port2)
@@ -718,6 +719,21 @@ testcafe ie my-tests --page-load-timeout 0
 ```
 
 *Related configuration file property*: [pageLoadTimeout](configuration-file.md#pageloadtimeout).
+
+### --browser-init-timeout \<ms\>
+
+Specifies the time (in milliseconds) for every of the specified browsers to establish a connection. If one or more of the browsers fail to connect to TestCafe proxy within the specified period, an error is thrown.
+
+When a browser connects to TestCafe, the [BrowserConnection.ready](./testcafe-api/browserconnection/ready.md) event fires.
+
+```sh
+testcafe chrome, ie, firefox my-tests --browser-init-timeout 40000
+```
+
+**Default values**:
+
+* `120000` for [local browsers](#local-browsers)
+* `360000` for [remote browsers](#remote-browsers)
 
 ### --speed \<factor\>
 
