@@ -729,7 +729,7 @@ Specifies wait time (in milliseconds) for fetch/XHR requests. If no response is 
 
 ### --page-request-timeout \<ms\>
 
-Specifies time (in milliseconds) to wait for a server to serve an HTML page. If a server doesn't respond within the specified period, an error is thrown.
+Specifies time (in milliseconds) to wait for a server to serve an HTML page. If a page isn't served within the specified period, an error is thrown.
 
 **Default value**: `25000`
 
