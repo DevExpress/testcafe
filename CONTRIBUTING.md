@@ -25,13 +25,13 @@ Join the TestCafe community on Stack Overflow: ask and answer [questions with th
 If you run into a bug with TestCafe, please file an issue in the [GitHub repository](https://github.com/DevExpress/testcafe/issues).
 Search through the existing issues to see if the problem has already been reported or addressed.
 
-When you create a new issue, the template text is automatically added to its body. Complete all the sections in this template to help us understand the problem you are describing. Missing information could delay the processing time.
+When you create a new issue, the template text is automatically added to its body. Complete all the sections in this template to help us understand the problem you are describing. Missing information could delay processing time.
 
 ## Code Contribution
 
 Follow the steps below when submitting your code.
 
-1. Search the [list of issues](https://github.com/DevExpress/testcafe/issues) to see if there is an issue for the bug or feature you plan to work on or create a new one.
+1. Search the [list of issues](https://github.com/DevExpress/testcafe/issues) to see if there is an issue for the bug or feature you plan to work on. If none exists, create a new one.
 
 2. To address an already described issue, check the comment thread to make sure that nobody is working on it at the moment. Leave a comment saying that you are willing to fix this issue, and include details on how you plan to do this. Core team members may need to discuss the details of the proposed fix with you. After a green light from them,
 leave a comment confirming that you have began your work on said issue.
@@ -89,7 +89,7 @@ Before you submit your pull request, it has to satisfy the following conditions:
 
 * The pull request name should describe the changes you implemented.
 * The pull request description should contain the [closes](https://github.com/blog/1506-closing-issues-via-pull-requests) directive with an appropriate issue number.
-* All existing and new tests must be passing
+* Run tests, all of which must pass before you continue.
 * Code must be linted without errors (see [Build Instructions](#build-instructions))
 
 Please keep in mind that the team may **suspend or reject** pull requests that fail to meet these requirements.
