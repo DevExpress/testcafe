@@ -126,6 +126,13 @@ describe('Multiple windows', () => {
         return runTests('testcafe-fixtures/i5857.js');
     });
 
+    it('Should throw error if cannot restore child links', () => {
+        return runTests('testcafe-fixtures/i4760.js', null, { only: 'chrome', shouldFail: true })
+            .catch(errs => {
+                expect(errs[0]).to.contain('Failed to restore connection to window within the allocated timeout.');
+            });
+    });
+
     describe('API', () => {
         it('Open child window', () => {
             return runTests('testcafe-fixtures/api/api-test.js', 'Open child window', { only: 'chrome' });
