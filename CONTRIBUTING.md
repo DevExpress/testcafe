@@ -122,7 +122,7 @@ npm install testcafe-x.y.z.tgz
 
 Where `x.y.z` is the current TestCafe version, for example, `1.10.1`.
 
-The `/lib` directory stores build artifacts. Build tasks remove this folder before they run. To remove the folder manually, run:
+The `/lib` directory stores build artifacts. Build tasks remove this folder before they run. To remove this directory manually, run:
 
 ```sh
 gulp clean
