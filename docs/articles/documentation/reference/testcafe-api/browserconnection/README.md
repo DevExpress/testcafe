@@ -11,11 +11,11 @@ A connection to a [remote browser](../../../guides/concepts/browsers.md#browsers
 
 Use this object to run tests on a remote or a mobile device.
 
-`BrowserConnection` is created with the [testCafe.createBrowserConnection](../testcafe/createbrowserconnection.md) function.
+You can create a new `BrowserConnection` with the [testCafe.createBrowserConnection](../testcafe/createbrowserconnection.md) function.
 
-The [browserConnection.url](url.md) property returns a URL the remote browser should visit in order to connect to the [TestCafe server instance](../testcafe/README.md).
+The [browserConnection.url](url.md) property returns a URL a remote browser can visit to connect to the [TestCafe server instance](../testcafe/README.md).
 
-When the remote browser establishes connection, the [browserConnection.ready](ready.md) event fires. After that, you can pass the `BrowserConnection` to [runner.browsers](../runner/browsers.md) and start tests.
+When the remote browser establishes connection, the [browserConnection.opened](opened.md) event fires. After that, you can pass the `BrowserConnection` to [runner.browsers](../runner/browsers.md) and start tests.
 
 **Example**
 
