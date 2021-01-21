@@ -318,8 +318,11 @@ export default class Driver extends serviceUtils.EventEmitter {
             if (!firstClosedChildWindowDriverLink.ignoreMasterSwitching)
                 this._setCurrentWindowAsMaster();
 
-            if (!this.childWindowDriverLinks.length)
+            if (!this.childWindowDriverLinks.length) {
                 nativeMethods.clearInterval.call(window, this.checkClosedChildWindowIntervalId);
+
+                delete this.checkClosedChildWindowIntervalId;
+            }
         }, CHECK_CHILD_WINDOW_CLOSED_INTERVAL);
     }
 
@@ -1240,7 +1243,10 @@ export default class Driver extends serviceUtils.EventEmitter {
             await getTimeLimitedPromise(restoreChildWindowsPromise, RESTORE_CHILD_WINDOWS_TIMEOUT);
         }
         catch (err) {
-            throw new CannotRestoreChildWindowError();
+            this._onReady(new DriverStatus({
+                isCommandResult: true,
+                executionError:  new CannotRestoreChildWindowError()
+            }));
         }
     }
 
