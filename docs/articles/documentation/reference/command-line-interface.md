@@ -307,7 +307,7 @@ You can use multiple reporters in a single test run. List them separated by comm
 testcafe all tests/sample-fixture.js -r spec,xunit:report.xml
 ```
 
-Note that one reporter can write to `stdout` at one time. All other reporters must output to files.
+During a test, only one reporter can write to `stdout`. If you use additional reporters, redirect their output to files.
 
 *Related configuration file property*: [reporter](configuration-file.md#reporter).
 
@@ -731,7 +731,7 @@ to slow the test down.
 testcafe chrome my-tests --speed 0.1
 ```
 
-The action's speed setting overrides the test speed specified for an individual action.
+If you specify speed for individual action, this setting overrides the global test speed.
 
 **Default value**: `1`
 
