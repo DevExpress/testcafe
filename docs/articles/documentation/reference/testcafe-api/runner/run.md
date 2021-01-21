@@ -91,7 +91,7 @@ If the same problem occurs with this test two more times, the test run finishes 
 
 ## Cancel Test Tasks
 
-You can cancel a promise returned by 'runner.run' to stop an individual test task:
+To stop an individual test task, cancel a promise returned by `runner.run`:
 
 ```js
 const taskPromise = runner

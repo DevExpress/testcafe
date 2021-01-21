@@ -29,7 +29,7 @@ const remoteConnection = await testcafe.createBrowserConnection();
 // Outputs remoteConnection.url so that it can be visited from the remote browser.
 console.log(remoteConnection.url);
 
-remoteConnection.once('ready', () => {
+remoteConnection.once('opened', () => {
     const failedCount = await runner
         .src('test.js')
         .browsers(remoteConnection)
