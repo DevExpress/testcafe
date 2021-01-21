@@ -62,3 +62,10 @@ test('Should restart browser on timeout if the `closeBrowser` method hangs', asy
     await t.expect(counter[userAgent]).eql(2);
 });
 
+test('Should log error on browser disconnect', async t => {
+    t.testRun.browserConnection.emit('disconnected', new Error('disconnected'));
+
+    setTimeout(() => {
+        t.testRun.browserConnection.emit('error', new Error('force error'));
+    }, 5000);
+});

@@ -129,3 +129,9 @@ export class TimeoutError extends GeneralError {
         super(RUNTIME_ERRORS.timeLimitedPromiseTimeoutExpired);
     }
 }
+
+export class BrowserConnectionError extends GeneralError {
+    constructor (...args) {
+        super(RUNTIME_ERRORS.browserConnectionError, ...args);
+    }
+}

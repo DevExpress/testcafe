@@ -1,5 +1,6 @@
 import CommandBase from '../test-run/commands/base';
 import TestRun from '../test-run';
+import WarningLog from '../notifications/warning-log';
 
 export interface ActionEventArg {
     apiActionName: string;
@@ -23,3 +24,8 @@ export interface ReportedTestStructureItem {
     fixture: ReportedFixtureItem;
 }
 
+export interface BrowserSetOptions {
+    concurrency: number;
+    browserInitTimeout?: number;
+    warningLog: WarningLog;
+}

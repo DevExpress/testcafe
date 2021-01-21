@@ -200,6 +200,12 @@ You should provide the base path where TestCafe stores videos to this flag, meth
 
 TestCafe records all the tests and saves the recording of each test in a separate file. To change this behavior, use the `failedOnly` and `singleFile` [video options](#basic-video-options).
 
+> When you specify the [:userProfile](../concepts/browsers.md#user-profiles) or `--user-data-dir` flag to override the user directory in Chrome and Chromium-based browsers, set the [cdpPort](../concepts/browsers.md#emulator-parameters) property to `9222` to record videos:
+>
+> ```sh
+> testcafe "chrome:emulation:cdpPort=9222 --user-data-dir=/my/user/data" test.js --video artifacts/videos
+> ```
+
 ### Basic Video Options
 
 TestCafe supports the following video options:

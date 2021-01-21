@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.10.1 (2020-12-24)
+
+### Bug Fixes
+
+* Fixed an error thrown when TestCafe runs TypeScript tests ([#5808](https://github.com/DevExpress/testcafe/issues/5808))
+* Implemented a Service Worker that allows TestCafe to re-try failed requests to the tested page. This improves test stability ([#5239](https://github.com/DevExpress/testcafe/issues/5239))
+* Fixed an error thrown when you call the `t.getBrowserConsoleMessages` method ([#5600](https://github.com/DevExpress/testcafe/issues/5600))
+
 ## v1.10.0 (2020-12-15)
 
 ### Enhancements

@@ -21,6 +21,7 @@ export interface Config {
 
 export interface ProviderMethods {
     resizeLocalBrowserWindow (browserId: string, newWidth: number, newHeight: number, currentWidth: number, currentHeight: number): Promise<void>;
+    reportWarning(...args: any[]): void;
 }
 
 export interface RuntimeInfo {
@@ -33,6 +34,7 @@ export interface RuntimeInfo {
     emulatedDevicePixelRatio: number;
     originalDevicePixelRatio: number;
     providerMethods: ProviderMethods;
+    browserName: string;
 }
 
 export interface TouchConfigOptions {

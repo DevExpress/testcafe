@@ -69,6 +69,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--compiler-options \<options\>](#--compiler-options-options)
   * [--disable-page-caching](#--disable-page-caching)
   * [--disable-multiple-windows](#--disable-multiple-windows)
+  * [--retry-test-pages](#--retry-test-pages)
   * [--color](#--color)
   * [--no-color](#--no-color)
 
@@ -950,6 +951,19 @@ testcafe firefox my-tests --disable-multiple-windows
 The `--disable-multiple-windows` option disables support for multi-window testing in Chrome and Firefox. Use this flag if you encounter compatibility issues with your existing tests.
 
 *Related configuration file property*: [disableMultipleWindows](configuration-file.md#disablemultiplewindows).
+
+### --retry-test-pages
+
+If this option is enabled, TestCafe retries failed network requests for webpages visited during tests. The retry functionality is limited to ten tries.
+
+```sh
+testcafe firefox my-tests --retry-test-pages
+```
+
+This feature uses [Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API) that require a secure connection.
+To run TestCafe over a secure connection, [setup HTTPS](../guides/advanced-guides/test-https-features-and-http2-websites.md#test-https-websites) or use the [--hostname localhost](#--hostname-name) option.
+
+*Related configuration file property*: [retryTestPages](./configuration-file.md#retrytestpages)
 
 ### --color
 

@@ -192,6 +192,19 @@ describe('CLI argument parser', function () {
         });
     });
 
+    describe('Browser initialization timeout', function () {
+        it('Should parse "--browser-init-timeout" option as integer value', function () {
+            return parse('--browser-init-timeout 1000')
+                .then(function (parser) {
+                    expect(parser.opts.browserInitTimeout).eql(1000);
+                });
+        });
+
+        it('Should raise an error if the "--browser-init-timeout" option value is not an integer', function () {
+            return assertRaisesError('--browser-init-timeout yo', 'Browser initialization timeout is expected to be a non-negative number, but it was "yo".');
+        });
+    });
+
     describe('Speed', function () {
         it('Should parse "--speed" option as a number', function () {
             return parse('--speed 0.01')
@@ -683,6 +696,7 @@ describe('CLI argument parser', function () {
             { long: '--selector-timeout' },
             { long: '--assertion-timeout' },
             { long: '--page-load-timeout' },
+            { long: '--browser-init-timeout' },
             { long: '--speed' },
             { long: '--ports' },
             { long: '--hostname' },
@@ -737,6 +751,7 @@ describe('CLI argument parser', function () {
             '--selector-timeout 1000',
             '--assertion-timeout 1000',
             '--page-load-timeout 1000',
+            '--browser-init-timeout 1000',
             '--speed 1',
             '--stop-on-first-fail',
             '--disable-page-caching',
@@ -757,6 +772,7 @@ describe('CLI argument parser', function () {
                 expect(runOpts.selectorTimeout).eql(1000);
                 expect(runOpts.assertionTimeout).eql(1000);
                 expect(runOpts.pageLoadTimeout).eql(1000);
+                expect(runOpts.browserInitTimeout).eql(1000);
                 expect(runOpts.speed).eql(1);
                 expect(runOpts.stopOnFirstFail).eql(true);
                 expect(runOpts.disablePageCaching).eql(true);

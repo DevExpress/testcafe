@@ -57,6 +57,7 @@ export const closest                                = hammerhead.utils.dom.close
 export const getParents                             = hammerhead.utils.dom.getParents;
 export const findParent                             = hammerhead.utils.dom.findParent;
 export const getTopSameDomainWindow                 = hammerhead.utils.dom.getTopSameDomainWindow;
+export const getParentExceptShadowRoot              = hammerhead.utils.dom.getParentExceptShadowRoot;
 
 function getElementsWithTabIndex (elements) {
     return arrayUtils.filter(elements, el => el.tabIndex > 0);

@@ -6,7 +6,7 @@ const createChromeProfile  = require('../../../../../lib/browser/provider/built-
 const createFirefoxProfile = require('../../../../../lib/browser/provider/built-in/dedicated/firefox/create-temp-profile');
 
 
-if (config.useLocalBrowsers && !config.isTravisEnvironment) {
+if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
     describe('Browser Provider - Custom User Profile', () => {
         it('Should run tests in userProfile mode', () => {
             return testCafe

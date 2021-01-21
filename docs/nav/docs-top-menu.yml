@@ -6,7 +6,7 @@
   url: /documentation/reference/
 - text: Recipes
   url: /documentation/recipes/
-- text: How It Works
-  url: /documentation/how-it-works/
+- text: Why TestCafe
+  url: /documentation/why-testcafe/
 - text: Examples
   url: /documentation/examples/
