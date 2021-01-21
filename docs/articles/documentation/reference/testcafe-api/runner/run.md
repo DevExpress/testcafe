@@ -11,7 +11,7 @@ Runs tests according to the current configuration. Returns the number of failed 
 async run(options) → Promise<Number>
 ```
 
-Before TestCafe runs tests, it reads settings from the `.testcaferc.json` [configuration file](../../configuration-file.md) if this file exists. Then it applies settings specified in the programming API. API settings override values from the configuration file in case they differ. TestCafe prints information about every overridden property in the console.
+Before TestCafe runs tests, it reads settings from the `.testcaferc.json` [configuration file](../../configuration-file.md) if this file exists. Then it applies settings specified in the programming API. API settings override values from the configuration file if they differ. TestCafe prints information about every overridden property in the console.
 
 > Important! Make sure to keep the browser tab that runs tests active. Do not minimize the browser window.
 > Inactive tabs and minimized browser windows switch to a lower resource consumption mode
@@ -29,7 +29,7 @@ Parameter         | Type    | Description                                       
 `selectorTimeout` | Number  | Specifies the time (in milliseconds) within which [selectors](../../../guides/basic-guides/select-page-elements.md) make attempts to obtain a node to be returned. See [Selector Timeout](../../../guides/basic-guides/select-page-elements.md#selector-timeout). | `10000`
 `assertionTimeout` | Number  | Specifies the time (in milliseconds) within which TestCafe makes attempts  to successfully execute an [assertion](../../../guides/basic-guides/assert.md) if [a selector property](../../../guides/basic-guides/select-page-elements.md#define-assertion-actual-value) or a [client function](../../../guides/basic-guides/obtain-client-side-info.md) was passed as an actual value. See [Smart Assertion Query Mechanism](../../../guides/basic-guides/assert.md#smart-assertion-query-mechanism). | `3000`
 `pageLoadTimeout` | Number  |  Specifies the time (in milliseconds) TestCafe waits for the `window.load` event to fire after the `DOMContentLoaded` event. After the timeout passes or the `window.load` event is raised (whichever happens first), TestCafe starts the test. You can set this timeout to `0` to skip waiting for `window.load`. | `3000`
-`browserInitTimeout` | Number | Specifies the time (in milliseconds) TestCafe waits for every of the specified browsers to connect. | `120000` for [local browsers](../../command-line-interface.md#local-browsers), `360000` for [remote browsers](../../command-line-interface.md#remote-browsers)
+`browserInitTimeout` | Number | Specifies the time (in milliseconds) for every of the specified browsers to connect and report that it is ready to test. If a browser fails to connect within this period, TestCafe throws an error. | `120000` for [local browsers](../../command-line-interface.md#local-browsers), `360000` for [remote browsers](../../command-line-interface.md#remote-browsers)
 `speed`           | Number  | Specifies the test execution speed. A number between `1` (fastest) and `0.01` (slowest). If an individual action's speed is also specified, the action speed setting overrides the test speed. | `1`
 `stopOnFirstFail`    | Boolean | Defines whether to stop a test run if a test fails. You do not need to wait for all the tests to finish to focus on the first error. | `false`
 `disablePageCaching` | Boolean | Prevents the browser from caching page content. When navigation to a cached page occurs in [role code](../../../guides/advanced-guides/authentication.md), local and session storage content is not preserved. Set `disablePageCaching` to `true` to retain the storage items after navigation. For more information, see [Troubleshooting: Test Actions Fail After Authentication](../../../guides/advanced-guides/authentication.md#test-actions-fail-after-authentication). You can also disable page caching for an individual [fixture](../../test-api/fixture/disablepagecaching.md) or [test](../../test-api/test/disablepagecaching.md). | `false`
@@ -87,7 +87,7 @@ finally {
 If a browser stops responding while it executes tests, TestCafe restarts the browser and reruns the current test in a new browser instance.
 If the same problem occurs with this test two more times, the test run finishes and an error is thrown.
 
-> When you use a [LiveModeRunner](../livemoderunner.md), you can call the `runner.run` method only once. In rare cases when you need multiple live mode sessions to run in parallel, you can create several [TestCafe server instances](../testcafe/README.md).
+> When you use a [LiveModeRunner](../livemoderunner.md), you can call the `runner.run` method only once. In rare cases when you need multiple live mode sessions to run in parallel, you can create multiple [TestCafe server instances](../testcafe/README.md).
 
 ## Cancel Test Tasks
 
@@ -103,4 +103,4 @@ const taskPromise = runner
 taskPromise.cancel();
 ```
 
-You can also cancel all pending tasks at once with the [runner.stop](stop.md) method.
+You can cancel all pending tasks with the [runner.stop](stop.md) method.

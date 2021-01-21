@@ -722,18 +722,18 @@ testcafe ie my-tests --page-load-timeout 0
 
 ### --browser-init-timeout \<ms\>
 
-Specifies the time (in milliseconds) for every of the specified browsers to establish a connection. If one or more of the browsers fail to connect to TestCafe proxy within the specified period, an error is thrown.
-
-When a browser connects to TestCafe, the [BrowserConnection.ready](./testcafe-api/browserconnection/ready.md) event fires.
+Specifies the time (in milliseconds) for every of the specified browsers to connect and report that it is ready to test. If one or more of the browsers fail to connect within the specified period, an error is thrown.
 
 ```sh
-testcafe chrome, ie, firefox my-tests --browser-init-timeout 40000
+testcafe chrome my-tests --browser-init-timeout 40000
 ```
 
 **Default values**:
 
 * `120000` for [local browsers](#local-browsers)
 * `360000` for [remote browsers](#remote-browsers)
+
+*Related configuration file property*: [browserInitTimeout](configuration-file.md#browserinittimeout).
 
 ### --speed \<factor\>
 

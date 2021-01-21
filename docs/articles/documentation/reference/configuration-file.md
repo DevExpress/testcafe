@@ -712,9 +712,7 @@ See the command line [--page-load-timeout](command-line-interface.md#--page-load
 
 ## browserInitTimeout
 
-Specifies the time (in milliseconds) for every of the specified browsers to establish a connection. If one or more of the browsers fail to connect to TestCafe proxy within the specified period, an error is thrown.
-
-When a browser connects to TestCafe, the [BrowserConnection.ready](./testcafe-api/browserconnection/ready.md) event fires.
+Specifies the time (in milliseconds) for every of the specified browsers to connect and report that it is ready to test. If one or more of the browsers fail to connect within the specified period, an error is thrown.
 
 ```json
 {
@@ -727,7 +725,8 @@ When a browser connects to TestCafe, the [BrowserConnection.ready](./testcafe-ap
 * `120000` for [local browsers](./command-line-interface.md#local-browsers)
 * `360000` for [remote browsers](./command-line-interface.md#remote-browsers)
 
-*CLI*: [--browser-init-timeout](./command-line-interface.md#--browser-init-timeout-ms)
+*CLI*: [--browser-init-timeout](./command-line-interface.md#--browser-init-timeout-ms)  
+*API*: [runner.run({ browserInitTimeout })](testcafe-api/runner/run.md)
 
 ## speed
 
