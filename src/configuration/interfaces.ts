@@ -8,11 +8,6 @@ export interface ReporterOption {
     output? : string | Buffer;
 }
 
-export interface StaticContentCachingOptions {
-    maxAge: number;
-    mustRevalidate: boolean;
-}
-
 export interface Dictionary<T> {
     [key: string]: T;
 }
