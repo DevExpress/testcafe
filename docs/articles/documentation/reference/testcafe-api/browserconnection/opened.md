@@ -5,7 +5,7 @@ permalink: /documentation/reference/testcafe-api/browserconnection/opened.html
 ---
 # BrowserConnection.opened Event
 
-Fires when a browser launched by a [browser provider](../../../guides/extend-testcafe/browser-provider-plugin.md#implement-the-browser-provider) has connected to TestCafe and opened a test page.
+Fires when a browser launched by a [browser provider](../../../guides/extend-testcafe/browser-provider-plugin.md#implement-the-browser-provider) has connected to TestCafe and reported that it is ready to run tests.
 
 ```js
 browserConnection.once('opened', callback)

@@ -712,13 +712,15 @@ See the command line [--page-load-timeout](command-line-interface.md#--page-load
 
 ## browserInitTimeout
 
-Specifies the time (in milliseconds) for every of the specified browsers to connect and report that it is ready to test. If one or more of the browsers fail to connect within the specified period, an error is thrown.
+Time (in milliseconds) for browsers to connect to TestCafe and report that they are ready to test. If one or more browsers fail to connect within the specified period, an error is thrown.
 
 ```json
 {
-    "browserInitTimeout": 40000
+    "browserInitTimeout": 180000
 }
 ```
+
+In this example, the timeout for all browsers is three minutes. In this run, local and remote browsers have to connect within this time before TestCafe throws an error.
 
 **Default values**:
 

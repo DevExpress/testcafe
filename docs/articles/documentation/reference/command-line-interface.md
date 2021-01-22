@@ -722,11 +722,13 @@ testcafe ie my-tests --page-load-timeout 0
 
 ### --browser-init-timeout \<ms\>
 
-Specifies the time (in milliseconds) for every of the specified browsers to connect and report that it is ready to test. If one or more of the browsers fail to connect within the specified period, an error is thrown.
+Time (in milliseconds) for browsers to connect to TestCafe and report that they are ready to test. If one or more browsers fail to connect within the specified period, an error is thrown.
 
 ```sh
-testcafe chrome my-tests --browser-init-timeout 40000
+testcafe chrome my-tests --browser-init-timeout 180000
 ```
+
+In this example, browser timeout for a local browser is increased. The browser has three minutes to initialize before TestCafe throws an error.
 
 **Default values**:
 
