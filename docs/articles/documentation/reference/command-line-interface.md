@@ -76,16 +76,16 @@ When you execute the `testcafe` command, TestCafe first reads settings from the 
 
 If you specify the [browsers](configuration-file.md#browsers) and [src](configuration-file.md#src) properties in the configuration file, you can omit them in the command line.
 
-> Important! Make sure to keep the browser tab that is running tests active. Do not minimize the browser window.
+> Important! The browser tab that is running tests should remain active. Do not minimize the browser window.
 > Inactive tabs and minimized browser windows switch to a lower resource consumption mode
 > where tests do not always execute correctly.
 >
-> Do not zoom pages while testing. Tests may be unstable if the page is zoomed in or out.
+> Do not zoom pages while testing. Tests may be unstable if the page is zoomed.
 
-During a test, TestCafe suppresses native dialogs, so they don't block the page. Learn how to handle native dialogs in [Handle Native Dialogs](../../documentation/guides/basic-guides/interact-with-the-page.md#handle-native-dialogs).
+TestCafe suppresses native dialogs during a test to prevent them from blocking the page. For more information on how to handle native dialogs, refer to [Handle Native Dialogs](../../documentation/guides/basic-guides/interact-with-the-page.md#handle-native-dialogs).
 
-If a browser stops responding while it executes tests, TestCafe restarts the browser and reruns the current test in a new browser instance.
-If the same problem occurs with this test two more times, the test run finishes, and an error is thrown.
+If a browser stops responding during test execution, TestCafe restarts the browser and reruns the current test in a new browser instance.
+If the same problem occurs with this test two more times, the test run finishes and an error is thrown.
 
 ## Browser List
 
@@ -131,7 +131,7 @@ In `Unix` shells like `bash`, `zsh`, `csh` (macOS, Linux, Windows Subsystem for 
 testcafe 'path:`C:\Program Files (x86)\Firefox Portable\firefox.exe`' tests/sample-fixture.js
 ```
 
-> Do not use the `path:` prefix if to run a browser in the [headless mode](../guides/concepts/browsers.md#test-in-headless-mode), use [device emulation](../guides/concepts/browsers.md#use-chromium-device-emulation) or [user profiles](../guides/concepts/browsers.md#user-profiles). Specify the [browser alias](../guides/concepts/browsers.md#locally-installed-browsers) in these cases.
+> Do not use the `path:` prefix to run a browser in [headless mode](../guides/concepts/browsers.md#test-in-headless-mode) - use [device emulation](../guides/concepts/browsers.md#use-chromium-device-emulation) or [user profiles](../guides/concepts/browsers.md#user-profiles) instead. Specify the [browser alias](../guides/concepts/browsers.md#locally-installed-browsers) in these cases.
 
 ### Test in Headless Mode
 
