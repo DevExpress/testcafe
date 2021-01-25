@@ -11,7 +11,7 @@ Runs tests according to the current configuration. Returns the number of failed 
 async run(options) → Promise<Number>
 ```
 
-Before TestCafe runs tests, it reads settings from the `.testcaferc.json` [configuration file](../../configuration-file.md) if this file exists. Then it applies settings specified in the programming API. API settings override values from the configuration file if they differ. TestCafe prints information about every overridden property in the console.
+Before TestCafe runs tests, it reads settings from the `.testcaferc.json` [configuration file](../../configuration-file.md) if this file exists and applies settings specified in the programming API. API settings override values from the configuration file. TestCafe prints information about every overridden property in the console.
 
 > Important! Make sure the browser tab that runs tests stays active.
 > Do not minimize the browser window. Inactive tabs and minimized browser windows switch
