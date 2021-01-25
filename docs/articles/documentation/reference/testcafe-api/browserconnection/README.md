@@ -13,7 +13,7 @@ Use this object to run tests on a remote or a mobile device.
 
 You can create a new `BrowserConnection` with the [testCafe.createBrowserConnection](../testcafe/createbrowserconnection.md) function.
 
-The [browserConnection.url](url.md) property returns a URL that remote browsers can visit to connect to the [TestCafe server instance](../testcafe/README.md).
+The [browserConnection.url](url.md) property returns a URL. Remote browsers can use this URL to connect to a [TestCafe server instance](../testcafe/README.md).
 
 When the remote browser establishes connection, the [browserConnection.opened](opened.md) event fires. After that, you can pass the `BrowserConnection` to [runner.browsers](../runner/browsers.md) and start tests.
 
@@ -26,7 +26,7 @@ const testcafe         = await createTestCafe('localhost', 1337, 1338)
 const runner           = testcafe.createRunner();
 const remoteConnection = await testcafe.createBrowserConnection();
 
-// Outputs remoteConnection.url so that it can be visited from the remote browser.
+// Outputs the remoteConnection.url to allow access from a remote browser.
 console.log(remoteConnection.url);
 
 remoteConnection.once('opened', () => {

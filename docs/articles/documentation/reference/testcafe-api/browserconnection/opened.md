@@ -11,7 +11,7 @@ Fires when a browser launched by a [browser provider](../../../guides/extend-tes
 browserConnection.once('opened', callback)
 ```
 
-If every remote browser connection does not emit this event within **6** minutes, TestCafe throws an error. You can configure this timeout with the [browserInitTimeout](../../configuration-file.md#browserinittimeout) configuration file property.
+If every remote browser connection does not fire this event within **6 minutes**, TestCafe throws an error. You can configure this timeout with the [browserInitTimeout](../../configuration-file.md#browserinittimeout) configuration file property.
 
 You can run tests without waiting for the `opened` event to fire.  The [runner.run](../runner/run.md) method waits for all browser connections to be established and all browsers to be ready within this time.
 
