@@ -506,7 +506,7 @@ testcafe all tests/sample-fixture.js -q
 
 ### -d, --debug-mode
 
-Specify this option to run tests in the debug mode. In this mode, test execution is paused before the first action or assertion so that you can invoke the developer tools and debug.
+Specify this option to run tests in the debug mode. In this mode, test execution is paused before the first action or assertion so that you can invoke the developer tools and then debug.
 
 The footer displays a status bar in which you can resume test execution or skip to the next action or assertion.
 
@@ -521,7 +521,7 @@ You can also use the **Unlock page** switch in the footer to unlock the tested p
 
 ### --debug-on-fail
 
-Specifies whether to automatically enter the [debug mode](#-d---debug-mode) when a test fails.
+Specifies whether to enter the [debug mode](#-d---debug-mode) when a test fails.
 
 ```sh
 testcafe chrome tests/sample-fixture.js --debug-on-fail
@@ -747,7 +747,7 @@ testcafe chrome my-tests --page-request-timeout 8000
 
 ### --speed \<factor\>
 
-Specifies the test execution speed.
+Specifies test execution speed.
 
 Tests are run at the maximum speed by default. You can use this option
 to slow the test down.

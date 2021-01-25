@@ -456,7 +456,7 @@ See the [--debug-mode](command-line-interface.md#-d---debug-mode) command line p
 
 ## debugOnFail
 
-Specifies whether to automatically enter the debug mode when a test fails.
+Specifies whether to enter the debug mode when a test fails.
 
 ```json
 {
@@ -661,7 +661,7 @@ See [Concurrent Test Execution](../guides/basic-guides/run-tests.md#run-tests-co
 
 ## selectorTimeout
 
-Specifies the time (in milliseconds) within which [selectors](../guides/basic-guides/select-page-elements.md) attempt to obtain a node to be returned. See [Selector Timeout](../guides/basic-guides/select-page-elements.md#selector-timeout) for details.
+Specifies the time (in milliseconds) within which [selectors](../guides/basic-guides/select-page-elements.md) attempt to return a node. See [Selector Timeout](../guides/basic-guides/select-page-elements.md#selector-timeout) for details.
 
 ```json
 {
@@ -1021,7 +1021,7 @@ If you launch TestCafe from the console, this option outputs a QR-code that repr
 
 ## stopOnFirstFail
 
-Stops a test run if any test fails.
+Stops a test run if a test fails.
 
 ```json
 {
