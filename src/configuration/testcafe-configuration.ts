@@ -17,7 +17,6 @@ import {
     DEFAULT_SOURCE_DIRECTORIES,
     DEFAULT_DEVELOPMENT_MODE,
     DEFAULT_RETRY_TEST_PAGES,
-    STATIC_CONTENT_CACHING_SETTINGS,
     getDefaultCompilerOptions
 } from './default-values';
 
@@ -26,7 +25,6 @@ import {
     Dictionary,
     FilterOption,
     ReporterOption,
-    StaticContentCachingOptions,
     TypeScriptCompilerOptions
 } from './interfaces';
 
@@ -59,7 +57,6 @@ const OPTION_INIT_FLAG_NAMES = [
 interface TestCafeAdditionalStartOptions {
     retryTestPages: boolean;
     ssl: string;
-    staticContentCaching?: StaticContentCachingOptions;
     developmentMode: boolean;
 }
 
@@ -133,19 +130,16 @@ export default class TestCafeConfiguration extends Configuration {
 
     public get startOptions (): TestCafeStartOptions {
         const result: TestCafeStartOptions = {
-            hostname: this.getOption('hostname') as string,
-            port1:    this.getOption('port1') as number,
-            port2:    this.getOption('port2') as number,
+            hostname: this.getOption(OPTION_NAMES.hostname) as string,
+            port1:    this.getOption(OPTION_NAMES.port1) as number,
+            port2:    this.getOption(OPTION_NAMES.port2) as number,
 
             options: {
-                ssl:             this.getOption('ssl') as string,
-                developmentMode: this.getOption('developmentMode') as boolean,
-                retryTestPages:  this.getOption('retryTestPages') as boolean
+                ssl:             this.getOption(OPTION_NAMES.ssl) as string,
+                developmentMode: this.getOption(OPTION_NAMES.developmentMode) as boolean,
+                retryTestPages:  this.getOption(OPTION_NAMES.retryTestPages) as boolean
             }
         };
-
-        if (result.options.retryTestPages)
-            result.options.staticContentCaching = STATIC_CONTENT_CACHING_SETTINGS;
 
         return result;
     }
