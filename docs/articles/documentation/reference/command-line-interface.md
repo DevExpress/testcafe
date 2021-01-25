@@ -776,7 +776,7 @@ to slow the test down.
 testcafe chrome my-tests --speed 0.1
 ```
 
-If you specify speed for individual action, this setting overrides the global test speed.
+If you specify the speed for an individual action, this setting overrides the global test speed.
 
 **Default value**: `1`
 
@@ -810,7 +810,7 @@ See [Inject Client Scripts](../guides/advanced-guides/inject-client-scripts.md) 
 
 Specifies custom port numbers TestCafe uses to perform testing. The number range is [0-65535].
 
-If you don't specify ports, TestCafe selects them within the range.
+If you do not specify ports, TestCafe automatically selects ports in the range.
 
 ```sh
 testcafe chrome my-tests --ports 12345,54321
@@ -979,7 +979,7 @@ Prevents the browser from caching page content.
 testcafe chrome my-tests --disable-page-caching
 ```
 
-When navigation to a cached page occurs in [role code](../guides/advanced-guides/authentication.md#user-roles) local and session storage content is not preserved. Use the `--disable-page-caching` flag to retain the storage items after navigation. For more information, see [Troubleshooting: Test Actions Fail After Authentication](../guides/advanced-guides/authentication.md#test-actions-fail-after-authentication).
+When navigation to a cached page occurs in [role code](../guides/advanced-guides/authentication.md#user-roles), local and session storage content is not preserved. Use the `--disable-page-caching` flag to retain the storage items after navigation. For more information, see [Troubleshooting: Test Actions Fail After Authentication](../guides/advanced-guides/authentication.md#test-actions-fail-after-authentication).
 
 You can disable page caching for an individual [fixture](test-api/fixture/disablepagecaching.md) or [test](test-api/test/disablepagecaching.md).
 
