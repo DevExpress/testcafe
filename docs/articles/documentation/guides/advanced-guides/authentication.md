@@ -30,7 +30,7 @@ Unlike [page models](../concepts/page-model.md) or [helper functions](../../reci
 
 * **Object-based API.** Authentication data and logic are stored in an object that is easy to pass and activate when needed.
 * **Single login.** Login actions are not repeated when you switch to a previously used role within the same session. If you activate a role in the [beforeEach](../basic-guides/organize-tests.md#test-hooks) hook, login actions run once before the first test. Subsequent tests reuse authentication data so that it happens instantly.
-* **Automatic return.** The browser automatically navigates back to the page where you switched roles. (You can disable this behavior if required.)
+* **Automatic return.** The browser automatically navigates back to the page where you switched roles. (You can disable this with the [preserveUrl](../../reference/test-api/role/constructor.md#optionspreserveurl) option.)
 * **No logout needed.** Authentication data is automatically cleared when you switch between roles.
 * **Multiple authentication support.** If you log in to different services/websites during a test, authentication data from cookie and browser storage accumulates in the active role. When you switch back to this role within the same test, you are automatically logged in to all websites.
 * **Anonymous role.** A built-in role that logs out of all accounts.
