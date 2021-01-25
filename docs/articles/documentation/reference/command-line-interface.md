@@ -728,7 +728,7 @@ Time (in milliseconds) for browsers to connect to TestCafe and report that they 
 testcafe chrome my-tests --browser-init-timeout 180000
 ```
 
-In this example, browser timeout for a local browser is increased. The browser has three minutes to initialize before TestCafe throws an error.
+In this example, browser timeout for Chrome is increased. The browser has three minutes to initialize before TestCafe throws an error.
 
 **Default values**:
 

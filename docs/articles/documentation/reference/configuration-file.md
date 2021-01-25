@@ -720,7 +720,7 @@ Time (in milliseconds) for browsers to connect to TestCafe and report that they 
 }
 ```
 
-In this example, the timeout for all browsers is three minutes. In this run, local and remote browsers have to connect within this time before TestCafe throws an error.
+In this example, the timeout  for local and remote browsers is three minutes. In this run, all browsers have to connect within this time before TestCafe throws an error.
 
 **Default values**:
 
