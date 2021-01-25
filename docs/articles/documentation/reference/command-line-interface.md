@@ -76,7 +76,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--color](#--color)
   * [--no-color](#--no-color)
 
-When you execute the `testcafe` command, TestCafe first reads settings from the `.testcaferc.json` [configuration file](configuration-file.md) if this file exists, and then applies the settings from the command line. Command-line settings override conflicting values from the configuration file. TestCafe prints information about every overridden property in the console.
+When you execute the `testcafe` command, TestCafe first reads settings from the `.testcaferc.json` [configuration file](configuration-file.md) if this file exists, and then applies the settings from the command line. If there are conflicting values, command-line settings override these values in the configuration file. TestCafe prints information about every overridden property in the console.
 
 If you specify the [browsers](configuration-file.md#browsers) and [src](configuration-file.md#src) properties in the configuration file, you can omit them in the command line.
 
@@ -176,8 +176,8 @@ TestCafe provides URLs you should open in your remote device's browsers.
 > If you run tests [concurrently](#-c-n---concurrency-n),
 > specify the total number of all browsers' instances after the `remote:` keyword.
 
-You can use the [--qr-code](#--qr-code) option to display QR-codes that represent the same URLs.
-Scan the QR-codes with the device on which you wish to test your application.
+You can use the [--qr-code](#--qr-code) option to display QR-codes that contain the URLs..
+Scan the QR-codes with the device you want to use to test your application.
 This connects the browsers to TestCafe and starts the tests.
 
 ### Browsers Accessed Through Browser Provider Plugins
@@ -710,7 +710,7 @@ Specifies the time (in milliseconds) passed after the `DOMContentLoaded` event, 
 
 After the timeout passes or the `window.load` event is raised (whichever happens first), TestCafe starts the test.
 
-> Note that the `DOMContentLoaded` event is raised after the HTML document is loaded and parsed, while `window.load` is raised after all stylesheets, images, and subframes are loaded. That is why there is a delay between the `DOMContentLoaded` and `window.load` events fire.
+> The `DOMContentLoaded` event is raised after the HTML document is loaded and parsed. The `window.load` event is raised after all stylesheets, images, and subframes are loaded. This causes a delay between the `DOMContentLoaded` and `window.load` events.
 
 **Default value**: `3000`
 
@@ -767,8 +767,7 @@ In this example, browser timeout for Chrome is increased. The browser has three 
 
 Specifies test execution speed.
 
-Tests run at the maximum speed by default. You can use this option
-to slow the test down.
+If this parameter is not specified, tests run at the maximum speed. You can use this option to decrease test speed.
 
 `factor` should be a number between `1` (the fastest) and `0.01` (the slowest).
 
