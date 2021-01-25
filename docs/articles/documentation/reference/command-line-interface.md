@@ -78,9 +78,9 @@ When you execute the `testcafe` command, TestCafe first reads settings from the 
 
 If the [browsers](configuration-file.md#browsers) and [src](configuration-file.md#src) properties are specified in the configuration file, you can omit them in the command line.
 
-> Important! Make sure to keep the browser tab that is running tests active. Do not minimize the browser window.
-> Inactive tabs and minimized browser windows switch to a lower resource consumption mode
-> where tests do not always execute correctly.
+> Important! Make sure the browser tab that runs tests stays active.
+> Do not minimize the browser window. Inactive tabs and minimized browser windows switch
+> to a lower resource consumption mode where tests are not guaranteed to execute correctly.
 >
 > Do not zoom pages while testing. Tests may be unstable if the page is zoomed in or out.
 
