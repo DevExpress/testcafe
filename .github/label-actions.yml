@@ -1,6 +1,6 @@
 # Configuration for Label Actions - https://github.com/dessant/label-actions
 
-? 'TYPE: Question'
+? 'TYPE: question'
 :
   # Post a comment
   comment: |

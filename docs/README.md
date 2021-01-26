@@ -181,7 +181,7 @@
     * Global Functions
       * [createTestCafe](articles/documentation/reference/testcafe-api/global/createtestcafe.md)
     * [BrowserConnection](articles/documentation/reference/testcafe-api/browserconnection/README.md)
-      * [ready](articles/documentation/reference/testcafe-api/browserconnection/ready.md)
+      * [opened](articles/documentation/reference/testcafe-api/browserconnection/opened.md)
       * [url](articles/documentation/reference/testcafe-api/browserconnection/url.md)
     * [LiveModeRunner](articles/documentation/reference/testcafe-api/livemoderunner.md)
     * [Runner](articles/documentation/reference/testcafe-api/runner/README.md)
