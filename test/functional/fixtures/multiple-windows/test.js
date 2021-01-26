@@ -9,10 +9,12 @@ const config                     = require('../../config');
 const SCREENSHOTS_PATH = config.testScreenshotsDir;
 
 async function assertScreenshotColor (fileName, pixel) {
-    const filePath = path.join(SCREENSHOTS_PATH, 'custom', fileName);
-    const png      = await readPngFile(filePath);
+    for (const browser of config.currentEnvironment.browsers) {
+        const filePath = path.join(SCREENSHOTS_PATH, 'custom', browser.alias + fileName);
+        const png      = await readPngFile(filePath);
 
-    expect(assertionHelper.hasPixel(png, pixel, 0, 0)).eql(true);
+        expect(assertionHelper.hasPixel(png, pixel, 0, 0)).eql(true);
+    }
 }
 
 describe('Multiple windows', () => {
@@ -102,7 +104,7 @@ describe('Multiple windows', () => {
     });
 
     it('Should make screenshots of different windows', () => {
-        return runTests('testcafe-fixtures/features/screenshots.js', null, { only: 'chrome', setScreenshotPath: true })
+        return runTests('testcafe-fixtures/features/screenshots.js', null, { setScreenshotPath: true })
             .then(() => {
                 return assertScreenshotColor('0.png', RED_PIXEL);
             })
@@ -117,6 +119,17 @@ describe('Multiple windows', () => {
             })
             .then(() => {
                 assertionHelper.removeScreenshotDir();
+            });
+    });
+
+    it('Should recreate close window watcher after new child window is opened', () => {
+        return runTests('testcafe-fixtures/i5857.js');
+    });
+
+    it('Should throw error if cannot restore child links', () => {
+        return runTests('testcafe-fixtures/i4760.js', null, { only: 'chrome', shouldFail: true })
+            .catch(errs => {
+                expect(errs[0]).to.contain('Failed to restore connection to window within the allocated timeout.');
             });
     });
 

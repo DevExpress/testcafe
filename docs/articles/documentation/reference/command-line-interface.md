@@ -54,6 +54,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--selector-timeout \<ms\>](#--selector-timeout-ms)
   * [--assertion-timeout \<ms\>](#--assertion-timeout-ms)
   * [--page-load-timeout \<ms\>](#--page-load-timeout-ms)
+  * [--browser-init-timeout \<ms\>](#--browser-init-timeout-ms)
   * [--speed \<factor\>](#--speed-factor)
   * [--cs \<path\[,path2,...\]\>, --client-scripts \<path\[,path2,...\]\>](#--cs-pathpath2---client-scripts-pathpath2)
   * [--ports \<port1,port2\>](#--ports-port1port2)
@@ -69,6 +70,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--compiler-options \<options\>](#--compiler-options-options)
   * [--disable-page-caching](#--disable-page-caching)
   * [--disable-multiple-windows](#--disable-multiple-windows)
+  * [--retry-test-pages](#--retry-test-pages)
   * [--color](#--color)
   * [--no-color](#--no-color)
 
@@ -718,6 +720,23 @@ testcafe ie my-tests --page-load-timeout 0
 
 *Related configuration file property*: [pageLoadTimeout](configuration-file.md#pageloadtimeout).
 
+### --browser-init-timeout \<ms\>
+
+Time (in milliseconds) for browsers to connect to TestCafe and report that they are ready to test. If one or more browsers fail to connect within the specified period, an error is thrown.
+
+```sh
+testcafe chrome my-tests --browser-init-timeout 180000
+```
+
+In this example, browser timeout for Chrome is increased. The browser has three minutes to initialize before TestCafe throws an error.
+
+**Default values**:
+
+* `120000` for [local browsers](#local-browsers)
+* `360000` for [remote browsers](#remote-browsers)
+
+*Related configuration file property*: [browserInitTimeout](configuration-file.md#browserinittimeout).
+
 ### --speed \<factor\>
 
 Specifies the test execution speed.
@@ -950,6 +969,19 @@ testcafe firefox my-tests --disable-multiple-windows
 The `--disable-multiple-windows` option disables support for multi-window testing in Chrome and Firefox. Use this flag if you encounter compatibility issues with your existing tests.
 
 *Related configuration file property*: [disableMultipleWindows](configuration-file.md#disablemultiplewindows).
+
+### --retry-test-pages
+
+If this option is enabled, TestCafe retries failed network requests for webpages visited during tests. The retry functionality is limited to ten tries.
+
+```sh
+testcafe firefox my-tests --retry-test-pages
+```
+
+This feature uses [Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API) that require a secure connection.
+To run TestCafe over a secure connection, [setup HTTPS](../guides/advanced-guides/test-https-features-and-http2-websites.md#test-https-websites) or use the [--hostname localhost](#--hostname-name) option.
+
+*Related configuration file property*: [retryTestPages](./configuration-file.md#retrytestpages)
 
 ### --color
 

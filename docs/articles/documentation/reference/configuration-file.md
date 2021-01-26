@@ -48,6 +48,7 @@ A configuration file can include the following settings:
 * [selectorTimeout](#selectortimeout)
 * [assertionTimeout](#assertiontimeout)
 * [pageLoadTimeout](#pageloadtimeout)
+* [browserInitTimeout](#browserinittimeout)
 * [speed](#speed)
 * [clientScripts](#clientscripts)
 * [port1, port2](#port1-port2)
@@ -709,6 +710,26 @@ See the command line [--page-load-timeout](command-line-interface.md#--page-load
 *CLI*: [--page-load-timeout](command-line-interface.md#--page-load-timeout-ms)  
 *API*: [runner.run({ pageLoadTimeout })](testcafe-api/runner/run.md)
 
+## browserInitTimeout
+
+Time (in milliseconds) for browsers to connect to TestCafe and report that they are ready to test. If one or more browsers fail to connect within the specified period, an error is thrown.
+
+```json
+{
+    "browserInitTimeout": 180000
+}
+```
+
+In this example, the timeout  for local and remote browsers is three minutes. In this run, all browsers have to connect within this time before TestCafe throws an error.
+
+**Default values**:
+
+* `120000` for [local browsers](./command-line-interface.md#local-browsers)
+* `360000` for [remote browsers](./command-line-interface.md#remote-browsers)
+
+*CLI*: [--browser-init-timeout](./command-line-interface.md#--browser-init-timeout-ms)  
+*API*: [runner.run({ browserInitTimeout })](testcafe-api/runner/run.md)
+
 ## speed
 
 Specifies the test execution speed.
@@ -1081,6 +1102,22 @@ The `disableMultipleWindows` option disables support for multi-window testing in
 
 *CLI*: [--disable-multiple-windows](command-line-interface.md#--disable-multiple-windows)  
 *API*: [runner.run({ disableMultipleWindows })](testcafe-api/runner/run.md)
+
+## retryTestPages
+
+If this option is enabled, TestCafe retries failed network requests for webpages visited during tests. The retry functionality is limited to ten tries.
+
+```json
+{
+    "retryTestPages": true
+}
+```
+
+This feature uses [Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API) that require a secure connection.
+To run TestCafe over a secure connection, [setup HTTPS](../guides/advanced-guides/test-https-features-and-http2-websites.md#test-https-websites) or use the [--hostname localhost](command-line-interface.md#--hostname-name) option.
+
+*CLI*: [--retry-test-pages](./command-line-interface.md#--retry-test-pages)
+*API*: [runner.run({ retryTestPages })](testcafe-api/runner/run.md)
 
 ## color
 
