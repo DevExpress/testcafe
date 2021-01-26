@@ -48,6 +48,7 @@ A configuration file can include the following settings:
 * [selectorTimeout](#selectortimeout)
 * [assertionTimeout](#assertiontimeout)
 * [pageLoadTimeout](#pageloadtimeout)
+* [browserInitTimeout](#browserinittimeout)
 * [speed](#speed)
 * [clientScripts](#clientscripts)
 * [port1, port2](#port1-port2)
@@ -708,6 +709,26 @@ See the command line [--page-load-timeout](command-line-interface.md#--page-load
 
 *CLI*: [--page-load-timeout](command-line-interface.md#--page-load-timeout-ms)  
 *API*: [runner.run({ pageLoadTimeout })](testcafe-api/runner/run.md)
+
+## browserInitTimeout
+
+Time (in milliseconds) for browsers to connect to TestCafe and report that they are ready to test. If one or more browsers fail to connect within the specified period, an error is thrown.
+
+```json
+{
+    "browserInitTimeout": 180000
+}
+```
+
+In this example, the timeout  for local and remote browsers is three minutes. In this run, all browsers have to connect within this time before TestCafe throws an error.
+
+**Default values**:
+
+* `120000` for [local browsers](./command-line-interface.md#local-browsers)
+* `360000` for [remote browsers](./command-line-interface.md#remote-browsers)
+
+*CLI*: [--browser-init-timeout](./command-line-interface.md#--browser-init-timeout-ms)  
+*API*: [runner.run({ browserInitTimeout })](testcafe-api/runner/run.md)
 
 ## speed
 

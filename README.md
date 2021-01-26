@@ -152,9 +152,9 @@ testcafe chrome test1.js
 
 TestCafe opens the browser and starts executing the test.
 
-> Important! Make sure to stay in the browser tab that is running tests.
-> Do not minimize the browser window. Tests are not guaranteed to execute correctly
-> in inactive tabs and minimized browser windows because they switch to a lower resource consumption mode.
+> Important! Make sure the browser tab that runs tests stays active.
+> Do not minimize the browser window. Inactive tabs and minimized browser windows switch
+> to a lower resource consumption mode where tests are not guaranteed to execute correctly.
 
 ### Viewing the Results
 
