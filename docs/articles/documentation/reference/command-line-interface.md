@@ -54,6 +54,8 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--selector-timeout \<ms\>](#--selector-timeout-ms)
   * [--assertion-timeout \<ms\>](#--assertion-timeout-ms)
   * [--page-load-timeout \<ms\>](#--page-load-timeout-ms)
+  * [--ajax-request-timeout \<ms\>](#--ajax-request-timeout-ms)
+  * [--page-request-timeout \<ms\>](#--page-request-timeout-ms)
   * [--browser-init-timeout \<ms\>](#--browser-init-timeout-ms)
   * [--speed \<factor\>](#--speed-factor)
   * [--cs \<path\[,path2,...\]\>, --client-scripts \<path\[,path2,...\]\>](#--cs-pathpath2---client-scripts-pathpath2)
@@ -505,7 +507,7 @@ testcafe all tests/sample-fixture.js -q
 
 ### -d, --debug-mode
 
-Specify this option to run tests in the debug mode. In this mode, test execution is paused before the first action or assertion so that you can invoke the developer tools and debug.
+Specify this option to run tests in the debug mode. In this mode, test execution is paused before the first action or assertion so that you can invoke the developer tools and then debug.
 
 The footer displays a status bar in which you can resume test execution or skip to the next action or assertion.
 
@@ -520,7 +522,7 @@ You can also use the **Unlock page** switch in the footer to unlock the tested p
 
 ### --debug-on-fail
 
-Specifies whether to automatically enter the [debug mode](#-d---debug-mode) when a test fails.
+Specifies whether to enter the [debug mode](#-d---debug-mode) when a test fails.
 
 ```sh
 testcafe chrome tests/sample-fixture.js --debug-on-fail
@@ -720,6 +722,30 @@ testcafe ie my-tests --page-load-timeout 0
 
 *Related configuration file property*: [pageLoadTimeout](configuration-file.md#pageloadtimeout).
 
+### --ajax-request-timeout \<ms\>
+
+Specifies wait time (in milliseconds) for fetch/XHR requests. If no response is received within the specified period, an error is thrown.
+
+```sh
+testcafe chrome my-tests --ajax-request-timeout 40000
+```
+
+**Default value**: `120000`
+
+*Related configuration file property*: [ajaxRequestTimeout](configuration-file.md#ajaxrequesttimeout)
+
+### --page-request-timeout \<ms\>
+
+Specifies time (in milliseconds) to wait for HTML pages. If the page isn't received within the specified period, an error is thrown.
+
+```sh
+testcafe chrome my-tests --page-request-timeout 8000
+```
+
+**Default value**: `25000`
+
+*Related configuration file property*: [pageRequestTimeout](configuration-file.md#pagerequesttimeout)
+
 ### --browser-init-timeout \<ms\>
 
 Time (in milliseconds) for browsers to connect to TestCafe and report that they are ready to test. If one or more browsers fail to connect within the specified period, an error is thrown.
@@ -739,7 +765,7 @@ In this example, browser timeout for Chrome is increased. The browser has three 
 
 ### --speed \<factor\>
 
-Specifies the test execution speed.
+Specifies test execution speed.
 
 Tests are run at the maximum speed by default. You can use this option
 to slow the test down.
