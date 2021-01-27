@@ -7,14 +7,17 @@ redirect_from:
 ---
 # Speed Up Your Tests
 
-The speed of TestCafe tests depends on the loading speed of your web application. The best way to speed up your tests may be to optimize the tested application. Make sure that your application doesn't load large payloads of unused CSS or scripts.
 
-Test in an environment with performance headroom. Lack of resources may increase the time browsers take to initialize, connect to TestCafe and load the tested application. If you have to test in a resource-low environment, [run tests in headless browsers](#run-tests-in-headless-browsers).
 
-For better performance, launch tests in local browsers. Network lag between TestCafe and remote browsers causes delays in test execution.
+## Run Tests Concurrently
 
-TestCafe's [speed](../../reference/command-line-interface.md#--speed-factor) option allows you to change test speed. The default value is `1`, which is fastest.
-If your tests have `speed` set in the run configuration, disable this setting or set it to `1`.
+Tests execute faster if run concurrently. In concurrent mode, TestCafe creates multiple instances of specified browsers and uses that browser pool to run tests.
+
+Use the [--concurency](../../reference/command-line-interface.md#-c-n---concurrency-n) CLI option to launch tests concurrently:
+
+```sh
+testcafe --concurency 3 chrome tests/
+```
 
 ## Run Tests in Headless Browsers
 
@@ -44,17 +47,18 @@ Use an [Anonymous Role](../../guides/advanced-guides/authentication.md#anonymous
 
 For more info on Roles, see [User Roles](../../guides/advanced-guides/authentication.md#user-roles)
 
-## Run Tests Concurrently
+## Set `speed`
 
-Tests execute faster if run concurrently. In concurrent mode, TestCafe creates multiple instances of specified browsers and uses that browser pool to run tests.
-
-Use the [--concurency](../../reference/command-line-interface.md#-c-n---concurrency-n) CLI option to launch tests concurrently:
-
-```sh
-testcafe --concurency 3 chrome tests/
-```
+TestCafe's [speed](../../reference/command-line-interface.md#--speed-factor) option allows you to change test speed. The default value is `1`, which is fastest.
+If your tests have `speed` set in the run configuration, disable this setting or set it to `1`.
 
 For more info on concurrency, read [Run Tests Concurrently](../../guides/basic-guides/run-tests.md#run-tests-concurrently).
+
+## Run Tests in Local Browsers
+
+For better performance, launch tests in local browsers. Network lag between TestCafe and remote browsers causes delays in test execution.
+
+Test in an environment with performance headroom. Lack of resources may increase the time browsers take to initialize, connect to TestCafe and load the tested application. If you have to test in a resource-low environment, [run tests in headless browsers](#run-tests-in-headless-browsers).
 
 ## Mock Requests
 
