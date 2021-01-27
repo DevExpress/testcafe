@@ -13,8 +13,6 @@ Test in an environment with performance headroom. Lack of resources may increase
 
 For better performance, launch tests in local browsers. Network lag between TestCafe and remote browsers causes delays in test execution.
 
-Remote browsers may take a long time to initialize and connect to TestCafe. Use the  [--browser-init-timeout](../../reference/command-line-interface.md#--browser-init-timeout-ms) CLI option to set a time limit for browsers to connect. Tests fail if this timeout is exceeded - it might be a good time to debug your remote browser connection.
-
 TestCafe's [speed](../../reference/command-line-interface.md#--speed-factor) option allows you to change test speed. The default value is `1`, which is fastest.
 If your tests have `speed` set in the run configuration, disable this setting or set it to `1`.
 
