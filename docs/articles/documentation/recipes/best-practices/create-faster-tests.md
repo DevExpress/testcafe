@@ -7,9 +7,11 @@ redirect_from:
 ---
 # Speed Up Your Tests
 
+This section describes ways to decrease the execution time of TestCafe tests.
+
 ## Run Tests Concurrently
 
-Enable concurrent mode to run multiple browser instances simultaneously. This will speed up the testing process at the expense of higher resource consumption.
+Enable concurrent mode to run multiple browser instances simultaneously. This speeds up the testing process at the expense of higher resource consumption.
 
 Use the [--concurency](../../reference/command-line-interface.md#-c-n---concurrency-n) CLI option to launch tests concurrently:
 
