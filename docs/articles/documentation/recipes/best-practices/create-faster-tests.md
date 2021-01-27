@@ -7,11 +7,9 @@ redirect_from:
 ---
 # Speed Up Your Tests
 
-
-
 ## Run Tests Concurrently
 
-Tests execute faster if run concurrently. In concurrent mode, TestCafe creates multiple instances of specified browsers and uses that browser pool to run tests.
+Enable concurrent mode to run multiple browser instances simultaneously. This will speed up the testing process at the expense of higher resource consumption.
 
 Use the [--concurency](../../reference/command-line-interface.md#-c-n---concurrency-n) CLI option to launch tests concurrently:
 
@@ -19,67 +17,62 @@ Use the [--concurency](../../reference/command-line-interface.md#-c-n---concurre
 testcafe --concurency 3 chrome tests/
 ```
 
+For more info on concurrency, read [Run Tests Concurrently](../../guides/basic-guides/run-tests.md#run-tests-concurrently).
+
 ## Run Tests in Headless Browsers
 
-Run tests in headless browsers. Headless browsers take less time to initialize because they don't need to render the application to a GUI. They also enable you to run tests in environments that lack GUI capabilities, like CI containers.
-
-To run tests in a headless browser, use the `:headless` CLI parameter:
-
-```sh
-testcafe "chrome:headless" tests/
-```
+Run tests in headless browsers. Headless browsers take less time to initialize because they don't need to render the application. They also enable you to run tests in environments without graphical capabilities, such as CI containers.
 
 For more information, see [Test in Headless Mode](../../guides/concepts/browsers.md#test-in-headless-mode)
 
 ## Use Roles for Login
 
-If your tests require activity from logged in users, use [Roles](../../guides/advanced-guides/authentication.md#user-roles) for authentication.
+Use [Roles](../../guides/advanced-guides/authentication.md#user-roles) to save time on user authentication.
 
-Put Roles in the [beforeEach hook](../../reference/test-api/fixture/beforeeach.md) of your test suite: following tests in a suite reuse authentication data and authentication happens instantly.
+Roles are user log-in routines. When you first enable a `Role`, TestCafe executes the routine and saves the user authentication data that it receives. When you activate the same role later, TestCafe loads the authentication data and skips the log-in process.
 
-With `Roles`, TestCafe remembers cookies associated with every logged-in account. When you switch Roles, TestCafe erases authentication data and you don't have to log out manually.
+When you switch between `Roles`, TestCafe replaces your browser's existing authentication data with the new role's credentials.
 
-If your test covers logins on multiple websites, the active Role collects the authentication data from all these websites. When you switch to that Role later, you are logged in to all these websites.
+Place your `Role` statements inside a [beforeEach hook](../../reference/test-api/fixture/beforeeach.md) to recall the authentication data before each of the tests in your fixture.
 
-Use an [Anonymous Role](../../guides/advanced-guides/authentication.md#anonymous-role) to instantly log out of all accounts during a test.
-
-> Roles can access authentication data in cookie and browser storage. If your authentication system stores data elsewhere, you may not be able to use roles.
+> Roles can access authentication data in cookie and browser storage. If your authentication system stores data elsewhere, roles may not work.
 
 For more info on Roles, see [User Roles](../../guides/advanced-guides/authentication.md#user-roles)
 
 ## Set `speed`
 
-TestCafe's [speed](../../reference/command-line-interface.md#--speed-factor) option allows you to change test speed. The default value is `1`, which is fastest.
-If your tests have `speed` set in the run configuration, disable this setting or set it to `1`.
+TestCafe emulates real user actions on tested webpages. The [speed](../../reference/command-line-interface.md#--speed-factor) option enables you to change action emulation speed.
 
-For more info on concurrency, read [Run Tests Concurrently](../../guides/basic-guides/run-tests.md#run-tests-concurrently).
+The highest value of `1` represents the fastest actions on the page. This is a default value. The minimum value of `0.01` represents a speed that is 100 lower. Setting a lower `speed` can be useful for debugging tests, but slows tests down.
+
+If your tests have `speed` set in the run configuration, disable this setting or set it to `1`.
 
 ## Run Tests in Local Browsers
 
-For better performance, launch tests in local browsers. Network lag between TestCafe and remote browsers causes delays in test execution.
+For better performance, launch tests in local browsers. Network latency negatively impacts test speed.
 
-Test in an environment with performance headroom. Lack of resources may increase the time browsers take to initialize, connect to TestCafe and load the tested application. If you have to test in a resource-low environment, [run tests in headless browsers](#run-tests-in-headless-browsers).
+Test in an environment with performance headroom. Lack of resources may increase the time browsers take to initialize, connect to TestCafe and load the tested application. If you have to test in a low-resource environment, [run tests in headless browsers](#run-tests-in-headless-browsers).
 
 ## Mock Requests
 
-A tested application may interact with remote resources (for example, an analytics service or a database). Requests to such resources may create delays in test suite execution. To avoid such delays, you can mock requests to these resources.
+You can mock the responses of time-consuming HTTP requests to speed up the testing process.
 
-TestCafe [request mocker](../../reference/test-api/requestmock/README.md) intercepts requests from your app to external resources and responds with data that you specify. A mocked request is resolved almost instantly, which eliminates a possible delay caused by a foreign resource or network lag.
+TestCafe [request mocker](../../reference/test-api/requestmock/README.md) intercepts your application's requests to external resources, and responds with the data that you specify. A mocked request is resolved almost instantly, which eliminates a possible delay caused by data processing and network latency.
 
 For more information about mocking requests, visit [Mock HTTP Requests](../../guides/advanced-guides/intercept-http-requests.md#mock-http-requests).
 
 ## Optimize Your Page Model
 
-Page model is a great way to structure your test suite. However, wrong page model structure can increase testing time in large test suites.
+Page model is a great way to structure your test suite. However, improper page model structure can increase testing time in large test suites.
 
-In your page model file, do not export the page model constructor, but create and export a new instance.
+In your page model file, do not export the page model class. Create a new page model instance and export that instance.
 
 ```js
 import { Selector } from 'testcafe';
 import { t } from 'testcafe';
 
 class MyPage {
-    //page model contents here
+    //page model contents
 }
 
 export default new MyPage()
