@@ -156,6 +156,29 @@ $(document).ready(function () {
             });
     });
 
+    asyncTest('pointerdown and pointerup events should be raised once per click', function () {
+        let pointerdownCount = 0;
+        let pointerupCount   = 0;
+
+        $el[0].addEventListener('pointerdown', function () {
+            pointerdownCount++;
+        });
+
+        $el[0].addEventListener('pointerup', function () {
+            pointerupCount++;
+        });
+
+        const click = new ClickAutomation($el[0], new ClickOptions({ offsetX: 5, offsetY: 5 }));
+
+        click
+            .run()
+            .then(function () {
+                equal(pointerdownCount, 1, 'pointerdown should be raised once per click');
+                equal(pointerupCount, 1, 'pointerup should be raised once per click');
+                startNext();
+            });
+    });
+
     if (!featureDetection.isTouchDevice) {
         asyncTest('over and move events on elements during moving', function () {
             let overed  = false;
