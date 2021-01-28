@@ -444,12 +444,7 @@ $(document).ready(function () {
         type
             .run()
             .then(function () {
-                // NOTE: in safari target input element is not focused on click
-                // it loses its focus immediately after click
-                // so it's impossible to type into it
-                const expected = !browserUtils.isSafari ? '12345' : '';
-
-                equal(input1.value, expected);
+                equal(input1.value, '12345');
 
                 start();
             });
