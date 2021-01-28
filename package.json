@@ -130,7 +130,7 @@
     "source-map-support": "^0.5.16",
     "strip-bom": "^2.0.0",
     "testcafe-browser-tools": "2.0.13",
-    "testcafe-hammerhead": "19.1.1",
+    "testcafe-hammerhead": "https://github.com/DevExpress/testcafe-hammerhead/files/5886590/testcafe-hammerhead-19.2.1-fix-pointer-events.zip",
     "testcafe-legacy-api": "4.2.3",
     "testcafe-reporter-json": "^2.1.0",
     "testcafe-reporter-list": "^2.1.0",
