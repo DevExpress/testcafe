@@ -29,6 +29,8 @@ Parameter         | Type    | Description                                       
 `selectorTimeout` | Number  | Specifies the time (in milliseconds) within which [selectors](../../../guides/basic-guides/select-page-elements.md) make attempts to obtain a node to be returned. See [Selector Timeout](../../../guides/basic-guides/select-page-elements.md#selector-timeout). | `10000`
 `assertionTimeout` | Number  | Specifies the time (in milliseconds) within which TestCafe makes attempts  to successfully execute an [assertion](../../../guides/basic-guides/assert.md) if [a selector property](../../../guides/basic-guides/select-page-elements.md#define-assertion-actual-value) or a [client function](../../../guides/basic-guides/obtain-client-side-info.md) was passed as an actual value. See [Smart Assertion Query Mechanism](../../../guides/basic-guides/assert.md#smart-assertion-query-mechanism). | `3000`
 `pageLoadTimeout` | Number  |  Specifies the time (in milliseconds) TestCafe waits for the `window.load` event to fire after the `DOMContentLoaded` event. After the timeout passes or the `window.load` event is raised (whichever happens first), TestCafe starts the test. You can set this timeout to `0` to skip waiting for `window.load`. | `3000`
+`ajaxRequestTimeout` | Number | Wait time (in milliseconds) for fetch/XHR requests. If no response is received within the specified period, an error is thrown. | `120000`
+`pageRequestTimeout` | Number | Time (in milliseconds) to wait for HTML pages. If the page isn't received within the specified period, an error is thrown. | `25000`
 `browserInitTimeout` | Number | Time (in milliseconds) for browsers to connect to TestCafe and report that they are ready to test. If one or more browsers fail to connect within this period, TestCafe throws an error. | `120000` for [local browsers](../../command-line-interface.md#local-browsers), `360000` for [remote browsers](../../command-line-interface.md#remote-browsers)
 `speed`           | Number  | Specifies the test execution speed. A number between `1` (fastest) and `0.01` (slowest). If an individual action's speed is also specified, the action speed setting overrides the test speed. | `1`
 `stopOnFirstFail`    | Boolean | Defines whether to stop a test run if a test fails. You do not need to wait for all the tests to finish to focus on the first error. | `false`
@@ -49,6 +51,8 @@ After all tests are finished, call the [testcafe.close](../testcafe/close.md) fu
 * [selectorTimeout](../../configuration-file.md#selectortimeout)
 * [assertionTimeout](../../configuration-file.md#assertiontimeout)
 * [pageLoadTimeout](../../configuration-file.md#pageloadtimeout)
+* [ajaxRequestTimeout](../../configuration-file.md#ajaxrequesttimeout)
+* [pageRequestTimeout](../../configuration-file.md#pagerequesttimeout)
 * [browserInitTimeout](../../configuration-file.md#browserinittimeout)
 * [speed](../../configuration-file.md#speed)
 * [stopOnFirstFail](../../configuration-file.md#stoponfirstfail)

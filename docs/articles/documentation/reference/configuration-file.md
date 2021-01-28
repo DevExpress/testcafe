@@ -48,6 +48,8 @@ A configuration file can include the following settings:
 * [selectorTimeout](#selectortimeout)
 * [assertionTimeout](#assertiontimeout)
 * [pageLoadTimeout](#pageloadtimeout)
+* [ajaxRequestTimeout](#ajaxrequesttimeout)
+* [pageRequestTimeout](#ajaxrequesttimeout)
 * [browserInitTimeout](#browserinittimeout)
 * [speed](#speed)
 * [clientScripts](#clientscripts)
@@ -455,7 +457,7 @@ See the [--debug-mode](command-line-interface.md#-d---debug-mode) command line p
 
 ## debugOnFail
 
-Specifies whether to automatically enter the debug mode when a test fails.
+Specifies whether to enter the debug mode when a test fails.
 
 ```json
 {
@@ -660,7 +662,7 @@ See [Concurrent Test Execution](../guides/basic-guides/run-tests.md#run-tests-co
 
 ## selectorTimeout
 
-Specifies the time (in milliseconds) within which [selectors](../guides/basic-guides/select-page-elements.md) attempt to obtain a node to be returned. See [Selector Timeout](../guides/basic-guides/select-page-elements.md#selector-timeout) for details.
+Specifies the time (in milliseconds) within which [selectors](../guides/basic-guides/select-page-elements.md) attempt to return a node. See [Selector Timeout](../guides/basic-guides/select-page-elements.md#selector-timeout) for details.
 
 ```json
 {
@@ -709,6 +711,34 @@ See the command line [--page-load-timeout](command-line-interface.md#--page-load
 
 *CLI*: [--page-load-timeout](command-line-interface.md#--page-load-timeout-ms)  
 *API*: [runner.run({ pageLoadTimeout })](testcafe-api/runner/run.md)
+
+### ajaxRequestTimeout
+
+Specifies wait time (in milliseconds) for fetch/XHR requests. If no response is received within the specified period, an error is thrown.
+
+```json
+{
+    "ajaxRequestTimeout": 40000
+}
+```
+
+**Default value**: `120000`
+
+*CLI*: [--ajax-request-timeout](command-line-interface.md#--ajax-request-timeout-ms)
+
+### pageRequestTimeout
+
+Specifies time (in milliseconds) to wait for HTML pages. If the page isn't received within the specified period, an error is thrown.
+
+```json
+{
+    "pageRequestTimeout": 8000
+}
+```
+
+**Default value**: `25000`
+
+*CLI*: [--page-request-timeout](command-line-interface.md#--page-request-timeout-ms)
 
 ## browserInitTimeout
 
@@ -1012,7 +1042,7 @@ If you launch TestCafe from the console, this option outputs a QR-code that repr
 
 ## stopOnFirstFail
 
-Stops a test run if any test fails.
+Stops a test run if a test fails.
 
 ```json
 {
