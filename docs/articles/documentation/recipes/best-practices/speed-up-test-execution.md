@@ -1,13 +1,22 @@
 ---
 layout: docs
 title: Create Faster Tests
-permalink: /documentation/recipes/best-practices/create-faster-tests.html
+permalink: /documentation/recipes/best-practices/speed-up-test-execution.html
 redirect_from:
-  - /documentation/recipes/create-faster-tests.html
+  - /documentation/recipes/speed-up-test-execution.html
 ---
+
 # Speed Up Test Execution
 
-This section describes ways to decrease the execution time of TestCafe tests.
+This section describes ways to decrease the execution time of TestCafe tests. It includes the following sections:
+
+* [Run Tests Concurrently](#run-tests-concurrently)
+* [Run Tests in Headless Browsers](#run-tests-in-headless-browsers)
+* [Use Roles for Login](#use-roles-for-login)
+* [Set Test Speed](#set-test-speed)
+* [Run Tests in Local Browsers](#run-tests-in-local-browsers)
+* [Mock Requests](#mock-requests)
+* [Optimize Your Page Model](#optimize-your-page-model)
 
 ## Run Tests Concurrently
 
@@ -49,7 +58,7 @@ Place your `Role` statements inside a [beforeEach hook](../../reference/test-api
 
 For more info on Roles, see [User Roles](../../guides/advanced-guides/authentication.md#user-roles)
 
-## Set `speed`
+## Set Test Speed
 
 TestCafe emulates real user actions on tested webpages. Set the [speed](../../reference/command-line-interface.md#--speed-factor) option to change the emulation speed.
 
