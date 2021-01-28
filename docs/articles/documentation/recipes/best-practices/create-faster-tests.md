@@ -13,7 +13,15 @@ This section describes ways to decrease the execution time of TestCafe tests.
 
 Enable concurrent mode to run multiple browser instances simultaneously. This speeds up the testing process at the expense of higher resource consumption.
 
-Use the [--concurency](../../reference/command-line-interface.md#-c-n---concurrency-n) CLI option to launch tests concurrently:
+You can enable concurrency with the [concurrency](../../reference/configuration-file.md#concurrency) configuration file property:
+
+```json
+{
+  "concurrency": 3
+}
+```
+
+In a CLI, use the [--concurency](../../reference/command-line-interface.md#-c-n---concurrency-n) option:
 
 ```sh
 testcafe --concurency 3 chrome tests/
@@ -23,7 +31,7 @@ For more info on concurrency, read [Run Tests Concurrently](../../guides/basic-g
 
 ## Run Tests in Headless Browsers
 
-Run tests in headless browsers. Headless browsers take less time to initialize because they don't need to render the application. They also enable you to run tests in environments without graphical capabilities, such as CI containers.
+Headless browsers take less time to initialize because they don't need to render the application. They also enable you to run tests in environments without graphical capabilities, such as CI containers.
 
 For more information, see [Test in Headless Mode](../../guides/concepts/browsers.md#test-in-headless-mode)
 
@@ -37,13 +45,13 @@ When you switch between `Roles`, TestCafe replaces your browser's existing authe
 
 Place your `Role` statements inside a [beforeEach hook](../../reference/test-api/fixture/beforeeach.md) to recall the authentication data before each of the tests in your fixture.
 
-> Roles can access authentication data in cookie and browser storage. If your authentication system stores data elsewhere, roles may not work.
+> Roles can access authentication data in cookie and browser storage only. If your authentication system stores data elsewhere, roles may not work.
 
 For more info on Roles, see [User Roles](../../guides/advanced-guides/authentication.md#user-roles)
 
 ## Set `speed`
 
-TestCafe emulates real user actions on tested webpages. The [speed](../../reference/command-line-interface.md#--speed-factor) option enables you to change action emulation speed.
+TestCafe emulates real user actions on tested webpages. Set the [speed](../../reference/command-line-interface.md#--speed-factor) option to change the emulation speed.
 
 The highest value of `1` represents the fastest actions on the page. This is a default value. The minimum value of `0.01` represents a speed that is 100 lower. Setting a lower `speed` can be useful for debugging tests, but slows tests down.
 
