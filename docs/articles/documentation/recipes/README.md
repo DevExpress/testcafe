@@ -20,6 +20,7 @@ This section provides examples and recipes of how to use TestCafe in different s
 
 * [Create Helpers](best-practices/create-helpers.md)
 * [Create Data-Driven Tests](best-practices/create-data-driven-tests.md)
+* [Speed Up Test Execution](best-practices/speed-up-test-execution.md)
 
 **Integrations**
 

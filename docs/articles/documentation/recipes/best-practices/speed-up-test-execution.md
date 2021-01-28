@@ -5,7 +5,7 @@ permalink: /documentation/recipes/best-practices/create-faster-tests.html
 redirect_from:
   - /documentation/recipes/create-faster-tests.html
 ---
-# Speed Up Your Tests
+# Speed Up Test Execution
 
 This section describes ways to decrease the execution time of TestCafe tests.
 

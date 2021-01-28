@@ -438,6 +438,8 @@
       url: /documentation/recipes/best-practices/create-helpers.md
     - name: Create Data-Driven Tests
       url: /documentation/recipes/best-practices/create-data-driven-tests.md
+    - name: Speed Up Test Execution
+      url: /documentation/recipes/best-practices/speed-up-test-execution.md
   - name: Integrations
     content:
     - name: Import Third-Party Modules

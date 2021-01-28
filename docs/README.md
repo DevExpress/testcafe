@@ -215,6 +215,8 @@
   * Best Practices
     * [Create Helpers](articles/documentation/recipes/best-practices/create-helpers.md)
     * [Create Data-Driven Tests](articles/documentation/recipes/best-practices/create-data-driven-tests.md)
+    * [Speed Up Test Execution](articles/documentation/recipes/best-practices/speed-up-test-execution.md)
+
   * Integrations
     * [Import Third-Party Modules](articles/documentation/recipes/integrations/import-third-party-modules.md)
     * [Testing Library API](articles/documentation/recipes/integrations/use-testing-library-api.md)
