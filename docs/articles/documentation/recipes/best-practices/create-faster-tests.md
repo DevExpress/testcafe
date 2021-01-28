@@ -21,7 +21,7 @@ You can enable concurrency with the [concurrency](../../reference/configuration-
 }
 ```
 
-In a CLI, use the [--concurency](../../reference/command-line-interface.md#-c-n---concurrency-n) option:
+In CLI, use the [--concurency](../../reference/command-line-interface.md#-c-n---concurrency-n) option:
 
 ```sh
 testcafe --concurency 3 chrome tests/
