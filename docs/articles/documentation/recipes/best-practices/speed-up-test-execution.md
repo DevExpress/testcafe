@@ -8,7 +8,7 @@ redirect_from:
 
 # Speed Up Test Execution
 
-This section describes ways to decrease the execution time of TestCafe tests. It includes the following sections:
+This article describes ways to decrease the execution time of TestCafe tests. It includes the following sections:
 
 * [Run Tests Concurrently](#run-tests-concurrently)
 * [Run Tests in Headless Browsers](#run-tests-in-headless-browsers)
@@ -40,7 +40,7 @@ For more info on concurrency, read [Run Tests Concurrently](../../guides/basic-g
 
 ## Run Tests in Headless Browsers
 
-Headless browsers take less time to initialize because they don't need to render the application. They also enable you to run tests in environments without graphical capabilities, such as CI containers.
+Headless browsers take less time to initialize because they lack a GUI. They also enable you to run tests in containers and other environments without graphical capabilities.
 
 For more information, see [Test in Headless Mode](../../guides/concepts/browsers.md#test-in-headless-mode)
 
@@ -62,9 +62,9 @@ For more info on Roles, see [User Roles](../../guides/advanced-guides/authentica
 
 TestCafe emulates real user actions on tested webpages. Set the [speed](../../reference/command-line-interface.md#--speed-factor) option to change the emulation speed.
 
-The highest value of `1` represents the fastest actions on the page. This is a default value. The minimum value of `0.01` represents a speed that is 100 lower. Setting a lower `speed` can be useful for debugging tests, but slows tests down.
+The highest value of `1` represents the fastest possible action speed. This is the default `speed` value. The minimum value of `0.01` represents a speed that is 100 times lower. Setting a lower `speed` can be useful for debugging, but it slows tests down.
 
-If your tests have `speed` set in the run configuration, disable this setting or set it to `1`.
+If you set a custom`speed` value in the run configuration, disable this setting or set it to `1`.
 
 ## Run Tests in Local Browsers
 
