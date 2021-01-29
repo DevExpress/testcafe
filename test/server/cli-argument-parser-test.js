@@ -723,7 +723,8 @@ describe('CLI argument parser', function () {
             { long: '--experimental-compiler-service' },
             { long: '--compiler-options' },
             { long: '--page-request-timeout' },
-            { long: '--ajax-request-timeout' }
+            { long: '--ajax-request-timeout' },
+            { long: '--cache' }
         ];
 
         const parser  = new CliArgumentParser('');
