@@ -23,6 +23,7 @@
     * [Detect the Client Browser and Platform](articles/documentation/guides/advanced-guides/detect-the-client-browser-and-platform.md)
     * [Use TestCafe Docker Image](articles/documentation/guides/advanced-guides/use-testcafe-docker-image.md)
     * [Multiple Browser Windows](articles/documentation/guides/advanced-guides/multiple-browser-windows.md)
+    * [Speed Up Test Execution](articles/documentation/guides/advanced-guides/speed-up-test-execution.md)
   * Concepts
     * [Browsers](articles/documentation/guides/concepts/browsers.md)
     * [Reporters](articles/documentation/guides/concepts/reporters.md)
@@ -215,8 +216,6 @@
   * Best Practices
     * [Create Helpers](articles/documentation/recipes/best-practices/create-helpers.md)
     * [Create Data-Driven Tests](articles/documentation/recipes/best-practices/create-data-driven-tests.md)
-    * [Speed Up Test Execution](articles/documentation/recipes/best-practices/speed-up-test-execution.md)
-
   * Integrations
     * [Import Third-Party Modules](articles/documentation/recipes/integrations/import-third-party-modules.md)
     * [Testing Library API](articles/documentation/recipes/integrations/use-testing-library-api.md)

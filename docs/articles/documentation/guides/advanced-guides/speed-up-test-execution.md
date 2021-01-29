@@ -1,9 +1,7 @@
 ---
 layout: docs
 title: Create Faster Tests
-permalink: /documentation/recipes/best-practices/speed-up-test-execution.html
-redirect_from:
-  - /documentation/recipes/speed-up-test-execution.html
+permalink: /documentation/guides/advanced-guides/speed-up-test-execution.html
 ---
 
 # Speed Up Test Execution

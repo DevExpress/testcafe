@@ -41,6 +41,8 @@
       url: /documentation/guides/advanced-guides/use-testcafe-docker-image.md
     - name: Multiple Browser Windows
       url: /documentation/guides/advanced-guides/multiple-browser-windows.md
+    - name: Speed Up Test Execution
+      url: /documentation/guides/advanced-guides/speed-up-test-execution.md
   - name: Concepts
     content:
     - name: Browsers
@@ -438,8 +440,6 @@
       url: /documentation/recipes/best-practices/create-helpers.md
     - name: Create Data-Driven Tests
       url: /documentation/recipes/best-practices/create-data-driven-tests.md
-    - name: Speed Up Test Execution
-      url: /documentation/recipes/best-practices/speed-up-test-execution.md
   - name: Integrations
     content:
     - name: Import Third-Party Modules
