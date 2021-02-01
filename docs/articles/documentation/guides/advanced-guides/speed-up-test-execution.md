@@ -9,6 +9,7 @@ permalink: /documentation/guides/advanced-guides/speed-up-test-execution.html
 This article describes ways to decrease the execution time of TestCafe tests. It includes the following sections:
 
 * [Run Tests Concurrently](#run-tests-concurrently)
+* [Run Tests in a Performant Environment](#run-tests-in-a-performant-environment)
 * [Run Tests in Headless Browsers](#run-tests-in-headless-browsers)
 * [Use Roles for Login](#use-roles-for-login)
 * [Set Test Speed](#set-test-speed)
@@ -18,7 +19,7 @@ This article describes ways to decrease the execution time of TestCafe tests. It
 
 ## Run Tests Concurrently
 
-Enable concurrent mode to run multiple browser instances simultaneously. This speeds up the testing process at the expense of higher resource consumption.
+Enable concurrent mode to run multiple browser instances simultaneously.
 
 You can enable concurrency with the [concurrency](../../reference/configuration-file.md#concurrency) configuration file property:
 
@@ -34,7 +35,13 @@ In CLI, use the [--concurency](../../reference/command-line-interface.md#-c-n---
 testcafe --concurency 3 chrome tests/
 ```
 
+With `concurrency` enabled, TestCafe runs tests in parallel, which may decrease execution time of your test suite, but requires more resources from the test environment. Choose the option value based on the test environment performance.
+
 For more info on concurrency, read [Run Tests Concurrently](../../guides/basic-guides/run-tests.md#run-tests-concurrently).
+
+## Run Tests in a Performant Environment
+
+Test in an environment with performance headroom. Lack of resources may increase the time browsers take to initialize, connect to TestCafe and load the tested application. If you have to test in a low-resource environment, [run tests in headless browsers](#run-tests-in-headless-browsers).
 
 ## Run Tests in Headless Browsers
 
@@ -52,7 +59,7 @@ When you switch between `Roles`, TestCafe replaces your browser's existing authe
 
 Place your `Role` statements inside a [beforeEach hook](../../reference/test-api/fixture/beforeeach.md) to recall the authentication data before each of the tests in your fixture.
 
-> Roles can access authentication data in cookie and browser storage only. If your authentication system stores data elsewhere, roles may not work.
+> Roles use authentication data from cookies, `sessionStorage` and `localStorage` only. If your authentication system stores data elsewhere, roles may not work.
 
 For more info on Roles, see [User Roles](../../guides/advanced-guides/authentication.md#user-roles)
 
@@ -60,15 +67,13 @@ For more info on Roles, see [User Roles](../../guides/advanced-guides/authentica
 
 TestCafe emulates real user actions on tested webpages. Set the [speed](../../reference/command-line-interface.md#--speed-factor) option to change the emulation speed.
 
-The highest value of `1` represents the fastest possible action speed. This is the default `speed` value. The minimum value of `0.01` represents a speed that is 100 times lower. Setting a lower `speed` can be useful for debugging, but it slows tests down.
+The highest value of `1` represents the fastest possible emulation speed. This is the default `speed` value. Setting a lower `speed` can be useful for debugging, but it slows tests down.
 
-If you set a custom`speed` value in the run configuration, disable this setting or set it to `1`.
+If you set a custom `speed` value in the run configuration, disable this setting or set it to `1`.
 
 ## Run Tests in Local Browsers
 
-For better performance, launch tests in local browsers. Network latency negatively impacts test speed.
-
-Test in an environment with performance headroom. Lack of resources may increase the time browsers take to initialize, connect to TestCafe and load the tested application. If you have to test in a low-resource environment, [run tests in headless browsers](#run-tests-in-headless-browsers).
+For better performance, launch tests in local browsers. Network latency caused by remote browsers negatively impacts test speed.
 
 ## Mock Requests
 
