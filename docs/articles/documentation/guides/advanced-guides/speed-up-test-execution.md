@@ -37,11 +37,11 @@ testcafe --concurency 3 chrome tests/
 
 With `concurrency` enabled, TestCafe runs tests in parallel, which may decrease execution time of your test suite, but requires more resources from the test environment. Choose the option value based on the test environment performance.
 
-For more info on concurrency, read [Run Tests Concurrently](../../guides/basic-guides/run-tests.md#run-tests-concurrently).
+For more information on concurrency, read [Run Tests Concurrently](../../guides/basic-guides/run-tests.md#run-tests-concurrently).
 
 ## Run Tests in a Performant Environment
 
-Test in an environment with performance headroom. Lack of resources may increase the time browsers take to initialize, connect to TestCafe and load the tested application. If you have to test in a low-resource environment, [run tests in headless browsers](#run-tests-in-headless-browsers).
+Test in an environment with performance headroom. Lack of resources may increase the time browsers take to initialize, connect to TestCafe, and load the tested application. If you have to test in a low-resource environment, [run tests in headless browsers](#run-tests-in-headless-browsers).
 
 ## Run Tests in Headless Browsers
 
@@ -51,7 +51,7 @@ For more information, see [Test in Headless Mode](../../guides/concepts/browsers
 
 ## Use Roles for Login
 
-Use [Roles](../../guides/advanced-guides/authentication.md#user-roles) to save time on user authentication.
+Use [Roles](../../guides/advanced-guides/authentication.md#user-roles) for user authentication.
 
 Roles are user log-in routines. When you first enable a `Role`, TestCafe executes the routine and saves the user authentication data. When you activate the same role again, TestCafe loads the authentication data and skips the log-in process.
 
@@ -61,13 +61,13 @@ Place your `Role` statements inside a [beforeEach hook](../../reference/test-api
 
 > Roles use authentication data from cookies, `sessionStorage` and `localStorage` only. If your authentication system stores data elsewhere, roles may not work.
 
-For more info on Roles, see [User Roles](../../guides/advanced-guides/authentication.md#user-roles)
+For more information on Roles, see [User Roles](../../guides/advanced-guides/authentication.md#user-roles)
 
 ## Set Test Speed
 
 TestCafe emulates real user actions on tested webpages. Set the [speed](../../reference/command-line-interface.md#--speed-factor) option to change the emulation speed.
 
-The highest value of `1` represents the fastest possible emulation speed. This is the default `speed` value. Setting a lower `speed` can be useful for debugging, but it slows tests down.
+A value of `1` represents the fastest emulation speed. This is the default `speed` value. A lower `speed` can be useful for debugging because it allows you to watch emulated actions on a screen, but it slows tests down.
 
 If you set a custom `speed` value in the run configuration, disable this setting or set it to `1`.
 
@@ -81,11 +81,11 @@ You can mock the responses of time-consuming HTTP requests to speed up the testi
 
 TestCafe [request mocker](../../reference/test-api/requestmock/README.md) intercepts your application's requests to external resources, and responds with the data that you specify. A mocked request is resolved almost instantly, and eliminates possible delays caused by data processing and network latency.
 
-For more information about mocking requests, visit [Mock HTTP Requests](../../guides/advanced-guides/intercept-http-requests.md#mock-http-requests).
+Learn how to mock requests in the [Mock HTTP Requests](../../guides/advanced-guides/intercept-http-requests.md#mock-http-requests) article.
 
 ## Optimize Your Page Model
 
-Page model is a great way to structure your test suite. However, improper page model structure can increase testing time in large test suites.
+A well-structured page model can improve your test suite's readability and performance. However, an improper page model structure can increase testing time in large test suites.
 
 Do not export the page model class from your page model file. Create a new page model instance and export that instance.
 
