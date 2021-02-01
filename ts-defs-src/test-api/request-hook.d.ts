@@ -1,4 +1,3 @@
-import { RequestFilterRule as RequestFilterRuleOptions } from 'testcafe-hammerhead';
 // Request Hook
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -14,7 +13,7 @@ interface RequestHook {
     onResponse(responseEvent: object): Promise<void>;
 }
 
-type RequestFilterRule = ConstructorParameters<typeof RequestFilterRuleOptions>[0];
+type RequestFilterRule = ConstructorParameters<typeof import('testcafe-hammerhead').RequestFilterRule>[0];
 
 interface RequestHookConstructor {
     /**
