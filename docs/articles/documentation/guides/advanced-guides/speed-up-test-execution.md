@@ -102,7 +102,7 @@ export default new MyPage()
 // that can be imported in tests
 ```
 
-You should avoid the `new` keyword when creating page model instances in your test files. Import the page object instead:
+Don't use the `new` keyword to create page model instances in your test files. Import the page object instead:
 
 ```js
 import myPage from 'path/to/page-model.js'
