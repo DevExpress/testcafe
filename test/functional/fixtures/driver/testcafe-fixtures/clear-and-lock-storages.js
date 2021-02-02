@@ -8,7 +8,7 @@ const setNativeStorageKey = ClientFunction(storageName => {
     const nativeStorageKey = window[storageName].internal.nativeStorageKey;
     const nativeMethods    = window['%hammerhead%'].nativeMethods;
 
-    nativeMethods.strorageSetItem.call(nativeStorage, 'stored-native-storage-key', nativeStorageKey);
+    nativeMethods.storageSetItem.call(nativeStorage, 'stored-native-storage-key', nativeStorageKey);
 });
 
 const getNativeStorageState = ClientFunction(storageName => {
