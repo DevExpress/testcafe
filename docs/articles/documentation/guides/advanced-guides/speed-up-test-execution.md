@@ -76,11 +76,11 @@ You can mock the responses of time-consuming HTTP requests to speed up the testi
 
 TestCafe [request mocker](../../reference/test-api/requestmock/README.md) intercepts your application's requests to external resources, and responds with the data that you specify. A mocked request is resolved almost instantly, and eliminates possible delays caused by data processing and network latency.
 
-Learn how to mock requests in the [Mock HTTP Requests](../../guides/advanced-guides/intercept-http-requests.md#mock-http-requests) article.
+For instructions on how to mock requests, refer to the [Mock HTTP Requests](../../guides/advanced-guides/intercept-http-requests.md#mock-http-requests) article.
 
 ## Optimize Your Page Model
 
-A well-structured page model can improve your test suite's readability and performance. However, an improper page model structure can increase testing time in large test suites.
+Improper page model structure can increase testing time in large test suites.
 
 Do not export the page model class from your page model file. Create a new page model instance and export that instance.
 
