@@ -9,7 +9,6 @@ permalink: /documentation/guides/advanced-guides/speed-up-test-execution.html
 This article consists of the following sections that describe how to decrease the execution time of TestCafe tests:
 
 * [Run Tests Concurrently](#run-tests-concurrently)
-* [Run Tests in a Performant Environment](#run-tests-in-a-performant-environment)
 * [Run Tests in Headless Browsers](#run-tests-in-headless-browsers)
 * [Use Roles for Login](#use-roles-for-login)
 * [Set Test Speed](#set-test-speed)
@@ -39,10 +38,6 @@ With `concurrency` enabled, TestCafe runs tests in parallel, which may decrease 
 
 For more information on concurrency, read [Run Tests Concurrently](../../guides/basic-guides/run-tests.md#run-tests-concurrently).
 
-## Run Tests in a Performant Environment
-
-Test in an environment with performance headroom. Lack of resources may increase the time browsers take to initialize, connect to TestCafe, and load the tested application. If you have to test in a low-resource environment, [run tests in headless browsers](#run-tests-in-headless-browsers).
-
 ## Run Tests in Headless Browsers
 
 Headless browsers take less time to initialize because they do not have a GUI. They also enable you to run tests in containers and other environments without graphic capabilities.
@@ -53,7 +48,7 @@ For more information, see [Test in Headless Mode](../../guides/concepts/browsers
 
 Use [Roles](../../guides/advanced-guides/authentication.md#user-roles) for user authentication.
 
-Roles are user log-in routines. When you first enable a `Role`, TestCafe executes the routine and saves the user authentication data. When you activate the same role again, TestCafe loads the authentication data and skips the log-in process.
+Roles are user log-in routines. When you first enable a `Role`, TestCafe executes the routine and saves the user authentication data. When you activate the same role again, TestCafe loads the authentication data and skips the log-in happens much faster.
 
 When you switch between `Roles`, TestCafe replaces your browser's existing authentication data with the new role's credentials.
 
@@ -65,7 +60,7 @@ For more information on Roles, see [User Roles](../../guides/advanced-guides/aut
 
 ## Set Test Speed
 
-TestCafe emulates real user actions on tested webpages. Set the [speed](../../reference/command-line-interface.md#--speed-factor) option to change the emulation speed.
+TestCafe emulates real user actions on tested webpages. The [speed](../../reference/command-line-interface.md#--speed-factor) option controls the emulation speed.
 
 A value of `1` represents the fastest emulation speed. This is the default `speed` value. A lower `speed` can be useful for debugging because it allows you to watch emulated actions on a screen, but it slows tests down.
 
