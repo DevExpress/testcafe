@@ -82,7 +82,11 @@ For instructions on how to mock requests, refer to the [Mock HTTP Requests](../.
 
 Improper page model structure can increase testing time in large test suites.
 
-Do not export the page model class from your page model file. Create a new page model instance and export that instance.
+Time spent on creation of page objects accumulates. If you create an instance in every test file, testing time increases. In large test suites this can lead to the `Unable to establish connection` error. Do not export the page model class from your page model file.
+
+Instead, create a new page model instance and export that instance.
+
+**PageModel.js**
 
 ```js
 import { Selector } from 'testcafe';
@@ -99,6 +103,8 @@ export default new MyPage()
 
 Don't use the `new` keyword to create page model instances in your test files. Import the page object instead:
 
+**test.js**
+
 ```js
 import myPage from 'path/to/page-model.js'
 // a recommended way to import page models
@@ -109,5 +115,7 @@ const myPage = new MyPage();
 // NOT RECOMMENDED
 // may lead to performance issues in large test suites
 ```
+
+This approach ensures that the page model object is created once per test run.
 
 For more on page models, read [Page Model](../../guides/concepts/page-model.md).
