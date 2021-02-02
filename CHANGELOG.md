@@ -1,5 +1,45 @@
 # Changelog
 
+## v1.11.0 (03.02.2021)
+
+### Bug Fixes
+
+* Fixed a bug where `Selector.withText` couldn't locate elements inside an `iframe` ([#5886](https://github.com/DevExpress/testcafe/issues/5886))
+* Fixed a bug where TestCafe was sometimes unable to detect when a browser instance closes ([#5857](https://github.com/DevExpress/testcafe/issues/5857))
+* TestCafe can now be installed with `Yarn 2` ([PR #5872]((https://github.com/DevExpress/testcafe/pull/5872)) by [@NiavlysB](https://github.com/NiavlysB))
+* Fixed a bug where TestCafe was sometimes unable to create a `Worker` from an object ([testcafe-hammerhead/#2512](https://github.com/DevExpress/testcafe-hammerhead/issues/2512))
+* Fixed an error thrown by TestCafe proxy when trying to delete an object property that doesn't exist ([testcafe-hammerhead/#2504](https://github.com/DevExpress/testcafe-hammerhead/issues/2504))
+* Fixed an error thrown  by TestCafe proxy when a Service Worker overwrites properties of a `window` object ([testcafe-hammerhead/#2538](https://github.com/DevExpress/testcafe-hammerhead/issues/2538))
+* Fixed a bug where `t.openWindow` method requested a URL twice ([testcafe-hammerhead/#2544](https://github.com/DevExpress/testcafe-hammerhead/issues/2544))
+* Fixed an error (`TypeError: Illegal invocation`) thrown by TestCafe on pages that contain an XMLDocument with an `iframe` ([testcafe-hammerhead/#2554](https://github.com/DevExpress/testcafe-hammerhead/issues/2554))
+* Fixed an error (`SyntaxError: Identifier has already been declared`) thrown by TestCafe on pages with scripts that create nested JavaScript objects ([testcafe-hammerhead/#2506](https://github.com/DevExpress/testcafe-hammerhead/issues/2506))
+* Fixed a bug where TestCafe was unable to focus elements within shadow DOM ([testcafe-hammerhead/#2408](https://github.com/DevExpress/testcafe-hammerhead/issues/2408))
+* TestCafe throws an error when an entity of type other than `Error` is thrown in a test script ([PR testcafe-hammerhead/#2536](https://github.com/DevExpress/testcafe-hammerhead/pull/2536))
+* Fixed a bug where TestCafe was sometimes unable to resolve relative URLs ([testcafe-hammerhead/#2399](https://github.com/DevExpress/testcafe-hammerhead/issues/2399))
+* Properties of `window.location.constructor` are now shadowed correctly by TestCafe proxy ([testcafe-hammerhead/#2423](https://github.com/DevExpress/testcafe-hammerhead/issues/2423))
+* TestCafe proxy now correctly handles requests that are not permitted by CORS ([testcafe-hammerhead/#1263](https://github.com/DevExpress/testcafe-hammerhead/issues/1263))
+
+### Enhancements
+
+#### Improved the `Unable To Establish Browser Connection` Error Message ([PR #5720](https://github.com/DevExpress/testcafe/pull/5720))
+
+The error message now includes the number of browsers that have established a connection. If the issue is caused by low system performance, TestCafe raises a warning.
+
+Use the `--browser-init-timeout` CLI flag or the `browserInitTimeout` API/configuration option to control time browsers have to connect to TestCafe before the error is thrown.
+
+```sh
+testcafe chrome my-tests --browser-init-timeout 180000
+```
+
+```js
+runner.run({ "browserInitTimeout": 180000 })
+```
+
+### Vulnerability Fix ([PR #5843](https://github.com/DevExpress/testcafe/pull/5843), [PR testcafe-hammerhead#2531](https://github.com/DevExpress/testcafe-hammerhead/pull/2531))
+
+We have fixed a vulnerability found in the [debug](https://www.npmjs.com/package/debug) module we use for debugging.
+The vulnerability was a [ReDos Vulnerability Regression](https://github.com/visionmedia/debug/issues/797) and affected all TestCafe users. TestCafe now uses `debug@4.3.1`, where the issue is fixed.
+
 ## v1.10.1 (2020-12-24)
 
 ### Bug Fixes
