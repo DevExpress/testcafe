@@ -17,7 +17,7 @@
 * TestCafe throws an error when an entity of type other than `Error` is thrown in a test script ([PR testcafe-hammerhead/#2536](https://github.com/DevExpress/testcafe-hammerhead/pull/2536))
 * Fixed a bug where TestCafe was sometimes unable to resolve relative URLs ([testcafe-hammerhead/#2399](https://github.com/DevExpress/testcafe-hammerhead/issues/2399))
 * Properties of `window.location.constructor` are now shadowed correctly by TestCafe proxy ([testcafe-hammerhead/#2423](https://github.com/DevExpress/testcafe-hammerhead/issues/2423))
-* TestCafe proxy now correctly handles requests that are not permitted by CORS ([testcafe-hammerhead/#1263](https://github.com/DevExpress/testcafe-hammerhead/issues/1263))
+* TestCafe proxy now correctly handles requests that are not permitted by the CORS policy ([testcafe-hammerhead/#1263](https://github.com/DevExpress/testcafe-hammerhead/issues/1263))
 
 ### Enhancements
 
