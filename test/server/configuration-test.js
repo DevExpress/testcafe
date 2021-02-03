@@ -24,7 +24,7 @@ const createConfigFile = (path, options) => {
 const createTestCafeConfigurationFile   = createConfigFile.bind(null, TestCafeConfiguration.FILENAME);
 const createTypeScriptConfigurationFile = createConfigFile.bind(null, tsConfigPath);
 
-const TEST_TIMEOUT = 3000;
+const TEST_TIMEOUT = 5000;
 
 describe('TestCafeConfiguration', function () {
     this.timeout(TEST_TIMEOUT);
