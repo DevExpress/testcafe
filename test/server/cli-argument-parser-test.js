@@ -674,7 +674,7 @@ describe('CLI argument parser', function () {
     it('Should have static CLI', () => {
         const CHANGE_CLI_WARNING         = 'IMPORTANT: Please be sure what you want to change CLI if this test is failing!';
         const ADD_TO_RUN_OPTIONS_WARNING = 'Check that the added option is correctly passed from the command-line interface to the run options.' +
-                                           'If the option has a separate method in the programmatic interface just increase the "expectedRunOptionsCount" value';
+                                           'If the new option is not a run option just increase the "expectedOtherOptionsCount" value';
 
         const EXPECTED_OPTIONS = [
             { long: '--version', short: '-v' },
@@ -744,11 +744,12 @@ describe('CLI argument parser', function () {
             expect(option.short).eql(EXPECTED_OPTIONS[i].short, CHANGE_CLI_WARNING);
         }
 
-        const expectedRunOptionsCount = 18;
-        const expectedOtherOptions    = options.length - expectedRunOptionsCount;
+        const expectedRunOptionsCount   = 18;
+        const expectedOtherOptionsCount = 34;
+        const otherOptionsCount         = options.length - expectedRunOptionsCount;
 
         expect(runOptionNames.length).eql(expectedRunOptionsCount, ADD_TO_RUN_OPTIONS_WARNING);
-        expect(expectedOtherOptions).eql(34, ADD_TO_RUN_OPTIONS_WARNING);
+        expect(otherOptionsCount).eql(expectedOtherOptionsCount, ADD_TO_RUN_OPTIONS_WARNING);
     });
 
     it('Run options', () => {
