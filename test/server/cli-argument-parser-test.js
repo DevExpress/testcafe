@@ -5,6 +5,7 @@ const tmp               = require('tmp');
 const { find }          = require('lodash');
 const CliArgumentParser = require('../../lib/cli/argument-parser');
 const nanoid            = require('nanoid');
+const runOptionNames    = require('../../lib/configuration/run-option-names');
 
 describe('CLI argument parser', function () {
     this.timeout(10000);
@@ -671,7 +672,10 @@ describe('CLI argument parser', function () {
     });
 
     it('Should have static CLI', () => {
-        const WARNING          = 'IMPORTANT: Please be sure what you want to change CLI if this test is failing!';
+        const CHANGE_CLI_WARNING         = 'IMPORTANT: Please be sure what you want to change CLI if this test is failing!';
+        const ADD_TO_RUN_OPTIONS_WARNING = 'Check that the added option is correctly passed from the command-line interface to the run options.' +
+                                           'If the option has a separate method in the programmatic interface just increase the "expectedRunOptionsCount" value';
+
         const EXPECTED_OPTIONS = [
             { long: '--version', short: '-v' },
             { long: '--list-browsers', short: '-b' },
@@ -730,15 +734,21 @@ describe('CLI argument parser', function () {
         const parser  = new CliArgumentParser('');
         const options = [ ...parser.program.options, ...parser.experimental.options];
 
-        expect(options.length).eql(EXPECTED_OPTIONS.length, WARNING);
+        expect(options.length).eql(EXPECTED_OPTIONS.length, CHANGE_CLI_WARNING);
 
         for (let i = 0; i < EXPECTED_OPTIONS.length; i++) {
             const option = find(options, EXPECTED_OPTIONS[i]);
 
-            expect(option).not.eql(void 0, WARNING);
-            expect(option.long).eql(EXPECTED_OPTIONS[i].long, WARNING);
-            expect(option.short).eql(EXPECTED_OPTIONS[i].short, WARNING);
+            expect(option).not.eql(void 0, CHANGE_CLI_WARNING);
+            expect(option.long).eql(EXPECTED_OPTIONS[i].long, CHANGE_CLI_WARNING);
+            expect(option.short).eql(EXPECTED_OPTIONS[i].short, CHANGE_CLI_WARNING);
         }
+
+        const expectedRunOptionsCount = 18;
+        const expectedOtherOptions    = options.length - expectedRunOptionsCount;
+
+        expect(runOptionNames.length).eql(expectedRunOptionsCount, ADD_TO_RUN_OPTIONS_WARNING);
+        expect(expectedOtherOptions).eql(34, ADD_TO_RUN_OPTIONS_WARNING);
     });
 
     it('Run options', () => {
