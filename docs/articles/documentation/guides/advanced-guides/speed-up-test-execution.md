@@ -80,40 +80,26 @@ For instructions on how to mock requests, refer to the [Mock HTTP Requests](../.
 
 ## Optimize Your Page Model
 
-In your page model file, create an instance with the `new` keyword and export that instance.
+In your page model file create and export an instance of the page model class.
 
 **PageModel.js**
 
 ```js
-import { Selector } from 'testcafe';
-import { t } from 'testcafe';
-
 class PageModel {
     //page model contents
 }
 
 export default new PageModel()
-// creates an instance of PageModel
-// that can be imported in tests
 ```
-
-Don't use the `new` keyword to create page model instances in your test files. Import the page object instead:
 
 **test.js**
 
 ```js
 import PageModel from 'path/to/page-model.js'
-// a recommended way to import page models
-
-
-//
-const PageModel = new PageModel();
-// NOT RECOMMENDED
-// may lead to performance issues in large test suites
 ```
 
 This approach ensures that the page model object is created once per test run.
 
-If you export the page model class and invoke it with the `new` keyword in every test file, TestCafe creates a new page object in memory per test file. The time TestCafe spends creating multiple page objects accumulates and can cause delays and errors.
+> Important! If you export the page model class and create an instance in every test file, JavaScript creates a new page object in memory per test file. This increases test execution time and memory consumption.
 
 For more on page models, read [Page Model](../../guides/concepts/page-model.md).
