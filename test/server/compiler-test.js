@@ -962,7 +962,7 @@ describe('Compiler', function () {
 
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'SyntaxError: ' + testfiles[0] + ': Unexpected token, expected ";" (1:8)'
+                                 'SyntaxError: ' + testfiles[0] + ': Missing semicolon (1:7)'
                     }, true);
 
                     return compile(testfiles[1]);
@@ -975,7 +975,7 @@ describe('Compiler', function () {
                         stackTop: null,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'SyntaxError: ' + testfiles[1] + ': Unexpected token, expected ";" (2:8)'
+                                 'SyntaxError: ' + testfiles[1] + ': Missing semicolon (2:7)'
                     }, true);
                 });
         });
