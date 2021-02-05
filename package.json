@@ -130,7 +130,6 @@
     "source-map-support": "^0.5.16",
     "strip-bom": "^2.0.0",
     "testcafe-browser-tools": "2.0.13",
-    "testcafe-hammerhead": "19.2.2",
     "testcafe-legacy-api": "4.2.3",
     "testcafe-reporter-json": "^2.1.0",
     "testcafe-reporter-list": "^2.1.0",
@@ -219,6 +218,7 @@
     "stack-chain": "^2.0.0",
     "strip-ansi": "^3.0.0",
     "testcafe-browser-provider-browserstack": "1.13.0-alpha.1",
+    "testcafe-hammerhead": "file:testcafe-hammerhead-19.2.2.tgz",
     "tslib": "^1.11.1",
     "uglify-js": "~3.10.4"
   }
