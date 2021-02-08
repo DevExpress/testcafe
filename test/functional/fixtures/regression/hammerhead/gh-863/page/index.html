@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test page</title>
+    <script src="script-1.js"></script>
+</head>
+<body>
+    <div id="loaded-script-status"></div>
+    <div id="check-loaded-script-header-status"></div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loadedScriptStatus            = document.getElementById('loaded-script-status');
+            const checkLoadedScriptHeaderStatus = document.getElementById('check-loaded-script-header-status');
+
+            fetch('/script-2.js')
+                .then(res => {
+                    const headerValue = res.headers.get('X-Checked-Header');
+
+                    checkLoadedScriptHeaderStatus.textContent = headerValue === 'TesT' ? 'Success' : 'Failed';
+
+                    return res.text();
+                })
+                .then(() => {
+                    loadedScriptStatus.textContent = 'Loaded';
+                })
+                .catch(err => {
+                    loadedScriptStatus.textContent = err.toString();
+                });
+        });
+    </script>
+</body>
+</html>

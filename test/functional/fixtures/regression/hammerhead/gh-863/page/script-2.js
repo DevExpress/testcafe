@@ -1,0 +1,3 @@
+window['testVar'] = 123;
+
+
