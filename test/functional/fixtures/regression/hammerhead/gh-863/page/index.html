@@ -8,10 +8,12 @@
 <body>
     <div id="loaded-script-status"></div>
     <div id="check-loaded-script-header-status"></div>
+    <div id="loaded-image-status"></div>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const loadedScriptStatus            = document.getElementById('loaded-script-status');
             const checkLoadedScriptHeaderStatus = document.getElementById('check-loaded-script-header-status');
+            const loadedImageStatus             = document.getElementById('loaded-image-status');
 
             fetch('/script-2.js')
                 .then(res => {
@@ -27,6 +29,20 @@
                 .catch(err => {
                     loadedScriptStatus.textContent = err.toString();
                 });
+
+            const img = new Image(300, 300);
+
+            img.src = 'img.png';
+            img.id  = 'img';
+
+            img.addEventListener('load', function () {
+                loadedImageStatus.textContent = 'Loaded';
+            });
+            img.addEventListener('error', function () {
+                loadedImageStatus.textContent = 'Failed';
+            });
+
+            document.body.appendChild(img);
         });
     </script>
 </body>
