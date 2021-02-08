@@ -168,7 +168,7 @@ permalink: /documentation/reference/
 
 *[BrowserConnection](testcafe-api/browserconnection/README.md)*
 
-* [opened](testcafe-api/browserconnection/opened.md)
+* [ready](testcafe-api/browserconnection/ready.md)
 * [url](testcafe-api/browserconnection/url.md)
 
 *[LiveModeRunner](testcafe-api/livemoderunner.md)*
