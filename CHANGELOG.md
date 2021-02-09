@@ -11,10 +11,10 @@ New CLI options allow you to control the timeout for requests. If a request is n
 * [--ajax-request-timeout](./docs/articles/documentation/reference/command-line-interface.md#--ajax-request-timeout-ms) controls the delay for fetch/XHR requests timeout
 * [--page-request-timeout](./docs/articles/documentation/reference/command-line-interface.md#--page-request-timeout-ms) sets the timeout for receiving webpages.
 
-Read the documentation for the corresponding configuration properties: 
+Read the documentation for the corresponding configuration properties:
 
 * [ajaxRequestTimeout](./docs/articles/documentation/reference/configuration-file.md#ajaxrequesttimeout)
-* [pageRequestTimeout](./docs/articles/documentation/reference/configuration-file.md#ajaxrequesttimeout). 
+* [pageRequestTimeout](./docs/articles/documentation/reference/configuration-file.md#ajaxrequesttimeout).
 
 The options are available in the [runner.run Method](./docs/articles/documentation/reference/testcafe-api/runner/run.md).
 
@@ -809,7 +809,7 @@ If tests run correctly without page caching, we recommend that you adjust the se
 
 ### Bug Fixes
 
-* Fixed an error that occured when a selector matched an `<svg>` element ([#3684](https://github.com/DevExpress/testcafe/issues/3684))
+* Fixed an error that occurred when a selector matched an `<svg>` element ([#3684](https://github.com/DevExpress/testcafe/issues/3684))
 * Fixed an issue when the `reporter` configuration file option was not applied ([#4234](https://github.com/DevExpress/testcafe/issues/4234))
 * Fixed a warning message about invalid `tsconfig.json` file ([#4154](https://github.com/DevExpress/testcafe/issues/4154))
 * `LiveRunner.stop()` now closes the browsers ([#4107](https://github.com/DevExpress/testcafe/issues/4107))
@@ -922,7 +922,7 @@ You can specify the scripts to inject as follows:
 
     ```js
     fixture `My fixture`
-        .clientScripts({ content: 'Geolocation.prototype.getCurrentPosition = () => new Positon(0, 0);' });
+        .clientScripts({ content: 'Geolocation.prototype.getCurrentPosition = () => new Position(0, 0);' });
     ```
 
 For more information, see [Inject Scripts into Tested Pages](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/inject-scripts-into-tested-pages.html).
@@ -1699,12 +1699,12 @@ When you use a programming API, pass the HTTPS server options to the [createTest
 'use strict';
 
 const createTestCafe        = require('testcafe');
-const selfSignedSertificate = require('openssl-self-signed-certificate');
+const selfSignedCertificate = require('openssl-self-signed-certificate');
 let runner                  = null;
 
 const sslOptions = {
-    key:  selfSignedSertificate.key,
-    cert: selfSignedSertificate.cert
+    key:  selfSignedCertificate.key,
+    cert: selfSignedCertificate.cert
 };
 
 createTestCafe('localhost', 1337, 1338, sslOptions)
@@ -2552,7 +2552,7 @@ Now, you have no need to type a unique link for each test run, all the links bec
 * The `window.history.replaceState` function is overridden incorrectly ([testcafe-hammerhead/#1146](https://github.com/DevExpress/testcafe-hammerhead/issues/1146))
 * Hammerhead crashes if a script file contains a sourcemap comment ([testcafe-hammerhead/#1052](https://github.com/DevExpress/testcafe-hammerhead/issues/1052))
 * The proxy should override the `DOMParser.parseFromString` method ([testcafe-hammerhead/#1133](https://github.com/DevExpress/testcafe-hammerhead/issues/1133))
-* The `fetch` method should emulate the native behaviour on merging headers ([testcafe-hammerhead/#1116](https://github.com/DevExpress/testcafe-hammerhead/issues/1116))
+* The `fetch` method should emulate the native behavior on merging headers ([testcafe-hammerhead/#1116](https://github.com/DevExpress/testcafe-hammerhead/issues/1116))
 * The `EventSource` requests are broken when used via proxy ([testcafe-hammerhead/#1106](https://github.com/DevExpress/testcafe-hammerhead/issues/1106))
 * The code processing may cause syntax errors in some cases because of wrong `location` property wrapping ([testcafe-hammerhead/#1101](https://github.com/DevExpress/testcafe-hammerhead/issues/1101))
 * When calling the `fetch` function without parameters, we should return its native result instead of `window.Promise.reject` ([testcafe-hammerhead/#1099](https://github.com/DevExpress/testcafe-hammerhead/issues/1099))
@@ -3443,12 +3443,12 @@ Get it to ensure that ESLint does not fail on TestCafe test code.
 * `Function.prototype.toString` is now proxied correctly when it is overridden in a user script ([testcafe-hammerhead#999](https://github.com/DevExpress/testcafe-hammerhead/issues/999))
 * Script processing no longer hangs on chained assignments ([testcafe-hammerhead#866](https://github.com/DevExpress/testcafe-hammerhead/issues/866))
 * `formaction` attribute is now processed ([testcafe-hammerhead#988](https://github.com/DevExpress/testcafe-hammerhead/issues/988))
-* `document.styleSheets` is now overrided ([testcafe-hammerhead#1000](https://github.com/DevExpress/testcafe-hammerhead/issues/1000))
+* `document.styleSheets` is now overridden ([testcafe-hammerhead#1000](https://github.com/DevExpress/testcafe-hammerhead/issues/1000))
 * `href` attribute is now processed correctly in an iframe without src when it is set from the main window ([testcafe-hammerhead#620](https://github.com/DevExpress/testcafe-hammerhead/issues/620))
 * Cookies without a key are now set correctly ([testcafe-hammerhead#899](https://github.com/DevExpress/testcafe-hammerhead/issues/899))
 * The `noscript` tag is now processed correctly when it was added via `innerHTML` ([testcafe-hammerhead#987](https://github.com/DevExpress/testcafe-hammerhead/issues/987))
-* `Element.insertAdjacentHTML` function is now overrided in IE ([testcafe-hammerhead#954](https://github.com/DevExpress/testcafe-hammerhead/issues/954))
-* Browser behaviour is now emulated correctly when the cookie size is bigger than the browser limit ([testcafe-hammerhead#767](https://github.com/DevExpress/testcafe-hammerhead/issues/767))
+* `Element.insertAdjacentHTML` function is now overridden in IE ([testcafe-hammerhead#954](https://github.com/DevExpress/testcafe-hammerhead/issues/954))
+* Browser behavior is now emulated correctly when the cookie size is bigger than the browser limit ([testcafe-hammerhead#767](https://github.com/DevExpress/testcafe-hammerhead/issues/767))
 
 ## v0.11.1 (2016-12-8)
 
