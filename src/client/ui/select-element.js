@@ -162,7 +162,7 @@ export function expandOptionList (select) {
 
     createChildren(selectChildren, optionList);
 
-    listeners.addInternalEventListener(window, [ 'click' ], onWindowClick);
+    listeners.addInternalEventBeforeListener(window, [ 'click' ], onWindowClick);
 
     nativeMethods.setTimeout.call(window, () => {
         eventUtils.bind(document, 'mousedown', onDocumentMouseDown);

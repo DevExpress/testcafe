@@ -193,11 +193,11 @@ export default class ClickAutomation extends VisibleElementAutomation {
                 const getTimeStamp = e => {
                     timeStamp = e.timeStamp;
 
-                    listeners.removeInternalEventListener(window, ['mouseup'], getTimeStamp);
+                    listeners.removeInternalEventBeforeListener(window, ['mouseup'], getTimeStamp);
                 };
 
                 if (!browserUtils.isIE)
-                    listeners.addInternalEventListener(window, ['mouseup'], getTimeStamp);
+                    listeners.addInternalEventBeforeListener(window, ['mouseup'], getTimeStamp);
 
                 if (!this._isTouchEventWasCancelled())
                     eventSimulator.mouseup(element, eventArgs.options);
