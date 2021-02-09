@@ -42,11 +42,11 @@ class LabelElementClickCommand extends ElementClickCommand {
             focusRaised = e.target === this.input;
         };
 
-        listeners.addInternalEventListener(window, ['focus'], ensureFocusRaised);
+        listeners.addInternalEventBeforeListener(window, ['focus'], ensureFocusRaised);
 
         super.run();
 
-        listeners.removeInternalEventListener(window, ['focus'], ensureFocusRaised);
+        listeners.removeInternalEventBeforeListener(window, ['focus'], ensureFocusRaised);
 
         if (domUtils.isElementFocusable(this.label) && !focusRaised)
             this._ensureBoundElementFocusRaised();
@@ -107,11 +107,11 @@ class LabelledCheckboxElementClickCommand extends LabelElementClickCommand {
             changed = true;
         };
 
-        listeners.addInternalEventListener(window, ['change'], onChange);
+        listeners.addInternalEventBeforeListener(window, ['change'], onChange);
 
         super.run();
 
-        listeners.removeInternalEventListener(window, ['change'], onChange);
+        listeners.removeInternalEventBeforeListener(window, ['change'], onChange);
 
         if (browserUtils.isChrome && !changed)
             this._ensureCheckboxStateChanged();

@@ -79,11 +79,11 @@ function preventRealEventHandler (e, dispatched, preventDefault, cancelHandlers,
 
 export function preventRealEvents () {
     listeners.initElementListening(window, PREVENTED_EVENTS);
-    listeners.addFirstInternalHandler(window, PREVENTED_EVENTS, preventRealEventHandler);
+    listeners.addFirstInternalEventBeforeListener(window, PREVENTED_EVENTS, preventRealEventHandler);
 
     scrollController.init();
 }
 
 export function disableRealEventsPreventing () {
-    listeners.removeInternalEventListener(window, PREVENTED_EVENTS, preventRealEventHandler);
+    listeners.removeInternalEventBeforeListener(window, PREVENTED_EVENTS, preventRealEventHandler);
 }

@@ -144,14 +144,14 @@ function simulateTextInput (element, text) {
     }
 
     if (browserUtils.isSafari) {
-        listeners.addInternalEventListener(window, ['textInput'], onSafariTextInput);
+        listeners.addInternalEventBeforeListener(window, ['textInput'], onSafariTextInput);
         eventSandbox.on(eventSandbox.EVENT_PREVENTED_EVENT, onSafariPreventTextInput);
     }
 
     const isInputEventRequired = browserUtils.isFirefox || eventSimulator.textInput(element, text) || forceInputInSafari;
 
     if (browserUtils.isSafari) {
-        listeners.removeInternalEventListener(window, ['textInput'], onSafariTextInput);
+        listeners.removeInternalEventBeforeListener(window, ['textInput'], onSafariTextInput);
         eventSandbox.off(eventSandbox.EVENT_PREVENTED_EVENT, onSafariPreventTextInput);
     }
 
@@ -188,8 +188,8 @@ function _typeTextToContentEditable (element, text) {
         needProcessInput    = simulateTextInput(element, textInputData);
         needRaiseInputEvent = needProcessInput && !browserUtils.isIE11;
 
-        listeners.addInternalEventListener(window, ['input'], onInput);
-        listeners.addInternalEventListener(window, ['textinput'], onTextInput);
+        listeners.addInternalEventBeforeListener(window, ['input'], onInput);
+        listeners.addInternalEventBeforeListener(window, ['textinput'], onTextInput);
     };
 
     const afterContentChanged = () => {
@@ -198,8 +198,8 @@ function _typeTextToContentEditable (element, text) {
                 if (needRaiseInputEvent)
                     eventSimulator.input(element, text);
 
-                listeners.removeInternalEventListener(window, ['input'], onInput);
-                listeners.removeInternalEventListener(window, ['textinput'], onTextInput);
+                listeners.removeInternalEventBeforeListener(window, ['input'], onInput);
+                listeners.removeInternalEventBeforeListener(window, ['textinput'], onTextInput);
             });
     };
 
