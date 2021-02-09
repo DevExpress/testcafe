@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GH-5940</title>
+</head>
+<body>
+
+<div>
+    <label for="ctrlshift+">ctrl+shift++</label>
+    <input id="ctrlshiftplus" type="checkbox"></input>
+</div>
+
+<div>
+    <label for="ctrl+">ctrl++</label>
+    <input id="ctrlplus" type="checkbox"></input>
+</div>
+
+<div>
+    <label for="shift+">shift++</label>
+    <input id="shiftplus" type="checkbox"></input>
+</div>
+
+<div>
+    <label for="+">+</label>
+    <input id="plus" type="checkbox"></input>
+</div>
+
+<div>
+    <label for="altplus">alt++
+    </label>
+    <input id="altplus" type="checkbox"></input>
+</div>
+<script>
+
+    document.addEventListener('keypress', function (e) {
+
+        if (e.key === '+' && e.shiftKey && e.ctrlKey && !e.altKey) {
+            ctrlshiftplus.checked = true;
+        }
+
+        if (e.key === '+' && e.shiftKey && !e.ctrlKey && !e.altKey) {
+            shiftplus.checked = true;
+        }
+
+        if (e.key === '+' && !e.shiftKey && e.ctrlKey && !e.altKey) {
+            ctrlplus.checked = true;
+        }
+
+        if (e.key === '+' && !e.shiftKey && !e.ctrlKey && !e.altKey) {
+            plus.checked = true;
+        }
+
+        if (e.key === '+' && !e.shiftKey && !e.ctrlKey && e.altKey) {
+            altplus.checked = true;
+        }
+
+    });
+
+</script>
+</body>
+</html>
