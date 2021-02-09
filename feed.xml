@@ -5,9 +5,37 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 09 Feb 2021 17:22:22 +0300</pubDate>
-    <lastBuildDate>Tue, 09 Feb 2021 17:22:22 +0300</lastBuildDate>
+    <pubDate>Tue, 09 Feb 2021 17:28:02 +0300</pubDate>
+    <lastBuildDate>Tue, 09 Feb 2021 17:28:02 +0300</lastBuildDate>
     <generator>Jekyll v3.9.0</generator>
+    
+      <item>
+        <title>Upcoming Roundtable: Modern Web Testing with TestCafe</title>
+        <description>&lt;h1&gt;Upcoming Roundtable: Modern Web Testing with TestCafe&lt;/h1&gt;
+&lt;p&gt;Tomorrow, join the 5th online &lt;a href=&quot;https://guildconferences.com/ag-2021/&quot;&gt;Automation Guild conference&lt;/a&gt; and learn how to improve your test automation skill with Dmytro Shpakovskyi, the author of “Modern Web Testing with TestCafe”.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;Dmytro has over a decade of experience in Quality Assurance, Software Testing, and Software-as-a-Service industries. Skilled in end-to-end, load, and API test automation, he is certified by the International Software Testing Qualifications Board (ISTQB).&lt;/p&gt;
+
+&lt;p&gt;During his career, Dmytro was in charge of the quality assurance automation of 60+ highly scalable web applications and services, built and maintained numerous test automation frameworks, managed distributed teams of QA automation engineers, and helped engineers to convert to automated testing.&lt;/p&gt;
+
+&lt;p&gt;Dmytro creates and open-sources new test automation frameworks, mentors other QA engineers, and explores new tools and techniques for automated testing. He shares his experience at &lt;a href=&quot;https://www.stijit.com/&quot;&gt;www.stijit.com&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;In addition to that, Dmytro authored a book &amp;quot;Modern Web Testing with TestCafe&amp;quot; - a no-nonsense guide to getting started with TestCafe quickly by building a complete test suite while learning the core concepts of test automation with TestCafe (available on &lt;a href=&quot;https://www.amazon.com/gp/product/B08HM9JXRK&quot;&gt;Amazon&lt;/a&gt;).&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Webinar Date:&lt;/strong&gt; Wednesday, February 10, 2021&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Start Time:&lt;/strong&gt; 1:30 PM Pacific Time&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://guildconferences.com/ag-2021/&quot;&gt;Register&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+</description>
+        <pubDate>Tue, 09 Feb 2021 00:00:00 +0300</pubDate>
+        <link>https://devexpress.github.io/testcafe/media/team-blog/modern-web-testing-with-testcafe.html</link>
+        <guid isPermaLink="true">https://devexpress.github.io/testcafe/media/team-blog/modern-web-testing-with-testcafe.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>Randomize Your End-to-End Tests: How to Generate Input Data for TestCafe</title>
@@ -877,408 +905,6 @@ Yes, we offer &lt;a href=&quot;https://www.devexpress.com/products/net/controls/
         <pubDate>Fri, 21 Aug 2020 00:00:00 +0300</pubDate>
         <link>https://devexpress.github.io/testcafe/media/team-blog/the-fastest-way-to-your-next-test.html</link>
         <guid isPermaLink="true">https://devexpress.github.io/testcafe/media/team-blog/the-fastest-way-to-your-next-test.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>TestCafe Webinar - Your Questions Answered</title>
-        <description>&lt;h1&gt;TestCafe Webinar - Your Questions Answered&lt;/h1&gt;
-&lt;p&gt;We recently hosted a webinar on TestCafe and found the response overwhelming. During the presentation a large number of questions were raised, and as promised, the team have been through and answered them all.&lt;/p&gt;
-
-&lt;!--more--&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;watch-the-webinar&quot;&gt;&lt;/a&gt;Watch the Webinar &lt;a class=&quot;permalink&quot; href=&quot;#watch-the-webinar&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;!-- markdownlint-disable MD033 --&gt;
-
-&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/kwV_HCE7neM&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen&gt;&lt;/iframe&gt;
-
-&lt;!-- markdownlint-enable MD033 --&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;webinar-resources&quot;&gt;&lt;/a&gt;Webinar Resources &lt;a class=&quot;permalink&quot; href=&quot;#webinar-resources&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Does the book (&lt;em&gt;End-to-End Testing with TestCafe&lt;/em&gt; by Dennis Martinez) go over the examples from the Webinar?&lt;/strong&gt;&lt;br&gt;
-This webinar is based on the book, so you will certainly find details about the examples we showed.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Is the webinar available in other languages?&lt;/strong&gt;&lt;br&gt;
-We currently hold online events in English only.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;In what language the application you show is written?&lt;/strong&gt;&lt;br&gt;
-It is JavaScript, the ES6 standard.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;testcafe-benefits&quot;&gt;&lt;/a&gt;TestCafe Benefits &lt;a class=&quot;permalink&quot; href=&quot;#testcafe-benefits&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;What are the advantages of TestCafe over Selenium/Cypress/Nightwatch.js/Robot Framework/WebdriverIO?&lt;/strong&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;TestCafe does not require browser plugins, SDKs or other tools and libraries - just Node.js and browsers.&lt;/li&gt;
-&lt;li&gt;You don&amp;#39;t need to configure testing environment. Install TestCafe from npm and you are ready to test.&lt;/li&gt;
-&lt;li&gt;TestCafe is truly cross-browser and cross-platform. It can run tests on Windows, macOS, Linux, iOS, and Android.  Supported browsers include Chrome, Firefox, Safari, Edge, and Internet Explorer.&lt;/li&gt;
-&lt;li&gt;TestCafe features a built-in wait mechanism. You don&amp;#39;t need to insert manual waiting in your tests. TestCafe waits for all kinds of loadings and animations automatically, so your tests are stable even when they slow down for whatever reason.&lt;/li&gt;
-&lt;li&gt;TestCafe allows you to test even the most complex scenarios like those with cross-domain navigation, file upload, sophisticated iframe use cases, secure services (payment, geolocation) or multiple windows (in beta).&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;license&quot;&gt;&lt;/a&gt;License &lt;a class=&quot;permalink&quot; href=&quot;#license&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Do I need to purchase a separate license for TestCafe? Is it included in any of the DevExpress subscriptions?&lt;/strong&gt;&lt;br&gt;
-TestCafe is open-source and free. It is licensed under &lt;a href=&quot;https://github.com/DevExpress/testcafe/blob/master/LICENSE&quot;&gt;the MIT license&lt;/a&gt;.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;desktop-application-testing&quot;&gt;&lt;/a&gt;Desktop Application Testing &lt;a class=&quot;permalink&quot; href=&quot;#desktop-application-testing&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Does TestCafe only work in a browser? Can I use it to test desktop applications, like WinForms?&lt;/strong&gt;&lt;br&gt;
-TestCafe is designed for Web applications only. Thankfully, if you use Electron.js for your desktop application, you can easily &lt;a href=&quot;https://github.com/DevExpress/testcafe-browser-provider-electron&quot;&gt;test it with TestCafe&lt;/a&gt;.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;parallelization&quot;&gt;&lt;/a&gt;Parallelization &lt;a class=&quot;permalink&quot; href=&quot;#parallelization&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Can I start 100 TestCafe tests to simulate high load?&lt;/strong&gt;&lt;br&gt;
-You can start 100 parallel browser instances if your computer has sufficient resources to run such a number of browsers. But we recommend using TestCafe for end-to-end rather than load testing.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Can I run the tests in parallel in multiple browser windows?&lt;/strong&gt;&lt;br&gt;
-Yes, TestCafe allows you to execute tests concurrently. In concurrent mode, TestCafe invokes multiple instances of each browser. These instances constitute the pool of browsers against which tests run concurrently, i.e. each test runs in the first available instance. You can find information how to run tests in parallel &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/basic-guides/run-tests.html#run-tests-concurrently&quot;&gt;in this topic&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;How well does TestCafe scale when it comes to parallelization? What is the ideal number of tests that can be run in parallel?&lt;/strong&gt;&lt;br&gt;
-You can run any number of tests in concurrent mode. Regarding the number of browser instances that can be used to run these test, it&amp;#39;s hard to name an optimal number. It all depends on the resources available on your machine and the tests themselves. It is best to choose this number on a case-by-case basis.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Can I have multiple TestCafe instances running tests?&lt;/strong&gt;&lt;br&gt;
-Yes, you can use several TestCafe instances. There are no special restrictions here. But in this case you will have to make sure that the instances do not conflict for resources (open ports, access to files, etc.).&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Is there a way to start more parallel tests in memory without running browsers?&lt;/strong&gt;&lt;br&gt;
-Concurrent mode implies launching the specified number of browser instances. All instances will be launched even if the number of tests is not enough to run at least one on each of them. Therefore, now there is no way to use this mode without launching browsers.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;integrations&quot;&gt;&lt;/a&gt;Integrations &lt;a class=&quot;permalink&quot; href=&quot;#integrations&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Does TestCafe integrate with BrowserStack?&lt;/strong&gt;&lt;br&gt;
-Yes, you can run tests in Cloud Testing Services (BrowserStack, Sauce Labs) via the corresponding plugins. See more &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/concepts/browsers.html#browsers-in-cloud-testing-services&quot;&gt;in the documentation&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Can I run TestCafe on Azure DevOps?&lt;/strong&gt;&lt;br&gt;
-You can find a topic about Azure DevOps integration in &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/continuous-integration/azure-devops.html&quot;&gt;the TestCafe documentation&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Can I run TestCafe on Jenkins where there are no local browsers installed? Should I use headless mode on Jenkins?&lt;/strong&gt;&lt;br&gt;
-If the machine that runs Jenkins does not have local browsers installed, you can use &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/basic-guides/run-tests.html#test-in-portable-browsers&quot;&gt;portable&lt;/a&gt; browsers or &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/basic-guides/run-tests.html#test-in-cloud-testing-services&quot;&gt;cloud testing services&lt;/a&gt; (BrowserStack, SauceLabs).&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/basic-guides/run-tests.html#use-headless-mode&quot;&gt;Headless mode&lt;/a&gt; is supported for both locally installed and portable browsers. We recommend that you use headless mode to decrease testing time. You can run browsers in headless mode even on machines without graphical system.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/continuous-integration/jenkins.html&quot;&gt;This tutorial&lt;/a&gt; describes how to integrate TestCafe with Jenkins.&lt;/p&gt;
-
-&lt;p&gt;You may also wish to check &lt;a href=&quot;https://devexpress.github.io/testcafe/media/team-blog/introducing-the-testcafe-jenkins-plugin.html&quot;&gt;the TestCafe plugin for Jenkins&lt;/a&gt; that attaches screenshots and videos to the Jenkins test results page.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Is TestCafe compatible with Angular applications?&lt;/strong&gt;&lt;br&gt;
-Yes, TestCafe has full support for Angular applications. You can use &lt;a href=&quot;https://github.com/DevExpress/testcafe-angular-selectors&quot;&gt;the Angular selector plugin&lt;/a&gt; that adds selector extensions to make it easier to test Angular applications with TestCafe. These extensions allow you to create a Selector to find elements on the page in a way that is native to Angular applications.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Does TestCafe support Vue?&lt;/strong&gt;&lt;br&gt;
-Yes, TestCafe allows you test Vue applications the same way as any other apps. You can use &lt;a href=&quot;https://github.com/DevExpress/testcafe-vue-selectors&quot;&gt;the Vue selector plugin&lt;/a&gt; that contains selector extensions to make it easier to test Vue components with TestCafe. These extensions allow you to test Vue component state and result markup alongside.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Can TestCafe pick elements by their React component name?&lt;/strong&gt;&lt;br&gt;
-You can use &lt;a href=&quot;https://github.com/DevExpress/testcafe-react-selectors&quot;&gt;the TestCafe selector plugin for React components&lt;/a&gt;. This plugin adds selector extensions that allow you to select page elements in a way that is native to React. For instance, you can use component names to identify page elements.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Is TestCafe compatible with Knockout?&lt;/strong&gt;&lt;br&gt;
-Yes, TestCafe can test applications based on Knockout. There are no known issues.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Does TestCafe support Bamboo?&lt;/strong&gt;&lt;br&gt;
-You can use &amp;quot;Script Task&amp;quot; in Bamboo setting to write a wrapper that invokes automated tests. Alternatively, you can use &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/use-testcafe-docker-image.html&quot;&gt;the TestCafe Docker image&lt;/a&gt;.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;blazor&quot;&gt;&lt;/a&gt;Blazor &lt;a class=&quot;permalink&quot; href=&quot;#blazor&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Can I use TestCafe to test a Blazor application?&lt;/strong&gt;&lt;br&gt;
-TestCafe supports testing for Blazor apps. You can test your Blazor app the same way as any other application. There are no known issues.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;action-chaining&quot;&gt;&lt;/a&gt;Action Chaining &lt;a class=&quot;permalink&quot; href=&quot;#action-chaining&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Are there limitations as to what kinds of actions can be chained? Is it the best practice to chain as many actions as I can?&lt;/strong&gt;&lt;br&gt;
-Almost all TestCafe &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/&quot;&gt;test controller&amp;#39;s methods&lt;/a&gt; can be chained, except those that return a value and hence break the chain:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/eval.html&quot;&gt;t.eval&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/getbrowserconsolemessages.html&quot;&gt;t.getBrowserConsoleMessages&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/getnativedialoghistory.html&quot;&gt;t.getNativeDialogHistory&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;You can chain these methods in any desirable manner but we recommend adding blank lines between logical parts of the action chain to improve tests readability, e.g.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;click&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#id1&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;//some settings&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;click&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#id1&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;click&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#id1&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#result&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;textContent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;eql&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;expected text&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;//assertion&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;strong&gt;Can I extend the TestController object with my own chainable methods? Or only helpers and pageobjects are the way to go?&lt;/strong&gt;&lt;br&gt;
-TestController cannot be extended with custom methods at the moment. We may consider adding this feature, but it isn&amp;#39;t in our current roadmap. As you correctly suggested, you can use helpers and page objects to implement custom methods.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;testcafe-studio&quot;&gt;&lt;/a&gt;TestCafe Studio &lt;a class=&quot;permalink&quot; href=&quot;#testcafe-studio&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Can TestCafe record my actions (some tests need many entries and writing them is very time-consuming)?&lt;/strong&gt;&lt;br&gt;
-You can use &lt;a href=&quot;https://www.devexpress.com/products/testcafestudio/&quot;&gt;TestCafe Studio&lt;/a&gt; that has a built-in test recorder. It allows you to record your actions without coding them.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Is there a user interface for building tests, or is it all JS-based?&lt;/strong&gt;&lt;br&gt;
-You can use TestCafe Studio which is a UI tool to maintain your tests.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Is TestCafe Studio a desktop application or is it available as a Web service?&lt;/strong&gt;&lt;br&gt;
-TestCafe Studio is a cross-platform desktop application (powered by Electron.js). You can download its installer for Windows, macOS or Linux and install on your machine. Offline registration is available for computers without internet access. Read more in the &lt;a href=&quot;https://docs.devexpress.com/TestCafeStudio/400163/guides/installation&quot;&gt;Installation topic&lt;/a&gt; in the Docs.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Does TestCafe Studio require a license?&lt;/strong&gt;&lt;br&gt;
-Yes, this is a &lt;a href=&quot;https://devexpress.com/testcafestudio&quot;&gt;commercial product&lt;/a&gt; that requires obtaining a license. There are two options available: TestCafe Studio and TestCafe Studio Pro with DevExpress Technical support.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Can TestCafe Studio generate tests steps in a more user-friendly form than code?&lt;/strong&gt;&lt;br&gt;
-TestCafe Studio has the built-in &lt;a href=&quot;https://docs.devexpress.com/TestCafeStudio/400190/user-interface/test-editor&quot;&gt;Test Editor&lt;/a&gt; designed for codeless test creation.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Can you change the order of tests on the side panel on the left?&lt;/strong&gt;&lt;br&gt;
-The &lt;a href=&quot;https://docs.devexpress.com/TestCafeStudio/400182/user-interface/explorer-panel&quot;&gt;Explorer Panel&lt;/a&gt; allows you to view and manage files in your testing directory. For recorded tests, the Explorer Panel displays fixtures and tests. You can create new tests, copy/paste them and more. But currently you can&amp;#39;t change the order of the tests.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Are there more formats of report logs in TestCafe Studio?&lt;/strong&gt;&lt;br&gt;
-In the Report View you can see tests run report in the TestCafe Studio format - &lt;a href=&quot;https://docs.devexpress.com/TestCafeStudio/400187/user-interface/report-view&quot;&gt;Grid View&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;The following built-in reports formats are also available:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;JSON&lt;/li&gt;
-&lt;li&gt;xUnit&lt;/li&gt;
-&lt;li&gt;List&lt;/li&gt;
-&lt;li&gt;Minimal&lt;/li&gt;
-&lt;li&gt;Spec&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;You can install TestCafe reporter plugins to add more formats: &lt;a href=&quot;https://docs.devexpress.com/TestCafeStudio/400187/user-interface/report-view#get-more-report-formats&quot;&gt;Get More Report Formats&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Is there any guide with comprehensive instructions and examples for TestCafe Studio?&lt;/strong&gt;&lt;br&gt;
-See the guides, videos, and examples &lt;a href=&quot;https://docs.devexpress.com/TestCafeStudio/400157/testcafe-studio&quot;&gt;in the TestCafe Studio documentation&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;What is the element locator strategy?&lt;/strong&gt;&lt;br&gt;
-TestCafe Studio use some characteristic of the DOM element in order to identify it on the page, such as id, class, text etc. You can set the usage priority of these characteristics, switch them off (e.g. for auto generated id) or create new ones based on custom attributes. See the details in &lt;a href=&quot;https://docs.devexpress.com/TestCafeStudio/400407/test-actions/element-selectors&quot;&gt;the documentation&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Is TestCafe Studio a part of the Universal Subscription?&lt;/strong&gt;&lt;br&gt;
-Yes, &lt;a href=&quot;https://www.devexpress.com/subscriptions/universal.xml&quot;&gt;TestCafe Studio Pro version is&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Does TestCafe Studio support console.log output? I am currently running tests from the command line so I&amp;#39;d like to see my console.log statements.&lt;/strong&gt;&lt;br&gt;
-You can add &lt;a href=&quot;https://docs.devexpress.com/TestCafeStudio/401265/test-actions/custom-scripts&quot;&gt;the Run TestCafe Script action&lt;/a&gt;. In this action, you can use &lt;code&gt;console.log()&lt;/code&gt; to print messages directly, or even call &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/getbrowserconsolemessages.html&quot;&gt;t.getBrowserConsoleMessages()&lt;/a&gt; to fetch messages from the browser&amp;#39;s console.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Can TestCafe Studio generate reports with statistics, graphs, pies, etc., illustrating execution results?&lt;/strong&gt;&lt;br&gt;
-Currently there is no such capability.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;In TestCafe Studio, moving a line becomes almost impossible over 100 lines. Is that a memory issue that can be changed via config?&lt;/strong&gt;&lt;br&gt;
-We cannot reproduce this behavior on our side. Please create an inquiry on &lt;a href=&quot;https://www.devexpress.com/ask&quot;&gt;https://www.devexpress.com/ask&lt;/a&gt; and provide more detail about the issue you encounter.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;We are using both DevExpress and custom controls in our application. We record tests in TestCafe Studio, but they fail when we run them. Can you tell why this happens?&lt;/strong&gt;&lt;br&gt;
-To resolve the issue, please refer to the Troubleshooting section on our &lt;a href=&quot;https://docs.devexpress.com/TestCafeStudio/400610/faq&quot;&gt;FAQ page&lt;/a&gt;. If suggestions described there do not help or apply to your case, create a ticket on &lt;a href=&quot;https://www.devexpress.com/ask&quot;&gt;https://www.devexpress.com/ask&lt;/a&gt; and describe your issue in detail.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;page-model&quot;&gt;&lt;/a&gt;Page Model &lt;a class=&quot;permalink&quot; href=&quot;#page-model&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Do you create the page models manually? Can the page models be dynamically generated?&lt;/strong&gt;&lt;br&gt;
-Page Models should be created manually, there is no built-in way to generate page models automatically. A page model reflects the internal structure of the testing page: what is the container, what is the parent and what is the child, etc., which distinguishing characteristics are best used to identify elements. Any automatically generated model is unlikely to reflect these semantics.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Is it necessary to create selectors with the Selector constructor in a page object class?&lt;/strong&gt;&lt;br&gt;
-No, you can use CSS strings:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Page&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;constructor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;submitButton&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#submit&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;But if you want to extend or chain such a selector with &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/selector/&quot;&gt;selector&amp;#39;s methods&lt;/a&gt;, you will need to use the Selector constructor:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Page&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;constructor&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;button&lt;/span&gt;       &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;button&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;submitButton&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;button&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;withText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Submit&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;cancelButton&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;button&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;withText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Cancel&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;strong&gt;Can I add additional methods to page object in TestCafe?&lt;/strong&gt;&lt;br&gt;
-Yes, you can add methods to a page model. Usually these methods are the most frequently repeated actions specific to this page. See an example in &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/concepts/page-model.html#step-7---add-actions-to-the-page-model&quot;&gt;the TestCafe docs&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Does TestCafe support the PageObjects library?&lt;/strong&gt;&lt;br&gt;
-If you mean &lt;a href=&quot;https://github.com/devcon5io/pageobjects&quot;&gt;this PageObjects library&lt;/a&gt;, then TestCafe does not support it because this library is designed for Selenium.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;database-access&quot;&gt;&lt;/a&gt;Database Access &lt;a class=&quot;permalink&quot; href=&quot;#database-access&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Can test results be sent to a database?&lt;/strong&gt;&lt;br&gt;
-There&amp;#39;s no built-in functionality for this, but you can certainly &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/extend-testcafe/reporter-plugin.html&quot;&gt;make a plugin&lt;/a&gt; that will do this.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Can TestCafe connect to databases to verify that the correct data was written?&lt;/strong&gt;&lt;br&gt;
-TestCafe doesn&amp;#39;t have built-in functionality for interaction with databases. But you can use any npm module for it.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;browsers&quot;&gt;&lt;/a&gt;Browsers &lt;a class=&quot;permalink&quot; href=&quot;#browsers&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Does TestCafe support Microsoft Edge? Can TestCafe create mocks and run tests in IE11?&lt;/strong&gt;&lt;br&gt;
-Yes, TestCafe supports both browsers. You can find the list of supported browsers in &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/concepts/browsers.html#officially-supported-browsers&quot;&gt;the TestCafe docs&lt;/a&gt;.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;selectors&quot;&gt;&lt;/a&gt;Selectors &lt;a class=&quot;permalink&quot; href=&quot;#selectors&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;What type of selectors are available? Is it only HTML element IDs and/or classes?&lt;/strong&gt;&lt;br&gt;
-You can use any &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors&quot;&gt;pure CSS selectors&lt;/a&gt; or &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/selector/&quot;&gt;TestCafe Selector API&lt;/a&gt; that extends capabilities offered by CSS selectors.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Can I target elements based on text that is actually visible to the end-user?&lt;/strong&gt;&lt;br&gt;
-TestCafe Selector&amp;#39;s &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/selector/withtext.html&quot;&gt;withText&lt;/a&gt; method finds elements by text that is visible to the end-user (the element&amp;#39;s &lt;code&gt;innerText&lt;/code&gt; property). You can also create a selector that uses custom logic to find an element. Pass a function to the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/selector/constructor.html#initialize-selectors&quot;&gt;selector&amp;#39;s constructor&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Is it possible to set the waiting time for an element? What if I mistyped the selector&amp;#39;s &amp;quot;name&amp;quot; or the page is loading really slow? How long does TestCafe wait by default?&lt;/strong&gt;&lt;br&gt;
-You can specify the Selector&amp;#39;s &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/selector/constructor.html#optionstimeout&quot;&gt;timeout option&lt;/a&gt;. During this timeout, the selector waits for the element. The default timeout duration is &lt;code&gt;10000&lt;/code&gt; ms.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;I use auto-generated names for DevExpress control&amp;#39;s elements in my application. Can TestCafe interact with them?&lt;/strong&gt;&lt;br&gt;
-Yes, you can identify these elements by their static parts. See an example in &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/basic-guides/select-page-elements.html#select-elements-with-dynamic-ids&quot;&gt;our docs&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Can I use XPath to locate elements?&lt;/strong&gt;&lt;br&gt;
-XPath selectors are not built-in with TestCafe, but you can implement a simple helper method to use them. &lt;a href=&quot;https://github.com/DevExpress/testcafe-examples/tree/master/examples/use-xpath-selectors&quot;&gt;See an example here&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Can I verify a certain element does not exist or will that cause a failure?&lt;/strong&gt;&lt;br&gt;
-If an element used in some action doesn&amp;#39;t exist, a test fails. A test run report then indicates that the test failed because a target element doesn&amp;#39;t exist on the page. To check if the element exists before TestCafe attempts to interact with it, use the following approach&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#element&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;exists&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;click&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#element&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;For instance, you would use this verification to close ad popups (should they appear).&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;debug&quot;&gt;&lt;/a&gt;Debug &lt;a class=&quot;permalink&quot; href=&quot;#debug&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Are there any approaches that help debug tests? How can I debug TestCafe and the Hammerhead proxy?&lt;/strong&gt;&lt;br&gt;
-Check out &lt;a href=&quot;https://devexpress.github.io/testcafe/media/team-blog/how-to-debug-tests-in-testcafe-quick-guide.html&quot;&gt;this blog post&lt;/a&gt; on how to debug your application and tests.&lt;/p&gt;
-
-&lt;p&gt;You can also find the instruction about how to debug in other IDEs in &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/basic-guides/debug.html&quot;&gt;our guide&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;To debug TestCafe and Hammerhead, enable the development mode. Use the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/command-line-interface.html#--dev&quot;&gt;--dev flag&lt;/a&gt; when you run tests:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome my-tests &lt;span class=&quot;nt&quot;&gt;--dev&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;strong&gt;What are the available debug options?&lt;/strong&gt;&lt;br&gt;
-The following capabilities help you determine the cause of errors and failures:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/command-line-interface.html#takeonfails&quot;&gt;Take screenshots automatically when tests fail&lt;/a&gt;,&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/command-line-interface.html#--video-basepath&quot;&gt;Capture videos of test runs&lt;/a&gt;,&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/command-line-interface.html#--speed-factor&quot;&gt;Set the speed of test execution&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/command-line-interface.html#--debug-on-fail&quot;&gt;Enter debug mode&lt;/a&gt; automatically when the first test fails,&lt;/li&gt;
-&lt;li&gt;Execute tests step by step in &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/command-line-interface.html#-d---debug-mode&quot;&gt;debug mode&lt;/a&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;Can TestCafe capture a screenshot when a test fails?&lt;/strong&gt;&lt;br&gt;
-Absolutely, enable the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/command-line-interface.html#takeonfails&quot;&gt;takeOnFails&lt;/a&gt; option to do this.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;authentication&quot;&gt;&lt;/a&gt;Authentication &lt;a class=&quot;permalink&quot; href=&quot;#authentication&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Can I log in once and execute multiple tests under the same account rather than logging in in every test?&lt;/strong&gt;&lt;br&gt;
-Yes, you can use roles to perform actions that log you in only once. In the subsequent tests, you just activate the role you defined earlier to log in without repeating the authentication process each time. See &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/authentication.html#user-roles&quot;&gt;User Roles&lt;/a&gt; in the documentation for details.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Do roles work with auth0/openid which has JWT in headers?&lt;/strong&gt;&lt;br&gt;
-Roles can process the JWT if it is sent in the cookies or stored in the local or session storage.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Would we run into any issues if we&amp;#39;re using Microsoft authentication tokens for permissions?&lt;/strong&gt;&lt;br&gt;
-You should not have any issue. Please try this and see how it works. If you face any issues, let us know, so we can research it.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;How does TestCafe log out the user to switch to a different role? Does it just re-open the page?&lt;/strong&gt;&lt;br&gt;
-When you switch to a role that was active previously in the current session, TestCafe restores cookies and browser&amp;#39;s local and session storage where authentication data is located. If the new role wasn&amp;#39;t used yet, TestCafe just resets the cookies and storage and then performs authentication actions.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Can you create Roles with API calls instead of functional steps?&lt;/strong&gt;
-If your question is about REST API, then yes, you can call REST API to authenticate a user in a role. Just note that you need to use a &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/basic-guides/obtain-client-side-info.html&quot;&gt;client function&lt;/a&gt; to call REST API from the browser. You may want to &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/inject-client-scripts.html&quot;&gt;inject a library that can call API into the tested page&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;What are the options for smart card logins?&lt;/strong&gt;
-TestCafe only supports web-based authentication. That is, your website should be able to authenticate you by your actions in the web browser, without relying on additional hardware. The only way is to deploy a testing instance of your web app without smart card authentication.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;multiple-apps-windows-and-tabs&quot;&gt;&lt;/a&gt;Multiple Apps, Windows, and Tabs &lt;a class=&quot;permalink&quot; href=&quot;#multiple-apps-windows-and-tabs&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Can TestCafe test integration across multiple applications?&lt;/strong&gt;&lt;br&gt;
-Yes, you can test any number of web applications.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Can you test multiple browser windows at the same time? For example, I may need to access application A, then check application B and come back to A.&lt;/strong&gt;&lt;br&gt;
-Yes, you can do this. We released multiple window support in beta in v1.9.0. Please find more information in the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/multiple-browser-windows.html&quot;&gt;Multiple Browser Windows&lt;/a&gt; topic and don&amp;#39;t hesitate to leave your feedback. Your opinion helps us make sure you get the best experience when this feature is released.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Does TestCafe support multiple tabs?&lt;/strong&gt;&lt;br&gt;
-You can open and switch between multiple browser windows with &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/multiple-browser-windows.html&quot;&gt;this new beta feature&lt;/a&gt;. TestCafe will open a new popup window instead of a tab when necessary. This is because tabs can be throttled which interrupts TestCafe scripts.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;iframes&quot;&gt;&lt;/a&gt;iframes &lt;a class=&quot;permalink&quot; href=&quot;#iframes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Does TestCafe support iframes?&lt;/strong&gt;&lt;br&gt;
-Yes, TestCafe supports iframes and provides two simple methods to interact with their content: &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/switchtoiframe.html&quot;&gt;switchToIframe&lt;/a&gt; to switch the test&amp;#39;s browsing context to iframe&amp;#39;s context and &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/switchtomainwindow.html&quot;&gt;switchToMainWindow&lt;/a&gt; to switch it back to the main window.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;reports&quot;&gt;&lt;/a&gt;Reports &lt;a class=&quot;permalink&quot; href=&quot;#reports&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;How does TestCafe output test run reports? Where can I find test results?&lt;/strong&gt;&lt;br&gt;
-TestCafe shows the test run report in the console by default. You can redirect output to a file or use dedicated reporters to post reports to a CI system or elsewhere.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;What happens when a test fails? What logs are produced?&lt;/strong&gt;&lt;br&gt;
-If a test fails, you will see a comprehensive report in the console. For instance:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/testcafe/images/blog/2020-8-19-report-example.png&quot; alt=&quot;Report example&quot; title=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;Multiple report formats are supported, including the following:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;spec&lt;/li&gt;
-&lt;li&gt;list&lt;/li&gt;
-&lt;li&gt;minimal&lt;/li&gt;
-&lt;li&gt;xUnit&lt;/li&gt;
-&lt;li&gt;JSON&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Read more in &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/concepts/reporters.html&quot;&gt;the TestCafe documentation&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;In what format does TestCafe generate the reports? Is it XML or HTML?&lt;/strong&gt;&lt;br&gt;
-The format depends on the reporter. It can be XML, JSON, HTML, and many others. You can &lt;a href=&quot;https://www.npmjs.com/search?q=testcafe-reporter&quot;&gt;explore the available reporter packages on npm&lt;/a&gt;.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;test-organization&quot;&gt;&lt;/a&gt;Test Organization &lt;a class=&quot;permalink&quot; href=&quot;#test-organization&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Can I use logic operators to have different conditional &amp;quot;paths&amp;quot; during a test?&lt;/strong&gt;&lt;br&gt;
-Yes, TestCafe can do conditional testing. You can use standard JavaScript if-clauses to make this happen.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Is it possible to share fixtures between test files?&lt;/strong&gt;&lt;br&gt;
-TestCafe treats fixtures declared in different files separately. If you can share your use case when merging fixtures is useful, please &lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/new?template=feature_request.md&quot;&gt;open an issue&lt;/a&gt; on GitHub.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;how-testcafe-works&quot;&gt;&lt;/a&gt;How TestCafe Works &lt;a class=&quot;permalink&quot; href=&quot;#how-testcafe-works&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Did I miss what the &lt;code&gt;async&lt;/code&gt; keyword means in code? Is that to say TestCafe commands can run as other tests are running?&lt;/strong&gt;&lt;br&gt;
-&lt;code&gt;async&lt;/code&gt; is a JavaScript keyword that indicates that the function is asynchronous. Technically, an asynchronous function means that this function returns a Promise. TestCafe actions are asynchronous because so are the page events. Page loading, animations, HTTP requests take different amounts of time. The test function is asynchronous as well because it uses asynchronous TestCafe actions.&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;await&lt;/code&gt; means that the next command should not execute until the previous (&amp;quot;awaited&amp;quot;) command is completed. This is required to execute test actions in the right sequence (and, in the same manner, TestCafe &amp;quot;awaits&amp;quot; tests in a fixture to run them one by one). Note that, by contrast, tests in different browsers can run in parallel, just like in concurrency mode.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Please provide technical insight about how TestCafe avoids installing special plug-ins in order to interact with the browser. How does it actually interact with browsers?&lt;/strong&gt;&lt;br&gt;
-TestCafe proxies the tested webpage and injects automation scripts right inside the proxied copy. This way, browsers do all the work when they execute the injected scripts. You can find more details in the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/how-it-works/&quot;&gt;How It Works&lt;/a&gt; article.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Is it possible to access runtimeJS objects from application client libraries loaded in the browser?&lt;/strong&gt;
-TestCafe is designed to conceal itself from application&amp;#39;s JavaScript code. This is necessary to ensure that pages proxied by TestCafe run exactly in the same way as they do on the website. For this reason, application code cannot access TestCafe scripts or test code entities.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;waiting-and-asynchrony&quot;&gt;&lt;/a&gt;Waiting and Asynchrony &lt;a class=&quot;permalink&quot; href=&quot;#waiting-and-asynchrony&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;What if a portion of a page takes a while to render (for instance, the page uses AJAX). Can TestCafe take it into account?&lt;/strong&gt;&lt;br&gt;
-Yes, TestCafe tests wait automatically until the page is rendered completely. You can also insert manual waiting, but it shouldn&amp;#39;t be necessary in almost all cases.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;I set up my page in a jQuery callback: &lt;code&gt;$(document).ready(function(){})&lt;/code&gt;. Will there be JS races with TestCafe?&lt;/strong&gt;&lt;br&gt;
-TestCafe will wait until the page loads completely and run tests only after that. TestCafe wait mechanisms are designed to prevent races with JS code.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;It is great that TestCafe handles waiting internally. Would there be a need to override default timeout functionality though? How should a user go about it?&lt;/strong&gt;&lt;br&gt;
-You may need to override the default timeout if your page requires extra long waiting. All TestCafe auto-wait timeouts are customizable. You can find more information in the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/concepts/built-in-wait-mechanisms.html&quot;&gt;Built-in Wait Mechanisms&lt;/a&gt; topic.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;other-features&quot;&gt;&lt;/a&gt;Other Features &lt;a class=&quot;permalink&quot; href=&quot;#other-features&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Does TestCafe support all ES6 or later features? Do I need plugins to support arrow functions or the async/await syntax?&lt;/strong&gt;&lt;br&gt;
-TestCafe supports all modern JavaScript and TypeScript features. No plugins needed, everything works out of the box.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Can TestCafe work with the Service Worker?&lt;/strong&gt;&lt;br&gt;
-We are currently in the progress of implementing full support for Service Workers. Stay tuned for our updates to be the first to know when we are ready.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Does TestCafe work with Python?&lt;/strong&gt;&lt;br&gt;
-You can write tests in JavaScript/TypeScript/CoffeeScript only.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Does TestCafe support upload ( excel ) data functionality?&lt;/strong&gt;&lt;br&gt;
-TestCafe can upload files, including Excel, to websites if it is a part of the test scenario. However, if you are asking about API to access Excel data sheets from test code, TestCafe does not provide one out of the box. You can search for npm modules that implement the functionality you need and use them from TestCafe tests.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;What about functional test coverage? Does TestCafe support it?&lt;/strong&gt;&lt;br&gt;
-Test coverage estimation is not available at the moment.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;miscellaneous&quot;&gt;&lt;/a&gt;Miscellaneous &lt;a class=&quot;permalink&quot; href=&quot;#miscellaneous&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;If TestCafe runs in headless mode, is it still possible to grab screenshots on failures?&lt;/strong&gt;&lt;br&gt;
-Yes, TestCafe can take screenshots even in headless mode.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Does this require a test framework like jest/mocha/jasmine?&lt;/strong&gt;&lt;br&gt;
-No additional frameworks are required for TestCafe.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;How can I use TestCafe to test different resolutions?&lt;/strong&gt;&lt;br&gt;
-You can use the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/resizewindow.html&quot;&gt;t.resizeWindow&lt;/a&gt; action to change the browser window size and test adaptive UIs. TestCafe also supports &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/basic-guides/run-tests.html#enable-mobile-device-emulation&quot;&gt;Chromium device emulation&lt;/a&gt; to test on emulated mobile devices of various sizes.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Can we use Test Cafe to compare two documents? Like documents with logos, disclaimers and other information?&lt;/strong&gt;&lt;br&gt;
-If you mean visual comparison, TestCafe does not provide this functionality out of the box. However, you can find multiple open-source packages that try to solve this task, like &lt;a href=&quot;https://github.com/tacoss/testcafe-blink-diff&quot;&gt;testcafe-blink-diff&lt;/a&gt;. Note that they are maintained by the community and are not related to the TestCafe team.&lt;/p&gt;
-
-&lt;p&gt;If your goal is to compare HTML, you can pass &lt;code&gt;innerHTML&lt;/code&gt; to a TestCafe assertion as shown in the example in &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/selector/addcustomdomproperties.html&quot;&gt;this topic&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;How do you change the base URL to test in different environments?&lt;/strong&gt;&lt;br&gt;
-You can import the base URL from a configuration file or an environment variable, and then use it to build start page URLs in test code. See &lt;a href=&quot;https://devexpress.github.io/testcafe/faq/#how-do-i-work-with-configuration-files-and-environment-variables&quot;&gt;this example&lt;/a&gt; on the FAQ page.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Can I run TestCafe on a Linux computer without the UI?&lt;/strong&gt;&lt;br&gt;
-Yes, you can run your tests on Linux and use headless browsers to run your tests without the UI.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Could you please share ideas about how to do localization testing? Does TestCafe support that?&lt;/strong&gt;&lt;br&gt;
-TestCafe does not have built-in functionality for localization testing. As a suggestion, you can fetch the localization strings from a resource file or database with Node.js means or third-party npm modules. Then, you can create &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/recipes/best-practices/create-data-driven-tests.html&quot;&gt;data-driven tests&lt;/a&gt; that check if the displayed strings are localized (present in the localization resources).&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;When do you plan to release version 1.9.0?&lt;/strong&gt;&lt;br&gt;
-1.9.0 was released on August 6th. If you are asking about the multi-window support final release, we do not have an exact date yet.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;How does TestCafe handle exceptions?&lt;/strong&gt;&lt;br&gt;
-TestCafe considers the test failed if its code throws an exception. The report will indicate the line of code and call stack where this exception originated. Exceptions in JavaScript code on the tested page also make tests fail. However, this behavior is customizable. You can use the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/command-line-interface.html#-e---skip-js-errors&quot;&gt;--skip-js-errors&lt;/a&gt; flag to ignore page errors. Similarly, the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/command-line-interface.html#-u---skip-uncaught-errors&quot;&gt;--skip-uncaught-errors&lt;/a&gt; flag allows you to continue tests when test code throws an exception.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Can we measure client-side performance using TestCafe (both HTTP and script execution time)?&lt;/strong&gt;&lt;br&gt;
-TestCafe is not intended for this task. In fact, TestCafe impacts webpage performance when it runs tests. We are constantly optimizing our code to minimize this slowdown, but we do not aim to precisely match the original performance.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Are tests executed in sequence within a fixture?&lt;/strong&gt;&lt;br&gt;
-Yes, tests are executed as they are declared in code.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Can I add my custom element library to the context object?&lt;/strong&gt;&lt;br&gt;
-You can add anything to the feature and test context objects. However, keep in mind that test code does not run in the browser, so adding browser libraries to the context objects might not help. If this is the case, you may be more interested in the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/inject-client-scripts.html&quot;&gt;custom script injection functionality&lt;/a&gt; designed for user&amp;#39;s client libraries.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Can TestCafe test HTML5 features like fullscreen, camera, audio, or video interaction?&lt;/strong&gt;&lt;br&gt;
-Yes, you can test these HTML 5 features with TestCafe.&lt;/p&gt;
-
-&lt;p&gt;Note that you might need to set the &lt;code&gt;--autoplay-policy=no-user-gesture-required&lt;/code&gt; browser flag as explained in &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/command-line-interface.html#start-a-browser-with-arguments&quot;&gt;this article&lt;/a&gt; to test the fullscreen mode and audio/video. The camera can be mocked using &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/basic-guides/obtain-client-side-info.html&quot;&gt;ClientFunctions&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Does TestCafe support multiple domains in a test?&lt;/strong&gt;&lt;br&gt;
-Yes, navigation and requests between different domains work out of the box. You do not need to care if you visit pages on one or several domains.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;What happens if TestCafe loses network connection with a remote device that runs tests?&lt;/strong&gt;&lt;br&gt;
-Tests cannot run without a network connection because TestCafe must be able to send commands to the remote device. If the connection is interrupted, TestCafe will throw an error saying that a browser connection is lost.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Is it possible to run all JS in one command? Could you please specify this command?&lt;/strong&gt;&lt;br&gt;
-If I understand you correctly, yes, you can run all your JS tests using a single console command.
-Here is the CLI reference where you can see the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/command-line-interface.html&quot;&gt;testcafe command syntax&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;I noticed non-standard code indentation. Is a respective formatter for VS Code available?&lt;/strong&gt;&lt;br&gt;
-We didn&amp;#39;t release a specific formatter because you can use any indentation you prefer with TestCafe.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Can I use TestCafe to test the development and production instances of my app? If so, how can I configure different URLs for my instances?&lt;/strong&gt;&lt;br&gt;
-Yes, you can import the base URL from a configuration file or an environment variable, and then use it to build start page URLs in test code. See &lt;a href=&quot;https://devexpress.github.io/testcafe/faq/#how-do-i-work-with-configuration-files-and-environment-variables&quot;&gt;this example&lt;/a&gt; on the FAQ page.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Does TestCafe have support for file download? Can you set the default file download location using TestCafe API?&lt;/strong&gt;&lt;br&gt;
-Yes, if test actions on the page trigger file download, the browser will download it as usually. Then you can access the file from test code to perform verification. Currently, TestCafe API does not allow you to set the default download location.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 19 Aug 2020 00:00:00 +0300</pubDate>
-        <link>https://devexpress.github.io/testcafe/media/team-blog/testcafe-webinar-your-questions-answered.html</link>
-        <guid isPermaLink="true">https://devexpress.github.io/testcafe/media/team-blog/testcafe-webinar-your-questions-answered.html</guid>
         
         
       </item>

@@ -393,7 +393,7 @@
     var teamBlogLastVisited = window.localStorage.getItem(TEAM_BLOG_LAST_VISITED_FLAG) || NOTIFICATIONS_ACTIVE_SINCE;
 
     window.addEventListener('DOMContentLoaded', function (e) {
-        var lastPostDate = new Date(1609102800 * 1000);
+        var lastPostDate = new Date(1612818000 * 1000);
         
         if(lastPostDate > teamBlogLastVisited) {
             var blogLink = document.getElementById(TEAM_BLOG_LINK_ID).parentElement;
@@ -1081,7 +1081,7 @@ DNS.1 <span class="o">=</span> localhost
 </code></pre></div></li>
 </ol>
 
-<p>In <strong>PowerShell</strong>, <a href="https://adamtheautomator.com/install-openssl-powershell/#Installing_OpenSSL_with_PowerShell_and_Chocolatey">install OpenSSL</a> and <a href="https://adamtheautomator.com/install-openssl-powershell/#Update_PowerShell_Profile_Environment_Variables">update environment variables</a>. Afterwards, proceed with the instructions <a href="#generate-a-certificate-from-the-command-line">above</a>.</p>
+<p>In <strong>PowerShell</strong>, <a href="https://adamtheautomator.com/openssl-windows-10/#Installing_OpenSSL_with_PowerShell_and_Chocolatey">install OpenSSL</a> and <a href="https://adamtheautomator.com/openssl-windows-10/#Update_PowerShell_Profile_Environment_Variables">update environment variables</a>. Afterwards, proceed with the instructions <a href="#generate-a-certificate-from-the-command-line">above</a>.</p>
 <h5><a class="anchor" id="run-tests"></a>Run Tests <a class="permalink" href="#run-tests">#</a></h5>
 <p>When you run tests from the command line, use <a href="../../reference/command-line-interface.html#--ssl-options">--ssl</a> flag to enable HTTPS on a proxy server. Specify options required to initialize <a href="https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener">a Node.js HTTPS server</a> after this flag in a semicolon-separated string. The most commonly used SSL options are described in the <a href="https://nodejs.org/api/tls.html#tls_tls_createsecurecontext_options">TLS topic</a> in the Node.js documentation.</p>
 
