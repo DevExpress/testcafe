@@ -202,7 +202,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         this.setCustomCommandHandlers(COMMAND_TYPE.unlockPage, () => this._unlockPageAfterTestIsDone());
 
         // NOTE: initiate the child links restoring process before the window is reloaded
-        listeners.addInternalEventListener(window, ['beforeunload'], () => {
+        listeners.addInternalEventBeforeListener(window, ['beforeunload'], () => {
             this._sendStartToRestoreCommand();
         });
     }
