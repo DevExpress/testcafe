@@ -1,10 +1,9 @@
-const http           = require('http');
-const path           = require('path');
-const expect         = require('chai').expect;
-const config         = require('../../../config');
-const createTestCafe = require('../../../../../lib');
-const enableDestroy  = require('server-destroy');
-
+const http               = require('http');
+const path               = require('path');
+const expect             = require('chai').expect;
+const config             = require('../../../config');
+const createTestCafe     = require('../../../../../lib');
+const { getFreePort }    = require('endpoint-utils');
 const { createReporter } = require('../../../utils/reporter');
 
 const ERROR_RESPONSE_COUNT        = 8;
@@ -19,7 +18,7 @@ const customReporter = createReporter({
     }
 });
 
-function createServer () {
+async function createServer () {
     let requestCounter = 0;
 
     const requestListener = function (req, res) {
@@ -40,10 +39,11 @@ function createServer () {
     };
 
     const server = http.createServer(requestListener);
+    const port   = await getFreePort();
 
-    server.listen(1340);
+    process.env.TEST_SERVER_PORT = port.toString();
 
-    enableDestroy(server);
+    server.listen(port);
 
     return server;
 }
@@ -68,14 +68,14 @@ const isLocalChrome = config.useLocalBrowsers && config.browsers.some(browser =>
 
 describe('[Regression](GH-5239)', function () {
     if (isLocalChrome) {
-        it('Should make multiple request for the page if the server does not respond', function () {
+        it('Should make multiple request for the page if the server does not respond', async function () {
             this.timeout(30000);
 
-            const server = createServer();
+            const server = await createServer();
 
             return run({ retryTestPages: true, browsers: 'chrome --headless', src: './testcafe-fixtures/index.js' })
                 .then(() => {
-                    server.destroy();
+                    server.close();
                 });
         });
     }
