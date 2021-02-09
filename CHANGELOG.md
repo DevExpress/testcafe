@@ -6,32 +6,55 @@
 
 #### :gear: Control Request Timeouts ([PR #5692](https://github.com/DevExpress/testcafe/pull/5692))
 
-New options allow you to control the timeout for requests. If a request is not met with a response within the specified period, TestCafe throws an error. The newly added options are:
+New CLI options allow you to control the timeout for requests. If a request is not met with a response within the specified period, TestCafe throws an error. The CLI options are:
 
-* [--ajax-request-timeout](./docs/articles/documentation/reference/command-line-interface.md#--ajax-request-timeout-ms) controls the for fetch/XHR requests timeout
+* [--ajax-request-timeout](./docs/articles/documentation/reference/command-line-interface.md#--ajax-request-timeout-ms) controls the delay for fetch/XHR requests timeout
 * [--page-request-timeout](./docs/articles/documentation/reference/command-line-interface.md#--page-request-timeout-ms) sets the timeout for receiving webpages.
 
-#### :gear: Control Browser Initialization Timeout
+Read the documentation for the corresponding configuration properties: 
 
-Use the new [--browser-init-timeout CLI flag](./docs/articles/documentation/reference/command-line-interface.md#--browser-init-timeout-ms) or the [browserInitTimeout configuration option](./docs/articles/documentation/reference/configuration-file.md#browserinittimeout) to control the time browsers have to connect to TestCafe before an error is thrown.
+* [ajaxRequestTimeout](./docs/articles/documentation/reference/configuration-file.md#ajaxrequesttimeout)
+* [pageRequestTimeout](./docs/articles/documentation/reference/configuration-file.md#ajaxrequesttimeout). 
+
+The options are available in the [runner.run Method](./docs/articles/documentation/reference/testcafe-api/runner/run.md).
+
+#### :gear: Control Browser Initialization Timeout ([PR #5720](https://github.com/DevExpress/testcafe/pull/5720))
+
+This release introduces an option to control browser initialization timeout. This timeout controls the time browsers have to connect to TestCafe before an error is thrown. You can control this timeout in one of the following ways:
+
+* [--browser-init-timeout](./docs/articles/documentation/reference/command-line-interface.md#--browser-init-timeout-ms) CLI option
 
 ```sh
 testcafe chrome my-tests --browser-init-timeout 180000
 ```
 
+* [browserInitTimeout](./docs/articles/documentation/reference/configuration-file.md#browserinittimeout) configuration option
+
+```json
+{
+    "browserInitTimeout": 180000
+}
+```
+
+* [runner.run Method](./docs/articles/documentation/reference/testcafe-api/runner/run.md) parameter
+
 ```js
 runner.run({ "browserInitTimeout": 180000 })
 ```
 
+This setting sets an equal timeout for local and [remote browsers](./docs/articles/documentation/guides/concepts/browsers.md#browsers-on-remote-devices).
+
 #### Improved the `Unable To Establish Browser Connection` Error Message ([PR #5720](https://github.com/DevExpress/testcafe/pull/5720))
 
-The error message now includes the number of browsers that have successfully established a connection. If the issue is caused by low system performance, TestCafe raises a warning.
+TestCafe raises this error when at least one local or remote browser wasn't able to connect. The error message now includes the number of browsers that have not established a connection.
 
-#### :gear: New Option to Retry Requests for the Test Page ([PR #5738](https://github.com/DevExpress/testcafe/pull/5738))
+TestCafe raises a warning if low system performance is causing the connectivity issue.
+
+#### :gear: An Option to Retry Requests for the Test Page ([PR #5738](https://github.com/DevExpress/testcafe/pull/5738))
 
 If the first request for the tested webpage is not satisfied, TestCafe can now retry this request.
 
-You can enable this functionality with a command line, API or configuration file option:
+You can enable this functionality with a command line, API, or configuration file option:
 
 * the [--retry-test-pages](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#--retry-test-pages) command line argument
 
@@ -39,7 +62,7 @@ You can enable this functionality with a command line, API or configuration file
     testcafe chrome test.js --retry-test-pages
     ```
 
-* the [runner.retryTestPages](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html) API method
+* the [runner.run](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html) option
 
     ```js
     runner.run({
@@ -1433,7 +1456,7 @@ TestCafe [programming interface](https://devexpress.github.io/testcafe/documenta
 You no longer need to use `fs.createWriteStream` to create a stream that writes a report to a file. You can now pass the file name as the [runner.reporter](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html#reporter) parameter.
 
 ```js
-runnner.reporter('json', 'reports/report.json');
+runner.reporter('json', 'reports/report.json');
 ```
 
 ### Bug Fixes
