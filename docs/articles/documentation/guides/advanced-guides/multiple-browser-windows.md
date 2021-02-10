@@ -169,12 +169,12 @@ This section describes the limitations of multiple browser windows testing in Te
 
 ### Limited Video Recording
 
-When you launch TestCafe with [video recording](./screenshots-and-videos.md) enabled, the resulting video scales to the size of the initial (parent) browser window.
+When you launch TestCafe with [video recording](./screenshots-and-videos.md) enabled, the resulting video scales to the initial (parent) browser window.
 
-When a child window opens, TestCafe continues the recording in that window. If child windows' size differs, the segment of the video that is recorded in these windows is resized to fit the aspect ratio of the main browser window. This can lead to a part of the recorded video appearing stretched.
+When a child window opens, TestCafe continues recording in that window. If the child windows' size differs, the segments of the video that are recorded in these windows are resized to fit the aspect ratio of the main browser window. That part of the recording appears stretched as a result.
 
 ### Cookies and User Roles Limitations in Child Windows
 
 TestCafe can only preserve one set of browser storage contents at the time. Child windows have the same cookies, local/session storage contents as the parent window.
 
-[User Roles] use cookies and browser/local storage contents. TestCafe can only have one active User Role at a time. If a user role is active when a child window opens, that user role will be active in that window. If a user role changes in the parent window, that role activates in the child window.
+[User Roles](./authentication.md#user-roles) use cookies and browser/local storage contents. A [TestCafe instance](../../reference/testcafe-api/testcafe/README.md) can only have one active User Role at a time. Child windows have the same user role active as the parent window. If a user role changes in any browser window, that role activates in the remaining windows.
