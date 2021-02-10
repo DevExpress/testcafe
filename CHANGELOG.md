@@ -4,21 +4,56 @@
 
 ### Enhancements
 
-#### :gear: Control Request Timeouts ([PR #5692](https://github.com/DevExpress/testcafe/pull/5692))
+#### :gear: Set Request Timeouts ([PR #5692](https://github.com/DevExpress/testcafe/pull/5692))
 
-New CLI options allow you to control the timeout for requests. If a request is not met with a response within the specified period, TestCafe throws an error. The CLI options are:
+TestCafe now enables you to set request timeouts. If a request is not met with a response within the specified period, TestCafe throws an error.
 
-* [--ajax-request-timeout](./docs/articles/documentation/reference/command-line-interface.md#--ajax-request-timeout-ms) controls the delay for fetch/XHR requests timeout
-* [--page-request-timeout](./docs/articles/documentation/reference/command-line-interface.md#--page-request-timeout-ms) sets the timeout for receiving webpages.
+*CLI*
 
-Read the documentation for the corresponding configuration properties:
+* [--ajax-request-timeout](./docs/articles/documentation/reference/command-line-interface.md#--ajax-request-timeout-ms) controls the timeout for fetch/XHR requests
+* [--page-request-timeout](./docs/articles/documentation/reference/command-line-interface.md#--page-request-timeout-ms) sets the timeout for webpages requests
+
+```sh
+testcafe chrome my-tests --ajax-request-timeout 40000 --page-request-timeout 8000
+```
+
+*Configuration file*
 
 * [ajaxRequestTimeout](./docs/articles/documentation/reference/configuration-file.md#ajaxrequesttimeout)
-* [pageRequestTimeout](./docs/articles/documentation/reference/configuration-file.md#ajaxrequesttimeout).
+* [pageRequestTimeout](./docs/articles/documentation/reference/configuration-file.md#pagerequesttimeout)
+
+```json
+{
+    "pageRequestTimeout": 8000,
+    "ajaxRequestTimeout": 40000
+}
+```
+
+*JavaScript API*
 
 The options are available in the [runner.run Method](./docs/articles/documentation/reference/testcafe-api/runner/run.md).
 
-#### :gear: Control Browser Initialization Timeout ([PR #5720](https://github.com/DevExpress/testcafe/pull/5720))
+```js
+const createTestCafe = require('testcafe');
+
+const testcafe = await createTestCafe('localhost', 1337, 1338);
+
+try {
+    const runner = testcafe.createRunner();
+
+    const failed = await runner.run({
+        pageRequestTimeout: 8000,
+        ajaxRequestTimeout: 40000
+    });
+
+    console.log('Tests failed: ' + failed);
+}
+finally {
+    await testcafe.close();
+}
+```
+
+#### :gear: Set Browser Initialization Timeout ([PR #5720](https://github.com/DevExpress/testcafe/pull/5720))
 
 This release introduces an option to control browser initialization timeout. This timeout controls the time browsers have to connect to TestCafe before an error is thrown. You can control this timeout in one of the following ways:
 
@@ -52,7 +87,7 @@ TestCafe raises a warning if low system performance is causing the connectivity 
 
 #### :gear: An Option to Retry Requests for the Test Page ([PR #5738](https://github.com/DevExpress/testcafe/pull/5738))
 
-If the first request for the tested webpage is not satisfied, TestCafe can now retry this request.
+If a tested webpage wasn't served after the first request, TestCafe can now retry the request.
 
 You can enable this functionality with a command line, API, or configuration file option:
 
@@ -83,7 +118,7 @@ You can enable this functionality with a command line, API, or configuration fil
 * Fixed a bug where `Selector.withText` couldn't locate elements inside an `iframe` ([#5886](https://github.com/DevExpress/testcafe/issues/5886))
 * Fixed a bug where TestCafe was sometimes unable to detect when a browser instance closes ([#5857](https://github.com/DevExpress/testcafe/issues/5857))
 * You can now install TestCafe with `Yarn 2` ([PR #5872](https://github.com/DevExpress/testcafe/pull/5872) by [@NiavlysB](https://github.com/NiavlysB))
-* Fixed a bug where TestCafe was sometimes unable to create a `Worker` from an object ([testcafe-hammerhead/#2512](https://github.com/DevExpress/testcafe-hammerhead/issues/2512))
+* Fixed a bug where TestCafe was sometimes unable to create a `Web Worker` from an object ([testcafe-hammerhead/#2512](https://github.com/DevExpress/testcafe-hammerhead/issues/2512))
 * Fixed an error thrown by TestCafe proxy when trying to delete an object property that doesn't exist ([testcafe-hammerhead/#2504](https://github.com/DevExpress/testcafe-hammerhead/issues/2504))
 * Fixed an error thrown  by TestCafe proxy when a Service Worker overwrites properties of a `window` object ([testcafe-hammerhead/#2538](https://github.com/DevExpress/testcafe-hammerhead/issues/2538))
 * Fixed a bug where `t.openWindow` method requested a URL twice ([testcafe-hammerhead/#2544](https://github.com/DevExpress/testcafe-hammerhead/issues/2544))
