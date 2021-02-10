@@ -167,11 +167,11 @@ test('Close a specific window', async t => {
 
 This section describes the limitations of multiple browser windows testing in TestCafe.
 
-### Limited Video Recording
+### Recorded Video Aspect Ratio in Multiple Windows
 
-When you launch TestCafe with [video recording](./screenshots-and-videos.md) enabled, the resulting video scales to the initial (parent) browser window.
+When you launch TestCafe with [video recording](./screenshots-and-videos.md) enabled, the recording scales to the initial (parent) browser window.
 
-When a child window opens, TestCafe continues recording in that window. If the child windows' size differs, the segments of the video that are recorded in these windows are resized to fit the aspect ratio of the main browser window. That part of the recording appears stretched as a result.
+When a child window opens, TestCafe continues recording in that window. If the child windows' size differs, the parts of the video that are recorded in these windows are resized to fit the aspect ratio of the main browser window. Portions of the recording appear stretched as a result.
 
 ### Cookies and User Roles Limitations in Child Windows
 
