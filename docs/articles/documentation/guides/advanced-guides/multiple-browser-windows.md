@@ -175,6 +175,6 @@ When a child window opens, TestCafe continues recording in that window. If the c
 
 ### Cookies and User Roles Limitations in Child Windows
 
-TestCafe can only preserve one set of browser storage contents at the time. Child windows have the same cookies, local/session storage contents as the parent window.
+TestCafe's [User Roles](./authentication.md#user-roles) preserve browser storage contents (cookies, `localStorage` and `sessionStorage`). A [TestCafe instance](../../reference/testcafe-api/testcafe/README.md) can only have one active User Role at a time.
 
-[User Roles](./authentication.md#user-roles) use cookies and browser/local storage contents. A [TestCafe instance](../../reference/testcafe-api/testcafe/README.md) can only have one active User Role at a time. Child windows have the same user role active as the parent window. If a user role changes in any browser window, that role activates in the remaining windows.
+If you switch between roles in any browser window, cookies and local/session storage contents inside that role are applied to the remaining windows.
