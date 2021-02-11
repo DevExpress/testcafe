@@ -81,7 +81,7 @@ This setting sets an equal timeout for local and [remote browsers](./docs/articl
 
 #### Improved `Unable To Establish Browser Connection` Error Message ([PR #5720](https://github.com/DevExpress/testcafe/pull/5720))
 
-TestCafe raises this error when at least one local or remote browser wasn't able to connect. The error message now includes the number of browsers that have not established a connection.
+TestCafe raises this error when at least one local or remote browser was not able to connect. The error message now includes the number of browsers that have not established a connection.
 
 TestCafe raises a warning if low system performance is causing the connectivity issue.
 
