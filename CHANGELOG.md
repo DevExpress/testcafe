@@ -11,7 +11,7 @@ TestCafe now enables you to set request timeouts. If a request is not met with a
 *CLI*
 
 * [--ajax-request-timeout](./docs/articles/documentation/reference/command-line-interface.md#--ajax-request-timeout-ms) controls the timeout for fetch/XHR requests
-* [--page-request-timeout](./docs/articles/documentation/reference/command-line-interface.md#--page-request-timeout-ms) sets the timeout for webpages requests
+* [--page-request-timeout](./docs/articles/documentation/reference/command-line-interface.md#--page-request-timeout-ms) sets the timeout for webpage requests
 
 ```sh
 testcafe chrome my-tests --ajax-request-timeout 40000 --page-request-timeout 8000
@@ -79,7 +79,7 @@ runner.run({ "browserInitTimeout": 180000 })
 
 This setting sets an equal timeout for local and [remote browsers](./docs/articles/documentation/guides/concepts/browsers.md#browsers-on-remote-devices).
 
-#### Improved the `Unable To Establish Browser Connection` Error Message ([PR #5720](https://github.com/DevExpress/testcafe/pull/5720))
+#### Improved `Unable To Establish Browser Connection` Error Message ([PR #5720](https://github.com/DevExpress/testcafe/pull/5720))
 
 TestCafe raises this error when at least one local or remote browser wasn't able to connect. The error message now includes the number of browsers that have not established a connection.
 
@@ -87,7 +87,7 @@ TestCafe raises a warning if low system performance is causing the connectivity 
 
 #### :gear: An Option to Retry Requests for the Test Page ([PR #5738](https://github.com/DevExpress/testcafe/pull/5738))
 
-If a tested webpage wasn't served after the first request, TestCafe can now retry the request.
+If a tested webpage was not served after the first request, TestCafe can now retry the request.
 
 You can enable this functionality with a command line, API, or configuration file option:
 
@@ -119,8 +119,8 @@ You can enable this functionality with a command line, API, or configuration fil
 * Fixed a bug where TestCafe was sometimes unable to detect when a browser instance closes ([#5857](https://github.com/DevExpress/testcafe/issues/5857))
 * You can now install TestCafe with `Yarn 2` ([PR #5872](https://github.com/DevExpress/testcafe/pull/5872) by [@NiavlysB](https://github.com/NiavlysB))
 * Fixed a bug where TestCafe was sometimes unable to create a `Web Worker` from an object ([testcafe-hammerhead/#2512](https://github.com/DevExpress/testcafe-hammerhead/issues/2512))
-* Fixed an error thrown by TestCafe proxy when trying to delete an object property that doesn't exist ([testcafe-hammerhead/#2504](https://github.com/DevExpress/testcafe-hammerhead/issues/2504))
-* Fixed an error thrown  by TestCafe proxy when a Service Worker overwrites properties of a `window` object ([testcafe-hammerhead/#2538](https://github.com/DevExpress/testcafe-hammerhead/issues/2538))
+* Fixed an error thrown by TestCafe proxy when trying to delete an object property that does not exist ([testcafe-hammerhead/#2504](https://github.com/DevExpress/testcafe-hammerhead/issues/2504))
+* Fixed an error thrown by TestCafe proxy when a Service Worker overwrites properties of a `window` object ([testcafe-hammerhead/#2538](https://github.com/DevExpress/testcafe-hammerhead/issues/2538))
 * Fixed a bug where `t.openWindow` method requested a URL twice ([testcafe-hammerhead/#2544](https://github.com/DevExpress/testcafe-hammerhead/issues/2544))
 * Fixed an error (`TypeError: Illegal invocation`) thrown by TestCafe on pages that contain an XMLDocument with an `iframe` ([testcafe-hammerhead/#2554](https://github.com/DevExpress/testcafe-hammerhead/issues/2554))
 * Fixed an error (`SyntaxError: Identifier has already been declared`) thrown by TestCafe on pages with scripts that create nested JavaScript objects ([testcafe-hammerhead/#2506](https://github.com/DevExpress/testcafe-hammerhead/issues/2506))
@@ -136,7 +136,7 @@ You can enable this functionality with a command line, API, or configuration fil
 ### Vulnerability Fix ([PR #5843](https://github.com/DevExpress/testcafe/pull/5843), [PR testcafe-hammerhead#2531](https://github.com/DevExpress/testcafe-hammerhead/pull/2531))
 
 We have fixed a vulnerability found in the [debug](https://www.npmjs.com/package/debug) module we use for debugging.
-The vulnerability was a [ReDos Vulnerability Regression](https://github.com/visionmedia/debug/issues/797) and affected all TestCafe users. TestCafe now uses `debug@4.3.1`, where the issue is fixed.
+The vulnerability was a [ReDos Vulnerability Regression](https://github.com/visionmedia/debug/issues/797) that affected all TestCafe users. TestCafe now uses `debug@4.3.1`, where the issue is fixed.
 
 ## v1.10.1 (2020-12-24)
 
@@ -2590,7 +2590,7 @@ Now, you have no need to type a unique link for each test run, all the links bec
 * The `window.history.replaceState` function is overridden incorrectly ([testcafe-hammerhead/#1146](https://github.com/DevExpress/testcafe-hammerhead/issues/1146))
 * Hammerhead crashes if a script file contains a sourcemap comment ([testcafe-hammerhead/#1052](https://github.com/DevExpress/testcafe-hammerhead/issues/1052))
 * The proxy should override the `DOMParser.parseFromString` method ([testcafe-hammerhead/#1133](https://github.com/DevExpress/testcafe-hammerhead/issues/1133))
-* The `fetch` method should emulate the native behavior on merging headers ([testcafe-hammerhead/#1116](https://github.com/DevExpress/testcafe-hammerhead/issues/1116))
+* The `fetch` method should emulate the native behavior on header merge ([testcafe-hammerhead/#1116](https://github.com/DevExpress/testcafe-hammerhead/issues/1116))
 * The `EventSource` requests are broken when used via proxy ([testcafe-hammerhead/#1106](https://github.com/DevExpress/testcafe-hammerhead/issues/1106))
 * The code processing may cause syntax errors in some cases because of wrong `location` property wrapping ([testcafe-hammerhead/#1101](https://github.com/DevExpress/testcafe-hammerhead/issues/1101))
 * When calling the `fetch` function without parameters, we should return its native result instead of `window.Promise.reject` ([testcafe-hammerhead/#1099](https://github.com/DevExpress/testcafe-hammerhead/issues/1099))
