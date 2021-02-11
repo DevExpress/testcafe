@@ -171,7 +171,7 @@ This section describes the limitations of multiple browser windows testing in Te
 
 When you launch TestCafe with [video recording](./screenshots-and-videos.md) enabled, the recording scales to the initial (parent) browser window.
 
-When a child window opens, TestCafe continues recording in that window. If the child windows' size differs, the parts of the video that are recorded in these windows are resized to fit the aspect ratio of the main browser window. Portions of the recording appear stretched as a result.
+When a child window opens, TestCafe continues recording in that window. If the child windows' size differs, the parts of the video that are recorded in these windows are resized to fit the aspect ratio of the main browser window. As a result, portions of the recording appear stretched.
 
 ### Cookies and User Roles Limitations in Child Windows
 
