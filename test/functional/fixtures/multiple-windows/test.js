@@ -304,7 +304,11 @@ describe('Multiple windows', () => {
 
     describe('iFrames', () => {
         it('Should switch to child window if it is opened in iFrame', () => {
-            return runTests('testcafe-fixtures/iframe.js', 'Open child window if iframe', { only: 'chrome' });
+            return runTests('testcafe-fixtures/iframe.js', 'Open child window if iframe');
+        });
+
+        it('Reload child window opened in iframe', () => {
+            return runTests('testcafe-fixtures/iframe.js', 'Reload child window opened in iframe');
         });
     });
 
