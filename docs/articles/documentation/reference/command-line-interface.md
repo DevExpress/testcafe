@@ -172,7 +172,7 @@ TestCafe provides URLs you should open in your remote device's browsers.
 > If you run tests [concurrently](#-c-n---concurrency-n),
 > specify the total number of all browsers' instances after the `remote:` keyword.
 
-You can use the [--qr-code](#--qr-code) option to display QR-codes that contain the URLs..
+You can use the [--qr-code](#--qr-code) option to display QR-codes that contain the URLs.
 Scan the QR-codes with the device you want to use to test your application.
 This connects the browsers to TestCafe and starts the tests.
 
