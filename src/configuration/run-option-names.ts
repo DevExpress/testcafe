@@ -15,5 +15,8 @@ export default [
     OPTION_NAMES.disablePageCaching,
     OPTION_NAMES.disablePageReloads,
     OPTION_NAMES.disableScreenshots,
-    OPTION_NAMES.disableMultipleWindows
+    OPTION_NAMES.disableMultipleWindows,
+    OPTION_NAMES.pageRequestTimeout,
+    OPTION_NAMES.ajaxRequestTimeout,
+    OPTION_NAMES.retryTestPages
 ];

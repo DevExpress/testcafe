@@ -44,7 +44,8 @@ enum OptionNames {
     experimentalCompilerService = 'experimentalCompilerService',
     compilerOptions = 'compilerOptions',
     pageRequestTimeout = 'pageRequestTimeout',
-    ajaxRequestTimeout = 'ajaxRequestTimeout'
+    ajaxRequestTimeout = 'ajaxRequestTimeout',
+    cache = 'cache'
 }
 
 export default OptionNames;

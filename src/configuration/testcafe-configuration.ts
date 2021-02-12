@@ -52,12 +52,14 @@ const OPTION_FLAG_NAMES = [
 const OPTION_INIT_FLAG_NAMES = [
     OPTION_NAMES.developmentMode,
     OPTION_NAMES.retryTestPages,
+    OPTION_NAMES.cache
 ];
 
 interface TestCafeAdditionalStartOptions {
     retryTestPages: boolean;
     ssl: string;
     developmentMode: boolean;
+    cache: boolean;
 }
 
 interface TestCafeStartOptions {
@@ -137,7 +139,8 @@ export default class TestCafeConfiguration extends Configuration {
             options: {
                 ssl:             this.getOption(OPTION_NAMES.ssl) as string,
                 developmentMode: this.getOption(OPTION_NAMES.developmentMode) as boolean,
-                retryTestPages:  this.getOption(OPTION_NAMES.retryTestPages) as boolean
+                retryTestPages:  this.getOption(OPTION_NAMES.retryTestPages) as boolean,
+                cache:           this.getOption(OPTION_NAMES.cache) as boolean
             }
         };
 
