@@ -155,7 +155,7 @@ test('Close a specific window', async t => {
 });
 ```
 
-## Disable Support for Multiple Windows 
+## Disable Support for Multiple Windows
 
 Use one of the following settings to disable support for multiple browser windows:
 
