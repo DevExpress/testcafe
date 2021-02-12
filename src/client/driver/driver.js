@@ -781,9 +781,9 @@ export default class Driver extends serviceUtils.EventEmitter {
 
         this._resolvePendingChildWindowInIframe();
 
-        const childLinkExists = !!this.childWindowDriverLinks.find(link => link.windowId === msg.windowId);
+        const childWindowDriverLinkExists = !!this.childWindowDriverLinks.find(link => link.windowId === msg.windowId);
 
-        if (!childLinkExists)
+        if (!childWindowDriverLinkExists)
             this._onChildWindowOpened({ window: wnd, windowId: msg.windowId });
     }
 
