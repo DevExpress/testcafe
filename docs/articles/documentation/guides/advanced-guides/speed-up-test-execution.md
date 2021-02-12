@@ -28,10 +28,10 @@ You can enable concurrency with the [concurrency](../../reference/configuration-
 }
 ```
 
-In CLI, use the [--concurency](../../reference/command-line-interface.md#-c-n---concurrency-n) option:
+In CLI, use the [--concurrency](../../reference/command-line-interface.md#-c-n---concurrency-n) option:
 
 ```sh
-testcafe --concurency 3 chrome tests/
+testcafe --concurrency 3 chrome tests/
 ```
 
 With `concurrency` enabled, TestCafe runs tests in parallel, which may decrease execution time of your test suite, but requires more resources from the test environment. Choose the option value based on the test environment performance.
