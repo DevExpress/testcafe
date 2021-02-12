@@ -144,14 +144,14 @@ function simulateTextInput (element, text) {
     }
 
     if (browserUtils.isSafari) {
-        listeners.addInternalEventListener(window, ['textInput'], onSafariTextInput);
+        listeners.addInternalEventBeforeListener(window, ['textInput'], onSafariTextInput);
         eventSandbox.on(eventSandbox.EVENT_PREVENTED_EVENT, onSafariPreventTextInput);
     }
 
     const isInputEventRequired = browserUtils.isFirefox || eventSimulator.textInput(element, text) || forceInputInSafari;
 
     if (browserUtils.isSafari) {
-        listeners.removeInternalEventListener(window, ['textInput'], onSafariTextInput);
+        listeners.removeInternalEventBeforeListener(window, ['textInput'], onSafariTextInput);
         eventSandbox.off(eventSandbox.EVENT_PREVENTED_EVENT, onSafariPreventTextInput);
     }
 
@@ -188,8 +188,8 @@ function _typeTextToContentEditable (element, text) {
         needProcessInput    = simulateTextInput(element, textInputData);
         needRaiseInputEvent = needProcessInput && !browserUtils.isIE11;
 
-        listeners.addInternalEventListener(window, ['input'], onInput);
-        listeners.addInternalEventListener(window, ['textinput'], onTextInput);
+        listeners.addInternalEventBeforeListener(window, ['input'], onInput);
+        listeners.addInternalEventBeforeListener(window, ['textinput'], onTextInput);
     };
 
     const afterContentChanged = () => {
@@ -198,8 +198,8 @@ function _typeTextToContentEditable (element, text) {
                 if (needRaiseInputEvent)
                     eventSimulator.input(element, text);
 
-                listeners.removeInternalEventListener(window, ['input'], onInput);
-                listeners.removeInternalEventListener(window, ['textinput'], onTextInput);
+                listeners.removeInternalEventBeforeListener(window, ['input'], onInput);
+                listeners.removeInternalEventBeforeListener(window, ['textinput'], onTextInput);
             });
     };
 
@@ -263,15 +263,16 @@ function _typeTextToTextEditable (element, text) {
     if (elementMaxLength < 0)
         elementMaxLength = browserUtils.isIE && browserUtils.version < 17 ? 0 : null;
 
-    if (elementMaxLength === null || isNaN(elementMaxLength) || elementMaxLength > elementValue.length) {
+    const newElementValue = elementValue.substring(0, startSelection) + text + elementValue.substring(endSelection, elementValue.length);
+
+    if (elementMaxLength === null || isNaN(elementMaxLength) || elementMaxLength >= newElementValue.length) {
         // NOTE: B254013
         if (isInputTypeNumber && browserUtils.isIOS && elementValue[elementValue.length - 1] === '.') {
             startSelection += 1;
             endSelection += 1;
         }
 
-        domUtils.setElementValue(element, elementValue.substring(0, startSelection) + text +
-                          elementValue.substring(endSelection, elementValue.length));
+        domUtils.setElementValue(element, newElementValue);
 
         textSelection.select(element, startSelection + textLength, startSelection + textLength);
     }
