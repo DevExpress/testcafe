@@ -6,7 +6,7 @@
 
 #### :gear: Set Request Timeouts ([PR #5692](https://github.com/DevExpress/testcafe/pull/5692))
 
-TestCafe now enables you to set request timeouts. If a request is not met with a response within the specified period, TestCafe throws an error.
+TestCafe now enables you to set request timeouts. If TestCafe receives no response within the specified period, it throws an error.
 
 *CLI*
 
@@ -31,7 +31,7 @@ testcafe chrome my-tests --ajax-request-timeout 40000 --page-request-timeout 800
 
 *JavaScript API*
 
-The options are available in the [runner.run Method](./docs/articles/documentation/reference/testcafe-api/runner/run.md).
+These options are available in the [runner.run Method](./docs/articles/documentation/reference/testcafe-api/runner/run.md).
 
 ```js
 const createTestCafe = require('testcafe');
@@ -118,7 +118,7 @@ You can enable this functionality with a command line, API, or configuration fil
 * Fixed a bug where `Selector.withText` couldn't locate elements inside an `iframe` ([#5886](https://github.com/DevExpress/testcafe/issues/5886))
 * Fixed a bug where TestCafe was sometimes unable to detect when a browser instance closes ([#5857](https://github.com/DevExpress/testcafe/issues/5857))
 * You can now install TestCafe with `Yarn 2` ([PR #5872](https://github.com/DevExpress/testcafe/pull/5872) by [@NiavlysB](https://github.com/NiavlysB))
-* Fixed a bug where the `typeText` action would sometimes not be able to replace existing text ([PR #5942](https://github.com/DevExpress/testcafe/pull/5942) by [@rueyaa332266](https://github.com/rueyaa332266))
+* Fixed a bug where the `typeText` action does not always replace existing text ([PR #5942](https://github.com/DevExpress/testcafe/pull/5942) by [@rueyaa332266](https://github.com/rueyaa332266))
 * Fixed a bug where TestCafe was sometimes unable to create a `Web Worker` from an object ([testcafe-hammerhead/#2512](https://github.com/DevExpress/testcafe-hammerhead/issues/2512))
 * Fixed an error thrown by TestCafe proxy when trying to delete an object property that does not exist ([testcafe-hammerhead/#2504](https://github.com/DevExpress/testcafe-hammerhead/issues/2504))
 * Fixed an error thrown by TestCafe proxy when a Service Worker overwrites properties of a `window` object ([testcafe-hammerhead/#2538](https://github.com/DevExpress/testcafe-hammerhead/issues/2538))
@@ -126,7 +126,7 @@ You can enable this functionality with a command line, API, or configuration fil
 * Fixed an error (`TypeError: Illegal invocation`) thrown by TestCafe on pages that contain an XMLDocument with an `iframe` ([testcafe-hammerhead/#2554](https://github.com/DevExpress/testcafe-hammerhead/issues/2554))
 * Fixed an error (`SyntaxError: Identifier has already been declared`) thrown by TestCafe on pages with scripts that create nested JavaScript objects ([testcafe-hammerhead/#2506](https://github.com/DevExpress/testcafe-hammerhead/issues/2506))
 * Fixed a bug where TestCafe was unable to focus elements within shadow DOM ([testcafe-hammerhead/#2408](https://github.com/DevExpress/testcafe-hammerhead/issues/2408))
-* TestCafe throws an error when an entity of type other than `Error` is thrown in a test script ([PR testcafe-hammerhead/#2536](https://github.com/DevExpress/testcafe-hammerhead/pull/2536))
+* TestCafe now throws an error when an entity of type other than `Error` is thrown in a test script ([PR testcafe-hammerhead/#2536](https://github.com/DevExpress/testcafe-hammerhead/pull/2536))
 * Fixed a bug where TestCafe was sometimes unable to resolve relative URLs ([testcafe-hammerhead/#2399](https://github.com/DevExpress/testcafe-hammerhead/issues/2399))
 * Properties of `window.location.constructor` are now shadowed correctly by TestCafe proxy ([testcafe-hammerhead/#2423](https://github.com/DevExpress/testcafe-hammerhead/issues/2423))
 * TestCafe proxy now correctly handles requests that are not permitted by the CORS policy ([testcafe-hammerhead/#1263](https://github.com/DevExpress/testcafe-hammerhead/issues/1263))
