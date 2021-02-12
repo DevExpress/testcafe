@@ -98,8 +98,8 @@ export default new PageModel()
 import PageModel from 'path/to/page-model.js'
 ```
 
-This approach ensures that the page model object is created once per test run.
+This approach ensures that the page model object is created only once per test run.
 
-> Important! If you export the page model class and create an instance in every test file, JavaScript creates a new page object in memory per test file. This increases test execution time and memory consumption.
+> Important! If you export the page model class and create an instance in every test file, JavaScript creates a new page object per test file. This increases test execution time and memory consumption.
 
 For more on page models, read [Page Model](../../guides/concepts/page-model.md).
