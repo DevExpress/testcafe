@@ -583,15 +583,6 @@
     },
     {
         "type": "article",
-        "source": "Imaginea",
-        "sourceHomePage": "https://blog.imaginea.com",
-        "date": "2018-12-03",
-        "title": "Why we Fancied TestCafe Over WebDriver for a Modern Web App?",
-        "url": "https://blog.imaginea.com/why-we-fancied-testcafe-over-webdriver/",
-        "author": "Balaji Sreenivasan"
-    },
-    {
-        "type": "article",
         "source": "Medium",
         "sourceHomePage": "https://medium.com",
         "date": "2018-03-29",
