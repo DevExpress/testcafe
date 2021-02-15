@@ -367,8 +367,8 @@
     - name: BrowserConnection
       url: /documentation/reference/testcafe-api/browserconnection/README.md
       content:
-      - name: ready
-        url: /documentation/reference/testcafe-api/browserconnection/ready.md
+      - name: opened
+        url: /documentation/reference/testcafe-api/browserconnection/opened.md
       - name: url
         url: /documentation/reference/testcafe-api/browserconnection/url.md
     - name: LiveModeRunner
