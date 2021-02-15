@@ -17,7 +17,7 @@ Testing in multiple browser windows is now stable.
 
 To take full advantage of testing in multiple windows with TestCafe, read [Multiple Browser Windows](https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/multiple-browser-windows.html).
 
-### :gear: Set Request Timeouts ([PR #5692](https://github.com/DevExpress/testcafe/pull/5692))
+### ⚙ Set Request Timeouts ([PR #5692](https://github.com/DevExpress/testcafe/pull/5692))
 
 TestCafe now enables you to set request timeouts. If TestCafe receives no response within the specified period, it throws an error.
 
@@ -62,7 +62,7 @@ finally {
 }
 ```
 
-### :gear: Set Browser Initialization Timeout ([PR #5720](https://github.com/DevExpress/testcafe/pull/5720))
+### ⚙ Set Browser Initialization Timeout ([PR #5720](https://github.com/DevExpress/testcafe/pull/5720))
 
 This release introduces an option to control browser initialization timeout. This timeout controls the time browsers have to connect to TestCafe before an error is thrown. You can control this timeout in one of the following ways:
 
@@ -94,7 +94,7 @@ TestCafe raises this error when at least one local or remote browser was not abl
 
 TestCafe raises a warning if low system performance is causing the connectivity issue.
 
-### :gear: An Option to Retry Requests for the Test Page ([PR #5738](https://github.com/DevExpress/testcafe/pull/5738))
+### ⚙ An Option to Retry Requests for the Test Page ([PR #5738](https://github.com/DevExpress/testcafe/pull/5738))
 
 If a tested webpage was not served after the first request, TestCafe can now retry the request.
 
