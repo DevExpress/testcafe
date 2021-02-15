@@ -162,3 +162,19 @@ Use one of the following settings to disable support for multiple browser window
 * the [--disable-multiple-windows](../../reference/command-line-interface.md#--disable-multiple-windows) command line flag,
 * the `disableMultipleWindows` [runner.run](../../reference/testcafe-api/runner/run.md) option,
 * the [disableMultipleWindows](../../reference/configuration-file.md#disablemultiplewindows) configuration file property.
+
+## Limitations
+
+This section describes the limitations of multiple browser windows testing in TestCafe.
+
+### Recorded Video Aspect Ratio in Multiple Windows
+
+When you launch TestCafe with [video recording](./screenshots-and-videos.md) enabled, the recording scales to the initial (parent) browser window.
+
+When a child window opens, TestCafe continues recording in that window. If the child windows' size differs, the parts of the video that are recorded in these windows are resized to fit the aspect ratio of the main browser window. As a result, portions of the recording appear stretched.
+
+### Cookies and User Roles Limitations in Child Windows
+
+TestCafe's [User Roles](./authentication.md#user-roles) preserve browser storage contents (cookies, `localStorage` and `sessionStorage`). A [TestCafe instance](../../reference/testcafe-api/testcafe/README.md) can only have one active User Role at a time.
+
+If you switch between roles in any browser window, cookies and local/session storage contents inside that role are applied to the remaining windows.
