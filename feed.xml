@@ -5,9 +5,134 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 15 Feb 2021 14:03:33 +0300</pubDate>
-    <lastBuildDate>Mon, 15 Feb 2021 14:03:33 +0300</lastBuildDate>
+    <pubDate>Mon, 15 Feb 2021 14:55:12 +0300</pubDate>
+    <lastBuildDate>Mon, 15 Feb 2021 14:55:12 +0300</lastBuildDate>
     <generator>Jekyll v3.9.0</generator>
+    
+      <item>
+        <title>TestCafe v1.11.0 Released</title>
+        <description>&lt;h1&gt;TestCafe v1.11.0 Released&lt;/h1&gt;
+&lt;p&gt;This version brings the release of multiple browser windows mode, options to configure request timeouts and many bugfixes.&lt;/p&gt;
+
+&lt;!--more--&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;multiple-browser-windows-is-live-912&quot;&gt;&lt;/a&gt;Multiple Browser Windows is Live (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/912&quot;&gt;#912&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#multiple-browser-windows-is-live-912&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Testing in multiple browser windows is now stable.&lt;/p&gt;
+
+&lt;p&gt;To take full advantage of testing in multiple windows with TestCafe, read &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/multiple-browser-windows.html&quot;&gt;Multiple Browser Windows&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;gear-set-request-timeouts-pr-5692&quot;&gt;&lt;/a&gt;:gear: Set Request Timeouts (&lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/5692&quot;&gt;PR #5692&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#gear-set-request-timeouts-pr-5692&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;TestCafe now enables you to set request timeouts. If TestCafe receives no response within the specified period, it throws an error.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;CLI&lt;/em&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;../documentation/reference/command-line-interface.html#--ajax-request-timeout-ms&quot;&gt;--ajax-request-timeout&lt;/a&gt; controls the timeout for fetch/XHR requests&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;../documentation/reference/command-line-interface.html#--page-request-timeout-ms&quot;&gt;--page-request-timeout&lt;/a&gt; sets the timeout for webpage requests&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome my-tests &lt;span class=&quot;nt&quot;&gt;--ajax-request-timeout&lt;/span&gt; 40000 &lt;span class=&quot;nt&quot;&gt;--page-request-timeout&lt;/span&gt; 8000
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;em&gt;Configuration file&lt;/em&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;../documentation/reference/configuration-file.html#ajaxrequesttimeout&quot;&gt;ajaxRequestTimeout&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;../documentation/reference/configuration-file.html#pagerequesttimeout&quot;&gt;pageRequestTimeout&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;pageRequestTimeout&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;ajaxRequestTimeout&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;40000&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;em&gt;JavaScript API&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;These options are available in the &lt;a href=&quot;../documentation/reference/testcafe-api/runner/run.html&quot;&gt;runner.run Method&lt;/a&gt;.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;createTestCafe&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;testcafe&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;testcafe&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;createTestCafe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;localhost&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1337&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1338&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;testcafe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;createRunner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;failed&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;pageRequestTimeout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;ajaxRequestTimeout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;40000&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Tests failed: &lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;failed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;finally&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;testcafe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;gear-set-browser-initialization-timeout-pr-5720&quot;&gt;&lt;/a&gt;:gear: Set Browser Initialization Timeout (&lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/5720&quot;&gt;PR #5720&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#gear-set-browser-initialization-timeout-pr-5720&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;This release introduces an option to control browser initialization timeout. This timeout controls the time browsers have to connect to TestCafe before an error is thrown. You can control this timeout in one of the following ways:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;../documentation/reference/command-line-interface.html#--browser-init-timeout-ms&quot;&gt;--browser-init-timeout&lt;/a&gt; CLI option&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome my-tests &lt;span class=&quot;nt&quot;&gt;--browser-init-timeout&lt;/span&gt; 180000
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;../documentation/reference/configuration-file.html#browserinittimeout&quot;&gt;browserInitTimeout&lt;/a&gt; configuration option&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;browserInitTimeout&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;180000&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;../documentation/reference/testcafe-api/runner/run.html&quot;&gt;runner.run Method&lt;/a&gt; parameter&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;browserInitTimeout&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;180000&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This setting sets an equal timeout for local and &lt;a href=&quot;../documentation/guides/concepts/browsers.html#browsers-on-remote-devices&quot;&gt;remote browsers&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;improved-unable-to-establish-browser-connection-error-message-pr-5720&quot;&gt;&lt;/a&gt;Improved &lt;code&gt;Unable To Establish Browser Connection&lt;/code&gt; Error Message (&lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/5720&quot;&gt;PR #5720&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#improved-unable-to-establish-browser-connection-error-message-pr-5720&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;TestCafe raises this error when at least one local or remote browser was not able to connect. The error message now includes the number of browsers that have not established a connection.&lt;/p&gt;
+
+&lt;p&gt;TestCafe raises a warning if low system performance is causing the connectivity issue.&lt;/p&gt;
+&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;gear-an-option-to-retry-requests-for-the-test-page-pr-5738&quot;&gt;&lt;/a&gt;:gear: An Option to Retry Requests for the Test Page (&lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/5738&quot;&gt;PR #5738&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#gear-an-option-to-retry-requests-for-the-test-page-pr-5738&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;If a tested webpage was not served after the first request, TestCafe can now retry the request.&lt;/p&gt;
+
+&lt;p&gt;You can enable this functionality with a command line, API, or configuration file option:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;../documentation/reference/command-line-interface.html#--retry-test-pages&quot;&gt;--retry-test-pages&lt;/a&gt; command line argument&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome test.js &lt;span class=&quot;nt&quot;&gt;--retry-test-pages&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;../documentation/reference/testcafe-api/runner/&quot;&gt;runner.run&lt;/a&gt; option&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;retryTestPages&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;../documentation/reference/configuration-file.html#retrytestpages&quot;&gt;retryTestPages&lt;/a&gt; configuration file property&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;retryTestPages&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Fixed a bug where &lt;code&gt;Selector.withText&lt;/code&gt; couldn&amp;#39;t locate elements inside an &lt;code&gt;iframe&lt;/code&gt; (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/5886&quot;&gt;#5886&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Fixed a bug where TestCafe was sometimes unable to detect when a browser instance closes (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/5857&quot;&gt;#5857&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;You can now install TestCafe with &lt;code&gt;Yarn 2&lt;/code&gt; (&lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/5872&quot;&gt;PR #5872&lt;/a&gt; by &lt;a href=&quot;https://github.com/NiavlysB&quot;&gt;@NiavlysB&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Fixed a bug where the &lt;code&gt;typeText&lt;/code&gt; action does not always replace existing text (&lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/5942&quot;&gt;PR #5942&lt;/a&gt; by &lt;a href=&quot;https://github.com/rueyaa332266&quot;&gt;@rueyaa332266&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Fixed a bug where TestCafe was sometimes unable to create a &lt;code&gt;Web Worker&lt;/code&gt; from an object (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2512&quot;&gt;testcafe-hammerhead/#2512&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Fixed an error thrown by TestCafe proxy when trying to delete an object property that does not exist (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2504&quot;&gt;testcafe-hammerhead/#2504&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Fixed an error thrown by TestCafe proxy when a Service Worker overwrites properties of a &lt;code&gt;window&lt;/code&gt; object (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2538&quot;&gt;testcafe-hammerhead/#2538&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Fixed a bug where &lt;code&gt;t.openWindow&lt;/code&gt; method requested a URL twice (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2544&quot;&gt;testcafe-hammerhead/#2544&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Fixed an error (&lt;code&gt;TypeError: Illegal invocation&lt;/code&gt;) thrown by TestCafe on pages that contain an XMLDocument with an &lt;code&gt;iframe&lt;/code&gt; (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2554&quot;&gt;testcafe-hammerhead/#2554&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Fixed an error (&lt;code&gt;SyntaxError: Identifier has already been declared&lt;/code&gt;) thrown by TestCafe on pages with scripts that create nested JavaScript objects (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2506&quot;&gt;testcafe-hammerhead/#2506&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Fixed a bug where TestCafe was unable to focus elements within shadow DOM (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2408&quot;&gt;testcafe-hammerhead/#2408&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;TestCafe now throws an error when an entity of type other than &lt;code&gt;Error&lt;/code&gt; is thrown in a test script (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/pull/2536&quot;&gt;PR testcafe-hammerhead/#2536&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Fixed a bug where TestCafe was sometimes unable to resolve relative URLs (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2399&quot;&gt;testcafe-hammerhead/#2399&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Properties of &lt;code&gt;window.location.constructor&lt;/code&gt; are now shadowed correctly by TestCafe proxy (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2423&quot;&gt;testcafe-hammerhead/#2423&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;TestCafe proxy now correctly handles requests that are not permitted by the CORS policy (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1263&quot;&gt;testcafe-hammerhead/#1263&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Improved compatibility with test pages that use &lt;code&gt;with&lt;/code&gt; statements (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2434&quot;&gt;testcafe-hammerhead/#2434&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;TestCafe proxy can now properly parse statements that use a comma operator in &lt;code&gt;for..of&lt;/code&gt; loops (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2573&quot;&gt;testcafe-hammerhead/#2573&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Fixed a bug where TestCafe would open a new window even if &lt;code&gt;preventDefault&lt;/code&gt; is present in element&amp;#39;s event handler (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/pull/2582&quot;&gt;testcafe-hammerhead/#2582&lt;/a&gt;)&lt;br&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;vulnerability-fix-pr-5843-pr-testcafe-hammerhead2531&quot;&gt;&lt;/a&gt;Vulnerability Fix (&lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/5843&quot;&gt;PR #5843&lt;/a&gt;, &lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/pull/2531&quot;&gt;PR testcafe-hammerhead#2531&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#vulnerability-fix-pr-5843-pr-testcafe-hammerhead2531&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;We have fixed a vulnerability found in the &lt;a href=&quot;https://www.npmjs.com/package/debug&quot;&gt;debug&lt;/a&gt; module we use for debugging.
+The vulnerability was a &lt;a href=&quot;https://github.com/visionmedia/debug/issues/797&quot;&gt;ReDos Vulnerability Regression&lt;/a&gt; that affected all TestCafe users. TestCafe now uses &lt;code&gt;debug@4.3.1&lt;/code&gt;, where the issue is fixed.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 15 Feb 2021 00:00:00 +0300</pubDate>
+        <link>https://devexpress.github.io/testcafe/blog/testcafe-v1-11-0-released.html</link>
+        <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v1-11-0-released.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>Upcoming Roundtable: Modern Web Testing with TestCafe</title>
@@ -874,37 +999,6 @@ Yes, we offer &lt;a href=&quot;https://www.devexpress.com/products/net/controls/
         <pubDate>Wed, 26 Aug 2020 00:00:00 +0300</pubDate>
         <link>https://devexpress.github.io/testcafe/media/team-blog/introducing-multi-window-tests-beta.html</link>
         <guid isPermaLink="true">https://devexpress.github.io/testcafe/media/team-blog/introducing-multi-window-tests-beta.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>Upcoming Webinar: The Fastest Way to Your Next Test – TestCafe + TestCafe Studio</title>
-        <description>&lt;h1&gt;Upcoming Webinar: The Fastest Way to Your Next Test – TestCafe + TestCafe Studio&lt;/h1&gt;
-&lt;p&gt;In this webinar, our Technical Evangelist Paul Usher will demonstrate the difference between TestCafe and TestCafe Studio. Paul will show you how to write code-based tests more quickly and he&amp;#39;ll explore the power of TestCafe Studio&amp;#39;s integrated visual test recorder (for those who don&amp;#39;t want to manually write test code).&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-&lt;p&gt;Paul&amp;#39;s topics will include:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;How to create and debug tests in TestCafe Studio without writing any code.&lt;/li&gt;
-&lt;li&gt;How to create stable selectors for your tests.&lt;/li&gt;
-&lt;li&gt;The advantages of TestCafe&amp;#39;s Smart Assertion mechanism.&lt;/li&gt;
-&lt;li&gt;How to leverage both TestCafe and TestCafe Studio within your organization.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;end-to-end-web-testing-made-easy&quot;&gt;&lt;/a&gt;End-to-End web testing made easy &lt;a class=&quot;permalink&quot; href=&quot;#end-to-end-web-testing-made-easy&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;TestCafe Open Source and TestCafe Studio are driver free and do not require you to manage complex plug-ins. If you&amp;#39;re ready to test your web apps and want to deliver more reliable solutions to your end-users, be sure to click the link below and register your interest in this live webinar.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Webinar Date:&lt;/strong&gt; Tuesday, September 8, 2020&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Start Time:&lt;/strong&gt; 10AM Pacific Time&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://dxpr.es/34jU51F&quot;&gt;Register&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
-</description>
-        <pubDate>Fri, 21 Aug 2020 00:00:00 +0300</pubDate>
-        <link>https://devexpress.github.io/testcafe/media/team-blog/the-fastest-way-to-your-next-test.html</link>
-        <guid isPermaLink="true">https://devexpress.github.io/testcafe/media/team-blog/the-fastest-way-to-your-next-test.html</guid>
         
         
       </item>
