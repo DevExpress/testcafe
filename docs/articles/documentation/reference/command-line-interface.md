@@ -271,7 +271,7 @@ testcafe --version
 
 ### -b, --list-browsers
 
-Lists the aliases of the [auto-detected browsers](../guides/concepts/browsers.md#locally-installed-browsers) installed on the local machine.
+Lists the aliases of the [automatically detected browsers](../guides/concepts/browsers.md#locally-installed-browsers) installed on the local machine.
 
 ```sh
 testcafe --list-browsers
