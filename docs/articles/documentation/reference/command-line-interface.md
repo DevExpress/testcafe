@@ -54,6 +54,9 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--selector-timeout \<ms\>](#--selector-timeout-ms)
   * [--assertion-timeout \<ms\>](#--assertion-timeout-ms)
   * [--page-load-timeout \<ms\>](#--page-load-timeout-ms)
+  * [--ajax-request-timeout \<ms\>](#--ajax-request-timeout-ms)
+  * [--page-request-timeout \<ms\>](#--page-request-timeout-ms)
+  * [--browser-init-timeout \<ms\>](#--browser-init-timeout-ms)
   * [--speed \<factor\>](#--speed-factor)
   * [--cs \<path\[,path2,...\]\>, --client-scripts \<path\[,path2,...\]\>](#--cs-pathpath2---client-scripts-pathpath2)
   * [--ports \<port1,port2\>](#--ports-port1port2)
@@ -69,6 +72,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--compiler-options \<options\>](#--compiler-options-options)
   * [--disable-page-caching](#--disable-page-caching)
   * [--disable-multiple-windows](#--disable-multiple-windows)
+  * [--retry-test-pages](#--retry-test-pages)
   * [--color](#--color)
   * [--no-color](#--no-color)
 
@@ -76,9 +80,9 @@ When you execute the `testcafe` command, TestCafe first reads settings from the 
 
 If the [browsers](configuration-file.md#browsers) and [src](configuration-file.md#src) properties are specified in the configuration file, you can omit them in the command line.
 
-> Important! Make sure to keep the browser tab that is running tests active. Do not minimize the browser window.
-> Inactive tabs and minimized browser windows switch to a lower resource consumption mode
-> where tests do not always execute correctly.
+> Important! Make sure the browser tab that runs tests stays active.
+> Do not minimize the browser window. Inactive tabs and minimized browser windows switch
+> to a lower resource consumption mode where tests are not guaranteed to execute correctly.
 >
 > Do not zoom pages while testing. Tests may be unstable if the page is zoomed in or out.
 
@@ -503,7 +507,7 @@ testcafe all tests/sample-fixture.js -q
 
 ### -d, --debug-mode
 
-Specify this option to run tests in the debug mode. In this mode, test execution is paused before the first action or assertion so that you can invoke the developer tools and debug.
+Specify this option to run tests in the debug mode. In this mode, test execution is paused before the first action or assertion so that you can invoke the developer tools and then debug.
 
 The footer displays a status bar in which you can resume test execution or skip to the next action or assertion.
 
@@ -518,7 +522,7 @@ You can also use the **Unlock page** switch in the footer to unlock the tested p
 
 ### --debug-on-fail
 
-Specifies whether to automatically enter the [debug mode](#-d---debug-mode) when a test fails.
+Specifies whether to enter the [debug mode](#-d---debug-mode) when a test fails.
 
 ```sh
 testcafe chrome tests/sample-fixture.js --debug-on-fail
@@ -718,9 +722,50 @@ testcafe ie my-tests --page-load-timeout 0
 
 *Related configuration file property*: [pageLoadTimeout](configuration-file.md#pageloadtimeout).
 
+### --ajax-request-timeout \<ms\>
+
+Specifies wait time (in milliseconds) for fetch/XHR requests. If no response is received within the specified period, an error is thrown.
+
+```sh
+testcafe chrome my-tests --ajax-request-timeout 40000
+```
+
+**Default value**: `120000`
+
+*Related configuration file property*: [ajaxRequestTimeout](configuration-file.md#ajaxrequesttimeout)
+
+### --page-request-timeout \<ms\>
+
+Specifies time (in milliseconds) to wait for HTML pages. If the page isn't received within the specified period, an error is thrown.
+
+```sh
+testcafe chrome my-tests --page-request-timeout 8000
+```
+
+**Default value**: `25000`
+
+*Related configuration file property*: [pageRequestTimeout](configuration-file.md#pagerequesttimeout)
+
+### --browser-init-timeout \<ms\>
+
+Time (in milliseconds) for browsers to connect to TestCafe and report that they are ready to test. If one or more browsers fail to connect within the specified period, an error is thrown.
+
+```sh
+testcafe chrome my-tests --browser-init-timeout 180000
+```
+
+In this example, browser timeout for Chrome is increased. The browser has three minutes to initialize before TestCafe throws an error.
+
+**Default values**:
+
+* `120000` for [local browsers](#local-browsers)
+* `360000` for [remote browsers](#remote-browsers)
+
+*Related configuration file property*: [browserInitTimeout](configuration-file.md#browserinittimeout).
+
 ### --speed \<factor\>
 
-Specifies the test execution speed.
+Specifies test execution speed.
 
 Tests are run at the maximum speed by default. You can use this option
 to slow the test down.
@@ -950,6 +995,19 @@ testcafe firefox my-tests --disable-multiple-windows
 The `--disable-multiple-windows` option disables support for multi-window testing in Chrome and Firefox. Use this flag if you encounter compatibility issues with your existing tests.
 
 *Related configuration file property*: [disableMultipleWindows](configuration-file.md#disablemultiplewindows).
+
+### --retry-test-pages
+
+If this option is enabled, TestCafe retries failed network requests for webpages visited during tests. The retry functionality is limited to ten tries.
+
+```sh
+testcafe firefox my-tests --retry-test-pages
+```
+
+This feature uses [Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API) that require a secure connection.
+To run TestCafe over a secure connection, [setup HTTPS](../guides/advanced-guides/test-https-features-and-http2-websites.md#test-https-websites) or use the [--hostname localhost](#--hostname-name) option.
+
+*Related configuration file property*: [retryTestPages](./configuration-file.md#retrytestpages)
 
 ### --color
 
