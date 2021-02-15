@@ -5,8 +5,8 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 15 Feb 2021 14:55:12 +0300</pubDate>
-    <lastBuildDate>Mon, 15 Feb 2021 14:55:12 +0300</lastBuildDate>
+    <pubDate>Mon, 15 Feb 2021 19:47:43 +0300</pubDate>
+    <lastBuildDate>Mon, 15 Feb 2021 19:47:43 +0300</lastBuildDate>
     <generator>Jekyll v3.9.0</generator>
     
       <item>
@@ -19,7 +19,7 @@
 &lt;p&gt;Testing in multiple browser windows is now stable.&lt;/p&gt;
 
 &lt;p&gt;To take full advantage of testing in multiple windows with TestCafe, read &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/multiple-browser-windows.html&quot;&gt;Multiple Browser Windows&lt;/a&gt;.&lt;/p&gt;
-&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;gear-set-request-timeouts-pr-5692&quot;&gt;&lt;/a&gt;:gear: Set Request Timeouts (&lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/5692&quot;&gt;PR #5692&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#gear-set-request-timeouts-pr-5692&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;set-request-timeouts-pr-5692&quot;&gt;&lt;/a&gt;⚙ Set Request Timeouts (&lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/5692&quot;&gt;PR #5692&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#set-request-timeouts-pr-5692&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;TestCafe now enables you to set request timeouts. If TestCafe receives no response within the specified period, it throws an error.&lt;/p&gt;
 
 &lt;p&gt;&lt;em&gt;CLI&lt;/em&gt;&lt;/p&gt;
@@ -57,7 +57,7 @@
 &lt;span class=&quot;k&quot;&gt;finally&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;testcafe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;gear-set-browser-initialization-timeout-pr-5720&quot;&gt;&lt;/a&gt;:gear: Set Browser Initialization Timeout (&lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/5720&quot;&gt;PR #5720&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#gear-set-browser-initialization-timeout-pr-5720&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;set-browser-initialization-timeout-pr-5720&quot;&gt;&lt;/a&gt;⚙ Set Browser Initialization Timeout (&lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/5720&quot;&gt;PR #5720&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#set-browser-initialization-timeout-pr-5720&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;This release introduces an option to control browser initialization timeout. This timeout controls the time browsers have to connect to TestCafe before an error is thrown. You can control this timeout in one of the following ways:&lt;/p&gt;
 
 &lt;ul&gt;
@@ -82,7 +82,7 @@
 &lt;p&gt;TestCafe raises this error when at least one local or remote browser was not able to connect. The error message now includes the number of browsers that have not established a connection.&lt;/p&gt;
 
 &lt;p&gt;TestCafe raises a warning if low system performance is causing the connectivity issue.&lt;/p&gt;
-&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;gear-an-option-to-retry-requests-for-the-test-page-pr-5738&quot;&gt;&lt;/a&gt;:gear: An Option to Retry Requests for the Test Page (&lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/5738&quot;&gt;PR #5738&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#gear-an-option-to-retry-requests-for-the-test-page-pr-5738&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;an-option-to-retry-requests-for-the-test-page-pr-5738&quot;&gt;&lt;/a&gt;⚙ An Option to Retry Requests for the Test Page (&lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/5738&quot;&gt;PR #5738&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#an-option-to-retry-requests-for-the-test-page-pr-5738&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;If a tested webpage was not served after the first request, TestCafe can now retry the request.&lt;/p&gt;
 
 &lt;p&gt;You can enable this functionality with a command line, API, or configuration file option:&lt;/p&gt;
