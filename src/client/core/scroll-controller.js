@@ -28,7 +28,7 @@ class ScrollController {
         this.initialized = true;
 
         listeners.initElementListening(window, ['scroll']);
-        listeners.addFirstInternalHandler(window, ['scroll'], (...args) => this._internalListener(...args));
+        listeners.addFirstInternalEventBeforeListener(window, ['scroll'], (...args) => this._internalListener(...args));
     }
 
     waitForScroll (scrollElement) {
@@ -53,7 +53,7 @@ class ScrollController {
 
         if (isShadowElement(el)) {
             listeners.initElementListening(el, ['scroll']);
-            listeners.addFirstInternalHandler(el, ['scroll'], (...args) => {
+            listeners.addFirstInternalEventBeforeListener(el, ['scroll'], (...args) => {
                 this._internalListener(...args);
 
                 listeners.cancelElementListening(el);

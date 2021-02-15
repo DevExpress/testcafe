@@ -24,7 +24,11 @@ const createConfigFile = (path, options) => {
 const createTestCafeConfigurationFile   = createConfigFile.bind(null, TestCafeConfiguration.FILENAME);
 const createTypeScriptConfigurationFile = createConfigFile.bind(null, tsConfigPath);
 
-describe('TestCafeConfiguration', () => {
+const TEST_TIMEOUT = 5000;
+
+describe('TestCafeConfiguration', function () {
+    this.timeout(TEST_TIMEOUT);
+
     const testCafeConfiguration = new TestCafeConfiguration();
     let keyFileContent          = null;
 
@@ -399,7 +403,9 @@ describe('TestCafeConfiguration', () => {
     });
 });
 
-describe('TypeScriptConfiguration', () => {
+describe('TypeScriptConfiguration', function () {
+    this.timeout(TEST_TIMEOUT);
+
     const typeScriptConfiguration = new TypeScriptConfiguration(tsConfigPath);
 
     it('Default', () => {
@@ -557,8 +563,6 @@ describe('TypeScriptConfiguration', () => {
         });
 
         it('TestCafe config + TypeScript config', function () {
-            this.timeout(3000);
-
             let runner = null;
 
             createTestCafeConfigurationFile({
@@ -593,8 +597,6 @@ describe('TypeScriptConfiguration', () => {
 
         describe('Should warn message on rewrite a non-overridable property', () => {
             it('TypeScript config', function () {
-                this.timeout(3000);
-
                 let runner = null;
 
                 createConfigFile(customTSConfigFilePath, {
