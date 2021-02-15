@@ -19,7 +19,7 @@ However, if you already have a Docker image prepared to deploy your web applicat
 
 Open the `.gitlab-ci.yml` file that stores the GitLab CI configuration. If this file does not exist, create it in the repository's root directory.
 
-Create a new [job](https://docs.gitlab.com/ee/ci/pipelines.html). To do this, add the following settings to `.gitlab-ci.yml` at the top level:
+Create a new [job](https://docs.gitlab.com/ee/ci/jobs/). To do this, add the following settings to `.gitlab-ci.yml` at the top level:
 
 ```yaml
 e2e_tests:
