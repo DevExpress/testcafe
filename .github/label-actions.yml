@@ -41,3 +41,13 @@
   unlabel: 
     - 'STATE: Need access confirmation'
     - 'STATE: Need response'
+
+? 'STATE: Incomplete template'
+:
+  # Post a comment
+  comment: |
+    Thank you for submitting this issue. However, the information you shared is insufficient to determine its cause. Please submit a new issue and fill the issue template completely - specify your TestCafe version and share a sample application with a test case that we can run on our side to reproduce and research the issue.
+  unlabel:
+    - 'STATE: Incomplete template'
+    - 'STATE: Need response'
+  close: true

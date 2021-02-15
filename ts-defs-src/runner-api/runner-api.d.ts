@@ -356,6 +356,7 @@ interface TestCafeFactory {
         port2?: number,
         sslOptions?: TlsOptions,
         developmentMode?: boolean,
-        retryTestPages?: boolean
+        retryTestPages?: boolean,
+        cache?: boolean
     ): Promise<TestCafe>;
 }

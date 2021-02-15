@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>gh-5886</title>
+</head>
+<body>
+<iframe id="frame"></iframe>
+<br />
+<script>
+    var iframe = document.getElementById('frame');
+    iframe.contentDocument.open();
+    iframe.contentDocument.write('<html><body><div id="test">The Test Text</div></body></html>');
+    iframe.contentDocument.close();
+</script>
+</body>
+</html>

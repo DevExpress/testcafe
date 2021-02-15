@@ -23,8 +23,14 @@ export interface RunnerRunOptions {
     pageLoadTimeout?: number;
     browserInitTimeout?: number;
     speed?: number;
-    stopOnFirstFail?: number;
-    disableMultipleWindows: boolean;
+    stopOnFirstFail?: boolean;
+    disablePageCaching?: boolean;
+    disablePageReloads?: boolean;
+    disableScreenshots?: boolean;
+    disableMultipleWindows?: boolean;
+    pageRequestTimeout?: number;
+    ajaxRequestTimeout?: number;
+    retryTestPages?: boolean;
 }
 
 export interface GetOptionConfiguration {

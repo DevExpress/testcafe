@@ -93,7 +93,7 @@ In **bash**, you can use [OpenSSL](https://www.openssl.org/docs/man1.1.1/man1/op
     openssl pkcs12 -export -out testingdomain.pfx -inkey testingdomain.key -in testingdomain.crt -certfile myCA.pem
     ```
 
-In **PowerShell**, [install OpenSSL](https://adamtheautomator.com/install-openssl-powershell/#Installing_OpenSSL_with_PowerShell_and_Chocolatey) and [update environment variables](https://adamtheautomator.com/install-openssl-powershell/#Update_PowerShell_Profile_Environment_Variables). Afterwards, proceed with the instructions [above](#generate-a-certificate-from-the-command-line).
+In **PowerShell**, [install OpenSSL](https://adamtheautomator.com/openssl-windows-10/#Installing_OpenSSL_with_PowerShell_and_Chocolatey) and [update environment variables](https://adamtheautomator.com/openssl-windows-10/#Update_PowerShell_Profile_Environment_Variables). Afterwards, proceed with the instructions [above](#generate-a-certificate-from-the-command-line).
 
 ##### Run Tests
 
