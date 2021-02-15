@@ -48,6 +48,9 @@ A configuration file can include the following settings:
 * [selectorTimeout](#selectortimeout)
 * [assertionTimeout](#assertiontimeout)
 * [pageLoadTimeout](#pageloadtimeout)
+* [ajaxRequestTimeout](#ajaxrequesttimeout)
+* [pageRequestTimeout](#ajaxrequesttimeout)
+* [browserInitTimeout](#browserinittimeout)
 * [speed](#speed)
 * [clientScripts](#clientscripts)
 * [port1, port2](#port1-port2)
@@ -454,7 +457,7 @@ See the [--debug-mode](command-line-interface.md#-d---debug-mode) command line p
 
 ## debugOnFail
 
-Specifies whether to automatically enter the debug mode when a test fails.
+Specifies whether to enter the debug mode when a test fails.
 
 ```json
 {
@@ -659,7 +662,7 @@ See [Concurrent Test Execution](../guides/basic-guides/run-tests.md#run-tests-co
 
 ## selectorTimeout
 
-Specifies the time (in milliseconds) within which [selectors](../guides/basic-guides/select-page-elements.md) attempt to obtain a node to be returned. See [Selector Timeout](../guides/basic-guides/select-page-elements.md#selector-timeout) for details.
+Specifies the time (in milliseconds) within which [selectors](../guides/basic-guides/select-page-elements.md) attempt to return a node. See [Selector Timeout](../guides/basic-guides/select-page-elements.md#selector-timeout) for details.
 
 ```json
 {
@@ -708,6 +711,54 @@ See the command line [--page-load-timeout](command-line-interface.md#--page-load
 
 *CLI*: [--page-load-timeout](command-line-interface.md#--page-load-timeout-ms)  
 *API*: [runner.run({ pageLoadTimeout })](testcafe-api/runner/run.md)
+
+### ajaxRequestTimeout
+
+Specifies wait time (in milliseconds) for fetch/XHR requests. If no response is received within the specified period, an error is thrown.
+
+```json
+{
+    "ajaxRequestTimeout": 40000
+}
+```
+
+**Default value**: `120000`
+
+*CLI*: [--ajax-request-timeout](command-line-interface.md#--ajax-request-timeout-ms)
+
+### pageRequestTimeout
+
+Specifies time (in milliseconds) to wait for HTML pages. If the page isn't received within the specified period, an error is thrown.
+
+```json
+{
+    "pageRequestTimeout": 8000
+}
+```
+
+**Default value**: `25000`
+
+*CLI*: [--page-request-timeout](command-line-interface.md#--page-request-timeout-ms)
+
+## browserInitTimeout
+
+Time (in milliseconds) for browsers to connect to TestCafe and report that they are ready to test. If one or more browsers fail to connect within the specified period, an error is thrown.
+
+```json
+{
+    "browserInitTimeout": 180000
+}
+```
+
+In this example, the timeout  for local and remote browsers is three minutes. In this run, all browsers have to connect within this time before TestCafe throws an error.
+
+**Default values**:
+
+* `120000` for [local browsers](./command-line-interface.md#local-browsers)
+* `360000` for [remote browsers](./command-line-interface.md#remote-browsers)
+
+*CLI*: [--browser-init-timeout](./command-line-interface.md#--browser-init-timeout-ms)  
+*API*: [runner.run({ browserInitTimeout })](testcafe-api/runner/run.md)
 
 ## speed
 
@@ -991,7 +1042,7 @@ If you launch TestCafe from the console, this option outputs a QR-code that repr
 
 ## stopOnFirstFail
 
-Stops a test run if any test fails.
+Stops a test run if a test fails.
 
 ```json
 {
@@ -1081,6 +1132,22 @@ The `disableMultipleWindows` option disables support for multi-window testing in
 
 *CLI*: [--disable-multiple-windows](command-line-interface.md#--disable-multiple-windows)  
 *API*: [runner.run({ disableMultipleWindows })](testcafe-api/runner/run.md)
+
+## retryTestPages
+
+If this option is enabled, TestCafe retries failed network requests for webpages visited during tests. The retry functionality is limited to ten tries.
+
+```json
+{
+    "retryTestPages": true
+}
+```
+
+This feature uses [Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API) that require a secure connection.
+To run TestCafe over a secure connection, [setup HTTPS](../guides/advanced-guides/test-https-features-and-http2-websites.md#test-https-websites) or use the [--hostname localhost](command-line-interface.md#--hostname-name) option.
+
+*CLI*: [--retry-test-pages](./command-line-interface.md#--retry-test-pages)
+*API*: [runner.run({ retryTestPages })](testcafe-api/runner/run.md)
 
 ## color
 
