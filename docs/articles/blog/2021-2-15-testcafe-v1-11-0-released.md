@@ -5,11 +5,17 @@ permalink: /blog/:title.html
 ---
 # TestCafe v1.11.0 Released
 
-This release brings options to configure requests timeouts, a vulnerability fix and many bugfixes.
+This version brings the release of multiple browser windows mode, options to configure request timeouts and many bugfixes.
 
 <!--more-->
 
 ## Enhancements
+
+### Multiple Browser Windows is Live ([#912](https://github.com/DevExpress/testcafe/issues/912))
+
+Testing in multiple browser windows is now stable.
+
+To take full advantage of testing in multiple windows with TestCafe, read [Multiple Browser Windows](https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/multiple-browser-windows.html).
 
 ### :gear: Set Request Timeouts ([PR #5692](https://github.com/DevExpress/testcafe/pull/5692))
 
