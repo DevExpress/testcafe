@@ -1870,7 +1870,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/reference/testcafe-api/browserconnection/ready.html"  >ready</a>
+<a href="/testcafe/documentation/reference/testcafe-api/browserconnection/opened.html"  >opened</a>
 
 		
     </li>
@@ -2175,6 +2175,9 @@
 <li><a href="#selectortimeout">selectorTimeout</a></li>
 <li><a href="#assertiontimeout">assertionTimeout</a></li>
 <li><a href="#pageloadtimeout">pageLoadTimeout</a></li>
+<li><a href="#ajaxrequesttimeout">ajaxRequestTimeout</a></li>
+<li><a href="#ajaxrequesttimeout">pageRequestTimeout</a></li>
+<li><a href="#browserinittimeout">browserInitTimeout</a></li>
 <li><a href="#speed">speed</a></li>
 <li><a href="#clientscripts">clientScripts</a></li>
 <li><a href="#port1-port2">port1, port2</a></li>
@@ -2454,7 +2457,7 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
 <p><em>CLI</em>: <a href="command-line-interface.html#-d---debug-mode">-d, --debug-mode</a><br>
 <em>API</em>: <a href="testcafe-api/runner/run.html">runner.run({ debugMode })</a></p>
 <h2><a class="anchor" id="debugonfail"></a>debugOnFail <a class="permalink" href="#debugonfail">#</a></h2>
-<p>Specifies whether to automatically enter the debug mode when a test fails.</p>
+<p>Specifies whether to enter the debug mode when a test fails.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
     </span><span class="nl">"debugOnFail"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
 </span><span class="p">}</span><span class="w">
@@ -2596,7 +2599,7 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
 <p><em>CLI</em>: <a href="command-line-interface.html#-c-n---concurrency-n">-c, --concurrency</a><br>
 <em>API</em>: <a href="testcafe-api/runner/concurrency.html">runner.concurrency</a></p>
 <h2><a class="anchor" id="selectortimeout"></a>selectorTimeout <a class="permalink" href="#selectortimeout">#</a></h2>
-<p>Specifies the time (in milliseconds) within which <a href="../guides/basic-guides/select-page-elements.html">selectors</a> attempt to obtain a node to be returned. See <a href="../guides/basic-guides/select-page-elements.html#selector-timeout">Selector Timeout</a> for details.</p>
+<p>Specifies the time (in milliseconds) within which <a href="../guides/basic-guides/select-page-elements.html">selectors</a> attempt to return a node. See <a href="../guides/basic-guides/select-page-elements.html#selector-timeout">Selector Timeout</a> for details.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
     </span><span class="nl">"selectorTimeout"</span><span class="p">:</span><span class="w"> </span><span class="mi">3000</span><span class="w">
 </span><span class="p">}</span><span class="w">
@@ -2632,6 +2635,41 @@ See <a href="../guides/basic-guides/assert.html#smart-assertion-query-mechanism"
 
 <p><em>CLI</em>: <a href="command-line-interface.html#--page-load-timeout-ms">--page-load-timeout</a><br>
 <em>API</em>: <a href="testcafe-api/runner/run.html">runner.run({ pageLoadTimeout })</a></p>
+<h3><a class="anchor" id="ajaxrequesttimeout"></a>ajaxRequestTimeout <a class="permalink" href="#ajaxrequesttimeout">#</a></h3>
+<p>Specifies wait time (in milliseconds) for fetch/XHR requests. If no response is received within the specified period, an error is thrown.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nl">"ajaxRequestTimeout"</span><span class="p">:</span><span class="w"> </span><span class="mi">40000</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p><strong>Default value</strong>: <code>120000</code></p>
+
+<p><em>CLI</em>: <a href="command-line-interface.html#--ajax-request-timeout-ms">--ajax-request-timeout</a></p>
+<h3><a class="anchor" id="pagerequesttimeout"></a>pageRequestTimeout <a class="permalink" href="#pagerequesttimeout">#</a></h3>
+<p>Specifies time (in milliseconds) to wait for HTML pages. If the page isn&#39;t received within the specified period, an error is thrown.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nl">"pageRequestTimeout"</span><span class="p">:</span><span class="w"> </span><span class="mi">8000</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p><strong>Default value</strong>: <code>25000</code></p>
+
+<p><em>CLI</em>: <a href="command-line-interface.html#--page-request-timeout-ms">--page-request-timeout</a></p>
+<h2><a class="anchor" id="browserinittimeout"></a>browserInitTimeout <a class="permalink" href="#browserinittimeout">#</a></h2>
+<p>Time (in milliseconds) for browsers to connect to TestCafe and report that they are ready to test. If one or more browsers fail to connect within the specified period, an error is thrown.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nl">"browserInitTimeout"</span><span class="p">:</span><span class="w"> </span><span class="mi">180000</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>In this example, the timeout  for local and remote browsers is three minutes. In this run, all browsers have to connect within this time before TestCafe throws an error.</p>
+
+<p><strong>Default values</strong>:</p>
+
+<ul>
+<li><code>120000</code> for <a href="./command-line-interface.html#local-browsers">local browsers</a></li>
+<li><code>360000</code> for <a href="./command-line-interface.html#remote-browsers">remote browsers</a></li>
+</ul>
+
+<p><em>CLI</em>: <a href="./command-line-interface.html#--browser-init-timeout-ms">--browser-init-timeout</a><br>
+<em>API</em>: <a href="testcafe-api/runner/run.html">runner.run({ browserInitTimeout })</a></p>
 <h2><a class="anchor" id="speed"></a>speed <a class="permalink" href="#speed">#</a></h2>
 <p>Specifies the test execution speed.</p>
 
@@ -2870,7 +2908,7 @@ to slow the test down.</p>
 </span></code></pre></div>
 <p><em>CLI</em>: <a href="command-line-interface.html#--qr-code">--qr-code</a>  </p>
 <h2><a class="anchor" id="stoponfirstfail"></a>stopOnFirstFail <a class="permalink" href="#stoponfirstfail">#</a></h2>
-<p>Stops a test run if any test fails.</p>
+<p>Stops a test run if a test fails.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
     </span><span class="nl">"stopOnFirstFail"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
 </span><span class="p">}</span><span class="w">
@@ -2933,6 +2971,17 @@ to slow the test down.</p>
 
 <p><em>CLI</em>: <a href="command-line-interface.html#--disable-multiple-windows">--disable-multiple-windows</a><br>
 <em>API</em>: <a href="testcafe-api/runner/run.html">runner.run({ disableMultipleWindows })</a></p>
+<h2><a class="anchor" id="retrytestpages"></a>retryTestPages <a class="permalink" href="#retrytestpages">#</a></h2>
+<p>If this option is enabled, TestCafe retries failed network requests for webpages visited during tests. The retry functionality is limited to ten tries.</p>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
+    </span><span class="nl">"retryTestPages"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>This feature uses <a href="https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API">Service Workers</a> that require a secure connection.
+To run TestCafe over a secure connection, <a href="../guides/advanced-guides/test-https-features-and-http2-websites.html#test-https-websites">setup HTTPS</a> or use the <a href="command-line-interface.html#--hostname-name">--hostname localhost</a> option.</p>
+
+<p><em>CLI</em>: <a href="./command-line-interface.html#--retry-test-pages">--retry-test-pages</a>
+<em>API</em>: <a href="testcafe-api/runner/run.html">runner.run({ retryTestPages })</a></p>
 <h2><a class="anchor" id="color"></a>color <a class="permalink" href="#color">#</a></h2>
 <p>Enables colors in the command line.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">

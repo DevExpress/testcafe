@@ -775,6 +775,15 @@
 		
     </li>
 
+    <li>
+		    
+		
+
+<a href="/testcafe/documentation/guides/advanced-guides/speed-up-test-execution.html"  >Speed Up Test Execution</a>
+
+		
+    </li>
+
 </ul>
 		
     </li>
@@ -1112,10 +1121,10 @@
 <p>Use TestCafe <a href="../../reference/test-api/requestmock/">request mocker</a> to substitute infrastructure that is difficult to deploy or that you do not want to use for test purposes. This can be a third-party service that charges you per pageview or an analytics service that should not log page views that tests generate. The mocker can intercept requests to this resource and emulate the response as needed.</p>
 
 <p>Use the <a href="../../reference/test-api/requestmock/constructor.html">RequestMock</a> constructor to create a request mocker.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">mock</span> <span class="o">=</span> <span class="nx">RequestMock</span><span class="p">();</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">mock</span> <span class="o">=</span> <span class="nx">RequestMock</span><span class="p">();</span>
 </code></pre></div>
 <p>Then call the <a href="../../reference/test-api/requestmock/onrequestto.html">onRequestTo</a> and <a href="../../reference/test-api/requestmock/respond.html">respond</a> methods in a chained fashion. The <a href="../../reference/test-api/requestmock/onrequestto.html">onRequestTo</a> method specifies a request to intercept, while the <a href="../../reference/test-api/requestmock/respond.html">respond</a> method specifies the mocked response for this request. Call these methods repeatedly to provide a mock for every request you need.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">mock</span> <span class="o">=</span> <span class="nx">RequestMock</span><span class="p">()</span>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">mock</span> <span class="o">=</span> <span class="nx">RequestMock</span><span class="p">()</span>
     <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="nx">request1</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">respond</span><span class="p">(</span><span class="nx">responseMock1</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="nx">request2</span><span class="p">)</span>

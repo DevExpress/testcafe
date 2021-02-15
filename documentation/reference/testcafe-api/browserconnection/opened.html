@@ -16,15 +16,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>RequestMock Constructor | TestCafe</title>
+  <title>BrowserConnection.opened Event | TestCafe</title>
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
 
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://devexpress.github.io/testcafe/documentation/reference/test-api/requestmock/constructor.html" />
-  <meta property="og:title" content="RequestMock Constructor | TestCafe" />
+  <meta property="og:url" content="https://devexpress.github.io/testcafe/documentation/reference/testcafe-api/browserconnection/opened.html" />
+  <meta property="og:title" content="BrowserConnection.opened Event | TestCafe" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-twitter-card-icon.png" />
@@ -37,7 +37,7 @@
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
   <link rel="stylesheet" href="/testcafe/css/banner.css">
-  <link rel="canonical" href="https://devexpress.github.io/testcafe/documentation/reference/test-api/requestmock/constructor.html">
+  <link rel="canonical" href="https://devexpress.github.io/testcafe/documentation/reference/testcafe-api/browserconnection/opened.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="https://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -933,7 +933,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/reference/test-api/requestmock/constructor.html" class="active" >Constructor</a>
+<a href="/testcafe/documentation/reference/test-api/requestmock/constructor.html"  >Constructor</a>
 
 		
     </li>
@@ -1870,7 +1870,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/reference/testcafe-api/browserconnection/opened.html"  >opened</a>
+<a href="/testcafe/documentation/reference/testcafe-api/browserconnection/opened.html" class="active" >opened</a>
 
 		
     </li>
@@ -2127,22 +2127,16 @@
 	<article class="doc">
 		<div class="post-content">
 
-			<h1>RequestMock Constructor</h1>
-<p>Creates a <a href=".">request mocker</a>.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">RequestMock()
+			<h1>BrowserConnection.opened Event</h1>
+<p>Fires when a browser launched by a <a href="../../../guides/extend-testcafe/browser-provider-plugin.html#implement-the-browser-provider">browser provider</a> connects to TestCafe and reports that it is ready to run tests.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">browserConnection</span><span class="p">.</span><span class="nx">once</span><span class="p">(</span><span class="dl">'</span><span class="s1">opened</span><span class="dl">'</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span>
 </code></pre></div>
-<p>Use the <a href="onrequestto.html">requestMock.onRequestTo</a> method followed by <a href="respond.html">respond</a> to define which request should be mocked and specify the responses. Then, <a href="../../../guides/advanced-guides/intercept-http-requests.html#attach-hooks-to-tests-and-fixtures">attach the mock</a> to a test or fixture.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">var</span> <span class="nx">mock</span> <span class="o">=</span> <span class="nx">RequestMock</span><span class="p">()</span>
-    <span class="p">.</span><span class="nx">onRequestTo</span><span class="p">(</span><span class="sr">/google.com/</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">respond</span><span class="p">(</span><span class="dl">''</span><span class="p">,</span> <span class="mi">404</span><span class="p">);</span>
+<p>If every remote browser connection does not fire this event within <strong>6 minutes</strong>, TestCafe throws an error. You can configure this timeout with the <a href="../../configuration-file.html#browserinittimeout">browserInitTimeout</a> configuration file property.</p>
 
-<span class="nx">fixture</span> <span class="s2">`My Fixture`</span>
-    <span class="p">.</span><span class="nx">requestHooks</span><span class="p">(</span><span class="nx">mock</span><span class="p">);</span>
+<p>You can run tests without waiting for the <code>opened</code> event to fire.  The <a href="../runner/run.html">runner.run</a> method waits for all browser connections to be established and all browsers to be ready within this time.</p>
 
-<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">My test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="cm">/* ... */</span>
-<span class="p">});</span>
-</code></pre></div>
+<p>Wait for the <code>opened</code> event if there is a chance that a browser isn&#39;t ready in time.</p>
+
 
 		</div>
 	</article>

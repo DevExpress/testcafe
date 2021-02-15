@@ -775,6 +775,15 @@
 		
     </li>
 
+    <li>
+		    
+		
+
+<a href="/testcafe/documentation/guides/advanced-guides/speed-up-test-execution.html"  >Speed Up Test Execution</a>
+
+		
+    </li>
+
 </ul>
 		
     </li>
@@ -1039,9 +1048,9 @@
 <p>Unlike <a href="../concepts/page-model.html">page models</a> or <a href="../../recipes/best-practices/create-helpers.html">helper functions</a>, roles are designed for login operations and provide the following dedicated features:</p>
 
 <ul>
-<li><strong>Object-based API.</strong> Authentication data and logic are stored in an object that is easy to pass and activate when needed.</li>
-<li><strong>Single login.</strong> Login actions are not repeated when you switch to a previously used role within the same session. If you activate a role in the <a href="../basic-guides/organize-tests.html#test-hooks">beforeEach</a> hook, login actions run once before the first test. Subsequent tests reuse authentication data so that it happens instantly.</li>
-<li><strong>Automatic return.</strong> The browser automatically navigates back to the page where you switched roles. (You can disable this behavior if required.)</li>
+<li><strong>Object-based API.</strong> Authentication data and logic are stored in a single object. You can use this object anywhere in code.</li>
+<li><strong>Single login.</strong> Login actions are not repeated when you switch to a previously used role within the same session. If you activate a role in the <a href="../basic-guides/organize-tests.html#test-hooks">beforeEach</a> hook, login actions run once before the first test. Subsequent tests reuse authentication data to automatically log in.</li>
+<li><strong>Automatic return.</strong> The browser automatically navigates back to the page that was active when you last switched roles. (You can disable this with the <a href="../../reference/test-api/role/constructor.html#optionspreserveurl">preserveUrl</a> option.)</li>
 <li><strong>No logout needed.</strong> Authentication data is automatically cleared when you switch between roles.</li>
 <li><strong>Multiple authentication support.</strong> If you log in to different services/websites during a test, authentication data from cookie and browser storage accumulates in the active role. When you switch back to this role within the same test, you are automatically logged in to all websites.</li>
 <li><strong>Anonymous role.</strong> A built-in role that logs out of all accounts.</li>

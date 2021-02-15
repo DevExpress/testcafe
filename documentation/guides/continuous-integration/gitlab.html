@@ -775,6 +775,15 @@
 		
     </li>
 
+    <li>
+		    
+		
+
+<a href="/testcafe/documentation/guides/advanced-guides/speed-up-test-execution.html"  >Speed Up Test Execution</a>
+
+		
+    </li>
+
 </ul>
 		
     </li>
@@ -1028,7 +1037,7 @@
 <h2><a class="anchor" id="option-1---use-testcafe-docker-image"></a>Option 1 - Use TestCafe Docker Image <a class="permalink" href="#option-1---use-testcafe-docker-image">#</a></h2>
 <p>Open the <code>.gitlab-ci.yml</code> file that stores the GitLab CI configuration. If this file does not exist, create it in the repository&#39;s root directory.</p>
 
-<p>Create a new <a href="https://docs.gitlab.com/ee/ci/pipelines.html">job</a>. To do this, add the following settings to <code>.gitlab-ci.yml</code> at the top level:</p>
+<p>Create a new <a href="https://docs.gitlab.com/ee/ci/jobs/index.html">job</a>. To do this, add the following settings to <code>.gitlab-ci.yml</code> at the top level:</p>
 <div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="na">e2e_tests</span><span class="pi">:</span>
   <span class="na">image</span><span class="pi">:</span>
     <span class="na">name</span><span class="pi">:</span> <span class="s">testcafe/testcafe</span>

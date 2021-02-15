@@ -1870,7 +1870,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/reference/testcafe-api/browserconnection/ready.html"  >ready</a>
+<a href="/testcafe/documentation/reference/testcafe-api/browserconnection/opened.html"  >opened</a>
 
 		
     </li>
@@ -2132,11 +2132,11 @@
 
 <p>Use this object to run tests on a remote or a mobile device.</p>
 
-<p><code>BrowserConnection</code> is created with the <a href="../testcafe/createbrowserconnection.html">testCafe.createBrowserConnection</a> function.</p>
+<p>You can create a new <code>BrowserConnection</code> with the <a href="../testcafe/createbrowserconnection.html">testCafe.createBrowserConnection</a> function.</p>
 
-<p>The <a href="url.html">browserConnection.url</a> property returns a URL the remote browser should visit in order to connect to the <a href="../testcafe/">TestCafe server instance</a>.</p>
+<p>The <a href="url.html">browserConnection.url</a> property returns a URL. Remote browsers can use this URL to connect to a <a href="../testcafe/">TestCafe server instance</a>.</p>
 
-<p>When the remote browser establishes connection, the <a href="ready.html">browserConnection.ready</a> event fires. After that, you can pass the <code>BrowserConnection</code> to <a href="../runner/browsers.html">runner.browsers</a> and start tests.</p>
+<p>When the remote browser establishes connection, the <a href="opened.html">browserConnection.opened</a> event fires. After that, you can pass the <code>BrowserConnection</code> to <a href="../runner/browsers.html">runner.browsers</a> and start tests.</p>
 
 <p><strong>Example</strong></p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">createTestCafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">);</span>
@@ -2145,10 +2145,10 @@
 <span class="kd">const</span> <span class="nx">runner</span>           <span class="o">=</span> <span class="nx">testcafe</span><span class="p">.</span><span class="nx">createRunner</span><span class="p">();</span>
 <span class="kd">const</span> <span class="nx">remoteConnection</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">testcafe</span><span class="p">.</span><span class="nx">createBrowserConnection</span><span class="p">();</span>
 
-<span class="c1">// Outputs remoteConnection.url so that it can be visited from the remote browser.</span>
+<span class="c1">// Outputs the remoteConnection.url to allow access from a remote browser.</span>
 <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">remoteConnection</span><span class="p">.</span><span class="nx">url</span><span class="p">);</span>
 
-<span class="nx">remoteConnection</span><span class="p">.</span><span class="nx">once</span><span class="p">(</span><span class="dl">'</span><span class="s1">ready</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+<span class="nx">remoteConnection</span><span class="p">.</span><span class="nx">once</span><span class="p">(</span><span class="dl">'</span><span class="s1">opened</span><span class="dl">'</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="kd">const</span> <span class="nx">failedCount</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">runner</span>
         <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="dl">'</span><span class="s1">test.js</span><span class="dl">'</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="nx">remoteConnection</span><span class="p">)</span>

@@ -1870,7 +1870,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/reference/testcafe-api/browserconnection/ready.html"  >ready</a>
+<a href="/testcafe/documentation/reference/testcafe-api/browserconnection/opened.html"  >opened</a>
 
 		
     </li>
@@ -2131,10 +2131,10 @@
 <p>Runs tests according to the current configuration. Returns the number of failed tests.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">async run(options) → Promise&lt;Number&gt;
 </code></pre></div>
-<p>Before TestCafe runs tests, it reads settings from the <code>.testcaferc.json</code> <a href="../../configuration-file.html">configuration file</a> if this file exists. Then it applies settings specified in the programming API. API settings override values from the configuration file in case they differ. TestCafe prints information about every overridden property in the console.</p>
-<blockquote class="important"><div class="blockquote-content"><p>Make sure to keep the browser tab that runs tests active. Do not minimize the browser window.
-Inactive tabs and minimized browser windows switch to a lower resource consumption mode
-where tests are not guaranteed to execute correctly.</p>
+<p>Before TestCafe runs tests, it reads settings from the <code>.testcaferc.json</code> <a href="../../configuration-file.html">configuration file</a> if this file exists and applies settings specified in the programming API. API settings override values from the configuration file. TestCafe prints information about every overridden property in the console.</p>
+<blockquote class="important"><div class="blockquote-content"><p>Make sure the browser tab that runs tests stays active.
+Do not minimize the browser window. Inactive tabs and minimized browser windows switch
+to a lower resource consumption mode where tests are not guaranteed to execute correctly.</p>
 </div></blockquote>
 <p>You can pass the following options to the <code>runner.run</code> function.</p>
 <div class="table-wrapper"><table><thead><tr>
@@ -2192,6 +2192,24 @@ where tests are not guaranteed to execute correctly.</p>
 <td><code>3000</code></td>
 </tr>
 <tr>
+<td><code>ajaxRequestTimeout</code></td>
+<td>Number</td>
+<td>Wait time (in milliseconds) for fetch/XHR requests. If no response is received within the specified period, an error is thrown.</td>
+<td><code>120000</code></td>
+</tr>
+<tr>
+<td><code>pageRequestTimeout</code></td>
+<td>Number</td>
+<td>Time (in milliseconds) to wait for HTML pages. If the page isn&#39;t received within the specified period, an error is thrown.</td>
+<td><code>25000</code></td>
+</tr>
+<tr>
+<td><code>browserInitTimeout</code></td>
+<td>Number</td>
+<td>Time (in milliseconds) for browsers to connect to TestCafe and report that they are ready to test. If one or more browsers fail to connect within this period, TestCafe throws an error.</td>
+<td><code>120000</code> for <a href="../../command-line-interface.html#local-browsers">local browsers</a>, <code>360000</code> for <a href="../../command-line-interface.html#remote-browsers">remote browsers</a></td>
+</tr>
+<tr>
 <td><code>speed</code></td>
 <td>Number</td>
 <td>Specifies the test execution speed. A number between <code>1</code> (fastest) and <code>0.01</code> (slowest). If an individual action&#39;s speed is also specified, the action speed setting overrides the test speed.</td>
@@ -2221,6 +2239,12 @@ where tests are not guaranteed to execute correctly.</p>
 <td>Disables support for <a href="../../../guides/advanced-guides/multiple-browser-windows.html">multi-window testing</a> in Chrome and Firefox. Use this option if you encounter compatibility issues with your existing tests.</td>
 <td></td>
 </tr>
+<tr>
+<td><code>retryTestPages</code></td>
+<td>Boolean</td>
+<td>Enables retries for failed network requests for webpages visited during tests. Requires a secure connection. See the <a href="../../configuration-file.html#retrytestpages">related configuration file property</a> for more details.</td>
+<td></td>
+</tr>
 </tbody></table></div>
 <p>After all tests are finished, call the <a href="../testcafe/close.html">testcafe.close</a> function to stop the TestCafe server.</p>
 
@@ -2235,11 +2259,15 @@ where tests are not guaranteed to execute correctly.</p>
 <li><a href="../../configuration-file.html#selectortimeout">selectorTimeout</a></li>
 <li><a href="../../configuration-file.html#assertiontimeout">assertionTimeout</a></li>
 <li><a href="../../configuration-file.html#pageloadtimeout">pageLoadTimeout</a></li>
+<li><a href="../../configuration-file.html#ajaxrequesttimeout">ajaxRequestTimeout</a></li>
+<li><a href="../../configuration-file.html#pagerequesttimeout">pageRequestTimeout</a></li>
+<li><a href="../../configuration-file.html#browserinittimeout">browserInitTimeout</a></li>
 <li><a href="../../configuration-file.html#speed">speed</a></li>
 <li><a href="../../configuration-file.html#stoponfirstfail">stopOnFirstFail</a></li>
 <li><a href="../../configuration-file.html#disablepagecaching">disablePageCaching</a></li>
 <li><a href="../../configuration-file.html#disablescreenshots">disableScreenshots</a></li>
 <li><a href="../../configuration-file.html#disablemultiplewindows">disableMultipleWindows</a></li>
+<li><a href="../../configuration-file.html#retrytestpages">retryTestPages</a></li>
 </ul>
 
 <p><strong>Example</strong></p>
@@ -2268,9 +2296,9 @@ where tests are not guaranteed to execute correctly.</p>
 </code></pre></div>
 <p>If a browser stops responding while it executes tests, TestCafe restarts the browser and reruns the current test in a new browser instance.
 If the same problem occurs with this test two more times, the test run finishes and an error is thrown.</p>
-<blockquote><div class="blockquote-content"><p>When you use a <a href="../livemoderunner.html">LiveModeRunner</a>, you can call the <code>runner.run</code> method only once. In rare cases when you need multiple live mode sessions to run in parallel, you can create several <a href="../testcafe/">TestCafe server instances</a>.</p>
+<blockquote><div class="blockquote-content"><p>When you use a <a href="../livemoderunner.html">LiveModeRunner</a>, call the <code>runner.run</code> method once. To run multiple live mode sessions simultaneously, create multiple <a href="../testcafe/">TestCafe server instances</a>.</p>
 </div></blockquote><h2><a class="anchor" id="cancel-test-tasks"></a>Cancel Test Tasks <a class="permalink" href="#cancel-test-tasks">#</a></h2>
-<p>You can cancel a promise returned by &#39;runner.run&#39; to stop an individual test task:</p>
+<p>To stop an individual test task, cancel a promise returned by <code>runner.run</code>:</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">taskPromise</span> <span class="o">=</span> <span class="nx">runner</span>
     <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="dl">'</span><span class="s1">tests/fixture1.js</span><span class="dl">'</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">browsers</span><span class="p">([</span><span class="nx">remoteConnection</span><span class="p">,</span> <span class="dl">'</span><span class="s1">chrome</span><span class="dl">'</span><span class="p">])</span>
@@ -2279,7 +2307,7 @@ If the same problem occurs with this test two more times, the test run finishes 
 
 <span class="nx">taskPromise</span><span class="p">.</span><span class="nx">cancel</span><span class="p">();</span>
 </code></pre></div>
-<p>You can also cancel all pending tasks at once with the <a href="stop.html">runner.stop</a> method.</p>
+<p>You can cancel all pending tasks with the <a href="stop.html">runner.stop</a> method.</p>
 
 
 		</div>
