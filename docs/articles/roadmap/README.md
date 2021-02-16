@@ -17,10 +17,8 @@ Feature                                                                         
 ------------------------------------------------------------------------------------------------- | -------------------
 
 [HTTP API Testing](https://github.com/DevExpress/testcafe/issues/4288)                            | Planned
-[Enhance TestCafe HTTPS Capabilities]()                                                           | Planned
 [HTTP2/HTTP3 Support](https://github.com/DevExpress/testcafe-hammerhead/issues/1960)              | Planned
 [Set HTTP Cookies](https://github.com/DevExpress/testcafe/issues/4063)                            | Planned
-[View Active Cookies](https://github.com/DevExpress/testcafe/issues/4428)                         | Planned
 
 ## API
 
@@ -28,6 +26,7 @@ Feature                                                                         
 ------------------------------------------------------------------------------------------------- | -------------------
 [Testing in Multiple Browser Windows](https://github.com/DevExpress/testcafe/issues/912)          | **Implemented**
 [Dedicated *Scroll* Action](https://github.com/DevExpress/testcafe/issues/527)                    | Planned
+[View Active Cookies](https://github.com/DevExpress/testcafe/issues/4428)                         | Planned
 
 ## Debugging
 
@@ -40,6 +39,7 @@ Feature                                                                         
 Feature                                                                                           | Status
 ------------------------------------------------------------------------------------------------- | -------------------
 [Cache Page Assets Between Tests](https://github.com/DevExpress/testcafe-hammerhead/issues/863)   | **In Progress**
-[Improve Waiting Mechanism]()                                                                     | Planned
+Improve Waiting Mechanism                                                                         | Planned
+Enhance TestCafe HTTPS Capabilities                                                               | Planned
 [Skip JS Errors on Chosen Pages](https://github.com/DevExpress/testcafe/issues/2775)              | Planned
 [Retry Failed Requests for Tested Webpages](https://github.com/DevExpress/testcafe/pull/5738)     | **Implemented**
