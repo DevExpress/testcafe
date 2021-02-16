@@ -51,3 +51,39 @@
     - 'STATE: Incomplete template'
     - 'STATE: Need response'
   close: true
+
+? 'STATE: No updates'
+:
+  # Post a comment
+  comment: |
+    No updates yet. Once we get any results, we will post them in this thread.
+  unlabel:
+    - 'STATE: No updates'
+    - 'STATE: Need response'
+
+? 'STATE: No estimations'
+:
+  # Post a comment
+  comment: |
+    Any personal estimate may be misleading, so we cannot currently tell it at the moment. Once we get any results, we will post them in this thread.
+  unlabel:
+    - 'STATE: No estimations'
+    - 'STATE: Need response'
+
+? 'STATE: Outdated proposal'
+:
+  # Post a comment
+  comment: |
+    We are focused on implementing features from our [Roadmap](https://devexpress.github.io/testcafe/roadmap/). Since this enhancement is not there, we cannot tell you any time frames on when we will be able to address it. If this feature is important for you, please submit a Pull Request with its implementation. See the [Сontribution guide](https://github.com/DevExpress/testcafe/blob/master/CONTRIBUTING.md) for more information.
+  unlabel:
+    - 'STATE: Outdated proposal'
+    - 'STATE: Need response'
+
+? 'STATE: Outdated issue'
+:
+  # Post a comment
+  comment: |
+    We address issues according to their severity, priority, and other factors. It appears that this issue is an edge case. If this issue is important for you, please submit a Pull Request with a fix. See the [Сontribution guide](https://github.com/DevExpress/testcafe/blob/master/CONTRIBUTING.md) for more information.
+  unlabel:
+    - 'STATE: Outdated issue'
+    - 'STATE: Need response'
