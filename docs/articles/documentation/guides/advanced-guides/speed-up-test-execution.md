@@ -15,7 +15,7 @@ This article consists of the following sections that describe how to decrease th
 * [Run Tests in Local Browsers](#run-tests-in-local-browsers)
 * [Mock Requests](#mock-requests)
 * [Optimize Your Page Model](#optimize-your-page-model)
-* [Enable Server Side Caching](#enable-server-side-caching)
+* [Enable Server-Side Caching](#enable-server-side-caching)
 
 ## Run Tests Concurrently
 
