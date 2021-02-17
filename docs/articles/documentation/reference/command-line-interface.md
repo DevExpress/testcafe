@@ -70,6 +70,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--sf, --stop-on-first-fail](#--sf---stop-on-first-fail)
   * [--ts-config-path \<path\>](#--ts-config-path-path)
   * [--compiler-options \<options\>](#--compiler-options-options)
+  * [--cache](#--cache)
   * [--disable-page-caching](#--disable-page-caching)
   * [--disable-multiple-windows](#--disable-multiple-windows)
   * [--retry-test-pages](#--retry-test-pages)
@@ -972,25 +973,21 @@ The values of the `typescript.options.lib` compiler option should be identical t
 
 ### --cache
 
-If enabled, TestCafe proxy caches webpage dependencies (like styles and scripts) for webpages visited during tests. When TestCafe visits the page again later, it pulls assets from the cache instead of requesting them from server.
-
-TestCafe emulates current browser's caching mechanism. TestCafe only caches resources that the browser itself would cache if run without TestCafe.
-
-TestCafe caches scripts, styles, fonts or other web assets, except for HTML and some other assets. Enable `--cache` whlie you test webpages that require plenty of external resources to decrease test run time.
-
-TODO: how do I know what gets cached exactly?
-TODO: what types of assets are cached exactly?
-TODO: what types assets are NOT cached (except HTML)?
-
-> Important! The `--cache` feature is experimental. Turn it off if you experience problems (
- TODO: what sort of problems may occur?)
->
+If enabled, TestCafe proxy caches webpage dependencies (like styles and scripts) for webpages visited during tests. When TestCafe revisits the page, it pulls assets from the cache instead of requesting them from the server.
 
 ```sh
 testcafe chrome my-tests --cache
 ```
 
-*Related configuration file property*: []().
+TestCafe emulates the current browser's caching mechanism. TestCafe only caches resources that the browser itself would cache if run without TestCafe.
+
+TestCafe caches scripts, styles, fonts, and other web assets, except for HTML. TestCafe doesn't cache HTML because that could interfere with [user roles](../guides/advanced-guides/authentication.md#user-roles). TestCafe caches assets that are *5 MB* in size at maximum.
+
+Enable `--cache` when you test asset-heavy webpages to decrease test run time.
+
+> Important! The `--cache` feature is experimental. Turn it off if you experience instabilities in your tests.
+
+*Related configuration file property*: [cache]().
 
 ### --disable-page-caching
 
