@@ -7,14 +7,6 @@ permalink: /documentation/guides/advanced-guides/multiple-browser-windows.html
 
 The TestCafe API includes methods that open, close, and switch between browser windows. You can test websites with pop-up windows and OAuth login forms, debug complex multi-window applications, or run multiple instances of the same web app side-by-side.
 
-⚠ This is a **beta** feature. Browser support is limited to local instances of Chrome and Firefox. You can resize child windows or make screenshots of them in Chrome only. You cannot record videos of child windows. The available functionality is subject to further revisions. Please do not use this feature in production environments.
-
-️🛠️ You can disable support for multiple browser windows if you encounter compatibility issues with your tests. Use one of the following settings:
-
-* the [--disable-multiple-windows](../../reference/command-line-interface.md#--disable-multiple-windows) command line flag,
-* the `disableMultipleWindows` [runner.run](../../reference/testcafe-api/runner/run.md) option,
-* the [disableMultipleWindows](../../reference/configuration-file.md#disablemultiplewindows) configuration file property.
-
 ## Automatic Switch to New Windows
 
 When your page launches a new window, the test automatically continues in the newly opened window. When that window is closed, the test switches back to its parent.
@@ -162,6 +154,14 @@ test('Close a specific window', async t => {
     await t.closeWindow(window1);
 });
 ```
+
+## Disable Support for Multiple Windows
+
+Use one of the following settings to disable support for multiple browser windows:
+
+* the [--disable-multiple-windows](../../reference/command-line-interface.md#--disable-multiple-windows) command line flag,
+* the `disableMultipleWindows` [runner.run](../../reference/testcafe-api/runner/run.md) option,
+* the [disableMultipleWindows](../../reference/configuration-file.md#disablemultiplewindows) configuration file property.
 
 ## Limitations
 

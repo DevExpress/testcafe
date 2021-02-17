@@ -27,6 +27,7 @@ permalink: /documentation/guides/
 * [Detect the Client Browser and Platform](advanced-guides/detect-the-client-browser-and-platform.md)
 * [Use TestCafe Docker Image](advanced-guides/use-testcafe-docker-image.md)
 * [Multiple Browser Windows](advanced-guides/multiple-browser-windows.md)
+* [Speed Up Test Execution](advanced-guides/speed-up-test-execution.md)
 
 ## Concepts
 
