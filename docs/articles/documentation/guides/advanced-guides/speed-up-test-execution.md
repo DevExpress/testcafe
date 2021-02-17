@@ -15,7 +15,7 @@ This article consists of the following sections that describe how to decrease th
 * [Run Tests in Local Browsers](#run-tests-in-local-browsers)
 * [Mock Requests](#mock-requests)
 * [Optimize Your Page Model](#optimize-your-page-model)
-* [Enable Server Side Caching](#enable-server-side-caching)
+* [Enable Server-Side Caching](#enable-server-side-caching)
 
 ## Run Tests Concurrently
 
@@ -105,7 +105,7 @@ This approach ensures that the page model object is created only once per test r
 
 For more on page models, read [Page Model](../../guides/concepts/page-model.md).
 
-## Enable Server Side Caching
+## Enable Server-Side Caching
 
 > Important! Server-side caching is **experimental**.
 >
