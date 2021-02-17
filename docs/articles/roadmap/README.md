@@ -16,30 +16,32 @@ Please vote on the features you want us to implement first to help us prioritize
 
 Feature                                                                                           | Status
 ------------------------------------------------------------------------------------------------- | -------------------
+[Testing in Multiple Browser Windows](https://github.com/DevExpress/testcafe/issues/912)          | **Implemented**
+[Selector Debug Panel](https://github.com/DevExpress/testcafe/issues/3244)                        | **In Progress**
 [HTTP API Testing](https://github.com/DevExpress/testcafe/issues/4288)                            | Planned
-[HTTP2/HTTP3 Support](https://github.com/DevExpress/testcafe-hammerhead/issues/1960)              | Planned
-[Set HTTP Cookies](https://github.com/DevExpress/testcafe/issues/4063)                            | Planned
+[Cookie Management](https://github.com/DevExpress/testcafe/issues/5964)                           | Planned                        
 
 ## API
 
 Feature                                                                                           | Status
 ------------------------------------------------------------------------------------------------- | -------------------
-[Testing in Multiple Browser Windows](https://github.com/DevExpress/testcafe/issues/912)          | **Implemented**
-[Dedicated *Scroll* Action](https://github.com/DevExpress/testcafe/issues/527)                    | Planned
-[View Active Cookies](https://github.com/DevExpress/testcafe/issues/4428)                         | Planned
+[Dedicated *Scroll* Action](https://github.com/DevExpress/testcafe/issues/5965)                   | Planned
+
 
 ## Debugging
 
 Feature                                                                                           | Status
 ------------------------------------------------------------------------------------------------- | -------------------
-[Selector Debug Panel](https://github.com/DevExpress/testcafe/issues/3244)                        | **In Progress**
+[Interactive Demo Center](https://github.com/DevExpress/testcafe/issues/5966)
+
 
 ## Test Stability
 
 Feature                                                                                           | Status
 ------------------------------------------------------------------------------------------------- | -------------------
-[Cache Page Assets Between Tests](https://github.com/DevExpress/testcafe-hammerhead/issues/863)   | **In Progress**
-Improve Waiting Mechanism                                                                         | Planned
+[Retry Failed Requests for Tested Webpages](https://github.com/DevExpress/testcafe/pull/5738)     | **Implemented**
+[HTTP Caching](https://github.com/DevExpress/testcafe-hammerhead/issues/863)                      | **In Progress**
+[Improve Waiting Mechanism for Assertions](https://github.com/DevExpress/testcafe/issues/5967)    | Planned
 Enhance TestCafe HTTPS Capabilities                                                               | Planned
 [Skip JS Errors on Chosen Pages](https://github.com/DevExpress/testcafe/issues/2775)              | Planned
-[Retry Failed Requests for Tested Webpages](https://github.com/DevExpress/testcafe/pull/5738)     | **Implemented**
+[HTTP2 Support](https://github.com/DevExpress/testcafe-hammerhead/issues/1960)                    | Planned
