@@ -19,7 +19,7 @@ Feature                                                                         
 [Testing in Multiple Browser Windows](https://github.com/DevExpress/testcafe/issues/912)          | **Implemented**
 [Selector Debug Panel](https://github.com/DevExpress/testcafe/issues/3244)                        | **In Progress**
 [HTTP API Testing](https://github.com/DevExpress/testcafe/issues/4288)                            | Planned
-[Cookie Management](https://github.com/DevExpress/testcafe/issues/5964)                           | Planned                        
+[Cookie Management](https://github.com/DevExpress/testcafe/issues/5964)                           | Planned
 
 ## API
 
@@ -27,13 +27,11 @@ Feature                                                                         
 ------------------------------------------------------------------------------------------------- | -------------------
 [Dedicated *Scroll* Action](https://github.com/DevExpress/testcafe/issues/5965)                   | Planned
 
-
 ## Debugging
 
 Feature                                                                                           | Status
 ------------------------------------------------------------------------------------------------- | -------------------
-[Interactive Demo Center](https://github.com/DevExpress/testcafe/issues/5966)
-
+[Interactive Demo Center](https://github.com/DevExpress/testcafe/issues/5966)                     | Planned
 
 ## Test Stability
 
