@@ -15,7 +15,7 @@ This article consists of the following sections that describe how to decrease th
 * [Run Tests in Local Browsers](#run-tests-in-local-browsers)
 * [Mock Requests](#mock-requests)
 * [Optimize Your Page Model](#optimize-your-page-model)
-* [Use the `--cache` CLI option](#use-the---cache-cli-option)
+* [Enable Server Side Caching](#enable-server-side-caching)
 
 ## Run Tests Concurrently
 
@@ -105,11 +105,36 @@ This approach ensures that the page model object is created only once per test r
 
 For more on page models, read [Page Model](../../guides/concepts/page-model.md).
 
-## Use the `--cache` CLI option
+## Enable Server Side Caching
 
-⚠ This is a **beta** feature. 
-TODO: add possible negative impact if the feature is enabled
+> Important! Server-side caching is **experimental**.
+>
+> Disable caching if you run into compatibility issues with your tests.
 
-<!-- Browser support is limited to local instances of Chrome and Firefox. You can resize child windows or make screenshots of them in Chrome only. You cannot record videos of child windows. The available functionality is subject to further revisions. Please do not use this feature in production environments. -->
+TestCafe can save webpage assets (like styles, scripts, and images) in its server cache. When TestCafe visits the page again, it pulls assets from the cache instead of requesting them from server.
 
-️Disable caching if you encounter compatibility issues with your tests.
+You can enable caching in one of the following ways:
+
+* [--cache](../../reference/command-line-interface.md#cache) CLI option
+
+  ```sh
+  testcafe chrome my-tests/ --cache
+  ```
+
+* [cache]() configuration file property
+
+  ```json
+  {
+  "cache": true
+  }
+  ```
+
+* [cache]() API option
+
+  ```js
+  runner.run({ cache: true });
+  ```
+
+Enable server-side caching when you test asset-heavy webpages to decrease test run time.
+
+> The `cache` option doesn't cache HTML page content and assets heavier than 5 MB.
