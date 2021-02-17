@@ -970,6 +970,28 @@ The values of the `typescript.options.lib` compiler option should be identical t
 *Related configuration file property*: [compilerOptions](configuration-file.md#compileroptions).
 *Related API method*: [runner.compilerOptions](testcafe-api/runner/compileroptions.md)
 
+### --cache
+
+If enabled, TestCafe proxy caches webpage dependencies (like styles and scripts) for webpages visited during tests. When TestCafe visits the page again later, it pulls assets from the cache instead of requesting them from server.
+
+TestCafe emulates current browser's caching mechanism. TestCafe only caches resources that the browser itself would cache if run without TestCafe.
+
+TestCafe caches scripts, styles, fonts or other web assets, except for HTML and some other assets. Enable `--cache` whlie you test webpages that require plenty of external resources to decrease test run time.
+
+TODO: how do I know what gets cached exactly?
+TODO: what types of assets are cached exactly?
+TODO: what types assets are NOT cached (except HTML)?
+
+> Important! The `--cache` feature is experimental. Turn it off if you experience problems (
+ TODO: what sort of problems may occur?)
+>
+
+```sh
+testcafe chrome my-tests --cache
+```
+
+*Related configuration file property*: []().
+
 ### --disable-page-caching
 
 Prevents the browser from caching page content.

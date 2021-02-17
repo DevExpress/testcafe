@@ -15,6 +15,7 @@ This article consists of the following sections that describe how to decrease th
 * [Run Tests in Local Browsers](#run-tests-in-local-browsers)
 * [Mock Requests](#mock-requests)
 * [Optimize Your Page Model](#optimize-your-page-model)
+* [Use the `--cache` CLI option](#use-the---cache-cli-option)
 
 ## Run Tests Concurrently
 
@@ -103,3 +104,12 @@ This approach ensures that the page model object is created only once per test r
 > Important! If you export the page model class and create an instance in every test file, JavaScript creates a new page object per test file. This increases test execution time and memory consumption.
 
 For more on page models, read [Page Model](../../guides/concepts/page-model.md).
+
+## Use the `--cache` CLI option
+
+⚠ This is a **beta** feature. 
+TODO: add possible negative impact if the feature is enabled
+
+<!-- Browser support is limited to local instances of Chrome and Firefox. You can resize child windows or make screenshots of them in Chrome only. You cannot record videos of child windows. The available functionality is subject to further revisions. Please do not use this feature in production environments. -->
+
+️Disable caching if you encounter compatibility issues with your tests.
