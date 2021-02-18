@@ -40,6 +40,7 @@ Feature                                                                         
 [Retry Failed Requests for Tested Webpages](https://github.com/DevExpress/testcafe/pull/5738)     | **Implemented**
 [HTTP Caching](https://github.com/DevExpress/testcafe-hammerhead/issues/863)                      | **In Progress**
 [Improve Waiting Mechanism for Assertions](https://github.com/DevExpress/testcafe/issues/5967)    | Planned
-Enhance TestCafe HTTPS Capabilities                                                               | Planned
+[Enable HTTPS connection Between the Proxy and Browsers](https://github.com/DevExpress/testcafe/issues/5974)| Planned
+[Simplify SSL Certificate Setup](https://github.com/DevExpress/testcafe/issues/5973)              | Planned
 [Skip JS Errors on Chosen Pages](https://github.com/DevExpress/testcafe/issues/2775)              | Planned
 [HTTP2 Support](https://github.com/DevExpress/testcafe-hammerhead/issues/1960)                    | Planned
