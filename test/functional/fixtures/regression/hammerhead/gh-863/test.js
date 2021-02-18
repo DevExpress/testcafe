@@ -6,15 +6,18 @@ const config         = require('../../../../config');
 const { expect }     = require('chai');
 const enableDestroy  = require('server-destroy');
 
-const scriptRequestCounter = {
+const resourceRequestCounter = {
     script1: 0,
-    script2: 0
+    script2: 0,
+    img:     0
 };
 
-function readFileContent (file) {
-    const resolvedPath = path.join(__dirname, file);
+function resolvePath (file) {
+    return path.join(__dirname, file);
+}
 
-    return fs.readFileSync(resolvedPath).toString();
+function readFileContent (file) {
+    return fs.readFileSync(resolvePath(file)).toString();
 }
 
 function addCachingHeader (res) {
@@ -29,20 +32,29 @@ function createServer () {
             content = readFileContent('./page/index.html');
 
         else if (req.url === '/script-1.js') {
-            scriptRequestCounter.script1++;
+            resourceRequestCounter.script1++;
 
             addCachingHeader(res);
 
             content = readFileContent('./page/script-1.js');
         }
         else if (req.url === '/script-2.js') {
-            scriptRequestCounter.script2++;
+            resourceRequestCounter.script2++;
 
             addCachingHeader(res);
             res.setHeader('X-Checked-Header', 'TesT');
             res.setHeader('content-type', 'application/javascript; charset=utf-8');
 
             content = readFileContent('./page/script-2.js');
+        }
+        else if (req.url === '/img.png') {
+            resourceRequestCounter.img++;
+
+            addCachingHeader(res);
+            res.setHeader('content-type', 'image/png');
+            fs.createReadStream(resolvePath('./page/img.png')).pipe(res);
+
+            return;
         }
 
         res.end(content);
@@ -78,12 +90,13 @@ if (isLocalChrome) {
         it('Should cache resources between tests', () => {
             const server = createServer();
 
-            return run({ src: './testcafe-fixtures/index.js', browser: 'chrome:headless' })
+            return run({ src: './testcafe-fixtures/index.js', browser: 'chrome' })
                 .then(() => {
                     server.destroy();
 
-                    expect(scriptRequestCounter.script1).eql(1);
-                    expect(scriptRequestCounter.script2).eql(1);
+                    expect(resourceRequestCounter.script1).eql(1);
+                    expect(resourceRequestCounter.script2).eql(1);
+                    expect(resourceRequestCounter.img).eql(1);
                 });
         });
     });
