@@ -24,16 +24,16 @@ export default class Storage {
     }
 
     _loadFromStorage () {
-        const savedData = this.storage.getItem(this.storageKey);
+        const savedData = nativeMethods.storageGetItem.call(this.storage, this.storageKey);
 
         if (savedData) {
             this.data = JSON.parse(savedData);
-            this.storage.removeItem(this.storageKey);
+            nativeMethods.storageRemoveItem.call(this.storage, this.storageKey);
         }
     }
 
     save () {
-        this.storage.setItem(this.storageKey, JSON.stringify(this.data));
+        nativeMethods.storageSetItem.call(this.storage, this.storageKey, JSON.stringify(this.data));
     }
 
     setItem (prop, value) {
@@ -46,6 +46,6 @@ export default class Storage {
     }
 
     dispose () {
-        this.storage.removeItem(this.storageKey);
+        nativeMethods.storageRemoveItem.call(this.storage, this.storageKey);
     }
 }
