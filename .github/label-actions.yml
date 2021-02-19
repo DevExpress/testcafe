@@ -87,3 +87,12 @@
   unlabel:
     - 'STATE: Outdated issue'
     - 'STATE: Need response'
+
+? 'STATE: No workarounds'
+:
+  # Post a comment
+  comment: |
+    There are no workarounds. Once we get any updates, we will post them in this thread.
+  unlabel:
+    - 'STATE: No workarounds'
+    - 'STATE: Need response'
