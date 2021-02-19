@@ -979,11 +979,11 @@ If enabled, TestCafe proxy caches webpage dependencies (like styles and scripts)
 testcafe chrome my-tests --cache
 ```
 
-TestCafe emulates the current browser's native caching mechanism. TestCafe only caches resources that the browser itself would cache if run without TestCafe.
+TestCafe emulates the native caching mechanism of the browser. For example, in *Chrome* TestCafe only caches resources that *Chrome* itself would cache if run without TestCafe.
 
-TestCafe caches scripts, styles, fonts, and other web assets, except for HTML. TestCafe doesn't cache HTML because that could interfere with [user roles](../guides/advanced-guides/authentication.md#user-roles). TestCafe caches assets that are *5 MB* in size at maximum.
+TestCafe caches up to **5 MB** of scripts, styles, fonts, and other web assets, except for HTML. TestCafe doesn't cache HTML because that could interfere with [user roles](../guides/advanced-guides/authentication.md#user-roles).
 
-Enable `--cache` when you test asset-heavy webpages to decrease test run time.
+To decrease test run time, enable `--cache` when you test asset-heavy web applications.
 
 > Important! The `--cache` feature is experimental. Turn it off if you experience instabilities in your tests.
 
