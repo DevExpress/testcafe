@@ -981,7 +981,7 @@ testcafe chrome my-tests --cache
 
 TestCafe emulates the native caching mechanism of the browser. For example, in *Chrome* TestCafe only caches resources that *Chrome* itself would cache if run without TestCafe.
 
-TestCafe caches scripts, styles, fonts, and other web assets, except for HTML. TestCafe doesn't cache HTML because that could interfere with [user roles](../guides/advanced-guides/authentication.md#user-roles). Only assets up to **5 MB** in size are saved in cache.
+TestCafe caches scripts, styles, fonts, and other web assets, except for HTML. TestCafe doesn't cache HTML because that could interfere with [user roles](../guides/advanced-guides/authentication.md#user-roles). Only assets up to **5 MB** in size are stored in cache.
 
 To decrease test run time, enable `--cache` when you test web applications that require a lot of assets.
 
