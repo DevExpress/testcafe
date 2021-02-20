@@ -107,11 +107,11 @@ For more on page models, read [Page Model](../../guides/concepts/page-model.md).
 
 ## Enable Server-Side Caching
 
-> Important! Server-side caching is **experimental**.
+> Important! Support for server-side caching is **experimental**.
 >
 > Don't use caching if you run into compatibility issues with your tests.
 
-TestCafe can store webpage assets (like styles, scripts, and images) in its server cache. When TestCafe visits the page again, it pulls assets from the cache instead of requesting them from server.
+The TestCafe proxy can cache webpage assets (such as stylesheets, scripts, and images) and retrieve them from its cache the next time it accesses the webpage.
 
 You can enable caching in one of the following ways:
 
@@ -135,6 +135,6 @@ You can enable caching in one of the following ways:
   runner.run({ cache: true });
   ```
 
-If the tested application loads assets that are cached by the browser, enable server-side caching to decrease test run time.
+Enable server-side caching to decrease test run time, particularly when your application relies on browser caching.
 
 > The `cache` option doesn't cache HTML page content and assets heavier than 5 MB.

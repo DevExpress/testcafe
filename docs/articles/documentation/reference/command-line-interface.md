@@ -973,19 +973,19 @@ The values of the `typescript.options.lib` compiler option should be identical t
 
 ### --cache
 
-If enabled, TestCafe proxy caches webpage dependencies (like styles and scripts) for webpages visited during tests. When TestCafe revisits the page, it pulls assets from the cache instead of requesting them from the server.
+If enabled, the TestCafe proxy caches webpage assets (such as stylesheets and scripts) for the webpages that it processes. The next time the proxy accesses the page, it pulls assets from its cache instead of requesting them from the server.
 
 ```sh
 testcafe chrome my-tests --cache
 ```
 
-TestCafe emulates the native caching mechanism of the browser. For example, in *Chrome* TestCafe only caches resources that *Chrome* itself would cache if run without TestCafe.
+TestCafe emulates the browser's native caching behavior. For example, in *Chrome* TestCafe only caches resources that *Chrome* itself would cache if run without TestCafe.
 
-TestCafe caches scripts, styles, fonts, and other web assets, except for HTML. TestCafe doesn't cache HTML because that could interfere with [user roles](../guides/advanced-guides/authentication.md#user-roles). Only assets up to **5 MB** in size are stored in cache.
+TestCafe caches scripts, stylesheets, fonts, and other web assets up to **5 MB** in size. TestCafe doesn't cache HTML because that could break [user roles](../guides/advanced-guides/authentication.md#user-roles).
 
 To decrease test run time, enable `--cache` when you test web applications that require a lot of assets.
 
-> Important! The `--cache` feature is experimental. Turn it off if you experience instabilities in your tests.
+> Important! Support for server-side caching is experimental. Disable the `--cache` flag if you run into compatibility issues with your tests.
 
 *Related configuration file property*: [cache]().
 
