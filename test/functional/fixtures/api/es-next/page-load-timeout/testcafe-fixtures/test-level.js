@@ -27,16 +27,14 @@ test
     .page('http://localhost:3000/fixtures/api/es-next/page-load-timeout/pages/window-load-long.html')
     .timeouts({ pageLoadTimeout: 0 })
     ("Don't wait for window.load", async t => {
-        const { startTestTime, pageOpenedTime, loadEventRaised } = await t.eval(() => {
+        const { startTestTime, pageOpenedTime } = await t.eval(() => {
             return {
-                pageOpenedTime:  window.pageOpenedTime,
-                startTestTime:   Date.now(),
-                loadEventRaised: window.loadEventRaised
+                pageOpenedTime: window.pageOpenedTime,
+                startTestTime:  Date.now(),
             };
         });
 
         await t.expect(startTestTime - pageOpenedTime).lt(expectedTimeoutForLongLoadPages);
-        await t.expect(loadEventRaised).notOk();
     });
 
 test('The `t.setPageLoadTimeout` method should raise a deprecation warning', async t => {
