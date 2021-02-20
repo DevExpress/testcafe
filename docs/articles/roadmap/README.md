@@ -16,7 +16,7 @@ Please vote on the features you want us to implement first to help us prioritize
 
 Feature                                                                                           | Status
 ------------------------------------------------------------------------------------------------- | -------------------
-[Testing in Multiple Browser Windows](https://github.com/DevExpress/testcafe/issues/912)          | **Implemented**
+[Support for Multiple Browser Windows](https://github.com/DevExpress/testcafe/issues/912)          | **Implemented**
 [Selector Debug Panel](https://github.com/DevExpress/testcafe/issues/3244)                        | **In Progress**
 [HTTP API Testing](https://github.com/DevExpress/testcafe/issues/4288)                            | Planned
 [Cookie Management](https://github.com/DevExpress/testcafe/issues/5964)                           | Planned
@@ -40,7 +40,7 @@ Feature                                                                         
 [Retry Failed Requests for Tested Webpages](https://github.com/DevExpress/testcafe/pull/5738)     | **Implemented**
 [HTTP Caching](https://github.com/DevExpress/testcafe-hammerhead/issues/863)                      | **In Progress**
 [Improve Waiting Mechanism for Assertions](https://github.com/DevExpress/testcafe/issues/5967)    | Planned
-[Enable HTTPS connection Between the Proxy and Browsers](https://github.com/DevExpress/testcafe/issues/5974)| Planned
-[Simplify SSL Certificate Setup](https://github.com/DevExpress/testcafe/issues/5973)              | Planned
-[Skip JS Errors on Chosen Pages](https://github.com/DevExpress/testcafe/issues/2775)              | Planned
+[Enable HTTPS connections Between Browsers and the Proxy](https://github.com/DevExpress/testcafe/issues/5974)| Planned
+[Simplify the SSL Workflow](https://github.com/DevExpress/testcafe/issues/5973)              | Planned
+[Ignore JS Errors On a Per-Page Basis](https://github.com/DevExpress/testcafe/issues/2775)              | Planned
 [HTTP2 Support](https://github.com/DevExpress/testcafe-hammerhead/issues/1960)                    | Planned
