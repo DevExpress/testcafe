@@ -104,6 +104,15 @@ export default class Test extends TestingUnit {
     private _timeouts$ (timeouts: TestTimeouts): Function {
         assertType(is.testTimeouts, 'timeouts', 'test.timeouts', timeouts);
 
+        if ('pageRequestTimeout' in timeouts)
+            assertType(is.nonNegativeNumber, 'timeouts', 'test.timeouts.pageRequestTimeout', timeouts.pageRequestTimeout);
+
+        if ('ajaxRequestTimeout' in timeouts)
+            assertType(is.nonNegativeNumber, 'timeouts', 'test.timeouts.ajaxRequestTimeout', timeouts.ajaxRequestTimeout);
+
+        if ('pageLoadTimeout' in timeouts)
+            assertType(is.nonNegativeNumber, 'timeouts', 'test.timeouts.pageLoadTimeout', timeouts.pageLoadTimeout);
+
         this.timeouts = timeouts;
 
         return this.apiOrigin;

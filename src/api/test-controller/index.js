@@ -427,6 +427,8 @@ export default class TestController {
     }
 
     _setPageLoadTimeout$ (duration) {
+        addWarning(this.warningLog, WARNING_MESSAGE.setPageLoadTimeoutDeprecated);
+
         return this._enqueueCommand('setPageLoadTimeout', SetPageLoadTimeoutCommand, { duration });
     }
 

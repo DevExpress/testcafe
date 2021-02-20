@@ -105,7 +105,7 @@ export const is = {
 
     testTimeouts: {
         name:      'test timeouts initializer',
-        predicate: obj => hasSomePropInObject(obj, ['pageRequestTimeout', 'ajaxRequestTimeout', 'speed'])
+        predicate: obj => hasSomePropInObject(obj, ['pageRequestTimeout', 'ajaxRequestTimeout', 'pageLoadTimeout'])
     }
 };
 

@@ -47,6 +47,7 @@ export default {
     missingAwaitOnSnapshotProperty:     'You used a DOM snapshot property without \'await\'. The property value is assigned when the snapshot is resolved. If you need to use the property value, use \'await\' to resolve the Promise.',
     retryTestPagesIsNotSupported:       'Cannot enable the \'retryTestPages\' option in "{browserAlias}". Please ensure that your version of "{browserAlias}" supports the Service Worker API (https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API).\n',
     browserProviderDropOfPerformance:   'We detected \'{browserName}\' runs slowly. Try to free up or allocate more system resources on its host machine.',
-    testsCompilationTakesTooLong:       'Tests took too long to compile ({compileTime}). Ensure the test code has no excessive imports.'
+    testsCompilationTakesTooLong:       'Tests took too long to compile ({compileTime}). Ensure the test code has no excessive imports.',
+    setPageLoadTimeoutDeprecated:       'You used the \'setPageLoadTimeout\' method of TestController which is deprecated. Note that the deprecated methods will be removed in the next major release. Specify the \'pageLoadTimeout\' option using the \'Test.timeouts\' method instead.'
 };
 

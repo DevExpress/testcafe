@@ -12,4 +12,5 @@ export interface AuthCredentials {
 export interface TestTimeouts {
     pageRequestTimeout?: number;
     ajaxRequestTimeout?: number;
+    pageLoadTimeout?: number;
 }
