@@ -10,7 +10,7 @@ const mock = RequestMock()
     .onRequestTo(async req => {
         return req.url === await getUrlPromise;
     })
-    .respond('Done!');
+    .respond('Done!', 200, { 'access-control-allow-origin': '*' });
 
 fixture `Fixture`
     .requestHooks(mock)
