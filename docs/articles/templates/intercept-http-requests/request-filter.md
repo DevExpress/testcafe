@@ -57,7 +57,7 @@ const mock = RequestMock()
 You can get more request parameters and determine whether to handle the request with the predicate functions.
 
 ```js
-const logger = RequestLogger(request => {
+const logger = RequestLogger(async request => {
     return request.body === '{ test: true }' &&
            request.headers['content-type'] === 'application/json';
 });
@@ -65,7 +65,7 @@ const logger = RequestLogger(request => {
 
 ```js
 const mock = RequestMock()
-    .onRequestTo(request => {
+    .onRequestTo(async request => {
         return request.url === 'http://example.com' &&
                request.method === 'post' &&
                request.isAjax &&
