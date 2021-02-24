@@ -13,7 +13,7 @@ interface RequestHook {
     onResponse(responseEvent: object): Promise<void>;
 }
 
-type RequestFilterRule = ConstructorParameters<typeof import('testcafe-hammerhead').RequestFilterRule>[0];
+type RequestFilterRule = import('testcafe-hammerhead').RequestFilterRuleOptions;
 
 interface RequestHookConstructor {
     /**
