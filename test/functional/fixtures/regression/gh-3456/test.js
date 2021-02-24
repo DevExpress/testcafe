@@ -39,7 +39,7 @@ if (config.useLocalBrowsers) {
                     return assertionHelper.removeScreenshotDir();
                 })
                 .then(() => {
-                    testCafe.close();
+                    return testCafe.close();
                 });
         });
     });

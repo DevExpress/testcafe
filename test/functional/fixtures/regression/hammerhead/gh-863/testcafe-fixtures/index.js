@@ -5,7 +5,7 @@ const reload = ClientFunction(() => {
 });
 
 fixture `Fixture`
-    .page('http://localhost:1340/');
+    .page(`http://localhost:${process.env.TEST_SERVER_PORT}/`);
 
 async function assertTestElements () {
     await t

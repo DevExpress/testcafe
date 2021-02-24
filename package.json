@@ -214,7 +214,6 @@
     "run-sequence": "^1.2.2",
     "saucelabs-connector": "^0.2.0",
     "serve-static": "^1.10.0",
-    "server-destroy": "^1.0.1",
     "sinon": "^7.3.0",
     "stack-chain": "^2.0.0",
     "strip-ansi": "^3.0.0",
