@@ -246,7 +246,7 @@ When TestCafe does not receive a successful response from a server, it outputs t
 
 ```text
 A request to https://www.example.com has failed.
-Use quarantine mode to perform additional attempts to execute this test.
+Increase the pageRequestTimeout or use quarantine mode to perform additional attempts to execute this test.
 ```
 
 You can use [quarantine mode](../documentation/guides/basic-guides/run-tests.md#quarantine-mode) to complete the tests if this problem occurs infrequently.
@@ -255,14 +255,26 @@ However, we recommend that you determine the cause of this issue and address it.
 
 This error can occur in the following situations:
 
-#### The Web server is not responding
+#### The Web server is not responding or takes too long to respond
 
 Check if the Web and DNS servers are online and configured to accept requests to this URL.
+
+Before an exception is thrown, TestCafe waits for *two minutes* for the webpage to be served. Use one of the following options to increase this timeout:
+
+* [`--page-request-timeout` CLI option](../documentation/reference/command-line-interface.md#--cache)
+* [`pageRequestTimeout` configuration file option](../documentation/reference/configuration-file.md#pagerequesttimeout)
+* [`pageRequestTimeout` option of the `runner.run` method](../documentation/reference/testcafe-api/runner/run.md)
+
+TestCafe can retry failed network request for webpages. Use one of the following options to enable retries:
+
+* [`--retry-test-pages` CLI option](../documentation/reference/command-line-interface.md#--retry-test-pages)
+* [`retryTestPages` configuration file option](../documentation/reference/configuration-file.md#retrytestPages)
+* [`retryTestPages` option of the `runner.run` method](../documentation/reference/testcafe-api/runner/run.md)
 
 #### Unstable or improperly configured network connection
 
 * Check the network connection's settings.
-* Ensure that your network equipment works properly. If possible, establish a direct connection to the Internet/Web server.
+* Check your network equipment. If possible, establish a direct connection to the Internet/Web server.
 * Check the proxy server's settings or try a different proxy server.
 * Use VPN.
 * Connect to a different network.
