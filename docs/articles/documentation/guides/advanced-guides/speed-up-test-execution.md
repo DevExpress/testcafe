@@ -101,7 +101,7 @@ import PageModel from 'path/to/page-model.js'
 
 This approach ensures that the page model object is created only once per test run.
 
-> Important! If you export the page model class and create an instance in every test file, JavaScript creates a new page object per test file. This increases test execution time and memory consumption.
+> Important! If you export the page model class and create an instance in every test file, JavaScript creates a new page object for each test file. This increases test execution time and memory consumption.
 
 For more on page models, read [Page Model](../../guides/concepts/page-model.md).
 
@@ -111,7 +111,7 @@ For more on page models, read [Page Model](../../guides/concepts/page-model.md).
 >
 > Don't use caching if you run into compatibility issues with your tests.
 
-The TestCafe proxy can cache webpage assets (such as stylesheets, scripts, and images) and retrieve them from its cache the next time it accesses the webpage.
+The TestCafe proxy can cache webpage assets (stylesheets, scripts, images) and retrieve them from its cache when it accesses the webpage again.
 
 You can enable caching in one of the following ways:
 
@@ -135,6 +135,6 @@ You can enable caching in one of the following ways:
   runner.run({ cache: true });
   ```
 
-Enable server-side caching to decrease test run time, particularly when your application relies on browser caching.
+Enable server-side caching to decrease test duration, particularly when your application relies on browser caching.
 
 > The `cache` option doesn't cache HTML page content and assets heavier than 5 MB.
