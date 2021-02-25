@@ -31,15 +31,15 @@ Feature                                                                         
 
 Feature                                                                                           | Status
 ------------------------------------------------------------------------------------------------- | -------------------
-[Interactive Demo Center](https://github.com/DevExpress/testcafe/issues/5966)                     | Planned
+[Interactive Demo Page](https://github.com/DevExpress/testcafe/issues/5966)                     | Planned
 
 ## Test Stability
 
 Feature                                                                                           | Status
 ------------------------------------------------------------------------------------------------- | -------------------
-[Retry Failed Requests for Tested Webpages](https://github.com/DevExpress/testcafe/pull/5738)     | **Implemented**
+[Repeat Page Requests on Failure](https://github.com/DevExpress/testcafe/pull/5738)     | **Implemented**
 [HTTP Caching](https://github.com/DevExpress/testcafe-hammerhead/issues/863)                      | **In Progress**
-[Improve Waiting Mechanism for Assertions](https://github.com/DevExpress/testcafe/issues/5967)    | Planned
+[Improve the Quality of Automatic Pre-Assertion Timeouts](https://github.com/DevExpress/testcafe/issues/5967)    | Planned
 [Enable HTTPS connections Between Browsers and the Proxy](https://github.com/DevExpress/testcafe/issues/5974)| Planned
 [Simplify the SSL Workflow](https://github.com/DevExpress/testcafe/issues/5973)              | Planned
 [Ignore JS Errors On a Per-Page Basis](https://github.com/DevExpress/testcafe/issues/2775)              | Planned
