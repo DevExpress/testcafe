@@ -713,7 +713,7 @@ See the command line [--page-load-timeout](command-line-interface.md#--page-load
 *CLI*: [--page-load-timeout](command-line-interface.md#--page-load-timeout-ms)  
 *API*: [runner.run({ pageLoadTimeout })](testcafe-api/runner/run.md)
 
-### ajaxRequestTimeout
+## ajaxRequestTimeout
 
 Specifies wait time (in milliseconds) for fetch/XHR requests. If no response is received within the specified period, an error is thrown.
 
@@ -727,7 +727,7 @@ Specifies wait time (in milliseconds) for fetch/XHR requests. If no response is 
 
 *CLI*: [--ajax-request-timeout](command-line-interface.md#--ajax-request-timeout-ms)
 
-### pageRequestTimeout
+## pageRequestTimeout
 
 Specifies time (in milliseconds) to wait for HTML pages. If the page isn't received within the specified period, an error is thrown.
 
