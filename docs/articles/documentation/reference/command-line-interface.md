@@ -987,7 +987,7 @@ To decrease test run time, enable server-side caching when you test asset-heavy 
 
 > Important! Support for server-side caching is experimental. Disable the `--cache` flag if you run into compatibility issues with your tests.
 
-*Related configuration file property*: [cache]().
+*Related configuration file property*: [cache](./configuration-file.md#cache).
 
 ### --disable-page-caching
 

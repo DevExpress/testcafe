@@ -121,7 +121,7 @@ You can enable caching in one of the following ways:
   testcafe chrome my-tests/ --cache
   ```
 
-* [cache]() configuration file property
+* [cache](../../reference/configuration-file.md#cache) configuration file property
 
   ```json
   {
@@ -129,7 +129,7 @@ You can enable caching in one of the following ways:
   }
   ```
 
-* [cache]() API option
+* [cache](testcafe-api/runner/run.md) API option
 
   ```js
   runner.run({ cache: true });
