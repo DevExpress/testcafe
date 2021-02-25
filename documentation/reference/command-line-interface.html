@@ -2202,18 +2202,18 @@
 </ul></li>
 </ul>
 
-<p>When you execute the <code>testcafe</code> command, TestCafe first reads settings from the <code>.testcaferc.json</code> <a href="configuration-file.html">configuration file</a> if this file exists, and then applies the settings from the command line. Command line settings override values from the configuration file in case they differ. TestCafe prints information about every overridden property in the console.</p>
+<p>When you execute the <code>testcafe</code> command, TestCafe first reads settings from the <code>.testcaferc.json</code> <a href="configuration-file.html">configuration file</a> if this file exists, and then applies the settings from the command line. If there are conflicting values, command-line settings override these values in the configuration file. TestCafe prints information about every overridden property in the console.</p>
 
-<p>If the <a href="configuration-file.html#browsers">browsers</a> and <a href="configuration-file.html#src">src</a> properties are specified in the configuration file, you can omit them in the command line.</p>
-<blockquote class="important"><div class="blockquote-content"><p>Make sure the browser tab that runs tests stays active.
-Do not minimize the browser window. Inactive tabs and minimized browser windows switch
-to a lower resource consumption mode where tests are not guaranteed to execute correctly.</p>
+<p>If you specify the <a href="configuration-file.html#browsers">browsers</a> and <a href="configuration-file.html#src">src</a> properties in the configuration file, you can omit them in the command line.</p>
+<blockquote class="important"><div class="blockquote-content"><p>The browser tab that is running tests should remain active. Do not minimize the browser window.
+Inactive tabs and minimized browser windows switch to a lower resource consumption mode
+where tests do not always execute correctly.</p>
 
-<p>Do not zoom pages while testing. Tests may be unstable if the page is zoomed in or out.</p>
+<p>Do not zoom pages while testing. Tests may be unstable if the page is zoomed.</p>
 </div></blockquote>
-<p>During a test, TestCafe suppresses native dialogs, so they don&#39;t block the page. Learn how to handle native dialogs <a href="../../documentation/guides/basic-guides/interact-with-the-page.html#handle-native-dialogs">here</a>.</p>
+<p>TestCafe suppresses native dialogs during a test to prevent them from blocking the page. For more information on how to handle native dialogs, refer to <a href="../../documentation/guides/basic-guides/interact-with-the-page.html#handle-native-dialogs">Handle Native Dialogs</a>.</p>
 
-<p>If a browser stops responding while it executes tests, TestCafe restarts the browser and reruns the current test in a new browser instance.
+<p>If a browser stops responding during test execution, TestCafe restarts the browser and reruns the current test in a new browser instance.
 If the same problem occurs with this test two more times, the test run finishes and an error is thrown.</p>
 <h2><a class="anchor" id="browser-list"></a>Browser List <a class="permalink" href="#browser-list">#</a></h2>
 <p>The <code>browser-list-comma-separated</code> argument specifies the list of browsers (separated by commas) where tests are run.</p>
@@ -2231,14 +2231,14 @@ If the same problem occurs with this test two more times, the test run finishes 
 <p>You can use a path to the browser&#39;s executable file (with the <code>path:</code> prefix) to specify <a href="../guides/concepts/browsers.html#portable-browsers">portable browsers</a>, for example:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe path:d:<span class="se">\f</span>irefoxportable<span class="se">\f</span>irefoxportable.exe tests/sample-fixture.js
 </code></pre></div>
-<p>If the path contains spaces, enclose it in backticks and additionally surround the whole parameter including the keyword in quotation marks.</p>
+<p>If the path has spaces, enclose it in backticks. Surround the whole parameter string including the keyword in quotation marks.</p>
 
 <p>In Windows <code>cmd.exe</code> (default command prompt), use double quotation marks:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"path:</span><span class="sb">`</span>C:<span class="se">\P</span>rogram Files <span class="o">(</span>x86<span class="o">)</span><span class="se">\F</span>irefox Portable<span class="se">\f</span>irefox.exe<span class="sb">`</span><span class="s2">"</span> tests/sample-fixture.js
 </code></pre></div>
 <p>In <code>Unix</code> shells like <code>bash</code>, <code>zsh</code>, <code>csh</code> (macOS, Linux, Windows Subsystem for Linux) and Windows PowerShell, use single quotation marks:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s1">'path:`C:\Program Files (x86)\Firefox Portable\firefox.exe`'</span> tests/sample-fixture.js
-</code></pre></div><blockquote><div class="blockquote-content"><p>Do not use the <code>path:</code> prefix if you need to run a browser in the <a href="../guides/concepts/browsers.html#test-in-headless-mode">headless mode</a>, use <a href="../guides/concepts/browsers.html#use-chromium-device-emulation">device emulation</a> or <a href="../guides/concepts/browsers.html#user-profiles">user profiles</a>. Specify the <a href="../guides/concepts/browsers.html#locally-installed-browsers">browser alias</a> in these cases.</p>
+</code></pre></div><blockquote><div class="blockquote-content"><p>Do not use the <code>path:</code> prefix to run a browser in <a href="../guides/concepts/browsers.html#test-in-headless-mode">headless mode</a> - use <a href="../guides/concepts/browsers.html#use-chromium-device-emulation">device emulation</a> or <a href="../guides/concepts/browsers.html#user-profiles">user profiles</a> instead. Specify the <a href="../guides/concepts/browsers.html#locally-installed-browsers">browser alias</a> in these cases.</p>
 </div></blockquote><h3><a class="anchor" id="test-in-headless-mode"></a>Test in Headless Mode <a class="permalink" href="#test-in-headless-mode">#</a></h3>
 <p>To run tests in the headless mode in Google Chrome or Firefox, use the <code>:headless</code> postfix:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"firefox:headless"</span> tests/sample-fixture.js
@@ -2253,22 +2253,22 @@ If the same problem occurs with this test two more times, the test run finishes 
 <p>To run tests in a <a href="../guides/concepts/browsers.html#browsers-on-remote-devices">browser on a remote device</a>, specify <code>remote</code> as a browser alias.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe remote tests/sample-fixture.js
 </code></pre></div>
-<p>If you want to connect multiple browsers, specify <code>remote:</code> and the number of browsers. For example, if you need to use three remote browsers, specify <code>remote:3</code>.</p>
+<p>If you want to connect multiple browsers, specify <code>remote:</code> and the number of browsers. For example, to use three remote browsers, specify <code>remote:3</code>.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe remote:3 tests/sample-fixture.js
 </code></pre></div>
 <p>TestCafe provides URLs you should open in your remote device&#39;s browsers.</p>
 <blockquote><div class="blockquote-content"><p>If you run tests <a href="#-c-n---concurrency-n">concurrently</a>,
 specify the total number of all browsers&#39; instances after the <code>remote:</code> keyword.</p>
 </div></blockquote>
-<p>You can also use the <a href="#--qr-code">--qr-code</a> option to display QR-codes that represent the same URLs.
-Scan the QR-codes with the device on which you wish to test your application.
+<p>You can use the <a href="#--qr-code">--qr-code</a> option to display QR-codes that contain the URLs.
+Scan the QR-codes with the device you want to use to test your application.
 This connects the browsers to TestCafe and starts the tests.</p>
 <h3><a class="anchor" id="browsers-accessed-through-browser-provider-plugins"></a>Browsers Accessed Through Browser Provider Plugins <a class="permalink" href="#browsers-accessed-through-browser-provider-plugins">#</a></h3>
 <p>To run tests in <a href="../guides/concepts/browsers.html#browsers-in-cloud-testing-services">cloud browsers</a> or <a href="../guides/concepts/browsers.html#nonconventional-browsers">other browsers</a> accessed through a <a href="../extending-testcafe/browser-provider-plugin/">browser provider plugin</a>,
 specify the browser&#39;s alias that consists of the <code>{browser-provider-name}</code> prefix and the name of a browser (the latter can be omitted); for example, <code>saucelabs:Chrome@52.0:Windows 8.1</code>.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"saucelabs:Chrome@52.0:Windows 8.1"</span> tests/sample-fixture.js
 </code></pre></div><h3><a class="anchor" id="start-a-browser-with-arguments"></a>Start a Browser With Arguments <a class="permalink" href="#start-a-browser-with-arguments">#</a></h3>
-<p>If you need to pass arguments for the specified browser, write them after the browser&#39;s alias. Enclose the browser call and its arguments in quotation marks.</p>
+<p>To pass arguments for the specified browser, write them after the browser&#39;s alias. Enclose the browser call and its arguments in quotation marks.</p>
 
 <p>In Windows <code>cmd.exe</code> (default command prompt), use double quotation marks:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s2">"chrome --start-fullscreen"</span> tests/sample-fixture.js
@@ -2276,7 +2276,7 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
 <p>In <code>Unix</code> shells like <code>bash</code>, <code>zsh</code>, <code>csh</code> (macOS, Linux, Windows Subsystem for Linux) and Windows PowerShell, use single quotation marks:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s1">'chrome --start-fullscreen'</span> tests/sample-fixture.js
 </code></pre></div>
-<p>You can also specify arguments for portable browsers. If a path to a browser contains spaces, the path should be enclosed in backticks.</p>
+<p>You can specify arguments for portable browsers. If a path to a browser has spaces, enclose it in backticks.</p>
 
 <p>For Unix shells and Windows PowerShell:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="s1">'path:`/Users/TestCafe/Apps/Google Chrome.app` --start-fullscreen'</span> tests/sample-fixture.js
@@ -2304,39 +2304,39 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
 <p>The following command runs tests from the specified fixture files:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe ie js-tests/fixture.js studio-tests/fixture.testcafe
 </code></pre></div>
-<p>You can also use <a href="https://github.com/isaacs/node-glob#glob-primer">glob patterns</a> to specify a set of files.</p>
+<p>You can use <a href="https://github.com/isaacs/node-glob#glob-primer">glob patterns</a> to specify a set of files.</p>
 
 <p>The following command runs tests from files that match the <code>tests/*page*</code> pattern (for instance, <code>tests/example-page.js</code>, <code>tests/main-page.js</code>, or <code>tests/auth-page.testcafe</code>):</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe ie tests/<span class="k">*</span>page<span class="k">*</span>
 </code></pre></div>
 <p>If you do not specify any file or directory, TestCafe runs tests from the <code>test</code> or <code>tests</code> directories.</p>
 <h2><a class="anchor" id="options"></a>Options <a class="permalink" href="#options">#</a></h2><h3><a class="anchor" id="-h---help"></a>-h, --help <a class="permalink" href="#-h---help">#</a></h3>
-<p>Displays commands&#39; usage information.</p>
+<p>Displays brief documentation for the command.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="nt">--help</span>
 </code></pre></div><h3><a class="anchor" id="-v---version"></a>-v, --version <a class="permalink" href="#-v---version">#</a></h3>
 <p>Displays the TestCafe version.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="nt">--version</span>
 </code></pre></div><h3><a class="anchor" id="-b---list-browsers"></a>-b, --list-browsers <a class="permalink" href="#-b---list-browsers">#</a></h3>
-<p>Lists the aliases of the <a href="../guides/concepts/browsers.html#locally-installed-browsers">auto-detected browsers</a> installed on the local machine.</p>
+<p>Lists the aliases of the <a href="../guides/concepts/browsers.html#locally-installed-browsers">automatically detected browsers</a> installed on the local machine.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="nt">--list-browsers</span>
 </code></pre></div><h3><a class="anchor" id="-r-nameoutput---reporter-nameoutput"></a>-r &lt;name[:output],[...]&gt;, --reporter &lt;name[:output],[...]&gt; <a class="permalink" href="#-r-nameoutput---reporter-nameoutput">#</a></h3>
-<p>Specifies the name of a <a href="../guides/concepts/reporters.html">built-in</a> or <a href="../extending-testcafe/reporter-plugin/">custom reporter</a> that is used to generate test reports.</p>
+<p>Specifies the name of a <a href="../guides/concepts/reporters.html">built-in</a> or <a href="../extending-testcafe/reporter-plugin/">custom reporter</a> that generates test reports.</p>
 
-<p>The following command runs tests in all available browsers and generates a report in xunit format:</p>
+<p>The following command runs tests in all available browsers and generates a report in <code>xunit</code> format:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js <span class="nt">-r</span> xunit
 </code></pre></div>
 <p>The following command runs tests and specifies a custom reporter plugin that generates a test report:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js <span class="nt">-r</span> my-reporter
 </code></pre></div>
-<p>The generated test report is displayed in the command prompt window.</p>
+<p>The command prompt window displays the test report generated.</p>
 
-<p>If you need to save the report to an external file, specify the file path after the report name.</p>
+<p>To save the report to an external file, specify the file path after the report name.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js <span class="nt">-r</span> json:report.json
 </code></pre></div>
-<p>You can also use multiple reporters in a single test run. List them separated by commas.</p>
+<p>You can use multiple reporters in a single test run. List them separated by commas.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js <span class="nt">-r</span> spec,xunit:report.xml
 </code></pre></div>
-<p>Note that only one reporter can write to <code>stdout</code>. All other reporters must output to files.</p>
+<p>During a test, only one reporter can write to <code>stdout</code>. If you use additional reporters, redirect their output to files.</p>
 
 <p><em>Related configuration file property</em>: <a href="configuration-file.html#reporter">reporter</a>.</p>
 <h3><a class="anchor" id="-s---screenshots-optionvalueoption2value2"></a>-s, --screenshots &lt;option=value[,option2=value2,...]&gt; <a class="permalink" href="#-s---screenshots-optionvalueoption2value2">#</a></h3>
@@ -2362,7 +2362,7 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
 </code></pre></div>
 <p>See <a href="../guides/advanced-guides/screenshots-and-videos.html#path-pattern-placeholders">Path Pattern Placeholders</a> for information about the available placeholders.</p>
 
-<p>Enclose the pattern in quotes if it contains spaces:</p>
+<p>Enclose the pattern in quotes if it has spaces:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe all tests/sample-fixture.js <span class="nt">-s</span> <span class="nv">pathPattern</span><span class="o">=</span><span class="s1">'${DATE} ${TIME}/test ${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png'</span>
 </code></pre></div>
 <p>In Windows <code>cmd.exe</code> shell, use double quotes:</p>
@@ -2447,16 +2447,16 @@ specify the browser&#39;s alias that consists of the <code>{browser-provider-nam
 <blockquote><div class="blockquote-content"><p>If the test you run in the debug mode contains a <a href="../guides/basic-guides/organize-tests.html#test-hooks">test hook</a>,
 it is paused within this hook before the first action.</p>
 </div></blockquote>
-<p>You can also use the <strong>Unlock page</strong> switch in the footer to unlock the tested page and interact with its elements.</p>
+<p>You can use the <strong>Unlock page</strong> switch in the footer to unlock the tested page and interact with its elements.</p>
 
 <p><em>Related configuration file property</em>: <a href="configuration-file.html#debugmode">debugMode</a>.</p>
 <h3><a class="anchor" id="--debug-on-fail"></a>--debug-on-fail <a class="permalink" href="#--debug-on-fail">#</a></h3>
-<p>Specifies whether to enter the <a href="#-d---debug-mode">debug mode</a> when a test fails.</p>
+<p>If enabled, TestCafe enters the <a href="#-d---debug-mode">debug mode</a> when a test fails.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome tests/sample-fixture.js <span class="nt">--debug-on-fail</span>
 </code></pre></div>
-<p>If this option is enabled, TestCafe pauses the test when it fails. This allows you to view the tested page and determine the cause of the fail.</p>
+<p>If this option is enabled, TestCafe pauses the test when it fails. This allows you to view the tested page and find the cause of the fail.</p>
 
-<p>When you are done, click the <strong>Finish</strong> button in the footer to end test execution.</p>
+<p>When you finish debugging, click the <strong>Finish</strong> button in the footer to end test execution.</p>
 
 <p><em>Related configuration file property</em>: <a href="configuration-file.html#debugonfail">debugOnFail</a>.</p>
 <h3><a class="anchor" id="-e---skip-js-errors"></a>-e, --skip-js-errors <a class="permalink" href="#-e---skip-js-errors">#</a></h3>
@@ -2478,7 +2478,7 @@ it is paused within this hook before the first action.</p>
 <h3><a class="anchor" id="-t-name---test-name"></a>-t &lt;name&gt;, --test &lt;name&gt; <a class="permalink" href="#-t-name---test-name">#</a></h3>
 <p>TestCafe runs a test with the specified name.</p>
 
-<p>For example, the following command runs only the <code>&quot;Click a label&quot;</code> test from the <code>sample-fixture.js</code> file:</p>
+<p>For example, the following command only runs the <code>&quot;Click a label&quot;</code> test from the <code>sample-fixture.js</code> file:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe ie tests/sample-fixture.js <span class="nt">-t</span> <span class="s2">"Click a label"</span>
 </code></pre></div>
 <p><em>Related configuration file property</em>: <a href="configuration-file.html#filtertest">filter.test</a>.</p>
@@ -2516,11 +2516,11 @@ it is paused within this hook before the first action.</p>
 </code></pre></div>
 <p><em>Related configuration file property</em>: <a href="configuration-file.html#filterfixturemeta">filter.fixtureMeta</a>.</p>
 <h3><a class="anchor" id="-a-command---app-command"></a>-a &lt;command&gt;, --app &lt;command&gt; <a class="permalink" href="#-a-command---app-command">#</a></h3>
-<p>Executes the specified shell command before tests are started. Use it to set up the application you need to test.</p>
+<p>Executes the specified shell command before tests start. Use it to set up the tested application.</p>
 
-<p>An application is automatically terminated after tests are finished.</p>
+<p>An application is terminated after tests finish.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests <span class="nt">--app</span> <span class="s2">"node server.js"</span>
-</code></pre></div><blockquote><div class="blockquote-content"><p>TestCafe adds <code>node_modules/.bin</code> to <code>PATH</code> so that you can use the binaries the locally installed dependencies provide without prefixes.</p>
+</code></pre></div><blockquote><div class="blockquote-content"><p>TestCafe adds <code>node_modules/.bin</code> to <code>PATH</code>. You can omit prefixes when you use binaries the locally installed dependencies provide.</p>
 </div></blockquote>
 <p>Use the <a href="#--app-init-delay-ms">--app-init-delay</a> option to specify the amount of time allowed for this command to initialize the tested application.</p>
 
@@ -2538,7 +2538,7 @@ it is paused within this hook before the first action.</p>
 <p>Specifies that tests should run concurrently.</p>
 
 <p>TestCafe opens <code>n</code> instances of the same browser and creates a pool of browser instances.
-Tests are run concurrently against this pool, that is, each test is run in the first free instance.</p>
+Tests run concurrently within this pool, that is, each test runs in the first free instance.</p>
 
 <p>See <a href="../guides/basic-guides/run-tests.html#run-tests-concurrently">Concurrent Test Execution</a> for more information about concurrent test execution.</p>
 
@@ -2547,7 +2547,7 @@ Tests are run concurrently against this pool, that is, each test is run in the f
 </code></pre></div>
 <p><em>Related configuration file property</em>: <a href="configuration-file.html#concurrency">concurrency</a>.</p>
 <h3><a class="anchor" id="--selector-timeout-ms"></a>--selector-timeout &lt;ms&gt; <a class="permalink" href="#--selector-timeout-ms">#</a></h3>
-<p>Specifies the time (in milliseconds) within which <a href="../guides/basic-guides/select-page-elements.html">selectors</a> attempt to obtain a node to be returned. See <a href="../guides/basic-guides/select-page-elements.html#selector-timeout">Selector Timeout</a>.</p>
+<p>Specifies the time (in milliseconds) within which <a href="../guides/basic-guides/select-page-elements.html">selectors</a> try to find a node. See <a href="../guides/basic-guides/select-page-elements.html#selector-timeout">Selector Timeout</a>.</p>
 
 <p><strong>Default value</strong>: <code>10000</code></p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe ie my-tests <span class="nt">--selector-timeout</span> 500000
@@ -2567,7 +2567,7 @@ See <a href="../guides/basic-guides/assert.html#smart-assertion-query-mechanism"
 <p>Specifies the time (in milliseconds) passed after the <code>DOMContentLoaded</code> event, within which TestCafe waits for the <code>window.load</code> event to fire.</p>
 
 <p>After the timeout passes or the <code>window.load</code> event is raised (whichever happens first), TestCafe starts the test.</p>
-<blockquote><div class="blockquote-content"><p>Note that the <code>DOMContentLoaded</code> event is raised after the HTML document is loaded and parsed, while <code>window.load</code> is raised after all stylesheets, images and subframes are loaded. That is why <code>window.load</code> is fired after the <code>DOMContentLoaded</code> event with a certain delay.</p>
+<blockquote><div class="blockquote-content"><p>The <code>DOMContentLoaded</code> event is raised after the HTML document is loaded and parsed. The <code>window.load</code> event is raised after all stylesheets, images, and subframes are loaded. This causes a delay between the <code>DOMContentLoaded</code> and <code>window.load</code> events.</p>
 </div></blockquote>
 <p><strong>Default value</strong>: <code>3000</code></p>
 
@@ -2606,13 +2606,12 @@ See <a href="../guides/basic-guides/assert.html#smart-assertion-query-mechanism"
 <h3><a class="anchor" id="--speed-factor"></a>--speed &lt;factor&gt; <a class="permalink" href="#--speed-factor">#</a></h3>
 <p>Specifies test execution speed.</p>
 
-<p>Tests are run at the maximum speed by default. You can use this option
-to slow the test down.</p>
+<p>If this parameter is not specified, tests run at the maximum speed. You can use this option to decrease test speed.</p>
 
 <p><code>factor</code> should be a number between <code>1</code> (the fastest) and <code>0.01</code> (the slowest).</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests <span class="nt">--speed</span> 0.1
 </code></pre></div>
-<p>If the speed is also specified for an individual action, the action&#39;s speed setting overrides the test speed.</p>
+<p>If you specify the speed for an individual action, this setting overrides the global test speed.</p>
 
 <p><strong>Default value</strong>: <code>1</code></p>
 
@@ -2626,7 +2625,7 @@ to slow the test down.</p>
 </div></blockquote>
 <p>Use the <a href="test-api/fixture/clientscripts.html">fixture.clientScripts</a> and <a href="test-api/test/clientscripts.html">test.clientScripts</a> methods in test code to inject scripts for an individual fixture or test.</p>
 
-<p>You can also <a href="../guides/advanced-guides/inject-client-scripts.html#inject-a-module">inject modules</a>, <a href="../guides/advanced-guides/inject-client-scripts.html#inject-script-code">code strings</a>, or <a href="../guides/advanced-guides/inject-client-scripts.html#provide-scripts-for-specific-pages">add scripts to individual pages</a> in the API and configuration file. Use the following methods and options to do this:</p>
+<p>You can <a href="../guides/advanced-guides/inject-client-scripts.html#inject-a-module">inject modules</a>, <a href="../guides/advanced-guides/inject-client-scripts.html#inject-script-code">code strings</a>, or <a href="../guides/advanced-guides/inject-client-scripts.html#provide-scripts-for-specific-pages">add scripts to individual pages</a> in the API and configuration file. Use the following methods and options to do this:</p>
 
 <ul>
 <li>the <a href="testcafe-api/runner/clientscripts.html">runner.clientScripts</a> programming interface method</li>
@@ -2640,7 +2639,7 @@ to slow the test down.</p>
 <h3><a class="anchor" id="--ports-port1port2"></a>--ports &lt;port1,port2&gt; <a class="permalink" href="#--ports-port1port2">#</a></h3>
 <p>Specifies custom port numbers TestCafe uses to perform testing. The number range is [0-65535].</p>
 
-<p>TestCafe automatically selects ports if ports are not specified.</p>
+<p>If you do not specify ports, TestCafe automatically selects ports in the range.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests <span class="nt">--ports</span> 12345,54321
 </code></pre></div>
 <p><em>Related configuration file properties</em>: <a href="configuration-file.html#port1-port2">port1, port2</a>.</p>
@@ -2656,16 +2655,17 @@ to slow the test down.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests/<span class="k">**</span>/<span class="k">*</span>.js <span class="nt">--proxy</span> proxy.corp.mycompany.com
 </code></pre></div><div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests/<span class="k">**</span>/<span class="k">*</span>.js <span class="nt">--proxy</span> 172.0.10.10:8080
 </code></pre></div>
-<p>You can also specify authentication credentials with the proxy host.</p>
+<p>You can specify authentication credentials with the proxy host.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">testcafe</span> <span class="nx">chrome</span> <span class="nx">my</span><span class="o">-</span><span class="nx">tests</span><span class="cm">/**/</span><span class="o">*</span><span class="p">.</span><span class="nx">js</span> <span class="o">--</span><span class="nx">proxy</span> <span class="nx">username</span><span class="p">:</span><span class="nx">password</span><span class="p">@</span><span class="nd">proxy</span><span class="p">.</span><span class="nx">mycorp</span><span class="p">.</span><span class="nx">com</span>
 </code></pre></div>
 <p><em>Related configuration file property</em>: <a href="configuration-file.html#proxy">proxy</a>.</p>
 <h3><a class="anchor" id="--proxy-bypass-rules"></a>--proxy-bypass &lt;rules&gt; <a class="permalink" href="#--proxy-bypass-rules">#</a></h3>
 <p>Requires that TestCafe bypasses the proxy server to access the specified resources.</p>
 
-<p>When you access the Internet through a proxy server (you can specify the server address with the <a href="#--proxy-host">--proxy</a> option), you may still need some local or external resources to be accessed directly. In this instance, provide their URLs to the <code>--proxy-bypass</code> option.</p>
+<p>You can use the <a href="#--proxy-host">--proxy</a> option to access the Internet through a proxy server.
+To bypass the proxy when you access resources, pass URLs of these resources to the <code>--proxy-bypass</code> option.</p>
 
-<p>The <code>rules</code> parameter takes a comma-separated list (without spaces) of URLs that require direct access. You can replace parts of the URL with the <code>*</code> wildcard that matches any number of characters. Wildcards at the beginning and end of the rules can be omitted (<code>*.mycompany.com</code> and <code>.mycompany.com</code> have the same effect).</p>
+<p>The <code>rules</code> parameter takes a comma-separated list (without spaces) of URLs that require direct access. You can replace parts of the URL with the <code>*</code> wildcard that matches any number of characters. You can omit wildcards at the beginning and end of the rules (<code>*.mycompany.com</code> and <code>.mycompany.com</code> have the same effect).</p>
 
 <p>The following example uses the proxy server at <code>proxy.corp.mycompany.com</code> with the <code>localhost:8080</code> address accessed directly:</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests/<span class="k">**</span>/<span class="k">*</span>.js <span class="nt">--proxy</span> proxy.corp.mycompany.com <span class="nt">--proxy-bypass</span> localhost:8080
@@ -2678,15 +2678,15 @@ to slow the test down.</p>
 </code></pre></div>
 <p><em>Related configuration file property</em>: <a href="configuration-file.html#proxybypass">proxyBypass</a>.</p>
 <h3><a class="anchor" id="--ssl-options"></a>--ssl &lt;options&gt; <a class="permalink" href="#--ssl-options">#</a></h3>
-<p>Provides options that allow you to establish an HTTPS connection between the client browser and the TestCafe server.</p>
+<p>Specifies options that allow you to establish an HTTPS connection between the client browser and the TestCafe server.</p>
 
-<p>The <code>options</code> parameter contains options required to initialize
-<a href="https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener">a Node.js HTTPS server</a>.
-The most commonly used SSL options are described in the <a href="https://nodejs.org/api/tls.html#tls_tls_createsecurecontext_options">TLS topic</a> in Node.js documentation.
-Options are specified in a semicolon-separated string.</p>
+<p>The <code>options</code> parameter contains <a href="https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener">Node.js HTTPS server initialization settings</a>.
+You can find the most commonly used SSL options in the <a href="https://nodejs.org/api/tls.html#tls_tls_createsecurecontext_options">TLS</a> topic in Node.js documentation.</p>
+
+<p>List options in a semicolon-separated string.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="nt">--ssl</span> <span class="nv">pfx</span><span class="o">=</span>path/to/file.pfx<span class="p">;</span><span class="nv">rejectUnauthorized</span><span class="o">=</span><span class="nb">true</span><span class="p">;</span>...
 </code></pre></div>
-<p>Provide the <code>--ssl</code> flag if the tested webpage uses browser features that require
+<p>Use the <code>--ssl</code> flag if the tested webpage uses browser features that require
 secure origin (<a href="https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API">Service Workers</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API">Geolocation API</a>, <a href="https://developer.apple.com/documentation/apple_pay_on_the_web/applepaysession">ApplePaySession</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto">SubtleCrypto</a>, etc).
 See <a href="../guides/advanced-guides/test-https-features-and-http2-websites.html">Test HTTPS and HTTP/2 Websites</a> for more information.</p>
 
@@ -2718,7 +2718,7 @@ See <a href="../guides/advanced-guides/test-https-features-and-http2-websites.ht
 <p>Specifies test compilation settings. The current version of TestCafe can only configure the <a href="/testcafe/documentation/guides/concepts/typescript-and-coffeescript.html#customize-compiler-options">TypeScript compiler</a>.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests <span class="nt">--compiler-options</span> typescript.options.lib<span class="o">=</span>lib.es5.d.ts,lib.webworker.d.ts<span class="p">;</span>typescript.typesRoot<span class="o">=</span><span class="s1">'this value contains spaces'</span>
 </code></pre></div>
-<p>The <code>--compiler-options</code> parameter accepts the compiler options listed in the <a href="https://www.typescriptlang.org/docs/handbook/compiler-options.html">official TypeScript documentation</a>, as well as two additional options: <code>typescript.configPath</code> and <code>typescript.customCompilerModulePath</code>.</p>
+<p>The <code>--compiler-options</code> parameter accepts the compiler options listed in the <a href="https://www.typescriptlang.org/docs/handbook/compiler-options.html">official TypeScript documentation</a>, and two additional options: <code>typescript.configPath</code> and <code>typescript.customCompilerModulePath</code>.</p>
 
 <p>To list multiple parameters, separate them with semicolons. Enclose values that contain spaces in quotes.</p>
 
@@ -2727,9 +2727,9 @@ See <a href="../guides/advanced-guides/test-https-features-and-http2-websites.ht
 </code></pre></div>
 <p>TestCafe ships with a <code>typescript@3</code> compiler. Specify the <code>typescript.customCompilerModulePath</code> option to compile your tests with a different compiler.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">testcafe</span> <span class="nx">chrome</span> <span class="nx">test</span><span class="p">.</span><span class="nx">ts</span> <span class="o">--</span><span class="nx">compiler</span><span class="o">-</span><span class="nx">options</span> <span class="nx">typescript</span><span class="p">.</span><span class="nx">customCompilerModulePath</span><span class="o">=</span><span class="p">..</span><span class="o">/</span><span class="nx">typescript</span><span class="p">@</span><span class="nd">4</span>
-</code></pre></div><blockquote><div class="blockquote-content"><p>TestCafe resolves relative paths against its own installation folder.</p>
+</code></pre></div><blockquote><div class="blockquote-content"><p>TestCafe resolves relative paths against its installation folder.</p>
 </div></blockquote>
-<p>The values of the <code>typescript.options.lib</code> compiler option should be identical to the names of the corresponding library files from your compiler’s <code>node_modules/typescript/lib</code> folder (for example: <code>lib.webworker.d.ts</code>).</p>
+<p>The values of the <code>typescript.options.lib</code> compiler option should be the same as the names of the corresponding library files from your compiler&#39;s <code>node_modules/typescript/lib</code> folder (for example: <code>lib.webworker.d.ts</code>).</p>
 
 <p><em>Related configuration file property</em>: <a href="configuration-file.html#compileroptions">compilerOptions</a>.
 <em>Related API method</em>: <a href="testcafe-api/runner/compileroptions.html">runner.compilerOptions</a></p>
@@ -2739,7 +2739,7 @@ See <a href="../guides/advanced-guides/test-https-features-and-http2-websites.ht
 </code></pre></div>
 <p>When navigation to a cached page occurs in <a href="../guides/advanced-guides/authentication.html#user-roles">role code</a>, local and session storage content is not preserved. Use the <code>--disable-page-caching</code> flag to retain the storage items after navigation. For more information, see <a href="../guides/advanced-guides/authentication.html#test-actions-fail-after-authentication">Troubleshooting: Test Actions Fail After Authentication</a>.</p>
 
-<p>You can also disable page caching for an individual <a href="test-api/fixture/disablepagecaching.html">fixture</a> or <a href="test-api/test/disablepagecaching.html">test</a>.</p>
+<p>You can disable page caching for an individual <a href="test-api/fixture/disablepagecaching.html">fixture</a> or <a href="test-api/test/disablepagecaching.html">test</a>.</p>
 
 <p><em>Related configuration file property</em>: <a href="configuration-file.html#disablepagecaching">disablePageCaching</a>.</p>
 <h3><a class="anchor" id="--disable-multiple-windows"></a>--disable-multiple-windows <a class="permalink" href="#--disable-multiple-windows">#</a></h3>
