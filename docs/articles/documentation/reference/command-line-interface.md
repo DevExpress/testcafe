@@ -983,7 +983,7 @@ TestCafe emulates the browser's native caching behavior. For example, in *Chrome
 
 TestCafe caches scripts, stylesheets, fonts, and other web assets up to **5 MB** in size. TestCafe doesn't cache HTML because that could break [user roles](../guides/advanced-guides/authentication.md#user-roles).
 
-To decrease test run time, enable `--cache` when you test web applications that require a lot of assets.
+To decrease test run time, enable server-side caching when you test asset-heavy web applications.
 
 > Important! Support for server-side caching is experimental. Disable the `--cache` flag if you run into compatibility issues with your tests.
 
