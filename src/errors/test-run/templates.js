@@ -32,8 +32,8 @@ export default {
     `,
 
     [TEST_RUN_ERRORS.pageLoadError]: err => `
-        A request to ${formatUrl(err.url)} has failed.
-        Use quarantine mode to perform additional attempts to execute this test.
+        Failed to load a page at ${formatUrl(err.url)}.
+        Increase the pageRequestTimeout, enable retryTestPages, or use quarantine mode to perform additional attempts to execute this test.
         You can find troubleshooting information for this issue at ${formatUrl(EXTERNAL_LINKS.troubleshootNetwork)}.
 
         Error details:
