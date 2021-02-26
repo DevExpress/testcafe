@@ -109,7 +109,7 @@ For more on page models, read [Page Model](../../guides/concepts/page-model.md).
 
 > Important! Support for server-side caching is **experimental**.
 >
-> Don't use caching if you run into compatibility issues with your tests.
+> Do not use caching if you run into compatibility issues with your tests.
 
 The TestCafe proxy can cache webpage assets (stylesheets, scripts, images) and retrieve them from its cache when it accesses the webpage again.
 

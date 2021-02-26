@@ -985,7 +985,7 @@ TestCafe caches scripts, stylesheets, fonts, and other web assets up to **5 MB**
 
 To decrease test run time, enable server-side caching when you test asset-heavy web applications.
 
-> Important! Support for server-side caching is experimental. Disable the `--cache` flag if you run into compatibility issues with your tests.
+> Important! Support for server-side caching is experimental. Disable the `--cache` flag if you have compatibility issues with your tests.
 
 *Related configuration file property*: [cache](./configuration-file.md#cache).
 
