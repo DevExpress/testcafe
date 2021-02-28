@@ -245,7 +245,7 @@ Finally, try updating TestCafe to the latest version to see if the problem persi
 When TestCafe does not receive a successful response from a server, it outputs the following error:
 
 ```text
-A request to https://www.example.com has failed.
+Failed to load a page at https://www.example.com.
 Increase the pageRequestTimeout, enable retryTestPages, or use quarantine mode to perform additional attempts to execute this test.
 ```
 
