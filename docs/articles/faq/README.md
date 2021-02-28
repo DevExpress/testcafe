@@ -246,7 +246,7 @@ When TestCafe does not receive a successful response from a server, it outputs t
 
 ```text
 A request to https://www.example.com has failed.
-Increase the pageRequestTimeout or use quarantine mode to perform additional attempts to execute this test.
+Increase the pageRequestTimeout, enable retryTestPages, or use quarantine mode to perform additional attempts to execute this test.
 ```
 
 You can use [quarantine mode](../documentation/guides/basic-guides/run-tests.md#quarantine-mode) to complete the tests if this problem occurs infrequently.
@@ -259,7 +259,7 @@ This error can occur in the following situations:
 
 Check if the Web and DNS servers are online and configured to accept requests to this URL.
 
-Before an exception is thrown, TestCafe waits for *two minutes* for the webpage to be served. Use one of the following options to increase this timeout:
+Before it throws an exception, TestCafe waits for *two minutes* for the webpage to be served. Use one of the following options to increase this timeout:
 
 * [`--page-request-timeout` CLI option](../documentation/reference/command-line-interface.md#--cache)
 * [`pageRequestTimeout` configuration file option](../documentation/reference/configuration-file.md#pagerequesttimeout)
