@@ -246,7 +246,7 @@ When TestCafe does not receive a successful response from a server, it outputs t
 
 ```text
 Failed to load a page at https://www.example.com.
-Increase the pageRequestTimeout, enable the retryTestPages option, or use quarantine mode to perform additional attempts to execute this test.
+Increase the "pageRequestTimeout", enable the "retryTestPages" option, or use quarantine mode to perform additional attempts to execute this test.
 ```
 
 You can use [quarantine mode](../documentation/guides/basic-guides/run-tests.md#quarantine-mode) to complete the tests if this problem occurs infrequently.
