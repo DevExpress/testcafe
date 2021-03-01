@@ -255,7 +255,7 @@ However, we recommend that you determine the cause of this issue and address it.
 
 This error can occur in the following situations:
 
-#### The Web server is not responding or takes too long to respond
+#### The Web server is not responding
 
 Check if the Web and DNS servers are online and configured to accept requests to this URL.
 
