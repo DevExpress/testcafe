@@ -43,7 +43,7 @@ export default {
     [TEST_RUN_ERRORS.uncaughtErrorOnPage]: err => `
         A JavaScript error occurred on ${formatUrl(err.pageDestUrl)}.
         Repeat test actions in the browser and check the console for errors.
-        The tested website probably caused this error.
+        This error is probably caused by the tested website and not by TestCafe.
         To make TestCafe ignore client-side JavaScript errors, enable the "--skip-js-errors" CLI option (or the corresponding "skipJsErrors" configuration file property).
         If this error only happens with TestCafe, please create a new issue at:
         ${formatUrl(EXTERNAL_LINKS.createNewIssue)}.
