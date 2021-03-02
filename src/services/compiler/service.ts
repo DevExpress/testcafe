@@ -9,7 +9,7 @@ import {
     serialize as serializeTestStructure,
     Unit,
     Units
-} from './test-structure';
+} from '../serialization/test-structure';
 
 import {
     SERVICE_INPUT_FD,
@@ -23,12 +23,19 @@ import sourceMapSupport from 'source-map-support';
 
 import {
     CompilerProtocol,
-    ExecuteCommandArguments, FunctionProperties, isFixtureFunctionProperty,
+    ExecuteActionArguments,
+    ExecuteCommandArguments,
+    FunctionProperties,
+    isFixtureFunctionProperty,
     isTestFunctionProperty,
-    RunTestArguments
+    RunTestArguments,
+    SetOptionsArguments
 } from './protocol';
+
 import { CompilerArguments } from '../../compiler/interfaces';
 import Fixture from '../../api/structure/fixture';
+import { Dictionary } from '../../configuration/interfaces';
+import ProcessTitle from '../process-title';
 
 sourceMapSupport.install({
     hookRequire:              true,
@@ -40,6 +47,7 @@ interface ServiceState {
     testRuns: { [id: string]: TestRunProxy };
     fixtureCtxs: { [id: string]: object };
     units: Units;
+    options: Dictionary<OptionValue>;
 }
 
 class CompilerService implements CompilerProtocol {
@@ -47,18 +55,32 @@ class CompilerService implements CompilerProtocol {
     private readonly state: ServiceState;
 
     public constructor () {
+        process.title = ProcessTitle.service;
+
         const input  = fs.createReadStream('', { fd: SERVICE_INPUT_FD });
         const output = fs.createWriteStream('', { fd: SERVICE_OUTPUT_FD });
 
-        this.proxy    = new IPCProxy(new ServiceTransport(input, output, SERVICE_SYNC_FD));
-        this.state    = {
-            testRuns:    {},
-            fixtureCtxs: {},
-            units:       {}
-        };
+        this.proxy = new IPCProxy(new ServiceTransport(input, output, SERVICE_SYNC_FD));
+        this.state = this._initState();
 
         this._setupRoutes();
         this.ready();
+    }
+
+    private _initState (): ServiceState {
+        return {
+            testRuns:    {},
+            fixtureCtxs: {},
+            units:       {},
+            options:     {}
+        };
+    }
+
+    private _ensureTestRunProxy (testRunId: string, fixtureCtx: unknown): TestRunProxy {
+        if (!this.state.testRuns[testRunId])
+            this.state.testRuns[testRunId] = new TestRunProxy(this, testRunId, fixtureCtx, this.state.options);
+
+        return this.state.testRuns[testRunId];
     }
 
     private _getFixtureCtx ({ id }: RunTestArguments): unknown {
@@ -79,16 +101,16 @@ class CompilerService implements CompilerProtocol {
         if (!testRunId)
             return fixtureCtx;
 
-        if (!this.state.testRuns[testRunId])
-            this.state.testRuns[testRunId] = new TestRunProxy(this, testRunId, fixtureCtx);
-
-        return this.state.testRuns[testRunId];
+        return this._ensureTestRunProxy(testRunId, fixtureCtx);
     }
 
     private _setupRoutes (): void {
-        this.proxy.register(this.getTests, this);
-        this.proxy.register(this.runTest, this);
-        this.proxy.register(this.cleanUp, this);
+        this.proxy.register([
+            this.getTests,
+            this.runTest,
+            this.cleanUp,
+            this.setOptions
+        ], this);
     }
 
     private _getFunction (unit: Unit, functionName: FunctionProperties): Function|null {
@@ -99,6 +121,10 @@ class CompilerService implements CompilerProtocol {
             return unit[functionName];
 
         throw new Error();
+    }
+
+    public async setOptions ({ value }: SetOptionsArguments): Promise<void> {
+        this.state.options = value;
     }
 
     public async ready (): Promise<void> {
@@ -134,8 +160,12 @@ class CompilerService implements CompilerProtocol {
         return await functionObject(context);
     }
 
-    public async executeAction ({ id, apiMethodName, command, callsite }: ExecuteCommandArguments): Promise<unknown> {
+    public async executeAction ({ id, apiMethodName, command, callsite }: ExecuteActionArguments): Promise<unknown> {
         return this.proxy.call(this.executeAction, { id, apiMethodName, command, callsite });
+    }
+
+    public async executeCommand ({ command, id }: ExecuteCommandArguments): Promise<unknown> {
+        return this.proxy.call(this.executeCommand, { id, command });
     }
 }
 

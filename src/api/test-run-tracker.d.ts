@@ -9,6 +9,7 @@ export interface TestRun {
     warningLog: WarningLog;
 
     executeAction(apiMethodName: string, command: unknown, callsite: unknown): Promise<unknown>;
+    executeCommand(command: unknown): Promise<unknown>;
 }
 
 export interface TestRunTracker {
