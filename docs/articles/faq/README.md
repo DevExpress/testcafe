@@ -245,7 +245,7 @@ Finally, try updating TestCafe to the latest version to see if the problem persi
 When TestCafe does not receive a successful response from a server, it outputs the following error:
 
 ```text
-Failed to load a page at https://www.example.com.
+Failed to load the page at https://www.example.com.
 Increase the "pageRequestTimeout", enable the "retryTestPages" option, or use quarantine mode to perform additional attempts to execute this test.
 ```
 
@@ -261,15 +261,15 @@ Check if the Web and DNS servers are online and configured to accept requests to
 
 Before it throws an exception, TestCafe waits for *two minutes* for the webpage to be served. Use one of the following options to increase this timeout:
 
-* [`--page-request-timeout` CLI option](../documentation/reference/command-line-interface.md#--cache)
-* [`pageRequestTimeout` configuration file option](../documentation/reference/configuration-file.md#pagerequesttimeout)
-* [`pageRequestTimeout` option of the `runner.run` method](../documentation/reference/testcafe-api/runner/run.md)
+* [`--page-request-timeout` (CLI)](../documentation/reference/command-line-interface.md#--cache)
+* [`pageRequestTimeout` (configuration file)](../documentation/reference/configuration-file.md#pagerequesttimeout)
+* [`pageRequestTimeout` (TestCafe Runner)](../documentation/reference/testcafe-api/runner/run.md)
 
 TestCafe can retry failed network request for webpages. Use one of the following options to enable retries:
 
-* [`--retry-test-pages` CLI option](../documentation/reference/command-line-interface.md#--retry-test-pages)
-* [`retryTestPages` configuration file option](../documentation/reference/configuration-file.md#retrytestPages)
-* [`retryTestPages` option of the `runner.run` method](../documentation/reference/testcafe-api/runner/run.md)
+* [`--retry-test-pages` (CLI)](../documentation/reference/command-line-interface.md#--retry-test-pages)
+* [`retryTestPages` (configuration file)](../documentation/reference/configuration-file.md#retrytestPages)
+* [`retryTestPages` option (TestCafe Runner)](../documentation/reference/testcafe-api/runner/run.md)
 
 #### Unstable or improperly configured network connection
 
