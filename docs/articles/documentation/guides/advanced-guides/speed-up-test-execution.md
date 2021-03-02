@@ -121,7 +121,7 @@ You can enable caching in one of the following ways:
   testcafe chrome my-tests/ --cache
   ```
 
-* [cache](../../reference/configuration-file.md#--cache) configuration file property
+* [cache](../../reference/configuration-file.md#cache) configuration file property
 
   ```json
   {
