@@ -115,13 +115,13 @@ The TestCafe proxy can cache webpage assets (stylesheets, scripts, images) and r
 
 You can enable caching in one of the following ways:
 
-* [--cache](../../reference/command-line-interface.md#cache) CLI option
+* [--cache](../../reference/command-line-interface.md#--cache) CLI option
 
   ```sh
   testcafe chrome my-tests/ --cache
   ```
 
-* [cache](../../reference/configuration-file.md#cache) configuration file property
+* [cache](../../reference/configuration-file.md#--cache) configuration file property
 
   ```json
   {
@@ -129,7 +129,7 @@ You can enable caching in one of the following ways:
   }
   ```
 
-* [cache](testcafe-api/runner/run.md) API option
+* [cache](../../reference/testcafe-api/runner/run.md) API option
 
   ```js
   runner.run({ cache: true });
