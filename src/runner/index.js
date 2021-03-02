@@ -579,7 +579,7 @@ export default class Runner extends EventEmitter {
 
                 const resultOptions = this.configuration.getOptions();
 
-                await this.bootstrapper?.compilerService.setOptions({ value: resultOptions });
+                await this.bootstrapper.compilerService?.setOptions({ value: resultOptions });
 
                 return this._runTask(reporterPlugins, browserSet, tests, testedApp, resultOptions);
             });
