@@ -356,8 +356,6 @@ describe('Runner', () => {
             runner.configuration.mergeOptions({ [OptionNames.retryTestPages]: true });
             runner.configuration.mergeOptions({ [OptionNames.hostname]: 'http://example.com' });
 
-            console.log(runner.configuration.getOption('hostname'));
-
             return runner
                 .browsers(connection)
                 .src('test/server/data/test-suites/basic/testfile2.js')
@@ -933,19 +931,18 @@ describe('Runner', () => {
 
     describe('.compilerOptions', () => {
         it('Should warn about deprecated options', () => {
-            const savedConsoleLog = console.log;
-
-            console.log = consoleWrapper.log;
+            consoleWrapper.wrap();
 
             return runner
                 .tsConfigPath('path-to-ts-config')
                 .run()
                 .catch(() => {
-                    console.log = savedConsoleLog;
+                    consoleWrapper.unwrap();
 
                     expect(consoleWrapper.messages.log).eql(
-                        "The 'tsConfigPath' option is deprecated. Use the 'compilerOptions.typescript.configPath' option instead.\n" +
-                        'The deprecated options will be removed in the next major release.\n');
+                        "The 'tsConfigPath' option is deprecated and will be removed in the next major release. " +
+                        "Use the 'compilerOptions.typescript.configPath' option instead."
+                    );
                 });
         });
 

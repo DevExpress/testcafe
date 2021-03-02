@@ -37,9 +37,9 @@ describe('Page Load timeout', () => {
             return runTests('testcafe-fixtures/test-level.js', 'The `t.setPageLoadTimeout` method should raise a deprecation warning')
                 .then(() => {
                     expect(testReport.warnings).eql([
-                        'You used the \'setPageLoadTimeout\' method of TestController which is deprecated. ' +
-                        'Note that the deprecated methods will be removed in the next major release. ' +
-                        'Specify the \'pageLoadTimeout\' option using the \'Test.timeouts\' method instead.\n\n'
+                        'The \'TestController.setPageLoadTimeout\' method is deprecated ' +
+                        'and will be removed in the next major release. ' +
+                        'Use the \'Test.timeouts\' method to set the \'pageLoadTimeout\' option instead.\n\n'
                     ]);
                 });
         });

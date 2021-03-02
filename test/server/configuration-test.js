@@ -335,6 +335,14 @@ describe('TestCafeConfiguration', function () {
     });
 
     describe('Should copy value from "tsConfigPath" to compiler options', () => {
+        beforeEach(() => {
+            consoleWrapper.wrap();
+        });
+
+        afterEach(() => {
+            consoleWrapper.unwrap();
+        });
+
         it('only tsConfigPath is specified', () => {
             const configuration = new TestCafeConfiguration();
             let runner          = null;

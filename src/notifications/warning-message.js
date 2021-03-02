@@ -17,8 +17,6 @@ export default {
     cannotReadConfigFile:                    'An error has occurred while reading the configuration file.',
     cannotParseConfigFile:                   "Failed to parse the '{path}' file.\n\nThis file is not a well-formed JSON file.",
     configOptionsWereOverridden:             'The {optionsString} option{suffix} from the configuration file will be ignored.',
-    deprecatedOptionsReplacement:            "The '{deprecatedOption}' option is deprecated. Use the '{replacement}' option instead.\n",
-    deprecatedOptionsAreUsed:                '{deprecatedOptionReplacements}The deprecated options will be removed in the next major release.\n',
     cannotOverrideTypeScriptConfigOptions:   'You cannot override the "{optionName}" compiler option in the TypeScript configuration file.\n',
 
     cannotFindWindowDescriptorError: 'Could not find the "{browserAlias}" window. ' +
@@ -48,6 +46,6 @@ export default {
     retryTestPagesIsNotSupported:       'Cannot enable the \'retryTestPages\' option in "{browserAlias}". Please ensure that your version of "{browserAlias}" supports the Service Worker API (https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API).\n',
     browserProviderDropOfPerformance:   'We detected \'{browserName}\' runs slowly. Try to free up or allocate more system resources on its host machine.',
     testsCompilationTakesTooLong:       'Tests took too long to compile ({compileTime}). Ensure the test code has no excessive imports.',
-    setPageLoadTimeoutDeprecated:       'You used the \'setPageLoadTimeout\' method of TestController which is deprecated. Note that the deprecated methods will be removed in the next major release. Specify the \'pageLoadTimeout\' option using the \'Test.timeouts\' method instead.'
+    deprecatedFunctionality:            '{functionality} is deprecated and will be removed in the next major release. Use {replacement} instead.'
 };
 

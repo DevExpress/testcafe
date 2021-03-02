@@ -29,7 +29,7 @@ import {
 } from './interfaces';
 
 import CustomizableCompilers from './customizable-compilers';
-import { DEPRECATED_OPTIONS, DEPRECATED_OPTION_NAMES } from './deprecated-options';
+import { DEPRECATED, getDeprecationMessage } from '../notifications/deprecated';
 
 const CONFIGURATION_FILENAME = '.testcaferc.json';
 
@@ -109,25 +109,10 @@ export default class TestCafeConfiguration extends Configuration {
     }
 
     public notifyAboutDeprecatedOptions (): void {
-        const deprecatedOptionsObj = this.getOptions((name, option) => {
-            return DEPRECATED_OPTION_NAMES.includes(name) &&
-                option.value !== void 0;
-        });
+        const deprecatedOptions = this.getOptions((name, option) => name in DEPRECATED && option.value !== void 0);
 
-        const deprecatedOptionNames = Object.keys(deprecatedOptionsObj);
-
-        if (!deprecatedOptionNames.length)
-            return;
-
-        const deprecatedOptions = DEPRECATED_OPTIONS.filter(deprecatedOption => deprecatedOptionNames.includes(deprecatedOption.what));
-
-        const replacements = deprecatedOptions.reduce((result, current) => {
-            result += renderTemplate(WARNING_MESSAGES.deprecatedOptionsReplacement, current.what, current.useInstead);
-
-            return result;
-        }, '');
-
-        Configuration._showConsoleWarning(renderTemplate(WARNING_MESSAGES.deprecatedOptionsAreUsed, replacements));
+        for (const optionName in deprecatedOptions)
+            Configuration._showConsoleWarning(getDeprecationMessage(DEPRECATED[optionName]));
     }
 
     public get startOptions (): TestCafeStartOptions {
