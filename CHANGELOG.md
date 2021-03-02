@@ -1,5 +1,40 @@
 # Changelog
 
+## v1.12.0 (03.03.2021)
+
+### Enhancements
+
+#### :gear: Server-Side Web Assets Caching ([testcafe-hammerhead/#863](https://github.com/DevExpress/testcafe-hammerhead/issues/863))
+
+TestCafe's reverse-proxy can now cache web assets (like images, scripts and videos). When TestCafe revisits a website, it loads assets from this cache, saving time on repetetive network requests.
+
+To enable server-side caching, use any of the following:
+
+* [the `--cache` CLI flag](./docs/articles/documentation/reference/command-line-interface.md#--cache)
+* [the `cache` configuration file property](./docs/articles/documentation/reference/configuration-file.md#cache)
+* [the `cache` runner option](./docs/articles/documentation/reference/testcafe-api/runner/run.md)
+
+#### :gear: Asynchronous Predicate Function
+
+The following TestCafe entities now support **asynchronous** predicate functions:
+
+* [RequestHook](./docs/articles/documentation/reference/test-api/requesthook/constructor.md#filter-with-a-predicate)
+* [RequestMock](./docs/articles/documentation/reference/test-api/requestmock/constructor.md#filter-with-a-predicate)
+* [RequestLogger](./docs/articles/documentation/reference/test-api/requestlogger/constructor.md#filter-with-a-predicate)
+
+**Example**
+
+```js
+const logger = RequestLogger(async request => {
+    return await myAsyncFunction();
+});
+```
+
+### Bug Fixes
+
+* Fixed a bug in the multiple windows mode where TestCafe was sometime unable to switch to the main browser window ([#5930](https://github.com/DevExpress/testcafe/issues/5930))
+* Fixed the `Illegal invocation` error thrown by TestCafe when calling `Storage.prototype` methods on a `StorageWrapper` object ([#2526](https://github.com/DevExpress/testcafe-hammerhead/issues/2526))
+
 ## v1.11.0 (03.02.2021)
 
 ### Enhancements
