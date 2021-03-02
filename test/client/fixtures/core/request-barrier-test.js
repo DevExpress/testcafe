@@ -1,6 +1,6 @@
 const hammerhead    = window.getTestCafeModule('hammerhead');
 const Promise       = hammerhead.Promise;
-const hhsettings    = hammerhead.get('./settings').get();
+const hhsettings    = hammerhead.settings.get();
 const iframeSandbox = hammerhead.sandbox.iframe;
 
 const testCafeCore   = window.getTestCafeModule('testCafeCore');
