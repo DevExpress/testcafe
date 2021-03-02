@@ -14,6 +14,7 @@ import RequestHook from '../request-hooks/hook';
 import ClientScriptInit from '../../custom-client-scripts/client-script-init';
 import { SPECIAL_BLANK_PAGE } from 'testcafe-hammerhead';
 import { TestTimeouts } from './interfaces';
+import TestTimeout from './test-timeout';
 
 export default class Test extends TestingUnit {
     public fixture: Fixture;
@@ -104,14 +105,11 @@ export default class Test extends TestingUnit {
     private _timeouts$ (timeouts: TestTimeouts): Function {
         assertType(is.testTimeouts, 'timeouts', 'test.timeouts', timeouts);
 
-        if ('pageRequestTimeout' in timeouts)
-            assertType(is.nonNegativeNumber, 'timeouts', 'test.timeouts.pageRequestTimeout', timeouts.pageRequestTimeout);
-
-        if ('ajaxRequestTimeout' in timeouts)
-            assertType(is.nonNegativeNumber, 'timeouts', 'test.timeouts.ajaxRequestTimeout', timeouts.ajaxRequestTimeout);
-
-        if ('pageLoadTimeout' in timeouts)
-            assertType(is.nonNegativeNumber, 'timeouts', 'test.timeouts.pageLoadTimeout', timeouts.pageLoadTimeout);
+        Object.keys(TestTimeout)
+            .filter(timeout => timeout in timeouts)
+            .forEach(timeout => {
+                assertType(is.nonNegativeNumber, 'timeouts', `test.timeouts.${timeout}`, timeouts[timeout as keyof TestTimeouts]);
+            });
 
         this.timeouts = timeouts;
 

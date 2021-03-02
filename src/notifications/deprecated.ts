@@ -3,15 +3,15 @@ import WARNING_MESSAGES from './warning-message';
 import OPTION_NAMES from '../configuration/option-names';
 import CustomizableCompilers from '../configuration/customizable-compilers';
 
-interface DeprecatedFunctionality {
+interface DeprecatedAPI {
     what: string;
     useInstead: string;
 }
 
-export const DEPRECATED: { [functionality: string]: DeprecatedFunctionality } = {
+export const DEPRECATED: { [functionality: string]: DeprecatedAPI } = {
     'setPageLoadTimeout': {
-        what:       'The \'TestController.setPageLoadTimeout\' method',
-        useInstead: 'the \'Test.timeouts\' method to set the \'pageLoadTimeout\' option'
+        what:       "The 't.setPageLoadTimeout' method",
+        useInstead: "the 'test.timeouts' method to set the 'pageLoadTimeout' option"
     },
     'tsConfigPath': {
         what:       `The '${OPTION_NAMES.tsConfigPath}' option`,
@@ -19,6 +19,6 @@ export const DEPRECATED: { [functionality: string]: DeprecatedFunctionality } = 
     }
 };
 
-export function getDeprecationMessage (deprecated: DeprecatedFunctionality): string {
-    return renderTemplate(WARNING_MESSAGES.deprecatedFunctionality, deprecated.what, deprecated.useInstead);
+export function getDeprecationMessage (deprecated: DeprecatedAPI): string {
+    return renderTemplate(WARNING_MESSAGES.deprecatedAPI, deprecated.what, deprecated.useInstead);
 }

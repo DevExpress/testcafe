@@ -30,6 +30,7 @@ import {
 
 import CustomizableCompilers from './customizable-compilers';
 import { DEPRECATED, getDeprecationMessage } from '../notifications/deprecated';
+import WarningLog from '../notifications/warning-log';
 
 const CONFIGURATION_FILENAME = '.testcaferc.json';
 
@@ -108,11 +109,11 @@ export default class TestCafeConfiguration extends Configuration {
         this._overriddenOptions = [];
     }
 
-    public notifyAboutDeprecatedOptions (): void {
+    public notifyAboutDeprecatedOptions (warningLog: WarningLog): void {
         const deprecatedOptions = this.getOptions((name, option) => name in DEPRECATED && option.value !== void 0);
 
         for (const optionName in deprecatedOptions)
-            Configuration._showConsoleWarning(getDeprecationMessage(DEPRECATED[optionName]));
+            warningLog.addWarning(getDeprecationMessage(DEPRECATED[optionName]));
     }
 
     public get startOptions (): TestCafeStartOptions {

@@ -38,5 +38,7 @@ test
     });
 
 test('The `t.setPageLoadTimeout` method should raise a deprecation warning', async t => {
-    await t.setPageLoadTimeout(1000);
+    // NOTE: warning will be raised only once
+    for (let i = 0; i < 5; i++)
+        await t.setPageLoadTimeout(1000);
 });

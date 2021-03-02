@@ -931,18 +931,14 @@ describe('Runner', () => {
 
     describe('.compilerOptions', () => {
         it('Should warn about deprecated options', () => {
-            consoleWrapper.wrap();
-
             return runner
                 .tsConfigPath('path-to-ts-config')
                 .run()
                 .catch(() => {
-                    consoleWrapper.unwrap();
-
-                    expect(consoleWrapper.messages.log).eql(
+                    expect(runner.warningLog.messages).eql([
                         "The 'tsConfigPath' option is deprecated and will be removed in the next major release. " +
                         "Use the 'compilerOptions.typescript.configPath' option instead."
-                    );
+                    ]);
                 });
         });
 
