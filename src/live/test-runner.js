@@ -170,7 +170,7 @@ class LiveModeRunner extends Runner {
     _createTask (tests, browserConnectionGroups, proxy, opts) {
         opts.live = true;
 
-        return super._createTask(tests, browserConnectionGroups, proxy, opts);
+        return super._createTask(tests, browserConnectionGroups, proxy, opts, this.warningLog);
     }
 
     _createBootstrapper (browserConnectionGateway) {
