@@ -21,9 +21,9 @@ Use any of the following to enable server-side caching:
 * [the `cache` configuration file property](./docs/articles/documentation/reference/configuration-file.md#cache)
 * [the `cache` runner option](./docs/articles/documentation/reference/testcafe-api/runner/run.md)
 
-### Asynchronous Predicate Function
+### Initialize Request Hooks with Async Predicates
 
-The following TestCafe entities now support **asynchronous** predicate functions:
+The following request hooks now support **asynchronous** predicate functions:
 
 * [RequestHook Constructor](./docs/articles/documentation/reference/test-api/requesthook/constructor.md)
 * [RequestMock Constructor](./docs/articles/documentation/reference/test-api/requestmock/constructor.md)
