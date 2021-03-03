@@ -5,7 +5,7 @@ permalink: /blog/:title.html
 ---
 # TestCafe v1.12.0 Released
 
-This version brings server-side caching, asynchronous predicates and multiple bugfixes.
+This version brings server-side caching, asynchronous predicates, and multiple bugfixes.
 
 <!--more-->
 

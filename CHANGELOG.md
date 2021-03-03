@@ -6,7 +6,7 @@
 
 #### :gear: Server-Side Web Assets Caching ([testcafe-hammerhead/#863](https://github.com/DevExpress/testcafe-hammerhead/issues/863))
 
-TestCafe's proxy server can now cache web assets (like images, scripts and videos). When TestCafe revisits a website, it loads assets from this cache, saving time on repetetive network requests.
+TestCafe's proxy server can now cache web assets (like images, scripts and videos). When TestCafe revisits a website, it loads assets from this cache to save time on repetetive network requests.
 
 To enable server-side caching, use any of the following:
 
@@ -32,7 +32,7 @@ const logger = RequestLogger(async request => {
 
 ### Bug Fixes
 
-* Fixed a bug in the multiple windows mode where TestCafe was sometime unable to switch to the main browser window ([#5930](https://github.com/DevExpress/testcafe/issues/5930))
+* Fixed a bug in Multiple Windows mode where TestCafe was sometime unable to switch to the main browser window ([#5930](https://github.com/DevExpress/testcafe/issues/5930))
 * Fixed the `Illegal invocation` error thrown by TestCafe when calling `Storage.prototype` methods on a `StorageWrapper` object ([#2526](https://github.com/DevExpress/testcafe-hammerhead/issues/2526))
 
 ## v1.11.0 (2021-03-02)
