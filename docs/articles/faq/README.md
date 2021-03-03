@@ -257,7 +257,7 @@ This error can occur in the following situations:
 
 #### The Web server is not responding
 
-Check if the Web and DNS servers are online and configured to accept requests to this URL.
+Confirm the successful resolution of the website's domain name. Check if the web application is online and configured to receive incoming requests.
 
 Before it throws an exception, TestCafe waits for *two minutes* for the webpage to be served. Use one of the following options to increase this timeout:
 
