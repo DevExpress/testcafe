@@ -13,7 +13,7 @@ This version brings server-side caching, asynchronous predicates and multiple bu
 
 ### ⚙ Server-Side Web Assets Caching ([testcafe-hammerhead/#863](https://github.com/DevExpress/testcafe-hammerhead/issues/863))
 
-TestCafe's reverse-proxy can now cache web assets (like images, scripts, videos). When TestCafe revisits the website later, it can load assets from cache. This helps to avoid repetitive network requests, which saves time.
+TestCafe's proxy server can now cache web assets (like images, scripts, videos). When TestCafe revisits the website later, it can load assets from cache. This helps to avoid repetitive network requests, which saves time.
 
 Use any of the following to enable server-side caching:
 

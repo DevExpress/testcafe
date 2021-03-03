@@ -6,7 +6,7 @@
 
 #### :gear: Server-Side Web Assets Caching ([testcafe-hammerhead/#863](https://github.com/DevExpress/testcafe-hammerhead/issues/863))
 
-TestCafe's reverse-proxy can now cache web assets (like images, scripts and videos). When TestCafe revisits a website, it loads assets from this cache, saving time on repetetive network requests.
+TestCafe's proxy server can now cache web assets (like images, scripts and videos). When TestCafe revisits a website, it loads assets from this cache, saving time on repetetive network requests.
 
 To enable server-side caching, use any of the following:
 
