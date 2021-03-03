@@ -11,7 +11,7 @@ interface DeprecatedAPI {
 export const DEPRECATED: { [functionality: string]: DeprecatedAPI } = {
     'setPageLoadTimeout': {
         what:       "The 't.setPageLoadTimeout' method",
-        useInstead: "the 'test.timeouts' method to set the 'pageLoadTimeout' option"
+        useInstead: "the 'test.timeouts' method to set the 'pageLoadTimeout'"
     },
     'tsConfigPath': {
         what:       `The '${OPTION_NAMES.tsConfigPath}' option`,

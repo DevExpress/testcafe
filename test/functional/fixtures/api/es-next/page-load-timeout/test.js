@@ -39,7 +39,7 @@ describe('Page Load timeout', () => {
                     expect(testReport.warnings).eql([
                         'The \'t.setPageLoadTimeout\' method is deprecated ' +
                         'and will be removed in the next major release. ' +
-                        'Use the \'test.timeouts\' method to set the \'pageLoadTimeout\' option instead.\n\n'
+                        'Use the \'test.timeouts\' method to set the \'pageLoadTimeout\' instead.\n\n'
                     ]);
                 });
         });
