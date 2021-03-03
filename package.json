@@ -130,7 +130,7 @@
     "source-map-support": "^0.5.16",
     "strip-bom": "^2.0.0",
     "testcafe-browser-tools": "2.0.13",
-    "testcafe-hammerhead": "file:testcafe-hammerhead-19.4.1-with-rollup-bundles.tgz",
+    "testcafe-hammerhead": "https://git.io/JqvUp",
     "testcafe-legacy-api": "4.2.4",
     "testcafe-reporter-json": "^2.1.0",
     "testcafe-reporter-list": "^2.1.0",
