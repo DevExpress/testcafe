@@ -14,14 +14,14 @@
 
     //Hammerhead setup
     const hammerhead   = getTestCafeModule('hammerhead');
-    const INSTRUCTION  = hammerhead.get('../processing/script/instruction');
+    const INSTRUCTION  = hammerhead.PROCESSING_INSTRUCTIONS.dom.script;
     const location     = 'http://localhost/sessionId/https://example.com';
     const browserUtils = hammerhead.utils.browser;
 
-    hammerhead.get('./utils/destination-location').forceLocation(location);
+    hammerhead.utils.destLocation.forceLocation(location);
 
     const iframeTaskScriptTempate = [
-        'window["%hammerhead%"].get("./utils/destination-location").forceLocation("{{{location}}}");',
+        'window["%hammerhead%"].utils.destLocation.forceLocation("{{{location}}}");',
         'window["%hammerhead%"].start({',
         '    referer : "{{{referer}}}",',
         '    cookie: "{{{cookie}}}",',
@@ -49,7 +49,7 @@
 
         if (iframe.id.indexOf('test') !== -1) {
             iframe.contentWindow.eval.call(iframe.contentWindow, [
-                'window["%hammerhead%"].get("./utils/destination-location").forceLocation("' + location + '");',
+                'window["%hammerhead%"].utils.destLocation.forceLocation("' + location + '");',
                 'window["%hammerhead%"].start({',
                 '    referer : "' + referer + '",',
                 '    serviceMsgUrl : "' + serviceMsg + '",',
