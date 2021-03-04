@@ -42,7 +42,7 @@ export default {
     [RUNTIME_ERRORS.invalidSpeedValue]:                                  'Speed should be a number between 0.01 and 1.',
     [RUNTIME_ERRORS.invalidConcurrencyFactor]:                           'The concurrency factor should be an integer greater or equal to 1.',
     [RUNTIME_ERRORS.cannotDivideRemotesCountByConcurrency]:              'The number of remote browsers should be divisible by the factor of concurrency.',
-    [RUNTIME_ERRORS.portsOptionRequiresTwoNumbers]:                      'The "--ports" option requires two numbers to be specified.',
+    [RUNTIME_ERRORS.portsOptionRequiresTwoNumbers]:                      'The "ports" option requires two numbers to be specified.',
     [RUNTIME_ERRORS.portIsNotFree]:                                      'The specified {portNum} port is already in use by another program.',
     [RUNTIME_ERRORS.invalidHostname]:                                    'The specified "{hostname}" hostname cannot be resolved to the current machine.',
     [RUNTIME_ERRORS.cannotFindSpecifiedTestSource]:                      'Cannot find a test source file at "{path}".',
@@ -123,6 +123,6 @@ export default {
     [RUNTIME_ERRORS.browserConnectionError]:               '{originErrorMessage}\n{numOfNotOpenedConnection} of {numOfAllConnections} browser connections have not been established:\n{listOfNotOpenedConnections}\n\nHints:\n{listOfHints}',
     [BrowserConnectionErrorHint.TooHighConcurrencyFactor]: 'The error can be due to a concurrency factor that is too high for the host machine’s performance (the factor value {concurrencyFactor} was specified). ' +
                                                            'Try to decrease the concurrency factor or ensure more system resources are available on the host machine.',
-    [BrowserConnectionErrorHint.UseBrowserInitOption]: 'Use the \'--browser-init-timeout\' option to allow more time for the browser to start. The timeout is set to {browserInitTimeoutMsg}.',
+    [BrowserConnectionErrorHint.UseBrowserInitOption]: 'Use the \'browserInitTimeout\' option to allow more time for the browser to start. The timeout is set to {browserInitTimeoutMsg}.',
     [BrowserConnectionErrorHint.RestErrorCauses]:      'The error can also be caused by network issues or remote device failure. Make sure that the connection is stable and the remote device can be reached.'
 };
