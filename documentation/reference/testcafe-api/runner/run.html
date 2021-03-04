@@ -2216,9 +2216,15 @@ to a lower resource consumption mode where tests are not guaranteed to execute c
 <td><code>1</code></td>
 </tr>
 <tr>
+<td><code>cache</code></td>
+<td>Boolean</td>
+<td>If enabled, the TestCafe proxy caches webpage assets (such as stylesheets, images and scripts) for the webpages that it processes. The next time the proxy accesses the page, it loads assets from its cache instead of requesting them from the server.</td>
+<td><code>false</code></td>
+</tr>
+<tr>
 <td><code>stopOnFirstFail</code></td>
 <td>Boolean</td>
-<td>Defines whether to stop a test run if a test fails. You do not need to wait for all the tests to finish to focus on the first error.</td>
+<td>Stops the test run if a test fails. You can focus on the first error before all the tests finish.</td>
 <td><code>false</code></td>
 </tr>
 <tr>
@@ -2263,6 +2269,7 @@ to a lower resource consumption mode where tests are not guaranteed to execute c
 <li><a href="../../configuration-file.html#pagerequesttimeout">pageRequestTimeout</a></li>
 <li><a href="../../configuration-file.html#browserinittimeout">browserInitTimeout</a></li>
 <li><a href="../../configuration-file.html#speed">speed</a></li>
+<li><a href="../../configuration-file.html#cache">cache</a></li>
 <li><a href="../../configuration-file.html#stoponfirstfail">stopOnFirstFail</a></li>
 <li><a href="../../configuration-file.html#disablepagecaching">disablePageCaching</a></li>
 <li><a href="../../configuration-file.html#disablescreenshots">disableScreenshots</a></li>

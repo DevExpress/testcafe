@@ -2190,6 +2190,7 @@
 <li><a href="#stoponfirstfail">stopOnFirstFail</a></li>
 <li><a href="#tsconfigpath">tsConfigPath</a></li>
 <li><a href="#compileroptions">compilerOptions</a></li>
+<li><a href="#cache">cache</a></li>
 <li><a href="#disablepagecaching">disablePageCaching</a></li>
 <li><a href="#disablemultiplewindows">disableMultipleWindows</a></li>
 <li><a href="#color">color</a></li>
@@ -2635,7 +2636,7 @@ See <a href="../guides/basic-guides/assert.html#smart-assertion-query-mechanism"
 
 <p><em>CLI</em>: <a href="command-line-interface.html#--page-load-timeout-ms">--page-load-timeout</a><br>
 <em>API</em>: <a href="testcafe-api/runner/run.html">runner.run({ pageLoadTimeout })</a></p>
-<h3><a class="anchor" id="ajaxrequesttimeout"></a>ajaxRequestTimeout <a class="permalink" href="#ajaxrequesttimeout">#</a></h3>
+<h2><a class="anchor" id="ajaxrequesttimeout"></a>ajaxRequestTimeout <a class="permalink" href="#ajaxrequesttimeout">#</a></h2>
 <p>Specifies wait time (in milliseconds) for fetch/XHR requests. If no response is received within the specified period, an error is thrown.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
     </span><span class="nl">"ajaxRequestTimeout"</span><span class="p">:</span><span class="w"> </span><span class="mi">40000</span><span class="w">
@@ -2644,7 +2645,7 @@ See <a href="../guides/basic-guides/assert.html#smart-assertion-query-mechanism"
 <p><strong>Default value</strong>: <code>120000</code></p>
 
 <p><em>CLI</em>: <a href="command-line-interface.html#--ajax-request-timeout-ms">--ajax-request-timeout</a></p>
-<h3><a class="anchor" id="pagerequesttimeout"></a>pageRequestTimeout <a class="permalink" href="#pagerequesttimeout">#</a></h3>
+<h2><a class="anchor" id="pagerequesttimeout"></a>pageRequestTimeout <a class="permalink" href="#pagerequesttimeout">#</a></h2>
 <p>Specifies time (in milliseconds) to wait for HTML pages. If the page isn&#39;t received within the specified period, an error is thrown.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
     </span><span class="nl">"pageRequestTimeout"</span><span class="p">:</span><span class="w"> </span><span class="mi">8000</span><span class="w">
@@ -2947,8 +2948,21 @@ to slow the test down.</p>
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div><blockquote><div class="blockquote-content"><p>TestCafe resolves user-specified relative paths against the TestCafe installation folder.</p>
 </div></blockquote>
-<p><em>CLI</em>: <a href="command-line-interface.html#--compiler-options-options">--compiler-options</a>
+<p><em>CLI</em>: <a href="command-line-interface.html#--compiler-options-options">--compiler-options</a><br>
 <em>API</em>: <a href="testcafe-api/runner/compileroptions.html">runner.compilerOptions</a></p>
+<h2><a class="anchor" id="cache"></a>cache <a class="permalink" href="#cache">#</a></h2>
+<p>If enabled, the TestCafe proxy caches webpage assets (such as stylesheets and scripts) for the webpages that it processes. The next time the proxy accesses the page, it pulls assets from its cache instead of requesting them from the server.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests <span class="nt">--cache</span>
+</code></pre></div>
+<p>TestCafe emulates the browser&#39;s native caching behavior. For example, in <em>Chrome</em> TestCafe only caches resources that <em>Chrome</em> itself would cache if run without TestCafe.</p>
+
+<p>TestCafe caches scripts, stylesheets, fonts, and other web assets up to <strong>5 MB</strong> in size. TestCafe doesn&#39;t cache HTML because that could break <a href="../guides/advanced-guides/authentication.html#user-roles">user roles</a>.</p>
+
+<p>If the tested application loads many heavy assets, enable server-side caching to decrease test run time.</p>
+<blockquote class="important"><div class="blockquote-content"><p>Support for server-side caching is experimental. Disable the <code>--cache</code> flag if you run into compatibility issues with your tests.</p>
+</div></blockquote>
+<p><em>CLI</em>: <a href="command-line-interface.html#--cache">--cache</a><br>
+<em>API</em>: <a href="testcafe-api/runner/run.html">runner.run({ cache })</a></p>
 <h2><a class="anchor" id="disablepagecaching"></a>disablePageCaching <a class="permalink" href="#disablepagecaching">#</a></h2>
 <p>Prevents the browser from caching page content.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
