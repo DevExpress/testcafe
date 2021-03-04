@@ -27,14 +27,10 @@ const options        = {
     hostname: 'localhost',
     port1:    1337,
     port2:    1338
-}
-  hostname: 'localhost',
-  port1: 1337,
-  port2: 1338
-}
+};
 
 const testCafeOptions = await createTestCafe(options);
-const runner   = testcafe.createRunner();
+const runner          = testcafe.createRunner();
 /* ... */
 ```
 
@@ -56,7 +52,7 @@ const testCafeOptions = {
     port1:   1337,
     port2:   1338,
     sslOptions
-}
+};
 
 const testcafe = await createTestCafe(testCafeOptions);
 const runner   = testcafe.createRunner();
