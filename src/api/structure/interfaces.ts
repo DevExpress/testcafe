@@ -1,4 +1,5 @@
 import { Dictionary } from '../../configuration/interfaces';
+import TestTimeout from './test-timeout';
 
 export type Metadata = Dictionary<string>;
 
@@ -9,7 +10,6 @@ export interface AuthCredentials {
     workstation?: string;
 }
 
-export interface TestTimeouts {
-    pageRequestTimeout?: number;
-    ajaxRequestTimeout?: number;
+export type TestTimeouts = {
+    [key in TestTimeout]?: number;
 }

@@ -11,7 +11,7 @@ const TestRunErrorFormattableAdapter = require('../../lib/errors/test-run/format
 
 class TestRunMock extends TestRun {
     constructor () {
-        super({ id: 'test-id', name: 'test-name', fixture: { path: 'dummy', id: 'fixture-id', name: 'fixture-name' } }, {}, {}, {}, {});
+        super({ id: 'test-id', name: 'test-name', fixture: { path: 'dummy', id: 'fixture-id', name: 'fixture-name' } }, {}, {}, null, {});
 
         this.disableMultipleWindows = false;
 

@@ -15,6 +15,7 @@ import WARNING_MESSAGE from '../../notifications/warning-message';
 import getBrowser from '../../utils/get-browser';
 import addWarning from '../../notifications/add-rendered-warning';
 import { getCallsiteId, getCallsiteStackFrameString } from '../../utils/callsite';
+import { getDeprecationMessage, DEPRECATED } from '../../notifications/deprecated';
 
 import {
     ClickCommand,
@@ -427,6 +428,8 @@ export default class TestController {
     }
 
     _setPageLoadTimeout$ (duration) {
+        addWarning(this.warningLog, getDeprecationMessage(DEPRECATED.setPageLoadTimeout));
+
         return this._enqueueCommand('setPageLoadTimeout', SetPageLoadTimeoutCommand, { duration });
     }
 

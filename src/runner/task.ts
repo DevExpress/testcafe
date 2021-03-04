@@ -30,7 +30,11 @@ export default class Task extends AsyncEventEmitter {
     public readonly testStructure: ReportedTestStructureItem[];
     public readonly videos?: Videos;
 
-    public constructor (tests: Test[], browserConnectionGroups: BrowserConnection[][], proxy: Proxy, opts: Dictionary<OptionValue>) {
+    public constructor (
+        tests: Test[],
+        browserConnectionGroups: BrowserConnection[][],
+        proxy: Proxy, opts: Dictionary<OptionValue>,
+        runnerWarningLog: WarningLog) {
         super({ captureRejections: true });
 
         this._timeStamp              = moment();
@@ -40,6 +44,8 @@ export default class Task extends AsyncEventEmitter {
         this.opts                    = opts;
         this._proxy                  = proxy;
         this.warningLog              = new WarningLog();
+
+        runnerWarningLog.copyTo(this.warningLog);
 
         const { path, pathPattern, fullPage } = this.opts.screenshots as ScreenshotOptionValue;
 

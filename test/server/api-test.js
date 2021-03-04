@@ -680,6 +680,30 @@ describe('API', function () {
                     });
                 });
         });
+
+        it('Should raise an error if "test.timeouts.pageLoadTimeout" is not a non-negative number', () => {
+            const testfile = resolve('test/server/data/test-suites/test-timeouts/page-load-timeout/testfile.js');
+
+            return compile(testfile)
+                .then(() => {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch(err => {
+                    assertAPIError(err, {
+                        stackTop: testfile,
+
+                        message: 'Cannot prepare tests due to an error.\n\n' +
+                            'test.timeouts.pageLoadTimeout is expected to be a non-negative number, but it was -1.',
+
+                        callsite: '   1 |fixture `Page Load Timeout`;\n' +
+                            '   2 |\n' +
+                            '   3 |test\n' +
+                            ' > 4 |    .timeouts({ pageLoadTimeout: -1 })\n' +
+                            '   5 |    (\'test\', async () => {});\n' +
+                            '   6 |'
+                    });
+                });
+        });
     });
 
     describe('Selector', function () {

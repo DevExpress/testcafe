@@ -23,6 +23,21 @@ interface HTTPAuthCredentials {
     workstation?: string;
 }
 
+interface TestTimeouts {
+    /**
+     * Specifies the timeout in milliseconds to complete the request for the page's HTML
+     */
+    pageRequestTimeout?: number;
+    /**
+     * Specifies the timeout in milliseconds to complete the AJAX requests (XHR or fetch)
+     */
+    ajaxRequestTimeout?: number;
+    /**
+     * Specifies the time (in milliseconds) TestCafe waits for the  window.load event to fire after the  DOMContentLoaded event. After the timeout passes or the window.load event is raised (whichever happens first), TestCafe starts the test. You can set this timeout to 0 to skip waiting for window.load.
+     */
+    pageLoadTimeout?: number;
+}
+
 interface FixtureFn {
     /**
      * Declares a test fixture.
@@ -197,4 +212,9 @@ interface TestFn {
      * @param scripts - Scripts that should be added to the tested pages.
      */
     clientScripts (scripts: ClientScript | ClientScript[]): this;
+    /**
+     * Specifies the timeouts for the test.
+     *
+     */
+    timeouts(testTimeouts: TestTimeouts): this;
 }
