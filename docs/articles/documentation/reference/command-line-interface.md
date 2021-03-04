@@ -70,6 +70,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--sf, --stop-on-first-fail](#--sf---stop-on-first-fail)
   * [--ts-config-path \<path\>](#--ts-config-path-path)
   * [--compiler-options \<options\>](#--compiler-options-options)
+  * [--cache](#--cache)
   * [--disable-page-caching](#--disable-page-caching)
   * [--disable-multiple-windows](#--disable-multiple-windows)
   * [--retry-test-pages](#--retry-test-pages)
@@ -947,7 +948,7 @@ Specifies test compilation settings. The current version of TestCafe can only co
 testcafe chrome my-tests --compiler-options typescript.options.lib=lib.es5.d.ts,lib.webworker.d.ts;typescript.typesRoot='this value contains spaces'
 ```
 
-The `--compiler-options` parameter accepts the compiler options listed in the [official TypeScript documentation](https://www.typescriptlang.org/docs/handbook/compiler-options.html), and two additional options: `typescript.configPath` and `typescript.customCompilerModulePath`.
+The `--compiler-options` parameter accepts the compiler options listed in the [official TypeScript documentation](https://www.typescriptlang.org/docs/handbook/compiler-options.html) and two additional options: `typescript.configPath` and `typescript.customCompilerModulePath`.
 
 To list multiple parameters, separate them with semicolons. Enclose values that contain spaces in quotes.
 
@@ -969,6 +970,24 @@ The values of the `typescript.options.lib` compiler option should be the same as
 
 *Related configuration file property*: [compilerOptions](configuration-file.md#compileroptions).
 *Related API method*: [runner.compilerOptions](testcafe-api/runner/compileroptions.md)
+
+### --cache
+
+If enabled, the TestCafe proxy caches webpage assets (such as stylesheets and scripts) for the webpages that it processes. The next time the proxy accesses the page, it pulls assets from its cache instead of requesting them from the server.
+
+```sh
+testcafe chrome my-tests --cache
+```
+
+TestCafe emulates the browser's native caching behavior. For example, in *Chrome* TestCafe only caches resources that *Chrome* itself would cache if run without TestCafe.
+
+TestCafe caches scripts, stylesheets, fonts, and other web assets up to **5 MB** in size. TestCafe doesn't cache HTML because that could break [user roles](../guides/advanced-guides/authentication.md#user-roles).
+
+If the tested application loads many large assets, enable server-side caching to decrease test run time.
+
+> Important! Support for server-side caching is experimental. Disable the `--cache` flag if you have compatibility issues with your tests.
+
+*Related configuration file property*: [cache](./configuration-file.md#cache).
 
 ### --disable-page-caching
 
