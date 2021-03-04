@@ -106,7 +106,6 @@
     "lodash": "^4.17.13",
     "log-update-async-hook": "^2.0.2",
     "make-dir": "^3.0.0",
-    "map-reverse": "^1.0.1",
     "mime-db": "^1.41.0",
     "moment": "^2.10.3",
     "moment-duration-format-commonjs": "^1.0.0",
