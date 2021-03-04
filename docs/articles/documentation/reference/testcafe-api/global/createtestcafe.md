@@ -23,7 +23,11 @@ Create a `TestCafe` instance with the `createTestCafe` function.
 
 ```js
 const createTestCafe = require('testcafe');
-const options = {
+const options        = {
+    hostname: 'localhost',
+    port1:    1337,
+    port2:    1338
+}
   hostname: 'localhost',
   port1: 1337,
   port2: 1338
@@ -48,9 +52,9 @@ const sslOptions = {
 };
 
 const testCafeOptions = {
-    hostname: 'localhost',
-    port1: 1337,
-    port2: 1338,
+   hostname: 'localhost',
+    port1:   1337,
+    port2:   1338,
     sslOptions
 }
 
