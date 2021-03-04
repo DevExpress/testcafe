@@ -1037,6 +1037,7 @@
 <li><a href="#run-tests-in-local-browsers">Run Tests in Local Browsers</a></li>
 <li><a href="#mock-requests">Mock Requests</a></li>
 <li><a href="#optimize-your-page-model">Optimize Your Page Model</a></li>
+<li><a href="#enable-server-side-caching">Enable Server-Side Caching</a></li>
 </ul>
 <h2><a class="anchor" id="run-tests-concurrently"></a>Run Tests Concurrently <a class="permalink" href="#run-tests-concurrently">#</a></h2>
 <p>Enable concurrent mode to run multiple browser instances simultaneously.</p>
@@ -1095,10 +1096,37 @@
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="nx">PageModel</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">path/to/page-model.js</span><span class="dl">'</span>
 </code></pre></div>
 <p>This approach ensures that the page model object is created only once per test run.</p>
-<blockquote class="important"><div class="blockquote-content"><p>If you export the page model class and create an instance in every test file, JavaScript creates a new page object per test file. This increases test execution time and memory consumption.</p>
+<blockquote class="important"><div class="blockquote-content"><p>If you export the page model class and create an instance in every test file, JavaScript creates a new page object for each test file. This increases test execution time and memory consumption.</p>
 </div></blockquote>
 <p>For more on page models, read <a href="../../guides/concepts/page-model.html">Page Model</a>.</p>
+<h2><a class="anchor" id="enable-server-side-caching"></a>Enable Server-Side Caching <a class="permalink" href="#enable-server-side-caching">#</a></h2><blockquote class="important"><div class="blockquote-content"><p>Support for server-side caching is <strong>experimental</strong>.</p>
 
+<p>Do not use caching if you run into compatibility issues with your tests.</p>
+</div></blockquote>
+<p>The TestCafe proxy can cache webpage assets (stylesheets, scripts, images) and retrieve them from its cache when it accesses the webpage again.</p>
+
+<p>You can enable caching in one of the following ways:</p>
+
+<ul>
+<li><a href="../../reference/command-line-interface.html#--cache">--cache</a> CLI option</li>
+</ul>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">  testcafe chrome my-tests/ <span class="nt">--cache</span>
+</code></pre></div>
+<ul>
+<li><a href="../../reference/configuration-file.html#cache">cache</a> configuration file property</li>
+</ul>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="w">  </span><span class="p">{</span><span class="w">
+  </span><span class="nl">"cache"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<ul>
+<li><a href="../../reference/testcafe-api/runner/run.html">cache</a> API option</li>
+</ul>
+<div class="highlight"><pre><code class="language-js" data-lang="js">  <span class="nx">runner</span><span class="p">.</span><span class="nx">run</span><span class="p">({</span> <span class="na">cache</span><span class="p">:</span> <span class="kc">true</span> <span class="p">});</span>
+</code></pre></div>
+<p>Enable server-side caching to decrease test duration, particularly when your application relies on browser caching.</p>
+<blockquote><div class="blockquote-content"><p>The <code>cache</code> option doesn&#39;t cache HTML page content and assets heavier than 5 MB.</p>
+</div></blockquote>
 
 		</div>
 	</article>

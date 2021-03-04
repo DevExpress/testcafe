@@ -2194,6 +2194,7 @@
 <li><a href="#--sf---stop-on-first-fail">--sf, --stop-on-first-fail</a></li>
 <li><a href="#--ts-config-path-path">--ts-config-path &lt;path&gt;</a></li>
 <li><a href="#--compiler-options-options">--compiler-options &lt;options&gt;</a></li>
+<li><a href="#--cache">--cache</a></li>
 <li><a href="#--disable-page-caching">--disable-page-caching</a></li>
 <li><a href="#--disable-multiple-windows">--disable-multiple-windows</a></li>
 <li><a href="#--retry-test-pages">--retry-test-pages</a></li>
@@ -2718,7 +2719,7 @@ See <a href="../guides/advanced-guides/test-https-features-and-http2-websites.ht
 <p>Specifies test compilation settings. The current version of TestCafe can only configure the <a href="/testcafe/documentation/guides/concepts/typescript-and-coffeescript.html#customize-compiler-options">TypeScript compiler</a>.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests <span class="nt">--compiler-options</span> typescript.options.lib<span class="o">=</span>lib.es5.d.ts,lib.webworker.d.ts<span class="p">;</span>typescript.typesRoot<span class="o">=</span><span class="s1">'this value contains spaces'</span>
 </code></pre></div>
-<p>The <code>--compiler-options</code> parameter accepts the compiler options listed in the <a href="https://www.typescriptlang.org/docs/handbook/compiler-options.html">official TypeScript documentation</a>, and two additional options: <code>typescript.configPath</code> and <code>typescript.customCompilerModulePath</code>.</p>
+<p>The <code>--compiler-options</code> parameter accepts the compiler options listed in the <a href="https://www.typescriptlang.org/docs/handbook/compiler-options.html">official TypeScript documentation</a> and two additional options: <code>typescript.configPath</code> and <code>typescript.customCompilerModulePath</code>.</p>
 
 <p>To list multiple parameters, separate them with semicolons. Enclose values that contain spaces in quotes.</p>
 
@@ -2733,6 +2734,18 @@ See <a href="../guides/advanced-guides/test-https-features-and-http2-websites.ht
 
 <p><em>Related configuration file property</em>: <a href="configuration-file.html#compileroptions">compilerOptions</a>.
 <em>Related API method</em>: <a href="testcafe-api/runner/compileroptions.html">runner.compilerOptions</a></p>
+<h3><a class="anchor" id="--cache"></a>--cache <a class="permalink" href="#--cache">#</a></h3>
+<p>If enabled, the TestCafe proxy caches webpage assets (such as stylesheets and scripts) for the webpages that it processes. The next time the proxy accesses the page, it pulls assets from its cache instead of requesting them from the server.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests <span class="nt">--cache</span>
+</code></pre></div>
+<p>TestCafe emulates the browser&#39;s native caching behavior. For example, in <em>Chrome</em> TestCafe only caches resources that <em>Chrome</em> itself would cache if run without TestCafe.</p>
+
+<p>TestCafe caches scripts, stylesheets, fonts, and other web assets up to <strong>5 MB</strong> in size. TestCafe doesn&#39;t cache HTML because that could break <a href="../guides/advanced-guides/authentication.html#user-roles">user roles</a>.</p>
+
+<p>If the tested application loads many large assets, enable server-side caching to decrease test run time.</p>
+<blockquote class="important"><div class="blockquote-content"><p>Support for server-side caching is experimental. Disable the <code>--cache</code> flag if you have compatibility issues with your tests.</p>
+</div></blockquote>
+<p><em>Related configuration file property</em>: <a href="./configuration-file.html#cache">cache</a>.</p>
 <h3><a class="anchor" id="--disable-page-caching"></a>--disable-page-caching <a class="permalink" href="#--disable-page-caching">#</a></h3>
 <p>Prevents the browser from caching page content.</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests <span class="nt">--disable-page-caching</span>
