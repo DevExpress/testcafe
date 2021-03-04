@@ -1,5 +1,5 @@
 const hammerhead    = window.getTestCafeModule('hammerhead');
-const hhsettings    = hammerhead.get('./settings').get();
+const hhsettings    = hammerhead.settings.get();
 const iframeSandbox = hammerhead.sandbox.iframe;
 
 const testCafeLegacyRunner = window.getTestCafeModule('testCafeLegacyRunner');

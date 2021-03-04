@@ -97,7 +97,7 @@ import DriverRole from './role';
 import { CHECK_CHILD_WINDOW_CLOSED_INTERVAL, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT } from './driver-link/timeouts';
 import sendMessageToDriver from './driver-link/send-message-to-driver';
 
-const settings = hammerhead.get('./settings');
+const settings = hammerhead.settings;
 
 const transport      = hammerhead.transport;
 const Promise        = hammerhead.Promise;

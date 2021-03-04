@@ -10,7 +10,7 @@
 <script>
     const hammerhead = window['%hammerhead%'];
 
-    hammerhead.get('./utils/destination-location').forceLocation('http://localhost/sessionId/http://target_url');
+    hammerhead.utils.destLocation.forceLocation('http://localhost/sessionId/http://target_url');
 
     hammerhead.start({ crossDomainProxyPort: 2000 });
 
