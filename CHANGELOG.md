@@ -12,7 +12,7 @@ To enable server-side caching, use any of the following:
 
 * [the `--cache` CLI flag](https://devexpress.github.io/testcafe/documentation/reference/command-line-interface.html#--cache)
 * [the `cache` configuration file property](https://devexpress.github.io/testcafe/documentation/reference/configuration-file.html#cache)
-* [the `cache` runner option](https://devexpress.github.io/testcafe/documentation/reference/testcafe-api/runner/run.html)
+* [the `createTestCafe` function parameter](https://devexpress.github.io/testcafe/documentation/reference/testcafe-api/global/createtestcafe.html)
 
 #### Initialize Request Hooks with Async Predicates
 
@@ -132,12 +132,12 @@ You can enable this functionality with a command line, API, or configuration fil
     testcafe chrome test.js --retry-test-pages
     ```
 
-* the [runner.run](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html) option
+* the [createTestCafe](https://devexpress.github.io/testcafe/documentation/reference/testcafe-api/global/createtestcafe.md) function parameter
 
     ```js
-    runner.run({
-        retryTestPages: true
-    });
+    const createTestCafe = require('testcafe');
+
+    const testcafe = await createTestCafe('localhost', 1337, 1338, retryTestPages)
     ```
 
 * the [retryTestPages](https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#retrytestpages) configuration file property
