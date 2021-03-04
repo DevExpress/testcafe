@@ -19,15 +19,15 @@ Use any of the following to enable server-side caching:
 
 * [the `--cache` CLI flag](../documentation/reference/command-line-interface.md#--cache)
 * [the `cache` configuration file property](../documentation/reference/configuration-file.md#cache)
-* [the `cache` runner option](../documentation/reference/testcafe-api/runner/run.md)
+* [the `createTestCafe` function parameter](../documentation/reference/testcafe-api/global/createtestcafe.md)
 
 ### Initialize Request Hooks with Async Predicates
 
 The following request hooks now support **asynchronous** predicate functions:
 
-* [RequestHook Constructor](../documentation/reference/test-api/requesthook/constructor.md)
-* [RequestMock Constructor](../documentation/reference/test-api/requestmock/constructor.md)
-* [RequestLogger Constructor](../documentation/reference/test-api/requestlogger/constructor.md)
+* [RequestHook](../documentation/reference/test-api/requesthook/constructor.md#filter-with-a-predicate)
+* [RequestMock.onRequestTo](../documentation/reference/test-api/requestmock/onrequestto.md#filter-with-a-predicate)
+* [RequestLogger](../documentation/reference/test-api/requestlogger/constructor.md#filter-with-a-predicate)
 
 **Example**
 
