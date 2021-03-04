@@ -43,7 +43,7 @@ export default {
     [TEST_RUN_ERRORS.uncaughtErrorOnPage]: err => `
         A JavaScript error occurred on ${formatUrl(err.pageDestUrl)}.
         Repeat test actions in the browser and check the console for errors.
-        If you see this error, it means that the tested website caused it. You can fix it or disable tracking JavaScript errors in TestCafe. To do the latter, enable the "--skip-js-errors" option.
+        If you see this error, it means that the tested website caused it. You can fix it or disable tracking JavaScript errors in TestCafe. To do the latter, enable the "skipJsErrors" option.
         If this error does not occur, please write a new issue at:
         ${formatUrl(EXTERNAL_LINKS.createNewIssue)}.
 
@@ -373,7 +373,7 @@ export default {
     `,
 
     [TEST_RUN_ERRORS.multipleWindowsModeIsDisabledError]: err => `
-        Multi window mode is disabled. Remove the "--disable-multiple-windows" CLI flag or set the "disableMultipleWindows" option to "false" in the API to use the "${err.methodName}" method.
+        Multi window mode is disabled. Disable the "disableMultipleWindows" option to use the "${err.methodName}" method.
     `,
 
     [TEST_RUN_ERRORS.multipleWindowsModeIsNotSupportedInRemoteBrowserError]: err => `
