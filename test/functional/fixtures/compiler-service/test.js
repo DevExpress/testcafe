@@ -35,4 +35,8 @@ describe('Compiler service', () => {
             ])).to.be.true;
         }
     });
+
+    it('Should allow using ClientFunction in assertions', async () => {
+        await runTests('testcafe-fixtures/client-function-in-assertions.js', 'ClientFunction in assertions');
+    });
 });

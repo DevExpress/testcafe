@@ -1,5 +1,6 @@
 import TestCafeErrorList from '../../../errors/error-list';
 import EventEmitter from '../../../utils/async-event-emitter';
+import { castArray } from 'lodash';
 
 import {
     ExternalError,
@@ -122,11 +123,15 @@ export class IPCProxy extends EventEmitter {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public register (func: Function, context: any = null): void {
-        if (this._handlers[func.name])
-            return;
+    public register (func: Function | Function[], context: any = null): void {
+        func = castArray(func);
 
-        this._handlers[func.name] = func.bind(context);
+        func.forEach(fn => {
+            if (this._handlers[fn.name])
+                return;
+
+            this._handlers[fn.name] = fn.bind(context);
+        });
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
