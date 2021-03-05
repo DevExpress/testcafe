@@ -33,12 +33,10 @@ Parameter         | Type    | Description                                       
 `pageRequestTimeout` | Number | Time (in milliseconds) to wait for HTML pages. If the page isn't received within the specified period, an error is thrown. | `25000`
 `browserInitTimeout` | Number | Time (in milliseconds) for browsers to connect to TestCafe and report that they are ready to test. If one or more browsers fail to connect within this period, TestCafe throws an error. | `120000` for [local browsers](../../command-line-interface.md#local-browsers), `360000` for [remote browsers](../../command-line-interface.md#remote-browsers)
 `speed`           | Number  | Specifies the test execution speed. A number between `1` (fastest) and `0.01` (slowest). If an individual action's speed is also specified, the action speed setting overrides the test speed. | `1`
-`cache` | Boolean | If enabled, the TestCafe proxy caches webpage assets (such as stylesheets, images and scripts) for the webpages that it processes. The next time the proxy accesses the page, it loads assets from its cache instead of requesting them from the server. | `false`
 `stopOnFirstFail`    | Boolean | Stops the test run if a test fails. You can focus on the first error before all the tests finish. | `false`
 `disablePageCaching` | Boolean | Prevents the browser from caching page content. When navigation to a cached page occurs in [role code](../../../guides/advanced-guides/authentication.md), local and session storage content is not preserved. Set `disablePageCaching` to `true` to retain the storage items after navigation. For more information, see [Troubleshooting: Test Actions Fail After Authentication](../../../guides/advanced-guides/authentication.md#test-actions-fail-after-authentication). You can also disable page caching for an individual [fixture](../../test-api/fixture/disablepagecaching.md) or [test](../../test-api/test/disablepagecaching.md). | `false`
 `disableScreenshots` | Boolean | Prevents TestCafe from taking screenshots. When this option is specified, screenshots are not taken whenever a test fails or when [t.takeScreenshot](../../test-api/testcontroller/takescreenshot.md) or [t.takeElementScreenshot](../../test-api/testcontroller/takeelementscreenshot.md) is executed. | `false`
 `disableMultipleWindows` | Boolean | Disables support for [multi-window testing](../../../guides/advanced-guides/multiple-browser-windows.md) in Chrome and Firefox. Use this option if you encounter compatibility issues with your existing tests.
-`retryTestPages` | Boolean | Enables retries for failed network requests for webpages visited during tests. Requires a secure connection. See the [related configuration file property](../../configuration-file.md#retrytestpages) for more details.
 
 After all tests are finished, call the [testcafe.close](../testcafe/close.md) function to stop the TestCafe server.
 
@@ -56,12 +54,10 @@ After all tests are finished, call the [testcafe.close](../testcafe/close.md) fu
 * [pageRequestTimeout](../../configuration-file.md#pagerequesttimeout)
 * [browserInitTimeout](../../configuration-file.md#browserinittimeout)
 * [speed](../../configuration-file.md#speed)
-* [cache](../../configuration-file.md#cache)
 * [stopOnFirstFail](../../configuration-file.md#stoponfirstfail)
 * [disablePageCaching](../../configuration-file.md#disablepagecaching)
 * [disableScreenshots](../../configuration-file.md#disablescreenshots)
 * [disableMultipleWindows](../../configuration-file.md#disablemultiplewindows)
-* [retryTestPages](../../configuration-file.md#retrytestpages)
 
 **Example**
 

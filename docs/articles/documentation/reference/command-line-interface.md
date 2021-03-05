@@ -968,7 +968,7 @@ testcafe chrome test.ts --compiler-options typescript.customCompilerModulePath=.
 
 The values of the `typescript.options.lib` compiler option should be the same as the names of the corresponding library files from your compiler's `node_modules/typescript/lib` folder (for example: `lib.webworker.d.ts`).
 
-*Related configuration file property*: [compilerOptions](configuration-file.md#compileroptions).
+*Related configuration file property*: [compilerOptions](configuration-file.md#compileroptions)  
 *Related API method*: [runner.compilerOptions](testcafe-api/runner/compileroptions.md)
 
 ### --cache
