@@ -593,6 +593,8 @@ export default class Runner extends EventEmitter {
         // or we can perform iteration from the end to the beginning.
         const cancellationPromises = this.pendingTaskPromises.reduceRight((result, taskPromise) => {
             result.push(taskPromise.cancel());
+
+            return result;
         }, []);
 
         await Promise.all(cancellationPromises);
