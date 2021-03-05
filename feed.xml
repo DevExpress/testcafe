@@ -5,8 +5,8 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 04 Mar 2021 10:46:20 +0300</pubDate>
-    <lastBuildDate>Thu, 04 Mar 2021 10:46:20 +0300</lastBuildDate>
+    <pubDate>Fri, 05 Mar 2021 11:39:15 +0300</pubDate>
+    <lastBuildDate>Fri, 05 Mar 2021 11:39:15 +0300</lastBuildDate>
     <generator>Jekyll v3.9.0</generator>
     
       <item>
@@ -23,15 +23,15 @@
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;../documentation/reference/command-line-interface.html#--cache&quot;&gt;the &lt;code&gt;--cache&lt;/code&gt; CLI flag&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;../documentation/reference/configuration-file.html#cache&quot;&gt;the &lt;code&gt;cache&lt;/code&gt; configuration file property&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;../documentation/reference/testcafe-api/runner/run.html&quot;&gt;the &lt;code&gt;cache&lt;/code&gt; runner option&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;../documentation/reference/testcafe-api/global/createtestcafe.html&quot;&gt;the &lt;code&gt;createTestCafe&lt;/code&gt; function parameter&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;initialize-request-hooks-with-async-predicates&quot;&gt;&lt;/a&gt;Initialize Request Hooks with Async Predicates &lt;a class=&quot;permalink&quot; href=&quot;#initialize-request-hooks-with-async-predicates&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;The following request hooks now support &lt;strong&gt;asynchronous&lt;/strong&gt; predicate functions:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;../documentation/reference/test-api/requesthook/constructor.html&quot;&gt;RequestHook Constructor&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;../documentation/reference/test-api/requestmock/constructor.html&quot;&gt;RequestMock Constructor&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;../documentation/reference/test-api/requestlogger/constructor.html&quot;&gt;RequestLogger Constructor&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;../documentation/reference/test-api/requesthook/constructor.html#filter-with-a-predicate&quot;&gt;RequestHook&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;../documentation/reference/test-api/requestmock/onrequestto.html#filter-with-a-predicate&quot;&gt;RequestMock.onRequestTo&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;../documentation/reference/test-api/requestlogger/constructor.html#filter-with-a-predicate&quot;&gt;RequestLogger&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;&lt;strong&gt;Example&lt;/strong&gt;&lt;/p&gt;
@@ -133,10 +133,10 @@
 &lt;li&gt;&lt;p&gt;the &lt;a href=&quot;../documentation/reference/command-line-interface.html#--retry-test-pages&quot;&gt;--retry-test-pages&lt;/a&gt; command line argument&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome test.js &lt;span class=&quot;nt&quot;&gt;--retry-test-pages&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;../documentation/reference/testcafe-api/runner/&quot;&gt;runner.run&lt;/a&gt; option&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;retryTestPages&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;../documentation/reference/testcafe-api/global/createtestcafe.html&quot;&gt;createTestCafe&lt;/a&gt; function parameter&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;createTestCafe&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;testcafe&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;testcafe&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;createTestCafe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;localhost&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1337&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1338&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;retryTestPages&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;the &lt;a href=&quot;../documentation/reference/configuration-file.html#retrytestpages&quot;&gt;retryTestPages&lt;/a&gt; configuration file property&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;

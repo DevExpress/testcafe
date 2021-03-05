@@ -533,10 +533,10 @@
 <li><p>the <a href="../documentation/reference/command-line-interface.html#--retry-test-pages">--retry-test-pages</a> command line argument</p>
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome test.js <span class="nt">--retry-test-pages</span>
 </code></pre></div></li>
-<li><p>the <a href="../documentation/reference/testcafe-api/runner/">runner.run</a> option</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">run</span><span class="p">({</span>
-    <span class="na">retryTestPages</span><span class="p">:</span> <span class="kc">true</span>
-<span class="p">});</span>
+<li><p>the <a href="../documentation/reference/testcafe-api/global/createtestcafe.html">createTestCafe</a> function parameter</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">createTestCafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="kd">const</span> <span class="nx">testcafe</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">createTestCafe</span><span class="p">(</span><span class="dl">'</span><span class="s1">localhost</span><span class="dl">'</span><span class="p">,</span> <span class="mi">1337</span><span class="p">,</span> <span class="mi">1338</span><span class="p">,</span> <span class="nx">retryTestPages</span><span class="p">)</span>
 </code></pre></div></li>
 <li><p>the <a href="../documentation/reference/configuration-file.html#retrytestpages">retryTestPages</a> configuration file property</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">

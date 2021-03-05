@@ -2129,8 +2129,66 @@
 
 			<h1>createTestCafe Function</h1>
 <p>Creates a <a href="../testcafe/">TestCafe</a> server instance.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">async createTestCafe([hostname], [port1], [port2], [sslOptions], [developmentMode]) → Promise&lt;TestCafe&gt;
+<div class="highlight"><pre><code class="language-text" data-lang="text">async createTestCafe(options) → Promise&lt;TestCafe&gt;
 </code></pre></div><div class="table-wrapper"><table><thead><tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody><tr>
+<td><code>options</code>&#160;<em>(optional)</em></td>
+<td>Object</td>
+<td>See <a href="#options">options</a>.</td>
+</tr>
+</tbody></table></div>
+<p><strong>Example</strong></p>
+
+<p>Create a <code>TestCafe</code> instance with the <code>createTestCafe</code> function.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">createTestCafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">options</span>        <span class="o">=</span> <span class="p">{</span>
+    <span class="na">hostname</span><span class="p">:</span> <span class="dl">'</span><span class="s1">localhost</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">port1</span><span class="p">:</span>    <span class="mi">1337</span><span class="p">,</span>
+    <span class="na">port2</span><span class="p">:</span>    <span class="mi">1338</span>
+<span class="p">};</span>
+
+<span class="kd">const</span> <span class="nx">testCafeOptions</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">createTestCafe</span><span class="p">(</span><span class="nx">options</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">runner</span>          <span class="o">=</span> <span class="nx">testcafe</span><span class="p">.</span><span class="nx">createRunner</span><span class="p">();</span>
+<span class="cm">/* ... */</span>
+</code></pre></div>
+<p>Establish an HTTPS connection with the TestCafe server. The <a href="https://www.npmjs.com/package/openssl-self-signed-certificate">openssl-self-signed-certificate</a> module is used to generate a self-signed certificate for development use.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="dl">'</span><span class="s1">use strict</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">createTestCafe</span>        <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">selfSignedSertificate</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">openssl-self-signed-certificate</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="kd">const</span> <span class="nx">sslOptions</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">key</span><span class="p">:</span>  <span class="nx">selfSignedSertificate</span><span class="p">.</span><span class="nx">key</span><span class="p">,</span>
+    <span class="na">cert</span><span class="p">:</span> <span class="nx">selfSignedSertificate</span><span class="p">.</span><span class="nx">cert</span>
+<span class="p">};</span>
+
+<span class="kd">const</span> <span class="nx">testCafeOptions</span> <span class="o">=</span> <span class="p">{</span>
+   <span class="na">hostname</span><span class="p">:</span> <span class="dl">'</span><span class="s1">localhost</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">port1</span><span class="p">:</span>   <span class="mi">1337</span><span class="p">,</span>
+    <span class="na">port2</span><span class="p">:</span>   <span class="mi">1338</span><span class="p">,</span>
+    <span class="nx">sslOptions</span>
+<span class="p">};</span>
+
+<span class="kd">const</span> <span class="nx">testcafe</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">createTestCafe</span><span class="p">(</span><span class="nx">testCafeOptions</span><span class="p">);</span>
+<span class="kd">const</span> <span class="nx">runner</span>   <span class="o">=</span> <span class="nx">testcafe</span><span class="p">.</span><span class="nx">createRunner</span><span class="p">();</span>
+
+<span class="k">await</span> <span class="nx">runner</span>
+    <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="dl">'</span><span class="s1">test.js</span><span class="dl">'</span><span class="p">)</span>
+
+    <span class="c1">// Browsers restrict self-signed certificate usage unless you</span>
+    <span class="c1">// explicitly set a flag specific to each browser.</span>
+    <span class="c1">// For Chrome, this is '--allow-insecure-localhost'.</span>
+    <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="dl">'</span><span class="s1">chrome --allow-insecure-localhost</span><span class="dl">'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
+
+<span class="k">await</span> <span class="nx">testcafe</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span>
+</code></pre></div><h2><a class="anchor" id="options"></a>options <a class="permalink" href="#options">#</a></h2>
+<p><strong>Type</strong>: Object</p>
+<div class="table-wrapper"><table><thead><tr>
 <th>Parameter</th>
 <th>Type</th>
 <th>Description</th>
@@ -2160,6 +2218,18 @@
 <td>Enables/disables mechanisms to log and diagnose errors. You should enable this option before you contact TestCafe Support to report an issue.</td>
 <td><code>false</code></td>
 </tr>
+<tr>
+<td><code>cache</code>&#160;<em>(optional)</em></td>
+<td>Boolean</td>
+<td>If enabled, the TestCafe proxy caches webpage assets (such as stylesheets, images and scripts) for the webpages that it processes. The next time the proxy accesses the page, it loads assets from its cache instead of requesting them from the server.</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>retryTestPages</code>&#160;<em>(optional)</em></td>
+<td>Boolean</td>
+<td>Retry failed network requests for webpages visited during tests. Requires a secure connection.</td>
+<td><code>false</code></td>
+</tr>
 </tbody></table></div>
 <p><em>Related configuration file properties</em>:</p>
 
@@ -2168,42 +2238,10 @@
 <li><a href="../../configuration-file.html#port1-port2">port1, port2</a></li>
 <li><a href="../../configuration-file.html#ssl">ssl</a></li>
 <li><a href="../../configuration-file.html#developmentmode">developmentMode</a></li>
+<li><a href="../../configuration-file.html#retrytestpages">retryTestPages</a></li>
+<li><a href="../../configuration-file.html#cache">cache</a></li>
 </ul>
-
-<p><strong>Example</strong></p>
-
-<p>Create a <code>TestCafe</code> instance with the <code>createTestCafe</code> function.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">const</span> <span class="nx">createTestCafe</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">);</span>
-
-<span class="kd">const</span> <span class="nx">testcafe</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">createTestCafe</span><span class="p">(</span><span class="dl">'</span><span class="s1">localhost</span><span class="dl">'</span><span class="p">,</span> <span class="mi">1337</span><span class="p">,</span> <span class="mi">1338</span><span class="p">);</span>
-<span class="kd">const</span> <span class="nx">runner</span>   <span class="o">=</span> <span class="nx">testcafe</span><span class="p">.</span><span class="nx">createRunner</span><span class="p">();</span>
-<span class="cm">/* ... */</span>
-</code></pre></div>
-<p>Establish an HTTPS connection with the TestCafe server. The <a href="https://www.npmjs.com/package/openssl-self-signed-certificate">openssl-self-signed-certificate</a> module is used to generate a self-signed certificate for development use.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="dl">'</span><span class="s1">use strict</span><span class="dl">'</span><span class="p">;</span>
-
-<span class="kd">const</span> <span class="nx">createTestCafe</span>        <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">);</span>
-<span class="kd">const</span> <span class="nx">selfSignedSertificate</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">openssl-self-signed-certificate</span><span class="dl">'</span><span class="p">);</span>
-
-<span class="kd">const</span> <span class="nx">sslOptions</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="na">key</span><span class="p">:</span>  <span class="nx">selfSignedSertificate</span><span class="p">.</span><span class="nx">key</span><span class="p">,</span>
-    <span class="na">cert</span><span class="p">:</span> <span class="nx">selfSignedSertificate</span><span class="p">.</span><span class="nx">cert</span>
-<span class="p">};</span>
-
-<span class="kd">const</span> <span class="nx">testcafe</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">createTestCafe</span><span class="p">(</span><span class="dl">'</span><span class="s1">localhost</span><span class="dl">'</span><span class="p">,</span> <span class="mi">1337</span><span class="p">,</span> <span class="mi">1338</span><span class="p">,</span> <span class="nx">sslOptions</span><span class="p">);</span>
-<span class="kd">const</span> <span class="nx">runner</span>   <span class="o">=</span> <span class="nx">testcafe</span><span class="p">.</span><span class="nx">createRunner</span><span class="p">();</span>
-
-<span class="k">await</span> <span class="nx">runner</span>
-    <span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="dl">'</span><span class="s1">test.js</span><span class="dl">'</span><span class="p">)</span>
-
-    <span class="c1">// Browsers restrict self-signed certificate usage unless you</span>
-    <span class="c1">// explicitly set a flag specific to each browser.</span>
-    <span class="c1">// For Chrome, this is '--allow-insecure-localhost'.</span>
-    <span class="p">.</span><span class="nx">browsers</span><span class="p">(</span><span class="dl">'</span><span class="s1">chrome --allow-insecure-localhost</span><span class="dl">'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">run</span><span class="p">();</span>
-
-<span class="k">await</span> <span class="nx">testcafe</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span>
-</code></pre></div><h2><a class="anchor" id="see-also"></a>See Also <a class="permalink" href="#see-also">#</a></h2>
+<h2><a class="anchor" id="see-also"></a>See Also <a class="permalink" href="#see-also">#</a></h2>
 <ul>
 <li><a href="../testcafe/">TestCafe Class</a></li>
 </ul>

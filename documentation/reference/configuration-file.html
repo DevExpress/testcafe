@@ -2962,7 +2962,7 @@ to slow the test down.</p>
 <blockquote class="important"><div class="blockquote-content"><p>Support for server-side caching is experimental. Disable the <code>--cache</code> flag if you run into compatibility issues with your tests.</p>
 </div></blockquote>
 <p><em>CLI</em>: <a href="command-line-interface.html#--cache">--cache</a><br>
-<em>API</em>: <a href="testcafe-api/runner/run.html">runner.run({ cache })</a></p>
+<em>API</em>: <a href="./testcafe-api/global/createtestcafe.html">createTestCafe</a></p>
 <h2><a class="anchor" id="disablepagecaching"></a>disablePageCaching <a class="permalink" href="#disablepagecaching">#</a></h2>
 <p>Prevents the browser from caching page content.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
@@ -2994,8 +2994,8 @@ to slow the test down.</p>
 <p>This feature uses <a href="https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API">Service Workers</a> that require a secure connection.
 To run TestCafe over a secure connection, <a href="../guides/advanced-guides/test-https-features-and-http2-websites.html#test-https-websites">setup HTTPS</a> or use the <a href="command-line-interface.html#--hostname-name">--hostname localhost</a> option.</p>
 
-<p><em>CLI</em>: <a href="./command-line-interface.html#--retry-test-pages">--retry-test-pages</a>
-<em>API</em>: <a href="testcafe-api/runner/run.html">runner.run({ retryTestPages })</a></p>
+<p><em>CLI</em>: <a href="./command-line-interface.html#--retry-test-pages">--retry-test-pages</a><br>
+<em>API</em>: <a href="./testcafe-api/global/createtestcafe.html">createTestCafe</a></p>
 <h2><a class="anchor" id="color"></a>color <a class="permalink" href="#color">#</a></h2>
 <p>Enables colors in the command line.</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
