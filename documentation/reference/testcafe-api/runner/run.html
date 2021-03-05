@@ -2216,12 +2216,6 @@ to a lower resource consumption mode where tests are not guaranteed to execute c
 <td><code>1</code></td>
 </tr>
 <tr>
-<td><code>cache</code></td>
-<td>Boolean</td>
-<td>If enabled, the TestCafe proxy caches webpage assets (such as stylesheets, images and scripts) for the webpages that it processes. The next time the proxy accesses the page, it loads assets from its cache instead of requesting them from the server.</td>
-<td><code>false</code></td>
-</tr>
-<tr>
 <td><code>stopOnFirstFail</code></td>
 <td>Boolean</td>
 <td>Stops the test run if a test fails. You can focus on the first error before all the tests finish.</td>
@@ -2245,12 +2239,6 @@ to a lower resource consumption mode where tests are not guaranteed to execute c
 <td>Disables support for <a href="../../../guides/advanced-guides/multiple-browser-windows.html">multi-window testing</a> in Chrome and Firefox. Use this option if you encounter compatibility issues with your existing tests.</td>
 <td></td>
 </tr>
-<tr>
-<td><code>retryTestPages</code></td>
-<td>Boolean</td>
-<td>Enables retries for failed network requests for webpages visited during tests. Requires a secure connection. See the <a href="../../configuration-file.html#retrytestpages">related configuration file property</a> for more details.</td>
-<td></td>
-</tr>
 </tbody></table></div>
 <p>After all tests are finished, call the <a href="../testcafe/close.html">testcafe.close</a> function to stop the TestCafe server.</p>
 
@@ -2269,12 +2257,10 @@ to a lower resource consumption mode where tests are not guaranteed to execute c
 <li><a href="../../configuration-file.html#pagerequesttimeout">pageRequestTimeout</a></li>
 <li><a href="../../configuration-file.html#browserinittimeout">browserInitTimeout</a></li>
 <li><a href="../../configuration-file.html#speed">speed</a></li>
-<li><a href="../../configuration-file.html#cache">cache</a></li>
 <li><a href="../../configuration-file.html#stoponfirstfail">stopOnFirstFail</a></li>
 <li><a href="../../configuration-file.html#disablepagecaching">disablePageCaching</a></li>
 <li><a href="../../configuration-file.html#disablescreenshots">disableScreenshots</a></li>
 <li><a href="../../configuration-file.html#disablemultiplewindows">disableMultipleWindows</a></li>
-<li><a href="../../configuration-file.html#retrytestpages">retryTestPages</a></li>
 </ul>
 
 <p><strong>Example</strong></p>
