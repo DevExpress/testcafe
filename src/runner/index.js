@@ -1,7 +1,6 @@
 import { resolve as resolvePath, dirname } from 'path';
 import debug from 'debug';
 import promisifyEvent from 'promisify-event';
-import mapReverse from 'map-reverse';
 import { EventEmitter } from 'events';
 import {
     flattenDeep as flatten,
@@ -592,7 +591,11 @@ export default class Runner extends EventEmitter {
         // the pendingTaskPromises array, which leads to shifting indexes
         // towards the beginning. So, we must copy the array in order to iterate it,
         // or we can perform iteration from the end to the beginning.
-        const cancellationPromises = mapReverse(this.pendingTaskPromises, taskPromise => taskPromise.cancel());
+        const cancellationPromises = this.pendingTaskPromises.reduceRight((result, taskPromise) => {
+            result.push(taskPromise.cancel());
+
+            return result;
+        }, []);
 
         await Promise.all(cancellationPromises);
     }

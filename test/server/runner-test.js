@@ -4,7 +4,7 @@ const path                    = require('path');
 const chai                    = require('chai');
 const { expect }              = chai;
 const request                 = require('request');
-const { noop, times, uniqBy } = require('lodash');
+const { times, uniqBy }       = require('lodash');
 const consoleWrapper          = require('./helpers/console-wrapper');
 const isAlpine                = require('./helpers/is-alpine');
 const createTestCafe          = require('../../lib/');
@@ -14,8 +14,9 @@ const BrowserConnection       = require('../../lib/browser/connection');
 const browserProviderPool     = require('../../lib/browser/provider/pool');
 const delay                   = require('../../lib/utils/delay');
 const OptionNames             = require('../../lib/configuration/option-names');
-const { GeneralError } = require('../../lib/errors/runtime');
-const { RUNTIME_ERRORS } = require('../../lib/errors/types');
+const { GeneralError }        = require('../../lib/errors/runtime');
+const { RUNTIME_ERRORS }      = require('../../lib/errors/types');
+const { createReporter }      = require('../functional/utils/reporter');
 
 chai.use(require('chai-string'));
 
@@ -75,7 +76,9 @@ describe('Runner', () => {
     });
 
     describe('.browsers()', () => {
-        it('Should raise an error if browser was not found for the alias', () => {
+        it('Should raise an error if browser was not found for the alias', function () {
+            this.timeout(5000);
+
             return runner
                 .browsers('browser42')
                 .reporter('list')
@@ -1051,14 +1054,7 @@ describe('Runner', () => {
 
             runner
                 .src('test/server/data/test-suites/basic/testfile2.js')
-                .reporter(() => {
-                    return {
-                        reportTaskStart:    noop,
-                        reportTaskDone:     noop,
-                        reportTestDone:     noop,
-                        reportFixtureStart: noop
-                    };
-                });
+                .reporter(createReporter());
         });
 
         before(() => {
