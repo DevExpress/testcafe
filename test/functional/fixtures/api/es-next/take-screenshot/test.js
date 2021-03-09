@@ -270,6 +270,8 @@ describe('[API] t.takeScreenshot()', function () {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Should add default extension', { only: 'chrome' })
                 .then(() => {
                     expect(testReport.screenshotPath).endsWith('screenshot-path.png');
+
+                    return assertionHelper.removeScreenshotDir('screenshots');
                 });
         });
     }
@@ -417,7 +419,6 @@ describe('[API] t.takeElementScreenshot()', function () {
                 });
         });
 
-
         it('Should perform bottom-left crop', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Bottom-left',
                 { setScreenshotPath: true })
@@ -428,7 +429,6 @@ describe('[API] t.takeElementScreenshot()', function () {
                     expect(result).eql(true);
                 });
         });
-
 
         it('Should perform bottom-right crop', function () {
             return runTests('./testcafe-fixtures/take-element-screenshot.js', 'Bottom-right',
