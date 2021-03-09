@@ -568,7 +568,7 @@
         "title": "Creating a Visual Regression Tool for Your Web App",
         "url": "https://blog.usejournal.com/creating-a-visual-regression-tool-for-your-web-app-f4920974e2ec",
         "author": "Greg Byrne",
-        "profileUrl": "https://twitter.com/gauravchl",
+        "profileUrl": "https://www.linkedin.com/in/byrne-greg/",
         "excerpt": "Automating \"spot the difference\" using TestCafe and ResembleJS."
     },
     {
@@ -580,15 +580,6 @@
         "url": "https://medium.com/xebia-france/end-to-end-web-testing-with-testcafe-766ddbd74924",
         "author": "Jennifer Proust",
         "profileUrl": "https://twitter.com/proustibat"
-    },
-    {
-        "type": "article",
-        "source": "Imaginea",
-        "sourceHomePage": "https://blog.imaginea.com",
-        "date": "2018-12-03",
-        "title": "Why we Fancied TestCafe Over WebDriver for a Modern Web App?",
-        "url": "https://blog.imaginea.com/why-we-fancied-testcafe-over-webdriver/",
-        "author": "Balaji Sreenivasan"
     },
     {
         "type": "article",

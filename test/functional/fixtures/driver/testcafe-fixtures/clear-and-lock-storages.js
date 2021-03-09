@@ -4,15 +4,19 @@ fixture `Storages`
     .page `http://localhost:3000/fixtures/driver/pages/set-value-to-storages.html`;
 
 const setNativeStorageKey = ClientFunction(storageName => {
-    const storageWrapper = window[storageName];
+    const nativeStorage    = window[storageName].internal.nativeStorage;
+    const nativeStorageKey = window[storageName].internal.nativeStorageKey;
+    const nativeMethods    = window['%hammerhead%'].nativeMethods;
 
-    storageWrapper.nativeStorage.setItem('stored-native-storage-key', storageWrapper.nativeStorageKey);
+    nativeMethods.storageSetItem.call(nativeStorage, 'stored-native-storage-key', nativeStorageKey);
 });
 
 const getNativeStorageState = ClientFunction(storageName => {
-    const storageWrapper = window[storageName];
+    const nativeStorage = window[storageName].internal.nativeStorage;
+    const nativeMethods = window['%hammerhead%'].nativeMethods;
 
-    return storageWrapper.nativeStorage.getItem(storageWrapper.nativeStorage.getItem('stored-native-storage-key'));
+    return nativeMethods.storageGetItem.call(nativeStorage,
+        nativeMethods.storageGetItem.call(nativeStorage, 'stored-native-storage-key'));
 });
 
 test('Set values to storages', async t => {

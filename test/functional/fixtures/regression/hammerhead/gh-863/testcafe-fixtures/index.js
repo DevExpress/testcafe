@@ -5,13 +5,14 @@ const reload = ClientFunction(() => {
 });
 
 fixture `Fixture`
-    .page('http://localhost:1340/');
+    .page(`http://localhost:${process.env.TEST_SERVER_PORT}/`);
 
 async function assertTestElements () {
     await t
         .expect(Selector('#test-div').visible).ok()
         .expect(Selector('#loaded-script-status').textContent).eql('Loaded')
-        .expect(Selector('#check-loaded-script-header-status').textContent).eql('Success');
+        .expect(Selector('#check-loaded-script-header-status').textContent).eql('Success')
+        .expect(Selector('#loaded-image-status').textContent).eql('Loaded');
 }
 
 async function performTestActions () {

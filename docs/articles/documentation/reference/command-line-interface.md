@@ -54,6 +54,9 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--selector-timeout \<ms\>](#--selector-timeout-ms)
   * [--assertion-timeout \<ms\>](#--assertion-timeout-ms)
   * [--page-load-timeout \<ms\>](#--page-load-timeout-ms)
+  * [--ajax-request-timeout \<ms\>](#--ajax-request-timeout-ms)
+  * [--page-request-timeout \<ms\>](#--page-request-timeout-ms)
+  * [--browser-init-timeout \<ms\>](#--browser-init-timeout-ms)
   * [--speed \<factor\>](#--speed-factor)
   * [--cs \<path\[,path2,...\]\>, --client-scripts \<path\[,path2,...\]\>](#--cs-pathpath2---client-scripts-pathpath2)
   * [--ports \<port1,port2\>](#--ports-port1port2)
@@ -67,24 +70,26 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--sf, --stop-on-first-fail](#--sf---stop-on-first-fail)
   * [--ts-config-path \<path\>](#--ts-config-path-path)
   * [--compiler-options \<options\>](#--compiler-options-options)
+  * [--cache](#--cache)
   * [--disable-page-caching](#--disable-page-caching)
   * [--disable-multiple-windows](#--disable-multiple-windows)
+  * [--retry-test-pages](#--retry-test-pages)
   * [--color](#--color)
   * [--no-color](#--no-color)
 
-When you execute the `testcafe` command, TestCafe first reads settings from the `.testcaferc.json` [configuration file](configuration-file.md) if this file exists, and then applies the settings from the command line. Command line settings override values from the configuration file in case they differ. TestCafe prints information about every overridden property in the console.
+When you execute the `testcafe` command, TestCafe first reads settings from the `.testcaferc.json` [configuration file](configuration-file.md) if this file exists, and then applies the settings from the command line. If there are conflicting values, command-line settings override these values in the configuration file. TestCafe prints information about every overridden property in the console.
 
-If the [browsers](configuration-file.md#browsers) and [src](configuration-file.md#src) properties are specified in the configuration file, you can omit them in the command line.
+If you specify the [browsers](configuration-file.md#browsers) and [src](configuration-file.md#src) properties in the configuration file, you can omit them in the command line.
 
-> Important! Make sure to keep the browser tab that is running tests active. Do not minimize the browser window.
+> Important! The browser tab that is running tests should remain active. Do not minimize the browser window.
 > Inactive tabs and minimized browser windows switch to a lower resource consumption mode
 > where tests do not always execute correctly.
 >
-> Do not zoom pages while testing. Tests may be unstable if the page is zoomed in or out.
+> Do not zoom pages while testing. Tests may be unstable if the page is zoomed.
 
-During a test, TestCafe suppresses native dialogs, so they don't block the page. Learn how to handle native dialogs [here](../../documentation/guides/basic-guides/interact-with-the-page.md#handle-native-dialogs).
+TestCafe suppresses native dialogs during a test to prevent them from blocking the page. For more information on how to handle native dialogs, refer to [Handle Native Dialogs](../../documentation/guides/basic-guides/interact-with-the-page.md#handle-native-dialogs).
 
-If a browser stops responding while it executes tests, TestCafe restarts the browser and reruns the current test in a new browser instance.
+If a browser stops responding during test execution, TestCafe restarts the browser and reruns the current test in a new browser instance.
 If the same problem occurs with this test two more times, the test run finishes and an error is thrown.
 
 ## Browser List
@@ -117,7 +122,7 @@ You can use a path to the browser's executable file (with the `path:` prefix) to
 testcafe path:d:\firefoxportable\firefoxportable.exe tests/sample-fixture.js
 ```
 
-If the path contains spaces, enclose it in backticks and additionally surround the whole parameter including the keyword in quotation marks.
+If the path has spaces, enclose it in backticks. Surround the whole parameter string including the keyword in quotation marks.
 
 In Windows `cmd.exe` (default command prompt), use double quotation marks:
 
@@ -131,7 +136,7 @@ In `Unix` shells like `bash`, `zsh`, `csh` (macOS, Linux, Windows Subsystem for 
 testcafe 'path:`C:\Program Files (x86)\Firefox Portable\firefox.exe`' tests/sample-fixture.js
 ```
 
-> Do not use the `path:` prefix if you need to run a browser in the [headless mode](../guides/concepts/browsers.md#test-in-headless-mode), use [device emulation](../guides/concepts/browsers.md#use-chromium-device-emulation) or [user profiles](../guides/concepts/browsers.md#user-profiles). Specify the [browser alias](../guides/concepts/browsers.md#locally-installed-browsers) in these cases.
+> Do not use the `path:` prefix to run a browser in [headless mode](../guides/concepts/browsers.md#test-in-headless-mode) - use [device emulation](../guides/concepts/browsers.md#use-chromium-device-emulation) or [user profiles](../guides/concepts/browsers.md#user-profiles) instead. Specify the [browser alias](../guides/concepts/browsers.md#locally-installed-browsers) in these cases.
 
 ### Test in Headless Mode
 
@@ -161,7 +166,7 @@ To run tests in a [browser on a remote device](../guides/concepts/browsers.md#br
 testcafe remote tests/sample-fixture.js
 ```
 
-If you want to connect multiple browsers, specify `remote:` and the number of browsers. For example, if you need to use three remote browsers, specify `remote:3`.
+If you want to connect multiple browsers, specify `remote:` and the number of browsers. For example, to use three remote browsers, specify `remote:3`.
 
 ```sh
 testcafe remote:3 tests/sample-fixture.js
@@ -172,8 +177,8 @@ TestCafe provides URLs you should open in your remote device's browsers.
 > If you run tests [concurrently](#-c-n---concurrency-n),
 > specify the total number of all browsers' instances after the `remote:` keyword.
 
-You can also use the [--qr-code](#--qr-code) option to display QR-codes that represent the same URLs.
-Scan the QR-codes with the device on which you wish to test your application.
+You can use the [--qr-code](#--qr-code) option to display QR-codes that contain the URLs.
+Scan the QR-codes with the device you want to use to test your application.
 This connects the browsers to TestCafe and starts the tests.
 
 ### Browsers Accessed Through Browser Provider Plugins
@@ -187,7 +192,7 @@ testcafe "saucelabs:Chrome@52.0:Windows 8.1" tests/sample-fixture.js
 
 ### Start a Browser With Arguments
 
-If you need to pass arguments for the specified browser, write them after the browser's alias. Enclose the browser call and its arguments in quotation marks.
+To pass arguments for the specified browser, write them after the browser's alias. Enclose the browser call and its arguments in quotation marks.
 
 In Windows `cmd.exe` (default command prompt), use double quotation marks:
 
@@ -201,7 +206,7 @@ In `Unix` shells like `bash`, `zsh`, `csh` (macOS, Linux, Windows Subsystem for 
 testcafe 'chrome --start-fullscreen' tests/sample-fixture.js
 ```
 
-You can also specify arguments for portable browsers. If a path to a browser contains spaces, the path should be enclosed in backticks.
+You can specify arguments for portable browsers. If a path to a browser has spaces, enclose it in backticks.
 
 For Unix shells and Windows PowerShell:
 
@@ -241,7 +246,7 @@ The following command runs tests from the specified fixture files:
 testcafe ie js-tests/fixture.js studio-tests/fixture.testcafe
 ```
 
-You can also use [glob patterns](https://github.com/isaacs/node-glob#glob-primer) to specify a set of files.
+You can use [glob patterns](https://github.com/isaacs/node-glob#glob-primer) to specify a set of files.
 
 The following command runs tests from files that match the `tests/*page*` pattern (for instance, `tests/example-page.js`, `tests/main-page.js`, or `tests/auth-page.testcafe`):
 
@@ -255,7 +260,7 @@ If you do not specify any file or directory, TestCafe runs tests from the `test`
 
 ### -h, --help
 
-Displays commands' usage information.
+Displays brief documentation for the command.
 
 ```sh
 testcafe --help
@@ -271,7 +276,7 @@ testcafe --version
 
 ### -b, --list-browsers
 
-Lists the aliases of the [auto-detected browsers](../guides/concepts/browsers.md#locally-installed-browsers) installed on the local machine.
+Lists the aliases of the [automatically detected browsers](../guides/concepts/browsers.md#locally-installed-browsers) installed on the local machine.
 
 ```sh
 testcafe --list-browsers
@@ -279,9 +284,9 @@ testcafe --list-browsers
 
 ### -r \<name\[:output\],\[...\]\>, --reporter \<name\[:output\],\[...\]\>
 
-Specifies the name of a [built-in](../guides/concepts/reporters.md) or [custom reporter](../extending-testcafe/reporter-plugin/README.md) that is used to generate test reports.
+Specifies the name of a [built-in](../guides/concepts/reporters.md) or [custom reporter](../extending-testcafe/reporter-plugin/README.md) that generates test reports.
 
-The following command runs tests in all available browsers and generates a report in xunit format:
+The following command runs tests in all available browsers and generates a report in `xunit` format:
 
 ```sh
 testcafe all tests/sample-fixture.js -r xunit
@@ -293,21 +298,21 @@ The following command runs tests and specifies a custom reporter plugin that gen
 testcafe all tests/sample-fixture.js -r my-reporter
 ```
 
-The generated test report is displayed in the command prompt window.
+The command prompt window displays the test report generated.
 
-If you need to save the report to an external file, specify the file path after the report name.
+To save the report to an external file, specify the file path after the report name.
 
 ```sh
 testcafe all tests/sample-fixture.js -r json:report.json
 ```
 
-You can also use multiple reporters in a single test run. List them separated by commas.
+You can use multiple reporters in a single test run. List them separated by commas.
 
 ```sh
 testcafe all tests/sample-fixture.js -r spec,xunit:report.xml
 ```
 
-Note that only one reporter can write to `stdout`. All other reporters must output to files.
+During a test, only one reporter can write to `stdout`. If you use additional reporters, redirect their output to files.
 
 *Related configuration file property*: [reporter](configuration-file.md#reporter).
 
@@ -353,7 +358,7 @@ testcafe all tests/sample-fixture.js -s pathPattern=${DATE}_${TIME}/test-${TEST_
 
 See [Path Pattern Placeholders](../guides/advanced-guides/screenshots-and-videos.md#path-pattern-placeholders) for information about the available placeholders.
 
-Enclose the pattern in quotes if it contains spaces:
+Enclose the pattern in quotes if it has spaces:
 
 ```sh
 testcafe all tests/sample-fixture.js -s pathPattern='${DATE} ${TIME}/test ${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png'
@@ -503,7 +508,7 @@ testcafe all tests/sample-fixture.js -q
 
 ### -d, --debug-mode
 
-Specify this option to run tests in the debug mode. In this mode, test execution is paused before the first action or assertion so that you can invoke the developer tools and debug.
+Specify this option to run tests in the debug mode. In this mode, test execution is paused before the first action or assertion so that you can invoke the developer tools and then debug.
 
 The footer displays a status bar in which you can resume test execution or skip to the next action or assertion.
 
@@ -512,21 +517,21 @@ The footer displays a status bar in which you can resume test execution or skip 
 > If the test you run in the debug mode contains a [test hook](../guides/basic-guides/organize-tests.md#test-hooks),
 > it is paused within this hook before the first action.
 
-You can also use the **Unlock page** switch in the footer to unlock the tested page and interact with its elements.
+You can use the **Unlock page** switch in the footer to unlock the tested page and interact with its elements.
 
 *Related configuration file property*: [debugMode](configuration-file.md#debugmode).
 
 ### --debug-on-fail
 
-Specifies whether to automatically enter the [debug mode](#-d---debug-mode) when a test fails.
+If enabled, TestCafe enters the [debug mode](#-d---debug-mode) when a test fails.
 
 ```sh
 testcafe chrome tests/sample-fixture.js --debug-on-fail
 ```
 
-If this option is enabled, TestCafe pauses the test when it fails. This allows you to view the tested page and determine the cause of the fail.
+If this option is enabled, TestCafe pauses the test when it fails. This allows you to view the tested page and find the cause of the fail.
 
-When you are done, click the **Finish** button in the footer to end test execution.
+When you finish debugging, click the **Finish** button in the footer to end test execution.
 
 *Related configuration file property*: [debugOnFail](configuration-file.md#debugonfail).
 
@@ -560,7 +565,7 @@ testcafe ie tests/sample-fixture.js -u
 
 TestCafe runs a test with the specified name.
 
-For example, the following command runs only the `"Click a label"` test from the `sample-fixture.js` file:
+For example, the following command only runs the `"Click a label"` test from the `sample-fixture.js` file:
 
 ```sh
 testcafe ie tests/sample-fixture.js -t "Click a label"
@@ -628,15 +633,15 @@ testcafe chrome my-tests --fixture-meta device=mobile,env=production
 
 ### -a \<command\>, --app \<command\>
 
-Executes the specified shell command before tests are started. Use it to set up the application you need to test.
+Executes the specified shell command before tests start. Use it to set up the tested application.
 
-An application is automatically terminated after tests are finished.
+An application is terminated after tests finish.
 
 ```sh
 testcafe chrome my-tests --app "node server.js"
 ```
 
-> TestCafe adds `node_modules/.bin` to `PATH` so that you can use the binaries the locally installed dependencies provide without prefixes.
+> TestCafe adds `node_modules/.bin` to `PATH`. You can omit prefixes when you use binaries the locally installed dependencies provide.
 
 Use the [--app-init-delay](#--app-init-delay-ms) option to specify the amount of time allowed for this command to initialize the tested application.
 
@@ -661,7 +666,7 @@ testcafe chrome my-tests --app "node server.js" --app-init-delay 4000
 Specifies that tests should run concurrently.
 
 TestCafe opens `n` instances of the same browser and creates a pool of browser instances.
-Tests are run concurrently against this pool, that is, each test is run in the first free instance.
+Tests run concurrently within this pool, that is, each test runs in the first free instance.
 
 See [Concurrent Test Execution](../guides/basic-guides/run-tests.md#run-tests-concurrently) for more information about concurrent test execution.
 
@@ -675,7 +680,7 @@ testcafe -c 3 chrome tests/sample-fixture.js
 
 ### --selector-timeout \<ms\>
 
-Specifies the time (in milliseconds) within which [selectors](../guides/basic-guides/select-page-elements.md) attempt to obtain a node to be returned. See [Selector Timeout](../guides/basic-guides/select-page-elements.md#selector-timeout).
+Specifies the time (in milliseconds) within which [selectors](../guides/basic-guides/select-page-elements.md) try to find a node. See [Selector Timeout](../guides/basic-guides/select-page-elements.md#selector-timeout).
 
 **Default value**: `10000`
 
@@ -706,7 +711,7 @@ Specifies the time (in milliseconds) passed after the `DOMContentLoaded` event, 
 
 After the timeout passes or the `window.load` event is raised (whichever happens first), TestCafe starts the test.
 
-> Note that the `DOMContentLoaded` event is raised after the HTML document is loaded and parsed, while `window.load` is raised after all stylesheets, images and subframes are loaded. That is why `window.load` is fired after the `DOMContentLoaded` event with a certain delay.
+> The `DOMContentLoaded` event is raised after the HTML document is loaded and parsed. The `window.load` event is raised after all stylesheets, images, and subframes are loaded. This causes a delay between the `DOMContentLoaded` and `window.load` events.
 
 **Default value**: `3000`
 
@@ -718,12 +723,52 @@ testcafe ie my-tests --page-load-timeout 0
 
 *Related configuration file property*: [pageLoadTimeout](configuration-file.md#pageloadtimeout).
 
+### --ajax-request-timeout \<ms\>
+
+Specifies wait time (in milliseconds) for fetch/XHR requests. If no response is received within the specified period, an error is thrown.
+
+```sh
+testcafe chrome my-tests --ajax-request-timeout 40000
+```
+
+**Default value**: `120000`
+
+*Related configuration file property*: [ajaxRequestTimeout](configuration-file.md#ajaxrequesttimeout)
+
+### --page-request-timeout \<ms\>
+
+Specifies time (in milliseconds) to wait for HTML pages. If the page isn't received within the specified period, an error is thrown.
+
+```sh
+testcafe chrome my-tests --page-request-timeout 8000
+```
+
+**Default value**: `25000`
+
+*Related configuration file property*: [pageRequestTimeout](configuration-file.md#pagerequesttimeout)
+
+### --browser-init-timeout \<ms\>
+
+Time (in milliseconds) for browsers to connect to TestCafe and report that they are ready to test. If one or more browsers fail to connect within the specified period, an error is thrown.
+
+```sh
+testcafe chrome my-tests --browser-init-timeout 180000
+```
+
+In this example, browser timeout for Chrome is increased. The browser has three minutes to initialize before TestCafe throws an error.
+
+**Default values**:
+
+* `120000` for [local browsers](#local-browsers)
+* `360000` for [remote browsers](#remote-browsers)
+
+*Related configuration file property*: [browserInitTimeout](configuration-file.md#browserinittimeout).
+
 ### --speed \<factor\>
 
-Specifies the test execution speed.
+Specifies test execution speed.
 
-Tests are run at the maximum speed by default. You can use this option
-to slow the test down.
+If this parameter is not specified, tests run at the maximum speed. You can use this option to decrease test speed.
 
 `factor` should be a number between `1` (the fastest) and `0.01` (the slowest).
 
@@ -731,7 +776,7 @@ to slow the test down.
 testcafe chrome my-tests --speed 0.1
 ```
 
-If the speed is also specified for an individual action, the action's speed setting overrides the test speed.
+If you specify the speed for an individual action, this setting overrides the global test speed.
 
 **Default value**: `1`
 
@@ -751,7 +796,7 @@ Pass the [path to a JavaScript file](../guides/advanced-guides/inject-client-scr
 
 Use the [fixture.clientScripts](test-api/fixture/clientscripts.md) and [test.clientScripts](test-api/test/clientscripts.md) methods in test code to inject scripts for an individual fixture or test.
 
-You can also [inject modules](../guides/advanced-guides/inject-client-scripts.md#inject-a-module), [code strings](../guides/advanced-guides/inject-client-scripts.md#inject-script-code), or [add scripts to individual pages](../guides/advanced-guides/inject-client-scripts.md#provide-scripts-for-specific-pages) in the API and configuration file. Use the following methods and options to do this:
+You can [inject modules](../guides/advanced-guides/inject-client-scripts.md#inject-a-module), [code strings](../guides/advanced-guides/inject-client-scripts.md#inject-script-code), or [add scripts to individual pages](../guides/advanced-guides/inject-client-scripts.md#provide-scripts-for-specific-pages) in the API and configuration file. Use the following methods and options to do this:
 
 * the [runner.clientScripts](testcafe-api/runner/clientscripts.md) programming interface method
 * the [clientScripts](configuration-file.md#clientscripts) configuration file property
@@ -765,7 +810,7 @@ See [Inject Client Scripts](../guides/advanced-guides/inject-client-scripts.md) 
 
 Specifies custom port numbers TestCafe uses to perform testing. The number range is [0-65535].
 
-TestCafe automatically selects ports if ports are not specified.
+If you do not specify ports, TestCafe automatically selects ports in the range.
 
 ```sh
 testcafe chrome my-tests --ports 12345,54321
@@ -797,7 +842,7 @@ testcafe chrome my-tests/**/*.js --proxy proxy.corp.mycompany.com
 testcafe chrome my-tests/**/*.js --proxy 172.0.10.10:8080
 ```
 
-You can also specify authentication credentials with the proxy host.
+You can specify authentication credentials with the proxy host.
 
 ```js
 testcafe chrome my-tests/**/*.js --proxy username:password@proxy.mycorp.com
@@ -809,9 +854,10 @@ testcafe chrome my-tests/**/*.js --proxy username:password@proxy.mycorp.com
 
 Requires that TestCafe bypasses the proxy server to access the specified resources.
 
-When you access the Internet through a proxy server (you can specify the server address with the [--proxy](#--proxy-host) option), you may still need some local or external resources to be accessed directly. In this instance, provide their URLs to the `--proxy-bypass` option.
+You can use the [--proxy](#--proxy-host) option to access the Internet through a proxy server.
+To bypass the proxy when you access resources, pass URLs of these resources to the `--proxy-bypass` option.
 
-The `rules` parameter takes a comma-separated list (without spaces) of URLs that require direct access. You can replace parts of the URL with the `*` wildcard that matches any number of characters. Wildcards at the beginning and end of the rules can be omitted (`*.mycompany.com` and `.mycompany.com` have the same effect).
+The `rules` parameter takes a comma-separated list (without spaces) of URLs that require direct access. You can replace parts of the URL with the `*` wildcard that matches any number of characters. You can omit wildcards at the beginning and end of the rules (`*.mycompany.com` and `.mycompany.com` have the same effect).
 
 The following example uses the proxy server at `proxy.corp.mycompany.com` with the `localhost:8080` address accessed directly:
 
@@ -835,18 +881,18 @@ testcafe chrome my-tests/**/*.js --proxy proxy.corp.mycompany.com --proxy-bypass
 
 ### --ssl \<options\>
 
-Provides options that allow you to establish an HTTPS connection between the client browser and the TestCafe server.
+Specifies options that allow you to establish an HTTPS connection between the client browser and the TestCafe server.
 
-The `options` parameter contains options required to initialize
-[a Node.js HTTPS server](https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener).
-The most commonly used SSL options are described in the [TLS topic](https://nodejs.org/api/tls.html#tls_tls_createsecurecontext_options) in Node.js documentation.
-Options are specified in a semicolon-separated string.
+The `options` parameter contains [Node.js HTTPS server initialization settings](https://nodejs.org/api/https.html#https_https_createserver_options_requestlistener).
+You can find the most commonly used SSL options in the [TLS](https://nodejs.org/api/tls.html#tls_tls_createsecurecontext_options) topic in Node.js documentation.
+
+List options in a semicolon-separated string.
 
 ```sh
 testcafe --ssl pfx=path/to/file.pfx;rejectUnauthorized=true;...
 ```
 
-Provide the `--ssl` flag if the tested webpage uses browser features that require
+Use the `--ssl` flag if the tested webpage uses browser features that require
 secure origin ([Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API), [Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API), [ApplePaySession](https://developer.apple.com/documentation/apple_pay_on_the_web/applepaysession), [SubtleCrypto](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto), etc).
 See [Test HTTPS and HTTP/2 Websites](../guides/advanced-guides/test-https-features-and-http2-websites.md) for more information.
 
@@ -902,7 +948,7 @@ Specifies test compilation settings. The current version of TestCafe can only co
 testcafe chrome my-tests --compiler-options typescript.options.lib=lib.es5.d.ts,lib.webworker.d.ts;typescript.typesRoot='this value contains spaces'
 ```
 
-The `--compiler-options` parameter accepts the compiler options listed in the [official TypeScript documentation](https://www.typescriptlang.org/docs/handbook/compiler-options.html), as well as two additional options: `typescript.configPath` and `typescript.customCompilerModulePath`.
+The `--compiler-options` parameter accepts the compiler options listed in the [official TypeScript documentation](https://www.typescriptlang.org/docs/handbook/compiler-options.html) and two additional options: `typescript.configPath` and `typescript.customCompilerModulePath`.
 
 To list multiple parameters, separate them with semicolons. Enclose values that contain spaces in quotes.
 
@@ -918,12 +964,30 @@ TestCafe ships with a `typescript@3` compiler. Specify the `typescript.customCom
 testcafe chrome test.ts --compiler-options typescript.customCompilerModulePath=../typescript@4
 ```
 
-> TestCafe resolves relative paths against its own installation folder.
+> TestCafe resolves relative paths against its installation folder.
 
-The values of the `typescript.options.lib` compiler option should be identical to the names of the corresponding library files from your compiler’s `node_modules/typescript/lib` folder (for example: `lib.webworker.d.ts`).
+The values of the `typescript.options.lib` compiler option should be the same as the names of the corresponding library files from your compiler's `node_modules/typescript/lib` folder (for example: `lib.webworker.d.ts`).
 
-*Related configuration file property*: [compilerOptions](configuration-file.md#compileroptions).
+*Related configuration file property*: [compilerOptions](configuration-file.md#compileroptions)  
 *Related API method*: [runner.compilerOptions](testcafe-api/runner/compileroptions.md)
+
+### --cache
+
+If enabled, the TestCafe proxy caches webpage assets (such as stylesheets and scripts) for the webpages that it processes. The next time the proxy accesses the page, it pulls assets from its cache instead of requesting them from the server.
+
+```sh
+testcafe chrome my-tests --cache
+```
+
+TestCafe emulates the browser's native caching behavior. For example, in *Chrome* TestCafe only caches resources that *Chrome* itself would cache if run without TestCafe.
+
+TestCafe caches scripts, stylesheets, fonts, and other web assets up to **5 MB** in size. TestCafe doesn't cache HTML because that could break [user roles](../guides/advanced-guides/authentication.md#user-roles).
+
+If the tested application loads many large assets, enable server-side caching to decrease test run time.
+
+> Important! Support for server-side caching is experimental. Disable the `--cache` flag if you have compatibility issues with your tests.
+
+*Related configuration file property*: [cache](./configuration-file.md#cache).
 
 ### --disable-page-caching
 
@@ -935,7 +999,7 @@ testcafe chrome my-tests --disable-page-caching
 
 When navigation to a cached page occurs in [role code](../guides/advanced-guides/authentication.md#user-roles), local and session storage content is not preserved. Use the `--disable-page-caching` flag to retain the storage items after navigation. For more information, see [Troubleshooting: Test Actions Fail After Authentication](../guides/advanced-guides/authentication.md#test-actions-fail-after-authentication).
 
-You can also disable page caching for an individual [fixture](test-api/fixture/disablepagecaching.md) or [test](test-api/test/disablepagecaching.md).
+You can disable page caching for an individual [fixture](test-api/fixture/disablepagecaching.md) or [test](test-api/test/disablepagecaching.md).
 
 *Related configuration file property*: [disablePageCaching](configuration-file.md#disablepagecaching).
 
@@ -950,6 +1014,19 @@ testcafe firefox my-tests --disable-multiple-windows
 The `--disable-multiple-windows` option disables support for multi-window testing in Chrome and Firefox. Use this flag if you encounter compatibility issues with your existing tests.
 
 *Related configuration file property*: [disableMultipleWindows](configuration-file.md#disablemultiplewindows).
+
+### --retry-test-pages
+
+If this option is enabled, TestCafe retries failed network requests for webpages visited during tests. The retry functionality is limited to ten tries.
+
+```sh
+testcafe firefox my-tests --retry-test-pages
+```
+
+This feature uses [Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API) that require a secure connection.
+To run TestCafe over a secure connection, [setup HTTPS](../guides/advanced-guides/test-https-features-and-http2-websites.md#test-https-websites) or use the [--hostname localhost](#--hostname-name) option.
+
+*Related configuration file property*: [retryTestPages](./configuration-file.md#retrytestpages)
 
 ### --color
 

@@ -1,6 +1,8 @@
 import CommandBase from '../test-run/commands/base';
 import TestRun from '../test-run';
 import WarningLog from '../notifications/warning-log';
+import { Writable as WritableStream } from 'stream';
+import BrowserConnection from '../browser/connection';
 
 export interface ActionEventArg {
     apiActionName: string;
@@ -29,3 +31,10 @@ export interface BrowserSetOptions {
     browserInitTimeout?: number;
     warningLog: WarningLog;
 }
+
+export interface ReporterInit {
+    name: string;
+    output?: string | WritableStream;
+}
+
+export type BrowserInit = string | object | BrowserConnection;

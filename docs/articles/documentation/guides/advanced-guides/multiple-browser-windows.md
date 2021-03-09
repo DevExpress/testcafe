@@ -7,14 +7,6 @@ permalink: /documentation/guides/advanced-guides/multiple-browser-windows.html
 
 The TestCafe API includes methods that open, close, and switch between browser windows. You can test websites with pop-up windows and OAuth login forms, debug complex multi-window applications, or run multiple instances of the same web app side-by-side.
 
-⚠ This is a **beta** feature. Browser support is limited to local instances of Chrome and Firefox. You can resize child windows or make screenshots of them in Chrome only. You cannot record videos of child windows. The available functionality is subject to further revisions. Please do not use this feature in production environments.
-
-️🛠️ You can disable support for multiple browser windows if you encounter compatibility issues with your tests. Use one of the following settings:
-
-* the [--disable-multiple-windows](../../reference/command-line-interface.md#--disable-multiple-windows) command line flag,
-* the `disableMultipleWindows` [runner.run](../../reference/testcafe-api/runner/run.md) option,
-* the [disableMultipleWindows](../../reference/configuration-file.md#disablemultiplewindows) configuration file property.
-
 ## Automatic Switch to New Windows
 
 When your page launches a new window, the test automatically continues in the newly opened window. When that window is closed, the test switches back to its parent.
@@ -162,3 +154,27 @@ test('Close a specific window', async t => {
     await t.closeWindow(window1);
 });
 ```
+
+## Disable Support for Multiple Windows
+
+Use one of the following settings to disable support for multiple browser windows:
+
+* the [--disable-multiple-windows](../../reference/command-line-interface.md#--disable-multiple-windows) command line flag,
+* the `disableMultipleWindows` [runner.run](../../reference/testcafe-api/runner/run.md) option,
+* the [disableMultipleWindows](../../reference/configuration-file.md#disablemultiplewindows) configuration file property.
+
+## Limitations
+
+This section describes the limitations of multiple browser windows testing in TestCafe.
+
+### Recorded Video Aspect Ratio in Multiple Windows
+
+When you launch TestCafe with [video recording](./screenshots-and-videos.md) enabled, the recording scales to the initial (parent) browser window.
+
+When a child window opens, TestCafe continues recording in that window. If the child windows' size differs, the parts of the video that are recorded in these windows are resized to fit the aspect ratio of the main browser window. As a result, portions of the recording appear stretched.
+
+### Cookies and User Roles Limitations in Child Windows
+
+TestCafe's [User Roles](./authentication.md#user-roles) preserve browser storage contents (cookies, `localStorage` and `sessionStorage`). A [TestCafe instance](../../reference/testcafe-api/testcafe/README.md) can only have one active User Role at a time.
+
+If you switch between roles in any browser window, cookies and local/session storage contents inside that role are applied to the remaining windows.
