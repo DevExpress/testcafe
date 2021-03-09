@@ -268,7 +268,7 @@ If TestCafe does not receive the webpage within *two minutes*, it throws an exce
 The following options enable TestCafe to retry failed network requests for webpages:
 
 * [`--retry-test-pages` (CLI)](../documentation/reference/command-line-interface.md#--retry-test-pages)
-* [`retryTestPages` (configuration file)](../documentation/reference/configuration-file.md#retrytestPages)
+* [`retryTestPages` (configuration file)](../documentation/reference/configuration-file.md#retrytestpages)
 * [`retryTestPages` option (TestCafe Runner)](../documentation/reference/testcafe-api/runner/run.md)
 
 #### Unstable or improperly configured network connection
