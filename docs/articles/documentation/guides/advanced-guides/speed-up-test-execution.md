@@ -15,6 +15,7 @@ This article consists of the following sections that describe how to decrease th
 * [Run Tests in Local Browsers](#run-tests-in-local-browsers)
 * [Mock Requests](#mock-requests)
 * [Optimize Your Page Model](#optimize-your-page-model)
+* [Enable Server-Side Caching](#enable-server-side-caching)
 
 ## Run Tests Concurrently
 
@@ -100,6 +101,40 @@ import PageModel from 'path/to/page-model.js'
 
 This approach ensures that the page model object is created only once per test run.
 
-> Important! If you export the page model class and create an instance in every test file, JavaScript creates a new page object per test file. This increases test execution time and memory consumption.
+> Important! If you export the page model class and create an instance in every test file, JavaScript creates a new page object for each test file. This increases test execution time and memory consumption.
 
 For more on page models, read [Page Model](../../guides/concepts/page-model.md).
+
+## Enable Server-Side Caching
+
+> Important! Support for server-side caching is **experimental**.
+>
+> Do not use caching if you run into compatibility issues with your tests.
+
+The TestCafe proxy can cache webpage assets (stylesheets, scripts, images) and retrieve them from its cache when it accesses the webpage again.
+
+You can enable caching in one of the following ways:
+
+* [--cache](../../reference/command-line-interface.md#--cache) CLI option
+
+  ```sh
+  testcafe chrome my-tests/ --cache
+  ```
+
+* [cache](../../reference/configuration-file.md#cache) configuration file property
+
+  ```json
+  {
+  "cache": true
+  }
+  ```
+
+* [cache](../../reference/testcafe-api/runner/run.md) API option
+
+  ```js
+  runner.run({ cache: true });
+  ```
+
+Enable server-side caching to decrease test duration, particularly when your application relies on browser caching.
+
+> The `cache` option doesn't cache HTML page content and assets heavier than 5 MB.

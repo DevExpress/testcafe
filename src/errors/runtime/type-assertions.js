@@ -8,6 +8,7 @@ import {
 import { APIError, GeneralError } from './';
 import { RUNTIME_ERRORS } from '../types';
 import RequestHook from '../../api/request-hooks/hook';
+import TestTimeout from '../../api/structure/test-timeout';
 
 const START_FROM_VOWEL_RE = /^[aeiou]/i;
 
@@ -105,7 +106,7 @@ export const is = {
 
     testTimeouts: {
         name:      'test timeouts initializer',
-        predicate: obj => hasSomePropInObject(obj, ['pageRequestTimeout', 'ajaxRequestTimeout', 'speed'])
+        predicate: obj => hasSomePropInObject(obj, Object.keys(TestTimeout))
     }
 };
 

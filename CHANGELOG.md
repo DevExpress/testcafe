@@ -1,6 +1,41 @@
 # Changelog
 
-## v1.11.0 (03.02.2021)
+## v1.12.0 (2021-03-03)
+
+### Enhancements
+
+#### :gear: Server-Side Web Assets Caching ([testcafe-hammerhead/#863](https://github.com/DevExpress/testcafe-hammerhead/issues/863))
+
+TestCafe's proxy server can now cache web assets (like images, scripts and videos). When TestCafe revisits a website, it loads assets from this cache to save time on repetetive network requests.
+
+To enable server-side caching, use any of the following:
+
+* [the `--cache` CLI flag](https://devexpress.github.io/testcafe/documentation/reference/command-line-interface.html#--cache)
+* [the `cache` configuration file property](https://devexpress.github.io/testcafe/documentation/reference/configuration-file.html#cache)
+* [the `createTestCafe` function parameter](https://devexpress.github.io/testcafe/documentation/reference/testcafe-api/global/createtestcafe.html)
+
+#### Initialize Request Hooks with Async Predicates
+
+The following request hooks now support **asynchronous** predicate functions:
+
+* [RequestHook](https://devexpress.github.io/testcafe/documentation/reference/test-api/requesthook/constructor.html#filter-with-a-predicate)
+* [RequestMock.onRequestTo](https://devexpress.github.io/testcafe/documentation/reference/test-api/requestmock/onrequestto.html#filter-with-a-predicate)
+* [RequestLogger](https://devexpress.github.io/testcafe/documentation/reference/test-api/requestlogger/constructor.html#filter-with-a-predicate)
+
+**Example**
+
+```js
+const logger = RequestLogger(async request => {
+    return await myAsyncFunction();
+});
+```
+
+### Bug Fixes
+
+* Fixed a bug in Multiple Windows mode where TestCafe was sometime unable to switch to the main browser window ([#5930](https://github.com/DevExpress/testcafe/issues/5930))
+* Fixed the `Illegal invocation` error thrown by TestCafe when calling `Storage.prototype` methods on a `StorageWrapper` object ([#2526](https://github.com/DevExpress/testcafe-hammerhead/issues/2526))
+
+## v1.11.0 (2021-03-02)
 
 ### Enhancements
 
@@ -10,8 +45,8 @@ TestCafe now enables you to set request timeouts. If TestCafe receives no respon
 
 *CLI*
 
-* [--ajax-request-timeout](./docs/articles/documentation/reference/command-line-interface.md#--ajax-request-timeout-ms) controls the timeout for fetch/XHR requests
-* [--page-request-timeout](./docs/articles/documentation/reference/command-line-interface.md#--page-request-timeout-ms) sets the timeout for webpage requests
+* [--ajax-request-timeout](https://devexpress.github.io/testcafe/documentation/reference/command-line-interface.html#--ajax-request-timeout-ms) controls the timeout for fetch/XHR requests
+* [--page-request-timeout](https://devexpress.github.io/testcafe/documentation/reference/command-line-interface.html#--page-request-timeout-ms) sets the timeout for webpage requests
 
 ```sh
 testcafe chrome my-tests --ajax-request-timeout 40000 --page-request-timeout 8000
@@ -19,8 +54,8 @@ testcafe chrome my-tests --ajax-request-timeout 40000 --page-request-timeout 800
 
 *Configuration file*
 
-* [ajaxRequestTimeout](./docs/articles/documentation/reference/configuration-file.md#ajaxrequesttimeout)
-* [pageRequestTimeout](./docs/articles/documentation/reference/configuration-file.md#pagerequesttimeout)
+* [ajaxRequestTimeout](https://devexpress.github.io/testcafe/documentation/reference/configuration-file.html#ajaxrequesttimeout)
+* [pageRequestTimeout](https://devexpress.github.io/testcafe/documentation/reference/configuration-file.html#pagerequesttimeout)
 
 ```json
 {
@@ -31,7 +66,7 @@ testcafe chrome my-tests --ajax-request-timeout 40000 --page-request-timeout 800
 
 *JavaScript API*
 
-These options are available in the [runner.run Method](./docs/articles/documentation/reference/testcafe-api/runner/run.md).
+These options are available in the [runner.run Method](https://devexpress.github.io/testcafe/documentation/reference/testcafe-api/runner/run.html).
 
 ```js
 const createTestCafe = require('testcafe');
@@ -57,13 +92,13 @@ finally {
 
 This release introduces an option to control browser initialization timeout. This timeout controls the time browsers have to connect to TestCafe before an error is thrown. You can control this timeout in one of the following ways:
 
-* [--browser-init-timeout](./docs/articles/documentation/reference/command-line-interface.md#--browser-init-timeout-ms) CLI option
+* [--browser-init-timeout](https://devexpress.github.io/testcafe/documentation/reference/command-line-interface.html#--browser-init-timeout-ms) CLI option
 
 ```sh
 testcafe chrome my-tests --browser-init-timeout 180000
 ```
 
-* [browserInitTimeout](./docs/articles/documentation/reference/configuration-file.md#browserinittimeout) configuration option
+* [browserInitTimeout](https://devexpress.github.io/testcafe/documentation/reference/configuration-file.html#browserinittimeout) configuration option
 
 ```json
 {
@@ -71,13 +106,13 @@ testcafe chrome my-tests --browser-init-timeout 180000
 }
 ```
 
-* [runner.run Method](./docs/articles/documentation/reference/testcafe-api/runner/run.md) parameter
+* [runner.run Method](https://devexpress.github.io/testcafe/documentation/reference/testcafe-api/runner/run.html) parameter
 
 ```js
 runner.run({ "browserInitTimeout": 180000 })
 ```
 
-This setting sets an equal timeout for local and [remote browsers](./docs/articles/documentation/guides/concepts/browsers.md#browsers-on-remote-devices).
+This setting sets an equal timeout for local and [remote browsers](https://devexpress.github.io/testcafe/documentation/guides/concepts/browsers.html#browsers-on-remote-devices).
 
 #### Improved `Unable To Establish Browser Connection` Error Message ([PR #5720](https://github.com/DevExpress/testcafe/pull/5720))
 
@@ -97,12 +132,12 @@ You can enable this functionality with a command line, API, or configuration fil
     testcafe chrome test.js --retry-test-pages
     ```
 
-* the [runner.run](https://devexpress.github.io/testcafe/documentation/using-testcafe/programming-interface/runner.html) option
+* the [createTestCafe](https://devexpress.github.io/testcafe/documentation/reference/testcafe-api/global/createtestcafe.md) function parameter
 
     ```js
-    runner.run({
-        retryTestPages: true
-    });
+    const createTestCafe = require('testcafe');
+
+    const testcafe = await createTestCafe('localhost', 1337, 1338, retryTestPages)
     ```
 
 * the [retryTestPages](https://devexpress.github.io/testcafe/documentation/using-testcafe/configuration-file.html#retrytestpages) configuration file property

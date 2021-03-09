@@ -63,6 +63,7 @@ A configuration file can include the following settings:
 * [stopOnFirstFail](#stoponfirstfail)
 * [tsConfigPath](#tsconfigpath)
 * [compilerOptions](#compileroptions)
+* [cache](#cache)
 * [disablePageCaching](#disablepagecaching)
 * [disableMultipleWindows](#disablemultiplewindows)
 * [color](#color)
@@ -712,7 +713,7 @@ See the command line [--page-load-timeout](command-line-interface.md#--page-load
 *CLI*: [--page-load-timeout](command-line-interface.md#--page-load-timeout-ms)  
 *API*: [runner.run({ pageLoadTimeout })](testcafe-api/runner/run.md)
 
-### ajaxRequestTimeout
+## ajaxRequestTimeout
 
 Specifies wait time (in milliseconds) for fetch/XHR requests. If no response is received within the specified period, an error is thrown.
 
@@ -726,7 +727,7 @@ Specifies wait time (in milliseconds) for fetch/XHR requests. If no response is 
 
 *CLI*: [--ajax-request-timeout](command-line-interface.md#--ajax-request-timeout-ms)
 
-### pageRequestTimeout
+## pageRequestTimeout
 
 Specifies time (in milliseconds) to wait for HTML pages. If the page isn't received within the specified period, an error is thrown.
 
@@ -1098,8 +1099,27 @@ Set the `typescript.compilerModulePath` parameter to load an external TypeScript
 
 > TestCafe resolves user-specified relative paths against the TestCafe installation folder.
 
-*CLI*: [--compiler-options](command-line-interface.md#--compiler-options-options)
+*CLI*: [--compiler-options](command-line-interface.md#--compiler-options-options)  
 *API*: [runner.compilerOptions](testcafe-api/runner/compileroptions.md)
+
+## cache
+
+If enabled, the TestCafe proxy caches webpage assets (such as stylesheets and scripts) for the webpages that it processes. The next time the proxy accesses the page, it pulls assets from its cache instead of requesting them from the server.
+
+```sh
+testcafe chrome my-tests --cache
+```
+
+TestCafe emulates the browser's native caching behavior. For example, in *Chrome* TestCafe only caches resources that *Chrome* itself would cache if run without TestCafe.
+
+TestCafe caches scripts, stylesheets, fonts, and other web assets up to **5 MB** in size. TestCafe doesn't cache HTML because that could break [user roles](../guides/advanced-guides/authentication.md#user-roles).
+
+If the tested application loads many heavy assets, enable server-side caching to decrease test run time.
+
+> Important! Support for server-side caching is experimental. Disable the `--cache` flag if you run into compatibility issues with your tests.
+
+*CLI*: [--cache](command-line-interface.md#--cache)  
+*API*: [createTestCafe](./testcafe-api/global/createtestcafe.md)
 
 ## disablePageCaching
 
@@ -1146,8 +1166,8 @@ If this option is enabled, TestCafe retries failed network requests for webpages
 This feature uses [Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API) that require a secure connection.
 To run TestCafe over a secure connection, [setup HTTPS](../guides/advanced-guides/test-https-features-and-http2-websites.md#test-https-websites) or use the [--hostname localhost](command-line-interface.md#--hostname-name) option.
 
-*CLI*: [--retry-test-pages](./command-line-interface.md#--retry-test-pages)
-*API*: [runner.run({ retryTestPages })](testcafe-api/runner/run.md)
+*CLI*: [--retry-test-pages](./command-line-interface.md#--retry-test-pages)  
+*API*: [createTestCafe](./testcafe-api/global/createtestcafe.md)
 
 ## color
 

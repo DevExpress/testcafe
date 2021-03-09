@@ -95,7 +95,7 @@ export default class TestRun extends AsyncEventEmitter {
         this.activeDialogHandler  = null;
         this.activeIframeSelector = null;
         this.speed                = this.opts.speed;
-        this.pageLoadTimeout      = this.opts.pageLoadTimeout;
+        this.pageLoadTimeout      = this._getPageLoadTimeout(test, opts);
 
         this.disablePageReloads   = test.disablePageReloads || opts.disablePageReloads && test.disablePageReloads !== false;
         this.disablePageCaching   = test.disablePageCaching || opts.disablePageCaching;
@@ -145,6 +145,13 @@ export default class TestRun extends AsyncEventEmitter {
 
         this._addInjectables();
         this._initRequestHooks();
+    }
+
+    _getPageLoadTimeout (test, opts) {
+        if (test.timeouts?.pageLoadTimeout !== void 0)
+            return test.timeouts.pageLoadTimeout;
+
+        return opts.pageLoadTimeout;
     }
 
     _getRequestTimeout (test, opts) {
