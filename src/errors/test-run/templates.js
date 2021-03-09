@@ -373,7 +373,7 @@ export default {
     `,
 
     [TEST_RUN_ERRORS.multipleWindowsModeIsDisabledError]: err => `
-        Multi window mode is disabled. Disable the "disableMultipleWindows" option to use the "${err.methodName}" method.
+        Multi-window mode is disabled.  To use the "${err.methodName}" method, remove the "disableMultipleWindows" option.
     `,
 
     [TEST_RUN_ERRORS.multipleWindowsModeIsNotSupportedInRemoteBrowserError]: err => `
