@@ -249,7 +249,7 @@ Failed to load the page at https://www.example.com.
 Increase the value of the "pageRequestTimeout" variable, enable the "retryTestPages" option, or use quarantine mode to perform additional attempts to execute this test.
 ```
 
-If your test produces unstable results, you can enable [quarantine mode](../documentation/guides/basic-guides/run-tests.md#quarantine-mode) to isolate it from the rest of the suite.
+Use [quarantine mode](../documentation/guides/basic-guides/run-tests.md#quarantine-mode) to isolate flaky tests from the rest of the suite.
 
 However, we recommend that you determine the cause of this issue and address it.
 
