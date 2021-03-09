@@ -249,7 +249,7 @@ Failed to load the page at https://www.example.com.
 Increase the value of the "pageRequestTimeout" variable, enable the "retryTestPages" option, or use quarantine mode to perform additional attempts to execute this test.
 ```
 
-If your test is flaky, you can enable [quarantine mode](../documentation/guides/basic-guides/run-tests.md#quarantine-mode) to isolate it from the rest of the suite.
+If your test produces unstable results, you can enable [quarantine mode](../documentation/guides/basic-guides/run-tests.md#quarantine-mode) to isolate it from the rest of the suite.
 
 However, we recommend that you determine the cause of this issue and address it.
 
@@ -259,13 +259,13 @@ This error can occur in the following situations:
 
 Confirm the successful resolution of the website's domain name. Check if the web application is online and configured to receive incoming requests.
 
-If the webpage is not served within *two minutes*, TestCafe throws an exception. Use one of the following options to increase the timeout value:
+If TestCafe does not receive the webpage within *two minutes*, it throws an exception.
 
 * [`--page-request-timeout` (CLI)](../documentation/reference/command-line-interface.md#--cache)
 * [`pageRequestTimeout` (configuration file)](../documentation/reference/configuration-file.md#pagerequesttimeout)
 * [`pageRequestTimeout` (TestCafe Runner)](../documentation/reference/testcafe-api/runner/run.md)
 
-TestCafe can retry failed network request for webpages. Use one of the following options to enable retries:
+The following options enable TestCafe to retry failed network requests for webpages:
 
 * [`--retry-test-pages` (CLI)](../documentation/reference/command-line-interface.md#--retry-test-pages)
 * [`retryTestPages` (configuration file)](../documentation/reference/configuration-file.md#retrytestPages)
