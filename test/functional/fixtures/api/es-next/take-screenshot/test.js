@@ -265,6 +265,13 @@ describe('[API] t.takeScreenshot()', function () {
                     expect(fs.existsSync(thumbnail2Path)).eql(true);
                 });
         });
+
+        it('Should add default extension if it is not specified', () => {
+            return runTests('./testcafe-fixtures/take-screenshot.js', 'Should add default extension', { only: 'chrome' })
+                .then(() => {
+                    expect(testReport.screenshotPath).endsWith('screenshot-path.png');
+                });
+        });
     }
     else if (!config.useLocalBrowsers) {
         it('Should show a warning on an attempt to capture a screenshot for a remote browser', () => {
