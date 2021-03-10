@@ -1,6 +1,7 @@
 const expect                = require('chai').expect;
 const url                   = require('url');
 const net                   = require('net');
+const path                  = require('path');
 const createTestCafe        = require('../../lib/');
 const exportableLib         = require('../../lib/api/exportable-lib');
 const selfSignedCertificate = require('openssl-self-signed-certificate');
@@ -9,8 +10,8 @@ describe('TestCafe factory function', function () {
     let testCafe = null;
     let server   = null;
 
-    function getTestCafe (hostname, port1, port2, sslOptions) {
-        return createTestCafe(hostname, port1, port2, sslOptions)
+    function getTestCafe (hostname, port1, port2, ssl, developmentMode, retryTestPages, cache, configPath) {
+        return createTestCafe(hostname, port1, port2, ssl, developmentMode, retryTestPages, cache, configPath)
             .then(tc => {
                 testCafe = tc;
             });
@@ -105,5 +106,25 @@ describe('TestCafe factory function', function () {
                 expect(testCafe.proxy.server2.key).eql(sslOptions.key);
                 expect(testCafe.proxy.server2.cert).eql(sslOptions.cert);
             });
+    });
+
+    describe('Custom Testcafe Config Path', () => {
+        it('Custom config path is used', () => {
+            const configPath = 'custom.testcaferc.json';
+
+            return getTestCafe('localhost', 1338, 1339, null, null, null, null, configPath)
+                .then(() => {
+                    expect(path.basename(testCafe.configuration.filePath)).eql(configPath);
+                });
+        });
+
+        it('Reverts back to default when not specified', () => {
+            const defaultConfigPath = '.testcaferc.json';
+
+            return getTestCafe('localhost', 1338, 1339)
+                .then(() => {
+                    expect(path.basename(testCafe.configuration.filePath)).eql(defaultConfigPath);
+                });
+        });
     });
 });
