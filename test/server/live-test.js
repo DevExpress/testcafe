@@ -140,6 +140,9 @@ class RunnerMock extends LiveModeRunner {
                 this.emit('tests-completed');
 
                 this.stopInfiniteWaiting();
+            })
+            .catch(error => {
+                this.emit('error-occurred', error);
             });
     }
 
@@ -366,6 +369,24 @@ describe('TestCafe Live', function () {
         return runTests(testFileWithSingleTestPath, { errorOnValidate: true })
             .catch(err => {
                 expect(err.message.indexOf('validationError') > -1).to.be.true;
+            });
+    });
+
+    it('"test files not found" error', function (done) {
+        runner = new RunnerMock(testCafe, {});
+
+        runner.once('error-occurred', error => {
+            expect(error.message).contain('TestCafe could not find the test files that match the following patterns');
+
+            done();
+        });
+
+        runner
+            .src('dummy.js')
+            .browsers('chrome')
+            .run()
+            .then(() => {
+                throw new Error('Should raise the "Test files not found" error');
             });
     });
 
