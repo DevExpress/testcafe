@@ -67,6 +67,7 @@ async function runTests (argParser) {
     const port2             = opts.ports && opts.ports[1];
     const proxy             = opts.proxy;
     const proxyBypass       = opts.proxyBypass;
+    const configPath        = opts.configPath;
 
     log.showSpinner();
 
@@ -81,7 +82,8 @@ async function runTests (argParser) {
         ssl,
         experimentalCompilerService,
         retryTestPages,
-        cache
+        cache,
+        configPath
     });
 
     const correctedBrowsersAndSources = await correctBrowsersAndSources(argParser, testCafe.configuration);

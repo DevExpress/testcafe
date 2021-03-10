@@ -40,12 +40,23 @@ async function getValidPort (port) {
 
 // API
 async function getConfiguration (args) {
-    const configuration = new TestCafeConfiguration();
+    let configuration;
 
-    if (args.length === 1 && typeof args[0] === 'object')
+    if (args.length === 1 && typeof args[0] === 'object') {
+        if (args[0].hasOwnProperty('configPath'))
+            configuration = new TestCafeConfiguration(args[0].configPath);
+        else
+            configuration = new TestCafeConfiguration();
+
         await configuration.init(args[0]);
+    }
     else {
-        const [hostname, port1, port2, ssl, developmentMode, retryTestPages, cache] = args;
+        const [hostname, port1, port2, ssl, developmentMode, retryTestPages, cache, configPath] = args;
+
+        if (configPath)
+            configuration = new TestCafeConfiguration(configPath);
+        else
+            configuration = new TestCafeConfiguration();
 
         await configuration.init({
             hostname,
