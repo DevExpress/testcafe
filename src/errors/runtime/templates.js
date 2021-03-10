@@ -42,7 +42,7 @@ export default {
     [RUNTIME_ERRORS.invalidSpeedValue]:                                  'Speed should be a number between 0.01 and 1.',
     [RUNTIME_ERRORS.invalidConcurrencyFactor]:                           'The concurrency factor should be an integer greater or equal to 1.',
     [RUNTIME_ERRORS.cannotDivideRemotesCountByConcurrency]:              'The number of remote browsers should be divisible by the factor of concurrency.',
-    [RUNTIME_ERRORS.portsOptionRequiresTwoNumbers]:                      'The "ports" option requires two numbers to be specified.',
+    [RUNTIME_ERRORS.portsOptionRequiresTwoNumbers]:                      'The "--ports" option requires two numbers to be specified.',
     [RUNTIME_ERRORS.portIsNotFree]:                                      'The specified {portNum} port is already in use by another program.',
     [RUNTIME_ERRORS.invalidHostname]:                                    'The specified "{hostname}" hostname cannot be resolved to the current machine.',
     [RUNTIME_ERRORS.cannotFindSpecifiedTestSource]:                      'Cannot find a test source file at "{path}".',
