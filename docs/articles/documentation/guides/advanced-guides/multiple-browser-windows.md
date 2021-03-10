@@ -7,6 +7,8 @@ permalink: /documentation/guides/advanced-guides/multiple-browser-windows.html
 
 The TestCafe API includes methods that open, close, and switch between browser windows. You can test websites with pop-up windows and OAuth login forms, debug complex multi-window applications, or run multiple instances of the same web app side-by-side.
 
+> Important! Multi-window mode is not supported in all browsers. See [Supported Browsers](#supported-browsers).
+
 ## Automatic Switch to New Windows
 
 When your page launches a new window, the test automatically continues in the newly opened window. When that window is closed, the test switches back to its parent.
@@ -128,7 +130,7 @@ test('Switch back', async t => {
 
 ## Close an Existing Window
 
->You cannot close windows with open children.
+> You cannot close windows with open children.
 
 Call the [t.closeWindow](../../reference/test-api/testcontroller/closewindow.md) method without parameters to close the active window:
 
@@ -166,6 +168,15 @@ Use one of the following settings to disable support for multiple browser window
 ## Limitations
 
 This section describes the limitations of multiple browser windows testing in TestCafe.
+
+### Supported Browsers
+
+TestCafe's multi-window mode supports the following browsers:
+
+* Chrome (headless and headed)
+* Firefox (headless and headed)
+
+Multiple browser windows are not available in cloud, remote browsers and during device emulation.
 
 ### Recorded Video Aspect Ratio in Multiple Windows
 
