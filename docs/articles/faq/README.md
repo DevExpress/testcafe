@@ -259,7 +259,7 @@ This error can occur in the following situations:
 
 Confirm the successful resolution of the website's domain name. Check if the web application is online and configured to receive incoming requests.
 
-If TestCafe does not receive the webpage within *two minutes*, it throws an exception.
+If the TestCafe proxy does not receive the webpage within *two minutes*, TestCafe throws an exception.
 
 * [`--page-request-timeout` (CLI)](../documentation/reference/command-line-interface.md#--cache)
 * [`pageRequestTimeout` (configuration file)](../documentation/reference/configuration-file.md#pagerequesttimeout)
