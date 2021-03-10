@@ -43,20 +43,14 @@ async function getConfiguration (args) {
     let configuration;
 
     if (args.length === 1 && typeof args[0] === 'object') {
-        if (args[0].hasOwnProperty('configPath'))
-            configuration = new TestCafeConfiguration(args[0].configPath);
-        else
-            configuration = new TestCafeConfiguration();
 
+        configuration = new TestCafeConfiguration(args[0].hasOwnProperty('configPath') ? args[0].configPath : null);
         await configuration.init(args[0]);
     }
     else {
         const [hostname, port1, port2, ssl, developmentMode, retryTestPages, cache, configPath] = args;
 
-        if (configPath)
-            configuration = new TestCafeConfiguration(configPath);
-        else
-            configuration = new TestCafeConfiguration();
+        configuration = new TestCafeConfiguration(configPath);
 
         await configuration.init({
             hostname,
