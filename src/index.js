@@ -44,7 +44,7 @@ async function getConfiguration (args) {
 
     if (args.length === 1 && typeof args[0] === 'object') {
 
-        configuration = new TestCafeConfiguration(args[0].hasOwnProperty('configPath') ? args[0].configPath : null);
+        configuration = new TestCafeConfiguration(args[0] !== null && args[0].hasOwnProperty('configPath') ? args[0].configPath : null);
         await configuration.init(args[0]);
     }
     else {
