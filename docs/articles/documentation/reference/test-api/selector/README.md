@@ -15,28 +15,6 @@ import { Selector } from 'testcafe';
 const article = Selector('#article-content');
 ```
 
-The following methods filter elements from the selector:
-
-Method                                                              | Description
-------------------------------------------------------------------- | -------------
-[nth](nth.md)                     | Finds an element by its index.
-[withText](withtext.md)           | Finds an element whose content includes the specified text.
-[withExactText](withexacttext.md) | Finds an element with the specified text.
-[withAttribute](withattribute.md) | Finds an element with the specified attribute or attribute value.
-[filterVisible](filtervisible.md) | Selects visible elements.
-[filterHidden](filterhidden.md)   | Selects hidden elements.
-[filter](filter.md)               | Finds elements that match the specified CSS selector or predicate.
-
-Methods that search for DOM elements relative to the selected element:
-
-Method                                                              | Description
-------------------------------------------------------------------- | -------------
-[find](find.md)                   | Finds a descendant node that matches the specified CSS selector or predicate.
-[parent](parent.md)               | Selects parent elements.
-[child](child.md)                 | Selects child elements.
-[sibling](sibling.md)             | Selects sibling elements.
-[nextSibling](nextsibling.md)     | Selects succeeding sibling elements.
-[prevSibling](prevsibling.md)     | Selects preceding sibling elements.
-[shadowRoot](shadowroot.md)       | Selects the shadow root hosted by the element.
+{% include selectors/selector-members.md%}
 
 For more information, see [Select Page Elements](../../../guides/basic-guides/select-page-elements.md).
