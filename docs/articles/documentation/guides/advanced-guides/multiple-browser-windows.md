@@ -176,7 +176,7 @@ TestCafe's multi-window mode supports the following browsers:
 * Chrome (headless and headed)
 * Firefox (headless and headed)
 
-Multiple browser windows are not available in cloud, remote browsers and during device emulation.
+Multiple browser windows are not available in [cloud browsers](../basic-guides/run-tests.md#test-in-cloud-testing-services), [remote browsers](../basic-guides/run-tests.md#test-on-remote-and-mobile-devices) and during [Chromium mobile device emulation](../basic-guides/run-tests.md#enable-mobile-device-emulation).
 
 ### Recorded Video Aspect Ratio in Multiple Windows
 
