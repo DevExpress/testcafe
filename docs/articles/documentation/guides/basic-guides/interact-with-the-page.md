@@ -295,7 +295,9 @@ Use resize window actions to maximize a browser window or resize it to fit a spe
 
 > Important! Window resize actions are not supported when you run tests in [remote browsers](../concepts/browsers.md#browsers-on-remote-devices).
 
-**Note**: These actions require a Windows machine with .NET 4.0 or newer, or a Linux machine with an [ICCCM/EWMH-compliant window manager](https://en.wikipedia.org/wiki/Comparison_of_X_window_managers).
+<!--  -->
+
+> Important! {% include actions/screenshots-prerequisites.md name="Window resize actions" %}
 
 **Example**
 

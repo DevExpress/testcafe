@@ -36,7 +36,7 @@ TestCafe allows you to take screenshots of the tested webpage at any moment duri
 
 ### Prerequisites for Screenshots
 
-Screenshots require .NET 4.0 or newer installed on Windows machines and an [ICCCM/EWMH-compliant window manager](https://en.wikipedia.org/wiki/Comparison_of_X_window_managers) on Linux.
+{% include actions/screenshots-prerequisites.md name="Screenshots" %}
 
 ### Take Screenshots at Arbitrary Moments During Test Run
 
