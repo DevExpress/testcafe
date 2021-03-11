@@ -5,7 +5,8 @@ import {
     HOST_SYNC_FD
 } from './io';
 
-import { restore as restoreTestStructure } from './test-structure';
+import { restore as restoreTestStructure } from '../serialization/test-structure';
+import prepareOptions from '../serialization/prepare-options';
 import { default as testRunTracker, TestRun } from '../../api/test-run-tracker';
 import { IPCProxy } from '../utils/ipc/proxy';
 import { HostTransport } from '../utils/ipc/transport';
@@ -15,8 +16,10 @@ import TestCafeErrorList from '../../errors/error-list';
 import {
     CompilerProtocol,
     RunTestArguments,
-    ExecuteCommandArguments,
-    FunctionProperties
+    ExecuteActionArguments,
+    FunctionProperties,
+    SetOptionsArguments,
+    ExecuteCommandArguments
 } from './protocol';
 
 import { CompilerArguments } from '../../compiler/interfaces';
@@ -43,10 +46,12 @@ export default class CompilerHost extends EventEmitter implements CompilerProtoc
     }
 
     private _setupRoutes (proxy: IPCProxy): void {
-        proxy.register(this.executeAction, this);
-        proxy.register(this.ready, this);
+        proxy.register([
+            this.executeAction,
+            this.executeCommand,
+            this.ready
+        ], this);
     }
-
 
     private async _init (runtime: Promise<RuntimeResources|undefined>): Promise<RuntimeResources|undefined> {
         const resolvedRuntime = await runtime;
@@ -87,13 +92,11 @@ export default class CompilerHost extends EventEmitter implements CompilerProtoc
         await this.runtime;
     }
 
-
     public async stop (): Promise<void> {
         const { service } = await this._getRuntime();
 
         service.kill();
     }
-
 
     private _wrapTestFunction (id: string, functionName: FunctionProperties): TestFunction {
         return async testRun => {
@@ -114,13 +117,22 @@ export default class CompilerHost extends EventEmitter implements CompilerProtoc
         this.emit('ready');
     }
 
-    public async executeAction (data: ExecuteCommandArguments): Promise<unknown> {
-        if (!testRunTracker.activeTestRuns[data.id])
+    public async executeAction (data: ExecuteActionArguments): Promise<unknown> {
+        const targetTestRun = testRunTracker.activeTestRuns[data.id];
+
+        if (!targetTestRun)
             return void 0;
 
-        return testRunTracker
-            .activeTestRuns[data.id]
-            .executeAction(data.apiMethodName, data.command, data.callsite);
+        return targetTestRun.executeAction(data.apiMethodName, data.command, data.callsite);
+    }
+
+    public async executeCommand ({ command, id }: ExecuteCommandArguments): Promise<unknown> {
+        const targetTestRun = testRunTracker.activeTestRuns[id];
+
+        if (!targetTestRun)
+            return void 0;
+
+        return targetTestRun.executeCommand(command);
     }
 
     public async getTests ({ sourceList, compilerOptions }: CompilerArguments): Promise<Test[]> {
@@ -143,4 +155,11 @@ export default class CompilerHost extends EventEmitter implements CompilerProtoc
         await proxy.call(this.cleanUp);
     }
 
+    public async setOptions ({ value }: SetOptionsArguments): Promise<void> {
+        const { proxy } = await this._getRuntime();
+
+        const preparedOptions = prepareOptions(value);
+
+        await proxy.call(this.setOptions, { value: preparedOptions });
+    }
 }

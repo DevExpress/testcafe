@@ -17,6 +17,8 @@ Parameter                | Type   | Description
 `path`&#160;*(optional)* | String | The screenshot file's relative path and name. The path is relative to the root directory specified in the [runner.screenshots](../../testcafe-api/runner/screenshots.md) API method or the [-s (--screenshots)](../../command-line-interface.md#-s---screenshots-optionvalueoption2value2) command line option. This path overrides the relative path the default or custom [path patterns](../../../guides/advanced-guides/screenshots-and-videos.md#screenshot-and-video-directories) specify.
 `options`&#160;*(optional)*   | Object | Options that define how the screenshot is taken. See details below.
 
+> Important! {% include actions/screenshots-prerequisites.md name="`t.takeScreenshot`" third-person-singular=true%}
+
 The example below demonstrates how to use `t.takeElementScreenshot` action.
 
 ```js

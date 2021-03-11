@@ -19,6 +19,8 @@ Parameter           | Type   | Description | Default Value
 `path`&#160;*(optional)* | String | The screenshot file's relative path and name. The path is relative to the root directory specified in the [runner.screenshots](../../testcafe-api/runner/screenshots.md) API method or the [-s (--screenshots)](../../command-line-interface.md#-s---screenshots-optionvalueoption2value2) command line option. This property overrides the relative path specified with the default or custom [path patterns](../../../guides/advanced-guides/screenshots-and-videos.md#screenshot-and-video-directories).
 `fullPage`&#160;*(optional)* | Boolean | Specifies that the full page should be captured, including content that is not visible due to overflow. | `false`
 
+> Important! {% include actions/screenshots-prerequisites.md name="`t.takeScreenshot`" third-person-singular=true%}
+
 The following example shows how to use the `t.takeScreenshot` action.
 
 ```js

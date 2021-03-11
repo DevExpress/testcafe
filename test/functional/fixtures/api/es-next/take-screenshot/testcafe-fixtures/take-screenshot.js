@@ -126,3 +126,7 @@ test
         await t.expect(Math.abs(png.width - expectedWidth)).lte(accuracy);
         await t.expect(Math.abs(png.height - expectedHeight)).lte(accuracy);
     });
+
+test('Should add default extension', async t => {
+    await t.takeScreenshot('screenshot-path');
+});

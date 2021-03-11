@@ -16,6 +16,8 @@ import {
     writePng
 } from '../utils/promisified-functions';
 
+import DEFAULT_SCREENSHOT_EXTENSION from './default-extension';
+
 
 export default class Capturer {
     constructor (baseScreenshotsPath, testEntry, connection, pathPattern, fullPage, warningLog) {
@@ -90,7 +92,7 @@ export default class Capturer {
     }
 
     _getCustomScreenshotPath (customPath) {
-        const correctedCustomPath = correctFilePath(customPath);
+        const correctedCustomPath = correctFilePath(customPath, DEFAULT_SCREENSHOT_EXTENSION);
 
         return this._joinWithBaseScreenshotPath(correctedCustomPath);
     }

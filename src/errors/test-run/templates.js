@@ -32,8 +32,8 @@ export default {
     `,
 
     [TEST_RUN_ERRORS.pageLoadError]: err => `
-        A request to ${formatUrl(err.url)} has failed.
-        Use quarantine mode to perform additional attempts to execute this test.
+        Failed to load the page at ${formatUrl(err.url)}.
+        Increase the value of the "pageRequestTimeout" variable, enable the "retryTestPages" option, or use quarantine mode to perform additional attempts to execute this test.
         You can find troubleshooting information for this issue at ${formatUrl(EXTERNAL_LINKS.troubleshootNetwork)}.
 
         Error details:
@@ -43,8 +43,8 @@ export default {
     [TEST_RUN_ERRORS.uncaughtErrorOnPage]: err => `
         A JavaScript error occurred on ${formatUrl(err.pageDestUrl)}.
         Repeat test actions in the browser and check the console for errors.
-        If you see this error, it means that the tested website caused it. You can fix it or disable tracking JavaScript errors in TestCafe. To do the latter, enable the "skipJsErrors" option.
-        If this error does not occur, please write a new issue at:
+        To ignore client-side JavaScript errors, enable the "--skip-js-errors" CLI option, or set the "skipJsErrors" configuration file property to "true".
+        If the website only throws this error when you test it with TestCafe, please create a new issue at:
         ${formatUrl(EXTERNAL_LINKS.createNewIssue)}.
 
         JavaScript error details:

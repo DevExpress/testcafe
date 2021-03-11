@@ -1,7 +1,6 @@
 import { resolve as resolvePath, dirname } from 'path';
 import debug from 'debug';
 import promisifyEvent from 'promisify-event';
-import mapReverse from 'map-reverse';
 import { EventEmitter } from 'events';
 import {
     flattenDeep as flatten,
@@ -173,8 +172,8 @@ export default class Runner extends EventEmitter {
         return new Task(tests, browserConnectionGroups, proxy, opts, warningLog);
     }
 
-    _runTask (reporterPlugins, browserSet, tests, testedApp) {
-        const task              = this._createTask(tests, browserSet.browserConnectionGroups, this.proxy, this.configuration.getOptions(), this.warningLog);
+    _runTask (reporterPlugins, browserSet, tests, testedApp, options) {
+        const task              = this._createTask(tests, browserSet.browserConnectionGroups, this.proxy, options, this.warningLog);
         const reporters         = reporterPlugins.map(reporter => new Reporter(reporter.plugin, task, reporter.outStream, reporter.name));
         const completionPromise = this._getTaskResult(task, browserSet, reporters, testedApp);
         let completed           = false;
@@ -577,7 +576,11 @@ export default class Runner extends EventEmitter {
             .then(async ({ reporterPlugins, browserSet, tests, testedApp, commonClientScripts }) => {
                 await this._prepareClientScripts(tests, commonClientScripts);
 
-                return this._runTask(reporterPlugins, browserSet, tests, testedApp);
+                const resultOptions = this.configuration.getOptions();
+
+                await this.bootstrapper.compilerService?.setOptions({ value: resultOptions });
+
+                return this._runTask(reporterPlugins, browserSet, tests, testedApp, resultOptions);
             });
 
         return this._createCancelablePromise(runTaskPromise);
@@ -588,7 +591,11 @@ export default class Runner extends EventEmitter {
         // the pendingTaskPromises array, which leads to shifting indexes
         // towards the beginning. So, we must copy the array in order to iterate it,
         // or we can perform iteration from the end to the beginning.
-        const cancellationPromises = mapReverse(this.pendingTaskPromises, taskPromise => taskPromise.cancel());
+        const cancellationPromises = this.pendingTaskPromises.reduceRight((result, taskPromise) => {
+            result.push(taskPromise.cancel());
+
+            return result;
+        }, []);
 
         await Promise.all(cancellationPromises);
     }
