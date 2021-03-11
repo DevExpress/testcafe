@@ -650,7 +650,8 @@ describe('TypeScriptConfiguration', function () {
         });
 
         it('Custom config path is used', () => {
-            const customConfigPath = 'custom11.testcaferc.json';
+            const customConfigFile = 'custom11.testcaferc.json';
+
             const options = {
                 'hostname': '123.456.789',
                 'port1':    1234,
@@ -659,12 +660,13 @@ describe('TypeScriptConfiguration', function () {
                 'browser':  'ie'
             };
 
-            createConfigFile(customConfigPath, options);
-            configuration = new TestCafeConfiguration(customConfigPath);
+            createConfigFile(customConfigFile, options);
+
+            configuration = new TestCafeConfiguration(customConfigFile);
 
             return configuration.init()
                 .then(() => {
-                    expect(pathUtil.basename(configuration.filePath)).eql(customConfigPath);
+                    expect(pathUtil.basename(configuration.filePath)).eql(customConfigFile);
                     expect(configuration.getOption('hostname')).eql(options.hostname);
                     expect(configuration.getOption('port1')).eql(options.port1);
                     expect(configuration.getOption('port2')).eql(options.port2);
@@ -675,6 +677,7 @@ describe('TypeScriptConfiguration', function () {
 
         it('Constructor should revert back to default when no custom config', () => {
             const defaultFileLocation = '.testcaferc.json';
+
             const options = {
                 'hostname': '123.456.789',
                 'port1':    1234,
@@ -684,6 +687,7 @@ describe('TypeScriptConfiguration', function () {
             };
 
             createConfigFile(defaultFileLocation, options);
+
             configuration = new TestCafeConfiguration();
 
             return configuration.init()

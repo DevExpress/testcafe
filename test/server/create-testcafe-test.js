@@ -110,20 +110,32 @@ describe('TestCafe factory function', function () {
 
     describe('Custom Testcafe Config Path', () => {
         it('Custom config path is used', () => {
-            const configPath = 'custom.testcaferc.json';
+            const configFile = 'custom.testcaferc.json';
 
-            return getTestCafe('localhost', 1338, 1339, null, null, null, null, configPath)
+            return getTestCafe('localhost', 1338, 1339, null, null, null, null, configFile)
                 .then(() => {
-                    expect(path.basename(testCafe.configuration.filePath)).eql(configPath);
+                    expect(path.basename(testCafe.configuration.filePath)).eql(configFile);
                 });
         });
 
         it('Reverts back to default when not specified', () => {
-            const defaultConfigPath = '.testcaferc.json';
+            const defaultConfigFile = '.testcaferc.json';
 
             return getTestCafe('localhost', 1338, 1339)
                 .then(() => {
-                    expect(path.basename(testCafe.configuration.filePath)).eql(defaultConfigPath);
+                    expect(path.basename(testCafe.configuration.filePath)).eql(defaultConfigFile);
+                });
+        });
+
+        it('Works when created using null', () => {
+            const defaultConfigFile = '.testcaferc.json';
+
+            return createTestCafe(null)
+                .then(tc => {
+                    testCafe = tc;
+                })
+                .then(() => {
+                    expect(path.basename(testCafe.configuration.filePath)).eql(defaultConfigFile);
                 });
         });
     });
