@@ -16,6 +16,8 @@ Parameter  | Type    | Description
 `width`    | Number  | The new width, in pixels.
 `height`   | Number  | The new height, in pixels.
 
+> Important! {% include actions/screenshots-prerequisites.md name="`t.resizeWindow`" third-person-singular=true%}
+
 The following example demonstrates how to use the `t.resizeWindow` action.
 
 ```js
