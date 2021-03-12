@@ -1,5 +1,7 @@
-A request to "http://some-url.example.com" has failed.
-Use quarantine mode to perform additional attempts to execute this test.
+Failed to load the page at "http://some-url.example.com".
+Increase the value of the "pageRequestTimeout" variable, enable the
+"retryTestPages" option, or use quarantine mode to perform additional
+attempts to execute this test.
 You can find troubleshooting information for this issue at
 "https://go.devexpress.com/TestCafe_FAQ_ARequestHasFailed.aspx".
 
