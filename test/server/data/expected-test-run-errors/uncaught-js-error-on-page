@@ -1,9 +1,9 @@
 A JavaScript error occurred on "http://example.org".
 Repeat test actions in the browser and check the console for errors.
-If you see this error, it means that the tested website caused it. You can
-fix it or disable tracking JavaScript errors in TestCafe. To do the latter,
-enable the "--skip-js-errors" option.
-If this error does not occur, please write a new issue at:
+To ignore client-side JavaScript errors, enable the "--skip-js-errors" CLI
+option, or set the "skipJsErrors" configuration file property to "true".
+If the website only throws this error when you test it with TestCafe, please
+create a new issue at:
 "https://github.com/DevExpress/testcafe/issues/new?template=bug-report.md".
 
 JavaScript error details:
