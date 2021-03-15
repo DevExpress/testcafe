@@ -42,22 +42,56 @@ Whenever TestCafe encounters TypeScript compilation errors, it includes correspo
 > and [selector.addCustomMethods](../../reference/test-api/selector/addcustommethods.md)
 > sections to learn how to extend selectors in TypeScript.
 
-#### Type-Cast Page Elements
+#### Type Cast Page Elements
 
-When you grab HTML elements in your TypeScript [client-side code](../basic-guides/obtain-client-side-info.md), you need to cast the elements to the [HTMLElement](https://www.typescriptlang.org/docs/handbook/dom-manipulation.html#an-exploration-into-the-htmlelement-type) type. To avoid type errors, cast the element to [unknown](https://www.typescriptlang.org/docs/handbook/2/functions.html#unknown) and then to `HTMLElement`.
+When you grab HTML elements in your TypeScript [client-side code](../basic-guides/obtain-client-side-info.md), you need to cast the elements to the [HTMLElement](https://www.typescriptlang.org/docs/handbook/dom-manipulation.html#an-exploration-into-the-htmlelement-type) type. To avoid type errors, cast the element to [unknown](https://www.typescriptlang.org/docs/handbook/2/functions.html#unknown) and then to [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement).
+
+The example below identifies an HTML element and scrolls it into view with a [client function](../../reference/test-api/clientfunction/README.md).
 
 ```ts
-const pageElement = Selector('#pageElement');
+import { ClientFunction, Selector } from 'testcafe';
 
-await t.eval(() => {
-    const container = pageElement() as unknown as HTMLElement;
+const scrollIntoView = ClientFunction( (selector: Selector) => {
+    const element = selector() as unknown as HTMLElement;
+    element.scrollIntoView();
+});
 
-    container.scrollIntoView();
-  },
-  {
-    dependencies: { bottomOfPage },
-  }
-);
+fixture`HTML Element`
+    .page('./index.html');
+
+test('Scroll element into view', async t => {
+    const bottomOfPage = Selector('#bottom-div');
+
+    await scrollIntoView(bottomOfPage);
+});
+```
+
+To use methods and properties of a certain HTMLElement interface (for example, `HTMLOListElement`), cast the element to that specific type.
+
+The example below uses [t.eval](../../reference/test-api/testcontroller/eval.md) to determine if an ordered list has the [reversed](https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement#properties) property. Because the property exists on the [HTMLOListElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement#properties), but not on [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement#properties), a narrower type casting is needed.
+
+```ts
+import { Selector } from 'testcafe';
+
+fixture`Ordered list`
+    .page('./index.html');
+
+test('Check that the list is reversed', async t => {
+    const olElement = Selector('#ordered-list');
+
+    const isListReversed = await t.eval(() => {
+        const list = olElement() as unknown as HTMLOListElement;
+
+        return list.reversed;
+    },
+    {
+        dependencies: { olElement }
+    });
+
+    await t
+        .expect(isListReversed)
+        .ok();
+});
 ```
 
 You can read more about client-side code in the [Obtain Client-Side Info](../basic-guides/obtain-client-side-info.md) topic.
