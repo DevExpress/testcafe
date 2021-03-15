@@ -672,7 +672,7 @@ describe('Runner', () => {
                                             '1 of 1 browser connections have not been established:\n' +
                                             '- remote\n\n' +
                                             'Hints:\n' +
-                                            '- Use the \'--browser-init-timeout\' option to allow more time for the browser to start. ' +
+                                            '- Use the "browserInitTimeout" option to allow more time for the browser to start. ' +
                                             'The timeout is set to 0.1 seconds for all browsers.\n' +
                                             '- The error can also be caused by network issues or remote device failure. ' +
                                             'Make sure that the connection is stable and the remote device can be reached.');
@@ -1260,7 +1260,7 @@ describe('Runner', () => {
                         'Hints:\n' +
                         '- some warning from "browser-alias1"\n' +
                         '- some warning from "browser-alias2"\n' +
-                        '- Use the \'--browser-init-timeout\' option to allow more time for the browser to start. ' +
+                        '- Use the "browserInitTimeout" option to allow more time for the browser to start. ' +
                         'The timeout is set to 2 minutes for local browsers and 6 minutes for remote browsers.\n' +
                         '- The error can also be caused by network issues or remote device failure. ' +
                         'Make sure that the connection is stable and the remote device can be reached.'

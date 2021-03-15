@@ -277,7 +277,7 @@ describe('Multiple windows', () => {
         it('Open window with `disableMultipleWindows` option', () => {
             return runTests('testcafe-fixtures/api/api-test.js', 'Open window with `disableMultipleWindows` option', { only: 'chrome', disableMultipleWindows: true, shouldFail: true })
                 .catch(errs => {
-                    expect(errs[0]).to.contain('Multi window mode is disabled. Remove the "--disable-multiple-windows" CLI flag or set the "disableMultipleWindows" option to "false" in the API to use the "openWindow" method.');
+                    expect(errs[0]).to.contain('Multi-window mode is disabled. To use the "openWindow" method, remove the "disableMultipleWindows" option.');
                 });
         });
 

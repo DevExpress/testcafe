@@ -373,11 +373,11 @@ export default {
     `,
 
     [TEST_RUN_ERRORS.multipleWindowsModeIsDisabledError]: err => `
-        Multi window mode is disabled. Remove the "--disable-multiple-windows" CLI flag or set the "disableMultipleWindows" option to "false" in the API to use the "${err.methodName}" method.
+        Multi-window mode is disabled. To use the "${err.methodName}" method, remove the "disableMultipleWindows" option.
     `,
 
     [TEST_RUN_ERRORS.multipleWindowsModeIsNotSupportedInRemoteBrowserError]: err => `
-        Multi window mode is supported in Chrome, Chromium, Edge 84+ and Firefox only. Run tests in these browsers to use the "${err.methodName}" method.
+        Multi-window mode is supported in Chrome, Chromium, Edge 84+ and Firefox only. Run tests in these browsers to use the "${err.methodName}" method.
     `,
 
     [TEST_RUN_ERRORS.cannotCloseWindowWithoutParent]: () => `
