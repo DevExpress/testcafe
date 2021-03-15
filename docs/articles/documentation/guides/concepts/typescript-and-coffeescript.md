@@ -42,6 +42,26 @@ Whenever TestCafe encounters TypeScript compilation errors, it includes correspo
 > and [selector.addCustomMethods](../../reference/test-api/selector/addcustommethods.md)
 > sections to learn how to extend selectors in TypeScript.
 
+#### Type-Cast Page Elements
+
+When you grab HTML elements in your TypeScript [client-side code](../basic-guides/obtain-client-side-info.md), you need to cast the elements to the [HTMLElement](https://www.typescriptlang.org/docs/handbook/dom-manipulation.html#an-exploration-into-the-htmlelement-type) type. To avoid type errors, cast the element to [unknown](https://www.typescriptlang.org/docs/handbook/2/functions.html#unknown) and then to `HTMLElement`.
+
+```ts
+const pageElement = Selector('#pageElement');
+
+await t.eval(() => {
+    const container = pageElement() as unknown as HTMLElement;
+
+    container.scrollIntoView();
+  },
+  {
+    dependencies: { bottomOfPage },
+  }
+);
+```
+
+You can read more about client-side code in the [Obtain Client-Side Info](../basic-guides/obtain-client-side-info.md) topic.
+
 ### Customize Compiler Options
 
 TestCafe users can modify [the settings](https://www.typescriptlang.org/docs/handbook/compiler-options.html) of the TypeScript compiler in one of the following three ways:
