@@ -69,3 +69,9 @@ test('Screenshot on action error', async t => {
 
     await t.click('#unexisting-element');
 });
+
+test('Action done after test done', async t => {
+    await t
+        .wait(5000)
+        .eval(() => location.reload(true));
+});
