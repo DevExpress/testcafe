@@ -111,8 +111,10 @@ function getDerivativeSelectorArgs (options, selectorFn, apiFn, filter, addition
 }
 
 function createPrimitiveGetterWrapper (observedCallsites, callsite) {
-    return () => {
-        if (observedCallsites)
+    return (depth, options) => {
+        const isTestCafeInspect = options?.isTestCafeInspect;
+
+        if (observedCallsites && !isTestCafeInspect)
             observedCallsites.unawaitedSnapshotCallsites.add(callsite);
 
         return SNAPSHOT_PROP_PRIMITIVE;
@@ -152,11 +154,8 @@ function addSnapshotProperties (obj, getSelector, SelectorBuilder, properties, o
                 propertyPromise[inspect.custom]     = primitiveGetterWrapper;
 
                 propertyPromise.then = function (onFulfilled, onRejected) {
-                    if (observedCallsites) {
+                    if (observedCallsites)
                         checkForExcessiveAwaits(observedCallsites.snapshotPropertyCallsites, callsite);
-
-                        observedCallsites.unawaitedSnapshotCallsites.delete(callsite);
-                    }
 
                     this._ensureExecuting();
 
