@@ -22,10 +22,10 @@
 
     //Hammerhead setup
     const hammerhead  = getTestCafeModule('hammerhead');
-    const INSTRUCTION = hammerhead.get('../processing/script/instruction');
+    const INSTRUCTION = hammerhead.PROCESSING_INSTRUCTIONS.dom.script;
 
 
-    hammerhead.get('./utils/destination-location').forceLocation('http://localhost/sessionId/https://example.com');
+    hammerhead.utils.destLocation.forceLocation('http://localhost/sessionId/https://example.com');
 
     hammerhead.start({ sessionId: 'sessionId' });
 

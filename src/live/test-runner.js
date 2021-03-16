@@ -38,7 +38,9 @@ class LiveModeRunner extends Runner {
                 return this._validateRunnableConfiguration(isFirstRun);
             })
             .then(() => {
-                this.testRunController.setExpectedTestCount(this.configurationCache.tests.filter(t => !t.skip).length);
+                const expectedTestCount = this.configurationCache.tests.length;
+
+                this.testRunController.setExpectedTestCount(expectedTestCount);
             })
             .then(() => {
                 this.runnerTaskPromise = super.run(this.opts);
@@ -170,7 +172,7 @@ class LiveModeRunner extends Runner {
     _createTask (tests, browserConnectionGroups, proxy, opts) {
         opts.live = true;
 
-        return super._createTask(tests, browserConnectionGroups, proxy, opts);
+        return super._createTask(tests, browserConnectionGroups, proxy, opts, this.warningLog);
     }
 
     _createBootstrapper (browserConnectionGateway) {

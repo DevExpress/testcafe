@@ -579,6 +579,29 @@ describe('Reporter', () => {
                     ]);
                 });
         });
+
+        it('Should not add action information in report if action was emitted after test done (GH-5650)', () => {
+            const log = [];
+
+            return runTests('testcafe-fixtures/index-test.js', 'Action done after test done', generateRunOptions(log))
+                .then(() => {
+                    expect(log).eql([
+                        { name: 'execute-client-function', action: 'start' },
+                        { name: 'wait', action: 'start' },
+                        {
+                            name:    'execute-client-function',
+                            action:  'done',
+                            command: {
+                                type:     'execute-client-function',
+                                clientFn: {
+                                    code: '(function(){ var func = function func() {return  __get$Loc(location) .reload(true);}; return func;})();',
+                                    args: []
+                                }
+                            }
+                        }
+                    ]);
+                });
+        });
     });
 
     describe('Action snapshots', () => {
@@ -710,7 +733,7 @@ describe('Reporter', () => {
         });
     });
 
-    it('Should raise an error when uncaught exception occured in any reporter method', async () => {
+    it('Should raise an error when uncaught exception occurred in any reporter method', async () => {
         function createReporterWithBrokenMethod (method) {
             const base = {
                 async reportTaskStart () {},

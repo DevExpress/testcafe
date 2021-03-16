@@ -25,6 +25,10 @@ export class GeneralError extends Error {
         Object.assign(this, { code, data: args });
         Error.captureStackTrace(this, GeneralError);
     }
+
+    static isGeneralError (arg) {
+        return arg instanceof GeneralError;
+    }
 }
 
 export class TestCompilationError extends Error {

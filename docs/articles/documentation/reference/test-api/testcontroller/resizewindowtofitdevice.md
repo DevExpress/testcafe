@@ -22,6 +22,8 @@ Property              | Type    | Description
 --------------------- | ------- | --------------------------------------------------------------
 `portraitOrientation` | Boolean | `true` for portrait screen orientation; `false` for landscape.
 
+> Important! {% include actions/screenshots-prerequisites.md name="`t.resizeWindowToFitDevice`" third-person-singular=true%}
+
 The example below shows how to use the `t.resizeWindowToFitDevice` action.
 
 ```js

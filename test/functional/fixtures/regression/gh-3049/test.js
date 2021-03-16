@@ -7,6 +7,8 @@ const isLocalChrome = config.useLocalBrowsers && config.browsers.some(browser =>
 if (isLocalChrome) {
     describe('[Regression](GH-3049) - Should increase small browser window', function () {
         it('Run browser with minimal window size', function () {
+            let failedCount = 0;
+
             return createTestCafe('127.0.0.1', 1335, 1336)
                 .then(tc => {
                     testCafe = tc;
@@ -19,9 +21,12 @@ if (isLocalChrome) {
                         .src(path.join(__dirname, './testcafe-fixtures/index.js'))
                         .run();
                 })
-                .then(failedCount => {
-                    testCafe.close();
+                .then(failed => {
+                    failedCount = failed;
 
+                    return testCafe.close();
+                })
+                .then(() => {
                     if (failedCount)
                         throw new Error('Error occurred');
                 });

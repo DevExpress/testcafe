@@ -1,4 +1,5 @@
 import { CompilerArguments } from '../../compiler/interfaces';
+import { Dictionary } from '../../configuration/interfaces';
 
 export const BEFORE_AFTER_PROPERTIES  = ['beforeFn', 'afterFn'] as const;
 export const BEFORE_AFTER_EACH_PROPERTIES = ['beforeEachFn', 'afterEachFn'] as const;
@@ -24,15 +25,25 @@ export interface RunTestArguments {
     testRunId: string;
 }
 
-export interface ExecuteCommandArguments {
+export interface ExecuteActionArguments {
     id: string;
     apiMethodName: string;
     command: unknown;
     callsite: unknown;
 }
 
+export interface ExecuteCommandArguments {
+    id: string;
+    command: unknown;
+}
+
+export interface SetOptionsArguments {
+    value: Dictionary<OptionValue>;
+}
+
 export interface TestRunDispatcherProtocol {
-    executeAction ({ id, apiMethodName, command, callsite }: ExecuteCommandArguments): Promise<unknown>;
+    executeAction ({ id, apiMethodName, command, callsite }: ExecuteActionArguments): Promise<unknown>;
+    executeCommand ({ command }: ExecuteCommandArguments): Promise<unknown>;
 }
 
 export interface CompilerProtocol extends TestRunDispatcherProtocol {
@@ -43,4 +54,6 @@ export interface CompilerProtocol extends TestRunDispatcherProtocol {
     runTest ({ id, functionName, testRunId }: RunTestArguments): Promise<unknown>;
 
     cleanUp (): Promise<void>;
+
+    setOptions ({ value }: SetOptionsArguments): Promise<void>;
 }

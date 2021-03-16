@@ -6,7 +6,7 @@ if (!config.useLocalBrowsers) {
         it('Should fail on remote', function () {
             return runTests('./testcafe-fixtures/multiple-windows-test.js', 'Should fail on remote', { shouldFail: true })
                 .catch(errs => {
-                    expect(errs[0]).to.contain('Multi window mode is supported in Chrome, Chromium, Edge 84+ and Firefox only. Run tests in these browsers to use the "openWindow" method');
+                    expect(errs[0]).to.contain('Multi-window mode is supported in Chrome, Chromium, Edge 84+ and Firefox only. Run tests in these browsers to use the "openWindow" method');
                 });
         });
     });

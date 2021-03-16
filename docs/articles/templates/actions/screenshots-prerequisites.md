@@ -1,0 +1,1 @@
+{{ include.name }} require{% if include.third-person-singular%}s{% endif %} .NET 4.0 or newer installed on Windows machines and an [ICCCM/EWMH-compliant window manager](https://en.wikipedia.org/wiki/Comparison_of_X_window_managers) on Linux.
