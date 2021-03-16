@@ -68,6 +68,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--dev](#--dev)
   * [--qr-code](#--qr-code)
   * [--sf, --stop-on-first-fail](#--sf---stop-on-first-fail)
+  * [--config-file \<path\>](#--config-file-path)
   * [--ts-config-path \<path\>](#--ts-config-path-path)
   * [--compiler-options \<options\>](#--compiler-options-options)
   * [--cache](#--cache)
@@ -933,6 +934,14 @@ testcafe chrome my-tests --sf
 ```
 
 *Related configuration file property*: [stopOnFirstFail](configuration-file.md#stoponfirstfail).
+
+### --config-file \<path\>
+
+Allows you to specify a path to the Testcafe config you want to use.
+
+```sh
+testcafe --config-file configurations/localdev.testcaferc.json
+```
 
 ### --ts-config-path \<path\>
 
