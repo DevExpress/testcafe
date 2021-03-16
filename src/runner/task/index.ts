@@ -1,23 +1,24 @@
-import { pull as remove, groupBy } from 'lodash';
+import { groupBy, pull as remove } from 'lodash';
 import moment from 'moment';
-import AsyncEventEmitter from '../utils/async-event-emitter';
-import BrowserJob from './browser-job';
-import Screenshots from '../screenshots';
-import WarningLog from '../notifications/warning-log';
-import FixtureHookController from './fixture-hook-controller';
-import * as clientScriptsRouting from '../custom-client-scripts/routing';
-import Videos from '../video-recorder/videos';
-import TestRun from '../test-run';
+import AsyncEventEmitter from '../../utils/async-event-emitter';
+import BrowserJob from '../browser-job';
+import Screenshots from '../../screenshots';
+import WarningLog from '../../notifications/warning-log';
+import FixtureHookController from '../fixture-hook-controller';
+import * as clientScriptsRouting from '../../custom-client-scripts/routing';
+import Videos from '../../video-recorder/videos';
+import TestRun from '../../test-run';
 import { Proxy } from 'testcafe-hammerhead';
-import { Dictionary } from '../configuration/interfaces';
-import { ActionEventArg, ReportedTestStructureItem } from './interfaces';
-import BrowserConnection from '../browser/connection';
-import Test from '../api/structure/test';
-import { VideoOptions } from '../video-recorder/interfaces';
+import { Dictionary } from '../../configuration/interfaces';
+import { ActionEventArg, ReportedTestStructureItem } from '../interfaces';
+import BrowserConnection from '../../browser/connection';
+import Test from '../../api/structure/test';
+import { VideoOptions } from '../../video-recorder/interfaces';
+import TaskPhase from './phase';
 
 export default class Task extends AsyncEventEmitter {
     private readonly _timeStamp: moment.Moment;
-    private _running: boolean;
+    private _phase: TaskPhase;
     public browserConnectionGroups: BrowserConnection[][];
     public readonly tests: Test[];
     public readonly opts: Dictionary<OptionValue>;
@@ -30,16 +31,22 @@ export default class Task extends AsyncEventEmitter {
     public readonly testStructure: ReportedTestStructureItem[];
     public readonly videos?: Videos;
 
-    public constructor (tests: Test[], browserConnectionGroups: BrowserConnection[][], proxy: Proxy, opts: Dictionary<OptionValue>) {
+    public constructor (
+        tests: Test[],
+        browserConnectionGroups: BrowserConnection[][],
+        proxy: Proxy, opts: Dictionary<OptionValue>,
+        runnerWarningLog: WarningLog) {
         super({ captureRejections: true });
 
         this._timeStamp              = moment();
-        this._running                = false;
+        this._phase                  = TaskPhase.initialized;
         this.browserConnectionGroups = browserConnectionGroups;
         this.tests                   = tests;
         this.opts                    = opts;
         this._proxy                  = proxy;
         this.warningLog              = new WarningLog();
+
+        runnerWarningLog.copyTo(this.warningLog);
 
         const { path, pathPattern, fullPage } = this.opts.screenshots as ScreenshotOptionValue;
 
@@ -78,8 +85,9 @@ export default class Task extends AsyncEventEmitter {
         });
 
         job.once('start', async () => {
-            if (!this._running) {
-                this._running = true;
+            if (this._phase !== TaskPhase.started) {
+                this._phase = TaskPhase.started;
+
                 await this.emit('start');
             }
         });
@@ -89,8 +97,11 @@ export default class Task extends AsyncEventEmitter {
 
             remove(this._pendingBrowserJobs, job);
 
-            if (!this._pendingBrowserJobs.length)
+            if (!this._pendingBrowserJobs.length) {
+                this._phase = TaskPhase.done;
+
                 await this.emit('done');
+            }
         });
 
         job.on('test-action-start', async (args: ActionEventArg) => {
@@ -98,6 +109,9 @@ export default class Task extends AsyncEventEmitter {
         });
 
         job.on('test-action-done', async (args: ActionEventArg) => {
+            if (this._phase === TaskPhase.done)
+                return;
+
             await this.emit('test-action-done', args);
         });
 

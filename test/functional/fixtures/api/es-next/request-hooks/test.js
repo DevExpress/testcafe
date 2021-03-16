@@ -62,5 +62,9 @@ describe('Request Hooks', () => {
         it("Test's request hooks should not override the fixture's request hooks (GH-4122)", () => {
             return runTests('./testcafe-fixtures/api/i4122.js', null, { only: 'chrome' });
         });
+
+        it('Async predicate for request filter rules', () => {
+            return runTests('./testcafe-fixtures/api/request-filter-rule-async-predicate.js', null, { only: 'chrome' });
+        });
     });
 });

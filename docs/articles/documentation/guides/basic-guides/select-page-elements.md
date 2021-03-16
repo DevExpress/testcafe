@@ -196,28 +196,7 @@ You can use the [selector.count](../../reference/test-api/selector/count.md) pro
 
 ## Member Tables
 
-The following methods filter elements from the selector:
-
-Method                                                              | Description
-------------------------------------------------------------------- | -------------
-[nth](../../reference/test-api/selector/nth.md)                     | Finds an element by its index.
-[withText](../../reference/test-api/selector/withtext.md)           | Finds an element whose content includes the specified text.
-[withExactText](../../reference/test-api/selector/withexacttext.md) | Finds an element with the specified text.
-[withAttribute](../../reference/test-api/selector/withattribute.md) | Finds an element with the specified attribute or attribute value.
-[filterVisible](../../reference/test-api/selector/filtervisible.md) | Selects visible elements.
-[filterHidden](../../reference/test-api/selector/filterhidden.md)   | Selects hidden elements.
-[filter](../../reference/test-api/selector/filter.md)               | Finds elements that match the specified CSS selector or predicate.
-
-Methods that search for DOM elements relative to the selected element:
-
-Method                                                              | Description
-------------------------------------------------------------------- | -------------
-[find](../../reference/test-api/selector/find.md)                   | Finds a descendant node that matches the specified CSS selector or predicate.
-[parent](../../reference/test-api/selector/parent.md)               | Selects parent elements.
-[child](../../reference/test-api/selector/child.md)                 | Selects child elements.
-[sibling](../../reference/test-api/selector/sibling.md)             | Selects sibling elements.
-[nextSibling](../../reference/test-api/selector/nextsibling.md)     | Selects succeeding sibling elements.
-[prevSibling](../../reference/test-api/selector/prevsibling.md)     | Selects preceding sibling elements.
+{% include selectors/selector-members.md%}
 
 ## Use Selectors
 

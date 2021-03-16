@@ -7,6 +7,7 @@ const Task                            = require('../../lib/runner/task');
 const Videos                          = require('../../lib/video-recorder/videos');
 const delay                           = require('../../lib/utils/delay');
 const { ReporterPluginError }         = require('../../lib/errors/runtime');
+const WarningLog                      = require('../../lib/notifications/warning-log');
 
 chai.use(require('chai-string'));
 
@@ -408,7 +409,7 @@ describe('Reporter', () => {
 
     class TaskMock extends Task {
         constructor () {
-            super(testMocks, chunk(browserConnectionMocks, 1), {}, taskOptions);
+            super(testMocks, chunk(browserConnectionMocks, 1), {}, taskOptions, new WarningLog());
 
             this.screenshots = new ScreenshotsMock();
 

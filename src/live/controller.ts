@@ -3,6 +3,9 @@ import Logger from './logger';
 import FileWatcher from './file-watcher';
 import LiveModeKeyboardEventObserver from './keyboard-observer';
 import LiveModeRunner from './test-runner';
+import { RUNTIME_ERRORS } from '../errors/types';
+import { GeneralError } from '../errors/runtime';
+
 
 class LiveModeController extends EventEmitter {
     private running: boolean;
@@ -10,9 +13,14 @@ class LiveModeController extends EventEmitter {
     private watchingPaused: boolean;
     private stopping: boolean;
     private logger: Logger;
-    private runner: LiveModeRunner;
+    private readonly runner: LiveModeRunner;
     private keyboardObserver: LiveModeKeyboardEventObserver;
     private fileWatcher: FileWatcher;
+
+    private _isTestFilesNotFoundError (err: Error): boolean {
+        // @ts-ignore
+        return GeneralError.isGeneralError(err) && err.code === RUNTIME_ERRORS.testFilesNotFound;
+    }
 
     public constructor (runner: LiveModeRunner) {
         super();
@@ -58,6 +66,9 @@ class LiveModeController extends EventEmitter {
 
     public onTestRunDone (err: Error): void {
         this.running = false;
+
+        if (this._isTestFilesNotFoundError(err))
+            throw err;
 
         if (!this.restarting)
             this.logger.writeTestsFinishedMessage();

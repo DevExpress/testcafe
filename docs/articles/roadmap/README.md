@@ -1,7 +1,8 @@
 ---
-layout: faq
-title: Roadmap
+layout: roadmap
+title: TestCafe Roadmap
 permalink: /roadmap/
+date: 2021-02-16
 ---
 # Roadmap
 
@@ -15,28 +16,31 @@ Please vote on the features you want us to implement first to help us prioritize
 
 Feature                                                                                           | Status
 ------------------------------------------------------------------------------------------------- | -------------------
-[Testing in Multiple Browser Windows](https://github.com/DevExpress/testcafe/issues/912)          | **In Progress**
-[API Testing](https://github.com/DevExpress/testcafe/issues/4288)                                 | Planned
+[Support for Multiple Browser Windows](https://github.com/DevExpress/testcafe/issues/912)          | **Implemented**
+[Selector Debug Panel](https://github.com/DevExpress/testcafe/issues/3244)                        | **In Progress**
+[HTTP API Testing](https://github.com/DevExpress/testcafe/issues/4288)                            | Planned
+[Cookie Management](https://github.com/DevExpress/testcafe/issues/5964)                           | Planned
 
 ## API
 
 Feature                                                                                           | Status
 ------------------------------------------------------------------------------------------------- | -------------------
-[Configuration File](https://github.com/DevExpress/testcafe/issues/3131)                          | **Implemented**
-[Screenshots of the Entire Page](https://github.com/DevExpress/testcafe/issues/1520)              | **Implemented**
-[Browser Information in Test Code](https://github.com/DevExpress/testcafe/issues/481)             | **Implemented**
+[Dedicated *Scroll* Action](https://github.com/DevExpress/testcafe/issues/5965)                   | Planned
 
 ## Debugging
 
 Feature                                                                                           | Status
 ------------------------------------------------------------------------------------------------- | -------------------
-[Video Recording](https://github.com/DevExpress/testcafe/issues/2151)                             | **Implemented**
-[Live Mode](https://github.com/DevExpress/testcafe/issues/3215)                                   | **Implemented**
-[Selector Debug Panel](https://github.com/DevExpress/testcafe/issues/3244)                        | **In Progress**
+[Interactive Demo Page](https://github.com/DevExpress/testcafe/issues/5966)                     | Planned
 
-## Ecosystem / Integrations
+## Test Stability
 
 Feature                                                                                           | Status
 ------------------------------------------------------------------------------------------------- | -------------------
-[Custom TypeScript Compilation Options](https://github.com/DevExpress/testcafe/issues/1845)       | **Implemented**
-[Jenkins Plugin](https://github.com/DevExpress/testcafe/issues/4289)                              | **Implemented**
+[Repeat Page Requests on Failure](https://github.com/DevExpress/testcafe/pull/5738)     | **Implemented**
+[HTTP Caching](https://github.com/DevExpress/testcafe-hammerhead/issues/863)                      | **In Progress**
+[Improve the Quality of Automatic Pre-Assertion Timeouts](https://github.com/DevExpress/testcafe/issues/5967)    | Planned
+[Enable HTTPS connections Between Browsers and the Proxy](https://github.com/DevExpress/testcafe/issues/5974)| Planned
+[Simplify the SSL Workflow](https://github.com/DevExpress/testcafe/issues/5973)              | Planned
+[Ignore JS Errors On a Per-Page Basis](https://github.com/DevExpress/testcafe/issues/2775)              | Planned
+[HTTP2 Support](https://github.com/DevExpress/testcafe-hammerhead/issues/1960)                    | Planned

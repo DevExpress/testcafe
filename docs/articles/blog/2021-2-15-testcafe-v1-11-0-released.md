@@ -106,12 +106,12 @@ You can enable this functionality with a command line, API, or configuration fil
     testcafe chrome test.js --retry-test-pages
     ```
 
-* the [runner.run](../documentation/reference/testcafe-api/runner/README.md) option
+* the [createTestCafe](../documentation/reference/testcafe-api/global/createtestcafe.md) function parameter
 
     ```js
-    runner.run({
-        retryTestPages: true
-    });
+    const createTestCafe = require('testcafe');
+
+    const testcafe = await createTestCafe('localhost', 1337, 1338, retryTestPages)
     ```
 
 * the [retryTestPages](../documentation/reference/configuration-file.md#retrytestpages) configuration file property

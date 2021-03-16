@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Async predicate for request filter rules</title>
+</head>
+<body>
+    <h2>Send request status</h2>
+    <button onclick="sendRequest()">Send request</button>
+    <script>
+        function sendRequest() {
+            fetch('http://dummy-url.com/get')
+                .then(res => {
+                    return res.text();
+                })
+                .then(text => {
+                    document.querySelector('h2').textContent = text;
+                });
+        }
+    </script>
+</body>
+</html>

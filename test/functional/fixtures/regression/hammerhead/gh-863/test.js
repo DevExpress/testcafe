@@ -1,10 +1,10 @@
-const http           = require('http');
-const path           = require('path');
-const fs             = require('fs');
-const createTestCafe = require('../../../../../../lib');
-const config         = require('../../../../config');
-const { expect }     = require('chai');
-const enableDestroy  = require('server-destroy');
+const http            = require('http');
+const path            = require('path');
+const fs              = require('fs');
+const createTestCafe  = require('../../../../../../lib');
+const config          = require('../../../../config');
+const { expect }      = require('chai');
+const { getFreePort } = require('endpoint-utils');
 
 const resourceRequestCounter = {
     script1: 0,
@@ -24,7 +24,7 @@ function addCachingHeader (res) {
     res.setHeader('cache-control', 'max-age=86400'); // Cache response 1 day
 }
 
-function createServer () {
+async function createServer () {
     const server = http.createServer((req, res) => {
         let content = '';
 
@@ -59,10 +59,11 @@ function createServer () {
 
         res.end(content);
     });
+    const port   = await getFreePort();
 
-    server.listen(1340);
+    process.env.TEST_SERVER_PORT = port.toString();
 
-    enableDestroy(server);
+    server.listen(port);
 
     return server;
 }
@@ -87,12 +88,12 @@ const isLocalChrome = config.useLocalBrowsers && config.browsers.some(browser =>
 
 if (isLocalChrome) {
     describe('Cache', () => {
-        it('Should cache resources between tests', () => {
-            const server = createServer();
+        it('Should cache resources between tests', async () => {
+            const server = await createServer();
 
-            return run({ src: './testcafe-fixtures/index.js', browser: 'chrome' })
+            return run({ src: './testcafe-fixtures/index.js', browser: 'chrome:headless' })
                 .then(() => {
-                    server.destroy();
+                    server.close();
 
                     expect(resourceRequestCounter.script1).eql(1);
                     expect(resourceRequestCounter.script2).eql(1);

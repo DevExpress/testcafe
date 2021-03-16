@@ -7,6 +7,8 @@ let testCafe = null;
 if (config.useLocalBrowsers) {
     describe(`[Regression](GH-5449) Should not crash if TestCafe is created via "createTestCafe('null')"`, () => {
         it(`[Regression](GH-5449) Should not crash if TestCafe is created via "createTestCafe('null')"`, () => {
+            let failedCount = 0;
+
             return createTestCafe(null)
                 .then(tc => {
                     testCafe = tc;
@@ -18,9 +20,12 @@ if (config.useLocalBrowsers) {
                         .src(path.join(__dirname, './testcafe-fixtures/index.js'))
                         .run();
                 })
-                .then(failedCount => {
-                    testCafe.close();
+                .then(failed => {
+                    failedCount = failed;
 
+                    return testCafe.close();
+                })
+                .then(() => {
                     if (failedCount)
                         throw new Error('Error occurred');
                 });
