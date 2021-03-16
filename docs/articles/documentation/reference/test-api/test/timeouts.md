@@ -27,7 +27,7 @@ fixture`My Fixture`
 
 test
     .timeouts({
-        pageLoadTimeout: 2000,
+        pageLoadTimeout:    2000,
         pageRequestTimeout: 60000,
         ajaxRequestTimeout: 60000
     })
