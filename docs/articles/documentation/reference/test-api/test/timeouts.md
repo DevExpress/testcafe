@@ -22,14 +22,16 @@ Parameter                         | Type   | Description
 `ajaxRequestTimeout` *(optional)* | number | Wait time (in milliseconds) for fetch/XHR requests. See [ajaxRequestTimeout](../../configuration-file.md#ajaxrequesttimeout).
 
 ```js
-fixture `My Fixture`
+fixture`My Fixture`
+    .page`http://devexpress.github.io/testcafe/example`;
+
+test
     .timeouts({
-        pageLoadTimeout:    2000,
+        pageLoadTimeout: 2000,
         pageRequestTimeout: 60000,
         ajaxRequestTimeout: 60000
     })
-    .page `http://devexpress.github.io/testcafe/example`;
-
-test('My test' , async t => {
-})
+    ('My test', async t => {
+        //test actions
+    })
 ```
