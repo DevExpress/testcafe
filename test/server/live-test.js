@@ -1,12 +1,11 @@
-const expect               = require('chai').expect;
-const noop                 = require('lodash').noop;
-const path                 = require('path');
-const createTestCafe       = require('../../lib/index');
-const FileWatcher          = require('../../lib/live/file-watcher');
-const LiveModeController   = require('../../lib/live/controller');
-const LiveModeRunner       = require('../../lib/live/test-runner');
-const LiveModeBootstrapper = require('../../lib/live/bootstrapper');
-
+const { expect }                    = require('chai');
+const { noop }                      = require('lodash');
+const path                          = require('path');
+const createTestCafe                = require('../../lib/index');
+const FileWatcher                   = require('../../lib/live/file-watcher');
+const LiveModeController            = require('../../lib/live/controller');
+const LiveModeRunner                = require('../../lib/live/test-runner');
+const LiveModeBootstrapper          = require('../../lib/live/bootstrapper');
 const LiveModeKeyboardEventObserver = require('../../lib/live/keyboard-observer');
 
 const testFileWithSingleTestPath               = path.resolve('test/server/data/test-suites/live/test.js');
@@ -15,6 +14,7 @@ const testFileWithSyntaxErrorPath              = path.resolve('test/server/data/
 const testFileWithExternalModulePath           = path.resolve('test/server/data/test-suites/live/test-external-module.js');
 const testFileWithExternalModuleRerunPath      = path.resolve('test/server/data/test-suites/live/test-external-module-rerun.js');
 const testFileWithExternalUnexistingModulePath = path.resolve('test/server/data/test-suites/live/test-external-unexisting-module.js');
+const testFileWithSkippedTestPath              = path.resolve('test/server/data/test-suites/live/test-with-skipped.js');
 
 const externalModulePath         = path.resolve('test/server/data/test-suites/live/module.js');
 const externalCommonJsModulePath = path.resolve('test/server/data/test-suites/live/commonjs-module.js');
@@ -411,6 +411,13 @@ describe('TestCafe Live', function () {
             })
             .then(() => {
                 expect(counter).eql(2);
+            });
+    });
+
+    it('skipped tests', async () => {
+        return runTests(testFileWithSkippedTestPath)
+            .then(() => {
+                expect(runner.testRunController.expectedTestCount).eql(2);
             });
     });
 
