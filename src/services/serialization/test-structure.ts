@@ -1,5 +1,5 @@
 import { uniq, keyBy } from 'lodash';
-import { TEST_FUNCTION_PROPERTIES } from './protocol';
+import { TEST_FUNCTION_PROPERTIES } from '../compiler/protocol';
 
 import Test from '../../api/structure/test';
 import Fixture from '../../api/structure/fixture';

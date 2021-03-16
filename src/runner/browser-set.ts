@@ -7,8 +7,6 @@ import {
     pull as remove
 } from 'lodash';
 
-// @ts-ignore
-import mapReverse from 'map-reverse';
 import { BrowserConnectionError, GeneralError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
 import BrowserConnection from '../browser/connection';
@@ -156,7 +154,11 @@ export default class BrowserSet extends EventEmitter {
         // the this.connections array, which leads to shifting indexes
         // towards the beginning. So, we must copy the array in order to iterate it,
         // or we can perform iteration from the end to the beginning.
-        mapReverse(this._browserConnections, (bc: BrowserConnection) => this.releaseConnection(bc));
+        this._browserConnections.reduceRight((_, bc) => {
+            this.releaseConnection(bc);
+
+            return bc;
+        }, {});
 
         await Promise.all(this._pendingReleases);
     }

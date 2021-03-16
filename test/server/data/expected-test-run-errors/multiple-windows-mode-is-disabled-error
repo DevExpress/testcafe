@@ -1,6 +1,5 @@
-Multi window mode is disabled. Remove the "--disable-multiple-windows" CLI
-flag or set the "disableMultipleWindows" option to "false" in the API to use
-the "openWindow" method.
+Multi-window mode is disabled. To use the "openWindow" method, remove the
+"disableMultipleWindows" option.
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
 Screenshot: /unix/path/with/<tag>

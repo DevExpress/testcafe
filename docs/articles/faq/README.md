@@ -245,11 +245,11 @@ Finally, try updating TestCafe to the latest version to see if the problem persi
 When TestCafe does not receive a successful response from a server, it outputs the following error:
 
 ```text
-A request to https://www.example.com has failed.
-Use quarantine mode to perform additional attempts to execute this test.
+Failed to load the page at https://www.example.com.
+Increase the value of the "pageRequestTimeout" variable, enable the "retryTestPages" option, or use quarantine mode to perform additional attempts to execute this test.
 ```
 
-You can use [quarantine mode](../documentation/guides/basic-guides/run-tests.md#quarantine-mode) to complete the tests if this problem occurs infrequently.
+Use [quarantine mode](../documentation/guides/basic-guides/run-tests.md#quarantine-mode) to isolate flaky tests from the rest of the suite.
 
 However, we recommend that you determine the cause of this issue and address it.
 
@@ -257,12 +257,24 @@ This error can occur in the following situations:
 
 #### The Web server is not responding
 
-Check if the Web and DNS servers are online and configured to accept requests to this URL.
+Confirm the successful resolution of the website's domain name. Check if the web application is online and configured to receive incoming requests.
+
+If the TestCafe proxy does not receive the webpage within *two minutes*, TestCafe throws an exception.
+
+* [`--page-request-timeout` (CLI)](../documentation/reference/command-line-interface.md#--cache)
+* [`pageRequestTimeout` (configuration file)](../documentation/reference/configuration-file.md#pagerequesttimeout)
+* [`pageRequestTimeout` (TestCafe Runner)](../documentation/reference/testcafe-api/runner/run.md)
+
+The following options enable TestCafe to retry failed network requests for webpages:
+
+* [`--retry-test-pages` (CLI)](../documentation/reference/command-line-interface.md#--retry-test-pages)
+* [`retryTestPages` (configuration file)](../documentation/reference/configuration-file.md#retrytestpages)
+* [`retryTestPages` option (TestCafe Runner)](../documentation/reference/testcafe-api/runner/run.md)
 
 #### Unstable or improperly configured network connection
 
 * Check the network connection's settings.
-* Ensure that your network equipment works properly. If possible, establish a direct connection to the Internet/Web server.
+* Check your network equipment and the connection to the Internet/Web server.
 * Check the proxy server's settings or try a different proxy server.
 * Use VPN.
 * Connect to a different network.

@@ -1120,7 +1120,7 @@ If the tested application loads many heavy assets, enable server-side caching to
 > Important! Support for server-side caching is experimental. Disable the `--cache` flag if you run into compatibility issues with your tests.
 
 *CLI*: [--cache](command-line-interface.md#--cache)  
-*API*: [runner.run({ cache })](testcafe-api/runner/run.md)
+*API*: [createTestCafe](./testcafe-api/global/createtestcafe.md)
 
 ## disablePageCaching
 
@@ -1167,8 +1167,8 @@ If this option is enabled, TestCafe retries failed network requests for webpages
 This feature uses [Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API) that require a secure connection.
 To run TestCafe over a secure connection, [setup HTTPS](../guides/advanced-guides/test-https-features-and-http2-websites.md#test-https-websites) or use the [--hostname localhost](command-line-interface.md#--hostname-name) option.
 
-*CLI*: [--retry-test-pages](./command-line-interface.md#--retry-test-pages)
-*API*: [runner.run({ retryTestPages })](testcafe-api/runner/run.md)
+*CLI*: [--retry-test-pages](./command-line-interface.md#--retry-test-pages)  
+*API*: [createTestCafe](./testcafe-api/global/createtestcafe.md)
 
 ## color
 

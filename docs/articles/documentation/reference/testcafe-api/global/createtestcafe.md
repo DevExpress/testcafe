@@ -10,8 +10,12 @@ redirect_from:
 Creates a [TestCafe](../testcafe/README.md) server instance.
 
 ```text
-async createTestCafe([hostname], [port1], [port2], [sslOptions], [developmentMode]) → Promise<TestCafe>
+async createTestCafe(options) → Promise<TestCafe>
 ```
+
+Parameter                   | Type     | Description
+----------------------------|----------|-------------
+`options`&#160;*(optional)* | Object   | See [options](#options).
 
 **Example**
 
@@ -19,9 +23,14 @@ Create a `TestCafe` instance with the `createTestCafe` function.
 
 ```js
 const createTestCafe = require('testcafe');
+const options        = {
+    hostname: 'localhost',
+    port1:    1337,
+    port2:    1338
+};
 
-const testcafe = await createTestCafe('localhost', 1337, 1338);
-const runner   = testcafe.createRunner();
+const testCafeOptions = await createTestCafe(options);
+const runner          = testcafe.createRunner();
 /* ... */
 ```
 
@@ -38,7 +47,14 @@ const sslOptions = {
     cert: selfSignedSertificate.cert
 };
 
-const testcafe = await createTestCafe('localhost', 1337, 1338, sslOptions);
+const testCafeOptions = {
+   hostname: 'localhost',
+    port1:   1337,
+    port2:   1338,
+    sslOptions
+};
+
+const testcafe = await createTestCafe(testCafeOptions);
 const runner   = testcafe.createRunner();
 
 await runner

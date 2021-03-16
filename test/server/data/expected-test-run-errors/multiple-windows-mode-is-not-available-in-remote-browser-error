@@ -1,4 +1,4 @@
-Multi window mode is supported in Chrome, Chromium, Edge 84+ and Firefox
+Multi-window mode is supported in Chrome, Chromium, Edge 84+ and Firefox
 only. Run tests in these browsers to use the "openWindow" method.
 
 Browser: Chrome 15.0.874.120 / macOS 10.15
