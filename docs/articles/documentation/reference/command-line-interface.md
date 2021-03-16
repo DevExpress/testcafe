@@ -78,7 +78,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--color](#--color)
   * [--no-color](#--no-color)
 
-When you execute the `testcafe` command, TestCafe first reads settings from the `.testcaferc.json` [configuration file](configuration-file.md) if this file exists, and then applies the settings from the command line. Command line settings override values from the configuration file in case they differ. TestCafe prints information about every overridden property in the console.
+When you execute the `testcafe` command, TestCafe first reads settings from a [configuration file](configuration-file.md) if this file exists, and then applies the settings from the command line. If there are conflicting values, command-line settings override these values in the configuration file. TestCafe prints information about every overridden property in the console.
 
 If the [browsers](configuration-file.md#browsers) and [src](configuration-file.md#src) properties are specified in the configuration file, you can omit them in the command line.
 
@@ -937,7 +937,7 @@ testcafe chrome my-tests --sf
 
 ### --config-file \<path\>
 
-Allows you to specify a path to the Testcafe config you want to use.
+Path to the [TestCafe configuration file](./configuration-file.md).
 
 ```sh
 testcafe --config-file configurations/localdev.testcaferc.json
