@@ -44,9 +44,9 @@ Whenever TestCafe encounters TypeScript compilation errors, it includes correspo
 
 #### Type Cast Page Elements
 
-When you grab HTML elements in your TypeScript [client-side code](../basic-guides/obtain-client-side-info.md), you need to cast the elements to the [HTMLElement](https://www.typescriptlang.org/docs/handbook/dom-manipulation.html#an-exploration-into-the-htmlelement-type) type. To avoid type errors, cast the element to [unknown](https://www.typescriptlang.org/docs/handbook/2/functions.html#unknown) and then to [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement).
+When you identify HTML elements in your TypeScript [client-side code](../basic-guides/obtain-client-side-info.md), you need to type cast the elements. To use properties of the basic [HTMLElement Interface](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement), cast the element to the `HTMLElement` type.
 
-The example below identifies an HTML element and scrolls it into view with a [client function](../../reference/test-api/clientfunction/README.md).
+An example below uses [Element.scrollIntoView()](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView) inside a [client function](../../reference/test-api/clientfunction/README.md) to scroll an HTML element into view.
 
 ```ts
 import { ClientFunction, Selector } from 'testcafe';
@@ -56,8 +56,8 @@ const scrollIntoView = ClientFunction( (selector: Selector) => {
     element.scrollIntoView();
 });
 
-fixture`HTML Element`
-    .page('./index.html');
+fixture`HTMLElement`
+    .page('https://example.com');
 
 test('Scroll element into view', async t => {
     const bottomOfPage = Selector('#bottom-div');
@@ -66,15 +66,15 @@ test('Scroll element into view', async t => {
 });
 ```
 
-To use methods and properties of a certain HTMLElement interface (for example, `HTMLOListElement`), cast the element to that specific type.
+To use members of a particular HTML element interface (for example, [HTMLOListElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement)), cast the element to that specific type.
 
-The example below uses [t.eval](../../reference/test-api/testcontroller/eval.md) to determine if an ordered list has the [reversed](https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement#properties) property. Because the property exists on the [HTMLOListElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement#properties), but not on [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement#properties), a narrower type casting is needed.
+The example below uses [t.eval](../../reference/test-api/testcontroller/eval.md) to determine if an ordered list has the [*reversed* property](https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement#properties). Because the property exists on the [HTMLOListElement Interface](https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement#properties), but not on the [HTMLElement Interface](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement#properties), a narrower type casting is needed.
 
 ```ts
 import { Selector } from 'testcafe';
 
-fixture`Ordered list`
-    .page('./index.html');
+fixture`HTMLOListElement`
+    .page('https://example.com');
 
 test('Check that the list is reversed', async t => {
     const olElement = Selector('#ordered-list');
