@@ -241,6 +241,8 @@
         url: /documentation/reference/test-api/test/requesthooks.md
       - name: skip
         url: /documentation/reference/test-api/test/skip.md
+      - name: timeouts
+        url: /documentation/reference/test-api/test/timeouts.md
     - name: TestController
       url: /documentation/reference/test-api/testcontroller/README.md
       content:
