@@ -11,7 +11,7 @@ export default class TestRunDebugLog {
     static _addEntry (logger, data) {
         try {
             const entry = data ?
-                indentString(`\n${inspect(data, { compact: false })}\n`, ' ', 4) :
+                indentString(`\n${inspect(data, { isTestCafeInspect: true, compact: false })}\n`, ' ', 4) :
                 '';
 
             logger(entry);
