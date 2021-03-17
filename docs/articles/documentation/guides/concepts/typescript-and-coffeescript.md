@@ -44,9 +44,11 @@ Whenever TestCafe encounters TypeScript compilation errors, it includes correspo
 
 #### Type Cast Page Elements
 
-When you identify HTML elements in your TypeScript [client-side code](../basic-guides/obtain-client-side-info.md), you need to type cast the elements. To use properties of the basic [HTMLElement Interface](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement), cast the element to the `HTMLElement` type.
+TypeScript compilers can not automatically identify TestCafe objects that refer to DOM elements. Perform manual [type assertions](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions) in your [client-side code](../basic-guides/obtain-client-side-info.md) to ensure correct TypeScript compilation.
 
-An example below uses [Element.scrollIntoView()](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView) inside a [client function](../../reference/test-api/clientfunction/README.md) to scroll an HTML element into view.
+Specify the [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement) data type to access the DOM element's generic HTMLElement interface.
+
+A [client function](../../reference/test-api/clientfunction/README.md) in the example below calls the [Element.scrollIntoView()](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView) method to scroll an element into view.
 
 ```ts
 import { ClientFunction, Selector } from 'testcafe';
@@ -66,7 +68,7 @@ test('Scroll element into view', async t => {
 });
 ```
 
-To use members of a particular HTML element interface (for example, [HTMLOListElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement)), cast the element to that specific type.
+Pick element-specific data types, such as [HTMLOListElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement)), whenever appropriate.
 
 The example below uses [t.eval](../../reference/test-api/testcontroller/eval.md) to determine if an ordered list has the [*reversed* property](https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement#properties). Because the property exists on the [HTMLOListElement Interface](https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement#properties), but not on the [HTMLElement Interface](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement#properties), a narrower type casting is needed.
 
