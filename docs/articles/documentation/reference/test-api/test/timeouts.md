@@ -5,7 +5,7 @@ permalink: /documentation/reference/test-api/test/timeouts.html
 ---
 # Test.timeouts Method
 
-Sets timeouts for the test.
+Customize timeout values for the requests performed during a particular test.
 
 ```text
 test.timeouts({
@@ -17,9 +17,9 @@ test.timeouts({
 
 Parameter                         | Type   | Description
 --------------------------------- | ------ | ---------------------------------------------------------------------------
-`pageLoadTimeout` *(optional)*    | number | The time (in milliseconds) passed after the `DOMContentLoaded` event, within which TestCafe waits for the `window.load` event to fire. See [pageLoadTimeout](../../configuration-file.md#pageloadtimeout).
+`pageLoadTimeout` *(optional)*    | number | Maximum time (in milliseconds) between the`DOMContentLoaded` event and the `window.load` event. See [pageLoadTimeout](../../configuration-file.md#pageloadtimeout).
 `pageRequestTimeout` *(optional)* | number | The time (in milliseconds) to wait for HTML pages. See [pageRequestTimeout](../../configuration-file.md#ajaxrequesttimeout).
-`ajaxRequestTimeout` *(optional)* | number | Wait time (in milliseconds) for fetch/XHR requests. See [ajaxRequestTimeout](../../configuration-file.md#ajaxrequesttimeout).
+`ajaxRequestTimeout` *(optional)* | number | Maximum time (in milliseconds) between a fetch/XHR request and the response. See [ajaxRequestTimeout](../../configuration-file.md#ajaxrequesttimeout).
 
 ```js
 fixture`My Fixture`
