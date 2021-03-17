@@ -71,8 +71,8 @@ interface TestCafeStartOptions {
 }
 
 export default class TestCafeConfiguration extends Configuration {
-    public constructor () {
-        super(CONFIGURATION_FILENAME);
+    public constructor (configFile = CONFIGURATION_FILENAME) {
+        super(configFile);
     }
 
     public async init (options?: object): Promise<void> {

@@ -716,6 +716,7 @@ describe('CLI argument parser', function () {
             { long: '--video' },
             { long: '--video-options' },
             { long: '--video-encoding-options' },
+            { long: '--config-file' },
             { long: '--ts-config-path' },
             { long: '--client-scripts', short: '--cs' },
             { long: '--disable-page-caching' },
@@ -745,7 +746,7 @@ describe('CLI argument parser', function () {
         }
 
         const expectedRunOptionsCount   = 18;
-        const expectedOtherOptionsCount = 34;
+        const expectedOtherOptionsCount = 35;
         const otherOptionsCount         = options.length - expectedRunOptionsCount;
 
         expect(runOptionNames.length).eql(expectedRunOptionsCount, ADD_TO_RUN_OPTIONS_WARNING);

@@ -5,6 +5,7 @@ const fs            = require('fs');
 const tmp           = require('tmp');
 const nanoid        = require('nanoid');
 const del           = require('del');
+const pathUtil      = require('path');
 
 const TestCafeConfiguration                   = require('../../lib/configuration/testcafe-configuration');
 const TypeScriptConfiguration                 = require('../../lib/configuration/typescript-configuration');
@@ -638,6 +639,66 @@ describe('TypeScriptConfiguration', function () {
                         expect(consoleWrapper.messages.log).contains('You cannot override the "target" compiler option in the TypeScript configuration file.');
                     });
             });
+        });
+    });
+
+    describe('Custom Testcafe Config Path', () => {
+        let configuration;
+
+        afterEach(async () => {
+            await del([configuration.filePath]);
+        });
+
+        it('Custom config path is used', () => {
+            const customConfigFile = 'custom11.testcaferc.json';
+
+            const options = {
+                'hostname': '123.456.789',
+                'port1':    1234,
+                'port2':    5678,
+                'src':      'path1/folder',
+                'browser':  'ie'
+            };
+
+            createConfigFile(customConfigFile, options);
+
+            configuration = new TestCafeConfiguration(customConfigFile);
+
+            return configuration.init()
+                .then(() => {
+                    expect(pathUtil.basename(configuration.filePath)).eql(customConfigFile);
+                    expect(configuration.getOption('hostname')).eql(options.hostname);
+                    expect(configuration.getOption('port1')).eql(options.port1);
+                    expect(configuration.getOption('port2')).eql(options.port2);
+                    expect(configuration.getOption('src')).eql([ options.src ]);
+                    expect(configuration.getOption('browser')).eql(options.browser);
+                });
+        });
+
+        it('Constructor should revert back to default when no custom config', () => {
+            const defaultFileLocation = '.testcaferc.json';
+
+            const options = {
+                'hostname': '123.456.789',
+                'port1':    1234,
+                'port2':    5678,
+                'src':      'path1/folder',
+                'browser':  'ie'
+            };
+
+            createConfigFile(defaultFileLocation, options);
+
+            configuration = new TestCafeConfiguration();
+
+            return configuration.init()
+                .then(() => {
+                    expect(pathUtil.basename(configuration.filePath)).eql(defaultFileLocation);
+                    expect(configuration.getOption('hostname')).eql(options.hostname);
+                    expect(configuration.getOption('port1')).eql(options.port1);
+                    expect(configuration.getOption('port2')).eql(options.port2);
+                    expect(configuration.getOption('src')).eql([ options.src ]);
+                    expect(configuration.getOption('browser')).eql(options.browser);
+                });
         });
     });
 });
