@@ -123,7 +123,7 @@ TestCafe allows you to specify settings in a [configuration file](../documentati
 
 If you need to use custom properties in the configuration, create a separate configuration file and import it to the tests.
 
-> Vote for the following GitHub issue if you want us to support custom properties in `.testcaferc.json`: [#3593](https://github.com/DevExpress/testcafe/issues/3593)
+> Vote for the [GitHub issue #3593](https://github.com/DevExpress/testcafe/issues/3593) if you want us to support custom properties in the [TestCafe configuration file](../documentation/reference/configuration-file.md).
 
 For example, you can create the following `config.json` file to pass a website's base URL to test code:
 
