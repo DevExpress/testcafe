@@ -1,6 +1,8 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
 import testCafeUI from '../../deps/testcafe-ui';
+
+import SHORTCUT_TYPE from './shortcut-type';
 import { focusNextElement } from './utils';
 
 const Promise               = hammerhead.Promise;
@@ -544,23 +546,23 @@ function focusNextElementOnNavigationButton (element, reverse, skipRadioGroups =
 }
 
 export default {
-    'ctrl+a':      selectAll,
-    'backspace':   backspace,
-    'delete':      del,
-    'left':        left,
-    'right':       right,
-    'up':          up,
-    'down':        down,
-    'shift+left':  shiftLeft,
-    'shift+right': shiftRight,
-    'shift+up':    shiftUp,
-    'shift+down':  shiftDown,
-    'shift+home':  shiftHome,
-    'shift+end':   shiftEnd,
-    'home':        home,
-    'end':         end,
-    'enter':       enter,
-    'tab':         element => focusNextElementOnNavigationButton(element, false),
-    'shift+tab':   element => focusNextElementOnNavigationButton(element, true),
-    'esc':         esc
+    [SHORTCUT_TYPE.ctrlA]:      selectAll,
+    [SHORTCUT_TYPE.backspace]:  backspace,
+    [SHORTCUT_TYPE.delete]:     del,
+    [SHORTCUT_TYPE.left]:       left,
+    [SHORTCUT_TYPE.right]:      right,
+    [SHORTCUT_TYPE.up]:         up,
+    [SHORTCUT_TYPE.down]:       down,
+    [SHORTCUT_TYPE.shiftLeft]:  shiftLeft,
+    [SHORTCUT_TYPE.shiftRight]: shiftRight,
+    [SHORTCUT_TYPE.shiftUp]:    shiftUp,
+    [SHORTCUT_TYPE.shiftDown]:  shiftDown,
+    [SHORTCUT_TYPE.shiftHome]:  shiftHome,
+    [SHORTCUT_TYPE.shiftEnd]:   shiftEnd,
+    [SHORTCUT_TYPE.home]:       home,
+    [SHORTCUT_TYPE.end]:        end,
+    [SHORTCUT_TYPE.enter]:      enter,
+    [SHORTCUT_TYPE.tab]:        element => focusNextElementOnNavigationButton(element, false),
+    [SHORTCUT_TYPE.shiftTab]:   element => focusNextElementOnNavigationButton(element, true),
+    [SHORTCUT_TYPE.esc]:        esc
 };

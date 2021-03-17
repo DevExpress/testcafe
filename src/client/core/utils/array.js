@@ -1,15 +1,36 @@
-import hammerhead from '../deps/hammerhead';
+import { nativeMethods } from '../deps/hammerhead';
 
-const nativeIndexOf = Array.prototype.indexOf;
-const nativeForEach = Array.prototype.forEach;
-const nativeSome    = Array.prototype.some;
-const nativeMap     = Array.prototype.map;
-const nativeFilter  = Array.prototype.filter;
-const nativeReverse = Array.prototype.reverse;
-const nativeReduce  = Array.prototype.reduce;
-const nativeSplice  = Array.prototype.splice;
+const ARRAY_METHODS_PREFIX = 'array';
 
-export function toArray (arg) {
+function createNativeMethodWrapper (methodName) {
+    const nativeMethodName = ARRAY_METHODS_PREFIX + methodName.charAt(0).toUpperCase() + methodName.slice(1);
+    const nativeMethod     = nativeMethods[nativeMethodName];
+
+    return (...args) => nativeMethod.call(...args);
+}
+
+export const filter  = createNativeMethodWrapper('filter');
+export const map     = createNativeMethodWrapper('map');
+export const slice   = createNativeMethodWrapper('slice');
+export const splice  = createNativeMethodWrapper('splice');
+export const unshift = createNativeMethodWrapper('unshift');
+export const forEach = createNativeMethodWrapper('forEach');
+export const indexOf = createNativeMethodWrapper('indexOf');
+export const some    = createNativeMethodWrapper('some');
+export const reverse = createNativeMethodWrapper('reverse');
+export const reduce  = createNativeMethodWrapper('reduce');
+export const concat  = createNativeMethodWrapper('concat');
+export const join    = createNativeMethodWrapper('join');
+
+export function isArray (arg) {
+    return nativeMethods.objectToString.call(arg) === '[object Array]';
+}
+
+export function from (arg, ...args) {
+    if (nativeMethods.arrayFrom)
+        return nativeMethods.arrayFrom(arg, ...args);
+
+    // NOTE: this logic is for IE
     const arr    = [];
     const length = arg.length;
 
@@ -19,15 +40,11 @@ export function toArray (arg) {
     return arr;
 }
 
-export function reverse (arr) {
-    return nativeReverse.call(arr);
-}
-
-export function isArray (arg) {
-    return hammerhead.nativeMethods.objectToString.call(arg) === '[object Array]';
-}
-
 export function find (arr, callback) {
+    if (nativeMethods.arrayFind)
+        return nativeMethods.arrayFind.call(arr, callback);
+
+    // NOTE: this logic is for IE
     const length = arr.length;
 
     for (let i = 0; i < length; i++) {
@@ -38,35 +55,11 @@ export function find (arr, callback) {
     return null;
 }
 
-export function indexOf (arr, arg) {
-    return nativeIndexOf.call(arr, arg);
-}
-
-export function forEach (arr, callback) {
-    nativeForEach.call(arr, callback);
-}
-
-export function some (arr, callback) {
-    return nativeSome.call(arr, callback);
-}
-
-export function map (arr, callback) {
-    return nativeMap.call(arr, callback);
-}
-
-export function filter (arr, callback) {
-    return nativeFilter.call(arr, callback);
-}
-
-export function reduce (arr, callback, initialValue) {
-    return nativeReduce.call(arr, callback, initialValue);
-}
-
 export function remove (arr, item) {
-    const index = indexOf(arr, item);
+    const index = nativeMethods.arrayIndexOf.call(arr, item);
 
     if (index > -1)
-        nativeSplice.call(arr, index, 1);
+        nativeMethods.arraySplice.call(arr, index, 1);
 }
 
 export function equals (arr1, arr2) {
@@ -91,3 +84,4 @@ export function getCommonElement (arr1, arr2) {
 
     return null;
 }
+
