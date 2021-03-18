@@ -70,7 +70,7 @@ test('Scroll element into view', async t => {
 
 Pick element-specific data types, such as [HTMLOListElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement)), whenever appropriate.
 
-The example below uses [t.eval](../../reference/test-api/testcontroller/eval.md) to determine if an ordered list has the [*reversed* property](https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement#properties). Because the property exists on the [HTMLOListElement Interface](https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement#properties), but not on the [HTMLElement Interface](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement#properties), a narrower type casting is needed.
+The example code below calls the [t.eval](../../reference/test-api/testcontroller/eval.md) method to determine if an ordered list is [reversed](https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement#properties). The generic [HTMLElement Interface](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement#properties) does not provide access to the element's `reversed` property. To avoid compilation errors, it is necessary to convert the `list` object to the [HTMLOListElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement#properties) data type.
 
 ```ts
 import { Selector } from 'testcafe';
