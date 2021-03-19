@@ -241,5 +241,11 @@ describe('RequestHook', () => {
 
         expect(hook._instantiatedRequestFilterRules.length).eql(1);
     });
+
+    it('Should have an identifier', () => {
+        const hook = new RequestHook();
+
+        expect(hook.id).not.undefined;
+    });
 });
 
