@@ -75,6 +75,3 @@ test
 * Fixed an error where a `documentElement.transform.translate` call moved the TestCafe UI in the browser window ([#5606](https://github.com/DevExpress/testcafe/issues/5606))
 * TestCafe now emits a warning if you pass an unawaited selector to an assertion ([#5554](https://github.com/DevExpress/testcafe/issues/5554))
 * Fixed a crash that sometimes occurred in Chrome v85 and earlier on pages with scripts ([PR testcafe-hammerhead/#2590](https://github.com/DevExpress/testcafe-hammerhead/pull/2590))
-* Overrode the [insertAdjacentElement method](https://developer.mozilla.org/en-US/docs/Web/API/Element/insertAdjacentElement) inside TestCafe ([testcafe-hammerhead/#1321](https://github.com/DevExpress/testcafe-hammerhead/issues/1321))
-* Overrode the internal `Element.prototype.after` method ([testcafe-hammerhead/#1833](https://github.com/DevExpress/testcafe-hammerhead/issues/1833))
-* Overrode the [ParentNode.prepend method](https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/prepend) inside TestCafe ([testcafe-hammerhead/#1005](https://github.com/DevExpress/testcafe-hammerhead/issues/1005))
