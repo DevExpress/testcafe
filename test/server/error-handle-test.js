@@ -1,5 +1,5 @@
 const EventEmitter        = require('events');
-const expect              = require('chai').expect;
+const { expect }          = require('chai');
 const { TEST_RUN_ERRORS } = require('../../lib/errors/types');
 const handleErrors        = require('../../lib/utils/handle-errors');
 const TestController      = require('../../lib/api/test-controller');
@@ -8,6 +8,16 @@ const Runner              = require('../../lib/runner');
 const AsyncEventEmitter   = require('../../lib/utils/async-event-emitter');
 const delay               = require('../../lib/utils/delay');
 const semver              = require('semver');
+
+class ConfigurationMock {
+    getOption () {
+        return null;
+    }
+
+    getOptions () {
+        return {};
+    }
+}
 
 class TaskMock extends AsyncEventEmitter {
     constructor () {
@@ -27,16 +37,7 @@ class BrowserSetMock extends EventEmitter {
 
 class RunnerMock extends Runner {
     constructor () {
-        super();
-
-        this.configuration = {
-            getOption: () => {
-                return null;
-            },
-            getOptions: () => {
-                return {};
-            }
-        };
+        super({ configuration: new ConfigurationMock() });
     }
 
     _createTask () {
@@ -167,7 +168,11 @@ describe('Global error handlers', () => {
     it('Should add error to multiple tests of same task', async () => {
         const runner = new RunnerMock();
 
-        const { completionPromise } = runner._runTask([], new BrowserSetMock(), null, null);
+        const { completionPromise } = runner._runTask({
+            reporterPlugins: [],
+            browserSet:      new BrowserSetMock(),
+            testedApp:       null
+        });
 
         const testRunMock1 = new TestRunMock(1);
         const testRunMock2 = new TestRunMock(2);

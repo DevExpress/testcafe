@@ -409,7 +409,13 @@ describe('Reporter', () => {
 
     class TaskMock extends Task {
         constructor () {
-            super(testMocks, chunk(browserConnectionMocks, 1), {}, taskOptions, new WarningLog());
+            super({
+                tests:                   testMocks,
+                browserConnectionGroups: chunk(browserConnectionMocks, 1),
+                proxy:                   {},
+                opts:                    taskOptions,
+                runnerWarningLog:        new WarningLog()
+            });
 
             this.screenshots = new ScreenshotsMock();
 

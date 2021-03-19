@@ -72,7 +72,12 @@ export default class TestCafe {
 
     _createRunner (isLiveMode) {
         const Ctor      = isLiveMode ? LiveModeRunner : Runner;
-        const newRunner = new Ctor(this.proxy, this.browserConnectionGateway, this.configuration.clone(), this.compilerService);
+        const newRunner = new Ctor({
+            proxy:                    this.proxy,
+            browserConnectionGateway: this.browserConnectionGateway,
+            configuration:            this.configuration.clone(),
+            compilerService:          this.compilerService
+        });
 
         this.runners.push(newRunner);
 

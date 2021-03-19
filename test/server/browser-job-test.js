@@ -1,10 +1,21 @@
-const expect     = require('chai').expect;
+const { expect } = require('chai');
+const { noop }   = require('lodash');
 const BrowserJob = require('../../lib/runner/browser-job');
 
 describe('Browser Job', function () {
     it('TestRunController events', function () {
-        const tests             = [1];
-        const job               = new BrowserJob(tests, [], null, null, null, null, { TestRunCtor: function () { } });
+        const tests = [1];
+
+        const job = new BrowserJob({
+            tests,
+            browserConnections:    [],
+            proxy:                 null,
+            screenshots:           null,
+            warningLog:            null,
+            fixtureHookController: null,
+            opts:                  { TestRunCtor: noop }
+        });
+
         const testRunController = job._testRunControllerQueue[0];
 
         expect(testRunController.listenerCount()).eql(8);

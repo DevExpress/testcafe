@@ -17,7 +17,13 @@ class TestRunMock extends TestRun {
     _initRequestHooks () {}
 
     constructor (reason) {
-        super({}, {}, {}, {}, {});
+        super({
+            test:               {},
+            browserConnection:  {},
+            screenshotCapturer: {},
+            globalWarningLog:   {},
+            opts:               {}
+        });
 
         this.errors = [];
         this.reason = reason;
