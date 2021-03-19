@@ -17,8 +17,8 @@ TestCafe now enables you to specify a custom path to the [configuration file](..
 
 To set the path, use one of the following options:
 
-* the [*--config-file* CLI option](../documentation/reference/command-line-interface.md#--config-file-path)
-* the [*configFile* option of the *createTestCafe* function](../documentation/reference/testcafe-api/global/createtestcafe.md#options)
+* the [--config-file CLI option](../documentation/reference/command-line-interface.md#--config-file-path)
+* the [configFile option of the createTestCafe function](../documentation/reference/testcafe-api/global/createtestcafe.md#options)
 
 ### Add Support for Microsoft Edge on Linux ([PR testcafe-browser-tools/#210](https://github.com/DevExpress/testcafe-browser-tools/pull/210) by [@dcsaszar](https://github.com/dcsaszar))
 
