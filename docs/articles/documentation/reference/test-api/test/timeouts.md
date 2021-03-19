@@ -18,7 +18,7 @@ test.timeouts({
 Parameter                         | Type   | Description
 --------------------------------- | ------ | ---------------------------------------------------------------------------
 `pageLoadTimeout` *(optional)*    | number | Maximum time (in milliseconds) between the`DOMContentLoaded` event and the `window.load` event. See [pageLoadTimeout](../../configuration-file.md#pageloadtimeout).
-`pageRequestTimeout` *(optional)* | number | Maximum time (in milliseconds) for the web server to serve an HTML page. See [pageRequestTimeout](../../configuration-file.md#ajaxrequesttimeout).
+`pageRequestTimeout` *(optional)* | number | Maximum time (in milliseconds) for the web server to serve an HTML page. See [pageRequestTimeout](../../configuration-file.md#pagerequesttimeout).
 `ajaxRequestTimeout` *(optional)* | number | Maximum time (in milliseconds) between a fetch/XHR request and the response. See [ajaxRequestTimeout](../../configuration-file.md#ajaxrequesttimeout).
 
 ```js
