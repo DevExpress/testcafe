@@ -5,7 +5,7 @@ permalink: /documentation/reference/test-api/test/timeouts.html
 ---
 # Test.timeouts Method
 
-Customize timeout values for the requests performed during a particular test.
+Customize timeout values for requests performed during a test.
 
 ```text
 test.timeouts({

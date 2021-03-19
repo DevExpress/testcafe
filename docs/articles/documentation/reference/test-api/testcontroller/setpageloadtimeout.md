@@ -34,4 +34,4 @@ test(`Page load timeout`, async t => {
 });
 ```
 
-> The `DOMContentLoaded` event always precedes the `window.load` event. It fires when the browser has loaded and parsed the HTML content of the page. The `window.load` event, on the other hand, fires when the browser has loaded all the style sheets, images and sub-frames.
+> The `DOMContentLoaded` event always precedes the `window.load` event. It fires when the browser has loaded and parsed the HTML content of the page. The `window.load` event, on the other hand, fires when the browser has loaded all the style sheets, images, and sub-frames.
