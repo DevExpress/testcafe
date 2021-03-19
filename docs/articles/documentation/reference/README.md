@@ -100,6 +100,7 @@ permalink: /documentation/reference/
 * [page](test-api/test/page.md)
 * [requestHooks](test-api/test/requesthooks.md)
 * [skip](test-api/test/skip.md)
+* [timeouts](test-api/test/timeouts.md)
 
 *[TestController](test-api/testcontroller/README.md)*
 

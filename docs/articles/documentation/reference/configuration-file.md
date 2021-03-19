@@ -49,7 +49,7 @@ A configuration file can include the following settings:
 * [assertionTimeout](#assertiontimeout)
 * [pageLoadTimeout](#pageloadtimeout)
 * [ajaxRequestTimeout](#ajaxrequesttimeout)
-* [pageRequestTimeout](#ajaxrequesttimeout)
+* [pageRequestTimeout](#pagerequesttimeout)
 * [browserInitTimeout](#browserinittimeout)
 * [speed](#speed)
 * [clientScripts](#clientscripts)
