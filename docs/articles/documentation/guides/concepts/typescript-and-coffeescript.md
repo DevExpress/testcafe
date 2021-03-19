@@ -44,7 +44,7 @@ Whenever TestCafe encounters TypeScript compilation errors, it includes correspo
 
 #### Type Cast Page Elements
 
-TypeScript compilers can not automatically identify TestCafe objects that refer to DOM elements. Perform manual [type assertions](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions) in your [client-side code](../basic-guides/obtain-client-side-info.md) to ensure correct TypeScript compilation.
+TypeScript compilers cannot automatically identify TestCafe objects that refer to DOM elements. Perform manual [type assertions](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions) in your [client-side code](../basic-guides/obtain-client-side-info.md) to ensure correct TypeScript compilation.
 
 Specify the [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement) data type to access the DOM element's generic HTMLElement interface.
 
