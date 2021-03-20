@@ -37,7 +37,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--video \<basePath\>](#--video-basepath)
   * [--video-options \<option=value\[,option2=value2,...\]\>](#--video-options-optionvalueoption2value2)
   * [--video-encoding-options \<option=value\[,option2=value2,...\]\>](#--video-encoding-options-optionvalueoption2value2)
-  * [-q, --quarantine-mode](#-q---quarantine-mode)
+  * [-q \[key1=value,key2=value2\], --quarantine-mode \[key1=value,key2=value2\]](#-q--keyvaluekey2value2---quarantine-mode--keyvaluekey2value2)
   * [-d, --debug-mode](#-d---debug-mode)
   * [--debug-on-fail](#--debug-on-fail)
   * [-e, --skip-js-errors](#-e---skip-js-errors)
@@ -496,12 +496,14 @@ See [Video Encoding Options](../guides/advanced-guides/screenshots-and-videos.md
 
 *Related configuration file property*: [videoEncodingOptions](configuration-file.md#videoencodingoptions).
 
-### -q, --quarantine-mode
+### -q \[key=value, key2=value2\], --quarantine-mode \[key=value, key2=value2\]
 
-Enables the [quarantine mode](../guides/basic-guides/run-tests.md#quarantine-mode) for tests that fail.
+Enables the [quarantine mode](../guides/basic-guides/run-tests.md#quarantine-mode) for tests that fail. Optionally specify the number of retries, and passes required (default: 3).
 
 ```sh
 testcafe all tests/sample-fixture.js -q
+testcafe all tests/sample-fixture.js -q retryCount=5
+testcafe all tests/sample-fixture.js -q passCount=1
 ```
 
 *Related configuration file property*: [quarantineMode](configuration-file.md#quarantinemode).

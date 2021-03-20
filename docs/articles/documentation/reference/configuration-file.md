@@ -31,6 +31,8 @@ A configuration file can include the following settings:
 * [videoOptions](#videooptions)
 * [videoEncodingOptions](#videoencodingoptions)
 * [quarantineMode](#quarantinemode)
+  * [retryCount](#quarantinemode)
+  * [passCount](#quarantinemode)
 * [debugMode](#debugmode)
 * [debugOnFail](#debugonfail)
 * [skipJsErrors](#skipjserrors)
@@ -440,6 +442,36 @@ Enables the [quarantine mode](../guides/basic-guides/run-tests.md#quarantine-mod
 
 *CLI*: [-q, --quarantine-mode](command-line-interface.md#-q---quarantine-mode)  
 *API*: [runner.run({ quarantineMode })](testcafe-api/runner/run.md)
+
+### quarantineMode.retryCount
+
+```json
+{
+    "quarantineMode": {
+        "retryCount": 3
+    }
+}
+```
+
+Set the number of times to retry a failed test (defaults to 3)
+
+*CLI*: [-q retryCount=N, --quarantine-mode retryCount=3](command-line-interface.md#-q---quarantine-mode)  
+*API*: [runner.run({ quarantineMode: { retryCount: 3 } })](testcafe-api/runner/run.md)
+
+### quarantineMode.passCount
+
+```json
+{
+    "quarantineMode": {
+        "passCount": 1
+    }
+}
+```
+
+Set the number of times to a failed test has to pass, before stopping the test run (defaults to 3)
+
+*CLI*: [-q retryCount=N, --quarantine-mode passCount=1](command-line-interface.md#-q---quarantine-mode)  
+*API*: [runner.run({ quarantineMode: { passCount: 1 } })](testcafe-api/runner/run.md)
 
 ## debugMode
 

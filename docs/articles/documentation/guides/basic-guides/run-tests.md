@@ -646,7 +646,7 @@ The quarantine mode is designed to isolate *non-deterministic* tests (that is, t
 When the quarantine mode is enabled, tests run according to the following logic:
 
 1. A test runs for the first time. If it passes, TestCafe proceeds to the next test.
-2. If the test fails, it runs again until it passes or fails three times.
+2. If the test fails, it runs again until it passes or fails the specified number of times (three by default).
 3. The most frequent outcome is recorded as the test result.
 4. If the test result differs between test runs, the test is marked as unstable.
 
@@ -654,6 +654,7 @@ Use the [-q (--quarantine-mode)](../../reference/command-line-interface.md#-q---
 
 ```sh
 testcafe chrome ./tests/ -q
+-testcafe chrome ./tests/ -q retryCount=5,passCount=2
 ```
 
 ```js
@@ -661,9 +662,14 @@ await runner
     .browsers('chrome')
     .src('./tests/')
     .run({ quarantineMode: true });
+
+await runner
+    .browsers('chrome')
+    .src('./tests/')
+    .run({ quarantineMode: { passCount: 1, retryCount: 3 } });
 ```
 
-> Note that quarantine mode increases the test task's duration because failed tests are executed three to five times.
+> Note that quarantine mode increases the test task's duration because failed tests are executed three to five times, by default.
 
 See Martin Fowler's [Eradicating Non-Determinism in Tests](http://martinfowler.com/articles/nonDeterminism.html) article for more information about non-deterministic tests.
 
