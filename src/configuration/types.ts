@@ -11,5 +11,9 @@ interface CompilerOptions {
     [key: string]: object;
 }
 
-type OptionValue = undefined | null | string | boolean | number | string[] | Function | { [key: string]: any } | ScreenshotOptionValue | CompilerOptions;
+interface QuarantineOptionValue {
+    retryCount?: number;
+    passCount?: number;
+}
 
+type OptionValue = undefined | null | string | boolean | number | string[] | Function | { [key: string]: any } | ScreenshotOptionValue | CompilerOptions;
