@@ -670,7 +670,7 @@ describe('CLI argument parser', function () {
         });
 
         it('Should fail if invalid option is specified', async () => {
-            return assertRaisesError('--quarantine-mode test=fake', 'The "--quarantine-mode" option option value should be one of "retryCount" or "passCount". should be empty, or one of "retryCount" or "passCount".');
+            return assertRaisesError('--quarantine-mode test=fake', 'The "--quarantine-mode" option should be empty, otherwise one of "retryCount" or "passCount".');
         });
     });
 

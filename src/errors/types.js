@@ -149,5 +149,6 @@ export const RUNTIME_ERRORS = {
     cannotCustomizeSpecifiedCompilers:                  'E1061',
     cannotEnableRetryTestPagesOption:                   'E1062',
     browserConnectionError:                             'E1063',
-    testRunRequestInDisconnectedBrowser:                'E1064'
+    testRunRequestInDisconnectedBrowser:                'E1064',
+    invalidQuarantineOption:                            'E1065',
 };
