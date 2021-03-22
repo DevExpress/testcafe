@@ -42,6 +42,62 @@ Whenever TestCafe encounters TypeScript compilation errors, it includes correspo
 > and [selector.addCustomMethods](../../reference/test-api/selector/addcustommethods.md)
 > sections to learn how to extend selectors in TypeScript.
 
+#### Type Cast Page Elements
+
+TypeScript compilers cannot automatically identify TestCafe objects that refer to DOM elements. Perform manual [type assertions](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions) in your [client-side code](../basic-guides/obtain-client-side-info.md) to ensure correct TypeScript compilation.
+
+Specify the [HTMLElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement) data type to access the DOM element's generic HTMLElement interface.
+
+A [client function](../../reference/test-api/clientfunction/README.md) in the example below calls the [Element.scrollIntoView()](https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView) method to scroll an element into view.
+
+```ts
+import { ClientFunction, Selector } from 'testcafe';
+
+const scrollIntoView = ClientFunction( (selector: Selector) => {
+    const element = selector() as unknown as HTMLElement;
+    element.scrollIntoView();
+});
+
+fixture`HTMLElement`
+    .page('https://example.com');
+
+test('Scroll element into view', async t => {
+    const bottomOfPage = Selector('#bottom-div');
+
+    await scrollIntoView(bottomOfPage);
+});
+```
+
+To avoid compilation errors, pick element-specific data types, such as [HTMLOListElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement)).
+
+The example code below calls the [t.eval](../../reference/test-api/testcontroller/eval.md) method to determine if an ordered list is [reversed](https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement#properties). The generic [HTMLElement Interface](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement#properties) does not provide access to the element's `reversed` property. To avoid compilation errors, it is necessary to convert the `list` object to the [HTMLOListElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement#properties) data type.
+
+```ts
+import { Selector } from 'testcafe';
+
+fixture`HTMLOListElement`
+    .page('https://example.com');
+
+test('Check that the list is reversed', async t => {
+    const olElement = Selector('#ordered-list');
+
+    const isListReversed = await t.eval(() => {
+        const list = olElement() as unknown as HTMLOListElement;
+
+        return list.reversed;
+    },
+    {
+        dependencies: { olElement }
+    });
+
+    await t
+        .expect(isListReversed)
+        .ok();
+});
+```
+
+You can read more about client-side code in the [Obtain Client-Side Info](../basic-guides/obtain-client-side-info.md) topic.
+
 ### Customize Compiler Options
 
 TestCafe users can modify [the settings](https://www.typescriptlang.org/docs/handbook/compiler-options.html) of the TypeScript compiler in one of the following three ways:
