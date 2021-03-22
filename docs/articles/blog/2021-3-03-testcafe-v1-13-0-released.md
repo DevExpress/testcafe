@@ -22,7 +22,7 @@ To set the path, use one of the following options:
 
 ### Add Support for Microsoft Edge on Linux ([PR testcafe-browser-tools/#210](https://github.com/DevExpress/testcafe-browser-tools/pull/210) by [@dcsaszar](https://github.com/dcsaszar))
 
-If you follow the [Microsoft Edge Insider Channels for Linux](https://www.microsoftedgeinsider.com/en-us/download?platform=linux-deb) and have Microsoft Edge installed on your Linux machine, you can now launch TestCafe tests in this browser.
+If you have [Microsoft Edge installed on your Linux machine](https://www.microsoftedgeinsider.com/en-us/download?platform=linux-deb), you can now launch TestCafe tests in this browser.
 
 ```sh
 testcafe edge tests/test.js
