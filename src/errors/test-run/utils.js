@@ -91,3 +91,7 @@ export function markup (err, msgMarkup, errCallsite = '') {
     return msgMarkup.replace('\t', '&nbsp;'.repeat(4));
 }
 
+export function renderDiff (diff) {
+    return diff ?
+        `<span class="diff-added">+ expected</span> <span class="diff-removed">- actual</span>\n\n${diff}` : ``;
+}
