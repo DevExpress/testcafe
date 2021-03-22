@@ -68,6 +68,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--dev](#--dev)
   * [--qr-code](#--qr-code)
   * [--sf, --stop-on-first-fail](#--sf---stop-on-first-fail)
+  * [--config-file \<path\>](#--config-file-path)
   * [--ts-config-path \<path\>](#--ts-config-path-path)
   * [--compiler-options \<options\>](#--compiler-options-options)
   * [--cache](#--cache)
@@ -77,7 +78,7 @@ testcafe [options] <browser-list-comma-separated> <file-or-glob ...>
   * [--color](#--color)
   * [--no-color](#--no-color)
 
-When you execute the `testcafe` command, TestCafe first reads settings from the `.testcaferc.json` [configuration file](configuration-file.md) if this file exists, and then applies the settings from the command line. If there are conflicting values, command-line settings override these values in the configuration file. TestCafe prints information about every overridden property in the console.
+When you execute the `testcafe` command, TestCafe first reads settings from a [configuration file](configuration-file.md) if this file exists, and then applies the settings from the command line. If there are conflicting values, command-line settings override these values in the configuration file. TestCafe prints information about every overridden property in the console.
 
 If you specify the [browsers](configuration-file.md#browsers) and [src](configuration-file.md#src) properties in the configuration file, you can omit them in the command line.
 
@@ -933,6 +934,14 @@ testcafe chrome my-tests --sf
 ```
 
 *Related configuration file property*: [stopOnFirstFail](configuration-file.md#stoponfirstfail).
+
+### --config-file \<path\>
+
+Path to the [TestCafe configuration file](./configuration-file.md).
+
+```sh
+testcafe --config-file configurations/localdev.testcaferc.json
+```
 
 ### --ts-config-path \<path\>
 
