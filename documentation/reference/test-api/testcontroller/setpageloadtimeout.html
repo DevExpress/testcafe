@@ -1283,6 +1283,15 @@
 		
     </li>
 
+    <li>
+		    
+		
+
+<a href="/testcafe/documentation/reference/test-api/test/timeouts.html"  >timeouts</a>
+
+		
+    </li>
+
 </ul>
 		
     </li>
@@ -2127,7 +2136,8 @@
 	<article class="doc">
 		<div class="post-content">
 
-			<h1>t.setPageLoadTimeout Method</h1>
+			<h1>t.setPageLoadTimeout Method</h1><blockquote class="important"><div class="blockquote-content"><p>This method is <strong>deprecated</strong>. Use the <a href="../test/timeouts.html">test.timeouts Method</a> to set the <code>pageLoadTimeout</code>.</p>
+</div></blockquote>
 <p>Defines the time passed after the <code>DOMContentLoaded</code> event within which the <code>window.load</code> event should be raised. Can be chained with other <code>TestController</code> methods.</p>
 <div class="highlight"><pre><code class="language-text" data-lang="text">t.setPageLoadTimeout(duration) → this | Promise&lt;any&gt;
 </code></pre></div><div class="table-wrapper"><table><thead><tr>
@@ -2154,7 +2164,7 @@
         <span class="p">.</span><span class="nx">setPageLoadTimeout</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="p">.</span><span class="nx">navigateTo</span><span class="p">(</span><span class="dl">'</span><span class="s1">http://devexpress.github.io/testcafe/</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">});</span>
-</code></pre></div><blockquote><div class="blockquote-content"><p>Note that browsers raise the <code>DOMContentLoaded</code> event after they load and parse the HTML document, while <code>window.load</code> is raised after the browser loads all stylesheets, images and subframes. This is why <code>window.load</code> fires after the <code>DOMContentLoaded</code> event with a certain delay.</p>
+</code></pre></div><blockquote><div class="blockquote-content"><p>The <code>DOMContentLoaded</code> event always precedes the <code>window.load</code> event. It fires when the browser has loaded and parsed the HTML content of the page. The <code>window.load</code> event, on the other hand, fires when the browser has loaded all the style sheets, images, and sub-frames.</p>
 </div></blockquote>
 
 		</div>

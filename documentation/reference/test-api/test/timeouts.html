@@ -16,15 +16,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <title>Runner.screenshots Method | TestCafe</title>
+  <title>Test.timeouts Method | TestCafe</title>
 
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
 
   <meta property="og:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-ogp-icon.png">
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://devexpress.github.io/testcafe/documentation/reference/testcafe-api/runner/screenshots.html" />
-  <meta property="og:title" content="Runner.screenshots Method | TestCafe" />
+  <meta property="og:url" content="https://devexpress.github.io/testcafe/documentation/reference/test-api/test/timeouts.html" />
+  <meta property="og:title" content="Test.timeouts Method | TestCafe" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:image" content="https://raw.githubusercontent.com/DevExpress/testcafe-gh-page-assets/master/src/images/testcafe-twitter-card-icon.png" />
@@ -37,7 +37,7 @@
   <link rel="shortcut icon" href="/testcafe/favicon.ico">
   <link rel="stylesheet" href="/testcafe/css/main.css">
   <link rel="stylesheet" href="/testcafe/css/banner.css">
-  <link rel="canonical" href="https://devexpress.github.io/testcafe/documentation/reference/testcafe-api/runner/screenshots.html">
+  <link rel="canonical" href="https://devexpress.github.io/testcafe/documentation/reference/test-api/test/timeouts.html">
   <link rel="alternate" type="application/rss+xml" title="TestCafe" href="https://devexpress.github.io/testcafe/feed.xml">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
@@ -1287,7 +1287,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/reference/test-api/test/timeouts.html"  >timeouts</a>
+<a href="/testcafe/documentation/reference/test-api/test/timeouts.html" class="active" >timeouts</a>
 
 		
     </li>
@@ -1973,7 +1973,7 @@
 		    
 		
 
-<a href="/testcafe/documentation/reference/testcafe-api/runner/screenshots.html" class="active" >screenshots</a>
+<a href="/testcafe/documentation/reference/testcafe-api/runner/screenshots.html"  >screenshots</a>
 
 		
     </li>
@@ -2136,64 +2136,45 @@
 	<article class="doc">
 		<div class="post-content">
 
-			<h1>Runner.screenshots Method</h1>
-<p>Specifies how TestCafe should take screenshots of the tested pages.</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">screenshots(options) → this
-obsolete: screenshots(path [, takeOnFails] [, pathPattern] ) → this
-</code></pre></div>
-<p>The <code>options</code> object can include the following properties:</p>
-<div class="table-wrapper"><table><thead><tr>
-<th>Option</th>
+			<h1>Test.timeouts Method</h1>
+<p>Customize timeout values for requests performed during a test.</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">test.timeouts({
+    [pageLoadTimeout]
+    [, pageRequestTimeout]
+    [, ajaxRequestTimeout]
+}) → this
+</code></pre></div><div class="table-wrapper"><table><thead><tr>
+<th>Parameter</th>
 <th>Type</th>
 <th>Description</th>
-<th>Default</th>
 </tr>
 </thead><tbody><tr>
-<td><code>path</code>&#160;<em>(optional)</em></td>
-<td>String</td>
-<td>The base path where the screenshots are saved. Note that to construct a complete path to these screenshots, TestCafe uses the default <a href="../../../guides/advanced-guides/screenshots-and-videos.html#default-path-pattern">path patterns</a>. You can override these patterns with the <code>pathPattern</code> property.</td>
-<td><code>&#39;./screenshots&#39;</code></td>
+<td><code>pageLoadTimeout</code> <em>(optional)</em></td>
+<td>number</td>
+<td>Maximum time (in milliseconds) between the<code>DOMContentLoaded</code> event and the <code>window.load</code> event. See <a href="../../configuration-file.html#pageloadtimeout">pageLoadTimeout</a>.</td>
 </tr>
 <tr>
-<td><code>takeOnFails</code>&#160;<em>(optional)</em></td>
-<td>Boolean</td>
-<td>Specifies if screenshots should be taken automatically when a test fails.</td>
-<td><code>false</code></td>
+<td><code>pageRequestTimeout</code> <em>(optional)</em></td>
+<td>number</td>
+<td>Maximum time (in milliseconds) for the web server to serve an HTML page. See <a href="../../configuration-file.html#pagerequesttimeout">pageRequestTimeout</a>.</td>
 </tr>
 <tr>
-<td><code>pathPattern</code>&#160;<em>(optional)</em></td>
-<td>String</td>
-<td>The pattern to compose screenshot files&#39; relative path and name. See <a href="../../../guides/advanced-guides/screenshots-and-videos.html#path-pattern-placeholders">Path Pattern Placeholders</a> for information about the available placeholders.</td>
-<td></td>
+<td><code>ajaxRequestTimeout</code> <em>(optional)</em></td>
+<td>number</td>
+<td>Maximum time (in milliseconds) between a fetch/XHR request and the response. See <a href="../../configuration-file.html#ajaxrequesttimeout">ajaxRequestTimeout</a>.</td>
 </tr>
-<tr>
-<td><code>fullPage</code>&#160;<em>(optional)</em></td>
-<td>Boolean</td>
-<td>Specifies that the full page should be captured, including content that is not visible due to overflow.</td>
-<td><code>false</code></td>
-</tr>
-</tbody></table></div>
-<p>See <a href="../../../guides/advanced-guides/screenshots-and-videos.html#screenshots">Screenshots</a> for details.</p>
+</tbody></table></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">fixture</span><span class="s2">`My Fixture`</span>
+    <span class="p">.</span><span class="nx">page</span><span class="s2">`http://devexpress.github.io/testcafe/example`</span><span class="p">;</span>
 
-<p>Pass the <code>disableScreenshots</code> option to the <a href="run.html">runner.run</a> method to disable screenshots:</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">run</span><span class="p">({</span>
-    <span class="na">disableScreenshots</span><span class="p">:</span> <span class="kc">true</span>
-<span class="p">});</span>
-</code></pre></div>
-<p><em>Related configuration file properties</em>:</p>
-
-<ul>
-<li><a href="../../configuration-file.html#screenshotspath">screenshots.path</a></li>
-<li><a href="../../configuration-file.html#screenshotstakeonfails">screenshots.takeOnFails</a></li>
-<li><a href="../../configuration-file.html#screenshotspathpattern">screenshots.pathPattern</a></li>
-</ul>
-
-<p><strong>Example</strong></p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">runner</span><span class="p">.</span><span class="nx">screenshots</span><span class="p">({</span>
-    <span class="na">path</span><span class="p">:</span> <span class="dl">'</span><span class="s1">reports/screenshots/</span><span class="dl">'</span><span class="p">,</span>
-    <span class="na">takeOnFails</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-    <span class="na">pathPattern</span><span class="p">:</span> <span class="dl">'</span><span class="s1">${DATE}_${TIME}/test-${TEST_INDEX}/${USERAGENT}/${FILE_INDEX}.png</span><span class="dl">'</span>
-<span class="p">});</span>
+<span class="nx">test</span>
+    <span class="p">.</span><span class="nx">timeouts</span><span class="p">({</span>
+        <span class="na">pageLoadTimeout</span><span class="p">:</span>    <span class="mi">2000</span><span class="p">,</span>
+        <span class="na">pageRequestTimeout</span><span class="p">:</span> <span class="mi">60000</span><span class="p">,</span>
+        <span class="na">ajaxRequestTimeout</span><span class="p">:</span> <span class="mi">60000</span>
+    <span class="p">})</span>
+    <span class="p">(</span><span class="dl">'</span><span class="s1">My test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="c1">//test actions</span>
+    <span class="p">})</span>
 </code></pre></div>
 
 		</div>

@@ -1028,7 +1028,8 @@
 
 			<h1>Multiple Browser Windows</h1>
 <p>The TestCafe API includes methods that open, close, and switch between browser windows. You can test websites with pop-up windows and OAuth login forms, debug complex multi-window applications, or run multiple instances of the same web app side-by-side.</p>
-<h2><a class="anchor" id="automatic-switch-to-new-windows"></a>Automatic Switch to New Windows <a class="permalink" href="#automatic-switch-to-new-windows">#</a></h2>
+<blockquote class="important"><div class="blockquote-content"><p>Multi-window mode is not supported in all browsers. See <a href="#supported-browsers">Supported Browsers</a>.</p>
+</div></blockquote><h2><a class="anchor" id="automatic-switch-to-new-windows"></a>Automatic Switch to New Windows <a class="permalink" href="#automatic-switch-to-new-windows">#</a></h2>
 <p>When your page launches a new window, the test automatically continues in the newly opened window. When that window is closed, the test switches back to its parent.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
@@ -1147,6 +1148,15 @@
 </ul>
 <h2><a class="anchor" id="limitations"></a>Limitations <a class="permalink" href="#limitations">#</a></h2>
 <p>This section describes the limitations of multiple browser windows testing in TestCafe.</p>
+<h3><a class="anchor" id="supported-browsers"></a>Supported Browsers <a class="permalink" href="#supported-browsers">#</a></h3>
+<p>TestCafe&#39;s multi-window mode supports the following browsers:</p>
+
+<ul>
+<li>Chrome (headless and headed)</li>
+<li>Firefox (headless and headed)</li>
+</ul>
+
+<p>Multiple browser windows are not available in <a href="../basic-guides/run-tests.html#test-in-cloud-testing-services">cloud browsers</a>, <a href="../basic-guides/run-tests.html#test-on-remote-and-mobile-devices">remote browsers</a> and during <a href="../basic-guides/run-tests.html#enable-mobile-device-emulation">Chromium mobile device emulation</a>.</p>
 <h3><a class="anchor" id="recorded-video-aspect-ratio-in-multiple-windows"></a>Recorded Video Aspect Ratio in Multiple Windows <a class="permalink" href="#recorded-video-aspect-ratio-in-multiple-windows">#</a></h3>
 <p>When you launch TestCafe with <a href="./screenshots-and-videos.html">video recording</a> enabled, the recording scales to the initial (parent) browser window.</p>
 

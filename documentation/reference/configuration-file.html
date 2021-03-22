@@ -1283,6 +1283,15 @@
 		
     </li>
 
+    <li>
+		    
+		
+
+<a href="/testcafe/documentation/reference/test-api/test/timeouts.html"  >timeouts</a>
+
+		
+    </li>
+
 </ul>
 		
     </li>
@@ -2128,11 +2137,12 @@
 		<div class="post-content">
 
 			<h1>Configuration File</h1>
-<p>TestCafe uses the <code>.testcaferc.json</code> configuration file to store its settings.</p>
-<blockquote class="important"><div class="blockquote-content"><p>Settings you specify when you run TestCafe from the <a href="command-line-interface.html">command line</a> and programming interfaces override settings from <code>.testcaferc.json</code>. TestCafe prints information about every overridden property in the console.</p>
-</div></blockquote>
-<p>Keep <code>.testcaferc.json</code> in the directory from which you run TestCafe. This is usually the project&#39;s root directory. TestCafe does not take into account configuration files located in other directories (for instance, project&#39;s subdirectories).</p>
+<p>TestCafe uses a <code>.json</code> configuration file to store its settings.</p>
 
+<p>Unless otherwise specified, TestCafe reads settings from the <code>.testcaferc.json</code> file in the root directory of the project.<br>
+To set a custom configuration file path, use the <a href="./command-line-interface.html#--config-file-path"><em>--config-file</em> CLI option</a> or the <a href="./testcafe-api/global/createtestcafe.html#options"><em>configFile</em> option of the <em>createTestCafe</em> function</a>.</p>
+<blockquote class="important"><div class="blockquote-content"><p>Settings you specify when you run TestCafe from the <a href="command-line-interface.html">command line</a> and programming interfaces override settings from a configuration file. TestCafe prints information about every overridden property in the console.</p>
+</div></blockquote>
 <p>A configuration file can include the following settings:</p>
 
 <ul>
@@ -2176,7 +2186,7 @@
 <li><a href="#assertiontimeout">assertionTimeout</a></li>
 <li><a href="#pageloadtimeout">pageLoadTimeout</a></li>
 <li><a href="#ajaxrequesttimeout">ajaxRequestTimeout</a></li>
-<li><a href="#ajaxrequesttimeout">pageRequestTimeout</a></li>
+<li><a href="#pagerequesttimeout">pageRequestTimeout</a></li>
 <li><a href="#browserinittimeout">browserInitTimeout</a></li>
 <li><a href="#speed">speed</a></li>
 <li><a href="#clientscripts">clientScripts</a></li>
