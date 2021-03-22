@@ -13,7 +13,7 @@ import { Dictionary } from '../configuration/interfaces';
 import { ActionEventArg } from './interfaces';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
 
-const QUARANTINE_THRESHOLD = 3;
+const DEFAULT_QUARANTINE_THRESHOLD = 3;
 const DISCONNECT_THRESHOLD = 3;
 
 interface AttemptResult {
@@ -23,9 +23,13 @@ interface AttemptResult {
 
 class Quarantine {
     public attempts: TestRunErrorFormattableAdapter[][];
+    public FAILED_QUARANTINE_THRESHOLD: number;
+    public PASSED_QUARANTINE_THRESHOLD: number;
 
     public constructor () {
         this.attempts = [];
+        this.FAILED_QUARANTINE_THRESHOLD = DEFAULT_QUARANTINE_THRESHOLD;
+        this.PASSED_QUARANTINE_THRESHOLD = DEFAULT_QUARANTINE_THRESHOLD;
     }
 
     public getFailedAttempts (): TestRunErrorFormattableAdapter[][] {
@@ -36,6 +40,14 @@ class Quarantine {
         return this.attempts.filter(errors => errors.length === 0);
     }
 
+    public setFailedQuarantineThreshold (threshold: number): void {
+        this.FAILED_QUARANTINE_THRESHOLD = threshold;
+    }
+
+    public setPassedQuarantineThreshold (threshold: number): void {
+        this.PASSED_QUARANTINE_THRESHOLD = threshold;
+    }
+
     public getNextAttemptNumber (): number {
         return this.attempts.length + 1;
     }
@@ -43,8 +55,8 @@ class Quarantine {
     public isThresholdReached (extraErrors?: TestRunErrorFormattableAdapter[]): boolean {
         const { failedTimes, passedTimes } = this._getAttemptsResult(extraErrors);
 
-        const failedThresholdReached = failedTimes >= QUARANTINE_THRESHOLD;
-        const passedThresholdReached = passedTimes >= QUARANTINE_THRESHOLD;
+        const failedThresholdReached = failedTimes >= this.FAILED_QUARANTINE_THRESHOLD;
+        const passedThresholdReached = passedTimes >= this.PASSED_QUARANTINE_THRESHOLD;
 
         return failedThresholdReached || passedThresholdReached;
     }
@@ -199,6 +211,12 @@ export default class TestRunController extends AsyncEventEmitter {
 
     private async _emitTestRunStart (): Promise<void> {
         await this.emit('test-run-start');
+        if (this._quarantine) {
+            // const { passCount, retryCount } = this._opts.quarantineMode;
+
+            this._quarantine.setFailedQuarantineThreshold(3);
+            this._quarantine.setPassedQuarantineThreshold(1);
+        }
     }
 
     private async _testRunBeforeDone (): Promise<void> {
