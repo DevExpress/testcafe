@@ -649,16 +649,16 @@ describe('CLI argument parser', function () {
             const parser = await parse('-q retryCount=5,passCount=1');
 
             expect(parser.opts.quarantineMode).to.be.ok;
-            expect(parser.opts.quarantineMode.retryCount).equal('5');
-            expect(parser.opts.quarantineMode.passCount).equal('1');
+            expect(parser.opts.quarantineMode.retryCount).equal(5);
+            expect(parser.opts.quarantineMode.passCount).equal(1);
         });
 
         it('Should parse quarantine-mode arguments', async () => {
             const parser = await parse('--quarantine-mode retryCount=5,passCount=1');
 
             expect(parser.opts.quarantineMode).to.be.ok;
-            expect(parser.opts.quarantineMode.retryCount).equal('5');
-            expect(parser.opts.quarantineMode.passCount).equal('1');
+            expect(parser.opts.quarantineMode.retryCount).equal(5);
+            expect(parser.opts.quarantineMode.passCount).equal(1);
         });
 
         it('Should fail if threshold value not specified', async () => {

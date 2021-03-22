@@ -9,7 +9,7 @@ function isQuarantineOption (option: string): option is QUARANTINE_OPTION_NAMES 
     return Object.values(QUARANTINE_OPTION_NAMES).includes(option as QUARANTINE_OPTION_NAMES);
 }
 
-export default async function (optionName: string, options: string | Dictionary<string | number | boolean>): Promise<Dictionary<number | string | boolean>> {
+export default async function (optionName: string, options: string | Dictionary<string | number>): Promise<Dictionary<number | string>> {
     const parsedOptions = await baseGetOptions(options, {
         skipOptionValueTypeConversion: true,
 
@@ -17,7 +17,7 @@ export default async function (optionName: string, options: string | Dictionary<
             if (!key || !value)
                 throw new GeneralError(RUNTIME_ERRORS.optionValueIsNotValidKeyValue, optionName);
 
-            return String(value);
+            return Number(value);
         }
     });
 
