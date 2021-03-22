@@ -3,7 +3,8 @@ import {
     ConfigureResponseEvent,
     ConfigureResponseEventOptions,
     RequestEvent,
-    ResponseEvent
+    ResponseEvent,
+    generateUniqueId
 } from 'testcafe-hammerhead';
 
 import { castArray } from 'lodash';
@@ -17,11 +18,13 @@ export default abstract class RequestHook {
     private _instantiatedRequestFilterRules: RequestFilterRule[];
     private readonly _responseEventConfigureOpts?: ConfigureResponseEventOptions;
     protected warningLog: WarningLog | null;
+    public id: string;
 
     protected constructor (requestFilterRules: RequestFilterRuleInit | RequestFilterRuleInit[] | undefined, responseEventConfigureOpts?: ConfigureResponseEventOptions) {
         this.requestFilterRules              = this._prepareRequestFilterRules(requestFilterRules);
         this._instantiatedRequestFilterRules = [];
         this._responseEventConfigureOpts     = responseEventConfigureOpts;
+        this.id                              = generateUniqueId();
 
         this.warningLog = null;
     }
