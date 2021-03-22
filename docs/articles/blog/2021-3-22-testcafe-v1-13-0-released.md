@@ -30,7 +30,7 @@ testcafe edge tests/test.js
 
 ### ⚙ Deprecated the `t.setPageLoadTimeout` method ([PR #5979](https://github.com/DevExpress/testcafe/pull/5979))
 
-Starting v1.13.0, the [t.setPageLoadTimeout](../documentation/reference/test-api/testcontroller/setpageloadtimeout.md) method is deprecated. To set the page load timeout, use the new [test.timeouts](../documentation/reference/test-api/test/timeouts.md) method.
+Starting with v1.13.0, the [t.setPageLoadTimeout](../documentation/reference/test-api/testcontroller/setpageloadtimeout.md) method is deprecated. To set the page load timeout, use the new [test.timeouts](../documentation/reference/test-api/test/timeouts.md) method.
 
 ```js
 fixture`Setting Timeouts`
