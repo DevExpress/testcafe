@@ -62,7 +62,7 @@ interface CommandLineOptions {
     ajaxRequestTimeout?: string | number;
     browserInitTimeout?: string | number;
     concurrency?: string | number;
-    quarantineMode?: string | Dictionary<string | number | boolean>;
+    quarantineMode?: string | Dictionary<string | number>;
     ports?: string | number[];
     providerName?: string;
     ssl?: string | Dictionary<string | number | boolean >;
