@@ -178,7 +178,7 @@ TestCafe's multi-window mode supports the following browsers:
 
 Multiple browser windows are not available in [cloud browsers](../basic-guides/run-tests.md#test-in-cloud-testing-services), [remote browsers](../basic-guides/run-tests.md#test-on-remote-and-mobile-devices) and during [Chromium mobile device emulation](../basic-guides/run-tests.md#enable-mobile-device-emulation).
 
-Multiple browser windows are not available in browsers launched with a [custom browser provider plugin](../extend-testcafe/browser-provider-plugin.md). If you use actions specific for multiple browser windows during tests in a custom browser, TestCafe stops test execution and throws an error.
+Multiple browser windows are not available in browsers launched with a [custom browser provider plugin](../extend-testcafe/browser-provider-plugin.md). If you use actions that only work in the multiple browser windows mode (for example, [t.openWindow](../../reference/test-api/testcontroller/openwindow.md)) during tests in a custom browser, TestCafe stops test execution and throws an error.
 
 ### Recorded Video Aspect Ratio in Multiple Windows
 
