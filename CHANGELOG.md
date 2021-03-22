@@ -8,7 +8,7 @@ This release adds support for custom paths to the configuration file, support fo
 
 #### :gear: Specify Custom Path to the TestCafe Configuration File ([PR #6035](https://github.com/DevExpress/testcafe/pull/6035) by [@Chris-Greaves](https://github.com/Chris-Greaves))
 
-TestCafe now enables you to specify a custom path to the [configuration file](../documentation/reference/configuration-file.md).
+TestCafe now allows you to specify a custom path to the [configuration file](../documentation/reference/configuration-file.md).
 
 To set the path, use one of the following options:
 
@@ -40,7 +40,7 @@ test
     })
 ```
 
-You can use `test.timeouts` to set the [pageRequestTimeout](../documentation/reference/configuration-file.md#pagerequesttimeout) and [ajaxRequestTimeout](../documentation/reference/configuration-file.md#ajaxrequesttimeout) as well.
+You can also use `test.timeouts` to set the [pageRequestTimeout](../documentation/reference/configuration-file.md#pagerequesttimeout) and [ajaxRequestTimeout](../documentation/reference/configuration-file.md#ajaxrequesttimeout).
 
 ```js
 fixture`Setting Timeouts`
