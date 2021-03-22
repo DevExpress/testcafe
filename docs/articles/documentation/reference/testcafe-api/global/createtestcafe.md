@@ -81,6 +81,7 @@ Parameter                          | Type   | Description | Default
 `developmentMode`&#160;*(optional)* | Boolean | Enables/disables mechanisms to log and diagnose errors. You should enable this option before you contact TestCafe Support to report an issue. | `false`
 `cache`&#160;*(optional)* | Boolean | If enabled, the TestCafe proxy caches webpage assets (such as stylesheets, images and scripts) for the webpages that it processes. The next time the proxy accesses the page, it loads assets from its cache instead of requesting them from the server. | `false`
 `retryTestPages`&#160;*(optional)* | Boolean | Retry failed network requests for webpages visited during tests. Requires a secure connection. | `false`
+`configFile`&#160;*(optional)* | String | Path to the [Testcafe configuration file](../../configuration-file.md). | `null`
 
 *Related configuration file properties*:
 

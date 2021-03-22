@@ -7,11 +7,12 @@ redirect_from:
 ---
 # Configuration File
 
-TestCafe uses the `.testcaferc.json` configuration file to store its settings.
+TestCafe uses a `.json` configuration file to store its settings.
 
-> Important! Settings you specify when you run TestCafe from the [command line](command-line-interface.md) and programming interfaces override settings from `.testcaferc.json`. TestCafe prints information about every overridden property in the console.
+Unless otherwise specified, TestCafe reads settings from the `.testcaferc.json` file in the root directory of the project.  
+To set a custom configuration file path, use the [*--config-file* CLI option](./command-line-interface.md#--config-file-path) or the [*configFile* option of the *createTestCafe* function](./testcafe-api/global/createtestcafe.md#options).
 
-Keep `.testcaferc.json` in the directory from which you run TestCafe. This is usually the project's root directory. TestCafe does not take into account configuration files located in other directories (for instance, project's subdirectories).
+> Important! Settings you specify when you run TestCafe from the [command line](command-line-interface.md) and programming interfaces override settings from a configuration file. TestCafe prints information about every overridden property in the console.
 
 A configuration file can include the following settings:
 
@@ -49,7 +50,7 @@ A configuration file can include the following settings:
 * [assertionTimeout](#assertiontimeout)
 * [pageLoadTimeout](#pageloadtimeout)
 * [ajaxRequestTimeout](#ajaxrequesttimeout)
-* [pageRequestTimeout](#ajaxrequesttimeout)
+* [pageRequestTimeout](#pagerequesttimeout)
 * [browserInitTimeout](#browserinittimeout)
 * [speed](#speed)
 * [clientScripts](#clientscripts)
