@@ -1283,6 +1283,15 @@
 		
     </li>
 
+    <li>
+		    
+		
+
+<a href="/testcafe/documentation/reference/test-api/test/timeouts.html"  >timeouts</a>
+
+		
+    </li>
+
 </ul>
 		
     </li>
@@ -2151,7 +2160,8 @@ obsolete: t.takeScreenshot([path]) → this | Promise&lt;any&gt;
 <td>Specifies that the full page should be captured, including content that is not visible due to overflow.</td>
 <td><code>false</code></td>
 </tr>
-</tbody></table></div>
+</tbody></table></div><blockquote class="important"><div class="blockquote-content"><p><code>t.takeScreenshot</code> requires .NET 4.0 or newer installed on Windows machines and an <a href="https://en.wikipedia.org/wiki/Comparison_of_X_window_managers">ICCCM/EWMH-compliant window manager</a> on Linux.</p>
+</div></blockquote>
 <p>The following example shows how to use the <code>t.takeScreenshot</code> action.</p>
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 

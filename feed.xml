@@ -5,9 +5,75 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 05 Mar 2021 11:39:15 +0300</pubDate>
-    <lastBuildDate>Fri, 05 Mar 2021 11:39:15 +0300</lastBuildDate>
+    <pubDate>Mon, 22 Mar 2021 13:21:10 +0300</pubDate>
+    <lastBuildDate>Mon, 22 Mar 2021 13:21:10 +0300</lastBuildDate>
     <generator>Jekyll v3.9.0</generator>
+    
+      <item>
+        <title>TestCafe v1.13.0 Released</title>
+        <description>&lt;h1&gt;TestCafe v1.13.0 Released&lt;/h1&gt;
+&lt;p&gt;This release adds support for custom paths to the configuration file, support for Microsoft Edge on Linux systems, and multiple bugfixes.&lt;/p&gt;
+
+&lt;!--more--&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;specify-custom-path-to-the-testcafe-configuration-file-pr-6035-by-chris-greaves&quot;&gt;&lt;/a&gt;⚙ Specify Custom Path to the TestCafe Configuration File (&lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/6035&quot;&gt;PR #6035&lt;/a&gt; by &lt;a href=&quot;https://github.com/Chris-Greaves&quot;&gt;@Chris-Greaves&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#specify-custom-path-to-the-testcafe-configuration-file-pr-6035-by-chris-greaves&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;TestCafe now allows you to specify a custom path to the &lt;a href=&quot;../documentation/reference/configuration-file.html&quot;&gt;configuration file&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;To set the path, use one of the following options:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;the &lt;a href=&quot;../documentation/reference/command-line-interface.html#--config-file-path&quot;&gt;--config-file CLI option&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;the &lt;a href=&quot;../documentation/reference/testcafe-api/global/createtestcafe.html#options&quot;&gt;configFile option of the createTestCafe function&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;add-support-for-microsoft-edge-on-linux-pr-testcafe-browser-tools210-by-dcsaszar&quot;&gt;&lt;/a&gt;Add Support for Microsoft Edge on Linux (&lt;a href=&quot;https://github.com/DevExpress/testcafe-browser-tools/pull/210&quot;&gt;PR testcafe-browser-tools/#210&lt;/a&gt; by &lt;a href=&quot;https://github.com/dcsaszar&quot;&gt;@dcsaszar&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#add-support-for-microsoft-edge-on-linux-pr-testcafe-browser-tools210-by-dcsaszar&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;If you have &lt;a href=&quot;https://www.microsoftedgeinsider.com/en-us/download?platform=linux-deb&quot;&gt;Microsoft Edge installed on your Linux machine&lt;/a&gt;, you can now launch TestCafe tests in this browser.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe edge tests/test.js
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;deprecated-the-tsetpageloadtimeout-method-pr-5979&quot;&gt;&lt;/a&gt;⚙ Deprecated the &lt;code&gt;t.setPageLoadTimeout&lt;/code&gt; method (&lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/5979&quot;&gt;PR #5979&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#deprecated-the-tsetpageloadtimeout-method-pr-5979&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Starting with v1.13.0, the &lt;a href=&quot;../documentation/reference/test-api/testcontroller/setpageloadtimeout.html&quot;&gt;t.setPageLoadTimeout&lt;/a&gt; method is deprecated. To set the page load timeout, use the new &lt;a href=&quot;../documentation/reference/test-api/test/timeouts.html&quot;&gt;test.timeouts&lt;/a&gt; method.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`Setting Timeouts`&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`http://devexpress.github.io/testcafe/example`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;timeouts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;pageLoadTimeout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2000&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;My test&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;//test actions&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;You can also use &lt;code&gt;test.timeouts&lt;/code&gt; to set the &lt;a href=&quot;../documentation/reference/configuration-file.html#pagerequesttimeout&quot;&gt;pageRequestTimeout&lt;/a&gt; and &lt;a href=&quot;../documentation/reference/configuration-file.html#ajaxrequesttimeout&quot;&gt;ajaxRequestTimeout&lt;/a&gt;.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`Setting Timeouts`&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`http://devexpress.github.io/testcafe/example`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;timeouts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;pageLoadTimeout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;    &lt;span class=&quot;mi&quot;&gt;2000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;pageRequestTimeout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;60000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;ajaxRequestTimeout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;60000&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;My test&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;//test actions&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Fixed a bug where TestCafe would sometimes be unable to trigger a &lt;code&gt;hover&lt;/code&gt; event on a &lt;code&gt;radio&lt;/code&gt; element (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/5916&quot;&gt;#5916&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Fixed a bug where TestCafe was unable to register a Service Worker due to the wrong &lt;code&gt;currentScope&lt;/code&gt; calculation inside a &lt;code&gt;Window.postMessage&lt;/code&gt; call (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2524&quot;&gt;testcafe-hammerhead/#2524&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;RequestLogger&lt;/code&gt; now shows a correct protocol for WebSocket requests (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2591&quot;&gt;testcafe-hammerhead/#2591&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Test execution now pauses when the browser window is in the background (&lt;a href=&quot;https://github.com/DevExpress/testcafe-browser-tools/issues/158&quot;&gt;testcafe-browser-tools/#158&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;TestCafe now appends an extension to screenshot filenames (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/5103&quot;&gt;#5103&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Fixed a bug where TestCafe would emit test action events after the end of a test run (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/5650&quot;&gt;#5650&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;TestCafe now closes if the &lt;code&gt;No tests to run&lt;/code&gt; error occurs in Live mode (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/4257&quot;&gt;#4257&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Fixed a freeze that happened when you run a test suite with skipped tests (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/4967&quot;&gt;#4967&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Fixed an error where a &lt;code&gt;documentElement.transform.translate&lt;/code&gt; call moved the TestCafe UI in the browser window (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/5606&quot;&gt;#5606&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;TestCafe now emits a warning if you pass an unawaited selector to an assertion (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/5554&quot;&gt;#5554&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Fixed a crash that sometimes occurred in Chrome v85 and earlier on pages with scripts (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/pull/2590&quot;&gt;PR testcafe-hammerhead/#2590&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Mon, 22 Mar 2021 00:00:00 +0300</pubDate>
+        <link>https://devexpress.github.io/testcafe/blog/testcafe-v1-13-0-released.html</link>
+        <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v1-13-0-released.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>TestCafe v1.12.0 Released</title>
@@ -855,80 +921,6 @@ Yes, we offer &lt;a href=&quot;https://www.devexpress.com/products/net/controls/
         <pubDate>Thu, 24 Sep 2020 00:00:00 +0300</pubDate>
         <link>https://devexpress.github.io/testcafe/media/team-blog/the-fastest-way-to-your-next-test-qa.html</link>
         <guid isPermaLink="true">https://devexpress.github.io/testcafe/media/team-blog/the-fastest-way-to-your-next-test-qa.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>How TestCafe Can Help You to Deliver Faster</title>
-        <description>&lt;h1&gt;How TestCafe Can Help You to Deliver Faster&lt;/h1&gt;
-&lt;p&gt;DevOps teams must make certain that applications ship on time and meet appropriate quality standards. To achieve the latter objective, DevOps must carefully consider what checks to include in the pipeline and what to leave as smoke tests. In this brief article, we argue that end-to-end tests are crucial to product quality and are worth running each time an organization delivers a build. We will illustrate how TestCafe can streamline this process and help you integrate end-to-end tests into your CI/CD workflow with minimum time and effort.&lt;/p&gt;
-
-&lt;!--more--&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;unit-tests-are-not-enough&quot;&gt;&lt;/a&gt;Unit Tests are not Enough &lt;a class=&quot;permalink&quot; href=&quot;#unit-tests-are-not-enough&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;As you know, some organizations/dev teams require use of unit tests. Unit tests allow developers to verify whether &amp;quot;small&amp;quot; portions of a solution work as intended, but do so &lt;strong&gt;independent of the whole&lt;/strong&gt;. While it may be tempting to use green unit tests as the prime delivery condition within a CI/CD system, unit tests will always remain granular and limited in scope.&lt;/p&gt;
-
-&lt;p&gt;Unit tests allow developers to flag problematic code modifications, but unit tests cannot accurately determine whether all parts of a given system are working &lt;strong&gt;together flawlessly&lt;/strong&gt;.  Said differently, unit tests cannot establish whether all usage scenarios are fully tested and meet an organization&amp;#39;s quality standards.&lt;/p&gt;
-
-&lt;p&gt;By contrast, end-to-end tests can check/analyze whether the entire system operates as expected (the whole and not just its parts). End-to-end tests can emulate user actions and determine whether real output matches expected outcomes. Unit tests are important, but we believe that only end-to-end test automation can deliver the reliability users have come to expect from today&amp;#39;s top software organizations.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;testcafe-end-to-end-testing-made-easy&quot;&gt;&lt;/a&gt;TestCafe – End-to-End Testing Made Easy &lt;a class=&quot;permalink&quot; href=&quot;#testcafe-end-to-end-testing-made-easy&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;TestCafe is an enterprise-ready end-to-end testing framework with an intuitive API. Unlike legacy frameworks such as Selenium, TestCafe is easy to install, run, and integrate within an organization&amp;#39;s CI/CD pipeline. You can install the framework via npm with a single command. Since TestCafe does not require tedious configuration or plugins, it can be wound up in a new CI system within minutes. And yes, with TestCafe, you do not need to locate, install, and configure additional testing software/modules. TestCafe is self-contained and only requires Node.js and your preferred browser (no browser plugins are needed).&lt;/p&gt;
-
-&lt;p&gt;In addition, TestCafe allows you to test next-gen web features with absolute ease. TestCafe supports all major modern browsers (either locally or cloud-based) – across a variety of mobile or desktop devices. TestCafe can execute its tests on macOS, Windows, Linux, iOS, and Android. You can use Chrome, Firefox, Safari, Edge and Internet Explorer when and where appropriate – you can even use headless browsers (a great way to decrease testing time and to execute browser tests on VMs with no graphical system).&lt;/p&gt;
-
-&lt;p&gt;As you&amp;#39;ll see below, we&amp;#39;ve taken care of everything under the hood so you and your team can avoid configuration hassles and the steep learning curve associated with legacy testing frameworks.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;how-to-integrate-testcafe-in-your-cicd&quot;&gt;&lt;/a&gt;How to Integrate TestCafe in Your CI/CD &lt;a class=&quot;permalink&quot; href=&quot;#how-to-integrate-testcafe-in-your-cicd&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;TestCafe can be incorporated into a pipeline with a few simple steps:  &lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;Install Node.js&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Install TestCafe&lt;/strong&gt;. As mentioned earlier, TestCafe can be installed with a simple command: &lt;code&gt;npm install -g testcafe&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Run TestCafe tests&lt;/strong&gt;. Only a single command is required to execute a test (for instance: &lt;code&gt;testcafe chrome:headless ./tests&lt;/code&gt;). With this simple command, TestCafe will auto detect the browser (if installed), launch it, and run your tests automatically.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;TestCafe ships with five reporters – modules that can generate test execution reports for your CI/CD. JSON, JUnit, xUnit, and console output (with rich formatting) are built-in. You can also use reporters developed by the TestCafe user community for &lt;a href=&quot;https://www.npmjs.com/package/testcafe-reporter-nunit&quot;&gt;NUnit&lt;/a&gt;, &lt;a href=&quot;https://www.npmjs.com/package/testcafe-reporter-teamcity&quot;&gt;TeamCity&lt;/a&gt;, &lt;a href=&quot;https://www.npmjs.com/package/testcafe-reporter-slack&quot;&gt;Slack&lt;/a&gt;, etc. Should you require these community plugins, you can:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Install the desired third-party reporter via npm: &lt;code&gt;npm install testcafe testcafe-reporter-nunit&lt;/code&gt;;&lt;/li&gt;
-&lt;li&gt;Run TestCafe tests much like step 3: &lt;code&gt;testcafe chrome:headless ./tests -r nunit:report.xml&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;You can learn more and about TestCafe and CI system integration via the following links:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/continuous-integration/jenkins.html&quot;&gt;Jenkins&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/continuous-integration/github-actions.html&quot;&gt;GitHub Actions&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/continuous-integration/travis.html&quot;&gt;Travis&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/continuous-integration/circleci.html&quot;&gt;CircleCI&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/continuous-integration/teamcity.html&quot;&gt;TeamCity&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/continuous-integration/gitlab.html&quot;&gt;GitLab&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/continuous-integration/azure-devops.html&quot;&gt;Azure DevOps&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/continuous-integration/bitbucket-pipelines.html&quot;&gt;BitBucket Pipelines&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/continuous-integration/appveyor.html&quot;&gt;AppVeyor&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Note: For Jenkins, TestCafe can post videos and screenshot it captured during test execution. To enable this functionality, you will need to install &lt;a href=&quot;https://plugins.jenkins.io/testcafe/&quot;&gt;the Jenkins plugin&lt;/a&gt; and use a dedicated &lt;a href=&quot;https://www.npmjs.com/package/testcafe-reporter-jenkins&quot;&gt;Jenkins reporter&lt;/a&gt;.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;docker-image&quot;&gt;&lt;/a&gt;Docker Image &lt;a class=&quot;permalink&quot; href=&quot;#docker-image&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;TestCafe is easy to install and requires a very basic environment. Of course, you can wind it up even faster with Docker. To get started, download a pre-configured image from Docker Hub:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;docker pull testcafe/testcafe
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;The image is based on ArcLinux and includes Node.js, TestCafe, Chrome, and Firefox. It is ready to execute tests as needed:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;docker run &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; //d/tests:/tests &lt;span class=&quot;nt&quot;&gt;-it&lt;/span&gt; testcafe/testcafe firefox:headless /tests/&lt;span class=&quot;k&quot;&gt;**&lt;/span&gt;/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.js
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;You can also use this image on your computer to perform tests on a host machine or remote machines within your network. See the following help topic for additional Docker-related information: &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/use-testcafe-docker-image.html&quot;&gt;Use TestCafe&amp;#39;s Docker Image&lt;/a&gt;&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;github-actions&quot;&gt;&lt;/a&gt;GitHub Actions &lt;a class=&quot;permalink&quot; href=&quot;#github-actions&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;The GitHub Actions CI service is ideal for projects developed on GitHub. To help you quickly integrate TestCafe into your Actions workflows, we created the &lt;a href=&quot;https://github.com/DevExpress/testcafe-action&quot;&gt;Run TestCafe&lt;/a&gt; action. This action installs TestCafe and runs tests on your behalf. To begin, you simply need to add TestCafe command line arguments:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;DevExpress/testcafe-action@latest&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;chrome&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;tests&quot;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;testcafe-adoption-made-easy&quot;&gt;&lt;/a&gt;TestCafe: Adoption Made Easy &lt;a class=&quot;permalink&quot; href=&quot;#testcafe-adoption-made-easy&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;Ready to see TestCafe&amp;#39;s capabilities in action? Want to see how quickly you can incorporate test automation into your CI/CD workflow?&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/getting-started/&quot;&gt;Get Started Today&lt;/a&gt; or &lt;a href=&quot;https://devexpress.github.io/testcafe/support/&quot;&gt;Ask Us&lt;/a&gt; for more information. We are here to help.&lt;/p&gt;
-</description>
-        <pubDate>Thu, 03 Sep 2020 00:00:00 +0300</pubDate>
-        <link>https://devexpress.github.io/testcafe/media/team-blog/how-testcafe-can-help-you-to-deliver-faster.html</link>
-        <guid isPermaLink="true">https://devexpress.github.io/testcafe/media/team-blog/how-testcafe-can-help-you-to-deliver-faster.html</guid>
         
         
       </item>

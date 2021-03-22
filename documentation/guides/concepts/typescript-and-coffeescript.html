@@ -1050,7 +1050,55 @@ in TypeScript differs from extending selectors in JavaScript. Refer to the
 <a href="../../reference/test-api/selector/addcustomdomproperties.html">selector.addCustomDOMProperties</a>
 and <a href="../../reference/test-api/selector/addcustommethods.html">selector.addCustomMethods</a>
 sections to learn how to extend selectors in TypeScript.</p>
-</div></blockquote><h3><a class="anchor" id="customize-compiler-options"></a>Customize Compiler Options <a class="permalink" href="#customize-compiler-options">#</a></h3>
+</div></blockquote><h4><a class="anchor" id="type-cast-page-elements"></a>Type Cast Page Elements <a class="permalink" href="#type-cast-page-elements">#</a></h4>
+<p>TypeScript compilers cannot automatically identify TestCafe objects that refer to DOM elements. Perform manual <a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions">type assertions</a> in your <a href="../basic-guides/obtain-client-side-info.html">client-side code</a> to ensure correct TypeScript compilation.</p>
+
+<p>Specify the <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement">HTMLElement</a> data type to access the DOM element&#39;s generic HTMLElement interface.</p>
+
+<p>A <a href="../../reference/test-api/clientfunction/">client function</a> in the example below calls the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoView">Element.scrollIntoView()</a> method to scroll an element into view.</p>
+<div class="highlight"><pre><code class="language-ts" data-lang="ts"><span class="k">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span><span class="p">,</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="kd">const</span> <span class="nx">scrollIntoView</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(</span> <span class="p">(</span><span class="nx">selector</span><span class="p">:</span> <span class="nx">Selector</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">element</span> <span class="o">=</span> <span class="nx">selector</span><span class="p">()</span> <span class="k">as</span> <span class="nx">unknown</span> <span class="k">as</span> <span class="nx">HTMLElement</span><span class="p">;</span>
+    <span class="nx">element</span><span class="p">.</span><span class="nx">scrollIntoView</span><span class="p">();</span>
+<span class="p">});</span>
+
+<span class="nx">fixture</span><span class="s2">`HTMLElement`</span>
+    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://example.com</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Scroll element into view</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">bottomOfPage</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#bottom-div</span><span class="dl">'</span><span class="p">);</span>
+
+    <span class="k">await</span> <span class="nx">scrollIntoView</span><span class="p">(</span><span class="nx">bottomOfPage</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>To avoid compilation errors, pick element-specific data types, such as <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement">HTMLOListElement</a>).</p>
+
+<p>The example code below calls the <a href="../../reference/test-api/testcontroller/eval.html">t.eval</a> method to determine if an ordered list is <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement#properties">reversed</a>. The generic <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement#properties">HTMLElement Interface</a> does not provide access to the element&#39;s <code>reversed</code> property. To avoid compilation errors, it is necessary to convert the <code>list</code> object to the <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement#properties">HTMLOListElement</a> data type.</p>
+<div class="highlight"><pre><code class="language-ts" data-lang="ts"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
+
+<span class="nx">fixture</span><span class="s2">`HTMLOListElement`</span>
+    <span class="p">.</span><span class="nx">page</span><span class="p">(</span><span class="dl">'</span><span class="s1">https://example.com</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Check that the list is reversed</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">olElement</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#ordered-list</span><span class="dl">'</span><span class="p">);</span>
+
+    <span class="kd">const</span> <span class="nx">isListReversed</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">t</span><span class="p">.</span><span class="nb">eval</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+        <span class="kd">const</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">olElement</span><span class="p">()</span> <span class="k">as</span> <span class="nx">unknown</span> <span class="k">as</span> <span class="nx">HTMLOListElement</span><span class="p">;</span>
+
+        <span class="k">return</span> <span class="nx">list</span><span class="p">.</span><span class="nx">reversed</span><span class="p">;</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="na">dependencies</span><span class="p">:</span> <span class="p">{</span> <span class="nx">olElement</span> <span class="p">}</span>
+    <span class="p">});</span>
+
+    <span class="k">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">expect</span><span class="p">(</span><span class="nx">isListReversed</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">ok</span><span class="p">();</span>
+<span class="p">});</span>
+</code></pre></div>
+<p>You can read more about client-side code in the <a href="../basic-guides/obtain-client-side-info.html">Obtain Client-Side Info</a> topic.</p>
+<h3><a class="anchor" id="customize-compiler-options"></a>Customize Compiler Options <a class="permalink" href="#customize-compiler-options">#</a></h3>
 <p>TestCafe users can modify <a href="https://www.typescriptlang.org/docs/handbook/compiler-options.html">the settings</a> of the TypeScript compiler in one of the following three ways:</p>
 
 <ul>

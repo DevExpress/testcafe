@@ -1283,6 +1283,15 @@
 		
     </li>
 
+    <li>
+		    
+		
+
+<a href="/testcafe/documentation/reference/test-api/test/timeouts.html"  >timeouts</a>
+
+		
+    </li>
+
 </ul>
 		
     </li>
@@ -2192,6 +2201,7 @@
 <li><a href="#--dev">--dev</a></li>
 <li><a href="#--qr-code">--qr-code</a></li>
 <li><a href="#--sf---stop-on-first-fail">--sf, --stop-on-first-fail</a></li>
+<li><a href="#--config-file-path">--config-file &lt;path&gt;</a></li>
 <li><a href="#--ts-config-path-path">--ts-config-path &lt;path&gt;</a></li>
 <li><a href="#--compiler-options-options">--compiler-options &lt;options&gt;</a></li>
 <li><a href="#--cache">--cache</a></li>
@@ -2203,7 +2213,7 @@
 </ul></li>
 </ul>
 
-<p>When you execute the <code>testcafe</code> command, TestCafe first reads settings from the <code>.testcaferc.json</code> <a href="configuration-file.html">configuration file</a> if this file exists, and then applies the settings from the command line. If there are conflicting values, command-line settings override these values in the configuration file. TestCafe prints information about every overridden property in the console.</p>
+<p>When you execute the <code>testcafe</code> command, TestCafe first reads settings from a <a href="configuration-file.html">configuration file</a> if this file exists, and then applies the settings from the command line. If there are conflicting values, command-line settings override these values in the configuration file. TestCafe prints information about every overridden property in the console.</p>
 
 <p>If you specify the <a href="configuration-file.html#browsers">browsers</a> and <a href="configuration-file.html#src">src</a> properties in the configuration file, you can omit them in the command line.</p>
 <blockquote class="important"><div class="blockquote-content"><p>The browser tab that is running tests should remain active. Do not minimize the browser window.
@@ -2711,7 +2721,10 @@ See <a href="../guides/advanced-guides/test-https-features-and-http2-websites.ht
 <div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe chrome my-tests <span class="nt">--sf</span>
 </code></pre></div>
 <p><em>Related configuration file property</em>: <a href="configuration-file.html#stoponfirstfail">stopOnFirstFail</a>.</p>
-<h3><a class="anchor" id="--ts-config-path-path"></a>--ts-config-path &lt;path&gt; <a class="permalink" href="#--ts-config-path-path">#</a></h3>
+<h3><a class="anchor" id="--config-file-path"></a>--config-file &lt;path&gt; <a class="permalink" href="#--config-file-path">#</a></h3>
+<p>Path to the <a href="./configuration-file.html">TestCafe configuration file</a>.</p>
+<div class="highlight"><pre><code class="language-sh" data-lang="sh">testcafe <span class="nt">--config-file</span> configurations/localdev.testcaferc.json
+</code></pre></div><h3><a class="anchor" id="--ts-config-path-path"></a>--ts-config-path &lt;path&gt; <a class="permalink" href="#--ts-config-path-path">#</a></h3>
 <p>Deprecated as of TestCafe v.1.10.0 in favour of the <a href="#--compiler-options-options"><code>--compiler-options</code></a> parameter.</p>
 
 <p><em>Related configuration file property</em>: <a href="configuration-file.html#tsconfigpath">tsConfigPath</a>.</p>

@@ -619,7 +619,7 @@ which means it should work with any browser with HTML5 support released in the l
 <p>TestCafe allows you to specify settings in a <a href="../documentation/reference/configuration-file.html">configuration file</a>.</p>
 
 <p>If you need to use custom properties in the configuration, create a separate configuration file and import it to the tests.</p>
-<blockquote><div class="blockquote-content"><p>Vote for the following GitHub issue if you want us to support custom properties in <code>.testcaferc.json</code>: <a href="https://github.com/DevExpress/testcafe/issues/3593">#3593</a></p>
+<blockquote><div class="blockquote-content"><p>Vote for the <a href="https://github.com/DevExpress/testcafe/issues/3593">GitHub issue #3593</a> if you want us to support custom properties in the <a href="../documentation/reference/configuration-file.html">TestCafe configuration file</a>.</p>
 </div></blockquote>
 <p>For example, you can create the following <code>config.json</code> file to pass a website&#39;s base URL to test code:</p>
 <div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w">
@@ -709,20 +709,36 @@ the target element when the window is resized to smaller dimensions.</p>
 <p>Finally, try updating TestCafe to the latest version to see if the problem persists.</p>
 <h3><a class="anchor" id="testcafe-reports-that-a-request-has-failed-what-are-the-possible-reasons"></a>TestCafe reports that a request has failed. What are the possible reasons? <a class="permalink" href="#testcafe-reports-that-a-request-has-failed-what-are-the-possible-reasons">#</a></h3>
 <p>When TestCafe does not receive a successful response from a server, it outputs the following error:</p>
-<div class="highlight"><pre><code class="language-text" data-lang="text">A request to https://www.example.com has failed.
-Use quarantine mode to perform additional attempts to execute this test.
+<div class="highlight"><pre><code class="language-text" data-lang="text">Failed to load the page at https://www.example.com.
+Increase the value of the "pageRequestTimeout" variable, enable the "retryTestPages" option, or use quarantine mode to perform additional attempts to execute this test.
 </code></pre></div>
-<p>You can use <a href="../documentation/guides/basic-guides/run-tests.html#quarantine-mode">quarantine mode</a> to complete the tests if this problem occurs infrequently.</p>
+<p>Use <a href="../documentation/guides/basic-guides/run-tests.html#quarantine-mode">quarantine mode</a> to isolate flaky tests from the rest of the suite.</p>
 
 <p>However, we recommend that you determine the cause of this issue and address it.</p>
 
 <p>This error can occur in the following situations:</p>
 <h4><a class="anchor" id="the-web-server-is-not-responding"></a>The Web server is not responding <a class="permalink" href="#the-web-server-is-not-responding">#</a></h4>
-<p>Check if the Web and DNS servers are online and configured to accept requests to this URL.</p>
+<p>Confirm the successful resolution of the website&#39;s domain name. Check if the web application is online and configured to receive incoming requests.</p>
+
+<p>If the TestCafe proxy does not receive the webpage within <em>two minutes</em>, TestCafe throws an exception.</p>
+
+<ul>
+<li><a href="../documentation/reference/command-line-interface.html#--cache"><code>--page-request-timeout</code> (CLI)</a></li>
+<li><a href="../documentation/reference/configuration-file.html#pagerequesttimeout"><code>pageRequestTimeout</code> (configuration file)</a></li>
+<li><a href="../documentation/reference/testcafe-api/runner/run.html"><code>pageRequestTimeout</code> (TestCafe Runner)</a></li>
+</ul>
+
+<p>The following options enable TestCafe to retry failed network requests for webpages:</p>
+
+<ul>
+<li><a href="../documentation/reference/command-line-interface.html#--retry-test-pages"><code>--retry-test-pages</code> (CLI)</a></li>
+<li><a href="../documentation/reference/configuration-file.html#retrytestpages"><code>retryTestPages</code> (configuration file)</a></li>
+<li><a href="../documentation/reference/testcafe-api/runner/run.html"><code>retryTestPages</code> option (TestCafe Runner)</a></li>
+</ul>
 <h4><a class="anchor" id="unstable-or-improperly-configured-network-connection"></a>Unstable or improperly configured network connection <a class="permalink" href="#unstable-or-improperly-configured-network-connection">#</a></h4>
 <ul>
 <li>Check the network connection&#39;s settings.</li>
-<li>Ensure that your network equipment works properly. If possible, establish a direct connection to the Internet/Web server.</li>
+<li>Check your network equipment and the connection to the Internet/Web server.</li>
 <li>Check the proxy server&#39;s settings or try a different proxy server.</li>
 <li>Use VPN.</li>
 <li>Connect to a different network.</li>
