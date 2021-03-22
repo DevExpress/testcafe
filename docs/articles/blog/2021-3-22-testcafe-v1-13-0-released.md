@@ -45,7 +45,7 @@ test
     })
 ```
 
-You can also use `test.timeouts` to set the [pageRequestTimeout](../documentation/reference/configuration-file.md#pagerequesttimeout) and [ajaxRequestTimeout](../documentation/reference/configuration-file.md#ajaxrequesttimeout) as well.
+You can also use `test.timeouts` to set the [pageRequestTimeout](../documentation/reference/configuration-file.md#pagerequesttimeout) and [ajaxRequestTimeout](../documentation/reference/configuration-file.md#ajaxrequesttimeout).
 
 ```js
 fixture`Setting Timeouts`
