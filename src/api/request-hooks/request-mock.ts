@@ -4,13 +4,13 @@ import {
     ResponseMock,
     RequestEvent,
     ResponseEvent,
+    RequestFilterRuleInit,
     RequestFilterRule
 } from 'testcafe-hammerhead';
 
 import { APIError } from '../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../errors/types';
 import WARNING_MESSAGE from '../../notifications/warning-message';
-import { RequestFilterRuleInit } from './interfaces';
 
 
 class RequestMock extends RequestHook {
@@ -54,6 +54,7 @@ class RequestMock extends RequestHook {
 
         this.requestFilterRules.push(rule);
         this._mocks.set(rule, mock);
+
         this._pendingRequestFilterRuleInit = null;
 
         return this;

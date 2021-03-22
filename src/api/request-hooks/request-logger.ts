@@ -1,7 +1,8 @@
 import {
     ConfigureResponseEventOptions,
     RequestEvent,
-    ResponseEvent
+    ResponseEvent,
+    RequestFilterRuleInit
 } from 'testcafe-hammerhead';
 
 import RequestHook from './hook';
@@ -12,7 +13,6 @@ import { APIError } from '../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../errors/types';
 
 import {
-    RequestFilterRuleInit,
     RequestHookLogOptionsInit,
     RequestHookLogOptions
 } from './interfaces';
@@ -56,7 +56,7 @@ class RequestLoggerImplementation extends RequestHook {
     private readonly _options: RequestHookLogOptions;
     private _internalRequests: Dictionary<LoggedRequest>;
 
-    public constructor (requestFilterRuleInit: RequestFilterRuleInit | RequestFilterRuleInit[] | undefined, options: RequestHookLogOptionsInit) {
+    public constructor (requestFilterRuleInit?: RequestFilterRuleInit | RequestFilterRuleInit[], options?: RequestHookLogOptionsInit) {
         const effectiveOptions = Object.assign({}, DEFAULT_OPTIONS, options) as RequestHookLogOptions;
 
         RequestLoggerImplementation._assertLogOptions(effectiveOptions);

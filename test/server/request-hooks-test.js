@@ -223,23 +223,10 @@ describe('RequestMock', () => {
 
 describe('RequestHook', () => {
     it('Should handle any requests by default', () => {
-        const hook                          = new RequestHook();
-        const defaultHookRequestFilterRules = hook.requestFilterRules;
+        const hook = new RequestHook();
 
-        expect(defaultHookRequestFilterRules).to.deep.equal([RequestFilterRule.ANY]);
-    });
-
-    it('Should not duplicate instantiated filter rules between test runs (GH-2650)', () => {
-        const url  = 'http://example.com';
-        const hook = new RequestHook(url);
-
-        hook._instantiateRequestFilterRules();
-
-        expect(hook._instantiatedRequestFilterRules.length).eql(1);
-
-        hook._instantiateRequestFilterRules();
-
-        expect(hook._instantiatedRequestFilterRules.length).eql(1);
+        expect(hook.requestFilterRules.length).eql(1);
+        expect(hook.requestFilterRules[0].options).eql(RequestFilterRule.ANY.options);
     });
 
     it('Should have an identifier', () => {
