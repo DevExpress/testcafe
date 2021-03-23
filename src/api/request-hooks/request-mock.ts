@@ -32,7 +32,7 @@ class RequestMock extends RequestHook {
 
     public async onResponse (event: ResponseEvent): Promise<void> {
         if (event.isSameOriginPolicyFailed)
-            this.warningLog?.addWarning(WARNING_MESSAGE.requestMockCORSValidationFailed, RequestMock.name, event._requestFilterRule);
+            this._warningLog?.addWarning(WARNING_MESSAGE.requestMockCORSValidationFailed, RequestMock.name, event._requestFilterRule);
     }
 
     // API
@@ -52,7 +52,7 @@ class RequestMock extends RequestHook {
         const mock = new ResponseMock(body, statusCode, headers);
         const rule = new RequestFilterRule(this._pendingRequestFilterRuleInit);
 
-        this.requestFilterRules.push(rule);
+        this._requestFilterRules.push(rule);
         this._mocks.set(rule, mock);
 
         this._pendingRequestFilterRuleInit = null;

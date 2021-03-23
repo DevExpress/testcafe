@@ -48,6 +48,7 @@ export default class Runner extends EventEmitter {
         this.configuration       = configuration;
         this.isCli               = false;
         this.warningLog          = new WarningLog();
+        this.compilerService     = compilerService;
 
         this.apiMethodWasCalled = new FlagList([
             OPTION_NAMES.src,

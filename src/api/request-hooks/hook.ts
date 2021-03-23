@@ -13,15 +13,15 @@ import WarningLog from '../../notifications/warning-log';
 
 
 export default abstract class RequestHook {
-    protected requestFilterRules: RequestFilterRuleInit[];
+    public _requestFilterRules: RequestFilterRuleInit[];
     private readonly _responseEventConfigureOpts?: ConfigureResponseEventOptions;
-    protected warningLog: WarningLog | null;
+    public _warningLog: WarningLog | null;
     public id: string;
 
     protected constructor (ruleInit?: RequestFilterRuleInit | RequestFilterRuleInit[], responseEventConfigureOpts?: ConfigureResponseEventOptions) {
-        this.requestFilterRules          = this._prepareRules(ruleInit);
+        this._requestFilterRules         = this._prepareRules(ruleInit);
         this._responseEventConfigureOpts = responseEventConfigureOpts;
-        this.warningLog                  = null;
+        this._warningLog                 = null;
         this.id                          = generateUniqueId();
     }
 
