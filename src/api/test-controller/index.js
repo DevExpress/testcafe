@@ -46,6 +46,9 @@ import {
     GetBrowserConsoleMessagesCommand,
     SetTestSpeedCommand,
     SetPageLoadTimeoutCommand,
+    ScrollCommand,
+    ScrollByCommand,
+    ScrollIntoViewCommand,
     UseRoleCommand
 } from '../../test-run/commands/actions';
 
@@ -207,6 +210,51 @@ export default class TestController {
 
     _dragToElement$ (selector, destinationSelector, options) {
         return this._enqueueCommand('dragToElement', DragToElementCommand, { selector, destinationSelector, options });
+    }
+
+    _parseSelectorForScroll (args) {
+        const selector = typeof args[0] === 'string' || isSelector(args[0]) ? args[0] : null;
+
+        if (selector)
+            args.shift();
+        else
+            // eslint-disable-next-line no-undef
+            return () => document.scrollingElement || document.documentElement;
+
+        return selector;
+    }
+
+    _scroll$ (...args) {
+        let position = null;
+
+        if (args.length === 1 && typeof args[0] === 'string')
+            position = args.shift();
+
+        const selector = this._parseSelectorForScroll(args);
+
+        let x       = void 0;
+        let y       = void 0;
+        let options = void 0;
+
+        if (typeof args[0] === 'string')
+            [ position, options ] = args;
+
+        if (typeof args[0] === 'number')
+            [ x, y, options ] = args;
+
+        return this._enqueueCommand('scroll', ScrollCommand, { selector, x, y, position, options });
+    }
+
+    _scrollBy$ (...args) {
+        const selector = this._parseSelectorForScroll(args);
+
+        const [byX, byY, options] = args;
+
+        return this._enqueueCommand('scrollBy', ScrollByCommand, { selector, byX, byY, options });
+    }
+
+    _scrollIntoView$ (selector, options) {
+        return this._enqueueCommand('scrollIntoView', ScrollIntoViewCommand, { selector, options });
     }
 
     _typeText$ (selector, text, options) {

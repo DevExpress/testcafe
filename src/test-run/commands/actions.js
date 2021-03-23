@@ -8,7 +8,8 @@ import {
     ClickOptions,
     MouseOptions,
     TypeOptions,
-    DragToElementOptions
+    DragToElementOptions,
+    OffsetOptions
 } from './options';
 
 import { initSelector, initUploadSelector } from './validations/initializers';
@@ -45,6 +46,10 @@ function initClickOptions (name, val) {
 
 function initMouseOptions (name, val) {
     return new MouseOptions(val, true);
+}
+
+function initOffsetOptions (name, val) {
+    return new OffsetOptions(val, true);
 }
 
 function initTypeOptions (name, val) {
@@ -203,6 +208,50 @@ export class DragToElementCommand extends CommandBase {
             { name: 'selector', init: initSelector, required: true },
             { name: 'destinationSelector', init: initSelector, required: true },
             { name: 'options', type: actionOptions, init: initDragToElementOptions, required: true }
+        ];
+    }
+}
+
+export class ScrollCommand extends CommandBase {
+    constructor (obj, testRun) {
+        super(obj, testRun, TYPE.scroll);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'selector', init: initSelector, required: false },
+            { name: 'position', type: nullableStringArgument, required: false },
+            { name: 'x', type: positiveIntegerArgument, defaultValue: null },
+            { name: 'y', type: positiveIntegerArgument, defaultValue: null },
+            { name: 'options', type: actionOptions, init: initOffsetOptions, required: true }
+        ];
+    }
+}
+
+export class ScrollByCommand extends CommandBase {
+    constructor (obj, testRun) {
+        super(obj, testRun, TYPE.scrollBy);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'selector', init: initSelector, required: false },
+            { name: 'byX', type: integerArgument, defaultValue: 0 },
+            { name: 'byY', type: integerArgument, defaultValue: 0 },
+            { name: 'options', type: actionOptions, init: initOffsetOptions, required: true }
+        ];
+    }
+}
+
+export class ScrollIntoViewCommand extends CommandBase {
+    constructor (obj, testRun) {
+        super(obj, testRun, TYPE.scrollIntoView);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'selector', init: initSelector, required: true },
+            { name: 'options', type: actionOptions, init: initOffsetOptions, required: true },
         ];
     }
 }
