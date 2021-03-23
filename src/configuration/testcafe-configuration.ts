@@ -38,7 +38,6 @@ const DEFAULT_SCREENSHOTS_DIRECTORY = 'screenshots';
 
 const OPTION_FLAG_NAMES = [
     OPTION_NAMES.skipJsErrors,
-    OPTION_NAMES.quarantineMode,
     OPTION_NAMES.debugMode,
     OPTION_NAMES.debugOnFail,
     OPTION_NAMES.skipUncaughtErrors,

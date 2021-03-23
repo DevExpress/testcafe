@@ -9,7 +9,7 @@ function isQuarantineOption (option: string): option is QUARANTINE_OPTION_NAMES 
     return Object.values(QUARANTINE_OPTION_NAMES).includes(option as QUARANTINE_OPTION_NAMES);
 }
 
-export default async function (optionName: string, options: string | Dictionary<string | number>): Promise<Dictionary<number | string>> {
+export default async function (optionName: string, options: string | Dictionary<string | number>): Promise<Dictionary<number>> {
     const parsedOptions = await baseGetOptions(options, {
         skipOptionValueTypeConversion: true,
 
