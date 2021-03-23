@@ -5,12 +5,13 @@ const { TEST_RUN_ERRORS } = require('../../lib/errors/types');
 
 class TestRunMock extends TestRun {
     constructor ({ activeWindowId = 'id', disableMultipleWindows = false, isLegacy = false } = {}) {
-        super(
-            { id: 'test-id', name: 'test-name', isLegacy: isLegacy, fixture: { path: 'dummy', id: 'fixture-id', name: 'fixture-name' } },
-            { activeWindowId: activeWindowId },
-            {},
-            {},
-            { disableMultipleWindows: disableMultipleWindows });
+        super({
+            test:               { id: 'test-id', name: 'test-name', isLegacy: isLegacy, fixture: { path: 'dummy', id: 'fixture-id', name: 'fixture-name' } },
+            browserConnection:  { activeWindowId: activeWindowId },
+            screenshotCapturer: {},
+            globalWarningLog:   {},
+            opts:               { disableMultipleWindows: disableMultipleWindows }
+        });
     }
 
     _addInjectables () {

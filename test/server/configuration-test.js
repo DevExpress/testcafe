@@ -342,7 +342,7 @@ describe('TestCafeConfiguration', function () {
 
             return configuration.init()
                 .then(() => {
-                    runner = new RunnerCtor(null, null, configuration);
+                    runner = new RunnerCtor({ configuration });
 
                     runner
                         .tsConfigPath('path-to-ts-config')
@@ -362,7 +362,7 @@ describe('TestCafeConfiguration', function () {
 
             return configuration.init()
                 .then(() => {
-                    runner = new RunnerCtor(null, null, configuration);
+                    runner = new RunnerCtor({ configuration });
 
                     runner
                         .tsConfigPath('path-to-ts-config')
@@ -383,7 +383,7 @@ describe('TestCafeConfiguration', function () {
 
             return configuration.init()
                 .then(() => {
-                    runner = new RunnerCtor(null, null, configuration);
+                    runner = new RunnerCtor({ configuration });
 
                     runner
                         .tsConfigPath('path-to-ts-config')
@@ -580,7 +580,7 @@ describe('TypeScriptConfiguration', function () {
 
             return configuration.init()
                 .then(() => {
-                    runner = new RunnerCtor(null, null, configuration);
+                    runner = new RunnerCtor({ configuration });
 
                     runner.src('test/server/data/test-suites/typescript-basic/testfile1.ts');
                     runner._setBootstrapperOptions();
@@ -606,7 +606,7 @@ describe('TypeScriptConfiguration', function () {
                     }
                 });
 
-                runner = new RunnerCtor(null, null, new TestCafeConfiguration());
+                runner = new RunnerCtor({ configuration: new TestCafeConfiguration() });
 
                 runner.src('test/server/data/test-suites/typescript-basic/testfile1.ts');
                 runner.tsConfigPath(customTSConfigFilePath);
@@ -622,7 +622,7 @@ describe('TypeScriptConfiguration', function () {
             });
 
             it('Custom compiler options', () => {
-                const runner = new RunnerCtor(null, null, new TestCafeConfiguration());
+                const runner = new RunnerCtor({ configuration: new TestCafeConfiguration() });
 
                 runner
                     .src('test/server/data/test-suites/typescript-basic/testfile1.ts')

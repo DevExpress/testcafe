@@ -7,7 +7,7 @@ const originalRequire = Module.prototype.require;
 
 class LiveModeBootstrapper extends Bootstrapper {
     constructor (runner, browserConnectionGateway) {
-        super(browserConnectionGateway);
+        super({ browserConnectionGateway });
 
         this.runner = runner;
     }

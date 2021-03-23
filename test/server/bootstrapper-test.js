@@ -37,7 +37,7 @@ function setupBootstrapper () {
         getTests: () => [ new Test({ currentFixture: void 0 }) ]
     };
 
-    return new BootstrapperMock(browserConnectionGateway, compilerService);
+    return new BootstrapperMock({ browserConnectionGateway, compilerService });
 }
 
 describe('Bootstrapper', () => {
@@ -148,7 +148,7 @@ describe('Bootstrapper', () => {
                 }
             };
 
-            const bootstrapper = new Bootstrapper(browserConnectionGateway, compilerService);
+            const bootstrapper = new Bootstrapper({ browserConnectionGateway, compilerService });
 
             bootstrapper.browserInitTimeout           = 100;
             bootstrapper.TESTS_COMPILATION_UPPERBOUND = 0;

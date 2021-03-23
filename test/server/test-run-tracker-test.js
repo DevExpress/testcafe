@@ -19,7 +19,13 @@ class TestRunMock extends TestRun {
     }
 
     constructor () {
-        super({}, {}, {}, {}, {});
+        super({
+            test:               {},
+            browserConnection:  {},
+            screenshotCapturer: {},
+            globalWarningLog:   {},
+            opts:               {}
+        });
     }
 }
 

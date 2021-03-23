@@ -8,8 +8,8 @@ import { GeneralError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
 
 class LiveModeRunner extends Runner {
-    constructor (proxy, browserConnectionGateway, options) {
-        super(proxy, browserConnectionGateway, options);
+    constructor ({ proxy, browserConnectionGateway, configuration }) {
+        super({ proxy, browserConnectionGateway, configuration });
 
         this.stopping              = false;
         this.runnerTaskPromise     = null;

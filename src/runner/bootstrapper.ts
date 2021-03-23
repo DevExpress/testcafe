@@ -37,7 +37,7 @@ import { Metadata } from '../api/structure/interfaces';
 import Test from '../api/structure/test';
 import detectDisplay from '../utils/detect-display';
 import { getPluginFactory, processReporterName } from '../utils/reporter';
-import { BrowserSetOptions } from './interfaces';
+import { BootstrapperInit, BrowserSetOptions } from './interfaces';
 import WarningLog from '../notifications/warning-log';
 import WARNING_MESSAGES from '../notifications/warning-message';
 import guardTimeExecution from '../utils/guard-time-execution';
@@ -109,9 +109,9 @@ export default class Bootstrapper {
     private readonly debugLogger: debug.Debugger;
     private readonly warningLog: WarningLog;
 
-    private TESTS_COMPILATION_UPPERBOUND: number;
+    private readonly TESTS_COMPILATION_UPPERBOUND: number;
 
-    public constructor (browserConnectionGateway: BrowserConnectionGateway, compilerService?: CompilerService) {
+    public constructor ({ browserConnectionGateway, compilerService }: BootstrapperInit) {
         this.browserConnectionGateway = browserConnectionGateway;
         this.concurrency              = 1;
         this.sources                  = [];
@@ -126,10 +126,9 @@ export default class Bootstrapper {
         this.compilerOptions          = void 0;
         this.debugLogger              = debug(DEBUG_SCOPE);
         this.warningLog               = new WarningLog();
+        this.compilerService          = compilerService;
 
         this.TESTS_COMPILATION_UPPERBOUND = 60;
-
-        this.compilerService = compilerService;
     }
 
     private static _getBrowserName (browser: BrowserInfoSource): string {
