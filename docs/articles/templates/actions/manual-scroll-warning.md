@@ -1,0 +1,1 @@
+> Important! When you perform actions, TestCafe scrolls the webpage as needed to reach elements. There is usually no need to scroll the page manually.
