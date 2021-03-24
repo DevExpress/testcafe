@@ -217,10 +217,9 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     _initRequestHook (hook) {
-        hook.warningLog = this.warningLog;
+        hook._warningLog = this.warningLog;
 
-        hook._instantiateRequestFilterRules();
-        hook._instantiatedRequestFilterRules.forEach(rule => {
+        hook._requestFilterRules.forEach(rule => {
             this.session.addRequestEventListeners(rule, {
                 onRequest:           hook.onRequest.bind(hook),
                 onConfigureResponse: hook._onConfigureResponse.bind(hook),
@@ -243,9 +242,9 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     _disposeRequestHook (hook) {
-        hook.warningLog = null;
+        hook._warningLog = null;
 
-        hook._instantiatedRequestFilterRules.forEach(rule => {
+        hook._requestFilterRules.forEach(rule => {
             this.session.removeRequestEventListeners(rule);
         });
     }

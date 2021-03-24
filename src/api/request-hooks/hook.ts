@@ -1,49 +1,37 @@
 import {
-    RequestFilterRule,
     ConfigureResponseEvent,
     ConfigureResponseEventOptions,
     RequestEvent,
     ResponseEvent,
+    RequestFilterRule,
+    RequestFilterRuleInit,
     generateUniqueId
 } from 'testcafe-hammerhead';
 
-import { castArray } from 'lodash';
 import { RequestHookNotImplementedMethodError } from '../../errors/test-run';
-import { RequestFilterRuleInit } from './interfaces';
 import WarningLog from '../../notifications/warning-log';
 
 
 export default abstract class RequestHook {
-    protected requestFilterRules: RequestFilterRuleInit[];
-    private _instantiatedRequestFilterRules: RequestFilterRule[];
+    public _requestFilterRules: RequestFilterRuleInit[];
     private readonly _responseEventConfigureOpts?: ConfigureResponseEventOptions;
-    protected warningLog: WarningLog | null;
+    public _warningLog: WarningLog | null;
     public id: string;
 
-    protected constructor (requestFilterRules: RequestFilterRuleInit | RequestFilterRuleInit[] | undefined, responseEventConfigureOpts?: ConfigureResponseEventOptions) {
-        this.requestFilterRules              = this._prepareRequestFilterRules(requestFilterRules);
-        this._instantiatedRequestFilterRules = [];
-        this._responseEventConfigureOpts     = responseEventConfigureOpts;
-        this.id                              = generateUniqueId();
-
-        this.warningLog = null;
+    protected constructor (ruleInit?: RequestFilterRuleInit | RequestFilterRuleInit[], responseEventConfigureOpts?: ConfigureResponseEventOptions) {
+        this._requestFilterRules         = this._prepareRules(ruleInit);
+        this._responseEventConfigureOpts = responseEventConfigureOpts;
+        this._warningLog                 = null;
+        this.id                          = generateUniqueId();
     }
 
-    private _prepareRequestFilterRules (rules: RequestFilterRuleInit | RequestFilterRuleInit[] | undefined): RequestFilterRuleInit[] {
-        if (rules)
-            return castArray(rules);
+    private _prepareRules (ruleInit?: RequestFilterRuleInit | RequestFilterRuleInit[]): RequestFilterRule[] {
+        if (Array.isArray(ruleInit) && !ruleInit.length)
+            return [];
 
-        return [RequestFilterRule.ANY];
-    }
+        const rules = RequestFilterRule.from(ruleInit);
 
-    private _instantiateRequestFilterRules (): void {
-        this._instantiatedRequestFilterRules = [];
-
-        this.requestFilterRules.forEach(rule => {
-            const instantiatedRule = rule instanceof RequestFilterRule ? rule : new RequestFilterRule(rule);
-
-            this._instantiatedRequestFilterRules.push(instantiatedRule);
-        });
+        return !rules.length ? [RequestFilterRule.ANY] : rules;
     }
 
     protected async onRequest (event: RequestEvent): Promise<void> { // eslint-disable-line @typescript-eslint/no-unused-vars

@@ -1,5 +1,3 @@
-export type RequestFilterRuleInit = unknown;
-
 export interface RequestHookLogOptions {
     logRequestHeaders: boolean;
     logRequestBody: boolean;
