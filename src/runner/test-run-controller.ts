@@ -134,6 +134,13 @@ export default class TestRunController extends AsyncEventEmitter {
         if (this.testRun.addQuarantineInfo)
             this.testRun.addQuarantineInfo(this._quarantine);
 
+        if (this._quarantine) {
+            const { passCount, retryCount } = this._opts.quarantineMode;
+
+            if (retryCount) this._quarantine.FAILED_QUARANTINE_THRESHOLD = retryCount;
+            if (passCount) this._quarantine.PASSED_QUARANTINE_THRESHOLD = passCount;
+        }
+
         if (!this._quarantine || this._isFirstQuarantineAttempt()) {
             await this.emit('test-run-create', {
                 testRun:    this.testRun,
@@ -211,12 +218,6 @@ export default class TestRunController extends AsyncEventEmitter {
 
     private async _emitTestRunStart (): Promise<void> {
         await this.emit('test-run-start');
-        if (this._quarantine) {
-            // const { passCount, retryCount } = this._opts.quarantineMode;
-
-            this._quarantine.setFailedQuarantineThreshold(3);
-            this._quarantine.setPassedQuarantineThreshold(1);
-        }
     }
 
     private async _testRunBeforeDone (): Promise<void> {
