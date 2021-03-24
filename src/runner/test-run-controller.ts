@@ -154,10 +154,10 @@ export default class TestRunController extends AsyncEventEmitter {
             this.testRun.addQuarantineInfo(this._quarantine);
 
         if (this._quarantine) {
-            const { passCount, retryCount } = this._opts.quarantineMode;
+            const { passCount, retryCount } = this._opts.quarantineMode as QuarantineOptionValue;
 
-            if (retryCount) this._quarantine.FAILED_QUARANTINE_THRESHOLD = retryCount;
-            if (passCount) this._quarantine.PASSED_QUARANTINE_THRESHOLD = passCount;
+            if (retryCount) this._quarantine.setFailedQuarantineThreshold(retryCount);
+            if (passCount) this._quarantine.setPassedQuarantineThreshold(passCount);
         }
 
         if (!this._quarantine || this._isFirstQuarantineAttempt()) {
