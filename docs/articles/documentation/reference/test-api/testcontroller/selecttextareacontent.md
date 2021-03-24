@@ -18,7 +18,7 @@ Parameter  | Type                                              | Description    
 `startPos`&#160;*(optional)*  | Number                                            | The start position of selection within the line defined by the `startLine`. A zero-based integer.                          | `0`
 `endLine`&#160;*(optional)*   | Number                                            | The line number at which selection ends. A zero-based integer.                                                             | The index of the last line.
 `endPos`&#160;*(optional)*    | Number                                            | The end position of selection within the line defined by `endLine`. A zero-based integer.                                  | The last position in `endLine`.
-`options`&#160;*(optional)*  | Object                                            | A set of options that provide additional parameters for the action. See [Options](#options).
+`options`&#160;*(optional)*  | Object                                            | A set of options with additional parameters for the action. See [Options](#options).
 
 The following example shows how to select text within a `<textarea>` element.
 

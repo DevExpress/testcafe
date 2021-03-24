@@ -74,7 +74,7 @@ const mock = RequestMock()
     .respond(/*...*/);
 ```
 
-This predicate takes the `request` parameter that provides the following properties:
+This predicate takes the `request` parameter with the following properties:
 
 Property | Type | Description
 -------- | ---- | --------------
