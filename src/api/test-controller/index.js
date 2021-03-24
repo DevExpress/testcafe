@@ -212,25 +212,33 @@ export default class TestController {
         return this._enqueueCommand('dragToElement', DragToElementCommand, { selector, destinationSelector, options });
     }
 
-    _parseSelectorForScroll (args) {
+    _getSelectorForScroll (args) {
         const selector = typeof args[0] === 'string' || isSelector(args[0]) ? args[0] : null;
 
         if (selector)
             args.shift();
         else
+            // NOTE: here we use document.scrollingElement for old Safari versions
+            // document.documentElement does not work as expected on Mojave Safari 12.1/ High Sierra Safari 11.1
             // eslint-disable-next-line no-undef
             return () => document.scrollingElement || document.documentElement;
 
         return selector;
     }
 
+    _getPosition (args) {
+        const position = args.length === 1 && typeof args[0] === 'string' ? args[0] : null;
+
+        if (position)
+            args.shift();
+
+        return position;
+    }
+
     _scroll$ (...args) {
-        let position = null;
+        let position = this._getPosition(args);
 
-        if (args.length === 1 && typeof args[0] === 'string')
-            position = args.shift();
-
-        const selector = this._parseSelectorForScroll(args);
+        const selector = this._getSelectorForScroll(args);
 
         let x       = void 0;
         let y       = void 0;
@@ -246,7 +254,7 @@ export default class TestController {
     }
 
     _scrollBy$ (...args) {
-        const selector = this._parseSelectorForScroll(args);
+        const selector = this._getSelectorForScroll(args);
 
         const [byX, byY, options] = args;
 

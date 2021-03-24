@@ -1,11 +1,23 @@
 import hammerhead from '../deps/hammerhead';
 import VisibleElementAutomation from './visible-element-automation';
+import { OffsetOptions } from '../../../test-run/commands/options';
 
 const Promise = hammerhead.Promise;
 
-function calculatePosition (el, position) {
+type ScrollPosition = 'top' | 'right' | 'bottom' | 'left' | 'topRight' | 'topLeft' | 'bottomRight' | 'bottomLeft' | 'center';
+
+interface SetScrollAutomationOptions {
+    x?: number;
+    y?: number;
+    position?: ScrollPosition;
+    byX?: number;
+    byY?: number;
+}
+
+function calculatePosition (el: HTMLElement, position: ScrollPosition): number[] {
     const centerX = Math.floor(el.scrollWidth / 2 - el.clientWidth / 2);
     const centerY = Math.floor(el.scrollHeight / 2 - el.clientHeight / 2);
+
 
     const positions = {
         'top':         [ centerX, 0],
@@ -23,7 +35,10 @@ function calculatePosition (el, position) {
 }
 
 export default class SetScrollAutomation extends VisibleElementAutomation {
-    constructor (element, { x, y, position, byX, byY }, offsetOptions) {
+    private scrollLeft: number;
+    private scrollTop: number;
+
+    public constructor (element: HTMLElement, { x, y, position, byX, byY }: SetScrollAutomationOptions, offsetOptions: OffsetOptions) {
         super(element, offsetOptions);
 
         if (position)
@@ -39,7 +54,7 @@ export default class SetScrollAutomation extends VisibleElementAutomation {
             this.scrollTop += byY;
     }
 
-    run (useStrictElementCheck) {
+    public run (useStrictElementCheck: boolean): Promise<void> {
         let promise = Promise.resolve();
 
         if (this.element !== document.scrollingElement && this.element !== document.documentElement)
