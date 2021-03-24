@@ -216,8 +216,8 @@ describe('RequestMock', () => {
             .onRequestTo('http://example.com')
             .respond();
 
-        expect(mock.requestFilterRules.length).eql(1);
-        expect(mock.requestFilterRules[0].options.url).eql('http://example.com');
+        expect(mock._requestFilterRules.length).eql(1);
+        expect(mock._requestFilterRules[0].options.url).eql('http://example.com');
     });
 });
 
@@ -225,8 +225,8 @@ describe('RequestHook', () => {
     it('Should handle any requests by default', () => {
         const hook = new RequestHook();
 
-        expect(hook.requestFilterRules.length).eql(1);
-        expect(hook.requestFilterRules[0].options).eql(RequestFilterRule.ANY.options);
+        expect(hook._requestFilterRules.length).eql(1);
+        expect(hook._requestFilterRules[0].options).eql(RequestFilterRule.ANY.options);
     });
 
     it('Should have an identifier', () => {
