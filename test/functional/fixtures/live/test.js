@@ -46,7 +46,11 @@ class RunnerMock extends LiveModeRunner {
 function createLiveModeRunner (tc, src, browsers = DEFAULT_BROWSERS) {
     const { proxy, browserConnectionGateway, configuration } = tc;
 
-    const runner = new RunnerMock(proxy, browserConnectionGateway, configuration.clone());
+    const runner = new RunnerMock({
+        proxy,
+        browserConnectionGateway,
+        configuration: configuration.clone()
+    });
 
     tc.runners.push(runner);
 

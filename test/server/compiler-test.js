@@ -46,7 +46,13 @@ class TestRunMock extends TestRun {
     }
 
     constructor (expectedError) {
-        super({}, {}, {}, {}, {});
+        super({
+            test:               {},
+            browserConnection:  {},
+            screenshotCapturer: {},
+            globalWarningLog:   {},
+            opts:               {}
+        });
 
         this.expectedError = expectedError;
         this.commands = [];

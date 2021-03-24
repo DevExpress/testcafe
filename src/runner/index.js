@@ -39,7 +39,7 @@ import WarningLog from '../notifications/warning-log';
 const DEBUG_LOGGER = debug('testcafe:runner');
 
 export default class Runner extends EventEmitter {
-    constructor (proxy, browserConnectionGateway, configuration, compilerService) {
+    constructor ({ proxy, browserConnectionGateway, configuration, compilerService }) {
         super();
 
         this.proxy               = proxy;
@@ -58,7 +58,7 @@ export default class Runner extends EventEmitter {
     }
 
     _createBootstrapper (browserConnectionGateway, compilerService) {
-        return new Bootstrapper(browserConnectionGateway, compilerService);
+        return new Bootstrapper({ browserConnectionGateway, compilerService });
     }
 
     _disposeBrowserSet (browserSet) {
@@ -169,10 +169,17 @@ export default class Runner extends EventEmitter {
     }
 
     _createTask (tests, browserConnectionGroups, proxy, opts, warningLog) {
-        return new Task(tests, browserConnectionGroups, proxy, opts, warningLog);
+        return new Task({
+            tests,
+            browserConnectionGroups,
+            proxy,
+            opts,
+            runnerWarningLog: warningLog,
+            compilerService:  this.compilerService
+        });
     }
 
-    _runTask (reporterPlugins, browserSet, tests, testedApp, options) {
+    _runTask ({ reporterPlugins, browserSet, tests, testedApp, options }) {
         const task              = this._createTask(tests, browserSet.browserConnectionGroups, this.proxy, options, this.warningLog);
         const reporters         = reporterPlugins.map(reporter => new Reporter(reporter.plugin, task, reporter.outStream, reporter.name));
         const completionPromise = this._getTaskResult(task, browserSet, reporters, testedApp);
@@ -580,7 +587,7 @@ export default class Runner extends EventEmitter {
 
                 await this.bootstrapper.compilerService?.setOptions({ value: resultOptions });
 
-                return this._runTask(reporterPlugins, browserSet, tests, testedApp, resultOptions);
+                return this._runTask({ reporterPlugins, browserSet, tests, testedApp, options: resultOptions });
             });
 
         return this._createCancelablePromise(runTaskPromise);

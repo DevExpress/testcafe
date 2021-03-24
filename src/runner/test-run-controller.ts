@@ -10,8 +10,9 @@ import Screenshots from '../screenshots';
 import WarningLog from '../notifications/warning-log';
 import FixtureHookController from './fixture-hook-controller';
 import { Dictionary } from '../configuration/interfaces';
-import { ActionEventArg } from './interfaces';
+import { ActionEventArg, TestRunControllerInit } from './interfaces';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
+import CompilerService from '../services/compiler/host';
 
 const DEFAULT_QUARANTINE_THRESHOLD = 3;
 const DISCONNECT_THRESHOLD = 3;
@@ -95,13 +96,23 @@ export default class TestRunController extends AsyncEventEmitter {
     private readonly _testRunCtor: LegacyTestRun['constructor'] | TestRun['constructor'];
     public testRun: null | LegacyTestRun | TestRun;
     public done: boolean;
+    private readonly compilerService?: CompilerService;
 
-    public constructor (test: Test, index: number, proxy: Proxy, screenshots: Screenshots, warningLog: WarningLog, fixtureHookController: FixtureHookController, opts: Dictionary<OptionValue>) {
+    public constructor ({
+        test,
+        index,
+        proxy,
+        screenshots,
+        warningLog,
+        fixtureHookController,
+        opts,
+        compilerService
+    }: TestRunControllerInit) {
         super();
 
         this.test  = test;
         this.index = index;
-        this._opts  = opts;
+        this._opts = opts;
 
         this._proxy                 = proxy;
         this._screenshots           = screenshots;
@@ -111,9 +122,10 @@ export default class TestRunController extends AsyncEventEmitter {
         this._testRunCtor = TestRunController._getTestRunCtor(test, opts);
 
         this.testRun             = null;
-        this.done               = false;
+        this.done                = false;
         this._quarantine         = this._opts.quarantineMode ? new Quarantine() : null;
         this._disconnectionCount = 0;
+        this.compilerService     = compilerService;
     }
 
     private static _getTestRunCtor (test: Test, opts: Dictionary<OptionValue>): LegacyTestRun | TestRun {
@@ -127,7 +139,14 @@ export default class TestRunController extends AsyncEventEmitter {
         const screenshotCapturer = this._screenshots.createCapturerFor(this.test, this.index, this._quarantine, connection, this._warningLog);
         const TestRunCtor        = this._testRunCtor;
 
-        this.testRun = new TestRunCtor(this.test, connection, screenshotCapturer, this._warningLog, this._opts);
+        this.testRun = new TestRunCtor({
+            test:              this.test,
+            browserConnection: connection,
+            globalWarningLog:  this._warningLog,
+            opts:              this._opts,
+            compilerService:   this.compilerService,
+            screenshotCapturer
+        });
 
         this._screenshots.addTestRun(this.test, this.testRun);
 

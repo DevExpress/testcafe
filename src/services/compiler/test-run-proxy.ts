@@ -11,7 +11,7 @@ import { Dictionary } from '../../configuration/interfaces';
 import COMMAND_TYPE from '../../test-run/commands/type';
 import CommandBase from '../../test-run/commands/base';
 import * as serviceCommands from '../../test-run/commands/service';
-
+import { TestRunProxyInit } from '../interfaces';
 
 class TestRunProxy {
     public readonly id: string;
@@ -24,7 +24,7 @@ class TestRunProxy {
     private readonly ctx: unknown;
     private readonly _options: Dictionary<OptionValue>;
 
-    public constructor (dispatcher: TestRunDispatcherProtocol, id: string, fixtureCtx: unknown, options: Dictionary<OptionValue>) {
+    public constructor ({ dispatcher, id, fixtureCtx, options }: TestRunProxyInit) {
         this.dispatcher = dispatcher;
 
         this.id = id;

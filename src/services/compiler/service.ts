@@ -77,8 +77,14 @@ class CompilerService implements CompilerProtocol {
     }
 
     private _ensureTestRunProxy (testRunId: string, fixtureCtx: unknown): TestRunProxy {
-        if (!this.state.testRuns[testRunId])
-            this.state.testRuns[testRunId] = new TestRunProxy(this, testRunId, fixtureCtx, this.state.options);
+        if (!this.state.testRuns[testRunId]) {
+            this.state.testRuns[testRunId] = new TestRunProxy({
+                dispatcher: this,
+                id:         testRunId,
+                options:    this.state.options,
+                fixtureCtx
+            });
+        }
 
         return this.state.testRuns[testRunId];
     }

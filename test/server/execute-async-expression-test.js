@@ -27,7 +27,13 @@ class TestRunMock extends TestRun {
     }
 
     constructor () {
-        super({ name: 'Test', testFile: { filename: __filename } }, {}, {}, {}, {});
+        super({
+            test:               { name: 'Test', testFile: { filename: __filename } },
+            browserConnection:  {},
+            screenshotCapturer: {},
+            globalWarningLog:   {},
+            opts:               {}
+        });
 
         this.debugLog        = { command: noop };
         this.controller      = new TestController(this);
@@ -208,9 +214,9 @@ describe('Code steps', () => {
                     resolve('hooray!');
                 }, 20);
             });
-            
+
             const result = await promise;
-            
+
             return result;
         `)
             .then(result => {
@@ -247,7 +253,7 @@ describe('Code steps', () => {
             clearTimeout(timeout);
             clearImmediate(immediate);
             clearInterval(interval);
-            
+
             return { __dirname, __filename };
         `);
 

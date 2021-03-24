@@ -76,7 +76,7 @@ const CHILD_WINDOW_READY_TIMEOUT      = 30 * 1000;
 const ALL_DRIVER_TASKS_ADDED_TO_QUEUE_EVENT = 'all-driver-tasks-added-to-queue';
 
 export default class TestRun extends AsyncEventEmitter {
-    constructor (test, browserConnection, screenshotCapturer, globalWarningLog, opts) {
+    constructor ({ test, browserConnection, screenshotCapturer, globalWarningLog, opts, compilerService }) {
         super();
 
         this[testRunMarker] = true;
@@ -142,6 +142,7 @@ export default class TestRun extends AsyncEventEmitter {
         this.debugLogger = this.opts.debugLogger;
 
         this.observedCallsites = new ObservedCallsitesStorage();
+        this.compilerService   = compilerService;
 
         this._addInjectables();
         this._initRequestHooks();
@@ -200,7 +201,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     addRequestHook (hook) {
-        if (this.requestHooks.indexOf(hook) !== -1)
+        if (this.requestHooks.includes(hook))
             return;
 
         this.requestHooks.push(hook);
@@ -208,7 +209,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     removeRequestHook (hook) {
-        if (this.requestHooks.indexOf(hook) === -1)
+        if (!this.requestHooks.includes(hook))
             return;
 
         pull(this.requestHooks, hook);

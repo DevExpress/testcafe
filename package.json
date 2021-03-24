@@ -2,7 +2,7 @@
   "name": "testcafe",
   "description": "Automated browser testing for the modern web development stack.",
   "license": "MIT",
-  "version": "1.13.0-rc.1",
+  "version": "1.13.0",
   "author": {
     "name": "Developer Express Inc.",
     "url": "https://www.devexpress.com/"
@@ -130,7 +130,7 @@
     "strip-bom": "^2.0.0",
     "testcafe-browser-tools": "2.0.15",
     "testcafe-hammerhead": "19.5.0",
-    "testcafe-legacy-api": "4.2.5",
+    "testcafe-legacy-api": "5.0.0",
     "testcafe-reporter-json": "^2.1.0",
     "testcafe-reporter-list": "^2.1.0",
     "testcafe-reporter-minimal": "^2.1.0",
