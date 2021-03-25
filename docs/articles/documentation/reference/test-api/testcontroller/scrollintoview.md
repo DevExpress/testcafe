@@ -7,7 +7,7 @@ permalink: /documentation/reference/test-api/testcontroller/scrollintoview.html
 
 {% include actions/manual-scroll-warning.md %}
 
-Scrolls the parent container of the `target` element until the element is inside of the viewport. Can be chained with other `TestController` methods.
+Scrolls parent containers of the `target` element until the element is inside of the viewport. Can be chained with other `TestController` methods.
 
 ```text
 t.scrollIntoView(target [, options]) → this | Promise<any>
@@ -20,19 +20,7 @@ Parameter   | Type                                              | Description
 
 The following example shows how to use the `t.scrollIntoView` action to scroll the webpage until the element is in the viewport.
 
-```js
-import { Selector } from 'testcafe';
-
-fixture `My fixture`
-    .page `http://www.example.com/`;
-
-test('Scroll inside a list', async t => {
-    const target = Selector('#target')
-
-    await t
-        .scrollIntoView(target)
-});
-```
+{% include actions/scrollintoview-example.md %}
 
 ## Select Target Elements
 

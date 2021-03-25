@@ -9,24 +9,26 @@ Scroll action options supply additional parameters for `t.scroll`, `t.scrollBy` 
 
 Parameter                      | Type    | Description                                                                                                                                                 | Default
 ------------------------------ | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------
-`offsetX`, `offsetY`           | Number  | Mouse pointer coordinates that define a point where the action is performed or started. If an offset is a positive integer, coordinates are calculated relative to the top-left corner of the target element. If an offset is a negative integer, they are calculated relative to the bottom-right corner. | The center of the target element.
+`offsetX`, `offsetY`           | Number  | Mouse pointer coordinates that define a point where the action is performed or started. If positive, TestCafe calculates coordinates relative to the top-left corner of the target element. If negative, they are calculated relative to the bottom-right corner. | The center of the target element.
 
-**Example**
-
-TODO
+The example below scrolls the element until the different corners of the element are visible.
 
 ```js
-// import { Selector } from 'testcafe';
+import { Selector } from 'testcafe';
 
-// const nameInput = Selector('#developer-name');
+fixture `Scroll Action`
+    .page `http://www.example.com/`;
 
-// fixture `My Fixture`
-//     .page `http://devexpress.github.io/testcafe/example/`
+test('Scroll element into view', async t => {
+    const target = Selector('#target');
 
-// test('My Test', async t => {
-//     await t
-//         .typeText(nameInput, 'Pete Parker')
-//         .click(nameInput, { caretPos: 4 })
-//         .pressKey('r');
-// });
+    await t.scrollIntoView(target)
+    // No offset, scrolls until the element's center is visible
+
+    await t.scrollIntoView(target, { offsetX: 1, offsetY: 1 });
+    // Scrolls until the top left corner of the element is visible
+
+    await t.scrollIntoView(target, { offsetX: -1, offsetY: -1 });
+    // Scrolls until the bottom right corner of the element is visible
+});
 ```
