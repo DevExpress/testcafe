@@ -68,7 +68,7 @@ test('Scroll element into view', async t => {
 });
 ```
 
-To avoid compilation errors, pick element-specific data types, such as [HTMLOListElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement)).
+To avoid compilation errors, pick element-specific data types, such as [HTMLOListElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement).
 
 The example code below calls the [t.eval](../../reference/test-api/testcontroller/eval.md) method to determine if an ordered list is [reversed](https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement#properties). The generic [HTMLElement Interface](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement#properties) does not provide access to the element's `reversed` property. To avoid compilation errors, it is necessary to convert the `list` object to the [HTMLOListElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement#properties) data type.
 
