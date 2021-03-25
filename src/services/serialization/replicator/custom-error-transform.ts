@@ -1,11 +1,11 @@
 export default class CustomErrorTransform {
     public readonly type: string;
 
-    constructor() {
+    public constructor () {
         this.type = 'CustomError';
     }
 
-    private _isBuiltInError (type:string): boolean {
+    private _isBuiltInError (type: string): boolean {
         // @ts-ignore
         return !!global[type];
     }
