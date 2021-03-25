@@ -2,15 +2,18 @@ const { ElementScreenshotOptions } = require('../../../../lib/test-run/commands/
 
 const basicOptions = { speed: 1 };
 
+const offsetOptions = Object.assign({
+    offsetX:   1,
+    offsetY:   2
+}, basicOptions);
+
 const mouseOptions = Object.assign({
     modifiers: {
         alt:   true,
         ctrl:  true,
         shift: true,
-    },
-    offsetX:   1,
-    offsetY:   2
-}, basicOptions);
+    }
+}, offsetOptions);
 
 const clickOptions = Object.assign({ caretPos: 1 }, mouseOptions);
 
@@ -22,6 +25,11 @@ const typeTextOptions = Object.assign({
     replace: true,
     paste:   true
 }, clickOptions);
+
+const scrollOptions = Object.assign({
+    x: 1,
+    y: 2
+}, offsetOptions);
 
 module.exports = [
     {
@@ -129,6 +137,68 @@ module.exports = [
             selector: { expression: 'Selector(\'#target\')' },
             destinationSelector: { expression: 'Selector(\'#target\')' },
             type:                'drag-to-element'
+        },
+        test:    {
+            id:    'test-id',
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
+        },
+        browser: { alias: 'test-browser', headless: false }
+    },
+    {
+        testRunId: 'test-run-id',
+        name:    'scroll',
+        command: {
+            x:        100,
+            y:        200,
+            position: null,
+            options:  offsetOptions,
+            selector: { expression: 'Selector(\'#target\')' },
+            type:     'scroll'
+        },
+        test:    {
+            id:    'test-id',
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
+        },
+        browser: { alias: 'test-browser', headless: false }
+    },
+    {
+        testRunId: 'test-run-id',
+        name:    'scrollBy',
+        command: {
+            byX:      100,
+            byY:      200,
+            options:  offsetOptions,
+            selector: { expression: 'Selector(\'#target\')' },
+            type:     'scroll-by'
+        },
+        test:    {
+            id:    'test-id',
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
+        },
+        browser: { alias: 'test-browser', headless: false }
+    },
+    {
+        testRunId: 'test-run-id',
+        name:    'scrollIntoView',
+        command: {
+            options:  offsetOptions,
+            selector: { expression: 'Selector(\'#target\')' },
+            type:     'scroll-into-view'
         },
         test:    {
             id:    'test-id',

@@ -46,6 +46,9 @@ import {
     GetBrowserConsoleMessagesCommand,
     SetTestSpeedCommand,
     SetPageLoadTimeoutCommand,
+    ScrollCommand,
+    ScrollByCommand,
+    ScrollIntoViewCommand,
     UseRoleCommand
 } from '../../test-run/commands/actions';
 
@@ -207,6 +210,59 @@ export default class TestController {
 
     _dragToElement$ (selector, destinationSelector, options) {
         return this._enqueueCommand('dragToElement', DragToElementCommand, { selector, destinationSelector, options });
+    }
+
+    _getSelectorForScroll (args) {
+        const selector = typeof args[0] === 'string' || isSelector(args[0]) ? args[0] : null;
+
+        if (selector)
+            args.shift();
+        else
+            // NOTE: here we use document.scrollingElement for old Safari versions
+            // document.documentElement does not work as expected on Mojave Safari 12.1/ High Sierra Safari 11.1
+            // eslint-disable-next-line no-undef
+            return () => document.scrollingElement || document.documentElement;
+
+        return selector;
+    }
+
+    _getPosition (args) {
+        const position = args.length === 1 && typeof args[0] === 'string' ? args[0] : null;
+
+        if (position)
+            args.shift();
+
+        return position;
+    }
+
+    _scroll$ (...args) {
+        let position = this._getPosition(args);
+
+        const selector = this._getSelectorForScroll(args);
+
+        let x       = void 0;
+        let y       = void 0;
+        let options = void 0;
+
+        if (typeof args[0] === 'string')
+            [ position, options ] = args;
+
+        if (typeof args[0] === 'number')
+            [ x, y, options ] = args;
+
+        return this._enqueueCommand('scroll', ScrollCommand, { selector, x, y, position, options });
+    }
+
+    _scrollBy$ (...args) {
+        const selector = this._getSelectorForScroll(args);
+
+        const [byX, byY, options] = args;
+
+        return this._enqueueCommand('scrollBy', ScrollByCommand, { selector, byX, byY, options });
+    }
+
+    _scrollIntoView$ (selector, options) {
+        return this._enqueueCommand('scrollIntoView', ScrollIntoViewCommand, { selector, options });
     }
 
     _typeText$ (selector, text, options) {
