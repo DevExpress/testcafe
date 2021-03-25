@@ -11,7 +11,7 @@ Parameter                      | Type    | Description                          
 ------------------------------ | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------
 `offsetX`, `offsetY`           | Number  | Mouse pointer coordinates that define a point where the action is performed or started. If positive, TestCafe calculates coordinates relative to the top-left corner of the target element. If negative, they are calculated relative to the bottom-right corner. | The center of the target element.
 
-The example below scrolls the element until the different corners of the element are visible.
+The example below scrolls the element until different corners of the element are visible.
 
 ```js
 import { Selector } from 'testcafe';

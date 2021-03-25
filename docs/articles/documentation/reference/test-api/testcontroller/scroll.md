@@ -10,7 +10,7 @@ permalink: /documentation/reference/test-api/testcontroller/scroll.html
 Scrolls the `target` element to a specified position. If no `target` is specified, scrolls the document body. Can be chained with other `TestController` methods.
 
 ```text
-t.scroll([target,] x, y[, options])       → this | Promise<any>
+t.scroll([target,] x, y[, options])     → this | Promise<any>
 t.scroll([target,] position[, options]) → this | Promise<any>
 ```
 
