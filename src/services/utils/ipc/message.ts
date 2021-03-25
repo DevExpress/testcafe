@@ -1,7 +1,9 @@
 import { default as Packet, ParsedPacket } from './packet';
 import { GeneralError } from '../../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../../errors/types';
+import createReplicator from '../../serialization/replicator/create-replicator';
 
+const replicator = createReplicator();
 
 export class MessageParser {
     private readonly dataQueue: Buffer[];
@@ -26,7 +28,7 @@ export class MessageParser {
             const packets = this.packetQueue.splice(0, this.packetQueue.length);
             const data    = packet.header.head ? packet.data : MessageParser._concatPackets([...packets, packet]);
 
-            return JSON.parse(data.toString());
+            return replicator.decode(data.toString()) as object;
         }
 
         if (packet.header.head && this.packetQueue.length !== 0) {
@@ -89,6 +91,8 @@ export class MessageSerializer {
     }
 
     public serialize (message: object): Buffer[] {
-        return MessageSerializer._chunkData(Buffer.from(JSON.stringify(message)));
+        const encodedMessage = replicator.encode(message);
+
+        return MessageSerializer._chunkData(Buffer.from(encodedMessage));
     }
 }

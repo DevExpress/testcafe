@@ -49,20 +49,9 @@ export class IPCProxy extends EventEmitter {
                 if (item.callsite)
                     item.callsite = prerenderCallsite(item.callsite);
             }
-
-            return error;
         }
 
-        // NOTE: The properties of the 'Error' class lost during serialization using the 'JSON.stringify' way
-        // because they are not enumerable.
-        // We clone the object and copy these properties explicitly to mark these properties as enumerable.
-        const errorData = Object.assign({}, error);
-
-        errorData.name    = errorData.name || error.name;
-        errorData.message = errorData.message || error.message;
-        errorData.stack   = errorData.stack || error.stack;
-
-        return errorData;
+        return error;
     }
 
     private async _onRead (packet: IPCPacket): Promise<void> {
