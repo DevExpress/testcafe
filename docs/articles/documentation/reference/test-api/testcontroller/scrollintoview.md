@@ -28,4 +28,4 @@ The following example shows how to use the `t.scrollIntoView` action to scroll t
 
 ## Options
 
-{% include actions/scroll-options.md %}
+{% include actions/offset-options.md %}

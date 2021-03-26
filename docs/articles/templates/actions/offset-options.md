@@ -1,4 +1,4 @@
-Scroll action options supply additional parameters for `t.scroll`, `t.scrollBy` and `t.scrollIntoView` actions.
+Offset options supply offset parameters for `t.scroll`, `t.scrollBy` and `t.scrollIntoView` actions.
 
 ```js
 {
@@ -16,7 +16,7 @@ The example below scrolls the element until different corners of the element are
 ```js
 import { Selector } from 'testcafe';
 
-fixture `Scroll Action`
+fixture `Scroll Actions`
     .page `http://www.example.com/`;
 
 test('Scroll element into view', async t => {
