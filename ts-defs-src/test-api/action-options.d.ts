@@ -95,7 +95,7 @@ interface TakeElementScreenshotOptions extends ActionOptions {
     scrollTargetY?: number;
 }
 
-interface MouseActionOptions extends ActionOptions {
+interface OffsetOptions extends ActionOptions {
     /**
      * Mouse pointer X coordinate that define a point where the action is performed or started.
      * If an offset is a positive integer, coordinates are calculated relative to the top-left corner of the target element.
@@ -110,6 +110,10 @@ interface MouseActionOptions extends ActionOptions {
      * The default is the center of the target element.
      */
     offsetY?: number;
+}
+
+interface MouseActionOptions extends OffsetOptions {
+
     /**
      * Indicate which modifier keys are to be pressed during the mouse action.
      */

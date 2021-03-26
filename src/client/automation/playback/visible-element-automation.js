@@ -172,13 +172,17 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
 
         if (useStrictElementCheck && (!state.isTarget || state.inMoving))
             throw new Error(AUTOMATION_ERROR_TYPES.foundElementIsNotTarget);
+
+        return state;
     }
 
-    _ensureElement (useStrictElementCheck, skipCheckAfterMoving) {
+    _ensureElement (useStrictElementCheck, skipCheckAfterMoving, skipMoving) {
         return this
             ._wrapAction(() => this._scrollToElement())
             .then(state => VisibleElementAutomation._checkElementState(state, useStrictElementCheck))
-            .then(() => this._wrapAction(() => this._moveToElement()))
+            .then(state => {
+                return skipMoving ? state : this._wrapAction(() => this._moveToElement());
+            })
             .then(state => {
                 if (!skipCheckAfterMoving)
                     VisibleElementAutomation._checkElementState(state, useStrictElementCheck);

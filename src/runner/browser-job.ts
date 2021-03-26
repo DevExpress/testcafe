@@ -10,6 +10,8 @@ import WarningLog from '../notifications/warning-log';
 import FixtureHookController from './fixture-hook-controller';
 import { Dictionary } from '../configuration/interfaces';
 import BrowserJobResult from './browser-job-result';
+import CompilerService from '../services/compiler/host';
+import { BrowserJobInit } from './interfaces';
 
 interface BrowserJobResultInfo {
     status: BrowserJobResult;
@@ -32,7 +34,16 @@ export default class BrowserJob extends AsyncEventEmitter {
     private readonly _connectionErrorListener: (error: Error) => void;
     private readonly _completionQueue: TestRunController[];
 
-    public constructor (tests: Test[], browserConnections: BrowserConnection[], proxy: Proxy, screenshots: Screenshots, warningLog: WarningLog, fixtureHookController: FixtureHookController, opts: Dictionary<OptionValue>) {
+    public constructor ({
+        tests,
+        browserConnections,
+        proxy,
+        screenshots,
+        warningLog,
+        fixtureHookController,
+        opts,
+        compilerService
+    }: BrowserJobInit) {
         super();
 
         this._started = false;
@@ -47,7 +58,7 @@ export default class BrowserJob extends AsyncEventEmitter {
         this.fixtureHookController = fixtureHookController;
         this._result               = null;
 
-        this._testRunControllerQueue = tests.map((test, index) => this._createTestRunController(test, index));
+        this._testRunControllerQueue = tests.map((test, index) => this._createTestRunController(test, index, compilerService));
 
         this._completionQueue = [];
         this._reportsPending  = [];
@@ -57,9 +68,17 @@ export default class BrowserJob extends AsyncEventEmitter {
         this.browserConnections.map(bc => bc.once('error', this._connectionErrorListener));
     }
 
-    private _createTestRunController (test: Test, index: number): TestRunController {
-        const testRunController = new TestRunController(test, index + 1, this._proxy, this._screenshots, this.warningLog,
-            this.fixtureHookController, this._opts);
+    private _createTestRunController (test: Test, index: number, compilerService?: CompilerService): TestRunController {
+        const testRunController = new TestRunController({
+            test,
+            index:                 index + 1,
+            proxy:                 this._proxy,
+            screenshots:           this._screenshots,
+            warningLog:            this.warningLog,
+            fixtureHookController: this.fixtureHookController,
+            opts:                  this._opts,
+            compilerService
+        });
 
         testRunController.on('test-run-create', async testRunInfo => {
             await this.emit('test-run-create', testRunInfo);

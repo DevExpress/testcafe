@@ -162,7 +162,7 @@ test('Close a specific window', async t => {
 Use one of the following settings to disable support for multiple browser windows:
 
 * the [--disable-multiple-windows](../../reference/command-line-interface.md#--disable-multiple-windows) command line flag,
-* the `disableMultipleWindows` [runner.run](../../reference/testcafe-api/runner/run.md) option,
+* the `disableMultipleWindows` option of the [runner.run Method](../../reference/testcafe-api/runner/run.md),
 * the [disableMultipleWindows](../../reference/configuration-file.md#disablemultiplewindows) configuration file property.
 
 ## Limitations
@@ -177,6 +177,8 @@ TestCafe's multi-window mode supports the following browsers:
 * Firefox (headless and headed)
 
 Multiple browser windows are not available in [cloud browsers](../basic-guides/run-tests.md#test-in-cloud-testing-services), [remote browsers](../basic-guides/run-tests.md#test-on-remote-and-mobile-devices) and during [Chromium mobile device emulation](../basic-guides/run-tests.md#enable-mobile-device-emulation).
+
+Custom [browser provider plugins](../extend-testcafe/browser-provider-plugin.md) do not provide support for multiple browser windows. If TestCafe encounters a window management action (for example, [t.openWindow](../../reference/test-api/testcontroller/openwindow.md)) during a test in a custom browser, it stops test execution and throws an error.
 
 ### Recorded Video Aspect Ratio in Multiple Windows
 

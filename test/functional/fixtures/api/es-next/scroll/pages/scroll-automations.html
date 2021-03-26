@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>scroll automations</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        #wrapper {
+            height: 5000px;
+            width: 5000px;
+        }
+
+        #scrollable {
+            height: 500px;
+            width: 500px;
+            overflow: scroll;
+            border: 1px solid black;
+        }
+
+        #scrollable-deferred {
+            height: 500px;
+            width: 500px;
+            overflow: scroll;
+            margin-top: 1000px;
+        }
+
+        #scrollable-deferred > div {
+            height: 5000px;
+            width: 5000px;
+            position: relative;
+        }
+
+        #target {
+            width: 1000px;
+            height: 1000px;
+            background-color: black;
+            top: 700px;
+            left: 700px;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+<div id="wrapper">
+    <div id="scrollable">
+        <div style="height: 5000px; width: 5000px; position: relative;">
+            <div id="target"></div>
+        </div>
+    </div>
+</div>
+<script>
+    setTimeout(function () {
+        var div = document.createElement('div');
+
+        div.id = 'scrollable-deferred';
+
+        div.appendChild(document.createElement('div'));
+
+        document.getElementById('wrapper').appendChild(div);
+    }, 3000);
+
+    var target = document.getElementById('target');
+
+    function handler () {
+        throw new Error('should not raise mouse events');
+    }
+
+    target.addEventListener('mouseenter', handler);
+    target.addEventListener('mouseleave', handler);
+    target.addEventListener('mouseover', handler);
+    target.addEventListener('mouseout', handler);
+    target.addEventListener('mousemove', handler);
+</script>
+</body>
+</html>

@@ -10,11 +10,17 @@ import Videos from '../../video-recorder/videos';
 import TestRun from '../../test-run';
 import { Proxy } from 'testcafe-hammerhead';
 import { Dictionary } from '../../configuration/interfaces';
-import { ActionEventArg, ReportedTestStructureItem } from '../interfaces';
+import {
+    ActionEventArg,
+    ReportedTestStructureItem,
+    TaskInit
+} from '../interfaces';
+
 import BrowserConnection from '../../browser/connection';
 import Test from '../../api/structure/test';
 import { VideoOptions } from '../../video-recorder/interfaces';
 import TaskPhase from './phase';
+import CompilerService from '../../services/compiler/host';
 
 export default class Task extends AsyncEventEmitter {
     private readonly _timeStamp: moment.Moment;
@@ -31,11 +37,14 @@ export default class Task extends AsyncEventEmitter {
     public readonly testStructure: ReportedTestStructureItem[];
     public readonly videos?: Videos;
 
-    public constructor (
-        tests: Test[],
-        browserConnectionGroups: BrowserConnection[][],
-        proxy: Proxy, opts: Dictionary<OptionValue>,
-        runnerWarningLog: WarningLog) {
+    public constructor ({
+        tests,
+        browserConnectionGroups,
+        proxy,
+        opts,
+        runnerWarningLog,
+        compilerService
+    }: TaskInit) {
         super({ captureRejections: true });
 
         this._timeStamp              = moment();
@@ -58,7 +67,7 @@ export default class Task extends AsyncEventEmitter {
         });
 
         this.fixtureHookController = new FixtureHookController(tests, browserConnectionGroups.length);
-        this._pendingBrowserJobs   = this._createBrowserJobs(proxy, this.opts);
+        this._pendingBrowserJobs   = this._createBrowserJobs(proxy, this.opts, compilerService);
         this._clientScriptRoutes   = clientScriptsRouting.register(proxy, tests);
         this.testStructure         = this._prepareTestStructure(tests);
 
@@ -140,9 +149,18 @@ export default class Task extends AsyncEventEmitter {
         });
     }
 
-    private _createBrowserJobs (proxy: Proxy, opts: Dictionary<OptionValue>): BrowserJob[] {
+    private _createBrowserJobs (proxy: Proxy, opts: Dictionary<OptionValue>, compilerService?: CompilerService): BrowserJob[] {
         return this.browserConnectionGroups.map(browserConnectionGroup => {
-            const job = new BrowserJob(this.tests, browserConnectionGroup, proxy, this.screenshots, this.warningLog, this.fixtureHookController, opts);
+            const job = new BrowserJob({
+                tests:                 this.tests,
+                browserConnections:    browserConnectionGroup,
+                screenshots:           this.screenshots,
+                warningLog:            this.warningLog,
+                fixtureHookController: this.fixtureHookController,
+                proxy,
+                opts,
+                compilerService
+            });
 
             this._assignBrowserJobEventHandlers(job);
             browserConnectionGroup.map(bc => bc.addJob(job));

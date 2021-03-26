@@ -1,4 +1,5 @@
-const expect                         = require('chai').expect;
+const { expect }                     = require('chai');
+const { noop }                       = require('lodash');
 const AsyncEventEmitter              = require('../../lib/utils/async-event-emitter');
 const delay                          = require('../../lib/utils/delay');
 const TestRun                        = require('../../lib/test-run');
@@ -11,7 +12,13 @@ const TestRunErrorFormattableAdapter = require('../../lib/errors/test-run/format
 
 class TestRunMock extends TestRun {
     constructor () {
-        super({ id: 'test-id', name: 'test-name', fixture: { path: 'dummy', id: 'fixture-id', name: 'fixture-name' } }, {}, {}, null, {});
+        super({
+            test:               { id: 'test-id', name: 'test-name', fixture: { path: 'dummy', id: 'fixture-id', name: 'fixture-name' } },
+            browserConnection:  {},
+            screenshotCapturer: {},
+            globalWarningLog:   { addPlainMessage: noop },
+            opts:               {}
+        });
 
         this.disableMultipleWindows = false;
 
@@ -100,6 +107,9 @@ const actions = {
     hover:                     ['#target', options],
     drag:                      ['#target', 100, 200, options],
     dragToElement:             ['#target', '#target', options],
+    scroll:                    ['#target', 100, 200, options],
+    scrollBy:                  ['#target', 100, 200, options],
+    scrollIntoView:            ['#target', options],
     typeText:                  ['#input', 'test', options],
     selectText:                ['#input', 1, 3, options],
     selectTextAreaContent:     ['#textarea', 1, 2, 3, 4, options],
@@ -140,7 +150,16 @@ const initializeReporter = (reporter) => {
 
 describe('TestController action events', () => {
     beforeEach(() => {
-        const job               = new BrowserJob([], [], void 0, void 0, void 0, void 0, { TestRunCtor: TestRunMock });
+        const job = new BrowserJob({
+            tests:                 [],
+            browserConnections:    [],
+            proxy:                 null,
+            screenshots:           null,
+            warningLog:            null,
+            fixtureHookController: null,
+            opts:                  { TestRunCtor: TestRunMock }
+        });
+
         const testRunController = job._createTestRunController();
         const testRun           = new TestRunMock();
 

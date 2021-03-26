@@ -123,7 +123,10 @@ describe('Client scripts', () => {
 
             return script.load()
                 .then(() => {
-                    expect(script.page).eql(RequestFilterRule.ANY);
+                    const anyRequestFilterRule = RequestFilterRule.ANY;
+
+                    expect(script.page.options).eql(anyRequestFilterRule.options);
+                    expect(script.page.id).not.eql(anyRequestFilterRule.id);
                 });
         });
 

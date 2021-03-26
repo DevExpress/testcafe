@@ -21,6 +21,10 @@ const externalCommonJsModulePath = path.resolve('test/server/data/test-suites/li
 
 const DOCKER_TESTCAFE_FOLDER_REGEXP = /^\/usr\/lib\/node_modules\/testcafe/;
 
+const browserSetMock = {
+    browserConnectionGroups: []
+};
+
 class FileWatcherMock extends FileWatcher {
     addFile (controller, file) {
         if (!FileWatcher.shouldWatchFile(file.replace(DOCKER_TESTCAFE_FOLDER_REGEXP, '')))
@@ -75,7 +79,7 @@ class BootstrapperMock extends LiveModeBootstrapper {
         return Promise.resolve({
             reporterPlugins:     [],
             tests:               [],
-            browserSet:          {},
+            browserSet:          browserSetMock,
             testedApp:           {},
             commonClientScripts: []
         });
@@ -84,7 +88,11 @@ class BootstrapperMock extends LiveModeBootstrapper {
 
 class RunnerMock extends LiveModeRunner {
     constructor ({ proxy, browserConnectionGateway, configuration }, { runTimeout = 0, errorOnValidate = false, onBootstrapDone = noop }) {
-        super(proxy, browserConnectionGateway, configuration.clone());
+        super({
+            proxy,
+            browserConnectionGateway,
+            configuration: configuration.clone()
+        });
 
         this.runCount        = 0;
         this.runTimeout      = runTimeout;

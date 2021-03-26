@@ -76,7 +76,7 @@ const CHILD_WINDOW_READY_TIMEOUT      = 30 * 1000;
 const ALL_DRIVER_TASKS_ADDED_TO_QUEUE_EVENT = 'all-driver-tasks-added-to-queue';
 
 export default class TestRun extends AsyncEventEmitter {
-    constructor (test, browserConnection, screenshotCapturer, globalWarningLog, opts) {
+    constructor ({ test, browserConnection, screenshotCapturer, globalWarningLog, opts, compilerService }) {
         super();
 
         this[testRunMarker] = true;
@@ -142,6 +142,7 @@ export default class TestRun extends AsyncEventEmitter {
         this.debugLogger = this.opts.debugLogger;
 
         this.observedCallsites = new ObservedCallsitesStorage();
+        this.compilerService   = compilerService;
 
         this._addInjectables();
         this._initRequestHooks();
@@ -200,7 +201,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     addRequestHook (hook) {
-        if (this.requestHooks.indexOf(hook) !== -1)
+        if (this.requestHooks.includes(hook))
             return;
 
         this.requestHooks.push(hook);
@@ -208,7 +209,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     removeRequestHook (hook) {
-        if (this.requestHooks.indexOf(hook) === -1)
+        if (!this.requestHooks.includes(hook))
             return;
 
         pull(this.requestHooks, hook);
@@ -216,10 +217,9 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     _initRequestHook (hook) {
-        hook.warningLog = this.warningLog;
+        hook._warningLog = this.warningLog;
 
-        hook._instantiateRequestFilterRules();
-        hook._instantiatedRequestFilterRules.forEach(rule => {
+        hook._requestFilterRules.forEach(rule => {
             this.session.addRequestEventListeners(rule, {
                 onRequest:           hook.onRequest.bind(hook),
                 onConfigureResponse: hook._onConfigureResponse.bind(hook),
@@ -242,9 +242,9 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     _disposeRequestHook (hook) {
-        hook.warningLog = null;
+        hook._warningLog = null;
 
-        hook._instantiatedRequestFilterRules.forEach(rule => {
+        hook._requestFilterRules.forEach(rule => {
             this.session.removeRequestEventListeners(rule);
         });
     }
