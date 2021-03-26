@@ -14,7 +14,7 @@ Scrolls the `target` element to a specified position. If no `target` is specifie
 ### scroll(posX, posY)
 
 ```text
-t.scroll([target,] x, y[, options]) → this | Promise<any>
+t.scroll([target,] posX, posY[, options]) → this | Promise<any>
 ```
 
 Parameter   | Type/Value                                        | Description
