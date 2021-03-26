@@ -24,12 +24,12 @@ interface AttemptResult {
 
 class Quarantine {
     public attempts: TestRunErrorFormattableAdapter[][];
-    public FAILED_QUARANTINE_THRESHOLD: number;
+    public TEST_RUN_THRESHOLD: number;
     public PASSED_QUARANTINE_THRESHOLD: number;
 
     public constructor () {
         this.attempts = [];
-        this.FAILED_QUARANTINE_THRESHOLD = DEFAULT_QUARANTINE_THRESHOLD;
+        this.TEST_RUN_THRESHOLD = DEFAULT_QUARANTINE_THRESHOLD;
         this.PASSED_QUARANTINE_THRESHOLD = DEFAULT_QUARANTINE_THRESHOLD;
     }
 
@@ -41,8 +41,8 @@ class Quarantine {
         return this.attempts.filter(errors => errors.length === 0);
     }
 
-    public setFailedQuarantineThreshold (threshold: number): void {
-        this.FAILED_QUARANTINE_THRESHOLD = threshold;
+    public setTestRunThreshold (threshold: number): void {
+        this.TEST_RUN_THRESHOLD = threshold;
     }
 
     public setPassedQuarantineThreshold (threshold: number): void {
@@ -56,7 +56,9 @@ class Quarantine {
     public isThresholdReached (extraErrors?: TestRunErrorFormattableAdapter[]): boolean {
         const { failedTimes, passedTimes } = this._getAttemptsResult(extraErrors);
 
-        const failedThresholdReached = failedTimes >= this.FAILED_QUARANTINE_THRESHOLD;
+        const failedThreshold = this.PASSED_QUARANTINE_THRESHOLD < this.TEST_RUN_THRESHOLD ? this.TEST_RUN_THRESHOLD - this.PASSED_QUARANTINE_THRESHOLD : DEFAULT_QUARANTINE_THRESHOLD;
+
+        const failedThresholdReached = failedTimes >= failedThreshold;
         const passedThresholdReached = passedTimes >= this.PASSED_QUARANTINE_THRESHOLD;
 
         return failedThresholdReached || passedThresholdReached;
@@ -156,7 +158,7 @@ export default class TestRunController extends AsyncEventEmitter {
         if (this._quarantine) {
             const { passCount, retryCount } = this._opts.quarantineMode as QuarantineOptionValue;
 
-            if (retryCount) this._quarantine.setFailedQuarantineThreshold(retryCount);
+            if (retryCount) this._quarantine.setTestRunThreshold(retryCount);
             if (passCount) this._quarantine.setPassedQuarantineThreshold(passCount);
         }
 
