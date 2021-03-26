@@ -106,7 +106,7 @@ async onResponse (event) {
 
 ### Mock Response Headers
 
-Before it passes an incoming response to the application, `RequestHook` can modify the response's headers. This allows you to mock part of the response.
+Before it passes an incoming response to the application, `RequestHook` can modify the response headers. This allows you to mock part of the response.
 
 > Important! You can not modify the body of the request or its headers inside a `RequestHook.onResponse()` call. If you edit properties of `event.headers` or `event.body` inside `onResponse()`, TestCafe ignores these changes.
 
