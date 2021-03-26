@@ -6,7 +6,8 @@ import cursor from '../cursor';
 import nextTick from '../utils/next-tick';
 import { MouseDownStateController } from './automation-states';
 import { ClickOptions } from '../../../test-run/commands/options';
-import { EnsureElementResultArgs } from './interfaces';
+import { EnsureElementResult, EnsureElementResultArgs } from './interfaces';
+import MouseBaseAutomation from './mouse-base';
 
 // @ts-ignore
 const Promise = hammerhead.Promise;
@@ -19,47 +20,25 @@ const eventSimulator   = hammerhead.eventSandbox.eventSimulator;
 const domUtils   = testCafeCore.domUtils;
 const eventUtils = testCafeCore.eventUtils;
 
-export default class MouseDownAutomation extends VisibleElementAutomation {
-    public modifiers: unknown;
+export default class MouseDownAutomation extends MouseBaseAutomation {
     public caretPos: number;
     public activeElementBeforeMouseDown: HTMLElement | null;
-    public eventArgs: EnsureElementResultArgs;
+
     public eventState: MouseDownStateController;
 
     public constructor (element: HTMLElement, clickOptions: ClickOptions, eventArgs: EnsureElementResultArgs) {
-        super(element, clickOptions);
+        super(element, clickOptions, eventArgs);
 
-        this.modifiers = clickOptions.modifiers;
         this.caretPos  = clickOptions.caretPos;
 
         this.activeElementBeforeMouseDown = null;
-        this.eventArgs                    = eventArgs;
 
         this.eventState = MouseDownStateController.from();
     }
 
     public run (useStrictElementCheck: boolean): Promise<unknown> {
-        let promise = Promise.resolve();
-
-        if (!this.eventArgs) {
-            promise = this._ensureElement(useStrictElementCheck, false, false)
-                .then(({ element, clientPoint, screenPoint, devicePoint }: any) => {
-                    this.eventArgs = {
-                        point:       clientPoint,
-                        screenPoint: screenPoint,
-                        element:     element,
-                        options:     extend({
-                            clientX: clientPoint.x,
-                            clientY: clientPoint.y,
-                            screenX: devicePoint.x,
-                            screenY: devicePoint.y
-                        }, this.modifiers)
-                    };
-                });
-        }
-
-        return promise
-            .then(() => this._mousedown(this.eventArgs));
+        return super.run(useStrictElementCheck)
+            .then(() => this._mousedown());
     }
 
     public _bindMousedownHandler (): void {
@@ -81,30 +60,22 @@ export default class MouseDownAutomation extends VisibleElementAutomation {
         eventUtils.bind(element, 'blur', onblur, true);
     }
 
-    // // NOTE:
-    // // If `touchstart`, `touchmove`, or `touchend` are canceled, we should not dispatch any mouse event
-    // // that would be a consequential result of the prevented touch event
-    // _isTouchEventWasCancelled () {
-    //     return this.eventState.touchStartCancelled || this.eventState.touchEndCancelled;
-    // }
+    private _raiseTouchEvents (): void {
+        const element = this.ensureElementResultArgs?.element;
+        const options = this.ensureElementResultArgs?.options;
 
-    private _raiseTouchEvents (eventArgs: EnsureElementResultArgs): void {
         if (featureDetection.isTouchDevice) {
-            this.eventState.touchStartCancelled = !eventSimulator.touchstart(eventArgs.element, eventArgs.options);
-            this.eventState.touchEndCancelled   = !eventSimulator.touchend(eventArgs.element, eventArgs.options);
+            this.eventState.touchStartCancelled = !eventSimulator.touchstart(element, options);
+            this.eventState.touchEndCancelled   = !eventSimulator.touchend(element, options);
         }
     }
 
-    private _mousedown (eventArgs: EnsureElementResultArgs): Promise<unknown> {
-        // this.eventState.targetElementParentNodes = domUtils.getParents(eventArgs.element);
-        // this.eventState.mouseDownElement         = eventArgs.element;
-
-        this.eventState.setElements(eventArgs.element);
+    private _mousedown (): Promise<unknown> {
+        this.eventState.setElements(this.ensureElementResultArgs?.element);
 
         return cursor.leftButtonDown()
             .then(() => {
-                this._raiseTouchEvents(eventArgs);
-
+                this._raiseTouchEvents();
 
                 const activeElement = domUtils.getActiveElement();
 
@@ -121,14 +92,14 @@ export default class MouseDownAutomation extends VisibleElementAutomation {
                 this._bindBlurHandler(activeElement);
 
                 if (!this.eventState._isTouchEventWasCancelled())
-                    this.eventState.simulateDefaultBehavior = eventSimulator.mousedown(eventArgs.element, eventArgs.options);
+                    this.eventState.simulateDefaultBehavior = eventSimulator.mousedown(this.ensureElementResultArgs?.element, this.ensureElementResultArgs?.options);
 
                 if (this.eventState.simulateDefaultBehavior === false)
                     this.eventState.simulateDefaultBehavior = needCloseSelectDropDown && !this.eventState.mousedownPrevented;
 
                 return this._ensureActiveElementBlur(activeElement);
             })
-            .then(() => this._focus(eventArgs));
+            .then(() => this._focus());
     }
 
     private _ensureActiveElementBlur (element: HTMLElement): Promise<void> {
@@ -161,14 +132,14 @@ export default class MouseDownAutomation extends VisibleElementAutomation {
         });
     }
 
-    private _focus (eventArgs: EnsureElementResultArgs): Promise<void> {
+    private _focus (): Promise<void> {
         if (this.eventState.simulateDefaultBehavior === false)
             return Promise.resolve();
 
         // NOTE: If a target element is a contentEditable element, we need to call focusAndSetSelection directly for
         // this element. Otherwise, if the element obtained by elementFromPoint is a child of the contentEditable
         // element, a selection position may be calculated incorrectly (by using the caretPos option).
-        const elementForFocus = domUtils.isContentEditableElement(this.element) ? this.element : eventArgs.element;
+        const elementForFocus = domUtils.isContentEditableElement(this.element) ? this.element : this.ensureElementResultArgs?.element;
 
         // NOTE: IE doesn't perform focus if active element has been changed while executing mousedown
         const simulateFocus = !browserUtils.isIE || this.activeElementBeforeMouseDown === domUtils.getActiveElement();

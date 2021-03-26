@@ -377,10 +377,10 @@ gulp.step('package-content', buildTasks('ts-defs', 'server-scripts', 'client-scr
 
 gulp.task('fast-build', gulp.series('clean', 'package-content'));
 
-gulp.task('build', DEV_MODE ? gulp.registry().get('fast-build') : buildTasks('lint', 'fast-build'));
+gulp.task('build', DEV_MODE ? gulp.registry().get('fast-build') : buildTasks('fast-build'));
 
 // Test
-gulp.step('prepare-tests', gulp.registry().get(SKIP_BUILD ? 'lint' : 'build'));
+gulp.step('prepare-tests', gulp.registry().get('build'));
 
 gulp.step('test-server-run', () => {
     // HACK: We have to exit from all Gulp's error domains to avoid conflicts with error handling inside mocha tests
@@ -752,7 +752,7 @@ gulp.step('website-publish-run', () => {
 
 gulp.task('publish-website', gulp.series('build-website-production', 'website-publish-run'));
 
-gulp.task('test-docs-travis', gulp.parallel('test-website-travis', 'lint'));
+gulp.task('test-docs-travis', gulp.parallel('test-website-travis'));
 
 function testFunctional (src, testingEnvironmentName, { experimentalCompilerService } = {}) {
     process.env.TESTING_ENVIRONMENT       = testingEnvironmentName;
@@ -816,13 +816,13 @@ gulp.step('test-functional-local-chrome-firefox-run', () => {
     return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localBrowsersChromeFirefox);
 });
 
-gulp.task('test-functional-local-chrome-firefox', gulp.series('prepare-tests', 'test-functional-local-chrome-firefox-run'));
+gulp.task('test-functional-local-chrome-firefox', gulp.series('test-functional-local-chrome-firefox-run'));
 
 gulp.step('test-functional-local-headless-chrome-run', () => {
     return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localHeadlessChrome);
 });
 
-gulp.task('test-functional-local-headless-chrome', gulp.series('prepare-tests', 'test-functional-local-headless-chrome-run'));
+gulp.task('test-functional-local-headless-chrome', gulp.series('test-functional-local-headless-chrome-run'));
 
 gulp.step('test-functional-local-headless-firefox-run', () => {
     return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localHeadlessFirefox);

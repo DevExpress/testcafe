@@ -2,7 +2,7 @@ import testCafeCore from '../deps/testcafe-core';
 
 const domUtils = testCafeCore.domUtils;
 
-interface DownState {
+export interface DownState {
     mousedownPrevented: boolean;
     blurRaised: boolean;
     simulateDefaultBehavior: boolean;
@@ -12,7 +12,7 @@ interface DownState {
     mouseDownElement: HTMLElement | null;
 }
 
-interface UpState {
+export interface UpState {
     clickElement: HTMLElement | null;
 }
 
@@ -42,7 +42,9 @@ export class MouseDownStateController implements DownState {
         return this.touchStartCancelled || this.touchEndCancelled;
     }
 
-    public setElements (element: HTMLElement): void {
+    public setElements (element?: HTMLElement): void {
+        if (!element) return;
+
         this.targetElementParentNodes = domUtils.getParents(element);
         this.mouseDownElement         = element;
     }

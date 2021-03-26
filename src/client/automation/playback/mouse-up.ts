@@ -6,6 +6,7 @@ import { MouseDownStateController, MouseUpStateController } from './automation-s
 import { MouseOptions } from '../../../test-run/commands/options';
 import testCafeCore from '../deps/testcafe-core';
 import { EnsureElementResult, EnsureElementResultArgs } from './interfaces';
+import MouseBaseAutomation from "./mouse-base";
 
 const domUtils   = testCafeCore.domUtils;
 const arrayUtils = testCafeCore.arrayUtils;
@@ -19,23 +20,13 @@ const browserUtils = hammerhead.utils.browser;
 const eventSimulator = hammerhead.eventSandbox.eventSimulator;
 const listeners = hammerhead.eventSandbox.listeners;
 
-export default class MouseUpAutomation extends VisibleElementAutomation {
-    private modifiers: {};
+export default class MouseUpAutomation extends MouseBaseAutomation {
     public upState: MouseUpStateController;
-    public downState: MouseDownStateController;
-    private mouseDownEnsureVisibilityEventArgs: EnsureElementResultArgs;
 
-    public constructor (element: HTMLElement | null, mouseOptions: MouseOptions, mouseDownState: MouseDownStateController, eventArgs: EnsureElementResultArgs) {
-        super(element, mouseOptions);
-
-        this.modifiers = mouseOptions.modifiers;
+    public constructor (element: HTMLElement, mouseOptions: MouseOptions, mouseDownState?: MouseDownStateController, eventArgs?: EnsureElementResultArgs) {
+        super(element, mouseOptions, eventArgs);
 
         this.upState = MouseUpStateController.from({ clickElement: null });
-        this.downState = MouseDownStateController.from(mouseDownState);
-
-        this.mouseDownEnsureVisibilityEventArgs = eventArgs;
-
-        this.element = this.mouseDownEnsureVisibilityEventArgs?.element || this.element;
 
         if (!this.downState.mouseDownElement)
             this.downState.setElements(this.element);
@@ -43,31 +34,12 @@ export default class MouseUpAutomation extends VisibleElementAutomation {
 
     // eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
     public run (useStrictElementCheck: boolean): Promise<unknown> {
-        let promise = Promise.resolve();
-
-        if (!this.mouseDownEnsureVisibilityEventArgs) {
-            promise = this._ensureElement(useStrictElementCheck, false, false)
-                .then(({ element, clientPoint, screenPoint, devicePoint }: EnsureElementResult) => {
-                    this.mouseDownEnsureVisibilityEventArgs = {
-                        point:       clientPoint,
-                        screenPoint: screenPoint,
-                        element:     element,
-                        options:     extend({
-                            clientX: clientPoint.x,
-                            clientY: clientPoint.y,
-                            screenX: devicePoint.x,
-                            screenY: devicePoint.y
-                        }, this.modifiers)
-                    };
-                });
-        }
-
-        return promise
-            .then(() => this._mouseup(this.mouseDownEnsureVisibilityEventArgs))
+        return super.run(useStrictElementCheck)
+            .then(() => this._mouseup())
             .then(({ timeStamp }: { timeStamp: number }) => {
                 this.options.timeStamp = timeStamp;
 
-                return this._click(this.mouseDownEnsureVisibilityEventArgs);
+                return this._click();
             });
     }
 
@@ -97,12 +69,13 @@ export default class MouseUpAutomation extends VisibleElementAutomation {
         return arrayUtils.equals(mouseDownElementParentNodes, topElementParentNodes) ? mouseDownElement : null;
     }
 
-    private _mouseup (eventArgs: any): Promise<{ timeStamp: number }> {
+    private _mouseup (): Promise<{ timeStamp: number }> {
         return cursor
             .buttonUp()
-            .then(() => this._getElementForEvent(eventArgs))
+            .then(() => this._getElementForEvent())
             .then((element: HTMLElement) => {
-                eventArgs.element = element;
+                if (this.ensureElementResultArgs)
+                    this.ensureElementResultArgs.element = element;
 
                 this.upState.clickElement = MouseUpAutomation._getElementForClick(this.downState.mouseDownElement || element, element,
                     this.downState.targetElementParentNodes);
@@ -119,19 +92,19 @@ export default class MouseUpAutomation extends VisibleElementAutomation {
                     listeners.addInternalEventBeforeListener(window, ['mouseup'], getTimeStamp);
 
                 if (!this.downState._isTouchEventWasCancelled())
-                    eventSimulator.mouseup(element, eventArgs.options);
+                    eventSimulator.mouseup(element, this.ensureElementResultArgs?.options);
 
                 return { timeStamp };
             });
     }
 
-    private _click (eventArgs: unknown): unknown {
-        const clickCommand = createClickCommand(this.upState, eventArgs);
+    private _click (): EnsureElementResultArgs | undefined {
+        const clickCommand = createClickCommand(this.upState, this.ensureElementResultArgs);
 
         if (!this.downState._isTouchEventWasCancelled())
             clickCommand.run();
 
-        return eventArgs;
+        return this.ensureElementResultArgs;
     }
 
     // // NOTE:

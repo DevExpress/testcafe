@@ -46,8 +46,8 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
         this.automationSettings = new AutomationSettings(offsetOptions.speed);
     }
 
-    _getElementForEvent (eventArgs) {
-        const { x, y }        = eventArgs.point;
+    _getElementForEvent () {
+        const { x, y }        = this.ensureElementResultArgs?.point;
         const expectedElement = positionUtils.containsOffset(this.element, this.options.offsetX, this.options.offsetY) ? this.element : null;
 
         return getElementFromPoint(x, y, expectedElement).then(({ element }) => element);

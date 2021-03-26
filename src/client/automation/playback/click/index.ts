@@ -44,7 +44,7 @@ export default class ClickAutomation extends VisibleElementAutomation {
         if (!this.mouseDownAutomation)
             return Promise.resolve();
 
-        this.mouseUpAutomation = new MouseUpAutomation(null, this.options, this.mouseDownAutomation.eventState, eventArgs);
+        this.mouseUpAutomation = new MouseUpAutomation(eventArgs.element, this.options, this.mouseDownAutomation.eventState, eventArgs);
 
         return this.mouseUpAutomation.run(false);
     }
