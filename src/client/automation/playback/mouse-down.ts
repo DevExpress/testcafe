@@ -1,18 +1,16 @@
 import hammerhead from '../deps/hammerhead';
 import testCafeCore from '../deps/testcafe-core';
-import VisibleElementAutomation from './visible-element-automation';
 import { focusAndSetSelection } from '../utils/utils';
 import cursor from '../cursor';
 import nextTick from '../utils/next-tick';
 import { MouseDownStateController } from './automation-states';
 import { ClickOptions } from '../../../test-run/commands/options';
-import { EnsureElementResult, EnsureElementResultArgs } from './interfaces';
+import { EnsureElementResultArgs } from './interfaces';
 import MouseBaseAutomation from './mouse-base';
 
 // @ts-ignore
 const Promise = hammerhead.Promise;
 
-const extend           = hammerhead.utils.extend;
 const browserUtils     = hammerhead.utils.browser;
 const featureDetection = hammerhead.utils.featureDetection;
 const eventSimulator   = hammerhead.eventSandbox.eventSimulator;

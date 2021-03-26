@@ -1,15 +1,11 @@
 import hammerhead from '../../deps/hammerhead';
 import testCafeCore from '../../deps/testcafe-core';
-import VisibleElementAutomation from '../visible-element-automation';
 import MouseDownAutomation from '../mouse-down';
 import MouseUpAutomation from '../mouse-up';
 import { ClickOptions } from '../../../../test-run/commands/options';
-import { MouseDownStateController, MouseUpStateController } from '../automation-states';
-import { EnsureElementResult, EnsureElementResultArgs } from '../interfaces';
 import MouseBaseAutomation from '../mouse-base';
 
 const Promise = hammerhead.Promise;
-const extend  = hammerhead.utils.extend;
 const delay   = testCafeCore.delay;
 
 
