@@ -22,7 +22,7 @@ fixture `Scroll Actions`
 test('Scroll element into view', async t => {
     const target = Selector('#target');
 
-    await t.scrollIntoView(target)
+    await t.scrollIntoView(target);
     // No offset, scrolls until the element's center is visible
 
     await t.scrollIntoView(target, { offsetX: 1, offsetY: 1 });
