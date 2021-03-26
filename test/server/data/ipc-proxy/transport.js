@@ -1,5 +1,6 @@
-const fs           = require('fs');
-const EventEmitter = require('../../../../lib/utils/async-event-emitter');
+const fs               = require('fs');
+const EventEmitter     = require('../../../../lib/utils/async-event-emitter');
+const createReplicator = require('../../../../lib/services/serialization/replicator/create-replicator');
 
 const BUFFER_SIZE = 64000;
 
@@ -14,6 +15,7 @@ class Transport extends EventEmitter {
 
         this.syncChannel = syncChannel;
         this.isHost      = isHost;
+        this.replicator  = createReplicator();
 
         if (typeof this.inputChannel === 'number')
             this.inputChannel = fs.createReadStream(null, { fd: this.inputChannel });
@@ -23,13 +25,13 @@ class Transport extends EventEmitter {
     }
 
     read () {
-        this.inputChannel.on('data', data => this.emit('data', JSON.parse(data.toString())));
+        this.inputChannel.on('data', data => this.emit('data', this.replicator.decode(data.toString())));
     }
 
     write (packet) {
         const channel = this.isHost && packet.sync ? this.syncChannel : this.outputChannel;
 
-        if (channel.write(JSON.stringify(packet)))
+        if (channel.write(this.replicator.encode(packet)))
             return Promise.resolve();
 
         return new Promise(r => channel.on('drain', r));
@@ -41,14 +43,14 @@ class Transport extends EventEmitter {
 
         const readLength = fs.readSync(this.syncChannel, this.buffer, 0, BUFFER_SIZE, null);
 
-        return JSON.parse(this.buffer.slice(0, readLength).toString());
+        return this.replicator.decode(this.buffer.slice(0, readLength).toString());
     }
 
     writeSync (packet) {
         if (this.isHost)
             return;
 
-        fs.writeSync(this.outputChannel.fd, JSON.stringify(packet));
+        fs.writeSync(this.outputChannel.fd, this.replicator.encode(packet));
     }
 }
 
