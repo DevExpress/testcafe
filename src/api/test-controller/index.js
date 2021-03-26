@@ -18,6 +18,8 @@ import { getCallsiteId, getCallsiteStackFrameString } from '../../utils/callsite
 import { getDeprecationMessage, DEPRECATED } from '../../notifications/deprecated';
 
 import {
+    MouseDownCommand,
+    MouseUpCommand,
     ClickCommand,
     RightClickCommand,
     DoubleClickCommand,
@@ -186,6 +188,14 @@ export default class TestController {
 
     _browser$getter () {
         return getBrowser(this.testRun.browserConnection);
+    }
+
+    _mouseDown$ (selector, options) {
+        return this._enqueueCommand('mousedown', MouseDownCommand, { selector, options });
+    }
+
+    _mouseUp$ (selector, options) {
+        return this._enqueueCommand('mouseup', MouseUpCommand, { selector, options });
     }
 
     _click$ (selector, options) {

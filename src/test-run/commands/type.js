@@ -4,6 +4,8 @@
 // -------------------------------------------------------------
 
 export default {
+    mouseDown:                  'mouse-down',
+    mouseUp:                    'mouse-up',
     click:                      'click',
     rightClick:                 'right-click',
     doubleClick:                'double-click',

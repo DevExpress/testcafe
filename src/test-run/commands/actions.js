@@ -92,6 +92,33 @@ function initDialogHandler (name, val, { skipVisibilityCheck, testRun }) {
 }
 
 // Commands
+export class MouseDownCommand extends CommandBase {
+    constructor (obj, testRun) {
+        super(obj, testRun, TYPE.mouseDown);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'selector', init: initSelector, required: true },
+            { name: 'options', type: actionOptions, init: initMouseOptions, required: true }
+        ];
+    }
+}
+
+export class MouseUpCommand extends CommandBase {
+    constructor (obj, testRun) {
+        super(obj, testRun, TYPE.mouseUp);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'selector', init: initSelector, required: true },
+            { name: 'options', type: actionOptions, init: initMouseOptions, required: true }
+        ];
+    }
+}
+
+
 export class ClickCommand extends CommandBase {
     constructor (obj, testRun) {
         super(obj, testRun, TYPE.click);

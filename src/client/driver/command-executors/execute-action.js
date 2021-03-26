@@ -11,6 +11,8 @@ import {
 
 import {
     calculateSelectTextArguments,
+    MouseDown as MouseDownAutomation,
+    MouseUp as MouseUpAutomation,
     Click as ClickAutomation,
     SelectChildClick as SelectChildClickAutomation,
     RClick as RClickAutomation,
@@ -180,6 +182,12 @@ class ActionExecutor {
         let selectArgs = null;
 
         switch (this.command.type) {
+            case COMMAND_TYPE.mouseDown:
+                return new MouseDownAutomation(this.elements[0], this.command.options);
+
+            case COMMAND_TYPE.mouseUp:
+                return new MouseUpAutomation(this.elements[0], this.command.options);
+
             case COMMAND_TYPE.click :
                 if (/option|optgroup/.test(domUtils.getTagName(this.elements[0])))
                     return new SelectChildClickAutomation(this.elements[0], this.command.options);

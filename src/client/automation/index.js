@@ -26,11 +26,15 @@ import { fromPoint as getElementFromPoint } from './get-element';
 import calculateSelectTextArguments from './playback/select/calculate-select-text-arguments';
 import ERROR_TYPES from './errors';
 import cursor from './cursor';
+import MouseDownAutomation from './playback/mouse-down';
+import MouseUpAutomation from './playback/mouse-up';
 
 
 const exports = {};
 
 exports.Scroll                = ScrollAutomation;
+exports.MouseDown             = MouseDownAutomation;
+exports.MouseUp               = MouseUpAutomation;
 exports.Click                 = ClickAutomation;
 exports.SelectChildClick      = SelectChildClickAutomation;
 exports.DblClick              = DblClickAutomation;

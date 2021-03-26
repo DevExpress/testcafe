@@ -69,7 +69,7 @@ export default class DblClickAutomation extends VisibleElementAutomation {
             .then(clickEventArgs => {
                 // NOTE: We should raise the `dblclick` event on an element that
                 // has been actually clicked during the second click automation.
-                this.eventState.dblClickElement = clickAutomation.eventState.clickElement;
+                this.eventState.dblClickElement = clickAutomation.upState.clickElement;
 
                 if (browserUtils.isIE)
                     eventUtils.unbind(document, 'focus', eventUtils.preventDefault, true);
