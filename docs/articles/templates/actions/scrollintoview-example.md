@@ -1,7 +1,7 @@
 ```js
 import { Selector } from 'testcafe';
 
-fixture `Scroll Action`
+fixture `Scroll Actions`
     .page `http://www.example.com/`;
 
 test('Scroll element into view', async t => {
