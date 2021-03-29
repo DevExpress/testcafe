@@ -23,7 +23,7 @@ Property | Type | Description
 `event.headers`    | Object | The response headers in a property-value form.
 `event.body`       | [Buffer](https://nodejs.org/api/buffer.html) | The response body.
 
-{% include notes-warnings/requesthook-onresponse-no-stub-headers.md href='./#stub-response-headers' %}
+{% include notes-warnings/requesthook-onresponse-no-stub-headers.md href='./#change-or-delete-response-headers' %}
 
 ```js
 async onResponse (event) {

@@ -104,13 +104,13 @@ async onResponse (event) {
 }
 ```
 
-{% include notes-warnings/requesthook-onresponse-no-stub-headers.md href='#stub-response-headers' %}
+{% include notes-warnings/requesthook-onresponse-no-stub-headers.md href='#change-or-delete-response-headers' %}
 
-### Stub Response Headers
+### Change or Delete Response Headers
 
-Before it passes an incoming response to the application, `RequestHook` can change the response headers.
+You can use the `RequestHook._onConfigureResponse()` method to set the header value or remove existing header, effectively mocking part of the response.
 
-You can use the `RequestHook._onConfigureResponse()` method to substitute response headers, effectively mocking part of the response.
+To change response headers, use `event.setHeaders` and `event.removeHeader` methods in the `__onConfigureResponse` call.
 
 > Important! The `RequestHook._onConfigureResponse()` method is private. Exercise caution when you implement this method in your request hooks.
 
@@ -134,4 +134,4 @@ class HeadersHook extends RequestHook {
 }
 ```
 
-You can not modify the response body with `RequestHook._onConfigureResponse()`.
+You *can not* modify the response body with `RequestHook._onConfigureResponse()`.
