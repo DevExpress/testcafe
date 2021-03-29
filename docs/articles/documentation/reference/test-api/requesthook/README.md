@@ -112,7 +112,7 @@ You can use the `RequestHook._onConfigureResponse()` method to set the header va
 
 To change response headers, use `event.setHeaders` and `event.removeHeader` methods in the `__onConfigureResponse` call.
 
-> Important! The `RequestHook._onConfigureResponse()` method is private. Exercise caution when you implement this method in your request hooks.
+> Important! The `RequestHook._onConfigureResponse()` method is private. Be cautious when you add this method to your request hooks.
 
 The example below demonstrates a `RequestHook` that sets a `x-token:token-123` header on the response and removes the `x-frame-options` header from the response.
 
