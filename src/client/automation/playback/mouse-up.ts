@@ -72,7 +72,7 @@ export default class MouseUpAutomation extends MouseBaseAutomation {
     private _mouseup (): Promise<{ timeStamp: number }> {
         return cursor
             .buttonUp()
-            .then(() => this._getElementForEvent())
+            .then(() => this._getElementForEvent(null))
             .then((element: HTMLElement) => {
                 if (this.ensureElementResultArgs)
                     this.ensureElementResultArgs.element = element;
