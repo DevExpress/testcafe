@@ -104,15 +104,19 @@ async onResponse (event) {
 }
 ```
 
-### Mock Response Headers
+> Important! You can not change response body or its headers inside a `RequestHook.onResponse()` call. If you edit properties of `event.headers` or `event.body` inside `onResponse()`, TestCafe ignores these changes.
+>
+> Learn how to stub response headers in [Stub Response Headers](#stub-response-headers).
 
-Before it passes an incoming response to the application, `RequestHook` can modify the response headers. This allows you to mock part of the response.
+### Stub Response Headers
 
-> Important! You can not modify the body of the request or its headers inside a `RequestHook.onResponse()` call. If you edit properties of `event.headers` or `event.body` inside `onResponse()`, TestCafe ignores these changes.
+Before it passes an incoming response to the application, `RequestHook` can change the response headers.
 
 You can use the `RequestHook._onConfigureResponse()` method to substitute response headers, effectively mocking part of the response.
 
-The example below demonstrates a `RequestHook` that sets a `foo:bar` header on the response and removes the `x-header` from the response.
+> Important! The `RequestHook._onConfigureResponse()` method is private. Exercise caution when you implement this method in your request hooks.
+
+The example below demonstrates a `RequestHook` that sets a `x-token:token-123` header on the response and removes the `x-frame-options` header from the response.
 
 ```js
 class HeadersHook extends RequestHook {
@@ -126,10 +130,10 @@ class HeadersHook extends RequestHook {
   _onConfigureResponse (event) {
     super._onConfigureResponse(event);
 
-    event.setHeader('foo', 'bar');
-    event.removeHeader('x-header');
+    event.setHeader('x-token', 'token-123');
+    event.removeHeader('x-frame-options');
   }
 }
 ```
 
-You can not modify the body of a response with `RequestHook._onConfigureResponse()`.
+You can not modify the response body with `RequestHook._onConfigureResponse()`.
