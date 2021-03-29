@@ -20,8 +20,8 @@ t.scroll([target,] posX, posY[, options]) → this | Promise<any>
 Parameter   | Type/Value                                        | Description
 ----------- | ------------------------------------------------- | --------------------
 `target`&#160;*(optional)* | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element to scroll. If unspecified, TestCafe scrolls the document body. See [Select Target Elements](#select-target-elements).
-`posX`&#160;               | Number | TestCafe scrolls the element to this position on the horizontal axis.
-`posY`&#160;               | Number | TestCafe scrolls the element to this position on the vertical axis.
+`posX`&#160;               | Number | The absolute location of the final scroll position on the horizontal axis
+`posY`&#160;               | Number | The absolute location of the final scroll position on the vertical axis
 `options`&#160;*(optional)*| Object | A set of options with additional parameters for the action. See [Options](#options).
 
 ### scroll(position)
