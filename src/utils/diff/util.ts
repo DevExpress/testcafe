@@ -1,15 +1,22 @@
 import { inspect } from 'util';
-import { isFunction, isBuffer } from 'lodash';
+import {
+    isFunction,
+    isBuffer,
+    isString
+} from 'lodash';
 
 export function cleanUpFilter (line: string): boolean {
     return !line.match(/\\ No newline/);
 }
 
 export function stringify (value: any): string {
-    let valueToStringify = value;
+    if (isString(value) && value !== '')
+        return value;
 
     if (isFunction(value))
-        return valueToStringify.toString();
+        return value.toString();
+
+    let valueToStringify = value;
 
     if (isBuffer(value))
         valueToStringify = Buffer.prototype.toJSON.call(value).data;

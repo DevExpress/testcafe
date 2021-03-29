@@ -21,7 +21,7 @@ function unifiedDiff (actual: string, expected: string): string {
     ;
 }
 
-export function generate (actual: string, expected: string): string {
+export function generate (actual: unknown, expected: unknown): string {
     try {
         return unifiedDiff(stringify(actual), stringify(expected));
     }
