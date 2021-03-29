@@ -16,8 +16,8 @@ t.scrollBy([target,] x, y[, options]) → this | Promise<any>
 Parameter   | Type                                              | Description
 ----------- | ------------------------------------------------- | --------------------
 `target`&#160;*(optional)*  | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element to scroll to. See [Select Target Elements](#select-target-elements).
-`x`&#160;                   | Number | The amount (in pixels) TestCafe scrolls the element from left to right. Can be negative.
-`y`&#160;                   | Number | The amount (in pixels) TestCafe scrolls the element from the top down. Can be negative.
+`x`&#160;                   | Number | Horizontal scroll distance, in pixels (left-right). Can be negative.
+`y`&#160;                   | Number | Vertical scroll distance, in pixels (top-down). Can be negative.
 `options`&#160;*(optional)* | Object | A set of options with additional parameters for the action. See [Options](#options).
 
 In the example below, TestCafe scrolls the webpage 200px *up* and 500px *to the right*:

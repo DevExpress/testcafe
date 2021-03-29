@@ -1,4 +1,4 @@
-Offset options supply offset parameters for `t.scroll`, `t.scrollBy` and `t.scrollIntoView` actions.
+Offset options apply to `t.scroll`, `t.scrollBy` and `t.scrollIntoView` actions.
 
 ```js
 {
