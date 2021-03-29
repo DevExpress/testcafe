@@ -19,12 +19,14 @@ const eventSimulator = hammerhead.eventSandbox.eventSimulator;
 const listeners = hammerhead.eventSandbox.listeners;
 
 export default class MouseUpAutomation extends MouseBaseAutomation {
-    public upState: MouseUpStateController;
+    public eventState: MouseUpStateController;
+    protected downState: MouseDownStateController;
 
     public constructor (element: HTMLElement, mouseOptions: MouseOptions, mouseDownState?: MouseDownStateController, eventArgs?: EnsureElementResultArgs) {
         super(element, mouseOptions, eventArgs);
 
-        this.upState = MouseUpStateController.from({ clickElement: null });
+        this.eventState = MouseUpStateController.from({ clickElement: null });
+        this.downState = MouseDownStateController.from(mouseDownState);
 
         if (!this.downState.mouseDownElement)
             this.downState.setElements(this.element);
@@ -75,7 +77,7 @@ export default class MouseUpAutomation extends MouseBaseAutomation {
                 if (this.ensureElementResultArgs)
                     this.ensureElementResultArgs.element = element;
 
-                this.upState.clickElement = MouseUpAutomation._getElementForClick(this.downState.mouseDownElement || element, element,
+                this.eventState.clickElement = MouseUpAutomation._getElementForClick(this.downState.mouseDownElement || element, element,
                     this.downState.targetElementParentNodes);
 
                 let timeStamp = {};
@@ -97,7 +99,7 @@ export default class MouseUpAutomation extends MouseBaseAutomation {
     }
 
     private _click (): EnsureElementResultArgs | undefined {
-        const clickCommand = createClickCommand(this.upState, this.ensureElementResultArgs);
+        const clickCommand = createClickCommand(this.eventState, this.ensureElementResultArgs);
 
         if (!this.downState._isTouchEventWasCancelled())
             clickCommand.run();

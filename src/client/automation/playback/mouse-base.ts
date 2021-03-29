@@ -1,6 +1,5 @@
 import hammerhead from '../deps/hammerhead';
 import VisibleElementAutomation from './visible-element-automation';
-import { DownState, MouseDownStateController } from './automation-states';
 import { MouseOptions } from '../../../test-run/commands/options';
 import { EnsureElementResult, EnsureElementResultArgs } from './interfaces';
 
@@ -12,16 +11,14 @@ export default class MouseBaseAutomation extends VisibleElementAutomation {
     private modifiers: unknown;
 
     protected ensureElementResultArgs?: EnsureElementResultArgs;
-    protected downState: MouseDownStateController;
 
-    public constructor (element: HTMLElement, mouseOptions: MouseOptions, eventArgs?: EnsureElementResultArgs, mouseDownState?: DownState) {
+
+    public constructor (element: HTMLElement, mouseOptions: MouseOptions, eventArgs?: EnsureElementResultArgs) {
         super(element, mouseOptions);
 
         this.modifiers = mouseOptions.modifiers;
 
         this.ensureElementResultArgs = eventArgs;
-
-        this.downState = MouseDownStateController.from(mouseDownState);
     }
 
     public run (useStrictElementCheck: boolean): Promise<unknown> {

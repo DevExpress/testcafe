@@ -4,6 +4,7 @@ import MouseDownAutomation from '../mouse-down';
 import MouseUpAutomation from '../mouse-up';
 import { ClickOptions } from '../../../../test-run/commands/options';
 import MouseBaseAutomation from '../mouse-base';
+import { MouseUpStateController } from '../automation-states';
 
 const Promise = hammerhead.Promise;
 const delay   = testCafeCore.delay;
@@ -24,9 +25,9 @@ export default class ClickAutomation extends MouseBaseAutomation {
     //     return this.mouseDownAutomation ? this.mouseDownAutomation.eventState : null;
     // }
     //
-    // public get upState (): MouseUpStateController | null {
-    //     return this.mouseUpAutomation ? this.mouseUpAutomation.upState : null;
-    // }
+    public get upState (): MouseUpStateController | null {
+        return this.mouseUpAutomation ? this.mouseUpAutomation.eventState : null;
+    }
 
     private _mousedown (): Promise<unknown> {
         if (this.ensureElementResultArgs) {
