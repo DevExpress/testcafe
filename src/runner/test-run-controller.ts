@@ -41,12 +41,12 @@ class Quarantine {
         return this.attempts.filter(errors => errors.length === 0);
     }
 
-    public setTestRunThreshold (threshold: number): void {
-        this.TEST_RUN_THRESHOLD = threshold;
-    }
-
     public setPassedQuarantineThreshold (threshold: number): void {
         this.PASSED_QUARANTINE_THRESHOLD = threshold;
+    }
+
+    public setTestRunThreshold (threshold: number): void {
+        this.TEST_RUN_THRESHOLD = threshold;
     }
 
     public getNextAttemptNumber (): number {
@@ -55,8 +55,7 @@ class Quarantine {
 
     public isThresholdReached (extraErrors?: TestRunErrorFormattableAdapter[]): boolean {
         const { failedTimes, passedTimes } = this._getAttemptsResult(extraErrors);
-
-        const failedThreshold = this.PASSED_QUARANTINE_THRESHOLD < this.TEST_RUN_THRESHOLD ? this.TEST_RUN_THRESHOLD - this.PASSED_QUARANTINE_THRESHOLD : DEFAULT_QUARANTINE_THRESHOLD;
+        const failedThreshold = this._getFailedThreshold();
 
         const failedThresholdReached = failedTimes >= failedThreshold;
         const passedThresholdReached = passedTimes >= this.PASSED_QUARANTINE_THRESHOLD;
@@ -82,6 +81,13 @@ class Quarantine {
         }
 
         return { failedTimes, passedTimes };
+    }
+
+    private _getFailedThreshold (): number {
+        if (this.TEST_RUN_THRESHOLD !== DEFAULT_QUARANTINE_THRESHOLD || this.PASSED_QUARANTINE_THRESHOLD !== DEFAULT_QUARANTINE_THRESHOLD)
+            return this.TEST_RUN_THRESHOLD - this.PASSED_QUARANTINE_THRESHOLD;
+
+        return DEFAULT_QUARANTINE_THRESHOLD;
     }
 }
 

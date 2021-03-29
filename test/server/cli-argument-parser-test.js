@@ -672,6 +672,14 @@ describe('CLI argument parser', function () {
         it('Should fail if invalid option is specified', async () => {
             return assertRaisesError('--quarantine-mode test=fake', 'The "--quarantine-mode" option should be empty, otherwise one of "retryCount" or "passCount".');
         });
+
+        it('Should fail if "retryCount" is greater than "passCount"', async () => {
+            return assertRaisesError('--quarantine-mode retryCount=1,passCount=2', 'The "retryCount" value should be greater or equal to "passCount".');
+        });
+
+        it('Should fail if "retryCount" is less than 3', async () => {
+            return assertRaisesError('--quarantine-mode retryCount=1', 'The "retryCount" value should be greater or equal to "passCount".');
+        });
     });
 
     it('Should parse command line arguments', function () {
