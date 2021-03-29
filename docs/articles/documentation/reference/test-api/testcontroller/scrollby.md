@@ -20,7 +20,7 @@ Parameter   | Type                                              | Description
 `y`&#160;                   | Number | The amount (in pixels) TestCafe scrolls the element from the top down. Can be negative.
 `options`&#160;*(optional)* | Object | A set of options with additional parameters for the action. See [Options](#options).
 
-In the example below, TestCafe scrolls the webpage *up* by 200px and *to the right* by 500px:
+In the example below, TestCafe scrolls the webpage 200px *up* and 500px *to the right*:
 
 ```js
 import 'testcafe'
