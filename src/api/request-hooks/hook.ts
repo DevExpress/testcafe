@@ -13,7 +13,7 @@ import WarningLog from '../../notifications/warning-log';
 
 
 export default abstract class RequestHook {
-    public _requestFilterRules: RequestFilterRuleInit[];
+    public _requestFilterRules: RequestFilterRule[];
     private readonly _responseEventConfigureOpts?: ConfigureResponseEventOptions;
     public _warningLog: WarningLog | null;
     public id: string;

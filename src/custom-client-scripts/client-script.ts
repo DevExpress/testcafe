@@ -2,7 +2,6 @@ import { readFile } from '../utils/promisified-functions';
 import { GeneralError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
 import { isAbsolute, join } from 'path';
-// @ts-ignore Could not find a declaration file for module 'testcafe-hammerhead'
 import { RequestFilterRule, generateUniqueId } from 'testcafe-hammerhead';
 import { createHash } from 'crypto';
 import ClientScriptInit from './client-script-init';
@@ -91,7 +90,7 @@ export default class ClientScript {
         else if (typeof this.init === 'string')
             await this._loadFromPath(this.init);
         else {
-            const { path: initPath, content: initContent, module: initModule, page: initPage } = this.init as ClientScript;
+            const { path: initPath, content: initContent, module: initModule, page: initPage } = this.init as ClientScriptInit;
 
             if (initPath && initContent || initPath && initModule || initContent && initModule)
                 throw new GeneralError(RUNTIME_ERRORS.clientScriptInitializerMultipleContentSources);
@@ -116,7 +115,7 @@ export default class ClientScript {
     }
 
     private _contentToString (): string {
-        let displayContent = '';
+        let displayContent;
 
         if (this.content.length <= CONTENT_STR_MAX_LENGTH - CONTENT_ELLIPSIS_STR.length)
             displayContent = this.content;

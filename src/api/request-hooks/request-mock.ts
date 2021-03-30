@@ -15,7 +15,7 @@ import WARNING_MESSAGE from '../../notifications/warning-message';
 
 class RequestMock extends RequestHook {
     private _pendingRequestFilterRuleInit: null | RequestFilterRuleInit;
-    private _mocks: Map<RequestFilterRule, ResponseMock>;
+    private _mocks: Map<string, ResponseMock>;
 
     public constructor () {
         super([]);
@@ -25,7 +25,7 @@ class RequestMock extends RequestHook {
     }
 
     public async onRequest (event: RequestEvent): Promise<void> {
-        const mock = this._mocks.get(event._requestFilterRule) as ResponseMock;
+        const mock = this._mocks.get(event._requestFilterRule.id) as ResponseMock;
 
         event.setMock(mock);
     }
@@ -53,7 +53,7 @@ class RequestMock extends RequestHook {
         const rule = new RequestFilterRule(this._pendingRequestFilterRuleInit);
 
         this._requestFilterRules.push(rule);
-        this._mocks.set(rule, mock);
+        this._mocks.set(rule.id, mock);
 
         this._pendingRequestFilterRuleInit = null;
 
