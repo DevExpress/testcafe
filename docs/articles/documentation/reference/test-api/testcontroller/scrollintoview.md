@@ -7,7 +7,7 @@ permalink: /documentation/reference/test-api/testcontroller/scrollintoview.html
 
 {% include actions/manual-scroll-warning.md %}
 
-Scrolls parent containers of the `target` element until the element is inside of the viewport. Can be chained with other `TestController` methods.
+Scrolls parent containers of the `target` element until the element is in the viewport. Can be chained with other `TestController` methods.
 
 ```text
 t.scrollIntoView(target [, options]) → this | Promise<any>
@@ -18,7 +18,7 @@ Parameter   | Type                                              | Description
 `target`&#160; | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element to scroll to. See [Select Target Elements](#select-target-elements).
 `options`&#160;*(optional)* | Object | A set of options with additional parameters for the action. See [Options](#options).
 
-The following example shows how to use the `t.scrollIntoView` action to scroll the webpage until the element is in the viewport.
+The following example shows how to use the `t.scrollIntoView` action to scroll the webpage until the element is in the viewport:
 
 {% include actions/scrollintoview-example.md %}
 

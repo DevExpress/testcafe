@@ -7,7 +7,7 @@ permalink: /documentation/reference/test-api/testcontroller/scroll.html
 
 {% include actions/manual-scroll-warning.md %}
 
-Scrolls the `target` element to a specified position. If no `target` is specified, scrolls the document body. Can be chained with other `TestController` methods.
+Scrolls the `target` element to a specified position. If no `target` is specified, the document body is scrolled. Can be chained with other `TestController` methods.
 
 ## Syntax
 

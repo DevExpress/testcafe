@@ -7,7 +7,7 @@ permalink: /documentation/reference/test-api/testcontroller/scrollby.html
 
 {% include actions/manual-scroll-warning.md %}
 
-Scrolls the `target` element by the given amount of pixels. If no `target` is specified, scrolls the document body. Can be chained with other `TestController` methods.
+Scrolls the `target` element by the specified number of pixels. If no `target` is specified, the document body is scrolled. Can be chained with other `TestController` methods.
 
 ```text
 t.scrollBy([target,] x, y[, options]) → this | Promise<any>
