@@ -661,6 +661,13 @@ describe('CLI argument parser', function () {
             expect(parser.opts.quarantineMode.passCount).equal(1);
         });
 
+        it('Should pass if only "passCount" is provided', async () => {
+            const parser = await parse('--quarantine-mode passCount=1');
+
+            expect(parser.opts.quarantineMode).to.be.ok;
+            expect(parser.opts.quarantineMode.passCount).equal(1);
+        });
+
         it('Should fail if threshold value not specified', async () => {
             return assertRaisesError('--quarantine-mode retryCount=', 'The "--quarantine-mode" option value is not a valid key-value pair.');
         });
@@ -674,11 +681,11 @@ describe('CLI argument parser', function () {
         });
 
         it('Should fail if "retryCount" is greater than "passCount"', async () => {
-            return assertRaisesError('--quarantine-mode retryCount=1,passCount=2', 'The "retryCount" value should be greater or equal to "passCount".');
+            return assertRaisesError('--quarantine-mode retryCount=1,passCount=2', 'The "retryCount" value should be greater or equal to "passCount" (2).');
         });
 
         it('Should fail if "retryCount" is less than 3', async () => {
-            return assertRaisesError('--quarantine-mode retryCount=1', 'The "retryCount" value should be greater or equal to "passCount".');
+            return assertRaisesError('--quarantine-mode retryCount=1', 'The "retryCount" value should be greater or equal to "passCount" (3).');
         });
     });
 

@@ -15,6 +15,7 @@ import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapt
 import CompilerService from '../services/compiler/host';
 
 const DEFAULT_QUARANTINE_THRESHOLD = 3;
+const DEFAULT_TEST_RUN_THRESHOLD = 5;
 const DISCONNECT_THRESHOLD = 3;
 
 interface AttemptResult {
@@ -29,7 +30,7 @@ class Quarantine {
 
     public constructor () {
         this.attempts = [];
-        this.TEST_RUN_THRESHOLD = DEFAULT_QUARANTINE_THRESHOLD;
+        this.TEST_RUN_THRESHOLD = DEFAULT_TEST_RUN_THRESHOLD;
         this.PASSED_QUARANTINE_THRESHOLD = DEFAULT_QUARANTINE_THRESHOLD;
     }
 
@@ -84,8 +85,8 @@ class Quarantine {
     }
 
     private _getFailedThreshold (): number {
-        if (this.TEST_RUN_THRESHOLD !== DEFAULT_QUARANTINE_THRESHOLD || this.PASSED_QUARANTINE_THRESHOLD !== DEFAULT_QUARANTINE_THRESHOLD)
-            return this.TEST_RUN_THRESHOLD - this.PASSED_QUARANTINE_THRESHOLD;
+        if (this.TEST_RUN_THRESHOLD !== DEFAULT_TEST_RUN_THRESHOLD)
+            return this.TEST_RUN_THRESHOLD - this.PASSED_QUARANTINE_THRESHOLD + 1;
 
         return DEFAULT_QUARANTINE_THRESHOLD;
     }

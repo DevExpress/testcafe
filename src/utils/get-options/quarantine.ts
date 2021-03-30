@@ -13,9 +13,9 @@ function validateQuarantineOptions (options: Dictionary<string | number> ): void
     const { retryCount, passCount } = options;
 
     if (!passCount && retryCount < 3)
-        throw new GeneralError(RUNTIME_ERRORS.invalidRetryCountValue);
+        throw new GeneralError(RUNTIME_ERRORS.invalidRetryCountValue, 3);
     else if (passCount > retryCount)
-        throw new GeneralError(RUNTIME_ERRORS.invalidRetryCountValue);
+        throw new GeneralError(RUNTIME_ERRORS.invalidRetryCountValue, passCount);
 }
 
 export default async function (optionName: string, options: string | Dictionary<string | number>): Promise<Dictionary<number>> {
