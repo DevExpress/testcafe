@@ -42,6 +42,9 @@ const CONFIG = CHUNK_NAMES.map(chunk => ({
     input:    chunk,
     external: Object.keys(GLOBALS(chunk)),
 
+    //NOTE: need to keep this to prevent rollup replacing this with undefined in TypeScript polyfills
+    context:  "window",
+
     output: {
         file:    path.join(TARGET_DIR, chunk),
         format:  'iife',
@@ -52,7 +55,6 @@ const CONFIG = CHUNK_NAMES.map(chunk => ({
     },
 
     plugins: [
-        inject({ Promise: 'pinkie' }),
         resolve(),
         alias({
             entries: [{
@@ -61,7 +63,10 @@ const CONFIG = CHUNK_NAMES.map(chunk => ({
             }]
         }),
         commonjs(),
-        typescript({ include: ['*.+(j|t)s', '**/*.+(j|t)s', '../**/*.+(j|t)s'] })
+        typescript({ include: ['*.+(j|t)s', '**/*.+(j|t)s', '../**/*.+(j|t)s'] }),
+
+        //NOTE: Need to keep this after the typescript plugin to allow using both async/await and TypeScript
+        inject({ Promise: 'pinkie' }),
     ]
 }));
 
