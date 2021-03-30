@@ -9,7 +9,7 @@ Offset options apply to `t.scroll`, `t.scrollBy` and `t.scrollIntoView` actions.
 
 Parameter                      | Type    | Description                                                                                                                                                 | Default
 ------------------------------ | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------
-`offsetX`, `offsetY`           | Number  | Mouse pointer coordinates that define a point where the action is performed or started. If positive, TestCafe calculates coordinates relative to the top-left corner of the target element. If negative, they are calculated relative to the bottom-right corner. | The center of the target element.
+`offsetX`, `offsetY`           | Number  | Coordinates that define the action's starting point. If positive, TestCafe calculates coordinates relative to the top-left corner of the target element. If negative, they are calculated relative to the bottom-right corner.  | Top left corner of the target element
 
 The example below scrolls the element until different corners of the element are visible.
 
