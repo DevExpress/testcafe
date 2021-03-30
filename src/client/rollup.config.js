@@ -43,7 +43,7 @@ const CONFIG = CHUNK_NAMES.map(chunk => ({
     external: Object.keys(GLOBALS(chunk)),
 
     //NOTE: need to keep this to prevent rollup from generating warnings about replacing `this` in TypeScript polyfills
-    context: 'undefined',
+    context: '(void 0)',
 
     output: {
         file:    path.join(TARGET_DIR, chunk),
