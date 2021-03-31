@@ -108,7 +108,7 @@ async onResponse (event) {
 
 ### Change or Delete Response Headers
 
-The `RequestHook._onConfigureResponse()` method sets and removes headers, effectively mocking part of the response.
+You can set or remove response headers in a `RequestHook._onConfigureResponse()` call. This allows you to modify part of the response headers before the response is sent to the browser.
 
 To change response headers, use the `event.setHeaders` and `event.removeHeader` methods in the `__onConfigureResponse` call.
 
