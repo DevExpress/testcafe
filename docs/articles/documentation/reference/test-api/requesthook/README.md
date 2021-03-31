@@ -110,7 +110,7 @@ async onResponse (event) {
 
 The `RequestHook._onConfigureResponse()` method sets and removes headers, effectively mocking part of the response.
 
-To change response headers, use `event.setHeaders` and `event.removeHeader` methods in the `__onConfigureResponse` call.
+To change response headers, use the `event.setHeaders` and `event.removeHeader` methods in the `__onConfigureResponse` call.
 
 > Important! The `RequestHook._onConfigureResponse()` method is private. Be cautious when you add this method to your request hooks.
 

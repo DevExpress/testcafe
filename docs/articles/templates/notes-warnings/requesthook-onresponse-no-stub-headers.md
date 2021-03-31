@@ -1,3 +1,3 @@
-> Important! You can not change response body or its headers inside a `RequestHook.onResponse()` call.
+> Important! You cannot change the response body or its status code inside a `RequestHook.onResponse()` call.
 >
-> Learn how to change or delete response headers in [Change or Delete Response Headers]({{ include.href }}).
+> Refer to the following topic for instructions on how to change or delete response headers: [Change or Delete Response Headers]({{ include.href }}).
