@@ -112,7 +112,7 @@ The `RequestHook._onConfigureResponse()` method sets and removes headers, effect
 
 To change response headers, use the `event.setHeaders` and `event.removeHeader` methods in the `__onConfigureResponse` call.
 
-> Important! The `RequestHook._onConfigureResponse()` method is private. Be cautious when you add this method to your request hooks.
+> Important! The `RequestHook._onConfigureResponse()` method is not part of TestCafe public API. As a private method, it can be removed or deprecated in the upcoming releases without prior warning. Be cautious when you add this method to your request hooks.
 
 The example below demonstrates a `RequestHook` that sets a `x-token:token-123` header on the response and removes the `x-frame-options` header from the response.
 
