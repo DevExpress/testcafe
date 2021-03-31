@@ -27,11 +27,9 @@ Write fewer E2E tests. End-to-end tests are slow by nature, so the number of tes
 
 ## Smart Assertions
 
-In end-to-end web testing, unpredictable factors (like network lag, processor speed, or memory bottlenecks in containers) can interfere with the assertions and produce inconsistent test results. Such tests are inconclusive (sometimes called 'flaky').
-
-TestCafe includes a [Smart Assertion Query Mechanism](../../guides/basic-guides/assert.md#smart-assertion-query-mechanism). This mechanism introduces wait time for all the assertions; if an assertion fails, it retries multiple times within a timeout. That reduces random impact and stabilizes the tests without performance trade-offs.
-
-The following example demonstrates a common mistake:
+If an assertion fails for any reason, TestCafe retries it multiple times within a predefined timeout. This [Smart Assertion Query Mechanism](../../guides/basic-guides/assert.md#smart-assertion-query-mechanism) mechanism helps minimize inconsistent test results (otherwise known as ‘flake’).  Reasons for flaky tests may be network lag, memory bottlenecks, or other unpredictable factors.  
+  
+Make sure that your test code don’t interfere with the Smart Assertion mechanism. The following two examples show common issues.
 
 ```js
 import { Selector } from 'testcafe';
@@ -135,12 +133,16 @@ In this case, TestCafe applies the smart query mechanism and retries the asserti
 
 ## Use of Page Objects
 
-Use the Page Model in your tests. Consider this simple page object of our [Example Page](https://devexpress.github.io/testcafe/example/).
+If multiple tests need to access the same UI elements, create a [Page Model](../concepts/page-model.md)-an intermediate object that provides a layer of abstraction over the tested page.
+
+Tests can call Page Model methods to access element or call user actions. If a web page changes, you can make changes once in the intermediate object instead of updating code in all your tests.
+
+Consider this Page Model implementation for our [Example Page](https://devexpress.github.io/testcafe/example/).
 
 ```js
 import {t, Selector } from 'testcafe';
 
-class Page {
+class MyPage {
     constructor () {
         this.nameInput               = Selector('input').withAttribute('data-testid', 'name-input');
         this.importantFeaturesLabels = Selector('legend').withExactText('Which features are important to you:').parent().child('p').child('label');
@@ -160,7 +162,7 @@ class Page {
     }
 }
 
-export default new Page();
+export default new MyPage();
 ```
 
 The page object holds references to the desired elements on the page. Common operations are defined as an object's method.
@@ -242,9 +244,9 @@ See the [Authentication](../../guides/advanced-guides/authentication.md) article
 
 Follow these guidelines to keep your test structure manageable and "clean":
 
-* Use a page model to store Selectors and compound actions that are often used across your app. For instance, a page model function can contain all steps that are necessary to perform an action.
+* Use a page model to store Selectors and compound actions that are often used across your app. For instance in tests for an e-shop app, you can put all cart checkout actions into `myPage.checkout()`.
 
-* Put all the page model files into one directory. If your application is divided logically into components or subsystems, split up the associated page model objects into separate files.
+* Put all the page model files into one directory. If your application is divided logically into components or subsystems, split up the associated page model objects into separate files. This practice helps you and others to navigate the project quicker.
 
 > You can find a page model example in the [testcafe-examples](https://github.com/DevExpress/testcafe-examples/tree/master/examples/use-page-model) repository.
 
@@ -260,7 +262,7 @@ Follow these guidelines to keep your test structure manageable and "clean":
 
 * In your test folder, create subfolders for tests that cover different subsystems of your application.
 
-* Don't write long tests. Shorter test scenarios are easier to debug and can run concurrently.
+* Keep your tests short. Shorter test scenarios are easier to debug. A test suite that consists of shorter test scenarios performs better when run concurrently.
 
 * Any reused data (for example, large sets of reference values or form inputs) is better stored in a dedicated directory. Consider a descriptive folder name (for instance, `data`).
 
