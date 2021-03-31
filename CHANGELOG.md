@@ -33,8 +33,6 @@ You can use the `t.scroll` action to scroll an element to a position:
  `t.scrollBy` allows you to scroll an element (or the webpage) by a set amount of pixels. The example below scrolls the webpage 200px up and 500px to the right:
 
  ```js
- import 'testcafe'
-
  fixture`Scroll Action`
      .page('http://example.com');
 
