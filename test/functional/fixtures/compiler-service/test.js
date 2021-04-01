@@ -39,4 +39,10 @@ describe('Compiler service', () => {
     it('Should allow using ClientFunction in assertions', async () => {
         await runTests('testcafe-fixtures/client-function-in-assertions.js', 'ClientFunction in assertions');
     });
+
+    describe('Request Hooks', () => {
+        it('Request Logger', async () => {
+            await runTests('../api/es-next/request-hooks/testcafe-fixtures/request-logger/api.js', 'API');
+        });
+    });
 });

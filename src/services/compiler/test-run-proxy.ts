@@ -12,6 +12,20 @@ import COMMAND_TYPE from '../../test-run/commands/type';
 import CommandBase from '../../test-run/commands/base';
 import * as serviceCommands from '../../test-run/commands/service';
 import { TestRunProxyInit } from '../interfaces';
+import Test from '../../api/structure/test';
+import RequestHook from '../../api/request-hooks/hook';
+import RequestHookMethodNames from '../../api/request-hooks/hook-method-names';
+import {
+    ConfigureResponseEvent,
+    RequestEvent,
+    ResponseEvent
+} from 'testcafe-hammerhead';
+
+interface RequestHookEventDescriptor {
+    hookId: string;
+    name: RequestHookMethodNames;
+    eventData: RequestEvent | ConfigureResponseEvent | ResponseEvent;
+}
 
 class TestRunProxy {
     public readonly id: string;
@@ -23,6 +37,7 @@ class TestRunProxy {
     private readonly fixtureCtx: unknown;
     private readonly ctx: unknown;
     private readonly _options: Dictionary<OptionValue>;
+    private _requestHooks: RequestHook[];
 
     public constructor ({ dispatcher, id, fixtureCtx, options }: TestRunProxyInit) {
         this.dispatcher = dispatcher;
@@ -35,9 +50,10 @@ class TestRunProxy {
 
         // TODO: Synchronize these properties with their real counterparts in the main process.
         // Postponed until (GH-3244). See details in (GH-5250).
-        this.controller =        new TestController(this);
+        this.controller        = new TestController(this);
         this.observedCallsites = new ObservedCallsitesStorage();
-        this.warningLog =        new WarningLog();
+        this.warningLog        = new WarningLog();
+        this._requestHooks     = [];
 
         testRunTracker.activeTestRuns[id] = this;
     }
@@ -62,6 +78,10 @@ class TestRunProxy {
         return executor.run();
     }
 
+    private getHook (hookId: string): RequestHook | undefined {
+        return this._requestHooks.find(hook => hook.id === hookId);
+    }
+
     public async executeAction (apiMethodName: string, command: unknown, callsite: unknown): Promise<unknown> {
         if (callsite)
             callsite = prerenderCallsite(callsite);
@@ -74,6 +94,21 @@ class TestRunProxy {
 
     public async executeCommand (command: unknown): Promise<unknown> {
         return this.dispatcher.executeCommand({ command, id: this.id });
+    }
+
+    public initializeRequestHooks (test: Test): void {
+        this._requestHooks = Array.from(test.requestHooks);
+
+        this._requestHooks.forEach(requestHook => {
+            requestHook._warningLog = this.warningLog;
+        });
+    }
+
+    public onRequestHookEvent ({ hookId, name, eventData }: RequestHookEventDescriptor): void {
+        const targetHook = this.getHook(hookId);
+
+        // @ts-ignore
+        targetHook[name].call(targetHook, eventData);
     }
 }
 
