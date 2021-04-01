@@ -110,7 +110,7 @@ async onResponse (event) {
 
 You can set or remove response headers in a `RequestHook._onConfigureResponse()` call. This allows you to modify part of the response headers before the response is sent to the browser.
 
-To change response headers, use the `event.setHeaders` and `event.removeHeader` methods in the `__onConfigureResponse` call.
+To change response headers, use the `event.setHeader` and `event.removeHeader` methods in the `__onConfigureResponse` call.
 
 > Important! The `RequestHook._onConfigureResponse()` method is not part of TestCafe public API. As a private method, it can be removed in the upcoming releases without prior warning. Be cautious when you override this method in your request hooks.
 
