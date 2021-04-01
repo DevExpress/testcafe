@@ -16,7 +16,7 @@ t.rightClick(selector [, options]) → this | Promise<any>
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------
 `selector`             | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element being right-clicked. See [Select Target Elements](#select-target-elements).
-`options`&#160;*(optional)* | Object                                            | A set of options that provide additional parameters for the action. See [Options](#options).
+`options`&#160;*(optional)* | Object                                            | A set of options with additional parameters for the action. See [Options](#options).
 
 The following example shows how to use the `t.rightClick` action to invoke a grid's popup menu.
 
