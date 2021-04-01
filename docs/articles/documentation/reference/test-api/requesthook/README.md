@@ -103,3 +103,35 @@ async onResponse (event) {
     throw new Error('Not implemented');
 }
 ```
+
+{% include notes-warnings/requesthook-onresponse-no-stub-headers.md href='#change-or-delete-response-headers' %}
+
+### Change or Delete Response Headers
+
+You can set or remove response headers in a `RequestHook._onConfigureResponse()` call. This allows you to modify part of the response headers before the response is sent to the browser.
+
+To change response headers, use the `event.setHeader` and `event.removeHeader` methods in the `__onConfigureResponse` call.
+
+> Important! The `RequestHook._onConfigureResponse()` method is not part of TestCafe public API. As a private method, it can be removed in upcoming releases without prior warning. Be cautious when you override this method in your request hooks.
+
+The example below demonstrates a `RequestHook` that sets a `x-token:token-123` header on the response and removes the `x-frame-options` header from the response.
+
+```js
+class HeadersHook extends RequestHook {
+  constructor (requestFilterRules) {
+    super(requestFilterRules);
+  }
+
+  async onRequest () { }
+  async onResponse () { }
+
+  _onConfigureResponse (event) {
+    super._onConfigureResponse(event);
+
+    event.setHeader('x-token', 'token-123');
+    event.removeHeader('x-frame-options');
+  }
+}
+```
+
+You *can not* modify the response body with `RequestHook._onConfigureResponse()`.
