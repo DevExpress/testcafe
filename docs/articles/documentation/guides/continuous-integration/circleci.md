@@ -25,7 +25,7 @@ This topic describes how to integrate TestCafe tests into a [CircleCI](https://c
 
 In this tutorial, you fetch tests from a GitHub repository: [testcafe-ci-demo](https://github.com/DevExpress-Examples/testcafe-ci-demo). Fork this repository before you begin.
 
-> CircleCI supports different version control systems. For information on which systems you can use with CircleCI, refer to the [CircleCI Integrations](https://circleci.com/integrations/) page.
+> CircleCI supports various version control systems. For information on which systems you can use with CircleCI, refer to the [CircleCI Integrations](https://circleci.com/integrations/) page.
 
 ## Step 1 - Install TestCafe and Create Tests
 
