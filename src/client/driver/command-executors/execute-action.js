@@ -48,7 +48,8 @@ import {
 } from '../../../shared/errors';
 
 import COMMAND_TYPE from '../../../test-run/commands/type';
-
+import SetScrollAutomation from '../../automation/playback/set-scroll';
+import ScrollIntoViewAutomation from '../../automation/playback/scroll-into-view';
 
 // Ensure command element properties
 function ensureElementEditable (element) {
@@ -199,6 +200,22 @@ class ActionExecutor {
 
             case COMMAND_TYPE.dragToElement :
                 return new DragToElementAutomation(this.elements[0], this.elements[1], this.command.options);
+
+            case COMMAND_TYPE.scroll: {
+                const { x, y, position, options } = this.command;
+
+                return new SetScrollAutomation(this.elements[0], { x, y, position }, options);
+            }
+
+            case COMMAND_TYPE.scrollBy: {
+                const { byX, byY, options } = this.command;
+
+                return new SetScrollAutomation(this.elements[0], { byX, byY }, options);
+            }
+
+            case COMMAND_TYPE.scrollIntoView: {
+                return new ScrollIntoViewAutomation(this.elements[0], this.command.options);
+            }
 
             case COMMAND_TYPE.typeText:
                 // eslint-disable-next-line no-restricted-properties

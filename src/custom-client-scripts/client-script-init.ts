@@ -1,9 +1,10 @@
-import { RequestFilterRule } from 'testcafe-hammerhead';
+import { RequestFilterRuleInit } from 'testcafe-hammerhead';
 
 interface ClientScriptInit {
     path: string;
     content: string;
-    page: RequestFilterRule;
+    module: string;
+    page: RequestFilterRuleInit;
 }
 
 //NOTE: https://github.com/Microsoft/TypeScript/issues/3194

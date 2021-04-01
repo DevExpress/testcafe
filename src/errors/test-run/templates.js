@@ -2,6 +2,7 @@ import { escape as escapeHtml } from 'lodash';
 import { TEST_RUN_ERRORS } from '../types';
 import {
     renderForbiddenCharsList,
+    renderDiff,
     formatSelectorCallstack,
     formatUrl,
     replaceLeadingSpacesWithNbsp,
@@ -242,9 +243,7 @@ export default {
     [TEST_RUN_ERRORS.externalAssertionLibraryError]: err => `
         ${escapeHtml(err.errMsg)}
 
-        <span class="diff-added">+ expected</span> <span class="diff-removed">- actual</span>
-
-        ${err.diff}
+        ${renderDiff(err.diff)}
     `,
 
     [TEST_RUN_ERRORS.domNodeClientFunctionResultError]: err => `

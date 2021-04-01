@@ -82,8 +82,8 @@ describe('IPC Message', () => {
         const serializer = new smallMessage.MessageSerializer();
         const parser     = new smallMessage.MessageParser();
 
-        // NOTE: must be serialized to [Buffer('"A'), Buffer('BB'), Buffer('C"')];
-        const correctData = serializer.serialize('ABBC');
+        // NOTE: must be serialized to [Buffer('["'), Buffer('AC'), Buffer('"]')];
+        const correctData = serializer.serialize('AC');
 
         expect(correctData.length).equal(3);
 
@@ -95,5 +95,24 @@ describe('IPC Message', () => {
         expect(() => parser.parse(unexpectedHeadData)).throw('Cannot create an IPC message due to an unexpected IPC head packet.');
         expect(() => parser.parse(unexpectedBodyData)).throw('Cannot create an IPC message due to an unexpected IPC body packet.');
         expect(() => parser.parse(unexpectedTailData)).throw('Cannot create an IPC message due to an unexpected IPC tail packet.');
+    });
+
+    it('Should serialize messages with RegExp fields', () => {
+        const serializer = new MessageSerializer();
+        const parser     = new MessageParser();
+
+        const originMessage = {
+            id:   1,
+            type: 'text',
+            url:  new RegExp('.*', 'i')
+        };
+
+        const data          = serializer.serialize(originMessage);
+        const parsedMessage = parser.parse(data[0])[0];
+
+        expect(parsedMessage.id).equal(originMessage.id);
+        expect(parsedMessage.type).equal(originMessage.type);
+        expect(parsedMessage.url).be.instanceOf(RegExp);
+        expect(parsedMessage.url.toString()).eql(originMessage.url.toString());
     });
 });

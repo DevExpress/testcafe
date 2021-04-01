@@ -1,0 +1,25 @@
+AssertionError: expected 0 to be above 1
+
++ expected - actual
+
+-0
++1
+
+
+Browser: Chrome 15.0.874.120 / macOS 10.15
+Screenshot: /unix/path/with/<tag>
+
+   18 |function func1 () {
+   19 |    record = createCallsiteRecord({ byFunctionName: 'func1' });
+   20 |}
+   21 |
+   22 |(function func2 () {
+ > 23 |    func1();
+   24 |})();
+   25 |
+   26 |stackTrace.filter.deattach(stackFilter);
+   27 |
+   28 |module.exports = record;
+
+   at func2 (testfile.js:23:5)
+   at Object.<anonymous> (testfile.js:24:3)

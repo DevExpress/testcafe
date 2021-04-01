@@ -1,11 +1,10 @@
-AssertionError: expected [Function] to deeply equal [Function]
+AssertionError: expected 'line1\nline2' to deeply equal 'line1'
 
 + expected - actual
 
- function () {
--            return true;
-+            return false;
-         }
+-line1
+-line2
++line1
 
 
 Browser: Chrome 15.0.874.120 / macOS 10.15

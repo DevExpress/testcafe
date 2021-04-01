@@ -1,4 +1,4 @@
-const expect                              = require('chai').expect;
+const { assert, expect }                  = require('chai');
 const { pull: remove, chain, values }     = require('lodash');
 const TestRun                             = require('../../lib/test-run');
 const TEST_RUN_PHASE                      = require('../../lib/test-run/phase');
@@ -94,139 +94,174 @@ const untestedErrorTypes = Object.keys(TEST_RUN_ERRORS).map(key => TEST_RUN_ERRO
 
 const userAgentMock = 'Chrome 15.0.874.120 / macOS 10.15';
 
-const testAssertionErrorArray = (function () {
-    try {
-        expect([1, 2, 3, [4, 5], 6]).eql([1, 4, 2, 3, [5, 6, [7]]]);
-    }
-    catch (err) {
-        return err;
-    }
+function equalAssertArray () {
+    expect([1, 2, 3, [4, 5], 6]).eql([1, 4, 2, 3, [5, 6, [7]]]);
+}
 
-    return null;
-})();
+function equalAssertBoolean () {
+    expect(true).eql(false);
+}
 
-const testAssertionErrorBoolean = (function () {
-    try {
-        expect(true).eql(false);
-    }
-    catch (err) {
-        return err;
-    }
+function equalAssertBuffer () {
+    expect(Buffer.from('test')).eql(Buffer.from([1, 2, 3]));
+}
 
-    return null;
-})();
+function equalAssertEmptyString () {
+    expect([]).eql('');
+}
 
-const testAssertionErrorBuffer = (function () {
-    try {
-        expect(Buffer.from('test')).eql(Buffer.from([1, 2, 3]));
-    }
-    catch (err) {
-        return err;
-    }
+function equalAssertFunction () {
+    expect(function () {
+        return true;
+    }).eql(function () {
+        return false;
+    });
+}
 
-    return null;
-})();
+function equalAssertNumber () {
+    expect(1).eql(2);
+}
 
-const testAssertionErrorEmpty = (function () {
-    try {
-        expect([]).eql('');
-    }
-    catch (err) {
-        return err;
-    }
-
-    return null;
-})();
-
-const testAssertionErrorFunction = (function () {
-    try {
-        expect(function () {
-            return true;
-        }).eql(function () {
-            return false;
-        });
-    }
-    catch (err) {
-        return err;
-    }
-
-    return null;
-})();
-
-const testAssertionErrorNumber = (function () {
-    try {
-        expect(1).eql(2);
-    }
-    catch (err) {
-        return err;
-    }
-
-    return null;
-})();
-
-const testAssertionErrorObject = (function () {
-    try {
-        const obj1 = {
-            first: {
-                second: {
-                    third: {
-                        fourth: {
-                            fifth: {
-                                hello: 'world',
-                                six:   '6'
-                            }
+function equalAssertObject () {
+    const obj1 = {
+        first: {
+            second: {
+                third: {
+                    fourth: {
+                        fifth: {
+                            hello: 'world',
+                            six:   '6'
                         }
                     }
                 }
             }
-        };
+        }
+    };
 
-        const obj2 = {
-            first: {
-                second: {
-                    third: {
-                        fourth: {
-                            fifth: {
-                                hello: 'world'
-                            }
+    const obj2 = {
+        first: {
+            second: {
+                third: {
+                    fourth: {
+                        fifth: {
+                            hello: 'world'
                         }
                     }
                 }
             }
-        };
+        }
+    };
 
-        expect(obj1).eql(obj2);
-    }
-    catch (err) {
-        return err;
-    }
+    expect(obj1).eql(obj2);
+}
 
-    return null;
-})();
+function equalAssertString () {
+    expect('line1\nline2').eql('line1');
+}
 
-const testAssertionErrorString = (function () {
+function equalAssertUndefinedNull () {
+    expect(void 0).eql(null);
+}
+
+function notEqualAssertString () {
+    assert.notEqual('foo', 'foo');
+}
+
+function okAssertBoolean () {
+    expect(false).ok;
+}
+
+function notOkAssertBoolean () {
+    expect(true).not.ok;
+}
+
+function containsAssertString () {
+    expect('foo').contains('bar');
+}
+
+function notContainsAssertString () {
+    expect('foobar').not.contains('bar');
+}
+
+function matchAssertRegExp () {
+    expect('some text').match(/some regexp/);
+}
+
+function notMatchAssertRegExp () {
+    expect('some text').not.match(/some \w+/);
+}
+
+function typeOfAssertNull () {
+    assert.typeOf(false, 'null');
+}
+
+function notTypeOfAssertNull () {
+    assert.notTypeOf(null, 'null');
+}
+
+function withinAssertNumber () {
+    expect(0).within(1, 2);
+}
+
+function notWithinAssertNumber () {
+    expect(0).not.within(0, 1);
+}
+
+function ltAssertNumber () {
+    expect(1).lt(0);
+}
+
+function lteAssertNumber () {
+    expect(1).lte(0);
+}
+
+function gtAssertNumber () {
+    expect(0).gt(1);
+}
+
+function gteAssertNumber () {
+    expect(0).gte(1);
+}
+
+const createAssertionError = fn => {
     try {
-        expect('hi').eql('hey');
+        fn();
     }
     catch (err) {
         return err;
     }
 
     return null;
-})();
+};
 
-const testAssertionErrorUndefinedNull = (function () {
-    let undefinedVar;
-
-    try {
-        expect(undefinedVar).eql(null);
-    }
-    catch (err) {
-        return err;
-    }
-
-    return null;
-})();
+const ASSERT_ERRORS = {
+    equal: {
+        array:         createAssertionError(equalAssertArray),
+        boolean:       createAssertionError(equalAssertBoolean),
+        buffer:        createAssertionError(equalAssertBuffer),
+        emptyString:   createAssertionError(equalAssertEmptyString),
+        function:      createAssertionError(equalAssertFunction),
+        number:        createAssertionError(equalAssertNumber),
+        object:        createAssertionError(equalAssertObject),
+        string:        createAssertionError(equalAssertString),
+        undefinedNull: createAssertionError(equalAssertUndefinedNull)
+    },
+    notEqual:    { string: createAssertionError(notEqualAssertString) },
+    ok:          { boolean: createAssertionError(okAssertBoolean) },
+    notOk:       { boolean: createAssertionError(notOkAssertBoolean) },
+    contains:    { string: createAssertionError(containsAssertString) },
+    notContains: { string: createAssertionError(notContainsAssertString) },
+    match:       { regexp: createAssertionError(matchAssertRegExp) },
+    notMatch:    { regexp: createAssertionError(notMatchAssertRegExp) },
+    typeOf:      { null: createAssertionError(typeOfAssertNull) },
+    notTypeOf:   { null: createAssertionError(notTypeOfAssertNull) },
+    within:      { number: createAssertionError(withinAssertNumber) },
+    notWithin:   { number: createAssertionError(notWithinAssertNumber) },
+    lt:          { number: createAssertionError(ltAssertNumber) },
+    lte:         { number: createAssertionError(lteAssertNumber) },
+    gt:          { number: createAssertionError(gtAssertNumber) },
+    gte:         { number: createAssertionError(gteAssertNumber) }
+};
 
 const longSelector = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua';
 
@@ -281,7 +316,7 @@ describe('Error formatting', () => {
 
         it('Should not throw if the specified decorator was not found', () => {
             expect(() => {
-                const error = new ExternalAssertionLibraryError(testAssertionErrorArray, testCallsite);
+                const error = new ExternalAssertionLibraryError(createAssertionError(equalAssertArray), testCallsite);
 
                 error.diff = '<div class="unknown-decorator">text</div>';
 
@@ -436,8 +471,8 @@ describe('Error formatting', () => {
 
         it('Should format "actionCannotFindFileToUploadError" message', () => {
             const filePaths        = ['/path/1', '/path/2'];
-            const scannedFilePaths = ['full-path-to/path/1', 'full-path-to/path/2'];
-            const err              = new ActionCannotFindFileToUploadError(filePaths, scannedFilePaths);
+            const scannedFilepaths = ['full-path-to/path/1', 'full-path-to/path/2'];
+            const err              = new ActionCannotFindFileToUploadError(filePaths, scannedFilepaths);
 
             assertErrorMessage('action-cannot-find-file-to-upload-error', err);
         });
@@ -470,19 +505,83 @@ describe('Error formatting', () => {
             assertErrorMessage('missing-await-error', new MissingAwaitError(testCallsite));
         });
 
-        it('Should format "externalAssertionLibraryError"', () => {
-            const filepath = filename => `../data/expected-test-run-errors/external-assertion-library-errors/${filename}`;
+        describe('Should format "externalAssertionLibraryError"', () => {
+            const filepath = function (assertion, filename) {
+                return `../data/expected-test-run-errors/external-assertion-library-errors/builtin/${assertion}/${filename}`;
+            };
 
-            assertTestRunError(new ExternalAssertionLibraryError(testAssertionErrorArray, testCallsite), filepath('array'));
-            assertTestRunError(new ExternalAssertionLibraryError(testAssertionErrorBoolean, testCallsite), filepath('boolean'));
-            assertTestRunError(new ExternalAssertionLibraryError(testAssertionErrorBuffer, testCallsite), filepath('buffer'));
-            assertTestRunError(new ExternalAssertionLibraryError(testAssertionErrorEmpty, testCallsite), filepath('empty-representation'));
-            assertTestRunError(new ExternalAssertionLibraryError(testAssertionErrorFunction, testCallsite), filepath('function'));
-            assertTestRunError(new ExternalAssertionLibraryError(testAssertionErrorNumber, testCallsite), filepath('number'));
-            assertTestRunError(new ExternalAssertionLibraryError(testAssertionErrorObject, testCallsite), filepath('object'));
-            assertTestRunError(new ExternalAssertionLibraryError(testAssertionErrorString, testCallsite), filepath('string'));
+            it('Deep Equal', () => {
+                assertTestRunError(new ExternalAssertionLibraryError(ASSERT_ERRORS.equal.array, testCallsite), filepath('equal', 'array'));
+                assertTestRunError(new ExternalAssertionLibraryError(ASSERT_ERRORS.equal.boolean, testCallsite), filepath('equal', 'boolean'));
+                assertTestRunError(new ExternalAssertionLibraryError(ASSERT_ERRORS.equal.buffer, testCallsite), filepath('equal', 'buffer'));
+                assertTestRunError(new ExternalAssertionLibraryError(ASSERT_ERRORS.equal.emptyString, testCallsite), filepath('equal', 'empty-string'));
+                assertTestRunError(new ExternalAssertionLibraryError(ASSERT_ERRORS.equal.function, testCallsite), filepath('equal', 'function'));
+                assertTestRunError(new ExternalAssertionLibraryError(ASSERT_ERRORS.equal.number, testCallsite), filepath('equal', 'number'));
+                assertTestRunError(new ExternalAssertionLibraryError(ASSERT_ERRORS.equal.object, testCallsite), filepath('equal', 'object'));
+                assertTestRunError(new ExternalAssertionLibraryError(ASSERT_ERRORS.equal.string, testCallsite), filepath('equal', 'string'));
 
-            assertErrorMessage('external-assertion-library-errors/undefined-null', new ExternalAssertionLibraryError(testAssertionErrorUndefinedNull, testCallsite));
+                assertErrorMessage('external-assertion-library-errors/builtin/equal/undefined-null', new ExternalAssertionLibraryError(ASSERT_ERRORS.equal.undefinedNull, testCallsite));
+            });
+
+            it('Not Deep Equal', () => {
+                assertTestRunError(new ExternalAssertionLibraryError(ASSERT_ERRORS.notEqual.string, testCallsite), filepath('not-equal', 'string'));
+            });
+
+            it('Ok', () => {
+                assertTestRunError(new ExternalAssertionLibraryError(ASSERT_ERRORS.ok.boolean, testCallsite), filepath('ok', 'boolean'));
+            });
+
+            it('Not Ok', () => {
+                assertTestRunError(new ExternalAssertionLibraryError(ASSERT_ERRORS.notOk.boolean, testCallsite), filepath('not-ok', 'boolean'));
+            });
+
+            it('Contains', () => {
+                assertTestRunError(new ExternalAssertionLibraryError(ASSERT_ERRORS.contains.string, testCallsite), filepath('contains', 'string'));
+            });
+
+            it('Not Contains', () => {
+                assertTestRunError(new ExternalAssertionLibraryError(ASSERT_ERRORS.notContains.string, testCallsite), filepath('not-contains', 'string'));
+            });
+
+            it('Match', () => {
+                assertTestRunError(new ExternalAssertionLibraryError(ASSERT_ERRORS.match.regexp, testCallsite), filepath('match', 'regexp'));
+            });
+
+            it('Not Match', () => {
+                assertTestRunError(new ExternalAssertionLibraryError(ASSERT_ERRORS.notMatch.regexp, testCallsite), filepath('not-match', 'regexp'));
+            });
+
+            it('Type of', () => {
+                assertTestRunError(new ExternalAssertionLibraryError(ASSERT_ERRORS.typeOf.null, testCallsite), filepath('type-of', 'null'));
+            });
+
+            it('Not Type of', () => {
+                assertTestRunError(new ExternalAssertionLibraryError(ASSERT_ERRORS.notTypeOf.null, testCallsite), filepath('not-type-of', 'null'));
+            });
+
+            it('Within', () => {
+                assertTestRunError(new ExternalAssertionLibraryError(ASSERT_ERRORS.within.number, testCallsite), filepath('within', 'number'));
+            });
+
+            it('Not Within', () => {
+                assertTestRunError(new ExternalAssertionLibraryError(ASSERT_ERRORS.notWithin.number, testCallsite), filepath('not-within', 'number'));
+            });
+
+            it('Less than', () => {
+                assertTestRunError(new ExternalAssertionLibraryError(ASSERT_ERRORS.lt.number, testCallsite), filepath('less-than', 'number'));
+            });
+
+            it('Less than or Equal to', () => {
+                assertTestRunError(new ExternalAssertionLibraryError(ASSERT_ERRORS.lte.number, testCallsite), filepath('less-than-or-equal', 'number'));
+            });
+
+            it('Greater than', () => {
+                assertTestRunError(new ExternalAssertionLibraryError(ASSERT_ERRORS.gt.number, testCallsite), filepath('greater-than', 'number'));
+            });
+
+            it('Greater than or Equal to', () => {
+                assertTestRunError(new ExternalAssertionLibraryError(ASSERT_ERRORS.gte.number, testCallsite), filepath('greater-than-or-equal', 'number'));
+            });
         });
 
         it('Should format "uncaughtErrorInClientFunctionCode"', () => {

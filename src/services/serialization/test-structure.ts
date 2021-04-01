@@ -5,6 +5,7 @@ import Test from '../../api/structure/test';
 import Fixture from '../../api/structure/fixture';
 import TestFile from '../../api/structure/test-file';
 import UnitType from '../../api/structure/unit-type';
+import { RequestFilterRule } from 'testcafe-hammerhead';
 
 
 const RECURSIVE_PROPERTIES = ['testFile', 'fixture', 'currentFixture', 'collectedTests'] as const;
@@ -71,6 +72,12 @@ function restoreRecursiveProperties (unit: Unit, units: Units): void {
     mapProperties(unit, RECURSIVE_PROPERTIES, ({ item }) => units[item]);
 }
 
+function restoreRequestFilterRulesInHooks (test: Test): void {
+    test.requestHooks.forEach(hook => {
+        hook._requestFilterRules = RequestFilterRule.from(hook._requestFilterRules as object[]);
+    });
+}
+
 export function flatten (tests: Test[]): Units {
     const testFiles = uniq(tests.map(test => test.testFile));
     const fixtures  = uniq(tests.map(test => test.fixture));
@@ -105,8 +112,12 @@ export function restore (units: Units, mapper: FunctionMapper): Test[] {
     }
 
     for (const unit of list) {
-        if (isTest(unit))
+        if (isTest(unit)) {
+            restoreRequestFilterRulesInHooks(unit as Test);
+
             result.push(unit);
+        }
+
     }
 
     return result;

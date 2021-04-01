@@ -4,18 +4,18 @@ import {
     ResponseMock,
     RequestEvent,
     ResponseEvent,
+    RequestFilterRuleInit,
     RequestFilterRule
 } from 'testcafe-hammerhead';
 
 import { APIError } from '../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../errors/types';
 import WARNING_MESSAGE from '../../notifications/warning-message';
-import { RequestFilterRuleInit } from './interfaces';
 
 
 class RequestMock extends RequestHook {
     private _pendingRequestFilterRuleInit: null | RequestFilterRuleInit;
-    private _mocks: Map<RequestFilterRule, ResponseMock>;
+    private _mocks: Map<string, ResponseMock>;
 
     public constructor () {
         super([]);
@@ -25,14 +25,14 @@ class RequestMock extends RequestHook {
     }
 
     public async onRequest (event: RequestEvent): Promise<void> {
-        const mock = this._mocks.get(event._requestFilterRule) as ResponseMock;
+        const mock = this._mocks.get(event._requestFilterRule.id) as ResponseMock;
 
         event.setMock(mock);
     }
 
     public async onResponse (event: ResponseEvent): Promise<void> {
         if (event.isSameOriginPolicyFailed)
-            this.warningLog?.addWarning(WARNING_MESSAGE.requestMockCORSValidationFailed, RequestMock.name, event._requestFilterRule);
+            this._warningLog?.addWarning(WARNING_MESSAGE.requestMockCORSValidationFailed, RequestMock.name, event._requestFilterRule);
     }
 
     // API
@@ -52,8 +52,9 @@ class RequestMock extends RequestHook {
         const mock = new ResponseMock(body, statusCode, headers);
         const rule = new RequestFilterRule(this._pendingRequestFilterRuleInit);
 
-        this.requestFilterRules.push(rule);
-        this._mocks.set(rule, mock);
+        this._requestFilterRules.push(rule);
+        this._mocks.set(rule.id, mock);
+
         this._pendingRequestFilterRuleInit = null;
 
         return this;

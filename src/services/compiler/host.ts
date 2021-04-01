@@ -19,7 +19,8 @@ import {
     ExecuteActionArguments,
     FunctionProperties,
     SetOptionsArguments,
-    ExecuteCommandArguments
+    ExecuteCommandArguments,
+    RequestHookEventArguments
 } from './protocol';
 
 import { CompilerArguments } from '../../compiler/interfaces';
@@ -49,7 +50,8 @@ export default class CompilerHost extends EventEmitter implements CompilerProtoc
         proxy.register([
             this.executeAction,
             this.executeCommand,
-            this.ready
+            this.ready,
+            this.onRequestHookEvent
         ], this);
     }
 
@@ -161,5 +163,11 @@ export default class CompilerHost extends EventEmitter implements CompilerProtoc
         const preparedOptions = prepareOptions(value);
 
         await proxy.call(this.setOptions, { value: preparedOptions });
+    }
+
+    public async onRequestHookEvent ({ name, testRunId, testId, hookId, eventData }: RequestHookEventArguments): Promise<void> {
+        const { proxy } = await this._getRuntime();
+
+        await proxy.call(this.onRequestHookEvent, { name, testRunId, testId, hookId, eventData });
     }
 }

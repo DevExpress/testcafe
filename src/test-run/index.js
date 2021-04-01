@@ -52,6 +52,7 @@ import { GetCurrentWindowsCommand, SwitchToWindowCommand } from './commands/acti
 
 import { RUNTIME_ERRORS, TEST_RUN_ERRORS } from '../errors/types';
 import processTestFnError from '../errors/process-test-fn-error';
+import RequestHookMethodNames from '../api/request-hooks/hook-method-names';
 
 const lazyRequire                 = require('import-lazy')(require);
 const SessionController           = lazyRequire('./session-controller');
@@ -217,14 +218,28 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     _initRequestHook (hook) {
-        hook.warningLog = this.warningLog;
+        hook._warningLog = this.warningLog;
 
-        hook._instantiateRequestFilterRules();
-        hook._instantiatedRequestFilterRules.forEach(rule => {
+        hook._requestFilterRules.forEach(rule => {
             this.session.addRequestEventListeners(rule, {
                 onRequest:           hook.onRequest.bind(hook),
                 onConfigureResponse: hook._onConfigureResponse.bind(hook),
                 onResponse:          hook.onResponse.bind(hook)
+            }, err => this._onRequestHookMethodError(err, hook));
+        });
+    }
+
+    _initRequestHookForCompilerService (hook) {
+        const testRunId = this.id;
+        const testId    = this.test.id;
+
+        hook._requestFilterRules.forEach(rule => {
+            const hookId = hook.id;
+
+            this.session.addRequestEventListeners(rule, {
+                onRequest:           event => this.compilerService.onRequestHookEvent({ testRunId, testId, hookId, name: RequestHookMethodNames.onRequest, eventData: event }),
+                onConfigureResponse: event => this.compilerService.onRequestHookEvent({ testRunId, testId, hookId, name: RequestHookMethodNames._onConfigureResponse, eventData: event }),
+                onResponse:          event => this.compilerService.onRequestHookEvent({ testRunId, testId, hookId, name: RequestHookMethodNames.onResponse, eventData: event })
             }, err => this._onRequestHookMethodError(err, hook));
         });
     }
@@ -243,9 +258,9 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     _disposeRequestHook (hook) {
-        hook.warningLog = null;
+        hook._warningLog = null;
 
-        hook._instantiatedRequestFilterRules.forEach(rule => {
+        hook._requestFilterRules.forEach(rule => {
             this.session.removeRequestEventListeners(rule);
         });
     }
@@ -253,7 +268,10 @@ export default class TestRun extends AsyncEventEmitter {
     _initRequestHooks () {
         this.requestHooks = Array.from(this.test.requestHooks);
 
-        this.requestHooks.forEach(hook => this._initRequestHook(hook));
+        if (this.compilerService)
+            this.requestHooks.forEach(hook => this._initRequestHookForCompilerService(hook));
+        else
+            this.requestHooks.forEach(hook => this._initRequestHook(hook));
     }
 
     // Hammerhead payload
