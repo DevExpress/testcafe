@@ -16,7 +16,7 @@ Parameter               | Type                                              | De
 `selector`              | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the webpage element whose text will be selected. See [Select Target Elements](#select-target-elements).
 `startPos`&#160;*(optional)* | Number                                            | The start position of the selection. A zero-based integer.                                                                              | `0`
 `endPos`&#160;*(optional)*   | Number                                            | The end position of the selection. A zero-based integer.                                                                                | Length of the visible text content.
-`options`&#160;*(optional)*  | Object                                            | A set of options that provide additional parameters for the action. See [Options](#options).
+`options`&#160;*(optional)*  | Object                                            | A set of options with additional parameters for the action. See [Options](#options).
 
 > You can use `t.selectText` for `<textarea>` and `contentEditable` elements as well. However, the [t.selectTextAreaContent](selecttextareacontent.md)
 > and [t.selectEditableContent](selecteditablecontent.md) actions allow you to specify the selection range
