@@ -3,14 +3,6 @@ const { expect } = require('chai');
 
 
 describe('Compiler service', () => {
-    before(() => {
-        process.env.TESTCAFE_PID = String(process.pid);
-    });
-
-    after(() => {
-        delete process.env.TESTCAFE_PID;
-    });
-
     it('Should execute a basic test', async () => {
         await runTests('testcafe-fixtures/basic-test.js', 'Basic test');
     });
