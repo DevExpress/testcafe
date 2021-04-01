@@ -38,7 +38,7 @@ Parameter   | Type/Value                                        | Description
 
 ## Example
 
-In the example below, TestCafe reveals the target container's bottom right corner.
+In the example below, TestCafe scrolls the target container's bottom right corner into view.
 
 ```js
 import { Selector } from 'testcafe';
