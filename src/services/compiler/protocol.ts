@@ -4,7 +4,9 @@ import RequestHookMethodNames from '../../api/request-hooks/hook-method-names';
 import {
     ConfigureResponseEvent,
     RequestEvent,
-    ResponseEvent
+    RequestFilterRule,
+    ResponseEvent,
+    ResponseMock
 } from 'testcafe-hammerhead';
 
 export const BEFORE_AFTER_PROPERTIES  = ['beforeFn', 'afterFn'] as const;
@@ -55,6 +57,11 @@ export interface RequestHookEventArguments {
     eventData: RequestEvent | ConfigureResponseEvent | ResponseEvent;
 }
 
+export interface SetMockArguments {
+    rule: RequestFilterRule;
+    mock: ResponseMock;
+}
+
 export interface TestRunDispatcherProtocol {
     executeAction ({ id, apiMethodName, command, callsite }: ExecuteActionArguments): Promise<unknown>;
     executeCommand ({ command }: ExecuteCommandArguments): Promise<unknown>;
@@ -72,4 +79,6 @@ export interface CompilerProtocol extends TestRunDispatcherProtocol {
     setOptions ({ value }: SetOptionsArguments): Promise<void>;
 
     onRequestHookEvent ({ name, testRunId, testId, hookId, eventData }: RequestHookEventArguments): Promise<void>;
+
+    setMock ({ rule, mock }: SetMockArguments): Promise<void>;
 }
