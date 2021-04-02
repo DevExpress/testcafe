@@ -27,7 +27,7 @@ class RequestMock extends RequestHook {
     public async onRequest (event: RequestEvent): Promise<void> {
         const mock = this._mocks.get(event._requestFilterRule.id) as ResponseMock;
 
-        event.setMock(mock);
+        await event.setMock(mock);
     }
 
     public async onResponse (event: ResponseEvent): Promise<void> {
