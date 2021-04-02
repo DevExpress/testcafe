@@ -1,4 +1,5 @@
 import hammerhead from '../deps/hammerhead';
+import { Dictionary } from '../../../configuration/interfaces';
 
 const nativeMethods = hammerhead.nativeMethods;
 
@@ -9,7 +10,7 @@ const INPUT_EVENT_NAME_RE   = /^(before)?input$/;
 const FOCUS_EVENT_NAME_RE   = /^(blur|(focus(in|out)?))$/;
 const POINTER_EVENT_NAME_RE = /^pointer\w+/;
 
-const DEFAULT_MOUSE_EVENT_DETAIL_PROP_VALUE = {
+const DEFAULT_MOUSE_EVENT_DETAIL_PROP_VALUE: Dictionary<number> = {
     click:     1,
     dblclick:  2,
     mousedown: 1,
@@ -27,38 +28,58 @@ const EVENT_CTORS = {
     FocusEvent:    'FocusEvent'
 };
 
-export default class DispatchEventAutomation {
-    constructor (element, eventName, options) {
-        this._element = element;
-        this._eventName = eventName;
-        this._options = options;
-    }
+interface DispatchEventInit {
+    [key: string]: unknown;
+    bubbles?: boolean;
+    cancelable?: boolean;
+    detail?: unknown;
+    view?: unknown;
+    buttons?: number;
+}
 
-    run () {
+interface EventConstructor {
+    new(eventName: string, options: DispatchEventInit): Event;
+}
+
+export default class DispatchEventAutomation {
+    private element: HTMLElement;
+    private eventName: string;
+    private options: DispatchEventInit;
+
+    public constructor (element: HTMLElement, eventName: string, options: DispatchEventInit) {
+        this.element   = element;
+        this.eventName = eventName;
+        this.options   = options;
+    }
+    public run (): void {
         let {
             bubbles,
             cancelable,
             detail,
             view,
             buttons
-        } = this._options;
+        } = this.options;
 
         bubbles    = bubbles !== false;
         cancelable = cancelable !== false;
-        detail     = detail || DEFAULT_MOUSE_EVENT_DETAIL_PROP_VALUE[this._eventName];
-        view       = document.window;
+        detail     = detail || DEFAULT_MOUSE_EVENT_DETAIL_PROP_VALUE[this.eventName];
+        view       = window;
         buttons    = buttons === void 0 ? DEFAULT_BUTTONS_PARAMETER : buttons;
 
-        window.Object.assign(this._options, { bubbles, cancelable, detail, view, buttons });
+        // eslint-disable-next-line no-restricted-globals
+        Object.assign(this.options, { bubbles, cancelable, detail, view, buttons });
 
-        const Ctor = DispatchEventAutomation._getEventCtorByEventType(this._eventName, this._options.eventConstructor);
+        const Ctor = DispatchEventAutomation._getEventCtorByEventType(this.eventName, this.options.eventConstructor as string);
 
-        if (Ctor)
-            this._element.dispatchEvent(new Ctor(this._eventName, this._options));
+        if (Ctor) {
+            const event = new Ctor(this.eventName, this.options);
+
+            this.element.dispatchEvent(event);
+        }
     }
 
-    static _getEventCtorByEventType (eventName, eventConstructor) {
-        if (eventConstructor && typeof window[eventConstructor] === 'function') {
+    private static _getEventCtorByEventType (eventName: string, eventConstructor: string): EventConstructor {
+        if (eventConstructor && typeof DispatchEventAutomation._getEventCtorFromWindow(eventConstructor) === 'function') {
             const Ctor = DispatchEventAutomation._getEventCtorFromNativeMethods(eventConstructor);
 
             if (Ctor && typeof Ctor === 'function')
@@ -86,8 +107,15 @@ export default class DispatchEventAutomation {
         return DispatchEventAutomation._getEventCtorFromNativeMethods('CustomEvent');
     }
 
-    static _getEventCtorFromNativeMethods (eventCtor) {
-        return nativeMethods['Window' + eventCtor] || window[eventCtor];
+    private static _getEventCtorFromNativeMethods (eventCtor: string): EventConstructor {
+        const ctor = nativeMethods['Window' + eventCtor] || DispatchEventAutomation._getEventCtorFromWindow(eventCtor);
+
+        return ctor as EventConstructor;
+    }
+
+    private static _getEventCtorFromWindow (eventCtor: string): EventConstructor {
+        // @ts-ignore
+        return window[eventCtor] as EventConstructor;
     }
 }
 

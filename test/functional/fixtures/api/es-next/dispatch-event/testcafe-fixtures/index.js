@@ -97,7 +97,7 @@ function createExpectedFocusArgs (eventName, relatedTargetId) {
 }
 
 fixture `Dispatch Event`
-    .page `http://localhost:3000/fixtures/api/es-next/click/dispatch-event/index.html`;
+    .page `http://localhost:3000/fixtures/api/es-next/dispatch-event/pages/index.html`;
 
 test(`mouse`, async t => {
     await t.dispatchEvent(btn, 'mousedown', mouseEventArgs);
@@ -220,7 +220,7 @@ test('custom event', async t => {
     }]);
 });
 
-test.page('../pages/drag.html')('simple drag', async t => {
+test.page('http://localhost:3000/fixtures/api/es-next/dispatch-event/pages/drag.html')('simple drag', async t => {
     let initialTop  = parseInt(await div.getStyleProperty('top'), 10);
     let initialLeft = parseInt(await div.getStyleProperty('left'), 10);
 
