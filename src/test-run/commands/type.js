@@ -4,6 +4,7 @@
 // -------------------------------------------------------------
 
 export default {
+    dispatchEvent:              'dispatch-event',
     click:                      'click',
     rightClick:                 'right-click',
     doubleClick:                'double-click',
