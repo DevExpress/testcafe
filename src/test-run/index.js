@@ -268,8 +268,13 @@ export default class TestRun extends AsyncEventEmitter {
     _initRequestHooks () {
         this.requestHooks = Array.from(this.test.requestHooks);
 
-        if (this.compilerService)
+        if (this.compilerService) {
+            this.compilerService.on('setMock', async ({ rule, mock }) => {
+                await this.session.setMock(rule, mock);
+            });
+
             this.requestHooks.forEach(hook => this._initRequestHookForCompilerService(hook));
+        }
         else
             this.requestHooks.forEach(hook => this._initRequestHook(hook));
     }

@@ -44,5 +44,9 @@ describe('Compiler service', () => {
         it('Request Logger', async () => {
             await runTests('../api/es-next/request-hooks/testcafe-fixtures/request-logger/api.js', 'API');
         });
+
+        it('Request Mock', async () => {
+            await runTests('../api/es-next/request-hooks/testcafe-fixtures/request-mock/basic.js');
+        });
     });
 });
