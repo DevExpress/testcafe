@@ -19,11 +19,9 @@ describe('Compiler service', () => {
                 ` 1 |fixture \`Compiler service\`;` +
                 ` 2 |` +
                 ` 3 |test(\`Throw an error\`, async t => {` +
-                ` 4 |    await t.expect(String(process.ppid)).eql(process.env.TESTCAFE_PID);` +
-                ` 5 |` +
-                ` > 6 |    await t.click('#not-exists');` +
-                ` 7 |});` +
-                ` 8 |  at <anonymous> (${path.join(__dirname, 'testcafe-fixtures/error-test.js')}:6:13)`
+                ` > 4 |    await t.click('#not-exists');` +
+                ` 5 |});` +
+                ` 6 |  at <anonymous> (${path.join(__dirname, 'testcafe-fixtures/error-test.js')}:6:13)`
             ])).to.be.true;
         }
     });
