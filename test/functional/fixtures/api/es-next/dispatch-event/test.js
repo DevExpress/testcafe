@@ -1,10 +1,10 @@
 describe('[API] t.dispatchEvent()', function () {
     it('mouse', function () {
-        return runTests('testcafe-fixtures/index.js', 'mouse', { skip: 'ie' });
+        return runTests('testcafe-fixtures/index.js', 'mouse', { skip: ['ie', 'iphone'] });
     });
 
     it('keyboard', function () {
-        return runTests('testcafe-fixtures/index.js', 'keyboard', { skip: 'ie' });
+        return runTests('testcafe-fixtures/index.js', 'keyboard', { skip: ['ie', 'iphone'] });
     });
 
     it('input', function () {
@@ -16,11 +16,11 @@ describe('[API] t.dispatchEvent()', function () {
     });
 
     it('pointer', function () {
-        return runTests('testcafe-fixtures/index.js', 'pointer', { skip: 'ie' });
+        return runTests('testcafe-fixtures/index.js', 'pointer', { skip: ['ie', 'iphone', 'ipad', 'safari'] });
     });
 
     it('defaults', function () {
-        return runTests('testcafe-fixtures/index.js', 'defaults', { skip: 'ie' });
+        return runTests('testcafe-fixtures/index.js', 'defaults', { skip: ['ie', 'iphone'] });
     });
 
     it('predifined ctor', function () {
