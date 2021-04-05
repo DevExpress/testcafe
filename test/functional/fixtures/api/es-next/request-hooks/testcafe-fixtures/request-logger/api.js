@@ -26,6 +26,5 @@ test
 
         await t
             .expect(logger.requests.length).eql(1)
-            .expect(logger.requests[0].request.url).eql(pageUrl)
-            .expect(logger.requests[0].response.statusCode).eql(304);
+            .expect(logger.requests[0].request.url).eql(pageUrl);
     });

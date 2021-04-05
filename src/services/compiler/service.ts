@@ -30,6 +30,7 @@ import {
     isTestFunctionProperty,
     RequestHookEventArguments,
     RunTestArguments,
+    SetMockArguments,
     SetOptionsArguments
 } from './protocol';
 
@@ -38,6 +39,8 @@ import Fixture from '../../api/structure/fixture';
 import { Dictionary } from '../../configuration/interfaces';
 import ProcessTitle from '../process-title';
 import Test from '../../api/structure/test';
+import RequestHookMethodNames from '../../api/request-hooks/hook-method-names';
+import { RequestEvent, ResponseMock } from 'testcafe-hammerhead';
 
 sourceMapSupport.install({
     hookRequire:              true,
@@ -130,7 +133,8 @@ class CompilerService implements CompilerProtocol {
             this.runTest,
             this.cleanUp,
             this.setOptions,
-            this.onRequestHookEvent
+            this.onRequestHookEvent,
+            this.setMock
         ], this);
     }
 
@@ -142,6 +146,14 @@ class CompilerService implements CompilerProtocol {
             return unit[functionName];
 
         throw new Error();
+    }
+
+    private _wrapSetMockFn (event: RequestEvent): void {
+        const rule = event._requestFilterRule;
+
+        event.setMock = async (mock: ResponseMock) => {
+            await this.setMock({ rule, mock });
+        };
     }
 
     public async setOptions ({ value }: SetOptionsArguments): Promise<void> {
@@ -191,7 +203,14 @@ class CompilerService implements CompilerProtocol {
     public async onRequestHookEvent ({ name, testRunId, testId, hookId, eventData }: RequestHookEventArguments): Promise<void> {
         const testRunProxy = this._ensureTestRunProxy({ testRunId, testId, fixtureCtx: void 0 });
 
+        if (name === RequestHookMethodNames.onRequest)
+            this._wrapSetMockFn(eventData as RequestEvent);
+
         testRunProxy.onRequestHookEvent({ hookId, name, eventData });
+    }
+
+    public async setMock ({ rule, mock }: SetMockArguments): Promise<void> {
+        await this.proxy.call(this.setMock, { rule, mock });
     }
 }
 
