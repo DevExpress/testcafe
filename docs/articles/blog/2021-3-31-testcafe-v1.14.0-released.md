@@ -24,46 +24,46 @@ This release introduces dedicated scroll actions.
 The `t.scroll` action scrolls the target to reveal the specified coordinates:
 
 ```js
- import { Selector } from 'testcafe';
+import { Selector } from 'testcafe';
 
- fixture`Scroll Action`
-     .page('http://example.com');
+fixture`Scroll Action`
+    .page('http://example.com');
 
- test('Scroll the container', async t => {
-     const container = Selector('#container');
+test('Scroll the container', async t => {
+    const container = Selector('#container');
 
-     await t
-         .scroll(container, 'bottomRight')
- });
- ```
+    await t
+        .scroll(container, 'bottomRight');
+});
+```
 
- The `t.scrollBy` action scrolls the target by a set amount of pixels. The example below scrolls the webpage 200px up and 500px to the right:
+The `t.scrollBy` action scrolls the target by a set amount of pixels. The example below scrolls the webpage 200px up and 500px to the right:
 
- ```js
- fixture`Scroll Action`
-     .page('http://example.com');
+```js
+fixture`Scroll Action`
+    .page('http://example.com');
 
- test('Scroll the webpage', async t => {
-     await t
-         .scrollBy(500, -200)
- });
- ```
+test('Scroll the webpage', async t => {
+    await t
+        .scrollBy(500, -200);
+});
+```
 
 The `t.scrollIntoView` action scrolls an element into view:
 
 ```js
- import { Selector } from 'testcafe';
+import { Selector } from 'testcafe';
 
- fixture `Scroll Actions`
-     .page `http://www.example.com/`;
+fixture `Scroll Actions`
+    .page `http://www.example.com/`;
 
- test('Scroll element into view', async t => {
-     const target = Selector('#target')
+test('Scroll element into view', async t => {
+    const target = Selector('#target');
 
-     await t
-         .scrollIntoView(target)
- });
- ```
+    await t
+        .scrollIntoView(target);
+});
+```
 
 ## Bug Fixes
 
