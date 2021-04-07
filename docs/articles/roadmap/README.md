@@ -26,7 +26,7 @@ Feature                                                                         
 Feature                                                                                           | Status
 ------------------------------------------------------------------------------------------------- | -------------------
 [Dedicated *Scroll* Action](https://github.com/DevExpress/testcafe/issues/5965)                   | Planned
-[Mouse Actions (*mouseDown*, *mouseUp*, etc.)](https://github.com/DevExpress/testcafe/issues/6039)| Planned
+[Mouse Actions (*mouseDown*, *mouseUp*, etc.)](https://github.com/DevExpress/testcafe/issues/6039)| **In Progress**
 
 ## Debugging
 
