@@ -2,7 +2,7 @@
   "name": "testcafe",
   "description": "Automated browser testing for the modern web development stack.",
   "license": "MIT",
-  "version": "1.14.0-rc.1",
+  "version": "1.14.0",
   "author": {
     "name": "Developer Express Inc.",
     "url": "https://www.devexpress.com/"
@@ -211,7 +211,7 @@
     "rollup": "2.16.1",
     "rollup-plugin-typescript2": "^0.26.0",
     "run-sequence": "^1.2.2",
-    "saucelabs-connector": "^0.2.0",
+    "saucelabs-connector": "^1.0.0",
     "serve-static": "^1.10.0",
     "sinon": "^7.3.0",
     "stack-chain": "^2.0.0",

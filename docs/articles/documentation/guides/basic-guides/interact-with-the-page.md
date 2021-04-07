@@ -408,20 +408,14 @@ This test introduces a `RequestLogger` that logs requests to a location and rece
 
 ### Scroll an Element into View
 
-Since TestCafe scrolls to reach items that are on the page but not on-screen, the TestCafe API does not have a dedicated scroll action.
+When TestCafe interacts with an off-screen DOM element, it scrolls that element into view. There is usually no need to use the `scroll` action.
 
-You can use any action (for example, [hover](#hover)) to scroll towards the desired part of the page.  
+Interact with a page element (for example, [hover](#hover)) to scroll it into view.
 
-If you specifically need to scroll the page without any action, use a [ClientFunction](obtain-client-side-info.md).
+To scroll the page without interacting with an element, use one of the following methods:
 
-```js
-import { ClientFunction } from 'testcafe';
+* [t.scroll](../../reference/test-api/testcontroller/scroll.md)
+* [t.scrollBy](../../reference/test-api/testcontroller/scrollby.md)
+* [t.scrollIntoView](../../reference/test-api/testcontroller/scrollintoview.md)
 
-const scrollBy = ClientFunction(() => {
-    window.scrollBy(0, 1000);
-});
-
-test('Test', async t => {
-      await scrollBy();
-});
-```
+{% include actions/scrollintoview-example.md %}

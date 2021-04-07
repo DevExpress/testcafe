@@ -149,7 +149,7 @@ interface TestController {
      * @param scrollLeft - The position along the horizontal axis of the document.
      * @param scrollTop - The position along the vertical axis of the document.
      */
-    scroll(scrollLeft: number, scrollTop: number): TestControllerPromise;
+    scroll(posX: number, posY: number): TestControllerPromise;
 
     /**
      * Scrolls the document element to the predefined position.
@@ -185,7 +185,7 @@ interface TestController {
      * @param scrollLeft - The horizontal pixel value that you want to scroll by.
      * @param scrollTop - The vertical pixel value that you want to scroll by.
      */
-    scrollBy(scrollLeft: number, scrollTop: number): TestControllerPromise;
+    scrollBy(x: number, y: number): TestControllerPromise;
 
     /**
      * Scrolls the specified element by the given offset.
@@ -195,7 +195,7 @@ interface TestController {
      * @param options - A set of options that provide additional parameters for the action.
      */
     scrollBy(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-         scrollLeft: number, scrollTop: number, options?: OffsetOptions): TestControllerPromise;
+         x: number, y: number, options?: OffsetOptions): TestControllerPromise;
 
     /**
      * Scrolls the specified element into view.
