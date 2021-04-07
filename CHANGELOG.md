@@ -8,12 +8,12 @@ This release adds support for custom paths to the configuration file, support fo
 
 #### :gear: Specify Custom Path to the TestCafe Configuration File ([PR #6035](https://github.com/DevExpress/testcafe/pull/6035) by [@Chris-Greaves](https://github.com/Chris-Greaves))
 
-TestCafe now allows you to specify a custom path to the [configuration file](../documentation/reference/configuration-file.md).
+TestCafe now allows you to specify a custom [configuration file](https://devexpress.github.io/testcafe/documentation/reference/configuration-file.html) path.
 
-To set the path, use one of the following options:
+To set this path, use one of the following options:
 
-* the [--config-file CLI option](../documentation/reference/command-line-interface.md#--config-file-path)
-* the [configFile option of the createTestCafe function](../documentation/reference/testcafe-api/global/createtestcafe.md#options)
+* the [--config-file CLI flag](https://devexpress.github.io/testcafe/documentation/reference/command-line-interface.html#--config-file-path)
+* the [configFile parameter of the createTestCafe function](https://devexpress.github.io/testcafe/documentation/reference/testcafe-api/global/createtestcafe.html#options)
 
 #### Add Support for Microsoft Edge on Linux ([PR testcafe-browser-tools/#210](https://github.com/DevExpress/testcafe-browser-tools/pull/210) by [@dcsaszar](https://github.com/dcsaszar))
 
@@ -25,7 +25,7 @@ testcafe edge tests/test.js
 
 #### :gear: Deprecated the `t.setPageLoadTimeout` method ([PR #5979](https://github.com/DevExpress/testcafe/pull/5979))
 
-Starting with v1.13.0, the [t.setPageLoadTimeout](../documentation/reference/test-api/testcontroller/setpageloadtimeout.md) method is deprecated. To set the page load timeout, use the new [test.timeouts](../documentation/reference/test-api/test/timeouts.md) method.
+Starting with v1.13.0, the [t.setPageLoadTimeout](https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/setpageloadtimeout.html) method is deprecated. To set the page load timeout, use the new [test.timeouts](https://devexpress.github.io/testcafe/documentation/reference/test-api/test/timeouts.html) method.
 
 ```js
 fixture`Setting Timeouts`
@@ -40,7 +40,7 @@ test
     })
 ```
 
-You can also use `test.timeouts` to set the [pageRequestTimeout](../documentation/reference/configuration-file.md#pagerequesttimeout) and [ajaxRequestTimeout](../documentation/reference/configuration-file.md#ajaxrequesttimeout).
+You can also use `test.timeouts` to set the [pageRequestTimeout](https://devexpress.github.io/testcafe/documentation/reference/configuration-file.html#pagerequesttimeout) and [ajaxRequestTimeout](https://devexpress.github.io/testcafe/documentation/reference/configuration-file.html#ajaxrequesttimeout).
 
 ```js
 fixture`Setting Timeouts`
@@ -203,7 +203,7 @@ You can enable this functionality with a command line, API, or configuration fil
     testcafe chrome test.js --retry-test-pages
     ```
 
-* the [createTestCafe](https://devexpress.github.io/testcafe/documentation/reference/testcafe-api/global/createtestcafe.md) function parameter
+* the [createTestCafe](https://devexpress.github.io/testcafe/documentation/reference/testcafe-api/global/createtestcafe.html) function parameter
 
     ```js
     const createTestCafe = require('testcafe');
