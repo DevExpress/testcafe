@@ -1,5 +1,13 @@
 import { CompilerArguments } from '../../compiler/interfaces';
 import { Dictionary } from '../../configuration/interfaces';
+import RequestHookMethodNames from '../../api/request-hooks/hook-method-names';
+import {
+    ConfigureResponseEvent,
+    RequestEvent,
+    RequestFilterRule,
+    ResponseEvent,
+    ResponseMock
+} from 'testcafe-hammerhead';
 
 export const BEFORE_AFTER_PROPERTIES  = ['beforeFn', 'afterFn'] as const;
 export const BEFORE_AFTER_EACH_PROPERTIES = ['beforeEachFn', 'afterEachFn'] as const;
@@ -41,6 +49,19 @@ export interface SetOptionsArguments {
     value: Dictionary<OptionValue>;
 }
 
+export interface RequestHookEventArguments {
+    name: RequestHookMethodNames;
+    testRunId: string;
+    testId: string;
+    hookId: string;
+    eventData: RequestEvent | ConfigureResponseEvent | ResponseEvent;
+}
+
+export interface SetMockArguments {
+    rule: RequestFilterRule;
+    mock: ResponseMock;
+}
+
 export interface TestRunDispatcherProtocol {
     executeAction ({ id, apiMethodName, command, callsite }: ExecuteActionArguments): Promise<unknown>;
     executeCommand ({ command }: ExecuteCommandArguments): Promise<unknown>;
@@ -56,4 +77,8 @@ export interface CompilerProtocol extends TestRunDispatcherProtocol {
     cleanUp (): Promise<void>;
 
     setOptions ({ value }: SetOptionsArguments): Promise<void>;
+
+    onRequestHookEvent ({ name, testRunId, testId, hookId, eventData }: RequestHookEventArguments): Promise<void>;
+
+    setMock ({ rule, mock }: SetMockArguments): Promise<void>;
 }

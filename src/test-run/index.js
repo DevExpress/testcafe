@@ -52,6 +52,7 @@ import { GetCurrentWindowsCommand, SwitchToWindowCommand } from './commands/acti
 
 import { RUNTIME_ERRORS, TEST_RUN_ERRORS } from '../errors/types';
 import processTestFnError from '../errors/process-test-fn-error';
+import RequestHookMethodNames from '../api/request-hooks/hook-method-names';
 
 const lazyRequire                 = require('import-lazy')(require);
 const SessionController           = lazyRequire('./session-controller');
@@ -228,6 +229,21 @@ export default class TestRun extends AsyncEventEmitter {
         });
     }
 
+    _initRequestHookForCompilerService (hook) {
+        const testRunId = this.id;
+        const testId    = this.test.id;
+
+        hook._requestFilterRules.forEach(rule => {
+            const hookId = hook.id;
+
+            this.session.addRequestEventListeners(rule, {
+                onRequest:           event => this.compilerService.onRequestHookEvent({ testRunId, testId, hookId, name: RequestHookMethodNames.onRequest, eventData: event }),
+                onConfigureResponse: event => this.compilerService.onRequestHookEvent({ testRunId, testId, hookId, name: RequestHookMethodNames._onConfigureResponse, eventData: event }),
+                onResponse:          event => this.compilerService.onRequestHookEvent({ testRunId, testId, hookId, name: RequestHookMethodNames.onResponse, eventData: event })
+            }, err => this._onRequestHookMethodError(err, hook));
+        });
+    }
+
     _onRequestHookMethodError (event, hook) {
         let err                                      = event.error;
         const isRequestHookNotImplementedMethodError = err instanceof RequestHookNotImplementedMethodError;
@@ -252,7 +268,15 @@ export default class TestRun extends AsyncEventEmitter {
     _initRequestHooks () {
         this.requestHooks = Array.from(this.test.requestHooks);
 
-        this.requestHooks.forEach(hook => this._initRequestHook(hook));
+        if (this.compilerService) {
+            this.compilerService.on('setMock', async ({ rule, mock }) => {
+                await this.session.setMock(rule, mock);
+            });
+
+            this.requestHooks.forEach(hook => this._initRequestHookForCompilerService(hook));
+        }
+        else
+            this.requestHooks.forEach(hook => this._initRequestHook(hook));
     }
 
     // Hammerhead payload

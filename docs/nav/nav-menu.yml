@@ -312,6 +312,12 @@
         url: /documentation/reference/test-api/testcontroller/getnativedialoghistory.md
       - name: hover
         url: /documentation/reference/test-api/testcontroller/hover.md
+      - name: scroll
+        url: /documentation/reference/test-api/testcontroller/scroll.md
+      - name: scrollBy
+        url: /documentation/reference/test-api/testcontroller/scrollby.md
+      - name: scrollIntoView
+        url: /documentation/reference/test-api/testcontroller/scrollintoview.md
       - name: maximizeWindow
         url: /documentation/reference/test-api/testcontroller/maximizewindow.md
       - name: navigateTo

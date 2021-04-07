@@ -10,7 +10,7 @@ import prepareOptions from '../serialization/prepare-options';
 import { default as testRunTracker, TestRun } from '../../api/test-run-tracker';
 import { IPCProxy } from '../utils/ipc/proxy';
 import { HostTransport } from '../utils/ipc/transport';
-import EventEmitter from '../../utils/async-event-emitter';
+import AsyncEventEmitter from '../../utils/async-event-emitter';
 import TestCafeErrorList from '../../errors/error-list';
 
 import {
@@ -19,11 +19,14 @@ import {
     ExecuteActionArguments,
     FunctionProperties,
     SetOptionsArguments,
-    ExecuteCommandArguments
+    ExecuteCommandArguments,
+    RequestHookEventArguments,
+    SetMockArguments
 } from './protocol';
 
 import { CompilerArguments } from '../../compiler/interfaces';
 import Test from '../../api/structure/test';
+import { RequestFilterRule, ResponseMock } from 'testcafe-hammerhead';
 
 const SERVICE_PATH = require.resolve('./service');
 
@@ -36,7 +39,7 @@ interface TestFunction {
     (testRun: TestRun): Promise<unknown>;
 }
 
-export default class CompilerHost extends EventEmitter implements CompilerProtocol {
+export default class CompilerHost extends AsyncEventEmitter implements CompilerProtocol {
     private runtime: Promise<RuntimeResources|undefined>;
 
     public constructor () {
@@ -49,7 +52,9 @@ export default class CompilerHost extends EventEmitter implements CompilerProtoc
         proxy.register([
             this.executeAction,
             this.executeCommand,
-            this.ready
+            this.ready,
+            this.onRequestHookEvent,
+            this.setMock
         ], this);
     }
 
@@ -161,5 +166,18 @@ export default class CompilerHost extends EventEmitter implements CompilerProtoc
         const preparedOptions = prepareOptions(value);
 
         await proxy.call(this.setOptions, { value: preparedOptions });
+    }
+
+    public async onRequestHookEvent ({ name, testRunId, testId, hookId, eventData }: RequestHookEventArguments): Promise<void> {
+        const { proxy } = await this._getRuntime();
+
+        await proxy.call(this.onRequestHookEvent, { name, testRunId, testId, hookId, eventData });
+    }
+
+    public async setMock ({ rule, mock }: SetMockArguments): Promise<void> {
+        mock = ResponseMock.from(mock);
+        rule = RequestFilterRule.from(rule as object)[0];
+
+        await this.emit('setMock', { rule, mock });
     }
 }

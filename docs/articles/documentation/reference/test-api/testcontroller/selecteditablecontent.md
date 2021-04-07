@@ -15,7 +15,7 @@ Parameter       | Type                                              | Descriptio
 --------------- | ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 `startSelector` | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies a webpage element from which selection starts. The start position of selection is the first character of the element's text. See [Select Target Elements](#select-target-elements).
 `endSelector`   | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies a webpage element at which selection ends. The end position of selection is the last character of the element's text. See [Select Target Elements](#select-target-elements).
-`options`&#160;*(optional)*  | Object                                            | A set of options that provide additional parameters for the action. See [Options](#options).
+`options`&#160;*(optional)*  | Object                                            | A set of options with additional parameters for the action. See [Options](#options).
 
 This function works for HTML elements that have the `contentEditable` attribute enabled.
 

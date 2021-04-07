@@ -16,7 +16,7 @@ t.pressKey(keys [, options]) → this | Promise<any>
 Parameter | Type   | Description
 --------- | ------ | --------------------------------------------------------
 `keys`    | String | The sequence of keys and key combinations to be pressed.
-`options`&#160;*(optional)*  | Object | A set of options that provide additional parameters for the action. See [Options](#options).
+`options`&#160;*(optional)*  | Object | A set of options with additional parameters for the action. See [Options](#options).
 
 The following table shows how to specify keys of different types, key sequences, and combinations:
 

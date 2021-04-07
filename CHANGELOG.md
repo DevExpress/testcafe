@@ -70,12 +70,12 @@ This release adds support for custom paths to the configuration file, support fo
 
 #### :gear: Specify Custom Path to the TestCafe Configuration File ([PR #6035](https://github.com/DevExpress/testcafe/pull/6035) by [@Chris-Greaves](https://github.com/Chris-Greaves))
 
-TestCafe now allows you to specify a custom path to the [configuration file](https://devexpress.github.io/testcafe/documentation/reference/configuration-file.html).
+TestCafe now allows you to specify a custom [configuration file](https://devexpress.github.io/testcafe/documentation/reference/configuration-file.html) path.
 
-To set the path, use one of the following options:
+To set this path, use one of the following options:
 
-* the [--config-file CLI option](https://devexpress.github.io/testcafe/documentation/reference/command-line-interface.html#--config-file-path)
-* the [configFile option of the createTestCafe function](https://devexpress.github.io/testcafe/documentation/reference/testcafe-api/global/createtestcafe.html#options)
+* the [--config-file CLI flag](https://devexpress.github.io/testcafe/documentation/reference/command-line-interface.html#--config-file-path)
+* the [configFile parameter of the createTestCafe function](https://devexpress.github.io/testcafe/documentation/reference/testcafe-api/global/createtestcafe.html#options)
 
 #### Add Support for Microsoft Edge on Linux ([PR testcafe-browser-tools/#210](https://github.com/DevExpress/testcafe-browser-tools/pull/210) by [@dcsaszar](https://github.com/dcsaszar))
 

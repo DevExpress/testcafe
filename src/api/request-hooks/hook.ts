@@ -38,7 +38,7 @@ export default abstract class RequestHook {
         throw new RequestHookNotImplementedMethodError('onRequest', this.constructor.name);
     }
 
-    private _onConfigureResponse (event: ConfigureResponseEvent): void {
+    private async _onConfigureResponse (event: ConfigureResponseEvent): Promise<void> {
         if (!this._responseEventConfigureOpts)
             return;
 
