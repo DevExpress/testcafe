@@ -1072,9 +1072,9 @@ sections to learn how to extend selectors in TypeScript.</p>
     <span class="k">await</span> <span class="nx">scrollIntoView</span><span class="p">(</span><span class="nx">bottomOfPage</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
-<p>To avoid compilation errors, pick element-specific data types, such as <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement">HTMLOListElement</a>).</p>
+<p>To avoid compilation errors, pick element-specific data types, such as <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement">HTMLOListElement</a>.</p>
 
-<p>The example code below calls the <a href="../../reference/test-api/testcontroller/eval.html">t.eval</a> method to determine if an ordered list is <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement#properties">reversed</a>. The generic <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement#properties">HTMLElement Interface</a> does not provide access to the element&#39;s <code>reversed</code> property. To avoid compilation errors, it is necessary to convert the <code>list</code> object to the <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement#properties">HTMLOListElement</a> data type.</p>
+<p>The example code below calls the <a href="../../reference/test-api/testcontroller/eval.html">t.eval</a> method to determine if an ordered list is <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement#properties">reversed</a>. The generic <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement#properties">HTMLElement Interface</a> does not provide access to the element&#39;s <code>reversed</code> property. To avoid compilation errors, convert the <code>list</code> object to the <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLOListElement#properties">HTMLOListElement</a> data type.</p>
 <div class="highlight"><pre><code class="language-ts" data-lang="ts"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
 <span class="nx">fixture</span><span class="s2">`HTMLOListElement`</span>

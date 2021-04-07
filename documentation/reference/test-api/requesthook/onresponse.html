@@ -1606,6 +1606,33 @@
 		    
 		
 
+<a href="/testcafe/documentation/reference/test-api/testcontroller/scroll.html"  >scroll</a>
+
+		
+    </li>
+
+    <li>
+		    
+		
+
+<a href="/testcafe/documentation/reference/test-api/testcontroller/scrollby.html"  >scrollBy</a>
+
+		
+    </li>
+
+    <li>
+		    
+		
+
+<a href="/testcafe/documentation/reference/test-api/testcontroller/scrollintoview.html"  >scrollIntoView</a>
+
+		
+    </li>
+
+    <li>
+		    
+		
+
 <a href="/testcafe/documentation/reference/test-api/testcontroller/maximizewindow.html"  >maximizeWindow</a>
 
 		
@@ -2165,7 +2192,10 @@
 <td><a href="https://nodejs.org/api/buffer.html">Buffer</a></td>
 <td>The response body.</td>
 </tr>
-</tbody></table></div><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">async</span> <span class="nx">onResponse</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+</tbody></table></div><blockquote class="important"><div class="blockquote-content"><p>You cannot change the response body or its status code inside a <code>RequestHook.onResponse()</code> call.</p>
+
+<p>Refer to the following topic for instructions on how to change or delete response headers: <a href="./#change-or-delete-response-headers">Change or Delete Response Headers</a>.</p>
+</div></blockquote><div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">async</span> <span class="nx">onResponse</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">if</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">===</span> <span class="mi">200</span><span class="p">)</span>
         <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">headers</span><span class="p">[</span><span class="dl">'</span><span class="s1">Content-Type</span><span class="dl">'</span><span class="p">]);</span>
 <span class="p">}</span>

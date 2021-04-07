@@ -1376,19 +1376,27 @@ or supply text for <a href="https://developer.mozilla.org/en-US/docs/Web/API/Win
 <p>This test introduces a <code>RequestLogger</code> that logs requests to a location and received responses. Location is <a href="../../reference/test-api/requestlogger/constructor.html#use-a-regular-expression-to-specify-the-url">defined with a regular expression</a>. The response body is then checked with a regular expression.</p>
 <blockquote><div class="blockquote-content"><p>The response body received from the server is binary. Use the <code>RequestLogger</code>&#39;s <a href="../../reference/test-api/requestlogger/constructor.html">stringifyResponseBody option</a> to convert it to a string.</p>
 </div></blockquote><h3><a class="anchor" id="scroll-an-element-into-view"></a>Scroll an Element into View <a class="permalink" href="#scroll-an-element-into-view">#</a></h3>
-<p>Since TestCafe scrolls to reach items that are on the page but not on-screen, the TestCafe API does not have a dedicated scroll action.</p>
+<p>When TestCafe interacts with an off-screen DOM element, it scrolls that element into view. There is usually no need to use the <code>scroll</code> action.</p>
 
-<p>You can use any action (for example, <a href="#hover">hover</a>) to scroll towards the desired part of the page.  </p>
+<p>Interact with a page element (for example, <a href="#hover">hover</a>) to scroll it into view.</p>
 
-<p>If you specifically need to scroll the page without any action, use a <a href="obtain-client-side-info.html">ClientFunction</a>.</p>
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">ClientFunction</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
+<p>To scroll the page without interacting with an element, use one of the following methods:</p>
 
-<span class="kd">const</span> <span class="nx">scrollBy</span> <span class="o">=</span> <span class="nx">ClientFunction</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nb">window</span><span class="p">.</span><span class="nx">scrollBy</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">);</span>
-<span class="p">});</span>
+<ul>
+<li><a href="../../reference/test-api/testcontroller/scroll.html">t.scroll</a></li>
+<li><a href="../../reference/test-api/testcontroller/scrollby.html">t.scrollBy</a></li>
+<li><a href="../../reference/test-api/testcontroller/scrollintoview.html">t.scrollIntoView</a></li>
+</ul>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">import</span> <span class="p">{</span> <span class="nx">Selector</span> <span class="p">}</span> <span class="k">from</span> <span class="dl">'</span><span class="s1">testcafe</span><span class="dl">'</span><span class="p">;</span>
 
-<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Test</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
-      <span class="k">await</span> <span class="nx">scrollBy</span><span class="p">();</span>
+<span class="nx">fixture</span> <span class="s2">`Scroll Actions`</span>
+    <span class="p">.</span><span class="nx">page</span> <span class="s2">`http://www.example.com/`</span><span class="p">;</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="dl">'</span><span class="s1">Scroll element into view</span><span class="dl">'</span><span class="p">,</span> <span class="k">async</span> <span class="nx">t</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kd">const</span> <span class="nx">target</span> <span class="o">=</span> <span class="nx">Selector</span><span class="p">(</span><span class="dl">'</span><span class="s1">#target</span><span class="dl">'</span><span class="p">);</span>
+
+    <span class="k">await</span> <span class="nx">t</span>
+        <span class="p">.</span><span class="nx">scrollIntoView</span><span class="p">(</span><span class="nx">target</span><span class="p">);</span>
 <span class="p">});</span>
 </code></pre></div>
 

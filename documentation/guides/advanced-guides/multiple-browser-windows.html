@@ -1143,7 +1143,7 @@
 
 <ul>
 <li>the <a href="../../reference/command-line-interface.html#--disable-multiple-windows">--disable-multiple-windows</a> command line flag,</li>
-<li>the <code>disableMultipleWindows</code> <a href="../../reference/testcafe-api/runner/run.html">runner.run</a> option,</li>
+<li>the <code>disableMultipleWindows</code> option of the <a href="../../reference/testcafe-api/runner/run.html">runner.run Method</a>,</li>
 <li>the <a href="../../reference/configuration-file.html#disablemultiplewindows">disableMultipleWindows</a> configuration file property.</li>
 </ul>
 <h2><a class="anchor" id="limitations"></a>Limitations <a class="permalink" href="#limitations">#</a></h2>
@@ -1157,6 +1157,8 @@
 </ul>
 
 <p>Multiple browser windows are not available in <a href="../basic-guides/run-tests.html#test-in-cloud-testing-services">cloud browsers</a>, <a href="../basic-guides/run-tests.html#test-on-remote-and-mobile-devices">remote browsers</a> and during <a href="../basic-guides/run-tests.html#enable-mobile-device-emulation">Chromium mobile device emulation</a>.</p>
+
+<p>Custom <a href="../extend-testcafe/browser-provider-plugin.html">browser provider plugins</a> do not provide support for multiple browser windows. If TestCafe encounters a window management action (for example, <a href="../../reference/test-api/testcontroller/openwindow.html">t.openWindow</a>) during a test in a custom browser, it stops test execution and throws an error.</p>
 <h3><a class="anchor" id="recorded-video-aspect-ratio-in-multiple-windows"></a>Recorded Video Aspect Ratio in Multiple Windows <a class="permalink" href="#recorded-video-aspect-ratio-in-multiple-windows">#</a></h3>
 <p>When you launch TestCafe with <a href="./screenshots-and-videos.html">video recording</a> enabled, the recording scales to the initial (parent) browser window.</p>
 
