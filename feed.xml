@@ -5,9 +5,72 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 22 Mar 2021 13:21:10 +0300</pubDate>
-    <lastBuildDate>Mon, 22 Mar 2021 13:21:10 +0300</lastBuildDate>
+    <pubDate>Wed, 07 Apr 2021 18:33:13 +0300</pubDate>
+    <lastBuildDate>Wed, 07 Apr 2021 18:33:13 +0300</lastBuildDate>
     <generator>Jekyll v3.9.0</generator>
+    
+      <item>
+        <title>TestCafe v1.14.0 Released</title>
+        <description>&lt;h1&gt;TestCafe v1.14.0 Released&lt;/h1&gt;
+&lt;p&gt;This update includes a bugfix and new API methods for page scrolling.&lt;/p&gt;
+
+&lt;!--more--&gt;
+&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;scroll-actions-pr-6066&quot;&gt;&lt;/a&gt;⚙ Scroll Actions (&lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/6066&quot;&gt;PR #6066&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#scroll-actions-pr-6066&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Users of earlier TestCafe versions had to interact with off-screen DOM elements to scroll the page.&lt;/p&gt;
+
+&lt;p&gt;This release introduces dedicated scroll actions.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;../documentation/reference/test-api/testcontroller/scroll.html&quot;&gt;t.scroll&lt;/a&gt; - scrolls the element to a specified position&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;../documentation/reference/test-api/testcontroller/scrollby.html&quot;&gt;t.scrollBy&lt;/a&gt; - scrolls the element by the specified number of pixels&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;../documentation/reference/test-api/testcontroller/scrollintoview.html&quot;&gt;t.scrollIntoView&lt;/a&gt; - scrolls the element into view&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The &lt;code&gt;t.scroll&lt;/code&gt; action scrolls the target to reveal the specified coordinates:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;testcafe&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`Scroll Action`&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;http://example.com&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Scroll the container&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;container&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#container&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;scroll&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;container&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;bottomRight&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The &lt;code&gt;t.scrollBy&lt;/code&gt; action scrolls the target by a set amount of pixels. The example below scrolls the webpage 200px up and 500px to the right:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`Scroll Action`&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;http://example.com&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Scroll the webpage&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;scrollBy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;500&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;200&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;The &lt;code&gt;t.scrollIntoView&lt;/code&gt; action scrolls an element into view:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;testcafe&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`Scroll Actions`&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`http://www.example.com/`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Scroll element into view&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;target&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#target&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;scrollIntoView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;target&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Fixed an error that caused &lt;a href=&quot;../documentation/reference/test-api/testcontroller/expect/contains.html&quot;&gt;expect.contains&lt;/a&gt; assertions to display &lt;code&gt;undefined&lt;/code&gt; instead of a value in the assertion result (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/5473&quot;&gt;#5473&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Wed, 31 Mar 2021 00:00:00 +0300</pubDate>
+        <link>https://devexpress.github.io/testcafe/blog/testcafe-v1.14.0-released.html</link>
+        <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v1.14.0-released.html</guid>
+        
+        
+      </item>
     
       <item>
         <title>TestCafe v1.13.0 Released</title>
@@ -798,129 +861,6 @@ The vulnerability was a &lt;a href=&quot;https://github.com/visionmedia/debug/is
         <pubDate>Tue, 17 Nov 2020 00:00:00 +0300</pubDate>
         <link>https://devexpress.github.io/testcafe/media/team-blog/upcoming-webinar-how-to-get-true-cross-browser-test-coverage-with-testcafe-and-lambdatest.html</link>
         <guid isPermaLink="true">https://devexpress.github.io/testcafe/media/team-blog/upcoming-webinar-how-to-get-true-cross-browser-test-coverage-with-testcafe-and-lambdatest.html</guid>
-        
-        
-      </item>
-    
-      <item>
-        <title>The Fastest Way to Your Next Test – TestCafe + TestCafe Studio - Q&amp;A's</title>
-        <description>&lt;h1&gt;The Fastest Way to Your Next Test – TestCafe + TestCafe Studio - Q&amp;amp;A&amp;#39;s&lt;/h1&gt;
-&lt;p&gt;Thank you to all that attended the recent &lt;a href=&quot;https://www.devexpress.com/products/testcafestudio/&quot;&gt;TestCafe Studio&lt;/a&gt; presentation, the questions raised have been answered by the team and listed below.&lt;/p&gt;
-
-&lt;!--more--&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;watch-the-webinar&quot;&gt;&lt;/a&gt;Watch the Webinar &lt;a class=&quot;permalink&quot; href=&quot;#watch-the-webinar&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;!-- markdownlint-disable MD033 --&gt;
-
-&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/3ZsYj1my-us&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen&gt;&lt;/iframe&gt;
-
-&lt;!-- markdownlint-enable MD033 --&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;questions-answers&quot;&gt;&lt;/a&gt;Questions &amp;amp; Answers &lt;a class=&quot;permalink&quot; href=&quot;#questions-answers&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Will the webinar recording on YouTube include the Q&amp;amp;A section?&lt;/strong&gt;&lt;br&gt;
-We discussed the most popular Q&amp;amp;As at the end of the webinar. This part is included in the &lt;a href=&quot;https://youtu.be/3ZsYj1my-us?t=3216&quot;&gt;recording&lt;/a&gt;. The remaining questions are answered in this post.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Can I test Windows Form applications with TestCafe Studio?&lt;/strong&gt;&lt;br&gt;
-TestCafe Studio can test web applications only.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Am I allowed to install TestCafe Studio on our customer&amp;#39;s site to test it in their environment?&lt;/strong&gt;&lt;br&gt;
-TestCafe Studio is a desktop application installed on a developer&amp;#39;s/tester&amp;#39;s local computer, not on a website. You can install TestCafe Studio on any Windows, macOS, or Linux machine. If the machine where TestCafe Studio runs can access the website deployed on your customer&amp;#39;s infrastructure, you can simply specify its URL to test it in its native environment.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Does TestCafe Studio support multiple languages?&lt;/strong&gt;&lt;br&gt;
-The TestCafe Studio UI only supports English. If you are asking about programming languages in which you can write tests, TestCafe Studio supports JavaScript, TypeScript, CoffeeScript, and of course tests recorded in TestCafe Studio (&lt;code&gt;*.testcafe&lt;/code&gt; files).&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Can I include TestCafe Studio in Continuous Integration?&lt;/strong&gt;&lt;br&gt;
-You can use the open-source TestCafe to run tests recorded or written in TestCafe Studio in CI systems. See the &lt;a href=&quot;https://docs.devexpress.com/TestCafeStudio/400445/guides/integrate-tests-with-ci-systems&quot;&gt;Integrate Tests with CI Systems&lt;/a&gt; topic for more information.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;What value does TestCafe Studio add to an automated CI pipeline in which tests are executed in headless mode?&lt;/strong&gt;&lt;br&gt;
-TestCafe Studio allows you to create and modify tests with ease. In a CI system, the tests will run with an open-source TestCafe runner that doesn&amp;#39;t make any difference between TestCafe Studio recorded tests and JavaScript TestCafe tests. See the &lt;a href=&quot;https://docs.devexpress.com/TestCafeStudio/400445/guides/integrate-tests-with-ci-systems&quot;&gt;Integrate Tests with CI Systems&lt;/a&gt; topic for more information. So, TestCafe Studio&amp;#39;s goal is to facilitate recording and maintenance.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Is there a way to record tests in TestCafe Studio and export them to JavaScript to run individually?&lt;/strong&gt;&lt;br&gt;
-Yes, you can do this. See the &lt;a href=&quot;https://docs.devexpress.com/TestCafeStudio/401052/test-directory-structure/test-scripts#convert-recorded-tests-to-javascript&quot;&gt;Convert Recorded Tests to JavaScript&lt;/a&gt; topic for more information.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Does TestCafe Studio have any known issues with SPA apps, specifically Angular?&lt;/strong&gt;&lt;br&gt;
-No, we are not aware of any significant issues with SPAs including Angular applications. You can also make use of the following selector extension that enables you to test Angular applications even easier: &lt;a href=&quot;https://github.com/DevExpress/testcafe-angular-selectors&quot;&gt;DevExpress/testcafe-angular-selectors&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Are there any recommendations on the best method for initializing a selector?&lt;/strong&gt;&lt;br&gt;
-We plan to publish an article that details the best practices for TestCafe tests, including suggestions on how to build effective selectors. In the meantime, refer to the &lt;a href=&quot;https://docs.devexpress.com/TestCafeStudio/400407/test-actions/element-selectors&quot;&gt;Element Selectors&lt;/a&gt; topic to learn more about them.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Does the open-source TestCafe have the reporting and screen capturing capabilities?&lt;/strong&gt;&lt;br&gt;
-Yes, it has both. See the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/concepts/reporters.html&quot;&gt;Reporters&lt;/a&gt; and &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/screenshots-and-videos.html&quot;&gt;Screenshots and Videos&lt;/a&gt; topics for details.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Can I test &amp;quot;concurrent&amp;quot; scenarios where two users use the app and modify the data simultaneously?&lt;/strong&gt;&lt;br&gt;
-To simulate users interacting with the app concurrently, you need two browser windows. Support for multiple browser windows is currently available in beta for coded tests only. See the details in the open-source TestCafe documentation: &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/multiple-browser-windows.html&quot;&gt;Multiple Browser Windows&lt;/a&gt;. As an alternative solution, you can try running the same test that edits a data record in different browsers at the same time.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Can I run tests at specific moments in time, e.g. on schedule?&lt;/strong&gt;&lt;br&gt;
-You can &lt;a href=&quot;https://docs.devexpress.com/TestCafeStudio/400445/guides/integrate-tests-with-ci-systems&quot;&gt;integrate your test with any CI service&lt;/a&gt; to run them on schedule.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Can I receive an email notification with test results once they are done?&lt;/strong&gt;&lt;br&gt;
-You can &lt;a href=&quot;https://docs.devexpress.com/TestCafeStudio/400187/user-interface/report-view#get-more-report-formats&quot;&gt;search for a TestCafe reporter&lt;/a&gt; that sends an email with test run results or &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/extend-testcafe/reporter-plugin.html#generate-a-reporter-project&quot;&gt;create a new custom reporter&lt;/a&gt; for your needs.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Can I deliberately slow down the test run in TestCafe Studio for more convenient viewing?&lt;/strong&gt;&lt;br&gt;
-Yes, you can adjust &lt;a href=&quot;https://docs.devexpress.com/TestCafeStudio/400179/guides/debug-tests#test-speed&quot;&gt;the Speed option&lt;/a&gt; to slow down test execution.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;How do you use the GUI to create a custom attribute for a webpage?&lt;/strong&gt;&lt;br&gt;
-You can customize &lt;a href=&quot;https://docs.devexpress.com/TestCafeStudio/400186/user-interface/record-configuration-dialog#selector-generation&quot;&gt;the selector generation mechanism&lt;/a&gt; to take into account custom attributes. Add a custom attribute name to the list of selector types. TestCafe Studio will then use this attribute to create selectors. On your website end, you should specify the custom attribute for page elements manually.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Is it possible to write a text assertion with wildcards in it, so that it matches multiple text values?&lt;/strong&gt;&lt;br&gt;
-Yes, you can use regular expressions for this purpose: &lt;a href=&quot;https://docs.devexpress.com/TestCafeStudio/400167/test-actions/assertions#match&quot;&gt;Match Assertion&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Is it possible to load user credentials from a file to use them in tests?&lt;/strong&gt;&lt;br&gt;
-You can use &lt;a href=&quot;https://docs.devexpress.com/TestCafeStudio/401265/test-actions/custom-scripts&quot;&gt;the Run TestCafe Script action&lt;/a&gt;. Write a script that imports &lt;a href=&quot;https://nodejs.org/api/fs.html&quot;&gt;the fs Node.js module&lt;/a&gt;, reads the file content and saves the credentials in &lt;a href=&quot;https://docs.devexpress.com/TestCafeStudio/401265/test-actions/custom-scripts#script-context&quot;&gt;the test context&lt;/a&gt;. Now you can read these values from &lt;code&gt;t.ctx&lt;/code&gt; in other scripts within Run TestCafe Script actions. Currently, you cannot pass the test context to recorded action parameters.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Can I create variables to store secrets or URLs for different environments?&lt;/strong&gt;&lt;br&gt;
-TestCafe Studio can save &lt;a href=&quot;https://docs.devexpress.com/TestCafeStudio/400401/test-actions/statements&quot;&gt;selectors and functions&lt;/a&gt; to variables. In &lt;a href=&quot;https://docs.devexpress.com/TestCafeStudio/401265/test-actions/custom-scripts&quot;&gt;Run TestCafe Script action&lt;/a&gt; code, you can create other types of variables and use them according to your needs. To share variables between different scripts, store them in &lt;a href=&quot;https://docs.devexpress.com/TestCafeStudio/401265/test-actions/custom-scripts#script-context&quot;&gt;the test context&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Can I use conditions, add conditional jumps or go-to statements?&lt;/strong&gt;&lt;br&gt;
-In recorded tests, you cannot use conditions and go-to statements. You can record test scenarios and then &lt;a href=&quot;https://docs.devexpress.com/TestCafeStudio/401052/test-directory-structure/test-scripts#convert-recorded-tests-to-javascript&quot;&gt;convert them to JavaScript&lt;/a&gt; to add conditions.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;How to organize tests in TestCafe Studio? How can I tag Smoke and Regression tests to distinguish between them? I tried metadata but found it ineffective. Is there an alternative way in TestCafe Studio?&lt;/strong&gt;&lt;br&gt;
-This is no such capability built in so far. You can split your tests across different directories or &lt;a href=&quot;https://docs.devexpress.com/TestCafeStudio/401052/test-directory-structure/test-scripts#convert-recorded-tests-to-javascript&quot;&gt;convert the recorded tests into JavaScript&lt;/a&gt; and &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/basic-guides/organize-tests.html#specify-test-metadata&quot;&gt;use metadata&lt;/a&gt; with the open-source TestCafe test runner.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Can I use data from external sources (text files or databases) in my tests?&lt;/strong&gt;&lt;br&gt;
-Yes, but not in the Test Editor UI. If you &lt;a href=&quot;https://docs.devexpress.com/TestCafeStudio/401052/test-directory-structure/test-scripts#convert-recorded-tests-to-javascript&quot;&gt;convert the recorded tests into JavaScript&lt;/a&gt;, you can use any Node.js or npm module to read data from your files or load from a database to use it in your test cases.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;How can I ensure temporary objects that pop up briefly after a button is pushed or the mouse hovers over something are displayed? The display doesn&amp;#39;t last long enough for me to click on it after activating the &amp;quot;=&amp;quot; assertion.&lt;/strong&gt;&lt;br&gt;
-In recoded tests, you can add &lt;a href=&quot;https://docs.devexpress.com/TestCafeStudio/400401/test-actions/statements#define-function&quot;&gt;the Define Function action&lt;/a&gt; that checks if the target element exists every &lt;code&gt;n&lt;/code&gt; milliseconds and returns the result when the element is found (you can use a &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise&quot;&gt;Promise&lt;/a&gt;). Then add an action for click. After that, use the client function&amp;#39;s return value in an assertion.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;How would I test visuals that indicate drag-and-drop, since that visuals only exist while you are actively dragging?&lt;/strong&gt;&lt;br&gt;
-TestCafe cannot execute an assertion while you are dragging. We may suggest a multi-step workaround where you &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/inject-client-scripts.html&quot;&gt;inject&lt;/a&gt; client-side code that is triggered during the drag, checks for the visuals, and stores the result. When drag is finished, you can obtain this value &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/basic-guides/obtain-client-side-info.html&quot;&gt;via a client function&lt;/a&gt; and &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/basic-guides/assert.html&quot;&gt;verify it in an assertion&lt;/a&gt;. For manual verification, you can use the open-source TestCafe to &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/screenshots-and-videos.html#record-videos&quot;&gt;record a video of a test run&lt;/a&gt; to ensure that the drag-and-drop indicator is displayed.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;How do I run the same test against my app versions deployed in different environments (at different URLs), e.g., FAT/UAT/production?&lt;/strong&gt;&lt;br&gt;
-In coded tests, you can &lt;a href=&quot;https://devexpress.github.io/testcafe/faq/#how-do-i-work-with-configuration-files-and-environment-variables&quot;&gt;specify the test&amp;#39;s start page programmatically&lt;/a&gt;. To test multiple versions of your app with the same test suite, start the tests as many times as you need while passing a different URL each time.&lt;/p&gt;
-
-&lt;p&gt;In recorded tests, you can use the same approach, but instead of setting the start page (which is not possible programmatically), begin tests with &lt;a href=&quot;https://docs.devexpress.com/TestCafeStudio/401265/test-actions/custom-scripts&quot;&gt;a custom script&lt;/a&gt; that accesses the passed URL and navigates to the required page with the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/navigateto.html&quot;&gt;t.navigateTo&lt;/a&gt; method.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Can variables be parameterized?&lt;/strong&gt;&lt;br&gt;
-Currently, you cannot use parameters for recorded test steps but you can write any custom code in &lt;a href=&quot;https://docs.devexpress.com/TestCafeStudio/401265/test-actions/custom-scripts&quot;&gt;the Run TestCafe Script action&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Can the JS scripts act as a REST client to obtain assertion values (via a service call to a helper endpoint)?&lt;/strong&gt;&lt;br&gt;
-Yes, you can use a Node.js HTTP client like &lt;a href=&quot;https://www.npmjs.com/package/got&quot;&gt;got&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;In our tests, selectors throw errors occasionally. How can we get rid of this irregular behavior?&lt;/strong&gt;&lt;br&gt;
-Let us know how we can replicate this behavior. &lt;a href=&quot;https://devexpress.com/ask&quot;&gt;Please submit an issue in the Support Center&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Can I record accessibility tests with TestCafe Studio?&lt;/strong&gt;&lt;br&gt;
-No, but you can use &lt;a href=&quot;https://www.npmjs.com/package/axe-testcafe&quot;&gt;axe-testcafe&lt;/a&gt; in coded tests for accessibility testing.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;How do I integrate TestCafe reports with Xray?&lt;/strong&gt;&lt;br&gt;
-Check out the following custom reporter plug-in for Xray: &lt;a href=&quot;https://github.com/antreyes/testcafe-reporter-xray&quot;&gt;antreyes/testcafe-reporter-xray&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Can you show an example of a much more complex real-life test?&lt;/strong&gt;&lt;br&gt;
-We publish TestCafe examples in this GitHub repository: &lt;a href=&quot;https://github.com/DevExpress/testcafe-examples&quot;&gt;DevExpress/testcafe-examples&lt;/a&gt;. You can find both basic examples as well as samples that address some rare scenarios.&lt;/p&gt;
-
-&lt;p&gt;However, you wouldn&amp;#39;t find a really complex test among our examples because it&amp;#39;s not good practice to overengineer end-to-end tests. After all, we created TestCafe to keep your tests simple.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Can you please show an example with the DevExpress Grid Control?&lt;/strong&gt;&lt;br&gt;
-DevExpress Grid Controls can be easily tested with TestCafe like any other web control/page. You can try to record your own test on &lt;a href=&quot;https://js.devexpress.com/Demos/WidgetsGallery/Demo/DataGrid/Overview/jQuery/Light/&quot;&gt;JS Grid demo pages&lt;/a&gt; with TestCafe Studio.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Will TestCafe be able to generate tests in other languages, like C#, or using Selenium API, etc?&lt;/strong&gt;&lt;br&gt;
-Not in the nearest future.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Do you offer a testing framework for desktop applications (specifically, .NET)?&lt;/strong&gt;&lt;br&gt;
-Yes, we offer &lt;a href=&quot;https://www.devexpress.com/products/net/controls/winforms/coded-ui/&quot;&gt;Coded UI&lt;/a&gt; for WinForms applications.&lt;/p&gt;
-</description>
-        <pubDate>Thu, 24 Sep 2020 00:00:00 +0300</pubDate>
-        <link>https://devexpress.github.io/testcafe/media/team-blog/the-fastest-way-to-your-next-test-qa.html</link>
-        <guid isPermaLink="true">https://devexpress.github.io/testcafe/media/team-blog/the-fastest-way-to-your-next-test-qa.html</guid>
         
         
       </item>

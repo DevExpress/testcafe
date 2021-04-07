@@ -1606,6 +1606,33 @@
 		    
 		
 
+<a href="/testcafe/documentation/reference/test-api/testcontroller/scroll.html"  >scroll</a>
+
+		
+    </li>
+
+    <li>
+		    
+		
+
+<a href="/testcafe/documentation/reference/test-api/testcontroller/scrollby.html"  >scrollBy</a>
+
+		
+    </li>
+
+    <li>
+		    
+		
+
+<a href="/testcafe/documentation/reference/test-api/testcontroller/scrollintoview.html"  >scrollIntoView</a>
+
+		
+    </li>
+
+    <li>
+		    
+		
+
 <a href="/testcafe/documentation/reference/test-api/testcontroller/maximizewindow.html"  >maximizeWindow</a>
 
 		
@@ -2203,7 +2230,34 @@
 <div class="highlight"><pre><code class="language-js" data-lang="js"><span class="k">async</span> <span class="nx">onResponse</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="dl">'</span><span class="s1">Not implemented</span><span class="dl">'</span><span class="p">);</span>
 <span class="p">}</span>
+</code></pre></div><blockquote class="important"><div class="blockquote-content"><p>You cannot change the response body or its status code inside a <code>RequestHook.onResponse()</code> call.</p>
+
+<p>Refer to the following topic for instructions on how to change or delete response headers: <a href="#change-or-delete-response-headers">Change or Delete Response Headers</a>.</p>
+</div></blockquote><h3><a class="anchor" id="change-or-delete-response-headers"></a>Change or Delete Response Headers <a class="permalink" href="#change-or-delete-response-headers">#</a></h3>
+<p>You can set or remove response headers in a <code>RequestHook._onConfigureResponse()</code> call. This allows you to modify part of the response headers before the response is sent to the browser.</p>
+
+<p>To change response headers, use the <code>event.setHeader</code> and <code>event.removeHeader</code> methods in the <code>__onConfigureResponse</code> call.</p>
+<blockquote class="important"><div class="blockquote-content"><p>The <code>RequestHook._onConfigureResponse()</code> method is not part of TestCafe public API. As a private method, it can be removed in upcoming releases without prior warning. Be cautious when you override this method in your request hooks.</p>
+</div></blockquote>
+<p>The example below demonstrates a <code>RequestHook</code> that sets a <code>x-token:token-123</code> header on the response and removes the <code>x-frame-options</code> header from the response.</p>
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">class</span> <span class="nx">HeadersHook</span> <span class="kd">extends</span> <span class="nx">RequestHook</span> <span class="p">{</span>
+  <span class="kd">constructor</span> <span class="p">(</span><span class="nx">requestFilterRules</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">super</span><span class="p">(</span><span class="nx">requestFilterRules</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="k">async</span> <span class="nx">onRequest</span> <span class="p">()</span> <span class="p">{</span> <span class="p">}</span>
+  <span class="k">async</span> <span class="nx">onResponse</span> <span class="p">()</span> <span class="p">{</span> <span class="p">}</span>
+
+  <span class="nx">_onConfigureResponse</span> <span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">super</span><span class="p">.</span><span class="nx">_onConfigureResponse</span><span class="p">(</span><span class="nx">event</span><span class="p">);</span>
+
+    <span class="nx">event</span><span class="p">.</span><span class="nx">setHeader</span><span class="p">(</span><span class="dl">'</span><span class="s1">x-token</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">token-123</span><span class="dl">'</span><span class="p">);</span>
+    <span class="nx">event</span><span class="p">.</span><span class="nx">removeHeader</span><span class="p">(</span><span class="dl">'</span><span class="s1">x-frame-options</span><span class="dl">'</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
+<p>You <em>can not</em> modify the response body with <code>RequestHook._onConfigureResponse()</code>.</p>
+
 
 		</div>
 	</article>
