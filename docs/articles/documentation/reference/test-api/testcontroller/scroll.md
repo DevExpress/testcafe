@@ -50,7 +50,7 @@ test('Scroll the container', async t => {
     const container = Selector('#container');
 
     await t
-        .scroll(container, 'bottomRight')
+        .scroll(container, 'bottomRight');
 });
 ```
 

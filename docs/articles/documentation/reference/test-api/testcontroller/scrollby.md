@@ -30,7 +30,7 @@ fixture`Scroll Action`
 
 test('Scroll the webpage', async t => {
     await t
-        .scrollBy(500, -200)
+        .scrollBy(500, -200);
 });
 
 ```
