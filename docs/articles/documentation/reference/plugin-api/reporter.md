@@ -188,7 +188,7 @@ The `quarantine` object provides information about [quarantine](../../guides/bas
 
 Key                               | Value
 ----------------------------------| ------------------------------------------------
-The&nbsp;quarantine&nbsp;attempt's&nbsp;number. |  The object that provides information about the attempt. The object has the boolean `passed` property that specifies if the test passed in the current attempt.
+The&nbsp;quarantine&nbsp;attempt's&nbsp;number. |  The object with information about the attempt. The object has the boolean `passed` property that specifies if the test passed in the current attempt.
 
 ## reportTaskDone
 
