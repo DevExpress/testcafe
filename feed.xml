@@ -5,8 +5,8 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 07 Apr 2021 18:33:13 +0300</pubDate>
-    <lastBuildDate>Wed, 07 Apr 2021 18:33:13 +0300</lastBuildDate>
+    <pubDate>Thu, 08 Apr 2021 09:11:21 +0300</pubDate>
+    <lastBuildDate>Thu, 08 Apr 2021 09:11:21 +0300</lastBuildDate>
     <generator>Jekyll v3.9.0</generator>
     
       <item>
@@ -65,7 +65,7 @@
 &lt;li&gt;Fixed an error that caused &lt;a href=&quot;../documentation/reference/test-api/testcontroller/expect/contains.html&quot;&gt;expect.contains&lt;/a&gt; assertions to display &lt;code&gt;undefined&lt;/code&gt; instead of a value in the assertion result (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/5473&quot;&gt;#5473&lt;/a&gt;)&lt;/li&gt;
 &lt;/ul&gt;
 </description>
-        <pubDate>Wed, 31 Mar 2021 00:00:00 +0300</pubDate>
+        <pubDate>Wed, 07 Apr 2021 00:00:00 +0300</pubDate>
         <link>https://devexpress.github.io/testcafe/blog/testcafe-v1.14.0-released.html</link>
         <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v1.14.0-released.html</guid>
         
