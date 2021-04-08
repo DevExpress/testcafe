@@ -43,5 +43,5 @@ Feature                                                                         
 [Improve the Quality of Automatic Pre-Assertion Timeouts](https://github.com/DevExpress/testcafe/issues/5967)| Planned
 [Enable HTTPS Connections Between Browsers and the Proxy](https://github.com/DevExpress/testcafe/issues/5974)| Planned
 [Simplify the SSL Workflow](https://github.com/DevExpress/testcafe/issues/5973)                   | Planned
-[Ignore JS Errors On a Per-Page Basis](https://github.com/DevExpress/testcafe/issues/2775)        | Planned
+[Ignore JS Errors on a Per-Page Basis](https://github.com/DevExpress/testcafe/issues/2775)        | Planned
 [HTTP2 Support](https://github.com/DevExpress/testcafe-hammerhead/issues/1960)                    | Planned
