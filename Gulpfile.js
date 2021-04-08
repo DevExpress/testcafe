@@ -171,6 +171,11 @@ const TESTS_GLOB = [
 
 const RETRY_TEST_RUN_COUNT = 3;
 
+const MIGRATE_ALL_TESTS_TO_COMPILER_SERVICE_GLOB = [
+    'test/functional/fixtures/app-command/test.js',
+    'test/functional/fixtures/driver/test.js'
+];
+
 let websiteServer = null;
 
 function promisifyStream (stream) {
@@ -855,7 +860,7 @@ gulp.step('test-functional-local-multiple-windows-run', () => {
 gulp.task('test-functional-local-multiple-windows', gulp.series('prepare-tests', 'test-functional-local-multiple-windows-run'));
 
 gulp.step('test-functional-local-compiler-service-run', () => {
-    return testFunctional(COMPILER_SERVICE_TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localHeadlessChrome, { experimentalCompilerService: true });
+    return testFunctional(MIGRATE_ALL_TESTS_TO_COMPILER_SERVICE_GLOB.concat(COMPILER_SERVICE_TESTS_GLOB), functionalTestConfig.testingEnvironmentNames.localHeadlessChrome, { experimentalCompilerService: true });
 });
 
 gulp.task('test-functional-local-compiler-service', gulp.series('prepare-tests', 'test-functional-local-compiler-service-run'));
