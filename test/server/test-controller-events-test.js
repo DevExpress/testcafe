@@ -101,6 +101,7 @@ const actionsWithoutOptions = {
 };
 
 const actions = {
+    dispatchEvent:             ['#target', 'mousedown'],
     click:                     ['#target', options],
     rightClick:                ['#target', options],
     doubleClick:               ['#target', options],

@@ -34,6 +34,27 @@ const scrollOptions = Object.assign({
 module.exports = [
     {
         testRunId: 'test-run-id',
+        name:    'dispatchEvent',
+        command: {
+            eventName : 'mousedown',
+            selector: { expression: 'Selector(\'#target\')' },
+            options: {},
+            relatedTarget: void 0,
+            type:     'dispatch-event'
+        },
+        test:    {
+            id:    'test-id',
+            name:  'test-name',
+            phase: 'initial'
+        },
+        fixture: {
+            id:   'fixture-id',
+            name: 'fixture-name',
+        },
+        browser: { alias: 'test-browser', headless: false }
+    },
+    {
+        testRunId: 'test-run-id',
         name:    'click',
         command: {
             options:  clickOptions,

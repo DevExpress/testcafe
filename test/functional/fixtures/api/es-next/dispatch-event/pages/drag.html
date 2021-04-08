@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Dispatch Event</title>
+    <style>
+        body {
+            width: 2000px;
+            height: 2000px;
+        }
+
+        #target {
+            position: absolute;
+            top: 100px;
+            left: 100px;
+            width: 100px;
+            height: 100px;
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+<div id="target">drag me</div>
+
+<script>
+    var div = document.querySelector('div');
+
+    let isMoving = false;
+    let offsetX  = 0;
+    let offsetY  = 0;
+
+    div.addEventListener('mousedown', function (e) {
+        isMoving = true;
+
+        offsetX = e.offsetX;
+        offsetY = e.offsetY;
+    });
+
+    document.body.addEventListener('mousemove', function (e) {
+        if (!isMoving)
+            return;
+
+        div.style.top  = (e.clientY - offsetY) + 'px';
+        div.style.left = (e.clientX - offsetX) + 'px';
+    });
+
+    document.body.addEventListener('mouseup', function (e) {
+        isMoving = false;
+    });
+</script>
+</body>
+</html>
