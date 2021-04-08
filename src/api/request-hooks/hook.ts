@@ -14,7 +14,7 @@ import WarningLog from '../../notifications/warning-log';
 
 export default abstract class RequestHook {
     public _requestFilterRules: RequestFilterRule[];
-    private readonly _responseEventConfigureOpts?: ConfigureResponseEventOptions;
+    public readonly _responseEventConfigureOpts?: ConfigureResponseEventOptions;
     public _warningLog: WarningLog | null;
     public id: string;
 
@@ -29,7 +29,7 @@ export default abstract class RequestHook {
         if (Array.isArray(ruleInit) && !ruleInit.length)
             return [];
 
-        const rules = RequestFilterRule.from(ruleInit);
+        const rules = RequestFilterRule.fromArray(ruleInit);
 
         return !rules.length ? [RequestFilterRule.ANY] : rules;
     }

@@ -41,8 +41,14 @@ describe('Compiler service', () => {
     });
 
     describe('Request Hooks', () => {
-        it('Request Logger', async () => {
-            await runTests('../api/es-next/request-hooks/testcafe-fixtures/request-logger/api.js', 'API');
+        describe('Request Logger', () => {
+            it('Basic', async () => {
+                await runTests('../api/es-next/request-hooks/testcafe-fixtures/request-logger/api.js', 'API');
+            });
+
+            it('Log options', async () => {
+                await runTests('../api/es-next/request-hooks/testcafe-fixtures/request-logger/log-options.js', 'Log options');
+            });
         });
 
         it('Request Mock', async () => {

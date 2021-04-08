@@ -21,7 +21,8 @@ import {
     SetOptionsArguments,
     ExecuteCommandArguments,
     RequestHookEventArguments,
-    SetMockArguments
+    SetMockArguments,
+    SetConfigureResponseEventOptionsArguments
 } from './protocol';
 
 import { CompilerArguments } from '../../compiler/interfaces';
@@ -54,7 +55,8 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
             this.executeCommand,
             this.ready,
             this.onRequestHookEvent,
-            this.setMock
+            this.setMock,
+            this.setConfigureResponseEventOptions
         ], this);
     }
 
@@ -176,8 +178,14 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
 
     public async setMock ({ rule, mock }: SetMockArguments): Promise<void> {
         mock = ResponseMock.from(mock);
-        rule = RequestFilterRule.from(rule as object)[0];
+        rule = RequestFilterRule.from(rule as object);
 
         await this.emit('setMock', { rule, mock });
+    }
+
+    public async setConfigureResponseEventOptions ({ rule, opts }: SetConfigureResponseEventOptionsArguments): Promise<void> {
+        rule = RequestFilterRule.from(rule as object);
+
+        await this.emit('setConfigureResponseEventOptions', { rule, opts });
     }
 }
