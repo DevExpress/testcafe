@@ -119,7 +119,7 @@ interface TestController {
      * @param options - The options which will be passed to EventConstructor.
      */
     dispatchEvent(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
-                  eventName: string, options: object): TestControllerPromise;
+                  eventName: string, options?: object): TestControllerPromise;
     /**
      * Clicks a webpage element.
      *
