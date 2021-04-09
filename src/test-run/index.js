@@ -265,14 +265,21 @@ export default class TestRun extends AsyncEventEmitter {
         });
     }
 
+    _subscribeOnCompilerServiceEvents () {
+        this.compilerService.on('setMock', async ({ rule, mock }) => {
+            await this.session.setMock(rule, mock);
+        });
+
+        this.compilerService.on('setConfigureResponseEventOptions', async ({ rule, opts }) => {
+            await this.session.setConfigureResponseEventOptions(rule, opts);
+        });
+    }
+
     _initRequestHooks () {
         this.requestHooks = Array.from(this.test.requestHooks);
 
         if (this.compilerService) {
-            this.compilerService.on('setMock', async ({ rule, mock }) => {
-                await this.session.setMock(rule, mock);
-            });
-
+            this._subscribeOnCompilerServiceEvents();
             this.requestHooks.forEach(hook => this._initRequestHookForCompilerService(hook));
         }
         else

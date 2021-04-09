@@ -30,6 +30,7 @@ import {
     isTestFunctionProperty,
     RequestHookEventArguments,
     RunTestArguments,
+    SetConfigureResponseEventOptionsArguments,
     SetMockArguments,
     SetOptionsArguments
 } from './protocol';
@@ -40,7 +41,11 @@ import { Dictionary } from '../../configuration/interfaces';
 import ProcessTitle from '../process-title';
 import Test from '../../api/structure/test';
 import RequestHookMethodNames from '../../api/request-hooks/hook-method-names';
-import { RequestEvent, ResponseMock } from 'testcafe-hammerhead';
+import {
+    ConfigureResponseEvent,
+    RequestEvent,
+    ResponseMock
+} from 'testcafe-hammerhead';
 
 sourceMapSupport.install({
     hookRequire:              true,
@@ -134,7 +139,8 @@ class CompilerService implements CompilerProtocol {
             this.cleanUp,
             this.setOptions,
             this.onRequestHookEvent,
-            this.setMock
+            this.setMock,
+            this.setConfigureResponseEventOptions
         ], this);
     }
 
@@ -206,11 +212,21 @@ class CompilerService implements CompilerProtocol {
         if (name === RequestHookMethodNames.onRequest)
             this._wrapSetMockFn(eventData as RequestEvent);
 
-        testRunProxy.onRequestHookEvent({ hookId, name, eventData });
+        const targetRequestHook = testRunProxy.onRequestHookEvent({ hookId, name, eventData });
+
+        if (name === RequestHookMethodNames._onConfigureResponse && targetRequestHook._responseEventConfigureOpts) {
+            const { opts, _requestFilterRule: rule } = eventData as ConfigureResponseEvent;
+
+            await this.setConfigureResponseEventOptions({ rule, opts });
+        }
     }
 
     public async setMock ({ rule, mock }: SetMockArguments): Promise<void> {
         await this.proxy.call(this.setMock, { rule, mock });
+    }
+
+    public async setConfigureResponseEventOptions ({ rule, opts }: SetConfigureResponseEventOptionsArguments): Promise<void> {
+        await this.proxy.call(this.setConfigureResponseEventOptions, { rule, opts });
     }
 }
 
