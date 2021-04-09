@@ -255,6 +255,8 @@ The following command runs tests from files that match the `tests/*page*` patter
 testcafe ie tests/*page*
 ```
 
+NOTE: You might want to enclose the glob pattern in single quotes to prevent your shell from expanding the glob [in an unexpected way](https://medium.com/@jakubsynowiec/you-should-always-quote-your-globs-in-npm-scripts-621887a2a784).
+
 If you do not specify any file or directory, TestCafe runs tests from the `test` or `tests` directories.
 
 ## Options
