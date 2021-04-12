@@ -62,7 +62,7 @@ interface CommandLineOptions {
     ajaxRequestTimeout?: string | number;
     browserInitTimeout?: string | number;
     concurrency?: string | number;
-    quarantineMode?: Dictionary<string | number>;
+    quarantineMode?: boolean | Dictionary<string | number>;
     ports?: string | number[];
     providerName?: string;
     ssl?: string | Dictionary<string | number | boolean >;
@@ -276,7 +276,7 @@ export default class CLIArgumentParser {
     }
 
     private async _parseQuarantineOptions (): Promise<void> {
-        if (this.opts.quarantineMode && this.opts.quarantineMode.length > 0)
+        if (this.opts.quarantineMode)
             this.opts.quarantineMode = await getQuarantineOptions('--quarantine-mode', this.opts.quarantineMode);
     }
 

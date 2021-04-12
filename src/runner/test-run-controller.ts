@@ -11,86 +11,11 @@ import WarningLog from '../notifications/warning-log';
 import FixtureHookController from './fixture-hook-controller';
 import { Dictionary } from '../configuration/interfaces';
 import { ActionEventArg, TestRunControllerInit } from './interfaces';
-import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
 import CompilerService from '../services/compiler/host';
+import { Quarantine } from '../utils/get-options/quarantine';
 
-const DEFAULT_QUARANTINE_THRESHOLD = 3;
-const DEFAULT_TEST_RUN_THRESHOLD = 5;
 const DISCONNECT_THRESHOLD = 3;
 
-interface AttemptResult {
-    failedTimes: number;
-    passedTimes: number;
-}
-
-class Quarantine {
-    public attempts: TestRunErrorFormattableAdapter[][];
-    public TEST_RUN_THRESHOLD: number;
-    public PASSED_QUARANTINE_THRESHOLD: number;
-
-    public constructor () {
-        this.attempts = [];
-        this.TEST_RUN_THRESHOLD = DEFAULT_TEST_RUN_THRESHOLD;
-        this.PASSED_QUARANTINE_THRESHOLD = DEFAULT_QUARANTINE_THRESHOLD;
-    }
-
-    public getFailedAttempts (): TestRunErrorFormattableAdapter[][] {
-        return this.attempts.filter(errors => !!errors.length);
-    }
-
-    public getPassedAttempts (): TestRunErrorFormattableAdapter[][] {
-        return this.attempts.filter(errors => errors.length === 0);
-    }
-
-    public setPassedQuarantineThreshold (threshold: number): void {
-        this.PASSED_QUARANTINE_THRESHOLD = threshold;
-    }
-
-    public setTestRunThreshold (threshold: number): void {
-        this.TEST_RUN_THRESHOLD = threshold;
-    }
-
-    public getNextAttemptNumber (): number {
-        return this.attempts.length + 1;
-    }
-
-    public isThresholdReached (extraErrors?: TestRunErrorFormattableAdapter[]): boolean {
-        const { failedTimes, passedTimes } = this._getAttemptsResult(extraErrors);
-        const failedThreshold = this._getFailedThreshold();
-
-        const failedThresholdReached = failedTimes >= failedThreshold;
-        const passedThresholdReached = passedTimes >= this.PASSED_QUARANTINE_THRESHOLD;
-
-        return failedThresholdReached || passedThresholdReached;
-    }
-
-    public isFirstAttemptSuccessful (extraErrors: TestRunErrorFormattableAdapter[]): boolean {
-        const { failedTimes, passedTimes } = this._getAttemptsResult(extraErrors);
-
-        return failedTimes === 0 && passedTimes > 0;
-    }
-
-    private _getAttemptsResult (extraErrors?: TestRunErrorFormattableAdapter[]): AttemptResult {
-        let failedTimes = this.getFailedAttempts().length;
-        let passedTimes = this.getPassedAttempts().length;
-
-        if (extraErrors) {
-            if (extraErrors.length)
-                failedTimes += extraErrors.length;
-            else
-                passedTimes += 1;
-        }
-
-        return { failedTimes, passedTimes };
-    }
-
-    private _getFailedThreshold (): number {
-        if (this.TEST_RUN_THRESHOLD !== DEFAULT_TEST_RUN_THRESHOLD)
-            return this.TEST_RUN_THRESHOLD - this.PASSED_QUARANTINE_THRESHOLD + 1;
-
-        return DEFAULT_QUARANTINE_THRESHOLD;
-    }
-}
 
 export default class TestRunController extends AsyncEventEmitter {
     private readonly _quarantine: null | Quarantine;
