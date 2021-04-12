@@ -127,6 +127,7 @@
       * [closeWindow](articles/documentation/reference/test-api/testcontroller/closewindow.md)
       * [ctx](articles/documentation/reference/test-api/testcontroller/ctx.md)
       * [debug](articles/documentation/reference/test-api/testcontroller/debug.md)
+      * [dispatchEvent](articles/documentation/reference/test-api/testcontroller/dispatchevent.md)
       * [doubleClick](articles/documentation/reference/test-api/testcontroller/doubleclick.md)
       * [drag](articles/documentation/reference/test-api/testcontroller/drag.md)
       * [dragToElement](articles/documentation/reference/test-api/testcontroller/dragtoelement.md)

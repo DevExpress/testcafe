@@ -260,6 +260,8 @@
         url: /documentation/reference/test-api/testcontroller/ctx.md
       - name: debug
         url: /documentation/reference/test-api/testcontroller/debug.md
+      - name: dispatchEvent
+        url: /documentation/reference/test-api/testcontroller/dispatchevent.md
       - name: doubleClick
         url: /documentation/reference/test-api/testcontroller/doubleclick.md
       - name: drag

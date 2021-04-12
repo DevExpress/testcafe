@@ -111,6 +111,7 @@ permalink: /documentation/reference/
 * [closeWindow](test-api/testcontroller/closewindow.md)
 * [ctx](test-api/testcontroller/ctx.md)
 * [debug](test-api/testcontroller/debug.md)
+* [dispatchEvent](test-api/testcontroller/dispatchevent.md)
 * [doubleClick](test-api/testcontroller/doubleclick.md)
 * [drag](test-api/testcontroller/drag.md)
 * [dragToElement](test-api/testcontroller/dragtoelement.md)
