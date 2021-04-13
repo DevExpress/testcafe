@@ -77,6 +77,7 @@ export class Quarantine {
 
     public setTestRunThreshold (threshold: number): void {
         this.testRunThreshold = threshold;
+        this._setFailedThreshold();
     }
 
     public getNextAttemptNumber (): number {
@@ -115,7 +116,7 @@ export class Quarantine {
     private _setFailedThreshold (): void {
         if (this.testRunThreshold !== DEFAULT_TEST_RUN_THRESHOLD)
             this.failedQuarantineThreshold = this.testRunThreshold - this.passedQuarantineThreshold + 1;
-
-        this.failedQuarantineThreshold = DEFAULT_QUARANTINE_THRESHOLD;
+        else
+            this.failedQuarantineThreshold = DEFAULT_QUARANTINE_THRESHOLD;
     }
 }
