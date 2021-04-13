@@ -1,5 +1,67 @@
 # Changelog
 
+## v1.14.0 (2021-4-7)
+
+## Enhancements
+
+### ⚙ Scroll Actions ([PR #6066](https://github.com/DevExpress/testcafe/pull/6066))
+
+When TestCafe interacts with elements on the page, it scrolls the page automatically to reach those elements.
+
+This release introduces actions that allow you to scroll webpage elements manually.
+
+* [t.scroll](https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/scroll.html) - scrolls the element to a specified position
+* [t.scrollBy](https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/scrollby.html) - scrolls the element by the specified number of pixels
+* [t.scrollIntoView](https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/scrollintoview.html) - scrolls the element into view
+
+You can use the `t.scroll` action to scroll an element to a position:
+
+```js
+ import { Selector } from 'testcafe';
+
+ fixture`Scroll Action`
+     .page('http://example.com');
+
+ test('Scroll the container', async t => {
+     const container = Selector('#container');
+
+     await t
+         .scroll(container, 'bottomRight')
+ });
+ ```
+
+ `t.scrollBy` allows you to scroll an element (or the webpage) by a set amount of pixels. The example below scrolls the webpage 200px up and 500px to the right:
+
+ ```js
+ fixture`Scroll Action`
+     .page('http://example.com');
+
+ test('Scroll the webpage', async t => {
+     await t
+         .scrollBy(500, -200)
+ });
+ ```
+
+Use `t.scrollIntoView` to scroll an element into view:
+
+```js
+ import { Selector } from 'testcafe';
+
+ fixture `Scroll Actions`
+     .page `http://www.example.com/`;
+
+ test('Scroll element into view', async t => {
+     const target = Selector('#target')
+
+     await t
+         .scrollIntoView(target)
+ });
+ ```
+
+## Bug Fixes
+
+* Fixed an error that caused [expect.contains](https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/expect/contains.html) assertions to display `undefined` instead of a string value in diffs ([#5473](https://github.com/DevExpress/testcafe/issues/5473))
+
 ## v1.13.0 (2021-03-22)
 
 This release adds support for custom paths to the configuration file, support for Microsoft Edge on Linux systems, and multiple bugfixes.
@@ -3375,7 +3437,7 @@ The `t.takeScreenshot`, `t.resizeWindow`, `t.resizeWindowToFitDevice` and `t.max
 
 The state of webpage elements can now be extended with custom properties.
 
-We have added the [addCustomDOMProperties](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#adding-custom-properties-to-element-state)
+We have added the [addCust.htmlOMProperties](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html#adding-custom-properties-to-element-state)
 method to the selector, so that you can add properties to the element state like in the following example.
 
 ```js
@@ -3385,7 +3447,7 @@ fixture `My fixture`
     .page `https://devexpress.github.io/testcafe/example/`;
 
 test('Check Label HTML', async t => {
-    const label = Selector('label').addCustomDOMProperties({
+    const label = Selector('label').addCust.htmlOMProperties({
         innerHTML: el => el.innerHTML
     });
 

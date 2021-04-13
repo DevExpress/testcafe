@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Dispatch event</title>
+</head>
+<body>
+<button>Click me</button>
+<input id="input1" type="text"/>
+<input id="input2" type="text"/>
+
+<script>
+    window.mouseLog = [];
+    window.keyboardLog = [];
+    window.inputLog = [];
+    window.focusLog = [];
+    window.pointerLog = [];
+
+    var btn   = document.querySelector('button');
+    var input = document.querySelector('#input1');
+
+    function mouseHandler (e) {
+        var res = {};
+
+        res.type       = e.type;
+        res.composed   = e.composed;
+        res.bubbles    = e.bubbles;
+        res.cancelable = e.cancelable;
+        res.detail     = e.detail;
+        res.altKey     = e.altKey;
+        res.ctrlKey    = e.ctrlKey;
+        res.shiftKey   = e.shiftKey;
+        res.metaKey    = e.metaKey;
+        res.screenX    = e.screenX;
+        res.screenY    = e.screenY;
+        res.clientX    = e.clientX;
+        res.clientY    = e.clientY;
+        res.button     = e.button;
+        res.buttons    = e.buttons;
+
+        window.mouseLog.push(res);
+    }
+
+    function keyboardHandler (e) {
+        var res = {};
+
+        res.type       = e.type;
+        res.composed   = e.composed;
+        res.bubbles    = e.bubbles;
+        res.cancelable = e.cancelable;
+        res.detail     = e.detail;
+        res.altKey     = e.altKey;
+        res.ctrlKey    = e.ctrlKey;
+        res.shiftKey   = e.shiftKey;
+        res.metaKey    = e.metaKey;
+        res.code       = e.code;
+        res.key        = e.key;
+        res.keyCode    = e.keyCode;
+
+        window.keyboardLog.push(res);
+    }
+
+    function inputHandler (e) {
+        var res = {};
+
+        res.type       = e.type;
+        res.composed   = e.composed;
+        res.bubbles    = e.bubbles;
+        res.cancelable = e.cancelable;
+        res.detail     = e.detail;
+        res.data       = e.data;
+        res.inputType  = e.inputType;
+
+        window.inputLog.push(res);
+    }
+
+    function focusHandler (e) {
+        var res = {};
+
+        res.type          = e.type;
+        res.composed      = e.composed;
+        res.bubbles       = e.bubbles;
+        res.cancelable    = e.cancelable;
+        res.detail        = e.detail;
+
+        if (e.relatedTarget)
+            res.relatedTarget = e.relatedTarget.id;
+
+        window.focusLog.push(res);
+    }
+
+    function pointerHandler (e) {
+        var res = {};
+
+        res.type               = e.type;
+        res.composed           = e.composed;
+        res.bubbles            = e.bubbles;
+        res.cancelable         = e.cancelable;
+        res.detail             = e.detail;
+        res.altKey             = e.altKey;
+        res.ctrlKey            = e.ctrlKey;
+        res.shiftKey           = e.shiftKey;
+        res.metaKey            = e.metaKey;
+        res.screenX            = e.screenX;
+        res.screenY            = e.screenY;
+        res.clientX            = e.clientX;
+        res.clientY            = e.clientY;
+        res.button             = e.button;
+        res.buttons            = e.buttons;
+        res.pointerId          = e.pointerId;
+        res.width              = e.width;
+        res.height             = e.height;
+        res.pressure           = e.pressure;
+        res.tangentialPressure = parseFloat(e.tangentialPressure.toFixed(1));
+        res.tiltX              = e.tiltX;
+        res.tiltY              = e.tiltY;
+        res.twist              = e.twist;
+        res.pointerType        = e.pointerType;
+        res.isPrimary          = e.isPrimary;
+
+        window.pointerLog.push(res);
+    }
+
+    btn.addEventListener('mousedown', mouseHandler);
+    btn.addEventListener('mouseup', mouseHandler);
+    btn.addEventListener('click', mouseHandler);
+
+    btn.addEventListener('customEvent', function (e) {
+        window.mouseLog.push({
+            isMouseEvent:  e instanceof MouseEvent,
+            isCustomEvent: e instanceof CustomEvent,
+            type:          e.type,
+            detail:        e.detail
+        });
+    });
+
+    input.addEventListener('keydown', keyboardHandler);
+    input.addEventListener('keypress', keyboardHandler);
+    input.addEventListener('keyup', keyboardHandler);
+
+    input.addEventListener('beforeinput', inputHandler);
+    input.addEventListener('input', inputHandler);
+
+    input.addEventListener('focus', focusHandler);
+    input.addEventListener('focusin', focusHandler);
+    input.addEventListener('focusout', focusHandler);
+    input.addEventListener('blur', focusHandler);
+
+    input.addEventListener('pointerover', pointerHandler);
+    input.addEventListener('pointerenter', pointerHandler);
+    input.addEventListener('pointerdown', pointerHandler);
+    input.addEventListener('pointermove', pointerHandler);
+    input.addEventListener('pointerrawupdate', pointerHandler);
+    input.addEventListener('pointerup', pointerHandler);
+    input.addEventListener('pointercancel', pointerHandler);
+    input.addEventListener('pointerout', pointerHandler);
+    input.addEventListener('pointerleave', pointerHandler);
+</script>
+</body>
+</html>

@@ -49,7 +49,8 @@ import {
     ScrollCommand,
     ScrollByCommand,
     ScrollIntoViewCommand,
-    UseRoleCommand
+    UseRoleCommand,
+    DispatchEventCommand
 } from '../../test-run/commands/actions';
 
 import {
@@ -186,6 +187,10 @@ export default class TestController {
 
     _browser$getter () {
         return getBrowser(this.testRun.browserConnection);
+    }
+
+    _dispatchEvent$ (selector, eventName, options = {}) {
+        return this._enqueueCommand('dispatchEvent', DispatchEventCommand, { selector, eventName, options, relatedTarget: options.relatedTarget });
     }
 
     _click$ (selector, options) {

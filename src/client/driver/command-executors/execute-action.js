@@ -11,6 +11,7 @@ import {
 
 import {
     calculateSelectTextArguments,
+    DispatchEvent as DispatchEventAutomation,
     Click as ClickAutomation,
     SelectChildClick as SelectChildClickAutomation,
     RClick as RClickAutomation,
@@ -147,6 +148,8 @@ class ActionExecutor {
             elementDescriptors.push(createAdditionalElementDescriptor(this.command.startSelector, 'startSelector'));
             elementDescriptors.push(createAdditionalElementDescriptor(this.command.endSelector || this.command.startSelector, 'endSelector'));
         }
+        else if (this.command.type === COMMAND_TYPE.dispatchEvent && this.command.relatedTarget)
+            elementDescriptors.push(createAdditionalElementDescriptor(this.command.relatedTarget, 'relatedTarget'));
 
         return ensureElements(elementDescriptors, this.globalSelectorTimeout)
             .then(elements => {
@@ -180,6 +183,11 @@ class ActionExecutor {
         let selectArgs = null;
 
         switch (this.command.type) {
+            case COMMAND_TYPE.dispatchEvent:
+                if (this.elements[1])
+                    this.command.options.relatedTarget = this.elements[1];
+
+                return new DispatchEventAutomation(this.elements[0], this.command.eventName, this.command.options);
             case COMMAND_TYPE.click :
                 if (/option|optgroup/.test(domUtils.getTagName(this.elements[0])))
                     return new SelectChildClickAutomation(this.elements[0], this.command.options);

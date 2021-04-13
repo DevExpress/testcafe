@@ -74,7 +74,7 @@ function restoreRecursiveProperties (unit: Unit, units: Units): void {
 
 function restoreRequestFilterRulesInHooks (test: Test): void {
     test.requestHooks.forEach(hook => {
-        hook._requestFilterRules = RequestFilterRule.from(hook._requestFilterRules as object[]);
+        hook._requestFilterRules = RequestFilterRule.fromArray(hook._requestFilterRules as object[]);
     });
 }
 

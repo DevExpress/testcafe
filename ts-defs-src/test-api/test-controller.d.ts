@@ -112,6 +112,15 @@ interface TestController {
      */
     readonly browser: Browser;
     /**
+     * Dispatches an event over a specified webpage element.
+     *
+     * @param selector - Identifies the EventTarget element.
+     * @param eventName - The name of the event to be dispatched on the DOM element..
+     * @param options - The options which will be passed to EventConstructor.
+     */
+    dispatchEvent(selector: string | Selector | NodeSnapshot | SelectorPromise | ((...args: any[]) => Node | Node[] | NodeList | HTMLCollection),
+                  eventName: string, options: object): TestControllerPromise;
+    /**
      * Clicks a webpage element.
      *
      * @param selector - Identifies the webpage element being clicked.

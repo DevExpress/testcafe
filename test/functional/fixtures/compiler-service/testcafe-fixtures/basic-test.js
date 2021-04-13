@@ -6,8 +6,6 @@ fixture `Compiler service`;
 const getClickOffset = ClientFunction(() => window.clickOffset);
 
 test(`Basic test`, async t => {
-    await t.expect(String(process.ppid)).eql(process.env.TESTCAFE_PID);
-
     await t.navigateTo('http://localhost:3000/fixtures/api/es-next/click/pages/index.html');
 
     await t.click('#div');

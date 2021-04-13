@@ -3,6 +3,7 @@ import { Dictionary } from '../../configuration/interfaces';
 import RequestHookMethodNames from '../../api/request-hooks/hook-method-names';
 import {
     ConfigureResponseEvent,
+    ConfigureResponseEventOptions,
     RequestEvent,
     RequestFilterRule,
     ResponseEvent,
@@ -62,6 +63,11 @@ export interface SetMockArguments {
     mock: ResponseMock;
 }
 
+export interface SetConfigureResponseEventOptionsArguments {
+    rule: RequestFilterRule;
+    opts: ConfigureResponseEventOptions;
+}
+
 export interface TestRunDispatcherProtocol {
     executeAction ({ id, apiMethodName, command, callsite }: ExecuteActionArguments): Promise<unknown>;
     executeCommand ({ command }: ExecuteCommandArguments): Promise<unknown>;
@@ -81,4 +87,6 @@ export interface CompilerProtocol extends TestRunDispatcherProtocol {
     onRequestHookEvent ({ name, testRunId, testId, hookId, eventData }: RequestHookEventArguments): Promise<void>;
 
     setMock ({ rule, mock }: SetMockArguments): Promise<void>;
+
+    setConfigureResponseEventOptions ({ rule, opts }: SetConfigureResponseEventOptionsArguments): Promise<void>;
 }

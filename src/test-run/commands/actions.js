@@ -92,6 +92,21 @@ function initDialogHandler (name, val, { skipVisibilityCheck, testRun }) {
 }
 
 // Commands
+export class DispatchEventCommand extends CommandBase {
+    constructor (obj, testRun) {
+        super(obj, testRun, TYPE.dispatchEvent);
+    }
+
+    _getAssignableProperties () {
+        return [
+            { name: 'selector', init: initSelector, required: true },
+            { name: 'eventName', type: nonEmptyStringArgument, required: true },
+            { name: 'options', type: actionOptions },
+            { name: 'relatedTarget', init: initSelector, required: false }
+        ];
+    }
+}
+
 export class ClickCommand extends CommandBase {
     constructor (obj, testRun) {
         super(obj, testRun, TYPE.click);

@@ -3,14 +3,6 @@ const { expect } = require('chai');
 
 
 describe('Compiler service', () => {
-    before(() => {
-        process.env.TESTCAFE_PID = String(process.pid);
-    });
-
-    after(() => {
-        delete process.env.TESTCAFE_PID;
-    });
-
     it('Should execute a basic test', async () => {
         await runTests('testcafe-fixtures/basic-test.js', 'Basic test');
     });
@@ -27,11 +19,9 @@ describe('Compiler service', () => {
                 ` 1 |fixture \`Compiler service\`;` +
                 ` 2 |` +
                 ` 3 |test(\`Throw an error\`, async t => {` +
-                ` 4 |    await t.expect(String(process.ppid)).eql(process.env.TESTCAFE_PID);` +
-                ` 5 |` +
-                ` > 6 |    await t.click('#not-exists');` +
-                ` 7 |});` +
-                ` 8 |  at <anonymous> (${path.join(__dirname, 'testcafe-fixtures/error-test.js')}:6:13)`
+                ` > 4 |    await t.click('#not-exists');` +
+                ` 5 |});` +
+                ` 6 |  at <anonymous> (${path.join(__dirname, 'testcafe-fixtures/error-test.js')}:4:13)`
             ])).to.be.true;
         }
     });
@@ -41,8 +31,14 @@ describe('Compiler service', () => {
     });
 
     describe('Request Hooks', () => {
-        it('Request Logger', async () => {
-            await runTests('../api/es-next/request-hooks/testcafe-fixtures/request-logger/api.js', 'API');
+        describe('Request Logger', () => {
+            it('Basic', async () => {
+                await runTests('../api/es-next/request-hooks/testcafe-fixtures/request-logger/api.js', 'API');
+            });
+
+            it('Log options', async () => {
+                await runTests('../api/es-next/request-hooks/testcafe-fixtures/request-logger/log-options.js', 'Log options');
+            });
         });
 
         it('Request Mock', async () => {

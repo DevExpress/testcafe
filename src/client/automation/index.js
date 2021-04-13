@@ -1,4 +1,5 @@
 import hammerhead from './deps/hammerhead';
+import DispatchEventAutomation from './playback/dispatch-event';
 import ScrollAutomation from './playback/scroll';
 import ClickAutomation from './playback/click';
 import SelectChildClickAutomation from './playback/click/select-child';
@@ -30,6 +31,7 @@ import cursor from './cursor';
 
 const exports = {};
 
+exports.DispatchEvent         = DispatchEventAutomation;
 exports.Scroll                = ScrollAutomation;
 exports.Click                 = ClickAutomation;
 exports.SelectChildClick      = SelectChildClickAutomation;
