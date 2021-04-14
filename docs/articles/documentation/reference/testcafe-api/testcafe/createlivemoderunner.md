@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402645/reference/testcafe-api/testcafe/createlivemoderunner
 title: TestCafe.createLiveModeRunner Method
 permalink: /documentation/reference/testcafe-api/testcafe/createlivemoderunner.html
 ---

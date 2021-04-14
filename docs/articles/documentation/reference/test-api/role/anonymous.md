@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402761/reference/test-api/role/anonymous
 title: Role.anonymous Static Method
 permalink: /documentation/reference/test-api/role/anonymous.html
 ---

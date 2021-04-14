@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402820/guides/continuous-integration/circleci-and-lambdatest
 title: Run Tests on LambdaTest with CircleCI
 permalink: /documentation/guides/continuous-integration/circleci-and-lambdatest.html
 ---

@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402840/guides/advanced-guides/screenshots-and-videos
 title: Screenshots and Videos
 permalink: /documentation/guides/advanced-guides/screenshots-and-videos.html
 redirect_from:

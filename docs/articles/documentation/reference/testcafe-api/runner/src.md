@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402653/reference/testcafe-api/runner/src
 title: Runner.src Method
 permalink: /documentation/reference/testcafe-api/runner/src.html
 ---

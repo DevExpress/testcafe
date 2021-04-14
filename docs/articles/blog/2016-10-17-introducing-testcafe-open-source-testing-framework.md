@@ -1,5 +1,6 @@
 ---
 layout: post
+redirect_to: https://testcafe.io/402864/release-notes/framework/2016-10-17-introducing-testcafe-open-source-testing-framework
 title: Introducing TestCafe Testing Framework
 permalink: /blog/:title.html
 ---

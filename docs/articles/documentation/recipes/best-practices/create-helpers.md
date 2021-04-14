@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402803/recipes/best-practices/create-helpers
 title: Create Helpers
 permalink: /documentation/recipes/best-practices/create-helpers.html
 redirect_from:

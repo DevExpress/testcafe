@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402775/reference/test-api/global/fixture
 title: fixture Function
 permalink: /documentation/reference/test-api/global/fixture.html
 ---

@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402681/reference/test-api/testcontroller/switchtoiframe
 title: t.switchToIframe Method
 permalink: /documentation/reference/test-api/testcontroller/switchtoiframe.html
 ---

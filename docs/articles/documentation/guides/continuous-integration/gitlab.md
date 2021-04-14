@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402816/guides/continuous-integration/gitlab
 title: Integrate TestCafe with GitLab
 permalink: /documentation/guides/continuous-integration/gitlab.html
 redirect_from:

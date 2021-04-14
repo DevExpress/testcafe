@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402776/reference/test-api/fixture/skip
 title: Fixture.skip Method
 permalink: /documentation/reference/test-api/fixture/skip.html
 ---

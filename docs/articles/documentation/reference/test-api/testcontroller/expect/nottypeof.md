@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402718/reference/test-api/testcontroller/expect/nottypeof
 title: t.expect.notTypeOf Method
 permalink: /documentation/reference/test-api/testcontroller/expect/nottypeof.html
 ---

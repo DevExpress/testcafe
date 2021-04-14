@@ -1,5 +1,6 @@
 ---
 layout: post
+redirect_to: https://testcafe.io/402904/resources/blog/2021-2-9-modern-web-testing-with-testcafe
 title: "Upcoming Roundtable: Modern Web Testing with TestCafe"
 permalink: /media/team-blog/:title.html
 isTeamBlog: true

@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402823/guides/continuous-integration/appveyor
 title: Integrate TestCafe with AppVeyor
 permalink: /documentation/guides/continuous-integration/appveyor.html
 redirect_from:

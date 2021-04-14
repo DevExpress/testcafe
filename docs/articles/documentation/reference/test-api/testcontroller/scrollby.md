@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/403066/reference/test-api/testcontroller/scrollby
 title: t.scrollBy Method
 permalink: /documentation/reference/test-api/testcontroller/scrollby.html
 ---

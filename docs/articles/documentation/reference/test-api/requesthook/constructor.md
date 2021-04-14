@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402773/reference/test-api/requesthook/constructor
 title: RequestHook Constructor
 permalink: /documentation/reference/test-api/requesthook/constructor.html
 ---

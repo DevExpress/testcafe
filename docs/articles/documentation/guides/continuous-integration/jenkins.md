@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402815/guides/continuous-integration/jenkins
 title: Integrate TestCafe with Jenkins
 permalink: /documentation/guides/continuous-integration/jenkins.html
 redirect_from:

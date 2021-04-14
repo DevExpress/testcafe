@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402648/reference/testcafe-api/runner/video
 title: Runner.video Method
 permalink: /documentation/reference/testcafe-api/runner/video.html
 ---

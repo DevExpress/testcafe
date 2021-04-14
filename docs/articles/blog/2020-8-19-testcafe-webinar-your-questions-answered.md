@@ -1,5 +1,6 @@
 ---
 layout: post
+redirect_to: https://testcafe.io/402898/resources/blog/2020-8-19-testcafe-webinar-your-questions-answered
 title: "TestCafe Webinar - Your Questions Answered"
 permalink: /media/team-blog/:title.html
 isTeamBlog: true

@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402753/reference/test-api/selector/filter
 title: Selector.filter Method
 permalink: /documentation/reference/test-api/selector/filter.html
 ---

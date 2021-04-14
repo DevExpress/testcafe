@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402658/reference/testcafe-api/runner/concurrency
 title: Runner.concurrency Method
 permalink: /documentation/reference/testcafe-api/runner/concurrency.html
 ---

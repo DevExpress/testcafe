@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402842/guides/advanced-guides/intercept-http-requests
 title: Intercept HTTP Requests
 permalink: /documentation/guides/advanced-guides/intercept-http-requests.html
 redirect_from:

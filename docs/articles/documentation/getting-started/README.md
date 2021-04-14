@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402635/getting-started
 title: Getting Started
 permalink: /documentation/getting-started/
 redirect_from:

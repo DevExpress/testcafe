@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402723/reference/test-api/testcontroller/expect/match
 title: t.expect.match Method
 permalink: /documentation/reference/test-api/testcontroller/expect/match.html
 ---

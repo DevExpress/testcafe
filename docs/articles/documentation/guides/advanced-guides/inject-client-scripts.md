@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402843/guides/advanced-guides/inject-client-scripts
 title: Inject Client Scripts
 permalink: /documentation/guides/advanced-guides/inject-client-scripts.html
 redirect_from:

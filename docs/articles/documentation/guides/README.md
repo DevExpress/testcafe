@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402634/guides
 title: Guides
 permalink: /documentation/guides/
 ---

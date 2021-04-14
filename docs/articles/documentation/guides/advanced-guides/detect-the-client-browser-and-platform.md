@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402844/guides/advanced-guides/detect-the-client-browser-and-platform
 title: Detect the Client Browser and Platform
 permalink: /documentation/guides/advanced-guides/detect-the-client-browser-and-platform.html
 redirect_from:

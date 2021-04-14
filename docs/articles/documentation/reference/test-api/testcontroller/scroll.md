@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/403065/reference/test-api/testcontroller/scroll
 title: t.scroll Method
 permalink: /documentation/reference/test-api/testcontroller/scroll.html
 ---

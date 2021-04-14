@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402683/reference/test-api/testcontroller/setpageloadtimeout
 title: t.setPageLoadTimeout Method
 permalink: /documentation/reference/test-api/testcontroller/setpageloadtimeout.html
 ---

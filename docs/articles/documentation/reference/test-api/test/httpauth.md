@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402735/reference/test-api/test/httpauth
 title: Test.httpAuth Method
 permalink: /documentation/reference/test-api/test/httpauth.html
 ---

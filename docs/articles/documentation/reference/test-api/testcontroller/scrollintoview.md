@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/403067/reference/test-api/testcontroller/scrollintoview
 title: t.scrollIntoView Method
 permalink: /documentation/reference/test-api/testcontroller/scrollintoview.html
 ---

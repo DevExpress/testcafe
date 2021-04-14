@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402826/guides/concepts/page-model
 title: Page Model
 permalink: /documentation/guides/concepts/page-model.html
 redirect_from:

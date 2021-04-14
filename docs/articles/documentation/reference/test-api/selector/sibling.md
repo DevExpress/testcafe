@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402744/reference/test-api/selector/sibling
 title: Selector.sibling Method
 permalink: /documentation/reference/test-api/selector/sibling.html
 ---

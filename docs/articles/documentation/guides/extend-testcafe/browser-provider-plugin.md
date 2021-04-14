@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402812/guides/extend-testcafe/browser-provider-plugin
 title: Browser Provider Plugin
 permalink: /documentation/guides/extend-testcafe/browser-provider-plugin.html
 redirect_from:

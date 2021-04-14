@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402643/reference/testcafe-api/browserconnection
 title: BrowserConnection Object
 permalink: /documentation/reference/testcafe-api/browserconnection/
 redirect_from:

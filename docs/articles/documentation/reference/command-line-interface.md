@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402639/reference/command-line-interface
 title: Command Line Interface
 permalink: /documentation/reference/command-line-interface.html
 redirect_from:

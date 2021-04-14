@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402799/recipes/debugging/webstorm
 title: Debug Tests in WebStorm
 permalink: /documentation/recipes/debugging/webstorm.html
 redirect_from:

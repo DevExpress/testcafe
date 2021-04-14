@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402729/reference/test-api/testcontroller/expect/contains
 title: t.expect.contains Method
 permalink: /documentation/reference/test-api/testcontroller/expect/contains.html
 ---

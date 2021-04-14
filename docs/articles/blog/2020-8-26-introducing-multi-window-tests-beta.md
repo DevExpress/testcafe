@@ -1,5 +1,6 @@
 ---
 layout: post
+redirect_to: https://testcafe.io/402900/resources/blog/2020-8-26-introducing-multi-window-tests-beta
 title: "Introducing Multi-window Tests (Beta)"
 permalink: /media/team-blog/:title.html
 isTeamBlog: true

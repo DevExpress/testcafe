@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402701/reference/test-api/testcontroller/fixturectx
 title: t.fixtureCtx Property
 permalink: /documentation/reference/test-api/testcontroller/fixturectx.html
 ---

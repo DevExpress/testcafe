@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402767/reference/test-api/requestlogger/count
 title: RequestLogger.count Method
 permalink: /documentation/reference/test-api/requestlogger/count.html
 ---

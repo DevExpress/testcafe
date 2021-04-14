@@ -1,5 +1,6 @@
 ---
 layout: post
+redirect_to: https://testcafe.io/402905/resources/blog/2020-12-28-randomize-your-end-to-end-tests-how-to-generate-input-data-for-testcafe
 title: "Randomize Your End-to-End Tests: How to Generate Input Data for TestCafe"
 permalink: /media/team-blog/:title.html
 isTeamBlog: true

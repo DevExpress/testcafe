@@ -1,5 +1,6 @@
 ---
 layout: post
+redirect_to: https://testcafe.io/402875/release-notes/framework/2018-03-01-testcafe-v0-19-0-released
 title: TestCafe v0.19.0 Released - Rapid Test Development Tool, Screenshots of Page Elements, etc
 permalink: /blog/:title.html
 ---

@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402829/guides/basic-guides/select-page-elements
 title: Select Page Elements
 permalink: /documentation/guides/basic-guides/select-page-elements.html
 redirect_from:

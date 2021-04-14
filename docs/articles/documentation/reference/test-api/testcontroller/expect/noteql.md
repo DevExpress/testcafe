@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402721/reference/test-api/testcontroller/expect/noteql
 title: t.expect.notEql Method
 permalink: /documentation/reference/test-api/testcontroller/expect/noteql.html
 ---

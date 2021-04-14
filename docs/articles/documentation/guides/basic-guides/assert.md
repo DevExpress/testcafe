@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402837/guides/basic-guides/assert
 title: Assert
 permalink: /documentation/guides/basic-guides/assert.html
 redirect_from:

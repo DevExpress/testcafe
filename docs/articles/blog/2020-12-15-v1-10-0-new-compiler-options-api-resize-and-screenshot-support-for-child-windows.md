@@ -1,5 +1,6 @@
 ---
 layout: post
+redirect_to: https://testcafe.io/402892/release-notes/framework/2020-12-15-v1-10-0-new-compiler-options-api-resize-and-screenshot-support-for-child-windows
 title: "v1.10.0: New Compiler Options API, Resize and Screenshot Support for Child Windows"
 permalink: /blog/:title.html
 ---

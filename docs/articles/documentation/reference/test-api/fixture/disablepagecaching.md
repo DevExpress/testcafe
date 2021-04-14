@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402782/reference/test-api/fixture/disablepagecaching
 title: Fixture.disablePageCaching Method
 permalink: /documentation/reference/test-api/fixture/disablepagecaching.html
 ---

@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402743/reference/test-api/selector/with
 title: Selector.with Method
 permalink: /documentation/reference/test-api/selector/with.html
 ---

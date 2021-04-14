@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402847/guides/continuous-integration/teamcity
 title: Integrate TestCafe with TeamCity
 permalink: /documentation/guides/continuous-integration/teamcity.html
 redirect_from:

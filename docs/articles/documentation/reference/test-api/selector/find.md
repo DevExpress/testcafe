@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402750/reference/test-api/selector/find
 title: Selector.find Method
 permalink: /documentation/reference/test-api/selector/find.html
 ---

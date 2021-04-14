@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402756/reference/test-api/selector/constructor
 title: Selector constructor
 permalink: /documentation/reference/test-api/selector/constructor.html
 ---

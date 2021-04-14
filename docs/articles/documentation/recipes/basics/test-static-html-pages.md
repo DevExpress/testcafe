@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402805/recipes/basics/test-static-html-pages
 title: Test Static HTML Pages
 permalink: /documentation/recipes/basics/test-static-html-pages.html
 redirect_from:

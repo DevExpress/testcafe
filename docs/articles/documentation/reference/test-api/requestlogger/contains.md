@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402768/reference/test-api/requestlogger/contains
 title: RequestLogger.contains Method
 permalink: /documentation/reference/test-api/requestlogger/contains.html
 ---

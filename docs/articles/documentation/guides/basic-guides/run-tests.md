@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402830/guides/basic-guides/run-tests
 title: Run Tests
 permalink: /documentation/guides/basic-guides/run-tests.html
 redirect_from:

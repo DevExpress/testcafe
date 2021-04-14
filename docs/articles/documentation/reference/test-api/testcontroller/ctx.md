@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402708/reference/test-api/testcontroller/ctx
 title: t.ctx Property
 permalink: /documentation/reference/test-api/testcontroller/ctx.html
 ---

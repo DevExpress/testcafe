@@ -1,5 +1,6 @@
 ---
 layout: post
+redirect_to: https://testcafe.io/402885/release-notes/framework/2019-7-5-testcafe-v1-3-1-released
 title: TestCafe v1.3.1 Released
 permalink: /blog/:title.html
 ---

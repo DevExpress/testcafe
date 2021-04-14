@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402691/reference/test-api/testcontroller/resizewindow
 title: t.resizeWindow Method
 permalink: /documentation/reference/test-api/testcontroller/resizewindow.html
 ---

@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402802/recipes/configuration/access-environment-variables-in-tests
 title: Access Environment Variables in Tests
 permalink: /documentation/recipes/configuration/access-environment-variables-in-tests.html
 redirect_from:

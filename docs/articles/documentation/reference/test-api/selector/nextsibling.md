@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402749/reference/test-api/selector/nextsibling
 title: Selector.nextSibling Method
 permalink: /documentation/reference/test-api/selector/nextsibling.html
 ---

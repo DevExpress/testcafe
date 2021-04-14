@@ -1,5 +1,6 @@
 ---
 layout: roadmap
+redirect_to: https://testcafe.io/402949/roadmap
 title: TestCafe Roadmap
 permalink: /roadmap/
 date: 2021-02-16

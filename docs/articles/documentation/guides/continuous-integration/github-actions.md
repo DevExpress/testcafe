@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402817/guides/continuous-integration/github-actions
 title: Integrate TestCafe with GitHub Actions
 permalink: /documentation/guides/continuous-integration/github-actions.html
 redirect_from:

@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402819/guides/continuous-integration/circleci
 title: Integrate TestCafe with CircleCI
 permalink: /documentation/guides/continuous-integration/circleci.html
 redirect_from:

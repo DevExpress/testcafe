@@ -1,5 +1,6 @@
 ---
 layout: post
+redirect_to: https://testcafe.io/402906/resources/blog/2020-12-11-webinar-recording-how-to-get-true-cross-browser-test-coverage-with-testcafe-and-lambdatest
 title: "Webinar Recording: How to Get True Cross-Browser Test Coverage with TestCafe and LambdaTest"
 permalink: /media/team-blog/:title.html
 isTeamBlog: true

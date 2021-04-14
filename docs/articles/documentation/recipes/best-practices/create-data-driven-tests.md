@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402804/recipes/best-practices/create-data-driven-tests
 title: Create Data-Driven Tests
 permalink: /documentation/recipes/best-practices/create-data-driven-tests.html
 redirect_from:

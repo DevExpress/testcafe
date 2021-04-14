@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402638/reference/configuration-file
 title: Configuration File
 permalink: /documentation/reference/configuration-file.html
 redirect_from:

@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402715/reference/test-api/testcontroller/expect/typeof
 title: t.expect.typeOf Method
 permalink: /documentation/reference/test-api/testcontroller/expect/typeof.html
 ---

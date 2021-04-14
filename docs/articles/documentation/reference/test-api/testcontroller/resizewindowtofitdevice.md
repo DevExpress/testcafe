@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402690/reference/test-api/testcontroller/resizewindowtofitdevice
 title: t.resizeWindowToFitDevice Method
 permalink: /documentation/reference/test-api/testcontroller/resizewindowtofitdevice.html
 ---

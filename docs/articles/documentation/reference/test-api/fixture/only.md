@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402779/reference/test-api/fixture/only
 title: Fixture.only Method
 permalink: /documentation/reference/test-api/fixture/only.html
 ---

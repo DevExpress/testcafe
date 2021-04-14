@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402740/reference/test-api/selector/withtext
 title: Selector.withText Method
 permalink: /documentation/reference/test-api/selector/withtext.html
 ---

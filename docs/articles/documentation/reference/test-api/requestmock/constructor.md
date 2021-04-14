@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402765/reference/test-api/requestmock/constructor
 title: RequestMock Constructor
 permalink: /documentation/reference/test-api/requestmock/constructor.html
 ---

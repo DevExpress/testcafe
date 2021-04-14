@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402631/why-testcafe
 title: Why TestCafe?
 permalink: /documentation/why-testcafe/
 redirect_from:

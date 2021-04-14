@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402745/reference/test-api/selector/shadowroot
 title: Selector.shadowRoot Method
 permalink: /documentation/reference/test-api/selector/shadowroot.html
 ---

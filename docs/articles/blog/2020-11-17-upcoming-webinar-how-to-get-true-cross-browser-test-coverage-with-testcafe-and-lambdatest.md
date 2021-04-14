@@ -1,5 +1,6 @@
 ---
 layout: post
+redirect_to: https://testcafe.io/402903/resources/blog/2020-11-17-upcoming-webinar-how-to-get-true-cross-browser-test-coverage-with-testcafe-and-lambdatest
 title: "Upcoming Webinar: How to Get True Cross-Browser Test Coverage with TestCafe and LambdaTest"
 permalink: /media/team-blog/:title.html
 isTeamBlog: true

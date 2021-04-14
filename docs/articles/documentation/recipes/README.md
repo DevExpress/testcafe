@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402633/recipes
 title: Recipes
 permalink: /documentation/recipes/
 redirect_from:

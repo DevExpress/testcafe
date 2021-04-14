@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402795/recipes/integrations/import-third-party-modules
 title: Import Third-Party Modules
 permalink: /documentation/recipes/integrations/import-third-party-modules.html
 redirect_from:

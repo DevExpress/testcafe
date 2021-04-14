@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402780/reference/test-api/fixture/meta
 title: Fixture.meta Method
 permalink: /documentation/reference/test-api/fixture/meta.html
 ---

@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402791/reference/plugin-api/browserprovider
 title: BrowserProvider Interface
 permalink: /documentation/reference/plugin-api/browserprovider.html
 redirect_from:

@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402641/reference/testcafe-api/runner
 title: Runner Object
 permalink: /documentation/reference/testcafe-api/runner/
 redirect_from:

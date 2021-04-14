@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402666/reference/test-api/selector
 title: Selector Object
 permalink: /documentation/reference/test-api/selector/
 ---

@@ -1,5 +1,6 @@
 ---
 layout: post
+redirect_to: https://testcafe.io/402897/resources/blog/2020-7-29-introducing-the-testcafe-jenkins-plugin
 title: "Introducing the TestCafe Jenkins Plugin"
 permalink: /media/team-blog/:title.html
 isTeamBlog: true

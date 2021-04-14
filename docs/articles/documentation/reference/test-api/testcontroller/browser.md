@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402712/reference/test-api/testcontroller/browser
 title: t.browser Property
 permalink: /documentation/reference/test-api/testcontroller/browser.html
 ---

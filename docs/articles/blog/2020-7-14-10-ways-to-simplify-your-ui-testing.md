@@ -1,5 +1,6 @@
 ---
 layout: post
+redirect_to: https://testcafe.io/402896/resources/blog/2020-7-14-10-ways-to-simplify-your-ui-testing
 title: "Upcoming Webinar: 10 Ways to Simplify Your UI Testing"
 permalink: /media/team-blog/:title.html
 isTeamBlog: true

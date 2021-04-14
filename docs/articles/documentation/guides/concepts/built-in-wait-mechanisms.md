@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402827/guides/concepts/built-in-wait-mechanisms
 title: Built-In Wait Mechanisms 
 permalink: /documentation/guides/concepts/built-in-wait-mechanisms.html
 redirect_from:

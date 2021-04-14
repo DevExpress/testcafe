@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402807/recipes/basics/test-on-remote-computers-and-mobile-devices
 title: Test on Remote Computers and Mobile Devices
 permalink: /documentation/recipes/basics/test-on-remote-computers-and-mobile-devices.html
 redirect_from:

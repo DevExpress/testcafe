@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402711/reference/test-api/testcontroller/clearupload
 title: t.clearUpload Method
 permalink: /documentation/reference/test-api/testcontroller/clearupload.html
 ---
