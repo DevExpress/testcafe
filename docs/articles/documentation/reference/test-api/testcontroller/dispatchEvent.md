@@ -19,7 +19,9 @@ Parameter              | Type                                              | Des
 `eventName`            | String                                            | Event name. See [Event Types](#event-types)
 `options`&#160;*(optional)* | Object                                       | A set of event parameters. See [Options](#options).
 
-To imitate user action on the webpage, TestCafe fires a sequences of [DOM events](https://developer.mozilla.org/en-US/docs/Web/API/Event). For example, when you call [t.click](./click.md), TestCafe raises `mousedown`, `mouseup` and `click` (and possibly other events if necessary) in succession. With `t.dispatchEvent` you can fire separate events on the webpage. This can be useful to imitate actions TestCafe does not support out-of-the-box.
+TestCafe fires [DOM events](https://developer.mozilla.org/en-US/docs/Web/API/Event) to imitate user actions on the webpage. For example, when you call [t.click](./click.md), TestCafe raises `mousedown`, `mouseup` and `click` (and possibly other events if necessary) in succession.
+
+With `t.dispatchEvent` you can fire separate events on the webpage. This can be useful to imitate actions TestCafe does not support out-of-the-box.
 
 ## Event Types
 
@@ -50,7 +52,7 @@ TestCafe calls the [MouseEvent Constructor](https://developer.mozilla.org/en-US/
 
 Unless otherwise specified, the [*buttons* property](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/buttons) is set to `1` and the event simulates a press of the primary pointer key (a left mouse click).
 
-An example below fires the [mousedown](https://developer.mozilla.org/en-US/docs/Web/API/Element/mousedown_event) and [mouseup](https://developer.mozilla.org/en-US/docs/Web/API/Element/mouseup_event) events to simulate the user holding down a left click on a button for 5 seconds.
+An example below fires the [mousedown](https://developer.mozilla.org/en-US/docs/Web/API/Element/mousedown_event) and [mouseup](https://developer.mozilla.org/en-US/docs/Web/API/Element/mouseup_event) events to simulate the user holding down a left-click on a button for 5 seconds.
 
 ```js
 import { Selector } from 'testcafe';
@@ -68,7 +70,7 @@ test('Left-click a button for 5 seconds', async t => {
 });
 ```
 
-An example below simulates a 5 second long *right click* on the target element.
+An example below simulates a 5 second long *right-click* on the target element.
 
 ```js
 import { Selector } from 'testcafe';
@@ -89,7 +91,7 @@ test('Right-click a button for 5 seconds', async t => {
 });
 ```
 
-In this example, *buttons* property of `options` is set to `2`, which imitates the secondary mouse button press.
+In this example, the *buttons* property of `options` is set to `2`, which imitates the secondary mouse button press.
 
 ### Keyboard Events
 
@@ -159,7 +161,7 @@ test('Dispatch a CustomEvent', async t => {
 });
 ```
 
-You can explicitly tell testCafe which constructor to use. See [Explicit Constructor Assignment](#explicit-constructor-assignment).
+You can tell TestCafe which constructor to use. See [Explicit Constructor Assignment](#explicit-constructor-assignment).
 
 ## Options
 
