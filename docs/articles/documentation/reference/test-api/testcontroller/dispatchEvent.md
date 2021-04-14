@@ -19,7 +19,7 @@ Parameter              | Type                                              | Des
 `eventName`            | String                                            | Event name. See [Event Types](#event-types)
 `options`&#160;*(optional)* | Object                                       | A set of event parameters. See [Options](#options).
 
-TestCafe fires [DOM events](https://developer.mozilla.org/en-US/docs/Web/API/Event) to imitate user actions on the webpage. For example, when you call [t.click](./click.md), TestCafe raises `mousedown`, `mouseup` and `click` (and possibly other events if necessary) in succession.
+TestCafe fires [DOM events](https://developer.mozilla.org/en-US/docs/Web/API/Event) to imitate user actions on the webpage. For example, when you call [t.click](./click.md), TestCafe raises [mousedown](https://developer.mozilla.org/en-US/docs/Web/API/Element/mousedown_event), [mouseup](https://developer.mozilla.org/en-US/docs/Web/API/Element/mouseup_event) and [click](https://developer.mozilla.org/en-US/docs/Web/API/Element/click_event) (and possibly other events if necessary) in succession.
 
 With `t.dispatchEvent` you can fire separate events on the webpage. This can be useful to imitate actions TestCafe does not support out-of-the-box.
 
