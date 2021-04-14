@@ -9,7 +9,7 @@ permalink: /documentation/reference/test-api/testcontroller/dispatchevent.html
 t.dispatchEvent(target, eventName[, options]) → this | Promise<any>
 ```
 
-> Important! The `t.dispatchEvent` method is not supported in Internet Explorer 11 and earlier.
+> Important! The `t.dispatchEvent` method is not supported in Internet Explorer 11.
 
 Fires a DOM event on the `target` element.
 
@@ -17,7 +17,7 @@ Parameter              | Type                                              | Des
 ---------------------- | ------------------------------------------------- | ----------------
 `target`               | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the event target. See [Select Target Elements](#select-target-elements).
 `eventName`            | String                                            | Event name. See [MDN Event Reference](https://developer.mozilla.org/en-US/docs/Web/Events)
-`options`&#160;*(optional)* | Object                                       | A set of action parameters. See [Options](#options).
+`options`&#160;*(optional)* | Object                                       | A set of event parameters. See [Options](#options).
 
 ## Options
 
@@ -35,7 +35,7 @@ You can explicitly set a constructor for an event. See [Explicit Constructor Ass
 
 ### Mouse Events
 
-You can use `t.dispatchEvent` to trigger a mouse event (like [mousedown](https://developer.mozilla.org/en-US/docs/Web/API/Element/mousedown_event) or [dblclick](https://developer.mozilla.org/en-US/docs/Web/API/Element/dblclick_event)).
+You can use `t.dispatchEvent` to trigger a mouse event.
 
 An example below fires the [mousedown](https://developer.mozilla.org/en-US/docs/Web/API/Element/mousedown_event) and [mouseup](https://developer.mozilla.org/en-US/docs/Web/API/Element/mouseup_event) events to simulate the user holding down a left click on a button for 5 seconds.
 
