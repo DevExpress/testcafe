@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402730/reference/test-api/test/skip
 title: Test.skip Method
 permalink: /documentation/reference/test-api/test/skip.html
 ---

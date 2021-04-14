@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402650/reference/testcafe-api/runner/tsconfigpath
 title: Runner.tsConfigPath Method
 permalink: /documentation/reference/testcafe-api/runner/tsconfigpath.html
 ---

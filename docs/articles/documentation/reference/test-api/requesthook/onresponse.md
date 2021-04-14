@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402771/reference/test-api/requesthook/onresponse
 title: RequestHook.onResponse Method
 permalink: /documentation/reference/test-api/requesthook/onresponse.html
 ---

@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402806/recipes/basics/test-select-elements
 title: Test &lt;select&gt; Elements
 permalink: /documentation/recipes/basics/test-select-elements.html
 redirect_from:

@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402632/reference
 title: Reference
 permalink: /documentation/reference/
 ---

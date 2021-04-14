@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402831/guides/basic-guides/organize-tests
 title: Organize Tests
 permalink: /documentation/guides/basic-guides/organize-tests.html
 redirect_from:

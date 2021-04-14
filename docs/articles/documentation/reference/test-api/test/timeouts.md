@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/403062/reference/test-api/test/timeouts
 title: Test.timeouts Method
 permalink: /documentation/reference/test-api/test/timeouts.html
 ---

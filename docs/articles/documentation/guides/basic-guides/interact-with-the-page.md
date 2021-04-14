@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402833/guides/basic-guides/interact-with-the-page
 title: Interact With The Page
 permalink: /documentation/guides/basic-guides/interact-with-the-page.html
 redirect_from:

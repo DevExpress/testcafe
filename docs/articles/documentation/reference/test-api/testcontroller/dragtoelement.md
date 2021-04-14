@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402704/reference/test-api/testcontroller/dragtoelement
 title: t.dragToElement Method
 permalink: /documentation/reference/test-api/testcontroller/dragtoelement.html
 ---

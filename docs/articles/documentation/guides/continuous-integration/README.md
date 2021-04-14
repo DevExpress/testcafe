@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402809/guides/continuous-integration
 title: Continuous Integration
 permalink: /documentation/guides/continuous-integration/
 redirect_from:

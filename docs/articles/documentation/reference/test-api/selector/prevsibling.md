@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402746/reference/test-api/selector/prevsibling
 title: Selector.prevSibling Method
 permalink: /documentation/reference/test-api/selector/prevsibling.html
 ---

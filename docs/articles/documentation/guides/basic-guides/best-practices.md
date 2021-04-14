@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402836/guides/basic-guides/best-practices
 title: Best Practices
 permalink: /documentation/guides/basic-guides/best-practices.html
 ---

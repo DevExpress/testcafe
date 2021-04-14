@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402785/reference/test-api/fixture/before
 title: Fixture.before Method
 permalink: /documentation/reference/test-api/fixture/before.html
 ---

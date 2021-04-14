@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402787/reference/test-api/fixture/after
 title: Fixture.after Method
 permalink: /documentation/reference/test-api/fixture/after.html
 ---

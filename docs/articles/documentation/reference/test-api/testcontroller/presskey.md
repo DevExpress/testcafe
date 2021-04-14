@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402693/reference/test-api/testcontroller/presskey
 title: t.pressKey Method
 permalink: /documentation/reference/test-api/testcontroller/presskey.html
 redirect_from:

@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402689/reference/test-api/testcontroller/rightclick
 title: t.rightClick Method
 permalink: /documentation/reference/test-api/testcontroller/rightclick.html
 redirect_from:

@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402769/reference/test-api/requestlogger/constructor
 title: RequestLogger Constructor
 permalink: /documentation/reference/test-api/requestlogger/constructor.html
 ---

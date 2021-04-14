@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402671/reference/test-api/clientfunction
 title: ClientFunction Object
 permalink: /documentation/reference/test-api/clientfunction/
 ---

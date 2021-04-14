@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402790/reference/plugin-api/reporter
 title: Reporter Interface
 permalink: /documentation/reference/plugin-api/reporter.html
 redirect_from:

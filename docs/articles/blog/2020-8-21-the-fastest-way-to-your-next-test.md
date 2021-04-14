@@ -1,5 +1,6 @@
 ---
 layout: post
+redirect_to: https://testcafe.io/402899/resources/blog/2020-8-21-the-fastest-way-to-your-next-test
 title: "Upcoming Webinar: The Fastest Way to Your Next Test – TestCafe + TestCafe Studio"
 permalink: /media/team-blog/the-fastest-way-to-your-next-test.html
 isTeamBlog: true

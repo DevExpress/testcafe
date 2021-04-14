@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402675/reference/test-api/testcontroller/takescreenshot
 title: t.takeScreenshot Method
 permalink: /documentation/reference/test-api/testcontroller/takescreenshot.html
 ---

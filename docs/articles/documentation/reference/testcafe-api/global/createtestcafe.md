@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402662/reference/testcafe-api/global/createtestcafe
 title: createTestCafe Function
 permalink: /documentation/reference/testcafe-api/global/createtestcafe.html
 redirect_from:

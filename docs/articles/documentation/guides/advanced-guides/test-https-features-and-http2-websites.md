@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402839/guides/advanced-guides/test-https-features-and-http2-websites
 title: Test HTTPS Features and HTTP/2 Websites
 permalink: /documentation/guides/advanced-guides/test-https-features-and-http2-websites.html
 redirect_from:

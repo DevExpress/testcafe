@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402646/reference/testcafe-api/testcafe/createbrowserconnection
 title: TestCafe.createBrowserConnection Method
 permalink: /documentation/reference/testcafe-api/testcafe/createbrowserconnection.html
 ---

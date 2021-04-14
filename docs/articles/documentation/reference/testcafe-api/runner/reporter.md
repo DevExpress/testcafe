@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402656/reference/testcafe-api/runner/reporter
 title: Runner.reporter Method
 permalink: /documentation/reference/testcafe-api/runner/reporter.html
 ---

@@ -1,5 +1,6 @@
 ---
 layout: post
+redirect_to: https://testcafe.io/402881/release-notes/framework/2019-2-7-migration-from-testcafe-v0-x-y-to-v1-0-0
 title: Migration from TestCafe v0.x.y to v1.0.0
 permalink: /blog/:title.html
 ---

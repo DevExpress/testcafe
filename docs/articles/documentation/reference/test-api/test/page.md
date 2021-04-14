@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402732/reference/test-api/test/page
 title: Test.page Method
 permalink: /documentation/reference/test-api/test/page.html
 ---

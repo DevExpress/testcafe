@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402800/recipes/debugging/visual-studio-code
 title: Debug Tests in Visual Studio Code
 permalink: /documentation/recipes/debugging/visual-studio-code.html
 redirect_from:

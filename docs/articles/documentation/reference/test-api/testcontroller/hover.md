@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402697/reference/test-api/testcontroller/hover
 title: t.hover Method
 permalink: /documentation/reference/test-api/testcontroller/hover.html
 redirect_from:

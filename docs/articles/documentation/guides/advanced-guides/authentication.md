@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402845/guides/advanced-guides/authentication
 title: Authentication
 permalink: /documentation/guides/advanced-guides/authentication.html
 redirect_from:

@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402818/guides/continuous-integration/github-actions-and-browserstack
 title: Run Tests on BrowserStack with GitHub Actions
 permalink: /documentation/guides/continuous-integration/github-actions-and-browserstack.html
 ---

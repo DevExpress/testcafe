@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402698/reference/test-api/testcontroller/getnativedialoghistory
 title: t.getNativeDialogHistory Method
 permalink: /documentation/reference/test-api/testcontroller/getnativedialoghistory.html
 ---

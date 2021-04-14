@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402678/reference/test-api/testcontroller/switchtopreviouswindow
 title: t.switchToPreviousWindow Method
 permalink: /documentation/reference/test-api/testcontroller/switchtopreviouswindow.html
 ---

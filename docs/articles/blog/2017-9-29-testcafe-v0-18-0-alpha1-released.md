@@ -1,5 +1,6 @@
 ---
 layout: post
+redirect_to: https://testcafe.io/402873/release-notes/framework/2017-9-29-testcafe-v0-18-0-alpha1-released
 title: TestCafe v0.18.0-alpha1 Released - Testing in headless Firefox
 permalink: /blog/:title.html
 ---

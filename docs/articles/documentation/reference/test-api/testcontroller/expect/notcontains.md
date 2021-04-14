@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402722/reference/test-api/testcontroller/expect/notcontains
 title: t.expect.notContains Method
 permalink: /documentation/reference/test-api/testcontroller/expect/notcontains.html
 ---

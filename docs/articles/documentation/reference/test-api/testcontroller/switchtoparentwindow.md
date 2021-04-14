@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402679/reference/test-api/testcontroller/switchtoparentwindow
 title: t.switchToParentWindow Method
 permalink: /documentation/reference/test-api/testcontroller/switchtoparentwindow.html
 ---

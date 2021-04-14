@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402759/reference/test-api/selector/addcustomdomproperties
 title: Selector.addCustomDOMProperties Method
 permalink: /documentation/reference/test-api/selector/addcustomdomproperties.html
 ---

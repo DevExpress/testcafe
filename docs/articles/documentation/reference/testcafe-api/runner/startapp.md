@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402652/reference/testcafe-api/runner/startapp
 title: Runner.startApp Method
 permalink: /documentation/reference/testcafe-api/runner/startapp.html
 ---

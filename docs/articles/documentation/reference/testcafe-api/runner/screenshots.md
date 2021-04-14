@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402654/reference/testcafe-api/runner/screenshots
 title: Runner.screenshots Method
 permalink: /documentation/reference/testcafe-api/runner/screenshots.html
 ---

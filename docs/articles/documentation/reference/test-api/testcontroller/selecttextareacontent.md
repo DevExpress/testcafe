@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402686/reference/test-api/testcontroller/selecttextareacontent
 title: t.selectTextAreaContent Method
 permalink: /documentation/reference/test-api/testcontroller/selecttextareacontent.html
 ---

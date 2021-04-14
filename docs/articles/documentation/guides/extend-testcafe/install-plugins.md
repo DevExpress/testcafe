@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402811/guides/extend-testcafe/install-plugins
 title: Extending TestCafe
 permalink: /documentation/guides/extend-testcafe/install-plugins.html
 redirect_from:

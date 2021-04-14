@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402834/guides/basic-guides/install-testcafe
 title: Install TestCafe
 permalink: /documentation/guides/basic-guides/install-testcafe.html
 redirect_from:

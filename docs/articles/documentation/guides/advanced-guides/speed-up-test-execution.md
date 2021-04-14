@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402963/guides/advanced-guides/speed-up-test-execution
 title: Create Faster Tests
 permalink: /documentation/guides/advanced-guides/speed-up-test-execution.html
 ---

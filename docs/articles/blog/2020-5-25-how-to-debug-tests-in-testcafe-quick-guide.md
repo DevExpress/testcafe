@@ -1,5 +1,6 @@
 ---
 layout: post
+redirect_to: https://testcafe.io/402894/resources/blog/2020-5-25-how-to-debug-tests-in-testcafe-quick-guide
 title: "How to Debug Tests in TestCafe: Quick Guide"
 permalink: /media/team-blog/:title.html
 isTeamBlog: true

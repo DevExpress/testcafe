@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402828/guides/concepts/browsers
 title: Browsers
 permalink: /documentation/guides/concepts/browsers.html
 redirect_from:

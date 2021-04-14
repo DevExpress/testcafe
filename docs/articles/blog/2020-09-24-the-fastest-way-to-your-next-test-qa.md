@@ -1,5 +1,6 @@
 ---
 layout: post
+redirect_to: https://testcafe.io/402902/resources/blog/2020-09-24-the-fastest-way-to-your-next-test-qa
 title: "The Fastest Way to Your Next Test – TestCafe + TestCafe Studio - Q&A's"
 permalink: /media/team-blog/the-fastest-way-to-your-next-test-qa.html
 isTeamBlog: true

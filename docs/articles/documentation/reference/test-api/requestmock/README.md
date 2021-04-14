@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402667/reference/test-api/requestmock
 title: RequestMock Class
 permalink: /documentation/reference/test-api/requestmock/
 ---

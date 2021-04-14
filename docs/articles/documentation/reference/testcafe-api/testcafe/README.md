@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402640/reference/testcafe-api/testcafe
 title: TestCafe Object
 permalink: /documentation/reference/testcafe-api/testcafe/
 redirect_from:

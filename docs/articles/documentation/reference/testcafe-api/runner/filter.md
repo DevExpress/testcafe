@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402657/reference/testcafe-api/runner/filter
 title: Runner.filter Method
 permalink: /documentation/reference/testcafe-api/runner/filter.html
 ---

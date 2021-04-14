@@ -1,5 +1,6 @@
 ---
 layout: faq
+redirect_to: https://testcafe.io/402636/faq
 title: Frequently Asked Questions
 permalink: /faq/
 ---

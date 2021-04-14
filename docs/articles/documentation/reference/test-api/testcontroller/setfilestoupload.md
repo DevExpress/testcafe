@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402685/reference/test-api/testcontroller/setfilestoupload
 title: t.setFilesToUpload Method
 permalink: /documentation/reference/test-api/testcontroller/setfilestoupload.html
 ---

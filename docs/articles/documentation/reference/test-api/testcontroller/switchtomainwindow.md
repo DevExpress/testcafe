@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402680/reference/test-api/testcontroller/switchtomainwindow
 title: t.switchToMainWindow Method
 permalink: /documentation/reference/test-api/testcontroller/switchtomainwindow.html
 ---

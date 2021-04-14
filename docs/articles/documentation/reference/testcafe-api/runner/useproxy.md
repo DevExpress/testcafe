@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402649/reference/testcafe-api/runner/useproxy
 title: Runner.useProxy Method
 permalink: /documentation/reference/testcafe-api/runner/useproxy.html
 ---

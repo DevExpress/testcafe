@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402838/guides/advanced-guides/use-testcafe-docker-image
 title: Use TestCafe Docker Image
 permalink: /documentation/guides/advanced-guides/use-testcafe-docker-image.html
 redirect_from:

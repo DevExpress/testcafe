@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402694/reference/test-api/testcontroller/openwindow
 title: t.openWindow Method
 permalink: /documentation/reference/test-api/testcontroller/openwindow.html
 ---

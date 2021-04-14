@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402784/reference/test-api/fixture/beforeeach
 title: Fixture.beforeEach Method
 permalink: /documentation/reference/test-api/fixture/beforeeach.html
 ---

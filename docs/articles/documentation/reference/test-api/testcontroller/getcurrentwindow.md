@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402699/reference/test-api/testcontroller/getcurrentwindow
 title: t.getCurrentWindow Method
 permalink: /documentation/reference/test-api/testcontroller/getcurrentwindow.html
 ---

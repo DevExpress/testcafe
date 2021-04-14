@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402793/recipes/integrations/use-angular-cli-builder
 title: Use Angular CLI Builder
 permalink: /documentation/recipes/integrations/use-angular-cli-builder.html
 redirect_from:

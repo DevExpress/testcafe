@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402660/reference/testcafe-api/runner/clientscripts
 title: Runner.clientScripts Method
 permalink: /documentation/reference/testcafe-api/runner/clientscripts.html
 ---

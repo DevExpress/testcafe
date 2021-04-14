@@ -1,5 +1,6 @@
 ---
 layout: post
+redirect_to: https://testcafe.io/402893/resources/blog/2020-4-20-how-to-scroll-web-pages-using-testcafe
 title: How to Scroll Web Pages Using TestCafe
 permalink: /media/team-blog/:title.html
 isTeamBlog: true

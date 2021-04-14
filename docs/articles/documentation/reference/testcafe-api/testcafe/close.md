@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402647/reference/testcafe-api/testcafe/close
 title: TestCafe.close Method
 permalink: /documentation/reference/testcafe-api/testcafe/close.html
 ---

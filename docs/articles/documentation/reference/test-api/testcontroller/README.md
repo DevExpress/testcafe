@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402665/reference/test-api/testcontroller
 title: TestController
 permalink: /documentation/reference/test-api/testcontroller/
 ---

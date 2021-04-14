@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402696/reference/test-api/testcontroller/maximizewindow
 title: t.maximizeWindow Method
 permalink: /documentation/reference/test-api/testcontroller/maximizewindow.html
 ---

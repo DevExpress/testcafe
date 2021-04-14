@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402813/guides/continuous-integration/travis
 title: Run Tests in Travis CI
 permalink: /documentation/guides/continuous-integration/travis.html
 redirect_from:

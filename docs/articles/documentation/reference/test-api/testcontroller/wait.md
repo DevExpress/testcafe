@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402672/reference/test-api/testcontroller/wait
 title: t.wait Method
 permalink: /documentation/reference/test-api/testcontroller/wait.html
 redirect_from: 

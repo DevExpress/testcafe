@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402808/recipes/basics/test-file-upload
 title: Test File Upload
 permalink: /documentation/recipes/basics/test-file-upload.html
 ---

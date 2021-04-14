@@ -1,5 +1,6 @@
 ---
 layout: post
+redirect_to: https://testcafe.io/402874/release-notes/framework/2017-10-10-testcafe-v0-18-0-released
 title: TestCafe v0.18.0 Released - Angular Selectors, Using Multiple Reporters, etc
 permalink: /blog/:title.html
 ---

@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402752/reference/test-api/selector/filterhidden
 title: Selector.filterHidden Method
 permalink: /documentation/reference/test-api/selector/filterhidden.html
 ---

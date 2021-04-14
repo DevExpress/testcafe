@@ -1,5 +1,6 @@
 ---
 layout: post
+redirect_to: https://testcafe.io/402901/resources/blog/2020-9-3-how-testcafe-can-help-you-to-deliver-faster
 title: "How TestCafe Can Help You to Deliver Faster"
 permalink: /media/team-blog/:title.html
 isTeamBlog: true

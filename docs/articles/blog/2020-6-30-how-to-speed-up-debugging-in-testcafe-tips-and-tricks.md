@@ -1,5 +1,6 @@
 ---
 layout: post
+redirect_to: https://testcafe.io/402895/resources/blog/2020-6-30-how-to-speed-up-debugging-in-testcafe-tips-and-tricks
 title: "How to Speed up Debugging in TestCafe: Tips and Tricks"
 permalink: /media/team-blog/:title.html
 isTeamBlog: true

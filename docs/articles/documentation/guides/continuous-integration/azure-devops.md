@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402822/guides/continuous-integration/azure-devops
 title: Integrate TestCafe with Azure DevOps
 permalink: /documentation/guides/continuous-integration/azure-devops.html
 redirect_from:

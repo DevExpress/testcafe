@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402736/reference/test-api/test/disablepagecaching
 title: Test.disablePageCaching Method
 permalink: /documentation/reference/test-api/test/disablepagecaching.html
 ---

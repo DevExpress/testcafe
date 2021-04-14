@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402703/reference/test-api/testcontroller/eval
 title: t.eval Method
 permalink: /documentation/reference/test-api/testcontroller/eval.html
 ---

@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402684/reference/test-api/testcontroller/setnativedialoghandler
 title: t.setNativeDialogHandler Method
 permalink: /documentation/reference/test-api/testcontroller/setnativedialoghandler.html
 ---

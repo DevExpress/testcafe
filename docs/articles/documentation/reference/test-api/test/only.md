@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402733/reference/test-api/test/only
 title: Test.only Method
 permalink: /documentation/reference/test-api/test/only.html
 ---

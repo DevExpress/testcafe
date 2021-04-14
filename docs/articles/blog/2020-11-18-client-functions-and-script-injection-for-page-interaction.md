@@ -1,5 +1,6 @@
 ---
 layout: post
+redirect_to: https://testcafe.io/402908/resources/blog/2020-11-18-client-functions-and-script-injection-for-page-interaction
 title: "Client Functions and Script Injection for Page Interaction"
 permalink: /media/team-blog/:title.html
 isTeamBlog: true

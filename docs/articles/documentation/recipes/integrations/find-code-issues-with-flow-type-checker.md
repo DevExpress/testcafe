@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402798/recipes/integrations/find-code-issues-with-flow-type-checker
 title: Find Code Issues with Flow Type Checker
 permalink: /documentation/recipes/integrations/find-code-issues-with-flow-type-checker.html
 redirect_from:

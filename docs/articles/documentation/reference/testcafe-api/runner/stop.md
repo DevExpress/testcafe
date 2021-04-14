@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402651/reference/testcafe-api/runner/stop
 title: Runner.stops Method
 permalink: /documentation/reference/testcafe-api/runner/stop.html
 ---

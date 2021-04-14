@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402814/guides/continuous-integration/travis-and-sauce-labs
 title: Run Tests on Sauce Labs with Travis CI
 permalink: /documentation/guides/continuous-integration/travis-and-sauce-labs.html
 redirect_from:

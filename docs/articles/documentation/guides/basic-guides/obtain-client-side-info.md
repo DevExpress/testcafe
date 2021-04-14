@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402832/guides/basic-guides/obtain-client-side-info
 title: Obtain Client-Side Info
 permalink: /documentation/guides/basic-guides/obtain-client-side-info.html
 redirect_from:

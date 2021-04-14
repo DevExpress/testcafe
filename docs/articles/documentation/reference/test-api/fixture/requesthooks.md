@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402777/reference/test-api/fixture/requesthooks
 title: Fixture.requestHooks Method
 permalink: /documentation/reference/test-api/fixture/requesthooks.html
 ---

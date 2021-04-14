@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402663/reference/testcafe-api/browserconnection/url
 title: BrowserConnection.url Property
 permalink: /documentation/reference/testcafe-api/browserconnection/url.html
 ---

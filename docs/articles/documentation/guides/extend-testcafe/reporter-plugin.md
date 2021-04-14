@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402810/guides/extend-testcafe/reporter-plugin
 title: Reporter Plugin
 permalink: /documentation/guides/extend-testcafe/reporter-plugin.html
 redirect_from:

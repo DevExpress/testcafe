@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402778/reference/test-api/fixture/page
 title: Fixture.page Method
 permalink: /documentation/reference/test-api/fixture/page.html
 ---

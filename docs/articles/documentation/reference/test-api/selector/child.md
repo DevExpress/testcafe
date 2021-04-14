@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402757/reference/test-api/selector/child
 title: Selector.child Method
 permalink: /documentation/reference/test-api/selector/child.html
 ---

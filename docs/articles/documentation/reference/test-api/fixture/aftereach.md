@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402786/reference/test-api/fixture/aftereach
 title: Fixture.afterEach Method
 permalink: /documentation/reference/test-api/fixture/aftereach.html
 ---

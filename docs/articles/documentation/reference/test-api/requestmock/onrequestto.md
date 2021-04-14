@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402763/reference/test-api/requestmock/onrequestto
 title: RequestMock.onRequestTo Method
 permalink: /documentation/reference/test-api/requestmock/onrequestto.html
 ---

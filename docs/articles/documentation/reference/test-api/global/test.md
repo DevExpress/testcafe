@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402774/reference/test-api/global/test
 title: test Function
 permalink: /documentation/reference/test-api/global/test.html
 ---

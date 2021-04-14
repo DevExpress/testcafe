@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402821/guides/continuous-integration/bitbucket-pipelines
 title: Run Tests in Bitbucket Pipelines
 permalink: /documentation/guides/continuous-integration/bitbucket-pipelines.html
 redirect_from:

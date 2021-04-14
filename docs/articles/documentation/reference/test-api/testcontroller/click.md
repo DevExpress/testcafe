@@ -1,5 +1,6 @@
 ---
 layout: docs
+redirect_to: https://testcafe.io/documentation/402710/reference/test-api/testcontroller/click
 title: t.click Method
 permalink: /documentation/reference/test-api/testcontroller/click.html
 redirect_from:
