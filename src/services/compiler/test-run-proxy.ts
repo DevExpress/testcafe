@@ -104,11 +104,11 @@ class TestRunProxy {
         });
     }
 
-    public onRequestHookEvent ({ hookId, name, eventData }: RequestHookEventDescriptor): RequestHook {
+    public async onRequestHookEvent ({ hookId, name, eventData }: RequestHookEventDescriptor): Promise<RequestHook> {
         const targetHook = this.getHook(hookId) as RequestHook;
 
         // @ts-ignore
-        targetHook[name].call(targetHook, eventData);
+        await targetHook[name].call(targetHook, eventData);
 
         return targetHook;
     }
