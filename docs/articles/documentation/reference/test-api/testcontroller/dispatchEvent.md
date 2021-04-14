@@ -16,26 +16,37 @@ Fires a DOM event on the `target` element.
 Parameter              | Type                                              | Description
 ---------------------- | ------------------------------------------------- | ----------------
 `target`               | Function &#124; String &#124; Selector &#124; Snapshot &#124; Promise | Identifies the event target. See [Select Target Elements](#select-target-elements).
-`eventName`            | String                                            | Event name. See [MDN Event Reference](https://developer.mozilla.org/en-US/docs/Web/Events)
+`eventName`            | String                                            | Event name. See [Event Types](#event-types)
 `options`&#160;*(optional)* | Object                                       | A set of event parameters. See [Options](#options).
 
-## Options
+## Event Types
 
-Use the `options` object to specify parameters for events fired with `t.dispatchEvent`.
-
-All DOM events support the following `options` properties:
-
-* [Event Interface Properties](https://developer.mozilla.org/en-US/docs/Web/API/Event#properties)
-
-Unless otherwise specified, events have `bubbles` and `cancelable` options set to `true`.
-
-Depending on the `eventName` parameter, a different constructor is called for an event and different sets of additional `options` are available.
-
-You can explicitly set a constructor for an event. See [Explicit Constructor Assignment](#explicit-constructor-assignment).
+When you fire an event with `t.dispatchEvent`, TestCafe chooses an event constructor to invoke based on the `eventName` value. Depending on the constructor, different sets of `options` are available.
 
 ### Mouse Events
 
-You can use `t.dispatchEvent` to trigger a mouse event.
+When you pass one of the following values as `eventName`, TestCafe dispatches a [Mouse Event](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent):
+
+* `mouseup`
+* `mousedown`
+* `click`
+* `dbclick`
+* `mousemove`
+* `mouseover`
+* `mouseleave`
+* `contextmenu`
+* `drag`
+* `dragend`
+* `dragenter`
+* `dragexit`
+* `dragleave`
+* `dragover`
+* `dragstart`
+* `drop`
+
+TestCafe calls the [MouseEvent Constructor](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/MouseEvent) to create a mouse event. Mouse events support [MouseEvent Properties](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent#properties) in `options`.
+
+Unless otherwise specified, the [*buttons* property](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/buttons) is set to `1` and the event simulates a press of the primary pointer key (a left mouse click).
 
 An example below fires the [mousedown](https://developer.mozilla.org/en-US/docs/Web/API/Element/mousedown_event) and [mouseup](https://developer.mozilla.org/en-US/docs/Web/API/Element/mouseup_event) events to simulate the user holding down a left click on a button for 5 seconds.
 
@@ -54,14 +65,6 @@ test('Left-click a button for 5 seconds', async t => {
         .dispatchEvent(target, 'mouseup');
 });
 ```
-
-Mouse events support the following `options` properties:
-
-* [Event Properties](https://developer.mozilla.org/en-US/docs/Web/API/Event#properties)
-* [UIEvent Properties](https://developer.mozilla.org/en-US/docs/Web/API/UIEvent#properties)
-* [MouseEvent Properties](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent#properties)
-
-Unless otherwise specified, the [*buttons* property](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent/buttons) is set to `1`, so the event simulates a press of the primary pointer key (left click in case of a mouse).
 
 An example below simulates a 5 second long *right click* on the target element.
 
@@ -84,36 +87,95 @@ test('Right-click a button for 5 seconds', async t => {
 });
 ```
 
+In this example, *buttons* property of `options` is set to `2`, which imitates the secondary mouse button press.
+
 ### Keyboard Events
 
-{% include events.md name = "KeyboardEvent" %}
+When you pass one of the following values as `eventName`, TestCafe dispatches a [Keyboard Event](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent):
+
+* `keydown`
+* `keyup`
+* `keypress`
+
+TestCafe calls the [KeyboardEvent Constructor](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/KeyboardEvent) to create a keyboard event. Keyboard events support [KeyboardEvent Properties](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent#properties) in `options`.
 
 ### Input Events
 
-{% include events.md name = "InputEvent" %}
+When you pass one of the following values as `eventName`, TestCafe dispatches an [Input Event](https://developer.mozilla.org/en-US/docs/Web/API/InputEvent):
+
+* `input`
+* `beforeinput`
+
+TestCafe calls the [InputEvent Constructor](https://developer.mozilla.org/en-US/docs/Web/API/InputEvent/InputEvent) to create an input event. Input events support [InputEvent Properties](https://developer.mozilla.org/en-US/docs/Web/API/InputEvent#properties) in `options`.
 
 ### Focus Events
 
-{% include events.md name = "FocusEvent" %}
+When you pass one of the following values as `eventName`, TestCafe dispatches a [Focus Event](https://developer.mozilla.org/en-US/docs/Web/API/FocusEvent):
+
+* `blur`
+* `focus`
+* `focusin`
+* `focusout`
+
+TestCafe calls the [FocusEvent Constructor](https://developer.mozilla.org/en-US/docs/Web/API/FocusEvent/FocusEvent) to create a focus event. Focus events support [FocusEvent Properties](https://developer.mozilla.org/en-US/docs/Web/API/FocusEvent#properties) in `options`.
 
 ### Pointer Events
 
-{% include events.md name = "PointerEvent" %}
+When you pass one of the following values as `eventName`, TestCafe dispatches a [Pointer Event](https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent):
+
+* `pointerover`
+* `pointerenter`
+* `pointerdown`
+* `pointermove`
+* `pointerrawupdate`
+* `pointerup`
+* `pointercancel`
+* `pointerout`
+* `pointerleave`
+
+TestCafe calls the [PointerEvent Constructor](https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent/PointerEvent) to create a pointer event. Pointer events support [PointerEvent Properties](https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent#properties) in `options`.
 
 ### Custom Events
 
 Custom Events are all events that are neither [Mouse](#mouse-events), [Keyboard](#keyboard-events), [Input](#input-events), [Focus](#focus-events) nor [Pointer](#pointer-events) events.
 
-When you dispatch a custom event, TestCafe passes the `options` properties to the [CustomEvent Constructor](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent).
+TestCafe calls the [CustomEvent Constructor](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent/CustomEvent) to create a custom event. Custom events support [CustomFocusEvent Properties](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent#properties) in `options`.
 
-CustomEvent Constructor supports the following `options` properties:
+In the example below, `foo` is passed as `eventName` to `options`. Since TestCafe can't recognize the event, it uses the CustomEvent constructor.
+
+```js
+import { Selector } from 'testcafe';
+
+fixture`Custom Events`
+    .page('www.example.com');
+
+test('Dispatch a CustomEvent', async t => {
+    const target  = Selector('#target');
+
+    await t
+        .dispatchEvent(target, 'foo')
+});
+```
+
+You can explicitly tell testCafe which constructor to use. See [Explicit Constructor Assignment](#explicit-constructor-assignment).
+
+## Options
+
+Use the `options` object to specify parameters for events fired with `t.dispatchEvent`.
+
+All DOM events support the following `options` properties:
 
 * [Event Interface Properties](https://developer.mozilla.org/en-US/docs/Web/API/Event#properties)
-* [CustomEvent Interface Properties](https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent#properties)
+
+Unless otherwise specified, events have `bubbles` and `cancelable` options set to `true`.
+
+Depending on the `eventName` parameter, a different constructor is called for an event and different sets of additional `options` are available. See [Event Types](#event-types).
+
+You can explicitly set a constructor for an event. See [Explicit Constructor Assignment](#explicit-constructor-assignment).
 
 ### Explicit Constructor Assignment
 
-You can explicitly tell TestCafe to use a different constructor. Pass the `eventConstructor` property to `options` (for example, `eventConstructor: 'TouchEvent'`).
+You can explicitly tell TestCafe which event constructor to use. Pass the `eventConstructor` property to `options` (for example, `eventConstructor: 'TouchEvent'`).
 
 The following example fires a [non-cancelable](https://developer.mozilla.org/en-US/docs/Web/API/Event/cancelable), [non-bubbling](https://developer.mozilla.org/en-US/docs/Web/API/Event/bubbles) `TouchEvent` on `target`.
 
@@ -141,11 +203,7 @@ test('Dispatch a TouchEvent', async t => {
 });
 ```
 
-Since this event is explicitly assigned the `TouchEvent` constructor, it supports the following `options`:
-
-* [Event Interface Properties](https://developer.mozilla.org/en-US/docs/Web/API/Event#properties)
-* [UIEvent Interface Properties](https://developer.mozilla.org/en-US/docs/Web/API/UIEvent#properties)
-* [TouchEvent Interface Properties](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent#properties)
+Because `eventConstructor: 'TouchEvent'` is passed to `options`, TestCafe calls the `TouchEvent` constructor to create the event. You can use [TouchEvent Properties](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent#properties) in this event's `options`.
 
 ## Select Target Elements
 
