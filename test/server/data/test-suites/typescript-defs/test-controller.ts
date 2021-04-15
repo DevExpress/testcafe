@@ -837,3 +837,10 @@ test('scroll methods', async t => {
     await t.scrollBy(target, 100, 200, { offsetX: -1, offsetY: -1 });
     await t.scrollIntoView(target, { offsetX: 1, offsetY: 1 });
 });
+
+test('dispatch', async t => {
+    const target = Selector('#target');
+
+    await t.dispatchEvent(target, 'mousedown');
+    await t.dispatchEvent(target, 'mousedown', { button: 1 });
+});
