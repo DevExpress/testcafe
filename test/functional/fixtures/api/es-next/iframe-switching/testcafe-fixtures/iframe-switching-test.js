@@ -1,5 +1,5 @@
 // NOTE: to preserve callsites, add new tests AFTER the existing ones
-import { ClientFunction } from 'testcafe';
+import { Selector, ClientFunction } from 'testcafe';
 import { expect } from 'chai';
 
 
@@ -202,4 +202,11 @@ test('Click in an iframe that is not loaded', async t => {
         .click('#too-long-loading-page-link')
         .wait(3000)
         .click('#second-page-btn');
+});
+
+test('Click in an iframe with the srcdoc attribute', async t => {
+    await t
+        .switchToIframe('#iframe-with-srcdoc')
+        .click('#target')
+        .expect(Selector('#target').innerText).eql('text in iframe with the srcdoc attribute');
 });
