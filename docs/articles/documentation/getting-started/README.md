@@ -5,6 +5,7 @@ title: Getting Started
 permalink: /documentation/getting-started/
 redirect_from:
   - /documentation/
+  - /documentation/using-testcafe/
 ---
 # Getting Started
 
