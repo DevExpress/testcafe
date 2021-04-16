@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-    <a href="https://devexpress.github.io/testcafe">
+    <a href="https://testcafe.io">
         <img src="https://raw.githubusercontent.com/DevExpress/testcafe/master/media/testcafe-logo.svg?sanitize=true" alt="testcafe" />
     </a>
 </p>
@@ -21,14 +21,14 @@
 </p>
 
 <p align="center">
-  <a href="https://devexpress.github.io/testcafe/">Homepage</a> &nbsp&nbsp•&nbsp&nbsp
-  <a href="https://devexpress.github.io/testcafe/documentation/getting-started/">Documentation</a> &nbsp&nbsp•&nbsp&nbsp
-  <a href="https://devexpress.github.io/testcafe/faq/">FAQ</a> &nbsp&nbsp•&nbsp&nbsp
-  <a href="https://devexpress.github.io/testcafe/support/">Support</a>
+  <a href="https://testcafe.io">Homepage</a> &nbsp&nbsp•&nbsp&nbsp
+  <a href="https://testcafe.io/documentation/402635/getting-started">Documentation</a> &nbsp&nbsp•&nbsp&nbsp
+  <a href="https://testcafe.io/402636/faq">FAQ</a> &nbsp&nbsp•&nbsp&nbsp
+  <a href="https://testcafe.io/support">Support</a>
 </p>
 
-* **Works on all popular environments**: TestCafe runs on Windows, MacOS, and Linux. It supports desktop, mobile, remote and cloud [browsers](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browsers/browser-support.html) (UI or headless).
-* **1 minute to set up**: You [do not need WebDriver](https://devexpress.github.io/testcafe/faq/#i-have-heard-that-testcafe-does-not-use-selenium-how-does-it-operate) or any other testing software. Install TestCafe with one command, and you are ready to test: `npm install -g testcafe`
+* **Works on all popular environments**: TestCafe runs on Windows, MacOS, and Linux. It supports desktop, mobile, remote and cloud [browsers](https://testcafe.io/documentation/402828/guides/concepts/browsers#browser-support) (UI or headless).
+* **1 minute to set up**: You [do not need WebDriver](https://testcafe.io/402636/faq#i-have-heard-that-testcafe-does-not-use-selenium-how-does-it-operate) or any other testing software. Install TestCafe with one command, and you are ready to test: `npm install -g testcafe`
 * **Free and open source**: TestCafe is free to use under the [MIT license](https://github.com/DevExpress/testcafe/blob/master/LICENSE). [Plugins](#plugins) provide custom reports, integration with other tools, launching tests from IDE, etc. You can use the plugins made by the GitHub community or make your own.
 
 ![Install TestCafe and Run a Test](https://raw.githubusercontent.com/DevExpress/testcafe/master/media/install-and-run-test.gif)
@@ -67,7 +67,7 @@ See how it works in the [TestCafe Live repository](https://github.com/DevExpress
 
 **Latest JS and TypeScript support**<br/>
 TestCafe supports the latest JavaScript features, including ES2017 (for example, async/await).
-You can also [use TypeScript](https://devexpress.github.io/testcafe/documentation/test-api/typescript-support.html)
+You can also [use TypeScript](https://testcafe.io/documentation/402824/guides/concepts/typescript-and-coffeescript#typescript-support)
 if you prefer a strongly typed language.
 
 **Detects JS errors in your code**<br/>
@@ -80,9 +80,9 @@ TestCafe can open multiple instances of the same browser to run parallel
 tests which decreases test execution time.
 
 **PageObject pattern support**<br/>
-The TestCafe's [Test API](https://devexpress.github.io/testcafe/documentation/test-api/)
+The TestCafe's [Test API](https://testcafe.io/documentation/402632/reference)
 includes a high-level selector library, assertions, etc.
-You can combine them to implement readable tests with the [PageObject pattern](https://devexpress.github.io/testcafe/documentation/recipes/using-page-model.html).
+You can combine them to implement readable tests with the [PageObject pattern](https://testcafe.io/documentation/402826/guides/concepts/page-model).
 
 ```js
 const macOSInput = Selector('.column').find('label').withText('MacOS').child('input');
@@ -143,8 +143,8 @@ test('My first test', async t => {
 ### Running the Test
 
 Call the following command in a command shell.
-Specify the [target browser](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#browser-list)
-and [file path](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#file-pathglob-pattern).
+Specify the [target browser](https://testcafe.io/documentation/402639/reference/command-line-interface#browser-list)
+and [file path](https://testcafe.io/documentation/402639/reference/command-line-interface#file-pathglob-pattern).
 
 ```sh
 testcafe chrome test1.js
@@ -158,16 +158,16 @@ TestCafe opens the browser and starts executing the test.
 
 ### Viewing the Results
 
-TestCafe outputs the results into a command shell by default. See [Reporters](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/reporters.html)
+TestCafe outputs the results into a command shell by default. See [Reporters](https://testcafe.io/documentation/402825/guides/concepts/reporters)
 for more information. You can also use [plugins](#plugins) to customize the reports.
 
-![Test Report](docs/articles/images/report.png)
+![Test Report](https://testcafe.io/images/report.png)
 
-Read the [Getting Started](https://devexpress.github.io/testcafe/documentation/getting-started/) page for a more detailed guide.
+Read the [Getting Started](https://testcafe.io/documentation/402635/getting-started) page for a more detailed guide.
 
 ## Documentation
 
-Go to our website for full [documentation](https://devexpress.github.io/testcafe/documentation/getting-started/) on TestCafe.
+Go to our website for full [documentation](https://testcafe.io/documentation/402635/getting-started) on TestCafe.
 
 ## Get Help
 
@@ -187,9 +187,9 @@ Read our [Contributing Guide](https://github.com/DevExpress/testcafe/blob/master
 
 To create your own plugin for TestCafe, you can use these plugin generators:
 
-* [Build a browser provider](https://devexpress.github.io/testcafe/documentation/extending-testcafe/browser-provider-plugin/)
+* [Build a browser provider](https://testcafe.io/documentation/402812/guides/extend-testcafe/browser-provider-plugin)
   to set up tests on your on-premises server farm, to use a cloud testing platform, or to start your local browsers in a special way. Use this [Yeoman generator](https://www.npmjs.com/package/generator-testcafe-browser-provider) to write only a few lines of code.
-* To [build a custom reporter](https://devexpress.github.io/testcafe/documentation/extending-testcafe/reporter-plugin/)
+* To [build a custom reporter](https://testcafe.io/documentation/402810/guides/extend-testcafe/reporter-plugin)
   with your formatting and style, check out this [generator](https://www.npmjs.com/package/generator-testcafe-reporter).
 
 If you want your plugin to be listed below, [send us a note in a Github issue](https://github.com/DevExpress/testcafe/issues/new).
@@ -315,14 +315,14 @@ TestCafe developers and community members made these plugins:
 
 ## Different Versions of TestCafe
 
-| &nbsp; | [TestCafe](https://devexpress.github.io/testcafe) | [TestCafe Studio](https://www.devexpress.com/products/testcafestudio/?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-diff)  |
+| &nbsp; | [TestCafe](https://testcafe.io) | [TestCafe Studio](https://www.devexpress.com/products/testcafestudio/?utm_source=github.com&utm_medium=referral&utm_campaign=tc-gh-diff)  |
 | ------ |:-------------------------------------------------:|:-----------------------------------------------------------------------:|
 | No need for WebDriver, browser plugins or other tools | &#10003; | &#10003; |
 | Cross-platform and cross-browser out of the box | &#10003; | &#10003; |
 | Write tests in the latest JavaScript or TypeScript | &#10003; | &#10003; |
-| Clear and flexible [API](https://devexpress.github.io/testcafe/documentation/test-api/) supports ES6 and [PageModel pattern](https://devexpress.github.io/testcafe/documentation/recipes/using-page-model.html) | &#10003; | &#10003; |
-| Stable tests due to the [Smart Assertion Query Mechanism](https://devexpress.github.io/testcafe/documentation/test-api/assertions/#smart-assertion-query-mechanism) | &#10003; | &#10003; |
-| Tests run fast due to intelligent [Automatic Waiting Mechanism](https://devexpress.github.io/testcafe/documentation/test-api/waiting-for-page-elements-to-appear.html) and [Concurrent Test Execution](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/concurrent-test-execution.html) | &#10003; | &#10003; |
+| Clear and flexible [API](https://testcafe.io/documentation/402632/reference) supports ES6 and [PageModel pattern](https://testcafe.io/documentation/402826/guides/concepts/page-model) | &#10003; | &#10003; |
+| Stable tests due to the [Smart Assertion Query Mechanism](https://testcafe.io/documentation/402837/guides/basic-guides/assert#smart-assertion-query-mechanism) | &#10003; | &#10003; |
+| Tests run fast due to intelligent [Automatic Waiting Mechanism](https://testcafe.io/documentation/402827/guides/concepts/built-in-wait-mechanisms) and [Concurrent Test Execution](https://testcafe.io/documentation/402830/guides/basic-guides/run-tests#run-tests-concurrently) | &#10003; | &#10003; |
 | Custom reporter plugins | &#10003; | &#10003; |
 | Use third-party Node.js modules in test scripts | &#10003; | &#10003; |
 | Integration with popular CI systems | &#10003; | &nbsp;&#10003;\* |
