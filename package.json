@@ -129,7 +129,7 @@
     "source-map-support": "^0.5.16",
     "strip-bom": "^2.0.0",
     "testcafe-browser-tools": "2.0.15",
-    "testcafe-hammerhead": "23.0.0",
+    "testcafe-hammerhead": "24.1.0",
     "testcafe-legacy-api": "5.0.0",
     "testcafe-reporter-json": "^2.1.0",
     "testcafe-reporter-list": "^2.1.0",

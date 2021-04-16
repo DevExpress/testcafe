@@ -66,5 +66,9 @@ describe('Request Hooks', () => {
         it('Async predicate for request filter rules', () => {
             return runTests('./testcafe-fixtures/api/request-filter-rule-async-predicate.js', null, { only: 'chrome' });
         });
+
+        it('Change and remove response headers', () => {
+            return runTests('./testcafe-fixtures/api/change-remove-response-headers.js', null, { only: 'chrome' });
+        });
     });
 });

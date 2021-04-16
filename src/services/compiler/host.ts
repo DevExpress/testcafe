@@ -22,12 +22,14 @@ import {
     ExecuteCommandArguments,
     RequestHookEventArguments,
     SetMockArguments,
-    SetConfigureResponseEventOptionsArguments
+    SetConfigureResponseEventOptionsArguments,
+    SetHeaderOnConfigureResponseEventArguments,
+    RemoveHeaderOnConfigureResponseEventArguments
 } from './protocol';
 
 import { CompilerArguments } from '../../compiler/interfaces';
 import Test from '../../api/structure/test';
-import { RequestFilterRule, ResponseMock } from 'testcafe-hammerhead';
+import { ResponseMock } from 'testcafe-hammerhead';
 
 const SERVICE_PATH = require.resolve('./service');
 
@@ -56,7 +58,9 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
             this.ready,
             this.onRequestHookEvent,
             this.setMock,
-            this.setConfigureResponseEventOptions
+            this.setConfigureResponseEventOptions,
+            this.setHeaderOnConfigureResponseEvent,
+            this.removeHeaderOnConfigureResponseEvent
         ], this);
     }
 
@@ -176,16 +180,21 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
         await proxy.call(this.onRequestHookEvent, { name, testRunId, testId, hookId, eventData });
     }
 
-    public async setMock ({ rule, mock }: SetMockArguments): Promise<void> {
+    public async setMock ({ responseEventId, mock }: SetMockArguments): Promise<void> {
         mock = ResponseMock.from(mock);
-        rule = RequestFilterRule.from(rule as object);
 
-        await this.emit('setMock', { rule, mock });
+        await this.emit('setMock', [responseEventId, mock]);
     }
 
-    public async setConfigureResponseEventOptions ({ rule, opts }: SetConfigureResponseEventOptionsArguments): Promise<void> {
-        rule = RequestFilterRule.from(rule as object);
+    public async setConfigureResponseEventOptions ({ eventId, opts }: SetConfigureResponseEventOptionsArguments): Promise<void> {
+        await this.emit('setConfigureResponseEventOptions', [eventId, opts]);
+    }
 
-        await this.emit('setConfigureResponseEventOptions', { rule, opts });
+    public async setHeaderOnConfigureResponseEvent ({ eventId, headerName, headerValue }: SetHeaderOnConfigureResponseEventArguments): Promise<void> {
+        await this.emit('setHeaderOnConfigureResponseEvent', [eventId, headerName, headerValue]);
+    }
+
+    public async removeHeaderOnConfigureResponseEvent ({ eventId, headerName }: RemoveHeaderOnConfigureResponseEventArguments): Promise<void> {
+        await this.emit('removeHeaderOnConfigureResponseEvent', [eventId, headerName]);
     }
 }

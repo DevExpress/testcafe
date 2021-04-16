@@ -5,7 +5,6 @@ import {
     ConfigureResponseEvent,
     ConfigureResponseEventOptions,
     RequestEvent,
-    RequestFilterRule,
     ResponseEvent,
     ResponseMock
 } from 'testcafe-hammerhead';
@@ -59,13 +58,24 @@ export interface RequestHookEventArguments {
 }
 
 export interface SetMockArguments {
-    rule: RequestFilterRule;
+    responseEventId: string;
     mock: ResponseMock;
 }
 
 export interface SetConfigureResponseEventOptionsArguments {
-    rule: RequestFilterRule;
+    eventId: string;
     opts: ConfigureResponseEventOptions;
+}
+
+export interface SetHeaderOnConfigureResponseEventArguments {
+    eventId: string;
+    headerName: string;
+    headerValue: string;
+}
+
+export interface RemoveHeaderOnConfigureResponseEventArguments {
+    eventId: string;
+    headerName: string;
 }
 
 export interface TestRunDispatcherProtocol {
@@ -86,7 +96,11 @@ export interface CompilerProtocol extends TestRunDispatcherProtocol {
 
     onRequestHookEvent ({ name, testRunId, testId, hookId, eventData }: RequestHookEventArguments): Promise<void>;
 
-    setMock ({ rule, mock }: SetMockArguments): Promise<void>;
+    setMock ({ responseEventId, mock }: SetMockArguments): Promise<void>;
 
-    setConfigureResponseEventOptions ({ rule, opts }: SetConfigureResponseEventOptionsArguments): Promise<void>;
+    setConfigureResponseEventOptions ({ eventId, opts }: SetConfigureResponseEventOptionsArguments): Promise<void>;
+
+    setHeaderOnConfigureResponseEvent ({ eventId, headerName, headerValue }: SetHeaderOnConfigureResponseEventArguments): Promise<void>;
+
+    removeHeaderOnConfigureResponseEvent ({ eventId, headerName }: RemoveHeaderOnConfigureResponseEventArguments): Promise<void>;
 }

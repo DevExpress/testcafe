@@ -163,6 +163,15 @@ Server.prototype._setupRoutes = function () {
             res.send(delay.toString());
         }, delay);
     });
+
+    this.app.post('/echo-custom-request-headers-in-response-headers', (req, res) => {
+        Object.keys(req.headers).forEach(headerName => {
+            if (headerName.startsWith('x-header-'))
+                res.setHeader(headerName, req.headers[headerName]);
+        });
+
+        res.end();
+    });
 };
 
 Server.prototype.close = function () {
