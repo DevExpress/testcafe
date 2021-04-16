@@ -4,6 +4,7 @@ redirect_to: https://testcafe.io/documentation/402801/recipes/debugging/chrome-d
 title: Debug Tests in Chrome Developer Tools
 permalink: /documentation/recipes/debugging/chrome-dev-tools.html
 redirect_from:
+  - /documentation/recipes/debug-tests/
   - /documentation/recipes/debug-in-chrome-dev-tools.html
   - /documentation/recipes/debug-tests/chrome-dev-tools.html
   - /documentation/recipes/debugging-with-chrome-dev-tools.html
