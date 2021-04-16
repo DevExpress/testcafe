@@ -589,7 +589,7 @@ gulp.task('clean-website', () => {
 });
 
 gulp.step('fetch-assets-repo', cb => {
-    git.clone('https://github.com/DevExpress/testcafe-gh-page-assets.git', { args: 'site' }, cb);
+    git.clone('https://github.com/Farfurix/testcafe-gh-page-assets.git', { args: 'site' }, cb);
 });
 
 gulp.step('put-in-articles', () => {
