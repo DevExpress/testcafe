@@ -5,66 +5,13 @@
     <description></description>
     <link>https://devexpress.github.io/testcafe/</link>
     <atom:link href="https://devexpress.github.io/testcafe/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 08 Apr 2021 09:11:21 +0300</pubDate>
-    <lastBuildDate>Thu, 08 Apr 2021 09:11:21 +0300</lastBuildDate>
+    <pubDate>Fri, 16 Apr 2021 10:32:02 +0300</pubDate>
+    <lastBuildDate>Fri, 16 Apr 2021 10:32:02 +0300</lastBuildDate>
     <generator>Jekyll v3.9.0</generator>
     
       <item>
         <title>TestCafe v1.14.0 Released</title>
-        <description>&lt;h1&gt;TestCafe v1.14.0 Released&lt;/h1&gt;
-&lt;p&gt;This update includes a bugfix and new API methods for page scrolling.&lt;/p&gt;
-
-&lt;!--more--&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;scroll-actions-pr-6066&quot;&gt;&lt;/a&gt;⚙ Scroll Actions (&lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/6066&quot;&gt;PR #6066&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#scroll-actions-pr-6066&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;Users of earlier TestCafe versions had to interact with off-screen DOM elements to scroll the page.&lt;/p&gt;
-
-&lt;p&gt;This release introduces dedicated scroll actions.&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;../documentation/reference/test-api/testcontroller/scroll.html&quot;&gt;t.scroll&lt;/a&gt; - scrolls the element to a specified position&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;../documentation/reference/test-api/testcontroller/scrollby.html&quot;&gt;t.scrollBy&lt;/a&gt; - scrolls the element by the specified number of pixels&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;../documentation/reference/test-api/testcontroller/scrollintoview.html&quot;&gt;t.scrollIntoView&lt;/a&gt; - scrolls the element into view&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;The &lt;code&gt;t.scroll&lt;/code&gt; action scrolls the target to reveal the specified coordinates:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;testcafe&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`Scroll Action`&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;http://example.com&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Scroll the container&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;container&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#container&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;scroll&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;container&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;bottomRight&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;The &lt;code&gt;t.scrollBy&lt;/code&gt; action scrolls the target by a set amount of pixels. The example below scrolls the webpage 200px up and 500px to the right:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`Scroll Action`&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;http://example.com&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Scroll the webpage&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;scrollBy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;500&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;200&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;The &lt;code&gt;t.scrollIntoView&lt;/code&gt; action scrolls an element into view:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;testcafe&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`Scroll Actions`&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`http://www.example.com/`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Scroll element into view&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;target&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#target&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;scrollIntoView&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;target&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Fixed an error that caused &lt;a href=&quot;../documentation/reference/test-api/testcontroller/expect/contains.html&quot;&gt;expect.contains&lt;/a&gt; assertions to display &lt;code&gt;undefined&lt;/code&gt; instead of a value in the assertion result (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/5473&quot;&gt;#5473&lt;/a&gt;)&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+        <description></description>
         <pubDate>Wed, 07 Apr 2021 00:00:00 +0300</pubDate>
         <link>https://devexpress.github.io/testcafe/blog/testcafe-v1.14.0-released.html</link>
         <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v1.14.0-released.html</guid>
@@ -74,63 +21,7 @@
     
       <item>
         <title>TestCafe v1.13.0 Released</title>
-        <description>&lt;h1&gt;TestCafe v1.13.0 Released&lt;/h1&gt;
-&lt;p&gt;This release adds support for custom paths to the configuration file, support for Microsoft Edge on Linux systems, and multiple bugfixes.&lt;/p&gt;
-
-&lt;!--more--&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;specify-custom-path-to-the-testcafe-configuration-file-pr-6035-by-chris-greaves&quot;&gt;&lt;/a&gt;⚙ Specify Custom Path to the TestCafe Configuration File (&lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/6035&quot;&gt;PR #6035&lt;/a&gt; by &lt;a href=&quot;https://github.com/Chris-Greaves&quot;&gt;@Chris-Greaves&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#specify-custom-path-to-the-testcafe-configuration-file-pr-6035-by-chris-greaves&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;TestCafe now allows you to specify a custom path to the &lt;a href=&quot;../documentation/reference/configuration-file.html&quot;&gt;configuration file&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;To set the path, use one of the following options:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;the &lt;a href=&quot;../documentation/reference/command-line-interface.html#--config-file-path&quot;&gt;--config-file CLI option&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;the &lt;a href=&quot;../documentation/reference/testcafe-api/global/createtestcafe.html#options&quot;&gt;configFile option of the createTestCafe function&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;add-support-for-microsoft-edge-on-linux-pr-testcafe-browser-tools210-by-dcsaszar&quot;&gt;&lt;/a&gt;Add Support for Microsoft Edge on Linux (&lt;a href=&quot;https://github.com/DevExpress/testcafe-browser-tools/pull/210&quot;&gt;PR testcafe-browser-tools/#210&lt;/a&gt; by &lt;a href=&quot;https://github.com/dcsaszar&quot;&gt;@dcsaszar&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#add-support-for-microsoft-edge-on-linux-pr-testcafe-browser-tools210-by-dcsaszar&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;If you have &lt;a href=&quot;https://www.microsoftedgeinsider.com/en-us/download?platform=linux-deb&quot;&gt;Microsoft Edge installed on your Linux machine&lt;/a&gt;, you can now launch TestCafe tests in this browser.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe edge tests/test.js
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;deprecated-the-tsetpageloadtimeout-method-pr-5979&quot;&gt;&lt;/a&gt;⚙ Deprecated the &lt;code&gt;t.setPageLoadTimeout&lt;/code&gt; method (&lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/5979&quot;&gt;PR #5979&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#deprecated-the-tsetpageloadtimeout-method-pr-5979&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;Starting with v1.13.0, the &lt;a href=&quot;../documentation/reference/test-api/testcontroller/setpageloadtimeout.html&quot;&gt;t.setPageLoadTimeout&lt;/a&gt; method is deprecated. To set the page load timeout, use the new &lt;a href=&quot;../documentation/reference/test-api/test/timeouts.html&quot;&gt;test.timeouts&lt;/a&gt; method.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`Setting Timeouts`&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`http://devexpress.github.io/testcafe/example`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;timeouts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;pageLoadTimeout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2000&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;My test&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;c1&quot;&gt;//test actions&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;You can also use &lt;code&gt;test.timeouts&lt;/code&gt; to set the &lt;a href=&quot;../documentation/reference/configuration-file.html#pagerequesttimeout&quot;&gt;pageRequestTimeout&lt;/a&gt; and &lt;a href=&quot;../documentation/reference/configuration-file.html#ajaxrequesttimeout&quot;&gt;ajaxRequestTimeout&lt;/a&gt;.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`Setting Timeouts`&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`http://devexpress.github.io/testcafe/example`&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;timeouts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;pageLoadTimeout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;    &lt;span class=&quot;mi&quot;&gt;2000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;pageRequestTimeout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;60000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;ajaxRequestTimeout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;60000&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;My test&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;c1&quot;&gt;//test actions&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Fixed a bug where TestCafe would sometimes be unable to trigger a &lt;code&gt;hover&lt;/code&gt; event on a &lt;code&gt;radio&lt;/code&gt; element (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/5916&quot;&gt;#5916&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed a bug where TestCafe was unable to register a Service Worker due to the wrong &lt;code&gt;currentScope&lt;/code&gt; calculation inside a &lt;code&gt;Window.postMessage&lt;/code&gt; call (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2524&quot;&gt;testcafe-hammerhead/#2524&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;RequestLogger&lt;/code&gt; now shows a correct protocol for WebSocket requests (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2591&quot;&gt;testcafe-hammerhead/#2591&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Test execution now pauses when the browser window is in the background (&lt;a href=&quot;https://github.com/DevExpress/testcafe-browser-tools/issues/158&quot;&gt;testcafe-browser-tools/#158&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;TestCafe now appends an extension to screenshot filenames (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/5103&quot;&gt;#5103&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed a bug where TestCafe would emit test action events after the end of a test run (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/5650&quot;&gt;#5650&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;TestCafe now closes if the &lt;code&gt;No tests to run&lt;/code&gt; error occurs in Live mode (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/4257&quot;&gt;#4257&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed a freeze that happened when you run a test suite with skipped tests (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/4967&quot;&gt;#4967&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed an error where a &lt;code&gt;documentElement.transform.translate&lt;/code&gt; call moved the TestCafe UI in the browser window (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/5606&quot;&gt;#5606&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;TestCafe now emits a warning if you pass an unawaited selector to an assertion (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/5554&quot;&gt;#5554&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed a crash that sometimes occurred in Chrome v85 and earlier on pages with scripts (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/pull/2590&quot;&gt;PR testcafe-hammerhead/#2590&lt;/a&gt;)&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+        <description></description>
         <pubDate>Mon, 22 Mar 2021 00:00:00 +0300</pubDate>
         <link>https://devexpress.github.io/testcafe/blog/testcafe-v1-13-0-released.html</link>
         <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v1-13-0-released.html</guid>
@@ -140,39 +31,7 @@
     
       <item>
         <title>TestCafe v1.12.0 Released</title>
-        <description>&lt;h1&gt;TestCafe v1.12.0 Released&lt;/h1&gt;
-&lt;p&gt;This version brings server-side caching, asynchronous predicates, and multiple bugfixes.&lt;/p&gt;
-
-&lt;!--more--&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;server-side-web-assets-caching-testcafe-hammerhead863&quot;&gt;&lt;/a&gt;⚙ Server-Side Web Assets Caching (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/863&quot;&gt;testcafe-hammerhead/#863&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#server-side-web-assets-caching-testcafe-hammerhead863&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;TestCafe&amp;#39;s proxy server can now cache web assets (like images, scripts, videos). When TestCafe revisits the website later, it can load assets from cache. This helps to avoid repetitive network requests, which saves time.&lt;/p&gt;
-
-&lt;p&gt;Use any of the following to enable server-side caching:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;../documentation/reference/command-line-interface.html#--cache&quot;&gt;the &lt;code&gt;--cache&lt;/code&gt; CLI flag&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;../documentation/reference/configuration-file.html#cache&quot;&gt;the &lt;code&gt;cache&lt;/code&gt; configuration file property&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;../documentation/reference/testcafe-api/global/createtestcafe.html&quot;&gt;the &lt;code&gt;createTestCafe&lt;/code&gt; function parameter&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;initialize-request-hooks-with-async-predicates&quot;&gt;&lt;/a&gt;Initialize Request Hooks with Async Predicates &lt;a class=&quot;permalink&quot; href=&quot;#initialize-request-hooks-with-async-predicates&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;The following request hooks now support &lt;strong&gt;asynchronous&lt;/strong&gt; predicate functions:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;../documentation/reference/test-api/requesthook/constructor.html#filter-with-a-predicate&quot;&gt;RequestHook&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;../documentation/reference/test-api/requestmock/onrequestto.html#filter-with-a-predicate&quot;&gt;RequestMock.onRequestTo&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;../documentation/reference/test-api/requestlogger/constructor.html#filter-with-a-predicate&quot;&gt;RequestLogger&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;Example&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;logger&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;RequestLogger&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;request&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;someFn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Fixed a bug where TestCafe was unable to switch to the main window before/after interacting with a child window (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/5930&quot;&gt;#5930&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed the &lt;code&gt;Illegal invocation&lt;/code&gt; error when calling &lt;code&gt;Storage.prototype&lt;/code&gt; methods on the &lt;code&gt;StorageWrapper&lt;/code&gt; object (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2526&quot;&gt;#2526&lt;/a&gt;)&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+        <description></description>
         <pubDate>Wed, 03 Mar 2021 00:00:00 +0300</pubDate>
         <link>https://devexpress.github.io/testcafe/blog/testcafe-v1-12-0-released.html</link>
         <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v1-12-0-released.html</guid>
@@ -182,122 +41,7 @@
     
       <item>
         <title>TestCafe v1.11.0 Released</title>
-        <description>&lt;h1&gt;TestCafe v1.11.0 Released&lt;/h1&gt;
-&lt;p&gt;This version brings the release of multiple browser windows mode, options to configure request timeouts and many bugfixes.&lt;/p&gt;
-
-&lt;!--more--&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;multiple-browser-windows-is-live-912&quot;&gt;&lt;/a&gt;Multiple Browser Windows is Live (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/912&quot;&gt;#912&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#multiple-browser-windows-is-live-912&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;Testing in multiple browser windows is now stable.&lt;/p&gt;
-
-&lt;p&gt;To take full advantage of testing in multiple windows with TestCafe, read &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/multiple-browser-windows.html&quot;&gt;Multiple Browser Windows&lt;/a&gt;.&lt;/p&gt;
-&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;set-request-timeouts-pr-5692&quot;&gt;&lt;/a&gt;⚙ Set Request Timeouts (&lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/5692&quot;&gt;PR #5692&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#set-request-timeouts-pr-5692&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;TestCafe now enables you to set request timeouts. If TestCafe receives no response within the specified period, it throws an error.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;CLI&lt;/em&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;../documentation/reference/command-line-interface.html#--ajax-request-timeout-ms&quot;&gt;--ajax-request-timeout&lt;/a&gt; controls the timeout for fetch/XHR requests&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;../documentation/reference/command-line-interface.html#--page-request-timeout-ms&quot;&gt;--page-request-timeout&lt;/a&gt; sets the timeout for webpage requests&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome my-tests &lt;span class=&quot;nt&quot;&gt;--ajax-request-timeout&lt;/span&gt; 40000 &lt;span class=&quot;nt&quot;&gt;--page-request-timeout&lt;/span&gt; 8000
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;em&gt;Configuration file&lt;/em&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;../documentation/reference/configuration-file.html#ajaxrequesttimeout&quot;&gt;ajaxRequestTimeout&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;../documentation/reference/configuration-file.html#pagerequesttimeout&quot;&gt;pageRequestTimeout&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;pageRequestTimeout&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;8000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;ajaxRequestTimeout&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;40000&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;em&gt;JavaScript API&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;These options are available in the &lt;a href=&quot;../documentation/reference/testcafe-api/runner/run.html&quot;&gt;runner.run Method&lt;/a&gt;.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;createTestCafe&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;testcafe&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;testcafe&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;createTestCafe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;localhost&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1337&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1338&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;testcafe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;createRunner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;failed&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;pageRequestTimeout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;ajaxRequestTimeout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;40000&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Tests failed: &lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;failed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;finally&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;testcafe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;set-browser-initialization-timeout-pr-5720&quot;&gt;&lt;/a&gt;⚙ Set Browser Initialization Timeout (&lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/5720&quot;&gt;PR #5720&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#set-browser-initialization-timeout-pr-5720&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;This release introduces an option to control browser initialization timeout. This timeout controls the time browsers have to connect to TestCafe before an error is thrown. You can control this timeout in one of the following ways:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;../documentation/reference/command-line-interface.html#--browser-init-timeout-ms&quot;&gt;--browser-init-timeout&lt;/a&gt; CLI option&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome my-tests &lt;span class=&quot;nt&quot;&gt;--browser-init-timeout&lt;/span&gt; 180000
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;../documentation/reference/configuration-file.html#browserinittimeout&quot;&gt;browserInitTimeout&lt;/a&gt; configuration option&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;browserInitTimeout&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;180000&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;../documentation/reference/testcafe-api/runner/run.html&quot;&gt;runner.run Method&lt;/a&gt; parameter&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;browserInitTimeout&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;180000&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;This setting sets an equal timeout for local and &lt;a href=&quot;../documentation/guides/concepts/browsers.html#browsers-on-remote-devices&quot;&gt;remote browsers&lt;/a&gt;.&lt;/p&gt;
-&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;improved-unable-to-establish-browser-connection-error-message-pr-5720&quot;&gt;&lt;/a&gt;Improved &lt;code&gt;Unable To Establish Browser Connection&lt;/code&gt; Error Message (&lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/5720&quot;&gt;PR #5720&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#improved-unable-to-establish-browser-connection-error-message-pr-5720&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;TestCafe raises this error when at least one local or remote browser was not able to connect. The error message now includes the number of browsers that have not established a connection.&lt;/p&gt;
-
-&lt;p&gt;TestCafe raises a warning if low system performance is causing the connectivity issue.&lt;/p&gt;
-&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;an-option-to-retry-requests-for-the-test-page-pr-5738&quot;&gt;&lt;/a&gt;⚙ An Option to Retry Requests for the Test Page (&lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/5738&quot;&gt;PR #5738&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#an-option-to-retry-requests-for-the-test-page-pr-5738&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;If a tested webpage was not served after the first request, TestCafe can now retry the request.&lt;/p&gt;
-
-&lt;p&gt;You can enable this functionality with a command line, API, or configuration file option:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;../documentation/reference/command-line-interface.html#--retry-test-pages&quot;&gt;--retry-test-pages&lt;/a&gt; command line argument&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome test.js &lt;span class=&quot;nt&quot;&gt;--retry-test-pages&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;../documentation/reference/testcafe-api/global/createtestcafe.html&quot;&gt;createTestCafe&lt;/a&gt; function parameter&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;createTestCafe&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;testcafe&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;testcafe&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;createTestCafe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;localhost&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1337&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1338&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;retryTestPages&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;../documentation/reference/configuration-file.html#retrytestpages&quot;&gt;retryTestPages&lt;/a&gt; configuration file property&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;retryTestPages&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Fixed a bug where &lt;code&gt;Selector.withText&lt;/code&gt; couldn&amp;#39;t locate elements inside an &lt;code&gt;iframe&lt;/code&gt; (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/5886&quot;&gt;#5886&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed a bug where TestCafe was sometimes unable to detect when a browser instance closes (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/5857&quot;&gt;#5857&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;You can now install TestCafe with &lt;code&gt;Yarn 2&lt;/code&gt; (&lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/5872&quot;&gt;PR #5872&lt;/a&gt; by &lt;a href=&quot;https://github.com/NiavlysB&quot;&gt;@NiavlysB&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed a bug where the &lt;code&gt;typeText&lt;/code&gt; action does not always replace existing text (&lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/5942&quot;&gt;PR #5942&lt;/a&gt; by &lt;a href=&quot;https://github.com/rueyaa332266&quot;&gt;@rueyaa332266&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed a bug where TestCafe was sometimes unable to create a &lt;code&gt;Web Worker&lt;/code&gt; from an object (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2512&quot;&gt;testcafe-hammerhead/#2512&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed an error thrown by TestCafe proxy when trying to delete an object property that does not exist (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2504&quot;&gt;testcafe-hammerhead/#2504&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed an error thrown by TestCafe proxy when a Service Worker overwrites properties of a &lt;code&gt;window&lt;/code&gt; object (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2538&quot;&gt;testcafe-hammerhead/#2538&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed a bug where &lt;code&gt;t.openWindow&lt;/code&gt; method requested a URL twice (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2544&quot;&gt;testcafe-hammerhead/#2544&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed an error (&lt;code&gt;TypeError: Illegal invocation&lt;/code&gt;) thrown by TestCafe on pages that contain an XMLDocument with an &lt;code&gt;iframe&lt;/code&gt; (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2554&quot;&gt;testcafe-hammerhead/#2554&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed an error (&lt;code&gt;SyntaxError: Identifier has already been declared&lt;/code&gt;) thrown by TestCafe on pages with scripts that create nested JavaScript objects (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2506&quot;&gt;testcafe-hammerhead/#2506&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed a bug where TestCafe was unable to focus elements within shadow DOM (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2408&quot;&gt;testcafe-hammerhead/#2408&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;TestCafe now throws an error when an entity of type other than &lt;code&gt;Error&lt;/code&gt; is thrown in a test script (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/pull/2536&quot;&gt;PR testcafe-hammerhead/#2536&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed a bug where TestCafe was sometimes unable to resolve relative URLs (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2399&quot;&gt;testcafe-hammerhead/#2399&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Properties of &lt;code&gt;window.location.constructor&lt;/code&gt; are now shadowed correctly by TestCafe proxy (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2423&quot;&gt;testcafe-hammerhead/#2423&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;TestCafe proxy now correctly handles requests that are not permitted by the CORS policy (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1263&quot;&gt;testcafe-hammerhead/#1263&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Improved compatibility with test pages that use &lt;code&gt;with&lt;/code&gt; statements (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2434&quot;&gt;testcafe-hammerhead/#2434&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;TestCafe proxy can now properly parse statements that use a comma operator in &lt;code&gt;for..of&lt;/code&gt; loops (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2573&quot;&gt;testcafe-hammerhead/#2573&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed a bug where TestCafe would open a new window even if &lt;code&gt;preventDefault&lt;/code&gt; is present in element&amp;#39;s event handler (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/pull/2582&quot;&gt;testcafe-hammerhead/#2582&lt;/a&gt;)&lt;br&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;vulnerability-fix-pr-5843-pr-testcafe-hammerhead2531&quot;&gt;&lt;/a&gt;Vulnerability Fix (&lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/5843&quot;&gt;PR #5843&lt;/a&gt;, &lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/pull/2531&quot;&gt;PR testcafe-hammerhead#2531&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#vulnerability-fix-pr-5843-pr-testcafe-hammerhead2531&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;We have fixed a vulnerability found in the &lt;a href=&quot;https://www.npmjs.com/package/debug&quot;&gt;debug&lt;/a&gt; module we use for debugging.
-The vulnerability was a &lt;a href=&quot;https://github.com/visionmedia/debug/issues/797&quot;&gt;ReDos Vulnerability Regression&lt;/a&gt; that affected all TestCafe users. TestCafe now uses &lt;code&gt;debug@4.3.1&lt;/code&gt;, where the issue is fixed.&lt;/p&gt;
-</description>
+        <description></description>
         <pubDate>Mon, 15 Feb 2021 00:00:00 +0300</pubDate>
         <link>https://devexpress.github.io/testcafe/blog/testcafe-v1-11-0-released.html</link>
         <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/testcafe-v1-11-0-released.html</guid>
@@ -307,25 +51,7 @@ The vulnerability was a &lt;a href=&quot;https://github.com/visionmedia/debug/is
     
       <item>
         <title>Upcoming Roundtable: Modern Web Testing with TestCafe</title>
-        <description>&lt;h1&gt;Upcoming Roundtable: Modern Web Testing with TestCafe&lt;/h1&gt;
-&lt;p&gt;Tomorrow, join the 5th online &lt;a href=&quot;https://guildconferences.com/ag-2021/&quot;&gt;Automation Guild conference&lt;/a&gt; and learn how to improve your test automation skill with Dmytro Shpakovskyi, the author of “Modern Web Testing with TestCafe”.&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-&lt;p&gt;Dmytro has over a decade of experience in Quality Assurance, Software Testing, and Software-as-a-Service industries. Skilled in end-to-end, load, and API test automation, he is certified by the International Software Testing Qualifications Board (ISTQB).&lt;/p&gt;
-
-&lt;p&gt;During his career, Dmytro was in charge of the quality assurance automation of 60+ highly scalable web applications and services, built and maintained numerous test automation frameworks, managed distributed teams of QA automation engineers, and helped engineers to convert to automated testing.&lt;/p&gt;
-
-&lt;p&gt;Dmytro creates and open-sources new test automation frameworks, mentors other QA engineers, and explores new tools and techniques for automated testing. He shares his experience at &lt;a href=&quot;https://www.stijit.com/&quot;&gt;www.stijit.com&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;In addition to that, Dmytro authored a book &amp;quot;Modern Web Testing with TestCafe&amp;quot; - a no-nonsense guide to getting started with TestCafe quickly by building a complete test suite while learning the core concepts of test automation with TestCafe (available on &lt;a href=&quot;https://www.amazon.com/gp/product/B08HM9JXRK&quot;&gt;Amazon&lt;/a&gt;).&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Webinar Date:&lt;/strong&gt; Wednesday, February 10, 2021&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Start Time:&lt;/strong&gt; 1:30 PM Pacific Time&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://guildconferences.com/ag-2021/&quot;&gt;Register&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
-</description>
+        <description></description>
         <pubDate>Tue, 09 Feb 2021 00:00:00 +0300</pubDate>
         <link>https://devexpress.github.io/testcafe/media/team-blog/modern-web-testing-with-testcafe.html</link>
         <guid isPermaLink="true">https://devexpress.github.io/testcafe/media/team-blog/modern-web-testing-with-testcafe.html</guid>
@@ -335,138 +61,7 @@ The vulnerability was a &lt;a href=&quot;https://github.com/visionmedia/debug/is
     
       <item>
         <title>Randomize Your End-to-End Tests: How to Generate Input Data for TestCafe</title>
-        <description>&lt;h1&gt;Randomize Your End-to-End Tests: How to Generate Input Data for TestCafe&lt;/h1&gt;
-&lt;p&gt;User input can be truly unpredictable, so it&amp;#39;s important to use a wide sample of random input data when testing web forms. In this article, we&amp;#39;ll take a look at three Node libraries that generate data: &lt;a href=&quot;https://github.com/ai/nanoid&quot;&gt;nanoid&lt;/a&gt;, &lt;a href=&quot;https://github.com/marak/Faker.js/&quot;&gt;faker&lt;/a&gt;, and &lt;a href=&quot;https://github.com/brendanashworth/generate-password&quot;&gt;generate-password&lt;/a&gt;. We&amp;#39;ll see how TestCafe can leverage their features to help you improve your test coverage.&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-&lt;p&gt;The &lt;a href=&quot;https://github.com/Farfurix/Generating-input-data&quot;&gt;farfurix/generating-input-data&lt;/a&gt; git repo contains the custom demo page and the test examples created specifically for this article. Clone the repository to follow along.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;the-basics-nanoid&quot;&gt;&lt;/a&gt;The Basics (nanoid) &lt;a class=&quot;permalink&quot; href=&quot;#the-basics-nanoid&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/example/&quot;&gt;This example page&lt;/a&gt; contains a text input field. We can use the &lt;code&gt;t.typeText&lt;/code&gt; method to populate it:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;testcafe&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`Random Input Data: example 1`&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;https://devexpress.github.io/testcafe/example/&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Generate a random name&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;typeText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#developer-name&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Developer Name&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;code&gt;Nanoid&lt;/code&gt; generates random strings when you call the &lt;code&gt;nanoid()&lt;/code&gt; method. We can call this method to randomize our input data.&lt;/p&gt;
-
-&lt;p&gt;Import the &lt;code&gt;nanoid&lt;/code&gt; module in the beginning of the file:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;nanoid&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;nanoid&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Declare a constant with a randomly generated name:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;randomDeveloperName&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;testuser_&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;nanoid&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Replace the &lt;code&gt;&amp;#39;Developer Name&amp;#39;&lt;/code&gt; string with the constant we just declared:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;typeText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#developer-name&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;randomDeveloperName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Now every time you run the test, the input value will be unique.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;input-validation-faker-generate-password&quot;&gt;&lt;/a&gt;Input validation (faker, generate-password) &lt;a class=&quot;permalink&quot; href=&quot;#input-validation-faker-generate-password&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;Imagine a more complicated scenario: testing a sign-up form&amp;#39;s ability to validate user passwords. We need to make sure that the password chosen by the user contains:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;At least eight symbols&lt;/li&gt;
-&lt;li&gt;At least one digit&lt;/li&gt;
-&lt;li&gt;A lowercase letter&lt;/li&gt;
-&lt;li&gt;An uppercase letter.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;First, we&amp;#39;re going to need a valid email address to serve as our username. &lt;code&gt;Faker&lt;/code&gt; — a Node.js library that specializes in generating realistic-looking data, such as home addresses, business details, and emails — can help us. Import the library and call the &lt;code&gt;faker.internet.email()&lt;/code&gt; method to create a valid email address.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;faker&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;faker&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;validEmail&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;faker&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;internet&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;The &lt;code&gt;generate-password&lt;/code&gt; library will give us the passwords we need. We can set password requirements by passing arguments to the generate method of the generator object. Let&amp;#39;s import the library:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;generator&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;generate-password&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;We&amp;#39;re ready to create an array of random, yet valid, passwords. The &lt;code&gt;faker&lt;/code&gt; library will, once again, prove itself useful — this time, it will help us determine the password length.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;validPasswords&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[];&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;newRandomPassword&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;generator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;generate&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;faker&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;random&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;number&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}),&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// 10-20 characters long&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;numbers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;uppercase&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;lowercase&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;strict&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-
-    &lt;span class=&quot;nx&quot;&gt;validPasswords&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;newRandomPassword&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;It&amp;#39;s just as easy to generate invalid credentials. Let&amp;#39;s use the &lt;code&gt;generateMultiple&lt;/code&gt; method to generate invalid passwords of varying length:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// These passwords are too short&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;shortPasswords&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;generator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;generateMultiple&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;7&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;numbers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;strict&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;// These passwords lack uppercase characters&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;passwordsWithoutUppercase&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;generator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;generateMultiple&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;numbers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;uppercase&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;strict&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;// These passwords lack lowercase characters&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;passwordsWithoutLowercase&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;generator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;generateMultiple&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;numbers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;lowercase&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;strict&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;// These passwords lack digits&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;passwordsWithoutDigits&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;generator&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;generateMultiple&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;strict&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-
-&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;invalidPasswords&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;shortPasswords&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;concat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;passwordsWithoutUppercase&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;passwordsWithoutLowercase&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;passwordsWithoutDigits&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Now that we have our fake credentials, we can test the web form.&lt;/p&gt;
-
-&lt;p&gt;The first test will feed the form valid passwords. To do this, let&amp;#39;s iterate over the &lt;code&gt;validPasswords&lt;/code&gt; array and enter the data it contains into the form. A confirmation of the password&amp;#39;s validity should appear every time we click the &lt;code&gt;#submit&lt;/code&gt; button.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Successful password validation&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;validPassword&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;of&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;validPasswords&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;
-            &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;typeText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#email&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;validEmail&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;replace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-            &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;typeText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#password&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;validPassword&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;replace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-            &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;click&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#submit&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-            &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#password-status&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;eql&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Valid password with a length of &lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;validPassword&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;The second test will iterate over the &lt;code&gt;invalidPasswords&lt;/code&gt; array. The main difference between this test and the previous is the content of the password status message. The message should read: &amp;quot;Invalid password&amp;quot;.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Invalid password warning&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;invalidPassword&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;of&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;invalidPasswords&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;
-            &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;typeText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#email&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;validEmail&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;replace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-            &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;typeText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#password&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;invalidPassword&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;replace&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-            &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;click&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;submit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-            &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#password-status&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;eql&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Invalid password&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;The &lt;a href=&quot;https://github.com/Farfurix/Generating-input-data&quot;&gt;farfurix/generating-input-data&lt;/a&gt; git repo contains full versions of the examples above, as well as a demo page to run these tests against.&lt;/p&gt;
-
-&lt;p&gt;As we just demonstrated, it&amp;#39;s easy to use third-party data generators in conjunction with TestCafe to randomize your tests&amp;#39; user input. Just remember: not all data generators are created equal. Select one based on your website&amp;#39;s unique needs.&lt;/p&gt;
-
-&lt;p&gt;Related Topics:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/intercept-http-requests.html&quot;&gt;Intercept HTTP Requests&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/basic-guides/obtain-client-side-info.html&quot;&gt;Obtain Client-Side Info&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/basic-guides/interact-with-the-page.html&quot;&gt;Interact with the Page&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+        <description></description>
         <pubDate>Mon, 28 Dec 2020 00:00:00 +0300</pubDate>
         <link>https://devexpress.github.io/testcafe/media/team-blog/randomize-your-end-to-end-tests-how-to-generate-input-data-for-testcafe.html</link>
         <guid isPermaLink="true">https://devexpress.github.io/testcafe/media/team-blog/randomize-your-end-to-end-tests-how-to-generate-input-data-for-testcafe.html</guid>
@@ -476,105 +71,7 @@ The vulnerability was a &lt;a href=&quot;https://github.com/visionmedia/debug/is
     
       <item>
         <title>v1.10.0: New Compiler Options API, Resize and Screenshot Support for Child Windows</title>
-        <description>&lt;h1&gt;v1.10.0: New Compiler Options API, Resize and Screenshot Support for Child Windows&lt;/h1&gt;
-&lt;p&gt;...and the selector API for shadow DOM access, plus multiple bugfixes.&lt;/p&gt;
-
-&lt;!--more--&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;enhancements&quot;&gt;&lt;/a&gt;Enhancements &lt;a class=&quot;permalink&quot; href=&quot;#enhancements&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;window-resize-and-screenshot-support-for-child-windows-in-chrome-pr-5661-pr-5567&quot;&gt;&lt;/a&gt;Window Resize and Screenshot Support for Child Windows in Chrome (&lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/5661&quot;&gt;PR #5661&lt;/a&gt;, &lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/5567&quot;&gt;PR #5567&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#window-resize-and-screenshot-support-for-child-windows-in-chrome-pr-5661-pr-5567&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;You can now use the following actions in Google Chrome when you switch the test context to a &lt;a href=&quot;../documentation/guides/advanced-guides/multiple-browser-windows.html&quot;&gt;child window&lt;/a&gt;:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;../documentation/reference/test-api/testcontroller/maximizewindow.html&quot;&gt;t.maximizeWindow&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;../documentation/reference/test-api/testcontroller/resizewindow.html&quot;&gt;t.resizeWindow&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;../documentation/reference/test-api/testcontroller/resizewindowtofitdevice.html&quot;&gt;t.resizeWindowToFitDevice&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;../documentation/reference/test-api/testcontroller/takeelementscreenshot.html&quot;&gt;t.takeElementScreenshot&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;../documentation/reference/test-api/testcontroller/takescreenshot.html&quot;&gt;t.takeScreenshot&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;new-api-to-specify-compiler-options-5519&quot;&gt;&lt;/a&gt;New API to Specify Compiler Options (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/5519&quot;&gt;#5519&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#new-api-to-specify-compiler-options-5519&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;In previous versions, you used the following methods to specify TypeScript compiler options:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;../documentation/reference/command-line-interface.html#--ts-config-path-path&quot;&gt;--ts-config-path&lt;/a&gt; command line flag&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome my-tests &lt;span class=&quot;nt&quot;&gt;--ts-config-path&lt;/span&gt; path/to/config.json
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;../documentation/reference/testcafe-api/runner/tsconfigpath.html&quot;&gt;runner.tsConfigPath&lt;/a&gt; method&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;tsConfigPath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;path/to/config.json&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;../documentation/reference/configuration-file.html#tsconfigpath&quot;&gt;tsConfigPath&lt;/a&gt; configuration file property&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;tsConfigPath&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;path/to/config.json&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;In v1.10.0, we introduced a new easy-to-use API that allows you to specify the compiler options in the command line, API or TestCafe configuration file, without creating a separate JSON file. The new API is also designed to accept options for more compilers (for instance, Babel) in future releases.&lt;/p&gt;
-
-&lt;p&gt;The API consists of the following members:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;../documentation/reference/command-line-interface.html#--compiler-options-options&quot;&gt;--compiler-options&lt;/a&gt; command line flag&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome my-tests &lt;span class=&quot;nt&quot;&gt;--compiler-options&lt;/span&gt; typescript.experimentalDecorators&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;true&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;../documentation/reference/testcafe-api/runner/compileroptions.html&quot;&gt;runner.compilerOptions&lt;/a&gt; method&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;compilerOptions&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;typescript&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;experimentalDecorators&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;the &lt;a href=&quot;../documentation/reference/configuration-file.html#compileroptions&quot;&gt;compilerOptions&lt;/a&gt; configuration file property&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;compilerOptions&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-        &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;typescript&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-            &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;experimentalDecorators&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-        &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;If you prefer to keep compiler settings in a configuration file, you can use the new API to specify the path to this file:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome my-tests &lt;span class=&quot;nt&quot;&gt;--compiler-options&lt;/span&gt; typescript.configPath&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'path/to/config.json'&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;In v1.10.0, you can customize TypeScript compiler options only.&lt;/p&gt;
-
-&lt;p&gt;For more information, see &lt;a href=&quot;../documentation/guides/concepts/typescript-and-coffeescript.html&quot;&gt;TypeScript and CoffeeScript&lt;/a&gt;.&lt;/p&gt;
-&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;added-a-selector-method-to-access-shadow-dom-pr-5560-by-mostlyfabulous&quot;&gt;&lt;/a&gt;Added a Selector Method to Access Shadow DOM (&lt;a href=&quot;https://github.com/DevExpress/testcafe/pull/5560&quot;&gt;PR #5560&lt;/a&gt; by &lt;a href=&quot;https://github.com/mostlyfabulous&quot;&gt;@mostlyfabulous&lt;/a&gt;) &lt;a class=&quot;permalink&quot; href=&quot;#added-a-selector-method-to-access-shadow-dom-pr-5560-by-mostlyfabulous&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;This release introduces the &lt;a href=&quot;../documentation/reference/test-api/selector/shadowroot.html&quot;&gt;selector.shadowRoot&lt;/a&gt; method that allows you to access and interact with the shadow DOM elements. This method returns a shadow DOM root hosted in the selector&amp;#39;s matched element.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;k&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;testcafe&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;`Target Shadow DOM elements`&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;https://devexpress.github.io/testcafe/example&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Get text within shadow tree&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;shadowRoot&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;div&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;withAttribute&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;id&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;shadow-host&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;shadowRoot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;paragraph&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;shadowRoot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;child&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-    &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;paragraph&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;textContent&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;eql&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;This paragraph is in the shadow tree&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Note that you should chain other &lt;a href=&quot;../documentation/guides/basic-guides/select-page-elements.html#member-tables&quot;&gt;selector methods&lt;/a&gt; to &lt;a href=&quot;../documentation/reference/test-api/selector/shadowroot.html&quot;&gt;selector.shadowRoot&lt;/a&gt; to access elements in the shadow DOM. You cannot interact with the root element (an error occurs if you specify &lt;code&gt;selector.shadowRoot&lt;/code&gt; as an action&amp;#39;s target element).&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;bug-fixes&quot;&gt;&lt;/a&gt;Bug Fixes &lt;a class=&quot;permalink&quot; href=&quot;#bug-fixes&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Browsers now restart correctly on BrowserStack when the connection is lost (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/5238&quot;&gt;#5238&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed an error that occurs if a child window is opened in an &lt;code&gt;iframe&lt;/code&gt; (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/5033&quot;&gt;#5033&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;TestCafe can now switch between the child and parent windows after the parent window is reloaded (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/5463&quot;&gt;#5463&lt;/a&gt;, &lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/5597&quot;&gt;#5597&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed an issue when touch and mouse events fired on mobile devices even though the mouse event was prevented in page code (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/5380&quot;&gt;#5380&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Cross-domain &lt;code&gt;iframes&lt;/code&gt; are now focused correctly in Safari (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/4793&quot;&gt;#4793&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed an excessive warning displayed when an assertion is executed in a loop or against an element returned by a &lt;code&gt;selector.xxxSibling&lt;/code&gt; method (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/5449&quot;&gt;#5449&lt;/a&gt;, &lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/5389&quot;&gt;#5389&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Cross-domain &lt;code&gt;iframe&lt;/code&gt; source links now have the correct protocol when SSL is used (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/pull/2478&quot;&gt;PR testcafe-hammerhead/#2478&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;A page error is no longer emitted if the destination server responded with the &lt;code&gt;304&lt;/code&gt; status (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/5025&quot;&gt;#5025&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed an issue when TestCafe could not authenticate websites that use MSAL (&lt;a href=&quot;https://github.com/DevExpress/testcafe/issues/4834&quot;&gt;#4834&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;The &lt;code&gt;srcdoc&lt;/code&gt; attributes for &lt;code&gt;iframes&lt;/code&gt; are now processed (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/1237&quot;&gt;testcafe-hammerhead/#1237&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;The &lt;code&gt;authorization&lt;/code&gt; header is now preserved in response headers of fetch requests (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2334&quot;&gt;testcafe-hammerhead/#2334&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;The &lt;code&gt;document.title&lt;/code&gt; for an &lt;code&gt;iframe&lt;/code&gt; without &lt;code&gt;src&lt;/code&gt; can now be correctly obtained in Firefox (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/pull/2466&quot;&gt;PR testcafe-hammerhead/#2466&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;TestCafe UI is now displayed correctly if the tested page&amp;#39;s body content is added dynamically (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/pull/2454&quot;&gt;PR testcafe-hammerhead/#2454&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Service Workers now receive &lt;code&gt;fetch&lt;/code&gt; events (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2412&quot;&gt;testcafe-hammerhead/#2412&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Fixed the case of headers sent to the web app server (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2344&quot;&gt;testcafe-hammerhead/#2344&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Location&lt;/code&gt; objects in &lt;code&gt;iframes&lt;/code&gt; without &lt;code&gt;src&lt;/code&gt; now contain the correct data (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/pull/2448&quot;&gt;PR testcafe-hammerhead/#2448&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;Native function wrappers are now converted to strings correctly (&lt;a href=&quot;https://github.com/DevExpress/testcafe-hammerhead/issues/2394&quot;&gt;testcafe-hammerhead/#2394&lt;/a&gt;)&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+        <description></description>
         <pubDate>Tue, 15 Dec 2020 00:00:00 +0300</pubDate>
         <link>https://devexpress.github.io/testcafe/blog/v1-10-0-new-compiler-options-api-resize-and-screenshot-support-for-child-windows.html</link>
         <guid isPermaLink="true">https://devexpress.github.io/testcafe/blog/v1-10-0-new-compiler-options-api-resize-and-screenshot-support-for-child-windows.html</guid>
@@ -584,27 +81,7 @@ The vulnerability was a &lt;a href=&quot;https://github.com/visionmedia/debug/is
     
       <item>
         <title>Webinar Recording: How to Get True Cross-Browser Test Coverage with TestCafe and LambdaTest</title>
-        <description>&lt;h1&gt;Webinar Recording: How to Get True Cross-Browser Test Coverage with TestCafe and LambdaTest&lt;/h1&gt;
-&lt;p&gt;Last week, TestCafe Technical Evangelist &lt;a href=&quot;https://twitter.com/paul__usher&quot;&gt;Paul Usher&lt;/a&gt; and &lt;a href=&quot;https://twitter.com/muditsingh5000&quot;&gt;Mudit Singh&lt;/a&gt;, Director of Product &amp;amp; Growth at LambdaTest, hosted a webinar where they demonstrated automated cross-browser cloud testing with TestCafe and LambdaTest in detail.&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-&lt;p&gt;Topics they covered:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;The basics of TestCafe&lt;/li&gt;
-&lt;li&gt;How to run your first automated test&lt;/li&gt;
-&lt;li&gt;How to integrate TestCafe with LambdaTest for better browser coverage&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Thank you to everyone who attended the webinar!  &lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;watch-the-webinar&quot;&gt;&lt;/a&gt;Watch the webinar &lt;a class=&quot;permalink&quot; href=&quot;#watch-the-webinar&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;!-- markdownlint-disable MD033 --&gt;
-
-&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/JH4WaoSORDI&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen&gt;&lt;/iframe&gt;
-
-&lt;!-- markdownlint-enable MD033 --&gt;
-</description>
+        <description></description>
         <pubDate>Fri, 11 Dec 2020 00:00:00 +0300</pubDate>
         <link>https://devexpress.github.io/testcafe/media/team-blog/webinar-recording-how-to-get-true-cross-browser-test-coverage-with-testcafe-and-lambdatest.html</link>
         <guid isPermaLink="true">https://devexpress.github.io/testcafe/media/team-blog/webinar-recording-how-to-get-true-cross-browser-test-coverage-with-testcafe-and-lambdatest.html</guid>
@@ -614,214 +91,7 @@ The vulnerability was a &lt;a href=&quot;https://github.com/visionmedia/debug/is
     
       <item>
         <title>Client Functions and Script Injection for Page Interaction</title>
-        <description>&lt;h1&gt;Client Functions and Script Injection for Page Interaction&lt;/h1&gt;
-&lt;p&gt;&lt;em&gt;You will learn how to run custom JavaScript code on the tested pages, how to use objects like the page model in this code, how to wait for an arbitrary event in the browser, and the fastest way to run a one-liner or an entire JS module.&lt;/em&gt;&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-&lt;p&gt;End-to-end tests emulate how users interact with the application. In theory, this interaction consists of simple actions like a mouse click on an element, a key press, drag-and-drop, or file upload. The TestCafe API allows you to perform these basic actions with a single line of code. However, real-world applications tend to be more complicated than a static entry form. Some applications cannot be tested without closer interaction with tested pages. In this article, we review several examples and show how knowledge of TestCafe&amp;#39;s internal architecture allows you to test complex or poorly designed pages with the help of client functions and script injection.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;use-client-functions-to-run-code-in-the-browser&quot;&gt;&lt;/a&gt;Use Client Functions to Run Code in the Browser &lt;a class=&quot;permalink&quot; href=&quot;#use-client-functions-to-run-code-in-the-browser&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;Let&amp;#39;s assume you need to click an element, but another element on the same page overlaps the first one due to design or implementation choices. If you simply call &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/click.html&quot;&gt;t.click&lt;/a&gt;, TestCafe waits for the target element to appear in the foreground. When a predefined timeout expires, TestCafe will eventually click the overlapping element. If the test author intended this click, the test completes successfully. However, the entire timeout period is wasted on aimless waiting. You can hide the overlapping element and avoid this pause if you run the following code:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Hide element&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;    &lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;hideElement&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ClientFunction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;        &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;querySelector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#id&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;display&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;none&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt; &lt;/span&gt; 
-&lt;span class=&quot;err&quot;&gt;    &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;hideElement&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt; &lt;/span&gt; 
-&lt;span class=&quot;err&quot;&gt;    &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#id&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;visible&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;notOk&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;You may also want to update that code and store the element ID in a variable:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Hide element&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;elementId&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#id&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;hideElement&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ClientFunction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;       &lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;querySelector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;elementId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;display&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;none&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt; &lt;/span&gt; 
-&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;hideElement&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt; &lt;/span&gt; 
-&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;elementId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;visible&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;notOk&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;A variable is a good idea and it can be used, but not in this manner. The test above would fail with an error:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;My Fixture
- × Hide element
-
-   1) An error occurred in ClientFunction code:
-
-      ReferenceError: elementId is not defined
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;On the surface, your JavaScript programming experience may tell you that the test is fine. Let&amp;#39;s look into TestCafe&amp;#39;s underlying mechanisms in greater detail to see why the test fails.&lt;/p&gt;
-&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;under-the-hood&quot;&gt;&lt;/a&gt;Under the Hood &lt;a class=&quot;permalink&quot; href=&quot;#under-the-hood&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;The TestCafe framework is based on a client-server architecture. The test code runs in a Node.js process (server) and uses a proxy server to interact with the browser (client).&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../../images/testcafe-nodejs-process.svg&quot; alt=&quot;TestCafe's client-server architecture&quot; title=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;Considering this fact, you can expect that:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;The test code has no direct access to the browser context.&lt;/li&gt;
-&lt;li&gt;TestCafe interacts with the browser asynchronously (which is why missing &lt;code&gt;await&lt;/code&gt; issues are often posted in GitHub and StackOverflow).&lt;/li&gt;
-&lt;li&gt;The server-side TestCafe process and the client-side browser can only exchange serialized data.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;We can simplify TestCafe&amp;#39;s client-server interactions as follows:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;On the server, the TestCafe API exposes methods that execute actions and user code in the browser. When the API is triggered, TestCafe creates commands and passes them to the proxy: TestCafe Hammerhead.&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;TestCafe Hammerhead transmits commands from the server to the browser and sends back the results when they are ready.&lt;/li&gt;
-&lt;li&gt;On the client, TestCafe scripts receive these commands and execute them in the same way the browser handles user actions.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;pass-variables-to-client-functions&quot;&gt;&lt;/a&gt;Pass Variables to Client Functions &lt;a class=&quot;permalink&quot; href=&quot;#pass-variables-to-client-functions&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;&lt;em&gt;Create parameterized functions or use page model properties on the client side.&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Let&amp;#39;s get back to our code that tries and fails to introduce a variable.&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Hide element&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;elementId&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#id&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt; 
-&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;hideElement&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ClientFunction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;       &lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;querySelector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;elementId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;display&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;none&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt; &lt;/span&gt; 
-&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;hideElement&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt; &lt;/span&gt; 
-&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;elementId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;visible&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;notOk&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;This function has to be executed in the browser. As we mentioned earlier, only serialized data can travel between the client and the server. This is why TestCafe serializes this function (i.e., converts it to a string). This string is then evaluated when received on the browser side. You can now see why closures do not work for client functions.&lt;/p&gt;
-
-&lt;p&gt;What&amp;#39;s the solution then? Before TestCafe converts the function to a string, a separate serializer module processes arguments passed to &lt;code&gt;ClientFunction()&lt;/code&gt;. This is the same module that serializes all data that travel between the client and the server. This means that you can easily pass parameters to the client function and they arrive safely.&lt;/p&gt;
-
-&lt;p&gt;In addition, you can also find the &lt;code&gt;dependencies&lt;/code&gt; property among the options that can be passed to the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/clientfunction/constructor.html&quot;&gt;ClientFunction&lt;/a&gt; constructor.&lt;/p&gt;
-
-&lt;p&gt;TestCafe offers two options to access variables declared in test code.&lt;/p&gt;
-
-&lt;p&gt;The first option is to pass the variable as an argument:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Hide element&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;elementId&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#id&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt; &lt;/span&gt; 
-&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;hideElement&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ClientFunction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;targetId&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;       &lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;querySelector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;targetId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;display&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;none&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt; &lt;/span&gt; 
-&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;hideElement&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;elementId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt; &lt;/span&gt; 
-&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;elementId&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;visible&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;notOk&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;But what if the element has no ID, so that it&amp;#39;s not easy to find in the DOM tree? The second option is to pass a selector to the client function. Use the &lt;code&gt;dependencies&lt;/code&gt; option in the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/clientfunction/constructor.html&quot;&gt;ClientFunction&lt;/a&gt; constructor:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Hide element&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;elementSelector&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Selector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;#populate&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt; &lt;/span&gt; 
-&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;hideElement&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ClientFunction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;       &lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;elementSelector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;display&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;none&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;dependencies&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;elementSelector&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt; &lt;/span&gt; 
-&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;hideElement&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt; &lt;/span&gt; 
-&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;expect&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;elementSelector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;visible&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;notOk&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Note that client functions and selectors have a lot in common. Methods that create and run selectors derive from similar methods of client functions. To execute a complex selector query, you can pass a function to the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/selector/constructor.html&quot;&gt;Selector&lt;/a&gt; constructor, as you do for client functions. The main difference between them is the return type. Selectors should return &lt;code&gt;DOMNode&lt;/code&gt;, while client functions should return any serializable value, or a Promise that resolves to such value.&lt;/p&gt;
-&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;wait-for-a-custom-condition&quot;&gt;&lt;/a&gt;Wait for a Custom Condition &lt;a class=&quot;permalink&quot; href=&quot;#wait-for-a-custom-condition&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;&lt;em&gt;You can specify when TestCafe considers a page loaded.&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Now let&amp;#39;s see why you may want a client function to return a Promise.&lt;/p&gt;
-
-&lt;p&gt;TestCafe is designed to wait for the &lt;code&gt;DOMContentLoaded&lt;/code&gt; and &lt;code&gt;load&lt;/code&gt; events, as well as XHR requests (allowing three seconds for the latter), before tests begin. In rare instances, the wait time may be over before all scripts on the page are initialized. The following client function pauses the test until a custom condition is fulfilled (you can replace it with your own script completion indicator).&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Wait for scripts&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;waitForScripts&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ClientFunction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;waitTimeout&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;       &lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;checkCondition&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;c1&quot;&gt;// Replace this line with a custom condition.&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;           &lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;       &lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;err&quot;&gt;       &lt;/span&gt; &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Promise&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;resolve&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;reject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;           &lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;timeout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;interval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;err&quot;&gt;           &lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;timeout&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;setTimeout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;               &lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;clearInterval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;interval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;               &lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;reject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Timeout is exceeded.&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;           &lt;/span&gt; &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;waitTimeout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-&lt;span class=&quot;err&quot;&gt;           &lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;interval&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;setInterval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;               &lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;checkCondition&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;                   &lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;clearTimeout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;timeout&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;                   &lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;clearInterval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;interval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;                   &lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;resolve&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;               &lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;           &lt;/span&gt; &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;       &lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-
-&lt;span class=&quot;err&quot;&gt;   &lt;/span&gt; &lt;span class=&quot;k&quot;&gt;await&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;waitForScripts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Even if a browser does not support Promises, this client function still works because TestCafe automatically adds the necessary polyfills when it processes this code.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;inject-scripts-to-add-code-permanently&quot;&gt;&lt;/a&gt;Inject Scripts to Add Code Permanently &lt;a class=&quot;permalink&quot; href=&quot;#inject-scripts-to-add-code-permanently&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;Client functions are useful to interact with the tested page when necessary. You can even run a client function without saving it to a variable. However, everything you change in this function on the tested page is reverted once a redirect or page reload occurs. To modify the page permanently, inject client scripts into the tested page. The injected scripts are added to the &lt;code&gt;&amp;lt;head&amp;gt;&lt;/code&gt; tag.&lt;/p&gt;
-&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;scripts-that-persist-throughout-testing&quot;&gt;&lt;/a&gt;Scripts that Persist Throughout Testing &lt;a class=&quot;permalink&quot; href=&quot;#scripts-that-persist-throughout-testing&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;Should you need to hide a banner, or modify an attribute for some element, you can organize client code that does it in a separate file:&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;script.js&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addEventListener&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;DOMContentLoaded&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;    &lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;element&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;querySelector&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;your-selector&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-&lt;span class=&quot;err&quot;&gt;    &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;element&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;setAttribute&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;foo-bar&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;baz&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Next, use your favorite API to attach this file in all tests (which eliminates repetitive &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/fixture/beforeeach.html&quot;&gt;beforeEach&lt;/a&gt; hooks):&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Command Line Interface&lt;/em&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-sh&quot; data-lang=&quot;sh&quot;&gt;testcafe chrome test.js &lt;span class=&quot;nt&quot;&gt;--client-scripts&lt;/span&gt; script.js
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;em&gt;API&lt;/em&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;runner&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;clientScripts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;script.js&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;em&gt;Configuration file&lt;/em&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-json&quot; data-lang=&quot;json&quot;&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;  
-    &lt;/span&gt;&lt;span class=&quot;nl&quot;&gt;&quot;clientScripts&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;script.js&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;injected-scripts-run-first&quot;&gt;&lt;/a&gt;Injected Scripts Run First &lt;a class=&quot;permalink&quot; href=&quot;#injected-scripts-run-first&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;TestCafe adds the injected scripts to its automation code, so that they run before any other script on the page. You can therefore use injected scripts to alter the page behavior. For instance, you can override the &lt;code&gt;window.open&lt;/code&gt; method for all tests as follows:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;mockWindowOpen&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;window.open = function () { };&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;fixture&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`My App`&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;page&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;`https://devexpress.github.io/testcafe/example/`&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;clientScripts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;na&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;mockWindowOpen&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;My test 1&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;async&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;/* ... */&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;My test 2&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;async&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;cm&quot;&gt;/* ... */&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Your code remains almost unchanged. TestCafe only wraps it to catch exceptions.&lt;/p&gt;
-&lt;h3&gt;&lt;a class=&quot;anchor&quot; id=&quot;checking-other-head-scripts-for-errors&quot;&gt;&lt;/a&gt;Checking Other &amp;lt;head&amp;gt; Scripts for Errors &lt;a class=&quot;permalink&quot; href=&quot;#checking-other-head-scripts-for-errors&quot;&gt;#&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;Due to their location inside the &lt;code&gt;&amp;lt;head&amp;gt;&lt;/code&gt; tags, injected scripts also allow you to access information that is not obtainable by other means.&lt;/p&gt;
-
-&lt;p&gt;Consider a scenario where you need to obtain unhandled exceptions thrown in another script in the &lt;code&gt;&amp;lt;head&amp;gt;&lt;/code&gt; section. The TestCafe API contains the &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/getbrowserconsolemessages.html&quot;&gt;t.getBrowserConsoleMessages&lt;/a&gt; method that returns messages printed in the console. However, this method can only access messages posted by the &lt;code&gt;console.log&lt;/code&gt;, &lt;code&gt;console.warn&lt;/code&gt;, and &lt;code&gt;console.error&lt;/code&gt; methods in page code. The &lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/reference/test-api/testcontroller/getbrowserconsolemessages.html&quot;&gt;t.getBrowserConsoleMessages&lt;/a&gt; method does not fetch errors thrown by the browser. You could try to use a client function to catch the exception, but client functions are executed after all &lt;code&gt;&amp;lt;head&amp;gt;&lt;/code&gt; scripts are completed.&lt;/p&gt;
-
-&lt;p&gt;With script injection, you can add the following code:&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;script.js&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;unhandledErrors&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[];&lt;/span&gt;
-
-&lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;onerror&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-&lt;span class=&quot;err&quot;&gt;    &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;unhandledErrors&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;In test code, you can create a client function to access messages in &lt;code&gt;window.unhandledErrors&lt;/code&gt;:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-js&quot; data-lang=&quot;js&quot;&gt;&lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;Get Unhandled Errors&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;async&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;kd&quot;&gt;const&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;errors&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;await&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;eval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(()&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;unhandledErrors&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;clientScripts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;script.js&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;conclusion&quot;&gt;&lt;/a&gt;Conclusion &lt;a class=&quot;permalink&quot; href=&quot;#conclusion&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;p&gt;Client functions and script injection extend TestCafe&amp;#39;s capabilities so that you can interact with the page directly. These features can configure your application at low levels to prepare it for testing, or fetch data about its execution in a custom manner. You can think of even more ways to use client functions and injected scripts. We hope this brief overview of the TestCafe architecture and sample usage scenarios help improve your understanding of these tools so that you can use them more effectively.&lt;/p&gt;
-&lt;h2&gt;&lt;a class=&quot;anchor&quot; id=&quot;related-topics&quot;&gt;&lt;/a&gt;Related Topics &lt;a class=&quot;permalink&quot; href=&quot;#related-topics&quot;&gt;#&lt;/a&gt;&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/advanced-guides/inject-client-scripts.html&quot;&gt;Inject Client Scripts&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/basic-guides/obtain-client-side-info.html&quot;&gt;Obtain Client-Side Info&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://devexpress.github.io/testcafe/documentation/guides/basic-guides/select-page-elements.html&quot;&gt;Select Page Elements&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+        <description></description>
         <pubDate>Wed, 18 Nov 2020 00:00:00 +0300</pubDate>
         <link>https://devexpress.github.io/testcafe/media/team-blog/client-functions-and-script-injection-for-page-interaction.html</link>
         <guid isPermaLink="true">https://devexpress.github.io/testcafe/media/team-blog/client-functions-and-script-injection-for-page-interaction.html</guid>
@@ -831,33 +101,7 @@ The vulnerability was a &lt;a href=&quot;https://github.com/visionmedia/debug/is
     
       <item>
         <title>Upcoming Webinar: How to Get True Cross-Browser Test Coverage with TestCafe and LambdaTest</title>
-        <description>&lt;h1&gt;Upcoming Webinar: How to Get True Cross-Browser Test Coverage with TestCafe and LambdaTest&lt;/h1&gt;
-&lt;p&gt;Venture into automated cross-browser cloud testing with TestCafe and LambdaTest.  &lt;/p&gt;
-
-&lt;p&gt;LambdaTest is a cloud testing platform that offers access to a wide variety of browsers and operating systems. With over 2000 unique testing setups, it is the perfect solutions provider for a testing framework like TestCafe.&lt;/p&gt;
-
-&lt;p&gt;On Wednesday, December 2nd, TestCafe Technical Evangelist Paul Usher will join Mudit Singh, Director of Product &amp;amp; Growth at LambdaTest, for an exclusive, beginner-friendly webinar.&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-&lt;p&gt;You&amp;#39;ll learn:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;The basics of TestCafe&lt;/li&gt;
-&lt;li&gt;How to run your first automated test&lt;/li&gt;
-&lt;li&gt;How TestCafe integrates with LambdaTest for better browser coverage&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;An interactive Q&amp;amp;A session will follow the presentation.&lt;/p&gt;
-
-&lt;p&gt;Can&amp;#39;t attend the webinar? Register and we&amp;#39;ll email you the video recording.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Webinar Date&lt;/strong&gt;: Wednesday, December 2, 2020&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Start Time&lt;/strong&gt;: 10AM Pacific Time&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://www.lambdatest.com/webinar/how-to-get-true-cross-browser-test-coverage-with-testCafe-and-lambdatest-webinar&quot;&gt;Register&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
-</description>
+        <description></description>
         <pubDate>Tue, 17 Nov 2020 00:00:00 +0300</pubDate>
         <link>https://devexpress.github.io/testcafe/media/team-blog/upcoming-webinar-how-to-get-true-cross-browser-test-coverage-with-testcafe-and-lambdatest.html</link>
         <guid isPermaLink="true">https://devexpress.github.io/testcafe/media/team-blog/upcoming-webinar-how-to-get-true-cross-browser-test-coverage-with-testcafe-and-lambdatest.html</guid>
