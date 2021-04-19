@@ -207,7 +207,7 @@ test('Dispatch a TouchEvent', async t => {
 });
 ```
 
-Because `eventConstructor: 'TouchEvent'` is passed to `options`, TestCafe calls the `TouchEvent` constructor to create the event. You can use [TouchEvent Properties](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent#properties) in this event's `options`.
+Because `eventConstructor: 'TouchEvent'` is passed to `options`, TestCafe calls the `TouchEvent` constructor to create the event. You can use [TouchEvent Properties](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent#properties) as `options` for this event.
 
 ## Select Target Elements
 
