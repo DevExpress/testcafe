@@ -24,12 +24,19 @@ import {
     SetMockArguments,
     SetConfigureResponseEventOptionsArguments,
     SetHeaderOnConfigureResponseEventArguments,
-    RemoveHeaderOnConfigureResponseEventArguments
+    RemoveHeaderOnConfigureResponseEventArguments,
+    ExecuteRequestFilterRulePredicateArguments,
+    RequestFilterRuleLocator,
+    ExecuteMockPredicate
 } from './protocol';
 
 import { CompilerArguments } from '../../compiler/interfaces';
 import Test from '../../api/structure/test';
-import { ResponseMock } from 'testcafe-hammerhead';
+import {
+    RequestInfo,
+    ResponseMock,
+    IncomingMessageLikeInitOptions
+} from 'testcafe-hammerhead';
 
 const SERVICE_PATH = require.resolve('./service');
 
@@ -40,6 +47,14 @@ interface RuntimeResources {
 
 interface TestFunction {
     (testRun: TestRun): Promise<unknown>;
+}
+
+interface RequestFilterRulePredicate {
+    (requestInfo: RequestInfo): Promise<boolean>;
+}
+
+interface WrapMockPredicateArguments extends RequestFilterRuleLocator {
+    mock: ResponseMock;
 }
 
 export default class CompilerHost extends AsyncEventEmitter implements CompilerProtocol {
@@ -60,7 +75,9 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
             this.setMock,
             this.setConfigureResponseEventOptions,
             this.setHeaderOnConfigureResponseEvent,
-            this.removeHeaderOnConfigureResponseEvent
+            this.removeHeaderOnConfigureResponseEvent,
+            this.executeRequestFilterRulePredicate,
+            this.executeMockPredicate
         ], this);
     }
 
@@ -92,7 +109,7 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
         const runtime = await this.runtime;
 
         if (!runtime)
-            throw new Error();
+            throw new Error('Runtime is not available.');
 
         return runtime;
     }
@@ -124,6 +141,18 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
         };
     }
 
+    private _wrapRequestFilterRulePredicate ({ testId, hookId, ruleId }: RequestFilterRuleLocator): RequestFilterRulePredicate {
+        return async (requestInfo: RequestInfo) => {
+            return await this.executeRequestFilterRulePredicate({ testId, hookId, ruleId, requestInfo });
+        };
+    }
+
+    private _wrapMockPredicate ({ mock, testId, hookId, ruleId }: WrapMockPredicateArguments): void {
+        mock.body = async (requestInfo: RequestInfo, res: IncomingMessageLikeInitOptions) => {
+            return await this.executeMockPredicate({ testId, hookId, ruleId, requestInfo, res });
+        };
+    }
+
     public async ready (): Promise<void> {
         this.emit('ready');
     }
@@ -151,7 +180,11 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
 
         const units = await proxy.call(this.getTests, { sourceList, compilerOptions });
 
-        return restoreTestStructure(units, (...args) => this._wrapTestFunction(...args));
+        return restoreTestStructure(
+            units,
+            (...args) => this._wrapTestFunction(...args),
+            (ruleLocator: RequestFilterRuleLocator) => this._wrapRequestFilterRulePredicate(ruleLocator)
+        );
     }
 
     public async runTest ({ id, functionName, testRunId }: RunTestArguments): Promise<unknown> {
@@ -180,8 +213,13 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
         await proxy.call(this.onRequestHookEvent, { name, testRunId, testId, hookId, eventData });
     }
 
-    public async setMock ({ responseEventId, mock }: SetMockArguments): Promise<void> {
+    public async setMock ({ testId, hookId, ruleId, responseEventId, mock }: SetMockArguments): Promise<void> {
+        const mockDefinedWithPredicate = mock.isPredicate;
+
         mock = ResponseMock.from(mock);
+
+        if (mockDefinedWithPredicate)
+            this._wrapMockPredicate({ mock, testId, hookId, ruleId });
 
         await this.emit('setMock', [responseEventId, mock]);
     }
@@ -196,5 +234,17 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
 
     public async removeHeaderOnConfigureResponseEvent ({ eventId, headerName }: RemoveHeaderOnConfigureResponseEventArguments): Promise<void> {
         await this.emit('removeHeaderOnConfigureResponseEvent', [eventId, headerName]);
+    }
+
+    public async executeRequestFilterRulePredicate ({ testId, hookId, ruleId, requestInfo }: ExecuteRequestFilterRulePredicateArguments): Promise<boolean> {
+        const { proxy } = await this._getRuntime();
+
+        return await proxy.call(this.executeRequestFilterRulePredicate, { testId, hookId, ruleId, requestInfo });
+    }
+
+    public async executeMockPredicate ({ testId, hookId, ruleId, requestInfo, res }: ExecuteMockPredicate): Promise<IncomingMessageLikeInitOptions> {
+        const { proxy } = await this._getRuntime();
+
+        return await proxy.call(this.executeMockPredicate, { testId, hookId, ruleId, requestInfo, res });
     }
 }

@@ -39,10 +39,20 @@ describe('Compiler service', () => {
             it('Log options', async () => {
                 await runTests('../api/es-next/request-hooks/testcafe-fixtures/request-logger/log-options.js', 'Log options');
             });
+
+            it('Request filter rule predicate', async () => {
+                await runTests('../api/es-next/request-hooks/testcafe-fixtures/request-logger/request-filter-rule-predicate.js');
+            });
         });
 
-        it('Request Mock', async () => {
-            await runTests('../api/es-next/request-hooks/testcafe-fixtures/request-mock/basic.js');
+        describe('Request Mock', function () {
+            it('Basic', async () => {
+                await runTests('../api/es-next/request-hooks/testcafe-fixtures/request-mock/basic.js');
+            });
+
+            it('Asynchronous response function (GH-4467)', () => {
+                return runTests('../api/es-next/request-hooks/testcafe-fixtures/request-mock/async-response-function.js');
+            });
         });
 
         describe('Request Hook', () => {

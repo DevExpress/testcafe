@@ -1,4 +1,4 @@
-export default function renderTemplate (template, ...args) {
+export default function renderTemplate (template: string, ...args: any[]): string {
     if (!args.length)
         return template;
 

@@ -25,11 +25,14 @@ import {
     CompilerProtocol,
     ExecuteActionArguments,
     ExecuteCommandArguments,
+    ExecuteMockPredicate,
+    ExecuteRequestFilterRulePredicateArguments,
     FunctionProperties,
     isFixtureFunctionProperty,
     isTestFunctionProperty,
     RemoveHeaderOnConfigureResponseEventArguments,
     RequestHookEventArguments,
+    RequestHookLocator,
     RunTestArguments,
     SetConfigureResponseEventOptionsArguments,
     SetHeaderOnConfigureResponseEventArguments,
@@ -45,10 +48,15 @@ import Test from '../../api/structure/test';
 import RequestHookMethodNames from '../../api/request-hooks/hook-method-names';
 import {
     ConfigureResponseEvent,
+    IncomingMessageLikeInitOptions,
     RequestEvent,
-    ResponseEvent,
-    ResponseMock
+    RequestFilterRule,
+    ResponseMock,
+    responseMockSetBodyMethod
 } from 'testcafe-hammerhead';
+
+import RequestHook from '../../api/request-hooks/hook';
+import RequestMock from '../../api/request-hooks/request-mock';
 
 sourceMapSupport.install({
     hookRequire:              true,
@@ -67,6 +75,10 @@ interface TestRunProxyCreationArgs {
     testRunId: string;
     testId: string;
     fixtureCtx: unknown;
+}
+
+interface WrapSetMockArguments extends RequestHookLocator {
+    event: RequestEvent;
 }
 
 class CompilerService implements CompilerProtocol {
@@ -145,7 +157,9 @@ class CompilerService implements CompilerProtocol {
             this.setMock,
             this.setConfigureResponseEventOptions,
             this.setHeaderOnConfigureResponseEvent,
-            this.removeHeaderOnConfigureResponseEvent
+            this.removeHeaderOnConfigureResponseEvent,
+            this.executeRequestFilterRulePredicate,
+            this.executeMockPredicate
         ], this);
     }
 
@@ -159,16 +173,22 @@ class CompilerService implements CompilerProtocol {
         throw new Error();
     }
 
-    private _wrapEventMethods (name: RequestHookMethodNames, eventData: RequestEvent | ConfigureResponseEvent | ResponseEvent): void {
+    private _wrapEventMethods ({ name, testId, hookId, eventData }: RequestHookEventArguments): void {
         if (name === RequestHookMethodNames.onRequest)
-            this._wrapSetMockFn(eventData as RequestEvent);
+            this._wrapSetMockFn({ testId, hookId, event: eventData as RequestEvent });
         else if (name === RequestHookMethodNames._onConfigureResponse)
             this._wrapConfigureResponseEventMethods(eventData as ConfigureResponseEvent);
     }
 
-    private _wrapSetMockFn (event: RequestEvent): void {
+    private _wrapSetMockFn ({ testId, hookId, event }: WrapSetMockArguments): void {
         event.setMock = async (mock: ResponseMock) => {
-            await this.setMock({ responseEventId: event.id, mock });
+            await this.setMock({
+                responseEventId: event.id,
+                ruleId:          event.requestFilterRule.id,
+                testId,
+                hookId,
+                mock
+            });
         };
     }
 
@@ -236,7 +256,7 @@ class CompilerService implements CompilerProtocol {
     public async onRequestHookEvent ({ name, testRunId, testId, hookId, eventData }: RequestHookEventArguments): Promise<void> {
         const testRunProxy = this._ensureTestRunProxy({ testRunId, testId, fixtureCtx: void 0 });
 
-        this._wrapEventMethods(name, eventData);
+        this._wrapEventMethods({ name, testRunId, testId, hookId, eventData });
 
         const targetRequestHook = await testRunProxy.onRequestHookEvent({ hookId, name, eventData });
 
@@ -247,8 +267,8 @@ class CompilerService implements CompilerProtocol {
         }
     }
 
-    public async setMock ({ responseEventId, mock }: SetMockArguments): Promise<void> {
-        await this.proxy.call(this.setMock, { responseEventId, mock });
+    public async setMock ({ testId, hookId, ruleId, responseEventId, mock }: SetMockArguments): Promise<void> {
+        await this.proxy.call(this.setMock, { testId, hookId, ruleId, responseEventId, mock });
     }
 
     public async setConfigureResponseEventOptions ({ eventId, opts }: SetConfigureResponseEventOptionsArguments): Promise<void> {
@@ -261,6 +281,30 @@ class CompilerService implements CompilerProtocol {
 
     public async removeHeaderOnConfigureResponseEvent ({ eventId, headerName }: RemoveHeaderOnConfigureResponseEventArguments): Promise<void> {
         await this.proxy.call(this.removeHeaderOnConfigureResponseEvent, { eventId, headerName });
+    }
+
+    public async executeRequestFilterRulePredicate ({ testId, hookId, ruleId, requestInfo }: ExecuteRequestFilterRulePredicateArguments): Promise<boolean> {
+        const test       = this.state.units[testId] as Test;
+        const targetHook = test.requestHooks.find(hook => hook.id === hookId) as RequestHook;
+        const targetRule = targetHook._requestFilterRules.find(rule => rule.id === ruleId) as RequestFilterRule;
+        const result     = await targetRule.options.call(targetRule, requestInfo);
+
+        return !!result;
+    }
+
+
+    public async executeMockPredicate ({ testId, hookId, ruleId, requestInfo, res }: ExecuteMockPredicate): Promise<IncomingMessageLikeInitOptions> {
+        const test         = this.state.units[testId] as Test;
+        const requestMock  = test.requestHooks.find(hook => hook.id === hookId) as RequestMock;
+        const responseMock = requestMock.mocks.get(ruleId) as ResponseMock;
+
+        responseMockSetBodyMethod.add(res);
+
+        res = Object.assign(res, await (responseMock.body as Function)(requestInfo, res));
+
+        responseMockSetBodyMethod.remove(res);
+
+        return res;
     }
 }
 
