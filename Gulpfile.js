@@ -757,8 +757,6 @@ gulp.step('website-publish-run', () => {
 
 gulp.task('publish-website', gulp.series('build-website-production', 'website-publish-run'));
 
-gulp.task('test-docs-travis', gulp.parallel('test-website-travis', 'lint'));
-
 function testFunctional (src, testingEnvironmentName, { experimentalCompilerService } = {}) {
     process.env.TESTING_ENVIRONMENT       = testingEnvironmentName;
     process.env.BROWSERSTACK_USE_AUTOMATE = 1;
