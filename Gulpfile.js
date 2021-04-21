@@ -3,7 +3,6 @@ const gulpStep                      = require('gulp-step');
 const data                          = require('gulp-data');
 const less                          = require('gulp-less');
 const qunitHarness                  = require('gulp-qunit-harness');
-const git                           = require('gulp-git');
 const mocha                         = require('gulp-mocha-simple');
 const mustache                      = require('gulp-mustache');
 const rename                        = require('gulp-rename');
@@ -17,16 +16,9 @@ const path                          = require('path');
 const { Transform }                 = require('stream');
 const { promisify }                 = require('util');
 const globby                        = require('globby');
-const open                          = require('open');
-const connect                       = require('connect');
-const execa                         = require('execa');
-const serveStatic                   = require('serve-static');
-const markdownlint                  = require('markdownlint');
 const minimist                      = require('minimist');
-const prompt                        = require('gulp-prompt');
 const functionalTestConfig          = require('./test/functional/config');
 const { assignIn, castArray }       = require('lodash');
-const yaml                          = require('js-yaml');
 const childProcess                  = require('child_process');
 const listBrowsers                  = require('testcafe-browser-tools').getInstallations;
 const npmAuditor                    = require('npm-auditor');
@@ -175,8 +167,6 @@ const MIGRATE_ALL_TESTS_TO_COMPILER_SERVICE_GLOB = [
     'test/functional/fixtures/app-command/test.js',
     'test/functional/fixtures/driver/test.js'
 ];
-
-let websiteServer = null;
 
 function promisifyStream (stream) {
     return new Promise((resolve, reject) => {
