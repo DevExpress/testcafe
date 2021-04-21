@@ -1,12 +1,8 @@
 version: "#{build}"
 clone_depth: 1
 
-skip_commits:
-  message: /^\[docs\]/
-
 branches:
   except:
-  - new-docs
   - /^\(testbot-only\)/
 
 environment:
