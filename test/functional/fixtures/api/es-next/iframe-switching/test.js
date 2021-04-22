@@ -52,6 +52,10 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
         return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click in a cross-domain iframe with redirect', { skip: 'safari', ...DEFAULT_RUN_OPTIONS });
     });
 
+    it('Should work in an iframe with the srcdoc attribute', function () {
+        return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Click in an iframe with the srcdoc attribute', { skip: 'ie', ...DEFAULT_RUN_OPTIONS });
+    });
+
     describe('Unavailable iframe errors', function () {
         it('Should ensure the iframe element exists before switching to it', function () {
             return runTests('./testcafe-fixtures/iframe-switching-test.js', 'Switch to a non-existent iframe',

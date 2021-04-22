@@ -76,6 +76,13 @@ const CHILD_WINDOW_READY_TIMEOUT      = 30 * 1000;
 
 const ALL_DRIVER_TASKS_ADDED_TO_QUEUE_EVENT = 'all-driver-tasks-added-to-queue';
 
+const COMPILER_SERVICE_EVENTS = [
+    'setMock',
+    'setConfigureResponseEventOptions',
+    'setHeaderOnConfigureResponseEvent',
+    'removeHeaderOnConfigureResponseEvent'
+];
+
 export default class TestRun extends AsyncEventEmitter {
     constructor ({ test, browserConnection, screenshotCapturer, globalWarningLog, opts, compilerService }) {
         super();
@@ -266,12 +273,10 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     _subscribeOnCompilerServiceEvents () {
-        this.compilerService.on('setMock', async ({ rule, mock }) => {
-            await this.session.setMock(rule, mock);
-        });
-
-        this.compilerService.on('setConfigureResponseEventOptions', async ({ rule, opts }) => {
-            await this.session.setConfigureResponseEventOptions(rule, opts);
+        COMPILER_SERVICE_EVENTS.forEach(eventName => {
+            this.compilerService.on(eventName, async args => {
+                await this.session[eventName](...args);
+            });
         });
     }
 

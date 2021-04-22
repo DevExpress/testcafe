@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div>
+        <button id="sendRequest">Send request</button>
+    </div>
+    <div>
+        <div id="requestStatus"></div>
+        <code id="result"></code>
+    </div>
+    <script>
+        const sendRequestBtn   = document.getElementById('sendRequest');
+        const receivedHeaders  = document.getElementById('result');
+        const requestStatusDiv = document.getElementById('requestStatus');
+
+        function filterCustomHeaders (headers) {
+            const resultHeaders = {};
+
+            for (const [key, value] of headers.entries()) {
+                if(key.startsWith('x-header-'))
+                    resultHeaders[key] = value;
+            }
+
+            return resultHeaders;
+        }
+
+        sendRequestBtn.addEventListener('click', () => {
+            let customHeaders = {};
+
+                fetch('/echo-custom-request-headers-in-response-headers', {
+                    method: 'POST',
+                    headers: {
+                        'x-header-1': 'different',
+                        'x-header-4': 'value-4',
+                        'x-header-5': 'value-5'
+                    }
+                })
+                .then(res => {
+                    customHeaders = filterCustomHeaders(res.headers);
+
+                    return res.text();
+                })
+                .then(() => {
+                    requestStatusDiv.textContent = 'Received';
+                    receivedHeaders.textContent  = JSON.stringify(customHeaders, null, 4);
+                })
+                .catch(err => {
+                    requestStatusDiv.textContent = 'Error';
+                    receivedHeaders.textContent  = err.toString();
+                });
+        });
+    </script>
+</body>
+</html>

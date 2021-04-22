@@ -111,6 +111,28 @@ test(`mouse`, async t => {
     ]);
 });
 
+test(`no options`, async t => {
+    await t.dispatchEvent(btn, 'mousedown');
+
+    await t.expect(getMouseLog()).eql([{
+        altKey:     false,
+        bubbles:    true,
+        button:     0,
+        buttons:    1,
+        cancelable: true,
+        clientX:    0,
+        clientY:    0,
+        composed:   false,
+        ctrlKey:    false,
+        detail:     1,
+        metaKey:    false,
+        screenX:    0,
+        screenY:    0,
+        shiftKey:   false,
+        type:       'mousedown'
+    }]);
+});
+
 test(`keyboard`, async t => {
     await t.dispatchEvent(firstInput, 'keypress', keyboardArgs);
     await t.dispatchEvent(firstInput, 'keydown', keyboardArgs);

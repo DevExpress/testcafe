@@ -25,14 +25,14 @@ class RequestMock extends RequestHook {
     }
 
     public async onRequest (event: RequestEvent): Promise<void> {
-        const mock = this._mocks.get(event._requestFilterRule.id) as ResponseMock;
+        const mock = this._mocks.get(event.requestFilterRule.id) as ResponseMock;
 
         await event.setMock(mock);
     }
 
     public async onResponse (event: ResponseEvent): Promise<void> {
         if (event.isSameOriginPolicyFailed)
-            this._warningLog?.addWarning(WARNING_MESSAGE.requestMockCORSValidationFailed, RequestMock.name, event._requestFilterRule);
+            this._warningLog?.addWarning(WARNING_MESSAGE.requestMockCORSValidationFailed, RequestMock.name, event.requestFilterRule);
     }
 
     // API

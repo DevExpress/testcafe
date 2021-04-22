@@ -44,5 +44,11 @@ describe('Compiler service', () => {
         it('Request Mock', async () => {
             await runTests('../api/es-next/request-hooks/testcafe-fixtures/request-mock/basic.js');
         });
+
+        describe('Request Hook', () => {
+            it('Change and remove response headers', async () => {
+                await runTests('../api/es-next/request-hooks/testcafe-fixtures/api/change-remove-response-headers.js');
+            });
+        });
     });
 });

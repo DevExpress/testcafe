@@ -28,9 +28,11 @@ import {
     FunctionProperties,
     isFixtureFunctionProperty,
     isTestFunctionProperty,
+    RemoveHeaderOnConfigureResponseEventArguments,
     RequestHookEventArguments,
     RunTestArguments,
     SetConfigureResponseEventOptionsArguments,
+    SetHeaderOnConfigureResponseEventArguments,
     SetMockArguments,
     SetOptionsArguments
 } from './protocol';
@@ -44,6 +46,7 @@ import RequestHookMethodNames from '../../api/request-hooks/hook-method-names';
 import {
     ConfigureResponseEvent,
     RequestEvent,
+    ResponseEvent,
     ResponseMock
 } from 'testcafe-hammerhead';
 
@@ -140,7 +143,9 @@ class CompilerService implements CompilerProtocol {
             this.setOptions,
             this.onRequestHookEvent,
             this.setMock,
-            this.setConfigureResponseEventOptions
+            this.setConfigureResponseEventOptions,
+            this.setHeaderOnConfigureResponseEvent,
+            this.removeHeaderOnConfigureResponseEvent
         ], this);
     }
 
@@ -154,11 +159,33 @@ class CompilerService implements CompilerProtocol {
         throw new Error();
     }
 
-    private _wrapSetMockFn (event: RequestEvent): void {
-        const rule = event._requestFilterRule;
+    private _wrapEventMethods (name: RequestHookMethodNames, eventData: RequestEvent | ConfigureResponseEvent | ResponseEvent): void {
+        if (name === RequestHookMethodNames.onRequest)
+            this._wrapSetMockFn(eventData as RequestEvent);
+        else if (name === RequestHookMethodNames._onConfigureResponse)
+            this._wrapConfigureResponseEventMethods(eventData as ConfigureResponseEvent);
+    }
 
+    private _wrapSetMockFn (event: RequestEvent): void {
         event.setMock = async (mock: ResponseMock) => {
-            await this.setMock({ rule, mock });
+            await this.setMock({ responseEventId: event.id, mock });
+        };
+    }
+
+    private _wrapConfigureResponseEventMethods (event: ConfigureResponseEvent): void {
+        event.setHeader = async (name: string, value: string) => {
+            await this.setHeaderOnConfigureResponseEvent({
+                eventId:     event.id,
+                headerName:  name,
+                headerValue: value
+            });
+        };
+
+        event.removeHeader = async (name: string) => {
+            await this.removeHeaderOnConfigureResponseEvent({
+                eventId:    event.id,
+                headerName: name
+            });
         };
     }
 
@@ -209,24 +236,31 @@ class CompilerService implements CompilerProtocol {
     public async onRequestHookEvent ({ name, testRunId, testId, hookId, eventData }: RequestHookEventArguments): Promise<void> {
         const testRunProxy = this._ensureTestRunProxy({ testRunId, testId, fixtureCtx: void 0 });
 
-        if (name === RequestHookMethodNames.onRequest)
-            this._wrapSetMockFn(eventData as RequestEvent);
+        this._wrapEventMethods(name, eventData);
 
-        const targetRequestHook = testRunProxy.onRequestHookEvent({ hookId, name, eventData });
+        const targetRequestHook = await testRunProxy.onRequestHookEvent({ hookId, name, eventData });
 
         if (name === RequestHookMethodNames._onConfigureResponse && targetRequestHook._responseEventConfigureOpts) {
-            const { opts, _requestFilterRule: rule } = eventData as ConfigureResponseEvent;
+            const { opts, id: eventId } = eventData as ConfigureResponseEvent;
 
-            await this.setConfigureResponseEventOptions({ rule, opts });
+            await this.setConfigureResponseEventOptions({ eventId, opts });
         }
     }
 
-    public async setMock ({ rule, mock }: SetMockArguments): Promise<void> {
-        await this.proxy.call(this.setMock, { rule, mock });
+    public async setMock ({ responseEventId, mock }: SetMockArguments): Promise<void> {
+        await this.proxy.call(this.setMock, { responseEventId, mock });
     }
 
-    public async setConfigureResponseEventOptions ({ rule, opts }: SetConfigureResponseEventOptionsArguments): Promise<void> {
-        await this.proxy.call(this.setConfigureResponseEventOptions, { rule, opts });
+    public async setConfigureResponseEventOptions ({ eventId, opts }: SetConfigureResponseEventOptionsArguments): Promise<void> {
+        await this.proxy.call(this.setConfigureResponseEventOptions, { eventId, opts });
+    }
+
+    public async setHeaderOnConfigureResponseEvent ({ eventId, headerName, headerValue }: SetHeaderOnConfigureResponseEventArguments): Promise<void> {
+        await this.proxy.call(this.setHeaderOnConfigureResponseEvent, { eventId, headerName, headerValue });
+    }
+
+    public async removeHeaderOnConfigureResponseEvent ({ eventId, headerName }: RemoveHeaderOnConfigureResponseEventArguments): Promise<void> {
+        await this.proxy.call(this.removeHeaderOnConfigureResponseEvent, { eventId, headerName });
     }
 }
 

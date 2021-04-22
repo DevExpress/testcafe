@@ -1,9 +1,7 @@
 trigger:
   branches:
     exclude:
-    - build-bot-temp-*
     - (testbot-only)*
-    - new-docs
 
   paths:
     include:
@@ -20,15 +18,8 @@ variables:
   RETRY_FAILED_TESTS: "true"
 
 steps:
-- bash: |
-    if [[ $BUILD_SOURCEVERSIONMESSAGE =~ ^\[docs\] ]] || [[ ! -f "appveyor.yml" ]]; then
-      echo '##vso[task.setvariable variable=isDocCommit]true'
-    fi
-  displayName: 'Check commit type'
-
 - task: NodeTool@0
   displayName: 'Install Node.js'
-  condition: and(succeeded(), not(variables['isDocCommit']))
   timeoutInMinutes: 40
   inputs:
     versionSpec: '10.x'
@@ -41,5 +32,4 @@ steps:
     npm install --no-progress --loglevel error
     npm test
   displayName: 'Run tests'
-  condition: and(succeeded(), not(variables['isDocCommit']))
   timeoutInMinutes: 60
