@@ -347,6 +347,10 @@ interface RunOptions {
      * Specifies the timeout in milliseconds to complete the AJAX requests (XHR or fetch)
      */
     ajaxRequestTimeout: number;
+    /**
+     * Prevents TestCafe from taking screenshots. When this option is specified, screenshots are not taken whenever a test fails or when t.takeScreenshot or t.takeElementScreenshot is executed.
+     */
+    disableScreenshots: boolean;
 }
 
 interface TestCafeFactory {
