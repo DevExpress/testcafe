@@ -4,11 +4,12 @@ const createCommandFromObject = require('../../lib/test-run/commands/from-object
 const SelectorBuilder         = require('../../lib/client-functions/selectors/selector-builder');
 const assertThrow             = require('./helpers/assert-runtime-error').assertThrow;
 const TestController          = require('../../lib/api/test-controller');
+const path                    = require('path');
 
 const testRunMock = {
     test: {
         testFile: {
-            filename: ''
+            filename: path.join(__dirname, 'test.js')
         }
     }
 };
