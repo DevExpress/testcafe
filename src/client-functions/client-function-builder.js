@@ -68,6 +68,10 @@ export default class ClientFunctionBuilder {
         return this.getBoundTestRun() || testRunTracker.resolveContextTestRun();
     }
 
+    _getObservedCallsites () {
+        return this._getTestRun()?.observedCallsites || null;
+    }
+
     getFunction () {
         const builder = this;
 

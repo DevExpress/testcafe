@@ -193,7 +193,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
             SelectorBuilder,
             this.options.customDOMProperties,
             this.options.customMethods,
-            this._getTestRun() ? this._getTestRun().observedCallsites : null
+            this._getObservedCallsites()
         );
     }
 
@@ -221,7 +221,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
                     SelectorBuilder,
                     this.options.customDOMProperties,
                     this.options.customMethods,
-                    this._getTestRun() ? this._getTestRun().observedCallsites : null,
+                    this._getObservedCallsites(),
                     true
                 );
             }
