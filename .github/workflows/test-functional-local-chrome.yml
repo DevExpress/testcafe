@@ -13,6 +13,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     environment: test-functional
+    env:
       RETRY_FAILED_TESTS: true
     steps:
       - uses: actions/github-script@v3
