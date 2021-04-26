@@ -17,8 +17,6 @@ on:
 jobs:    
   build:
     runs-on: ubuntu-latest
-    environment: CI 
-    needs: pre  
     outputs:
       sha: ${{steps.prep.outputs.sha}} 
     steps:
@@ -70,8 +68,8 @@ jobs:
           name: docker
           path: ${{steps.package-name.outputs.packageName}}.tar
   changes:
+    # TODO: currently cannot generate a list of changes after rebase
     runs-on: ubuntu-latest
-    needs: pre
     steps:
       - uses: actions/github-script@v3
         with:
@@ -118,6 +116,7 @@ jobs:
               });
             }
             
+            // TODO: Optimize by running only necessary tests for corresponding changes
             const fileList = require('fs').readFileSync('changes.txt').toString().split('\n').filter(line => line);
             
             const tasks = [];
@@ -165,4 +164,3 @@ jobs:
               state: 'failure',
               target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
             });     
-            
