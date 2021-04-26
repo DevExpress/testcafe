@@ -61,13 +61,7 @@ jobs:
                 throw new Error('PR cannot be merged');
               
               const sha = pr.head.sha;
-              //await github.git.createRef({
-              //  owner: pr.base.repo.owner.login,
-              //  repo: pr.base.repo.name,
-              //  sha,
-              //  ref: `refs/tags/pr-${pr.number}`,
-              //  force: true
-              //});
+
               return { sha, merged_sha: pr.merge_commit_sha, base_sha: pr.base.sha, base_ref: pr.base.ref };
             }
             

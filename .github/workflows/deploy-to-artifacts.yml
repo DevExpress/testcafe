@@ -114,11 +114,9 @@ jobs:
             
             const tasks = [];
             
-            if (fileList.some(file => file.match(/^.github|^docs|^Gemfile/)))
-              tasks.push('test-docs.yml');
-            
-            if (fileList.some(file => file.match(/^.github|^bin|^docker|^gulp|^src|^test|^ts-defs-src|^Gulpfile.js|^package.json/)))
-              tasks.push('test-client-desktop.yml');
+            tasks.push('test-functional-remote-mobile.yml');
+            tasks.push('test-functional-docker.yml');
+            tasks.push('test-server-docker.yml');
             
             await Promise.all(tasks.map(task => dispatchWorkflow(task)));
             
