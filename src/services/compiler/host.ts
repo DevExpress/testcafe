@@ -166,6 +166,10 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
         return targetTestRun.executeAction(data.apiMethodName, data.command, data.callsite);
     }
 
+    public executeActionSync (): never {
+        throw new Error('The method should not be called.');
+    }
+
     public async executeCommand ({ command, id }: ExecuteCommandArguments): Promise<unknown> {
         const targetTestRun = testRunTracker.activeTestRuns[id];
 

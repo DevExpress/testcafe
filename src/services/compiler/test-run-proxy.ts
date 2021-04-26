@@ -92,6 +92,13 @@ class TestRunProxy {
         return this.dispatcher.executeAction({ apiMethodName, command, callsite, id: this.id });
     }
 
+    public executeActionSync (apiMethodName: string, command: unknown, callsite: unknown): unknown {
+        if (callsite)
+            callsite = prerenderCallsite(callsite);
+
+        return this.dispatcher.executeActionSync({ apiMethodName, command, callsite, id: this.id });
+    }
+
     public async executeCommand (command: unknown): Promise<unknown> {
         return this.dispatcher.executeCommand({ command, id: this.id });
     }

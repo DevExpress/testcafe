@@ -30,6 +30,10 @@ describe('Compiler service', () => {
         await runTests('testcafe-fixtures/client-function-in-assertions.js', 'ClientFunction in assertions');
     });
 
+    it('Should execute Selectors in sync mode', async () => {
+        await runTests('testcafe-fixtures/synchronous-selectors.js');
+    });
+
     describe('Request Hooks', () => {
         describe('Request Logger', () => {
             it('Basic', async () => {
