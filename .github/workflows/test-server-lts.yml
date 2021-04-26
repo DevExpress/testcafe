@@ -41,12 +41,17 @@ jobs:
             
             let artifacts = {};
             
-            for(let i = 0;i<30&&!artifacts.total_count;i++,await delay(200)) {
-              ({ data: artifacts } = await github.actions.listWorkflowRunArtifacts({
+            for(let i = 0;i<36&&!artifacts.total_count;i++,await delay(5000)) {
+              try {
+                ({ data: artifacts } = await github.actions.listWorkflowRunArtifacts({
                 repo: context.repo.repo,
                 owner: context.repo.owner,
                 run_id: context.payload.inputs.deploy_run_id
               }));
+              }
+              catch (e) {
+                console.log(e);
+              }
             }
             
             const { data: artifact } = await github.request(artifacts.artifacts.find(artifact=> artifact.name === 'npm').archive_download_url);
