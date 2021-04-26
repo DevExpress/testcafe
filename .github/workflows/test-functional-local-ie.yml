@@ -10,10 +10,6 @@ on:
       deploy_run_id:
         description: "The ID of a deployment workspace run with artifacts"
 
-defaults:
-  run:
-    shell: bash
-
 jobs:  
   test:
     runs-on: windows-latest
