@@ -14,11 +14,14 @@ on:
       base_ref:
         description: 'The base commit ref'   
   
-jobs:
-  pre:
+jobs:    
+  build:
     runs-on: ubuntu-latest
-    environment: CI
-    steps: 
+    environment: CI 
+    needs: pre  
+    outputs:
+      sha: ${{steps.prep.outputs.sha}} 
+    steps:
       - uses: actions/github-script@v3
         with:
           github-token: ${{secrets.ACTIVE_TOKEN}}
@@ -31,13 +34,6 @@ jobs:
               state: 'pending',
               target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
             });
-  build:
-    runs-on: ubuntu-latest
-    environment: CI 
-    needs: pre  
-    outputs:
-      sha: ${{steps.prep.outputs.sha}} 
-    steps:
       - id: prep
         uses: actions/github-script@v3
         with:
@@ -77,6 +73,18 @@ jobs:
     runs-on: ubuntu-latest
     needs: pre
     steps:
+      - uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.ACTIVE_TOKEN}}
+          script: |
+            await github.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.payload.inputs.sha,
+              context: context.workflow,
+              state: 'pending',
+              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+            });
       - uses: actions/checkout@v2
         with:
           ref: ${{ github.event.inputs.sha }}
@@ -132,12 +140,6 @@ jobs:
             tasks.push('test-server-stable.yml');
             
             await Promise.all(tasks.map(task => dispatchWorkflow(task)));
-            
-  post:
-    runs-on: ubuntu-latest
-    environment: CI
-    needs: test
-    steps: 
       - uses: actions/github-script@v3
         with:
           github-token: ${{secrets.ACTIVE_TOKEN}}
@@ -150,13 +152,8 @@ jobs:
               state: 'success',
               target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}#artifacts`
             });
-  failure:
-    runs-on: ubuntu-latest
-    environment: CI
-    needs: test
-    if: failure() || cancelled()
-    steps: 
       - uses: actions/github-script@v3
+        if: failure() || cancelled()
         with:
           github-token: ${{secrets.ACTIVE_TOKEN}}
           script: |
@@ -167,6 +164,5 @@ jobs:
               context: context.workflow,
               state: 'failure',
               target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
-            });
-          
-  
+            });     
+            
