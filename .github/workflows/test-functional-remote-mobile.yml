@@ -57,7 +57,7 @@ jobs:
         
       - run: |
           unzip package.zip
-          tar --strip-components=1 -xzf testcafe-1.10.1.tgz
+          tar --strip-components=1 -xzf testcafe-*.tgz
           
       - name: Get npm cache directory
         id: npm-cache-dir
