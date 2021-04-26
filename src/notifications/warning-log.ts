@@ -1,19 +1,23 @@
 import renderTemplate from '../utils/render-template';
 
 export default class WarningLog {
-    constructor (globalLog = null) {
+    public messages: string[];
+    public globalLog: WarningLog | null;
+
+    public constructor (globalLog = null) {
         this.globalLog = globalLog;
         this.messages  = [];
     }
 
-    addPlainMessage (msg) {
+    public addPlainMessage (msg: string): void {
         // NOTE: avoid duplicates
-        if (this.messages.indexOf(msg) < 0)
+        if (!this.messages.includes(msg))
             this.messages.push(msg);
     }
 
-    addWarning () {
-        const msg = renderTemplate.apply(null, arguments);
+    public addWarning (...args: any[]): void {
+        // @ts-ignore
+        const msg = renderTemplate.apply(null, args);
 
         this.addPlainMessage(msg);
 
@@ -21,11 +25,11 @@ export default class WarningLog {
             this.globalLog.addPlainMessage(msg);
     }
 
-    clear () {
+    public clear (): void {
         this.messages = [];
     }
 
-    copyTo (warningLog) {
+    public copyTo (warningLog: WarningLog): void {
         this.messages.forEach(msg => warningLog.addWarning(msg));
     }
 }

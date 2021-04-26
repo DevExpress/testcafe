@@ -6,7 +6,9 @@ import {
     ConfigureResponseEventOptions,
     RequestEvent,
     ResponseEvent,
-    ResponseMock
+    ResponseMock,
+    RequestInfo,
+    IncomingMessageLikeInitOptions
 } from 'testcafe-hammerhead';
 
 export const BEFORE_AFTER_PROPERTIES  = ['beforeFn', 'afterFn'] as const;
@@ -57,7 +59,7 @@ export interface RequestHookEventArguments {
     eventData: RequestEvent | ConfigureResponseEvent | ResponseEvent;
 }
 
-export interface SetMockArguments {
+export interface SetMockArguments extends RequestFilterRuleLocator {
     responseEventId: string;
     mock: ResponseMock;
 }
@@ -76,6 +78,24 @@ export interface SetHeaderOnConfigureResponseEventArguments {
 export interface RemoveHeaderOnConfigureResponseEventArguments {
     eventId: string;
     headerName: string;
+}
+
+export interface RequestHookLocator {
+    testId: string;
+    hookId: string;
+}
+
+export interface RequestFilterRuleLocator extends RequestHookLocator {
+    ruleId: string;
+}
+
+export interface ExecuteRequestFilterRulePredicateArguments extends RequestFilterRuleLocator {
+    requestInfo: RequestInfo;
+}
+
+export interface ExecuteMockPredicate extends RequestFilterRuleLocator {
+    requestInfo: RequestInfo;
+    res: IncomingMessageLikeInitOptions;
 }
 
 export interface TestRunDispatcherProtocol {
@@ -103,4 +123,8 @@ export interface CompilerProtocol extends TestRunDispatcherProtocol {
     setHeaderOnConfigureResponseEvent ({ eventId, headerName, headerValue }: SetHeaderOnConfigureResponseEventArguments): Promise<void>;
 
     removeHeaderOnConfigureResponseEvent ({ eventId, headerName }: RemoveHeaderOnConfigureResponseEventArguments): Promise<void>;
+
+    executeRequestFilterRulePredicate ({ testId, hookId, ruleId, requestInfo }: ExecuteRequestFilterRulePredicateArguments): Promise<boolean>;
+
+    executeMockPredicate ({ testId, hookId, ruleId, requestInfo, res }: ExecuteMockPredicate): Promise<IncomingMessageLikeInitOptions>;
 }

@@ -32,6 +32,10 @@ describe('Request Hooks', () => {
         it('Multi-browser', () => {
             return runTests('./testcafe-fixtures/request-logger/multi-browser.js', 'Multi-browser');
         });
+
+        it('Request filter rule predicate', () => {
+            return runTests('./testcafe-fixtures/request-logger/request-filter-rule-predicate.js', null, { only: 'chrome' });
+        });
     });
 
     describe('API', () => {

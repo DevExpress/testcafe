@@ -1,4 +1,4 @@
-import RequestHook from './hook';
+import RequestHook from '../hook';
 
 import {
     ResponseMock,
@@ -8,24 +8,24 @@ import {
     RequestFilterRule
 } from 'testcafe-hammerhead';
 
-import { APIError } from '../../errors/runtime';
-import { RUNTIME_ERRORS } from '../../errors/types';
-import WARNING_MESSAGE from '../../notifications/warning-message';
+import { APIError } from '../../../errors/runtime';
+import { RUNTIME_ERRORS } from '../../../errors/types';
+import WARNING_MESSAGE from '../../../notifications/warning-message';
 
 
-class RequestMock extends RequestHook {
+export default class RequestMock extends RequestHook {
     private _pendingRequestFilterRuleInit: null | RequestFilterRuleInit;
-    private _mocks: Map<string, ResponseMock>;
+    public mocks: Map<string, ResponseMock>;
 
     public constructor () {
         super([]);
 
         this._pendingRequestFilterRuleInit = null;
-        this._mocks                        = new Map();
+        this.mocks                         = new Map();
     }
 
     public async onRequest (event: RequestEvent): Promise<void> {
-        const mock = this._mocks.get(event.requestFilterRule.id) as ResponseMock;
+        const mock = this.mocks.get(event.requestFilterRule.id) as ResponseMock;
 
         await event.setMock(mock);
     }
@@ -53,14 +53,10 @@ class RequestMock extends RequestHook {
         const rule = new RequestFilterRule(this._pendingRequestFilterRuleInit);
 
         this._requestFilterRules.push(rule);
-        this._mocks.set(rule.id, mock);
+        this.mocks.set(rule.id, mock);
 
         this._pendingRequestFilterRuleInit = null;
 
         return this;
     }
-}
-
-export default function createRequestMock (): RequestMock {
-    return new RequestMock();
 }
