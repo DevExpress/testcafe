@@ -72,8 +72,7 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-      - if: ${{ steps.npm-cache.outputs.cache-hit != 'true' }}
-        run: npm install
+      - run: npm install
       - run: npx gulp docker-server-test-run --steps-as-tasks
       - uses: actions/github-script@v3
         with:
