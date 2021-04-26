@@ -75,6 +75,7 @@ jobs:
             ${{ runner.os }}-node-
       - run: npm ci
       - run: npx gulp test-client-travis-mobile-run --steps-as-tasks
+        timeout-minutes: 60
       - uses: actions/github-script@v3
         with:
           script: |

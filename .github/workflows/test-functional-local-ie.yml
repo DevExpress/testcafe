@@ -9,6 +9,11 @@ on:
         default: "master"
       deploy_run_id:
         description: "The ID of a deployment workspace run with artifacts"
+
+defaults:
+  run:
+    shell: bash
+
 jobs:  
   test:
     runs-on: windows-latest
@@ -73,6 +78,7 @@ jobs:
             ${{ runner.os }}-node-
       - run: npm ci
       - run: npx gulp test-functional-local-ie-run --steps-as-tasks
+        timeout-minutes: 60
       - uses: actions/github-script@v3
         with:
           script: |
