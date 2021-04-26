@@ -1,4 +1,4 @@
-name: Test Server
+name: Test Server (Docker)
 
 on:
   workflow_dispatch:
@@ -49,12 +49,12 @@ jobs:
               }));
             }
             
-            const { data: artifact } = await github.request(artifacts.artifacts.find(artifact=> artifact.name === 'npm').archive_download_url);
-            require('fs').writeFileSync(require('path').join(process.env.GITHUB_WORKSPACE, 'package.zip'), Buffer.from(artifact))
+            const { data: artifact } = await github.request(artifacts.artifacts.find(artifact=> artifact.name === 'docker').archive_download_url);
+            require('fs').writeFileSync(require('path').join(process.env.GITHUB_WORKSPACE, 'docker.zip'), Buffer.from(artifact))
         
       - run: |
-          unzip package.zip
-          tar --strip-components=1 -xzf testcafe-1.10.1.tgz
+          unzip docker.zip
+          docker load -i testcafe-*.tar
           
       - name: Get npm cache directory
         id: npm-cache-dir
@@ -69,7 +69,7 @@ jobs:
             ${{ runner.os }}-node-
       - if: ${{ steps.npm-cache.outputs.cache-hit != 'true' }}
         run: npm ci
-      - run: npx gulp test-functional-local-headless-chrome-run --steps-as-tasks
+      - run: npx gulp docker-server-test-run --steps-as-tasks
       - uses: actions/github-script@v3
         with:
           github-token: ${{secrets.ACTIVE_TOKEN}}

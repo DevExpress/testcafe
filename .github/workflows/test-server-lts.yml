@@ -1,0 +1,97 @@
+name: Test Server (LTS)
+
+on:
+  workflow_dispatch:
+    inputs:
+      sha:
+        desciption: "The test commit SHA or ref"
+        required: true
+        default: "master"
+      deploy_run_id:
+        description: "The ID of a deployment workspace run with artifacts"
+jobs:  
+  test:
+    runs-on: ubuntu-latest
+    environment: CI
+    steps:
+      - uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.ACTIVE_TOKEN}}
+          script: |
+            await github.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.payload.inputs.sha,
+              context: context.workflow,
+              state: 'pending',
+              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+            });
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{github.event.inputs.sha}}
+          
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 10
+
+      - uses: actions/github-script@v3
+        with:
+          script: |
+            const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+            
+            let artifacts = {};
+            
+            for(let i = 0;i<30&&!artifacts.total_count;i++,await delay(200)) {
+              ({ data: artifacts } = await github.actions.listWorkflowRunArtifacts({
+                repo: context.repo.repo,
+                owner: context.repo.owner,
+                run_id: context.payload.inputs.deploy_run_id
+              }));
+            }
+            
+            const { data: artifact } = await github.request(artifacts.artifacts.find(artifact=> artifact.name === 'npm').archive_download_url);
+            require('fs').writeFileSync(require('path').join(process.env.GITHUB_WORKSPACE, 'package.zip'), Buffer.from(artifact))
+        
+      - run: |
+          unzip package.zip
+          tar --strip-components=1 -xzf testcafe-1.10.1.tgz
+          
+      - name: Get npm cache directory
+        id: npm-cache-dir
+        run: |
+          echo "::set-output name=dir::$(npm config get cache)"
+      - uses: actions/cache@v2
+        id: npm-cache # use this to check for `cache-hit` ==> if: steps.npm-cache.outputs.cache-hit != 'true'
+        with:
+          path: ${{ steps.npm-cache-dir.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - if: ${{ steps.npm-cache.outputs.cache-hit != 'true' }}
+        run: npm ci
+      - run: npx gulp test-functional-local-headless-chrome-run --steps-as-tasks
+      - uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.ACTIVE_TOKEN}}
+          script: |
+            await github.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.payload.inputs.sha,
+              context: context.workflow,
+              state: 'success',
+              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+            });
+      - uses: actions/github-script@v3
+        if: failure() || cancelled()
+        with:
+          github-token: ${{secrets.ACTIVE_TOKEN}}
+          script: |
+            await github.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.payload.inputs.sha,
+              context: context.workflow,
+              state: 'failure',
+              target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+            });

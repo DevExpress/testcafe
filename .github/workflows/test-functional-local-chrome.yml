@@ -1,4 +1,4 @@
-name: Test Docs
+name: Test Functional (Local Chrome)
 
 on:
   workflow_dispatch:
@@ -13,8 +13,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
     environment: CI
-    env:
-      JEKYLL_ENV: testing
     steps:
       - uses: actions/github-script@v3
         with:
@@ -33,15 +31,42 @@ jobs:
           
       - uses: actions/setup-node@v2
         with:
-          node-version: 14
-      - uses: ruby/setup-ruby@v1
+          node-version: 10
+
+      - uses: actions/github-script@v3
         with:
-          ruby-version: 2.5.1
-      
-      - run: npm install
-      - run: bundle install
-      
-      - run: npx gulp test-docs-travis
+          script: |
+            const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+            
+            let artifacts = {};
+            
+            for(let i = 0;i<30&&!artifacts.total_count;i++,await delay(200)) {
+              ({ data: artifacts } = await github.actions.listWorkflowRunArtifacts({
+                repo: context.repo.repo,
+                owner: context.repo.owner,
+                run_id: context.payload.inputs.deploy_run_id
+              }));
+            }
+            
+            const { data: artifact } = await github.request(artifacts.artifacts.find(artifact=> artifact.name === 'npm').archive_download_url);
+            require('fs').writeFileSync(require('path').join(process.env.GITHUB_WORKSPACE, 'package.zip'), Buffer.from(artifact))
+        
+      - run: |
+          unzip package.zip
+          tar --strip-components=1 -xzf testcafe-1.10.1.tgz
+          
+      - name: Get npm cache directory
+        id: npm-cache-dir
+        run: |
+          echo "::set-output name=dir::$(npm config get cache)"
+      - uses: actions/cache@v2
+        with:
+          path: ${{ steps.npm-cache-dir.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm ci
+      - run: npx gulp test-functional-local-headless-chrome-run --steps-as-tasks
       - uses: actions/github-script@v3
         with:
           script: |
