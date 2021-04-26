@@ -1,7 +1,7 @@
 const os = require('os');
 
-const isAzureEnvironment = !!process.env.TF_BUILD;
-const hostname           = isAzureEnvironment ? os.hostname() : '127.0.0.1';
+
+const hostname = !!process.env.USE_PUBLIC_HOSTNAME ? process.env.HOSTNAME : '127.0.0.1';
 
 const browserProviderNames = {
     sauceLabs:    'sauceLabs',
@@ -227,8 +227,6 @@ module.exports = {
     get retryTestPages () {
         return this.currentEnvironment.retryTestPages;
     },
-
-    isAzureEnvironment,
 
     testingEnvironmentNames,
     testingEnvironments,

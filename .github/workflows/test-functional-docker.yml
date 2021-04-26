@@ -12,11 +12,10 @@ on:
 jobs:  
   test:
     runs-on: ubuntu-latest
-    environment: CI
+    environment: test-functional
     steps:
       - uses: actions/github-script@v3
         with:
-          github-token: ${{secrets.ACTIVE_TOKEN}}
           script: |
             await github.repos.createCommitStatus({
               owner: context.repo.owner,
@@ -77,7 +76,6 @@ jobs:
         timeout-minutes: 60
       - uses: actions/github-script@v3
         with:
-          github-token: ${{secrets.ACTIVE_TOKEN}}
           script: |
             await github.repos.createCommitStatus({
               owner: context.repo.owner,
@@ -90,7 +88,6 @@ jobs:
       - uses: actions/github-script@v3
         if: failure() || cancelled()
         with:
-          github-token: ${{secrets.ACTIVE_TOKEN}}
           script: |
             await github.repos.createCommitStatus({
               owner: context.repo.owner,

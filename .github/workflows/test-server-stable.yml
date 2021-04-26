@@ -12,11 +12,10 @@ on:
 jobs:  
   test:
     runs-on: ubuntu-latest
-    environment: CI
+    environment: test-server
     steps:
       - uses: actions/github-script@v3
         with:
-          github-token: ${{secrets.ACTIVE_TOKEN}}
           script: |
             await github.repos.createCommitStatus({
               owner: context.repo.owner,
@@ -73,11 +72,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - run: npm ci
-      - run: npx gulp test-functional-local-headless-chrome-run --steps-as-tasks
+      - run: npx gulp test-server-run --steps-as-tasks
         timeout-minutes: 60
       - uses: actions/github-script@v3
         with:
-          github-token: ${{secrets.ACTIVE_TOKEN}}
           script: |
             await github.repos.createCommitStatus({
               owner: context.repo.owner,
@@ -90,7 +88,6 @@ jobs:
       - uses: actions/github-script@v3
         if: failure() || cancelled()
         with:
-          github-token: ${{secrets.ACTIVE_TOKEN}}
           script: |
             await github.repos.createCommitStatus({
               owner: context.repo.owner,

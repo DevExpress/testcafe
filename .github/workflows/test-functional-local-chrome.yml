@@ -12,7 +12,8 @@ on:
 jobs:  
   test:
     runs-on: ubuntu-latest
-    environment: CI
+    environment: test-functional
+      RETRY_FAILED_TESTS: true
     steps:
       - uses: actions/github-script@v3
         with:

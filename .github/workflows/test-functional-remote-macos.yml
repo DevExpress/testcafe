@@ -12,11 +12,12 @@ on:
 jobs:  
   test:
     runs-on: browserstack
-    environment: remote-functional-tests
+    environment: test-functional
     env: 
       BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
       BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
-      TF_BUILD: 1
+      USE_PUBLIC_HOSTNAME: true
+      RETRY_FAILED_TESTS: true
     steps:
       - uses: actions/github-script@v3
         with:
