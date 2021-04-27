@@ -10,9 +10,7 @@ on:
       merged_sha:
         description: 'The merge commit SHA'  
       base_sha:
-        description: 'The base commit SHA'
-      base_ref:
-        description: 'The base commit ref'   
+        description: 'The base commit SHA' 
   
 jobs:    
   build:
@@ -106,13 +104,23 @@ jobs:
         with:
           github-token: ${{secrets.ACTIVE_TOKEN}}
           script: |
+            function getInputs () {
+              const { sha, merged_sha } = context.payload.inputs;
+              
+              return {
+                ...merged_sha ? { merged_sha } : {},
+                sha,
+                deploy_run_id: '${{github.run_id}}'
+              }
+            }
+
             async function dispatchWorkflow (workflowName) {
               await github.actions.createWorkflowDispatch({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 ref: 'master',
                 workflow_id: workflowName,
-                inputs: { sha: '${{needs.build.outputs.sha}}', deploy_run_id: '${{github.run_id}}' }
+                inputs: getInputs()
               });
             }
             
