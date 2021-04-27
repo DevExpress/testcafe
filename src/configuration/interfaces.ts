@@ -15,7 +15,6 @@ export interface Dictionary<T> {
 export interface RunnerRunOptions {
     skipJsErrors?: boolean;
     skipUncaughtErrors?: boolean;
-    quarantineMode?: boolean;
     debugMode?: boolean;
     debugOnFail?: boolean;
     selectorTimeout?: number;

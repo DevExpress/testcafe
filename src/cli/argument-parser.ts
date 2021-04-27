@@ -9,6 +9,7 @@ import getViewPortWidth from '../utils/get-viewport-width';
 import { wordWrap, splitQuotedText } from '../utils/string';
 import {
     getSSLOptions,
+    getQuarantineOptions,
     getScreenshotOptions,
     getVideoOptions,
     getMetaOptions,
@@ -61,6 +62,7 @@ interface CommandLineOptions {
     ajaxRequestTimeout?: string | number;
     browserInitTimeout?: string | number;
     concurrency?: string | number;
+    quarantineMode?: boolean | Dictionary<string | number>;
     ports?: string | number[];
     providerName?: string;
     ssl?: string | Dictionary<string | number | boolean >;
@@ -117,7 +119,7 @@ export default class CLIArgumentParser {
             .option('-s, --screenshots <option=value[,...]>', 'specify screenshot options')
             .option('-S, --screenshots-on-fails', 'take a screenshot whenever a test fails')
             .option('-p, --screenshot-path-pattern <pattern>', 'use patterns to compose screenshot file names and paths: ${BROWSER}, ${BROWSER_VERSION}, ${OS}, etc.')
-            .option('-q, --quarantine-mode', 'enable the quarantine mode')
+            .option('-q, --quarantine-mode [option=value,...]', 'enable the quarantine mode, optionally number of retries and pass threshold')
             .option('-d, --debug-mode', 'execute test steps one by one pausing the test after each step')
             .option('-e, --skip-js-errors', 'make tests not fail when a JS error happens on a page')
             .option('-u, --skip-uncaught-errors', 'ignore uncaught errors and unhandled promise rejections, which occur during test execution')
@@ -273,6 +275,11 @@ export default class CLIArgumentParser {
             this.opts.concurrency = parseInt(this.opts.concurrency as string, 10);
     }
 
+    private async _parseQuarantineOptions (): Promise<void> {
+        if (this.opts.quarantineMode)
+            this.opts.quarantineMode = await getQuarantineOptions('--quarantine-mode', this.opts.quarantineMode);
+    }
+
     private _parsePorts (): void {
         if (this.opts.ports) {
             const parsedPorts = (this.opts.ports as string) /* eslint-disable-line no-extra-parens */
@@ -392,6 +399,7 @@ export default class CLIArgumentParser {
         this._parseFileList();
 
         await this._parseFilteringOptions();
+        await this._parseQuarantineOptions();
         await this._parseScreenshotOptions();
         await this._parseVideoOptions();
         await this._parseCompilerOptions();

@@ -644,6 +644,51 @@ describe('CLI argument parser', function () {
             });
     });
 
+    describe('Quarantine Options', function () {
+        it('Should parse quarantine arguments', async () => {
+            const parser = await parse('-q retryCount=5,passCount=1');
+
+            expect(parser.opts.quarantineMode).to.be.ok;
+            expect(parser.opts.quarantineMode.retryCount).equal(5);
+            expect(parser.opts.quarantineMode.passCount).equal(1);
+        });
+
+        it('Should parse quarantine-mode arguments', async () => {
+            const parser = await parse('--quarantine-mode retryCount=5,passCount=1');
+
+            expect(parser.opts.quarantineMode).to.be.ok;
+            expect(parser.opts.quarantineMode.retryCount).equal(5);
+            expect(parser.opts.quarantineMode.passCount).equal(1);
+        });
+
+        it('Should pass if only "passCount" is provided', async () => {
+            const parser = await parse('--quarantine-mode passCount=1');
+
+            expect(parser.opts.quarantineMode).to.be.ok;
+            expect(parser.opts.quarantineMode.passCount).equal(1);
+        });
+
+        it('Should fail if threshold value not specified', async () => {
+            return assertRaisesError('--quarantine-mode retryCount=', 'The "--quarantine-mode" option value is not a valid key-value pair.');
+        });
+
+        it('Should fail if threshold keys not specified', async () => {
+            return assertRaisesError('--quarantine-mode 1', 'The "--quarantine-mode" option value is not a valid key-value pair.');
+        });
+
+        it('Should fail if invalid option is specified', async () => {
+            return assertRaisesError('--quarantine-mode test=fake', 'The "--quarantine-mode" option should be empty, otherwise one of "retryCount" or "passCount".');
+        });
+
+        it('Should fail if "retryCount" is greater than "passCount"', async () => {
+            return assertRaisesError('--quarantine-mode retryCount=1,passCount=2', 'The "retryCount" value should be greater or equal to "passCount" (2).');
+        });
+
+        it('Should fail if "retryCount" is less than 3', async () => {
+            return assertRaisesError('--quarantine-mode retryCount=1', 'The "retryCount" value should be greater or equal to "passCount" (3).');
+        });
+    });
+
     it('Should parse command line arguments', function () {
         return parse('-r list -S -q -e --hostname myhost --proxy localhost:1234 --proxy-bypass localhost:5678 --qr-code --app run-app --speed 0.5 --debug-on-fail --disable-page-reloads --retry-test-pages --dev --sf --disable-page-caching ie test/server/data/file-list/file-1.js')
             .then(parser => {

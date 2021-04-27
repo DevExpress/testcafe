@@ -39,6 +39,8 @@ export default {
     [RUNTIME_ERRORS.multipleSameStreamReporters]:                        'The following reporters attempted to write to the same output stream: "{reporters}". Only one reporter can write to a stream.',
     [RUNTIME_ERRORS.optionValueIsNotValidRegExp]:                        'The "{optionName}" option value is not a valid regular expression.',
     [RUNTIME_ERRORS.optionValueIsNotValidKeyValue]:                      'The "{optionName}" option value is not a valid key-value pair.',
+    [RUNTIME_ERRORS.invalidQuarantineOption]:                            'The "{optionName}" option should be empty, otherwise one of "retryCount" or "passCount".',
+    [RUNTIME_ERRORS.invalidRetryCountValue]:                             'The "retryCount" value should be greater or equal to "passCount" ({passCount}).',
     [RUNTIME_ERRORS.invalidSpeedValue]:                                  'Speed should be a number between 0.01 and 1.',
     [RUNTIME_ERRORS.invalidConcurrencyFactor]:                           'The concurrency factor should be an integer greater or equal to 1.',
     [RUNTIME_ERRORS.cannotDivideRemotesCountByConcurrency]:              'The number of remote browsers should be divisible by the factor of concurrency.',

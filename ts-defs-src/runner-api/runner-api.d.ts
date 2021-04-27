@@ -298,7 +298,7 @@ interface RunOptions {
     /**
      * Defines whether to enable the quarantine mode.
      */
-    quarantineMode: boolean;
+    quarantineMode: boolean | Record<string, string>;
     /**
      * Specifies if tests run in the debug mode. If this option is enabled, test execution is paused before the first action or assertion allowing you to invoke the developer tools and debug. In the debug mode, you can execute the test step-by-step to reproduce its incorrect behavior. You can also use the Unlock Page switch in the footer to unlock the tested page and interact with its elements.
      */
