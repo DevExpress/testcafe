@@ -62,7 +62,7 @@ jobs:
               
               const sha = pr.head.sha;
 
-              return { sha, merged_sha: pr.merge_commit_sha, base_sha: pr.base.sha, base_ref: pr.base.ref };
+              return { sha, merged_sha: pr.merge_commit_sha, base_sha: pr.base.sha };
             }
             
             async function getTargetCommit(context) {
