@@ -57,6 +57,15 @@ describe('Compiler service', () => {
             it('Asynchronous response function (GH-4467)', () => {
                 return runTests('../api/es-next/request-hooks/testcafe-fixtures/request-mock/async-response-function.js');
             });
+
+            it('Request failed the CORS validation', async () => {
+                await runTests('../api/es-next/request-hooks/testcafe-fixtures/request-mock/failed-cors-validation.js', 'Failed CORS validation', { only: 'chrome' })
+                    .then(() => {
+                        expect(testReport.warnings).eql([
+                            'RequestMock: CORS validation failed for a request specified as { url: "http://dummy-url.com/get" }'
+                        ]);
+                    });
+            });
         });
 
         describe('Request Hook', () => {

@@ -36,6 +36,7 @@ export default class Task extends AsyncEventEmitter {
     private readonly _clientScriptRoutes: string[];
     public readonly testStructure: ReportedTestStructureItem[];
     public readonly videos?: Videos;
+    private readonly _compilerService?: CompilerService;
 
     public constructor ({
         tests,
@@ -54,6 +55,7 @@ export default class Task extends AsyncEventEmitter {
         this.opts                    = opts;
         this._proxy                  = proxy;
         this.warningLog              = new WarningLog();
+        this._compilerService        = compilerService;
 
         runnerWarningLog.copyTo(this.warningLog);
 
@@ -67,7 +69,7 @@ export default class Task extends AsyncEventEmitter {
         });
 
         this.fixtureHookController = new FixtureHookController(tests, browserConnectionGroups.length);
-        this._pendingBrowserJobs   = this._createBrowserJobs(proxy, this.opts, compilerService);
+        this._pendingBrowserJobs   = this._createBrowserJobs(proxy, this.opts);
         this._clientScriptRoutes   = clientScriptsRouting.register(proxy, tests);
         this.testStructure         = this._prepareTestStructure(tests);
 
@@ -78,12 +80,24 @@ export default class Task extends AsyncEventEmitter {
         }
     }
 
+    private async _copyWarningsFromCompilerService (testRun: TestRun): Promise<void> {
+        if (!this._compilerService)
+            return;
+
+        const warnings = await this._compilerService.getWarningMessages({ testRunId: testRun.id });
+
+        warnings.forEach(warning => {
+            testRun.warningLog.addWarning(warning);
+        });
+    }
+
     private _assignBrowserJobEventHandlers (job: BrowserJob): void {
         job.on('test-run-start', async (testRun: TestRun) => {
             await this.emit('test-run-start', testRun);
         });
 
         job.on('test-run-done', async (testRun: TestRun) => {
+            await this._copyWarningsFromCompilerService(testRun);
             await this.emit('test-run-done', testRun);
 
             if (this.opts.stopOnFirstFail && testRun.errs.length) {
@@ -149,7 +163,7 @@ export default class Task extends AsyncEventEmitter {
         });
     }
 
-    private _createBrowserJobs (proxy: Proxy, opts: Dictionary<OptionValue>, compilerService?: CompilerService): BrowserJob[] {
+    private _createBrowserJobs (proxy: Proxy, opts: Dictionary<OptionValue>): BrowserJob[] {
         return this.browserConnectionGroups.map(browserConnectionGroup => {
             const job = new BrowserJob({
                 tests:                 this.tests,
@@ -157,9 +171,9 @@ export default class Task extends AsyncEventEmitter {
                 screenshots:           this.screenshots,
                 warningLog:            this.warningLog,
                 fixtureHookController: this.fixtureHookController,
+                compilerService:       this._compilerService,
                 proxy,
-                opts,
-                compilerService
+                opts
             });
 
             this._assignBrowserJobEventHandlers(job);
