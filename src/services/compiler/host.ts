@@ -35,7 +35,10 @@ import Test from '../../api/structure/test';
 import {
     RequestInfo,
     ResponseMock,
-    IncomingMessageLikeInitOptions
+    IncomingMessageLikeInitOptions,
+    RequestEvent,
+    ConfigureResponseEvent,
+    ResponseEvent
 } from 'testcafe-hammerhead';
 
 const SERVICE_PATH = require.resolve('./service');
@@ -112,6 +115,21 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
             throw new Error('Runtime is not available.');
 
         return runtime;
+    }
+
+    private _prepareEventData (eventData: RequestEvent | ConfigureResponseEvent | ResponseEvent): RequestEvent | ConfigureResponseEvent | ResponseEvent {
+        // TODO: Remove eventData._requestContext into 'testcafe-hammerhead' module
+        // after switching to the compiler service mode.
+
+        // NOTE: Access to the deprecated property inside of the unserializable 'eventData._requestContext' property
+        // causes the node's deprecation warning.
+
+        const clonedEventData = Object.assign({}, eventData);
+
+        // @ts-ignore
+        delete clonedEventData._requestContext;
+
+        return clonedEventData;
     }
 
     public async init (): Promise<void> {
@@ -210,7 +228,13 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
     public async onRequestHookEvent ({ name, testRunId, testId, hookId, eventData }: RequestHookEventArguments): Promise<void> {
         const { proxy } = await this._getRuntime();
 
-        await proxy.call(this.onRequestHookEvent, { name, testRunId, testId, hookId, eventData });
+        await proxy.call(this.onRequestHookEvent, {
+            name,
+            testRunId,
+            testId,
+            hookId,
+            eventData: this._prepareEventData(eventData)
+        });
     }
 
     public async setMock ({ testId, hookId, ruleId, responseEventId, mock }: SetMockArguments): Promise<void> {
