@@ -46,6 +46,7 @@ import { Dictionary } from '../../configuration/interfaces';
 import ProcessTitle from '../process-title';
 import Test from '../../api/structure/test';
 import RequestHookMethodNames from '../../api/request-hooks/hook-method-names';
+
 import {
     ConfigureResponseEvent,
     IncomingMessageLikeInitOptions,
@@ -243,6 +244,10 @@ class CompilerService implements CompilerProtocol {
             throw new Error();
 
         return await functionObject(context);
+    }
+
+    public executeActionSync ({ id, apiMethodName, command, callsite }: ExecuteActionArguments): unknown {
+        return this.proxy.callSync(this.executeAction, { id, apiMethodName, command, callsite });
     }
 
     public async executeAction ({ id, apiMethodName, command, callsite }: ExecuteActionArguments): Promise<unknown> {

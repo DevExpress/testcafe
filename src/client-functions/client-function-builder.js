@@ -10,6 +10,7 @@ import { RUNTIME_ERRORS } from '../errors/types';
 import { getCallsiteForMethod } from '../errors/get-callsite';
 import ReExecutablePromise from '../utils/re-executable-promise';
 import testRunMarker from '../test-run/marker-symbol';
+import selectorApiExecutionMode from './selector-api-execution-mode';
 
 const DEFAULT_EXECUTION_CALLSITE_NAME = '__$$clientFunction$$';
 
@@ -67,6 +68,10 @@ export default class ClientFunctionBuilder {
         return this.getBoundTestRun() || testRunTracker.resolveContextTestRun();
     }
 
+    _getObservedCallsites () {
+        return this._getTestRun()?.observedCallsites || null;
+    }
+
     getFunction () {
         const builder = this;
 
@@ -78,6 +83,9 @@ export default class ClientFunctionBuilder {
             // OPTIMIZATION: don't leak `arguments` object.
             for (let i = 0; i < arguments.length; i++)
                 args.push(arguments[i]);
+
+            if (selectorApiExecutionMode.isSync)
+                return builder._executeCommandSync(args, testRun, callsite);
 
             return builder._executeCommand(args, testRun, callsite);
         };
@@ -140,6 +148,26 @@ export default class ClientFunctionBuilder {
 
             return this._processResult(result, args);
         });
+    }
+
+    _executeCommandSync (args, testRun, callsite) {
+        // NOTE: should be kept outside of lazy promise to preserve
+        // correct callsite in case of replicator error.
+        const command = this.getCommand(args);
+
+        if (!testRun) {
+            const err = new ClientFunctionAPIError(this.callsiteNames.execution, this.callsiteNames.instantiation, RUNTIME_ERRORS.clientFunctionCannotResolveTestRun);
+
+            // NOTE: force callsite here, because more likely it will
+            // be impossible to resolve it by method name from a lazy promise.
+            err.callsite = callsite;
+
+            throw err;
+        }
+
+        const result = testRun.executeActionSync(command.type, command, callsite);
+
+        return this._processResult(result, args);
     }
 
     _processResult (result) {

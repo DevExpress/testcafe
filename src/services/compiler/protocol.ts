@@ -99,6 +99,7 @@ export interface ExecuteMockPredicate extends RequestFilterRuleLocator {
 }
 
 export interface TestRunDispatcherProtocol {
+    executeActionSync ({ id, apiMethodName, command, callsite }: ExecuteActionArguments): unknown;
     executeAction ({ id, apiMethodName, command, callsite }: ExecuteActionArguments): Promise<unknown>;
     executeCommand ({ command }: ExecuteCommandArguments): Promise<unknown>;
 }
