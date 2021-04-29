@@ -68,7 +68,14 @@ export default class BrowserJob extends AsyncEventEmitter {
 
         this._resolveWaitingLastTestInFixture = null;
 
-        this.browserConnections.map(bc => bc.once('error', this._connectionErrorListener));
+        this.browserConnections.map(bc => {
+            const errorListenerCount = bc.listenerCount('error');
+
+            if (errorListenerCount > 1)
+                console.log(`BrowserJob constructor: BrowserConnection error count: ${errorListenerCount}`); // eslint-disable-line
+
+            bc.once('error', this._connectionErrorListener);
+        });
     }
 
     private _createTestRunController (test: Test, index: number, compilerService?: CompilerService): TestRunController {
