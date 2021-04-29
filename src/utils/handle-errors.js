@@ -63,8 +63,8 @@ export function registerErrorHandlers () {
     process.on('unhandledRejection', e => handleUnexpectedError(UnhandledPromiseRejectionError, e));
     process.on('uncaughtException', e => handleUnexpectedError(UncaughtExceptionError, e));
 
-    process.on('warning', (warning) => {
-        console.log(warning.stack);
+    process.on('warning', warning => {
+        console.log(warning.stack);// eslint-disable-line
     });
 }
 
