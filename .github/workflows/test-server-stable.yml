@@ -4,13 +4,16 @@ on:
   workflow_dispatch:
     inputs:
       sha:
-        desciption: 'The test commit SHA or ref'
+        description: 'The test commit SHA or ref'
         required: true
         default: 'master'
       merged_sha:
         description: 'The merge commit SHA' 
       deploy_run_id:
         description: 'The ID of a deployment workspace run with artifacts'
+env:
+  NO_CACHE: ${{ secrets.NO_CACHE }}
+  
 jobs:  
   test:
     runs-on: ubuntu-latest
@@ -67,6 +70,7 @@ jobs:
         run: |
           echo "::set-output name=dir::$(npm config get cache)"
       - uses: actions/cache@v2
+        if: ${{ !env.NO_CACHE }}
         id: npm-cache # use this to check for `cache-hit` ==> if: steps.npm-cache.outputs.cache-hit != 'true'
         with:
           path: ${{ steps.npm-cache-dir.outputs.dir }}
