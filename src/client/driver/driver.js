@@ -202,10 +202,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         hammerhead.on(hammerhead.EVENTS.windowOpened, e => this._onChildWindowOpened(e));
 
         this.setCustomCommandHandlers(COMMAND_TYPE.unlockPage, () => this._unlockPageAfterTestIsDone());
-        this.setCustomCommandHandlers(
-            COMMAND_TYPE.getActiveElement,
-            () => Promise.resolve(createReplicator(new SelectorNodeTransform()).encode(domUtils.getActiveElement()))
-        );
+        this.setCustomCommandHandlers(COMMAND_TYPE.getActiveElement, () => this._getActiveElement());
 
         // NOTE: initiate the child links restoring process before the window is reloaded
         listeners.addInternalEventBeforeListener(window, ['beforeunload'], () => {
@@ -272,6 +269,13 @@ export default class Driver extends serviceUtils.EventEmitter {
         disableRealEventsPreventing();
 
         return Promise.resolve();
+    }
+
+    _getActiveElement () {
+        const activeElement = domUtils.getActiveElement();
+        const encodedResult = createReplicator(new SelectorNodeTransform()).encode(activeElement);
+
+        return Promise.resolve(encodedResult);
     }
 
     _failIfClientCodeExecutionIsInterrupted () {

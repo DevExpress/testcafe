@@ -290,7 +290,7 @@ interface TestController {
      * @param keys - The sequence of keys and key combinations to be pressed.
      * @param options - A set of options that provide additional parameters for the action.
      */
-    pressKey(keys: string, options?: ActionOptions): TestControllerPromise;
+    pressKey(keys: string, options?: PressActionOptions): TestControllerPromise;
     /**
      * Pauses a test for a specified period of time.
      *

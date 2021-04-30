@@ -76,16 +76,32 @@ test('Action done after test done', async t => {
         .eval(() => location.reload(true));
 });
 
-test('The "typeText" action with masked input', async t => {
-    await t.typeText('#masked-input', 'pa$$w0rd');
+test('The "typeText" action with the input[type=password]', async t => {
+    await t.typeText('#password-input', 'pa$$w0rd');
 });
 
-test('The "typeText" action with masked input and the "confidential" flag set to false', async t => {
-    await t.typeText('#masked-input', 'pa$$w0rd', { confidential: false });
+test('The "typeText" action with the input[type=text] and the "confidential" flag set to true', async t => {
+    await t.typeText('#input', 'pa$$w0rd', { confidential: true });
 });
 
-test('The "pressKey" action with masked input', async t => {
+test('The "typeText" action with the input[type=password] and the "confidential" flag set to false', async t => {
+    await t.typeText('#password-input', 'pa$$w0rd', { confidential: false });
+});
+
+test('The "pressKey" action with the input[type=password]', async t => {
     await t
-        .click('#masked-input')
+        .click('#password-input')
         .pressKey('p a $ $ w 0 r d enter');
+});
+
+test('The "pressKey" action with the input[type=text] and the "confidential" flag set to true', async t => {
+    await t
+        .click('#input')
+        .pressKey('p a $ $ w 0 r d enter', { confidential: true });
+});
+
+test('The "pressKey" action with the input[type=password] and the "confidential" flag set to false', async t => {
+    await t
+        .click('#password-input')
+        .pressKey('p a $ $ w 0 r d enter', { confidential: false });
 });

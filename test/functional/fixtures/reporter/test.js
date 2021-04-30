@@ -588,119 +588,213 @@ describe('Reporter', () => {
         });
 
         it('Value typed using the "typeText" action in the input[type=password] should be masked', () => {
-            return runTests('testcafe-fixtures/index-test.js', 'The "typeText" action with masked input', { reporter: generateReporter(log, { includeCommandInfo: true }) })
-                .then(() => {
-                    expect(log).eql([
-                        {
-                            name:    'typeText',
-                            action:  'start',
-                            command: {
-                                type:     'type-text',
-                                selector: {
-                                    expression: "Selector('#masked-input')",
-                                },
-                                options: {
-                                    confidential: true
-                                },
-                                text: '********',
+            return runTests(
+                'testcafe-fixtures/index-test.js',
+                'The "typeText" action with the input[type=password]',
+                { reporter: generateReporter(log, { includeCommandInfo: true }) }
+            ).then(() => {
+                expect(log).to.include.deep.members([
+                    {
+                        name:    'typeText',
+                        action:  'start',
+                        command: {
+                            type:     'type-text',
+                            selector: {
+                                expression: "Selector('#password-input')"
                             },
-                        },
-                        {
-                            name:    'typeText',
-                            action:  'done',
-                            command: {
-                                type:     'type-text',
-                                selector: "Selector('#masked-input')",
-                                options:  {
-                                    confidential: true
-                                },
-                                text: '********'
-                            }
-                        },
-                    ]);
-                });
+                            options: {
+                                confidential: true
+                            },
+                            text: '********'
+                        }
+                    },
+                    {
+                        name:    'typeText',
+                        action:  'done',
+                        command: {
+                            type:     'type-text',
+                            selector: "Selector('#password-input')",
+                            options:  {
+                                confidential: true
+                            },
+                            text: '********'
+                        }
+                    }
+                ]);
+            });
         });
 
-        it('Value typed using the "typeText" action in the inpu[type=password] shouldnt be masked if "confidential" flag is set to false', () => {
-            return runTests('testcafe-fixtures/index-test.js', 'The "typeText" action with masked input and the "confidential" flag set to false', { reporter: generateReporter(log, { includeCommandInfo: true }) })
-                .then(() => {
-                    expect(log).eql([
-                        {
-                            name:    'typeText',
-                            action:  'start',
-                            command: {
-                                type:     'type-text',
-                                selector: {
-                                    expression: "Selector('#masked-input')",
-                                },
-                                options: {
-                                    confidential: false
-                                },
-                                text: 'pa$$w0rd',
+        it('Value typed using the "typeText" action should be masked if "confidential" flag is set to true', () => {
+            return runTests(
+                'testcafe-fixtures/index-test.js',
+                'The "typeText" action with the input[type=text] and the "confidential" flag set to true',
+                { reporter: generateReporter(log, { includeCommandInfo: true }) }
+            ).then(() => {
+                expect(log).to.include.deep.members([
+                    {
+                        name:    'typeText',
+                        action:  'start',
+                        command: {
+                            type:     'type-text',
+                            selector: {
+                                expression: "Selector('#input')"
                             },
-                        },
-                        {
-                            name:    'typeText',
-                            action:  'done',
-                            command: {
-                                type:     'type-text',
-                                selector: "Selector('#masked-input')",
-                                options:  {
-                                    confidential: false
-                                },
-                                text: 'pa$$w0rd'
-                            }
-                        },
-                    ]);
-                });
+                            options: {
+                                confidential: true
+                            },
+                            text: '********'
+                        }
+                    },
+                    {
+                        name:    'typeText',
+                        action:  'done',
+                        command: {
+                            type:     'type-text',
+                            selector: "Selector('#input')",
+                            options:  {
+                                confidential: true
+                            },
+                            text: '********'
+                        }
+                    }
+                ]);
+            });
+        });
+
+        it('Value typed using the "typeText" action shouldn\'t be masked if "confidential" flag is set to false', () => {
+            return runTests(
+                'testcafe-fixtures/index-test.js',
+                'The "typeText" action with the input[type=password] and the "confidential" flag set to false',
+                { reporter: generateReporter(log, { includeCommandInfo: true }) }
+            ).then(() => {
+                expect(log).to.include.deep.members([
+                    {
+                        name:    'typeText',
+                        action:  'start',
+                        command: {
+                            type:     'type-text',
+                            selector: {
+                                expression: "Selector('#password-input')"
+                            },
+                            options: {
+                                confidential: false
+                            },
+                            text: 'pa$$w0rd'
+                        }
+                    },
+                    {
+                        name:    'typeText',
+                        action:  'done',
+                        command: {
+                            type:     'type-text',
+                            selector: "Selector('#password-input')",
+                            options:  {
+                                confidential: false
+                            },
+                            text: 'pa$$w0rd'
+                        }
+                    }
+                ]);
+            });
         });
 
         it('Value typed using the "pressKey" action in the input[type=password] should be masked', () => {
-            return runTests('testcafe-fixtures/index-test.js', 'The "pressKey" action with masked input', { reporter: generateReporter(log, { includeCommandInfo: true }) })
-                .then(() => {
-                    expect(log).eql([
-                        {
-                            name:    'click',
-                            action:  'start',
-                            command: {
-                                type:     'click',
-                                selector: {
-                                    expression: "Selector('#masked-input')",
-                                }
+            return runTests(
+                'testcafe-fixtures/index-test.js',
+                'The "pressKey" action with the input[type=password]',
+                { reporter: generateReporter(log, { includeCommandInfo: true }) }
+            ).then(() => {
+                expect(log).to.include.deep.members([
+                    {
+                        name:    'pressKey',
+                        action:  'start',
+                        command: {
+                            type:    'press-key',
+                            options: {
+                                confidential: true
                             },
-                        },
-                        {
-                            name:    'click',
-                            action:  'done',
-                            command: {
-                                type:     'click',
-                                selector: "Selector('#masked-input')"
-                            }
-                        },
-                        {
-                            name:    'pressKey',
-                            action:  'start',
-                            command: {
-                                type:    'press-key',
-                                options: {
-                                    confidential: true
-                                },
-                                keys: '********'
+                            keys: '********'
+                        }
+                    },
+                    {
+                        name:    'pressKey',
+                        action:  'done',
+                        command: {
+                            type:    'press-key',
+                            options: {
+                                confidential: true
                             },
-                        },
-                        {
-                            name:    'pressKey',
-                            action:  'done',
-                            command: {
-                                type:    'press-key',
-                                options: {
-                                    confidential: true
-                                },
-                                keys: '********'
-                            }
-                        },
-                    ]);
-                });
+                            keys: '********'
+                        }
+                    }
+                ]);
+            });
+        });
+
+        it('Value typed using the "pressKey" action should be masked if "confidential" flag is set to true', () => {
+            return runTests(
+                'testcafe-fixtures/index-test.js',
+                'The "pressKey" action with the input[type=text] and the "confidential" flag set to true',
+                { reporter: generateReporter(log, { includeCommandInfo: true }) }
+            ).then(() => {
+                expect(log).to.include.deep.members([
+                    {
+                        name:    'pressKey',
+                        action:  'start',
+                        command: {
+                            type:    'press-key',
+                            options: {
+                                confidential: true,
+                            },
+                            keys: '********'
+                        }
+                    },
+                    {
+                        name:    'pressKey',
+                        action:  'done',
+                        command: {
+                            type:    'press-key',
+                            options: {
+                                confidential: true,
+                            },
+                            keys: '********'
+                        }
+                    }
+                ]);
+            });
+        });
+
+        it('Value typed using the "pressKey" action shouldn\'t be masked if "confidential" flag is set to false', () => {
+            return runTests(
+                'testcafe-fixtures/index-test.js',
+                'The "pressKey" action with the input[type=password] and the "confidential" flag set to false',
+                { reporter: generateReporter(log, { includeCommandInfo: true }) }
+            ).then(() => {
+                expect(log).to.include.deep.members([
+                    {
+                        name:    'pressKey',
+                        action:  'start',
+                        command: {
+                            type:    'press-key',
+                            options: {
+                                confidential: false
+                            },
+                            keys: 'p a $ $ w 0 r d enter'
+                        }
+                    },
+                    {
+                        name:    'pressKey',
+                        action:  'done',
+                        command: {
+                            type:    'press-key',
+                            options: {
+                                confidential: false
+                            },
+                            keys: 'p a $ $ w 0 r d enter'
+                        }
+                    }
+                ]);
+            });
         });
     });
 
