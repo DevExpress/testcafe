@@ -14,12 +14,13 @@ function generateReporter (log, options = {}) {
         emitOnStart = true,
         emitOnDone = true,
         includeBrowserInfo = false,
-        includeTestInfo = false
+        includeTestInfo = false,
+        includeCommandInfo = false
     } = options;
 
     return function () {
         return Object.assign({}, baseReport, {
-            async reportTestActionStart (name, { browser, test, fixture }) {
+            async reportTestActionStart (name, { browser, test, fixture, command }) {
                 if (!emitOnStart)
                     return;
 
@@ -44,6 +45,9 @@ function generateReporter (log, options = {}) {
                         };
                     }
                 }
+
+                if (includeCommandInfo)
+                    item.command = command;
 
                 log.push(item);
             },

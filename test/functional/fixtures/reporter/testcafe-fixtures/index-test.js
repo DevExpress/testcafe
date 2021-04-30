@@ -75,3 +75,17 @@ test('Action done after test done', async t => {
         .wait(5000)
         .eval(() => location.reload(true));
 });
+
+test('The "typeText" action with masked input', async t => {
+    await t.typeText('#masked-input', 'pa$$w0rd');
+});
+
+test('The "typeText" action with masked input and the "confidential" flag set to false', async t => {
+    await t.typeText('#masked-input', 'pa$$w0rd', { confidential: false });
+});
+
+test('The "pressKey" action with masked input', async t => {
+    await t
+        .click('#masked-input')
+        .pressKey('p a $ $ w 0 r d enter');
+});

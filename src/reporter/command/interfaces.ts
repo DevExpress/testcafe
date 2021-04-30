@@ -6,7 +6,7 @@ export interface Command {
 }
 
 export interface FormattedCommand {
-    [key: string]: unknown;
+    [key: string]: any;
     type: string;
 }
 

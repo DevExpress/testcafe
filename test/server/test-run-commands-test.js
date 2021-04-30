@@ -512,7 +512,9 @@ describe('Test run commands', () => {
                         dummy: 'yo',
                         alt:   false,
                         meta:  false
-                    }
+                    },
+
+                    confidential: true
                 }
             };
 
@@ -536,7 +538,9 @@ describe('Test run commands', () => {
                         alt:   false,
                         shift: false,
                         meta:  false
-                    }
+                    },
+
+                    confidential: true
                 }
             });
 

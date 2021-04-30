@@ -186,8 +186,9 @@ export class TypeOptions extends ClickOptions {
     constructor (obj, validate) {
         super();
 
-        this.replace = false;
-        this.paste   = false;
+        this.replace      = false;
+        this.paste        = false;
+        this.confidential = void 0;
 
         this._assignFrom(obj, validate);
     }
@@ -195,7 +196,8 @@ export class TypeOptions extends ClickOptions {
     _getAssignableProperties () {
         return super._getAssignableProperties().concat([
             { name: 'replace', type: booleanOption },
-            { name: 'paste', type: booleanOption }
+            { name: 'paste', type: booleanOption },
+            { name: 'confidential', type: booleanOption }
         ]);
     }
 }
@@ -252,5 +254,22 @@ export class AssertionOptions extends Assignable {
             { name: 'timeout', type: positiveIntegerOption },
             { name: 'allowUnawaitedPromise', type: booleanOption }
         ];
+    }
+}
+
+// Press
+export class PressOptions extends ActionOptions {
+    constructor (obj, validate) {
+        super();
+
+        this.confidential = void 0;
+
+        this._assignFrom(obj, validate);
+    }
+
+    _getAssignableProperties () {
+        return super._getAssignableProperties().concat([
+            { name: 'confidential', type: booleanOption }
+        ]);
     }
 }

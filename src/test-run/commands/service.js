@@ -40,3 +40,8 @@ export class UnlockPageCommand {
     }
 }
 
+export class GetActiveElementCommand {
+    constructor () {
+        this.type = TYPE.getActiveElement;
+    }
+}
