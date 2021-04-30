@@ -60,6 +60,8 @@ export default function loadLibs () {
         presetEnvForClientFunction: [require('@babel/preset-env'), getPresetEnvForClientFunctionOpts()],
         presetEnvForTestCode:       [require('@babel/preset-env'), getPresetEnvForTestCodeOpts()],
         moduleResolver:             [require('babel-plugin-module-resolver'), getModuleResolverOpts()],
-        presetReact:                getPresetReact()
+        presetReact:                getPresetReact(),
+        proposalPrivateMethods:     [require('@babel/plugin-proposal-private-methods'), { loose: true }],
+        proposalClassProperties:    [require('@babel/plugin-proposal-class-properties'), { loose: true }]
     };
 }
