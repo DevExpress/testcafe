@@ -968,7 +968,7 @@ describe('Compiler', function () {
 
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'SyntaxError: ' + testfiles[0] + ': Missing semicolon (1:7)'
+                                 'SyntaxError: ' + testfiles[0] + ': Missing semicolon. (1:7)'
                     }, true);
 
                     return compile(testfiles[1]);
@@ -981,7 +981,7 @@ describe('Compiler', function () {
                         stackTop: null,
 
                         message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'SyntaxError: ' + testfiles[1] + ': Missing semicolon (2:7)'
+                                 'SyntaxError: ' + testfiles[1] + ': Missing semicolon. (2:7)'
                     }, true);
                 });
         });

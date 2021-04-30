@@ -15,8 +15,13 @@ export default class ESNextTestFileCompiler extends APIBasedTestFileCompilerBase
         } = loadBabelLibs();
 
         const opts = Object.assign({}, BASE_BABEL_OPTIONS, {
-            presets:    [presetStage2, presetEnvForTestCode, presetReact],
-            plugins:    [transformRuntime, moduleResolver],
+            presets: [presetStage2, presetEnvForTestCode, presetReact],
+            plugins: [
+                transformRuntime,
+                moduleResolver,
+                ['@babel/plugin-proposal-private-methods', { loose: true }],
+                ['@babel/plugin-proposal-class-properties', { loose: true }]
+            ],
             sourceMaps: 'inline',
             filename
         });

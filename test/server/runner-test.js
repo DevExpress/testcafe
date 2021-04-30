@@ -973,8 +973,6 @@ describe('Runner', () => {
 
     describe('Regression', () => {
         it('Should not have unhandled rejections in runner (GH-825)', function () {
-            this.timeout(10000);
-
             let rejectionReason = null;
 
             process.on('unhandledRejection', reason => {
@@ -982,7 +980,7 @@ describe('Runner', () => {
             });
 
             return runner
-                .browsers(BROWSER_NAME)
+                .browsers('remote')
                 .src([])
                 .run()
                 .then(() => {
