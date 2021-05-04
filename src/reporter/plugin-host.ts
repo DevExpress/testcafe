@@ -1,5 +1,6 @@
 import chalk, { Chalk } from 'chalk';
 import indentString from 'indent-string';
+
 import {
     identity,
     escape as escapeHtml,
@@ -13,18 +14,16 @@ import getViewportWidth from '../utils/get-viewport-width';
 import { DIFF_COLORS } from '../utils/diff/colors';
 import { Moment } from 'moment';
 import ReporterStreamController from '../runner/reporter-stream-controller';
-import { Stream } from 'stream';
+import { Writable } from 'stream';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
 
 // NOTE: we should not expose internal state to
 // the plugin, to avoid accidental rewrites.
 // Therefore we use symbols to store them.
-
-/*global Symbol*/
-const stream          = Symbol();
-const wordWrapEnabled = Symbol();
-const indent          = Symbol();
-const errorDecorator  = Symbol();
+const stream: unique symbol          = Symbol();
+const wordWrapEnabled: unique symbol = Symbol();
+const indent: unique symbol          = Symbol();
+const errorDecorator: unique symbol  = Symbol();
 
 interface ReporterSymbols {
     ok: string;
@@ -38,26 +37,22 @@ export default class ReporterPluginHost {
     public moment: Moment;
     public viewportWidth: number;
     public symbols: ReporterSymbols;
+    private [stream]: Writable;
+    private [wordWrapEnabled]: boolean;
+    private [indent]: number;
+    private [errorDecorator]: Record<string, Function>;
 
-    public constructor (plugin: any, outStream: Stream, name: string) {
+    public constructor (plugin: any, outStream: Writable, name: string) {
         this.name             = name;
         this.streamController = null;
-
-        // Type 'Symbol' cannot be used as an index type.
-        // https://github.com/microsoft/TypeScript/issues/1863
-        // @ts-ignore
-        this[stream] = outStream || process.stdout;
-        // @ts-ignore
+        this[stream]          = outStream || process.stdout;
         this[wordWrapEnabled] = false;
-        // @ts-ignore
-        this[indent] = 0;
+        this[indent]          = 0;
 
-        // @ts-ignore
         const useColors = this[stream] === process.stdout && chalk.enabled && !plugin.noColors;
 
-        this.chalk  = new chalk.constructor({ enabled: useColors });
-        this.moment = moment;
-        // @ts-ignore
+        this.chalk         = new chalk.constructor({ enabled: useColors });
+        this.moment        = moment;
         this.viewportWidth = getViewportWidth(this[stream]);
 
         this.symbols = OS.win ?
@@ -66,7 +61,6 @@ export default class ReporterPluginHost {
 
         assignIn(this, plugin);
 
-        // @ts-ignore
         this[errorDecorator] = this.createErrorDecorator();
     }
 
@@ -128,12 +122,10 @@ export default class ReporterPluginHost {
 
     public formatError (err: TestRunErrorFormattableAdapter, prefix = ''): string {
         const prefixLengthWithoutColors = removeTTYColors(prefix).length;
-        // @ts-ignore
-        const maxMsgLength = this.viewportWidth - this[indent] - prefixLengthWithoutColors;
-        // @ts-ignore
+        const maxMsgLength              = this.viewportWidth - this[indent] - prefixLengthWithoutColors;
+
         let msg = err.formatMessage(this[errorDecorator], maxMsgLength);
 
-        // @ts-ignore
         if (this[wordWrapEnabled])
             msg = this.wordWrap(msg, prefixLengthWithoutColors, maxMsgLength);
         else
@@ -151,12 +143,9 @@ export default class ReporterPluginHost {
     }
 
     public write (text: string): ReporterPluginHost {
-        // @ts-ignore
         if (this[wordWrapEnabled])
-            // @ts-ignore
             text = this.wordWrap(text, this[indent], this.viewportWidth);
         else
-            // @ts-ignore
             text = this.indentString(text, this[indent]);
 
         this._writeToUniqueStream(text);
@@ -165,23 +154,19 @@ export default class ReporterPluginHost {
     }
 
     public useWordWrap (use: boolean): ReporterPluginHost {
-        // @ts-ignore
         this[wordWrapEnabled] = use;
 
         return this;
     }
 
     public setIndent (val: number): ReporterPluginHost {
-        // @ts-ignore
         this[indent] = val;
 
         return this;
     }
 
     private _writeToUniqueStream (text: string): void {
-        // @ts-ignore
         if (!this.streamController || this.streamController.ensureUniqueStream(this[stream], this))
-            // @ts-ignore
             this[stream].write(text);
     }
 
