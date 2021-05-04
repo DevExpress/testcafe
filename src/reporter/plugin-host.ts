@@ -20,10 +20,10 @@ import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapt
 // NOTE: we should not expose internal state to
 // the plugin, to avoid accidental rewrites.
 // Therefore we use symbols to store them.
-const stream: unique symbol          = Symbol();
-const wordWrapEnabled: unique symbol = Symbol();
-const indent: unique symbol          = Symbol();
-const errorDecorator: unique symbol  = Symbol();
+const stream          = Symbol();
+const wordWrapEnabled = Symbol();
+const indent          = Symbol();
+const errorDecorator  = Symbol();
 
 interface ReporterSymbols {
     ok: string;
