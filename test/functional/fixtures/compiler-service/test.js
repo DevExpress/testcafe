@@ -33,45 +33,4 @@ describe('Compiler service', () => {
     it('Should execute Selectors in sync mode', async () => {
         await runTests('testcafe-fixtures/synchronous-selectors.js');
     });
-
-    describe('Request Hooks', () => {
-        describe('Request Logger', () => {
-            it('Basic', async () => {
-                await runTests('../api/es-next/request-hooks/testcafe-fixtures/request-logger/api.js', 'API');
-            });
-
-            it('Log options', async () => {
-                await runTests('../api/es-next/request-hooks/testcafe-fixtures/request-logger/log-options.js', 'Log options');
-            });
-
-            it('Request filter rule predicate', async () => {
-                await runTests('../api/es-next/request-hooks/testcafe-fixtures/request-logger/request-filter-rule-predicate.js');
-            });
-        });
-
-        describe('Request Mock', function () {
-            it('Basic', async () => {
-                await runTests('../api/es-next/request-hooks/testcafe-fixtures/request-mock/basic.js');
-            });
-
-            it('Asynchronous response function (GH-4467)', () => {
-                return runTests('../api/es-next/request-hooks/testcafe-fixtures/request-mock/async-response-function.js');
-            });
-
-            it('Request failed the CORS validation', async () => {
-                await runTests('../api/es-next/request-hooks/testcafe-fixtures/request-mock/failed-cors-validation.js', 'Failed CORS validation', { only: 'chrome' })
-                    .then(() => {
-                        expect(testReport.warnings).eql([
-                            'RequestMock: CORS validation failed for a request specified as { url: "http://dummy-url.com/get" }'
-                        ]);
-                    });
-            });
-        });
-
-        describe('Request Hook', () => {
-            it('Change and remove response headers', async () => {
-                await runTests('../api/es-next/request-hooks/testcafe-fixtures/api/change-remove-response-headers.js');
-            });
-        });
-    });
 });

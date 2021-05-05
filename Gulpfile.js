@@ -29,6 +29,7 @@ const getDockerPublishInfo          = require('./gulp/docker/get-publish-info');
 const runFunctionalTestInDocker     = require('./gulp/docker/run-functional-test-via-command-line');
 const { exitDomains, enterDomains } = require('./gulp/helpers/domain');
 const getTimeout                    = require('./gulp/helpers/get-timeout');
+const promisifyStream               = require('./gulp/helpers/promisify-stream');
 
 const readFile = promisify(fs.readFile);
 
@@ -165,14 +166,9 @@ const RETRY_TEST_RUN_COUNT = 3;
 
 const MIGRATE_ALL_TESTS_TO_COMPILER_SERVICE_GLOB = [
     'test/functional/fixtures/app-command/test.js',
-    'test/functional/fixtures/driver/test.js'
+    'test/functional/fixtures/driver/test.js',
+    'test/functional/fixtures/api/es-next/request-hooks/test.js'
 ];
-
-function promisifyStream (stream) {
-    return new Promise((resolve, reject) => {
-        stream.on('end', resolve).on('error', reject);
-    });
-}
 
 gulp.task('audit', () => {
     return npmAuditor()

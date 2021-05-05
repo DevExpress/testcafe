@@ -1,6 +1,6 @@
+import { pull } from 'lodash';
 import testRunTracker from '../../api/test-run-tracker';
 import prerenderCallsite from '../../utils/prerender-callsite';
-
 import { TestRunDispatcherProtocol } from './protocol';
 import TestController from '../../api/test-controller';
 import ObservedCallsitesStorage from '../../test-run/observed-callsites-storage';
@@ -15,6 +15,7 @@ import { TestRunProxyInit } from '../interfaces';
 import Test from '../../api/structure/test';
 import RequestHook from '../../api/request-hooks/hook';
 import RequestHookMethodNames from '../../api/request-hooks/hook-method-names';
+
 import {
     ConfigureResponseEvent,
     RequestEvent,
@@ -30,33 +31,36 @@ interface RequestHookEventDescriptor {
 
 class TestRunProxy {
     public readonly id: string;
+    public readonly test: Test;
     public readonly controller: TestController;
     public readonly observedCallsites: ObservedCallsitesStorage;
     public readonly warningLog: WarningLog;
 
     private readonly dispatcher: TestRunDispatcherProtocol;
-    private readonly fixtureCtx: unknown;
     private readonly ctx: unknown;
     private readonly _options: Dictionary<OptionValue>;
-    private _requestHooks: RequestHook[];
 
-    public constructor ({ dispatcher, id, fixtureCtx, options }: TestRunProxyInit) {
+    public constructor ({ dispatcher, id, test, options }: TestRunProxyInit) {
         this.dispatcher = dispatcher;
 
-        this.id = id;
-
-        this.ctx        = Object.create(null);
-        this.fixtureCtx = fixtureCtx;
-        this._options   = options;
+        this.id       = id;
+        this.test     = test;
+        this.ctx      = Object.create(null);
+        this._options = options;
 
         // TODO: Synchronize these properties with their real counterparts in the main process.
         // Postponed until (GH-3244). See details in (GH-5250).
         this.controller        = new TestController(this);
         this.observedCallsites = new ObservedCallsitesStorage();
         this.warningLog        = new WarningLog();
-        this._requestHooks     = [];
 
         testRunTracker.activeTestRuns[id] = this;
+
+        this._initializeRequestHooks();
+    }
+
+    private _initializeRequestHooks (): void {
+        this.test.requestHooks.forEach(this._attachWarningLog, this);
     }
 
     private _restoreRequestFilterRule (event: RequestEvent | ConfigureResponseEvent | ResponseEvent): void {
@@ -83,8 +87,12 @@ class TestRunProxy {
         return executor.run();
     }
 
-    private getHook (hookId: string): RequestHook | undefined {
-        return this._requestHooks.find(hook => hook.id === hookId);
+    private _attachWarningLog (hook: RequestHook): void {
+        hook._warningLog = this.warningLog;
+    }
+
+    private _detachWarningLog (hook: RequestHook): void {
+        hook._warningLog = null;
     }
 
     public async executeAction (apiMethodName: string, command: unknown, callsite: unknown): Promise<unknown> {
@@ -108,22 +116,28 @@ class TestRunProxy {
         return this.dispatcher.executeCommand({ command, id: this.id });
     }
 
-    public initializeRequestHooks (test: Test): void {
-        this._requestHooks = Array.from(test.requestHooks);
+    public async addRequestHook (hook: RequestHook): Promise<void> {
+        if (this.test.requestHooks.includes(hook))
+            return;
 
-        this._requestHooks.forEach(requestHook => {
-            requestHook._warningLog = this.warningLog;
+        this.test.requestHooks.push(hook);
+        this._attachWarningLog(hook);
+
+        await this.dispatcher.addRequestEventListeners({
+            hookId:        hook.id,
+            hookClassName: hook._className,
+            rules:         hook._requestFilterRules
         });
     }
 
-    public async onRequestHookEvent ({ hookId, name, eventData }: RequestHookEventDescriptor): Promise<RequestHook> {
-        const targetHook = this.getHook(hookId) as RequestHook;
+    public async removeRequestHook (hook: RequestHook): Promise<void> {
+        if (!this.test.requestHooks.includes(hook))
+            return;
 
-        this._restoreRequestFilterRule(eventData);
-        // @ts-ignore
-        await targetHook[name].call(targetHook, eventData);
+        pull(this.test.requestHooks, hook);
+        this._detachWarningLog(hook);
 
-        return targetHook;
+        await this.dispatcher.removeRequestEventListeners({ rules: hook._requestFilterRules });
     }
 }
 

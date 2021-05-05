@@ -8,7 +8,8 @@ import {
     ResponseEvent,
     ResponseMock,
     RequestInfo,
-    IncomingMessageLikeInitOptions
+    IncomingMessageLikeInitOptions,
+    RequestFilterRule
 } from 'testcafe-hammerhead';
 
 export const BEFORE_AFTER_PROPERTIES  = ['beforeFn', 'afterFn'] as const;
@@ -47,13 +48,22 @@ export interface ExecuteCommandArguments {
     command: unknown;
 }
 
+export interface RemoveRequestEventListenersArguments {
+    rules: RequestFilterRule[];
+}
+
+export interface AddRequestEventListenersArguments {
+    hookId: string;
+    hookClassName: string;
+    rules: RequestFilterRule[];
+}
+
 export interface SetOptionsArguments {
     value: Dictionary<OptionValue>;
 }
 
 export interface RequestHookEventArguments {
     name: RequestHookMethodNames;
-    testRunId: string;
     testId: string;
     hookId: string;
     eventData: RequestEvent | ConfigureResponseEvent | ResponseEvent;
@@ -102,10 +112,17 @@ export interface GetWarningMessagesArguments {
     testRunId: string;
 }
 
+export interface InitializeTestRunProxyArguments {
+    testRunId: string;
+    testId: string;
+}
+
 export interface TestRunDispatcherProtocol {
     executeActionSync ({ id, apiMethodName, command, callsite }: ExecuteActionArguments): unknown;
     executeAction ({ id, apiMethodName, command, callsite }: ExecuteActionArguments): Promise<unknown>;
     executeCommand ({ command }: ExecuteCommandArguments): Promise<unknown>;
+    addRequestEventListeners ( { hookId, hookClassName, rules }: AddRequestEventListenersArguments): Promise<void>;
+    removeRequestEventListeners ({ rules }: RemoveRequestEventListenersArguments): Promise<void>;
 }
 
 export interface CompilerProtocol extends TestRunDispatcherProtocol {
@@ -119,7 +136,7 @@ export interface CompilerProtocol extends TestRunDispatcherProtocol {
 
     setOptions ({ value }: SetOptionsArguments): Promise<void>;
 
-    onRequestHookEvent ({ name, testRunId, testId, hookId, eventData }: RequestHookEventArguments): Promise<void>;
+    onRequestHookEvent ({ name, testId, hookId, eventData }: RequestHookEventArguments): Promise<void>;
 
     setMock ({ responseEventId, mock }: SetMockArguments): Promise<void>;
 
@@ -134,4 +151,6 @@ export interface CompilerProtocol extends TestRunDispatcherProtocol {
     executeMockPredicate ({ testId, hookId, ruleId, requestInfo, res }: ExecuteMockPredicate): Promise<IncomingMessageLikeInitOptions>;
 
     getWarningMessages ({ testRunId }: GetWarningMessagesArguments): Promise<string[]>;
+
+    initializeTestRunProxy ({ testRunId, testId }: InitializeTestRunProxyArguments): Promise<void>;
 }

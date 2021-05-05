@@ -16,13 +16,15 @@ export default abstract class RequestHook {
     public _requestFilterRules: RequestFilterRule[];
     public readonly _responseEventConfigureOpts?: ConfigureResponseEventOptions;
     public _warningLog: WarningLog | null;
-    public id: string;
+    public readonly id: string;
+    public _className: string;
 
     protected constructor (ruleInit?: RequestFilterRuleInit | RequestFilterRuleInit[], responseEventConfigureOpts?: ConfigureResponseEventOptions) {
         this._requestFilterRules         = this._prepareRules(ruleInit);
         this._responseEventConfigureOpts = responseEventConfigureOpts;
         this._warningLog                 = null;
         this.id                          = generateUniqueId();
+        this._className                  = this.constructor.name;
     }
 
     private _prepareRules (ruleInit?: RequestFilterRuleInit | RequestFilterRuleInit[]): RequestFilterRule[] {

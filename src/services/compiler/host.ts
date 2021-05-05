@@ -28,7 +28,10 @@ import {
     ExecuteRequestFilterRulePredicateArguments,
     RequestFilterRuleLocator,
     ExecuteMockPredicate,
-    GetWarningMessagesArguments
+    GetWarningMessagesArguments,
+    AddRequestEventListenersArguments,
+    RemoveRequestEventListenersArguments,
+    InitializeTestRunProxyArguments
 } from './protocol';
 
 import { CompilerArguments } from '../../compiler/interfaces';
@@ -39,7 +42,8 @@ import {
     IncomingMessageLikeInitOptions,
     RequestEvent,
     ConfigureResponseEvent,
-    ResponseEvent
+    ResponseEvent,
+    RequestFilterRule
 } from 'testcafe-hammerhead';
 
 const SERVICE_PATH = require.resolve('./service');
@@ -82,7 +86,10 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
             this.removeHeaderOnConfigureResponseEvent,
             this.executeRequestFilterRulePredicate,
             this.executeMockPredicate,
-            this.getWarningMessages
+            this.getWarningMessages,
+            this.addRequestEventListeners,
+            this.removeRequestEventListeners,
+            this.initializeTestRunProxy
         ], this);
     }
 
@@ -231,12 +238,11 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
         await proxy.call(this.setOptions, { value: preparedOptions });
     }
 
-    public async onRequestHookEvent ({ name, testRunId, testId, hookId, eventData }: RequestHookEventArguments): Promise<void> {
+    public async onRequestHookEvent ({ name, testId, hookId, eventData }: RequestHookEventArguments): Promise<void> {
         const { proxy } = await this._getRuntime();
 
         await proxy.call(this.onRequestHookEvent, {
             name,
-            testRunId,
             testId,
             hookId,
             eventData: this._prepareEventData(eventData)
@@ -282,5 +288,23 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
         const { proxy } = await this._getRuntime();
 
         return proxy.call(this.getWarningMessages, { testRunId });
+    }
+
+    public async addRequestEventListeners ( { hookId, hookClassName, rules }: AddRequestEventListenersArguments): Promise<void> {
+        rules = RequestFilterRule.fromArray(rules as object[]);
+
+        await this.emit('addRequestEventListeners', { hookId, hookClassName, rules });
+    }
+
+    public async removeRequestEventListeners ({ rules }: RemoveRequestEventListenersArguments): Promise<void> {
+        rules = RequestFilterRule.fromArray(rules as object[]);
+
+        await this.emit('removeRequestEventListeners', { rules });
+    }
+
+    public async initializeTestRunProxy ({ testRunId, testId }: InitializeTestRunProxyArguments): Promise<void> {
+        const { proxy } = await this._getRuntime();
+
+        return proxy.call(this.initializeTestRunProxy, { testRunId, testId });
     }
 }
