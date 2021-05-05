@@ -37,7 +37,8 @@ import {
     SetConfigureResponseEventOptionsArguments,
     SetHeaderOnConfigureResponseEventArguments,
     SetMockArguments,
-    SetOptionsArguments
+    SetOptionsArguments,
+    GetWarningMessagesArguments
 } from './protocol';
 
 import { CompilerArguments } from '../../compiler/interfaces';
@@ -160,7 +161,8 @@ class CompilerService implements CompilerProtocol {
             this.setHeaderOnConfigureResponseEvent,
             this.removeHeaderOnConfigureResponseEvent,
             this.executeRequestFilterRulePredicate,
-            this.executeMockPredicate
+            this.executeMockPredicate,
+            this.getWarningMessages
         ], this);
     }
 
@@ -310,6 +312,12 @@ class CompilerService implements CompilerProtocol {
         responseMockSetBodyMethod.remove(res);
 
         return res;
+    }
+
+    public async getWarningMessages ({ testRunId }: GetWarningMessagesArguments): Promise<string[]> {
+        const testRunProxy = this.state.testRuns[testRunId];
+
+        return testRunProxy.warningLog.messages;
     }
 }
 

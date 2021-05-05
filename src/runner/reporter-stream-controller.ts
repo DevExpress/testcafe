@@ -3,15 +3,11 @@ import { Writable } from 'stream';
 import { GeneralError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
 import Reporter from '../reporter';
-
-interface Plugin {
-    name: string;
-    streamController: ReporterStreamController;
-}
+import ReporterPluginHost from '../reporter/plugin-host';
 
 interface PluginInfo {
     stream: Writable;
-    plugin: Plugin;
+    plugin: ReporterPluginHost;
 }
 
 class ReporterStreamController {
@@ -29,7 +25,7 @@ class ReporterStreamController {
         });
     }
 
-    public ensureUniqueStream (stream: Writable, plugin: Plugin): boolean {
+    public ensureUniqueStream (stream: Writable, plugin: ReporterPluginHost): boolean {
         const pluginInfo = this._pluginInfos.find(info => info.stream === stream);
 
         if (!pluginInfo)

@@ -27,7 +27,8 @@ import {
     RemoveHeaderOnConfigureResponseEventArguments,
     ExecuteRequestFilterRulePredicateArguments,
     RequestFilterRuleLocator,
-    ExecuteMockPredicate
+    ExecuteMockPredicate,
+    GetWarningMessagesArguments
 } from './protocol';
 
 import { CompilerArguments } from '../../compiler/interfaces';
@@ -80,7 +81,8 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
             this.setHeaderOnConfigureResponseEvent,
             this.removeHeaderOnConfigureResponseEvent,
             this.executeRequestFilterRulePredicate,
-            this.executeMockPredicate
+            this.executeMockPredicate,
+            this.getWarningMessages
         ], this);
     }
 
@@ -274,5 +276,11 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
         const { proxy } = await this._getRuntime();
 
         return await proxy.call(this.executeMockPredicate, { testId, hookId, ruleId, requestInfo, res });
+    }
+
+    public async getWarningMessages ({ testRunId }: GetWarningMessagesArguments): Promise<string[]> {
+        const { proxy } = await this._getRuntime();
+
+        return proxy.call(this.getWarningMessages, { testRunId });
     }
 }

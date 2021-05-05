@@ -18,6 +18,7 @@ import RequestHookMethodNames from '../../api/request-hooks/hook-method-names';
 import {
     ConfigureResponseEvent,
     RequestEvent,
+    RequestFilterRule,
     ResponseEvent
 } from 'testcafe-hammerhead';
 
@@ -56,6 +57,10 @@ class TestRunProxy {
         this._requestHooks     = [];
 
         testRunTracker.activeTestRuns[id] = this;
+    }
+
+    private _restoreRequestFilterRule (event: RequestEvent | ConfigureResponseEvent | ResponseEvent): void {
+        event.requestFilterRule = RequestFilterRule.from(event.requestFilterRule as object);
     }
 
     private _getAssertionTimeout (command: AssertionCommand): number {
@@ -114,6 +119,7 @@ class TestRunProxy {
     public async onRequestHookEvent ({ hookId, name, eventData }: RequestHookEventDescriptor): Promise<RequestHook> {
         const targetHook = this.getHook(hookId) as RequestHook;
 
+        this._restoreRequestFilterRule(eventData);
         // @ts-ignore
         await targetHook[name].call(targetHook, eventData);
 

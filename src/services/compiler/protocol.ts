@@ -98,6 +98,10 @@ export interface ExecuteMockPredicate extends RequestFilterRuleLocator {
     res: IncomingMessageLikeInitOptions;
 }
 
+export interface GetWarningMessagesArguments {
+    testRunId: string;
+}
+
 export interface TestRunDispatcherProtocol {
     executeActionSync ({ id, apiMethodName, command, callsite }: ExecuteActionArguments): unknown;
     executeAction ({ id, apiMethodName, command, callsite }: ExecuteActionArguments): Promise<unknown>;
@@ -128,4 +132,6 @@ export interface CompilerProtocol extends TestRunDispatcherProtocol {
     executeRequestFilterRulePredicate ({ testId, hookId, ruleId, requestInfo }: ExecuteRequestFilterRulePredicateArguments): Promise<boolean>;
 
     executeMockPredicate ({ testId, hookId, ruleId, requestInfo, res }: ExecuteMockPredicate): Promise<IncomingMessageLikeInitOptions>;
+
+    getWarningMessages ({ testRunId }: GetWarningMessagesArguments): Promise<string[]>;
 }
