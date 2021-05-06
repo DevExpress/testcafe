@@ -299,7 +299,7 @@ describe('[API] Assertions', function () {
         expect(getSnapshotWarnings()[0]).contains("> 253 |        await t.expect(await Selector('#el1').innerText).eql('');");
     });
 
-    it.skip('Should raise multiple warnings when awaiting multiple selector properties in one assertion', async function () {
+    it('Should raise multiple warnings when awaiting multiple selector properties in one assertion', async function () {
         await runTests('./testcafe-fixtures/assertions-test.js', 'Multiple awaited selector properties in one assertion', { only: 'chrome' });
 
         expect(getSnapshotWarnings().length).to.eql(2);
