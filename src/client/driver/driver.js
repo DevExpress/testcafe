@@ -208,6 +208,8 @@ export default class Driver extends serviceUtils.EventEmitter {
         listeners.addInternalEventBeforeListener(window, ['beforeunload'], () => {
             this._sendStartToRestoreCommand();
         });
+
+        this.replicator = createReplicator([ new SelectorNodeTransform() ]);
     }
 
     _isOpenedInIframe () {
@@ -271,11 +273,11 @@ export default class Driver extends serviceUtils.EventEmitter {
         return Promise.resolve();
     }
 
-    _getActiveElement () {
+    async _getActiveElement () {
         const activeElement = domUtils.getActiveElement();
-        const encodedResult = createReplicator(new SelectorNodeTransform()).encode(activeElement);
+        const encodedResult = this.replicator.encode(activeElement);
 
-        return Promise.resolve(encodedResult);
+        return encodedResult;
     }
 
     _failIfClientCodeExecutionIsInterrupted () {

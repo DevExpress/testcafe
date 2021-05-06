@@ -154,6 +154,8 @@ export default class TestRun extends AsyncEventEmitter {
         this.observedCallsites = new ObservedCallsitesStorage();
         this.compilerService   = compilerService;
 
+        this.replicator = createReplicator([ new SelectorNodeTransform() ]);
+
         this._addInjectables();
         this._initRequestHooks();
     }
@@ -704,7 +706,7 @@ export default class TestRun extends AsyncEventEmitter {
             if (!result)
                 return;
 
-            const node = createReplicator(new SelectorNodeTransform()).decode(result);
+            const node = this.replicator.decode(result);
 
             command.options.confidential = isPasswordInput(node);
         }
@@ -715,7 +717,7 @@ export default class TestRun extends AsyncEventEmitter {
             if (!result)
                 return;
 
-            const node = createReplicator(new SelectorNodeTransform()).decode(result);
+            const node = this.replicator.decode(result);
 
             command.options.confidential = isPasswordInput(node);
         }

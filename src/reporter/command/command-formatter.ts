@@ -63,7 +63,7 @@ export class CommandFormatter {
     }
 
     private _maskConfidentialInfo (command: FormattedCommand): void {
-        if (!command.options?.confidential)
+        if (!(command.options as any)?.confidential)
             return;
 
         if (this._command instanceof TypeTextCommand)

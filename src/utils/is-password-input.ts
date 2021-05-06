@@ -1,3 +1,6 @@
-export default function isPasswordInput (node: any): boolean {
-    return node && node.tagName === 'input' && node.attributes.type === 'password';
+export default function isPasswordInput (node?: NodeSnapshot): boolean {
+    if (!node)
+        return false;
+
+    return node.tagName === 'input' && node.attributes?.type === 'password';
 }
