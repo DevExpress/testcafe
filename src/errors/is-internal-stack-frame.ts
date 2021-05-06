@@ -13,7 +13,7 @@ const TESTCAFE_LIB        = join(__dirname, '../');
 const TESTCAFE_BIN        = join(__dirname, '../../bin');
 const TESTCAFE_SRC        = join(__dirname, '../../src');
 const TESTCAFE_HAMMERHEAD = require.resolve('testcafe-hammerhead');
-const SOURCE_MAP_SUPPORT  = `${sep}source-map-support${sep}`;
+const SOURCE_MAP_SUPPORT  = require.resolve('source-map-support');
 
 const INTERNAL_STARTS_WITH_PATH_SEGMENTS = [
     TESTCAFE_LIB,
