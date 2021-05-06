@@ -1,6 +1,6 @@
 describe('Scroll', () => {
     it('Should raise events for scroll', () => {
-        return runTests('./testcafe-fixtures/raise-events.js', null);
+        return runTests('./testcafe-fixtures/raise-events.js');
     });
 
     // NOTE: https://github.com/DevExpress/testcafe/issues/4157
