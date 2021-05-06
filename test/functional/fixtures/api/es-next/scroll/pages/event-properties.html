@@ -15,39 +15,37 @@
     </style>
 </head>
 <body>
-    <div class="space"></div>
-    <div class="item"></div>
-    <div class="space"></div>
+    <div id="item1" class="space"></div>
+    <div id="item2" class="item"></div>
+    <div id="item3" class="space"></div>
     <div>
         <span id="emittedEvents"></span>
+        <span id="emittedEventDetails"></span>
     </div>
     <script>
-        var item             = document.querySelector('.item');
-        var emittedEventSpan = document.getElementById('emittedEvents');
-
-        function logEventProperties (e) {
-            var eventProperties = {
-                name: e.type,
-                clientX: e.clientX,
-                clientY: e.clientY,
-                screenX: e.screenX,
-                screenY: e.screenY,
-                ctrl: e.ctrlKey,
-                alt: e.altKey,
-                shift: e.shiftKey,
-                meta: e.metaKey,
-                buttons: e.buttons,
-                relatedTarget: e.relatedTarget.className,
-                target: e.target.className
-            };
-
-            console.log(JSON.stringify(eventProperties));
-        }
+        var item                = document.querySelector('.item');
+        var emittedEventSpan    = document.getElementById('emittedEvents');
+        var emittedEventDetails = document.getElementById('emittedEventDetails');
 
         function logEvent (event) {
             emittedEventSpan.textContent += event.type + ';';
 
-            logEventProperties(event);
+            var eventProperties = {
+                name:          event.type,
+                clientX:       event.clientX,
+                clientY:       event.clientY,
+                screenX:       event.screenX,
+                screenY:       event.screenY,
+                ctrl:          event.ctrlKey,
+                alt:           event.altKey,
+                shift:         event.shiftKey,
+                meta:          event.metaKey,
+                buttons:       event.buttons,
+                relatedTarget: event.relatedTarget.className,
+                target:        event.target.className
+            };
+
+            emittedEventDetails.textContent += JSON.stringify(eventProperties) + '|';
         }
 
         item.addEventListener('mouseenter', logEvent);

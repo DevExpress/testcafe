@@ -11,11 +11,12 @@ const getElementClassFromPoint = ClientFunction((x, y) => {
 
 test('test', async t => {
     await t
-        .hover('.item')
-        .click(Selector('.space').nth(1))
+        .hover('#item2')
+        .click('#item3')
         .expect(Selector('#emittedEvents').textContent).eql('mouseenter;mouseleave;');
 
-    const { log } = await t.getBrowserConsoleMessages();
+    const emittedEventDetails = await Selector('#emittedEventDetails').textContent;
+    const log                 = emittedEventDetails.split('|');
 
     const mouseenterEventProperties = JSON.parse(log[0]);
     const mouseleaveEventProperties = JSON.parse(log[1]);
