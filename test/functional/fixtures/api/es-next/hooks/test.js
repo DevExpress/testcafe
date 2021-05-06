@@ -93,7 +93,7 @@ describe('[API] t.ctx', () => {
 
 describe('[API] fixture.before/fixture.after hooks', () => {
     it('Should run hooks before and after fixture', () => {
-        return runTests('./testcafe-fixtures/fixture-hooks.js', null);
+        return runTests('./testcafe-fixtures/fixture-hooks.js');
     });
 
     it('Should keep sequential reports with long executing hooks', () => {
