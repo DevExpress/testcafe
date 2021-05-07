@@ -16,6 +16,7 @@ function getMimeTypes (): string {
 
 async function generatePreferences (profileDir: string, { marionettePort, config }: { marionettePort: number; config: any }): Promise<void> {
     const prefsFileName = path.join(profileDir, 'user.js');
+    const mimeTypes = getMimeTypes();
 
     let prefs = [
         'user_pref("browser.link.open_newwindow.override.external", 2);',
@@ -30,7 +31,7 @@ async function generatePreferences (profileDir: string, { marionettePort, config
         'user_pref("browser.tabs.warnOnCloseOtherTabs", false);',
         'user_pref("browser.tabs.warnOnClose", false);',
         'user_pref("browser.sessionstore.resume_from_crash", false);',
-        `user_pref("browser.helperApps.neverAsk.saveToDisk", "${getMimeTypes()}");`,
+        `user_pref("browser.helperApps.neverAsk.saveToDisk", "${mimeTypes}");`,
         `user_pref("pdfjs.disabled", true);`,
         'user_pref("toolkit.telemetry.reportingpolicy.firstRun", false);',
         'user_pref("toolkit.telemetry.enabled", false);',
@@ -70,6 +71,12 @@ async function generatePreferences (profileDir: string, { marionettePort, config
             'user_pref("browser.tabs.remote.autostart.2", false);',
         ]);
     }
+
+    mimeTypes.split(',').forEach(mimeType => {
+        const type = mimeType.split('/')[1];
+
+        prefs.push(`user_pref("browser.download.viewableInternally.typeWasRegistered.${type}", true);`);
+    });
 
     await writeFile(prefsFileName, prefs.join('\n'));
 }
