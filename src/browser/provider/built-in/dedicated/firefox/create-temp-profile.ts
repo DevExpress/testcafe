@@ -79,6 +79,45 @@ async function generatePreferences (profileDir: string, { marionettePort, config
     });
 
     await writeFile(prefsFileName, prefs.join('\n'));
+
+    // NOTE: The definitions of actions are there https://searchfox.org/mozilla-release/source/netwerk/mime/nsIMIMEInfo.idl#115
+    const handlersFileName = path.join(profileDir, 'handlers.json');
+    const handlers         = {
+        defaultHandlersVersion: {
+            ru: 5
+        },
+        mimeTypes: {
+            'application/pdf': {
+                action:     0,
+                extensions: [
+                    'pdf'
+                ]
+            },
+            'text/xml': {
+                action:     0,
+                extensions: [
+                    'xml',
+                    'xsl',
+                    'xbl'
+                ]
+            },
+            'image/svg+xml': {
+                action:     0,
+                extensions: [
+                    'svg'
+                ]
+            },
+            'image/webp': {
+                action:     0,
+                extensions: [
+                    'webp'
+                ]
+            }
+        },
+        schemes: {}
+    };
+
+    await writeFile(handlersFileName, JSON.stringify(handlers));
 }
 
 export default async function (runtimeInfo: any): Promise<TempDirectory> {
