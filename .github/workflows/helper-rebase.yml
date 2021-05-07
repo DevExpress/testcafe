@@ -3,6 +3,7 @@ name: Helper (Rebase)
 on:
   issue_comment:
     types: [created]
+
 env:
   GITHUB_TOKEN: ${{ secrets.ACTIVE_TOKEN }}
   
@@ -15,6 +16,7 @@ jobs:
       - name: Checkout the latest code
         uses: actions/checkout@v2
         with:
+          token: ${{ secrets.ACTIVE_TOKEN }}
           fetch-depth: 0 # otherwise, you will fail to push refs to dest repo
       - name: Automatic Rebase
         uses: cirrus-actions/rebase@1.4
