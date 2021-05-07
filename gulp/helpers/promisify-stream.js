@@ -1,5 +1,3 @@
-module.exports = function promisifyStream (stream) {
-    return new Promise((resolve, reject) => {
-        stream.on('end', resolve).on('error', reject);
-    });
-};
+const { once } = require('events');
+
+module.exports = stream => once(stream, 'end');
