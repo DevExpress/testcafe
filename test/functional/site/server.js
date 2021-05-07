@@ -18,7 +18,8 @@ const CONTENT_TYPES = {
     '.html': 'text/html',
     '.png':  'image/png',
     '.zip':  'application/zip',
-    '.pdf':  'application/pdf'
+    '.pdf':  'application/pdf',
+    '.xml':  'application/xml',
 };
 
 const NON_CACHEABLE_PAGES = [

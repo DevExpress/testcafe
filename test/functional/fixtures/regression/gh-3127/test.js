@@ -1,4 +1,4 @@
-describe('[Regression](GH-3127, GH-2741) Should download files', function () {
+describe('[Regression](GH-3127, GH-2741, GH-5892) Should download files', function () {
     it('JSON', function () {
         return runTests('testcafe-fixtures/index-test.js', 'JSON', { only: ['chrome', 'firefox'] });
     });
@@ -9,5 +9,9 @@ describe('[Regression](GH-3127, GH-2741) Should download files', function () {
 
     it('Download PDF', function () {
         return runTests('testcafe-fixtures/index-test.js', 'PDF', { only: ['firefox', 'chrome'] });
+    });
+
+    it('Download XML', function () {
+        return runTests('testcafe-fixtures/index-test.js', 'XML', { only: ['firefox', 'chrome'] });
     });
 });

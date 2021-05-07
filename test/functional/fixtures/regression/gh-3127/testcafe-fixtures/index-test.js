@@ -9,6 +9,7 @@ import delay from '../../../../../../lib/utils/delay';
 const DOWNLOADED_JSON_FILE_PATH = join(homedir(), 'Downloads', 'package.json');
 const DOWNLOADED_ZIP_FILE_PATH  = join(homedir(), 'Downloads', 'dummy.zip');
 const DOWNLOADED_PDF_FILE_PATH  = join(homedir(), 'Downloads', 'dummy.pdf');
+const DOWNLOADED_XML_FILE_PATH  = join(homedir(), 'Downloads', 'dummy.xml');
 
 const FILE_CHECK_INTERVAL   = 3000;
 
@@ -38,6 +39,7 @@ function deleteFiles () {
     del(DOWNLOADED_JSON_FILE_PATH, { force: true });
     del(DOWNLOADED_ZIP_FILE_PATH, { force: true });
     del(DOWNLOADED_PDF_FILE_PATH, { force: true });
+    del(DOWNLOADED_XML_FILE_PATH, { force: true });
 }
 
 fixture `gh3127`
@@ -62,4 +64,10 @@ test('PDF', async t => {
     await t.click('#pdf');
 
     await waitForFileWithTimeout(DOWNLOADED_PDF_FILE_PATH, 20000);
+});
+
+test('XML', async t => {
+    await t.click('#xml');
+
+    await waitForFileWithTimeout(DOWNLOADED_XML_FILE_PATH, 20000);
 });
