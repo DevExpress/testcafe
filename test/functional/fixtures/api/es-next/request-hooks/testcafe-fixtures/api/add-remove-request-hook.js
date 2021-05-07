@@ -7,7 +7,9 @@ const pageUrl             = 'http://localhost:3000/fixtures/api/es-next/request-
 
 class TestRequestHook extends RequestHook {
     constructor () {
-        super(pageUrl);
+        super(req => {
+            return req.url === pageUrl;
+        });
 
         this.onResponseCallCountInternal = 0;
     }

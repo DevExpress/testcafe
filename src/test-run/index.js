@@ -15,7 +15,6 @@ import { GeneralError } from '../errors/runtime';
 import {
     RequestHookUnhandledError,
     PageLoadError,
-    RequestHookNotImplementedMethodError,
     RoleSwitchInRoleInitializerError,
     SwitchToWindowPredicateError,
     WindowNotFoundError
@@ -209,18 +208,18 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     addRequestHook (hook) {
-        if (this.requestHooks.includes(hook))
+        if (this.test.requestHooks.includes(hook))
             return;
 
-        this.requestHooks.push(hook);
+        this.test.requestHooks.push(hook);
         this._initRequestHook(hook);
     }
 
     removeRequestHook (hook) {
-        if (!this.requestHooks.includes(hook))
+        if (!this.test.requestHooks.includes(hook))
             return;
 
-        pull(this.requestHooks, hook);
+        pull(this.test.requestHooks, hook);
         this._disposeRequestHook(hook);
     }
 
@@ -232,34 +231,28 @@ export default class TestRun extends AsyncEventEmitter {
                 onRequest:           hook.onRequest.bind(hook),
                 onConfigureResponse: hook._onConfigureResponse.bind(hook),
                 onResponse:          hook.onResponse.bind(hook)
-            }, err => this._onRequestHookMethodError(err, hook));
+            }, err => this._onRequestHookMethodError(err, hook._className));
         });
     }
 
-    _initRequestHookForCompilerService (hook) {
-        const testRunId = this.id;
-        const testId    = this.test.id;
+    _initRequestHookForCompilerService (hookId, hookClassName, rules) {
+        const testId = this.test.id;
 
-        hook._requestFilterRules.forEach(rule => {
-            const hookId = hook.id;
-
+        rules.forEach(rule => {
             this.session.addRequestEventListeners(rule, {
-                onRequest:           event => this.compilerService.onRequestHookEvent({ testRunId, testId, hookId, name: RequestHookMethodNames.onRequest, eventData: event }),
-                onConfigureResponse: event => this.compilerService.onRequestHookEvent({ testRunId, testId, hookId, name: RequestHookMethodNames._onConfigureResponse, eventData: event }),
-                onResponse:          event => this.compilerService.onRequestHookEvent({ testRunId, testId, hookId, name: RequestHookMethodNames.onResponse, eventData: event })
-            }, err => this._onRequestHookMethodError(err, hook));
+                onRequest:           event => this.compilerService.onRequestHookEvent({ testId, hookId, name: RequestHookMethodNames.onRequest, eventData: event }),
+                onConfigureResponse: event => this.compilerService.onRequestHookEvent({ testId, hookId, name: RequestHookMethodNames._onConfigureResponse, eventData: event }),
+                onResponse:          event => this.compilerService.onRequestHookEvent({ testId, hookId, name: RequestHookMethodNames.onResponse, eventData: event })
+            }, err => this._onRequestHookMethodError(err, hookClassName));
         });
     }
 
-    _onRequestHookMethodError (event, hook) {
+    _onRequestHookMethodError (event, hookClassName) {
         let err                                      = event.error;
-        const isRequestHookNotImplementedMethodError = err instanceof RequestHookNotImplementedMethodError;
+        const isRequestHookNotImplementedMethodError = err?.code === TEST_RUN_ERRORS.requestHookNotImplementedError;
 
-        if (!isRequestHookNotImplementedMethodError) {
-            const hookClassName = hook.constructor.name;
-
+        if (!isRequestHookNotImplementedMethodError)
             err = new RequestHookUnhandledError(err, hookClassName, event.methodName);
-        }
 
         this.addError(err);
     }
@@ -272,23 +265,37 @@ export default class TestRun extends AsyncEventEmitter {
         });
     }
 
+    _detachRequestEventListeners (rules) {
+        rules.forEach(rule => {
+            this.session.removeRequestEventListeners(rule);
+        });
+    }
+
     _subscribeOnCompilerServiceEvents () {
         COMPILER_SERVICE_EVENTS.forEach(eventName => {
             this.compilerService.on(eventName, async args => {
                 await this.session[eventName](...args);
             });
         });
+
+        this.compilerService.on('addRequestEventListeners', async ({ hookId, hookClassName, rules }) => {
+            this._initRequestHookForCompilerService(hookId, hookClassName, rules);
+        });
+
+        this.compilerService.on('removeRequestEventListeners', async ({ rules }) => {
+            this._detachRequestEventListeners(rules);
+        });
     }
 
     _initRequestHooks () {
-        this.requestHooks = Array.from(this.test.requestHooks);
-
         if (this.compilerService) {
             this._subscribeOnCompilerServiceEvents();
-            this.requestHooks.forEach(hook => this._initRequestHookForCompilerService(hook));
+            this.test.requestHooks.forEach(hook => {
+                this._initRequestHookForCompilerService(hook.id, hook._className, hook._requestFilterRules);
+            });
         }
         else
-            this.requestHooks.forEach(hook => this._initRequestHook(hook));
+            this.test.requestHooks.forEach(hook => this._initRequestHook(hook));
     }
 
     // Hammerhead payload
@@ -981,6 +988,16 @@ export default class TestRun extends AsyncEventEmitter {
         const { disableMultipleWindows, test, browserConnection } = testRun;
 
         return !disableMultipleWindows && !test.isLegacy && !!browserConnection.activeWindowId;
+    }
+
+    async initialize () {
+        if (!this.compilerService)
+            return;
+
+        await this.compilerService.initializeTestRunProxy({
+            testRunId: this.id,
+            testId:    this.test.id
+        });
     }
 }
 

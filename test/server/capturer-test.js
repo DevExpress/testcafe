@@ -1,3 +1,4 @@
+const { noop }                   = require('lodash');
 const nanoid                     = require('nanoid');
 const { expect }                 = require('chai');
 const { resolve, dirname, join } = require('path');
@@ -62,15 +63,21 @@ describe('Capturer', () => {
     });
 
     it('Screenshot properties for reporter', async () => {
-        const screenshots = new ScreenshotsMock({ enabled: true, path: process.cwd(), pathPattern: '', fullPage: false });
+        const screenshots = new ScreenshotsMock({
+            enabled:     true,
+            path:        process.cwd(),
+            pathPattern: '',
+            fullPage:    false
+        });
 
         const testRunControllerMock = {
             _screenshots: screenshots,
             test:         { fixture: {} },
-            emit:         () => { },
+            emit:         noop,
             _testRunCtor: function ({ browserConnection }) {
                 this.id                = 'test-run-id';
                 this.browserConnection = browserConnection;
+                this.initialize        = noop;
             }
         };
 

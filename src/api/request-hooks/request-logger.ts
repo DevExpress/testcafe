@@ -52,6 +52,8 @@ interface LoggedRequest {
     response?: LoggedResponsePart;
 }
 
+const REQUEST_LOGGER_CLASS_NAME = 'RequestLogger';
+
 class RequestLoggerImplementation extends RequestHook {
     private readonly _options: RequestHookLogOptions;
     private _internalRequests: Dictionary<LoggedRequest>;
@@ -65,6 +67,7 @@ class RequestLoggerImplementation extends RequestHook {
 
         super(requestFilterRuleInit, configureResponseEventOptions);
 
+        this._className        = REQUEST_LOGGER_CLASS_NAME;
         this._options          = effectiveOptions;
         this._internalRequests = {};
     }
