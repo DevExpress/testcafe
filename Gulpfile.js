@@ -18,7 +18,7 @@ const { promisify }                 = require('util');
 const globby                        = require('globby');
 const minimist                      = require('minimist');
 const functionalTestConfig          = require('./test/functional/config');
-const { assignIn, castArray }       = require('lodash');
+const { assignIn }                  = require('lodash');
 const childProcess                  = require('child_process');
 const listBrowsers                  = require('testcafe-browser-tools').getInstallations;
 const npmAuditor                    = require('npm-auditor');
@@ -30,6 +30,15 @@ const runFunctionalTestInDocker     = require('./gulp/docker/run-functional-test
 const { exitDomains, enterDomains } = require('./gulp/helpers/domain');
 const getTimeout                    = require('./gulp/helpers/get-timeout');
 const promisifyStream               = require('./gulp/helpers/promisify-stream');
+const testFunctional                = require('./gulp/helpers/test-functional');
+
+const {
+    TESTS_GLOB,
+    LEGACY_TESTS_GLOB,
+    MULTIPLE_WINDOWS_TESTS_GLOB,
+    MIGRATE_ALL_TESTS_TO_COMPILER_SERVICE_GLOB,
+    COMPILER_SERVICE_TESTS_GLOB
+} = require('./gulp/constants/functional-test-globs');
 
 const readFile = promisify(fs.readFile);
 
@@ -48,7 +57,6 @@ ll
     ]);
 
 const ARGS          = minimist(process.argv.slice(2));
-const DEV_MODE      = 'dev' in ARGS;
 const QR_CODE       = 'qr-code' in ARGS;
 const SKIP_BUILD    = process.env.SKIP_BUILD || 'skip-build' in ARGS;
 const BROWSER_ALIAS = ARGS['browser-alias'];
@@ -146,29 +154,7 @@ const NODE_MODULE_BINS = path.join(__dirname, 'node_modules/.bin');
 
 process.env.PATH = NODE_MODULE_BINS + path.delimiter + process.env.PATH + path.delimiter + NODE_MODULE_BINS;
 
-const SETUP_TESTS_GLOB            = 'test/functional/setup.js';
-const MULTIPLE_WINDOWS_TESTS_GLOB = 'test/functional/fixtures/multiple-windows/test.js';
-const COMPILER_SERVICE_TESTS_GLOB = 'test/functional/fixtures/compiler-service/test.js';
-const LEGACY_TESTS_GLOB           = 'test/functional/legacy-fixtures/**/test.js';
-
-const SCREENSHOT_TESTS_GLOB = [
-    'test/functional/fixtures/api/es-next/take-screenshot/test.js',
-    'test/functional/fixtures/screenshots-on-fails/test.js'
-];
-
-const TESTS_GLOB = [
-    'test/functional/fixtures/**/test.js',
-    `!${MULTIPLE_WINDOWS_TESTS_GLOB}`,
-    `!${COMPILER_SERVICE_TESTS_GLOB}`
-];
-
-const RETRY_TEST_RUN_COUNT = 3;
-
-const MIGRATE_ALL_TESTS_TO_COMPILER_SERVICE_GLOB = [
-    'test/functional/fixtures/app-command/test.js',
-    'test/functional/fixtures/driver/test.js',
-    'test/functional/fixtures/api/es-next/request-hooks/test.js'
-];
+process.env.DEV_MODE = ('dev' in ARGS).toString();
 
 gulp.task('audit', () => {
     return npmAuditor()
@@ -368,7 +354,7 @@ gulp.step('package-content', buildTasks('ts-defs', 'server-scripts', 'client-scr
 
 gulp.task('fast-build', gulp.series('clean', 'package-content'));
 
-gulp.task('build', DEV_MODE ? gulp.registry().get('fast-build') : buildTasks('lint', 'fast-build'));
+gulp.task('build', process.env.DEV_MODE === 'true' ? gulp.registry().get('fast-build') : buildTasks('lint', 'fast-build'));
 
 // Test
 gulp.step('prepare-tests', gulp.registry().get(SKIP_BUILD ? 'lint' : 'build'));
@@ -473,40 +459,6 @@ gulp.step('test-client-legacy-travis-mobile-run', () => {
 });
 
 gulp.task('test-client-legacy-travis-mobile', gulp.series('prepare-tests', 'test-client-legacy-travis-mobile-run'));
-
-function testFunctional (src, testingEnvironmentName, { experimentalCompilerService } = {}) {
-    process.env.TESTING_ENVIRONMENT       = testingEnvironmentName;
-    process.env.BROWSERSTACK_USE_AUTOMATE = 1;
-
-    if (experimentalCompilerService)
-        process.env.EXPERIMENTAL_COMPILER_SERVICE = 'true';
-
-    if (!process.env.BROWSERSTACK_NO_LOCAL)
-        process.env.BROWSERSTACK_NO_LOCAL = 1;
-
-    if (DEV_MODE)
-        process.env.DEV_MODE = 'true';
-
-    let tests = castArray(src);
-
-    // TODO: Run takeScreenshot tests first because other tests heavily impact them
-    if (src === TESTS_GLOB)
-        tests = SCREENSHOT_TESTS_GLOB.concat(tests);
-
-    tests.unshift(SETUP_TESTS_GLOB);
-
-    const opts = {
-        reporter: 'mocha-reporter-spec-with-retries',
-        timeout:  getTimeout(3 * 60 * 1000)
-    };
-
-    if (process.env.RETRY_FAILED_TESTS === 'true')
-        opts.retries = RETRY_TEST_RUN_COUNT;
-
-    return gulp
-        .src(tests)
-        .pipe(mocha(opts));
-}
 
 gulp.step('test-functional-travis-desktop-osx-and-ms-edge-run', () => {
     return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.osXDesktopAndMSEdgeBrowsers);

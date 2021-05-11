@@ -93,6 +93,7 @@ export default class TestRun extends AsyncEventEmitter {
         this.opts              = opts;
         this.test              = test;
         this.browserConnection = browserConnection;
+        this.unstable          = false;
 
         this.phase = PHASE.initial;
 
@@ -994,7 +995,7 @@ export default class TestRun extends AsyncEventEmitter {
         if (!this.compilerService)
             return;
 
-        await this.compilerService.initializeTestRunProxy({
+        await this.compilerService.initializeTestRunData({
             testRunId: this.id,
             testId:    this.test.id
         });
