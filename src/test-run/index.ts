@@ -925,8 +925,24 @@ export default class TestRun extends AsyncEventEmitter {
         return result;
     }
 
+    async canExecuteCommandThroughCDP (command: CommandBase) {
+        const browserId         = this.browserConnection.id;
+        const customActionsInfo = await this.browserConnection.provider.hasCustomActionForBrowser(browserId);
+
+        if (command.type === COMMAND_TYPE.executeClientFunction)
+            return customActionsInfo.hasExecuteClientFunction;
+        else if (command.type === COMMAND_TYPE.switchToIframe)
+            return customActionsInfo.hasSwitchToIframe;
+        else if (command.type === COMMAND_TYPE.switchToMainWindow)
+            return customActionsInfo.hasSwitchToMainWindow;
+
+        return false;
+    }
+
     public async executeCommand (command: CommandBase, callsite?: CallsiteRecord): Promise<unknown> {
         this.debugLog.command(command);
+
+        let postAction = null as (() => Promise<unknown>) | null;
 
         if (this.pendingPageError && isCommandRejectableByPageError(command))
             return this._rejectCommandWithPageError(callsite);
@@ -937,6 +953,17 @@ export default class TestRun extends AsyncEventEmitter {
         this._adjustConfigurationWithCommand(command);
 
         await this._setBreakpointIfNecessary(command, callsite);
+
+        if (await this.canExecuteCommandThroughCDP(command)) {
+            const browserId = this.browserConnection.id;
+
+            if (command.type === COMMAND_TYPE.executeClientFunction)
+                return this.browserConnection.provider.executeClientFunction(browserId, command, callsite);
+            else if (command.type === COMMAND_TYPE.switchToIframe)
+                postAction = async () => this.browserConnection.provider.switchToIframe(browserId);
+            else if (command.type === COMMAND_TYPE.switchToMainWindow)
+                postAction = async () => this.browserConnection.provider.switchToMainWindow(browserId);
+        }
 
         if (isScreenshotCommand(command)) {
             if (this.opts.disableScreenshots) {
@@ -991,7 +1018,13 @@ export default class TestRun extends AsyncEventEmitter {
         if (command.type === COMMAND_TYPE.switchToWindowByPredicate)
             return this._switchToWindowByPredicate(command as SwitchToWindowByPredicateCommand);
 
-        return this._enqueueCommand(command, callsite as CallsiteRecord);
+        const resultPromise = this._enqueueCommand(command, callsite as CallsiteRecord);
+
+        return postAction ? resultPromise.then(async r => {
+            await postAction!();
+
+            return r;
+        }) : resultPromise;
     }
 
     private _rejectCommandWithPageError (callsite?: CallsiteRecord): Promise<Error> {

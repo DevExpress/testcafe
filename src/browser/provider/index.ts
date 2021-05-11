@@ -401,6 +401,18 @@ export default class BrowserProvider {
             await this.plugin.takeScreenshot(browserId, screenshotPath, pageWidth, pageHeight, fullPage);
     }
 
+    public async executeClientFunction (browserId: string, command: any, callsite: any): Promise<any> {
+        return this.plugin.executeClientFunction(browserId, command, callsite);
+    }
+
+    public async switchToIframe (browserId: string) {
+        return this.plugin.switchToIframe(browserId);
+    }
+
+    public async switchToMainWindow (browserId: string) {
+        return this.plugin.switchToMainWindow(browserId);
+    }
+
     public async getVideoFrameData (browserId: string): Promise<any> {
         return this.plugin.getVideoFrameData(browserId);
     }

@@ -11,7 +11,10 @@ import alias from '@rollup/plugin-alias';
 
 const NO_HAMMERHEAD_CHUNKS = [
     'browser/idle-page/index.js',
-    'browser/service-worker.js'
+    'browser/service-worker.js',
+
+    // TODO: should not inject pinkie
+    'proxyless/index.js'
 ];
 
 const CHUNK_NAMES = [

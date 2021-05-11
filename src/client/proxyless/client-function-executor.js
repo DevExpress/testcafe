@@ -1,13 +1,9 @@
-import { Promise } from '../../deps/hammerhead';
-import DriverStatus from '../../status';
 import {
     createReplicator,
     FunctionTransform,
     ClientFunctionNodeTransform
 } from './replicator';
-
 import evalFunction from './eval-function';
-import { UncaughtErrorInClientFunctionCode } from '../../../../shared/errors';
 
 export default class ClientFunctionExecutor {
     constructor (command) {
@@ -25,25 +21,7 @@ export default class ClientFunctionExecutor {
 
                 return this._executeFn(args);
             })
-            .catch(err => {
-                if (!err.isTestCafeError)
-                    err = new UncaughtErrorInClientFunctionCode(this.command.instantiationCallsiteName, err);
-
-                throw err;
-            });
-    }
-
-    getResultDriverStatus () {
-        return this
-            .getResult()
-            .then(result => new DriverStatus({
-                isCommandResult: true,
-                result:          this.replicator.encode(result)
-            }))
-            .catch(err => new DriverStatus({
-                isCommandResult: true,
-                executionError:  err
-            }));
+            .then(result => this.replicator.encode(result));
     }
 
     //Overridable methods

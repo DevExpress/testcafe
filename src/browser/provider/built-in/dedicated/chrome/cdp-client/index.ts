@@ -1,24 +1,31 @@
-import { Dictionary } from '../../../../../configuration/interfaces';
+import { readSync as read } from 'read-file-relative';
+import { Dictionary } from '../../../../../../configuration/interfaces';
 import Protocol from 'devtools-protocol';
 import path from 'path';
 import os from 'os';
 import remoteChrome from 'chrome-remote-interface';
 import debug from 'debug';
-import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../../utils/client-functions';
-import WARNING_MESSAGE from '../../../../../notifications/warning-message';
+import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../../../utils/client-functions';
+import WARNING_MESSAGE from '../../../../../../notifications/warning-message';
 
 import {
     Config,
     RuntimeInfo,
     TouchConfigOptions,
     Size
-} from './interfaces';
+} from '../interfaces';
 import prettyTime from 'pretty-hrtime';
-import { CheckedCDPMethod, ELAPSED_TIME_UPPERBOUNDS } from './elapsed-upperbounds';
-import guardTimeExecution from '../../../../../utils/guard-time-execution';
+import { CheckedCDPMethod, ELAPSED_TIME_UPPERBOUNDS } from '../elapsed-upperbounds';
+import guardTimeExecution from '../../../../../../utils/guard-time-execution';
+import {
+    ClientFunctionExecutionInterruptionError,
+    UncaughtErrorInClientFunctionCode,
+    DomNodeClientFunctionResultError
+} from '../../../../../../shared/errors';
 
 const DEBUG_SCOPE = (id: string): string => `testcafe:browser:provider:built-in:chrome:browser-client:${id}`;
 const DOWNLOADS_DIR = path.join(os.homedir(), 'Downloads');
+const EXECUTION_CTX_WAS_DESTROYED_CODE = -32000;
 
 const debugLog = debug('testcafe:browser:provider:built-in:dedicated:chrome');
 
@@ -27,6 +34,9 @@ export class BrowserClient {
     private _runtimeInfo: RuntimeInfo;
     private _parentTarget?: remoteChrome.TargetInfo;
     private readonly debugLogger: debug.Debugger;
+    // new Map<frameId, executionContextId>
+    private readonly _frameExecutionContexts = new Map<string, number>();
+    private _currentFrameId: string = '';
 
     public constructor (runtimeInfo: RuntimeInfo) {
         this._runtimeInfo = runtimeInfo;
@@ -168,6 +178,36 @@ export class BrowserClient {
         this._runtimeInfo.emulatedDevicePixelRatio = this._config.scaleFactor || this._runtimeInfo.originalDevicePixelRatio;
     }
 
+    private async _addScriptToEvaluateOnNewDocument (client: remoteChrome.ProtocolApi) {
+        await client.Page.addScriptToEvaluateOnNewDocument({
+            source: read('../../../../../../../lib/client/proxyless/index.js') as string
+        });
+    }
+
+    private _setupFramesWatching (client: remoteChrome.ProtocolApi) {
+        // @ts-ignore
+        client.Runtime.executionContextCreated((event: Protocol.Runtime.ExecutionContextCreatedEvent) => {
+            if (!event.context.auxData?.frameId)
+                return;
+
+            this._frameExecutionContexts.set(event.context.auxData.frameId, event.context.id);
+        });
+
+        // @ts-ignore
+        client.Runtime.executionContextDestroyed((event: Protocol.Runtime.ExecutionContextDestroyedEvent) => {
+            for (const [frameId, executionContextId] of this._frameExecutionContexts.entries()) {
+                if (executionContextId === event.executionContextId)
+                    this._frameExecutionContexts.delete(frameId);
+            }
+        });
+
+        // @ts-ignore
+        client.Runtime.executionContextsCleared(() => {
+            this._currentFrameId = '';
+            this._frameExecutionContexts.clear();
+        });
+    }
+
     public async resizeWindow (newDimensions: Size): Promise<void> {
         const { browserId, config, viewportSize, providerMethods, emulatedDevicePixelRatio } = this._runtimeInfo;
 
@@ -228,6 +268,8 @@ export class BrowserClient {
             if (client) {
                 await this._calculateEmulatedDevicePixelRatio(client);
                 await this._setupClient(client);
+                await this._addScriptToEvaluateOnNewDocument(client);
+                this._setupFramesWatching(client);
             }
         }
         catch (e) {
@@ -295,5 +337,76 @@ export class BrowserClient {
 
         this._runtimeInfo.viewportSize.width = windowDimensions.outerWidth;
         this._runtimeInfo.viewportSize.height = windowDimensions.outerHeight;
+    }
+
+    public async executeClientFunction (command: any, callsite: any): Promise<object> {
+        const client = await this.getActiveClient();
+
+        if (!client)
+            throw new Error('Browser client error!');
+
+        const expression = `
+            (function () {
+                const proxyless              = window['%proxyless%'];
+                const ClientFunctionExecutor = proxyless.ClientFunctionExecutor;
+                const executor               = new ClientFunctionExecutor(${JSON.stringify(command)});
+
+                return executor.getResult().then(result => JSON.stringify(result));
+            })();
+        `;
+
+        let result, exceptionDetails;
+
+        try {
+            const script = { expression, awaitPromise: true } as Protocol.Runtime.EvaluateRequest;
+
+            if (this._currentFrameId && this._frameExecutionContexts.has(this._currentFrameId))
+                script.contextId = this._frameExecutionContexts.get(this._currentFrameId);
+
+            ({ result, exceptionDetails } = await client.Runtime.evaluate(script));
+        }
+        catch (e) {
+            if (e.response?.code === EXECUTION_CTX_WAS_DESTROYED_CODE)
+                throw new ClientFunctionExecutionInterruptionError(command.instantiationCallsiteName, callsite);
+
+            throw e;
+        }
+
+        if (exceptionDetails) {
+            if (exceptionDetails.exception?.value === DomNodeClientFunctionResultError.name)
+                throw new DomNodeClientFunctionResultError(command.instantiationCallsiteName, callsite);
+
+            throw new UncaughtErrorInClientFunctionCode(command.instantiationCallsiteName, exceptionDetails.text, callsite);
+        }
+
+        return JSON.parse(result.value);
+    }
+
+    private async switchToIframe () {
+        const client = await this.getActiveClient();
+
+        if (!client)
+            return;
+
+        const script = { expression: 'window["%switchedIframe%"]' } as Protocol.Runtime.EvaluateRequest;
+
+        if (this._currentFrameId && this._frameExecutionContexts.has(this._currentFrameId))
+            script.contextId = this._frameExecutionContexts.get(this._currentFrameId);
+
+        const { result } = await client.Runtime.evaluate(script);
+
+        if (result.subtype !== 'node')
+            return;
+
+        const { node } = await client.DOM.describeNode({ objectId: result.objectId });
+
+        if (!node.frameId)
+            return;
+
+        this._currentFrameId = node.frameId;
+    }
+
+    private switchToMainWindow () {
+        this._currentFrameId = '';
     }
 }

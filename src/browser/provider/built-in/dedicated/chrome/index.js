@@ -5,7 +5,7 @@ import ChromeRunTimeInfo from './runtime-info';
 import getConfig from './config';
 import { start as startLocalChrome, stop as stopLocalChrome } from './local-chrome';
 import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../../utils/client-functions';
-import { BrowserClient } from './browser-client';
+import { BrowserClient } from './cdp-client';
 
 const MIN_AVAILABLE_DIMENSION = 50;
 
@@ -120,7 +120,10 @@ export default {
             hasTakeScreenshot:              !!client,
             hasChromelessScreenshots:       !!client,
             hasGetVideoFrameData:           !!client,
-            hasCanResizeWindowToDimensions: false
+            hasCanResizeWindowToDimensions: false,
+            hasExecuteClientFunction:       !!client,
+            hasSwitchToIframe:              !!client,
+            hasSwitchToMainWindow:          !!client
         };
     },
 

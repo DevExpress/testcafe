@@ -1,4 +1,4 @@
-import { BrowserClient } from './browser-client';
+import { BrowserClient } from './cdp-client';
 
 export interface Size {
     width: number;

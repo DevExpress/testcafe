@@ -7,10 +7,10 @@ import { TEST_RUN_ERRORS } from '../../errors/types';
 // Base
 //--------------------------------------------------------------------
 export class TestRunErrorBase {
-    constructor (code) {
+    constructor (code, callsite) {
         this.code            = code;
         this.isTestCafeError = true;
-        this.callsite        = null;
+        this.callsite        = callsite || null;
     }
 }
 
@@ -27,16 +27,16 @@ class ActionOptionErrorBase extends TestRunErrorBase {
 // Client function errors
 //--------------------------------------------------------------------
 export class ClientFunctionExecutionInterruptionError extends TestRunErrorBase {
-    constructor (instantiationCallsiteName) {
-        super(TEST_RUN_ERRORS.clientFunctionExecutionInterruptionError);
+    constructor (instantiationCallsiteName, callsite) {
+        super(TEST_RUN_ERRORS.clientFunctionExecutionInterruptionError, callsite);
 
         this.instantiationCallsiteName = instantiationCallsiteName;
     }
 }
 
 export class DomNodeClientFunctionResultError extends TestRunErrorBase {
-    constructor (instantiationCallsiteName) {
-        super(TEST_RUN_ERRORS.domNodeClientFunctionResultError);
+    constructor (instantiationCallsiteName, callsite) {
+        super(TEST_RUN_ERRORS.domNodeClientFunctionResultError, callsite);
 
         this.instantiationCallsiteName = instantiationCallsiteName;
     }
@@ -81,8 +81,8 @@ export class UncaughtErrorOnPage extends TestRunErrorBase {
 }
 
 export class UncaughtErrorInClientFunctionCode extends TestRunErrorBase {
-    constructor (instantiationCallsiteName, err) {
-        super(TEST_RUN_ERRORS.uncaughtErrorInClientFunctionCode);
+    constructor (instantiationCallsiteName, err, callsite) {
+        super(TEST_RUN_ERRORS.uncaughtErrorInClientFunctionCode, callsite);
 
         this.errMsg                    = String(err);
         this.instantiationCallsiteName = instantiationCallsiteName;

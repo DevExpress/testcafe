@@ -33,7 +33,8 @@ describe('[API] t.eval', function () {
     it('Should have the correct callsite if an error occurs during execution', function () {
         return runTests('./testcafe-fixtures/eval-test.js', 'Error during execution', { shouldFail: true })
             .catch(function (errs) {
-                expect(errs[0]).contains('An error occurred in eval code:  Error: Hi there!');
+                expect(errs[0]).contains('An error occurred in eval code:');
+                expect(errs[0]).contains('Error: Hi there!');
                 expect(errs[0]).contains('> 25 |    await t.eval(() => {');
             });
     });
