@@ -178,13 +178,13 @@ export class BrowserClient {
         this._runtimeInfo.emulatedDevicePixelRatio = this._config.scaleFactor || this._runtimeInfo.originalDevicePixelRatio;
     }
 
-    private async _addScriptToEvaluateOnNewDocument (client: remoteChrome.ProtocolApi) {
+    private async _addScriptToEvaluateOnNewDocument (client: remoteChrome.ProtocolApi): Promise<void> {
         await client.Page.addScriptToEvaluateOnNewDocument({
             source: read('../../../../../../../lib/client/proxyless/index.js') as string
         });
     }
 
-    private _setupFramesWatching (client: remoteChrome.ProtocolApi) {
+    private _setupFramesWatching (client: remoteChrome.ProtocolApi): void {
         // @ts-ignore
         client.Runtime.executionContextCreated((event: Protocol.Runtime.ExecutionContextCreatedEvent) => {
             if (!event.context.auxData?.frameId)
@@ -355,7 +355,8 @@ export class BrowserClient {
             })();
         `;
 
-        let result, exceptionDetails;
+        let result;
+        let exceptionDetails;
 
         try {
             const script = { expression, awaitPromise: true } as Protocol.Runtime.EvaluateRequest;
@@ -382,7 +383,7 @@ export class BrowserClient {
         return JSON.parse(result.value);
     }
 
-    private async switchToIframe () {
+    private async switchToIframe (): Promise<void> {
         const client = await this.getActiveClient();
 
         if (!client)
@@ -406,7 +407,7 @@ export class BrowserClient {
         this._currentFrameId = node.frameId;
     }
 
-    private switchToMainWindow () {
+    private switchToMainWindow (): void {
         this._currentFrameId = '';
     }
 }

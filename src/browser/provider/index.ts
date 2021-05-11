@@ -405,11 +405,11 @@ export default class BrowserProvider {
         return this.plugin.executeClientFunction(browserId, command, callsite);
     }
 
-    public async switchToIframe (browserId: string) {
+    public async switchToIframe (browserId: string): Promise<void> {
         return this.plugin.switchToIframe(browserId);
     }
 
-    public async switchToMainWindow (browserId: string) {
+    public switchToMainWindow (browserId: string): Promise<void> {
         return this.plugin.switchToMainWindow(browserId);
     }
 

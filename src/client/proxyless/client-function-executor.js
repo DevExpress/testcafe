@@ -15,6 +15,7 @@ export default class ClientFunctionExecutor {
     }
 
     getResult () {
+        // eslint-disable-next-line hammerhead/use-hh-promise
         return Promise.resolve()
             .then(() => {
                 const args = this.replicator.decode(this.command.args);
