@@ -247,7 +247,7 @@ The following command runs tests from the specified fixture files:
 testcafe ie js-tests/fixture.js studio-tests/fixture.testcafe
 ```
 
-You can use [glob patterns](https://github.com/isaacs/node-glob#glob-primer) to specify a set of files.
+You can use [glob patterns](https://github.com/isaacs/node-glob#glob-primer) to specify sets of files.
 
 The following command runs tests from files that match the `tests/*page*` pattern (for instance, `tests/example-page.js`, `tests/main-page.js`, or `tests/auth-page.testcafe`):
 
@@ -255,7 +255,7 @@ The following command runs tests from files that match the `tests/*page*` patter
 testcafe ie tests/*page*
 ```
 
-NOTE: You might want to enclose the glob pattern in single quotes to prevent your shell from expanding the glob [in an unexpected way](https://medium.com/@jakubsynowiec/you-should-always-quote-your-globs-in-npm-scripts-621887a2a784).
+NOTE: Enclose glob patterns in single quotes to prevent your shell from [expanding](https://medium.com/@jakubsynowiec/you-should-always-quote-your-globs-in-npm-scripts-621887a2a784) them.
 
 If you do not specify any file or directory, TestCafe runs tests from the `test` or `tests` directories.
 
