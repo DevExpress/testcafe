@@ -1,19 +1,25 @@
-fixture `Concurrent`.page`../pages/index.html`;
+import { saveTimeline } from '../common/timeline';
 
-global.timeline = [];
+const timeline = [];
+
+fixture `Concurrent`
+    .page`../pages/index.html`
+    .after(() => {
+        saveTimeline(timeline);
+    });
 
 test('Long test', async t => {
-    global.timeline.push('test started');
+    timeline.push('test started');
 
     await t.wait(10000);
 
-    global.timeline.push('long finished');
+    timeline.push('long finished');
 });
 
 test('Short test', async t => {
-    global.timeline.push('test started');
+    timeline.push('test started');
 
     await t.wait(1000);
 
-    global.timeline.push('short finished');
+    timeline.push('short finished');
 });

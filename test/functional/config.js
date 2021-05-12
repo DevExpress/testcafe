@@ -218,7 +218,7 @@ module.exports = {
     },
 
     get devMode () {
-        return !!process.env.DEV_MODE;
+        return process.env.DEV_MODE === 'true';
     },
 
     get retryTestPages () {

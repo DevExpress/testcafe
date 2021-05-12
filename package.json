@@ -101,7 +101,7 @@
     "is-ci": "^1.0.10",
     "is-docker": "^2.0.0",
     "is-glob": "^2.0.1",
-    "is-stream": "^1.1.0",
+    "is-stream": "^2.0.0",
     "json5": "^2.1.0",
     "lodash": "^4.17.13",
     "log-update-async-hook": "^2.0.2",

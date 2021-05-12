@@ -12,14 +12,15 @@ import {
     RequestFilterRule
 } from 'testcafe-hammerhead';
 
-export const BEFORE_AFTER_PROPERTIES  = ['beforeFn', 'afterFn'] as const;
+export const BEFORE_AFTER_PROPERTIES      = ['beforeFn', 'afterFn'] as const;
 export const BEFORE_AFTER_EACH_PROPERTIES = ['beforeEachFn', 'afterEachFn'] as const;
-export const TEST_FUNCTION_PROPERTIES = ['fn', ...BEFORE_AFTER_PROPERTIES] as const;
-export const FUNCTION_PROPERTIES = [...TEST_FUNCTION_PROPERTIES, ...BEFORE_AFTER_EACH_PROPERTIES] as const;
+export const TEST_FUNCTION_PROPERTIES     = ['fn', ...BEFORE_AFTER_PROPERTIES] as const;
+export const FIXTURE_FUNCTION_PROPERTIES  = [...BEFORE_AFTER_PROPERTIES, ...BEFORE_AFTER_EACH_PROPERTIES] as const;
+export const FUNCTION_PROPERTIES          = [...TEST_FUNCTION_PROPERTIES, ...BEFORE_AFTER_EACH_PROPERTIES] as const;
 
 export type FunctionProperties = typeof FUNCTION_PROPERTIES[number];
 export type TestFunctionProperties = typeof TEST_FUNCTION_PROPERTIES[number];
-export type FixtureFunctionProperties = typeof BEFORE_AFTER_EACH_PROPERTIES[number];
+export type FixtureFunctionProperties = typeof FIXTURE_FUNCTION_PROPERTIES[number];
 
 
 export function isTestFunctionProperty (value: FunctionProperties): value is TestFunctionProperties {
@@ -27,7 +28,7 @@ export function isTestFunctionProperty (value: FunctionProperties): value is Tes
 }
 
 export function isFixtureFunctionProperty (value: FunctionProperties): value is FixtureFunctionProperties {
-    return BEFORE_AFTER_EACH_PROPERTIES.includes(value as FixtureFunctionProperties);
+    return FIXTURE_FUNCTION_PROPERTIES.includes(value as FixtureFunctionProperties);
 }
 
 export interface RunTestArguments {
@@ -112,7 +113,7 @@ export interface GetWarningMessagesArguments {
     testRunId: string;
 }
 
-export interface InitializeTestRunProxyArguments {
+export interface InitializeTestRunDataArguments {
     testRunId: string;
     testId: string;
 }
@@ -130,7 +131,7 @@ export interface CompilerProtocol extends TestRunDispatcherProtocol {
 
     getTests ({ sourceList, compilerOptions }: CompilerArguments): Promise<unknown>;
 
-    runTest ({ id, functionName, testRunId }: RunTestArguments): Promise<unknown>;
+    runTestFn ({ id, functionName, testRunId }: RunTestArguments): Promise<unknown>;
 
     cleanUp (): Promise<void>;
 
@@ -152,5 +153,5 @@ export interface CompilerProtocol extends TestRunDispatcherProtocol {
 
     getWarningMessages ({ testRunId }: GetWarningMessagesArguments): Promise<string[]>;
 
-    initializeTestRunProxy ({ testRunId, testId }: InitializeTestRunProxyArguments): Promise<void>;
+    initializeTestRunData ({ testRunId, testId }: InitializeTestRunDataArguments): Promise<void>;
 }

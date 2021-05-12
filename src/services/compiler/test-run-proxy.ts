@@ -35,7 +35,7 @@ class TestRunProxy {
     public readonly controller: TestController;
     public readonly observedCallsites: ObservedCallsitesStorage;
     public readonly warningLog: WarningLog;
-
+    public fixtureCtx?: object;
     private readonly dispatcher: TestRunDispatcherProtocol;
     private readonly ctx: unknown;
     private readonly _options: Dictionary<OptionValue>;

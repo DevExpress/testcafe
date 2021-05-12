@@ -1,17 +1,25 @@
-fixture `Sequential`.page`../pages/index.html`;
+import { saveTimeline } from '../common/timeline';
+
+const timeline = [];
+
+fixture `Sequential`
+    .page`../pages/index.html`
+    .after(() => {
+        saveTimeline(timeline);
+    });
 
 test('Long test', async t => {
-    global.timeline.push('long started');
+    timeline.push('long started');
 
     await t.wait(10000);
 
-    global.timeline.push('long finished');
+    timeline.push('long finished');
 });
 
 test('Short test', async t => {
-    global.timeline.push('short started');
+    timeline.push('short started');
 
     await t.wait(1000);
 
-    global.timeline.push('short finished');
+    timeline.push('short finished');
 });

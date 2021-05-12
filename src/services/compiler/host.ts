@@ -31,7 +31,7 @@ import {
     GetWarningMessagesArguments,
     AddRequestEventListenersArguments,
     RemoveRequestEventListenersArguments,
-    InitializeTestRunProxyArguments
+    InitializeTestRunDataArguments
 } from './protocol';
 
 import { CompilerArguments } from '../../compiler/interfaces';
@@ -89,7 +89,7 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
             this.getWarningMessages,
             this.addRequestEventListeners,
             this.removeRequestEventListeners,
-            this.initializeTestRunProxy
+            this.initializeTestRunData
         ], this);
     }
 
@@ -156,7 +156,7 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
     private _wrapTestFunction (id: string, functionName: FunctionProperties): TestFunction {
         return async testRun => {
             try {
-                return await this.runTest({ id, functionName, testRunId: testRun.id });
+                return await this.runTestFn({ id, functionName, testRunId: testRun.id });
             }
             catch (err) {
                 const errList = new TestCafeErrorList();
@@ -218,10 +218,10 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
         );
     }
 
-    public async runTest ({ id, functionName, testRunId }: RunTestArguments): Promise<unknown> {
+    public async runTestFn ({ id, functionName, testRunId }: RunTestArguments): Promise<unknown> {
         const { proxy } = await this._getRuntime();
 
-        return await proxy.call(this.runTest, { id, functionName, testRunId });
+        return await proxy.call(this.runTestFn, { id, functionName, testRunId });
     }
 
     public async cleanUp (): Promise<void> {
@@ -302,9 +302,9 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
         await this.emit('removeRequestEventListeners', { rules });
     }
 
-    public async initializeTestRunProxy ({ testRunId, testId }: InitializeTestRunProxyArguments): Promise<void> {
+    public async initializeTestRunData ({ testRunId, testId }: InitializeTestRunDataArguments): Promise<void> {
         const { proxy } = await this._getRuntime();
 
-        return proxy.call(this.initializeTestRunProxy, { testRunId, testId });
+        return proxy.call(this.initializeTestRunData, { testRunId, testId });
     }
 }

@@ -4,6 +4,11 @@ const isCI               = require('is-ci');
 const config             = require('../../config');
 const { createReporter } = require('../../utils/reporter');
 
+const {
+    getTimeline,
+    deleteTimeline
+} = require('./common/timeline');
+
 if (config.useLocalBrowsers) {
     describe('Concurrency', function () {
         let data = '';
@@ -76,26 +81,24 @@ if (config.useLocalBrowsers) {
         });
 
         beforeEach(function () {
-            global.timeline = [];
-
             data = '';
         });
 
         afterEach(function () {
-            delete global.timeline;
+            deleteTimeline();
         });
 
         it('Should run tests sequentially if concurrency = 1', function () {
             return run('chrome:headless --no-sandbox', 1, './testcafe-fixtures/sequential-test.js')
                 .then(() => {
-                    expect(global.timeline).eql(['long started', 'long finished', 'short started', 'short finished']);
+                    expect(getTimeline()).eql(['long started', 'long finished', 'short started', 'short finished']);
                 });
         });
 
         it('Should run tests concurrently if concurrency > 1', function () {
             return run('chrome:headless --no-sandbox', 2, './testcafe-fixtures/concurrent-test.js')
                 .then(() => {
-                    expect(global.timeline).eql(['test started', 'test started', 'short finished', 'long finished']);
+                    expect(getTimeline()).eql(['test started', 'test started', 'short finished', 'long finished']);
                 });
         });
 
@@ -104,9 +107,11 @@ if (config.useLocalBrowsers) {
             it('Should run tests concurrently in different browser kinds', function () {
                 return run(['chrome:headless --no-sandbox', 'chrome:headless --no-sandbox --user-agent="TestAgent"'], 2, './testcafe-fixtures/multibrowser-concurrent-test.js')
                     .then(() => {
-                        expect(Object.keys(global.timeline).length).gt(1);
+                        const timeline = getTimeline();
 
-                        for (const browserTimeline of Object.values(global.timeline))
+                        expect(Object.keys(timeline).length).gt(1);
+
+                        for (const browserTimeline of Object.values(timeline))
                             expect(browserTimeline).eql(['test started', 'test started', 'short finished', 'long finished']);
                     });
             });

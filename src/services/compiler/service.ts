@@ -41,7 +41,7 @@ import {
     GetWarningMessagesArguments,
     AddRequestEventListenersArguments,
     RemoveRequestEventListenersArguments,
-    InitializeTestRunProxyArguments
+    InitializeTestRunDataArguments
 } from './protocol';
 
 import { CompilerArguments } from '../../compiler/interfaces';
@@ -118,26 +118,31 @@ class CompilerService implements CompilerProtocol {
 
         const fixtureId = isTest(unit) ? unit.fixture.id : (unit as Fixture).id;
 
-        if (!this.state.fixtureCtxs[fixtureId])
-            this.state.fixtureCtxs[fixtureId] = Object.create(null);
-
         return this.state.fixtureCtxs[fixtureId];
     }
 
-    private _getContext (args: RunTestArguments): TestRunProxy | unknown {
+    private _getTestCtx ({ testRunId }: RunTestArguments, test: Test): TestRunProxy {
+        const testRunProxy     = this.state.testRuns[testRunId];
+        const targetFixtureCtx = this.state.fixtureCtxs[test.fixture.id];
+
+        testRunProxy.fixtureCtx = targetFixtureCtx;
+
+        return testRunProxy;
+    }
+
+    private _getContext (args: RunTestArguments, unit: Unit): TestRunProxy | unknown {
         const { testRunId } = args;
-        const fixtureCtx    = this._getFixtureCtx(args);
 
-        if (!testRunId)
-            return fixtureCtx;
+        if (testRunId)
+            return this._getTestCtx(args, unit as Test);
 
-        return this.state.testRuns[testRunId];
+        return this._getFixtureCtx(args);
     }
 
     private _setupRoutes (): void {
         this.proxy.register([
             this.getTests,
-            this.runTest,
+            this.runTestFn,
             this.cleanUp,
             this.setOptions,
             this.onRequestHookEvent,
@@ -150,7 +155,7 @@ class CompilerService implements CompilerProtocol {
             this.getWarningMessages,
             this.addRequestEventListeners,
             this.removeRequestEventListeners,
-            this.initializeTestRunProxy
+            this.initializeTestRunData
         ], this);
     }
 
@@ -204,6 +209,26 @@ class CompilerService implements CompilerProtocol {
         event.requestFilterRule = RequestFilterRule.from(event.requestFilterRule as object);
     }
 
+    private _initializeTestRunProxy (testRunId: string, test: Test): void {
+        const testRunProxy = new TestRunProxy({
+            dispatcher: this,
+            id:         testRunId,
+            options:    this.state.options,
+            test
+        });
+
+        this.state.testRuns[testRunId] = testRunProxy;
+    }
+
+    private _initializeFixtureCtx (test: Test): void {
+        const fixtureId = test.fixture.id;
+
+        if (this.state.fixtureCtxs[fixtureId])
+            return;
+
+        this.state.fixtureCtxs[fixtureId] = Object.create(null);
+    }
+
     public async setOptions ({ value }: SetOptionsArguments): Promise<void> {
         this.state.options = value;
     }
@@ -227,11 +252,11 @@ class CompilerService implements CompilerProtocol {
         return serializeTestStructure(units);
     }
 
-    public async runTest (args: RunTestArguments): Promise<unknown> {
+    public async runTestFn (args: RunTestArguments): Promise<unknown> {
         const { id, functionName } = args;
 
         const unit           = this.state.units[id];
-        const context        = this._getContext(args);
+        const context        = this._getContext(args, unit);
         const functionObject = this._getFunction(unit, functionName);
 
         if (!functionObject)
@@ -322,17 +347,11 @@ class CompilerService implements CompilerProtocol {
         return await this.proxy.call(this.removeRequestEventListeners, { rules });
     }
 
-    public async initializeTestRunProxy ({ testRunId, testId }: InitializeTestRunProxyArguments): Promise<void> {
+    public async initializeTestRunData ({ testRunId, testId }: InitializeTestRunDataArguments): Promise<void> {
         const test = this.state.units[testId] as Test;
 
-        const testRunProxy = new TestRunProxy({
-            dispatcher: this,
-            id:         testRunId,
-            options:    this.state.options,
-            test
-        });
-
-        this.state.testRuns[testRunId] = testRunProxy;
+        this._initializeTestRunProxy(testRunId, test);
+        this._initializeFixtureCtx(test);
     }
 }
 
