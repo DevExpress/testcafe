@@ -8,6 +8,7 @@ import {
     ClickOptions,
     MouseOptions,
     TypeOptions,
+    PressOptions,
     DragToElementOptions,
     OffsetOptions
 } from './options';
@@ -58,6 +59,10 @@ function initTypeOptions (name, val) {
 
 function initDragToElementOptions (name, val) {
     return new DragToElementOptions(val, true);
+}
+
+function initPressOptions (name, val) {
+    return new PressOptions(val, true);
 }
 
 function initDialogHandler (name, val, { skipVisibilityCheck, testRun }) {
@@ -325,7 +330,7 @@ export class PressKeyCommand extends CommandBase {
     _getAssignableProperties () {
         return [
             { name: 'keys', type: nonEmptyStringArgument, required: true },
-            { name: 'options', type: actionOptions, init: initActionOptions, required: true }
+            { name: 'options', type: actionOptions, init: initPressOptions, required: true }
         ];
     }
 }

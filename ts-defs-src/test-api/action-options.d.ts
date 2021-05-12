@@ -138,6 +138,17 @@ interface TypeActionOptions extends ClickActionOptions {
      * and false to insert the current text character by character.
      */
     paste?: boolean;
+    /**
+     * `true` to replace the typed text with a placeholder when sending action logs to a reporter.
+     */
+    confidential?: boolean;
+}
+
+interface PressActionOptions extends ActionOptions {
+    /**
+     * `true` to replace the pressed keys with a placeholder when sending action logs to a reporter.
+     */
+    confidential?: boolean;
 }
 
 interface DragToElementOptions extends MouseActionOptions {

@@ -24,6 +24,7 @@ import PHASE from './phase';
 import CLIENT_MESSAGES from './client-messages';
 import COMMAND_TYPE from './commands/type';
 import delay from '../utils/delay';
+import isPasswordInput from '../utils/is-password-input';
 import testRunMarker from './marker-symbol';
 import testRunTracker from '../api/test-run-tracker';
 import ROLE_PHASE from '../role/phase';
@@ -52,6 +53,8 @@ import { GetCurrentWindowsCommand, SwitchToWindowCommand } from './commands/acti
 import { RUNTIME_ERRORS, TEST_RUN_ERRORS } from '../errors/types';
 import processTestFnError from '../errors/process-test-fn-error';
 import RequestHookMethodNames from '../api/request-hooks/hook-method-names';
+
+import { createReplicator, SelectorNodeTransform } from '../client-functions/replicator';
 
 const lazyRequire                 = require('import-lazy')(require);
 const SessionController           = lazyRequire('./session-controller');
@@ -150,6 +153,8 @@ export default class TestRun extends AsyncEventEmitter {
 
         this.observedCallsites = new ObservedCallsitesStorage();
         this.compilerService   = compilerService;
+
+        this.replicator = createReplicator([ new SelectorNodeTransform() ]);
 
         this._addInjectables();
         this._initRequestHooks();
@@ -691,6 +696,33 @@ export default class TestRun extends AsyncEventEmitter {
             command.generateScreenshotMark();
     }
 
+    async _adjustCommandOptions (command) {
+        if (command.options?.confidential !== void 0)
+            return;
+
+        if (command.type === COMMAND_TYPE.typeText) {
+            const result = await this.executeCommand(command.selector);
+
+            if (!result)
+                return;
+
+            const node = this.replicator.decode(result);
+
+            command.options.confidential = isPasswordInput(node);
+        }
+
+        else if (command.type === COMMAND_TYPE.pressKey) {
+            const result = await this.executeCommand(new serviceCommands.GetActiveElementCommand());
+
+            if (!result)
+                return;
+
+            const node = this.replicator.decode(result);
+
+            command.options.confidential = isPasswordInput(node);
+        }
+    }
+
     async _setBreakpointIfNecessary (command, callsite) {
         if (!this.disableDebugBreakpoints && this.debugging && canSetDebuggerBreakpointBeforeCommand(command))
             await this._enqueueSetBreakpointCommand(callsite);
@@ -702,6 +734,8 @@ export default class TestRun extends AsyncEventEmitter {
         let errorAdapter = null;
         let error        = null;
         let result       = null;
+
+        await this._adjustCommandOptions(command);
 
         await this.emitActionEvent('action-start', actionArgs);
 

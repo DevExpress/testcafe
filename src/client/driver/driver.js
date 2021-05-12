@@ -80,6 +80,8 @@ import DriverStatus from './status';
 import generateId from './generate-id';
 import ChildIframeDriverLink from './driver-link/iframe/child';
 
+import { createReplicator, SelectorNodeTransform } from './command-executors/client-functions/replicator';
+
 import executeActionCommand from './command-executors/execute-action';
 import executeManipulationCommand from './command-executors/browser-manipulation';
 import executeNavigateToCommand from './command-executors/execute-navigate-to';
@@ -200,11 +202,14 @@ export default class Driver extends serviceUtils.EventEmitter {
         hammerhead.on(hammerhead.EVENTS.windowOpened, e => this._onChildWindowOpened(e));
 
         this.setCustomCommandHandlers(COMMAND_TYPE.unlockPage, () => this._unlockPageAfterTestIsDone());
+        this.setCustomCommandHandlers(COMMAND_TYPE.getActiveElement, () => this._getActiveElement());
 
         // NOTE: initiate the child links restoring process before the window is reloaded
         listeners.addInternalEventBeforeListener(window, ['beforeunload'], () => {
             this._sendStartToRestoreCommand();
         });
+
+        this.replicator = createReplicator([ new SelectorNodeTransform() ]);
     }
 
     _isOpenedInIframe () {
@@ -266,6 +271,12 @@ export default class Driver extends serviceUtils.EventEmitter {
         disableRealEventsPreventing();
 
         return Promise.resolve();
+    }
+
+    async _getActiveElement () {
+        const activeElement = domUtils.getActiveElement();
+
+        return this.replicator.encode(activeElement);
     }
 
     _failIfClientCodeExecutionIsInterrupted () {

@@ -12,8 +12,4 @@ interface QuarantineOptionValue {
     passCount?: number;
 }
 
-interface CompilerOptions {
-    [key: string]: object;
-}
-
 type OptionValue = undefined | null | string | boolean | number | string[] | Function | { [key: string]: any } | ScreenshotOptionValue | QuarantineOptionValue | CompilerOptions;

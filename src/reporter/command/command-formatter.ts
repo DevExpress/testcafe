@@ -2,7 +2,9 @@ import { isEmpty } from 'lodash';
 import { ExecuteSelectorCommand, ExecuteClientFunctionCommand } from '../../test-run/commands/observation';
 import {
     NavigateToCommand,
+    PressKeyCommand,
     SetNativeDialogHandlerCommand,
+    TypeTextCommand,
     UseRoleCommand
 } from '../../test-run/commands/actions';
 
@@ -22,6 +24,8 @@ import {
     AssertionOptions
 } from '../../test-run/commands/options';
 
+
+const CONFIDENTIAL_INFO_PLACEHOLDER = '********';
 
 function isCommandOptions (obj: object): boolean {
     return obj instanceof ActionOptions || obj instanceof ResizeToFitDeviceOptions || obj instanceof AssertionOptions;
@@ -53,7 +57,19 @@ export class CommandFormatter {
         else
             this._assignProperties(this._command, formattedCommand);
 
+        this._maskConfidentialInfo(formattedCommand);
+
         return formattedCommand;
+    }
+
+    private _maskConfidentialInfo (command: FormattedCommand): void {
+        if (!(command.options as any)?.confidential)
+            return;
+
+        if (this._command instanceof TypeTextCommand)
+            command.text = CONFIDENTIAL_INFO_PLACEHOLDER;
+        else if (this._command instanceof PressKeyCommand)
+            command.keys = CONFIDENTIAL_INFO_PLACEHOLDER;
     }
 
     private _getElementByPropertyName (propertyName: string): HTMLElement {

@@ -1,5 +1,9 @@
 {
-  "include": [ "../@types", "./"],
+  "include": [
+    "../@types",
+    "../ts-defs-src",
+    "./"
+  ],
   "exclude": ["./client"],
   "compilerOptions": {
     "outDir": "../lib",
