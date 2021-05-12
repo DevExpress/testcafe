@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.14.2 (2021-05-13)
+
+## Bug Fixes
+
+* Fixed a bug that caused the `The "--quarantine-mode" option value is not a valid key-value pair` error
+
 ## v1.14.1 (2021-05-12)
 
 ## Bug Fixes
