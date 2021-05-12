@@ -1,7 +1,7 @@
 import { uniq, keyBy } from 'lodash';
 
 import {
-    TEST_FUNCTION_PROPERTIES,
+    FUNCTION_PROPERTIES,
     RequestFilterRuleLocator
 } from '../compiler/protocol';
 
@@ -15,7 +15,7 @@ import { RequestFilterRule, RequestInfo } from 'testcafe-hammerhead';
 const RECURSIVE_PROPERTIES = ['testFile', 'fixture', 'currentFixture', 'collectedTests'] as const;
 
 interface FunctionMapper {
-    (id: string, functionName: typeof TEST_FUNCTION_PROPERTIES[number]): Function;
+    (id: string, functionName: typeof FUNCTION_PROPERTIES[number]): Function;
 }
 
 interface RequestFilterRuleMapper {
@@ -64,12 +64,12 @@ function mapProperties<T extends Readonly<object>, P extends Readonly<string[]>>
     }
 }
 
-function replaceTestFunctions (unit: Unit): void {
-    mapProperties(unit, TEST_FUNCTION_PROPERTIES, ({ item }) => !!item);
+function replaceFunctionProperties (unit: Unit): void {
+    mapProperties(unit, FUNCTION_PROPERTIES, ({ item }) => !!item);
 }
 
-function restoreTestFunctions (unit: Unit, mapper: FunctionMapper): void {
-    mapProperties(unit, TEST_FUNCTION_PROPERTIES, ({ item, object, property }) => item ? mapper(object.id, property) : item);
+function restoreFunctionProperties (unit: Unit, mapper: FunctionMapper): void {
+    mapProperties(unit, FUNCTION_PROPERTIES, ({ item, object, property }) => item ? mapper(object.id, property) : item);
 }
 
 function flattenRecursiveProperties (unit: Unit): void {
@@ -112,7 +112,7 @@ export function serialize (units: Units): Units {
         // @ts-ignore
         const copy: Unit = { ...unit };
 
-        replaceTestFunctions(copy);
+        replaceFunctionProperties(copy);
         flattenRecursiveProperties(copy);
 
         result[copy.id] = copy;
@@ -128,7 +128,7 @@ export function restore (units: Units, testFunctionMapper: FunctionMapper, ruleM
 
     for (const unit of list) {
         restoreRecursiveProperties(unit, units);
-        restoreTestFunctions(unit, testFunctionMapper);
+        restoreFunctionProperties(unit, testFunctionMapper);
 
         if (isTest(unit)) {
             restoreRequestFilterRulesInHooks(unit, ruleMapper);
