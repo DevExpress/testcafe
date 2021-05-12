@@ -1,5 +1,15 @@
 # Changelog
 
+## v1.14.1 (2021-05-12)
+
+## Bug Fixes
+
+* Fixed a bug where TestCafe hangs during TestCafe Studio tests execution ([#5207](https://github.com/DevExpress/testcafe/issues/5207))
+* Added missing `disableScreenshots` type definitions ([#5735](https://github.com/DevExpress/testcafe/issues/5735))
+* Fixed an error where the unexpected popup browser window makes TestCafe hang ([#6132](https://github.com/DevExpress/testcafe/issues/6132))
+* Fixed switching to an `iframe` with the `srcdoc` attribute ([#6033](https://github.com/DevExpress/testcafe/issues/6033))
+* Fixed a bug where Word online document is not fully loaded with Firefox ([testcafe-hammerhead#2287](https://github.com/DevExpress/testcafe-hammerhead/issues/2287))
+
 ## v1.14.0 (2021-4-7)
 
 ## Enhancements
@@ -300,7 +310,7 @@ You can enable this functionality with a command line, API, or configuration fil
 * TestCafe proxy now correctly handles requests that are not permitted by the CORS policy ([testcafe-hammerhead/#1263](https://github.com/DevExpress/testcafe-hammerhead/issues/1263))
 * Improved compatibility with test pages that use `with` statements ([testcafe-hammerhead/#2434](https://github.com/DevExpress/testcafe-hammerhead/issues/2434))
 * TestCafe proxy can now properly parse statements that use a comma operator in `for..of` loops ([testcafe-hammerhead/#2573](https://github.com/DevExpress/testcafe-hammerhead/issues/2573))
-* Fixed a bug where TestCafe would open a new window even if `preventDefault` is present in element's event handler ([testcafe-hammerhead/#2582](https://github.com/DevExpress/testcafe-hammerhead/pull/2582))  
+* Fixed a bug where TestCafe would open a new window even if `preventDefault` is present in element's event handler ([testcafe-hammerhead/#2582](https://github.com/DevExpress/testcafe-hammerhead/pull/2582))
 
 ### Vulnerability Fix ([PR #5843](https://github.com/DevExpress/testcafe/pull/5843), [PR testcafe-hammerhead#2531](https://github.com/DevExpress/testcafe-hammerhead/pull/2531))
 
