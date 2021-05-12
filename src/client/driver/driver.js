@@ -275,9 +275,8 @@ export default class Driver extends serviceUtils.EventEmitter {
 
     async _getActiveElement () {
         const activeElement = domUtils.getActiveElement();
-        const encodedResult = this.replicator.encode(activeElement);
 
-        return encodedResult;
+        return this.replicator.encode(activeElement);
     }
 
     _failIfClientCodeExecutionIsInterrupted () {
