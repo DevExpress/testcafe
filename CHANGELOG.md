@@ -4,11 +4,11 @@
 
 ## Bug Fixes
 
-* Fixed a bug where TestCafe hangs during TestCafe Studio tests execution ([#5207](https://github.com/DevExpress/testcafe/issues/5207))
-* Added missing `disableScreenshots` type definitions ([#5735](https://github.com/DevExpress/testcafe/issues/5735))
-* Fixed an error where the unexpected popup browser window makes TestCafe hang ([#6132](https://github.com/DevExpress/testcafe/issues/6132))
-* Fixed switching to an `iframe` with the `srcdoc` attribute ([#6033](https://github.com/DevExpress/testcafe/issues/6033))
-* Fixed a bug where Word online document is not fully loaded with Firefox ([testcafe-hammerhead#2287](https://github.com/DevExpress/testcafe-hammerhead/issues/2287))
+* Fixed a bug that caused TestCafe to hang during the execution of TestCafe Studio tests ([#5207](https://github.com/DevExpress/testcafe/issues/5207))
+* Added a type definition for the `disableScreenshots` Runner option ([#5735](https://github.com/DevExpress/testcafe/issues/5735))
+* Fixed a multi-window mode bug that caused TestCafe to launch an empty browser window and then hang ([#6132](https://github.com/DevExpress/testcafe/issues/6132))
+* Fixed a bug that denied users access to iframes with `srcdoc` attributes ([#6033](https://github.com/DevExpress/testcafe/issues/6033))
+* Fixed a bug that interfered with the loading of Word Online documents in Firefox ([testcafe-hammerhead#2287](https://github.com/DevExpress/testcafe-hammerhead/issues/2287))
 
 ## v1.14.0 (2021-4-7)
 
