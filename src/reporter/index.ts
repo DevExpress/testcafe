@@ -31,7 +31,7 @@ interface ReportItem {
     screenshotPath: null | string;
     screenshots: unknown[];
     videos: unknown[];
-    quarantine: null;
+    quarantine: null | Record<string, object>;
     errs: TestRunErrorFormattableAdapter[];
     warnings: string[];
     unstable: boolean;
@@ -267,7 +267,10 @@ export default class Reporter {
                 id:   testRun.test.fixture.id
             },
             command: formatCommand(command, result),
-            browser: testRun.controller.browser,
+            // TestController doesn't have the browser property in its definition.
+            // It is dynamically added later.
+            // @ts-ignore
+            browser: testRun.controller?.browser,
         });
     }
 

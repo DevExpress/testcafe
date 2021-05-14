@@ -276,22 +276,26 @@ export class SetNativeDialogHandlerCodeWrongTypeError extends TestRunErrorBase {
     }
 }
 
-export class RequestHookUnhandledError extends TestRunErrorBase {
-    constructor (err, hookClassName, methodName) {
-        super(TEST_RUN_ERRORS.requestHookUnhandledError);
+export class RequestHookBaseError extends TestRunErrorBase {
+    constructor (code, hookClassName, methodName) {
+        super(code);
 
-        this.errMsg        = String(err);
         this.hookClassName = hookClassName;
         this.methodName    = methodName;
     }
 }
 
-export class RequestHookNotImplementedMethodError extends TestRunErrorBase {
-    constructor (methodName, hookClassName) {
-        super(TEST_RUN_ERRORS.requestHookNotImplementedError);
+export class RequestHookUnhandledError extends RequestHookBaseError {
+    constructor (err, hookClassName, methodName) {
+        super(TEST_RUN_ERRORS.requestHookUnhandledError, hookClassName, methodName);
 
-        this.methodName    = methodName;
-        this.hookClassName = hookClassName;
+        this.errMsg = String(err);
+    }
+}
+
+export class RequestHookNotImplementedMethodError extends RequestHookBaseError {
+    constructor (methodName, hookClassName) {
+        super(TEST_RUN_ERRORS.requestHookNotImplementedError, hookClassName, methodName);
     }
 }
 
