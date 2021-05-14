@@ -113,19 +113,16 @@ class CompilerService implements CompilerProtocol {
         };
     }
 
-    private _getFixtureCtx ({ id }: RunTestArguments): unknown {
-        const unit = this.state.units[id];
-
+    private _getFixtureCtx (unit: Unit): object {
         const fixtureId = isTest(unit) ? unit.fixture.id : (unit as Fixture).id;
 
         return this.state.fixtureCtxs[fixtureId];
     }
 
-    private _getTestCtx ({ testRunId }: RunTestArguments, test: Test): TestRunProxy {
-        const testRunProxy     = this.state.testRuns[testRunId];
-        const targetFixtureCtx = this.state.fixtureCtxs[test.fixture.id];
+    private _getTestCtx ({ testRunId }: RunTestArguments, unit: Unit): TestRunProxy {
+        const testRunProxy = this.state.testRuns[testRunId];
 
-        testRunProxy.fixtureCtx = targetFixtureCtx;
+        testRunProxy.fixtureCtx = this._getFixtureCtx(unit);
 
         return testRunProxy;
     }
@@ -134,9 +131,9 @@ class CompilerService implements CompilerProtocol {
         const { testRunId } = args;
 
         if (testRunId)
-            return this._getTestCtx(args, unit as Test);
+            return this._getTestCtx(args, unit);
 
-        return this._getFixtureCtx(args);
+        return this._getFixtureCtx(unit);
     }
 
     private _setupRoutes (): void {

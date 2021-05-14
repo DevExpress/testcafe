@@ -11,6 +11,12 @@ const TESTS_GLOB = [
 const MIGRATE_ALL_TESTS_TO_COMPILER_SERVICE_GLOB = [
     'test/functional/fixtures/app-command/test.js',
     'test/functional/fixtures/driver/test.js',
+    'test/functional/fixtures/concurrency/test.js',
+    'test/functional/fixtures/driver/test.js',
+    'test/functional/fixtures/hammerhead/gh-2418/test.js',
+    'test/functional/fixtures/hammerhead/gh-2622/test.js',
+    'test/functional/fixtures/live/test.js',
+    'test/functional/fixtures/api/es-next/hooks/test.js',
     'test/functional/fixtures/api/es-next/request-hooks/test.js'
 ];
 
