@@ -79,7 +79,9 @@ async function generatePreferences (profileDir: string, { marionettePort, config
     });
 
     await writeFile(prefsFileName, prefs.join('\n'));
+}
 
+async function writeHandlersFile (profileDir: string): Promise<void> {
     // NOTE: The definitions of actions are there https://searchfox.org/mozilla-release/source/netwerk/mime/nsIMIMEInfo.idl#115
     const handlersFileName = path.join(profileDir, 'handlers.json');
     const handlers         = {
@@ -120,10 +122,12 @@ async function generatePreferences (profileDir: string, { marionettePort, config
     await writeFile(handlersFileName, JSON.stringify(handlers));
 }
 
+
 export default async function (runtimeInfo: any): Promise<TempDirectory> {
     const tmpDir = await TempDirectory.createDirectory('firefox-profile');
 
     await generatePreferences(tmpDir.path, runtimeInfo);
+    await writeHandlersFile(tmpDir.path);
 
     return tmpDir;
 }
