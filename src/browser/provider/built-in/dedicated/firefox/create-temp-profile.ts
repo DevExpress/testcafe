@@ -16,6 +16,7 @@ function getMimeTypes (): string {
 
 async function generatePreferences (profileDir: string, { marionettePort, config }: { marionettePort: number; config: any }): Promise<void> {
     const prefsFileName = path.join(profileDir, 'user.js');
+    const mimeTypes = getMimeTypes();
 
     let prefs = [
         'user_pref("browser.link.open_newwindow.override.external", 2);',
@@ -30,7 +31,7 @@ async function generatePreferences (profileDir: string, { marionettePort, config
         'user_pref("browser.tabs.warnOnCloseOtherTabs", false);',
         'user_pref("browser.tabs.warnOnClose", false);',
         'user_pref("browser.sessionstore.resume_from_crash", false);',
-        `user_pref("browser.helperApps.neverAsk.saveToDisk", "${getMimeTypes()}");`,
+        `user_pref("browser.helperApps.neverAsk.saveToDisk", "${mimeTypes}");`,
         `user_pref("pdfjs.disabled", true);`,
         'user_pref("toolkit.telemetry.reportingpolicy.firstRun", false);',
         'user_pref("toolkit.telemetry.enabled", false);',
@@ -71,13 +72,62 @@ async function generatePreferences (profileDir: string, { marionettePort, config
         ]);
     }
 
+    mimeTypes.split(',').forEach(mimeType => {
+        const type = mimeType.split('/')[1];
+
+        prefs.push(`user_pref("browser.download.viewableInternally.typeWasRegistered.${type}", true);`);
+    });
+
     await writeFile(prefsFileName, prefs.join('\n'));
 }
+
+async function writeHandlersFile (profileDir: string): Promise<void> {
+    // NOTE: The definitions of actions are there https://searchfox.org/mozilla-release/source/netwerk/mime/nsIMIMEInfo.idl#115
+    const handlersFileName = path.join(profileDir, 'handlers.json');
+    const handlers         = {
+        defaultHandlersVersion: {
+            ru: 5
+        },
+        mimeTypes: {
+            'application/pdf': {
+                action:     0,
+                extensions: [
+                    'pdf'
+                ]
+            },
+            'text/xml': {
+                action:     0,
+                extensions: [
+                    'xml',
+                    'xsl',
+                    'xbl'
+                ]
+            },
+            'image/svg+xml': {
+                action:     0,
+                extensions: [
+                    'svg'
+                ]
+            },
+            'image/webp': {
+                action:     0,
+                extensions: [
+                    'webp'
+                ]
+            }
+        },
+        schemes: {}
+    };
+
+    await writeFile(handlersFileName, JSON.stringify(handlers));
+}
+
 
 export default async function (runtimeInfo: any): Promise<TempDirectory> {
     const tmpDir = await TempDirectory.createDirectory('firefox-profile');
 
     await generatePreferences(tmpDir.path, runtimeInfo);
+    await writeHandlersFile(tmpDir.path);
 
     return tmpDir;
 }
