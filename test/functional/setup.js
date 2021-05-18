@@ -203,6 +203,7 @@ before(function () {
                 const {
                     skipJsErrors,
                     quarantineMode,
+                    quarantineOptions,
                     screenshotPathPattern,
                     screenshotsOnFails,
                     screenshotsFullPage,
@@ -276,6 +277,7 @@ before(function () {
                     .run({
                         skipJsErrors,
                         quarantineMode,
+                        quarantineOptions,
                         selectorTimeout,
                         assertionTimeout,
                         pageLoadTimeout,

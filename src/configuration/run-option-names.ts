@@ -4,6 +4,7 @@ export default [
     OPTION_NAMES.skipJsErrors,
     OPTION_NAMES.skipUncaughtErrors,
     OPTION_NAMES.quarantineMode,
+    OPTION_NAMES.quarantineOptions,
     OPTION_NAMES.debugMode,
     OPTION_NAMES.debugOnFail,
     OPTION_NAMES.selectorTimeout,

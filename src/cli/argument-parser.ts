@@ -62,7 +62,8 @@ interface CommandLineOptions {
     ajaxRequestTimeout?: string | number;
     browserInitTimeout?: string | number;
     concurrency?: string | number;
-    quarantineMode?: boolean | Dictionary<string | number>;
+    quarantineMode?: boolean;
+    quarantineOptions?: Dictionary<string | number>;
     ports?: string | number[];
     providerName?: string;
     ssl?: string | Dictionary<string | number | boolean >;
@@ -120,6 +121,7 @@ export default class CLIArgumentParser {
             .option('-S, --screenshots-on-fails', 'take a screenshot whenever a test fails')
             .option('-p, --screenshot-path-pattern <pattern>', 'use patterns to compose screenshot file names and paths: ${BROWSER}, ${BROWSER_VERSION}, ${OS}, etc.')
             .option('-q, --quarantine-mode', 'enable the quarantine mode, optionally number of retries and pass threshold')
+            .option('--quarantine-options <option=value[,...]>', 'specify the quarantine mode options: number of retries and pass threshold')
             .option('-d, --debug-mode', 'execute test steps one by one pausing the test after each step')
             .option('-e, --skip-js-errors', 'make tests not fail when a JS error happens on a page')
             .option('-u, --skip-uncaught-errors', 'ignore uncaught errors and unhandled promise rejections, which occur during test execution')
@@ -276,8 +278,8 @@ export default class CLIArgumentParser {
     }
 
     private async _parseQuarantineOptions (): Promise<void> {
-        if (this.opts.quarantineMode)
-            this.opts.quarantineMode = await getQuarantineOptions('--quarantine-mode', this.opts.quarantineMode);
+        if (this.opts.quarantineMode && this.opts.quarantineOptions)
+            this.opts.quarantineOptions = await getQuarantineOptions('--quarantine-options', this.opts.quarantineOptions);
     }
 
     private _parsePorts (): void {

@@ -17,6 +17,7 @@ enum OptionNames {
     appInitDelay = 'appInitDelay',
     skipJsErrors = 'skipJsErrors',
     quarantineMode = 'quarantineMode',
+    quarantineOptions = 'quarantineOptions',
     debugMode = 'debugMode',
     debugOnFail = 'debugOnFail',
     skipUncaughtErrors = 'skipUncaughtErrors',

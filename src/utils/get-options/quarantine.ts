@@ -20,10 +20,7 @@ function _validateQuarantineOptions (options: Dictionary<string | number> ): voi
         throw new GeneralError(RUNTIME_ERRORS.invalidRetryCountValue, passCount);
 }
 
-export async function getQuarantineOptions (optionName: string, options: string | boolean | Dictionary<string | number>): Promise<Dictionary<number> | boolean> {
-    if (typeof options === 'boolean')
-        return true;
-
+export async function getQuarantineOptions (optionName: string, options: string | Dictionary<string | number>): Promise<Dictionary<number>> {
     const parsedOptions = await baseGetOptions(options, {
         skipOptionValueTypeConversion: true,
 

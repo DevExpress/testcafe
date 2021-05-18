@@ -644,49 +644,48 @@ describe('CLI argument parser', function () {
             });
     });
 
-    // TODO: enable tests back after eliminating a breaking change in -q <browser> and -q <test.js> behavior
-    describe.skip('Quarantine Options', function () {
+    describe('Quarantine Options', function () {
         it('Should parse quarantine arguments', async () => {
-            const parser = await parse('-q retryCount=5,passCount=1');
+            const parser = await parse('-q --quarantine-options retryCount=5,passCount=1');
 
             expect(parser.opts.quarantineMode).to.be.ok;
-            expect(parser.opts.quarantineMode.retryCount).equal(5);
-            expect(parser.opts.quarantineMode.passCount).equal(1);
+            expect(parser.opts.quarantineOptions.retryCount).equal(5);
+            expect(parser.opts.quarantineOptions.passCount).equal(1);
         });
 
         it('Should parse quarantine-mode arguments', async () => {
-            const parser = await parse('--quarantine-mode retryCount=5,passCount=1');
+            const parser = await parse('--quarantine-mode --quarantine-options retryCount=5,passCount=1');
 
             expect(parser.opts.quarantineMode).to.be.ok;
-            expect(parser.opts.quarantineMode.retryCount).equal(5);
-            expect(parser.opts.quarantineMode.passCount).equal(1);
+            expect(parser.opts.quarantineOptions.retryCount).equal(5);
+            expect(parser.opts.quarantineOptions.passCount).equal(1);
         });
 
         it('Should pass if only "passCount" is provided', async () => {
-            const parser = await parse('--quarantine-mode passCount=1');
+            const parser = await parse('--quarantine-mode --quarantine-options passCount=1');
 
             expect(parser.opts.quarantineMode).to.be.ok;
-            expect(parser.opts.quarantineMode.passCount).equal(1);
+            expect(parser.opts.quarantineOptions.passCount).equal(1);
         });
 
         it('Should fail if threshold value not specified', async () => {
-            return assertRaisesError('--quarantine-mode retryCount=', 'The "--quarantine-mode" option value is not a valid key-value pair.');
+            return assertRaisesError('--quarantine-mode --quarantine-options retryCount=', 'The "--quarantine-options" option value is not a valid key-value pair.');
         });
 
         it('Should fail if threshold keys not specified', async () => {
-            return assertRaisesError('--quarantine-mode 1', 'The "--quarantine-mode" option value is not a valid key-value pair.');
+            return assertRaisesError('--quarantine-mode --quarantine-options 1', 'The "--quarantine-options" option value is not a valid key-value pair.');
         });
 
         it('Should fail if invalid option is specified', async () => {
-            return assertRaisesError('--quarantine-mode test=fake', 'The "--quarantine-mode" option should be empty, otherwise one of "retryCount" or "passCount".');
+            return assertRaisesError('--quarantine-mode --quarantine-options test=fake', 'The "--quarantine-options" option should be one of "retryCount" or "passCount".');
         });
 
         it('Should fail if "retryCount" is greater than "passCount"', async () => {
-            return assertRaisesError('--quarantine-mode retryCount=1,passCount=2', 'The "retryCount" value should be greater or equal to "passCount" (2).');
+            return assertRaisesError('--quarantine-mode --quarantine-options retryCount=1,passCount=2', 'The "retryCount" value should be greater or equal to "passCount" (2).');
         });
 
         it('Should fail if "retryCount" is less than 3', async () => {
-            return assertRaisesError('--quarantine-mode retryCount=1', 'The "retryCount" value should be greater or equal to "passCount" (3).');
+            return assertRaisesError('--quarantine-mode --quarantine-options retryCount=1', 'The "retryCount" value should be greater or equal to "passCount" (3).');
         });
     });
 
@@ -730,6 +729,7 @@ describe('CLI argument parser', function () {
             { long: '--screenshot-path-pattern', short: '-p' },
             { long: '--screenshots-on-fails', short: '-S' },
             { long: '--quarantine-mode', short: '-q' },
+            { long: '--quarantine-options' },
             { long: '--debug-mode', short: '-d' },
             { long: '--skip-js-errors', short: '-e' },
             { long: '--test', short: '-t' },
@@ -791,7 +791,7 @@ describe('CLI argument parser', function () {
             expect(option.short).eql(EXPECTED_OPTIONS[i].short, CHANGE_CLI_WARNING);
         }
 
-        const expectedRunOptionsCount   = 18;
+        const expectedRunOptionsCount   = 19;
         const expectedOtherOptionsCount = 35;
         const otherOptionsCount         = options.length - expectedRunOptionsCount;
 

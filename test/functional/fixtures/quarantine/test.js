@@ -33,7 +33,8 @@ if (config.useLocalBrowsers) {
             const reporter = getReporter(result);
 
             return runTests('./testcafe-fixtures/test-quarantine-mode.js', 'Failing test, in quarantine mode', {
-                quarantineMode: {
+                quarantineMode:    true,
+                quarantineOptions: {
                     retryCount: 10
                 },
                 reporter: [reporter]
@@ -49,7 +50,8 @@ if (config.useLocalBrowsers) {
             const reporter = getReporter(result);
 
             return runTests('./testcafe-fixtures/test-quarantine-mode.js', 'Check for unstable test', {
-                quarantineMode: {
+                quarantineMode:    true,
+                quarantineOptions: {
                     passCount: 2
                 },
                 reporter: [reporter]
@@ -65,7 +67,8 @@ if (config.useLocalBrowsers) {
             const reporter = getReporter(result);
 
             return runTests('./testcafe-fixtures/test-quarantine-mode.js', 'Another unstable test', {
-                quarantineMode: {
+                quarantineMode:    true,
+                quarantineOptions: {
                     retryCount: 10
                 },
                 reporter: [reporter]
