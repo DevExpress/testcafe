@@ -929,7 +929,7 @@ export default class TestRun extends AsyncEventEmitter {
                 return null;
             }
 
-            await this._adjustScreenshotCommand(command as TakeScreenshotBaseCommand);
+            await this._adjustScreenshotCommand(command as unknown as TakeScreenshotBaseCommand);
         }
 
         if (isBrowserManipulationCommand(command)) {
@@ -973,7 +973,7 @@ export default class TestRun extends AsyncEventEmitter {
             (command as any).windowId = this.browserConnection.previousActiveWindowId;
 
         if (command.type === COMMAND_TYPE.switchToWindowByPredicate)
-            return this._switchToWindowByPredicate(command as SwitchToWindowByPredicateCommand);
+            return this._switchToWindowByPredicate(command as unknown as SwitchToWindowByPredicateCommand);
 
         return this._enqueueCommand(command, callsite as CallsiteRecord);
     }
@@ -1116,7 +1116,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     private async _switchToWindowByPredicate (command: SwitchToWindowByPredicateCommand): Promise<void> {
-        const currentWindows = await this.executeCommand(new GetCurrentWindowsCommand({}, this)) as OpenedWindowInformation[];
+        const currentWindows = await this.executeCommand(new GetCurrentWindowsCommand({}, this) as unknown as Command) as OpenedWindowInformation[];
 
         const windows = currentWindows.filter(wnd => {
             try {
@@ -1135,7 +1135,7 @@ export default class TestRun extends AsyncEventEmitter {
         if (windows.length > 1)
             this.warningLog.addWarning(WARNING_MESSAGE.multipleWindowsFoundByPredicate);
 
-        await this.executeCommand(new SwitchToWindowCommand({ windowId: windows[0].id }, this));
+        await this.executeCommand(new SwitchToWindowCommand({ windowId: windows[0].id }, this) as unknown as Command);
     }
 
     private _disconnect (err: Error): void {

@@ -15,11 +15,11 @@ export default class Role extends EventEmitter {
     public opts: RoleOptions;
     public initErr: null | Error;
     public stateSnapshot: StateSnapshot;
+    private [roleMarker]: boolean;
 
     public constructor (loginUrl: string | null, initFn: Function | null, options = {}) {
         super();
 
-        // @ts-ignore
         this[roleMarker]   = true;
         this.id            = nanoid(7);
         this.phase         = loginUrl ? RolePhase.uninitialized : RolePhase.initialized;

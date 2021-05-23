@@ -85,7 +85,7 @@ class TestRunProxy {
     public async executeAction (apiMethodName: string, command: CommandBase, callsite: CallsiteRecord): Promise<unknown> {
         const renderedCallsite = callsite ? prerenderCallsite(callsite) : null;
 
-        if ((command as CommandBase).type === COMMAND_TYPE.assertion)
+        if (command.type === COMMAND_TYPE.assertion)
             return this._executeAssertion(command as AssertionCommand, renderedCallsite);
 
         return this.dispatcher.executeAction({
@@ -98,6 +98,9 @@ class TestRunProxy {
 
     public executeActionSync (apiMethodName: string, command: CommandBase, callsite: CallsiteRecord): unknown {
         const renderedCallsite = callsite ? prerenderCallsite(callsite) : null;
+
+        if (command.type === COMMAND_TYPE.assertion)
+            return this._executeAssertion(command as AssertionCommand, renderedCallsite);
 
         return this.dispatcher.executeActionSync({
             apiMethodName,

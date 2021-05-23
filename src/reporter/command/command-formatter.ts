@@ -138,7 +138,7 @@ export class CommandFormatter {
             const property = this._command[key];
 
             if (property instanceof ExecuteSelectorCommand)
-                formattedCommand[key] = this._prepareSelector(property, key);
+                formattedCommand[key] = this._prepareSelector(property as unknown as Command, key);
             else if (isCommandOptions(property)) {
                 const modifiedOptions = CommandFormatter._getModifiedOptions(property);
 

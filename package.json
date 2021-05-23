@@ -121,7 +121,7 @@
     "promisify-event": "^1.0.0",
     "qrcode-terminal": "^0.10.0",
     "read-file-relative": "^1.2.0",
-    "replicator": "^1.0.3",
+    "replicator": "1.0.3",
     "resolve-cwd": "^1.0.0",
     "resolve-from": "^4.0.0",
     "sanitize-filename": "^1.6.0",
