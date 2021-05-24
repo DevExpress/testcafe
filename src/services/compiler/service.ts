@@ -38,10 +38,13 @@ import {
     SetHeaderOnConfigureResponseEventArguments,
     SetMockArguments,
     SetOptionsArguments,
-    GetWarningMessagesArguments,
     AddRequestEventListenersArguments,
     RemoveRequestEventListenersArguments,
-    InitializeTestRunDataArguments
+    InitializeTestRunDataArguments,
+    UseStateSnapshotArguments,
+    SetTestRunPhaseArguments,
+    TestRunLocator,
+    SetBrowserConsoleMessagesArguments
 } from './protocol';
 
 import { CompilerArguments } from '../../compiler/interfaces';
@@ -58,11 +61,15 @@ import {
     RequestFilterRule,
     ResponseEvent,
     ResponseMock,
-    responseMockSetBodyMethod
+    responseMockSetBodyMethod,
+    StateSnapshot
 } from 'testcafe-hammerhead';
 
 import RequestHook from '../../api/request-hooks/hook';
 import RequestMock from '../../api/request-hooks/request-mock';
+import TestRunPhase from '../../test-run/phase';
+import { ExecuteClientFunctionCommand, ExecuteSelectorCommand } from '../../test-run/commands/observation';
+import BrowserConsoleMessages from '../../test-run/browser-console-messages';
 
 sourceMapSupport.install({
     hookRequire:              true,
@@ -146,7 +153,18 @@ class CompilerService implements CompilerProtocol {
             this.getWarningMessages,
             this.addRequestEventListeners,
             this.removeRequestEventListeners,
-            this.initializeTestRunData
+            this.initializeTestRunData,
+            this.getCurrentUrl,
+            this.getStateSnapshot,
+            this.useStateSnapshot,
+            this.getTestRunPhase,
+            this.setTestRunPhase,
+            this.getActiveDialogHandler,
+            this.getActiveIframeSelector,
+            this.getSpeed,
+            this.getPageLoadTimeout,
+            this.setBrowserConsoleMessages,
+            this.getBrowserConsoleMessages
         ], this);
     }
 
@@ -324,7 +342,7 @@ class CompilerService implements CompilerProtocol {
         return res;
     }
 
-    public async getWarningMessages ({ testRunId }: GetWarningMessagesArguments): Promise<string[]> {
+    public async getWarningMessages ({ testRunId }: TestRunLocator): Promise<string[]> {
         const testRunProxy = this.state.testRuns[testRunId];
 
         return testRunProxy.warningLog.messages;
@@ -343,6 +361,49 @@ class CompilerService implements CompilerProtocol {
 
         this._initializeTestRunProxy(testRunId, test);
         this._initializeFixtureCtx(test);
+    }
+
+    public async getCurrentUrl ({ testRunId }: TestRunLocator): Promise<string> {
+        return this.proxy.call(this.getCurrentUrl, { testRunId });
+    }
+
+    public async getStateSnapshot ({ testRunId }: TestRunLocator): Promise<StateSnapshot> {
+        return this.proxy.call(this.getStateSnapshot, { testRunId });
+    }
+
+    public async useStateSnapshot ({ testRunId, snapshot }: UseStateSnapshotArguments): Promise<void> {
+        return this.proxy.call(this.useStateSnapshot, { testRunId, snapshot });
+    }
+
+    public async getTestRunPhase ({ testRunId }: TestRunLocator): Promise<TestRunPhase> {
+        return this.proxy.call(this.getTestRunPhase, { testRunId });
+    }
+    public async setTestRunPhase ({ testRunId, value }: SetTestRunPhaseArguments): Promise<void> {
+        return this.proxy.call(this.setTestRunPhase, { testRunId, value });
+    }
+
+    public async getActiveDialogHandler ({ testRunId }: TestRunLocator): Promise<ExecuteClientFunctionCommand | null> {
+        return this.proxy.call(this.getActiveDialogHandler, { testRunId });
+    }
+
+    public async getActiveIframeSelector ({ testRunId }: TestRunLocator): Promise<ExecuteSelectorCommand | null> {
+        return this.proxy.call(this.getActiveIframeSelector, { testRunId });
+    }
+
+    public async getSpeed ({ testRunId }: TestRunLocator): Promise<number> {
+        return this.proxy.call(this.getSpeed, { testRunId });
+    }
+
+    public async getPageLoadTimeout ({ testRunId }: TestRunLocator): Promise<number> {
+        return this.proxy.call(this.getPageLoadTimeout, { testRunId });
+    }
+
+    public async setBrowserConsoleMessages ({ testRunId, value }: SetBrowserConsoleMessagesArguments): Promise<void> {
+        return this.proxy.call(this.setBrowserConsoleMessages, { testRunId, value });
+    }
+
+    public async getBrowserConsoleMessages ({ testRunId }: TestRunLocator): Promise<BrowserConsoleMessages> {
+        return this.proxy.call(this.getBrowserConsoleMessages, { testRunId });
     }
 }
 

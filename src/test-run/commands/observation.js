@@ -15,7 +15,7 @@ export class WaitCommand extends CommandBase {
     }
 }
 
-class ExecuteClientFunctionCommandBase extends CommandBase {
+export class ExecuteClientFunctionCommandBase extends CommandBase {
     constructor (obj, testRun, type) {
         super(obj, testRun, type, false);
     }

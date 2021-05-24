@@ -1,5 +1,7 @@
 import Replicator, { Transform } from 'replicator';
-import CustomErrorTransform from './custom-error-transform';
+import CustomErrorTransform from './transforms/custom-error-transform';
+import BrowserConsoleMessagesTransform from './transforms/browser-console-messages-transform';
+import ExecuteClientFunctionCommandBaseTransform from './transforms/execute-client-function-command-base-transform';
 
 const DEFAULT_ERROR_TRANSFORM_TYPE = '[[Error]]';
 
@@ -19,5 +21,10 @@ export default function (): Replicator {
 
     return replicator
         .removeTransforms(defaultErrorTransform)
-        .addTransforms([customErrorTransform, defaultErrorTransform]);
+        .addTransforms([
+            customErrorTransform,
+            defaultErrorTransform,
+            new BrowserConsoleMessagesTransform(),
+            new ExecuteClientFunctionCommandBaseTransform()
+        ]);
 }

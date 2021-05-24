@@ -37,3 +37,17 @@ export class SwitchToWindowCommand extends CommandBase {
 export class SwitchToWindowByPredicateCommand extends CommandBase {
     public findWindow: Function;
 }
+
+export class SetTestSpeedCommand extends CommandBase {
+    public speed: number;
+}
+
+export class SetPageLoadTimeoutCommand extends CommandBase {
+    public duration: number;
+}
+
+export class SwitchToIframeCommand extends CommandBase {
+    public selector: ExecuteClientFunctionCommand | unknown;
+}
+
+export class SwitchToMainWindowCommand extends CommandBase { }
