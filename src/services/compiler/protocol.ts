@@ -1,6 +1,7 @@
 import { CompilerArguments } from '../../compiler/interfaces';
 import { Dictionary } from '../../configuration/interfaces';
 import RequestHookMethodNames from '../../api/request-hooks/hook-method-names';
+
 import {
     ConfigureResponseEvent,
     ConfigureResponseEventOptions,
@@ -11,6 +12,8 @@ import {
     IncomingMessageLikeInitOptions,
     RequestFilterRule
 } from 'testcafe-hammerhead';
+
+import CommandBase from '../../test-run/commands/base';
 
 export const BEFORE_AFTER_PROPERTIES      = ['beforeFn', 'afterFn'] as const;
 export const BEFORE_AFTER_EACH_PROPERTIES = ['beforeEachFn', 'afterEachFn'] as const;
@@ -40,13 +43,13 @@ export interface RunTestArguments {
 export interface ExecuteActionArguments {
     id: string;
     apiMethodName: string;
-    command: unknown;
+    command: CommandBase;
     callsite: unknown;
 }
 
 export interface ExecuteCommandArguments {
     id: string;
-    command: unknown;
+    command: CommandBase;
 }
 
 export interface RemoveRequestEventListenersArguments {

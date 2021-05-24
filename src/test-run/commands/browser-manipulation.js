@@ -22,7 +22,7 @@ function initElementScreenshotOptions (name, val) {
 }
 
 // Commands
-class TakeScreenshotBaseCommand extends CommandBase {
+export class TakeScreenshotBaseCommand extends CommandBase {
     constructor (obj, testRun, type) {
         super(obj, testRun, type);
 

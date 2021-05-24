@@ -87,12 +87,12 @@ export default class BrowserConnection extends EventEmitter {
     public readonly idleUrl: string;
     private forcedIdleUrl: string;
     private readonly initScriptUrl: string;
-    private readonly heartbeatRelativeUrl: string;
-    private readonly statusRelativeUrl: string;
-    private readonly statusDoneRelativeUrl: string;
+    public readonly heartbeatRelativeUrl: string;
+    public readonly statusRelativeUrl: string;
+    public readonly statusDoneRelativeUrl: string;
     private readonly heartbeatUrl: string;
     private readonly statusUrl: string;
-    private readonly activeWindowIdUrl: string;
+    public readonly activeWindowIdUrl: string;
     private statusDoneUrl: string;
     private readonly debugLogger: debug.Debugger;
 

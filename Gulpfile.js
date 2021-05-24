@@ -2,7 +2,6 @@ const gulp                          = require('gulp');
 const gulpStep                      = require('gulp-step');
 const data                          = require('gulp-data');
 const less                          = require('gulp-less');
-const qunitHarness                  = require('gulp-qunit-harness');
 const mocha                         = require('gulp-mocha-simple');
 const mustache                      = require('gulp-mustache');
 const rename                        = require('gulp-rename');
@@ -18,9 +17,7 @@ const { promisify }                 = require('util');
 const globby                        = require('globby');
 const minimist                      = require('minimist');
 const functionalTestConfig          = require('./test/functional/config');
-const { assignIn }                  = require('lodash');
 const childProcess                  = require('child_process');
-const listBrowsers                  = require('testcafe-browser-tools').getInstallations;
 const npmAuditor                    = require('npm-auditor');
 const checkLicenses                 = require('./test/dependency-licenses-checker');
 const packageInfo                   = require('./package');
@@ -31,6 +28,7 @@ const { exitDomains, enterDomains } = require('./gulp/helpers/domain');
 const getTimeout                    = require('./gulp/helpers/get-timeout');
 const promisifyStream               = require('./gulp/helpers/promisify-stream');
 const testFunctional                = require('./gulp/helpers/test-functional');
+const testClient                    = require('./gulp/helpers/test-client');
 
 const {
     TESTS_GLOB,
@@ -39,6 +37,15 @@ const {
     MIGRATE_ALL_TESTS_TO_COMPILER_SERVICE_GLOB,
     COMPILER_SERVICE_TESTS_GLOB
 } = require('./gulp/constants/functional-test-globs');
+
+const {
+    CLIENT_TESTS_SETTINGS,
+    CLIENT_TESTS_LOCAL_SETTINGS,
+    CLIENT_TESTS_LEGACY_SETTINGS,
+    CLIENT_TESTS_SAUCELABS_SETTINGS,
+    CLIENT_TESTS_DESKTOP_BROWSERS,
+    CLIENT_TESTS_MOBILE_BROWSERS
+} = require('./gulp/constants/client-test-settings');
 
 const readFile = promisify(fs.readFile);
 
@@ -60,93 +67,6 @@ const ARGS          = minimist(process.argv.slice(2));
 const QR_CODE       = 'qr-code' in ARGS;
 const SKIP_BUILD    = process.env.SKIP_BUILD || 'skip-build' in ARGS;
 const BROWSER_ALIAS = ARGS['browser-alias'];
-
-const CLIENT_TESTS_PATH        = 'test/client/fixtures';
-const CLIENT_TESTS_LEGACY_PATH = 'test/client/legacy-fixtures';
-
-const CLIENT_TESTS_SETTINGS_BASE = {
-    port:            2000,
-    crossDomainPort: 2001,
-
-    scripts: [
-        { src: '/async.js', path: 'test/client/vendor/async.js' },
-        { src: '/hammerhead.js', path: 'node_modules/testcafe-hammerhead/lib/client/hammerhead.min.js' },
-        { src: '/core.js', path: 'lib/client/core/index.min.js' },
-        { src: '/ui.js', path: 'lib/client/ui/index.min.js' },
-        { src: '/automation.js', path: 'lib/client/automation/index.min.js' },
-        { src: '/driver.js', path: 'lib/client/driver/index.js' },
-        { src: '/legacy-runner.js', path: 'node_modules/testcafe-legacy-api/lib/client/index.js' },
-        { src: '/before-test.js', path: 'test/client/before-test.js' }
-    ],
-
-    configApp: require('./test/client/config-qunit-server-app')
-};
-
-const CLIENT_TESTS_SETTINGS        = assignIn({}, CLIENT_TESTS_SETTINGS_BASE, { basePath: CLIENT_TESTS_PATH });
-const CLIENT_TESTS_LOCAL_SETTINGS  = assignIn({}, CLIENT_TESTS_SETTINGS);
-const CLIENT_TESTS_LEGACY_SETTINGS = assignIn({}, CLIENT_TESTS_SETTINGS_BASE, { basePath: CLIENT_TESTS_LEGACY_PATH });
-
-const CLIENT_TESTS_DESKTOP_BROWSERS = [
-    {
-        platform:    'Windows 10',
-        browserName: 'microsoftedge'
-    },
-    {
-        platform:    'Windows 10',
-        browserName: 'chrome'
-    },
-    {
-        platform:    'Windows 10',
-        browserName: 'firefox'
-    },
-    {
-        platform:    'Windows 10',
-        browserName: 'internet explorer',
-        version:     '11.0'
-    },
-    {
-        platform:    'macOS 10.13',
-        browserName: 'safari',
-        version:     '11.1'
-    },
-    {
-        platform:    'OS X 10.11',
-        browserName: 'chrome'
-    },
-    {
-        platform:    'OS X 10.11',
-        browserName: 'firefox'
-    }
-];
-
-const CLIENT_TESTS_MOBILE_BROWSERS = [
-    {
-        platform:    'Linux',
-        browserName: 'android',
-        version:     '6.0',
-        deviceName:  'Android Emulator'
-    },
-    {
-        platform:    'iOS',
-        browserName: 'Safari',
-        // NOTE: https://github.com/DevExpress/testcafe/issues/471
-        // problem with extra scroll reproduced only on saucelabs
-        // virtual machines with ios device emulators
-        version:     '10.3',
-        deviceName:  'iPhone 7 Plus Simulator'
-    }
-];
-
-const CLIENT_TESTS_SAUCELABS_SETTINGS = {
-    username:  process.env.SAUCE_USERNAME,
-    accessKey: process.env.SAUCE_ACCESS_KEY,
-    build:     process.env.TRAVIS_BUILD_ID || '',
-    tags:      [process.env.TRAVIS_BRANCH || 'master'],
-    name:      'testcafe client tests',
-    timeout:   720
-};
-
-const CLIENT_TEST_LOCAL_BROWSERS_ALIASES = ['ie', 'edge', 'chrome', 'firefox', 'safari'];
 
 const { PUBLISH_TAGS, PUBLISH_REPO } = getDockerPublishInfo(packageInfo);
 
@@ -378,29 +298,6 @@ gulp.step('test-server-run', () => {
 gulp.step('test-server-bootstrap', gulp.series('prepare-tests', 'test-server-run'));
 
 gulp.task('test-server', gulp.parallel('check-licenses', 'test-server-bootstrap'));
-
-function testClient (tests, settings, envSettings, cliMode) {
-    function runTests (env, runOpts) {
-        return gulp
-            .src(tests)
-            .pipe(qunitHarness(settings, env, runOpts));
-    }
-
-    if (!cliMode)
-        return runTests(envSettings);
-
-    return listBrowsers().then(browsers => {
-        const browserNames   = Object.keys(browsers);
-        const targetBrowsers = [];
-
-        browserNames.forEach(browserName => {
-            if (CLIENT_TEST_LOCAL_BROWSERS_ALIASES.includes(browserName))
-                targetBrowsers.push({ browserInfo: browsers[browserName], browserName: browserName });
-        });
-
-        return runTests({ browsers: targetBrowsers }, { cliMode: true });
-    });
-}
 
 gulp.step('test-client-run', () => {
     return testClient('test/client/fixtures/**/*-test.js', CLIENT_TESTS_SETTINGS);

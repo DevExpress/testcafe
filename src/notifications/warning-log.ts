@@ -4,7 +4,7 @@ export default class WarningLog {
     public messages: string[];
     public globalLog: WarningLog | null;
 
-    public constructor (globalLog = null) {
+    public constructor (globalLog: WarningLog | null = null) {
         this.globalLog = globalLog;
         this.messages  = [];
     }

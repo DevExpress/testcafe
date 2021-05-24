@@ -7,7 +7,8 @@ import {
 
 import { restore as restoreTestStructure } from '../serialization/test-structure';
 import prepareOptions from '../serialization/prepare-options';
-import { default as testRunTracker, TestRun } from '../../api/test-run-tracker';
+import { default as testRunTracker } from '../../api/test-run-tracker';
+import TestRun from '../../test-run';
 import { IPCProxy } from '../utils/ipc/proxy';
 import { HostTransport } from '../utils/ipc/transport';
 import AsyncEventEmitter from '../../utils/async-event-emitter';
@@ -45,6 +46,8 @@ import {
     ResponseEvent,
     RequestFilterRule
 } from 'testcafe-hammerhead';
+
+import { CallsiteRecord } from 'callsite-record';
 
 const SERVICE_PATH = require.resolve('./service');
 
@@ -190,7 +193,7 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
         if (!targetTestRun)
             return void 0;
 
-        return targetTestRun.executeAction(data.apiMethodName, data.command, data.callsite);
+        return targetTestRun.executeAction(data.apiMethodName, data.command, data.callsite as CallsiteRecord);
     }
 
     public executeActionSync (): never {

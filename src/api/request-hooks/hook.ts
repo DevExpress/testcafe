@@ -36,11 +36,11 @@ export default abstract class RequestHook {
         return !rules.length ? [RequestFilterRule.ANY] : rules;
     }
 
-    protected async onRequest (event: RequestEvent): Promise<void> { // eslint-disable-line @typescript-eslint/no-unused-vars
+    public async onRequest (event: RequestEvent): Promise<void> { // eslint-disable-line @typescript-eslint/no-unused-vars
         throw new RequestHookNotImplementedMethodError('onRequest', this.constructor.name);
     }
 
-    private async _onConfigureResponse (event: ConfigureResponseEvent): Promise<void> {
+    public async _onConfigureResponse (event: ConfigureResponseEvent): Promise<void> {
         if (!this._responseEventConfigureOpts)
             return;
 
@@ -48,7 +48,7 @@ export default abstract class RequestHook {
         event.opts.includeBody    = this._responseEventConfigureOpts.includeBody;
     }
 
-    protected async onResponse (event: ResponseEvent): Promise<void> { // eslint-disable-line @typescript-eslint/no-unused-vars
+    public async onResponse (event: ResponseEvent): Promise<void> { // eslint-disable-line @typescript-eslint/no-unused-vars
         throw new RequestHookNotImplementedMethodError('onResponse', this.constructor.name);
     }
 }

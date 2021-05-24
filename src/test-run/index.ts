@@ -17,10 +17,10 @@ import {
     PageLoadError,
     RoleSwitchInRoleInitializerError,
     SwitchToWindowPredicateError,
-    WindowNotFoundError
+    WindowNotFoundError,
+    RequestHookBaseError
 } from '../errors/test-run/';
 
-import PHASE from './phase';
 import CLIENT_MESSAGES from './client-messages';
 import COMMAND_TYPE from './commands/type';
 import delay from '../utils/delay';
@@ -32,7 +32,17 @@ import ReporterPluginHost from '../reporter/plugin-host';
 import BrowserConsoleMessages from './browser-console-messages';
 import WarningLog from '../notifications/warning-log';
 import WARNING_MESSAGE from '../notifications/warning-message';
-import { StateSnapshot, SPECIAL_ERROR_PAGE } from 'testcafe-hammerhead';
+import {
+    StateSnapshot,
+    SPECIAL_ERROR_PAGE,
+    RequestFilterRule,
+    InjectableResources,
+    RequestEvent,
+    ConfigureResponseEvent,
+    ResponseEvent,
+    RequestHookMethodError,
+    StoragesSnapshot
+} from 'testcafe-hammerhead';
 import * as INJECTABLES from '../assets/injectables';
 import { findProblematicScripts } from '../custom-client-scripts/utils';
 import getCustomClientScriptUrl from '../custom-client-scripts/get-url';
@@ -48,19 +58,44 @@ import {
     isResizeWindowCommand
 } from './commands/utils';
 
-import { GetCurrentWindowsCommand, SwitchToWindowCommand } from './commands/actions';
+import {
+    GetCurrentWindowsCommand,
+    SwitchToWindowByPredicateCommand,
+    SwitchToWindowCommand
+} from './commands/actions';
 
 import { RUNTIME_ERRORS, TEST_RUN_ERRORS } from '../errors/types';
 import processTestFnError from '../errors/process-test-fn-error';
 import RequestHookMethodNames from '../api/request-hooks/hook-method-names';
-
 import { createReplicator, SelectorNodeTransform } from '../client-functions/replicator';
+import Test from '../api/structure/test';
+import Capturer from '../screenshots/capturer';
+import { Dictionary } from '../configuration/interfaces';
+import CompilerService from '../services/compiler/host';
+import SessionController from './session-controller';
+import TestController from '../api/test-controller';
+import BrowserManipulationQueue from './browser-manipulation-queue';
+import ObservedCallsitesStorage from './observed-callsites-storage';
+import ClientScript from '../custom-client-scripts/client-script';
+import BrowserConnection from '../browser/connection';
+import { Quarantine } from '../utils/get-options/quarantine';
+import RequestHook from '../api/request-hooks/hook';
+import DriverStatus from '../client/driver/status';
+import CommandBase from './commands/base.js';
+import Role from '../role/role';
+import { TestRunErrorBase } from '../shared/errors';
+import { CallsiteRecord } from 'callsite-record';
+import EventEmitter from 'events';
+import getAssertionTimeout from '../utils/get-options/get-assertion-timeout';
+import AssertionCommand from './commands/assertion';
+import { TakeScreenshotBaseCommand } from './commands/browser-manipulation';
+//@ts-ignore
+import { TestRun as LegacyTestRun } from 'testcafe-legacy-api';
+import { AuthCredentials } from '../api/structure/interfaces';
+import TestRunPhase from './phase';
 
 const lazyRequire                 = require('import-lazy')(require);
-const SessionController           = lazyRequire('./session-controller');
-const ObservedCallsitesStorage    = lazyRequire('./observed-callsites-storage');
 const ClientFunctionBuilder       = lazyRequire('../client-functions/client-function-builder');
-const BrowserManipulationQueue    = lazyRequire('./browser-manipulation-queue');
 const TestRunBookmark             = lazyRequire('./bookmark');
 const AssertionExecutor           = lazyRequire('../assertions/executor');
 const actionCommands              = lazyRequire('./commands/actions');
@@ -70,8 +105,8 @@ const observationCommands         = lazyRequire('./commands/observation');
 
 const { executeJsExpression, executeAsyncJsExpression } = lazyRequire('./execute-js-expression');
 
-const TEST_RUN_TEMPLATE               = read('../client/test-run/index.js.mustache');
-const IFRAME_TEST_RUN_TEMPLATE        = read('../client/test-run/iframe.js.mustache');
+const TEST_RUN_TEMPLATE               = read('../client/test-run/index.js.mustache') as string;
+const IFRAME_TEST_RUN_TEMPLATE        = read('../client/test-run/iframe.js.mustache') as string;
 const TEST_DONE_CONFIRMATION_RESPONSE = 'test-done-confirmation';
 const MAX_RESPONSE_DELAY              = 3000;
 const CHILD_WINDOW_READY_TIMEOUT      = 30 * 1000;
@@ -85,33 +120,119 @@ const COMPILER_SERVICE_EVENTS = [
     'removeHeaderOnConfigureResponseEvent'
 ];
 
+interface TestRunInit {
+    test: Test;
+    browserConnection: BrowserConnection;
+    screenshotCapturer: Capturer;
+    globalWarningLog: WarningLog;
+    opts: Dictionary<OptionValue>;
+    compilerService?: CompilerService;
+}
+
+interface DriverTask {
+    command: CommandBase;
+    resolve: Function;
+    reject: Function;
+    callsite: CallsiteRecord;
+}
+
+interface DriverMessage {
+    status: DriverStatus;
+}
+
+interface RequestTimeout {
+    page?: number;
+    ajax?: number;
+}
+
+interface PendingRequest {
+    responseTimeout: NodeJS.Timeout;
+    resolve: Function;
+    reject: Function;
+}
+
+interface BrowserManipulationResult {
+    result: unknown;
+    error: Error;
+}
+
+interface OpenedWindowInformation {
+    id: string;
+    url: string;
+    title: string;
+}
+
 export default class TestRun extends AsyncEventEmitter {
-    constructor ({ test, browserConnection, screenshotCapturer, globalWarningLog, opts, compilerService }) {
+    private [testRunMarker]: boolean;
+    public readonly warningLog: WarningLog;
+    private readonly opts: Dictionary<OptionValue>;
+    public readonly test: Test;
+    public readonly browserConnection: BrowserConnection;
+    public unstable: boolean;
+    public phase: TestRunPhase;
+    private driverTaskQueue: DriverTask[];
+    private testDoneCommandQueued: boolean;
+    private activeDialogHandler: Function | null;
+    private activeIframeSelector: Function | null;
+    private speed: number;
+    private pageLoadTimeout: number;
+    private disablePageReloads: boolean;
+    private disablePageCaching: boolean;
+    private disableMultipleWindows: boolean;
+    private requestTimeout: RequestTimeout;
+    private readonly session: SessionController;
+    private consoleMessages: BrowserConsoleMessages;
+    private pendingRequest: PendingRequest | null;
+    private pendingPageError: PageLoadError | Error | null;
+    public controller: TestController | null;
+    private ctx: object;
+    public fixtureCtx: object | null;
+    private currentRoleId: string | null;
+    private readonly usedRoleStates: Record<string, any>;
+    public errs: TestRunErrorFormattableAdapter[];
+    private lastDriverStatusId: string | null;
+    private lastDriverStatusResponse: CommandBase | null | string;
+    private fileDownloadingHandled: boolean;
+    private resolveWaitForFileDownloadingPromise: Function | null;
+    private addingDriverTasksCount: number;
+    private debugging: boolean;
+    private readonly debugOnFail: boolean;
+    private readonly disableDebugBreakpoints: boolean;
+    private readonly debugReporterPluginHost: ReporterPluginHost;
+    private readonly browserManipulationQueue: BrowserManipulationQueue;
+    private debugLog: TestRunDebugLog;
+    public quarantine: Quarantine | null;
+    private readonly debugLogger: any;
+    public observedCallsites: ObservedCallsitesStorage;
+    private readonly compilerService?: CompilerService;
+    private readonly replicator: any;
+    private disconnected: boolean;
+    private errScreenshotPath: string | null;
+
+    public constructor ({ test, browserConnection, screenshotCapturer, globalWarningLog, opts, compilerService }: TestRunInit) {
         super();
 
-        this[testRunMarker] = true;
-
-        this.warningLog = new WarningLog(globalWarningLog);
-
+        this[testRunMarker]    = true;
+        this.warningLog        = new WarningLog(globalWarningLog);
         this.opts              = opts;
         this.test              = test;
         this.browserConnection = browserConnection;
         this.unstable          = false;
 
-        this.phase = PHASE.initial;
+        this.phase = TestRunPhase.initial;
 
         this.driverTaskQueue       = [];
         this.testDoneCommandQueued = false;
 
         this.activeDialogHandler  = null;
         this.activeIframeSelector = null;
-        this.speed                = this.opts.speed;
+        this.speed                = this.opts.speed as number;
         this.pageLoadTimeout      = this._getPageLoadTimeout(test, opts);
 
-        this.disablePageReloads   = test.disablePageReloads || opts.disablePageReloads && test.disablePageReloads !== false;
-        this.disablePageCaching   = test.disablePageCaching || opts.disablePageCaching;
+        this.disablePageReloads   = test.disablePageReloads || opts.disablePageReloads as boolean && test.disablePageReloads !== false;
+        this.disablePageCaching   = test.disablePageCaching || opts.disablePageCaching as boolean;
 
-        this.disableMultipleWindows = opts.disableMultipleWindows;
+        this.disableMultipleWindows = opts.disableMultipleWindows as boolean;
 
         this.requestTimeout = this._getRequestTimeout(test, opts);
 
@@ -139,8 +260,8 @@ export default class TestRun extends AsyncEventEmitter {
 
         this.addingDriverTasksCount = 0;
 
-        this.debugging               = this.opts.debugMode;
-        this.debugOnFail             = this.opts.debugOnFail;
+        this.debugging               = this.opts.debugMode as boolean;
+        this.debugOnFail             = this.opts.debugOnFail as boolean;
         this.disableDebugBreakpoints = false;
         this.debugReporterPluginHost = new ReporterPluginHost({ noColors: false });
 
@@ -157,26 +278,29 @@ export default class TestRun extends AsyncEventEmitter {
 
         this.replicator = createReplicator([ new SelectorNodeTransform() ]);
 
+        this.disconnected      = false;
+        this.errScreenshotPath = null;
+
         this._addInjectables();
         this._initRequestHooks();
     }
 
-    _getPageLoadTimeout (test, opts) {
+    private _getPageLoadTimeout (test: Test, opts: Dictionary<OptionValue>): number {
         if (test.timeouts?.pageLoadTimeout !== void 0)
             return test.timeouts.pageLoadTimeout;
 
-        return opts.pageLoadTimeout;
+        return opts.pageLoadTimeout as number;
     }
 
-    _getRequestTimeout (test, opts) {
+    private _getRequestTimeout (test: Test, opts: Dictionary<OptionValue>): RequestTimeout {
         return {
-            page: test.timeouts?.pageRequestTimeout || opts.pageRequestTimeout,
-            ajax: test.timeouts?.ajaxRequestTimeout || opts.ajaxRequestTimeout
+            page: test.timeouts?.pageRequestTimeout || opts.pageRequestTimeout as number,
+            ajax: test.timeouts?.ajaxRequestTimeout || opts.ajaxRequestTimeout as number
         };
     }
 
-    _addClientScriptContentWarningsIfNecessary () {
-        const { empty, duplicatedContent } = findProblematicScripts(this.test.clientScripts);
+    private _addClientScriptContentWarningsIfNecessary (): void {
+        const { empty, duplicatedContent } = findProblematicScripts(this.test.clientScripts as ClientScript[]);
 
         if (empty.length)
             this.warningLog.addWarning(WARNING_MESSAGE.clientScriptsWithEmptyContent);
@@ -189,31 +313,31 @@ export default class TestRun extends AsyncEventEmitter {
         }
     }
 
-    _addInjectables () {
+    private _addInjectables (): void {
         this._addClientScriptContentWarningsIfNecessary();
         this.injectable.scripts.push(...INJECTABLES.SCRIPTS);
         this.injectable.userScripts.push(...this.test.clientScripts.map(script => {
             return {
-                url:  getCustomClientScriptUrl(script),
-                page: script.page
+                url:  getCustomClientScriptUrl(script as ClientScript),
+                page: script.page as RequestFilterRule
             };
         }));
         this.injectable.styles.push(INJECTABLES.TESTCAFE_UI_STYLES);
     }
 
-    get id () {
+    public get id (): string {
         return this.session.id;
     }
 
-    get injectable () {
+    public get injectable (): InjectableResources {
         return this.session.injectable;
     }
 
-    addQuarantineInfo (quarantine) {
+    public addQuarantineInfo (quarantine: Quarantine): void {
         this.quarantine = quarantine;
     }
 
-    addRequestHook (hook) {
+    public addRequestHook (hook: RequestHook): void {
         if (this.test.requestHooks.includes(hook))
             return;
 
@@ -221,7 +345,7 @@ export default class TestRun extends AsyncEventEmitter {
         this._initRequestHook(hook);
     }
 
-    removeRequestHook (hook) {
+    public removeRequestHook (hook: RequestHook): void {
         if (!this.test.requestHooks.includes(hook))
             return;
 
@@ -229,7 +353,7 @@ export default class TestRun extends AsyncEventEmitter {
         this._disposeRequestHook(hook);
     }
 
-    _initRequestHook (hook) {
+    private _initRequestHook (hook: RequestHook): void {
         hook._warningLog = this.warningLog;
 
         hook._requestFilterRules.forEach(rule => {
@@ -237,25 +361,25 @@ export default class TestRun extends AsyncEventEmitter {
                 onRequest:           hook.onRequest.bind(hook),
                 onConfigureResponse: hook._onConfigureResponse.bind(hook),
                 onResponse:          hook.onResponse.bind(hook)
-            }, err => this._onRequestHookMethodError(err, hook._className));
+            }, (err: RequestHookMethodError) => this._onRequestHookMethodError(err, hook._className));
         });
     }
 
-    _initRequestHookForCompilerService (hookId, hookClassName, rules) {
+    private _initRequestHookForCompilerService (hookId: string, hookClassName: string, rules: RequestFilterRule[]): void {
         const testId = this.test.id;
 
         rules.forEach(rule => {
             this.session.addRequestEventListeners(rule, {
-                onRequest:           event => this.compilerService.onRequestHookEvent({ testId, hookId, name: RequestHookMethodNames.onRequest, eventData: event }),
-                onConfigureResponse: event => this.compilerService.onRequestHookEvent({ testId, hookId, name: RequestHookMethodNames._onConfigureResponse, eventData: event }),
-                onResponse:          event => this.compilerService.onRequestHookEvent({ testId, hookId, name: RequestHookMethodNames.onResponse, eventData: event })
+                onRequest:           (event: RequestEvent) => this.compilerService?.onRequestHookEvent({ testId, hookId, name: RequestHookMethodNames.onRequest, eventData: event }),
+                onConfigureResponse: (event: ConfigureResponseEvent) => this.compilerService?.onRequestHookEvent({ testId, hookId, name: RequestHookMethodNames._onConfigureResponse, eventData: event }),
+                onResponse:          (event: ResponseEvent) => this.compilerService?.onRequestHookEvent({ testId, hookId, name: RequestHookMethodNames.onResponse, eventData: event })
             }, err => this._onRequestHookMethodError(err, hookClassName));
         });
     }
 
-    _onRequestHookMethodError (event, hookClassName) {
-        let err                                      = event.error;
-        const isRequestHookNotImplementedMethodError = err?.code === TEST_RUN_ERRORS.requestHookNotImplementedError;
+    private _onRequestHookMethodError (event: RequestHookMethodError, hookClassName: string): void {
+        let err: Error | TestRunErrorBase            = event.error;
+        const isRequestHookNotImplementedMethodError = (err as unknown as TestRunErrorBase)?.code === TEST_RUN_ERRORS.requestHookNotImplementedError;
 
         if (!isRequestHookNotImplementedMethodError)
             err = new RequestHookUnhandledError(err, hookClassName, event.methodName);
@@ -263,7 +387,7 @@ export default class TestRun extends AsyncEventEmitter {
         this.addError(err);
     }
 
-    _disposeRequestHook (hook) {
+    private _disposeRequestHook (hook: RequestHook): void {
         hook._warningLog = null;
 
         hook._requestFilterRules.forEach(rule => {
@@ -271,29 +395,30 @@ export default class TestRun extends AsyncEventEmitter {
         });
     }
 
-    _detachRequestEventListeners (rules) {
+    private _detachRequestEventListeners (rules: RequestFilterRule[]): void {
         rules.forEach(rule => {
             this.session.removeRequestEventListeners(rule);
         });
     }
 
-    _subscribeOnCompilerServiceEvents () {
+    private _subscribeOnCompilerServiceEvents (): void {
         COMPILER_SERVICE_EVENTS.forEach(eventName => {
-            this.compilerService.on(eventName, async args => {
+            this.compilerService?.on(eventName, async args => {
+                // @ts-ignore
                 await this.session[eventName](...args);
             });
         });
 
-        this.compilerService.on('addRequestEventListeners', async ({ hookId, hookClassName, rules }) => {
+        this.compilerService?.on('addRequestEventListeners', async ({ hookId, hookClassName, rules }) => {
             this._initRequestHookForCompilerService(hookId, hookClassName, rules);
         });
 
-        this.compilerService.on('removeRequestEventListeners', async ({ rules }) => {
+        this.compilerService?.on('removeRequestEventListeners', async ({ rules }) => {
             this._detachRequestEventListeners(rules);
         });
     }
 
-    _initRequestHooks () {
+    private _initRequestHooks (): void {
         if (this.compilerService) {
             this._subscribeOnCompilerServiceEvents();
             this.test.requestHooks.forEach(hook => {
@@ -305,7 +430,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     // Hammerhead payload
-    async getPayloadScript () {
+    public async getPayloadScript (): Promise<string> {
         this.fileDownloadingHandled               = false;
         this.resolveWaitForFileDownloadingPromise = null;
 
@@ -330,7 +455,7 @@ export default class TestRun extends AsyncEventEmitter {
         });
     }
 
-    async getIframePayloadScript () {
+    public async getIframePayloadScript (): Promise<string> {
         return Mustache.render(IFRAME_TEST_RUN_TEMPLATE, {
             testRunId:       JSON.stringify(this.session.id),
             selectorTimeout: this.opts.selectorTimeout,
@@ -342,11 +467,11 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     // Hammerhead handlers
-    getAuthCredentials () {
+    public getAuthCredentials (): null | AuthCredentials {
         return this.test.authCredentials;
     }
 
-    handleFileDownload () {
+    public handleFileDownload (): void {
         if (this.resolveWaitForFileDownloadingPromise) {
             this.resolveWaitForFileDownloadingPromise(true);
             this.resolveWaitForFileDownloadingPromise = null;
@@ -355,14 +480,14 @@ export default class TestRun extends AsyncEventEmitter {
             this.fileDownloadingHandled = true;
     }
 
-    handlePageError (ctx, err) {
+    public handlePageError (ctx: any, err: Error): void {
         this.pendingPageError = new PageLoadError(err, ctx.reqOpts.url);
 
         ctx.redirect(ctx.toProxyUrl(SPECIAL_ERROR_PAGE));
     }
 
     // Test function execution
-    async _executeTestFn (phase, fn) {
+    private async _executeTestFn (phase: TestRunPhase, fn: Function): Promise<boolean> {
         this.phase = phase;
 
         try {
@@ -382,32 +507,32 @@ export default class TestRun extends AsyncEventEmitter {
         return !this._addPendingPageErrorIfAny();
     }
 
-    async _runBeforeHook () {
+    private async _runBeforeHook (): Promise<boolean> {
         if (this.test.beforeFn)
-            return await this._executeTestFn(PHASE.inTestBeforeHook, this.test.beforeFn);
+            return await this._executeTestFn(TestRunPhase.inTestBeforeHook, this.test.beforeFn);
 
         if (this.test.fixture.beforeEachFn)
-            return await this._executeTestFn(PHASE.inFixtureBeforeEachHook, this.test.fixture.beforeEachFn);
+            return await this._executeTestFn(TestRunPhase.inFixtureBeforeEachHook, this.test.fixture.beforeEachFn);
 
         return true;
     }
 
-    async _runAfterHook () {
+    private async _runAfterHook (): Promise<boolean> {
         if (this.test.afterFn)
-            return await this._executeTestFn(PHASE.inTestAfterHook, this.test.afterFn);
+            return await this._executeTestFn(TestRunPhase.inTestAfterHook, this.test.afterFn);
 
         if (this.test.fixture.afterEachFn)
-            return await this._executeTestFn(PHASE.inFixtureAfterEachHook, this.test.fixture.afterEachFn);
+            return await this._executeTestFn(TestRunPhase.inFixtureAfterEachHook, this.test.fixture.afterEachFn);
 
         return true;
     }
 
-    async start () {
+    public async start (): Promise<void> {
         testRunTracker.activeTestRuns[this.session.id] = this;
 
         await this.emit('start');
 
-        const onDisconnected = err => this._disconnect(err);
+        const onDisconnected = (err: Error): void => this._disconnect(err);
 
         this.browserConnection.once('disconnected', onDisconnected);
 
@@ -416,7 +541,7 @@ export default class TestRun extends AsyncEventEmitter {
         await this.emit('ready');
 
         if (await this._runBeforeHook()) {
-            await this._executeTestFn(PHASE.inTest, this.test.fn);
+            await this._executeTestFn(TestRunPhase.inTest, this.test.fn as Function);
             await this._runAfterHook();
         }
 
@@ -425,8 +550,11 @@ export default class TestRun extends AsyncEventEmitter {
 
         this.browserConnection.removeListener('disconnected', onDisconnected);
 
-        if (this.errs.length && this.debugOnFail)
-            await this._enqueueSetBreakpointCommand(null, this.debugReporterPluginHost.formatError(this.errs[0]));
+        if (this.errs.length && this.debugOnFail) {
+            const errStr = this.debugReporterPluginHost.formatError(this.errs[0]);
+
+            await this._enqueueSetBreakpointCommand(void 0, errStr);
+        }
 
         await this.emit('before-done');
 
@@ -442,17 +570,18 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     // Errors
-    _addPendingPageErrorIfAny () {
+    private _addPendingPageErrorIfAny (): boolean {
         if (this.pendingPageError) {
             this.addError(this.pendingPageError);
             this.pendingPageError = null;
+
             return true;
         }
 
         return false;
     }
 
-    _createErrorAdapter (err) {
+    private _createErrorAdapter (err: Error): TestRunErrorFormattableAdapter {
         return new TestRunErrorFormattableAdapter(err, {
             userAgent:      this.browserConnection.userAgent,
             screenshotPath: this.errScreenshotPath || '',
@@ -461,7 +590,7 @@ export default class TestRun extends AsyncEventEmitter {
         });
     }
 
-    addError (err) {
+    public addError (err: Error | TestCafeErrorList | TestRunErrorBase): void {
         const errList = err instanceof TestCafeErrorList ? err.items : [err];
 
         errList.forEach(item => {
@@ -471,16 +600,20 @@ export default class TestRun extends AsyncEventEmitter {
         });
     }
 
-    normalizeRequestHookErrors () {
+    public normalizeRequestHookErrors (): void {
         const requestHookErrors = remove(this.errs, e =>
-            e.code === TEST_RUN_ERRORS.requestHookNotImplementedError ||
-            e.code === TEST_RUN_ERRORS.requestHookUnhandledError);
+            (e as unknown as TestRunErrorBase).code === TEST_RUN_ERRORS.requestHookNotImplementedError ||
+            (e as unknown as TestRunErrorBase).code === TEST_RUN_ERRORS.requestHookUnhandledError);
 
         if (!requestHookErrors.length)
             return;
 
         const uniqRequestHookErrors = chain(requestHookErrors)
-            .uniqBy(e => e.hookClassName + e.methodName)
+            .uniqBy(e => {
+                const err = e as unknown as RequestHookBaseError;
+
+                return err.hookClassName + err.methodName;
+            })
             .sortBy(['hookClassName', 'methodName'])
             .value();
 
@@ -488,7 +621,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     // Task queue
-    _enqueueCommand (command, callsite) {
+    private _enqueueCommand (command: CommandBase, callsite: CallsiteRecord): Promise<unknown> {
         if (this.pendingRequest)
             this._resolvePendingRequest(command);
 
@@ -501,19 +634,20 @@ export default class TestRun extends AsyncEventEmitter {
         });
     }
 
-    get driverTaskQueueLength () {
-        return this.addingDriverTasksCount ? promisifyEvent(this, ALL_DRIVER_TASKS_ADDED_TO_QUEUE_EVENT) : Promise.resolve(this.driverTaskQueue.length);
+    public get driverTaskQueueLength (): Promise<number> {
+        return this.addingDriverTasksCount ? promisifyEvent(this as unknown as EventEmitter, ALL_DRIVER_TASKS_ADDED_TO_QUEUE_EVENT) : Promise.resolve(this.driverTaskQueue.length);
     }
 
-    async _enqueueBrowserConsoleMessagesCommand (command, callsite) {
+    public async _enqueueBrowserConsoleMessagesCommand (command: CommandBase, callsite: CallsiteRecord): Promise<unknown> {
         await this._enqueueCommand(command, callsite);
 
         const consoleMessageCopy = this.consoleMessages.getCopy();
 
-        return consoleMessageCopy[this.browserConnection.activeWindowId];
+        // @ts-ignore
+        return consoleMessageCopy[String(this.browserConnection.activeWindowId)];
     }
 
-    async _enqueueSetBreakpointCommand (callsite, error) {
+    private async _enqueueSetBreakpointCommand (callsite: CallsiteRecord | undefined, error?: string): Promise<void> {
         if (this.browserConnection.isHeadlessBrowser()) {
             this.warningLog.addWarning(WARNING_MESSAGE.debugInHeadlessError);
             return;
@@ -522,21 +656,21 @@ export default class TestRun extends AsyncEventEmitter {
         if (this.debugLogger)
             this.debugLogger.showBreakpoint(this.session.id, this.browserConnection.userAgent, callsite, error);
 
-        this.debugging = await this.executeCommand(new serviceCommands.SetBreakpointCommand(!!error), callsite);
+        this.debugging = await this.executeCommand(new serviceCommands.SetBreakpointCommand(!!error), callsite) as boolean;
     }
 
-    _removeAllNonServiceTasks () {
+    private _removeAllNonServiceTasks (): void {
         this.driverTaskQueue = this.driverTaskQueue.filter(driverTask => isServiceCommand(driverTask.command));
 
         this.browserManipulationQueue.removeAllNonServiceManipulations();
     }
 
     // Current driver task
-    get currentDriverTask () {
+    public get currentDriverTask (): DriverTask {
         return this.driverTaskQueue[0];
     }
 
-    _resolveCurrentDriverTask (result) {
+    private _resolveCurrentDriverTask (result?: unknown): void {
         this.currentDriverTask.resolve(result);
         this.driverTaskQueue.shift();
 
@@ -544,7 +678,8 @@ export default class TestRun extends AsyncEventEmitter {
             this._removeAllNonServiceTasks();
     }
 
-    _rejectCurrentDriverTask (err) {
+    private _rejectCurrentDriverTask (err: Error): void {
+        // @ts-ignore
         err.callsite = err.callsite || this.currentDriverTask.callsite;
 
         this.currentDriverTask.reject(err);
@@ -552,21 +687,21 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     // Pending request
-    _clearPendingRequest () {
+    private _clearPendingRequest (): void {
         if (this.pendingRequest) {
             clearTimeout(this.pendingRequest.responseTimeout);
             this.pendingRequest = null;
         }
     }
 
-    _resolvePendingRequest (command) {
+    private _resolvePendingRequest (command: CommandBase | null): void {
         this.lastDriverStatusResponse = command;
-        this.pendingRequest.resolve(command);
+        this.pendingRequest?.resolve(command);
         this._clearPendingRequest();
     }
 
     // Handle driver request
-    _shouldResolveCurrentDriverTask (driverStatus) {
+    private _shouldResolveCurrentDriverTask (driverStatus: DriverStatus): boolean {
         const currentCommand = this.currentDriverTask.command;
 
         const isExecutingObservationCommand = currentCommand instanceof observationCommands.ExecuteSelectorCommand ||
@@ -580,7 +715,7 @@ export default class TestRun extends AsyncEventEmitter {
         return !shouldExecuteCurrentCommand;
     }
 
-    _fulfillCurrentDriverTask (driverStatus) {
+    private _fulfillCurrentDriverTask (driverStatus: DriverStatus): void {
         if (!this.currentDriverTask)
             return;
 
@@ -590,7 +725,7 @@ export default class TestRun extends AsyncEventEmitter {
             this._resolveCurrentDriverTask(driverStatus.result);
     }
 
-    _handlePageErrorStatus (pageError) {
+    private _handlePageErrorStatus (pageError: Error): boolean {
         if (this.currentDriverTask && isCommandRejectableByPageError(this.currentDriverTask.command)) {
             this._rejectCurrentDriverTask(pageError);
             this.pendingPageError = null;
@@ -603,7 +738,7 @@ export default class TestRun extends AsyncEventEmitter {
         return false;
     }
 
-    _handleDriverRequest (driverStatus) {
+    private _handleDriverRequest (driverStatus: DriverStatus): CommandBase | null | string {
         const isTestDone                 = this.currentDriverTask && this.currentDriverTask.command.type ===
                                            COMMAND_TYPE.testDone;
         const pageError                  = this.pendingPageError || driverStatus.pageError;
@@ -627,22 +762,22 @@ export default class TestRun extends AsyncEventEmitter {
         return this._getCurrentDriverTaskCommand();
     }
 
-    _getCurrentDriverTaskCommand () {
+    private _getCurrentDriverTaskCommand (): CommandBase | null {
         if (!this.currentDriverTask)
             return null;
 
         const command = this.currentDriverTask.command;
 
-        if (command.type === COMMAND_TYPE.navigateTo && command.stateSnapshot)
-            this.session.useStateSnapshot(JSON.parse(command.stateSnapshot));
+        if (command.type === COMMAND_TYPE.navigateTo && (command as any).stateSnapshot)
+            this.session.useStateSnapshot(JSON.parse((command as any).stateSnapshot));
 
         return command;
     }
 
     // Execute command
-    _executeJsExpression (command) {
-        const resultVariableName = command.resultVariableName;
-        let expression           = command.expression;
+    private _executeJsExpression (command: CommandBase): unknown {
+        const resultVariableName = (command as any).resultVariableName;
+        let expression           = (command as any).expression;
 
         if (resultVariableName)
             expression = `${resultVariableName} = ${expression}, ${resultVariableName}`;
@@ -650,20 +785,19 @@ export default class TestRun extends AsyncEventEmitter {
         return executeJsExpression(expression, this, { skipVisibilityCheck: false });
     }
 
-    async _executeAssertion (command, callsite) {
-        const assertionTimeout = command.options.timeout ===
-                                 void 0 ? this.opts.assertionTimeout : command.options.timeout;
+    private async _executeAssertion (command: AssertionCommand, callsite: CallsiteRecord): Promise<void> {
+        const assertionTimeout = getAssertionTimeout(command, this.opts);
         const executor         = new AssertionExecutor(command, assertionTimeout, callsite);
 
-        executor.once('start-assertion-retries', timeout => this.executeCommand(new serviceCommands.ShowAssertionRetriesStatusCommand(timeout)));
-        executor.once('end-assertion-retries', success => this.executeCommand(new serviceCommands.HideAssertionRetriesStatusCommand(success)));
+        executor.once('start-assertion-retries', (timeout: number) => this.executeCommand(new serviceCommands.ShowAssertionRetriesStatusCommand(timeout)));
+        executor.once('end-assertion-retries', (success: boolean) => this.executeCommand(new serviceCommands.HideAssertionRetriesStatusCommand(success)));
 
         const executeFn = this.decoratePreventEmitActionEvents(() => executor.run(), { prevent: true });
 
         return await executeFn();
     }
 
-    _adjustConfigurationWithCommand (command) {
+    private _adjustConfigurationWithCommand (command: CommandBase): void {
         if (command.type === COMMAND_TYPE.testDone) {
             this.testDoneCommandQueued = true;
             if (this.debugLogger)
@@ -671,25 +805,25 @@ export default class TestRun extends AsyncEventEmitter {
         }
 
         else if (command.type === COMMAND_TYPE.setNativeDialogHandler)
-            this.activeDialogHandler = command.dialogHandler;
+            this.activeDialogHandler = (command as any).dialogHandler;
 
         else if (command.type === COMMAND_TYPE.switchToIframe)
-            this.activeIframeSelector = command.selector;
+            this.activeIframeSelector = (command as any).selector;
 
         else if (command.type === COMMAND_TYPE.switchToMainWindow)
             this.activeIframeSelector = null;
 
         else if (command.type === COMMAND_TYPE.setTestSpeed)
-            this.speed = command.speed;
+            this.speed = (command as any).speed;
 
         else if (command.type === COMMAND_TYPE.setPageLoadTimeout)
-            this.pageLoadTimeout = command.duration;
+            this.pageLoadTimeout = (command as any).duration;
 
         else if (command.type === COMMAND_TYPE.debug)
             this.debugging = true;
     }
 
-    async _adjustScreenshotCommand (command) {
+    private async _adjustScreenshotCommand (command: TakeScreenshotBaseCommand): Promise<void> {
         const browserId                    = this.browserConnection.id;
         const { hasChromelessScreenshots } = await this.browserConnection.provider.hasCustomActionForBrowser(browserId);
 
@@ -697,19 +831,19 @@ export default class TestRun extends AsyncEventEmitter {
             command.generateScreenshotMark();
     }
 
-    async _adjustCommandOptions (command) {
-        if (command.options?.confidential !== void 0)
+    public async _adjustCommandOptions (command: CommandBase): Promise<void> {
+        if ((command as any).options?.confidential !== void 0)
             return;
 
         if (command.type === COMMAND_TYPE.typeText) {
-            const result = await this.executeCommand(command.selector);
+            const result = await this.executeCommand((command as any).selector);
 
             if (!result)
                 return;
 
             const node = this.replicator.decode(result);
 
-            command.options.confidential = isPasswordInput(node);
+            (command as any).options.confidential = isPasswordInput(node);
         }
 
         else if (command.type === COMMAND_TYPE.pressKey) {
@@ -720,16 +854,16 @@ export default class TestRun extends AsyncEventEmitter {
 
             const node = this.replicator.decode(result);
 
-            command.options.confidential = isPasswordInput(node);
+            (command as any).options.confidential = isPasswordInput(node);
         }
     }
 
-    async _setBreakpointIfNecessary (command, callsite) {
+    public async _setBreakpointIfNecessary (command: CommandBase, callsite?: CallsiteRecord): Promise<void> {
         if (!this.disableDebugBreakpoints && this.debugging && canSetDebuggerBreakpointBeforeCommand(command))
             await this._enqueueSetBreakpointCommand(callsite);
     }
 
-    async executeAction (apiActionName, command, callsite) {
+    public async executeAction (apiActionName: string, command: CommandBase, callsite: CallsiteRecord): Promise<unknown> {
         const actionArgs = { apiActionName, command };
 
         let errorAdapter = null;
@@ -740,7 +874,7 @@ export default class TestRun extends AsyncEventEmitter {
 
         await this.emitActionEvent('action-start', actionArgs);
 
-        const start = new Date();
+        const start = new Date().getTime();
 
         try {
             result = await this.executeCommand(command, callsite);
@@ -749,7 +883,7 @@ export default class TestRun extends AsyncEventEmitter {
             error = err;
         }
 
-        const duration = new Date() - start;
+        const duration = new Date().getTime() - start;
 
         if (error) {
             // NOTE: check if error is TestCafeErrorList is specific for the `useRole` action
@@ -776,7 +910,7 @@ export default class TestRun extends AsyncEventEmitter {
         return result;
     }
 
-    async executeCommand (command, callsite) {
+    public async executeCommand (command: CommandBase, callsite?: CallsiteRecord): Promise<unknown> {
         this.debugLog.command(command);
 
         if (this.pendingPageError && isCommandRejectableByPageError(command))
@@ -796,7 +930,7 @@ export default class TestRun extends AsyncEventEmitter {
                 return null;
             }
 
-            await this._adjustScreenshotCommand(command);
+            await this._adjustScreenshotCommand(command as TakeScreenshotBaseCommand);
         }
 
         if (isBrowserManipulationCommand(command)) {
@@ -807,7 +941,7 @@ export default class TestRun extends AsyncEventEmitter {
         }
 
         if (command.type === COMMAND_TYPE.wait)
-            return delay(command.timeout);
+            return delay((command as any).timeout);
 
         if (command.type === COMMAND_TYPE.setPageLoadTimeout)
             return null;
@@ -816,7 +950,7 @@ export default class TestRun extends AsyncEventEmitter {
             return await this._enqueueSetBreakpointCommand(callsite);
 
         if (command.type === COMMAND_TYPE.useRole) {
-            let fn = () => this._useRole(command.role, callsite);
+            let fn = (): Promise<void> => this._useRole((command as any).role, callsite as CallsiteRecord);
 
             fn = this.decoratePreventEmitActionEvents(fn, { prevent: true });
             fn = this.decorateDisableDebugBreakpoints(fn, { disable: true });
@@ -825,45 +959,46 @@ export default class TestRun extends AsyncEventEmitter {
         }
 
         if (command.type === COMMAND_TYPE.assertion)
-            return this._executeAssertion(command, callsite);
+            return this._executeAssertion(command as AssertionCommand, callsite as CallsiteRecord);
 
         if (command.type === COMMAND_TYPE.executeExpression)
-            return await this._executeJsExpression(command, callsite);
+            return await this._executeJsExpression(command);
 
         if (command.type === COMMAND_TYPE.executeAsyncExpression)
-            return await executeAsyncJsExpression(command.expression, this, callsite);
+            return await executeAsyncJsExpression((command as any).expression, this, callsite);
 
         if (command.type === COMMAND_TYPE.getBrowserConsoleMessages)
-            return await this._enqueueBrowserConsoleMessagesCommand(command, callsite);
+            return await this._enqueueBrowserConsoleMessagesCommand(command, callsite as CallsiteRecord);
 
         if (command.type === COMMAND_TYPE.switchToPreviousWindow)
-            command.windowId = this.browserConnection.previousActiveWindowId;
+            (command as any).windowId = this.browserConnection.previousActiveWindowId;
 
         if (command.type === COMMAND_TYPE.switchToWindowByPredicate)
-            return this._switchToWindowByPredicate(command);
+            return this._switchToWindowByPredicate(command as SwitchToWindowByPredicateCommand);
 
-
-        return this._enqueueCommand(command, callsite);
+        return this._enqueueCommand(command, callsite as CallsiteRecord);
     }
 
-    _rejectCommandWithPageError (callsite) {
+    private _rejectCommandWithPageError (callsite?: CallsiteRecord): Promise<Error> {
         const err = this.pendingPageError;
 
+        // @ts-ignore
         err.callsite          = callsite;
         this.pendingPageError = null;
 
         return Promise.reject(err);
     }
 
-    async _makeScreenshotOnFail () {
+    public async _makeScreenshotOnFail (): Promise<void> {
         const { screenshots } = this.opts;
 
-        if (!this.errScreenshotPath && screenshots && screenshots.takeOnFails)
-            this.errScreenshotPath = await this.executeCommand(new browserManipulationCommands.TakeScreenshotOnFailCommand());
+        if (!this.errScreenshotPath && (screenshots as ScreenshotOptionValue)?.takeOnFails)
+            this.errScreenshotPath = await this.executeCommand(new browserManipulationCommands.TakeScreenshotOnFailCommand()) as string;
     }
 
-    _decorateWithFlag (fn, flagName, value) {
+    private _decorateWithFlag (fn: Function, flagName: string, value: boolean): () => Promise<void> {
         return async () => {
+            // @ts-ignore
             this[flagName] = value;
 
             try {
@@ -873,29 +1008,30 @@ export default class TestRun extends AsyncEventEmitter {
                 throw err;
             }
             finally {
+                // @ts-ignore
                 this[flagName] = !value;
             }
         };
     }
 
-    decoratePreventEmitActionEvents (fn, { prevent }) {
+    public decoratePreventEmitActionEvents (fn: Function, { prevent }: { prevent: boolean }): () => Promise<void> {
         return this._decorateWithFlag(fn, 'preventEmitActionEvents', prevent);
     }
 
-    decorateDisableDebugBreakpoints (fn, { disable }) {
+    public decorateDisableDebugBreakpoints (fn: Function, { disable }: { disable: boolean }): () => Promise<void> {
         return this._decorateWithFlag(fn, 'disableDebugBreakpoints', disable);
     }
 
     // Role management
-    async getStateSnapshot () {
+    public async getStateSnapshot (): Promise<StateSnapshot> {
         const state = this.session.getStateSnapshot();
 
-        state.storages = await this.executeCommand(new serviceCommands.BackupStoragesCommand());
+        state.storages = await this.executeCommand(new serviceCommands.BackupStoragesCommand()) as StoragesSnapshot;
 
         return state;
     }
 
-    async switchToCleanRun (url) {
+    public async switchToCleanRun (url: string): Promise<void> {
         this.ctx             = Object.create(null);
         this.fixtureCtx      = Object.create(null);
         this.consoleMessages = new BrowserConsoleMessages();
@@ -923,16 +1059,16 @@ export default class TestRun extends AsyncEventEmitter {
         }
     }
 
-    async navigateToUrl (url, forceReload, stateSnapshot) {
+    public async navigateToUrl (url: string, forceReload: boolean, stateSnapshot?: StateSnapshot): Promise<void> {
         const navigateCommand = new actionCommands.NavigateToCommand({ url, forceReload, stateSnapshot });
 
         await this.executeCommand(navigateCommand);
     }
 
-    async _getStateSnapshotFromRole (role) {
+    private async _getStateSnapshotFromRole (role: Role): Promise<StateSnapshot> {
         const prevPhase = this.phase;
 
-        this.phase = PHASE.inRoleInitializer;
+        this.phase = TestRunPhase.inRoleInitializer;
 
         if (role.phase === ROLE_PHASE.uninitialized)
             await role.initialize(this);
@@ -948,8 +1084,8 @@ export default class TestRun extends AsyncEventEmitter {
         return role.stateSnapshot;
     }
 
-    async _useRole (role, callsite) {
-        if (this.phase === PHASE.inRoleInitializer)
+    private async _useRole (role: Role, callsite: CallsiteRecord): Promise<void> {
+        if (this.phase === TestRunPhase.inRoleInitializer)
             throw new RoleSwitchInRoleInitializerError(callsite);
 
         const bookmark = new TestRunBookmark(this, role);
@@ -968,7 +1104,7 @@ export default class TestRun extends AsyncEventEmitter {
         await bookmark.restore(callsite, stateSnapshot);
     }
 
-    async getCurrentUrl () {
+    public async getCurrentUrl (): Promise<string> {
         const builder = new ClientFunctionBuilder(() => {
             /* eslint-disable no-undef */
             return window.location.href;
@@ -980,14 +1116,14 @@ export default class TestRun extends AsyncEventEmitter {
         return await getLocation();
     }
 
-    async _switchToWindowByPredicate (command) {
-        const currentWindows = await this.executeCommand(new GetCurrentWindowsCommand({}, this));
+    private async _switchToWindowByPredicate (command: SwitchToWindowByPredicateCommand): Promise<void> {
+        const currentWindows = await this.executeCommand(new GetCurrentWindowsCommand({}, this) as CommandBase) as OpenedWindowInformation[];
 
         const windows = currentWindows.filter(wnd => {
             try {
                 const url = new URL(wnd.url);
 
-                return command.findWindow({ url, title: wnd.title });
+                return (command as any).findWindow({ url, title: wnd.title });
             }
             catch (e) {
                 throw new SwitchToWindowPredicateError(e.message);
@@ -1000,10 +1136,10 @@ export default class TestRun extends AsyncEventEmitter {
         if (windows.length > 1)
             this.warningLog.addWarning(WARNING_MESSAGE.multipleWindowsFoundByPredicate);
 
-        await this.executeCommand(new SwitchToWindowCommand({ windowId: windows[0].id }), this);
+        await this.executeCommand(new SwitchToWindowCommand({ windowId: windows[0].id }, this) as CommandBase);
     }
 
-    _disconnect (err) {
+    private _disconnect (err: Error): void {
         this.disconnected = true;
 
         if (this.currentDriverTask)
@@ -1014,18 +1150,19 @@ export default class TestRun extends AsyncEventEmitter {
         delete testRunTracker.activeTestRuns[this.session.id];
     }
 
-    async emitActionEvent (eventName, args) {
+    public async emitActionEvent (eventName: string, args: unknown): Promise<void> {
+        // @ts-ignore
         if (!this.preventEmitActionEvents)
             await this.emit(eventName, args);
     }
 
-    static isMultipleWindowsAllowed (testRun) {
+    public static isMultipleWindowsAllowed (testRun: TestRun): boolean {
         const { disableMultipleWindows, test, browserConnection } = testRun;
 
-        return !disableMultipleWindows && !test.isLegacy && !!browserConnection.activeWindowId;
+        return !disableMultipleWindows && !(test as LegacyTestRun).isLegacy && !!browserConnection.activeWindowId;
     }
 
-    async initialize () {
+    public async initialize (): Promise<void> {
         if (!this.compilerService)
             return;
 
@@ -1034,67 +1171,64 @@ export default class TestRun extends AsyncEventEmitter {
             testId:    this.test.id
         });
     }
-}
 
-// Service message handlers
-const ServiceMessages = TestRun.prototype;
+    // NOTE: this function is time-critical and must return ASAP to avoid client disconnection
+    private async [CLIENT_MESSAGES.ready] (msg: DriverMessage): Promise<unknown> {
+        this.debugLog.driverMessage(msg);
 
-// NOTE: this function is time-critical and must return ASAP to avoid client disconnection
-ServiceMessages[CLIENT_MESSAGES.ready] = function (msg) {
-    this.debugLog.driverMessage(msg);
+        if (this.disconnected)
+            return Promise.reject(new GeneralError(RUNTIME_ERRORS.testRunRequestInDisconnectedBrowser, this.browserConnection.browserInfo.alias));
 
-    if (this.disconnected)
-        return Promise.reject(new GeneralError(RUNTIME_ERRORS.testRunRequestInDisconnectedBrowser, this.browserConnection.browserInfo.alias));
+        this.emit('connected');
 
-    this.emit('connected');
+        this._clearPendingRequest();
 
-    this._clearPendingRequest();
+        // NOTE: the driver sends the status for the second time if it didn't get a response at the
+        // first try. This is possible when the page was unloaded after the driver sent the status.
+        if (msg.status.id === this.lastDriverStatusId)
+            return this.lastDriverStatusResponse;
 
-    // NOTE: the driver sends the status for the second time if it didn't get a response at the
-    // first try. This is possible when the page was unloaded after the driver sent the status.
-    if (msg.status.id === this.lastDriverStatusId)
-        return this.lastDriverStatusResponse;
+        this.lastDriverStatusId       = msg.status.id;
+        this.lastDriverStatusResponse = this._handleDriverRequest(msg.status);
 
-    this.lastDriverStatusId       = msg.status.id;
-    this.lastDriverStatusResponse = this._handleDriverRequest(msg.status);
+        if (this.lastDriverStatusResponse || msg.status.isPendingWindowSwitching)
+            return this.lastDriverStatusResponse;
 
-    if (this.lastDriverStatusResponse || msg.status.isPendingWindowSwitching)
-        return this.lastDriverStatusResponse;
+        // NOTE: we send an empty response after the MAX_RESPONSE_DELAY timeout is exceeded to keep connection
+        // with the client and prevent the response timeout exception on the client side
+        const responseTimeout = setTimeout(() => this._resolvePendingRequest(null), MAX_RESPONSE_DELAY);
 
-    // NOTE: we send an empty response after the MAX_RESPONSE_DELAY timeout is exceeded to keep connection
-    // with the client and prevent the response timeout exception on the client side
-    const responseTimeout = setTimeout(() => this._resolvePendingRequest(null), MAX_RESPONSE_DELAY);
-
-    return new Promise((resolve, reject) => {
-        this.pendingRequest = { resolve, reject, responseTimeout };
-    });
-};
-
-ServiceMessages[CLIENT_MESSAGES.readyForBrowserManipulation] = async function (msg) {
-    this.debugLog.driverMessage(msg);
-
-    let result = null;
-    let error  = null;
-
-    try {
-        result = await this.browserManipulationQueue.executePendingManipulation(msg);
-    }
-    catch (err) {
-        error = err;
+        return new Promise((resolve, reject) => {
+            this.pendingRequest = { resolve, reject, responseTimeout };
+        });
     }
 
-    return { result, error };
-};
+    private async [CLIENT_MESSAGES.readyForBrowserManipulation] (msg: DriverMessage): Promise<BrowserManipulationResult> {
+        this.debugLog.driverMessage(msg);
 
-ServiceMessages[CLIENT_MESSAGES.waitForFileDownload] = function (msg) {
-    this.debugLog.driverMessage(msg);
+        let result = null;
+        let error  = null;
 
-    return new Promise(resolve => {
-        if (this.fileDownloadingHandled) {
-            this.fileDownloadingHandled = false;
-            resolve(true);
+        try {
+            result = await this.browserManipulationQueue.executePendingManipulation(msg);
         }
-        else
-            this.resolveWaitForFileDownloadingPromise = resolve;
-    });
-};
+        catch (err) {
+            error = err;
+        }
+
+        return { result, error };
+    }
+
+    private async [CLIENT_MESSAGES.waitForFileDownload] (msg: DriverMessage): Promise<boolean> {
+        this.debugLog.driverMessage(msg);
+
+        return new Promise(resolve => {
+            if (this.fileDownloadingHandled) {
+                this.fileDownloadingHandled = false;
+                resolve(true);
+            }
+            else
+                this.resolveWaitForFileDownloadingPromise = resolve;
+        });
+    }
+}

@@ -72,7 +72,7 @@ export default class FixtureHookController {
                 item.runningFixtureBeforeHook = true;
 
                 try {
-                    await fixture.beforeFn(item.fixtureCtx);
+                    await (fixture.beforeFn as Function)(item.fixtureCtx);
                 }
                 catch (err) {
                     item.fixtureBeforeHookErr = processTestFnError(err);

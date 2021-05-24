@@ -1,9 +1,15 @@
-import { renderers } from 'callsite-record';
+import { CallsiteRecord, renderers } from 'callsite-record';
 import renderCallsiteSync from './render-callsite-sync';
 import createStackFilter from '../errors/create-stack-filter';
 
+export interface RenderedCallsite {
+    prerendered: boolean;
+    default: string;
+    html: string;
+    noColor: string;
+}
 
-export default function prerenderCallsite (callsite) {
+export default function prerenderCallsite (callsite: CallsiteRecord): RenderedCallsite {
     const stackFilter = createStackFilter(Error.stackTraceLimit);
 
     return {

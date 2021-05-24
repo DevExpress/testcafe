@@ -17,7 +17,8 @@ import TestRun from '../test-run';
 import Test from '../api/structure/test';
 import Fixture from '../api/structure/fixture';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
-import { Command } from './command/interfaces';
+import CommandBase from '../test-run/commands/base';
+
 
 interface PendingPromise {
     resolve: Function | null;
@@ -31,7 +32,7 @@ interface ReportItem {
     screenshotPath: null | string;
     screenshots: unknown[];
     videos: unknown[];
-    quarantine: null;
+    quarantine: null | Record<string, object>;
     errs: TestRunErrorFormattableAdapter[];
     warnings: string[];
     unstable: boolean;
@@ -64,7 +65,7 @@ interface PluginMethodArguments {
 }
 
 interface ReportTestActionEventArguments {
-    command: Command;
+    command: CommandBase;
     duration: number;
     result: unknown;
     testRun: TestRun;
@@ -267,7 +268,7 @@ export default class Reporter {
                 id:   testRun.test.fixture.id
             },
             command: formatCommand(command, result),
-            browser: testRun.controller.browser,
+            browser: testRun.controller?.browser,
         });
     }
 

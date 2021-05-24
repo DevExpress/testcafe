@@ -1,6 +1,6 @@
 import TestController from './test-controller';
 import testRunTracker from './test-run-tracker';
-import { TestRun } from './test-run-tracker.d';
+import TestRun from '../test-run';
 import TestCafeErrorList from '../errors/error-list';
 import { MissingAwaitError } from '../errors/test-run';
 import addRenderedWarning from '../notifications/add-rendered-warning';

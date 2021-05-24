@@ -31,7 +31,7 @@ interface ReporterSymbols {
 }
 
 export default class ReporterPluginHost {
-    public name: string;
+    public name?: string;
     public streamController: ReporterStreamController | null;
     public chalk: Chalk;
     public moment: Moment;
@@ -42,7 +42,7 @@ export default class ReporterPluginHost {
     private [indent]: number;
     private [errorDecorator]: Record<string, Function>;
 
-    public constructor (plugin: any, outStream: Writable, name: string) {
+    public constructor (plugin: any, outStream?: Writable, name?: string) {
         this.name             = name;
         this.streamController = null;
         this[stream]          = outStream || process.stdout;

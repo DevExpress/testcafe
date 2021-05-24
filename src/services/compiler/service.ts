@@ -77,12 +77,6 @@ interface ServiceState {
     options: Dictionary<OptionValue>;
 }
 
-interface TestRunProxyCreationArgs {
-    testRunId: string;
-    testId: string;
-    fixtureCtx: unknown;
-}
-
 interface WrapSetMockArguments extends RequestHookLocator {
     event: RequestEvent;
 }
