@@ -268,9 +268,6 @@ export default class Reporter {
                 id:   testRun.test.fixture.id
             },
             command: formatCommand(command, result),
-            // TestController doesn't have the browser property in its definition.
-            // It is dynamically added later.
-            // @ts-ignore
             browser: testRun.controller?.browser,
         });
     }
