@@ -17,7 +17,8 @@ import TestRun from '../test-run';
 import Test from '../api/structure/test';
 import Fixture from '../api/structure/fixture';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
-import { Command } from './command/interfaces';
+import CommandBase from '../test-run/commands/base';
+
 
 interface PendingPromise {
     resolve: Function | null;
@@ -64,7 +65,7 @@ interface PluginMethodArguments {
 }
 
 interface ReportTestActionEventArguments {
-    command: Command;
+    command: CommandBase;
     duration: number;
     result: unknown;
     testRun: TestRun;

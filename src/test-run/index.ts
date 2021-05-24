@@ -59,7 +59,8 @@ import {
 } from './commands/utils';
 
 import {
-    GetCurrentWindowsCommand, SwitchToWindowByPredicateCommand,
+    GetCurrentWindowsCommand,
+    SwitchToWindowByPredicateCommand,
     SwitchToWindowCommand
 } from './commands/actions';
 
@@ -80,7 +81,7 @@ import BrowserConnection from '../browser/connection';
 import { Quarantine } from '../utils/get-options/quarantine';
 import RequestHook from '../api/request-hooks/hook';
 import DriverStatus from '../client/driver/status';
-import Command from './commands/base.js';
+import CommandBase from './commands/base.js';
 import Role from '../role/role';
 import { TestRunErrorBase } from '../shared/errors';
 import { CallsiteRecord } from 'callsite-record';
@@ -129,7 +130,7 @@ interface TestRunInit {
 }
 
 interface DriverTask {
-    command: Command;
+    command: CommandBase;
     resolve: Function;
     reject: Function;
     callsite: CallsiteRecord;
@@ -190,7 +191,7 @@ export default class TestRun extends AsyncEventEmitter {
     private readonly usedRoleStates: Record<string, any>;
     public errs: TestRunErrorFormattableAdapter[];
     private lastDriverStatusId: string | null;
-    private lastDriverStatusResponse: Command | null | string;
+    private lastDriverStatusResponse: CommandBase | null | string;
     private fileDownloadingHandled: boolean;
     private resolveWaitForFileDownloadingPromise: Function | null;
     private addingDriverTasksCount: number;
@@ -620,7 +621,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     // Task queue
-    private _enqueueCommand (command: Command, callsite: CallsiteRecord): Promise<unknown> {
+    private _enqueueCommand (command: CommandBase, callsite: CallsiteRecord): Promise<unknown> {
         if (this.pendingRequest)
             this._resolvePendingRequest(command);
 
@@ -637,7 +638,7 @@ export default class TestRun extends AsyncEventEmitter {
         return this.addingDriverTasksCount ? promisifyEvent(this as unknown as EventEmitter, ALL_DRIVER_TASKS_ADDED_TO_QUEUE_EVENT) : Promise.resolve(this.driverTaskQueue.length);
     }
 
-    public async _enqueueBrowserConsoleMessagesCommand (command: Command, callsite: CallsiteRecord): Promise<unknown> {
+    public async _enqueueBrowserConsoleMessagesCommand (command: CommandBase, callsite: CallsiteRecord): Promise<unknown> {
         await this._enqueueCommand(command, callsite);
 
         const consoleMessageCopy = this.consoleMessages.getCopy();
@@ -693,7 +694,7 @@ export default class TestRun extends AsyncEventEmitter {
         }
     }
 
-    private _resolvePendingRequest (command: Command | null): void {
+    private _resolvePendingRequest (command: CommandBase | null): void {
         this.lastDriverStatusResponse = command;
         this.pendingRequest?.resolve(command);
         this._clearPendingRequest();
@@ -737,7 +738,7 @@ export default class TestRun extends AsyncEventEmitter {
         return false;
     }
 
-    private _handleDriverRequest (driverStatus: DriverStatus): Command | null | string {
+    private _handleDriverRequest (driverStatus: DriverStatus): CommandBase | null | string {
         const isTestDone                 = this.currentDriverTask && this.currentDriverTask.command.type ===
                                            COMMAND_TYPE.testDone;
         const pageError                  = this.pendingPageError || driverStatus.pageError;
@@ -761,7 +762,7 @@ export default class TestRun extends AsyncEventEmitter {
         return this._getCurrentDriverTaskCommand();
     }
 
-    private _getCurrentDriverTaskCommand (): Command | null {
+    private _getCurrentDriverTaskCommand (): CommandBase | null {
         if (!this.currentDriverTask)
             return null;
 
@@ -774,7 +775,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     // Execute command
-    private _executeJsExpression (command: Command): unknown {
+    private _executeJsExpression (command: CommandBase): unknown {
         const resultVariableName = (command as any).resultVariableName;
         let expression           = (command as any).expression;
 
@@ -796,7 +797,7 @@ export default class TestRun extends AsyncEventEmitter {
         return await executeFn();
     }
 
-    private _adjustConfigurationWithCommand (command: Command): void {
+    private _adjustConfigurationWithCommand (command: CommandBase): void {
         if (command.type === COMMAND_TYPE.testDone) {
             this.testDoneCommandQueued = true;
             if (this.debugLogger)
@@ -830,7 +831,7 @@ export default class TestRun extends AsyncEventEmitter {
             command.generateScreenshotMark();
     }
 
-    public async _adjustCommandOptions (command: Command): Promise<void> {
+    public async _adjustCommandOptions (command: CommandBase): Promise<void> {
         if ((command as any).options?.confidential !== void 0)
             return;
 
@@ -857,12 +858,12 @@ export default class TestRun extends AsyncEventEmitter {
         }
     }
 
-    public async _setBreakpointIfNecessary (command: Command, callsite?: CallsiteRecord): Promise<void> {
+    public async _setBreakpointIfNecessary (command: CommandBase, callsite?: CallsiteRecord): Promise<void> {
         if (!this.disableDebugBreakpoints && this.debugging && canSetDebuggerBreakpointBeforeCommand(command))
             await this._enqueueSetBreakpointCommand(callsite);
     }
 
-    public async executeAction (apiActionName: string, command: Command, callsite: CallsiteRecord): Promise<unknown> {
+    public async executeAction (apiActionName: string, command: CommandBase, callsite: CallsiteRecord): Promise<unknown> {
         const actionArgs = { apiActionName, command };
 
         let errorAdapter = null;
@@ -909,7 +910,7 @@ export default class TestRun extends AsyncEventEmitter {
         return result;
     }
 
-    public async executeCommand (command: Command, callsite?: CallsiteRecord): Promise<unknown> {
+    public async executeCommand (command: CommandBase, callsite?: CallsiteRecord): Promise<unknown> {
         this.debugLog.command(command);
 
         if (this.pendingPageError && isCommandRejectableByPageError(command))
@@ -929,7 +930,7 @@ export default class TestRun extends AsyncEventEmitter {
                 return null;
             }
 
-            await this._adjustScreenshotCommand(command as unknown as TakeScreenshotBaseCommand);
+            await this._adjustScreenshotCommand(command as TakeScreenshotBaseCommand);
         }
 
         if (isBrowserManipulationCommand(command)) {
@@ -973,7 +974,7 @@ export default class TestRun extends AsyncEventEmitter {
             (command as any).windowId = this.browserConnection.previousActiveWindowId;
 
         if (command.type === COMMAND_TYPE.switchToWindowByPredicate)
-            return this._switchToWindowByPredicate(command as unknown as SwitchToWindowByPredicateCommand);
+            return this._switchToWindowByPredicate(command as SwitchToWindowByPredicateCommand);
 
         return this._enqueueCommand(command, callsite as CallsiteRecord);
     }
@@ -1116,7 +1117,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     private async _switchToWindowByPredicate (command: SwitchToWindowByPredicateCommand): Promise<void> {
-        const currentWindows = await this.executeCommand(new GetCurrentWindowsCommand({}, this) as unknown as Command) as OpenedWindowInformation[];
+        const currentWindows = await this.executeCommand(new GetCurrentWindowsCommand({}, this) as CommandBase) as OpenedWindowInformation[];
 
         const windows = currentWindows.filter(wnd => {
             try {
@@ -1135,7 +1136,7 @@ export default class TestRun extends AsyncEventEmitter {
         if (windows.length > 1)
             this.warningLog.addWarning(WARNING_MESSAGE.multipleWindowsFoundByPredicate);
 
-        await this.executeCommand(new SwitchToWindowCommand({ windowId: windows[0].id }, this) as unknown as Command);
+        await this.executeCommand(new SwitchToWindowCommand({ windowId: windows[0].id }, this) as CommandBase);
     }
 
     private _disconnect (err: Error): void {

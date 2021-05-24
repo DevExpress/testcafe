@@ -1,10 +1,6 @@
 import CommandBase from './base';
 import { AssertionOptions } from './options';
 
-interface AssertionCommand extends CommandBase {
-    options: AssertionOptions;
+export default class AssertionCommand extends CommandBase {
+    public options: AssertionOptions;
 }
-
-declare const AssertionCommand: AssertionCommand;
-
-export default AssertionCommand;
