@@ -163,7 +163,7 @@ export default class VideoRecorder extends AsyncEmitter {
 
         await this.once('frame');
     }
-    async finishCapturing() {
+    async finishCapturing () {
         if (this.closed)
             return;
 

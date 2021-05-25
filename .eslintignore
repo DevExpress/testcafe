@@ -1,1 +1,2 @@
 test/server/data/**/*.js
+test/client/kill-browser-process/kill-test.js

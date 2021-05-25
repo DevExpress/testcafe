@@ -3,7 +3,6 @@ import OS from 'os-family';
 import promisifyEvent from 'promisify-event';
 import delay from '../utils/delay';
 
-const CHECK_PROCESS_IS_KILLED_TIMEOUT = 5000;
 const CHECK_KILLED_DELAY              = 2000;
 const NEW_LINE_SEPERATOR_RE           = /(\r\n)|(\n\r)|\n|\r/g;
 const cannotGetListOfProcessError     = 'Cannot get list of processes';
@@ -71,31 +70,32 @@ async function isUnixProcessKilled (processId) {
     return !isUnixProcessExist(processId, output);
 }
 
-async function killUnixProcessSoft(processId) {
+async function killUnixProcessSoft (processId) {
     process.kill(processId);
 }
 
-async function killUnixProcessHard(processId) {
+async function killUnixProcessHard (processId) {
     process.kill(processId, 'SIGKILL');
 }
 
 async function killProcessUnix (processId) {
     let softTries = 0;
     let unixProcessKilled = false;
+
     do {
         await killUnixProcessSoft(processId);
         softTries++;
         await delay(CHECK_KILLED_DELAY);
         unixProcessKilled = await isUnixProcessKilled(processId);
-    } while(!unixProcessKilled && softTries < 2);
+    } while (!unixProcessKilled && softTries < 2);
 
     unixProcessKilled = await isUnixProcessKilled(processId);
-    if(unixProcessKilled) return;
+    if (unixProcessKilled) return;
 
     await killUnixProcessHard(processId);
     await delay(CHECK_KILLED_DELAY);
     unixProcessKilled = await isUnixProcessKilled(processId);
-    if(unixProcessKilled) return;
+    if (unixProcessKilled) return;
 
     //if 2 soft-kill and 1 hard-kill with "SIGKILL"-flag didn't work - throw error
     throw new Error(killProcessTimeoutError);

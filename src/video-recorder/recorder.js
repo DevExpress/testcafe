@@ -139,7 +139,7 @@ export default class VideoRecorder extends EventEmitter {
 
         const isVideoEnabled = await testRunVideoRecorder.isVideoEnabled();
 
-        if(!isVideoEnabled)
+        if (!isVideoEnabled)
             return;
 
         await testRunVideoRecorder.init();
