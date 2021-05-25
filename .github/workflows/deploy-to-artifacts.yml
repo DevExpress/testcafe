@@ -139,6 +139,8 @@ jobs:
             tasks.push('test-functional-local-ie.yml');
             tasks.push('test-functional-local-multiple-windows.yml');
 
+            tasks.push('test-functional-local-legacy.yml');
+
             tasks.push('test-functional-remote-macos.yml');
             tasks.push('test-functional-remote-mobile.yml');
             
