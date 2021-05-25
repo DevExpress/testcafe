@@ -53,6 +53,7 @@ export default class VideoRecorder extends AsyncEmitter {
 
         this.ffmpegClosingPromise = null;
 
+        this.disposed = false;
         this.closed = false;
 
         this.optionsList = this._getOptionsList();
@@ -94,6 +95,10 @@ export default class VideoRecorder extends AsyncEmitter {
         return optionsList;
     }
 
+    get active () {
+        return !this.closed && !this.disposed;
+    }
+
     async _addFrame (frameData) {
         const writingFinished = this.ffmpegProcess.stdin.write(frameData);
 
@@ -102,7 +107,7 @@ export default class VideoRecorder extends AsyncEmitter {
     }
 
     async _capture () {
-        while (!this.closed) {
+        while (this.active) {
             try {
                 const frame = await this.connection.provider.getVideoFrameData(this.connection.id);
 
@@ -126,6 +131,7 @@ export default class VideoRecorder extends AsyncEmitter {
             ._getChildProcessPromise()
             .then(code => {
                 this.closed = true;
+                this.disposed = true;
 
                 if (code) {
                     this.debugLogger(code);
@@ -135,6 +141,7 @@ export default class VideoRecorder extends AsyncEmitter {
             })
             .catch(error => {
                 this.closed = true;
+                this.disposed = true;
 
                 this.debugLogger(error);
                 this.debugLogger(this.ffmpegStdoutBuf);
@@ -143,23 +150,25 @@ export default class VideoRecorder extends AsyncEmitter {
 
         await delay(FFMPEG_START_DELAY);
     }
+    async dispose () {
+        if (this.disposed)
+            return;
 
+        this.disposed = true;
+        this.ffmpegProcess.stdin.end();
+        await this.ffmpegClosingPromise;
+    }
     async startCapturing () {
         this.capturingPromise = this._capture();
 
         await this.once('frame');
     }
-
-    async finishCapturing () {
+    async finishCapturing() {
         if (this.closed)
             return;
 
         this.closed = true;
-
         await this.capturingPromise;
-
-        this.ffmpegProcess.stdin.end();
-
-        await this.ffmpegClosingPromise;
+        await this.dispose();
     }
 }

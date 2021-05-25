@@ -4,7 +4,7 @@ import promisifyEvent from 'promisify-event';
 import delay from '../utils/delay';
 
 const CHECK_PROCESS_IS_KILLED_TIMEOUT = 5000;
-const CHECK_KILLED_DELAY              = 1000;
+const CHECK_KILLED_DELAY              = 2000;
 const NEW_LINE_SEPERATOR_RE           = /(\r\n)|(\n\r)|\n|\r/g;
 const cannotGetListOfProcessError     = 'Cannot get list of processes';
 const killProcessTimeoutError         = 'Kill process timeout';
@@ -52,7 +52,7 @@ function findProcessIdUnix (browserId, psOutput) {
     return null;
 }
 
-function isProcessExistUnix (processId, psOutput) {
+function isUnixProcessExist (processId, psOutput) {
     const processIdRegex   = new RegExp('^\\s*' + processId + '\\s+.*');
     const lines            = psOutput.split(NEW_LINE_SEPERATOR_RE);
 
@@ -65,30 +65,40 @@ async function findProcessUnix (browserId) {
     return findProcessIdUnix(browserId, output);
 }
 
-async function checkUnixProcessIsKilled (processId) {
+async function isUnixProcessKilled (processId) {
     const output = await getProcessOutputUnix();
 
-    if (isProcessExistUnix(processId, output)) {
-        await delay(CHECK_KILLED_DELAY);
+    return !isUnixProcessExist(processId, output);
+}
 
-        await checkUnixProcessIsKilled();
-    }
+async function killUnixProcessSoft(processId) {
+    process.kill(processId);
+}
+
+async function killUnixProcessHard(processId) {
+    process.kill(processId, 'SIGKILL');
 }
 
 async function killProcessUnix (processId) {
-    let timeoutError = false;
+    let softTries = 0;
+    let unixProcessKilled = false;
+    do {
+        await killUnixProcessSoft(processId);
+        softTries++;
+        await delay(CHECK_KILLED_DELAY);
+        unixProcessKilled = await isUnixProcessKilled(processId);
+    } while(!unixProcessKilled && softTries < 2);
 
-    process.kill(processId);
+    unixProcessKilled = await isUnixProcessKilled(processId);
+    if(unixProcessKilled) return;
 
-    const killTimeoutTimer = delay(CHECK_PROCESS_IS_KILLED_TIMEOUT)
-        .then(() => {
-            timeoutError = true;
-        });
+    await killUnixProcessHard(processId);
+    await delay(CHECK_KILLED_DELAY);
+    unixProcessKilled = await isUnixProcessKilled(processId);
+    if(unixProcessKilled) return;
 
-    return Promise.race([killTimeoutTimer, checkUnixProcessIsKilled(processId)]).then(() => {
-        if (timeoutError)
-            throw new Error(killProcessTimeoutError);
-    });
+    //if 2 soft-kill and 1 hard-kill with "SIGKILL"-flag didn't work - throw error
+    throw new Error(killProcessTimeoutError);
 }
 
 async function runWMIC (args) {

@@ -61,7 +61,9 @@ export default class TestRunVideoRecorder {
 
         return connectionCapabilities && connectionCapabilities.hasGetVideoFrameData;
     }
-
+    async isVideoEnabled () {
+        return !this.test.skip;
+    }
     _createVideoRecorderProcess () {
         return new VideoRecorderProcess(this.tempFiles.tempVideoPath, this.ffmpegPath, this._connection, this.encodingOptions);
     }
@@ -81,4 +83,3 @@ export default class TestRunVideoRecorder {
         return tempFileNames;
     }
 }
-
