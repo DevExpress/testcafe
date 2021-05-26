@@ -4,7 +4,7 @@ const __importDefault = this && this.__importDefault || function (mod) {
 const sinon     = require('sinon');
 const assert    = require('assert');
 const osFamily = __importDefault(require('os-family'));
-const process = require('../../../lib/utils/process');
+const process = require('../../lib/utils/process');
 const childProcess = require('child_process');
 
 describe('PROCESS KILLER', () => {
