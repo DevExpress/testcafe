@@ -4,7 +4,7 @@ const __importDefault = this && this.__importDefault || function (mod) {
 const sinon     = require('sinon');
 const assert    = require('assert');
 const osFamily = __importDefault(require('os-family'));
-const process = require('../../lib/utils/process');
+const utilsProcess = require('../../lib/utils/process');
 const childProcess = require('child_process');
 
 describe('PROCESS KILLER', () => {
@@ -19,7 +19,7 @@ describe('PROCESS KILLER', () => {
                     winProcessKilled = true;
                 });
 
-                await process.killBrowserProcess(BROWSER_ID);
+                await utilsProcess.killBrowserProcess(BROWSER_ID);
 
                 stubKill.restore();
                 assert.deepStrictEqual(winProcessKilled, true);
@@ -65,7 +65,7 @@ describe('PROCESS KILLER', () => {
                         unixProcessKilled = true;
                 });
 
-                await process.killBrowserProcess(BROWSER_ID);
+                await utilsProcess.killBrowserProcess(BROWSER_ID);
                 assert.deepStrictEqual(unixProcessKilled, true);
 
                 stubSpawn.restore();
@@ -95,7 +95,7 @@ describe('PROCESS KILLER', () => {
                         unixProcessKilled = true;
                 });
 
-                await process.killBrowserProcess(BROWSER_ID);
+                await utilsProcess.killBrowserProcess(BROWSER_ID);
                 assert.deepStrictEqual(unixProcessKilled, true);
 
                 stubSpawn.restore();
@@ -125,7 +125,7 @@ describe('PROCESS KILLER', () => {
                         unixProcessKilled = true;
                 });
 
-                await process.killBrowserProcess(BROWSER_ID);
+                await utilsProcess.killBrowserProcess(BROWSER_ID);
                 assert.deepStrictEqual(unixProcessKilled, true);
 
                 stubSpawn.restore();
