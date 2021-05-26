@@ -150,6 +150,7 @@ export default class VideoRecorder extends AsyncEmitter {
 
         await delay(FFMPEG_START_DELAY);
     }
+
     async dispose () {
         if (this.disposed)
             return;
@@ -158,11 +159,13 @@ export default class VideoRecorder extends AsyncEmitter {
         this.ffmpegProcess.stdin.end();
         await this.ffmpegClosingPromise;
     }
+
     async startCapturing () {
         this.capturingPromise = this._capture();
 
         await this.once('frame');
     }
+
     async finishCapturing () {
         if (this.closed)
             return;

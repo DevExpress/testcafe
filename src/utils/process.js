@@ -4,6 +4,7 @@ import promisifyEvent from 'promisify-event';
 import delay from '../utils/delay';
 
 const CHECK_KILLED_DELAY              = 2000;
+const HARD_KILL_FLAG                  = 'SIGKILL';
 const NEW_LINE_SEPERATOR_RE           = /(\r\n)|(\n\r)|\n|\r/g;
 const cannotGetListOfProcessError     = 'Cannot get list of processes';
 const killProcessTimeoutError         = 'Kill process timeout';
@@ -75,26 +76,34 @@ async function killUnixProcessSoft (processId) {
 }
 
 async function killUnixProcessHard (processId) {
-    process.kill(processId, 'SIGKILL');
+    process.kill(processId, HARD_KILL_FLAG);
 }
 
 async function killProcessUnix (processId) {
+    const maxSoftTries = 2;
     let softTries = 0;
     let unixProcessKilled = false;
 
     do {
         await killUnixProcessSoft(processId);
+
         softTries++;
+
         await delay(CHECK_KILLED_DELAY);
+
         unixProcessKilled = await isUnixProcessKilled(processId);
-    } while (!unixProcessKilled && softTries < 2);
+    } while (!unixProcessKilled && softTries < maxSoftTries);
 
     unixProcessKilled = await isUnixProcessKilled(processId);
+
     if (unixProcessKilled) return;
 
     await killUnixProcessHard(processId);
+
     await delay(CHECK_KILLED_DELAY);
+
     unixProcessKilled = await isUnixProcessKilled(processId);
+
     if (unixProcessKilled) return;
 
     //if 2 soft-kill and 1 hard-kill with "SIGKILL"-flag didn't work - throw error

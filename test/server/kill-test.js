@@ -1,16 +1,14 @@
-const __importDefault = this && this.__importDefault || function (mod) {
-    return mod && mod.__esModule ? mod : { 'default': mod };
-};
 const sinon     = require('sinon');
 const assert    = require('assert');
-const osFamily = __importDefault(require('os-family'));
+const osFamily = require('os-family');
 const utilsProcess = require('../../lib/utils/process');
 const childProcess = require('child_process');
 
-describe('PROCESS KILLER', () => {
-    const BROWSER_ID = 1;
+const BROWSER_ID = 1;
+const HARD_KILL_FLAG = 'SIGKILL';
 
-    if (osFamily.default.win) {
+describe('PROCESS KILLER', () => {
+    if (osFamily.win) {
         describe('Windows process killer', () => {
             it('Should call process.kill()', async () => {
                 let winProcessKilled = false;
@@ -28,6 +26,7 @@ describe('PROCESS KILLER', () => {
     }
     else {
         describe('Unix process killer', () => {
+            const LITTLE_DELAY = 500;
             const CHECK_KILLED_DELAY = 2000;
 
             const stubChildProcess = {
@@ -46,7 +45,7 @@ describe('PROCESS KILLER', () => {
             it('Should try simple kill and stop if it works', async function () {
                 // After killing the process, program should wait some time before checking whether it is killed
                 // In test we should wait a little bit more
-                this.timeout(1000 + CHECK_KILLED_DELAY);
+                this.timeout(LITTLE_DELAY + CHECK_KILLED_DELAY);
 
                 let getInfoCount = 0;
 
@@ -60,8 +59,9 @@ describe('PROCESS KILLER', () => {
                 let unixProcessKilled = false;
 
                 const stubSpawn = sinon.stub(childProcess, 'spawn').returns(stubChildProcess);
+
                 const stubKill = sinon.stub(process, 'kill').callsFake((processId, flag) => {
-                    if (flag !== 'SIGKILL')
+                    if (flag !== HARD_KILL_FLAG)
                         unixProcessKilled = true;
                 });
 
@@ -74,7 +74,9 @@ describe('PROCESS KILLER', () => {
             it('Should try second simple kill 2s after first try and stop if it works', async function () {
                 // After killing the process, program should wait some time before checking whether it is killed
                 // In test we should wait a little bit more
-                this.timeout(1000 + CHECK_KILLED_DELAY * 2);
+                const SUPPOSED_KILL_TRIES = 2;
+
+                this.timeout(LITTLE_DELAY + CHECK_KILLED_DELAY * SUPPOSED_KILL_TRIES);
 
                 let getInfoCount = 0;
 
@@ -89,9 +91,11 @@ describe('PROCESS KILLER', () => {
                 let killCount = 0;
 
                 const stubSpawn = sinon.stub(childProcess, 'spawn').returns(stubChildProcess);
+
                 const stubKill = sinon.stub(process, 'kill').callsFake((processId, flag) => {
                     killCount++;
-                    if (killCount === 2 && flag !== 'SIGKILL')
+
+                    if (killCount === SUPPOSED_KILL_TRIES && flag !== HARD_KILL_FLAG)
                         unixProcessKilled = true;
                 });
 
@@ -101,15 +105,17 @@ describe('PROCESS KILLER', () => {
                 stubSpawn.restore();
                 stubKill.restore();
             });
-            it('Should try kill with "SIGKILL"-flag 2s after second try and stop if it works', async function () {
+            it('Should try kill with hard kill flag 2s after second try and stop if it works', async function () {
                 // After killing the process, program should wait some time before checking whether it is killed
                 // In test we should wait a little bit more
-                this.timeout(1000 + CHECK_KILLED_DELAY * 3);
+                const SUPPOSED_KILL_TRIES = 3;
+
+                this.timeout(LITTLE_DELAY + CHECK_KILLED_DELAY * SUPPOSED_KILL_TRIES);
 
                 let getInfoCount = 0;
 
                 stubChildProcess.stdout.on = (event, listener) => {
-                    if (event === 'data' && getInfoCount <= 3) {
+                    if (event === 'data' && getInfoCount <= SUPPOSED_KILL_TRIES) {
                         listener('1 1');
                         getInfoCount++;
                     }
@@ -119,9 +125,11 @@ describe('PROCESS KILLER', () => {
                 let killCount = 0;
 
                 const stubSpawn = sinon.stub(childProcess, 'spawn').returns(stubChildProcess);
+
                 const stubKill = sinon.stub(process, 'kill').callsFake((processId, flag) => {
                     killCount++;
-                    if (killCount === 3 && flag === 'SIGKILL')
+
+                    if (killCount === SUPPOSED_KILL_TRIES && flag === HARD_KILL_FLAG)
                         unixProcessKilled = true;
                 });
 
