@@ -5,7 +5,7 @@ const config = require('../../../config');
 const VideoRecorder = require('../../../../../lib/video-recorder/process');
 
 if (config.useLocalBrowsers) {
-    describe.only('FFMPEG shouldn\'t run, when fixture skipped', () => {
+    describe('FFMPEG shouldn\'t run, when fixture skipped', () => {
         it('Start fixture with skip and look for FFMPEG init function', async function () {
             this.timeout(30000);
 
