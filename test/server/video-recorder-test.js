@@ -125,6 +125,7 @@ function createTestRunMock (warningLog) {
 
     return {
         testRun,
+        test:  { skip: false },
         index: 0
     };
 }
