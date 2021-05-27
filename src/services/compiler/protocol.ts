@@ -10,10 +10,14 @@ import {
     ResponseMock,
     RequestInfo,
     IncomingMessageLikeInitOptions,
-    RequestFilterRule
+    RequestFilterRule,
+    StateSnapshot
 } from 'testcafe-hammerhead';
 
 import CommandBase from '../../test-run/commands/base';
+import TestRunPhase from '../../test-run/phase';
+import { ExecuteClientFunctionCommand, ExecuteSelectorCommand } from '../../test-run/commands/observation';
+import BrowserConsoleMessages from '../../test-run/browser-console-messages';
 
 export const BEFORE_AFTER_PROPERTIES      = ['beforeFn', 'afterFn'] as const;
 export const BEFORE_AFTER_EACH_PROPERTIES = ['beforeEachFn', 'afterEachFn'] as const;
@@ -34,10 +38,13 @@ export function isFixtureFunctionProperty (value: FunctionProperties): value is 
     return FIXTURE_FUNCTION_PROPERTIES.includes(value as FixtureFunctionProperties);
 }
 
-export interface RunTestArguments {
+export interface TestRunLocator {
+    testRunId: string;
+}
+
+export interface RunTestArguments extends TestRunLocator {
     id: string;
     functionName: FunctionProperties;
-    testRunId: string;
 }
 
 export interface ExecuteActionArguments {
@@ -112,13 +119,20 @@ export interface ExecuteMockPredicate extends RequestFilterRuleLocator {
     res: IncomingMessageLikeInitOptions;
 }
 
-export interface GetWarningMessagesArguments {
-    testRunId: string;
+export interface InitializeTestRunDataArguments extends TestRunLocator {
+    testId: string;
 }
 
-export interface InitializeTestRunDataArguments {
-    testRunId: string;
-    testId: string;
+export interface UseStateSnapshotArguments extends TestRunLocator {
+    snapshot: StateSnapshot;
+}
+
+export interface SetTestRunPhaseArguments extends TestRunLocator {
+    value: TestRunPhase;
+}
+
+export interface SetBrowserConsoleMessagesArguments extends TestRunLocator {
+    value: BrowserConsoleMessages;
 }
 
 export interface TestRunDispatcherProtocol {
@@ -127,6 +141,17 @@ export interface TestRunDispatcherProtocol {
     executeCommand ({ command }: ExecuteCommandArguments): Promise<unknown>;
     addRequestEventListeners ( { hookId, hookClassName, rules }: AddRequestEventListenersArguments): Promise<void>;
     removeRequestEventListeners ({ rules }: RemoveRequestEventListenersArguments): Promise<void>;
+    getCurrentUrl ({ testRunId }: TestRunLocator): Promise<string>;
+    getStateSnapshot ({ testRunId }: TestRunLocator): Promise<StateSnapshot>;
+    useStateSnapshot ({ testRunId, snapshot }: UseStateSnapshotArguments): Promise<void>;
+    getTestRunPhase ({ testRunId }: TestRunLocator): Promise<TestRunPhase>;
+    setTestRunPhase ({ testRunId, value }: SetTestRunPhaseArguments): Promise<void>;
+    getActiveDialogHandler ({ testRunId }: TestRunLocator): Promise<ExecuteClientFunctionCommand | null>;
+    getActiveIframeSelector ({ testRunId }: TestRunLocator): Promise<ExecuteSelectorCommand | null>;
+    getSpeed ({ testRunId }: TestRunLocator): Promise<number>;
+    getPageLoadTimeout ({ testRunId }: TestRunLocator): Promise<number>;
+    setBrowserConsoleMessages ({ testRunId, value }: SetBrowserConsoleMessagesArguments): Promise<void>;
+    getBrowserConsoleMessages ({ testRunId }: TestRunLocator): Promise<BrowserConsoleMessages>;
 }
 
 export interface CompilerProtocol extends TestRunDispatcherProtocol {
@@ -154,7 +179,7 @@ export interface CompilerProtocol extends TestRunDispatcherProtocol {
 
     executeMockPredicate ({ testId, hookId, ruleId, requestInfo, res }: ExecuteMockPredicate): Promise<IncomingMessageLikeInitOptions>;
 
-    getWarningMessages ({ testRunId }: GetWarningMessagesArguments): Promise<string[]>;
+    getWarningMessages ({ testRunId }: TestRunLocator): Promise<string[]>;
 
     initializeTestRunData ({ testRunId, testId }: InitializeTestRunDataArguments): Promise<void>;
 }

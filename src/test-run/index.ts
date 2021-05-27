@@ -93,6 +93,7 @@ import { TakeScreenshotBaseCommand } from './commands/browser-manipulation';
 import { TestRun as LegacyTestRun } from 'testcafe-legacy-api';
 import { AuthCredentials } from '../api/structure/interfaces';
 import TestRunPhase from './phase';
+import { ExecuteClientFunctionCommand, ExecuteSelectorCommand } from './commands/observation';
 
 const lazyRequire                 = require('import-lazy')(require);
 const ClientFunctionBuilder       = lazyRequire('../client-functions/client-function-builder');
@@ -172,20 +173,20 @@ export default class TestRun extends AsyncEventEmitter {
     public phase: TestRunPhase;
     private driverTaskQueue: DriverTask[];
     private testDoneCommandQueued: boolean;
-    private activeDialogHandler: Function | null;
-    private activeIframeSelector: Function | null;
-    private speed: number;
-    private pageLoadTimeout: number;
+    public activeDialogHandler: ExecuteClientFunctionCommand | null;
+    public activeIframeSelector: ExecuteSelectorCommand | null;
+    public speed: number;
+    public pageLoadTimeout: number;
     private disablePageReloads: boolean;
     private disablePageCaching: boolean;
     private disableMultipleWindows: boolean;
     private requestTimeout: RequestTimeout;
-    private readonly session: SessionController;
-    private consoleMessages: BrowserConsoleMessages;
+    public readonly session: SessionController;
+    public consoleMessages: BrowserConsoleMessages;
     private pendingRequest: PendingRequest | null;
     private pendingPageError: PageLoadError | Error | null;
     public controller: TestController | null;
-    private ctx: object;
+    public ctx: object;
     public fixtureCtx: object | null;
     private currentRoleId: string | null;
     private readonly usedRoleStates: Record<string, any>;
@@ -705,7 +706,7 @@ export default class TestRun extends AsyncEventEmitter {
         const currentCommand = this.currentDriverTask.command;
 
         const isExecutingObservationCommand = currentCommand instanceof observationCommands.ExecuteSelectorCommand ||
-            currentCommand instanceof observationCommands.ExecuteClientFunctionCommand;
+            currentCommand instanceof ExecuteClientFunctionCommand;
 
         const isDebugActive = currentCommand instanceof serviceCommands.SetBreakpointCommand;
 
@@ -1059,7 +1060,7 @@ export default class TestRun extends AsyncEventEmitter {
         }
     }
 
-    public async navigateToUrl (url: string, forceReload: boolean, stateSnapshot?: StateSnapshot): Promise<void> {
+    public async navigateToUrl (url: string, forceReload: boolean, stateSnapshot?: string): Promise<void> {
         const navigateCommand = new actionCommands.NavigateToCommand({ url, forceReload, stateSnapshot });
 
         await this.executeCommand(navigateCommand);
@@ -1106,9 +1107,7 @@ export default class TestRun extends AsyncEventEmitter {
 
     public async getCurrentUrl (): Promise<string> {
         const builder = new ClientFunctionBuilder(() => {
-            /* eslint-disable no-undef */
-            return window.location.href;
-            /* eslint-enable no-undef */
+            return window.location.href; // eslint-disable-line no-undef
         }, { boundTestRun: this });
 
         const getLocation = builder.getFunction();

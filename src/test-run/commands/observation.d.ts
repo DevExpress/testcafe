@@ -1,4 +1,6 @@
-declare class ExecuteClientFunctionCommandBase {
+import CommandBase from './base';
+
+declare class ExecuteClientFunctionCommandBase extends CommandBase {
     public instantiationCallsiteName: string;
     public fnCode: string;
     public args: string[];

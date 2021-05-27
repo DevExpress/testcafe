@@ -29,10 +29,13 @@ import {
     ExecuteRequestFilterRulePredicateArguments,
     RequestFilterRuleLocator,
     ExecuteMockPredicate,
-    GetWarningMessagesArguments,
     AddRequestEventListenersArguments,
     RemoveRequestEventListenersArguments,
-    InitializeTestRunDataArguments
+    InitializeTestRunDataArguments,
+    UseStateSnapshotArguments,
+    SetTestRunPhaseArguments,
+    TestRunLocator,
+    SetBrowserConsoleMessagesArguments
 } from './protocol';
 
 import { CompilerArguments } from '../../compiler/interfaces';
@@ -44,10 +47,14 @@ import {
     RequestEvent,
     ConfigureResponseEvent,
     ResponseEvent,
-    RequestFilterRule
+    RequestFilterRule,
+    StateSnapshot
 } from 'testcafe-hammerhead';
 
 import { CallsiteRecord } from 'callsite-record';
+import TestRunPhase from '../../test-run/phase';
+import { ExecuteClientFunctionCommand, ExecuteSelectorCommand } from '../../test-run/commands/observation';
+import BrowserConsoleMessages from '../../test-run/browser-console-messages';
 
 const SERVICE_PATH = require.resolve('./service');
 
@@ -92,7 +99,18 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
             this.getWarningMessages,
             this.addRequestEventListeners,
             this.removeRequestEventListeners,
-            this.initializeTestRunData
+            this.initializeTestRunData,
+            this.getCurrentUrl,
+            this.getStateSnapshot,
+            this.useStateSnapshot,
+            this.getTestRunPhase,
+            this.setTestRunPhase,
+            this.getActiveDialogHandler,
+            this.getActiveIframeSelector,
+            this.getSpeed,
+            this.getPageLoadTimeout,
+            this.setBrowserConsoleMessages,
+            this.getBrowserConsoleMessages
         ], this);
     }
 
@@ -144,6 +162,10 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
         return clonedEventData;
     }
 
+    private _getTargetTestRun (id: string): TestRun {
+        return testRunTracker.activeTestRuns[id] as unknown as TestRun;
+    }
+
     public async init (): Promise<void> {
         this.runtime = this._init(this.runtime);
 
@@ -188,12 +210,9 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
     }
 
     public async executeAction (data: ExecuteActionArguments): Promise<unknown> {
-        const targetTestRun = testRunTracker.activeTestRuns[data.id];
-
-        if (!targetTestRun)
-            return void 0;
-
-        return targetTestRun.executeAction(data.apiMethodName, data.command, data.callsite as CallsiteRecord);
+        return this
+            ._getTargetTestRun(data.id)
+            .executeAction(data.apiMethodName, data.command, data.callsite as CallsiteRecord);
     }
 
     public executeActionSync (): never {
@@ -201,12 +220,9 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
     }
 
     public async executeCommand ({ command, id }: ExecuteCommandArguments): Promise<unknown> {
-        const targetTestRun = testRunTracker.activeTestRuns[id];
-
-        if (!targetTestRun)
-            return void 0;
-
-        return targetTestRun.executeCommand(command);
+        return this
+            ._getTargetTestRun(id)
+            .executeCommand(command);
     }
 
     public async getTests ({ sourceList, compilerOptions }: CompilerArguments): Promise<Test[]> {
@@ -287,7 +303,7 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
         return await proxy.call(this.executeMockPredicate, { testId, hookId, ruleId, requestInfo, res });
     }
 
-    public async getWarningMessages ({ testRunId }: GetWarningMessagesArguments): Promise<string[]> {
+    public async getWarningMessages ({ testRunId }: TestRunLocator): Promise<string[]> {
         const { proxy } = await this._getRuntime();
 
         return proxy.call(this.getWarningMessages, { testRunId });
@@ -309,5 +325,49 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
         const { proxy } = await this._getRuntime();
 
         return proxy.call(this.initializeTestRunData, { testRunId, testId });
+    }
+
+    public async getCurrentUrl ({ testRunId }: TestRunLocator): Promise<string> {
+        return this._getTargetTestRun(testRunId).getCurrentUrl();
+    }
+
+    public async getStateSnapshot ({ testRunId }: TestRunLocator): Promise<StateSnapshot> {
+        return this._getTargetTestRun(testRunId).getStateSnapshot();
+    }
+
+    public async useStateSnapshot ({ testRunId, snapshot }: UseStateSnapshotArguments): Promise<void> {
+        return this._getTargetTestRun(testRunId).session.useStateSnapshot(snapshot);
+    }
+
+    public async getTestRunPhase ({ testRunId }: TestRunLocator): Promise<TestRunPhase> {
+        return this._getTargetTestRun(testRunId).phase;
+    }
+
+    public async setTestRunPhase ({ testRunId, value }: SetTestRunPhaseArguments): Promise<void> {
+        this._getTargetTestRun(testRunId).phase = value;
+    }
+
+    public async getActiveDialogHandler ({ testRunId }: TestRunLocator): Promise<ExecuteClientFunctionCommand | null> {
+        return this._getTargetTestRun(testRunId).activeDialogHandler;
+    }
+
+    public async getActiveIframeSelector ({ testRunId }: TestRunLocator): Promise<ExecuteSelectorCommand | null> {
+        return this._getTargetTestRun(testRunId).activeIframeSelector;
+    }
+
+    public async getSpeed ({ testRunId }: TestRunLocator): Promise<number> {
+        return this._getTargetTestRun(testRunId).speed;
+    }
+
+    public async getPageLoadTimeout ({ testRunId }: TestRunLocator): Promise<number> {
+        return this._getTargetTestRun(testRunId).pageLoadTimeout;
+    }
+
+    public async setBrowserConsoleMessages ({ testRunId, value }: SetBrowserConsoleMessagesArguments): Promise<void> {
+        this._getTargetTestRun(testRunId).consoleMessages = value;
+    }
+
+    public async getBrowserConsoleMessages ({ testRunId }: TestRunLocator): Promise<BrowserConsoleMessages> {
+        return this._getTargetTestRun(testRunId).consoleMessages;
     }
 }
