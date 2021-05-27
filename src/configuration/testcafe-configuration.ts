@@ -1,6 +1,8 @@
 import Configuration from './configuration-base';
 import { castArray } from 'lodash';
-import { getBrowsersOptions, getGrepOptions, getSSLOptions } from '../utils/get-options';
+import {
+    getBrowsersOptions, getGrepOptions, getSSLOptions
+} from '../utils/get-options';
 import OPTION_NAMES from './option-names';
 import getFilterFn from '../utils/get-filter-fn';
 import prepareReporters from '../utils/prepare-reporters';
