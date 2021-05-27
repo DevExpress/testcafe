@@ -153,5 +153,6 @@ export const RUNTIME_ERRORS = {
     invalidQuarantineOption:                            'E1065',
     invalidQuarantineParametersRatio:                   'E1066',
     invalidAttemptLimitValue:                           'E1067',
-    invalidSuccessThresholdValue:                       'E1068'
+    invalidSuccessThresholdValue:                       'E1068',
+    cannotSetConcurrencyWithCDPPort:                    'E1067',
 };

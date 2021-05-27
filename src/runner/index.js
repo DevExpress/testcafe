@@ -251,6 +251,9 @@ export default class Runner extends EventEmitter {
 
         if (typeof concurrency !== 'number' || isNaN(concurrency) || concurrency < 1)
             throw new GeneralError(RUNTIME_ERRORS.invalidConcurrencyFactor);
+
+        if (concurrency > 1 && this.bootstrapper.browsers.some(browser => browser.browserConfig.cdpPort))
+            throw new GeneralError(RUNTIME_ERRORS.cannotSetConcurrencyWithCDPPort);
     }
 
     _validateRequestTimeoutOption (optionName) {
