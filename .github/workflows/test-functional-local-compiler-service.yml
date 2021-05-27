@@ -11,6 +11,9 @@ on:
         description: 'The merge commit SHA' 
       deploy_run_id:
         description: 'The ID of a deployment workspace run with artifacts'
+env:
+  NO_CACHE: ${{ secrets.NO_CACHE }}
+  
 jobs:  
   test:
     runs-on: ubuntu-latest
@@ -76,7 +79,7 @@ jobs:
         run: |
           echo "::set-output name=dir::$(npm config get cache)"
       - uses: actions/cache@v2
-        if: ${{ secrets.NO_CACHE != '' }}
+        if: ${{ !env.NO_CACHE }}
         with:
           path: ${{ steps.npm-cache-dir.outputs.dir }}
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
