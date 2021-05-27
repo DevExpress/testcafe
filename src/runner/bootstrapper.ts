@@ -2,7 +2,6 @@ import path from 'path';
 import fs from 'fs';
 import isCI from 'is-ci';
 import {
-    flatten,
     chunk,
     times
 } from 'lodash';
@@ -15,7 +14,6 @@ import { errors, findWindow } from 'testcafe-browser-tools';
 import authenticationHelper from '../cli/authentication-helper';
 import Compiler from '../compiler';
 import BrowserConnection, { BrowserInfo } from '../browser/connection';
-import browserProviderPool from '../browser/provider/pool';
 import BrowserSet from './browser-set';
 import RemoteBrowserProvider from '../browser/provider/built-in/remote';
 import { GeneralError } from '../errors/runtime';
@@ -41,12 +39,13 @@ import { BootstrapperInit, BrowserSetOptions } from './interfaces';
 import WarningLog from '../notifications/warning-log';
 import WARNING_MESSAGES from '../notifications/warning-message';
 import guardTimeExecution from '../utils/guard-time-execution';
+import { getBrowsersOptions } from '../utils/get-options';
 
 const DEBUG_SCOPE = 'testcafe:bootstrapper';
 
 type TestSource = unknown;
 
-type BrowserSource = BrowserConnection | string;
+type BrowserSource = BrowserConnection | BrowserInfo | string;
 
 interface Filter {
     (testName: string, fixtureName: string, fixturePath: string, testMeta: Metadata, fixtureMeta: Metadata): boolean;
@@ -199,15 +198,6 @@ export default class Bootstrapper {
                 );
             }
         }
-    }
-
-    private async _getBrowserInfo (): Promise<BrowserInfoSource[]> {
-        if (!this.browsers.length)
-            throw new GeneralError(RUNTIME_ERRORS.browserNotSet);
-
-        const browserInfo = await Promise.all(this.browsers.map(browser => browserProviderPool.getBrowserInfo(browser)));
-
-        return flatten(browserInfo);
     }
 
     private _createAutomatedConnections (browserInfo: BrowserInfo[]): BrowserConnection[][] {
@@ -422,7 +412,7 @@ export default class Bootstrapper {
         // considered as the browser argument, and the tests path argument will have the predefined default value.
         // It's very ambiguous for the user, who might be confused by compilation errors from an unexpected test.
         // So, we need to retrieve the browser aliases and paths before tests compilation.
-        const browserInfo = await this._getBrowserInfo();
+        const browserInfo = await getBrowsersOptions(this.browsers);
 
         if (OS.mac)
             await Bootstrapper._checkRequiredPermissions(browserInfo);

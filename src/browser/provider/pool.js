@@ -15,8 +15,12 @@ export default {
         const browserName  = JSON.stringify(alias);
         const providerName = 'path';
         const provider     = await this.getProvider(providerName);
+        let browserConfig  = {};
 
-        return { provider, providerName, browserName };
+        if (provider.plugin.getConfig)
+            browserConfig = provider.plugin.getConfig(browserName);
+
+        return { provider, providerName, browserName, browserConfig };
     },
 
     async _parseAliasString (alias) {
@@ -25,8 +29,9 @@ export default {
         if (!providerRegExpMatch)
             throw new GeneralError(RUNTIME_ERRORS.cannotFindBrowser, alias);
 
-        let providerName = providerRegExpMatch[1];
-        let browserName  = providerRegExpMatch[2] || '';
+        let providerName  = providerRegExpMatch[1];
+        let browserName   = providerRegExpMatch[2] || '';
+        let browserConfig = {};
 
         let provider = await this.getProvider(providerName);
 
@@ -39,7 +44,10 @@ export default {
             browserName  = providerRegExpMatch[1] || '';
         }
 
-        return { provider, providerName, browserName };
+        if (provider.plugin.getConfig)
+            browserConfig = provider.plugin.getConfig(typeof alias === 'string' ? alias : JSON.stringify(alias));
+
+        return { provider, providerName, browserName, browserConfig };
     },
 
     async _parseAlias (alias) {

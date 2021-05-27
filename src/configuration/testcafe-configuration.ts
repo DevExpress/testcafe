@@ -1,6 +1,6 @@
 import Configuration from './configuration-base';
 import { castArray } from 'lodash';
-import { getGrepOptions, getSSLOptions } from '../utils/get-options';
+import { getBrowsersOptions, getGrepOptions, getSSLOptions } from '../utils/get-options';
 import OPTION_NAMES from './option-names';
 import getFilterFn from '../utils/get-filter-fn';
 import prepareReporters from '../utils/prepare-reporters';
@@ -85,6 +85,10 @@ export default class TestCafeConfiguration extends Configuration {
             this._options = Configuration._fromObj(opts);
 
             await this._normalizeOptionsAfterLoad();
+        }
+
+        if (Array.isArray(this._options.browsers.value)) {
+            this._options.browsers.value = await getBrowsersOptions(this._options.browsers.value);
         }
 
         this.mergeOptions(options);
