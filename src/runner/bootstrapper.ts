@@ -39,13 +39,10 @@ import { BootstrapperInit, BrowserSetOptions } from './interfaces';
 import WarningLog from '../notifications/warning-log';
 import WARNING_MESSAGES from '../notifications/warning-message';
 import guardTimeExecution from '../utils/guard-time-execution';
-import { getBrowsersOptions } from '../utils/get-options';
 
 const DEBUG_SCOPE = 'testcafe:bootstrapper';
 
 type TestSource = unknown;
-
-type BrowserSource = BrowserConnection | BrowserInfo | string;
 
 interface Filter {
     (testName: string, fixtureName: string, fixturePath: string, testMeta: Metadata, fixtureMeta: Metadata): boolean;
@@ -93,7 +90,7 @@ export default class Bootstrapper {
     private readonly browserConnectionGateway: BrowserConnectionGateway;
     public concurrency: number;
     public sources: TestSource[];
-    public browsers: BrowserSource[];
+    public browsers: BrowserInfoSource[];
     public reporters: ReporterSource[];
     public filter?: Filter;
     public appCommand?: string;
@@ -412,7 +409,7 @@ export default class Bootstrapper {
         // considered as the browser argument, and the tests path argument will have the predefined default value.
         // It's very ambiguous for the user, who might be confused by compilation errors from an unexpected test.
         // So, we need to retrieve the browser aliases and paths before tests compilation.
-        const browserInfo = await getBrowsersOptions(this.browsers);
+        const browserInfo = this.browsers;
 
         if (OS.mac)
             await Bootstrapper._checkRequiredPermissions(browserInfo);

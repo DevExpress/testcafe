@@ -588,9 +588,10 @@ export default class Runner extends EventEmitter {
     run (options = {}) {
         this.apiMethodWasCalled.reset();
         this.configuration.mergeOptions(options);
-        this._setBootstrapperOptions();
 
         const runTaskPromise = Promise.resolve()
+            .then(() => this.configuration.init())
+            .then(() => this._setBootstrapperOptions())
             .then(() => this._validateRunOptions())
             .then(() => this._createRunnableConfiguration())
             .then(async ({ reporterPlugins, browserSet, tests, testedApp, commonClientScripts }) => {
