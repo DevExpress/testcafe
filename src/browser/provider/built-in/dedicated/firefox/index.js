@@ -9,7 +9,7 @@ import MarionetteClient from './marionette-client';
 export default {
     ...dedicatedProviderBase,
 
-    _getConfig (name) {
+    getConfig (name) {
         return getConfig(name);
     },
 

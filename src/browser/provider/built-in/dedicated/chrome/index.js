@@ -12,7 +12,7 @@ const MIN_AVAILABLE_DIMENSION = 50;
 export default {
     ...dedicatedProviderBase,
 
-    _getConfig (name) {
+    getConfig (name) {
         return getConfig(name);
     },
 

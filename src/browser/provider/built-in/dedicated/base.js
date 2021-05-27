@@ -37,7 +37,7 @@ export default {
         runtimeInfo.windowDescriptors[runtimeInfo.activeWindowId] = windowDescriptor;
     },
 
-    _getConfig () {
+    getConfig () {
         throw new Error('Not implemented');
     },
 
@@ -50,7 +50,7 @@ export default {
     },
 
     async isValidBrowserName (browserName) {
-        const config      = await this._getConfig(browserName);
+        const config      = await this.getConfig(browserName);
         const browserInfo = await getBrowserInfo(config.path || this._getBrowserName());
 
         return !!browserInfo;
@@ -64,7 +64,7 @@ export default {
         if (browserId)
             return this.openedBrowsers[browserId].config.headless;
 
-        const config = this._getConfig(browserName);
+        const config = this.getConfig(browserName);
 
         return !!config.headless;
     },
