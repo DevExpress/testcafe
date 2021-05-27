@@ -17,7 +17,7 @@ function isClientFunctionCommand (command) {
            command.type === TYPE.executeSelector;
 }
 
-function isObservationCommand (command) {
+export function isObservationCommand (command) {
     return isClientFunctionCommand(command) ||
            command.type === TYPE.wait ||
            command.type === TYPE.assertion ||

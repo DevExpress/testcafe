@@ -9,7 +9,7 @@ import Test from '../../api/structure/test';
 import Fixture from '../../api/structure/fixture';
 import TestFile from '../../api/structure/test-file';
 import UnitType from '../../api/structure/unit-type';
-import { RequestFilterRule, RequestInfo } from 'testcafe-hammerhead';
+import { RequestInfo } from 'testcafe-hammerhead';
 
 
 const RECURSIVE_PROPERTIES = ['testFile', 'fixture', 'currentFixture', 'collectedTests'] as const;
@@ -80,20 +80,19 @@ function restoreRecursiveProperties (unit: Unit, units: Units): void {
     mapProperties(unit, RECURSIVE_PROPERTIES, ({ item }) => units[item]);
 }
 
-function restoreRequestFilterRulesInHooks (test: Test, mapper: RequestFilterRuleMapper): void {
+function restorePredicateInRequestFilterRules (test: Test, mapper: RequestFilterRuleMapper): void {
     test.requestHooks.forEach(hook => {
         for (let i = 0; i < hook._requestFilterRules.length; i++) {
             const targetRule = hook._requestFilterRules[i];
 
-            if (targetRule.isPredicate) {
-                targetRule.options = mapper({
-                    testId: test.id,
-                    hookId: hook.id,
-                    ruleId: targetRule.id
-                });
-            }
+            if (!targetRule.isPredicate)
+                continue;
 
-            hook._requestFilterRules[i] = RequestFilterRule.from(targetRule as object);
+            targetRule.options = mapper({
+                testId: test.id,
+                hookId: hook.id,
+                ruleId: targetRule.id
+            });
         }
     });
 }
@@ -131,7 +130,7 @@ export function restore (units: Units, testFunctionMapper: FunctionMapper, ruleM
         restoreFunctionProperties(unit, testFunctionMapper);
 
         if (isTest(unit)) {
-            restoreRequestFilterRulesInHooks(unit, ruleMapper);
+            restorePredicateInRequestFilterRules(unit, ruleMapper);
 
             result.push(unit);
         }

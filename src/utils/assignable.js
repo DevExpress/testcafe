@@ -38,7 +38,7 @@ export default class Assignable {
                     if (validate && type)
                         type(name, srcVal);
 
-                    destObj[last] = init ? init(name, srcVal, initOptions) : srcVal;
+                    destObj[last] = init ? init(name, srcVal, initOptions, validate) : srcVal;
                 }
             }
         }

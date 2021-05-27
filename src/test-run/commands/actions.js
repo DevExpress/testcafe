@@ -37,32 +37,32 @@ import { ExecuteClientFunctionCommand } from './observation';
 
 
 // Initializers
-function initActionOptions (name, val) {
-    return new ActionOptions(val, true);
+function initActionOptions (name, val, initOptions, validate = true) {
+    return new ActionOptions(val, validate);
 }
 
-function initClickOptions (name, val) {
-    return new ClickOptions(val, true);
+function initClickOptions (name, val, initOptions, validate = true) {
+    return new ClickOptions(val, validate);
 }
 
-function initMouseOptions (name, val) {
-    return new MouseOptions(val, true);
+function initMouseOptions (name, val, initOptions, validate = true) {
+    return new MouseOptions(val, validate);
 }
 
-function initOffsetOptions (name, val) {
-    return new OffsetOptions(val, true);
+function initOffsetOptions (name, val, initOptions, validate = true) {
+    return new OffsetOptions(val, validate);
 }
 
-function initTypeOptions (name, val) {
-    return new TypeOptions(val, true);
+function initTypeOptions (name, val, initOptions, validate = true) {
+    return new TypeOptions(val, validate);
 }
 
-function initDragToElementOptions (name, val) {
-    return new DragToElementOptions(val, true);
+function initDragToElementOptions (name, val, initOptions, validate = true) {
+    return new DragToElementOptions(val, validate);
 }
 
-function initPressOptions (name, val) {
-    return new PressOptions(val, true);
+function initPressOptions (name, val, initOptions, validate = true) {
+    return new PressOptions(val, validate);
 }
 
 function initDialogHandler (name, val, { skipVisibilityCheck, testRun }) {
@@ -98,8 +98,8 @@ function initDialogHandler (name, val, { skipVisibilityCheck, testRun }) {
 
 // Commands
 export class DispatchEventCommand extends CommandBase {
-    constructor (obj, testRun) {
-        super(obj, testRun, TYPE.dispatchEvent);
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.dispatchEvent, validateProperties);
     }
 
     _getAssignableProperties () {
@@ -113,8 +113,8 @@ export class DispatchEventCommand extends CommandBase {
 }
 
 export class ClickCommand extends CommandBase {
-    constructor (obj, testRun) {
-        super(obj, testRun, TYPE.click);
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.click, validateProperties);
     }
 
     _getAssignableProperties () {
@@ -126,8 +126,8 @@ export class ClickCommand extends CommandBase {
 }
 
 export class RightClickCommand extends CommandBase {
-    constructor (obj, testRun) {
-        super(obj, testRun, TYPE.rightClick);
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.rightClick, validateProperties);
     }
 
     _getAssignableProperties () {
@@ -139,8 +139,8 @@ export class RightClickCommand extends CommandBase {
 }
 
 export class ExecuteExpressionCommand extends CommandBase {
-    constructor (obj, testRun) {
-        super(obj, testRun, TYPE.executeExpression);
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.executeExpression, validateProperties);
     }
 
     _getAssignableProperties () {
@@ -152,8 +152,8 @@ export class ExecuteExpressionCommand extends CommandBase {
 }
 
 export class ExecuteAsyncExpressionCommand extends CommandBase {
-    constructor (obj, testRun) {
-        super(obj, testRun, TYPE.executeAsyncExpression);
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.executeAsyncExpression, validateProperties);
     }
 
     _getAssignableProperties () {
@@ -164,8 +164,8 @@ export class ExecuteAsyncExpressionCommand extends CommandBase {
 }
 
 export class DoubleClickCommand extends CommandBase {
-    constructor (obj, testRun) {
-        super(obj, testRun, TYPE.doubleClick);
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.doubleClick, validateProperties);
     }
 
     _getAssignableProperties () {
@@ -177,8 +177,8 @@ export class DoubleClickCommand extends CommandBase {
 }
 
 export class HoverCommand extends CommandBase {
-    constructor (obj, testRun) {
-        super(obj, testRun, TYPE.hover);
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.hover, validateProperties);
     }
 
     _getAssignableProperties () {
@@ -190,8 +190,8 @@ export class HoverCommand extends CommandBase {
 }
 
 export class TypeTextCommand extends CommandBase {
-    constructor (obj, testRun) {
-        super(obj, testRun, TYPE.typeText);
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.typeText, validateProperties);
     }
 
     _getAssignableProperties () {
@@ -204,8 +204,8 @@ export class TypeTextCommand extends CommandBase {
 }
 
 export class DragCommand extends CommandBase {
-    constructor (obj, testRun) {
-        super(obj, testRun, TYPE.drag);
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.drag, validateProperties);
     }
 
     _getAssignableProperties () {
@@ -219,8 +219,8 @@ export class DragCommand extends CommandBase {
 }
 
 export class DragToElementCommand extends CommandBase {
-    constructor (obj, testRun) {
-        super(obj, testRun, TYPE.dragToElement);
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.dragToElement, validateProperties);
     }
 
     _getAssignableProperties () {
@@ -233,8 +233,8 @@ export class DragToElementCommand extends CommandBase {
 }
 
 export class ScrollCommand extends CommandBase {
-    constructor (obj, testRun) {
-        super(obj, testRun, TYPE.scroll);
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.scroll, validateProperties);
     }
 
     _getAssignableProperties () {
@@ -249,8 +249,8 @@ export class ScrollCommand extends CommandBase {
 }
 
 export class ScrollByCommand extends CommandBase {
-    constructor (obj, testRun) {
-        super(obj, testRun, TYPE.scrollBy);
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.scrollBy, validateProperties);
     }
 
     _getAssignableProperties () {
@@ -264,8 +264,8 @@ export class ScrollByCommand extends CommandBase {
 }
 
 export class ScrollIntoViewCommand extends CommandBase {
-    constructor (obj, testRun) {
-        super(obj, testRun, TYPE.scrollIntoView);
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.scrollIntoView, validateProperties);
     }
 
     _getAssignableProperties () {
@@ -277,8 +277,8 @@ export class ScrollIntoViewCommand extends CommandBase {
 }
 
 export class SelectTextCommand extends CommandBase {
-    constructor (obj, testRun) {
-        super(obj, testRun, TYPE.selectText);
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.selectText, validateProperties);
     }
 
     _getAssignableProperties () {
@@ -292,8 +292,8 @@ export class SelectTextCommand extends CommandBase {
 }
 
 export class SelectEditableContentCommand extends CommandBase {
-    constructor (obj, testRun) {
-        super(obj, testRun, TYPE.selectEditableContent);
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.selectEditableContent, validateProperties);
     }
 
     _getAssignableProperties () {
@@ -306,8 +306,8 @@ export class SelectEditableContentCommand extends CommandBase {
 }
 
 export class SelectTextAreaContentCommand extends CommandBase {
-    constructor (obj, testRun) {
-        super(obj, testRun, TYPE.selectTextAreaContent);
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.selectTextAreaContent, validateProperties);
     }
 
     _getAssignableProperties () {
@@ -323,8 +323,8 @@ export class SelectTextAreaContentCommand extends CommandBase {
 }
 
 export class PressKeyCommand extends CommandBase {
-    constructor (obj, testRun) {
-        super(obj, testRun, TYPE.pressKey);
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.pressKey, validateProperties);
     }
 
     _getAssignableProperties () {
@@ -336,8 +336,8 @@ export class PressKeyCommand extends CommandBase {
 }
 
 export class NavigateToCommand extends CommandBase {
-    constructor (obj, testRun) {
-        super(obj, testRun, TYPE.navigateTo);
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.navigateTo, validateProperties);
     }
 
     _getAssignableProperties () {
@@ -350,8 +350,8 @@ export class NavigateToCommand extends CommandBase {
 }
 
 export class SetFilesToUploadCommand extends CommandBase {
-    constructor (obj, testRun) {
-        super(obj, testRun, TYPE.setFilesToUpload);
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.setFilesToUpload, validateProperties);
     }
 
     _getAssignableProperties () {
@@ -363,8 +363,8 @@ export class SetFilesToUploadCommand extends CommandBase {
 }
 
 export class ClearUploadCommand extends CommandBase {
-    constructor (obj, testRun) {
-        super(obj, testRun, TYPE.clearUpload);
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.clearUpload, validateProperties);
     }
 
     _getAssignableProperties () {
@@ -375,8 +375,8 @@ export class ClearUploadCommand extends CommandBase {
 }
 
 export class SwitchToIframeCommand extends CommandBase {
-    constructor (obj, testRun) {
-        super(obj, testRun, TYPE.switchToIframe);
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.switchToIframe, validateProperties);
     }
 
     _getAssignableProperties () {
@@ -393,8 +393,8 @@ export class SwitchToMainWindowCommand {
 }
 
 export class OpenWindowCommand extends CommandBase {
-    constructor (obj, testRun) {
-        super(obj, testRun, TYPE.openWindow);
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.openWindow, validateProperties);
     }
 
     _getAssignableProperties () {
@@ -405,8 +405,8 @@ export class OpenWindowCommand extends CommandBase {
 }
 
 export class CloseWindowCommand extends CommandBase {
-    constructor (obj, testRun) {
-        super(obj, testRun, TYPE.closeWindow);
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.closeWindow, validateProperties);
     }
 
     _getAssignableProperties () {
@@ -418,8 +418,8 @@ export class CloseWindowCommand extends CommandBase {
 
 
 export class GetCurrentWindowCommand extends CommandBase {
-    constructor (obj, testRun) {
-        super(obj, testRun, TYPE.getCurrentWindow);
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.getCurrentWindow, validateProperties);
     }
 
     _getAssignableProperties () {
@@ -429,8 +429,8 @@ export class GetCurrentWindowCommand extends CommandBase {
 }
 
 export class GetCurrentWindowsCommand extends CommandBase {
-    constructor (obj, testRun) {
-        super(obj, testRun, TYPE.getCurrentWindows);
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.getCurrentWindows, validateProperties);
     }
 
     _getAssignableProperties () {
@@ -441,8 +441,8 @@ export class GetCurrentWindowsCommand extends CommandBase {
 
 
 export class SwitchToWindowCommand extends CommandBase {
-    constructor (obj, testRun) {
-        super(obj, testRun, TYPE.switchToWindow);
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.switchToWindow, validateProperties);
     }
 
     _getAssignableProperties () {
@@ -453,8 +453,8 @@ export class SwitchToWindowCommand extends CommandBase {
 }
 
 export class SwitchToWindowByPredicateCommand extends CommandBase {
-    constructor (obj, testRun) {
-        super(obj, testRun, TYPE.switchToWindowByPredicate);
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.switchToWindowByPredicate, validateProperties);
     }
 
     _getAssignableProperties () {
@@ -464,10 +464,9 @@ export class SwitchToWindowByPredicateCommand extends CommandBase {
     }
 }
 
-
 export class SwitchToParentWindowCommand extends CommandBase {
-    constructor (obj, testRun) {
-        super(obj, testRun, TYPE.switchToParentWindow);
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.switchToParentWindow, validateProperties);
     }
 
     _getAssignableProperties () {
@@ -477,8 +476,8 @@ export class SwitchToParentWindowCommand extends CommandBase {
 }
 
 export class SwitchToPreviousWindowCommand extends CommandBase {
-    constructor (obj, testRun) {
-        super(obj, testRun, TYPE.switchToPreviousWindow);
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.switchToPreviousWindow, validateProperties);
     }
 
     _getAssignableProperties () {
@@ -487,14 +486,26 @@ export class SwitchToPreviousWindowCommand extends CommandBase {
 }
 
 export class SetNativeDialogHandlerCommand extends CommandBase {
-    constructor (obj, testRun) {
-        super(obj, testRun, TYPE.setNativeDialogHandler);
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.setNativeDialogHandler, validateProperties);
     }
 
     _getAssignableProperties () {
         return [
             { name: 'dialogHandler', init: initDialogHandler, required: true }
         ];
+    }
+
+    static from (val) {
+        const dialogHandlerStub = {
+            dialogHandler: { fn: null }
+        };
+
+        const command = new SetNativeDialogHandlerCommand(dialogHandlerStub);
+
+        command.dialogHandler = val.dialogHandler;
+
+        return command;
     }
 }
 
@@ -511,8 +522,8 @@ export class GetBrowserConsoleMessagesCommand {
 }
 
 export class SetTestSpeedCommand extends CommandBase {
-    constructor (obj, testRun) {
-        super(obj, testRun, TYPE.setTestSpeed);
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.setTestSpeed, validateProperties);
     }
 
     _getAssignableProperties () {
@@ -523,8 +534,8 @@ export class SetTestSpeedCommand extends CommandBase {
 }
 
 export class SetPageLoadTimeoutCommand extends CommandBase {
-    constructor (obj, testRun) {
-        super(obj, testRun, TYPE.setPageLoadTimeout);
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.setPageLoadTimeout, validateProperties);
     }
 
     _getAssignableProperties () {
@@ -535,8 +546,8 @@ export class SetPageLoadTimeoutCommand extends CommandBase {
 }
 
 export class UseRoleCommand extends CommandBase {
-    constructor (obj, testRun) {
-        super(obj, testRun, TYPE.useRole);
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.useRole, validateProperties);
     }
 
     _getAssignableProperties () {

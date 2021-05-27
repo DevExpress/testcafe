@@ -15,15 +15,7 @@ import { TestRunProxyInit } from '../interfaces';
 import Test from '../../api/structure/test';
 import RequestHook from '../../api/request-hooks/hook';
 import getAssertionTimeout from '../../utils/get-options/get-assertion-timeout';
-
-import {
-    ConfigureResponseEvent,
-    RequestEvent,
-    RequestFilterRule,
-    ResponseEvent,
-    StateSnapshot
-} from 'testcafe-hammerhead';
-
+import { StateSnapshot } from 'testcafe-hammerhead';
 import { CallsiteRecord } from 'callsite-record';
 import TestRunPhase from '../../test-run/phase';
 import { RoleSwitchInRoleInitializerError } from '../../errors/test-run';
@@ -81,10 +73,6 @@ class TestRunProxy {
 
     private _initializeRequestHooks (): void {
         this.test.requestHooks.forEach(this._attachWarningLog, this);
-    }
-
-    private _restoreRequestFilterRule (event: RequestEvent | ConfigureResponseEvent | ResponseEvent): void {
-        event.requestFilterRule = RequestFilterRule.from(event.requestFilterRule as object);
     }
 
     private async _executeAssertion (command: AssertionCommand, callsite: unknown): Promise<unknown> {

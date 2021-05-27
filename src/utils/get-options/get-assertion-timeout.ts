@@ -5,6 +5,6 @@ export default function getAssertionTimeout (command: AssertionCommand, options:
     const commandTimeout = command.options?.timeout;
 
     return commandTimeout === void 0
-        ? options.assertionTimeout
+        ? options.assertionTimeout as number
         : commandTimeout;
 }

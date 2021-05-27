@@ -3,6 +3,9 @@ const mocha          = require('gulp-mocha-simple');
 const { castArray }  = require('lodash');
 const getTimeout     = require('./get-timeout');
 const { TESTS_GLOB } = require('../constants/functional-test-globs');
+const chai           = require('chai');
+
+chai.use(require('chai-string'));
 
 const RETRY_TEST_RUN_COUNT = 3;
 const SETUP_TESTS_GLOB     = 'test/functional/setup.js';
