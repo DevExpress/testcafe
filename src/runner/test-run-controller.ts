@@ -82,6 +82,8 @@ export default class TestRunController extends AsyncEventEmitter {
             screenshotCapturer
         });
 
+        await this.testRun.initialize();
+
         this._screenshots.addTestRun(this.test, this.testRun);
 
         if (this.testRun.addQuarantineInfo)
