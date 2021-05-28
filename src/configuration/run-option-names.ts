@@ -3,6 +3,7 @@ import OPTION_NAMES from './option-names';
 export default [
     OPTION_NAMES.skipJsErrors,
     OPTION_NAMES.skipUncaughtErrors,
+    OPTION_NAMES.quarantine,
     OPTION_NAMES.quarantineMode,
     OPTION_NAMES.quarantineOptions,
     OPTION_NAMES.debugMode,

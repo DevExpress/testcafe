@@ -153,10 +153,10 @@ if (config.useLocalBrowsers) {
             const videos = [];
 
             return runTests('./testcafe-fixtures/quarantine-test.js', '', {
-                only:           'chrome',
-                quarantineMode: true,
-                setVideoPath:   true,
-                reporter:       customReporter(errs, videos),
+                only:         'chrome',
+                quarantine:   true,
+                setVideoPath: true,
+                reporter:     customReporter(errs, videos),
             })
                 .then(assertionHelper.getVideoFilesList)
                 .then(videoFiles => {

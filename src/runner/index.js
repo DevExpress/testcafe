@@ -35,6 +35,7 @@ import CustomizableCompilers from '../configuration/customizable-compilers';
 import { getConcatenatedValuesString, getPluralSuffix } from '../utils/string';
 import isLocalhost from '../utils/is-localhost';
 import WarningLog from '../notifications/warning-log';
+import { validateQuarantineOptions } from '../utils/get-options/quarantine';
 
 const DEBUG_LOGGER = debug('testcafe:runner');
 
@@ -365,6 +366,19 @@ export default class Runner extends EventEmitter {
         throw new GeneralError(RUNTIME_ERRORS.cannotCustomizeSpecifiedCompilers, compilerListStr, pluralSuffix);
     }
 
+    _validateQuarantineOptions () {
+        const quarantine        = this.configuration.getOption(OPTION_NAMES.quarantine) ||
+            this.configuration.getOption(OPTION_NAMES.quarantineMode);
+        const quarantineOptions = this.configuration.getOption(OPTION_NAMES.quarantineOptions);
+
+        if (quarantineOptions) {
+            if (!quarantine)
+                throw new GeneralError(RUNTIME_ERRORS.cannotSetQuarantineOptionsWhenQuarantineIsDisabled, 'quarantine');
+
+            validateQuarantineOptions(quarantineOptions, 'quarantine');
+        }
+    }
+
     _validateRetryTestPagesOption () {
         const retryTestPagesOption = this.configuration.getOption(OPTION_NAMES.retryTestPages);
 
@@ -392,6 +406,7 @@ export default class Runner extends EventEmitter {
         this._validateConcurrencyOption();
         this._validateProxyBypassOption();
         this._validateCompilerOptions();
+        this._validateQuarantineOptions();
         this._validateRetryTestPagesOption();
         this._validateRequestTimeoutOption(OPTION_NAMES.pageRequestTimeout);
         this._validateRequestTimeoutOption(OPTION_NAMES.ajaxRequestTimeout);

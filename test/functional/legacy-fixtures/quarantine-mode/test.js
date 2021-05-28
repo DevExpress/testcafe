@@ -30,7 +30,7 @@ describe('Quarantine mode tests', function () {
     });
 
     it('Should pass if an unstable test passes in most of runs', function () {
-        return runTests('testcafe-fixtures/passing-quarantine.test.js', 'Wait 200ms', { quarantineMode: true })
+        return runTests('testcafe-fixtures/passing-quarantine.test.js', 'Wait 200ms', { quarantine: true })
             .then(function () {
                 checkQuarantineTestRuns('passed-quarantine');
 
@@ -40,8 +40,8 @@ describe('Quarantine mode tests', function () {
 
     it('Should fail if an unstable test fails in most of runs', function () {
         return runTests('testcafe-fixtures/failing-quarantine.test.js', 'Wait 200ms', {
-            shouldFail:     true,
-            quarantineMode: true
+            shouldFail: true,
+            quarantine: true
         })
             .catch(function (errs) {
                 var expectedError = 'Failed by request! on page';

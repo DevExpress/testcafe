@@ -109,7 +109,7 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
                     });
 
                     return runner.run({
-                        quarantineMode: true
+                        quarantine: true
                     });
                 })
                 .then(() => {

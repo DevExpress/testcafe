@@ -57,7 +57,7 @@ export default class TestRunController extends AsyncEventEmitter {
 
         this.testRun             = null;
         this.done                = false;
-        this._quarantine         = this._opts.quarantineMode ? new Quarantine() : null;
+        this._quarantine         = this._opts.quarantine || this._opts.quarantineMode ? new Quarantine() : null;
         this._disconnectionCount = 0;
         this.compilerService     = compilerService;
     }

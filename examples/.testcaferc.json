@@ -20,7 +20,7 @@
         "r": 20,
         "aspect": "4:3"
     },
-    "quarantineMode": false,
+    "quarantine": false,
     "debugMode": true,
     "debugOnFail": true,
     "stopOnFirstFail": true,

@@ -12,7 +12,10 @@ function _isQuarantineOption (option: string): option is QUARANTINE_OPTION_NAMES
     return Object.values(QUARANTINE_OPTION_NAMES).includes(option as QUARANTINE_OPTION_NAMES);
 }
 
-function _validateQuarantineOptions (options: Dictionary<string | number> ): void {
+export function validateQuarantineOptions (options: Dictionary<string | number>, optionName: string ): void {
+    if (Object.keys(options).some(key => !_isQuarantineOption(key)))
+        throw new GeneralError(RUNTIME_ERRORS.invalidQuarantineOptions, optionName);
+
     const retryCount = options.retryCount || DEFAULT_TEST_RUN_THRESHOLD;
     const passCount  = options.passCount || DEFAULT_QUARANTINE_THRESHOLD;
 
@@ -32,10 +35,7 @@ export async function getQuarantineOptions (optionName: string, options: string 
         }
     });
 
-    if (Object.keys(parsedOptions).some(key => !_isQuarantineOption(key)))
-        throw new GeneralError(RUNTIME_ERRORS.invalidQuarantineOption, optionName);
-
-    _validateQuarantineOptions(parsedOptions);
+    validateQuarantineOptions(parsedOptions, optionName);
 
     return parsedOptions;
 }

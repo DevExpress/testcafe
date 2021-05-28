@@ -202,6 +202,7 @@ before(function () {
 
                 const {
                     skipJsErrors,
+                    quarantine,
                     quarantineMode,
                     quarantineOptions,
                     screenshotPathPattern,
@@ -276,6 +277,7 @@ before(function () {
                     .compilerOptions(compilerOptions)
                     .run({
                         skipJsErrors,
+                        quarantine,
                         quarantineMode,
                         quarantineOptions,
                         selectorTimeout,

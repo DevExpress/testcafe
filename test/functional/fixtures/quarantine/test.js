@@ -27,13 +27,13 @@ const getReporter = function (scope) {
 };
 
 if (config.useLocalBrowsers) {
-    describe('Using quarantineMode', function () {
+    describe('Using Quarantine Mode', function () {
         it('Should attempt to run tests up to the failedThreshold amount (retryCount (10) - passCount (3) + 1 = 8)', function () {
             const result   = {};
             const reporter = getReporter(result);
 
             return runTests('./testcafe-fixtures/test-quarantine-mode.js', 'Failing test, in quarantine mode', {
-                quarantineMode:    true,
+                quarantine:        true,
                 quarantineOptions: {
                     retryCount: 10
                 },
@@ -50,7 +50,7 @@ if (config.useLocalBrowsers) {
             const reporter = getReporter(result);
 
             return runTests('./testcafe-fixtures/test-quarantine-mode.js', 'Check for unstable test', {
-                quarantineMode:    true,
+                quarantine:        true,
                 quarantineOptions: {
                     passCount: 2
                 },
@@ -67,7 +67,7 @@ if (config.useLocalBrowsers) {
             const reporter = getReporter(result);
 
             return runTests('./testcafe-fixtures/test-quarantine-mode.js', 'Another unstable test', {
-                quarantineMode:    true,
+                quarantine:        true,
                 quarantineOptions: {
                     retryCount: 10
                 },

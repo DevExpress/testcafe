@@ -80,7 +80,7 @@ describe('Screenshots on fails', function () {
                     screenshotsOnFails: true,
                     selectorTimeout:    0,
                     setScreenshotPath:  true,
-                    quarantineMode:     true
+                    quarantine:         true
                 })
                 .catch(function (errs) {
                     assertionHelper.errorInEachBrowserContainsRegExp(errs, QUARANTINE_MODE_SCREENSHOT_PATH_RE, 0);

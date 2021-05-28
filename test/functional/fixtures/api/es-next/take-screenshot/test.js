@@ -154,7 +154,7 @@ describe('[API] t.takeScreenshot()', function () {
         it('Should take a screenshot in quarantine mode', function () {
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Take a screenshot in quarantine mode', {
                 setScreenshotPath: true,
-                quarantineMode:    true
+                quarantine:        true
             })
                 .catch(function () {
                     expect(SCREENSHOT_PATH_MESSAGE_RE.test(testReport.screenshotPath)).eql(true);
@@ -203,7 +203,7 @@ describe('[API] t.takeScreenshot()', function () {
 
             return runTests('./testcafe-fixtures/take-screenshot.js', 'Take screenshots for reporter', {
                 setScreenshotPath:  true,
-                quarantineMode:     true,
+                quarantine:         true,
                 screenshotsOnFails: true,
                 reporter:           [ reporter ]
             })
