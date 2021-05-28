@@ -268,7 +268,7 @@ export default class Reporter {
                 id:   testRun.test.fixture.id
             },
             command: formatCommand(command, result),
-            browser: testRun.controller?.browser,
+            browser: getBrowser(testRun.browserConnection),
         });
     }
 

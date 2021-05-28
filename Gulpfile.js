@@ -12,7 +12,6 @@ const mergeStreams                  = require('merge-stream');
 const del                           = require('del');
 const fs                            = require('fs');
 const path                          = require('path');
-const { Transform }                 = require('stream');
 const { promisify }                 = require('util');
 const globby                        = require('globby');
 const minimist                      = require('minimist');
@@ -29,6 +28,7 @@ const getTimeout                    = require('./gulp/helpers/get-timeout');
 const promisifyStream               = require('./gulp/helpers/promisify-stream');
 const testFunctional                = require('./gulp/helpers/test-functional');
 const testClient                    = require('./gulp/helpers/test-client');
+const moduleExportsTransform        = require('./gulp/helpers/module-exports-transform');
 
 const {
     TESTS_GLOB,
@@ -213,29 +213,12 @@ gulp.step('server-scripts-compile', () => {
 
 // TODO: get rid of this step when we migrate to proper ES6 default imports
 gulp.step('server-scripts-add-exports', () => {
-    const transform = new Transform({
-        objectMode: true,
-
-        transform (file, enc, cb) {
-            const fileSource = file.contents.toString();
-
-            if (fileSource.includes('exports.default =')) {
-                const sourceMapIndex = fileSource.indexOf('//# sourceMappingURL');
-                const modifiedSource = fileSource.slice(0, sourceMapIndex) + 'module.exports = exports.default;\n' + fileSource.slice(sourceMapIndex);
-
-                file.contents = Buffer.from(modifiedSource);
-            }
-
-            cb(null, file);
-        }
-    });
-
     return gulp
         .src([
             'lib/**/*.js',
             '!lib/client/**/*.js'
         ])
-        .pipe(transform)
+        .pipe(moduleExportsTransform)
         .pipe(gulp.dest('lib'));
 });
 
