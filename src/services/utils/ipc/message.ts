@@ -27,19 +27,8 @@ export class MessageParser {
 
             const packets = this.packetQueue.splice(0, this.packetQueue.length);
             const data    = packet.header.head ? packet.data : MessageParser._concatPackets([...packets, packet]);
-            const dataStr = data.toString();
 
-            let result = null;
-
-            try {
-                result = replicator.decode(dataStr);
-            }
-            catch (err) {
-                console.error(err); // eslint-disable-line no-console
-                console.log(`|${dataStr}|`); // eslint-disable-line no-console
-            }
-
-            return result as object;
+            return replicator.decode(data.toString()) as object;
         }
 
         if (packet.header.head && this.packetQueue.length !== 0) {
