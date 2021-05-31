@@ -58,7 +58,7 @@ describe('[API] Generic errors', function () {
 
     describe('External assertion library error', function () {
         it('Should handle Node built-in assertion lib error', function () {
-            const NODE_12_ASSERTION_MESSAGE = [
+            const NODE_12_ASSERTION_MESSAGE_PARTS = [
                 'AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:',
                 '\'answer\' !== \'42\''
             ];
@@ -68,11 +68,9 @@ describe('[API] Generic errors', function () {
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('> 13 |    assert.strictEqual(\'answer\', \'42\');');
 
-                    if (nodeVersion.major >= 12) {
-                        NODE_12_ASSERTION_MESSAGE.forEach((item) => {
-                            expect(errs[0]).to.contain(item);
-                        });
-                    }
+                    NODE_12_ASSERTION_MESSAGE_PARTS.forEach((item) => {
+                        expect(errs[0]).to.contain(item);
+                    });
                 });
         });
 
