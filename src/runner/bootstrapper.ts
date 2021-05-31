@@ -350,9 +350,8 @@ export default class Bootstrapper {
         const reporterPlugins     = await this._getReporterPlugins();
         const commonClientScripts = await loadClientScripts(this.clientScripts);
 
-        if (await this._canUseParallelBootstrapping(this.browsers)) {
+        if (await this._canUseParallelBootstrapping(this.browsers))
             return { reporterPlugins, ...await this._bootstrapParallel(this.browsers), commonClientScripts };
-        }
 
         return { reporterPlugins, ...await this._bootstrapSequence(this.browsers), commonClientScripts };
     }
