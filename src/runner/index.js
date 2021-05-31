@@ -367,16 +367,14 @@ export default class Runner extends EventEmitter {
     }
 
     _validateQuarantineOptions () {
-        const quarantine        = this.configuration.getOption(OPTION_NAMES.quarantine) ||
-            this.configuration.getOption(OPTION_NAMES.quarantineMode);
+        const quarantine        = this.configuration.getOption(OPTION_NAMES.quarantine);
+        const quarantineMode    = this.configuration.getOption(OPTION_NAMES.quarantineMode);
         const quarantineOptions = this.configuration.getOption(OPTION_NAMES.quarantineOptions);
 
-        if (quarantineOptions) {
-            if (!quarantine)
-                throw new GeneralError(RUNTIME_ERRORS.cannotSetQuarantineOptionsWhenQuarantineIsDisabled, 'quarantine');
-
-            validateQuarantineOptions(quarantineOptions, 'quarantine');
-        }
+        if (typeof quarantine === 'object')
+            validateQuarantineOptions(quarantine, 'quarantine');
+        else if (quarantineMode && quarantineOptions)
+            validateQuarantineOptions(quarantineOptions, 'quarantineMode');
     }
 
     _validateRetryTestPagesOption () {

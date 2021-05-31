@@ -930,18 +930,13 @@ describe('Runner', () => {
                         expect(err.message).eql(expectedErrorMessage);
 
                         delete runner.configuration._options[OptionNames.quarantine];
-                        delete runner.configuration._options[OptionNames.quarantineMode];
-                        delete runner.configuration._options[OptionNames.quarantineOptions];
                     });
             };
 
-            await checkQuarantineOptions({ quarantineOptions: { retryCount: 5, passCount: 1 } }, 'Unable to set Quarantine options when the Quarantine Mode is disabled. Specify the "quarantine" option to enable the Quarantine Mode.');
-            await checkQuarantineOptions({ quarantine: true, quarantineOptions: { retryCount: 5, passCount: 10 } }, 'The "retryCount" value should be greater or equal to "passCount" (10).');
-            await checkQuarantineOptions({ quarantine: true, quarantineOptions: { test: '1' } }, 'The "quarantine" option should be one of "retryCount" or "passCount".');
-            await checkQuarantineOptions({ quarantineMode: true, quarantineOptions: { retryCount: 5, passCount: 10 } }, 'The "retryCount" value should be greater or equal to "passCount" (10).');
-            await checkQuarantineOptions({ quarantineMode: true, quarantineOptions: { test: '1' } }, 'The "quarantine" option should be one of "retryCount" or "passCount".');
+            await checkQuarantineOptions({ quarantine: { retryCount: 5, passCount: 10 } }, 'The "retryCount" value should be greater or equal to "passCount" (10).');
+            await checkQuarantineOptions({ quarantine: { test: '1' } }, 'The "quarantine" option should be one of "retryCount" or "passCount".');
 
-            expect(errorCount).eql(5);
+            expect(errorCount).eql(2);
         });
     });
 

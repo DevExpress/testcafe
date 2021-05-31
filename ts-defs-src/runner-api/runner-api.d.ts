@@ -308,9 +308,9 @@ interface RunOptions {
      */
     skipUncaughtErrors: boolean;
     /**
-     * Defines whether to enable the quarantine mode.
+     * Defines whether to enable the quarantine mode. Optionally specifies quarantine mode options.
      */
-    quarantine: boolean;
+    quarantine: boolean | QuarantineOptions;
     /**
      * Defines whether to enable the quarantine mode.
      */
