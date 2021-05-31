@@ -1,5 +1,4 @@
-const expect      = require('chai').expect;
-const nodeVersion = require('node-version');
+const expect = require('chai').expect;
 
 // NOTE: we run tests in chrome only, because we mainly test server API functionality.
 // Actions functionality is tested in lower-level raw API.
@@ -58,41 +57,19 @@ describe('[API] Generic errors', function () {
 
     describe('External assertion library error', function () {
         it('Should handle Node built-in assertion lib error', function () {
-            const NODE_11_ASSERTION_MESSAGE = [
+            const NODE_12_ASSERTION_MESSAGE_PARTS = [
                 'AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:',
-                '+ actual',
-                '- expected',
-                '+ \'answer\'',
-                '- \'42\''
+                '\'answer\' !== \'42\''
             ];
-
-            const NODE_10_ASSERTION_MESSAGE = [
-                'AssertionError [ERR_ASSERTION]: Input A expected to strictly equal input B:',
-                '+ expected',
-                '- actual',
-                '- \'answer\'',
-                '+ \'42\''
-            ];
-
-            const OLD_NODE_ASSERTION_MESSAGE_RE = /AssertionError( \[ERR_ASSERTION])?: 'answer' === '42'/;
 
             return runTests('./testcafe-fixtures/external-assertion-lib-errors-test.js', 'Built-in assertion lib error',
                 { shouldFail: true, only: 'chrome' })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('> 13 |    assert.strictEqual(\'answer\', \'42\');');
 
-                    if (nodeVersion.major >= 11) {
-                        NODE_11_ASSERTION_MESSAGE.forEach((item) => {
-                            expect(errs[0]).to.contain(item);
-                        });
-                    }
-                    else if (nodeVersion.major >= 10) {
-                        NODE_10_ASSERTION_MESSAGE.forEach((item) => {
-                            expect(errs[0]).to.contain(item);
-                        });
-                    }
-                    else
-                        expect(errs[0]).to.match(OLD_NODE_ASSERTION_MESSAGE_RE);
+                    NODE_12_ASSERTION_MESSAGE_PARTS.forEach((item) => {
+                        expect(errs[0]).to.contain(item);
+                    });
                 });
         });
 
