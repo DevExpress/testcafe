@@ -592,7 +592,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     public addError (err: Error | TestCafeErrorList | TestRunErrorBase): void {
-        const errList = err instanceof TestCafeErrorList ? err.items : [err];
+        const errList = (err instanceof TestCafeErrorList ? err.items : [err]) as Error[];
 
         errList.forEach(item => {
             const adapter = this._createErrorAdapter(item);
@@ -925,7 +925,7 @@ export default class TestRun extends AsyncEventEmitter {
         return result;
     }
 
-    async canExecuteCommandThroughCDP (command: CommandBase) {
+    private async _canExecuteCommandThroughCDP (command: CommandBase): Promise<boolean> {
         const browserId         = this.browserConnection.id;
         const customActionsInfo = await this.browserConnection.provider.hasCustomActionForBrowser(browserId);
 
@@ -954,7 +954,7 @@ export default class TestRun extends AsyncEventEmitter {
 
         await this._setBreakpointIfNecessary(command, callsite);
 
-        if (await this.canExecuteCommandThroughCDP(command)) {
+        if (await this._canExecuteCommandThroughCDP(command)) {
             const browserId = this.browserConnection.id;
 
             if (command.type === COMMAND_TYPE.executeClientFunction)
@@ -1018,13 +1018,13 @@ export default class TestRun extends AsyncEventEmitter {
         if (command.type === COMMAND_TYPE.switchToWindowByPredicate)
             return this._switchToWindowByPredicate(command as SwitchToWindowByPredicateCommand);
 
-        const resultPromise = this._enqueueCommand(command, callsite as CallsiteRecord);
+        return this._enqueueCommand(command, callsite as CallsiteRecord)
+            .then(async r => {
+                if (postAction)
+                    await postAction();
 
-        return postAction ? resultPromise.then(async r => {
-            await postAction!();
-
-            return r;
-        }) : resultPromise;
+                return r;
+            });
     }
 
     private _rejectCommandWithPageError (callsite?: CallsiteRecord): Promise<Error> {
