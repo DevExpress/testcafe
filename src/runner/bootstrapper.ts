@@ -1,21 +1,16 @@
 import path from 'path';
 import fs from 'fs';
-import isCI from 'is-ci';
 import {
     chunk,
     times
 } from 'lodash';
 
 import makeDir from 'make-dir';
-import OS from 'os-family';
 import debug from 'debug';
 import prettyTime from 'pretty-hrtime';
-import { errors, findWindow } from 'testcafe-browser-tools';
-import authenticationHelper from '../cli/authentication-helper';
 import Compiler from '../compiler';
 import BrowserConnection, { BrowserInfo } from '../browser/connection';
 import BrowserSet from './browser-set';
-import RemoteBrowserProvider from '../browser/provider/built-in/remote';
 import { GeneralError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
 import TestedApp from './tested-app';
@@ -33,7 +28,6 @@ import { CompilerArguments } from '../compiler/interfaces';
 import CompilerService from '../services/compiler/host';
 import { Metadata } from '../api/structure/interfaces';
 import Test from '../api/structure/test';
-import detectDisplay from '../utils/detect-display';
 import { getPluginFactory, processReporterName } from '../utils/reporter';
 import { BootstrapperInit, BrowserSetOptions } from './interfaces';
 import WarningLog from '../notifications/warning-log';
@@ -146,55 +140,6 @@ export default class Bootstrapper {
         });
 
         return { remotes, automated };
-    }
-
-    private static async _hasLocalBrowsers (browserInfo: BrowserInfoSource[]): Promise<boolean> {
-        for (const browser of browserInfo) {
-            if (browser instanceof BrowserConnection)
-                continue;
-
-            if (await browser.provider.isLocalBrowser(void 0, browser.browserName))
-                return true;
-        }
-
-        return false;
-    }
-
-    private static async _checkRequiredPermissions (browserInfo: BrowserInfoSource[]): Promise<void> {
-        const hasLocalBrowsers = await Bootstrapper._hasLocalBrowsers(browserInfo);
-
-        const { error } = await authenticationHelper(
-            () => findWindow(''),
-            errors.UnableToAccessScreenRecordingAPIError,
-            {
-                interactive: hasLocalBrowsers && !isCI
-            }
-        );
-
-        if (!error)
-            return;
-
-        if (hasLocalBrowsers)
-            throw error;
-
-        RemoteBrowserProvider.canDetectLocalBrowsers = false;
-    }
-
-    private static async _checkThatTestsCanRunWithoutDisplay (browserInfoSource: BrowserInfoSource[]): Promise<void> {
-        for (let browserInfo of browserInfoSource) {
-            if (browserInfo instanceof BrowserConnection)
-                browserInfo = browserInfo.browserInfo;
-
-            const isLocalBrowser    = await browserInfo.provider.isLocalBrowser(void 0, browserInfo.browserName);
-            const isHeadlessBrowser = await browserInfo.provider.isHeadlessBrowser(void 0, browserInfo.browserName);
-
-            if (isLocalBrowser && !isHeadlessBrowser) {
-                throw new GeneralError(
-                    RUNTIME_ERRORS.cannotRunLocalNonHeadlessBrowserWithoutDisplay,
-                    browserInfo.alias
-                );
-            }
-        }
     }
 
     private _createAutomatedConnections (browserInfo: BrowserInfo[]): BrowserConnection[][] {
@@ -405,21 +350,10 @@ export default class Bootstrapper {
         const reporterPlugins     = await this._getReporterPlugins();
         const commonClientScripts = await loadClientScripts(this.clientScripts);
 
-        // NOTE: If a user forgot to specify a browser, but has specified a path to tests, the specified path will be
-        // considered as the browser argument, and the tests path argument will have the predefined default value.
-        // It's very ambiguous for the user, who might be confused by compilation errors from an unexpected test.
-        // So, we need to retrieve the browser aliases and paths before tests compilation.
-        const browserInfo = this.browsers;
+        if (await this._canUseParallelBootstrapping(this.browsers)) {
+            return { reporterPlugins, ...await this._bootstrapParallel(this.browsers), commonClientScripts };
+        }
 
-        if (OS.mac)
-            await Bootstrapper._checkRequiredPermissions(browserInfo);
-
-        if (OS.linux && !detectDisplay())
-            await Bootstrapper._checkThatTestsCanRunWithoutDisplay(browserInfo);
-
-        if (await this._canUseParallelBootstrapping(browserInfo))
-            return { reporterPlugins, ...await this._bootstrapParallel(browserInfo), commonClientScripts };
-
-        return { reporterPlugins, ...await this._bootstrapSequence(browserInfo), commonClientScripts };
+        return { reporterPlugins, ...await this._bootstrapSequence(this.browsers), commonClientScripts };
     }
 }

@@ -35,6 +35,13 @@ import CustomizableCompilers from '../configuration/customizable-compilers';
 import { getConcatenatedValuesString, getPluralSuffix } from '../utils/string';
 import isLocalhost from '../utils/is-localhost';
 import WarningLog from '../notifications/warning-log';
+import authenticationHelper from '../cli/authentication-helper';
+import { errors, findWindow } from 'testcafe-browser-tools';
+import isCI from 'is-ci';
+import RemoteBrowserProvider from '../browser/provider/built-in/remote';
+import BrowserConnection from '../browser/connection';
+import OS from 'os-family';
+import detectDisplay from '../utils/detect-display';
 import { validateQuarantineOptions } from '../utils/get-options/quarantine';
 
 const DEBUG_LOGGER = debug('testcafe:runner');
@@ -256,6 +263,23 @@ export default class Runner extends EventEmitter {
             throw new GeneralError(RUNTIME_ERRORS.cannotSetConcurrencyWithCDPPort);
     }
 
+    async _validateBrowsers () {
+        const browsers = this.configuration.getOption(OPTION_NAMES.browsers);
+
+        if (!browsers || Array.isArray(browsers) && !browsers.length)
+            throw new GeneralError(RUNTIME_ERRORS.browserNotSet);
+
+        // NOTE: If a user forgot to specify a browser, but has specified a path to tests, the specified path will be
+        // considered as the browser argument, and the tests path argument will have the predefined default value.
+        // It's very ambiguous for the user, who might be confused by compilation errors from an unexpected test.
+        // So, we need to retrieve the browser aliases and paths before tests compilation.
+        if (OS.mac)
+            await this._checkRequiredPermissions(browsers);
+
+        if (OS.linux && !detectDisplay())
+            await this._checkThatTestsCanRunWithoutDisplay(browsers);
+    }
+
     _validateRequestTimeoutOption (optionName) {
         const requestTimeout = this.configuration.getOption(optionName);
 
@@ -400,12 +424,13 @@ export default class Runner extends EventEmitter {
         this._validateScreenshotOptions();
         await this._validateVideoOptions();
         this._validateSpeedOption();
-        this._validateConcurrencyOption();
         this._validateProxyBypassOption();
         this._validateCompilerOptions();
         this._validateRetryTestPagesOption();
         this._validateRequestTimeoutOption(OPTION_NAMES.pageRequestTimeout);
         this._validateRequestTimeoutOption(OPTION_NAMES.ajaxRequestTimeout);
+        this._validateConcurrencyOption();
+        await this._validateBrowsers();
         this._validateQuarantineOptions();
     }
 
@@ -456,6 +481,55 @@ export default class Runner extends EventEmitter {
 
             test.clientScripts = setUniqueUrls(loadedTestClientScripts);
         }));
+    }
+
+    async _hasLocalBrowsers (browserInfo) {
+        for (const browser of browserInfo) {
+            if (browser instanceof BrowserConnection)
+                continue;
+
+            if (await browser.provider.isLocalBrowser(void 0, browser.browserName))
+                return true;
+        }
+
+        return false;
+    }
+
+    async _checkRequiredPermissions (browserInfo) {
+        const hasLocalBrowsers = await Bootstrapper._hasLocalBrowsers(browserInfo);
+
+        const { error } = await authenticationHelper(
+            () => findWindow(''),
+            errors.UnableToAccessScreenRecordingAPIError,
+            {
+                interactive: hasLocalBrowsers && !isCI
+            }
+        );
+
+        if (!error)
+            return;
+
+        if (hasLocalBrowsers)
+            throw error;
+
+        RemoteBrowserProvider.canDetectLocalBrowsers = false;
+    }
+
+    async _checkThatTestsCanRunWithoutDisplay (browserInfoSource) {
+        for (let browserInfo of browserInfoSource) {
+            if (browserInfo instanceof BrowserConnection)
+                browserInfo = browserInfo.browserInfo;
+
+            const isLocalBrowser    = await browserInfo.provider.isLocalBrowser(void 0, browserInfo.browserName);
+            const isHeadlessBrowser = await browserInfo.provider.isHeadlessBrowser(void 0, browserInfo.browserName);
+
+            if (isLocalBrowser && !isHeadlessBrowser) {
+                throw new GeneralError(
+                    RUNTIME_ERRORS.cannotRunLocalNonHeadlessBrowserWithoutDisplay,
+                    browserInfo.alias
+                );
+            }
+        }
     }
 
     // API
