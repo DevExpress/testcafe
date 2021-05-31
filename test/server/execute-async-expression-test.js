@@ -52,7 +52,11 @@ class TestRunMock extends TestRun {
 
         this.browserConnection = {
             isHeadlessBrowser: () => false,
-            userAgent:         'Chrome'
+            userAgent:         'Chrome',
+            provider:          {
+                hasCustomActionForBrowser () {
+                }
+            }
         };
     }
 }

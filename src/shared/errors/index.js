@@ -91,7 +91,7 @@ export class UncaughtErrorInClientFunctionCode extends TestRunErrorBase {
 
 export class UncaughtErrorInCustomDOMPropertyCode extends TestRunErrorBase {
     constructor (instantiationCallsiteName, err, prop) {
-        super(TEST_RUN_ERRORS.uncaughtErrorInCustomDOMPropertyCode, err, prop);
+        super(TEST_RUN_ERRORS.uncaughtErrorInCustomDOMPropertyCode);
 
         this.errMsg                    = String(err);
         this.property                  = prop;
