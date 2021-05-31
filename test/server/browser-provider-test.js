@@ -336,7 +336,7 @@ describe('Browser provider', function () {
                 const testProvider = Object.assign({}, dedicatedBrowserProviderBase, {
                     providerName: 'browser',
 
-                    _getConfig () {
+                    getConfig () {
                         return {};
                     }
                 });
@@ -360,7 +360,7 @@ describe('Browser provider', function () {
                 const testProvider = Object.assign({}, dedicatedBrowserProviderBase, {
                     providerName: 'browser',
 
-                    _getConfig () {
+                    getConfig () {
                         return {};
                     }
                 });

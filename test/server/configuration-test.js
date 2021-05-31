@@ -97,8 +97,9 @@ describe('TestCafeConfiguration', function () {
 
                         expect(ssl.key).eql(keyFileContent);
                         expect(ssl.rejectUnauthorized).eql(true);
-                        expect(testCafeConfiguration.getOption('src')).eql([ 'path1/folder' ]);
-                        expect(testCafeConfiguration.getOption('browsers')).eql([ 'ie' ]);
+                        expect(testCafeConfiguration.getOption('src')).eql(['path1/folder']);
+                        expect(testCafeConfiguration.getOption('browsers')).to.be.an('array').that.not.empty;
+                        expect(testCafeConfiguration.getOption('browsers')[0]).to.include({ browserName: 'ie' });
                         expect(testCafeConfiguration.getOption('concurrency')).eql(0.5);
                         expect(testCafeConfiguration.getOption('filter')).to.be.a('function');
                         expect(testCafeConfiguration.getOption('filter').testGrep.test('test1')).to.be.true;
