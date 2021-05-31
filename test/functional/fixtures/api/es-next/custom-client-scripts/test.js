@@ -75,7 +75,7 @@ describe('Custom client scripts', () => {
         it('Wrong module name', () => {
             return runTests('./testcafe-fixtures/wrong-module-name.js', null, { shouldFail: true })
                 .catch(err => {
-                    expect(err.message).eql("An error occurred when trying to locate the injected client script module:\n\nCannot find module 'wrong-module-name'.");
+                    expect(err.message).contains("An error occurred when trying to locate the injected client script module:\n\nCannot find module 'wrong-module-name'");
                 });
         });
     });
