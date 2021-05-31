@@ -1,5 +1,4 @@
-const expect      = require('chai').expect;
-const nodeVersion = require('node-version');
+const expect = require('chai').expect;
 
 // NOTE: we run tests in chrome only, because we mainly test server API functionality.
 // Actions functionality is tested in lower-level raw API.
