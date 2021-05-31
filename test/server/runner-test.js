@@ -1051,6 +1051,22 @@ describe('Runner', () => {
             });
         });
 
+        it('Should raise an error if concurrency more than 1 and cdp port isn\'t undefined', () => {
+            const concurrency = 2;
+            const cdpPort     = '9223';
+
+            return runner
+                .browsers(`${BROWSER_NAME}:emulation;cdpPort=${cdpPort}`)
+                .concurrency(concurrency)
+                .run()
+                .then(() => {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch((err) => {
+                    expect(err.message).eql('The concurrency factor should be used without CDP port.');
+                });
+        });
+
         it('Should raise an error if the Quarantine Mode is represented by invalid arguments', async () => {
             let errorCount = 0;
 
