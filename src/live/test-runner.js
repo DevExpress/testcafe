@@ -101,14 +101,14 @@ class LiveModeRunner extends Runner {
 
         this.opts = Object.assign({}, this.opts, options);
 
-        this._setBootstrapperOptions();
-
         const fileListPromise = parseFileList(this.bootstrapper.sources, process.cwd());
 
         fileListPromise
             .then(files => {
                 return this.controller.init(files);
             })
+            .then(() => this.configuration.init())
+            .then(() => this._setBootstrapperOptions())
             .then(() => this._createRunnableConfiguration())
             .then(() => this.runTests(true));
 
