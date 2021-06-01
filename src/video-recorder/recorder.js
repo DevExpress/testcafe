@@ -143,7 +143,7 @@ export default class VideoRecorder extends EventEmitter {
             return;
 
         await testRunVideoRecorder.init();
-        
+
         this.testRunVideoRecorders[testRunVideoRecorder.index] = testRunVideoRecorder;
     }
 
