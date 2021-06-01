@@ -47,7 +47,6 @@ import {
     RequestEvent,
     ConfigureResponseEvent,
     ResponseEvent,
-    RequestFilterRule,
     StateSnapshot
 } from 'testcafe-hammerhead';
 
@@ -269,11 +268,7 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
     }
 
     public async setMock ({ testId, hookId, ruleId, responseEventId, mock }: SetMockArguments): Promise<void> {
-        const mockDefinedWithPredicate = mock.isPredicate;
-
-        mock = ResponseMock.from(mock);
-
-        if (mockDefinedWithPredicate)
+        if (mock.isPredicate)
             this._wrapMockPredicate({ mock, testId, hookId, ruleId });
 
         await this.emit('setMock', [responseEventId, mock]);
@@ -310,14 +305,10 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
     }
 
     public async addRequestEventListeners ( { hookId, hookClassName, rules }: AddRequestEventListenersArguments): Promise<void> {
-        rules = RequestFilterRule.fromArray(rules as object[]);
-
         await this.emit('addRequestEventListeners', { hookId, hookClassName, rules });
     }
 
     public async removeRequestEventListeners ({ rules }: RemoveRequestEventListenersArguments): Promise<void> {
-        rules = RequestFilterRule.fromArray(rules as object[]);
-
         await this.emit('removeRequestEventListeners', { rules });
     }
 

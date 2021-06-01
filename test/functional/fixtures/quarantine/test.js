@@ -1,9 +1,6 @@
-const chai               = require('chai');
-const { expect }         = chai;
+const { expect }         = require('chai');
 const config             = require('../../config');
 const { createReporter } = require('../../utils/reporter');
-
-chai.use(require('chai-string'));
 
 const getFailureCount = results => {
     return Object.values(results).filter(value => value['passed'] === false);

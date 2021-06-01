@@ -59,7 +59,6 @@ import {
     IncomingMessageLikeInitOptions,
     RequestEvent,
     RequestFilterRule,
-    ResponseEvent,
     ResponseMock,
     responseMockSetBodyMethod,
     StateSnapshot
@@ -214,10 +213,6 @@ class CompilerService implements CompilerProtocol {
         };
     }
 
-    private _restoreRequestFilterRule (event: RequestEvent | ConfigureResponseEvent | ResponseEvent): void {
-        event.requestFilterRule = RequestFilterRule.from(event.requestFilterRule as object);
-    }
-
     private _initializeTestRunProxy (testRunId: string, test: Test): void {
         const testRunProxy = new TestRunProxy({
             dispatcher: this,
@@ -288,7 +283,6 @@ class CompilerService implements CompilerProtocol {
 
     public async onRequestHookEvent ({ name, testId, hookId, eventData }: RequestHookEventArguments): Promise<void> {
         this._wrapEventMethods({ name, testId, hookId, eventData });
-        this._restoreRequestFilterRule(eventData);
 
         const test       = this.state.units[testId] as Test;
         const targetHook = test.requestHooks.find(hook => hook.id === hookId) as RequestHook;

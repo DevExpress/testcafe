@@ -1,12 +1,9 @@
 const path               = require('path');
 const fs                 = require('fs');
-const chai               = require('chai');
-const { expect }         = chai;
+const { expect }         = require('chai');
 const config             = require('../../../../config.js');
 const assertionHelper    = require('../../../../assertion-helper.js');
 const { createReporter } = require('../../../../utils/reporter');
-
-chai.use(require('chai-string'));
 
 const SCREENSHOTS_PATH                   = path.resolve(assertionHelper.SCREENSHOTS_PATH);
 const THUMBNAILS_DIR_NAME                = assertionHelper.THUMBNAILS_DIR_NAME;
