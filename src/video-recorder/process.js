@@ -157,6 +157,7 @@ export default class VideoRecorder extends AsyncEmitter {
 
         this.disposed = true;
         this.ffmpegProcess.stdin.end();
+
         await this.ffmpegClosingPromise;
     }
 
@@ -171,6 +172,7 @@ export default class VideoRecorder extends AsyncEmitter {
             return;
 
         this.closed = true;
+
         await this.capturingPromise;
         await this.dispose();
     }

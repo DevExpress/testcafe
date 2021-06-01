@@ -14,8 +14,9 @@ function getProcessOutputUnix () {
 
     return new Promise((resolve, reject) => {
         const child = spawn('ps', ['-eo', 'pid,command']);
-        let stdout  = '';
-        let stderr  = '';
+
+        let stdout = '';
+        let stderr = '';
 
         child.stdout.on('data', data => {
             stdout += data.toString();
@@ -81,7 +82,8 @@ async function killUnixProcessHard (processId) {
 
 async function killProcessUnix (processId) {
     const maxSoftTries = 2;
-    let softTries = 0;
+
+    let softTries         = 0;
     let unixProcessKilled = false;
 
     do {
@@ -92,11 +94,13 @@ async function killProcessUnix (processId) {
         await delay(CHECK_KILLED_DELAY);
 
         unixProcessKilled = await isUnixProcessKilled(processId);
-    } while (!unixProcessKilled && softTries < maxSoftTries);
+    }
+    while (!unixProcessKilled && softTries < maxSoftTries);
 
     unixProcessKilled = await isUnixProcessKilled(processId);
 
-    if (unixProcessKilled) return;
+    if (unixProcessKilled)
+        return;
 
     await killUnixProcessHard(processId);
 
@@ -106,14 +110,14 @@ async function killProcessUnix (processId) {
 
     if (unixProcessKilled) return;
 
-    //if 2 soft-kill and 1 hard-kill with "SIGKILL"-flag didn't work - throw error
+    // NOTE: if 2 soft-kill and 1 hard-kill with "SIGKILL"-flag didn't work - throw error
     throw new Error(killProcessTimeoutError);
 }
 
 async function runWMIC (args) {
     const wmicProcess = spawn('wmic.exe', args, { detached: true });
 
-    let wmicOutput  = '';
+    let wmicOutput = '';
 
     wmicProcess.stdout.on('data', data => {
         wmicOutput += data.toString();
@@ -135,6 +139,7 @@ async function runWMIC (args) {
 async function findProcessWin (browserId) {
     const wmicArgs    = ['process', 'where', `commandline like '%${browserId}%' and name <> 'cmd.exe' and name <> 'wmic.exe'`, 'get', 'processid'];
     const wmicOutput  = await runWMIC(wmicArgs);
+
     let processList = wmicOutput.split(/\s*\n/);
 
     processList = processList
