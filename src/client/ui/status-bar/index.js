@@ -3,6 +3,7 @@ import testCafeCore from './../deps/testcafe-core';
 import ProgressBar from './progress-bar';
 import uiRoot from '../ui-root';
 import MESSAGES from './messages';
+import DEBUG_ACTION from '../../../utils/debug-action';
 import isIframeWindow from '../../../utils/is-window-in-iframe';
 
 
@@ -421,7 +422,8 @@ export default class StatusBar extends serviceUtils.EventEmitter {
                 const isNextButton = domUtils.containsElement(this.nextButton, e.target);
 
                 this._resetState();
-                resolve(isNextButton);
+
+                resolve(isNextButton ? DEBUG_ACTION.step : DEBUG_ACTION.resume);
             });
         });
     }

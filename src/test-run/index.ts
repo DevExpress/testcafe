@@ -196,7 +196,7 @@ export default class TestRun extends AsyncEventEmitter {
     private fileDownloadingHandled: boolean;
     private resolveWaitForFileDownloadingPromise: Function | null;
     private addingDriverTasksCount: number;
-    private debugging: boolean;
+    public debugging: boolean;
     private readonly debugOnFail: boolean;
     private readonly disableDebugBreakpoints: boolean;
     private readonly debugReporterPluginHost: ReporterPluginHost;
@@ -529,7 +529,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     public async start (): Promise<void> {
-        testRunTracker.activeTestRuns[this.session.id] = this;
+        testRunTracker.addActiveTestRun(this);
 
         await this.emit('start');
 
@@ -657,13 +657,18 @@ export default class TestRun extends AsyncEventEmitter {
         if (this.debugLogger)
             this.debugLogger.showBreakpoint(this.session.id, this.browserConnection.userAgent, callsite, error);
 
-        this.debugging = await this.executeCommand(new serviceCommands.SetBreakpointCommand(!!error), callsite) as boolean;
+        this.debugging = await this.executeCommand(new serviceCommands.SetBreakpointCommand(!!error, !!this.compilerService), callsite) as boolean;
     }
 
     private _removeAllNonServiceTasks (): void {
         this.driverTaskQueue = this.driverTaskQueue.filter(driverTask => isServiceCommand(driverTask.command));
 
         this.browserManipulationQueue.removeAllNonServiceManipulations();
+    }
+
+    private _handleDebugState (driverStatus: DriverStatus): void {
+        if (driverStatus.debug)
+            this.emit(driverStatus.debug);
     }
 
     // Current driver task
@@ -747,6 +752,8 @@ export default class TestRun extends AsyncEventEmitter {
 
         this.consoleMessages.concat(driverStatus.consoleMessages);
 
+        this._handleDebugState(driverStatus);
+
         if (!currentTaskRejectedByError && driverStatus.isCommandResult) {
             if (isTestDone) {
                 this._resolveCurrentDriverTask();
@@ -822,6 +829,13 @@ export default class TestRun extends AsyncEventEmitter {
 
         else if (command.type === COMMAND_TYPE.debug)
             this.debugging = true;
+
+        else if (command.type === COMMAND_TYPE.disableDebug) {
+            this.debugLogger.hideBreakpoint(this.session.id);
+
+            this.debugging = false;
+        }
+
     }
 
     private async _adjustScreenshotCommand (command: TakeScreenshotBaseCommand): Promise<void> {

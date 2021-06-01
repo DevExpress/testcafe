@@ -52,9 +52,15 @@ export class ExecuteSelectorCommand extends ExecuteClientFunctionCommandBase {
     }
 }
 
-export class DebugCommand {
+export class DebugCommand extends CommandBase {
     constructor () {
-        this.type = TYPE.debug;
+        super(null, null, TYPE.debug);
+    }
+}
+
+export class DisableDebugCommand extends CommandBase {
+    constructor () {
+        super(null, null, TYPE.disableDebug);
     }
 }
 
