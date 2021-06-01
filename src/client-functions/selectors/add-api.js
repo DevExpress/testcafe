@@ -74,7 +74,7 @@ const expandSelectorResults = (new ClientFunctionBuilder((selector, populateDeri
 
 async function getSnapshot (getSelector, callsite, SelectorBuilder, getVisibleValueMode) {
     let node       = null;
-    const selector = new SelectorBuilder(getSelector(), { getVisibleValueMode, needError: true }, { instantiation: 'Selector' }).getFunction();
+    const selector = new SelectorBuilder(getSelector(), { getVisibleValueMode, needError: true }, { instantiation: 'Selector' }, callsite).getFunction();
 
     try {
         node = await selector();
@@ -91,7 +91,7 @@ async function getSnapshot (getSelector, callsite, SelectorBuilder, getVisibleVa
 
 function getSnapshotSync (getSelector, callsite, SelectorBuilder, getVisibleValueMode) {
     let node       = null;
-    const selector = new SelectorBuilder(getSelector(), { getVisibleValueMode, needError: true }, { instantiation: 'Selector' }).getFunction();
+    const selector = new SelectorBuilder(getSelector(), { getVisibleValueMode, needError: true }, { instantiation: 'Selector' }, callsite).getFunction();
 
     try {
         node = selector();
