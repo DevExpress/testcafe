@@ -141,6 +141,7 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
 
             // NOTE: disable `debugger` for non-debug commands if the `Resume` button is clicked
             // the `includeCommandLineAPI` option allows to use the `require` functoion in the expression
+            // TODO: debugging: refactor to use absolute paths
             await this.cdp.Runtime.evaluate({
                 expression:            `require.main.require('../../api/test-controller').${disableDebugMethodName}()`,
                 includeCommandLineAPI: true
@@ -157,6 +158,7 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
 
             // NOTE: enable `debugger` for non-debug commands in the `Next Action` button is clicked
             // the `includeCommandLineAPI` option allows to use the `require` functoion in the expression
+            // TODO: debugging: refactor to use absolute paths
             await this.cdp.Runtime.evaluate({
                 expression:            `require.main.require('../../api/test-controller').${enableDebugMethodName}()`,
                 includeCommandLineAPI: true
@@ -167,6 +169,7 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
 
         // NOTE: need to step out from the source code until breakpoint is set in the code of test
         // force DebugCommand if breakpoint stopped in the test code
+        // TODO: debugging: refactor to this.cdp.Debugger.on('paused') after updating to chrome-remote-interface@0.30.0
         this.cdp.on('Debugger.paused', (args: any): Promise<void> => {
             const { callFrames } = args;
 
@@ -187,6 +190,7 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
         });
 
         // NOTE: need to hide Status Bar if debugger is resumed
+        // TODO: debugging: refactor to this.cdp.Debugger.on('resumed') after updating to chrome-remote-interface@0.30.0
         this.cdp.on('Debugger.resumed', () => {
             Object.values(testRunTracker.activeTestRuns).forEach(testRun => {
                 if (testRun.debugging)
@@ -204,10 +208,12 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
 
         try {
             // NOTE: fixed port number for debugging purposes. Will be replaced with the `getFreePort` util
+            // TODO: debugging: refactor to a separate debug info parsing unit
             const port    = '64128';
             const service = spawn(process.argv0, [`--inspect-brk=127.0.0.1:${port}`, SERVICE_PATH], { stdio: [0, 1, 2, 'pipe', 'pipe', 'pipe'] });
 
             // NOTE: need to wait, otherwise the error will be at `await cdp(...)`
+            // TODO: debugging: refactor to use delay and multiple tries
             await new Promise(r => setTimeout(r, 2000));
 
             // @ts-ignore
