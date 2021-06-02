@@ -150,7 +150,7 @@ export const RUNTIME_ERRORS = {
     cannotEnableRetryTestPagesOption:                   'E1062',
     browserConnectionError:                             'E1063',
     testRunRequestInDisconnectedBrowser:                'E1064',
-    invalidQuarantineOptions:                           'E1065',
+    invalidQuarantineOption:                            'E1065',
     invalidRetryCountValue:                             'E1066',
     cannotSetQuarantineOptionsWhenQuarantineIsDisabled: 'E1067'
 };

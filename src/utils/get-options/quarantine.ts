@@ -14,7 +14,7 @@ function _isQuarantineOption (option: string): option is QUARANTINE_OPTION_NAMES
 
 export function validateQuarantineOptions (options: Dictionary<string | number>, optionName: string ): void {
     if (Object.keys(options).some(key => !_isQuarantineOption(key)))
-        throw new GeneralError(RUNTIME_ERRORS.invalidQuarantineOptions, optionName);
+        throw new GeneralError(RUNTIME_ERRORS.invalidQuarantineOption, optionName);
 
     const retryCount = options.retryCount || DEFAULT_TEST_RUN_THRESHOLD;
     const passCount  = options.passCount || DEFAULT_QUARANTINE_THRESHOLD;
