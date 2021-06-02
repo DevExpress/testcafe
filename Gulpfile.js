@@ -416,7 +416,7 @@ gulp.step('test-functional-local-proxyless-run', () => {
     return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localHeadlessChrome, { isProxyless: true });
 });
 
-gulp.task('test-functional-local-native-mode', gulp.series('prepare-tests', 'test-functional-local-proxyless-run'));
+gulp.task('test-functional-local-proxyless', gulp.series('prepare-tests', 'test-functional-local-proxyless-run'));
 
 gulp.task('docker-build', done => {
     childProcess.execSync('npm pack', { env: process.env }).toString();

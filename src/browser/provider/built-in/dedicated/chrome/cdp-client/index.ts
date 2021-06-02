@@ -56,7 +56,7 @@ export class BrowserClient {
     }
 
     private async _getTabs (): Promise<remoteChrome.TargetInfo[]> {
-        const tabs = await remoteChrome.listTabs({ port: this._runtimeInfo.cdpPort });
+        const tabs = await remoteChrome.List({ port: this._runtimeInfo.cdpPort });
 
         return tabs.filter(t => t.type === 'page');
     }
@@ -187,24 +187,21 @@ export class BrowserClient {
     }
 
     private _setupFramesWatching (client: remoteChrome.ProtocolApi): void {
-        // @ts-ignore
-        client.Runtime.executionContextCreated((event: Protocol.Runtime.ExecutionContextCreatedEvent) => {
+        client.Runtime.on('executionContextCreated', (event: Protocol.Runtime.ExecutionContextCreatedEvent) => {
             if (!event.context.auxData?.frameId)
                 return;
 
             this._frameExecutionContexts.set(event.context.auxData.frameId, event.context.id);
         });
 
-        // @ts-ignore
-        client.Runtime.executionContextDestroyed((event: Protocol.Runtime.ExecutionContextDestroyedEvent) => {
+        client.Runtime.on('executionContextDestroyed', (event: Protocol.Runtime.ExecutionContextDestroyedEvent) => {
             for (const [frameId, executionContextId] of this._frameExecutionContexts.entries()) {
                 if (executionContextId === event.executionContextId)
                     this._frameExecutionContexts.delete(frameId);
             }
         });
 
-        // @ts-ignore
-        client.Runtime.executionContextsCleared(() => {
+        client.Runtime.on('executionContextsCleared', () => {
             this._currentFrameId = '';
             this._frameExecutionContexts.clear();
         });
@@ -327,7 +324,7 @@ export class BrowserClient {
 
     public async closeTab (): Promise<void> {
         if (this._parentTarget)
-            await remoteChrome.closeTab({ id: this._parentTarget.id, port: this._runtimeInfo.cdpPort });
+            await remoteChrome.Close({ id: this._parentTarget.id, port: this._runtimeInfo.cdpPort });
     }
 
     public async updateMobileViewportSize (): Promise<void> {
@@ -351,7 +348,7 @@ export class BrowserClient {
             throw new Error('Cannot get the active browser client');
 
         const expression = `
-            (function () {
+            (function () {debugger;
                 const proxyless              = window['%proxyless%'];
                 const ClientFunctionExecutor = proxyless.ClientFunctionExecutor;
                 const executor               = new ClientFunctionExecutor(${JSON.stringify(command)});

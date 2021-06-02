@@ -49,7 +49,7 @@ const CONFIG = CHUNK_NAMES.map(chunk => ({
     context: '(void 0)',
 
     output: {
-        file:    path.join(TARGET_DIR, chunk),
+        file:    path.join(TARGET_DIR, chunk.replace(/\.ts$/, '.js')),
         format:  'iife',
         globals: GLOBALS(chunk),
         // NOTE: 'use strict' in our scripts can break user code

@@ -79,7 +79,7 @@
     "callsite-record": "^4.0.0",
     "chai": "^4.1.2",
     "chalk": "^2.3.0",
-    "chrome-remote-interface": "^0.25.3",
+    "chrome-remote-interface": "^0.30.0",
     "coffeescript": "^2.3.1",
     "commander": "^2.8.1",
     "debug": "^4.3.1",
