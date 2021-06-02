@@ -39,7 +39,7 @@ export default {
     [RUNTIME_ERRORS.multipleSameStreamReporters]:                        'The following reporters attempted to write to the same output stream: "{reporters}". Only one reporter can write to a stream.',
     [RUNTIME_ERRORS.optionValueIsNotValidRegExp]:                        'The "{optionName}" option value is not a valid regular expression.',
     [RUNTIME_ERRORS.optionValueIsNotValidKeyValue]:                      'The "{optionName}" option value is not a valid key-value pair.',
-    [RUNTIME_ERRORS.invalidQuarantineOption]:                            'The "{optionName}" option should be one of "retryCount" or "passCount".', // !!!!!!!
+    [RUNTIME_ERRORS.invalidQuarantineOption]:                            'The "{optionName}" option should be one of "retryCount" or "passCount".',
     [RUNTIME_ERRORS.cannotSetQuarantineOptionsWhenQuarantineIsDisabled]: 'Unable to set Quarantine options when the Quarantine Mode is disabled. Specify the "{optionName}" option to enable the Quarantine Mode.',
     [RUNTIME_ERRORS.invalidRetryCountValue]:                             'The "retryCount" value should be greater or equal to "passCount" ({passCount}).',
     [RUNTIME_ERRORS.invalidSpeedValue]:                                  'Speed should be a number between 0.01 and 1.',
