@@ -15,7 +15,7 @@ import returnSinglePropMode from '../return-single-prop-mode';
 import selectorApiExecutionMode from '../selector-api-execution-mode';
 
 export default class SelectorBuilder extends ClientFunctionBuilder {
-    constructor (fn, options, callsiteNames) {
+    constructor (fn, options, callsiteNames, callsite) {
         const apiFn                        = options && options.apiFn;
         const apiFnID                      = options && options.apiFnID;
         const builderFromSelector          = fn && fn[functionBuilderSymbol];
@@ -46,6 +46,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
             this.options.apiFnChain.push(apiFn);
 
         this.options.apiFnID = typeof apiFnID === 'number' ? apiFnID : this.options.apiFnChain.length - 1;
+        this.callsite        = callsite;
     }
 
     _getCompiledFnCode () {
@@ -91,7 +92,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
     }
 
     _executeCommand (args, testRun, callsite) {
-        const resultPromise = super._executeCommand(args, testRun, callsite);
+        const resultPromise = super._executeCommand(args, testRun, this.callsite || callsite);
 
         this._addBoundArgsSelectorGetter(resultPromise, args);
 
