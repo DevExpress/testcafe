@@ -1,11 +1,12 @@
-import Replicator from 'replicator';
+import Replicator, { Transform } from 'replicator';
 import evalFunction from './eval-function';
 import { DomNodeClientFunctionResultError } from '../../shared/errors';
+import { ExecuteClientFunctionCommandBase } from '../../test-run/commands/observation';
 
-const identity = val => val;
+const identity = (val: unknown): unknown => val;
 
 
-export function createReplicator (transforms) {
+export function createReplicator (transforms: Transform[]): Replicator {
     // NOTE: we will serialize replicator results
     // to JSON with a command or command result.
     // Therefore there is no need to do additional job here,
@@ -19,21 +20,19 @@ export function createReplicator (transforms) {
 }
 
 export class FunctionTransform {
-    constructor () {
-        this.type = 'Function';
-    }
+    public readonly type = 'Function';
 
-    shouldTransform (type) {
+    public shouldTransform (type: string): boolean {
         return type === 'function';
     }
 
-    toSerializable () {
+    public toSerializable (): string {
         return '';
     }
 
     // HACK: UglifyJS + TypeScript + argument destructuring can generate incorrect code.
     // So we have to use plain assignments here.
-    fromSerializable (opts) {
+    public fromSerializable (opts: ExecuteClientFunctionCommandBase): Function {
         const fnCode       = opts.fnCode;
         const dependencies = opts.dependencies;
 
@@ -42,13 +41,23 @@ export class FunctionTransform {
 }
 
 export class ClientFunctionNodeTransform {
-    constructor (instantiationCallsiteName) {
-        this.type                      = 'Node';
+    public readonly type = 'Node';
+    public readonly instantiationCallsiteName: string;
+
+    public constructor (instantiationCallsiteName: string) {
         this.instantiationCallsiteName = instantiationCallsiteName;
     }
 
-    shouldTransform (type, val) {
+    public shouldTransform (type: string, val: any): boolean {
         if (val instanceof Node)
             throw DomNodeClientFunctionResultError.name;
+
+        return false;
+    }
+
+    public toSerializable (): void {
+    }
+
+    public fromSerializable (): void {
     }
 }

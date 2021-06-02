@@ -32,15 +32,17 @@ const debugLog = debug('testcafe:browser:provider:built-in:dedicated:chrome');
 export class BrowserClient {
     private _clients: Dictionary<remoteChrome.ProtocolApi> = {};
     private _runtimeInfo: RuntimeInfo;
+    private readonly _isProxyless: boolean;
     private _parentTarget?: remoteChrome.TargetInfo;
     private readonly debugLogger: debug.Debugger;
     // new Map<frameId, executionContextId>
     private readonly _frameExecutionContexts = new Map<string, number>();
     private _currentFrameId: string = '';
 
-    public constructor (runtimeInfo: RuntimeInfo) {
+    public constructor (runtimeInfo: RuntimeInfo, isProxyless: boolean) {
         this._runtimeInfo = runtimeInfo;
         this.debugLogger  = debug(DEBUG_SCOPE(runtimeInfo.browserId));
+        this._isProxyless = isProxyless;
 
         runtimeInfo.browserClient = this;
     }
@@ -178,7 +180,7 @@ export class BrowserClient {
         this._runtimeInfo.emulatedDevicePixelRatio = this._config.scaleFactor || this._runtimeInfo.originalDevicePixelRatio;
     }
 
-    private async _addScriptToEvaluateOnNewDocument (client: remoteChrome.ProtocolApi): Promise<void> {
+    private async _injectProxylessStuff (client: remoteChrome.ProtocolApi): Promise<void> {
         await client.Page.addScriptToEvaluateOnNewDocument({
             source: read('../../../../../../../lib/client/proxyless/index.js') as string
         });
@@ -268,8 +270,11 @@ export class BrowserClient {
             if (client) {
                 await this._calculateEmulatedDevicePixelRatio(client);
                 await this._setupClient(client);
-                await this._addScriptToEvaluateOnNewDocument(client);
-                this._setupFramesWatching(client);
+
+                if (this._isProxyless) {
+                    await this._injectProxylessStuff(client);
+                    this._setupFramesWatching(client);
+                }
             }
         }
         catch (e) {
@@ -343,7 +348,7 @@ export class BrowserClient {
         const client = await this.getActiveClient();
 
         if (!client)
-            throw new Error('Browser client error!');
+            throw new Error('Cannot get the active browser client');
 
         const expression = `
             (function () {

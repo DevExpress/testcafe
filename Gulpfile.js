@@ -412,6 +412,12 @@ gulp.step('test-functional-local-compiler-service-run', () => {
 
 gulp.task('test-functional-local-compiler-service', gulp.series('prepare-tests', 'test-functional-local-compiler-service-run'));
 
+gulp.step('test-functional-local-native-mode-run', () => {
+    return testFunctional(TESTS_GLOB, functionalTestConfig.testingEnvironmentNames.localHeadlessChrome, { isProxyless: true });
+});
+
+gulp.task('test-functional-local-native-mode', gulp.series('prepare-tests', 'test-functional-local-native-mode-run'));
+
 gulp.task('docker-build', done => {
     childProcess.execSync('npm pack', { env: process.env }).toString();
 

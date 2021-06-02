@@ -74,6 +74,7 @@ interface CommandLineOptions {
     videoEncodingOptions?: string | Dictionary<number | string | boolean>;
     compilerOptions?: string | Dictionary<number | string | boolean>;
     configFile?: string;
+    isProxyless?: boolean;
 }
 
 export default class CLIArgumentParser {

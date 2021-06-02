@@ -4,9 +4,16 @@ import {
     ClientFunctionNodeTransform
 } from './replicator';
 import evalFunction from './eval-function';
+import Replicator from 'replicator';
+import { ExecuteClientFunctionCommandBase } from '../../test-run/commands/observation';
 
 export default class ClientFunctionExecutor {
-    constructor (command) {
+    public readonly fn: Function;
+    public readonly replicator: Replicator;
+    public readonly dependencies: unknown;
+    public readonly command: ExecuteClientFunctionCommandBase
+
+    public constructor (command: ExecuteClientFunctionCommandBase) {
         this.command      = command;
         this.replicator   = this._createReplicator();
         this.dependencies = this.replicator.decode(this.command.dependencies);
@@ -14,26 +21,25 @@ export default class ClientFunctionExecutor {
         this.fn = evalFunction(this.command.fnCode, this.dependencies);
     }
 
-    getResult () {
+    public getResult (): Promise<unknown> {
         // eslint-disable-next-line hammerhead/use-hh-promise
         return Promise.resolve()
             .then(() => {
-                const args = this.replicator.decode(this.command.args);
+                const args = this.replicator.decode(this.command.args) as any[];
 
                 return this._executeFn(args);
             })
             .then(result => this.replicator.encode(result));
     }
 
-    //Overridable methods
-    _createReplicator () {
+    protected _createReplicator (): Replicator {
         return createReplicator([
             new ClientFunctionNodeTransform(this.command.instantiationCallsiteName),
             new FunctionTransform()
         ]);
     }
 
-    _executeFn (args) {
+    protected _executeFn (args: any[]): unknown {
         return this.fn.apply(window, args);
     }
 }

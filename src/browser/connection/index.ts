@@ -71,6 +71,7 @@ export default class BrowserConnection extends EventEmitter {
     public permanent: boolean;
     public previousActiveWindowId: string | null;
     private readonly disableMultipleWindows: boolean;
+    private readonly isProxyless: boolean;
     private readonly HEARTBEAT_TIMEOUT: number;
     private readonly BROWSER_CLOSE_TIMEOUT: number;
     private readonly BROWSER_RESTART_TIMEOUT: number;
@@ -107,7 +108,8 @@ export default class BrowserConnection extends EventEmitter {
         gateway: BrowserConnectionGateway,
         browserInfo: BrowserInfo,
         permanent: boolean,
-        disableMultipleWindows = false) {
+        disableMultipleWindows = false,
+        isProxyless = false) {
         super();
 
         this.HEARTBEAT_TIMEOUT       = HEARTBEAT_TIMEOUT;
@@ -134,6 +136,7 @@ export default class BrowserConnection extends EventEmitter {
         this.heartbeatTimeout       = null;
         this.pendingTestRunUrl      = null;
         this.disableMultipleWindows = disableMultipleWindows;
+        this.isProxyless            = isProxyless;
 
         this.url           = `${gateway.domain}/browser/connect/${this.id}`;
         this.idleUrl       = `${gateway.domain}/browser/idle/${this.id}`;
@@ -183,7 +186,7 @@ export default class BrowserConnection extends EventEmitter {
 
     private async _runBrowser (): Promise<void> {
         try {
-            await this.provider.openBrowser(this.id, this.url, this.browserInfo.browserName, this.disableMultipleWindows);
+            await this.provider.openBrowser(this.id, this.url, this.browserInfo.browserName, this.disableMultipleWindows, this.isProxyless);
 
             if (this.status !== BrowserConnectionStatus.ready)
                 await promisifyEvent(this, 'ready');

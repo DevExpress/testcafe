@@ -14,7 +14,7 @@ const NO_HAMMERHEAD_CHUNKS = [
     'browser/service-worker.js',
 
     // TODO: should not inject pinkie
-    'proxyless/index.js'
+    'proxyless/index.ts'
 ];
 
 const CHUNK_NAMES = [

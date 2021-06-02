@@ -53,7 +53,7 @@ function getBrowserInfo (settings) {
 
             return browserProviderPool
                 .getBrowserInfo(settings.browserName)
-                .then(browserInfo => new BrowserConnection(testCafe.browserConnectionGateway, browserInfo, true));
+                .then(browserInfo => new BrowserConnection(testCafe.browserConnectionGateway, browserInfo, true, false, !!process.env.PROXYLESS));
         })
         .then(connection => {
             return {
@@ -153,7 +153,8 @@ before(function () {
 
         retryTestPages,
 
-        experimentalCompilerService: !!process.env.EXPERIMENTAL_COMPILER_SERVICE
+        experimentalCompilerService: !!process.env.EXPERIMENTAL_COMPILER_SERVICE,
+        isProxyless:                 !!process.env.PROXYLESS
     };
 
     return createTestCafe(testCafeOptions)

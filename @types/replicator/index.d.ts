@@ -15,7 +15,7 @@ declare module 'replicator' {
     }
 
     interface ReplicatorConstructor {
-        new (): Replicator;
+        new (serializer?: { serialize: (val: unknown) => unknown, deserialize: (val: unknown) => unknown }): Replicator;
     }
 
     const Replicator: ReplicatorConstructor;

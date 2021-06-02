@@ -121,6 +121,12 @@ const COMPILER_SERVICE_EVENTS = [
     'removeHeaderOnConfigureResponseEvent'
 ];
 
+const PROXYLESS_COMMANDS = new Map<string, string>();
+
+PROXYLESS_COMMANDS.set(COMMAND_TYPE.executeClientFunction, 'hasExecuteClientFunction');
+PROXYLESS_COMMANDS.set(COMMAND_TYPE.switchToIframe, 'hasSwitchToIframe');
+PROXYLESS_COMMANDS.set(COMMAND_TYPE.switchToMainWindow, 'hasSwitchToMainWindow');
+
 interface TestRunInit {
     test: Test;
     browserConnection: BrowserConnection;
@@ -926,17 +932,14 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     private async _canExecuteCommandThroughCDP (command: CommandBase): Promise<boolean> {
+        if (!this.opts.isProxyless || !PROXYLESS_COMMANDS.has(command.type))
+            return false;
+
         const browserId         = this.browserConnection.id;
         const customActionsInfo = await this.browserConnection.provider.hasCustomActionForBrowser(browserId);
 
-        if (command.type === COMMAND_TYPE.executeClientFunction)
-            return customActionsInfo.hasExecuteClientFunction;
-        else if (command.type === COMMAND_TYPE.switchToIframe)
-            return customActionsInfo.hasSwitchToIframe;
-        else if (command.type === COMMAND_TYPE.switchToMainWindow)
-            return customActionsInfo.hasSwitchToMainWindow;
-
-        return false;
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        return customActionsInfo[PROXYLESS_COMMANDS.get(command.type)!];
     }
 
     public async executeCommand (command: CommandBase, callsite?: CallsiteRecord): Promise<unknown> {

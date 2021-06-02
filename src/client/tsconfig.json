@@ -7,5 +7,6 @@
     "allowJs": true,
     "checkJs": false,
     "types": []
-  }
+  },
+  "include": ["../../@types", "./", "../shared"]
 }
