@@ -1,4 +1,4 @@
-import { pull } from 'lodash';
+import { pull, noop } from 'lodash';
 import testRunTracker from '../../api/test-run-tracker';
 import prerenderCallsite from '../../utils/prerender-callsite';
 import { TestRunDispatcherProtocol } from './protocol';
@@ -42,6 +42,8 @@ class TestRunProxy {
     public readonly observedCallsites: ObservedCallsitesStorage;
     public readonly warningLog: WarningLog;
     public fixtureCtx: object;
+    public debugging: boolean = false;
+    public onAny: Function = noop;
     private readonly dispatcher: TestRunDispatcherProtocol;
     public ctx: object;
     private readonly _options: Dictionary<OptionValue>;
@@ -66,7 +68,7 @@ class TestRunProxy {
         this.observedCallsites = new ObservedCallsitesStorage();
         this.warningLog        = new WarningLog();
 
-        testRunTracker.activeTestRuns[id] = this;
+        testRunTracker.addActiveTestRun(this);
 
         this._initializeRequestHooks();
     }

@@ -200,6 +200,8 @@ before(function () {
                 const clientScripts               = opts && opts.clientScripts || [];
                 const compilerOptions             = opts && opts.compilerOptions;
 
+                testCafe.runner = runner;
+
                 const {
                     skipJsErrors,
                     quarantineMode,

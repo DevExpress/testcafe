@@ -8,4 +8,8 @@ export default class CommandBase extends Assignable {
 
         this._assignFrom(obj, validateProperties, { testRun });
     }
+
+    _getAssignableProperties () {
+        return [];
+    }
 }

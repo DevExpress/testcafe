@@ -1,6 +1,8 @@
 import fs from 'fs';
 import Compiler from '../../compiler';
 import TestRunProxy from './test-run-proxy';
+import TestController from '../../api/test-controller';
+
 
 import {
     flatten as flattenTestStructure,
@@ -363,6 +365,14 @@ class CompilerService implements CompilerProtocol {
 
     public async getStateSnapshot ({ testRunId }: TestRunLocator): Promise<StateSnapshot> {
         return this.proxy.call(this.getStateSnapshot, { testRunId });
+    }
+
+    public enableDebugForNonDebugCommands (): void {
+        TestController.enableDebugForNonDebugCommands();
+    }
+
+    public disableDebugForNonDebugCommands (): void {
+        TestController.disableDebugForNonDebugCommands();
     }
 
     public async useStateSnapshot ({ testRunId, snapshot }: UseStateSnapshotArguments): Promise<void> {

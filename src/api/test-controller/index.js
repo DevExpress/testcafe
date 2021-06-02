@@ -65,6 +65,7 @@ import { WaitCommand, DebugCommand } from '../../test-run/commands/observation';
 import assertRequestHookType from '../request-hooks/assert-type';
 import { createExecutionContext as createContext } from './execution-context';
 import { isClientFunction, isSelector } from '../../client-functions/types';
+import TestRunProxy from '../../services/compiler/test-run-proxy';
 
 import {
     MultipleWindowsModeIsDisabledError,
@@ -72,6 +73,8 @@ import {
 } from '../../errors/test-run';
 
 const originalThen = Promise.resolve().then;
+
+let inDebug = false;
 
 export default class TestController {
     constructor (testRun) {
@@ -481,7 +484,9 @@ export default class TestController {
     }
 
     _debug$ () {
-        return this._enqueueCommand('debug', DebugCommand);
+        // NOTE: do not need to enqueue the Debug command if we are in compiler service debugging mode
+        // the Debug command will be executed by CDP
+        return this.isCompilerServiceMode() ? void 0 : this._enqueueCommand('debug', DebugCommand);
     }
 
     _setTestSpeed$ (speed) {
@@ -516,6 +521,37 @@ export default class TestController {
 
             hooks.forEach(hook => this.testRun.removeRequestHook(hook));
         });
+    }
+
+    static enableDebugForNonDebugCommands () {
+        inDebug = true;
+    }
+
+    static disableDebugForNonDebugCommands () {
+        inDebug = false;
+    }
+
+    shouldStop (command) {
+        // NOTE: should never stop in not compliler debugging mode
+        if (!this.isCompilerServiceMode())
+            return false;
+
+        // NOTE: should always stop on Debug command
+        if (command === 'debug')
+            return true;
+
+        // NOTE: should stop on other actions after the `Next Action` button is clicked
+        if (inDebug) {
+            inDebug = false;
+
+            return true;
+        }
+
+        return false;
+    }
+
+    isCompilerServiceMode () {
+        return this.testRun instanceof TestRunProxy;
     }
 }
 

@@ -148,6 +148,7 @@
     "@rollup/plugin-commonjs": "^11.0.2",
     "@rollup/plugin-inject": "^4.0.2",
     "@rollup/plugin-node-resolve": "^7.1.1",
+    "@types/callsite": "^1.0.30",
     "@types/chai": "^3.5.2",
     "@types/debug": "^4.1.5",
     "@types/dedent": "^0.7.0",

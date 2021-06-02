@@ -1,15 +1,23 @@
 import getStackFrames from 'callsite';
+import { EventEmitter } from 'events';
+import TestRun from '../test-run';
+import TestRunProxy from '../services/compiler/test-run-proxy';
 
 const TRACKING_MARK_RE = /^\$\$testcafe_test_run\$\$(\S+)\$\$$/;
 const STACK_CAPACITY   = 5000;
 
-// Tracker
-export default {
-    enabled: false,
+class TestRunTracker extends EventEmitter {
+    private enabled: boolean;
+    public activeTestRuns: { [id: string]: TestRun | TestRunProxy };
 
-    activeTestRuns: {},
+    public constructor () {
+        super();
 
-    _createContextSwitchingFunctionHook (ctxSwitchingFn, patchedArgsCount) {
+        this.enabled = false;
+        this.activeTestRuns = {};
+    }
+
+    private _createContextSwitchingFunctionHook (ctxSwitchingFn: Function, patchedArgsCount: number): any {
         const tracker = this;
 
         return function () {
@@ -22,11 +30,12 @@ export default {
                 }
             }
 
+            // @ts-ignore
             return ctxSwitchingFn.apply(this, arguments);
         };
-    },
+    }
 
-    _getStackFrames () {
+    private _getStackFrames (): getStackFrames.CallSite[] {
         // NOTE: increase stack capacity to seek deep stack entries
         const savedLimit = Error.stackTraceLimit;
 
@@ -37,9 +46,9 @@ export default {
         Error.stackTraceLimit = savedLimit;
 
         return frames;
-    },
+    }
 
-    ensureEnabled () {
+    public ensureEnabled (): void {
         if (!this.enabled) {
             global.setTimeout   = this._createContextSwitchingFunctionHook(global.setTimeout, 1);
             global.setInterval  = this._createContextSwitchingFunctionHook(global.setInterval, 1);
@@ -51,9 +60,9 @@ export default {
 
             this.enabled = true;
         }
-    },
+    }
 
-    addTrackingMarkerToFunction (testRunId, fn) {
+    public addTrackingMarkerToFunction (testRunId: string, fn: Function): Function {
         const markerFactoryBody = `
             return function $$testcafe_test_run$$${testRunId}$$ () {
                 switch (arguments.length) {
@@ -68,9 +77,9 @@ export default {
         `;
 
         return new Function('fn', markerFactoryBody)(fn);
-    },
+    }
 
-    getContextTestRunId () {
+    private getContextTestRunId (): string | null {
         const frames = this._getStackFrames();
 
         // OPTIMIZATION: we start traversing from the bottom of the stack,
@@ -87,11 +96,23 @@ export default {
         }
 
         return null;
-    },
+    }
 
-    resolveContextTestRun () {
+    public resolveContextTestRun (): TestRun | TestRunProxy | null {
         const testRunId = this.getContextTestRunId();
 
-        return this.activeTestRuns[testRunId];
+        if (testRunId)
+            return this.activeTestRuns[testRunId];
+
+        return null;
     }
-};
+
+    public addActiveTestRun (testRun: TestRun | TestRunProxy): void {
+        this.activeTestRuns[testRun.id] = testRun;
+
+        testRun.onAny((eventName: string, eventData: unknown) => this.emit(eventName, { testRun, data: eventData }));
+    }
+}
+
+// Tracker
+export default new TestRunTracker();

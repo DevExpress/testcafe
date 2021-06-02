@@ -1,3 +1,7 @@
+import path from 'path';
+import url from 'url';
+import cdp from 'chrome-remote-interface';
+import EventEmitter from 'events';
 import { spawn, ChildProcess } from 'child_process';
 import {
     HOST_INPUT_FD,
@@ -8,11 +12,13 @@ import {
 import { restore as restoreTestStructure } from '../serialization/test-structure';
 import prepareOptions from '../serialization/prepare-options';
 import { default as testRunTracker } from '../../api/test-run-tracker';
+import TestController from '../../api/test-controller';
 import TestRun from '../../test-run';
 import { IPCProxy } from '../utils/ipc/proxy';
 import { HostTransport } from '../utils/ipc/transport';
 import AsyncEventEmitter from '../../utils/async-event-emitter';
 import TestCafeErrorList from '../../errors/error-list';
+import DEBUG_ACTION from '../../utils/debug-action';
 
 import {
     CompilerProtocol,
@@ -52,10 +58,17 @@ import {
 
 import { CallsiteRecord } from 'callsite-record';
 import TestRunPhase from '../../test-run/phase';
-import { ExecuteClientFunctionCommand, ExecuteSelectorCommand } from '../../test-run/commands/observation';
 import BrowserConsoleMessages from '../../test-run/browser-console-messages';
 
-const SERVICE_PATH = require.resolve('./service');
+import {
+    DebugCommand,
+    DisableDebugCommand,
+    ExecuteClientFunctionCommand,
+    ExecuteSelectorCommand
+} from '../../test-run/commands/observation';
+
+const SERVICE_PATH       = require.resolve('./service');
+const INTERNAL_FILES_URL = url.pathToFileURL(path.join(__dirname, '../../'));
 
 interface RuntimeResources {
     service: ChildProcess;
@@ -74,8 +87,11 @@ interface WrapMockPredicateArguments extends RequestFilterRuleLocator {
     mock: ResponseMock;
 }
 
+const INITIAL_DEBUGGER_BREAK_ON_START = 'Break on start';
+
 export default class CompilerHost extends AsyncEventEmitter implements CompilerProtocol {
     private runtime: Promise<RuntimeResources|undefined>;
+    private cdp: cdp.ProtocolApi & EventEmitter | undefined;
 
     public constructor () {
         super();
@@ -113,6 +129,77 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
         ], this);
     }
 
+    private _setupDebuggerHandlers (): void {
+        if (!this.cdp)
+            return;
+
+        testRunTracker.on(DEBUG_ACTION.resume, async () => {
+            if (!this.cdp)
+                return;
+
+            const disableDebugMethodName = TestController.disableDebugForNonDebugCommands.name;
+
+            // NOTE: disable `debugger` for non-debug commands if the `Resume` button is clicked
+            // the `includeCommandLineAPI` option allows to use the `require` functoion in the expression
+            // TODO: debugging: refactor to use absolute paths
+            await this.cdp.Runtime.evaluate({
+                expression:            `require.main.require('../../api/test-controller').${disableDebugMethodName}()`,
+                includeCommandLineAPI: true
+            });
+
+            await this.cdp.Debugger.resume();
+        });
+
+        testRunTracker.on(DEBUG_ACTION.step, async () => {
+            if (!this.cdp)
+                return;
+
+            const enableDebugMethodName = TestController.enableDebugForNonDebugCommands.name;
+
+            // NOTE: enable `debugger` for non-debug commands in the `Next Action` button is clicked
+            // the `includeCommandLineAPI` option allows to use the `require` functoion in the expression
+            // TODO: debugging: refactor to use absolute paths
+            await this.cdp.Runtime.evaluate({
+                expression:            `require.main.require('../../api/test-controller').${enableDebugMethodName}()`,
+                includeCommandLineAPI: true
+            });
+
+            await this.cdp.Debugger.resume();
+        });
+
+        // NOTE: need to step out from the source code until breakpoint is set in the code of test
+        // force DebugCommand if breakpoint stopped in the test code
+        // TODO: debugging: refactor to this.cdp.Debugger.on('paused') after updating to chrome-remote-interface@0.30.0
+        this.cdp.on('Debugger.paused', (args: any): Promise<void> => {
+            const { callFrames } = args;
+
+            if (this.cdp) {
+                if (args.reason === INITIAL_DEBUGGER_BREAK_ON_START)
+                    return this.cdp.Debugger.resume();
+
+                if (callFrames[0].url.includes(INTERNAL_FILES_URL))
+                    return this.cdp.Debugger.stepOut();
+
+                Object.values(testRunTracker.activeTestRuns).forEach(testRun => {
+                    if (!testRun.debugging)
+                        testRun.executeCommand(new DebugCommand());
+                });
+            }
+
+            return Promise.resolve();
+        });
+
+        // NOTE: need to hide Status Bar if debugger is resumed
+        // TODO: debugging: refactor to this.cdp.Debugger.on('resumed') after updating to chrome-remote-interface@0.30.0
+        this.cdp.on('Debugger.resumed', () => {
+            Object.values(testRunTracker.activeTestRuns).forEach(testRun => {
+                if (testRun.debugging)
+                    testRun.executeCommand(new DisableDebugCommand());
+            });
+        });
+    }
+
+
     private async _init (runtime: Promise<RuntimeResources|undefined>): Promise<RuntimeResources|undefined> {
         const resolvedRuntime = await runtime;
 
@@ -120,7 +207,26 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
             return resolvedRuntime;
 
         try {
-            const service = spawn(process.argv0, [SERVICE_PATH], { stdio: [0, 1, 2, 'pipe', 'pipe', 'pipe'] });
+            // NOTE: fixed port number for debugging purposes. Will be replaced with the `getFreePort` util
+            // TODO: debugging: refactor to a separate debug info parsing unit
+            const port    = '64128';
+            const service = spawn(process.argv0, [`--inspect-brk=127.0.0.1:${port}`, SERVICE_PATH], { stdio: [0, 1, 2, 'pipe', 'pipe', 'pipe'] });
+
+            // NOTE: need to wait, otherwise the error will be at `await cdp(...)`
+            // TODO: debugging: refactor to use delay and multiple tries
+            await new Promise(r => setTimeout(r, 2000));
+
+            // @ts-ignore
+            this.cdp = await cdp({ port });
+
+            if (!this.cdp)
+                return void 0;
+
+            this._setupDebuggerHandlers();
+
+            await this.cdp.Debugger.enable({});
+            await this.cdp.Runtime.enable();
+            await this.cdp.Runtime.runIfWaitingForDebugger();
 
             // HACK: Node.js definition are not correct when additional I/O channels are sp
             const stdio = service.stdio as any;

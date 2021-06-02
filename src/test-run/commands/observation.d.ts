@@ -26,3 +26,7 @@ export class WaitCommand extends CommandBase {
     public constructor(obj: object, testRun: TestRun);
     public timeout: number;
 }
+
+export class DebugCommand extends CommandBase { }
+
+export class DisableDebugCommand extends CommandBase { }

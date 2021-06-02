@@ -35,6 +35,9 @@ import {
     isCommandRejectableByPageError,
     isExecutableInTopWindowOnly
 } from '../../test-run/commands/utils';
+
+import STATUS_BAR_DEBUG_ACTION from '../../utils/debug-action';
+
 import {
     UncaughtErrorOnPage,
     ClientFunctionExecutionInterruptionError,
@@ -1289,12 +1292,37 @@ export default class Driver extends serviceUtils.EventEmitter {
             });
     }
 
-    _onSetBreakpointCommand (isTestError) {
-        this.statusBar.showDebuggingStatus(isTestError)
-            .then(stopAfterNextAction => this._onReady(new DriverStatus({
+    _onSetBreakpointCommand ({ isTestError, inCompilerService }) {
+        const showDebuggingStatusPromise = this.statusBar.showDebuggingStatus(isTestError);
+
+        if (inCompilerService) {
+            showDebuggingStatusPromise.then(debug => {
+                this.debug = debug;
+            });
+
+            this._onReady(new DriverStatus({
                 isCommandResult: true,
-                result:          stopAfterNextAction
-            })));
+                result:          true
+            }));
+        }
+        else {
+            showDebuggingStatusPromise.then(debug => {
+                const stopAfterNextAction = debug === STATUS_BAR_DEBUG_ACTION.step;
+
+                this._onReady(new DriverStatus({
+                    isCommandResult: true,
+                    result:          stopAfterNextAction
+                }));
+            });
+        }
+    }
+
+    _onDisableDebugCommand () {
+        this.statusBar._resetState();
+
+        this._onReady(new DriverStatus({
+            isCommandResult: true
+        }));
     }
 
     _onSetTestSpeedCommand (command) {
@@ -1402,6 +1430,12 @@ export default class Driver extends serviceUtils.EventEmitter {
 
     // Routing
     _onReady (status) {
+        if (this.debug) {
+            status.debug = this.debug;
+
+            this.debug = null;
+        }
+
         if (this._isStatusWithCommandResultInPendingWindowSwitchingMode(status))
             this.emit(STATUS_WITH_COMMAND_RESULT_EVENT);
 
@@ -1433,7 +1467,10 @@ export default class Driver extends serviceUtils.EventEmitter {
             this._onTestDone(new DriverStatus({ isCommandResult: true }));
 
         else if (command.type === COMMAND_TYPE.setBreakpoint)
-            this._onSetBreakpointCommand(command.isTestError);
+            this._onSetBreakpointCommand(command);
+
+        else if (command.type === COMMAND_TYPE.disableDebug)
+            this._onDisableDebugCommand();
 
         else if (command.type === COMMAND_TYPE.switchToMainWindow)
             this._onSwitchToMainWindowCommand(command);

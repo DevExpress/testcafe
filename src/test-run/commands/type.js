@@ -52,6 +52,7 @@ export default {
     setTestSpeed:               'set-test-speed',
     setPageLoadTimeout:         'set-page-load-timeout',
     debug:                      'debug',
+    disableDebug:               'disable-debug',
     assertion:                  'assertion',
     useRole:                    'useRole',
     testDone:                   'test-done',
