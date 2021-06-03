@@ -105,7 +105,7 @@ function createTestRunMock (warningLog) {
     Object.assign(testRun, {
         test:                     { name: 'Test', id: 'test-id' },
         debugLog:                 { command: noop },
-        _enqueueCommand:          () => Promise.resolve(),
+        _enqueueCommand:          noop,
         browserManipulationQueue: [],
         warningLog:               warningLog,
 

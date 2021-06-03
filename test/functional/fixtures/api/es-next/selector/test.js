@@ -309,9 +309,8 @@ describe('[API] Selector', function () {
                     only:       'chrome'
                 })
                     .catch(function (errs) {
-                        expect(errs[0]).contains(
-                            'An error occurred in customMethod code:  Error: test'
-                        );
+                        expect(errs[0]).contains('An error occurred in customMethod code:');
+                        expect(errs[0]).contains('Error: test');
                         expect(errs[0]).contains('> 63 |    await el.customMethod();');
                     });
             }

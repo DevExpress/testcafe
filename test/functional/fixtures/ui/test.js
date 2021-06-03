@@ -1,5 +1,7 @@
+const config = require('../../config');
+
 describe('TestCafe UI', () => {
-    if (!process.env.PROXYLESS) {
+    if (!config.isProxyless) {
         it('Should display correct status', () => {
             return runTests('./testcafe-fixtures/status-bar-test.js', 'Show status prefix', { assertionTimeout: 3000 });
         });

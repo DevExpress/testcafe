@@ -1021,13 +1021,12 @@ export default class TestRun extends AsyncEventEmitter {
         if (command.type === COMMAND_TYPE.switchToWindowByPredicate)
             return this._switchToWindowByPredicate(command as SwitchToWindowByPredicateCommand);
 
-        return this._enqueueCommand(command, callsite as CallsiteRecord)
-            .then(async r => {
-                if (postAction)
-                    await postAction();
+        const result = await this._enqueueCommand(command, callsite as CallsiteRecord);
 
-                return r;
-            });
+        if (postAction)
+            await postAction();
+
+        return result;
     }
 
     private _rejectCommandWithPageError (callsite?: CallsiteRecord): Promise<Error> {
