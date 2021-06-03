@@ -302,12 +302,14 @@ describe('Runner', () => {
                     takeOnFails: true,
                     pathPattern: 'pathPattern',
                     fullPage:    true
+                })
+                ._applyOptions()
+                .then(() => {
+                    expect(runner.configuration.getOption('screenshots').path).eql('path');
+                    expect(runner.configuration.getOption('screenshots').takeOnFails).eql(true);
+                    expect(runner.configuration.getOption('screenshots').pathPattern).eql('pathPattern');
+                    expect(runner.configuration.getOption('screenshots').fullPage).eql(true);
                 });
-
-            expect(runner.configuration.getOption('screenshots').path).eql('path');
-            expect(runner.configuration.getOption('screenshots').takeOnFails).eql(true);
-            expect(runner.configuration.getOption('screenshots').pathPattern).eql('pathPattern');
-            expect(runner.configuration.getOption('screenshots').fullPage).eql(true);
         });
 
         it('Validate screenshot options. The `screenshots` option has priority', () => {
@@ -1020,8 +1022,7 @@ describe('Runner', () => {
 
                 return runnerLinux
                     .browsers(`${BROWSER_NAME}`)
-                    .configuration.init()
-                    .then(() => runnerLinux._setBootstrapperOptions())
+                    ._applyOptions()
                     .then(() => runnerLinux._validateRunOptions())
                     .then(() => runnerLinux._createRunnableConfiguration())
                     .catch(() => {
@@ -1038,8 +1039,7 @@ describe('Runner', () => {
 
                 return runnerLinux
                     .browsers([new BrowserConnection(browserConnectionGateway, browserInfo)])
-                    .configuration.init()
-                    .then(() => runnerLinux._setBootstrapperOptions())
+                    ._applyOptions()
                     .then(() => runnerLinux._validateRunOptions())
                     .then(() => runnerLinux._createRunnableConfiguration())
                     .catch(() => {
@@ -1363,21 +1363,26 @@ describe('Runner', () => {
     it('Should interpret the empty array of the arguments as the "undefined" value', () => {
         runner.isCli = true;
 
-        runner
+        return runner
             .src('/path-to-test')
-            .browsers('ie')
-            .reporter('json');
+            .browsers('remote')
+            .reporter('json')
+            ._applyOptions()
+            .then(() => {
+                runner.apiMethodWasCalled.reset();
 
-        runner.apiMethodWasCalled.reset();
-
-        runner
-            .src([])
-            .browsers([])
-            .reporter([]);
-
-        expect(runner.configuration.getOption('src')).eql(['/path-to-test']);
-        expect(runner.configuration.getOption('browsers')).eql(['ie']);
-        expect(runner.configuration.getOption('reporter')).eql([ { name: 'json', output: void 0 } ]);
+                return runner
+                    .src([])
+                    .browsers([])
+                    .reporter([])
+                    ._applyOptions();
+            })
+            .then(() => {
+                expect(runner.configuration.getOption('src')).eql(['/path-to-test']);
+                expect(runner.configuration.getOption('browsers')).to.be.an('array').that.not.empty;
+                expect(runner.configuration.getOption('browsers')[0]).to.include({ providerName: 'remote' });
+                expect(runner.configuration.getOption('reporter')).eql([{ name: 'json', output: void 0 }]);
+            });
     });
 
     describe('"Unable to establish one or more of the specifed browser connections" error message', function () {
@@ -1414,8 +1419,8 @@ describe('Runner', () => {
                     throw new Error('Promise rejection expected');
                 })
                 .catch(err => {
-                    expect(err.message).contains('- some warning from "browser-alias1"');
-                    expect(err.message).contains('- some warning from "browser-alias2"');
+                    expect(err.message).contains('- some warning from "warningProvider:browser-alias1"');
+                    expect(err.message).contains('- some warning from "warningProvider:browser-alias2"');
                 });
         });
 
@@ -1434,8 +1439,8 @@ describe('Runner', () => {
                         '- warningProvider:browser-alias1\n' +
                         '- warningProvider:browser-alias2\n\n' +
                         'Hints:\n' +
-                        '- some warning from "browser-alias1"\n' +
-                        '- some warning from "browser-alias2"\n' +
+                        '- some warning from "warningProvider:browser-alias1"\n' +
+                        '- some warning from "warningProvider:browser-alias2"\n' +
                         '- Use the "browserInitTimeout" option to allow more time for the browser to start. ' +
                         'The timeout is set to 2 minutes for local browsers and 6 minutes for remote browsers.\n' +
                         '- The error can also be caused by network issues or remote device failure. ' +
