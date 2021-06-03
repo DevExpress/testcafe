@@ -20,7 +20,7 @@ test('test', async t => {
     await t
         .click('#space-before', { offsetX })
         .hover('#target', { offsetX })
-        .click('#space-after',  { offsetX })
+        .click('#space-after', { offsetX })
         .expect(Selector('#emittedEvents').textContent).eql('mouseenter;mouseleave;');
 
     const emittedEventDetails = await Selector('#emittedEventDetails').textContent;
