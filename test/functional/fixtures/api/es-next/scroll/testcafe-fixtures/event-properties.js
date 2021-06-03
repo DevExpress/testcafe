@@ -10,9 +10,17 @@ const getElementClassFromPoint = ClientFunction((x, y) => {
 });
 
 test('test', async t => {
+    const target = Selector('#target');
+
+    const targetBounds = await target.boundingClientRect;
+
+    // NOTE: All actions should be aligned vertically at the center of the target to prevent MouseMove actions and force the Scroll action to raise mouseenter/mouseleave events
+    const offsetX = 0.5 * (targetBounds.left + targetBounds.right);
+
     await t
-        .hover('#item2')
-        .click('#item3')
+        .click('#space-before', { offsetX })
+        .hover('#target', { offsetX })
+        .click('#space-after',  { offsetX })
         .expect(Selector('#emittedEvents').textContent).eql('mouseenter;mouseleave;');
 
     const emittedEventDetails = await Selector('#emittedEventDetails').textContent;
@@ -27,7 +35,7 @@ test('test', async t => {
         .expect(mouseenterEventProperties.alt).eql(false)
         .expect(mouseenterEventProperties.shift).eql(false)
         .expect(mouseenterEventProperties.meta).eql(false)
-        .expect(mouseenterEventProperties.relatedTarget).eql('html')
+        .expect(mouseenterEventProperties.relatedTarget).eql('space')
         .expect(mouseenterEventProperties.target).eql('item')
         .expect(getElementClassFromPoint(mouseenterEventProperties.clientX, mouseenterEventProperties.clientY)).eql('space')
 
