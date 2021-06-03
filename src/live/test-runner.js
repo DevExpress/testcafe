@@ -107,8 +107,7 @@ class LiveModeRunner extends Runner {
             .then(files => {
                 return this.controller.init(files);
             })
-            .then(() => this.configuration.init())
-            .then(() => this._setBootstrapperOptions())
+            .then(() => this._applyOptions())
             .then(() => this._createRunnableConfiguration())
             .then(() => this.runTests(true));
 

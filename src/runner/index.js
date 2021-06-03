@@ -57,6 +57,7 @@ export default class Runner extends EventEmitter {
         this.isCli               = false;
         this.warningLog          = new WarningLog();
         this.compilerService     = compilerService;
+        this._options             = {};
 
         this.apiMethodWasCalled = new FlagList([
             OPTION_NAMES.src,
@@ -532,12 +533,18 @@ export default class Runner extends EventEmitter {
         }
     }
 
+    async _applyOptions () {
+        await this.configuration.init(this._options);
+
+        return this._setBootstrapperOptions();
+    }
+
     // API
     embeddingOptions (opts) {
         const { assets, TestRunCtor } = opts;
 
         this._registerAssets(assets);
-        this.configuration.mergeOptions({ TestRunCtor });
+        this._options.TestRunCtor = TestRunCtor;
 
         return this;
     }
@@ -546,10 +553,8 @@ export default class Runner extends EventEmitter {
         if (this.apiMethodWasCalled.src)
             throw new GeneralError(RUNTIME_ERRORS.multipleAPIMethodCallForbidden, OPTION_NAMES.src);
 
-        sources = this._prepareArrayParameter(sources);
-        this.configuration.mergeOptions({ [OPTION_NAMES.src]: sources });
-
-        this.apiMethodWasCalled.src = true;
+        this._options[OPTION_NAMES.src] = this._prepareArrayParameter(sources);
+        this.apiMethodWasCalled.src     = true;
 
         return this;
     }
@@ -558,16 +563,14 @@ export default class Runner extends EventEmitter {
         if (this.apiMethodWasCalled.browsers)
             throw new GeneralError(RUNTIME_ERRORS.multipleAPIMethodCallForbidden, OPTION_NAMES.browsers);
 
-        browsers = this._prepareArrayParameter(browsers);
-        this.configuration.mergeOptions({ browsers });
-
+        this._options.browsers           = this._prepareArrayParameter(browsers);
         this.apiMethodWasCalled.browsers = true;
 
         return this;
     }
 
     concurrency (concurrency) {
-        this.configuration.mergeOptions({ concurrency });
+        this._options.concurrency = concurrency;
 
         return this;
     }
@@ -576,25 +579,21 @@ export default class Runner extends EventEmitter {
         if (this.apiMethodWasCalled.reporter)
             throw new GeneralError(RUNTIME_ERRORS.multipleAPIMethodCallForbidden, OPTION_NAMES.reporter);
 
-        let reporters = prepareReporters(name, output);
-
-        reporters = this._prepareArrayParameter(reporters);
-
-        this.configuration.mergeOptions({ [OPTION_NAMES.reporter]: reporters });
-
-        this.apiMethodWasCalled.reporter = true;
+        this._options[OPTION_NAMES.reporter] = this._prepareArrayParameter(prepareReporters(name, output));
+        this.apiMethodWasCalled.reporter     = true;
 
         return this;
     }
 
     filter (filter) {
-        this.configuration.mergeOptions({ filter });
+        this._options.filter = filter;
 
         return this;
     }
 
     useProxy (proxy, proxyBypass) {
-        this.configuration.mergeOptions({ proxy, proxyBypass });
+        this._options.proxy       = proxy;
+        this._options.proxyBypass = proxyBypass;
 
         return this;
     }
@@ -606,34 +605,28 @@ export default class Runner extends EventEmitter {
         if (options.length === 1 && options[0] && typeof options[0] === 'object')
             ({ path, takeOnFails, pathPattern, fullPage } = options[0]);
 
-        this.configuration.mergeOptions({ screenshots: { path, takeOnFails, pathPattern, fullPage } });
+        this._options.screenshots = { path, takeOnFails, pathPattern, fullPage };
 
         return this;
     }
 
     video (path, options, encodingOptions) {
-        this.configuration.mergeOptions({
-            [OPTION_NAMES.videoPath]:            path,
-            [OPTION_NAMES.videoOptions]:         options,
-            [OPTION_NAMES.videoEncodingOptions]: encodingOptions
-        });
+        this._options[OPTION_NAMES.videoPath]            = path;
+        this._options[OPTION_NAMES.videoOptions]         = options;
+        this._options[OPTION_NAMES.videoEncodingOptions] = encodingOptions;
 
         return this;
     }
 
     startApp (command, initDelay) {
-        this.configuration.mergeOptions({
-            [OPTION_NAMES.appCommand]:   command,
-            [OPTION_NAMES.appInitDelay]: initDelay
-        });
+        this._options[OPTION_NAMES.appCommand]   = command;
+        this._options[OPTION_NAMES.appInitDelay] = initDelay;
 
         return this;
     }
 
     tsConfigPath (path) {
-        this.configuration.mergeOptions({
-            [OPTION_NAMES.tsConfigPath]: path
-        });
+        this._options[OPTION_NAMES.tsConfigPath] = path;
 
         return this;
     }
@@ -642,19 +635,14 @@ export default class Runner extends EventEmitter {
         if (this.apiMethodWasCalled.clientScripts)
             throw new GeneralError(RUNTIME_ERRORS.multipleAPIMethodCallForbidden, OPTION_NAMES.clientScripts);
 
-        scripts = this._prepareArrayParameter(scripts);
-
-        this.configuration.mergeOptions({ [OPTION_NAMES.clientScripts]: scripts });
-
-        this.apiMethodWasCalled.clientScripts = true;
+        this._options[OPTION_NAMES.clientScripts] = this._prepareArrayParameter(scripts);
+        this.apiMethodWasCalled.clientScripts     = true;
 
         return this;
     }
 
     compilerOptions (opts) {
-        this.configuration.mergeOptions({
-            [OPTION_NAMES.compilerOptions]: opts
-        });
+        this._options[OPTION_NAMES.compilerOptions] = opts;
 
         return this;
     }
@@ -664,8 +652,7 @@ export default class Runner extends EventEmitter {
         this.configuration.mergeOptions(options);
 
         const runTaskPromise = Promise.resolve()
-            .then(() => this.configuration.init())
-            .then(() => this._setBootstrapperOptions())
+            .then(() => this._applyOptions())
             .then(() => this._validateRunOptions())
             .then(() => this._createRunnableConfiguration())
             .then(async ({ reporterPlugins, browserSet, tests, testedApp, commonClientScripts }) => {

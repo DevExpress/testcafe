@@ -91,10 +91,10 @@ export default class TestCafeConfiguration extends Configuration {
             await this._normalizeOptionsAfterLoad();
         }
 
+        this.mergeOptions(options);
+
         if (this._options.browsers)
             this._options.browsers.value = await this._getBrowserInfo();
-
-        this.mergeOptions(options);
     }
 
     public prepare (): void {
