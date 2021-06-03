@@ -295,21 +295,20 @@ describe('Runner', () => {
                 });
         });
 
-        it('should allow to set object as a `screenshots` method parameter', () => {
-            runner
+        it('should allow to set object as a `screenshots` method parameter', async () => {
+            await runner
                 .screenshots({
                     path:        'path',
                     takeOnFails: true,
                     pathPattern: 'pathPattern',
                     fullPage:    true
                 })
-                ._applyOptions()
-                .then(() => {
-                    expect(runner.configuration.getOption('screenshots').path).eql('path');
-                    expect(runner.configuration.getOption('screenshots').takeOnFails).eql(true);
-                    expect(runner.configuration.getOption('screenshots').pathPattern).eql('pathPattern');
-                    expect(runner.configuration.getOption('screenshots').fullPage).eql(true);
-                });
+                ._applyOptions();
+
+            expect(runner.configuration.getOption('screenshots').path).eql('path');
+            expect(runner.configuration.getOption('screenshots').takeOnFails).eql(true);
+            expect(runner.configuration.getOption('screenshots').pathPattern).eql('pathPattern');
+            expect(runner.configuration.getOption('screenshots').fullPage).eql(true);
         });
 
         it('Validate screenshot options. The `screenshots` option has priority', () => {
@@ -1360,29 +1359,27 @@ describe('Runner', () => {
         });
     });
 
-    it('Should interpret the empty array of the arguments as the "undefined" value', () => {
+    it('Should interpret the empty array of the arguments as the "undefined" value', async () => {
         runner.isCli = true;
 
-        return runner
+        await runner
             .src('/path-to-test')
             .browsers('remote')
             .reporter('json')
-            ._applyOptions()
-            .then(() => {
-                runner.apiMethodWasCalled.reset();
+            ._applyOptions();
 
-                return runner
-                    .src([])
-                    .browsers([])
-                    .reporter([])
-                    ._applyOptions();
-            })
-            .then(() => {
-                expect(runner.configuration.getOption('src')).eql(['/path-to-test']);
-                expect(runner.configuration.getOption('browsers')).to.be.an('array').that.not.empty;
-                expect(runner.configuration.getOption('browsers')[0]).to.include({ providerName: 'remote' });
-                expect(runner.configuration.getOption('reporter')).eql([{ name: 'json', output: void 0 }]);
-            });
+        runner.apiMethodWasCalled.reset();
+
+        await runner
+            .src([])
+            .browsers([])
+            .reporter([])
+            ._applyOptions();
+
+        expect(runner.configuration.getOption('src')).eql(['/path-to-test']);
+        expect(runner.configuration.getOption('browsers')).to.be.an('array').that.not.empty;
+        expect(runner.configuration.getOption('browsers')[0]).to.include({ providerName: 'remote' });
+        expect(runner.configuration.getOption('reporter')).eql([{ name: 'json', output: void 0 }]);
     });
 
     describe('"Unable to establish one or more of the specifed browser connections" error message', function () {
