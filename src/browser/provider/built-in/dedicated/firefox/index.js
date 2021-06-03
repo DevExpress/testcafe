@@ -30,8 +30,8 @@ export default {
         }
     },
 
-    async openBrowser (browserId, pageUrl, configString, disableMultipleWindows) {
-        const runtimeInfo = await getRuntimeInfo(configString);
+    async openBrowser (browserId, pageUrl, config, disableMultipleWindows) {
+        const runtimeInfo = await getRuntimeInfo(config);
 
         runtimeInfo.browserName       = this._getBrowserName();
         runtimeInfo.browserId         = browserId;

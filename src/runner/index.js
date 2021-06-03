@@ -261,8 +261,8 @@ export default class Runner extends EventEmitter {
 
         if (concurrency > 1 && this.bootstrapper.browsers.some(browser => {
             return browser instanceof BrowserConnection
-                ? browser.browserInfo.browserConfig.cdpPort
-                : browser.browserConfig.cdpPort;
+                ? browser.browserInfo.browserOption.cdpPort
+                : browser.browserOption.cdpPort;
         }))
             throw new GeneralError(RUNTIME_ERRORS.cannotSetConcurrencyWithCDPPort);
     }

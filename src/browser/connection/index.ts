@@ -61,6 +61,7 @@ interface ProviderMetaInfoOptions {
 export interface BrowserInfo {
     alias: string;
     browserName: string;
+    browserOption: unknown;
     providerName: string;
     provider: BrowserProvider;
     userAgentProviderMetaInfo: string;
@@ -186,7 +187,7 @@ export default class BrowserConnection extends EventEmitter {
 
     private async _runBrowser (): Promise<void> {
         try {
-            await this.provider.openBrowser(this.id, this.url, this.browserInfo.browserName, this.disableMultipleWindows, this.isProxyless);
+            await this.provider.openBrowser(this.id, this.url, this.browserInfo.browserOption, this.disableMultipleWindows, this.isProxyless);
 
             if (this.status !== BrowserConnectionStatus.ready)
                 await promisifyEvent(this, 'ready');

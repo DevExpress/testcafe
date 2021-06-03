@@ -15,12 +15,11 @@ export default {
         const browserName  = JSON.stringify(alias);
         const providerName = 'path';
         const provider     = await this.getProvider(providerName);
-        let browserConfig  = {};
+        let browserOption  = {};
 
-        if (provider.plugin.getConfig)
-            browserConfig = provider.plugin.getConfig(browserName);
+        browserOption = provider.plugin.getConfig(browserName);
 
-        return { provider, providerName, browserName, browserConfig };
+        return { provider, providerName, browserName, browserOption };
     },
 
     async _parseAliasString (alias) {
@@ -31,7 +30,7 @@ export default {
 
         let providerName  = providerRegExpMatch[1];
         let browserName   = providerRegExpMatch[2] || '';
-        let browserConfig = {};
+        let browserOption = {};
 
         let provider = await this.getProvider(providerName);
 
@@ -44,10 +43,9 @@ export default {
             browserName  = providerRegExpMatch[1] || '';
         }
 
-        if (provider.plugin.getConfig)
-            browserConfig = provider.plugin.getConfig(typeof alias === 'string' ? alias : JSON.stringify(alias));
+        browserOption = provider.plugin.getConfig(typeof alias === 'string' ? alias : JSON.stringify(alias));
 
-        return { provider, providerName, browserName, browserConfig };
+        return { provider, providerName, browserName, browserOption };
     },
 
     async _parseAlias (alias) {

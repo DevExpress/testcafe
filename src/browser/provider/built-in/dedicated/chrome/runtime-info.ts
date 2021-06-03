@@ -1,5 +1,4 @@
 import { getFreePort } from 'endpoint-utils';
-import getConfig from './config';
 import createTempProfile from './create-temp-profile';
 import isDocker from 'is-docker';
 import TempDirectory from '../../../../../utils/temp-directory';
@@ -12,8 +11,8 @@ export default class ChromeRuntimeInfo {
     public inDocker: boolean;
     public browserName?: string;
 
-    protected constructor (configString: string) {
-        this.config         = getConfig(configString);
+    protected constructor (config: Config) {
+        this.config         = config;
         this.tempProfileDir = null;
         this.cdpPort        = this.config.cdpPort;
         this.inDocker       = isDocker();
@@ -23,8 +22,8 @@ export default class ChromeRuntimeInfo {
         return await createTempProfile(proxyHostName, disableMultipleWindows);
     }
 
-    public static async create (proxyHostName: string, configString: string, disableMultipleWindows: boolean): Promise<ChromeRuntimeInfo> {
-        const runtimeInfo = new this(configString);
+    public static async create (proxyHostName: string, config: Config, disableMultipleWindows: boolean): Promise<ChromeRuntimeInfo> {
+        const runtimeInfo = new this(config);
 
         if (!runtimeInfo.config.userProfile)
             runtimeInfo.tempProfileDir = await runtimeInfo.createTempProfile(proxyHostName, disableMultipleWindows);

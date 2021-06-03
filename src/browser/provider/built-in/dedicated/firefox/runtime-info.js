@@ -1,10 +1,8 @@
 import { getFreePort } from 'endpoint-utils';
-import getConfig from './config';
 import createTempProfile from './create-temp-profile';
 
 
-export default async function (configString) {
-    const config         = getConfig(configString);
+export default async function (config) {
     const marionettePort = config.marionettePort || (!config.userProfile ? await getFreePort() : null);
     const runtimeInfo    = { config, marionettePort };
 
