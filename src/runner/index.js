@@ -273,10 +273,6 @@ export default class Runner extends EventEmitter {
         if (!browsers || Array.isArray(browsers) && !browsers.length)
             throw new GeneralError(RUNTIME_ERRORS.browserNotSet);
 
-        // NOTE: If a user forgot to specify a browser, but has specified a path to tests, the specified path will be
-        // considered as the browser argument, and the tests path argument will have the predefined default value.
-        // It's very ambiguous for the user, who might be confused by compilation errors from an unexpected test.
-        // So, we need to retrieve the browser aliases and paths before tests compilation.
         if (OS.mac)
             await this._checkRequiredPermissions(browsers);
 
