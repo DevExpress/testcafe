@@ -120,7 +120,7 @@ export default class CLIArgumentParser {
             .option('-s, --screenshots <option=value[,...]>', 'specify screenshot options')
             .option('-S, --screenshots-on-fails', 'take a screenshot whenever a test fails')
             .option('-p, --screenshot-path-pattern <pattern>', 'use patterns to compose screenshot file names and paths: ${BROWSER}, ${BROWSER_VERSION}, ${OS}, etc.')
-            .option('-q, --quarantine-mode', 'enable the quarantine mode, optionally number of retries and pass threshold')
+            .option('-q, --quarantine-mode [option=value,...]', 'enable the quarantine mode, optionally number of retries and pass threshold')
             .option('-d, --debug-mode', 'execute test steps one by one pausing the test after each step')
             .option('-e, --skip-js-errors', 'make tests not fail when a JS error happens on a page')
             .option('-u, --skip-uncaught-errors', 'ignore uncaught errors and unhandled promise rejections, which occur during test execution')
@@ -295,7 +295,7 @@ export default class CLIArgumentParser {
     }
 
     private _parseBrowsersFromArgs (): void {
-        const browsersArg = this.program.args[0] || '';
+        const browsersArg = this.args[0] || '';
 
         this.opts.browsers = splitQuotedText(browsersArg, ',')
             .filter(browser => browser && this._checkAndCountRemotes(browser));
@@ -323,7 +323,7 @@ export default class CLIArgumentParser {
     }
 
     private _parseFileList (): void {
-        this.opts.src = this.program.args.slice(1);
+        this.opts.src = this.args.slice(1);
     }
 
     private async _parseScreenshotOptions (): Promise<void> {
@@ -378,6 +378,13 @@ export default class CLIArgumentParser {
         this.args = this.program.args;
 
         this.opts = { ...this.experimental.opts(), ...this.program.opts() };
+
+        // NOTE: GH-6231
+        // @ts-ignore
+        if (this.opts.quarantineMode && typeof this.opts.quarantineMode === 'string' && !['retryCount', 'passCount'].some(opt => this.opts.quarantineMode.startsWith(opt))) {
+            this.args.unshift(this.opts.quarantineMode);
+            this.opts.quarantineMode = true;
+        }
 
         this._parseListBrowsers();
 

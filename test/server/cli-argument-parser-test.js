@@ -644,49 +644,57 @@ describe('CLI argument parser', function () {
             });
     });
 
-    // TODO: enable tests back after eliminating a breaking change in -q <browser> and -q <test.js> behavior
-    describe.skip('Quarantine Options', function () {
+    describe('Quarantine Option', function () {
         it('Should parse quarantine arguments', async () => {
-            const parser = await parse('-q retryCount=5,passCount=1');
+            async function checkCliArgs (argsString) {
+                const parser = await parse(argsString);
 
-            expect(parser.opts.quarantineMode).to.be.ok;
-            expect(parser.opts.quarantineMode.retryCount).equal(5);
-            expect(parser.opts.quarantineMode.passCount).equal(1);
-        });
+                expect(parser.opts.quarantineMode).to.be.ok;
+                expect(parser.opts.quarantineMode.retryCount).equal(5);
+                expect(parser.opts.quarantineMode.passCount).equal(1);
+            }
 
-        it('Should parse quarantine-mode arguments', async () => {
-            const parser = await parse('--quarantine-mode retryCount=5,passCount=1');
-
-            expect(parser.opts.quarantineMode).to.be.ok;
-            expect(parser.opts.quarantineMode.retryCount).equal(5);
-            expect(parser.opts.quarantineMode.passCount).equal(1);
+            await checkCliArgs('-q retryCount=5,passCount=1');
+            await checkCliArgs('--quarantine-mode retryCount=5,passCount=1');
         });
 
         it('Should pass if only "passCount" is provided', async () => {
-            const parser = await parse('--quarantine-mode passCount=1');
+            async function checkCliArgs (argsString) {
+                const parser = await parse(argsString);
 
-            expect(parser.opts.quarantineMode).to.be.ok;
-            expect(parser.opts.quarantineMode.passCount).equal(1);
+                expect(parser.opts.quarantineMode).to.be.ok;
+                expect(parser.opts.quarantineMode.passCount).equal(1);
+            }
+
+            await checkCliArgs('-q passCount=1');
+            await checkCliArgs('--quarantine-mode passCount=1');
         });
 
-        it('Should fail if threshold value not specified', async () => {
-            return assertRaisesError('--quarantine-mode retryCount=', 'The "--quarantine-mode" option value is not a valid key-value pair.');
-        });
-
-        it('Should fail if threshold keys not specified', async () => {
-            return assertRaisesError('--quarantine-mode 1', 'The "--quarantine-mode" option value is not a valid key-value pair.');
-        });
-
-        it('Should fail if invalid option is specified', async () => {
-            return assertRaisesError('--quarantine-mode test=fake', 'The "--quarantine-mode" option should be empty, otherwise one of "retryCount" or "passCount".');
+        it('Should fail if the argument value is not specified', async () => {
+            await assertRaisesError('-q retryCount=', 'The "--quarantine-mode" option value is not a valid key-value pair.');
+            await assertRaisesError('--quarantine-mode retryCount=', 'The "--quarantine-mode" option value is not a valid key-value pair.');
         });
 
         it('Should fail if "retryCount" is greater than "passCount"', async () => {
-            return assertRaisesError('--quarantine-mode retryCount=1,passCount=2', 'The "retryCount" value should be greater or equal to "passCount" (2).');
+            await assertRaisesError('-q retryCount=1,passCount=2', 'The "retryCount" value should be greater or equal to "passCount" (2).');
+            await assertRaisesError('--quarantine-mode retryCount=1,passCount=2', 'The "retryCount" value should be greater or equal to "passCount" (2).');
         });
 
         it('Should fail if "retryCount" is less than 3', async () => {
-            return assertRaisesError('--quarantine-mode retryCount=1', 'The "retryCount" value should be greater or equal to "passCount" (3).');
+            await assertRaisesError('-q retryCount=1', 'The "retryCount" value should be greater or equal to "passCount" (3).');
+            await assertRaisesError('--quarantine-mode retryCount=1', 'The "retryCount" value should be greater or equal to "passCount" (3).');
+        });
+
+        it('Should not fail if the quarantine option is not the latest option and don\'t specify Quarantine Mode arguments ', async () => {
+            async function checkCliArgs (argsString) {
+                const parser = await parse(argsString);
+
+                expect(parser.opts.quarantineMode).to.be.ok;
+                expect(parser.opts.browsers).eql(['chrome']);
+            }
+
+            await checkCliArgs('-q chrome');
+            await checkCliArgs('--quarantine-mode chrome');
         });
     });
 
