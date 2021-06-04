@@ -74,5 +74,9 @@ describe('Request Hooks', () => {
         it('Change and remove response headers', () => {
             return runTests('./testcafe-fixtures/api/change-remove-response-headers.js', null, { only: 'chrome' });
         });
+
+        it('Request hook events should be represented as appropriate classes', () => {
+            return runTests('./testcafe-fixtures/api/request-hook-events.js', null, { only: 'chrome' });
+        });
     });
 });
