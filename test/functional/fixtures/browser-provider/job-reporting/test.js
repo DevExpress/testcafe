@@ -16,9 +16,10 @@ if (config.useLocalBrowsers) {
             state:     {},
             idNameMap: {},
 
-            openBrowser (browserId, pageUrl, name) {
+            openBrowser (browserId, pageUrl, browserConfig) {
                 const self       = this;
-                const providerId = typeof name === 'string' ? name : name.userArgs.slice(2);
+                const providerId = typeof browserConfig ===
+                                   'string' ? browserConfig : browserConfig.userArgs.replace(/\W*/, '');
 
                 this.idNameMap[browserId] = providerId;
                 this.state[providerId]    = {};
@@ -29,7 +30,11 @@ if (config.useLocalBrowsers) {
                     }, BROWSER_OPENING_DELAY);
                 }
 
-                return chromeBrowserProvider.openBrowser.call(this, browserId, pageUrl, 'headless --no-sandbox');
+                return chromeBrowserProvider.openBrowser.call(this, browserId, pageUrl, {
+                    ...browserConfig,
+                    userArgs: `--no-sandbox ${browserConfig.userArgs}`,
+                    headless: true,
+                });
             },
 
             closeBrowser (browserId) {
