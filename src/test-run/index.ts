@@ -121,6 +121,12 @@ const COMPILER_SERVICE_EVENTS = [
     'removeHeaderOnConfigureResponseEvent'
 ];
 
+const PROXYLESS_COMMANDS = new Map<string, string>();
+
+PROXYLESS_COMMANDS.set(COMMAND_TYPE.executeClientFunction, 'hasExecuteClientFunction');
+PROXYLESS_COMMANDS.set(COMMAND_TYPE.switchToIframe, 'hasSwitchToIframe');
+PROXYLESS_COMMANDS.set(COMMAND_TYPE.switchToMainWindow, 'hasSwitchToMainWindow');
+
 interface TestRunInit {
     test: Test;
     browserConnection: BrowserConnection;
@@ -592,7 +598,7 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     public addError (err: Error | TestCafeErrorList | TestRunErrorBase): void {
-        const errList = err instanceof TestCafeErrorList ? err.items : [err];
+        const errList = (err instanceof TestCafeErrorList ? err.items : [err]) as Error[];
 
         errList.forEach(item => {
             const adapter = this._createErrorAdapter(item);
@@ -925,8 +931,21 @@ export default class TestRun extends AsyncEventEmitter {
         return result;
     }
 
+    private async _canExecuteCommandThroughCDP (command: CommandBase): Promise<boolean> {
+        if (!this.opts.isProxyless || !PROXYLESS_COMMANDS.has(command.type))
+            return false;
+
+        const browserId         = this.browserConnection.id;
+        const customActionsInfo = await this.browserConnection.provider.hasCustomActionForBrowser(browserId);
+
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        return customActionsInfo[PROXYLESS_COMMANDS.get(command.type)!];
+    }
+
     public async executeCommand (command: CommandBase, callsite?: CallsiteRecord): Promise<unknown> {
         this.debugLog.command(command);
+
+        let postAction = null as (() => Promise<unknown>) | null;
 
         if (this.pendingPageError && isCommandRejectableByPageError(command))
             return this._rejectCommandWithPageError(callsite);
@@ -937,6 +956,17 @@ export default class TestRun extends AsyncEventEmitter {
         this._adjustConfigurationWithCommand(command);
 
         await this._setBreakpointIfNecessary(command, callsite);
+
+        if (await this._canExecuteCommandThroughCDP(command)) {
+            const browserId = this.browserConnection.id;
+
+            if (command.type === COMMAND_TYPE.executeClientFunction)
+                return this.browserConnection.provider.executeClientFunction(browserId, command, callsite);
+            else if (command.type === COMMAND_TYPE.switchToIframe)
+                postAction = async () => this.browserConnection.provider.switchToIframe(browserId);
+            else if (command.type === COMMAND_TYPE.switchToMainWindow)
+                postAction = async () => this.browserConnection.provider.switchToMainWindow(browserId);
+        }
 
         if (isScreenshotCommand(command)) {
             if (this.opts.disableScreenshots) {
@@ -991,7 +1021,12 @@ export default class TestRun extends AsyncEventEmitter {
         if (command.type === COMMAND_TYPE.switchToWindowByPredicate)
             return this._switchToWindowByPredicate(command as SwitchToWindowByPredicateCommand);
 
-        return this._enqueueCommand(command, callsite as CallsiteRecord);
+        const result = await this._enqueueCommand(command, callsite as CallsiteRecord);
+
+        if (postAction)
+            await postAction();
+
+        return result;
     }
 
     private _rejectCommandWithPageError (callsite?: CallsiteRecord): Promise<Error> {

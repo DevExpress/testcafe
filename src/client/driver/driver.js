@@ -916,6 +916,8 @@ export default class Driver extends serviceUtils.EventEmitter {
                 if (!domUtils.isIframeElement(iframe))
                     throw new ActionElementNotIframeError();
 
+                window['%switchedIframe%'] = iframe;
+
                 return this._ensureChildIframeDriverLink(nativeMethods.contentWindowGetter.call(iframe),
                     iframeErrorCtors.NotLoadedError, commandSelectorTimeout);
             })

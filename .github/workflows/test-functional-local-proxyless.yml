@@ -1,0 +1,102 @@
+name: Test Functional (Local Chrome proxyless)
+
+on:
+    workflow_dispatch:
+        inputs:
+            sha:
+                desciption: 'The test commit SHA or ref'
+                required: true
+                default: 'master'
+            merged_sha:
+                description: 'The merge commit SHA'
+            deploy_run_id:
+                description: 'The ID of a deployment workspace run with artifacts'
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        environment: test-functional
+        env:
+            RETRY_FAILED_TESTS: true
+        steps:
+            - uses: actions/github-script@v3
+              with:
+                  script: |
+                      await github.repos.createCommitStatus({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        sha: context.payload.inputs.sha,
+                        context: context.workflow,
+                        state: 'pending',
+                        target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+                      });
+            - uses: actions/checkout@v2
+              with:
+                  ref: ${{github.event.inputs.merged_sha || github.event.inputs.sha}}
+
+            - uses: actions/setup-node@v2
+              with:
+                  node-version: 12
+
+            - uses: actions/github-script@v3
+              with:
+                  script: |
+                      const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+                      let artifacts = {};
+
+                      for(let i = 0;i<36&&!artifacts.total_count;i++,await delay(5000)) {
+                        try {
+                          ({ data: artifacts } = await github.actions.listWorkflowRunArtifacts({
+                          repo: context.repo.repo,
+                          owner: context.repo.owner,
+                          run_id: context.payload.inputs.deploy_run_id
+                        }));
+                        }
+                        catch (e) {
+                          console.log(e);
+                        }
+                      }
+
+                      const { data: artifact } = await github.request(artifacts.artifacts.find(artifact=> artifact.name === 'npm').archive_download_url);
+                      require('fs').writeFileSync(require('path').join(process.env.GITHUB_WORKSPACE, 'package.zip'), Buffer.from(artifact))
+
+            - run: |
+                  unzip package.zip
+                  tar --strip-components=1 -xzf testcafe-*.tgz
+
+            - name: Get npm cache directory
+              id: npm-cache-dir
+              run: |
+                  echo "::set-output name=dir::$(npm config get cache)"
+            - uses: actions/cache@v2
+              with:
+                  path: ${{ steps.npm-cache-dir.outputs.dir }}
+                  key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+                  restore-keys: |
+                      ${{ runner.os }}-node-
+            - run: npm ci
+            - run: npx gulp test-functional-local-proxyless-run --steps-as-tasks
+              timeout-minutes: 60
+            - uses: actions/github-script@v3
+              with:
+                  script: |
+                      await github.repos.createCommitStatus({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        sha: context.payload.inputs.sha,
+                        context: context.workflow,
+                        state: 'success',
+                        target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+                      });
+            - uses: actions/github-script@v3
+              if: failure() || cancelled()
+              with:
+                  script: |
+                      await github.repos.createCommitStatus({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        sha: context.payload.inputs.sha,
+                        context: context.workflow,
+                        state: 'failure',
+                        target_url: `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`
+                      });

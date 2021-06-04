@@ -310,8 +310,8 @@ export default class BrowserProvider {
         return this.plugin.isHeadlessBrowser(browserId, browserName);
     }
 
-    public async openBrowser (browserId: string, pageUrl: string, browserName: string, disableMultipleWindows: boolean): Promise<void> {
-        await this.plugin.openBrowser(browserId, pageUrl, browserName, disableMultipleWindows);
+    public async openBrowser (browserId: string, pageUrl: string, browserName: string, disableMultipleWindows: boolean, isProxyless: boolean): Promise<void> {
+        await this.plugin.openBrowser(browserId, pageUrl, browserName, disableMultipleWindows, isProxyless);
 
         await this._ensureRetryTestPagesWarning(browserId);
 
@@ -399,6 +399,18 @@ export default class BrowserProvider {
             await this._takeLocalBrowserScreenshot(browserId, screenshotPath);
         else
             await this.plugin.takeScreenshot(browserId, screenshotPath, pageWidth, pageHeight, fullPage);
+    }
+
+    public async executeClientFunction (browserId: string, command: any, callsite: any): Promise<any> {
+        return this.plugin.executeClientFunction(browserId, command, callsite);
+    }
+
+    public async switchToIframe (browserId: string): Promise<void> {
+        return this.plugin.switchToIframe(browserId);
+    }
+
+    public switchToMainWindow (browserId: string): Promise<void> {
+        return this.plugin.switchToMainWindow(browserId);
     }
 
     public async getVideoFrameData (browserId: string): Promise<any> {

@@ -40,12 +40,10 @@ export default class ClientFunctionExecutor {
                 isCommandResult: true,
                 result:          this.replicator.encode(result)
             }))
-            .catch(err => {
-                return new DriverStatus({
-                    isCommandResult: true,
-                    executionError:  err
-                });
-            });
+            .catch(err => new DriverStatus({
+                isCommandResult: true,
+                executionError:  err
+            }));
     }
 
     //Overridable methods

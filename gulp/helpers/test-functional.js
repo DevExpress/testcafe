@@ -15,12 +15,15 @@ const SCREENSHOT_TESTS_GLOB = [
     'test/functional/fixtures/screenshots-on-fails/test.js'
 ];
 
-module.exports = function testFunctional (src, testingEnvironmentName, { experimentalCompilerService } = {}) {
+module.exports = function testFunctional (src, testingEnvironmentName, { experimentalCompilerService, isProxyless } = {}) {
     process.env.TESTING_ENVIRONMENT       = testingEnvironmentName;
     process.env.BROWSERSTACK_USE_AUTOMATE = 1;
 
     if (experimentalCompilerService)
         process.env.EXPERIMENTAL_COMPILER_SERVICE = 'true';
+
+    if (isProxyless)
+        process.env.PROXYLESS = 'true';
 
     if (!process.env.BROWSERSTACK_NO_LOCAL)
         process.env.BROWSERSTACK_NO_LOCAL = 1;

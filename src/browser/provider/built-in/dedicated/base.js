@@ -99,5 +99,26 @@ export default {
         const maximumSize = getMaximizedHeadlessWindowSize();
 
         await this.resizeWindow(browserId, maximumSize.width, maximumSize.height, maximumSize.width, maximumSize.height);
+    },
+
+    async executeClientFunction (browserId, command, callsite) {
+        const runtimeInfo   = this.openedBrowsers[browserId];
+        const browserClient = this._getBrowserProtocolClient(runtimeInfo);
+
+        return browserClient.executeClientFunction(command, callsite);
+    },
+
+    async switchToIframe (browserId) {
+        const runtimeInfo   = this.openedBrowsers[browserId];
+        const browserClient = this._getBrowserProtocolClient(runtimeInfo);
+
+        return browserClient.switchToIframe();
+    },
+
+    async switchToMainWindow (browserId) {
+        const runtimeInfo   = this.openedBrowsers[browserId];
+        const browserClient = this._getBrowserProtocolClient(runtimeInfo);
+
+        return browserClient.switchToMainWindow();
     }
 };

@@ -1,36 +1,48 @@
-import { Dictionary } from '../../../../../configuration/interfaces';
+import { readSync as read } from 'read-file-relative';
+import { Dictionary } from '../../../../../../configuration/interfaces';
 import Protocol from 'devtools-protocol';
 import path from 'path';
 import os from 'os';
 import remoteChrome from 'chrome-remote-interface';
 import debug from 'debug';
-import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../../utils/client-functions';
-import WARNING_MESSAGE from '../../../../../notifications/warning-message';
+import { GET_WINDOW_DIMENSIONS_INFO_SCRIPT } from '../../../../utils/client-functions';
+import WARNING_MESSAGE from '../../../../../../notifications/warning-message';
 
 import {
     Config,
     RuntimeInfo,
     TouchConfigOptions,
     Size
-} from './interfaces';
+} from '../interfaces';
 import prettyTime from 'pretty-hrtime';
-import { CheckedCDPMethod, ELAPSED_TIME_UPPERBOUNDS } from './elapsed-upperbounds';
-import guardTimeExecution from '../../../../../utils/guard-time-execution';
+import { CheckedCDPMethod, ELAPSED_TIME_UPPERBOUNDS } from '../elapsed-upperbounds';
+import guardTimeExecution from '../../../../../../utils/guard-time-execution';
+import {
+    ClientFunctionExecutionInterruptionError,
+    UncaughtErrorInClientFunctionCode,
+    DomNodeClientFunctionResultError
+} from '../../../../../../shared/errors';
 
 const DEBUG_SCOPE = (id: string): string => `testcafe:browser:provider:built-in:chrome:browser-client:${id}`;
 const DOWNLOADS_DIR = path.join(os.homedir(), 'Downloads');
+const EXECUTION_CTX_WAS_DESTROYED_CODE = -32000;
 
 const debugLog = debug('testcafe:browser:provider:built-in:dedicated:chrome');
 
 export class BrowserClient {
     private _clients: Dictionary<remoteChrome.ProtocolApi> = {};
     private _runtimeInfo: RuntimeInfo;
+    private readonly _isProxyless: boolean;
     private _parentTarget?: remoteChrome.TargetInfo;
     private readonly debugLogger: debug.Debugger;
+    // new Map<frameId, executionContextId>
+    private readonly _frameExecutionContexts = new Map<string, number>();
+    private _currentFrameId: string = '';
 
-    public constructor (runtimeInfo: RuntimeInfo) {
+    public constructor (runtimeInfo: RuntimeInfo, isProxyless: boolean) {
         this._runtimeInfo = runtimeInfo;
         this.debugLogger  = debug(DEBUG_SCOPE(runtimeInfo.browserId));
+        this._isProxyless = isProxyless;
 
         runtimeInfo.browserClient = this;
     }
@@ -44,7 +56,7 @@ export class BrowserClient {
     }
 
     private async _getTabs (): Promise<remoteChrome.TargetInfo[]> {
-        const tabs = await remoteChrome.listTabs({ port: this._runtimeInfo.cdpPort });
+        const tabs = await remoteChrome.List({ port: this._runtimeInfo.cdpPort });
 
         return tabs.filter(t => t.type === 'page');
     }
@@ -168,6 +180,33 @@ export class BrowserClient {
         this._runtimeInfo.emulatedDevicePixelRatio = this._config.scaleFactor || this._runtimeInfo.originalDevicePixelRatio;
     }
 
+    private async _injectProxylessStuff (client: remoteChrome.ProtocolApi): Promise<void> {
+        await client.Page.addScriptToEvaluateOnNewDocument({
+            source: read('../../../../../../../lib/client/proxyless/index.js') as string
+        });
+    }
+
+    private _setupFramesWatching (client: remoteChrome.ProtocolApi): void {
+        client.Runtime.on('executionContextCreated', (event: Protocol.Runtime.ExecutionContextCreatedEvent) => {
+            if (!event.context.auxData?.frameId)
+                return;
+
+            this._frameExecutionContexts.set(event.context.auxData.frameId, event.context.id);
+        });
+
+        client.Runtime.on('executionContextDestroyed', (event: Protocol.Runtime.ExecutionContextDestroyedEvent) => {
+            for (const [frameId, executionContextId] of this._frameExecutionContexts.entries()) {
+                if (executionContextId === event.executionContextId)
+                    this._frameExecutionContexts.delete(frameId);
+            }
+        });
+
+        client.Runtime.on('executionContextsCleared', () => {
+            this._currentFrameId = '';
+            this._frameExecutionContexts.clear();
+        });
+    }
+
     public async resizeWindow (newDimensions: Size): Promise<void> {
         const { browserId, config, viewportSize, providerMethods, emulatedDevicePixelRatio } = this._runtimeInfo;
 
@@ -228,6 +267,11 @@ export class BrowserClient {
             if (client) {
                 await this._calculateEmulatedDevicePixelRatio(client);
                 await this._setupClient(client);
+
+                if (this._isProxyless) {
+                    await this._injectProxylessStuff(client);
+                    this._setupFramesWatching(client);
+                }
             }
         }
         catch (e) {
@@ -280,7 +324,7 @@ export class BrowserClient {
 
     public async closeTab (): Promise<void> {
         if (this._parentTarget)
-            await remoteChrome.closeTab({ id: this._parentTarget.id, port: this._runtimeInfo.cdpPort });
+            await remoteChrome.Close({ id: this._parentTarget.id, port: this._runtimeInfo.cdpPort });
     }
 
     public async updateMobileViewportSize (): Promise<void> {
@@ -295,5 +339,77 @@ export class BrowserClient {
 
         this._runtimeInfo.viewportSize.width = windowDimensions.outerWidth;
         this._runtimeInfo.viewportSize.height = windowDimensions.outerHeight;
+    }
+
+    public async executeClientFunction (command: any, callsite: any): Promise<object> {
+        const client = await this.getActiveClient();
+
+        if (!client)
+            throw new Error('Cannot get the active browser client');
+
+        const expression = `
+            (function () {debugger;
+                const proxyless              = window['%proxyless%'];
+                const ClientFunctionExecutor = proxyless.ClientFunctionExecutor;
+                const executor               = new ClientFunctionExecutor(${JSON.stringify(command)});
+
+                return executor.getResult().then(result => JSON.stringify(result));
+            })();
+        `;
+
+        let result;
+        let exceptionDetails;
+
+        try {
+            const script = { expression, awaitPromise: true } as Protocol.Runtime.EvaluateRequest;
+
+            if (this._currentFrameId && this._frameExecutionContexts.has(this._currentFrameId))
+                script.contextId = this._frameExecutionContexts.get(this._currentFrameId);
+
+            ({ result, exceptionDetails } = await client.Runtime.evaluate(script));
+        }
+        catch (e) {
+            if (e.response?.code === EXECUTION_CTX_WAS_DESTROYED_CODE)
+                throw new ClientFunctionExecutionInterruptionError(command.instantiationCallsiteName, callsite);
+
+            throw e;
+        }
+
+        if (exceptionDetails) {
+            if (exceptionDetails.exception?.value === DomNodeClientFunctionResultError.name)
+                throw new DomNodeClientFunctionResultError(command.instantiationCallsiteName, callsite);
+
+            throw new UncaughtErrorInClientFunctionCode(command.instantiationCallsiteName, exceptionDetails.text, callsite);
+        }
+
+        return JSON.parse(result.value);
+    }
+
+    private async switchToIframe (): Promise<void> {
+        const client = await this.getActiveClient();
+
+        if (!client)
+            return;
+
+        const script = { expression: 'window["%switchedIframe%"]' } as Protocol.Runtime.EvaluateRequest;
+
+        if (this._currentFrameId && this._frameExecutionContexts.has(this._currentFrameId))
+            script.contextId = this._frameExecutionContexts.get(this._currentFrameId);
+
+        const { result } = await client.Runtime.evaluate(script);
+
+        if (result.subtype !== 'node')
+            return;
+
+        const { node } = await client.DOM.describeNode({ objectId: result.objectId });
+
+        if (!node.frameId)
+            return;
+
+        this._currentFrameId = node.frameId;
+    }
+
+    private switchToMainWindow (): void {
+        this._currentFrameId = '';
     }
 }

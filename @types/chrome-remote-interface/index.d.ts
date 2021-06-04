@@ -23,8 +23,8 @@ declare module 'chrome-remote-interface' {
 
     interface ChromeRemoteInterface {
         (options: chromeRemoteInterface.ConstructorOptions): Promise<chromeRemoteInterface.ProtocolApi>;
-        listTabs (options: chromeRemoteInterface.GenericConnectionOptions): Promise<chromeRemoteInterface.TargetInfo[]>;
-        closeTab (options: chromeRemoteInterface.CloseTabOptions): Promise<void>;
+        List (options: chromeRemoteInterface.GenericConnectionOptions): Promise<chromeRemoteInterface.TargetInfo[]>;
+        Close (options: chromeRemoteInterface.CloseTabOptions): Promise<void>;
     }
 
     const chromeRemoteInterface: ChromeRemoteInterface;
