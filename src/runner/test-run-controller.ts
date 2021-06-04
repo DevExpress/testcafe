@@ -226,6 +226,7 @@ export default class TestRunController extends AsyncEventEmitter {
 
         if (this.test.skip || !hookOk) {
             await this.emit('test-run-start');
+            await this.emit('test-run-before-done');
             await this._emitTestRunDone();
 
             return null;
