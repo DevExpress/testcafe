@@ -15,7 +15,7 @@ class RequestHookEventClasses extends RequestHook {
         this.eventClasses.push(event.constructor.name);
     }
 
-    allEventRaised () {
+    get allEventRaised () {
         return ReExecutablePromise.fromFn(async () => {
             return this.eventClasses.length === 3;
         });
