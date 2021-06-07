@@ -50,9 +50,6 @@ import {
     RequestInfo,
     ResponseMock,
     IncomingMessageLikeInitOptions,
-    RequestEvent,
-    ConfigureResponseEvent,
-    ResponseEvent,
     StateSnapshot
 } from 'testcafe-hammerhead';
 
@@ -252,21 +249,6 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
         return runtime;
     }
 
-    private _prepareEventData (eventData: RequestEvent | ConfigureResponseEvent | ResponseEvent): RequestEvent | ConfigureResponseEvent | ResponseEvent {
-        // TODO: Remove eventData._requestContext into 'testcafe-hammerhead' module
-        // after switching to the compiler service mode.
-
-        // NOTE: Access to the deprecated property inside of the unserializable 'eventData._requestContext' property
-        // causes the node's deprecation warning.
-
-        const clonedEventData = Object.assign({}, eventData);
-
-        // @ts-ignore
-        delete clonedEventData._requestContext;
-
-        return clonedEventData;
-    }
-
     private _getTargetTestRun (id: string): TestRun {
         return testRunTracker.activeTestRuns[id] as unknown as TestRun;
     }
@@ -369,7 +351,7 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
             name,
             testId,
             hookId,
-            eventData: this._prepareEventData(eventData)
+            eventData
         });
     }
 

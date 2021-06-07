@@ -4,6 +4,7 @@ import BrowserConsoleMessagesTransform from './transforms/browser-console-messag
 import CommandBaseTransform from './transforms/command-base-transform';
 import RequestFilterRuleTransform from './transforms/request-filter-rule-transform';
 import ResponseMockTransform from './transforms/response-mock-transform';
+import RequestHookEventDataTransform from './transforms/request-hook-event-data-transform';
 
 const DEFAULT_ERROR_TRANSFORM_TYPE = '[[Error]]';
 
@@ -29,6 +30,7 @@ export default function (): Replicator {
             new BrowserConsoleMessagesTransform(),
             new CommandBaseTransform(),
             new RequestFilterRuleTransform(),
-            new ResponseMockTransform()
+            new ResponseMockTransform(),
+            new RequestHookEventDataTransform()
         ]);
 }
