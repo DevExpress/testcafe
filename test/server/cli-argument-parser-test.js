@@ -685,7 +685,7 @@ describe('CLI argument parser', function () {
             await assertRaisesError('--quarantine-mode retryCount=1', 'The "retryCount" value should be greater or equal to "passCount" (3).');
         });
 
-        it('Should not fail if the quarantine option is not the latest option and don\'t specify Quarantine Mode arguments ', async () => {
+        it('Should not fail if the quarantine option is not the latest option and no quarantine mode arguments are specified', async () => {
             async function checkCliArgs (argsString) {
                 const parser = await parse(argsString);
 
