@@ -248,7 +248,7 @@ export default class TestCafeConfiguration extends Configuration {
         const browsers = Array.isArray(this._options.browsers.value) ? [...this._options.browsers.value] : [this._options.browsers.value];
 
         const browserInfo = await Promise.all(browsers.map(browser => {
-            return (browser as BrowserInfo)['alias'] && browser ||
+            return (browser as BrowserInfo)?.['browserOption'] && browser ||
                    browserProviderPool.getBrowserInfo(browser);
         }));
 
