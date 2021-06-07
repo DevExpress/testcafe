@@ -249,8 +249,8 @@ export default class TestCafeConfiguration extends Configuration {
 
         const browserInfo = await Promise.all(browsers.map(browser => {
             return typeof browser === 'string'
-                   ? browserProviderPool.getBrowserInfo(browser)
-                   : browser;
+                ? browserProviderPool.getBrowserInfo(browser)
+                : browser;
         }));
 
         return flatten(browserInfo);
