@@ -94,6 +94,8 @@ import { TestRun as LegacyTestRun } from 'testcafe-legacy-api';
 import { AuthCredentials } from '../api/structure/interfaces';
 import TestRunPhase from './phase';
 import { ExecuteClientFunctionCommand, ExecuteSelectorCommand } from './commands/observation';
+import { RE_EXECUTABLE_PROMISE_MARKER_DESCRIPTION } from '../services/serialization/replicator/transforms/re-executable-promise-transform/marker';
+import ReExecutablePromise from '../utils/re-executable-promise';
 
 const lazyRequire                 = require('import-lazy')(require);
 const ClientFunctionBuilder       = lazyRequire('../client-functions/client-function-builder');
@@ -799,7 +801,24 @@ export default class TestRun extends AsyncEventEmitter {
         return executeJsExpression(expression, this, { skipVisibilityCheck: false });
     }
 
+    private _redirectReExecutablePromiseExecutionToCompilerService (command: AssertionCommand): void {
+        if (!this.compilerService)
+            return;
+
+        const self = this;
+
+        command.actual = ReExecutablePromise.fromFn(async () => {
+            return self.compilerService?.getAssertionActualValue({
+                testRunId: self.id,
+                commandId: command.id
+            });
+        });
+    }
+
     private async _executeAssertion (command: AssertionCommand, callsite: CallsiteRecord): Promise<void> {
+        if (command.actual === Symbol.for(RE_EXECUTABLE_PROMISE_MARKER_DESCRIPTION))
+            this._redirectReExecutablePromiseExecutionToCompilerService(command);
+
         const assertionTimeout = getAssertionTimeout(command, this.opts);
         const executor         = new AssertionExecutor(command, assertionTimeout, callsite);
 

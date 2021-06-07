@@ -41,7 +41,8 @@ import {
     UseStateSnapshotArguments,
     SetTestRunPhaseArguments,
     TestRunLocator,
-    SetBrowserConsoleMessagesArguments
+    SetBrowserConsoleMessagesArguments,
+    GetAssertionActualValueArguments
 } from './protocol';
 
 import { CompilerArguments } from '../../compiler/interfaces';
@@ -122,7 +123,8 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
             this.getSpeed,
             this.getPageLoadTimeout,
             this.setBrowserConsoleMessages,
-            this.getBrowserConsoleMessages
+            this.getBrowserConsoleMessages,
+            this.getAssertionActualValue
         ], this);
     }
 
@@ -448,5 +450,11 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
 
     public async getBrowserConsoleMessages ({ testRunId }: TestRunLocator): Promise<BrowserConsoleMessages> {
         return this._getTargetTestRun(testRunId).consoleMessages;
+    }
+
+    public async getAssertionActualValue ({ testRunId, commandId }: GetAssertionActualValueArguments): Promise<unknown> {
+        const { proxy } = await this._getRuntime();
+
+        return proxy.call(this.getAssertionActualValue, { testRunId, commandId: commandId });
     }
 }

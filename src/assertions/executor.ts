@@ -4,11 +4,21 @@ import { isThennable } from '../utils/thennable';
 import { ExternalAssertionLibraryError, AssertionUnawaitedPromiseError } from '../errors/test-run';
 import ReExecutablePromise from '../utils/re-executable-promise';
 import getFn from './get-fn';
+import AssertionCommand from '../test-run/commands/assertion';
+import { CallsiteRecord } from 'callsite-record';
 
 const ASSERTION_DELAY = 200;
 
 export default class AssertionExecutor extends EventEmitter {
-    constructor (command, timeout, callsite) {
+    private readonly command: AssertionCommand;
+    private readonly timeout: number;
+    private readonly callsite: CallsiteRecord;
+    private startTime: number | null;
+    private passed: boolean;
+    private inRetry: boolean;
+    private readonly fn: Function;
+
+    public constructor (command: AssertionCommand, timeout: number, callsite: CallsiteRecord) {
         super();
 
         this.command  = command;
@@ -30,18 +40,20 @@ export default class AssertionExecutor extends EventEmitter {
             this.fn = fn;
     }
 
-    _getTimeLeft () {
-        return this.timeout - (new Date() - this.startTime);
+    private _getTimeLeft (): number {
+        const executionTime = new Date().getTime() - (this.startTime as number); // eslint-disable-line @typescript-eslint/no-extra-parens
+
+        return this.timeout - executionTime;
     }
 
-    _onExecutionFinished () {
+    private _onExecutionFinished (): void {
         if (this.inRetry)
             this.emit('end-assertion-retries', this.passed);
     }
 
-    _wrapFunction (fn) {
+    private _wrapFunction (fn: Function): Function {
         return async () => {
-            const resultPromise = this.command.actual;
+            const resultPromise = this.command.actual as ReExecutablePromise;
 
             while (!this.passed) {
                 this.command.actual = await resultPromise._reExecute();
@@ -67,8 +79,8 @@ export default class AssertionExecutor extends EventEmitter {
         };
     }
 
-    async run () {
-        this.startTime = new Date();
+    public async run (): Promise<void> {
+        this.startTime = new Date().getTime();
 
         try {
             await this.fn();

@@ -79,7 +79,7 @@ class TestRunTracker extends EventEmitter {
         return new Function('fn', markerFactoryBody)(fn);
     }
 
-    private getContextTestRunId (): string | null {
+    public getContextTestRunId (): string | null {
         const frames = this._getStackFrames();
 
         // OPTIMIZATION: we start traversing from the bottom of the stack,

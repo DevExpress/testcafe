@@ -135,6 +135,10 @@ export interface SetBrowserConsoleMessagesArguments extends TestRunLocator {
     value: BrowserConsoleMessages;
 }
 
+export interface GetAssertionActualValueArguments extends TestRunLocator {
+    commandId: string;
+}
+
 export interface TestRunDispatcherProtocol {
     executeActionSync ({ id, apiMethodName, command, callsite }: ExecuteActionArguments): unknown;
     executeAction ({ id, apiMethodName, command, callsite }: ExecuteActionArguments): Promise<unknown>;
@@ -152,34 +156,22 @@ export interface TestRunDispatcherProtocol {
     getPageLoadTimeout ({ testRunId }: TestRunLocator): Promise<number>;
     setBrowserConsoleMessages ({ testRunId, value }: SetBrowserConsoleMessagesArguments): Promise<void>;
     getBrowserConsoleMessages ({ testRunId }: TestRunLocator): Promise<BrowserConsoleMessages>;
+    getAssertionActualValue ({ testRunId, commandId }: GetAssertionActualValueArguments): Promise<unknown>;
 }
 
 export interface CompilerProtocol extends TestRunDispatcherProtocol {
     ready (): Promise<void>;
-
     getTests ({ sourceList, compilerOptions }: CompilerArguments): Promise<unknown>;
-
     runTestFn ({ id, functionName, testRunId }: RunTestArguments): Promise<unknown>;
-
     cleanUp (): Promise<void>;
-
     setOptions ({ value }: SetOptionsArguments): Promise<void>;
-
     onRequestHookEvent ({ name, testId, hookId, eventData }: RequestHookEventArguments): Promise<void>;
-
     setMock ({ responseEventId, mock }: SetMockArguments): Promise<void>;
-
     setConfigureResponseEventOptions ({ eventId, opts }: SetConfigureResponseEventOptionsArguments): Promise<void>;
-
     setHeaderOnConfigureResponseEvent ({ eventId, headerName, headerValue }: SetHeaderOnConfigureResponseEventArguments): Promise<void>;
-
     removeHeaderOnConfigureResponseEvent ({ eventId, headerName }: RemoveHeaderOnConfigureResponseEventArguments): Promise<void>;
-
     executeRequestFilterRulePredicate ({ testId, hookId, ruleId, requestInfo }: ExecuteRequestFilterRulePredicateArguments): Promise<boolean>;
-
     executeMockPredicate ({ testId, hookId, ruleId, requestInfo, res }: ExecuteMockPredicate): Promise<IncomingMessageLikeInitOptions>;
-
     getWarningMessages ({ testRunId }: TestRunLocator): Promise<string[]>;
-
     initializeTestRunData ({ testRunId, testId }: InitializeTestRunDataArguments): Promise<void>;
 }

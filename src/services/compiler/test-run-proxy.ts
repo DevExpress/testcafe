@@ -6,16 +6,13 @@ import TestController from '../../api/test-controller';
 import ObservedCallsitesStorage from '../../test-run/observed-callsites-storage';
 import WarningLog from '../../notifications/warning-log';
 import AssertionCommand from '../../test-run/commands/assertion';
-import AssertionExecutor from '../../assertions/executor';
 import { Dictionary } from '../../configuration/interfaces';
 import COMMAND_TYPE from '../../test-run/commands/type';
 import CommandBase from '../../test-run/commands/base';
-import * as serviceCommands from '../../test-run/commands/service';
 import { TestRunProxyInit } from '../interfaces';
 import Test from '../../api/structure/test';
 import RequestHook from '../../api/request-hooks/hook';
-import getAssertionTimeout from '../../utils/get-options/get-assertion-timeout';
-import { StateSnapshot } from 'testcafe-hammerhead';
+import { StateSnapshot, generateUniqueId } from 'testcafe-hammerhead';
 import { CallsiteRecord } from 'callsite-record';
 import TestRunPhase from '../../test-run/phase';
 import { RoleSwitchInRoleInitializerError } from '../../errors/test-run';
@@ -34,6 +31,7 @@ import {
 
 import BrowserConsoleMessages from '../../test-run/browser-console-messages';
 import { ExecuteClientFunctionCommand, ExecuteSelectorCommand } from '../../test-run/commands/observation';
+import ReExecutablePromise from '../../utils/re-executable-promise';
 
 class TestRunProxy {
     public readonly id: string;
@@ -49,6 +47,7 @@ class TestRunProxy {
     private readonly _options: Dictionary<OptionValue>;
     private currentRoleId: string | null;
     private readonly usedRoleStates: Record<string, any>;
+    private readonly assertionCommandActualValues: Map<string, ReExecutablePromise>;
 
     public constructor ({ dispatcher, id, test, options }: TestRunProxyInit) {
         this.dispatcher = dispatcher;
@@ -61,6 +60,7 @@ class TestRunProxy {
 
         this.currentRoleId  = null;
         this.usedRoleStates = Object.create(null);
+        this.assertionCommandActualValues   = new Map<string, ReExecutablePromise>();
 
         // TODO: Synchronize these properties with their real counterparts in the main process.
         // Postponed until (GH-3244). See details in (GH-5250).
@@ -75,17 +75,6 @@ class TestRunProxy {
 
     private _initializeRequestHooks (): void {
         this.test.requestHooks.forEach(this._attachWarningLog, this);
-    }
-
-    private async _executeAssertion (command: AssertionCommand, callsite: unknown): Promise<unknown> {
-        const assertionTimeout = getAssertionTimeout(command, this._options);
-
-        const executor = new AssertionExecutor(command, assertionTimeout, callsite);
-
-        executor.once('start-assertion-retries', timeout => this.executeCommand(new serviceCommands.ShowAssertionRetriesStatusCommand(timeout) as unknown as CommandBase));
-        executor.once('end-assertion-retries', success => this.executeCommand(new serviceCommands.HideAssertionRetriesStatusCommand(success) as unknown as CommandBase));
-
-        return executor.run();
     }
 
     private async _getStateSnapshotFromRole (role: Role): Promise<StateSnapshot> {
@@ -172,11 +161,20 @@ class TestRunProxy {
         hook._warningLog = null;
     }
 
+    private _handleAssertionCommand (command: AssertionCommand): void {
+        if (command.actual instanceof ReExecutablePromise === false)
+            return;
+
+        command.id = generateUniqueId();
+
+        this.assertionCommandActualValues.set((command as AssertionCommand).id, command.actual as ReExecutablePromise);
+    }
+
     public async executeAction (apiMethodName: string, command: CommandBase, callsite: CallsiteRecord): Promise<unknown> {
         const renderedCallsite = callsite ? prerenderCallsite(callsite) : null;
 
         if (command.type === COMMAND_TYPE.assertion)
-            return this._executeAssertion(command as AssertionCommand, renderedCallsite);
+            this._handleAssertionCommand(command as AssertionCommand);
 
         else if (command.type === COMMAND_TYPE.useRole)
             return this._useRole((command as UseRoleCommand).role, renderedCallsite);
@@ -191,9 +189,6 @@ class TestRunProxy {
 
     public executeActionSync (apiMethodName: string, command: CommandBase, callsite: CallsiteRecord): unknown {
         const renderedCallsite = callsite ? prerenderCallsite(callsite) : null;
-
-        if (command.type === COMMAND_TYPE.assertion)
-            return this._executeAssertion(command as AssertionCommand, renderedCallsite);
 
         return this.dispatcher.executeActionSync({
             apiMethodName,
@@ -316,6 +311,12 @@ class TestRunProxy {
             testRunId: this.id,
             value
         });
+    }
+
+    public async getAssertionActualValue (commandId: string): Promise<unknown> {
+        const assertionReExecutablePromise = this.assertionCommandActualValues.get(commandId) as ReExecutablePromise;
+
+        return assertionReExecutablePromise._reExecute();
     }
 }
 

@@ -46,7 +46,8 @@ import {
     UseStateSnapshotArguments,
     SetTestRunPhaseArguments,
     TestRunLocator,
-    SetBrowserConsoleMessagesArguments
+    SetBrowserConsoleMessagesArguments,
+    GetAssertionActualValueArguments
 } from './protocol';
 
 import { CompilerArguments } from '../../compiler/interfaces';
@@ -122,7 +123,7 @@ class CompilerService implements CompilerProtocol {
     }
 
     private _getTestCtx ({ testRunId }: RunTestArguments, unit: Unit): TestRunProxy {
-        const testRunProxy = this.state.testRuns[testRunId];
+        const testRunProxy = this._getTargetTestRun(testRunId);
 
         testRunProxy.fixtureCtx = this._getFixtureCtx(unit);
 
@@ -165,7 +166,8 @@ class CompilerService implements CompilerProtocol {
             this.getSpeed,
             this.getPageLoadTimeout,
             this.setBrowserConsoleMessages,
-            this.getBrowserConsoleMessages
+            this.getBrowserConsoleMessages,
+            this.getAssertionActualValue
         ], this);
     }
 
@@ -233,6 +235,10 @@ class CompilerService implements CompilerProtocol {
             return;
 
         this.state.fixtureCtxs[fixtureId] = Object.create(null);
+    }
+
+    private _getTargetTestRun (testRunId: string): TestRunProxy {
+        return this.state.testRuns[testRunId];
     }
 
     public async setOptions ({ value }: SetOptionsArguments): Promise<void> {
@@ -339,9 +345,7 @@ class CompilerService implements CompilerProtocol {
     }
 
     public async getWarningMessages ({ testRunId }: TestRunLocator): Promise<string[]> {
-        const testRunProxy = this.state.testRuns[testRunId];
-
-        return testRunProxy.warningLog.messages;
+        return this._getTargetTestRun(testRunId).warningLog.messages;
     }
 
     public async addRequestEventListeners ( { hookId, hookClassName, rules }: AddRequestEventListenersArguments): Promise<void> {
@@ -382,6 +386,7 @@ class CompilerService implements CompilerProtocol {
     public async getTestRunPhase ({ testRunId }: TestRunLocator): Promise<TestRunPhase> {
         return this.proxy.call(this.getTestRunPhase, { testRunId });
     }
+
     public async setTestRunPhase ({ testRunId, value }: SetTestRunPhaseArguments): Promise<void> {
         return this.proxy.call(this.setTestRunPhase, { testRunId, value });
     }
@@ -408,6 +413,10 @@ class CompilerService implements CompilerProtocol {
 
     public async getBrowserConsoleMessages ({ testRunId }: TestRunLocator): Promise<BrowserConsoleMessages> {
         return this.proxy.call(this.getBrowserConsoleMessages, { testRunId });
+    }
+
+    public async getAssertionActualValue ({ testRunId, commandId }: GetAssertionActualValueArguments): Promise<unknown> {
+        return this._getTargetTestRun(testRunId).getAssertionActualValue(commandId);
     }
 }
 
