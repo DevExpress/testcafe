@@ -691,10 +691,13 @@ describe('CLI argument parser', function () {
 
                 expect(parser.opts.quarantineMode).to.be.ok;
                 expect(parser.opts.browsers).eql(['chrome']);
+                expect(parser.opts.src).eql(['test.js']);
             }
 
-            await checkCliArgs('-q chrome');
-            await checkCliArgs('--quarantine-mode chrome');
+            await checkCliArgs('-q chrome test.js');
+            await checkCliArgs('--quarantine-mode chrome test.js');
+            await checkCliArgs('chrome -q test.js');
+            await checkCliArgs('chrome --quarantine-mode test.js');
         });
     });
 

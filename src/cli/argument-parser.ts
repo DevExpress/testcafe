@@ -25,6 +25,7 @@ import {
     ReporterOption,
     RunnerRunOptions
 } from '../configuration/interfaces';
+import QUARANTINE_OPTION_NAMES from '../configuration/quarantine-option-names';
 
 
 const REMOTE_ALIAS_RE = /^remote(?::(\d*))?$/;
@@ -295,7 +296,7 @@ export default class CLIArgumentParser {
     }
 
     private _parseBrowsersFromArgs (): void {
-        const browsersArg = this.args[0] || '';
+        const browsersArg = this.program.args[0] || '';
 
         this.opts.browsers = splitQuotedText(browsersArg, ',')
             .filter(browser => browser && this._checkAndCountRemotes(browser));
@@ -323,7 +324,7 @@ export default class CLIArgumentParser {
     }
 
     private _parseFileList (): void {
-        this.opts.src = this.args.slice(1);
+        this.opts.src = this.program.args.slice(1);
     }
 
     private async _parseScreenshotOptions (): Promise<void> {
@@ -372,19 +373,26 @@ export default class CLIArgumentParser {
     }
 
     public async parse (argv: string[]): Promise<void> {
+        // NOTE: move the quarantine mode options to the end of the array to avoid the wrong quarantine mode CLI options parsing (GH-6231)
+        const quarantineOptionIndex = argv.findIndex(
+            el => ['-q', '--quarantine-mode'].some(opt => el.startsWith(opt)));
+
+        if (quarantineOptionIndex > -1) {
+            const isNotLastOption       = quarantineOptionIndex < argv.length - 1;
+            const shouldMoveOptionToEnd = isNotLastOption &&
+                ![QUARANTINE_OPTION_NAMES.retryCount, QUARANTINE_OPTION_NAMES.passCount].some(opt => argv[quarantineOptionIndex + 1].startsWith(opt));
+
+            if (shouldMoveOptionToEnd)
+                argv.push(argv.splice(quarantineOptionIndex, 1)[0]);
+        }
+
+
         this.program.parse(argv);
         this.experimental.parse(argv);
 
         this.args = this.program.args;
 
         this.opts = { ...this.experimental.opts(), ...this.program.opts() };
-
-        // NOTE: GH-6231
-        // @ts-ignore
-        if (this.opts.quarantineMode && typeof this.opts.quarantineMode === 'string' && !['retryCount', 'passCount'].some(opt => this.opts.quarantineMode.startsWith(opt))) {
-            this.args.unshift(this.opts.quarantineMode);
-            this.opts.quarantineMode = true;
-        }
 
         this._parseListBrowsers();
 
