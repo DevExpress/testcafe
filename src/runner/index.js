@@ -35,6 +35,7 @@ import CustomizableCompilers from '../configuration/customizable-compilers';
 import { getConcatenatedValuesString, getPluralSuffix } from '../utils/string';
 import isLocalhost from '../utils/is-localhost';
 import WarningLog from '../notifications/warning-log';
+import { validateQuarantineOptions } from '../utils/get-options/quarantine';
 
 const DEBUG_LOGGER = debug('testcafe:runner');
 
@@ -384,6 +385,13 @@ export default class Runner extends EventEmitter {
         throw new GeneralError(RUNTIME_ERRORS.cannotEnableRetryTestPagesOption);
     }
 
+    _validateQuarantineOptions () {
+        const quarantineMode = this.configuration.getOption(OPTION_NAMES.quarantineMode);
+
+        if (typeof quarantineMode === 'object')
+            validateQuarantineOptions(quarantineMode, OPTION_NAMES.quarantineMode);
+    }
+
     async _validateRunOptions () {
         this._validateDebugLogger();
         this._validateScreenshotOptions();
@@ -395,6 +403,7 @@ export default class Runner extends EventEmitter {
         this._validateRetryTestPagesOption();
         this._validateRequestTimeoutOption(OPTION_NAMES.pageRequestTimeout);
         this._validateRequestTimeoutOption(OPTION_NAMES.ajaxRequestTimeout);
+        this._validateQuarantineOptions();
     }
 
     _createRunnableConfiguration () {

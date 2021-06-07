@@ -25,6 +25,7 @@ import {
     ReporterOption,
     RunnerRunOptions
 } from '../configuration/interfaces';
+import QUARANTINE_OPTION_NAMES from '../configuration/quarantine-option-names';
 
 
 const REMOTE_ALIAS_RE = /^remote(?::(\d*))?$/;
@@ -120,7 +121,7 @@ export default class CLIArgumentParser {
             .option('-s, --screenshots <option=value[,...]>', 'specify screenshot options')
             .option('-S, --screenshots-on-fails', 'take a screenshot whenever a test fails')
             .option('-p, --screenshot-path-pattern <pattern>', 'use patterns to compose screenshot file names and paths: ${BROWSER}, ${BROWSER_VERSION}, ${OS}, etc.')
-            .option('-q, --quarantine-mode', 'enable the quarantine mode, optionally number of retries and pass threshold')
+            .option('-q, --quarantine-mode [option=value,...]', 'enable the quarantine mode, optionally number of retries and pass threshold')
             .option('-d, --debug-mode', 'execute test steps one by one pausing the test after each step')
             .option('-e, --skip-js-errors', 'make tests not fail when a JS error happens on a page')
             .option('-u, --skip-uncaught-errors', 'ignore uncaught errors and unhandled promise rejections, which occur during test execution')
@@ -372,6 +373,20 @@ export default class CLIArgumentParser {
     }
 
     public async parse (argv: string[]): Promise<void> {
+        // NOTE: move the quarantine mode options to the end of the array to avoid the wrong quarantine mode CLI options parsing (GH-6231)
+        const quarantineOptionIndex = argv.findIndex(
+            el => ['-q', '--quarantine-mode'].some(opt => el.startsWith(opt)));
+
+        if (quarantineOptionIndex > -1) {
+            const isNotLastOption       = quarantineOptionIndex < argv.length - 1;
+            const shouldMoveOptionToEnd = isNotLastOption &&
+                ![QUARANTINE_OPTION_NAMES.retryCount, QUARANTINE_OPTION_NAMES.passCount].some(opt => argv[quarantineOptionIndex + 1].startsWith(opt));
+
+            if (shouldMoveOptionToEnd)
+                argv.push(argv.splice(quarantineOptionIndex, 1)[0]);
+        }
+
+
         this.program.parse(argv);
         this.experimental.parse(argv);
 
