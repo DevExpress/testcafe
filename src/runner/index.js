@@ -389,7 +389,7 @@ export default class Runner extends EventEmitter {
         const quarantineMode = this.configuration.getOption(OPTION_NAMES.quarantineMode);
 
         if (typeof quarantineMode === 'object')
-            validateQuarantineOptions(quarantineMode, 'quarantineMode');
+            validateQuarantineOptions(quarantineMode, OPTION_NAMES.quarantineMode);
     }
 
     async _validateRunOptions () {
