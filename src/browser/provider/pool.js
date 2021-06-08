@@ -12,12 +12,10 @@ export default {
     providersCache: {},
 
     async _handlePathAndCmd (alias) {
-        const browserName  = JSON.stringify(alias);
-        const providerName = 'path';
-        const provider     = await this.getProvider(providerName);
-        let browserOption  = {};
-
-        browserOption = provider.plugin.getConfig(browserName);
+        const browserName   = JSON.stringify(alias);
+        const providerName  = 'path';
+        const provider      = await this.getProvider(providerName);
+        const browserOption = provider.plugin.getConfig(browserName);
 
         return { provider, providerName, browserName, browserOption };
     },
