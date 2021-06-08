@@ -430,9 +430,9 @@ export default class Runner extends EventEmitter {
         this._validateRetryTestPagesOption();
         this._validateRequestTimeoutOption(OPTION_NAMES.pageRequestTimeout);
         this._validateRequestTimeoutOption(OPTION_NAMES.ajaxRequestTimeout);
+        this._validateQuarantineOptions();
         this._validateConcurrencyOption();
         await this._validateBrowsers();
-        this._validateQuarantineOptions();
     }
 
     _createRunnableConfiguration () {
