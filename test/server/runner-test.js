@@ -1416,8 +1416,8 @@ describe('Runner', () => {
                     throw new Error('Promise rejection expected');
                 })
                 .catch(err => {
-                    expect(err.message).contains('- some warning from "warningProvider:browser-alias1"');
-                    expect(err.message).contains('- some warning from "warningProvider:browser-alias2"');
+                    expect(err.message).contains('- some warning from "browser-alias1"');
+                    expect(err.message).contains('- some warning from "browser-alias2"');
                 });
         });
 
@@ -1436,8 +1436,8 @@ describe('Runner', () => {
                         '- warningProvider:browser-alias1\n' +
                         '- warningProvider:browser-alias2\n\n' +
                         'Hints:\n' +
-                        '- some warning from "warningProvider:browser-alias1"\n' +
-                        '- some warning from "warningProvider:browser-alias2"\n' +
+                        '- some warning from "browser-alias1"\n' +
+                        '- some warning from "browser-alias2"\n' +
                         '- Use the "browserInitTimeout" option to allow more time for the browser to start. ' +
                         'The timeout is set to 2 minutes for local browsers and 6 minutes for remote browsers.\n' +
                         '- The error can also be caused by network issues or remote device failure. ' +
