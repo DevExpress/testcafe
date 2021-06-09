@@ -49,9 +49,11 @@ function getPresetReact () {
     return presetReact;
 }
 
+let loadedLibs = null;
+
 // NOTE: lazy load heavy dependencies
 export default function loadLibs () {
-    return {
+    loadedLibs = loadedLibs || {
         babel:                      require('@babel/core'),
         presetStage2:               require('./preset-stage-2'),
         presetFlow:                 require('@babel/preset-flow'),
@@ -64,4 +66,6 @@ export default function loadLibs () {
         proposalPrivateMethods:     [require('@babel/plugin-proposal-private-methods'), { loose: true }],
         proposalClassProperties:    [require('@babel/plugin-proposal-class-properties'), { loose: true }]
     };
+
+    return loadedLibs;
 }

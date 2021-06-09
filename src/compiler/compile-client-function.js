@@ -17,18 +17,24 @@ const ASYNC_TO_GENERATOR_OUTPUT_CODE = formatBabelProducedCode(asyncToGenerator(
 const CLIENT_FUNCTION_BODY_WRAPPER = code => `const func = (${code});`;
 const CLIENT_FUNCTION_WRAPPER      = ({ code, dependencies }) => `(function(){${dependencies} ${code} return func;})();`;
 
-function getBabelOptions () {
-    const { presetEnvForClientFunction, transformForOfAsArray } = loadBabelLibs();
+let babelOptions = null;
 
-    return Object.assign({}, BASE_BABEL_OPTIONS, {
-        presets: [{ plugins: [transformForOfAsArray] }, presetEnvForClientFunction]
-    });
+function getBabelOptions (babel) {
+    if (!babelOptions) {
+        const { presetEnvForClientFunction, transformForOfAsArray } = loadBabelLibs();
+
+        babelOptions = babel.loadOptions(Object.assign({}, BASE_BABEL_OPTIONS, {
+            presets: [{ plugins: [transformForOfAsArray] }, presetEnvForClientFunction]
+        }));
+    }
+
+    return babelOptions;
 }
 
 function downgradeES (fnCode) {
     const { babel } = loadBabelLibs();
 
-    const opts     = getBabelOptions();
+    const opts     = getBabelOptions(babel);
     const compiled = babel.transform(fnCode, opts);
 
     return compiled.code
