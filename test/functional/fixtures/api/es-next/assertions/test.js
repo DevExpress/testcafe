@@ -343,8 +343,8 @@ describe('[API] Assertions', function () {
             only:       'chrome',
         })
             .catch(function (errs) {
-                expect(errs[1]).contains('A call to an async function is not awaited.');
-                expect(errs[1]).contains('> 136 |    t.expect(42).eql(43); 137 |});');
+                expect(errs[0]).contains('A call to an async function is not awaited.');
+                expect(errs[0]).contains('> 136 |    t.expect(42).eql(43); 137 |});');
             });
     });
 

@@ -96,6 +96,9 @@ import TestRunPhase from './phase';
 import { ExecuteClientFunctionCommand, ExecuteSelectorCommand } from './commands/observation';
 import { RE_EXECUTABLE_PROMISE_MARKER_DESCRIPTION } from '../services/serialization/replicator/transforms/re-executable-promise-transform/marker';
 import ReExecutablePromise from '../utils/re-executable-promise';
+import { ExternalAssertionLibraryError } from '../errors/test-run';
+import addRenderedWarning from '../notifications/add-rendered-warning';
+
 
 const lazyRequire                 = require('import-lazy')(require);
 const ClientFunctionBuilder       = lazyRequire('../client-functions/client-function-builder');
@@ -557,6 +560,8 @@ export default class TestRun extends AsyncEventEmitter {
         if (this.disconnected)
             return;
 
+        this.phase = TestRunPhase.pendingFinalization;
+
         this.browserConnection.removeListener('disconnected', onDisconnected);
 
         if (this.errs.length && this.debugOnFail) {
@@ -920,7 +925,10 @@ export default class TestRun extends AsyncEventEmitter {
             result = await this.executeCommand(command, callsite);
         }
         catch (err) {
-            error = err;
+            if (this.phase === TestRunPhase.pendingFinalization && err instanceof ExternalAssertionLibraryError)
+                addRenderedWarning(this.warningLog, WARNING_MESSAGE.unawaitedMethodWithAssertion, callsite);
+            else
+                error = err;
         }
 
         const duration = new Date().getTime() - start;

@@ -47,5 +47,6 @@ export default {
     browserProviderDropOfPerformance:   'We detected \'{browserName}\' runs slowly. Try to free up or allocate more system resources on its host machine.',
     testsCompilationTakesTooLong:       'Tests took too long to compile ({compileTime}). Ensure the test code has no excessive imports.',
     deprecatedAPI:                      '{API} is deprecated and will be removed in the next major release. Use {replacement} instead.',
+    unawaitedMethodWithAssertion:       "An asynchronous method that you do not await includes an assertion. Inspect that method's execution chain and add the 'await' keyword where necessary.",
 };
 
