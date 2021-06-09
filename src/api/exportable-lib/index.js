@@ -11,6 +11,8 @@ let RequestHook = null;
 // NOTE: We can't use lazy require for testControllerProxy, because it will break test controller detection
 let testControllerProxy = null;
 
+const UserConfig = {};
+
 function Role (loginUrl, initFn, options) {
     return role.createRole(loginUrl, initFn, options);
 }
@@ -62,5 +64,9 @@ export default {
             testControllerProxy = require('../test-controller/proxy');
 
         return testControllerProxy;
+    },
+
+    get UserConfig () {
+        return UserConfig;
     },
 };
