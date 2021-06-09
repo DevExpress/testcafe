@@ -78,6 +78,11 @@ async function createTestCafe (...args) {
         getValidPort(configuration.getOption(OPTION_NAMES.port2)),
     ]);
 
+    const userConfig = configuration.getOption(OPTION_NAMES.userConfig);
+
+    if (userConfig)
+        Object.assign(createTestCafe.UserConfig, userConfig === Object(userConfig) ? userConfig : { userConfig });
+
     configuration.mergeOptions({ hostname, port1, port2 });
 
     const testcafe = new TestCafe(configuration);
