@@ -1,5 +1,5 @@
 import { has, set } from 'lodash';
-import { Command } from 'commander';
+import { Command, Option } from 'commander';
 import dedent from 'dedent';
 import { readSync as read } from 'read-file-relative';
 import { GeneralError } from '../errors/runtime';
@@ -80,15 +80,14 @@ interface CommandLineOptions {
 
 export default class CLIArgumentParser {
     private readonly program: Command;
-    private readonly experimental: Command;
     private cwd: string;
     private remoteCount: number;
     public opts: CommandLineOptions;
     public args: string[];
 
     public constructor (cwd: string) {
-        this.program      = new Command('testcafe');
-        this.experimental = new Command('testcafe-experimental');
+        // NOTE: https://github.com/tj/commander.js/issues/1465
+        this.program      = new Command('testcafe') as Command;
         this.cwd          = cwd || process.cwd();
         this.remoteCount  = 0;
         this.opts         = {};
@@ -166,14 +165,12 @@ export default class CLIArgumentParser {
 
             // NOTE: these options will be handled by chalk internally
             .option('--color', 'force colors in command line')
-            .option('--no-color', 'disable colors in command line');
+            .option('--no-color', 'disable colors in command line')
 
-        // NOTE: temporary hide experimental options from --help command
-        this.experimental
-            .allowUnknownOption()
-            .option('--disable-multiple-windows', 'disable multiple windows mode')
-            .option('--experimental-compiler-service', 'run compiler in a separate process')
-            .option('--cache', 'cache web assets between test runs');
+            // NOTE: temporary hide experimental options from --help command
+            .addOption(new Option('--disable-multiple-windows', 'disable multiple windows mode').hideHelp())
+            .addOption(new Option('--experimental-compiler-service', 'run compiler in a separate process').hideHelp())
+            .addOption(new Option('--cache', 'cache web assets between test runs').hideHelp());
     }
 
     private _parseList (val: string): string[] {
@@ -388,11 +385,9 @@ export default class CLIArgumentParser {
 
 
         this.program.parse(argv);
-        this.experimental.parse(argv);
 
         this.args = this.program.args;
-
-        this.opts = { ...this.experimental.opts(), ...this.program.opts() };
+        this.opts = this.program.opts();
 
         this._parseListBrowsers();
 
