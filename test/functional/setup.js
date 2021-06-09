@@ -155,6 +155,11 @@ before(function () {
 
         experimentalDebug: !!process.env.EXPERIMENTAL_DEBUG,
         isProxyless:       config.isProxyless,
+        userConfig:                  {
+            url:          'localhost',
+            port:         1337,
+            isUserConfig: true,
+        },
     };
 
     return createTestCafe(testCafeOptions)
@@ -227,6 +232,7 @@ before(function () {
                     disableMultipleWindows,
                     pageRequestTimeout,
                     ajaxRequestTimeout,
+                    userConfig,
                 } = opts;
 
                 const actualBrowsers = browsersInfo.filter(browserInfo => {
@@ -291,6 +297,7 @@ before(function () {
                         disableMultipleWindows,
                         pageRequestTimeout,
                         ajaxRequestTimeout,
+                        userConfig,
                     })
                     .then(failedCount => {
                         if (customReporters)
