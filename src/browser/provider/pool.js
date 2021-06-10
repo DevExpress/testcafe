@@ -6,7 +6,8 @@ import BrowserConnection from '../connection';
 import { GeneralError } from '../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../errors/types';
 
-const BROWSER_PROVIDER_RE = /^([^:\s]+):?(.*)?$/;
+const BROWSER_PROVIDER_RE     = /^([^:\s]+):?(.*)?$/;
+const BROWSER_INFO_PROPERTIES = ['browserName', 'browserOption', 'providerName', 'provider'];
 
 export default {
     providersCache: {},
@@ -47,7 +48,7 @@ export default {
     },
 
     async _parseAlias (alias) {
-        if (alias.browserName || alias.browserOption || alias.providerName || alias.provider)
+        if (Object(alias) === alias && BROWSER_INFO_PROPERTIES.every(property => property in alias))
             return alias;
 
         if (alias && alias.path)
