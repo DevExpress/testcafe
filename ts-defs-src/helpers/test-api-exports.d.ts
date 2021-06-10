@@ -39,4 +39,4 @@ export const t: TestController;
 /**
  * Object which contains userConfig data
  */
-export const UserConfig: UserConfigFactory;
+export const UserConfig: UserConfig;
