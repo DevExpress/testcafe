@@ -61,7 +61,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
             return this.options.sourceSelectorBuilder.compiledFnCode;
 
         const code = typeof this.fn === 'string' ?
-            `(function(){return document.querySelectorAll(${JSON.stringify(this.fn)});});` :
+            this._selectorToFunction(this.fn) :
             super._getCompiledFnCode();
 
         if (code) {
@@ -85,6 +85,59 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
         }
 
         return null;
+    }
+
+    _selectorToFunction(selector) {
+        const pseudoelementKeywords =['::after', '::before', '::cue', '::first-letter', '::first-line', '::selection', '::slotted'];
+
+        if(this._hasPseudo(selector, pseudoelementKeywords)) {
+            const { parentSelector, pseudoSelector } = this._parsePseudoelementTags(selector, pseudoelementKeywords);
+            return `(function() {
+                const parent = document.querySelectorAll(${JSON.stringify(parentSelector)})[0];
+                const pseudoStyles = window.getComputedStyle(parent, ${JSON.stringify(pseudoSelector)});
+                const realPseudo = document.createElement('div');
+
+                Array.from(pseudoStyles).forEach(pseudoStyle =>
+                    realPseudo.style.setProperty(
+                        pseudoStyle,
+                        pseudoStyles.getPropertyValue(pseudoStyle),
+                        pseudoStyles.getPropertyPriority(pseudoStyle))
+                );
+
+                // NOTE: css-content returns value with quotation marks on borders
+                if(pseudoStyles.content) realPseudo.textContent = pseudoStyles.content.substring(1, pseudoStyles.content.length - 1);
+                parent.append(realPseudo);
+                return realPseudo;
+            })`;
+        }
+        return `(function() { return document.querySelectorAll(${JSON.stringify(selector)}); });`;
+    }
+
+    _hasPseudo(selector, pseudoelementKeywords) {
+        let hasPseudo = false;
+
+        pseudoelementKeywords.forEach(keyword => {
+            if (selector.includes(keyword)) {
+                hasPseudo = true;
+            }
+        });
+
+        return hasPseudo;
+    }
+
+    _parsePseudoelementTags(selector, pseudoelementKeywords) {
+        // TODO: КАК-ТО АДАПТИРУЙСЯ ПОД СЛОЖНЫЕ СОСТАВНЫЕ СЕЛЕКТОРЫ
+        let parentSelector = selector;
+        let pseudoSelector = '';
+
+        pseudoelementKeywords.forEach(keyword => {
+            if(parentSelector.includes(keyword)) {
+                pseudoSelector = keyword;
+                parentSelector = parentSelector.replace(keyword, '');
+            }
+        });
+
+        return { parentSelector, pseudoSelector };
     }
 
     _createInvalidFnTypeError () {
