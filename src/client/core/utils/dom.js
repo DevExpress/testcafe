@@ -159,16 +159,38 @@ function sortBy (property) {
     };
 }
 
+function canFocus (element, activeElement, tabIndex) {
+    if (element === activeElement)
+        return true;
+
+    if (element.disabled)
+        return false;
+
+    if (getElementStyleProperty(element, 'display') === 'none' || getElementStyleProperty(element, 'visibility') === 'hidden')
+        return false;
+
+    if ((browserUtils.isIE || browserUtils.isAndroid) && isOptionElement(element))
+        return false;
+
+    if (tabIndex !== null && tabIndex < 0)
+        return false;
+
+    return true;
+}
+
 export function getFocusableElements (doc, sort = false) {
     // NOTE: We don't take into account the case of embedded contentEditable
     // elements and specify the contentEditable attribute for focusable elements
-    const allElements         = doc.querySelectorAll('*');
-    const invisibleElements   = getInvisibleElements(allElements);
-    const inputElementsRegExp = /^(input|button|select|textarea)$/;
-    const focusableElements   = [];
-    let element               = null;
-    let tagName               = null;
-    let tabIndex              = null;
+    const allElements           = doc.querySelectorAll('*');
+    const activeElement         = nativeMethods.documentActiveElementGetter.call(doc);
+    const activeElementTabIndex = getTabIndexAttributeIntValue(activeElement);
+    const invisibleElements     = getInvisibleElements(allElements);
+    const inputElementsRegExp   = /^(input|button|select|textarea)$/;
+    const focusableElements     = [];
+
+    let element  = null;
+    let tagName  = null;
+    let tabIndex = null;
 
     let needPush = false;
 
@@ -178,16 +200,7 @@ export function getFocusableElements (doc, sort = false) {
         tabIndex = getTabIndexAttributeIntValue(element);
         needPush = false;
 
-        if (element.disabled)
-            continue;
-
-        if (getElementStyleProperty(element, 'display') === 'none' || getElementStyleProperty(element, 'visibility') === 'hidden')
-            continue;
-
-        if ((browserUtils.isIE || browserUtils.isAndroid) && isOptionElement(element))
-            continue;
-
-        if (tabIndex !== null && tabIndex < 0)
+        if (!canFocus(element, activeElement, tabIndex))
             continue;
 
         if (inputElementsRegExp.test(tagName))
@@ -211,6 +224,9 @@ export function getFocusableElements (doc, sort = false) {
 
     //NOTE: remove children of invisible elements
     let result = arrayUtils.filter(focusableElements, el => !containsElement(invisibleElements, el));
+
+    if (activeElementTabIndex && activeElementTabIndex < 0)
+        sort = false;
 
     if (sort)
         result = sortElementsByFocusingIndex(result);

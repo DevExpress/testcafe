@@ -153,8 +153,12 @@ export function getNextFocusableElement (element, reverse, skipRadioGroups) {
     const currentIndex         = arrayUtils.indexOf(allFocusable, element);
     const isLastElementFocused = reverse ? currentIndex === 0 : currentIndex === allFocusable.length - 1;
 
-    if (isLastElementFocused)
+    if (isLastElementFocused) {
+        if (!reverse && element.tabIndex < 0)
+            return allFocusable.find(el => el.tabIndex === 0);
+
         return skipRadioGroups || !isRadioInput ? document.body : allFocusable[allFocusable.length - 1 - currentIndex];
+    }
 
     if (reverse && currentIndex === -1)
         return allFocusable[allFocusable.length - 1];

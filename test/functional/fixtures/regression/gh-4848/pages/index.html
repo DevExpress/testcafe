@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>gh-4848</title>
+</head>
+<body>
+    <button id="ft5" tabindex="-1">Focus "target 5"</button>
+    <button id="ft1" tabindex="-1">Focus "target 1"</button>
+    <div id="target1" tabindex="0">target 1</div>
+    <div id="target2" tabindex="-1">target 2</div>
+    <div id="target3">target 3</div>
+    <a href="http://example.com">test</a>
+    <div id="target4" tabindex="2">target 4</div>
+    <div id="target5" tabindex="-1">target 5</div>
+
+    <script>
+        document.querySelector('#target2').focus();
+
+        document.querySelector('#ft5').addEventListener('click', function () {
+            document.querySelector('#target5').focus();
+        });
+
+        document.querySelector('#ft1').addEventListener('click', function () {
+            var t1 = document.querySelector('#target1');
+
+            t1.setAttribute('tabindex', '-1');
+            t1.focus();
+        });
+    </script>
+</body>
+</html>
