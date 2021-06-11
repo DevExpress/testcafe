@@ -815,6 +815,18 @@ describe('Compiler', function () {
             return testClientFnCompilation('basic');
         });
 
+        it('Performance (GH-6284)', async function () {
+            this.timeout(20000);
+
+            const start           = new Date().getTime();
+            const compiled        = await compile('test/server/data/client-fn-compilation/performance/index.js');
+            const compilationTime = new Date().getTime() - start;
+
+            expect(compilationTime).below(5000);
+            expect(compiled.tests.length).eql(1);
+            expect(compiled.fixtures.length).eql(1);
+        });
+
         describe('Regression', function () {
             it('Should compile ES6 object method (GH-1279)', function () {
                 return testClientFnCompilation('gh1279');
