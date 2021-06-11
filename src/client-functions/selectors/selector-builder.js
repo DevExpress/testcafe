@@ -107,7 +107,6 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
                 // NOTE: the new element should be above the pseudo, because
                 // action will look at the top element
                 const pseudoZIndex = pseudoStyles.getPropertyValue('z-index');
-                console.log('pseudoZIndex', typeof pseudoZIndex, pseudoZIndex);
                 if(pseudoZIndex === 'auto' || pseudoZIndex === 'inherit') {
                     realPseudo.style.setProperty('z-index', '99');
                 }
