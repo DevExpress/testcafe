@@ -4,36 +4,25 @@ $(document).ready(() => {
         if (this.offsetWidth - e.offsetX < 0)
             $('#popUp').addClass('close');
     });
-});
 
-let timeline = document.getElementsByClassName('timeline')[0],
-    timelineProgress = document.getElementsByClassName('timeline__progress')[0],
-    drag = document.getElementsByClassName('timeline__drag')[0];
+    $('#timeline_drag').mousedown(dragMouseDown);
 
-// Make the timeline draggable
-Draggable.create(drag, {
-    type: 'x',
-    trigger: timeline,
-    bounds: timeline,
-    onPress: function(e) {
-        video.currentTime = this.x / this.maxX * video.duration;
-        TweenMax.set(this.target, {
-            x: this.pointerX - timeline.getBoundingClientRect().left
-        });
-        this.update();
-        var progress = this.x / timeline.offsetWidth;
-        TweenMax.set(timelineProgress, {
-            scaleX: progress
-        });
-    },
-    onDrag: function() {
-        video.currentTime = this.x / this.maxX * video.duration;
-        var progress = this.x / timeline.offsetWidth;
-        TweenMax.set(timelineProgress, {
-            scaleX: progress
-        });
-    },
-    onRelease: function(e) {
-        e.preventDefault();
+    function dragMouseDown(e) {
+        document.onmouseup = closeDragElement;
+        document.onmousemove = elementDrag;
+    }
+
+    function elementDrag(e) {
+        const drag = $('#timeline_drag');
+        const timeline = $('#timeline');
+        const position = e.clientX - timeline.offset().left - 10;
+
+        if(position >= -1 && position <= 290)
+            drag.css('left', position + 'px');
+    }
+
+    function closeDragElement() {
+        document.onmouseup = null;
+        document.onmousemove = null;
     }
 });

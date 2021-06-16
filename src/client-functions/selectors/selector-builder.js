@@ -88,7 +88,7 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
     }
 
     _selectorToFunction(selector) {
-        const pseudoelementKeywords =['::after', '::before', '::cue', '::first-letter', '::first-line', '::selection', '::slotted'];
+        const pseudoelementKeywords =[':after', ':before', ':cue', ':first-letter', ':first-line', ':selection', ':slotted'];
 
         if(this._hasPseudo(selector, pseudoelementKeywords)) {
             const { parentSelector, pseudoSelector } = this._parsePseudoelementTags(selector, pseudoelementKeywords);

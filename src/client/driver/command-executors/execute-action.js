@@ -180,7 +180,7 @@ class ActionExecutor {
     }
 
     _hasPseudo(command) {
-        const pseudoelementKeywords =['::after', '::before', '::cue', '::first-letter', '::first-line', '::selection', '::slotted'];
+        const pseudoelementKeywords =[':after', ':before', ':cue', ':first-letter', ':first-line', ':selection', ':slotted'];
         const selectorText = command.selector.apiFnChain[0];
 
         let hasPseudo = false;
@@ -223,22 +223,22 @@ class ActionExecutor {
                 return new DragToOffsetAutomation(this.elements[0], this.command.dragOffsetX, this.command.dragOffsetY, this.command.options, hasPseudo);
 
             case COMMAND_TYPE.dragToElement :
-                return new DragToElementAutomation(this.elements[0], this.elements[1], this.command.options);
+                return new DragToElementAutomation(this.elements[0], this.elements[1], this.command.options, hasPseudo);
 
             case COMMAND_TYPE.scroll: {
                 const { x, y, position, options } = this.command;
 
-                return new SetScrollAutomation(this.elements[0], { x, y, position }, options);
+                return new SetScrollAutomation(this.elements[0], { x, y, position }, options, hasPseudo);
             }
 
             case COMMAND_TYPE.scrollBy: {
                 const { byX, byY, options } = this.command;
 
-                return new SetScrollAutomation(this.elements[0], { byX, byY }, options);
+                return new SetScrollAutomation(this.elements[0], { byX, byY }, options, hasPseudo);
             }
 
             case COMMAND_TYPE.scrollIntoView: {
-                return new ScrollIntoViewAutomation(this.elements[0], this.command.options);
+                return new ScrollIntoViewAutomation(this.elements[0], this.command.options, hasPseudo);
             }
 
             case COMMAND_TYPE.typeText:
