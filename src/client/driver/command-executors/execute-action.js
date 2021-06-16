@@ -179,8 +179,24 @@ class ActionExecutor {
             ensureOffsetOptions(this.elements[0], this.command.options);
     }
 
+    _hasPseudo(command) {
+        const pseudoelementKeywords =['::after', '::before', '::cue', '::first-letter', '::first-line', '::selection', '::slotted'];
+        const selectorText = command.selector.apiFnChain[0];
+
+        let hasPseudo = false;
+
+        pseudoelementKeywords.forEach(keyword => {
+            if (selectorText.includes(keyword)) {
+                hasPseudo = true;
+            }
+        });
+
+        return hasPseudo;
+    }
+
     _createAutomation () {
         let selectArgs = null;
+        const hasPseudo = this._hasPseudo(this.command);
 
         switch (this.command.type) {
             case COMMAND_TYPE.dispatchEvent:
@@ -192,10 +208,10 @@ class ActionExecutor {
                 if (/option|optgroup/.test(domUtils.getTagName(this.elements[0])))
                     return new SelectChildClickAutomation(this.elements[0], this.command.options);
 
-                return new ClickAutomation(this.elements[0], this.command.options);
+                return new ClickAutomation(this.elements[0], this.command.options, hasPseudo);
 
             case COMMAND_TYPE.rightClick :
-                return new RClickAutomation(this.elements[0], this.command.options);
+                return new RClickAutomation(this.elements[0], this.command.options, hasPseudo);
 
             case COMMAND_TYPE.doubleClick :
                 return new DblClickAutomation(this.elements[0], this.command.options);
