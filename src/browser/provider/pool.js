@@ -48,11 +48,13 @@ export default {
     },
 
     async _parseAlias (alias) {
-        if (Object(alias) === alias && BROWSER_INFO_PROPERTIES.every(property => property in alias))
-            return alias;
+        if (typeof alias === 'object') {
+            if (BROWSER_INFO_PROPERTIES.every(property => property in alias))
+                return alias;
 
-        if (alias && alias.path)
-            return this._handlePathAndCmd(alias);
+            if (alias.path)
+                return this._handlePathAndCmd(alias);
+        }
 
         if (typeof alias === 'string')
             return this._parseAliasString(alias);
