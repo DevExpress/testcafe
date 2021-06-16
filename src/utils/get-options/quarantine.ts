@@ -78,7 +78,7 @@ export class Quarantine {
         // @ts-ignore
         if (needToUpdateTestRunThreshold) this.attemptLimit = attemptLimit;
         // @ts-ignore
-        if (needToUpdatePassedQuarantineThreshold) this.passedThreshold = successThreshold;
+        if (needToUpdatePassedQuarantineThreshold) this.successThreshold = successThreshold;
 
         if (needToRecalculateFailedThreshold) this._setFailedThreshold();
     }
