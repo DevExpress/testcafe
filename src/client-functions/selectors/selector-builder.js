@@ -104,16 +104,16 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
                         pseudoStyles.getPropertyPriority(pseudoStyle))
                 );
 
-                // NOTE: the new element should be above the pseudo, because
-                // action will look at the top element
-                const pseudoZIndex = pseudoStyles.getPropertyValue('z-index');
-                if(pseudoZIndex === 'auto' || pseudoZIndex === 'inherit') {
-                    realPseudo.style.setProperty('z-index', '99');
-                }
-                else {
-                    const realZIndex = parseInt(pseudoZIndex) + 1;
-                    realPseudo.style.setProperty('z-index', '' + realZIndex);
-                }
+                // // NOTE: the new element should be above the pseudo, because
+                // // action will look at the top element
+                // const pseudoZIndex = pseudoStyles.getPropertyValue('z-index');
+                // if(pseudoZIndex === 'auto' || pseudoZIndex === 'inherit') {
+                //     realPseudo.style.setProperty('z-index', '99');
+                // }
+                // else {
+                //     const realZIndex = parseInt(pseudoZIndex) + 1;
+                //     realPseudo.style.setProperty('z-index', '' + realZIndex);
+                // }
 
                 // NOTE: css-content returns value with quotation marks on borders
                 if(pseudoStyles.content) realPseudo.textContent = pseudoStyles.content.substring(1, pseudoStyles.content.length - 1);
