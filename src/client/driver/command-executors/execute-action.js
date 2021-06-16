@@ -214,13 +214,13 @@ class ActionExecutor {
                 return new RClickAutomation(this.elements[0], this.command.options, hasPseudo);
 
             case COMMAND_TYPE.doubleClick :
-                return new DblClickAutomation(this.elements[0], this.command.options);
+                return new DblClickAutomation(this.elements[0], this.command.options, hasPseudo);
 
             case COMMAND_TYPE.hover :
-                return new HoverAutomation(this.elements[0], this.command.options);
+                return new HoverAutomation(this.elements[0], this.command.options, hasPseudo);
 
             case COMMAND_TYPE.drag :
-                return new DragToOffsetAutomation(this.elements[0], this.command.dragOffsetX, this.command.dragOffsetY, this.command.options);
+                return new DragToOffsetAutomation(this.elements[0], this.command.dragOffsetX, this.command.dragOffsetY, this.command.options, hasPseudo);
 
             case COMMAND_TYPE.dragToElement :
                 return new DragToElementAutomation(this.elements[0], this.elements[1], this.command.options);

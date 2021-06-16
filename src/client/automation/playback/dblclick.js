@@ -15,8 +15,8 @@ const delay      = testCafeCore.delay;
 const FIRST_CLICK_DELAY = featureDetection.isTouchDevice ? 0 : 160;
 
 export default class DblClickAutomation extends VisibleElementAutomation {
-    constructor (element, clickOptions) {
-        super(element, clickOptions);
+    constructor (element, clickOptions, hasPseudo) {
+        super(element, clickOptions, hasPseudo);
 
         this.modifiers = clickOptions.modifiers;
         this.caretPos  = clickOptions.caretPos;
@@ -40,7 +40,7 @@ export default class DblClickAutomation extends VisibleElementAutomation {
 
         clickOptions.speed = 1;
 
-        const clickAutomation = new ClickAutomation(this.element, clickOptions);
+        const clickAutomation = new ClickAutomation(this.element, clickOptions, this.hasPseudo);
 
         clickAutomation.on(clickAutomation.TARGET_ELEMENT_FOUND_EVENT, e => this.emit(this.TARGET_ELEMENT_FOUND_EVENT, e));
 
@@ -63,7 +63,7 @@ export default class DblClickAutomation extends VisibleElementAutomation {
             speed:     1
         });
 
-        const clickAutomation = new ClickAutomation(document.documentElement, clickOptions);
+        const clickAutomation = new ClickAutomation(document.documentElement, clickOptions, this.hasPseudo);
 
         return clickAutomation.run()
             .then(clickEventArgs => {
