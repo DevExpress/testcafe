@@ -151,5 +151,5 @@ export const RUNTIME_ERRORS = {
     browserConnectionError:                             'E1063',
     testRunRequestInDisconnectedBrowser:                'E1064',
     invalidQuarantineOption:                            'E1065',
-    invalidRetryCountValue:                             'E1066',
+    invalidAttemptLimitValue:                           'E1066',
 };

@@ -5,8 +5,8 @@ import { GeneralError } from '../../errors/runtime';
 import { Dictionary } from '../../configuration/interfaces';
 import TestRunErrorFormattableAdapter from '../../errors/test-run/formattable-adapter';
 
-const DEFAULT_QUARANTINE_THRESHOLD = 3;
-const DEFAULT_TEST_RUN_THRESHOLD = 5;
+const DEFAULT_ATTEMPT_LIMIT = 5;
+const DEFAULT_THRESHOLD     = 3;
 
 function _isQuarantineOption (option: string): option is QUARANTINE_OPTION_NAMES {
     return Object.values(QUARANTINE_OPTION_NAMES).includes(option as QUARANTINE_OPTION_NAMES);
@@ -16,11 +16,11 @@ export function validateQuarantineOptions (options: Dictionary<string | number>,
     if (Object.keys(options).some(key => !_isQuarantineOption(key)))
         throw new GeneralError(RUNTIME_ERRORS.invalidQuarantineOption, optionName);
 
-    const retryCount = options.retryCount || DEFAULT_TEST_RUN_THRESHOLD;
-    const passCount  = options.passCount || DEFAULT_QUARANTINE_THRESHOLD;
+    const attemptLimit     = options.attemptLimit || DEFAULT_ATTEMPT_LIMIT;
+    const successThreshold = options.successThreshold || DEFAULT_THRESHOLD;
 
-    if (passCount > retryCount)
-        throw new GeneralError(RUNTIME_ERRORS.invalidRetryCountValue, passCount);
+    if (successThreshold >= attemptLimit)
+        throw new GeneralError(RUNTIME_ERRORS.invalidAttemptLimitValue, attemptLimit, successThreshold);
 }
 
 export async function getQuarantineOptions (optionName: string, options: string | boolean | Dictionary<string | number>): Promise<Dictionary<number> | boolean> {
@@ -51,15 +51,15 @@ interface AttemptResult {
 
 export class Quarantine {
     public attempts: TestRunErrorFormattableAdapter[][];
-    public testRunThreshold: number;
-    public failedQuarantineThreshold: number;
-    public passedQuarantineThreshold: number;
+    public attemptLimit: number;
+    public successThreshold: number;
+    public failureThreshold: number;
 
     public constructor () {
         this.attempts = [];
-        this.testRunThreshold = DEFAULT_TEST_RUN_THRESHOLD;
-        this.failedQuarantineThreshold = DEFAULT_QUARANTINE_THRESHOLD;
-        this.passedQuarantineThreshold = DEFAULT_QUARANTINE_THRESHOLD;
+        this.attemptLimit = DEFAULT_ATTEMPT_LIMIT;
+        this.successThreshold = DEFAULT_THRESHOLD;
+        this.failureThreshold = DEFAULT_THRESHOLD;
     }
 
     public getFailedAttempts (): TestRunErrorFormattableAdapter[][] {
@@ -70,14 +70,17 @@ export class Quarantine {
         return this.attempts.filter(errors => errors.length === 0);
     }
 
-    public setPassedQuarantineThreshold (threshold: number): void {
-        this.passedQuarantineThreshold = threshold;
-        this._setFailedThreshold();
-    }
+    public setCustomParameters (attemptLimit: number | undefined, successThreshold: number | undefined): void {
+        const needToUpdateTestRunThreshold          = typeof attemptLimit === 'number';
+        const needToUpdatePassedQuarantineThreshold = typeof successThreshold === 'number';
+        const needToRecalculateFailedThreshold      = needToUpdateTestRunThreshold || needToUpdatePassedQuarantineThreshold;
 
-    public setTestRunThreshold (threshold: number): void {
-        this.testRunThreshold = threshold;
-        this._setFailedThreshold();
+        // @ts-ignore
+        if (needToUpdateTestRunThreshold) this.attemptLimit = attemptLimit;
+        // @ts-ignore
+        if (needToUpdatePassedQuarantineThreshold) this.passedThreshold = successThreshold;
+
+        if (needToRecalculateFailedThreshold) this._setFailedThreshold();
     }
 
     public getNextAttemptNumber (): number {
@@ -85,12 +88,12 @@ export class Quarantine {
     }
 
     public isThresholdReached (extraErrors?: TestRunErrorFormattableAdapter[]): boolean {
-        const { failedTimes, passedTimes } = this._getAttemptsResult(extraErrors);
+        const { passedTimes, failedTimes } = this._getAttemptsResult(extraErrors);
 
-        const failedThresholdReached = failedTimes >= this.failedQuarantineThreshold;
-        const passedThresholdReached = passedTimes >= this.passedQuarantineThreshold;
+        const successThresholdReached = passedTimes >= this.successThreshold;
+        const failureThresholdReached = failedTimes >= this.failureThreshold;
 
-        return failedThresholdReached || passedThresholdReached;
+        return successThresholdReached || failureThresholdReached;
     }
 
     public isFirstAttemptSuccessful (extraErrors: TestRunErrorFormattableAdapter[]): boolean {
@@ -114,9 +117,6 @@ export class Quarantine {
     }
 
     private _setFailedThreshold (): void {
-        if (this.testRunThreshold !== DEFAULT_TEST_RUN_THRESHOLD)
-            this.failedQuarantineThreshold = this.testRunThreshold - this.passedQuarantineThreshold + 1;
-        else
-            this.failedQuarantineThreshold = DEFAULT_QUARANTINE_THRESHOLD;
+        this.failureThreshold = this.attemptLimit - this.successThreshold + 1;
     }
 }

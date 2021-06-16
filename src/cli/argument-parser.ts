@@ -380,7 +380,7 @@ export default class CLIArgumentParser {
         if (quarantineOptionIndex > -1) {
             const isNotLastOption       = quarantineOptionIndex < argv.length - 1;
             const shouldMoveOptionToEnd = isNotLastOption &&
-                ![QUARANTINE_OPTION_NAMES.retryCount, QUARANTINE_OPTION_NAMES.passCount].some(opt => argv[quarantineOptionIndex + 1].startsWith(opt));
+                ![QUARANTINE_OPTION_NAMES.attemptLimit, QUARANTINE_OPTION_NAMES.successThreshold].some(opt => argv[quarantineOptionIndex + 1].startsWith(opt));
 
             if (shouldMoveOptionToEnd)
                 argv.push(argv.splice(quarantineOptionIndex, 1)[0]);

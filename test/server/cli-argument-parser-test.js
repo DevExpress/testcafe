@@ -650,39 +650,42 @@ describe('CLI argument parser', function () {
                 const parser = await parse(argsString);
 
                 expect(parser.opts.quarantineMode).to.be.ok;
-                expect(parser.opts.quarantineMode.retryCount).equal(5);
-                expect(parser.opts.quarantineMode.passCount).equal(1);
+                expect(parser.opts.quarantineMode.attemptLimit).equal(5);
+                expect(parser.opts.quarantineMode.successThreshold).equal(1);
             }
 
-            await checkCliArgs('-q retryCount=5,passCount=1');
-            await checkCliArgs('--quarantine-mode retryCount=5,passCount=1');
+            await checkCliArgs('-q attemptLimit=5,successThreshold=1');
+            await checkCliArgs('--quarantine-mode attemptLimit=5,successThreshold=1');
         });
 
-        it('Should pass if only "passCount" is provided', async () => {
+        it('Should pass if only "successThreshold" is provided', async () => {
             async function checkCliArgs (argsString) {
                 const parser = await parse(argsString);
 
                 expect(parser.opts.quarantineMode).to.be.ok;
-                expect(parser.opts.quarantineMode.passCount).equal(1);
+                expect(parser.opts.quarantineMode.successThreshold).equal(1);
             }
 
-            await checkCliArgs('-q passCount=1');
-            await checkCliArgs('--quarantine-mode passCount=1');
+            await checkCliArgs('-q successThreshold=1');
+            await checkCliArgs('--quarantine-mode successThreshold=1');
         });
 
         it('Should fail if the argument value is not specified', async () => {
-            await assertRaisesError('-q retryCount=', 'The "--quarantine-mode" option value is not a valid key-value pair.');
-            await assertRaisesError('--quarantine-mode retryCount=', 'The "--quarantine-mode" option value is not a valid key-value pair.');
+            await assertRaisesError('-q attemptLimit=', 'The "--quarantine-mode" option value is not a valid key-value pair.');
+            await assertRaisesError('--quarantine-mode attemptLimit=', 'The "--quarantine-mode" option value is not a valid key-value pair.');
         });
 
-        it('Should fail if "retryCount" is greater than "passCount"', async () => {
-            await assertRaisesError('-q retryCount=1,passCount=2', 'The "retryCount" value should be greater or equal to "passCount" (2).');
-            await assertRaisesError('--quarantine-mode retryCount=1,passCount=2', 'The "retryCount" value should be greater or equal to "passCount" (2).');
+        it('Should fail if "attemptLimit" is greater or equal to "successThreshold"', async () => {
+            await assertRaisesError('-q attemptLimit=2,successThreshold=2', 'The "attemptLimit" (2) value should be greater then "successThreshold" (2).');
+            await assertRaisesError('--quarantine-mode attemptLimit=2,successThreshold=2', 'The "attemptLimit" (2) value should be greater then "successThreshold" (2).');
+
+            await assertRaisesError('-q attemptLimit=1,successThreshold=2', 'The "attemptLimit" (1) value should be greater then "successThreshold" (2).');
+            await assertRaisesError('--quarantine-mode attemptLimit=1,successThreshold=2', 'The "attemptLimit" (1) value should be greater then "successThreshold" (2).');
         });
 
-        it('Should fail if "retryCount" is less than 3', async () => {
-            await assertRaisesError('-q retryCount=1', 'The "retryCount" value should be greater or equal to "passCount" (3).');
-            await assertRaisesError('--quarantine-mode retryCount=1', 'The "retryCount" value should be greater or equal to "passCount" (3).');
+        it('Should fail if "attemptLimit" is less than 3', async () => {
+            await assertRaisesError('-q attemptLimit=1', 'The "attemptLimit" (1) value should be greater then "successThreshold" (3).');
+            await assertRaisesError('--quarantine-mode attemptLimit=1', 'The "attemptLimit" (1) value should be greater then "successThreshold" (3).');
         });
 
         it('Should not fail if the quarantine option is not the latest option and no quarantine mode arguments are specified', async () => {
