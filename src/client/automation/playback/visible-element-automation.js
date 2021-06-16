@@ -32,7 +32,6 @@ class ElementState {
         this.isTarget    = isTarget;
         this.inMoving    = inMoving;
         this.devicePoint = getDevicePoint(clientPoint);
-        this.hasPseudo   = true;
     }
 }
 
@@ -45,6 +44,10 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
         this.element            = element;
         this.options            = offsetOptions;
         this.hasPseudo          = hasPseudo;
+
+        console.log('HAS PSEUDO:', hasPseudo);
+        debugger;
+
         this.automationSettings = new AutomationSettings(offsetOptions.speed);
     }
 

@@ -21,8 +21,8 @@ const focusBlurSandbox = hammerhead.eventSandbox.focusBlur;
 
 
 export default class DragAutomationBase extends VisibleElementAutomation {
-    constructor (element, mouseOptions) {
-        super(element, mouseOptions);
+    constructor (element, mouseOptions, hasPseudo) {
+        super(element, mouseOptions, hasPseudo);
 
         this.modifiers = mouseOptions.modifiers;
         this.speed     = mouseOptions.speed;
