@@ -75,11 +75,8 @@ export class Quarantine {
         const needToUpdatePassedQuarantineThreshold = typeof successThreshold === 'number';
         const needToRecalculateFailedThreshold      = needToUpdateTestRunThreshold || needToUpdatePassedQuarantineThreshold;
 
-        // @ts-ignore
-        if (needToUpdateTestRunThreshold) this.attemptLimit = attemptLimit;
-        // @ts-ignore
-        if (needToUpdatePassedQuarantineThreshold) this.successThreshold = successThreshold;
-
+        if (needToUpdateTestRunThreshold) this.attemptLimit = attemptLimit as number;
+        if (needToUpdatePassedQuarantineThreshold) this.successThreshold = successThreshold as number;
         if (needToRecalculateFailedThreshold) this._setFailedThreshold();
     }
 
