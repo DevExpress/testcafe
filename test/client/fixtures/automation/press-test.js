@@ -159,6 +159,46 @@ $(document).ready(function () {
             });
     });
 
+    asyncTest('press tab to focus svg', function () {
+        const div = document.createElement('div');
+
+        div.innerHTML = '<button id="btn_prev_svg" tabindex="100">button 1</button>' +
+                        '<svg id="svg_target" tabindex="101"><text x="0" y="15" fill="red">svg</text></svg>' +
+                        '<button id="btn_after_svg" tabindex="102">button 2</button>';
+
+        const btn1 = div.querySelector('#btn_prev_svg');
+        const svg  = div.querySelector('#svg_target');
+        const btn2 = div.querySelector('#btn_after_svg');
+
+        document.body.appendChild(div);
+
+        btn1.focus();
+        ok(btn1 === document.activeElement);
+
+        let press = new PressAutomation(parseKeySequence('tab').combinations, {});
+
+        press
+            .run()
+            .then(function () {
+                ok(svg === document.activeElement);
+
+                btn2.focus();
+                ok(btn2 === document.activeElement);
+
+                press = new PressAutomation(parseKeySequence('shift+tab').combinations, {});
+
+                return press
+                    .run();
+            })
+            .then(function () {
+                ok(svg === document.activeElement);
+
+                document.body.removeChild(div);
+
+                start();
+            });
+    });
+
     module('regression tests');
 
     asyncTest('T334620, GH-3282 - Wrong "key" property in keyEvent objects (press)', function () {

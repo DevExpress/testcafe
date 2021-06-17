@@ -246,7 +246,7 @@ function getInvisibleElements (elements) {
 }
 
 function getTabIndexAttributeIntValue (el) {
-    let tabIndex = el.getAttribute('tabIndex');
+    let tabIndex = el.getAttribute('tabindex');
 
     if (tabIndex !== null) {
         tabIndex = parseInt(tabIndex, 10);
