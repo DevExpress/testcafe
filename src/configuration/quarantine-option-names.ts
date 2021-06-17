@@ -1,6 +1,6 @@
 enum QUARANTINE_OPTION_NAMES {
-    retryCount = 'retryCount',
-    passCount = 'passCount'
+    attemptLimit = 'attemptLimit',
+    successThreshold = 'successThreshold'
 }
 
 export default QUARANTINE_OPTION_NAMES;
