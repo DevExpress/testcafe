@@ -7,6 +7,8 @@ import TestRunErrorFormattableAdapter from '../../errors/test-run/formattable-ad
 
 const DEFAULT_ATTEMPT_LIMIT = 5;
 const DEFAULT_THRESHOLD     = 3;
+const MIN_ATTEMPT_LIMIT     = 2;
+const MIN_SUCCESS_THRESHOLD = 1;
 
 function _isQuarantineOption (option: string): option is QUARANTINE_OPTION_NAMES {
     return Object.values(QUARANTINE_OPTION_NAMES).includes(option as QUARANTINE_OPTION_NAMES);
@@ -16,11 +18,17 @@ export function validateQuarantineOptions (options: Dictionary<string | number>,
     if (Object.keys(options).some(key => !_isQuarantineOption(key)))
         throw new GeneralError(RUNTIME_ERRORS.invalidQuarantineOption, optionName);
 
-    const attemptLimit     = options.attemptLimit || DEFAULT_ATTEMPT_LIMIT;
-    const successThreshold = options.successThreshold || DEFAULT_THRESHOLD;
+    const attemptLimit     = typeof options.attemptLimit === 'number' ? options.attemptLimit : DEFAULT_ATTEMPT_LIMIT;
+    const successThreshold = typeof options.successThreshold === 'number' ? options.successThreshold : DEFAULT_THRESHOLD;
+
+    if (attemptLimit < MIN_ATTEMPT_LIMIT)
+        throw new GeneralError(RUNTIME_ERRORS.invalidAttemptLimitValue, QUARANTINE_OPTION_NAMES.attemptLimit, MIN_ATTEMPT_LIMIT);
+
+    if (successThreshold < MIN_SUCCESS_THRESHOLD)
+        throw new GeneralError(RUNTIME_ERRORS.invalidSuccessThresholdValue, QUARANTINE_OPTION_NAMES.successThreshold, MIN_SUCCESS_THRESHOLD);
 
     if (successThreshold >= attemptLimit)
-        throw new GeneralError(RUNTIME_ERRORS.invalidAttemptLimitValue, attemptLimit, successThreshold);
+        throw new GeneralError(RUNTIME_ERRORS.invalidQuarantineParametersRatio, attemptLimit, successThreshold);
 }
 
 export async function getQuarantineOptions (optionName: string, options: string | boolean | Dictionary<string | number>): Promise<Dictionary<number> | boolean> {

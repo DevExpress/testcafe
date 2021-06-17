@@ -675,17 +675,30 @@ describe('CLI argument parser', function () {
             await assertRaisesError('--quarantine-mode attemptLimit=', 'The "--quarantine-mode" option value is not a valid key-value pair.');
         });
 
-        it('Should fail if "attemptLimit" is greater or equal to "successThreshold"', async () => {
+        it('Should fail if "successThreshold" is greater or equal to "attemptLimit"', async () => {
             await assertRaisesError('-q attemptLimit=2,successThreshold=2', 'The "attemptLimit" (2) value should be greater then "successThreshold" (2).');
             await assertRaisesError('--quarantine-mode attemptLimit=2,successThreshold=2', 'The "attemptLimit" (2) value should be greater then "successThreshold" (2).');
 
-            await assertRaisesError('-q attemptLimit=1,successThreshold=2', 'The "attemptLimit" (1) value should be greater then "successThreshold" (2).');
-            await assertRaisesError('--quarantine-mode attemptLimit=1,successThreshold=2', 'The "attemptLimit" (1) value should be greater then "successThreshold" (2).');
+            await assertRaisesError('-q attemptLimit=2,successThreshold=3', 'The "attemptLimit" (2) value should be greater then "successThreshold" (3).');
+            await assertRaisesError('--quarantine-mode attemptLimit=2,successThreshold=3', 'The "attemptLimit" (2) value should be greater then "successThreshold" (3).');
         });
 
-        it('Should fail if "attemptLimit" is less than 3', async () => {
-            await assertRaisesError('-q attemptLimit=1', 'The "attemptLimit" (1) value should be greater then "successThreshold" (3).');
-            await assertRaisesError('--quarantine-mode attemptLimit=1', 'The "attemptLimit" (1) value should be greater then "successThreshold" (3).');
+        it('Should fail if "attemptLimit" is less than 3 with the default "successThreshold" value (3)', async () => {
+            await assertRaisesError('-q attemptLimit=2', 'The "attemptLimit" (2) value should be greater then "successThreshold" (3).');
+            await assertRaisesError('--quarantine-mode attemptLimit=2', 'The "attemptLimit" (2) value should be greater then "successThreshold" (3).');
+        });
+
+        it('Should fail if "attemptLimit" is less than 2', async () => {
+            await assertRaisesError('-q attemptLimit=1', 'The "attemptLimit" cannot be less than 2.');
+            await assertRaisesError('--quarantine-mode attemptLimit=1', 'The "attemptLimit" cannot be less than 2.');
+
+            await assertRaisesError('-q attemptLimit=0', 'The "attemptLimit" cannot be less than 2.');
+            await assertRaisesError('--quarantine-mode attemptLimit=0', 'The "attemptLimit" cannot be less than 2.');
+        });
+
+        it('Should fail if "successThreshold" is less than 1', async () => {
+            await assertRaisesError('-q successThreshold=0', 'The "successThreshold" cannot be less than 1.');
+            await assertRaisesError('--quarantine-mode successThreshold=0', 'The "successThreshold" cannot be less than 1.');
         });
 
         it('Should not fail if the quarantine option is not the latest option and no quarantine mode arguments are specified', async () => {

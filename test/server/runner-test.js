@@ -935,9 +935,12 @@ describe('Runner', () => {
 
             await checkQuarantineOptions({ quarantineMode: { attemptLimit: 5, successThreshold: 5 } }, 'The "attemptLimit" (5) value should be greater then "successThreshold" (5).');
             await checkQuarantineOptions({ quarantineMode: { attemptLimit: 5, successThreshold: 10 } }, 'The "attemptLimit" (5) value should be greater then "successThreshold" (10).');
+            await checkQuarantineOptions({ quarantineMode: { attemptLimit: 1 } }, 'The "attemptLimit" cannot be less than 2.');
+            await checkQuarantineOptions({ quarantineMode: { attemptLimit: 0 } }, 'The "attemptLimit" cannot be less than 2.');
+            await checkQuarantineOptions({ quarantineMode: { successThreshold: 0 } }, 'The "successThreshold" cannot be less than 1.');
             await checkQuarantineOptions({ quarantineMode: { test: '1' } }, 'The "quarantineMode" option should be one of "attemptLimit" or "successThreshold" if you specify custom quarantine mode settings.');
 
-            expect(errorCount).eql(3);
+            expect(errorCount).eql(6);
         });
     });
 
