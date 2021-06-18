@@ -75,7 +75,7 @@ type BrowserInfoSource = BrowserInfo | BrowserConnection;
 
 export default class TestCafeConfiguration extends Configuration {
     public constructor (configFile = CONFIGURATION_FILENAME) {
-        super(configFile);
+        super(configFile, configFile === CONFIGURATION_FILENAME);
     }
 
     public async init (options?: object): Promise<void> {
@@ -83,7 +83,7 @@ export default class TestCafeConfiguration extends Configuration {
 
         await super.init();
 
-        const opts = await this._load();
+        const opts = await this._load() || await this._loadJs();
 
         if (opts) {
             this._options = Configuration._fromObj(opts);
