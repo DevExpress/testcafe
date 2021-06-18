@@ -6,17 +6,19 @@ import BrowserConnection from '../connection';
 import { GeneralError } from '../../errors/runtime';
 import { RUNTIME_ERRORS } from '../../errors/types';
 
-const BROWSER_PROVIDER_RE = /^([^:\s]+):?(.*)?$/;
+const BROWSER_PROVIDER_RE     = /^([^:\s]+):?(.*)?$/;
+const BROWSER_INFO_PROPERTIES = ['browserName', 'browserOption', 'providerName', 'provider'];
 
 export default {
     providersCache: {},
 
     async _handlePathAndCmd (alias) {
-        const browserName  = JSON.stringify(alias);
-        const providerName = 'path';
-        const provider     = await this.getProvider(providerName);
+        const browserName   = JSON.stringify(alias);
+        const providerName  = 'path';
+        const provider      = await this.getProvider(providerName);
+        const browserOption = provider.plugin.getConfig(browserName);
 
-        return { provider, providerName, browserName };
+        return { provider, providerName, browserName, browserOption };
     },
 
     async _parseAliasString (alias) {
@@ -25,8 +27,9 @@ export default {
         if (!providerRegExpMatch)
             throw new GeneralError(RUNTIME_ERRORS.cannotFindBrowser, alias);
 
-        let providerName = providerRegExpMatch[1];
-        let browserName  = providerRegExpMatch[2] || '';
+        let providerName  = providerRegExpMatch[1];
+        let browserName   = providerRegExpMatch[2] || '';
+        let browserOption = {};
 
         let provider = await this.getProvider(providerName);
 
@@ -39,15 +42,19 @@ export default {
             browserName  = providerRegExpMatch[1] || '';
         }
 
-        return { provider, providerName, browserName };
+        browserOption = provider.plugin.getConfig(browserName);
+
+        return { provider, providerName, browserName, browserOption };
     },
 
     async _parseAlias (alias) {
-        if (alias.browserName && alias.providerName && alias.provider)
-            return alias;
+        if (typeof alias === 'object') {
+            if (BROWSER_INFO_PROPERTIES.every(property => property in alias))
+                return alias;
 
-        if (alias && alias.path)
-            return this._handlePathAndCmd(alias);
+            if (alias.path)
+                return this._handlePathAndCmd(alias);
+        }
 
         if (typeof alias === 'string')
             return this._parseAliasString(alias);

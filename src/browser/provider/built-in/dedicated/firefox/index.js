@@ -9,7 +9,7 @@ import MarionetteClient from './marionette-client';
 export default {
     ...dedicatedProviderBase,
 
-    _getConfig (name) {
+    getConfig (name) {
         return getConfig(name);
     },
 
@@ -30,8 +30,8 @@ export default {
         }
     },
 
-    async openBrowser (browserId, pageUrl, configString, disableMultipleWindows) {
-        const runtimeInfo = await getRuntimeInfo(configString);
+    async openBrowser (browserId, pageUrl, config, disableMultipleWindows) {
+        const runtimeInfo = await getRuntimeInfo(config);
 
         runtimeInfo.browserName       = this._getBrowserName();
         runtimeInfo.browserId         = browserId;

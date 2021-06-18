@@ -189,7 +189,7 @@ describe('TestCafe Live', function () {
 
         return runner
             .src(fileName)
-            .browsers('chrome')
+            .browsers('remote')
             .run();
     }
 
@@ -222,7 +222,7 @@ describe('TestCafe Live', function () {
                 expect(tests.length).eql(1);
                 expect(tests[0].name).eql('basic');
                 expect(runner.disposed).eql(true);
-                expect(runner.watchedFiles).eql([testFileWithSingleTestPath]);
+                expect(runner.watchedFiles).include(testFileWithSingleTestPath);
             });
     });
 
@@ -258,6 +258,7 @@ describe('TestCafe Live', function () {
         return runTests(testFileWithSingleTestPath)
             .then(() => {
                 runner.src(testFileWithMultipleTestsPath);
+                return runner._applyOptions();
             })
             .then(() => {
                 return runner.controller.restart();
@@ -280,7 +281,9 @@ describe('TestCafe Live', function () {
         return runTests(testFileWithSingleTestPath)
             .then(() => {
                 runner.src(testFileWithSyntaxErrorPath);
-
+                return runner._applyOptions();
+            })
+            .then(() => {
                 return runner.controller.restart();
             })
             .then(() => {
@@ -292,6 +295,9 @@ describe('TestCafe Live', function () {
                 runner.clearSources();
                 runner.src(testFileWithSingleTestPath);
 
+                return runner._applyOptions();
+            })
+            .then(() => {
                 return runner.controller.restart();
             })
             .then(() => {
@@ -306,6 +312,9 @@ describe('TestCafe Live', function () {
                 runner.clearSources();
                 runner.src(testFileWithSyntaxErrorPath);
 
+                return runner._applyOptions();
+            })
+            .then(() => {
                 return runner.controller.restart();
             })
             .then(() => {
@@ -359,7 +368,7 @@ describe('TestCafe Live', function () {
         this.timeout(6000);
 
         runner = new RunnerMock(testCafe, {})
-            .browsers('chrome');
+            .browsers('remote');
 
         const promise = runner.run();
 
@@ -391,7 +400,7 @@ describe('TestCafe Live', function () {
 
         runner
             .src('dummy.js')
-            .browsers('chrome')
+            .browsers('remote')
             .run()
             .then(() => {
                 throw new Error('Should raise the "Test files not found" error');
@@ -411,7 +420,7 @@ describe('TestCafe Live', function () {
 
         return runner
             .src(testFileWithSingleTestPath)
-            .browsers('chrome')
+            .browsers('remote')
             .run()
             .then(() => {
                 counter++;

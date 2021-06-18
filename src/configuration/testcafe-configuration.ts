@@ -1,5 +1,5 @@
 import Configuration from './configuration-base';
-import { castArray } from 'lodash';
+import { castArray, flatten } from 'lodash';
 import { getGrepOptions, getSSLOptions } from '../utils/get-options';
 import OPTION_NAMES from './option-names';
 import getFilterFn from '../utils/get-filter-fn';
@@ -31,6 +31,8 @@ import {
 import CustomizableCompilers from './customizable-compilers';
 import { DEPRECATED, getDeprecationMessage } from '../notifications/deprecated';
 import WarningLog from '../notifications/warning-log';
+import browserProviderPool from '../browser/provider/pool';
+import BrowserConnection, { BrowserInfo } from '../browser/connection';
 
 const CONFIGURATION_FILENAME = '.testcaferc.json';
 
@@ -69,6 +71,8 @@ interface TestCafeStartOptions {
     options: TestCafeAdditionalStartOptions;
 }
 
+type BrowserInfoSource = BrowserInfo | BrowserConnection;
+
 export default class TestCafeConfiguration extends Configuration {
     public constructor (configFile = CONFIGURATION_FILENAME) {
         super(configFile);
@@ -88,6 +92,9 @@ export default class TestCafeConfiguration extends Configuration {
         }
 
         this.mergeOptions(options);
+
+        if (this._options.browsers)
+            this._options.browsers.value = await this._getBrowserInfo();
     }
 
     public prepare (): void {
@@ -232,6 +239,17 @@ export default class TestCafeConfiguration extends Configuration {
 
             (compilerOptions.value as CompilerOptions)[CustomizableCompilers.typescript] = typeScriptCompilerOptions;
         }
+    }
+
+    private async _getBrowserInfo (): Promise<BrowserInfoSource[]> {
+        if (!this._options.browsers.value)
+            return [];
+
+        const browsers = Array.isArray(this._options.browsers.value) ? [...this._options.browsers.value] : [this._options.browsers.value];
+
+        const browserInfo = await Promise.all(browsers.map(browser => browserProviderPool.getBrowserInfo(browser)));
+
+        return flatten(browserInfo);
     }
 
     public static get FILENAME (): string {

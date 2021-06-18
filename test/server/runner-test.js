@@ -17,6 +17,10 @@ const OptionNames             = require('../../lib/configuration/option-names');
 const { GeneralError }        = require('../../lib/errors/runtime');
 const { RUNTIME_ERRORS }      = require('../../lib/errors/types');
 const { createReporter }      = require('../functional/utils/reporter');
+const proxyquire              = require('proxyquire');
+const BrowserConnectionStatus = require('../../lib/browser/connection/status');
+const { noop }                = require('lodash');
+const Test                    = require('../../lib/api/structure/test');
 
 chai.use(require('chai-string'));
 
@@ -291,14 +295,15 @@ describe('Runner', () => {
                 });
         });
 
-        it('should allow to set object as a `screenshots` method parameter', () => {
-            runner
+        it('should allow to set object as a `screenshots` method parameter', async () => {
+            await runner
                 .screenshots({
                     path:        'path',
                     takeOnFails: true,
                     pathPattern: 'pathPattern',
                     fullPage:    true
-                });
+                })
+                ._applyOptions();
 
             expect(runner.configuration.getOption('screenshots').path).eql('path');
             expect(runner.configuration.getOption('screenshots').takeOnFails).eql(true);
@@ -918,6 +923,149 @@ describe('Runner', () => {
             expect(errorCount).eql(4);
         });
 
+        describe('On Linux without a graphics subsystem', () => {
+
+            const browserConnectionGateway = {
+                startServingConnection: noop,
+                stopServingConnection:  noop
+            };
+            const compilerService          = {
+                init:     noop,
+                getTests: () => [new Test({ currentFixture: void 0 })]
+            };
+
+            let runnerLinux = null;
+
+            class BrowserConnectionMock extends BrowserConnection {
+                constructor (...args) {
+                    super(...args);
+
+                    this.status = BrowserConnectionStatus.opened;
+                }
+            }
+
+            function setupBootstrapper () {
+                const BootstrapperMock = proxyquire('../../lib/runner/bootstrapper', {
+                    '../browser/connection': BrowserConnectionMock,
+                });
+
+                return new BootstrapperMock({ browserConnectionGateway, compilerService });
+            }
+
+            function createMockRunner () {
+                const RunnerMock = proxyquire('../../lib/runner/index', {
+                    '../utils/detect-display': () => false,
+                    'os-family':               { linux: true, win: false, mac: false },
+                });
+
+                const runnerLocal = new RunnerMock({
+                    proxy:                    testCafe.proxy,
+                    browserConnectionGateway: browserConnectionGateway,
+                    configuration:            testCafe.configuration.clone(),
+                    compilerService:          compilerService
+                });
+
+                runnerLocal.bootstrapper = setupBootstrapper();
+
+                return runnerLocal;
+            }
+
+            beforeEach(() => {
+                runnerLinux = createMockRunner();
+            });
+
+            it('Should raise an error when browser is specified as non-headless', async function () {
+                this.timeout(3000);
+
+                const browserName = BROWSER_NAME.replace(':headless', '');
+
+                return runnerLinux
+                    .browsers(browserName)
+                    .run()
+                    .then(() => {
+                        throw new Error('Promise rejection expected');
+                    })
+                    .catch((err) => {
+                        expect(err.message).eql(
+                            `Your Linux version does not have a graphic subsystem to run ${browserName} with a GUI. ` +
+                            `You can launch the browser in headless mode. ` +
+                            `If you use a portable browser version, ` +
+                            `specify the browser alias before the path instead of the 'path' prefix. ` +
+                            `For more information, see ` +
+                            `https://devexpress.github.io/testcafe/documentation/guides/concepts/browsers.html#test-in-headless-mode`
+                        );
+                    });
+            });
+
+            it('Should raise an error when browser is specified by a path', async function () {
+                return runnerLinux
+                    .browsers({ path: '/non/exist' })
+                    .run()
+                    .then(() => {
+                        throw new Error('Promise rejection expected');
+                    })
+                    .catch((err) => {
+                        expect(err.message).eql(
+                            `Your Linux version does not have a graphic subsystem to run {"path":"/non/exist"} with a GUI. ` +
+                            `You can launch the browser in headless mode. ` +
+                            `If you use a portable browser version, ` +
+                            `specify the browser alias before the path instead of the 'path' prefix. ` +
+                            `For more information, see ` +
+                            `https://devexpress.github.io/testcafe/documentation/guides/concepts/browsers.html#test-in-headless-mode`
+                        );
+                    });
+            });
+
+            it('Should not raise an error when browser is specified as headless', async function () {
+                let isErrorThrown = false;
+
+                return runnerLinux
+                    .browsers(`${BROWSER_NAME}`)
+                    ._applyOptions()
+                    .then(() => runnerLinux._validateRunOptions())
+                    .then(() => runnerLinux._createRunnableConfiguration())
+                    .catch(() => {
+                        isErrorThrown = true;
+                    })
+                    .finally(() => {
+                        expect(isErrorThrown).to.be.false;
+                    });
+            });
+
+            it('Should not raise an error when remote browser is passed as BrowserConnection', async function () {
+                const browserInfo = await browserProviderPool.getBrowserInfo('remote');
+                let isErrorThrown = false;
+
+                return runnerLinux
+                    .browsers([new BrowserConnection(browserConnectionGateway, browserInfo)])
+                    ._applyOptions()
+                    .then(() => runnerLinux._validateRunOptions())
+                    .then(() => runnerLinux._createRunnableConfiguration())
+                    .catch(() => {
+                        isErrorThrown = true;
+                    })
+                    .finally(() => {
+                        expect(isErrorThrown).to.be.false;
+                    });
+            });
+        });
+
+        it('Should raise an error if concurrency more than 1 and cdp port isn\'t undefined', () => {
+            const concurrency = 2;
+            const cdpPort     = '9223';
+
+            return runner
+                .browsers(`${BROWSER_NAME}:emulation;cdpPort=${cdpPort}`)
+                .concurrency(concurrency)
+                .run()
+                .then(() => {
+                    throw new Error('Promise rejection expected');
+                })
+                .catch((err) => {
+                    expect(err.message).eql('The concurrency factor should be used without CDP port.');
+                });
+        });
+
         it('Should raise an error if the Quarantine Mode is represented by invalid arguments', async () => {
             let errorCount = 0;
 
@@ -1211,24 +1359,27 @@ describe('Runner', () => {
         });
     });
 
-    it('Should interpret the empty array of the arguments as the "undefined" value', () => {
+    it('Should interpret the empty array of the arguments as the "undefined" value', async () => {
         runner.isCli = true;
 
-        runner
+        await runner
             .src('/path-to-test')
-            .browsers('ie')
-            .reporter('json');
+            .browsers('remote')
+            .reporter('json')
+            ._applyOptions();
 
         runner.apiMethodWasCalled.reset();
 
-        runner
+        await runner
             .src([])
             .browsers([])
-            .reporter([]);
+            .reporter([])
+            ._applyOptions();
 
         expect(runner.configuration.getOption('src')).eql(['/path-to-test']);
-        expect(runner.configuration.getOption('browsers')).eql(['ie']);
-        expect(runner.configuration.getOption('reporter')).eql([ { name: 'json', output: void 0 } ]);
+        expect(runner.configuration.getOption('browsers')).to.be.an('array').that.not.empty;
+        expect(runner.configuration.getOption('browsers')[0]).to.include({ providerName: 'remote' });
+        expect(runner.configuration.getOption('reporter')).eql([{ name: 'json', output: void 0 }]);
     });
 
     describe('"Unable to establish one or more of the specifed browser connections" error message', function () {

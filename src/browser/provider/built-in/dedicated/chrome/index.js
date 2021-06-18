@@ -12,7 +12,7 @@ const MIN_AVAILABLE_DIMENSION = 50;
 export default {
     ...dedicatedProviderBase,
 
-    _getConfig (name) {
+    getConfig (name) {
         return getConfig(name);
     },
 
@@ -20,8 +20,8 @@ export default {
         return runtimeInfo.browserClient;
     },
 
-    async _createRunTimeInfo (hostName, configString, disableMultipleWindows) {
-        return ChromeRunTimeInfo.create(hostName, configString, disableMultipleWindows);
+    async _createRunTimeInfo (hostName, config, disableMultipleWindows) {
+        return ChromeRunTimeInfo.create(hostName, config, disableMultipleWindows);
     },
 
     _setUserAgentMetaInfoForEmulatingDevice (browserId, config) {
@@ -39,9 +39,9 @@ export default {
         this.setUserAgentMetaInfo(browserId, metaInfo, options);
     },
 
-    async openBrowser (browserId, pageUrl, configString, disableMultipleWindows, isProxyless) {
+    async openBrowser (browserId, pageUrl, config, disableMultipleWindows, isProxyless) {
         const parsedPageUrl = parseUrl(pageUrl);
-        const runtimeInfo   = await this._createRunTimeInfo(parsedPageUrl.hostname, configString, disableMultipleWindows);
+        const runtimeInfo   = await this._createRunTimeInfo(parsedPageUrl.hostname, config, disableMultipleWindows);
 
         runtimeInfo.browserName = this._getBrowserName();
         runtimeInfo.browserId   = browserId;
