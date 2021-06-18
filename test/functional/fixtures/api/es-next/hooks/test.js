@@ -1,3 +1,4 @@
+const delay      = require('../../../../../../lib/utils/delay');
 const { expect } = require('chai');
 const { uniq }   = require('lodash');
 const config     = require('../../../../config');
@@ -128,4 +129,31 @@ describe('[API] fixture.before/fixture.after hooks', () => {
     it('Fixture context', () => {
         return runTests('./testcafe-fixtures/fixture-ctx.js', null, { only: 'chrome, firefox' });
     });
+});
+
+describe('[API] fixture global before/after hooks', () => {
+    global.fixtureBefore = 0;
+    global.fixtureAfter  = 0;
+
+    const hooks = {
+        fixture: {
+            before: async () => {
+                await delay(100);
+
+                global.fixtureBefore++;
+            },
+            after: async () => {
+                await delay(100);
+
+                global.fixtureAfter++;
+            }
+        }
+    };
+
+    it('Should run hooks for all fixture', () => {
+        return runTests('./testcafe-fixtures/fixture-hooks-global.js', null, { only: 'chrome', hooks });
+    });
+
+    delete global.fixtureBefore;
+    delete global.fixtureAfter;
 });
