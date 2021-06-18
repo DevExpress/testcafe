@@ -118,6 +118,15 @@ describe('TestCafe factory function', function () {
                 });
         });
 
+        it('Custom js config path is used', () => {
+            const configFile = 'custom.testcaferc.js';
+
+            return getTestCafe('localhost', 1338, 1339, null, null, null, null, configFile)
+                .then(() => {
+                    expect(path.basename(testCafe.configuration.jsFilePath)).eql(configFile);
+                });
+        });
+
         it('Reverts back to default when not specified', () => {
             const defaultConfigFile = '.testcaferc.json';
 

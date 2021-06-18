@@ -19,7 +19,9 @@ const customTSConfigFilePath = 'custom-config.json';
 
 const createConfigFile = (path, options) => {
     options = options || {};
-    fs.writeFileSync(path, JSON.stringify(options));
+    const content = `${pathUtil.extname(path) === '.js' ? 'module.exports = ' : ''}${JSON.stringify(options)}`;
+
+    fs.writeFileSync(path, content);
 };
 
 const createTestCafeConfigurationFile   = createConfigFile.bind(null, TestCafeConfiguration.FILENAME);
@@ -632,6 +634,7 @@ describe('TypeScriptConfiguration', function () {
 
         afterEach(async () => {
             await del([configuration.filePath]);
+            await del([configuration.jsFilePath]);
         });
 
         it('Custom config path is used', () => {
@@ -658,6 +661,31 @@ describe('TypeScriptConfiguration', function () {
                     expect(configuration.getOption('src')).eql([ options.src ]);
                     expect(configuration.getOption('browser')).eql(options.browser);
                 });
+        });
+
+        it('Custom js config path is used', async () => {
+            const customConfigFile = 'custom11.testcaferc.js';
+
+            const options = {
+                'hostname': '123.456.789',
+                'port1':    1234,
+                'port2':    5678,
+                'src':      'path1/folder',
+                'browser':  'ie'
+            };
+
+            createConfigFile(customConfigFile, options);
+
+            configuration = new TestCafeConfiguration(customConfigFile);
+
+            await configuration.init();
+
+            expect(pathUtil.basename(configuration.jsFilePath)).eql(customConfigFile);
+            expect(configuration.getOption('hostname')).eql(options.hostname);
+            expect(configuration.getOption('port1')).eql(options.port1);
+            expect(configuration.getOption('port2')).eql(options.port2);
+            expect(configuration.getOption('src')).eql([ options.src ]);
+            expect(configuration.getOption('browser')).eql(options.browser);
         });
 
         it('Constructor should revert back to default when no custom config', () => {
