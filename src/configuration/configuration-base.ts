@@ -1,4 +1,6 @@
-import { isAbsolute } from 'path';
+import {
+    isAbsolute, extname, basename
+} from 'path';
 import debug from 'debug';
 import JSON5 from 'json5';
 import {
@@ -22,11 +24,23 @@ const DEBUG_LOGGER = debug('testcafe:configuration');
 export default class Configuration {
     protected _options: Dictionary<Option>;
     protected readonly _filePath: string | null;
+    protected readonly _jsFilePath: string | null;
     protected _overriddenOptions: string[];
 
-    public constructor (configurationFileName: string | null) {
-        this._options  = {};
-        this._filePath = Configuration._resolveFilePath(configurationFileName);
+    public constructor (configurationFileName: string | null, isDefaultConfigurationFile = true) {
+        const filePath    = Configuration._resolveFilePath(configurationFileName) || '';
+        const fileExtname = extname(filePath);
+
+        this._options    = {};
+
+        if (isDefaultConfigurationFile) {
+            this._filePath   = filePath;
+            this._jsFilePath = basename(filePath, fileExtname) + '.js';
+        }
+        else {
+            this._filePath   = fileExtname !== '.js' ? filePath : '';
+            this._jsFilePath = fileExtname === '.js' ? filePath : '';
+        }
 
         this._overriddenOptions = [];
     }
@@ -120,6 +134,10 @@ export default class Configuration {
         return this._filePath;
     }
 
+    public get jsFilePath (): string | null {
+        return this._jsFilePath;
+    }
+
     public async _load (): Promise<null | object> {
         if (!this.filePath)
             return null;
@@ -135,6 +153,13 @@ export default class Configuration {
         return this._parseConfigurationFileContent(configurationFileContent);
     }
 
+    public async _loadJs (): Promise<null | object> {
+        if (!this.jsFilePath || !await this._isConfigurationJsFileExists())
+            return null;
+
+        return require(this.jsFilePath);
+    }
+
     protected async _isConfigurationFileExists (): Promise<boolean> {
         try {
             await stat(this.filePath);
@@ -143,6 +168,22 @@ export default class Configuration {
         }
         catch (error) {
             DEBUG_LOGGER(renderTemplate(WARNING_MESSAGES.cannotFindConfigurationFile, this.filePath, error.stack));
+
+            return false;
+        }
+    }
+
+    protected async _isConfigurationJsFileExists (): Promise<boolean> {
+        if (!this.jsFilePath)
+            return false;
+
+        try {
+            require.resolve(this.jsFilePath);
+
+            return true;
+        }
+        catch (error) {
+            DEBUG_LOGGER(renderTemplate(WARNING_MESSAGES.cannotFindConfigurationFile, this.jsFilePath, error.stack));
 
             return false;
         }
