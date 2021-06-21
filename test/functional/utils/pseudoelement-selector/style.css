@@ -1,0 +1,156 @@
+body,html {width:100%;height:100%;margin:0px;padding:0px;}
+
+.close {
+    display:none;
+}
+
+.mouse-block {
+    position:absolute;
+    top:200px;
+    background:#fd8;
+    padding:30px;
+    text-align:center;
+    font:30px arial;
+    color:#ffffff;
+}
+
+#left-click {
+    left:50px;
+}
+#left-click:after {
+    content:'X';
+    position: absolute;
+    top:-30px;
+    right: -20px;
+    font:20px arial;
+    color:#ff0000;
+    z-index: 1;
+}
+
+#right-click {
+    left:250px;
+}
+#right-click:after {
+    content:'X';
+    position: absolute;
+    top:-30px;
+    right: -20px;
+    font:20px arial;
+    color:#ff0000;
+    z-index: 1;
+}
+
+#double-click {
+    left:460px;
+}
+#double-click:after {
+    content:'X';
+    position: absolute;
+    top:-30px;
+    right: -20px;
+    font:20px arial;
+    color:#ff0000;
+    z-index: 1;
+}
+
+#hover {
+    left:670px;
+}
+#hover:after {
+    content:'X';
+    position: absolute;
+    top:-30px;
+    right: -20px;
+    font:20px arial;
+    color:#ff0000;
+    z-index: 1;
+}
+
+#A {
+    position: absolute;
+    top: 400px;
+    left: 350px;
+    width: 200px;
+    height: 125px;
+    background-color: #940;
+}
+#B {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 180px;
+    height: 105px;
+    background-color: #c70;
+}
+#C {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 160px;
+    height: 85px;
+    background-color: #fa0;
+}
+#D {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 140px;
+    height: 65px;
+    background-color:#fd8;
+    text-align:center;
+    font:30px arial;
+    color:#ffffff;
+}
+#D:after {
+    content:'X';
+    position: absolute;
+    top:-30px;
+    right: -20px;
+    font:20px arial;
+    color:#ff0000;
+    z-index: 1;
+}
+
+#timeline {
+    position: absolute;
+    top: 700px;
+    left: 50px;
+
+    width: 300px;
+    height: 20px;
+    background-color: grey;
+    cursor: pointer;
+}
+#timeline::after {
+    content:'_';
+    position: absolute;
+    top:-10px;
+    right: 5px;
+    height: 40px;
+    width: 10px;
+    background-color: #ffdd88;
+    color:#ffdd88;
+    z-index: 1;
+}
+#drag {
+    position: relative;
+    width: 0px;
+    height: 0px;
+    background-color: red;
+    z-index: 2;
+}
+#drag::after {
+    content:'_';
+    position: absolute;
+    top:-10px;
+    background-color: red;
+    color:red;
+    z-index: 1;
+}
+
+#drag-title {
+    position: absolute;
+    top: 730px;
+    left: 150px;
+    font:30px arial;
+}
