@@ -179,16 +179,15 @@ class ActionExecutor {
             ensureOffsetOptions(this.elements[0], this.command.options);
     }
 
-    _hasPseudo(command) {
-        const pseudoelementKeywords =[':after', ':before', ':cue', ':first-letter', ':first-line', ':selection', ':slotted'];
+    _hasPseudo (command) {
+        const pseudoelementKeywords = ['::after', '::before', '::cue', '::first-letter', '::first-line', '::selection', '::slotted'];
         const selectorText = command.selector.apiFnChain[0];
 
         let hasPseudo = false;
 
         pseudoelementKeywords.forEach(keyword => {
-            if (selectorText.includes(keyword)) {
+            if (selectorText.includes(keyword))
                 hasPseudo = true;
-            }
         });
 
         return hasPseudo;

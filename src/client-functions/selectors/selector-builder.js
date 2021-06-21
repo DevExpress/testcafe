@@ -87,11 +87,12 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
         return null;
     }
 
-    _selectorToFunction(selector) {
-        const pseudoelementKeywords =['::after', '::before', '::cue', '::first-letter', '::first-line', '::selection', '::slotted'];
+    _selectorToFunction (selector) {
+        const pseudoelementKeywords = ['::after', '::before', '::cue', '::first-letter', '::first-line', '::selection', '::slotted'];
 
-        if(this._hasPseudo(selector, pseudoelementKeywords)) {
+        if (this._hasPseudo(selector, pseudoelementKeywords)) {
             const { parentSelector, pseudoSelector } = this._parsePseudoelementTags(selector, pseudoelementKeywords);
+
             return `(function() {
                 const parent = document.querySelectorAll(${JSON.stringify(parentSelector)})[0];
                 const pseudoStyles = window.getComputedStyle(parent, ${JSON.stringify(pseudoSelector)});
@@ -110,28 +111,27 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
                 return realPseudo;
             })`;
         }
+
         return `(function() { return document.querySelectorAll(${JSON.stringify(selector)}); });`;
     }
 
-    _hasPseudo(selector, pseudoelementKeywords) {
+    _hasPseudo (selector, pseudoelementKeywords) {
         let hasPseudo = false;
 
         pseudoelementKeywords.forEach(keyword => {
-            if (selector.includes(keyword)) {
+            if (selector.includes(keyword))
                 hasPseudo = true;
-            }
         });
 
         return hasPseudo;
     }
 
-    _parsePseudoelementTags(selector, pseudoelementKeywords) {
-        // TODO: КАК-ТО АДАПТИРУЙСЯ ПОД СЛОЖНЫЕ СОСТАВНЫЕ СЕЛЕКТОРЫ
+    _parsePseudoelementTags (selector, pseudoelementKeywords) {
         let parentSelector = selector;
         let pseudoSelector = '';
 
         pseudoelementKeywords.forEach(keyword => {
-            if(parentSelector.includes(keyword)) {
+            if (parentSelector.includes(keyword)) {
                 pseudoSelector = keyword;
                 parentSelector = parentSelector.replace(keyword, '');
             }
