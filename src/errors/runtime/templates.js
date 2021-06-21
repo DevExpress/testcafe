@@ -9,7 +9,7 @@ import BrowserConnectionErrorHint from '../../browser/connection/error-hints';
 const DOCUMENTATION_LINKS = {
     TEST_SOURCE_PARAMETER: 'https://testcafe.io/documentation/402639/reference/command-line-interface#file-pathglob-pattern',
     FILTER_SETTINGS:       'https://testcafe.io/documentation/402638/reference/configuration-file#filter',
-    HEADLESS_MODE: 'https://testcafe.io/documentation/402828/guides/concepts/browsers#test-in-headless-mode'
+    HEADLESS_MODE:         'https://testcafe.io/documentation/402828/guides/concepts/browsers#test-in-headless-mode'
 };
 
 export default {
@@ -22,16 +22,16 @@ export default {
     [RUNTIME_ERRORS.cannotFindBrowser]:                    'Cannot find the browser. "{browser}" is neither a known browser alias, nor a path to an executable file.',
     [RUNTIME_ERRORS.browserProviderNotFound]:              'Cannot find the "{providerName}" browser provider.',
     [RUNTIME_ERRORS.browserNotSet]:                        "You haven't specified a browser.",
-    [RUNTIME_ERRORS.testFilesNotFound]: 'No test files inside "{cwd}" match the specified patterns. \n' +
-                                        'Check the patterns for errors: \n' +
-                                        '{sourceList}\n\n' +
-                                        'or launch TestCafe from a different directory.\n' +
-                                        `For more information on how to list test files, see ${DOCUMENTATION_LINKS.TEST_SOURCE_PARAMETER}.`,
+    [RUNTIME_ERRORS.testFilesNotFound]:                    'No test files inside "{cwd}" match the specified patterns. \n' +
+                                                           'Check the patterns for errors: \n' +
+                                                           '{sourceList}\n\n' +
+                                                           'or launch TestCafe from a different directory.\n' +
+                                                           `For more information on how to list test files, see ${DOCUMENTATION_LINKS.TEST_SOURCE_PARAMETER}.`,
 
     [RUNTIME_ERRORS.noTestsToRun]: "Source files do not contain valid 'fixture' and 'test' directives.",
 
     [RUNTIME_ERRORS.noTestsToRunDueFiltering]: "Your filter doesn't match any tests.\n" +
-                                               "Modify your filter configuration.\n" +
+                                               'Modify your filter configuration.\n' +
                                                `See ${DOCUMENTATION_LINKS.FILTER_SETTINGS}`,
 
     [RUNTIME_ERRORS.cannotFindReporterForAlias]:                         'The "{name}" reporter does not exist. Check the reporter parameter for errors.',
