@@ -45,9 +45,6 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
         this.options            = offsetOptions;
         this.hasPseudo          = hasPseudo;
 
-        console.log('HAS PSEUDO:', hasPseudo);
-        debugger;
-
         this.automationSettings = new AutomationSettings(offsetOptions.speed);
     }
 
@@ -149,9 +146,9 @@ export default class VisibleElementAutomation extends serviceUtils.EventEmitter 
                             isTarget = arrayUtils.indexOf(domUtils.getParents(foundElement), this.element) > -1;
                         }
 
-                        if (!isTarget && this.hasPseudo) {
+                        if (!isTarget && this.hasPseudo)
                             isTarget = arrayUtils.indexOf(domUtils.getParents(this.element), foundElement) > -1;
-                        }
+
 
                         const offsetPositionChanged = screenPointBeforeAction.x !== screenPointAfterAction.x ||
                                                     screenPointBeforeAction.y !== screenPointAfterAction.y;
