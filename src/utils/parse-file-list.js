@@ -6,7 +6,7 @@ import OS from 'os-family';
 import { isEmpty, flatten } from 'lodash';
 import { stat } from '../utils/promisified-functions';
 
-const DEFAULT_TEST_LOOKUP_DIRS = ['test/', 'tests/'];
+const DEFAULT_TEST_LOOKUP_DIRS = ['test', 'tests'];
 const TEST_FILE_GLOB_PATTERN   = `./**/*@(${Compiler.getSupportedTestFileExtensions().join('|')})`;
 
 function modifyFileRoot (baseDir, file) {
@@ -46,13 +46,14 @@ async function convertDirsToGlobs (fileList, baseDir) {
             }
 
             if (fileStat.isDirectory())
-                return path.join(file, TEST_FILE_GLOB_PATTERN);
+                return path.posix.join(file, TEST_FILE_GLOB_PATTERN); // NOTE: glob patterns can only contain forward-slashes (https://github.com/sindresorhus/globby#api)
 
             if (OS.win)
                 file = modifyFileRoot(baseDir, file);
         }
 
-        return file;
+        // NOTE: glob patterns can only contain forward-slashes (https://github.com/sindresorhus/globby#api)
+        return file.replace(/\\/g, '/');
     }));
 
     return fileList.filter(file => !!file);
