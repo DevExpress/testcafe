@@ -187,10 +187,11 @@ class ActionExecutor {
 
         let hasPseudo = false;
 
-        pseudoelementKeywords.forEach(keyword => {
-            if (selectorText.includes(keyword))
+        // NOTE: IE doesn't support "foreach" syntax and Array.includes() method
+        for (let i = 0; i < pseudoelementKeywords.length; i++) {
+            if (selectorText.indexOf(pseudoelementKeywords[i]) > -1)
                 hasPseudo = true;
-        });
+        }
 
         return hasPseudo;
     }
