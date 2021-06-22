@@ -1,8 +1,8 @@
 
-// User Config
+// User Variables
 //----------------------------------------------------------------------------------------------------------------------
 
-interface UserConfig {
+interface UserVariables {
     /**
      * Custom property
      */

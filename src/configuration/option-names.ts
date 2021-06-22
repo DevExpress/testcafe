@@ -46,7 +46,7 @@ enum OptionNames {
     pageRequestTimeout = 'pageRequestTimeout',
     ajaxRequestTimeout = 'ajaxRequestTimeout',
     cache = 'cache',
-    userConfig = 'userConfig',
+    userVariables = 'userVariables',
 }
 
 export default OptionNames;

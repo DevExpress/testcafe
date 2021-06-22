@@ -6,7 +6,7 @@
 // <reference path="../test-api/client-script.d.ts" />
 // <reference path="../test-api/node-snapshot.d.ts" />
 // <reference path="../test-api/request-hook.d.ts" />
-// <reference path="../test-api/user-config.d.ts" />
+// <reference path="../test-api/user-variables.d.ts" />
 // <reference path="../test-api/role.d.ts" />
 // <reference path="../test-api/selector.d.ts" />
 // <reference path="../test-api/structure.d.ts" />
@@ -20,7 +20,7 @@
 // {{>client-script.d.ts}}
 // {{>node-snapshot.d.ts}}
 // {{>request-hook.d.ts}}
-// {{>user-config.d.ts}}
+// {{>user-variables.d.ts}}
 // {{>role.d.ts}}
 // {{>selector.d.ts}}
 // {{>structure.d.ts}}
