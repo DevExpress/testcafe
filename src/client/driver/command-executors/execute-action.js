@@ -180,6 +180,8 @@ class ActionExecutor {
     }
 
     _hasPseudo (command) {
+        if (!command.selector) return false;
+
         const pseudoelementKeywords = ['::after', '::before', '::cue', '::first-letter', '::first-line', '::selection', '::slotted'];
         const selectorText = command.selector.apiFnChain[0];
 
