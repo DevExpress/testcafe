@@ -21,9 +21,9 @@
 </p>
 
 <p align="center">
-  <a href="https://testcafe.io">Homepage</a> &nbsp&nbsp•&nbsp&nbsp
-  <a href="https://testcafe.io/documentation/402635/getting-started">Documentation</a> &nbsp&nbsp•&nbsp&nbsp
-  <a href="https://testcafe.io/402636/faq">FAQ</a> &nbsp&nbsp•&nbsp&nbsp
+  <a href="https://testcafe.io">Homepage</a> &nbsp;&nbsp;•&nbsp;&nbsp;
+  <a href="https://testcafe.io/documentation/402635/getting-started">Documentation</a> &nbsp;&nbsp;•&nbsp;&nbsp;
+  <a href="https://testcafe.io/402636/faq">FAQ</a> &nbsp;&nbsp;•&nbsp;&nbsp;
   <a href="https://testcafe.io/support">Support</a>
 </p>
 
