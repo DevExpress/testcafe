@@ -1,7 +1,7 @@
 
 // {{#allowReferences}}
 /// <reference path="../test-api/request-hook.d.ts" />
-/// <reference path="../test-api/user-config.d.ts" />
+/// <reference path="../test-api/user-variables.d.ts" />
 /// <reference path="../test-api/role.d.ts" />
 /// <reference path="../test-api/test-controller.d.ts" />
 // {{/allowReferences}}
@@ -37,6 +37,6 @@ export const Role: RoleFactory;
 export const t: TestController;
 
 /**
- * Object which contains userConfig data
+ * Object which contains userVariables data
  */
-export const UserConfig: UserConfig;
+export const userVariables: UserVariables;

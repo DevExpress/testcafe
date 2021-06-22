@@ -155,10 +155,10 @@ before(function () {
 
         experimentalDebug: !!process.env.EXPERIMENTAL_DEBUG,
         isProxyless:       config.isProxyless,
-        userConfig:                  {
-            url:          'localhost',
-            port:         1337,
-            isUserConfig: true,
+        userVariables:     {
+            url:             'localhost',
+            port:            1337,
+            isUserVariables: true,
         },
     };
 
@@ -232,7 +232,7 @@ before(function () {
                     disableMultipleWindows,
                     pageRequestTimeout,
                     ajaxRequestTimeout,
-                    userConfig,
+                    userVariables,
                 } = opts;
 
                 const actualBrowsers = browsersInfo.filter(browserInfo => {
@@ -297,7 +297,7 @@ before(function () {
                         disableMultipleWindows,
                         pageRequestTimeout,
                         ajaxRequestTimeout,
-                        userConfig,
+                        userVariables,
                     })
                     .then(failedCount => {
                         if (customReporters)

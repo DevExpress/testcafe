@@ -5,6 +5,7 @@ import exportableLib from './api/exportable-lib';
 import TestCafeConfiguration from './configuration/testcafe-configuration';
 import OPTION_NAMES from './configuration/option-names';
 import ProcessTitle from './services/process-title';
+import userVariables from './api/user-variables';
 
 const lazyRequire   = require('import-lazy')(require);
 const TestCafe      = lazyRequire('./testcafe');
@@ -78,10 +79,10 @@ async function createTestCafe (...args) {
         getValidPort(configuration.getOption(OPTION_NAMES.port2)),
     ]);
 
-    const userConfig = configuration.getOption(OPTION_NAMES.userConfig);
+    const userVariablesOption = configuration.getOption(OPTION_NAMES.userVariables);
 
-    if (userConfig)
-        Object.assign(createTestCafe.UserConfig, userConfig === Object(userConfig) ? userConfig : { userConfig });
+    if (userVariablesOption)
+        userVariables.value = userVariablesOption;
 
     configuration.mergeOptions({ hostname, port1, port2 });
 
