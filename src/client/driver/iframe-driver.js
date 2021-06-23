@@ -87,9 +87,10 @@ export default class IframeDriver extends Driver {
         if (this._failIfClientCodeExecutionIsInterrupted())
             return;
 
-        const inCommandExecution = inCrossDomainIframe(window) ?
-            await this.parentDriverLink.hasPendingActionFlags() :
-            this._hasPendingActionFlags(this.contextStorage);
+        let inCommandExecution = this._hasPendingActionFlags(this.contextStorage);
+
+        if (inCrossDomainIframe(window))
+            inCommandExecution = await this.parentDriverLink.hasPendingActionFlags();
 
         if (inCommandExecution) {
             this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, false);
