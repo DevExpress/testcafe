@@ -166,7 +166,14 @@ describe('Utils', () => {
                 'test/server/data/file-list/dir1/file-1-3.testcafe',
                 'test/server/data/file-list/dir1/file-1-4.ts',
                 'test/server/data/file-list/dir2/file-2-2.js',
-                'test/server/data/file-list/dir2/file-2-3.js'
+                'test/server/data/file-list/dir2/file-2-3.js',
+                'test/server/data/file-list/dir4/dir4-1/file-4-1-1.js',
+                'test/server/data/file-list/dir4/dir4-1/file-4-1-2.ts',
+                'test/server/data/file-list/dir4/dir4-1/file-4-1-3.testcafe',
+                'test/server/data/file-list/dir4/dir4-2/file-4-2-1.js',
+                'test/server/data/file-list/dir4/dir4-2/file-4-2-2.ts',
+                'test/server/data/file-list/dir4/dir4-2/file-4-2-3.testcafe',
+                'test/server/data/file-list/dir5/file-5-1.js'
             ].map(file => {
                 return path.resolve(cwd, file);
             });
@@ -177,7 +184,9 @@ describe('Utils', () => {
                 'test/server/data/file-list/dir1',
                 'test/server/data/file-list/dir2/*.js',
                 '!test/server/data/file-list/dir2/file-2-1.js',
-                'test/server/data/file-list/dir3'
+                'test/server/data/file-list/dir3',
+                'test/server/data/file-list/dir4/**/*/',
+                'test/server/data/file-list/dir5/',
             ], cwd).then(actualFiles => {
                 expect(actualFiles).eql(expectedFiles);
             });

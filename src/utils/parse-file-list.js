@@ -51,6 +51,10 @@ async function convertDirsToGlobs (fileList, baseDir) {
             if (OS.win)
                 file = modifyFileRoot(baseDir, file);
         }
+        else if (file.endsWith('*/')) {
+            // TODO: remove this workaround after resolving https://github.com/mrmlnc/fast-glob/issues/290
+            file = file.slice(0, -1);
+        }
 
         // NOTE: glob patterns can only contain forward-slashes (https://github.com/sindresorhus/globby#api)
         return file.replace(/\\/g, '/');
