@@ -7,6 +7,7 @@ import DriverStatus from './status';
 import ParentIframeDriverLink from './driver-link/iframe/parent';
 import { ChildWindowIsOpenedInFrameMessage, TYPE as MESSAGE_TYPE } from './driver-link/messages';
 import IframeNativeDialogTracker from './native-dialog-tracker/iframe';
+import inCrossDomainIframe from '../../utils/in-cross-domain-iframe';
 
 const messageSandbox = eventSandbox.message;
 
@@ -78,29 +79,32 @@ export default class IframeDriver extends Driver {
         this.parentDriverLink.onCommandExecuted(status);
     }
 
+    async _init () {
+        const id = await this.parentDriverLink.establishConnection();
+
+        this.contextStorage = new ContextStorage(window, id, this.windowId);
+
+        if (this._failIfClientCodeExecutionIsInterrupted())
+            return;
+
+        const inCommandExecution = inCrossDomainIframe(window) ?
+            await this.parentDriverLink.hasPendingActionFlags() :
+            this._hasPendingActionFlags(this.contextStorage);
+
+        if (inCommandExecution) {
+            this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, false);
+            this.contextStorage.setItem(this.EXECUTING_IN_IFRAME_FLAG, false);
+
+            this._onReady(new DriverStatus({ isCommandResult: true }));
+        }
+    }
 
     // API
     start () {
         this.nativeDialogsTracker = new IframeNativeDialogTracker(this.dialogHandler);
         this.statusBar            = new IframeStatusBar();
 
-        const initializePromise = this.parentDriverLink
-            .establishConnection()
-            .then(id => {
-                this.contextStorage = new ContextStorage(window, id, this.windowId);
-
-                if (this._failIfClientCodeExecutionIsInterrupted())
-                    return;
-
-                const inCommandExecution = this.contextStorage.getItem(this.COMMAND_EXECUTING_FLAG) ||
-                                         this.contextStorage.getItem(this.EXECUTING_IN_IFRAME_FLAG);
-
-                if (inCommandExecution) {
-                    this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, false);
-                    this.contextStorage.setItem(this.EXECUTING_IN_IFRAME_FLAG, false);
-                    this._onReady(new DriverStatus({ isCommandResult: true }));
-                }
-            });
+        const initializePromise   = this._init();
 
         this.readyPromise = Promise.all([this.readyPromise, initializePromise]);
     }

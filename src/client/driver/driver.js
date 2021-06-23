@@ -757,6 +757,16 @@ export default class Driver extends serviceUtils.EventEmitter {
         this.parentWindowDriverLink.restoreChild(this._getCurrentWindowId());
     }
 
+    _handleHasPendingActionFlags (msg, window) {
+        const result = this._hasPendingActionFlags(this.contextStorage);
+
+        sendConfirmationMessage({
+            requestMsgId: msg.id,
+            window,
+            result
+        });
+    }
+
     _handleRestoreChildLink (msg, wnd) {
         if (this._stopRespondToChildren)
             return;
@@ -839,6 +849,9 @@ export default class Driver extends serviceUtils.EventEmitter {
                     break;
                 case MESSAGE_TYPE.startToRestoreChildLink:
                     this._handleStartToRestoreChildLinkMessage();
+                    break;
+                case MESSAGE_TYPE.hasPendingActionFlags:
+                    this._handleHasPendingActionFlags(msg, window);
                     break;
                 case MESSAGE_TYPE.restoreChildLink:
                     this._handleRestoreChildLink(msg, window);
