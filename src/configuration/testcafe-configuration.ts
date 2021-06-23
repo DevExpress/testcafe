@@ -34,7 +34,7 @@ import WarningLog from '../notifications/warning-log';
 import browserProviderPool from '../browser/provider/pool';
 import BrowserConnection, { BrowserInfo } from '../browser/connection';
 
-const CONFIGURATION_FILENAME = '.testcaferc.json';
+const CONFIGURATION_FILENAMES = ['.testcaferc.js', '.testcaferc.json'];
 
 const DEFAULT_SCREENSHOTS_DIRECTORY = 'screenshots';
 
@@ -74,8 +74,8 @@ interface TestCafeStartOptions {
 type BrowserInfoSource = BrowserInfo | BrowserConnection;
 
 export default class TestCafeConfiguration extends Configuration {
-    public constructor (configFile = CONFIGURATION_FILENAME) {
-        super(configFile, configFile === CONFIGURATION_FILENAME);
+    public constructor (configFiles: string | string[] = CONFIGURATION_FILENAMES) {
+        super(configFiles);
     }
 
     public async init (options?: object): Promise<void> {
@@ -83,7 +83,7 @@ export default class TestCafeConfiguration extends Configuration {
 
         await super.init();
 
-        const opts = await this._load() || await this._loadJs();
+        const opts = await this._load();
 
         if (opts) {
             this._options = Configuration._fromObj(opts);
@@ -252,7 +252,7 @@ export default class TestCafeConfiguration extends Configuration {
         return flatten(browserInfo);
     }
 
-    public static get FILENAME (): string {
-        return CONFIGURATION_FILENAME;
+    public static get FILENAMES (): string[] {
+        return CONFIGURATION_FILENAMES;
     }
 }

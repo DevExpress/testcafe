@@ -1,5 +1,5 @@
 import {
-    isAbsolute, extname, basename
+    isAbsolute, extname
 } from 'path';
 import debug from 'debug';
 import JSON5 from 'json5';
@@ -23,24 +23,16 @@ const DEBUG_LOGGER = debug('testcafe:configuration');
 
 export default class Configuration {
     protected _options: Dictionary<Option>;
-    protected readonly _filePath: string | null;
-    protected readonly _jsFilePath: string | null;
+    protected _filePath: string | null;
+    protected readonly _filePaths: (string | null)[];
     protected _overriddenOptions: string[];
 
-    public constructor (configurationFileName: string | null, isDefaultConfigurationFile = true) {
-        const filePath    = Configuration._resolveFilePath(configurationFileName) || '';
-        const fileExtname = extname(filePath);
-
-        this._options    = {};
-
-        if (isDefaultConfigurationFile) {
-            this._filePath   = filePath;
-            this._jsFilePath = basename(filePath, fileExtname) + '.js';
-        }
-        else {
-            this._filePath   = fileExtname !== '.js' ? filePath : '';
-            this._jsFilePath = fileExtname === '.js' ? filePath : '';
-        }
+    public constructor (configurationFilesNames: string | null | (string | null)[]) {
+        this._options   = {};
+        this._filePath  = '';
+        this._filePaths = Array.isArray(configurationFilesNames)
+            ? configurationFilesNames.map(Configuration._resolveFilePath)
+            : [Configuration._resolveFilePath(configurationFilesNames)];
 
         this._overriddenOptions = [];
     }
@@ -134,30 +126,32 @@ export default class Configuration {
         return this._filePath;
     }
 
-    public get jsFilePath (): string | null {
-        return this._jsFilePath;
+    public get filePaths (): (string | null)[] {
+        return this._filePaths;
     }
 
     public async _load (): Promise<null | object> {
-        if (!this.filePath)
-            return null;
+        for (const filePath of this.filePaths) {
+            this._filePath = filePath;
 
-        if (!await this._isConfigurationFileExists())
-            return null;
+            if (!this._filePath)
+                continue;
 
-        const configurationFileContent = await this._readConfigurationFileContent();
+            if (!await this._isConfigurationFileExists())
+                continue;
 
-        if (!configurationFileContent)
-            return null;
+            if (extname(this._filePath) === '.js')
+                return this._readJsConfigurationFileContent();
 
-        return this._parseConfigurationFileContent(configurationFileContent);
-    }
+            const configurationFileContent = await this._readConfigurationFileContent();
 
-    public async _loadJs (): Promise<null | object> {
-        if (!this.jsFilePath || !await this._isConfigurationJsFileExists())
-            return null;
+            if (!configurationFileContent)
+                continue;
 
-        return require(this.jsFilePath);
+            return this._parseConfigurationFileContent(configurationFileContent);
+        }
+
+        return null;
     }
 
     protected async _isConfigurationFileExists (): Promise<boolean> {
@@ -173,20 +167,18 @@ export default class Configuration {
         }
     }
 
-    protected async _isConfigurationJsFileExists (): Promise<boolean> {
-        if (!this.jsFilePath)
-            return false;
-
-        try {
-            require.resolve(this.jsFilePath);
-
-            return true;
+    public _readJsConfigurationFileContent (): object | null {
+        if (this.filePath) {
+            try {
+                delete require.cache[this.filePath];
+                return require(this.filePath);
+            }
+            catch (error) {
+                Configuration._showWarningForError(error, WARNING_MESSAGES.cannotReadConfigFile);
+            }
         }
-        catch (error) {
-            DEBUG_LOGGER(renderTemplate(WARNING_MESSAGES.cannotFindConfigurationFile, this.jsFilePath, error.stack));
 
-            return false;
-        }
+        return null;
     }
 
     public async _readConfigurationFileContent (): Promise<Buffer | null> {
