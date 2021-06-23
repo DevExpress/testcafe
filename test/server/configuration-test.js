@@ -13,6 +13,7 @@ const { DEFAULT_TYPESCRIPT_COMPILER_OPTIONS } = require('../../lib/configuration
 const RunnerCtor                              = require('../../lib/runner');
 const OptionNames                             = require('../../lib/configuration/option-names');
 const consoleWrapper                          = require('./helpers/console-wrapper');
+const WARNING_MESSAGES                        = require('../../lib/notifications/warning-message');
 
 const tsConfigPath           = 'tsconfig.json';
 const customTSConfigFilePath = 'custom-config.json';
@@ -24,7 +25,7 @@ const createConfigFile = (path, options) => {
     fs.writeFileSync(path, content);
 };
 
-const createTestCafeConfigurationFile   = createConfigFile.bind(null, TestCafeConfiguration.FILENAME);
+const createTestCafeConfigurationFile   = createConfigFile.bind(null, TestCafeConfiguration.FILENAMES[0]);
 const createTypeScriptConfigurationFile = createConfigFile.bind(null, tsConfigPath);
 
 const TEST_TIMEOUT = 5000;
@@ -68,7 +69,7 @@ describe('TestCafeConfiguration', function () {
     });
 
     afterEach(async () => {
-        await del([testCafeConfiguration.filePath]);
+        await Promise.all(testCafeConfiguration.filePaths.map(async (path) => await del([path])));
 
         consoleWrapper.unwrap();
         consoleWrapper.messages.clear();
@@ -77,7 +78,7 @@ describe('TestCafeConfiguration', function () {
     describe('Init', () => {
         describe('Exists', () => {
             it('Config is not well-formed', () => {
-                fs.writeFileSync(testCafeConfiguration.filePath, '{');
+                fs.writeFileSync(testCafeConfiguration.filePaths[0], '{');
                 consoleWrapper.wrap();
 
                 return testCafeConfiguration.init()
@@ -85,7 +86,7 @@ describe('TestCafeConfiguration', function () {
                         consoleWrapper.unwrap();
 
                         expect(testCafeConfiguration.getOption('hostname')).eql(void 0);
-                        expect(consoleWrapper.messages.log).contains(`Failed to parse the '${testCafeConfiguration.filePath}' file.`);
+                        expect(consoleWrapper.messages.log).contains(WARNING_MESSAGES.cannotReadConfigFile);
                     });
             });
 
@@ -279,7 +280,7 @@ describe('TestCafeConfiguration', function () {
         });
 
         it('File doesn\'t exists', () => {
-            fs.unlinkSync(testCafeConfiguration.filePath);
+            fs.unlinkSync(testCafeConfiguration.filePaths[0]);
 
             const defaultOptions = cloneDeep(testCafeConfiguration._options);
 
@@ -575,7 +576,7 @@ describe('TypeScriptConfiguration', function () {
                     return runner.bootstrapper._getTests();
                 })
                 .then(() => {
-                    fs.unlinkSync(TestCafeConfiguration.FILENAME);
+                    fs.unlinkSync(TestCafeConfiguration.FILENAMES[0]);
                     typeScriptConfiguration._filePath = customTSConfigFilePath;
 
                     expect(runner.bootstrapper.tsConfigPath).eql(customTSConfigFilePath);
@@ -634,7 +635,6 @@ describe('TypeScriptConfiguration', function () {
 
         afterEach(async () => {
             await del([configuration.filePath]);
-            await del([configuration.jsFilePath]);
         });
 
         it('Custom config path is used', () => {
@@ -680,7 +680,7 @@ describe('TypeScriptConfiguration', function () {
 
             await configuration.init();
 
-            expect(pathUtil.basename(configuration.jsFilePath)).eql(customConfigFile);
+            expect(pathUtil.basename(configuration.filePath)).eql(customConfigFile);
             expect(configuration.getOption('hostname')).eql(options.hostname);
             expect(configuration.getOption('port1')).eql(options.port1);
             expect(configuration.getOption('port2')).eql(options.port2);
