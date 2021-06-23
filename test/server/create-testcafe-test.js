@@ -123,7 +123,7 @@ describe('TestCafe factory function', function () {
 
             return getTestCafe('localhost', 1338, 1339, null, null, null, null, configFile)
                 .then(() => {
-                    expect(path.basename(testCafe.configuration.jsFilePath)).eql(configFile);
+                    expect(path.basename(testCafe.configuration.filePath)).eql(configFile);
                 });
         });
 
