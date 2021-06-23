@@ -36,7 +36,7 @@ import BrowserConnection, { BrowserInfo } from '../browser/connection';
 import { GeneralError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
 
-const CONFIGURATION_FILENAME = '.testcaferc.json';
+const CONFIGURATION_FILENAMES = ['.testcaferc.js', '.testcaferc.json'];
 
 const DEFAULT_SCREENSHOTS_DIRECTORY = 'screenshots';
 
@@ -79,7 +79,7 @@ export default class TestCafeConfiguration extends Configuration {
     protected readonly _isExplicitConfig: boolean;
 
     public constructor (configFile = '') {
-        super(configFile || CONFIGURATION_FILENAME);
+        super(configFile || CONFIGURATION_FILENAMES);
 
         this._isExplicitConfig = !!configFile;
     }
@@ -271,7 +271,7 @@ export default class TestCafeConfiguration extends Configuration {
         return fileExists;
     }
 
-    public static get FILENAME (): string {
-        return CONFIGURATION_FILENAME;
+    public static get FILENAMES (): string[] {
+        return CONFIGURATION_FILENAMES;
     }
 }
