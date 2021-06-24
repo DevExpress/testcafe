@@ -173,7 +173,8 @@ describe('Utils', () => {
                 'test/server/data/file-list/dir4/dir4-2/file-4-2-1.js',
                 'test/server/data/file-list/dir4/dir4-2/file-4-2-2.ts',
                 'test/server/data/file-list/dir4/dir4-2/file-4-2-3.testcafe',
-                'test/server/data/file-list/dir5/file-5-1.js'
+                'test/server/data/file-list/dir5/file-5-1.js',
+                'test/server/data/file-list/dir6/file-6-1.js'
             ].map(file => {
                 return path.resolve(cwd, file);
             });
@@ -186,7 +187,8 @@ describe('Utils', () => {
                 '!test/server/data/file-list/dir2/file-2-1.js',
                 'test/server/data/file-list/dir3',
                 'test/server/data/file-list/dir4/**/*/',
-                'test/server/data/file-list/dir5/',
+                'test\\server\\data\\file-list\\dir5\\*\\',
+                'test\\server\\data\\file-list\\dir6\\'
             ], cwd).then(actualFiles => {
                 expect(actualFiles).eql(expectedFiles);
             });

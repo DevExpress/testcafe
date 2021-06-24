@@ -8,6 +8,7 @@ import { stat } from '../utils/promisified-functions';
 
 const DEFAULT_TEST_LOOKUP_DIRS = ['test', 'tests'];
 const TEST_FILE_GLOB_PATTERN   = `./**/*@(${Compiler.getSupportedTestFileExtensions().join('|')})`;
+const GLOB_POSIX_SLASH_ENDING  = '*' + path.posix.sep;
 
 function modifyFileRoot (baseDir, file) {
     const absPath            = path.resolve(baseDir, file);
@@ -32,6 +33,14 @@ async function getDefaultDirs (baseDir) {
     });
 }
 
+// NOTE: glob patterns can only contain forward-slashes (https://github.com/sindresorhus/globby#api)
+function ensurePosix (fileString) {
+    if (path.sep !== path.posix.sep)
+        return fileString.split(path.sep).join(path.posix.sep);
+
+    return fileString;
+}
+
 async function convertDirsToGlobs (fileList, baseDir) {
     fileList = await Promise.all(fileList.map(async file => {
         if (!isGlob(file)) {
@@ -45,19 +54,24 @@ async function convertDirsToGlobs (fileList, baseDir) {
                 return null;
             }
 
-            if (fileStat.isDirectory())
-                return path.posix.join(file, TEST_FILE_GLOB_PATTERN); // NOTE: glob patterns can only contain forward-slashes (https://github.com/sindresorhus/globby#api)
+            if (fileStat.isDirectory()) {
+                file = path.join(file, TEST_FILE_GLOB_PATTERN);
+
+                return ensurePosix(file);
+            }
 
             if (OS.win)
                 file = modifyFileRoot(baseDir, file);
         }
-        else if (file.endsWith('*/')) {
-            // TODO: remove this workaround after resolving https://github.com/mrmlnc/fast-glob/issues/290
-            file = file.slice(0, -1);
+        // TODO: remove this workaround after resolving https://github.com/mrmlnc/fast-glob/issues/290
+        else {
+            file = ensurePosix(file);
+
+            if (file.endsWith(GLOB_POSIX_SLASH_ENDING))
+                return file.slice(0, -1);
         }
 
-        // NOTE: glob patterns can only contain forward-slashes (https://github.com/sindresorhus/globby#api)
-        return file.replace(/\\/g, '/');
+        return ensurePosix(file);
     }));
 
     return fileList.filter(file => !!file);
