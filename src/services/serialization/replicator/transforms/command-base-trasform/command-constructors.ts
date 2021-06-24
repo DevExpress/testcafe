@@ -17,7 +17,8 @@ import {
     SetPageLoadTimeoutCommand,
     SetTestSpeedCommand,
     SwitchToIframeCommand,
-    TypeTextCommand
+    TypeTextCommand,
+    UseRoleCommand
 } from '../../../../../test-run/commands/actions';
 
 import AssertionCommand from '../../../../../test-run/commands/assertion';
@@ -39,7 +40,8 @@ const COMMAND_CONSTRUCTORS = new Map<string, CommandConstructor>([
     [CommandType.dragToElement, DragToElementCommand],
     [CommandType.selectEditableContent, SelectEditableContentCommand],
     [CommandType.hover, HoverCommand],
-    [CommandType.assertion, AssertionCommand]
+    [CommandType.assertion, AssertionCommand],
+    [CommandType.useRole, UseRoleCommand]
 ]);
 
 export default COMMAND_CONSTRUCTORS;

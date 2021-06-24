@@ -1,10 +1,6 @@
 import { uniq, keyBy } from 'lodash';
-
-import {
-    FUNCTION_PROPERTIES,
-    RequestFilterRuleLocator
-} from '../compiler/protocol';
-
+import { FUNCTION_PROPERTIES } from '../compiler/protocol';
+import { RequestFilterRuleLocator } from '../compiler/interfaces';
 import Test from '../../api/structure/test';
 import Fixture from '../../api/structure/fixture';
 import TestFile from '../../api/structure/test-file';

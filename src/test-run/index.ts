@@ -213,7 +213,7 @@ export default class TestRun extends AsyncEventEmitter {
     public quarantine: Quarantine | null;
     private readonly debugLogger: any;
     public observedCallsites: ObservedCallsitesStorage;
-    private readonly compilerService?: CompilerService;
+    public readonly compilerService?: CompilerService;
     private readonly replicator: any;
     private disconnected: boolean;
     private errScreenshotPath: string | null;
@@ -1100,9 +1100,26 @@ export default class TestRun extends AsyncEventEmitter {
         return state;
     }
 
+    private async _cleanUpCtxs (): Promise<void> {
+        if (this.compilerService) {
+            await this.compilerService.setCtx({
+                testRunId: this.id,
+                value:     Object.create(null)
+            });
+            await this.compilerService.setFixtureCtx({
+                testRunId: this.id,
+                value:     Object.create(null)
+            });
+        }
+        else {
+            this.ctx        = Object.create(null);
+            this.fixtureCtx = Object.create(null);
+        }
+    }
+
     public async switchToCleanRun (url: string): Promise<void> {
-        this.ctx             = Object.create(null);
-        this.fixtureCtx      = Object.create(null);
+        await this._cleanUpCtxs();
+
         this.consoleMessages = new BrowserConsoleMessages();
 
         this.session.useStateSnapshot(StateSnapshot.empty());

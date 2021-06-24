@@ -6,6 +6,7 @@ import RequestFilterRuleTransform from './transforms/request-filter-rule-transfo
 import ResponseMockTransform from './transforms/response-mock-transform';
 import RequestHookEventDataTransform from './transforms/request-hook-event-data-transform';
 import ReExecutablePromiseTransform from './transforms/re-executable-promise-transform';
+import RoleTransform from './transforms/role-transform';
 
 const DEFAULT_ERROR_TRANSFORM_TYPE = '[[Error]]';
 
@@ -33,6 +34,7 @@ export default function (): Replicator {
             new CommandBaseTransform(),
             new RequestFilterRuleTransform(),
             new ResponseMockTransform(),
-            new RequestHookEventDataTransform()
+            new RequestHookEventDataTransform(),
+            new RoleTransform()
         ]);
 }

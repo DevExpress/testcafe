@@ -1,23 +1,27 @@
 import { CompilerArguments } from '../../compiler/interfaces';
-import { Dictionary } from '../../configuration/interfaces';
-import RequestHookMethodNames from '../../api/request-hooks/hook-method-names';
+import { IncomingMessageLikeInitOptions } from 'testcafe-hammerhead';
+import Role from '../../role/role';
 
 import {
-    ConfigureResponseEvent,
-    ConfigureResponseEventOptions,
-    RequestEvent,
-    ResponseEvent,
-    ResponseMock,
-    RequestInfo,
-    IncomingMessageLikeInitOptions,
-    RequestFilterRule,
-    StateSnapshot
-} from 'testcafe-hammerhead';
-
-import CommandBase from '../../test-run/commands/base';
-import TestRunPhase from '../../test-run/phase';
-import { ExecuteClientFunctionCommand, ExecuteSelectorCommand } from '../../test-run/commands/observation';
-import BrowserConsoleMessages from '../../test-run/browser-console-messages';
+    AddRequestEventListenersArguments,
+    ExecuteActionArguments,
+    ExecuteCommandArguments,
+    ExecuteMockPredicate,
+    ExecuteRequestFilterRulePredicateArguments,
+    ExecuteRoleInitFnArguments,
+    GetAssertionActualValueArguments,
+    InitializeTestRunDataArguments,
+    RemoveHeaderOnConfigureResponseEventArguments,
+    RemoveRequestEventListenersArguments,
+    RequestHookEventArguments,
+    SetConfigureResponseEventOptionsArguments,
+    SetCtxArguments,
+    SetHeaderOnConfigureResponseEventArguments,
+    SetMockArguments,
+    SetOptionsArguments,
+    TestRunLocator,
+    UpdateRolePropertyArguments
+} from './interfaces';
 
 export const BEFORE_AFTER_PROPERTIES      = ['beforeFn', 'afterFn'] as const;
 export const BEFORE_AFTER_EACH_PROPERTIES = ['beforeEachFn', 'afterEachFn'] as const;
@@ -38,105 +42,9 @@ export function isFixtureFunctionProperty (value: FunctionProperties): value is 
     return FIXTURE_FUNCTION_PROPERTIES.includes(value as FixtureFunctionProperties);
 }
 
-export interface TestRunLocator {
-    testRunId: string;
-}
-
 export interface RunTestArguments extends TestRunLocator {
     id: string;
     functionName: FunctionProperties;
-}
-
-export interface ExecuteActionArguments {
-    id: string;
-    apiMethodName: string;
-    command: CommandBase;
-    callsite: unknown;
-}
-
-export interface ExecuteCommandArguments {
-    id: string;
-    command: CommandBase;
-}
-
-export interface RemoveRequestEventListenersArguments {
-    rules: RequestFilterRule[];
-}
-
-export interface AddRequestEventListenersArguments {
-    hookId: string;
-    hookClassName: string;
-    rules: RequestFilterRule[];
-}
-
-export interface SetOptionsArguments {
-    value: Dictionary<OptionValue>;
-}
-
-export interface RequestHookEventArguments {
-    name: RequestHookMethodNames;
-    testId: string;
-    hookId: string;
-    eventData: RequestEvent | ConfigureResponseEvent | ResponseEvent;
-}
-
-export interface SetMockArguments extends RequestFilterRuleLocator {
-    responseEventId: string;
-    mock: ResponseMock;
-}
-
-export interface SetConfigureResponseEventOptionsArguments {
-    eventId: string;
-    opts: ConfigureResponseEventOptions;
-}
-
-export interface SetHeaderOnConfigureResponseEventArguments {
-    eventId: string;
-    headerName: string;
-    headerValue: string;
-}
-
-export interface RemoveHeaderOnConfigureResponseEventArguments {
-    eventId: string;
-    headerName: string;
-}
-
-export interface RequestHookLocator {
-    testId: string;
-    hookId: string;
-}
-
-export interface RequestFilterRuleLocator extends RequestHookLocator {
-    ruleId: string;
-}
-
-export interface ExecuteRequestFilterRulePredicateArguments extends RequestFilterRuleLocator {
-    requestInfo: RequestInfo;
-}
-
-export interface ExecuteMockPredicate extends RequestFilterRuleLocator {
-    requestInfo: RequestInfo;
-    res: IncomingMessageLikeInitOptions;
-}
-
-export interface InitializeTestRunDataArguments extends TestRunLocator {
-    testId: string;
-}
-
-export interface UseStateSnapshotArguments extends TestRunLocator {
-    snapshot: StateSnapshot;
-}
-
-export interface SetTestRunPhaseArguments extends TestRunLocator {
-    value: TestRunPhase;
-}
-
-export interface SetBrowserConsoleMessagesArguments extends TestRunLocator {
-    value: BrowserConsoleMessages;
-}
-
-export interface GetAssertionActualValueArguments extends TestRunLocator {
-    commandId: string;
 }
 
 export interface TestRunDispatcherProtocol {
@@ -145,18 +53,9 @@ export interface TestRunDispatcherProtocol {
     executeCommand ({ command }: ExecuteCommandArguments): Promise<unknown>;
     addRequestEventListeners ( { hookId, hookClassName, rules }: AddRequestEventListenersArguments): Promise<void>;
     removeRequestEventListeners ({ rules }: RemoveRequestEventListenersArguments): Promise<void>;
-    getCurrentUrl ({ testRunId }: TestRunLocator): Promise<string>;
-    getStateSnapshot ({ testRunId }: TestRunLocator): Promise<StateSnapshot>;
-    useStateSnapshot ({ testRunId, snapshot }: UseStateSnapshotArguments): Promise<void>;
-    getTestRunPhase ({ testRunId }: TestRunLocator): Promise<TestRunPhase>;
-    setTestRunPhase ({ testRunId, value }: SetTestRunPhaseArguments): Promise<void>;
-    getActiveDialogHandler ({ testRunId }: TestRunLocator): Promise<ExecuteClientFunctionCommand | null>;
-    getActiveIframeSelector ({ testRunId }: TestRunLocator): Promise<ExecuteSelectorCommand | null>;
-    getSpeed ({ testRunId }: TestRunLocator): Promise<number>;
-    getPageLoadTimeout ({ testRunId }: TestRunLocator): Promise<number>;
-    setBrowserConsoleMessages ({ testRunId, value }: SetBrowserConsoleMessagesArguments): Promise<void>;
-    getBrowserConsoleMessages ({ testRunId }: TestRunLocator): Promise<BrowserConsoleMessages>;
     getAssertionActualValue ({ testRunId, commandId }: GetAssertionActualValueArguments): Promise<unknown>;
+    executeRoleInitFn ({ testRunId, roleId }: ExecuteRoleInitFnArguments): Promise<unknown>;
+    onRoleAppeared (role: Role): void;
 }
 
 export interface CompilerProtocol extends TestRunDispatcherProtocol {
@@ -174,4 +73,9 @@ export interface CompilerProtocol extends TestRunDispatcherProtocol {
     executeMockPredicate ({ testId, hookId, ruleId, requestInfo, res }: ExecuteMockPredicate): Promise<IncomingMessageLikeInitOptions>;
     getWarningMessages ({ testRunId }: TestRunLocator): Promise<string[]>;
     initializeTestRunData ({ testRunId, testId }: InitializeTestRunDataArguments): Promise<void>;
+    getCtx ({ testRunId }: TestRunLocator): Promise<object>;
+    getFixtureCtx ({ testRunId }: TestRunLocator): Promise<object>;
+    setCtx ({ testRunId, value }: SetCtxArguments): Promise<void>;
+    setFixtureCtx ({ testRunId, value }: SetCtxArguments): Promise<void>;
+    updateRoleProperty ({ roleId, name, value }: UpdateRolePropertyArguments): Promise<void>;
 }
