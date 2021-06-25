@@ -1,5 +1,72 @@
 # Changelog
 
+## v1.15.0 (2021-06-28)
+
+### Enhancements
+
+#### Dispatch DOM events ([#6103](https://github.com/DevExpress/testcafe/pull/6103))
+
+```plaintext
+t.dispatchEvent(target, eventName[, options])
+```
+
+The [`t.dispatchEvent`](link-needed) method lets you interact with the page in ways that TestCafe does not support out of the box. To implement an unsupported user action, break it down into discrete DOM events, and use the `t.dispatchEvent` method to fire them.
+
+>Internet Explorer does [not](https://developer.mozilla.org/en-US/docs/Web/API/Event/Event) support event constructors. As such, TestCafe cannot dispatch DOM events in this browser. 
+
+The following example fires a `touchstart` action on an element with the 'button' id:
+
+```js
+await t.dispatchEvent('#button', 'touchstart',  { eventConstructor: 'TouchEvent' });
+```
+
+Read the [Custom Actions Guide](link-needed) for more information on DOM events and event constructors.
+
+#### Modify request hook headers ([#6140](https://github.com/DevExpress/testcafe/pull/6140))
+
+You can now modify the headers of custom request hooks. Call the `event.setHeader` and `event.removeHeader` methods. See the [Request Hook article](https://testcafe.io/documentation/402669/reference/test-api/requesthook#change-or-delete-response-headers) for more information.
+
+#### Quarantine mode customization ([#6073](https://github.com/DevExpress/testcafe/pull/6073))
+
+New settings are available in [quarantine mode](link-needed). Quarantine mode repeats failing tests to help users get conclusive test results in sub-optimal conditions. TestCafe v1.15 adds two variables - `successThreshold` and `attemptLimit` - that allow you specify when TestCafe must stop.
+
+The `attemptLimit` variable determines the maximum possible number of test attempts.
+The `successThreshold` variable determines the number of successful attempts necessary for the test to pass.
+
+```js
+testcafe chrome ./tests/ -q attemptLimit=5, successThreshold=2
+```
+
+#### Password obfuscation ([#6014](https://github.com/DevExpress/testcafe/issues/6014))
+
+TestCafe reporters no longer receive the contents of `password` input fields, unless you explicitly specify otherwise. This improves security for users that store their test results online.
+
+#### Support for non-HTML documents ([#1471](https://github.com/DevExpress/testcafe/issues/1471))
+
+TestCafe now has the capability to proxy non-HTML documents such as XML and text files. Tests no longer hang upon redirection to a non-HTML address.
+
+### Bug Fixes
+
+// 1.15.0-rc.2    - 24.3.1
+* Resolved an issue that led to incorrect handling of elements with a negative `tabIndex` value ([#4848](https://github.com/DevExpress/testcafe/issues/4848)).
+* Resolved an issue with `Navigator.prototype` that led to [incorrect request interception] ([PR testcafe-hammerhead/#2643](https://github.com/DevExpress/testcafe-hammerhead/pull/2643) by [@michaelficarra](https://github.com/michaelficarra)).
+* Fixed an error in the handling of the `<base>` HTML tag ([testcafe-hammerhead/#1965](https://github.com/DevExpress/testcafe-hammerhead/issues/1965)).
+* Fixed a website parsing error that led to test failure ([testcafe-hammerhead/#2650](https://github.com/DevExpress/testcafe-hammerhead/issues/2650)).
+* The TestCafe event handler now correctly processes eventListeners in multi-window mode ([#5621](https://github.com/DevExpress/testcafe/issues/5621)).
+* The TestCafe proxy now intercepts `WorkerGlobalScope.importScripts()` arguments ([testcafe-hammerhead/#2521](https://github.com/DevExpress/testcafe-hammerhead/issues/2521)).
+
+// 1.15.0-rc.1    - 24.3.0
+* TestCafe no longer stops recording test videos after you skip a fixture ([#6163](https://github.com/DevExpress/testcafe/issues/6163)).
+* Links with empty download attributes no longer cause TestCafe to hang ([#6132](https://github.com/DevExpress/testcafe/issues/6132)).
+
+// 1.15.0-alpha.4 - 24.2.2
+* TestCafe no longer reports incorrect line numbers ([#5642](https://github.com/DevExpress/testcafe/issues/5642)).
+
+// 1.15.0-alpha.3 - 24.2.2
+* Ensured proper processing of for-of statements ([PR testcafe-hammerhead/#2632](https://github.com/DevExpress/testcafe-hammerhead/pull/2632)).
+* TestCafe no longer directs window location queries to non-window objects ([testcafe-hammerhead/#2611](https://github.com/DevExpress/testcafe-hammerhead/issues/2611)).
+* Performance enhancement: obtaining element attributes ([#6117](https://github.com/DevExpress/testcafe/issues/6117))
+
 ## v1.14.2 (2021-05-13)
 
 ## Bug Fixes
