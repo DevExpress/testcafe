@@ -157,7 +157,7 @@ describe('Utils', () => {
         it('File, directory and glob pattern', () => {
             const cwd = process.cwd();
 
-            const expectedFiles = [
+            let expectedFiles = [
                 'test/server/data/file-list/file-1.js',
                 'test/server/data/file-list/file-2.js',
                 'test/server/data/file-list/dir1/dir1-1/file-1-1-1.js',
@@ -172,24 +172,38 @@ describe('Utils', () => {
                 'test/server/data/file-list/dir4/dir4-1/file-4-1-3.testcafe',
                 'test/server/data/file-list/dir4/dir4-2/file-4-2-1.js',
                 'test/server/data/file-list/dir4/dir4-2/file-4-2-2.ts',
-                'test/server/data/file-list/dir4/dir4-2/file-4-2-3.testcafe',
-                'test/server/data/file-list/dir5/file-5-1.js',
-                'test/server/data/file-list/dir6/file-6-1.js'
-            ].map(file => {
+                'test/server/data/file-list/dir4/dir4-2/file-4-2-3.testcafe'
+            ];
+
+            if (OS.win) {
+                expectedFiles.push(
+                    'test/server/data/file-list/dir5/file-5-1.js',
+                    'test/server/data/file-list/dir6/file-6-1.js'
+                );
+            }
+
+            expectedFiles = expectedFiles.map(file => {
                 return path.resolve(cwd, file);
             });
 
-            return parseFileList([
+            const fileList = [
                 'test/server/data/file-list/file-1.js',
                 path.join(cwd, 'test/server/data/file-list/file-2.js'),
                 'test/server/data/file-list/dir1',
                 'test/server/data/file-list/dir2/*.js',
                 '!test/server/data/file-list/dir2/file-2-1.js',
-                'test/server/data/file-list/dir3',
-                'test/server/data/file-list/dir4/**/*/',
-                'test\\server\\data\\file-list\\dir5\\*\\',
-                'test\\server\\data\\file-list\\dir6\\'
-            ], cwd).then(actualFiles => {
+                'test/server/data/file-list/dir3/',
+                'test/server/data/file-list/dir4/**/*/'
+            ];
+
+            if (OS.win) {
+                fileList.push(
+                    'test\\server\\data\\file-list\\dir5\\*\\',
+                    'test\\server\\data\\file-list\\dir6\\'
+                );
+            }
+
+            return parseFileList(fileList, cwd).then(actualFiles => {
                 expect(actualFiles).eql(expectedFiles);
             });
         });

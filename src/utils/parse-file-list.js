@@ -40,8 +40,6 @@ function ensurePosix (fileString) {
 
 async function convertDirsToGlobs (fileList, baseDir) {
     fileList = await Promise.all(fileList.map(async file => {
-        file = ensurePosix(file);
-
         if (!isGlob(file)) {
             const absPath = path.resolve(baseDir, file);
             let fileStat  = null;
