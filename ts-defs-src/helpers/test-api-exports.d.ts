@@ -3,6 +3,7 @@
 /// <reference path="../test-api/request-hook.d.ts" />
 /// <reference path="../test-api/role.d.ts" />
 /// <reference path="../test-api/test-controller.d.ts" />
+/// <reference path="../test-api/structure.d.ts" />
 // {{/allowReferences}}
 
 // {{>selectors-exports.d.ts}}
@@ -34,3 +35,5 @@ export const Role: RoleFactory;
  * The test controller used to access test run API.
  */
 export const t: TestController;
+
+export const fixture: FixtureFn;
