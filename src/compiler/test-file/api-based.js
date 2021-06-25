@@ -15,6 +15,7 @@ import { TestCompilationError, APIError } from '../../errors/runtime';
 import stackCleaningHook from '../../errors/stack-cleaning-hook';
 import NODE_MODULES from '../../shared/node-modules-folder-name';
 import cacheProxy from './cache-proxy';
+import exportableLib from '../../api/exportable-lib';
 
 const CWD = process.cwd();
 
@@ -133,6 +134,7 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
                     this._compileExternalModule(mod, filename, requireCompilers[ext], origExt);
 
                 this._addGlobalAPI(testFile);
+                this._addExportAPI(testFile);
             };
         });
     }
@@ -172,6 +174,13 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         });
     }
 
+    _addExportAPI (testFile) {
+        Object.defineProperty(exportableLib, 'fixture', {
+            get:          () => new Fixture(testFile),
+            configurable: true
+        });
+    }
+
     _removeGlobalAPI () {
         delete global.fixture;
         delete global.test;
@@ -181,6 +190,7 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
         const testFile = new TestFile(filename);
 
         this._addGlobalAPI(testFile);
+        this._addExportAPI(testFile);
 
         stackCleaningHook.enabled = true;
 
