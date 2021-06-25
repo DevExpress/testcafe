@@ -37,3 +37,4 @@ export const Role: RoleFactory;
 export const t: TestController;
 
 export const fixture: FixtureFn;
+export const test: TestFn;
