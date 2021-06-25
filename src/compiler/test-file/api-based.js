@@ -179,6 +179,11 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
             get:          () => new Fixture(testFile),
             configurable: true
         });
+
+        Object.defineProperty(exportableLib, 'test', {
+            get:          () => new Test(testFile),
+            configurable: true
+        });
     }
 
     _removeGlobalAPI () {
