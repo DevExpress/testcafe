@@ -35,14 +35,13 @@ async function getDefaultDirs (baseDir) {
 
 // NOTE: glob patterns can only contain forward-slashes (https://github.com/sindresorhus/globby#api)
 function ensurePosix (fileString) {
-    if (path.sep !== path.posix.sep)
-        return fileString.split(path.sep).join(path.posix.sep);
-
-    return fileString;
+    return fileString.split(path.win32.sep).join(path.posix.sep);
 }
 
 async function convertDirsToGlobs (fileList, baseDir) {
     fileList = await Promise.all(fileList.map(async file => {
+        file = ensurePosix(file);
+
         if (!isGlob(file)) {
             const absPath = path.resolve(baseDir, file);
             let fileStat  = null;
