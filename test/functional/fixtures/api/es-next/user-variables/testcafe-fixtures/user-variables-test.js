@@ -1,12 +1,11 @@
 import { userVariables } from 'testcafe';
-import { expect } from 'chai';
 
 fixture `UserVariables.access`;
 
-test('test', () => {
+test('test', async (t) => {
     const { url, port, isUserVariables } = userVariables;
 
-    expect(url).equal('localhost');
-    expect(port).equal(1337);
-    expect(isUserVariables).equal(true);
+    await t.expect(url).eql('localhost');
+    await t.expect(port).eql(1337);
+    await t.expect(isUserVariables).eql(true);
 });
