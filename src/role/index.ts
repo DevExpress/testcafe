@@ -8,12 +8,12 @@ interface RoleOptions {
 }
 
 export function createRole (loginUrl: string, initFn: Function, options: RoleOptions = { preserveUrl: false }): Role {
-    assertType(is.string, 'Role', '"loginUrl" argument', loginUrl);
-    assertType(is.function, 'Role', '"initFn" argument', initFn);
-    assertType(is.nonNullObject, 'Role', '"options" argument', options);
+    assertType(is.string, 'Role', 'the "loginUrl" argument', loginUrl);
+    assertType(is.function, 'Role', 'the "initFn" argument', initFn);
+    assertType(is.nonNullObject, 'Role', 'the "options" argument', options);
 
     if (options.preserveUrl !== void 0)
-        assertType(is.boolean, 'Role', '"preserveUrl" option', options.preserveUrl);
+        assertType(is.boolean, 'Role', 'the "preserveUrl" option', options.preserveUrl);
 
     assertRoleUrl(loginUrl, 'Role');
 

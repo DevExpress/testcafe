@@ -419,7 +419,7 @@ describe('TypeScriptConfiguration', function () {
             message = err.message;
         }
 
-        expect(message).eql(`Unable to find the TypeScript configuration file in "${nonExistingConfiguration.filePath}"`);
+        expect(message).eql(`"${nonExistingConfiguration.filePath}" does not contain a TypeScript configuration file.`);
     });
 
     it('Config is not well-formed', () => {

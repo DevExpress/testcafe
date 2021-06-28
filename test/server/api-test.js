@@ -30,8 +30,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'The fixture name is expected to be a string, but it was object.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected the fixture name to be of type string, but it was a(n) object.',
 
                         callsite: '    2 |// (to treat a file as a test, it requires at least one fixture definition\n' +
                                   '    3 |//  with the string argument).\n' +
@@ -59,8 +59,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'The page URL is expected to be a string, but it was object.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected the page URL to be of type string, but it was a(n) object.',
 
                         callsite: '   1 |fixture `Yo`\n' +
                                   ' > 2 |    .page({ answer: 42 });\n' +
@@ -84,8 +84,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'fixture.beforeEach hook is expected to be a function, but it was string.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected the fixture.beforeEach hook to be of type function, but it was a(n) string.',
 
                         callsite: '   1 |fixture `beforeEach is not a function`\n' +
                                   " > 2 |    .beforeEach('yo');\n" +
@@ -109,8 +109,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'fixture.afterEach hook is expected to be a function, but it was string.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected the fixture.afterEach hook to be of type function, but it was a(n) string.',
 
                         callsite: '   1 |fixture `afterEach is not a function`\n' +
                                   " > 2 |    .afterEach('yo');\n" +
@@ -134,8 +134,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'fixture.before hook is expected to be a function, but it was string.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected the fixture.before hook to be of type function, but it was a(n) string.',
 
                         callsite: '   1 |fixture `before is not a function`\n' +
                                   " > 2 |    .before('yo');\n" +
@@ -159,8 +159,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'fixture.after hook is expected to be a function, but it was string.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected the fixture.after hook to be of type function, but it was a(n) string.',
 
                         callsite: '   1 |fixture `after is not a function`\n' +
                                   " > 2 |    .after('yo');\n" +
@@ -186,8 +186,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: credentialsInNotObject,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'credentials is expected to be a non-null object, but it was string.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected the credentials to be of type non-null object, but it was a(n) string.',
 
                         callsite: '   1 |fixture `Credentials is not an object`\n' +
                                   " > 2 |    .httpAuth('');\n" +
@@ -207,8 +207,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: passIsNotString,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'credentials.password is expected to be a string, but it was object.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected credentials.password to be of type string, but it was a(n) object.',
 
                         callsite: '   1 |fixture `Password is not a string`\n' +
                                   ' > 2 |    .httpAuth({ username: \'username\', password: {} });\n' +
@@ -228,8 +228,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: usernameIsNotDefined,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'credentials.username is expected to be a string, but it was undefined.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected credentials.username to be of type string, but it was a(n) undefined.',
 
                         callsite: '   1 |fixture `Username is not defined`\n' +
                                   " > 2 |    .httpAuth({ password: 'password' });\n" +
@@ -253,8 +253,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: fixtureHookHasWrongType,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'Hook is expected to be a RequestHook subclass, but it was string.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected the hook to be of type RequestHook subclass, but it was a(n) string.',
 
                         callsite: '   1 |fixture `RequestHook is undefined`\n' +
                                   ' > 2 |    .requestHooks(\'string\');\n' +
@@ -278,8 +278,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'You cannot call the "requestHooks" method more than once. Pass an array of parameters to this method instead.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'You cannot call the "requestHooks" method more than once. Specify an array of parameters instead.',
 
                         callsite: '    3 |const logger1 = new RequestLogger();\n' +
                                   '    4 |const logger2 = new RequestLogger();\n' +
@@ -315,8 +315,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: file,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'fixture.meta is expected to be a string or a non-null object, but it was undefined.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected fixture.meta to be of type string or a non-null object, but it was a(n) undefined.',
 
                         callsite: '   1 |fixture(\'Fixture1\')\n' +
                                   '   2 |    .page(\'http://example.com\')\n' +
@@ -341,8 +341,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'Client script is expected to be a string or a client script initializer, but it was number.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected the client script to be of type string or a client script initializer, but it was a(n) number.',
 
                         callsite: ' > 1 |fixture.clientScripts(8);\n' +
                                   '   2 |\n' +
@@ -363,8 +363,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'You cannot call the "clientScripts" method more than once. Pass an array of parameters to this method instead.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'You cannot call the "clientScripts" method more than once. Specify an array of parameters instead.',
 
                         callsite: '   1 |fixture `Fixture`\n' +
                                   '   2 |    .clientScripts(\'script1.js\')\n' +
@@ -389,8 +389,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'The test name is expected to be a string, but it was number.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected the test name to be of type string, but it was a(n) number.',
 
                         callsite: '    4 |// (to treat a file as a test, it requires at least one fixture definition\n' +
                                   '    5 |//  with the string argument).\n' +
@@ -414,8 +414,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'The test body is expected to be a function, but it was string.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected the test body to be of type function, but it was a(n) string.',
 
                         callsite: '   1 |fixture `Test body is not a function`;\n' +
                                   '   2 |\n' +
@@ -436,8 +436,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'test.before hook is expected to be a function, but it was number.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected the test.before hook to be of type function, but it was a(n) number.',
 
                         callsite: '   1 |fixture `Fixture`;\n' +
                                   '   2 |\n' +
@@ -460,8 +460,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'test.after hook is expected to be a function, but it was number.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected the test.after hook to be of type function, but it was a(n) number.',
 
                         callsite: '   1 |fixture `Fixture`;\n' +
                                   '   2 |\n' +
@@ -484,8 +484,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testHookArrayContainsNotRequestHookInheritor,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'Hook is expected to be a RequestHook subclass, but it was number.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected the hook to be of type RequestHook subclass, but it was a(n) number.',
 
                         callsite: "   1 |import { RequestMock } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -535,8 +535,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'You cannot call the "requestHooks" method more than once. Pass an array of parameters to this method instead.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'You cannot call the "requestHooks" method more than once. Specify an array of parameters instead.',
 
                         callsite: '    5 |\n' +
                                   '    6 |fixture `Fixture`;\n' +
@@ -571,8 +571,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: file,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'test.meta is expected to be a string or a non-null object, but it was null.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected test.meta to be of type string or a non-null object, but it was a(n) null.',
 
                         callsite: '   1 |fixture(\'Fixture1\')\n' +
                                   '   2 |    .page(\'http://example.com\');\n' +
@@ -597,8 +597,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: file,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'The fixture of \'Test\' test is expected to be a non-null object, but it was null.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected the fixture of \'Test\' test to be of type non-null object, but it was a(n) null.',
 
                         callsite: '   1 |// fixture `Fixture`\n' +
                                   '   2 |\n' +
@@ -620,8 +620,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'Client script is expected to be a string or a client script initializer, but it was number.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected the client script to be of type string or a client script initializer, but it was a(n) number.',
 
                         callsite: '   1 |fixture `Fixture`;\n' +
                                   '   2 |\n' +
@@ -643,8 +643,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'You cannot call the "clientScripts" method more than once. Pass an array of parameters to this method instead.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'You cannot call the "clientScripts" method more than once. Specify an array of parameters instead.',
 
                         callsite: '   1 |fixture `Fixture`;\n' +
                                   '   2 |\n' +
@@ -668,8 +668,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                            'test.timeouts is expected to be a test timeouts initializer, but it was number.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                            'Expected test.timeouts to be of type test timeouts initializer, but it was a(n) number.',
 
                         callsite: '   1 |fixture `Test timeouts`;\n' +
                             '   2 |\n' +
@@ -692,8 +692,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                            'test.timeouts.pageLoadTimeout is expected to be a non-negative number, but it was -1.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                            'Expected test.timeouts.pageLoadTimeout to be of type non-negative number, but it was a(n) -1.',
 
                         callsite: '   1 |fixture `Page Load Timeout`;\n' +
                             '   2 |\n' +
@@ -718,9 +718,9 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
-                                 'node snapshot or a Promise returned by a Selector, but number was passed.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Cannot initialize a Selector because Selector is number, and not one of the following: a CSS selector string, ' +
+                                 'a Selector object, a node snapshot, a function, or a Promise returned by a Selector.',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -746,8 +746,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"visibilityCheck" option is expected to be a boolean, but it was number.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected the "visibilityCheck" option to be of type boolean, but it was a(n) number.',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -772,8 +772,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"timeout" option is expected to be a non-negative number, but it was -5.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected the "timeout" option to be of type non-negative number, but it was a(n) -5.',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -798,8 +798,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"index" argument is expected to be a number, but it was NaN.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected the "index" argument to be of type number, but it was a(n) NaN.',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -824,8 +824,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"index" argument is expected to be a number, but it was Infinity.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected the "index" argument to be of type number, but it was a(n) Infinity.',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -850,8 +850,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"index" argument is expected to be a number, but it was string.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected the "index" argument to be of type number, but it was a(n) string.',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -876,8 +876,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"text" argument is expected to be a string or a regular expression, but it was object.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected the "text" argument to be of type string or a regular expression, but it was a(n) object.',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -902,8 +902,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"attrName" argument is expected to be a string or a regular expression, but it was object.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected the "attrName" argument to be of type string or a regular expression, but it was a(n) object.',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -928,8 +928,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"attrValue" argument is expected to be a string or a regular expression, but it was number.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected the "attrValue" argument to be of type string or a regular expression, but it was a(n) number.',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -954,8 +954,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"filter" argument is expected to be a string or a function, but it was object.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected the "filter" argument to be of type string or a function, but it was a(n) object.',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -980,8 +980,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"filter" argument is expected to be a string or a function, but it was object.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected the "filter" argument to be of type string or a function, but it was a(n) object.',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1006,8 +1006,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"filter" argument is expected to be a string, function or a number, but it was object.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected the "filter" argument to be of type string, function or a number, but it was a(n) object.',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1032,8 +1032,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"filter" argument is expected to be a string, function or a number, but it was object.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected the "filter" argument to be of type string, function or a number, but it was a(n) object.',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1058,8 +1058,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"filter" argument is expected to be a string, function or a number, but it was object.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected the "filter" argument to be of type string, function or a number, but it was a(n) object.',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1084,8 +1084,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"filter" argument is expected to be a string, function or a number, but it was object.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected the "filter" argument to be of type string, function or a number, but it was a(n) object.',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1111,8 +1111,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"filter" argument is expected to be a string, function or a number, but it was object.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected the "filter" argument to be of type string, function or a number, but it was a(n) object.',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1137,8 +1137,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"addCustomDOMProperties" option is expected to be a non-null object, but it was number.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected the "addCustomDOMProperties" option to be of type non-null object, but it was a(n) number.',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1164,8 +1164,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 "Custom DOM properties method 'prop1' is expected to be a function, but it was number.",
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 "Expected the custom DOM properties method 'prop1' to be of type function, but it was a(n) number.",
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1190,8 +1190,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"addCustomMethods" option is expected to be a non-null object, but it was number.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected the "addCustomMethods" option to be of type non-null object, but it was a(n) number.',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1217,8 +1217,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 "Custom method 'prop1' is expected to be a function, but it was number.",
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 "Expected the custom method 'prop1' to be of type function, but it was a(n) number.",
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1245,8 +1245,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'ClientFunction code is expected to be specified as a function, but number was passed.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Cannot execute a clientFunction because ClientFunction is number, and not a function.',
 
                         callsite: "   1 |import { ClientFunction } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1272,8 +1272,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'ClientFunction code is expected to be specified as a function, but number was passed.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Cannot execute a clientFunction because ClientFunction is number, and not a function.',
 
                         callsite: "   1 |import { ClientFunction } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1299,7 +1299,7 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
                                  'ClientFunction code, arguments or dependencies cannot contain generators or "async/await" syntax (use Promises instead).',
 
                         callsite: "    1 |import { ClientFunction } from 'testcafe';\n" +
@@ -1326,7 +1326,7 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
                                  'ClientFunction code, arguments or dependencies cannot contain generators or "async/await" syntax (use Promises instead).',
 
                         callsite: "    1 |import { ClientFunction } from 'testcafe';\n" +
@@ -1354,8 +1354,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"options" argument is expected to be a non-null object, but it was number.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected the "options" argument to be of type non-null object, but it was a(n) number.',
 
                         callsite: "   1 |import { ClientFunction } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1380,8 +1380,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"dependencies" option is expected to be a non-null object, but it was string.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected the "dependencies" option to be of type non-null object, but it was a(n) string.',
 
                         callsite: "   1 |import { ClientFunction } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1403,8 +1403,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 'The "boundTestRun" option value is expected to be a test controller.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Cannot resolve the "boundTestRun" option because its value is not a test controller.',
 
                         callsite: "   1 |import { ClientFunction } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1432,8 +1432,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"loginUrl" argument is expected to be a string, but it was number.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected the "loginUrl" argument to be of type string, but it was a(n) number.',
 
                         callsite: "   1 |import { Role } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1459,8 +1459,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"initFn" argument is expected to be a function, but it was number.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected the "initFn" argument to be of type function, but it was a(n) number.',
 
                         callsite: "   1 |import { Role } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1486,8 +1486,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"options" argument is expected to be a non-null object, but it was string.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected the "options" argument to be of type non-null object, but it was a(n) string.',
 
                         callsite: "   1 |import { Role } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1513,8 +1513,8 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                                 '"preserveUrl" option is expected to be a boolean, but it was object.',
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                                 'Expected the "preserveUrl" option to be of type boolean, but it was a(n) object.',
 
                         callsite: "   1 |import { Role } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1542,7 +1542,7 @@ describe('API', function () {
                     assertAPIError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
                                  "Cannot implicitly resolve the test run in the context of which the test controller action should be executed. Use test function's 't' argument instead.",
 
                         callsite: '    1 |import { t } from \'testcafe\';\n' +
@@ -1572,8 +1572,8 @@ describe('API', function () {
                         assertAPIError(err, {
                             stackTop: testFile,
 
-                            message: 'Cannot prepare tests due to an error.\n\n' +
-                                     'There was an error while configuring the request hook:\n\n' +
+                            message: 'Cannot prepare tests due to the following error:\n\n' +
+                                     'Attempt to configure a request hook resulted in the following error:\n\n' +
                                      'RequestLogger: Cannot stringify the request body because it is not logged. Specify { logRequestBody: true } in log options.',
 
                             callsite: '    1 |import { RequestLogger } from \'testcafe\';\n' +
@@ -1599,8 +1599,8 @@ describe('API', function () {
                         assertAPIError(err, {
                             stackTop: testFile,
 
-                            message: 'Cannot prepare tests due to an error.\n\n' +
-                                     'There was an error while configuring the request hook:\n\n' +
+                            message: 'Cannot prepare tests due to the following error:\n\n' +
+                                     'Attempt to configure a request hook resulted in the following error:\n\n' +
                                      'RequestLogger: Cannot stringify the response body because it is not logged. Specify { logResponseBody: true } in log options.',
 
                             callsite: '    1 |import { RequestLogger } from \'testcafe\';\n' +
@@ -1628,8 +1628,8 @@ describe('API', function () {
                         assertAPIError(err, {
                             stackTop: testFile,
 
-                            message: 'Cannot prepare tests due to an error.\n\n' +
-                                     'There was an error while configuring the request hook:\n\n' +
+                            message: 'Cannot prepare tests due to the following error:\n\n' +
+                                     'Attempt to configure a request hook resulted in the following error:\n\n' +
                                      "RequestMock: The 'respond' method was not called after 'onRequestTo'. You must call the 'respond' method to provide the mocked response.",
 
                             callsite: '   1 |import { RequestMock } from \'testcafe\';\n' +
@@ -1655,8 +1655,8 @@ describe('API', function () {
                         assertAPIError(err, {
                             stackTop: testFile,
 
-                            message: 'Cannot prepare tests due to an error.\n\n' +
-                                     'There was an error while configuring the request hook:\n\n' +
+                            message: 'Cannot prepare tests due to the following error:\n\n' +
+                                     'Attempt to configure a request hook resulted in the following error:\n\n' +
                                      "RequestMock: The 'onRequestTo' method was not called before 'respond'. You must call the 'onRequestTo' method to provide the URL requests to which are mocked.",
 
                             callsite: '   1 |import { RequestMock } from \'testcafe\';\n' +

@@ -288,7 +288,7 @@ describe('TestCafe Live', function () {
             })
             .then(() => {
                 expect(errors.length).eql(1);
-                expect(errors[0].toString()).contains('Error: Cannot prepare tests due to an error');
+                expect(errors[0].toString()).contains('Error: Cannot prepare tests due to the following error');
                 expect(runner.runCount).eql(2);
             })
             .then(() => {
@@ -335,7 +335,7 @@ describe('TestCafe Live', function () {
         return runTests(testFileWithSyntaxErrorPath)
             .then(() => {
                 expect(errors.length).eql(1);
-                expect(errors[0].toString()).contains('Error: Cannot prepare tests due to an error');
+                expect(errors[0].toString()).contains('Error: Cannot prepare tests due to the following error');
             });
     });
 
@@ -360,7 +360,7 @@ describe('TestCafe Live', function () {
             testCafe.createLiveModeRunner();
         }
         catch (err) {
-            expect(err.message.indexOf('Cannot create multiple live mode runners') > -1).to.be.true;
+            expect(err.message.indexOf('Cannot launch multiple live mode instances of the TestCafe test runner') > -1).to.be.true;
         }
     });
 
@@ -376,7 +376,7 @@ describe('TestCafe Live', function () {
             runner.run();
         }
         catch (err) {
-            expect(err.message.indexOf('Cannot run a live mode runner multiple times') > -1).to.be.true;
+            expect(err.message.indexOf('Cannot launch the same live mode instance of the TestCafe test runner multiple times') > -1).to.be.true;
         }
 
         return promise;
@@ -393,7 +393,7 @@ describe('TestCafe Live', function () {
         runner = new RunnerMock(testCafe, {});
 
         runner.once('error-occurred', error => {
-            expect(error.message).contain('TestCafe could not find the test files that match the following patterns');
+            expect(error.message).contain('No test files inside');
 
             done();
         });

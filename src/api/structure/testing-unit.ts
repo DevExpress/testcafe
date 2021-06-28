@@ -86,7 +86,7 @@ export default abstract class TestingUnit extends BaseUnit {
     private _page$ (url: string, ...rest: unknown[]): Function {
         this.pageUrl = handleTagArgs(url, rest);
 
-        assertType(is.string, 'page', 'The page URL', this.pageUrl);
+        assertType(is.string, 'page', 'the page URL', this.pageUrl);
         assertPageUrl(this.pageUrl, 'page');
 
         this.pageUrl = getUrl(this.pageUrl, pathToFileURL(this.testFile.filename));
@@ -95,7 +95,7 @@ export default abstract class TestingUnit extends BaseUnit {
     }
 
     private _httpAuth$ (credentials: AuthCredentials): Function {
-        assertType(is.nonNullObject, 'httpAuth', 'credentials', credentials);
+        assertType(is.nonNullObject, 'httpAuth', 'the credentials', credentials);
         assertType(is.string, 'httpAuth', 'credentials.username', credentials.username);
         assertType(is.string, 'httpAuth', 'credentials.password', credentials.password);
 

@@ -73,7 +73,7 @@ describe('TestCafe factory function', function () {
                 throw new Error('Promise rejection expected');
             })
             .catch(function (err) {
-                expect(err.message).eql('The specified 1337 port is already in use by another program.');
+                expect(err.message).eql('Port 1337 is occupied by another process.');
             });
     });
 
@@ -83,7 +83,7 @@ describe('TestCafe factory function', function () {
                 throw new Error('Promise rejection expected');
             })
             .catch(function (err) {
-                expect(err.message).eql('The specified "example.org" hostname cannot be resolved to the current machine.');
+                expect(err.message).eql('Cannot resolve hostname "example.org".');
             });
     });
 
