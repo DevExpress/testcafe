@@ -248,9 +248,9 @@ Thank you to all the people who already contributed to TestCafe!
 :---: |:---: |:---: |:---: |:---: |:---: |
 [VasilyStrelyaev](https://github.com/VasilyStrelyaev) |[vitalics](https://github.com/vitalics) |[Vla8islav](https://github.com/Vla8islav) |[wentwrong](https://github.com/wentwrong) |[intermike](https://github.com/intermike) |[DevSide](https://github.com/DevSide) |
 
-[<img alt="b12031106" src="https://avatars1.githubusercontent.com/u/2063566?v=4&s=117" width="117">](https://github.com/b12031106) |[<img alt="tomashanacek" src="https://avatars2.githubusercontent.com/u/1244486?v=4&s=117" width="117">](https://github.com/tomashanacek) |[<img alt="danielroe" src="https://avatars1.githubusercontent.com/u/28706372?v=4&s=117" width="117">](https://github.com/danielroe) |
-:---: |:---: |:---: |
-[b12031106](https://github.com/b12031106) |[tomashanacek](https://github.com/tomashanacek) |[danielroe](https://github.com/danielroe) |
+[<img alt="b12031106" src="https://avatars1.githubusercontent.com/u/2063566?v=4&s=117" width="117">](https://github.com/b12031106) |[<img alt="tomashanacek" src="https://avatars2.githubusercontent.com/u/1244486?v=4&s=117" width="117">](https://github.com/tomashanacek) |[<img alt="danielroe" src="https://avatars1.githubusercontent.com/u/28706372?v=4&s=117" width="117">](https://github.com/danielroe) |[<img alt="Aleksey28" src="https://avatars.githubusercontent.com/u/32869530?v=4&s=117" width="117">](https://github.com/Aleksey28) |[<img alt="kisrefod" src="https://avatars.githubusercontent.com/u/27427579?v=4&s=117" width="117">](https://github.com/kisrefod) |[<img alt="rob4629" src="https://avatars.githubusercontent.com/u/37812673?v=4&s=117" width="117">](https://github.com/rob4629) |
+:---: |:---: |:---: |:---: |:---: |:---: |
+[b12031106](https://github.com/b12031106) |[tomashanacek](https://github.com/tomashanacek) |[danielroe](https://github.com/danielroe) |[Aleksey28](https://github.com/Aleksey28) |[kisrefod](https://github.com/kisrefod) |[rob4629](https://github.com/rob4629) |
 
 ## Plugins
 
