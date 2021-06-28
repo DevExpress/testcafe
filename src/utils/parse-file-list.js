@@ -6,8 +6,9 @@ import OS from 'os-family';
 import { isEmpty, flatten } from 'lodash';
 import { stat } from '../utils/promisified-functions';
 
-const DEFAULT_TEST_LOOKUP_DIRS = ['test/', 'tests/'];
+const DEFAULT_TEST_LOOKUP_DIRS = ['test', 'tests'];
 const TEST_FILE_GLOB_PATTERN   = `./**/*@(${Compiler.getSupportedTestFileExtensions().join('|')})`;
+const GLOB_POSIX_SLASH_ENDING  = '*' + path.posix.sep;
 
 function modifyFileRoot (baseDir, file) {
     const absPath            = path.resolve(baseDir, file);
@@ -32,6 +33,11 @@ async function getDefaultDirs (baseDir) {
     });
 }
 
+// NOTE: glob patterns can only contain forward-slashes (https://github.com/sindresorhus/globby#api)
+function ensurePosix (fileString) {
+    return fileString.split(path.win32.sep).join(path.posix.sep);
+}
+
 async function convertDirsToGlobs (fileList, baseDir) {
     fileList = await Promise.all(fileList.map(async file => {
         if (!isGlob(file)) {
@@ -45,14 +51,24 @@ async function convertDirsToGlobs (fileList, baseDir) {
                 return null;
             }
 
-            if (fileStat.isDirectory())
-                return path.join(file, TEST_FILE_GLOB_PATTERN);
+            if (fileStat.isDirectory()) {
+                file = path.join(file, TEST_FILE_GLOB_PATTERN);
+
+                return ensurePosix(file);
+            }
 
             if (OS.win)
                 file = modifyFileRoot(baseDir, file);
         }
+        // TODO: remove this workaround after resolving https://github.com/mrmlnc/fast-glob/issues/290
+        else {
+            file = ensurePosix(file);
 
-        return file;
+            if (file.endsWith(GLOB_POSIX_SLASH_ENDING))
+                return file.slice(0, -1);
+        }
+
+        return ensurePosix(file);
     }));
 
     return fileList.filter(file => !!file);
