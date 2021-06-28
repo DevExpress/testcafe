@@ -69,7 +69,7 @@ describe('TestCafeConfiguration', function () {
     });
 
     afterEach(async () => {
-        await Promise.all(testCafeConfiguration.filePaths.map(async (path) => await del([path])));
+        await Promise.all(testCafeConfiguration.defaultPaths.map(async (path) => await del([path])));
 
         consoleWrapper.unwrap();
         consoleWrapper.messages.clear();
@@ -78,7 +78,7 @@ describe('TestCafeConfiguration', function () {
     describe('Init', () => {
         describe('Exists', () => {
             it('Config is not well-formed', () => {
-                fs.writeFileSync(testCafeConfiguration.filePaths[0], '{');
+                fs.writeFileSync(testCafeConfiguration.defaultPaths[0], '{');
                 consoleWrapper.wrap();
 
                 return testCafeConfiguration.init()
@@ -280,7 +280,7 @@ describe('TestCafeConfiguration', function () {
         });
 
         it('File doesn\'t exists', () => {
-            fs.unlinkSync(testCafeConfiguration.filePaths[0]);
+            fs.unlinkSync(testCafeConfiguration.defaultPaths[0]);
 
             const defaultOptions = cloneDeep(testCafeConfiguration._options);
 
