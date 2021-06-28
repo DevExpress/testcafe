@@ -1,6 +1,6 @@
 import { userVariables } from 'testcafe';
 
-fixture `UserVariables.access`;
+fixture `UserVariables read access`;
 
 test('test', async (t) => {
     const { url, port, isUserVariables } = userVariables;
