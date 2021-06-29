@@ -1,4 +1,4 @@
-import { Promise, eventSandbox } from './deps/hammerhead';
+import { Promise, eventSandbox, utils } from './deps/hammerhead';
 import { pageUnloadBarrier } from './deps/testcafe-core';
 import { IframeStatusBar } from './deps/testcafe-ui';
 import Driver from './driver';
@@ -7,7 +7,7 @@ import DriverStatus from './status';
 import ParentIframeDriverLink from './driver-link/iframe/parent';
 import { ChildWindowIsOpenedInFrameMessage, TYPE as MESSAGE_TYPE } from './driver-link/messages';
 import IframeNativeDialogTracker from './native-dialog-tracker/iframe';
-import inCrossDomainIframe from '../../utils/in-cross-domain-iframe';
+
 
 const messageSandbox = eventSandbox.message;
 
@@ -79,6 +79,13 @@ export default class IframeDriver extends Driver {
         this.parentDriverLink.onCommandExecuted(status);
     }
 
+    async _isInCommandExecution () {
+        if (utils.dom.isCrossDomainWindows(window, window.parent))
+            return await this.parentDriverLink.hasPendingActionFlags();
+
+        return this._hasPendingActionFlags(this.contextStorage);
+    }
+
     async _init () {
         const id = await this.parentDriverLink.establishConnection();
 
@@ -87,17 +94,15 @@ export default class IframeDriver extends Driver {
         if (this._failIfClientCodeExecutionIsInterrupted())
             return;
 
-        let inCommandExecution = this._hasPendingActionFlags(this.contextStorage);
+        const inCommandExecution = await this._isInCommandExecution();
 
-        if (inCrossDomainIframe(window))
-            inCommandExecution = await this.parentDriverLink.hasPendingActionFlags();
+        if (!inCommandExecution)
+            return;
 
-        if (inCommandExecution) {
-            this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, false);
-            this.contextStorage.setItem(this.EXECUTING_IN_IFRAME_FLAG, false);
+        this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, false);
+        this.contextStorage.setItem(this.EXECUTING_IN_IFRAME_FLAG, false);
 
-            this._onReady(new DriverStatus({ isCommandResult: true }));
-        }
+        this._onReady(new DriverStatus({ isCommandResult: true }));
     }
 
     // API
