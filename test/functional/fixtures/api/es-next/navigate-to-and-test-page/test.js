@@ -5,7 +5,7 @@ describe('[API] t.navigateTo', function () {
     it('Should validate the url argument', function () {
         return runTests('./testcafe-fixtures/navigate-to-test.js', 'Incorrect protocol', { shouldFail: 'true' })
             .catch(function (errs) {
-                expect(errs[0]).contains('The specified "ftp://localhost:3000/fixtures/api/es-next/navigate-to-and-test-page/pages/index.html" test page URL uses an unsupported ftp:// protocol. Only relative URLs or absolute URLs with http://, https:// and file:// protocols are supported.');
+                expect(errs[0]).contains('The "ftp://localhost:3000/fixtures/api/es-next/navigate-to-and-test-page/pages/index.html" test page URL includes an unsupported ftp:// protocol. TestCafe only supports http://, https:// and file:// protocols.');
                 expect(errs[0]).contains('> 72 |    await t.navigateTo(\'ftp://localhost:3000/fixtures/api/es-next/navigate-to-and-test-page/pages/index.html\');');
             });
     });

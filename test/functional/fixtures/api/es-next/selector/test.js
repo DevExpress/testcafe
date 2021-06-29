@@ -198,8 +198,9 @@ describe('[API] Selector', function () {
                 only:       'chrome'
             }).catch(function (errs) {
                 expect(errs[0].indexOf(
-                    'Selector is expected to be initialized with a function, CSS selector string, another Selector, ' +
-                    'node snapshot or a Promise returned by a Selector, but number was passed.'
+                    'Cannot initialize a Selector because Selector is number, ' +
+                    'and not one of the following: a CSS selector string, a Selector object, a node snapshot, ' +
+                    'a function, or a Promise returned by a Selector.'
                 )).eql(0);
 
                 expect(errs[0]).contains('> 19 |    await Selector(123)();');

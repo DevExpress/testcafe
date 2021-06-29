@@ -30,9 +30,9 @@ describe('[API] t.doubleClick()', function () {
         })
             .catch(function (errs) {
                 expect(errs[0]).to.contains(
-                    'Action "selector" argument error:  Selector is expected to be initialized with a ' +
-                    'function, CSS selector string, another Selector, node snapshot or a Promise ' +
-                    'returned by a Selector, but object was passed.'
+                    'Action "selector" argument error:  Cannot initialize a Selector because Selector is object, ' +
+                    'and not one of the following: a CSS selector string, a Selector object, a node snapshot, ' +
+                    'a function, or a Promise returned by a Selector.'
                 );
                 expect(errs[0]).to.contains(' > 11 |    await t.doubleClick(null);');
             });

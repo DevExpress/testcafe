@@ -9,7 +9,7 @@ describe('App command', function () {
             appCommand: 'node test/functional/fixtures/app-command/failing-app.js'
         })
             .catch(function (err) {
-                expect(err.message).contains('Tested app failed with an error:\n\nError: Command failed');
+                expect(err.message).contains('The web application failed with the following error:\n\nError: Command failed');
             });
     });
 
