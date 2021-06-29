@@ -51,11 +51,11 @@ export default class TypescriptConfiguration extends Configuration {
         this._notifyThatOptionsCannotBeOverridden();
     }
 
-    protected async _isConfigurationFileExists (): Promise<boolean> {
-        const fileExists = await super._isConfigurationFileExists();
+    protected async _isConfigurationFileExists (filePath = this.filePath): Promise<boolean> {
+        const fileExists = await super._isConfigurationFileExists(filePath);
 
         if (!fileExists)
-            throw new GeneralError(RUNTIME_ERRORS.cannotFindTypescriptConfigurationFile, this.filePath);
+            throw new GeneralError(RUNTIME_ERRORS.cannotFindTypescriptConfigurationFile, filePath);
 
         return true;
     }
