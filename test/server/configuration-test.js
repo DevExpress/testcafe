@@ -13,20 +13,22 @@ const { DEFAULT_TYPESCRIPT_COMPILER_OPTIONS } = require('../../lib/configuration
 const RunnerCtor                              = require('../../lib/runner');
 const OptionNames                             = require('../../lib/configuration/option-names');
 const consoleWrapper                          = require('./helpers/console-wrapper');
-const WARNING_MESSAGES                        = require('../../lib/notifications/warning-message');
 
 const tsConfigPath           = 'tsconfig.json';
 const customTSConfigFilePath = 'custom-config.json';
 
-const createConfigFile = (path, options) => {
+const createJSONConfig = (path, options) => {
     options = options || {};
-    const content = `${pathUtil.extname(path) === '.js' ? 'module.exports = ' : ''}${JSON.stringify(options)}`;
-
-    fs.writeFileSync(path, content);
+    fs.writeFileSync(path, JSON.stringify(options));
 };
 
-const createTestCafeConfigurationFile   = createConfigFile.bind(null, TestCafeConfiguration.FILENAMES[0]);
-const createTypeScriptConfigurationFile = createConfigFile.bind(null, tsConfigPath);
+const createJsConfig = (path, options) => {
+    options = options || {};
+    fs.writeFileSync(path, `module.exports = ${JSON.stringify(options)}`);
+};
+
+const createTestCafeConfigurationFile = createJSONConfig.bind(null, TestCafeConfiguration.FILENAMES[1]);
+const createTypeScriptConfigurationFile = createJSONConfig.bind(null, tsConfigPath);
 
 const TEST_TIMEOUT = 5000;
 
@@ -78,7 +80,9 @@ describe('TestCafeConfiguration', function () {
     describe('Init', () => {
         describe('Exists', () => {
             it('Config is not well-formed', () => {
-                fs.writeFileSync(testCafeConfiguration.defaultPaths[0], '{');
+                const filePath = testCafeConfiguration.defaultPaths[0];
+
+                fs.writeFileSync(filePath, '{');
                 consoleWrapper.wrap();
 
                 return testCafeConfiguration.init()
@@ -86,7 +90,7 @@ describe('TestCafeConfiguration', function () {
                         consoleWrapper.unwrap();
 
                         expect(testCafeConfiguration.getOption('hostname')).eql(void 0);
-                        expect(consoleWrapper.messages.log).contains(WARNING_MESSAGES.cannotReadConfigFile);
+                        expect(consoleWrapper.messages.log).contains(`An error has occurred while reading the "${filePath}" configuration file.`);
                     });
             });
 
@@ -280,7 +284,7 @@ describe('TestCafeConfiguration', function () {
         });
 
         it('File doesn\'t exists', () => {
-            fs.unlinkSync(testCafeConfiguration.defaultPaths[0]);
+            fs.unlinkSync(TestCafeConfiguration.FILENAMES[1]);
 
             const defaultOptions = cloneDeep(testCafeConfiguration._options);
 
@@ -575,7 +579,7 @@ describe('TypeScriptConfiguration', function () {
                 tsConfigPath: customTSConfigFilePath,
             });
 
-            createConfigFile(customTSConfigFilePath, {
+            createJSONConfig(customTSConfigFilePath, {
                 compilerOptions: {
                     target: 'es5',
                 },
@@ -588,7 +592,7 @@ describe('TypeScriptConfiguration', function () {
             await runner.src('test/server/data/test-suites/typescript-basic/testfile1.ts')._applyOptions();
             await runner.bootstrapper._getTests();
 
-            fs.unlinkSync(TestCafeConfiguration.FILENAMES[0]);
+            fs.unlinkSync(TestCafeConfiguration.FILENAMES[1]);
             typeScriptConfiguration._filePath = customTSConfigFilePath;
 
             expect(runner.bootstrapper.tsConfigPath).eql(customTSConfigFilePath);
@@ -599,7 +603,7 @@ describe('TypeScriptConfiguration', function () {
             it('TypeScript config', function () {
                 let runner = null;
 
-                createConfigFile(customTSConfigFilePath, {
+                createJSONConfig(customTSConfigFilePath, {
                     compilerOptions: {
                         target: 'es5',
                     },
@@ -659,7 +663,7 @@ describe('TypeScriptConfiguration', function () {
                 'browser':  'ie',
             };
 
-            createConfigFile(customConfigFile, options);
+            createJSONConfig(customConfigFile, options);
 
             configuration = new TestCafeConfiguration(customConfigFile);
 
@@ -685,7 +689,7 @@ describe('TypeScriptConfiguration', function () {
                 'browser':  'ie'
             };
 
-            createConfigFile(customConfigFile, options);
+            createJsConfig(customConfigFile, options);
 
             configuration = new TestCafeConfiguration(customConfigFile);
 
@@ -710,7 +714,7 @@ describe('TypeScriptConfiguration', function () {
                 'browser':  'ie',
             };
 
-            createConfigFile(defaultFileLocation, options);
+            createJSONConfig(defaultFileLocation, options);
 
             configuration = new TestCafeConfiguration();
 
