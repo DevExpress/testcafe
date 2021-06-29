@@ -86,8 +86,7 @@ export default class CLIArgumentParser {
     public args: string[];
 
     public constructor (cwd: string) {
-        // NOTE: https://github.com/tj/commander.js/issues/1465
-        this.program      = new Command('testcafe') as Command;
+        this.program      = new Command('testcafe');
         this.cwd          = cwd || process.cwd();
         this.remoteCount  = 0;
         this.opts         = {};
@@ -162,13 +161,13 @@ export default class CLIArgumentParser {
             .option('--disable-screenshots', 'disable screenshots')
             .option('--screenshots-full-page', 'enable full-page screenshots')
             .option('--compiler-options <option=value[,...]>', 'specify test file compiler options')
+            .option('--disable-multiple-windows', 'disable multiple windows mode')
 
             // NOTE: these options will be handled by chalk internally
             .option('--color', 'force colors in command line')
             .option('--no-color', 'disable colors in command line')
 
             // NOTE: temporary hide experimental options from --help command
-            .addOption(new Option('--disable-multiple-windows', 'disable multiple windows mode').hideHelp())
             .addOption(new Option('--experimental-compiler-service', 'run compiler in a separate process').hideHelp())
             .addOption(new Option('--cache', 'cache web assets between test runs').hideHelp());
     }
