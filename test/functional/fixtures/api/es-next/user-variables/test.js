@@ -4,10 +4,10 @@ const DEFAULT_RUN_OPTIONS        = {
 };
 
 describe('[API] UserVariables', function () {
-    it('Should provide user variables for read', function () {
+    it('Read', function () {
         return runTests('./testcafe-fixtures/readable-test.js', 'test', DEFAULT_RUN_OPTIONS);
     });
-    it('Should provide user variables for write', function () {
+    it('Write', function () {
         return runTests('./testcafe-fixtures/writable-test.js', 'test', DEFAULT_RUN_OPTIONS);
     });
 });
