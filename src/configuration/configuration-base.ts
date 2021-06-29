@@ -1,6 +1,4 @@
-import {
-    isAbsolute, extname
-} from 'path';
+import { isAbsolute, extname } from 'path';
 import debug from 'debug';
 import JSON5 from 'json5';
 import {
@@ -30,9 +28,7 @@ export default class Configuration {
     public constructor (configurationFilesNames: string | null | (string | null)[]) {
         this._options   = {};
         this._filePath  = '';
-        this._defaultPaths = Array.isArray(configurationFilesNames)
-            ? configurationFilesNames.map(Configuration._resolveFilePath)
-            : [Configuration._resolveFilePath(configurationFilesNames)];
+        this._defaultPaths = castArray(configurationFilesNames).map(Configuration._resolveFilePath);
 
         this._overriddenOptions = [];
     }
@@ -140,7 +136,7 @@ export default class Configuration {
             if (!await this._isConfigurationFileExists())
                 continue;
 
-            if (extname(this._filePath) === '.js')
+            if (this._isJSConfiguration(this._filePath))
                 return this._readJsConfigurationFileContent();
 
             const configurationFileContent = await this._readConfigurationFileContent();
@@ -167,14 +163,19 @@ export default class Configuration {
         }
     }
 
+    protected _isJSConfiguration (filePath: string): boolean {
+        return extname(filePath) === '.js';
+    }
+
     public _readJsConfigurationFileContent (): object | null {
         if (this.filePath) {
             try {
                 delete require.cache[this.filePath];
+
                 return require(this.filePath);
             }
             catch (error) {
-                Configuration._showWarningForError(error, WARNING_MESSAGES.cannotReadConfigFile);
+                Configuration._showWarningForError(error, WARNING_MESSAGES.cannotReadConfigFile, this.filePath);
             }
         }
 
@@ -186,7 +187,7 @@ export default class Configuration {
             return await readFile(this.filePath);
         }
         catch (error) {
-            Configuration._showWarningForError(error, WARNING_MESSAGES.cannotReadConfigFile);
+            Configuration._showWarningForError(error, WARNING_MESSAGES.cannotReadConfigFile, this.filePath);
         }
 
         return null;

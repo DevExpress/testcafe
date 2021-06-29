@@ -34,7 +34,9 @@ import WarningLog from '../notifications/warning-log';
 import browserProviderPool from '../browser/provider/pool';
 import BrowserConnection, { BrowserInfo } from '../browser/connection';
 
-const CONFIGURATION_FILENAMES = ['.testcaferc.js', '.testcaferc.json'];
+const BASE_CONFIGURATION_FILENAME = '.testcaferc';
+const CONFIGURATION_EXTENSIONS    = ['.js', '.json'];
+const CONFIGURATION_FILENAMES     = CONFIGURATION_EXTENSIONS.map(ext => `${BASE_CONFIGURATION_FILENAME}${ext}`);
 
 const DEFAULT_SCREENSHOTS_DIRECTORY = 'screenshots';
 
