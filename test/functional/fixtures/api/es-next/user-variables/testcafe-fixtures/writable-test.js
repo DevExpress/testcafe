@@ -1,16 +1,14 @@
 import { userVariables } from 'testcafe';
-import { expect } from 'chai';
 
-fixture `UserVariables write access`
+fixture `UserVariables write access`;
+
+test
     .before(() => {
         userVariables.executedTests = [];
     })
-    .after(() => {
-        expect(userVariables.executedTests).eql(['localhost', 1337, true]);
+    .after(async t => {
+        await t.expect(userVariables.executedTests).eql(['localhost', 1337, true]);
+    })
+    ('test', async () => {
+        userVariables.executedTests.push('localhost', 1337, true);
     });
-
-test('test', async () => {
-    userVariables.executedTests.push('localhost');
-    userVariables.executedTests.push(1337);
-    userVariables.executedTests.push(true);
-});
