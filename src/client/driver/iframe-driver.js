@@ -1,4 +1,9 @@
-import { Promise, eventSandbox, utils } from './deps/hammerhead';
+import {
+    Promise,
+    eventSandbox,
+    utils
+} from './deps/hammerhead';
+
 import { pageUnloadBarrier } from './deps/testcafe-core';
 import { IframeStatusBar } from './deps/testcafe-ui';
 import Driver from './driver';
