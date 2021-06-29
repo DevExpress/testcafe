@@ -37,7 +37,7 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
                     return testCafe.close();
                 })
                 .finally(() => {
-                    expect(error.message).eql('The following reporters attempted to write to the same output stream: "custom1, custom2". Only one reporter can write to a stream.');
+                    expect(error.message).eql('Reporters can not share output streams. The following reporters interfere with one another: "custom1, custom2".');
                 });
         });
     });
