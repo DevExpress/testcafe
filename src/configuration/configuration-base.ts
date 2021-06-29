@@ -21,14 +21,23 @@ const DEBUG_LOGGER = debug('testcafe:configuration');
 
 export default class Configuration {
     protected _options: Dictionary<Option>;
-    protected _filePath: string | null;
-    protected readonly _defaultPaths: (string | null)[];
+    protected _filePath?: string;
+    protected readonly _defaultPaths?: string[];
     protected _overriddenOptions: string[];
 
-    public constructor (configurationFilesNames: string | null | (string | null)[]) {
+    public constructor (configurationFilesNames: string | null | string[]) {
         this._options   = {};
-        this._filePath  = '';
-        this._defaultPaths = castArray(configurationFilesNames).map(Configuration._resolveFilePath);
+
+        if (configurationFilesNames) {
+            this._defaultPaths = castArray(configurationFilesNames).reduce((result, name) => {
+                const resolveFilePath = Configuration._resolveFilePath(name);
+
+                if (resolveFilePath)
+                    result.push(resolveFilePath);
+
+                return result;
+            }, [] as string[]);
+        }
 
         this._overriddenOptions = [];
     }
@@ -118,46 +127,53 @@ export default class Configuration {
         return cloneDeep(this);
     }
 
-    public get filePath (): string | null {
+    public get filePath (): string | undefined {
         return this._filePath;
     }
 
-    public get defaultPaths (): (string | null)[] {
+    public get defaultPaths (): string[] | undefined {
         return this._defaultPaths;
     }
 
     public async _load (): Promise<null | object> {
-        for (const filePath of this.defaultPaths) {
-            this._filePath = filePath;
+        if (!this.defaultPaths || !this.defaultPaths.length)
+            return null;
 
-            if (!this._filePath)
-                continue;
+        const options = await Promise.all(this.defaultPaths.map(async filePath => {
+            if (!await this._isConfigurationFileExists(filePath))
+                return null;
 
-            if (!await this._isConfigurationFileExists())
-                continue;
+            if (this._isJSConfiguration(filePath))
+                return this._readJsConfigurationFileContent(filePath);
 
-            if (this._isJSConfiguration(this._filePath))
-                return this._readJsConfigurationFileContent();
-
-            const configurationFileContent = await this._readConfigurationFileContent();
+            const configurationFileContent = await this._readConfigurationFileContent(filePath);
 
             if (!configurationFileContent)
-                continue;
+                return null;
 
             return this._parseConfigurationFileContent(configurationFileContent);
-        }
+        }));
 
-        return null;
+        return options.reduce((result, option, index) => {
+            if (option && result)
+                Configuration._showConsoleWarning(WARNING_MESSAGES.multipleConfigurationFilesFound);
+            else if (option) {
+                this._filePath = this.defaultPaths?.[index];
+                return option;
+            }
+
+            return result;
+        }, null as (null | object));
     }
 
-    protected async _isConfigurationFileExists (): Promise<boolean> {
+    protected async _isConfigurationFileExists (filePath = this.filePath): Promise<boolean> {
         try {
-            await stat(this.filePath);
+            await stat(filePath);
 
             return true;
         }
         catch (error) {
-            DEBUG_LOGGER(renderTemplate(WARNING_MESSAGES.cannotFindConfigurationFile, this.filePath, error.stack));
+            DEBUG_LOGGER(renderTemplate(WARNING_MESSAGES.cannotFindConfigurationFile, filePath, error.stack));
 
             return false;
         }
@@ -167,27 +183,27 @@ export default class Configuration {
         return extname(filePath) === '.js';
     }
 
-    public _readJsConfigurationFileContent (): object | null {
-        if (this.filePath) {
+    public _readJsConfigurationFileContent (filePath = this.filePath): object | null {
+        if (filePath) {
             try {
-                delete require.cache[this.filePath];
+                delete require.cache[filePath];
 
-                return require(this.filePath);
+                return require(filePath);
             }
             catch (error) {
-                Configuration._showWarningForError(error, WARNING_MESSAGES.cannotReadConfigFile, this.filePath);
+                Configuration._showWarningForError(error, WARNING_MESSAGES.cannotReadConfigFile, filePath);
             }
         }
 
         return null;
     }
 
-    public async _readConfigurationFileContent (): Promise<Buffer | null> {
+    public async _readConfigurationFileContent (filePath = this.filePath): Promise<Buffer | null> {
         try {
-            return await readFile(this.filePath);
+            return await readFile(filePath);
         }
         catch (error) {
-            Configuration._showWarningForError(error, WARNING_MESSAGES.cannotReadConfigFile, this.filePath);
+            Configuration._showWarningForError(error, WARNING_MESSAGES.cannotReadConfigFile, filePath);
         }
 
         return null;
