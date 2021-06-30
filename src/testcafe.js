@@ -32,7 +32,7 @@ export default class TestCafe {
         this.runners                  = [];
         this.configuration            = configuration;
 
-        this.compilerService = configuration.getOption(OPTION_NAMES.experimentalCompilerService) ? new CompilerHost() : void 0;
+        this.compilerService = configuration.getOption(OPTION_NAMES.experimentalCompilerService) ? new CompilerHost(options) : void 0;
 
         this._registerAssets(options.developmentMode);
     }

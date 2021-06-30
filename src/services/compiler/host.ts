@@ -89,11 +89,13 @@ const INITIAL_DEBUGGER_BREAK_ON_START = 'Break on start';
 export default class CompilerHost extends AsyncEventEmitter implements CompilerProtocol {
     private runtime: Promise<RuntimeResources|undefined>;
     private cdp: cdp.ProtocolApi & EventEmitter | undefined;
+    private developmentMode: boolean;
 
-    public constructor () {
+    public constructor ({ developmentMode }: any) {
         super();
 
         this.runtime = Promise.resolve(void 0);
+        this.developmentMode = developmentMode;
     }
 
     private _setupRoutes (proxy: IPCProxy): void {
@@ -219,7 +221,8 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
             if (!this.cdp)
                 return void 0;
 
-            this._setupDebuggerHandlers();
+            if (!this.developmentMode)
+                this._setupDebuggerHandlers();
 
             await this.cdp.Debugger.enable({});
             await this.cdp.Runtime.enable();
