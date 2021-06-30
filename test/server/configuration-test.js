@@ -14,7 +14,6 @@ const { DEFAULT_TYPESCRIPT_COMPILER_OPTIONS } = require('../../lib/configuration
 const RunnerCtor                              = require('../../lib/runner');
 const OptionNames                             = require('../../lib/configuration/option-names');
 const consoleWrapper                          = require('./helpers/console-wrapper');
-const WARNING_MESSAGES                        = require('../../lib/notifications/warning-message');
 
 const tsConfigPath           = 'tsconfig.json';
 const customTSConfigFilePath = 'custom-config.json';
@@ -77,7 +76,7 @@ describe('TestCafeConfiguration', function () {
     });
 
     afterEach(async () => {
-        await Promise.all(testCafeConfiguration.defaultPaths.map(async (path) => await del([path])));
+        await del(testCafeConfiguration.defaultPaths);
 
         consoleWrapper.unwrap();
         consoleWrapper.messages.clear();
@@ -302,7 +301,7 @@ describe('TestCafeConfiguration', function () {
                 consoleWrapper.unwrap();
                 await del([testCafeConfiguration.defaultPaths[jsFilePriority]]);
 
-                expect(consoleWrapper.messages.log).contains(WARNING_MESSAGES.multipleConfigurationFilesFound);
+                expect(consoleWrapper.messages.log).contains('There are multiple configuration files found, TestCafe will only use one.');
             });
         });
 
@@ -475,7 +474,7 @@ describe('TypeScriptConfiguration', function () {
         });
 
         afterEach(async () => {
-            await Promise.all(typeScriptConfiguration.defaultPaths.map(async (path) => await del([path])));
+            await del(typeScriptConfiguration.defaultPaths.concat(customTSConfigFilePath));
 
             consoleWrapper.unwrap();
             consoleWrapper.messages.clear();
@@ -661,7 +660,7 @@ describe('TypeScriptConfiguration', function () {
         let configuration;
 
         afterEach(async () => {
-            await del([configuration.filePath]);
+            await del(configuration.defaultPaths);
         });
 
         it('Custom config path is used', () => {
