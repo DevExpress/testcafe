@@ -159,6 +159,7 @@ export default class Configuration {
                 Configuration._showConsoleWarning(WARNING_MESSAGES.multipleConfigurationFilesFound);
             else if (option) {
                 this._filePath = this.defaultPaths?.[index];
+
                 return option;
             }
 
