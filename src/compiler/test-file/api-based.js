@@ -78,12 +78,11 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
             this.origRequireExtensions[ext] = origExt;
 
             require.extensions[ext] = (mod, filename) => {
-                // NOTE: remove global API so that it will be unavailable for the dependencies
-                this._removeGlobalAPI();
-
-                if (APIBasedTestFileCompilerBase._isNodeModulesDep(filename) && origExt)
+                if (APIBasedTestFileCompilerBase._isNodeModulesDep(filename) && origExt) {
+                    // NOTE: remove global API so that it will be unavailable for the dependencies
+                    this._removeGlobalAPI();
                     origExt(mod, filename);
-
+                }
                 else {
                     const code         = readFileSync(filename).toString();
                     const compiledCode = requireCompilers[ext](stripBom(code), filename);
