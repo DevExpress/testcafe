@@ -48,6 +48,6 @@ export default {
     testsCompilationTakesTooLong:       'Tests took too long to compile ({compileTime}). Ensure the test code has no excessive imports.',
     deprecatedAPI:                      '{API} is deprecated and will be removed in the next major release. Use {replacement} instead.',
     unawaitedMethodWithAssertion:       "An asynchronous method that you do not await includes an assertion. Inspect that method's execution chain and add the 'await' keyword where necessary.",
-    multipleConfigurationFilesFound:    'There are multiple configuration files found, TestCafe will only use one. The priority order is as follows:\n1. .testcafe.js\n2. .testcafe.json',
+    multipleConfigurationFilesFound:    'There are multiple configuration files found, TestCafe will only use one. The priority order is as follows:\n{priorityList}',
 };
 

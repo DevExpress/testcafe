@@ -139,32 +139,37 @@ export default class Configuration {
         if (!this.defaultPaths?.length)
             return null;
 
-        const options = await Promise.all(this.defaultPaths.map(async filePath => {
+        const configs = await Promise.all(this.defaultPaths.map(async filePath => {
             if (!await this._isConfigurationFileExists(filePath))
-                return null;
+                return { filePath, options: null };
+
+            let options = null as object | null;
 
             if (this._isJSConfiguration(filePath))
-                return this._readJsConfigurationFileContent(filePath);
+                options = this._readJsConfigurationFileContent(filePath);
+            else {
+                const configurationFileContent = await this._readConfigurationFileContent(filePath);
 
-            const configurationFileContent = await this._readConfigurationFileContent(filePath);
-
-            if (!configurationFileContent)
-                return null;
-
-            return this._parseConfigurationFileContent(configurationFileContent);
-        }));
-
-        return options.reduce((result, option, index) => {
-            if (option && result)
-                Configuration._showConsoleWarning(WARNING_MESSAGES.multipleConfigurationFilesFound);
-            else if (option) {
-                this._filePath = this.defaultPaths?.[index];
-
-                return option;
+                if (configurationFileContent)
+                    options = this._parseConfigurationFileContent(configurationFileContent);
             }
 
-            return result;
-        }, null as (null | object));
+            return { filePath, options };
+        }));
+
+        configs.filter(config => config.options);
+
+        if (!configs.length)
+            return null;
+        else if (configs.length > 1) {
+            const priorityList = configs.map((item, index) => `${index + 1}. ${item.filePath}`);
+
+            Configuration._showConsoleWarning(renderTemplate(WARNING_MESSAGES.multipleConfigurationFilesFound, priorityList.join('\n')));
+        }
+
+        this._filePath = configs[0].filePath;
+
+        return configs[0].options;
     }
 
     protected async _isConfigurationFileExists (filePath = this.filePath): Promise<boolean> {
