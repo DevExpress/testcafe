@@ -165,19 +165,19 @@ export default class Configuration {
             return { filePath, options };
         }));
 
-        configs.filter(config => config.options);
+        const existedConfigs = configs.filter(config => !!config.options);
 
-        if (!configs.length)
+        if (!existedConfigs.length)
             return null;
-        else if (configs.length > 1) {
+        else if (existedConfigs.length > 1) {
             const priorityList = configs.map((item, index) => `${index + 1}. ${item.filePath}`);
 
             Configuration._showConsoleWarning(renderTemplate(WARNING_MESSAGES.multipleConfigurationFilesFound, priorityList.join('\n')));
         }
 
-        this._filePath = configs[0].filePath;
+        this._filePath = existedConfigs[0].filePath;
 
-        return configs[0].options;
+        return existedConfigs[0].options;
     }
 
     protected async _isConfigurationFileExists (filePath = this.filePath): Promise<boolean> {
