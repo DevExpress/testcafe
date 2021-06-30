@@ -136,7 +136,7 @@ export default class Configuration {
     }
 
     public async _load (): Promise<null | object> {
-        if (!this.defaultPaths || !this.defaultPaths.length)
+        if (!this.defaultPaths?.length)
             return null;
 
         const options = await Promise.all(this.defaultPaths.map(async filePath => {
