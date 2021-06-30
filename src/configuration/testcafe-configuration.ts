@@ -36,9 +36,12 @@ import BrowserConnection, { BrowserInfo } from '../browser/connection';
 import { GeneralError } from '../errors/runtime';
 import { RUNTIME_ERRORS } from '../errors/types';
 
-const BASE_CONFIGURATION_FILENAME = '.testcaferc';
-const CONFIGURATION_EXTENSIONS    = ['.js', '.json'];
-const CONFIGURATION_FILENAMES     = CONFIGURATION_EXTENSIONS.map(ext => `${BASE_CONFIGURATION_FILENAME}${ext}`);
+const BASE_CONFIGURATION_FILENAME       = '.testcaferc';
+const PRIORITY_CONFIGURATION_EXTENSIONS = {
+    js:   0,
+    json: 1
+};
+const CONFIGURATION_FILENAMES           = Object.keys(PRIORITY_CONFIGURATION_EXTENSIONS).map(ext => `${BASE_CONFIGURATION_FILENAME}.${ext}`);
 
 const DEFAULT_SCREENSHOTS_DIRECTORY = 'screenshots';
 
@@ -275,5 +278,9 @@ export default class TestCafeConfiguration extends Configuration {
 
     public static get FILENAMES (): string[] {
         return CONFIGURATION_FILENAMES;
+    }
+
+    public static get PRIORITY_EXTENSIONS (): { [key: string]: number } {
+        return PRIORITY_CONFIGURATION_EXTENSIONS;
     }
 }
