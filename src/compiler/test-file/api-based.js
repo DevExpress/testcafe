@@ -83,9 +83,11 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
     }
 
     _compileExternalModule (mod, filename, requireCompiler, origExt) {
-        if (APIBasedTestFileCompilerBase._isNodeModulesDep(filename) && origExt)
-            origExt(mod, filename);
-        else
+        if (APIBasedTestFileCompilerBase._isNodeModulesDep(filename) && origExt) {
+            // NOTE: remove global API so that it will be unavailable for the dependencies
+            this._removeGlobalAPI();
+            origExt( mod, filename );
+        } else
             this._compileModule(mod, filename, requireCompiler, origExt);
     }
 
@@ -94,6 +96,9 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
             origExt = this.origRequireExtensions['.js'];
 
         if (!APIBasedTestFileCompilerBase._isNodeModulesDep(filename)) {
+            // NOTE: remove global API so that it will be unavailable for the dependencies
+            this._removeGlobalAPI();
+
             global.customExtensionHook = () => {
                 global.customExtensionHook = null;
 
@@ -125,9 +130,6 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
             this.origRequireExtensions[ext] = origExt;
 
             require.extensions[ext] = (mod, filename) => {
-                // NOTE: remove global API so that it will be unavailable for the dependencies
-                this._removeGlobalAPI();
-
                 if (this.isCompilerServiceMode)
                     this._compileExternalModuleInEsmMode(mod, filename, requireCompilers[ext], origExt);
                 else
