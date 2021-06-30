@@ -296,7 +296,7 @@ interface RunOptions {
      */
     skipUncaughtErrors: boolean;
     /**
-     * Defines whether to enable the quarantine mode. Optionally specifies the custom quarantine mode options.
+     * Defines whether to enable quarantine mode and (optionally) what settings to use.
      */
     quarantineMode: boolean | Record<string, string>;
     /**

@@ -163,10 +163,10 @@ export default class SelectorBuilder extends ClientFunctionBuilder {
         super._validateOptions(options);
 
         if (!isNullOrUndefined(options.visibilityCheck))
-            assertType(is.boolean, this.callsiteNames.instantiation, '"visibilityCheck" option', options.visibilityCheck);
+            assertType(is.boolean, this.callsiteNames.instantiation, 'The "visibilityCheck" option', options.visibilityCheck);
 
         if (!isNullOrUndefined(options.timeout))
-            assertType(is.nonNegativeNumber, this.callsiteNames.instantiation, '"timeout" option', options.timeout);
+            assertType(is.nonNegativeNumber, this.callsiteNames.instantiation, 'The "timeout" option', options.timeout);
     }
 
     _getReplicatorTransforms () {

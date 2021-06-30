@@ -59,7 +59,7 @@ export default class Test extends TestingUnit {
     }
 
     private _before$ (fn: Function): Function {
-        assertType(is.function, 'before', 'test.before hook', fn);
+        assertType(is.function, 'before', 'The test.before hook', fn);
 
         this.beforeFn = wrapTestFunction(fn);
 
@@ -67,7 +67,7 @@ export default class Test extends TestingUnit {
     }
 
     private _after$ (fn: Function): Function {
-        assertType(is.function, 'after', 'test.after hook', fn);
+        assertType(is.function, 'after', 'The test.after hook', fn);
 
         this.afterFn = wrapTestFunction(fn);
 

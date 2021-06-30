@@ -95,7 +95,7 @@ export default abstract class TestingUnit extends BaseUnit {
     }
 
     private _httpAuth$ (credentials: AuthCredentials): Function {
-        assertType(is.nonNullObject, 'httpAuth', 'credentials', credentials);
+        assertType(is.nonNullObject, 'httpAuth', 'The credentials', credentials);
         assertType(is.string, 'httpAuth', 'credentials.username', credentials.username);
         assertType(is.string, 'httpAuth', 'credentials.password', credentials.password);
 

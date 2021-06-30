@@ -8,7 +8,7 @@ describe('[API] Generic errors', function () {
             return runTests('./testcafe-fixtures/unsupported-protocol-test.js', 'Test',
                 { shouldFail: true, only: 'chrome' })
                 .catch(function (err) {
-                    expect(err.message).contains('The specified "mail://testcafe@devexpress.io" test page URL uses an unsupported mail:// protocol.');
+                    expect(err.message).contains('The "mail://testcafe@devexpress.io" test page URL includes an unsupported mail:// protocol. TestCafe only supports http://, https:// and file:// protocols.');
                 });
         });
 

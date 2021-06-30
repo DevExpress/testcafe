@@ -544,8 +544,8 @@ describe('Compiler', function () {
                 })
                 .catch(err => {
                     assertError(err, {
-                        message: 'Cannot prepare tests due to an error.\n\n' +
-                            'Error: Unable to load the TypeScript compiler.\n' +
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
+                            'Error: Cannot load the TypeScript compiler.\n' +
                             "Cannot find module 'wrong-path-to-typescript-module'"
                     }, true);
                 });
@@ -731,8 +731,8 @@ describe('Compiler', function () {
                     throw new Error('Promise rejection is expected');
                 })
                 .catch(function (err) {
-                    expect(err.message).contains('Cannot parse a test source file in the raw format at "' + testfile1 +
-                                                 '" due to an error.\n\n' +
+                    expect(err.message).contains('Cannot parse a raw test file at "' + testfile1 +
+                                                 '" due to the following error:\n\n' +
                                                  'SyntaxError: Unexpected token i');
                 })
                 .then(function () {
@@ -742,8 +742,8 @@ describe('Compiler', function () {
                     throw new Error('Promise rejection is expected');
                 })
                 .catch(function (err) {
-                    expect(err.message).contains('Cannot parse a test source file in the raw format at "' + testfile2 +
-                                                 '" due to an error.\n\n');
+                    expect(err.message).contains('Cannot parse a raw test file at "' + testfile2 +
+                                                 '" due to the following error:\n\n');
                 });
         });
 
@@ -829,7 +829,7 @@ describe('Compiler', function () {
                     throw new Error('Promise rejection expected');
                 })
                 .catch(function (err) {
-                    expect(err.message).eql('Cannot find a test source file at "' +
+                    expect(err.message).eql('Cannot find a test file at "' +
                                             path.resolve('does/not/exists.js') + '".');
                 });
         });
@@ -850,7 +850,7 @@ describe('Compiler', function () {
                     assertError(err, {
                         stackTop: stack,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
                                  'SyntaxError: ' + dep + ': Unexpected token, expected "{" (1:7)'
                     }, true);
                 });
@@ -873,7 +873,7 @@ describe('Compiler', function () {
                     assertError(err, {
                         stackTop: stack,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
                                  "Error: Cannot find module './yo'"
 
                     }, true);
@@ -895,7 +895,7 @@ describe('Compiler', function () {
                             testfile
                         ],
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
                                  'Error: Hey ya!'
                     });
                 });
@@ -912,7 +912,7 @@ describe('Compiler', function () {
                     assertError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
                                  "Error: Cannot find module './yo'",
                     }, true);
                 });
@@ -929,7 +929,7 @@ describe('Compiler', function () {
                     assertError(err, {
                         stackTop: testfile,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
                                  'Error: Hey ya!'
                     });
                 });
@@ -946,7 +946,7 @@ describe('Compiler', function () {
                     assertError(err, {
                         stackTop: null,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
                                  'SyntaxError: ' + testfile + ': Unexpected token, expected "{" (1:7)'
                     }, true);
                 });
@@ -967,7 +967,7 @@ describe('Compiler', function () {
                         stackTop: null,
 
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
                                  'SyntaxError: ' + testfiles[0] + ': Missing semicolon. (1:7)'
                     }, true);
 
@@ -980,7 +980,7 @@ describe('Compiler', function () {
                     assertError(err, {
                         stackTop: null,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
                                  'SyntaxError: ' + testfiles[1] + ': Missing semicolon. (2:7)'
                     }, true);
                 });
@@ -997,7 +997,7 @@ describe('Compiler', function () {
                     assertError(err, {
                         stackTop: null,
 
-                        message: 'Cannot prepare tests due to an error.\n\n' +
+                        message: 'Cannot prepare tests due to the following error:\n\n' +
                                  'Error: TypeScript compilation failed.\n' +
                                  testfile + ' (6, 13): Property \'doSmthg\' does not exist on type \'TestController\'.\n' +
                                  testfile + ' (9, 6): Argument of type \'123\' is not assignable to parameter of type \'string\'.\n' +

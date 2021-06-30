@@ -14,9 +14,9 @@ describe('[API] Upload', function () {
             })
                 .catch(function (errs) {
                     expect(errs[0]).contains(
-                        'Action "selector" argument error:  Selector is expected to be initialized with a ' +
-                        'function, CSS selector string, another Selector, node snapshot or a Promise returned ' +
-                        'by a Selector, but undefined was passed.'
+                        'Action "selector" argument error:  Cannot initialize a Selector because Selector is undefined, ' +
+                        'and not one of the following: a CSS selector string, a Selector object, a node snapshot, ' +
+                        'a function, or a Promise returned by a Selector.'
                     );
                     expect(errs[0]).contains('> 28 |    await t.setFilesToUpload(void 0, \'../test-data/file1.txt\');');
                 });
@@ -66,9 +66,9 @@ describe('[API] Upload', function () {
             })
                 .catch(function (errs) {
                     expect(errs[0]).contains(
-                        'Action "selector" argument error:  Selector is expected to be initialized with a ' +
-                        'function, CSS selector string, another Selector, node snapshot or a Promise returned ' +
-                        'by a Selector, but object was passed.'
+                        'Action "selector" argument error:  Cannot initialize a Selector because Selector is object, ' +
+                        'and not one of the following: a CSS selector string, a Selector object, a node snapshot, ' +
+                        'a function, or a Promise returned by a Selector.'
                     );
                     expect(errs[0]).contains('> 36 |    await t.clearUpload(null);');
                 });

@@ -42,7 +42,7 @@ export default async function (optionString: string): Promise<Dictionary<string 
                 return await readFile(value);
             }
             catch (error) {
-                throw new GeneralError(RUNTIME_ERRORS.cannotReadSSLCertFile, value, key, error.stack);
+                throw new GeneralError(RUNTIME_ERRORS.cannotReadSSLCertFile, key, value, error.stack);
             }
         }
     });

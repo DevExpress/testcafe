@@ -45,7 +45,7 @@ export default class Fixture extends TestingUnit {
     }
 
     private _before$ (fn: Function): Function {
-        assertType(is.function, 'before', 'fixture.before hook', fn);
+        assertType(is.function, 'before', 'The fixture.before hook', fn);
 
         this.beforeFn = fn;
 
@@ -53,7 +53,7 @@ export default class Fixture extends TestingUnit {
     }
 
     private _after$ (fn: Function): Function {
-        assertType(is.function, 'after', 'fixture.after hook', fn);
+        assertType(is.function, 'after', 'The fixture.after hook', fn);
 
         this.afterFn = fn;
 
@@ -61,7 +61,7 @@ export default class Fixture extends TestingUnit {
     }
 
     private _beforeEach$ (fn: Function): Function {
-        assertType(is.function, 'beforeEach', 'fixture.beforeEach hook', fn);
+        assertType(is.function, 'beforeEach', 'The fixture.beforeEach hook', fn);
 
         this.beforeEachFn = wrapTestFunction(fn);
 
@@ -69,7 +69,7 @@ export default class Fixture extends TestingUnit {
     }
 
     private _afterEach$ (fn: Function): Function {
-        assertType(is.function, 'afterEach', 'fixture.afterEach hook', fn);
+        assertType(is.function, 'afterEach', 'The fixture.afterEach hook', fn);
 
         this.afterEachFn = wrapTestFunction(fn);
 

@@ -132,7 +132,7 @@ describe('Native dialogs handling', function () {
         it('Should fail if client function argument has wrong type', function () {
             return runTests('./testcafe-fixtures/native-dialogs-test.js', 'Client function argument wrong type', { shouldFail: true })
                 .catch(function (errs) {
-                    errorInEachBrowserContains(errs, 'ClientFunction code is expected to be specified as a function, but number was passed.', 0);
+                    errorInEachBrowserContains(errs, 'Cannot execute a clientFunction because ClientFunction is number, and not a function.', 0);
                     errorInEachBrowserContains(errs, ' > 178 |    await t.setNativeDialogHandler(ClientFunction(42));', 0);
                 });
         });

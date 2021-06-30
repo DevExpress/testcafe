@@ -99,8 +99,8 @@ describe('Browser connection', function () {
         connection.HEARTBEAT_TIMEOUT = 0;
 
         connection.on('error', function (error) {
-            expect(error.message).eql('The Chrome 41.0.2227.1 / macOS 10.10.1 browser disconnected. This problem may ' +
-                                      'appear when a browser hangs or is closed, or due to network issues.');
+            expect(error.message).eql('The Chrome 41.0.2227.1 / macOS 10.10.1 browser disconnected. If you didn\'t ' +
+                'close the browser yourself, browser performance or network issues may be at fault.');
             done();
         });
 

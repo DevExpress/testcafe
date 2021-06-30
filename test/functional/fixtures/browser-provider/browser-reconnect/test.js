@@ -85,7 +85,7 @@ describe('Browser reconnect', function () {
                 proc.on('close', resolve);
             })
                 .then(() => {
-                    expect(errLog).contains('"chrome:headless" has disconnected during test execution');
+                    expect(errLog).contains('"chrome:headless" disconnected during test execution');
                 });
         });
 
@@ -95,7 +95,7 @@ describe('Browser reconnect', function () {
                     throw new Error('Test should have failed but it succeeded');
                 })
                 .catch(err => {
-                    expect(err.message).contains('browser disconnected. This problem may appear when a browser hangs or is closed, or due to network issues');
+                    expect(err.message).contains("browser disconnected. If you didn't close the browser yourself, browser performance or network issues may be at fault.");
                 });
         });
 

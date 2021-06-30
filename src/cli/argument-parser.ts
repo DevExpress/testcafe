@@ -98,7 +98,7 @@ export default class CLIArgumentParser {
     }
 
     private static _parsePortNumber (value: string): number {
-        assertType(is.nonNegativeNumberString, null, 'Port number', value);
+        assertType(is.nonNegativeNumberString, null, 'The port number', value);
 
         return parseInt(value, 10);
     }
@@ -121,7 +121,7 @@ export default class CLIArgumentParser {
             .option('-s, --screenshots <option=value[,...]>', 'specify screenshot options')
             .option('-S, --screenshots-on-fails', 'take a screenshot whenever a test fails')
             .option('-p, --screenshot-path-pattern <pattern>', 'use patterns to compose screenshot file names and paths: ${BROWSER}, ${BROWSER_VERSION}, ${OS}, etc.')
-            .option('-q, --quarantine-mode [option=value,...]', 'enable the quarantine mode, optionally number of retries and pass threshold')
+            .option('-q, --quarantine-mode [option=value,...]', 'enable quarantine mode and (optionally) modify quarantine mode settings')
             .option('-d, --debug-mode', 'execute test steps one by one pausing the test after each step')
             .option('-e, --skip-js-errors', 'make tests not fail when a JS error happens on a page')
             .option('-u, --skip-uncaught-errors', 'ignore uncaught errors and unhandled promise rejections, which occur during test execution')
@@ -210,7 +210,7 @@ export default class CLIArgumentParser {
 
     private _parseAppInitDelay (): void {
         if (this.opts.appInitDelay) {
-            assertType(is.nonNegativeNumberString, null, 'Tested app initialization delay', this.opts.appInitDelay);
+            assertType(is.nonNegativeNumberString, null, 'The tested app initialization delay', this.opts.appInitDelay);
 
             this.opts.appInitDelay = parseInt(this.opts.appInitDelay as string, 10);
         }
@@ -218,7 +218,7 @@ export default class CLIArgumentParser {
 
     private _parseSelectorTimeout (): void {
         if (this.opts.selectorTimeout) {
-            assertType(is.nonNegativeNumberString, null, 'Selector timeout', this.opts.selectorTimeout);
+            assertType(is.nonNegativeNumberString, null, 'The Selector timeout', this.opts.selectorTimeout);
 
             this.opts.selectorTimeout = parseInt(this.opts.selectorTimeout as string, 10);
         }
@@ -226,7 +226,7 @@ export default class CLIArgumentParser {
 
     private _parseAssertionTimeout (): void {
         if (this.opts.assertionTimeout) {
-            assertType(is.nonNegativeNumberString, null, 'Assertion timeout', this.opts.assertionTimeout);
+            assertType(is.nonNegativeNumberString, null, 'The assertion timeout', this.opts.assertionTimeout);
 
             this.opts.assertionTimeout = parseInt(this.opts.assertionTimeout as string, 10);
         }
@@ -234,7 +234,7 @@ export default class CLIArgumentParser {
 
     private _parsePageLoadTimeout (): void {
         if (this.opts.pageLoadTimeout) {
-            assertType(is.nonNegativeNumberString, null, 'Page load timeout', this.opts.pageLoadTimeout);
+            assertType(is.nonNegativeNumberString, null, 'The page load timeout', this.opts.pageLoadTimeout);
 
             this.opts.pageLoadTimeout = parseInt(this.opts.pageLoadTimeout as string, 10);
         }
@@ -244,7 +244,7 @@ export default class CLIArgumentParser {
         if (!this.opts.pageRequestTimeout)
             return;
 
-        assertType(is.nonNegativeNumberString, null, 'Page request timeout', this.opts.pageRequestTimeout);
+        assertType(is.nonNegativeNumberString, null, 'The page request timeout', this.opts.pageRequestTimeout);
 
         this.opts.pageRequestTimeout = parseInt(this.opts.pageRequestTimeout as string, 10);
     }
@@ -253,7 +253,7 @@ export default class CLIArgumentParser {
         if (!this.opts.ajaxRequestTimeout)
             return;
 
-        assertType(is.nonNegativeNumberString, null, 'Ajax request timeout', this.opts.ajaxRequestTimeout);
+        assertType(is.nonNegativeNumberString, null, 'The AJAX request timeout', this.opts.ajaxRequestTimeout);
 
         this.opts.ajaxRequestTimeout = parseInt(this.opts.ajaxRequestTimeout as string, 10);
     }
@@ -262,7 +262,7 @@ export default class CLIArgumentParser {
         if (!this.opts.browserInitTimeout)
             return;
 
-        assertType(is.nonNegativeNumberString, null, 'Browser initialization timeout', this.opts.browserInitTimeout);
+        assertType(is.nonNegativeNumberString, null, 'The browser initialization timeout', this.opts.browserInitTimeout);
 
         this.opts.browserInitTimeout = parseInt(this.opts.browserInitTimeout as string, 10);
     }

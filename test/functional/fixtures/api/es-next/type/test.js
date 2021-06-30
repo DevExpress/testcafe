@@ -36,9 +36,9 @@ describe('[API] t.typeText()', function () {
         })
             .catch(function (errs) {
                 expect(errs[0]).to.contains(
-                    'Action "selector" argument error:  Selector is expected to be initialized with a ' +
-                    'function, CSS selector string, another Selector, node snapshot or a Promise returned ' +
-                    'by a Selector, but number was passed.'
+                    'Action "selector" argument error:  Cannot initialize a Selector because Selector is number, ' +
+                    'and not one of the following: a CSS selector string, a Selector object, a node snapshot, ' +
+                    'a function, or a Promise returned by a Selector.'
                 );
                 expect(errs[0]).to.contains('> 19 |    await t.typeText(NaN, \'a\');');
             });

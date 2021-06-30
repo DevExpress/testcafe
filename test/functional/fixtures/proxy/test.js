@@ -35,7 +35,7 @@ describe('Using proxy-bypass', function () {
     it('Should fail using proxy-bypass which is set by incorrect argument', function () {
         return runTests('testcafe-fixtures/index.test.js', null, { useProxy: ERROR_PROXY_URL, proxyBypass: /dummy/, shouldFail: true })
             .catch(function (err) {
-                expect(err.message).contains('proxyBypass" argument is expected to be a string or an array, but it was object.');
+                expect(err.message).contains('The "proxyBypass" argument (object) is not of expected type (string or an array)');
             });
     });
 

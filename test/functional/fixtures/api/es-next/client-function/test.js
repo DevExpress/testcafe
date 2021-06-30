@@ -87,7 +87,7 @@ describe('[API] ClientFunction', function () {
                 only:       'chrome'
             }).catch(function (errs) {
                 expect(errs[0].indexOf(
-                    'ClientFunction code is expected to be specified as a function, but number was passed.'
+                    'Cannot execute a clientFunction because ClientFunction is number, and not a function.'
                 )).eql(0);
 
                 expect(errs[0]).contains('> 32 |    await ClientFunction(123)();');
@@ -139,7 +139,7 @@ describe('[API] ClientFunction', function () {
                 only:       'chrome'
             }).catch(function (errs) {
                 expect(errs[0].indexOf(
-                    'The "boundTestRun" option value is expected to be a test controller.'
+                    'Cannot resolve the "boundTestRun" option because its value is not a test controller.'
                 )).eql(0);
 
                 expect(errs[0]).contains('> 94 |    ClientFunction(() => 123).with({ boundTestRun: {} });');

@@ -14,9 +14,9 @@ describe('[API] Select text', function () {
             })
                 .catch(function (errs) {
                     expect(errs[0]).contains(
-                        'Action "selector" argument error:  Selector is expected to be initialized with a ' +
-                        'function, CSS selector string, another Selector, node snapshot or a Promise returned ' +
-                        'by a Selector, but object was passed.'
+                        'Action "selector" argument error:  Cannot initialize a Selector because Selector is object, ' +
+                        'and not one of the following: a CSS selector string, a Selector object, a node snapshot, ' +
+                        'a function, or a Promise returned by a Selector.'
                     );
                     expect(errs[0]).contains('> 51 |    await t.selectText(null, 2, 4);');
                 });
@@ -57,9 +57,9 @@ describe('[API] Select text', function () {
             })
                 .catch(function (errs) {
                     expect(errs[0]).contains(
-                        'Action "selector" argument error:  Selector is expected to be initialized with a ' +
-                        'function, CSS selector string, another Selector, node snapshot or a Promise returned ' +
-                        'by a Selector, but object was passed.'
+                        'Action "selector" argument error:  Cannot initialize a Selector because Selector is object, ' +
+                        'and not one of the following: a CSS selector string, a Selector object, a node snapshot, ' +
+                        'a function, or a Promise returned by a Selector.'
                     );
                     expect(errs[0]).contains('> 63 |    await t.selectTextAreaContent({}, 0, 2, 1, 3);');
                 });
@@ -131,9 +131,9 @@ describe('[API] Select text', function () {
                 .catch(function (errs) {
                     expect(errs[0]).contains(
                         'Action "startSelector" argument error:  ' +
-                        'Selector is expected to be initialized with a function, CSS selector string, another ' +
-                        'Selector, node snapshot or a Promise returned by a Selector, but boolean was passed.' +
-                        '');
+                        'Cannot initialize a Selector because Selector is boolean, and not one of the following: ' +
+                        'a CSS selector string, a Selector object, a node snapshot, a function, ' +
+                        'or a Promise returned by a Selector.');
                     expect(errs[0]).contains('> 83 |    await t.selectEditableContent(false, \'#p2\');');
                 });
         });
@@ -145,9 +145,9 @@ describe('[API] Select text', function () {
             })
                 .catch(function (errs) {
                     expect(errs[0]).contains(
-                        'Action "endSelector" argument error:  Selector is expected to be initialized with a ' +
-                        'function, CSS selector string, another Selector, node snapshot or a Promise returned by ' +
-                        'a Selector, but number was passed.'
+                        'Action "endSelector" argument error:  Cannot initialize a Selector because Selector is number, ' +
+                        'and not one of the following: a CSS selector string, a Selector object, a node snapshot, ' +
+                        'a function, or a Promise returned by a Selector.'
                     );
                     expect(errs[0]).contains('> 87 |    await t.selectEditableContent(\'#p1\', 42);');
                 });
