@@ -45,9 +45,9 @@ export default class Test extends TestingUnit {
     }
 
     protected _add (name: string, fn: Function): Function {
-        assertType(is.string, 'apiOrigin', 'the test name', name);
-        assertType(is.function, 'apiOrigin', 'the test body', fn);
-        assertType(is.nonNullObject, 'apiOrigin', `the fixture of '${name}' test`, this.fixture);
+        assertType(is.string, 'apiOrigin', 'The test name', name);
+        assertType(is.function, 'apiOrigin', 'The test body', fn);
+        assertType(is.nonNullObject, 'apiOrigin', `The fixture of '${name}' test`, this.fixture);
 
         this.name          = name;
         this.fn            = wrapTestFunction(fn);
@@ -59,7 +59,7 @@ export default class Test extends TestingUnit {
     }
 
     private _before$ (fn: Function): Function {
-        assertType(is.function, 'before', 'the test.before hook', fn);
+        assertType(is.function, 'before', 'The test.before hook', fn);
 
         this.beforeFn = wrapTestFunction(fn);
 
@@ -67,7 +67,7 @@ export default class Test extends TestingUnit {
     }
 
     private _after$ (fn: Function): Function {
-        assertType(is.function, 'after', 'the test.after hook', fn);
+        assertType(is.function, 'after', 'The test.after hook', fn);
 
         this.afterFn = wrapTestFunction(fn);
 

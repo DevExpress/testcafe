@@ -842,14 +842,13 @@ describe('Runner', () => {
                     .run()
                     .catch(err => {
                         exceptionCount++;
-                        expect(err.message).contains('Expected the "proxyBypass" argument to be of type string or an array, but it was a(n) ' +
-                                                     type);
+                        expect(err.message).contains(`The "proxyBypass" argument (${type}) is not of expected type (string or an array)`);
                     });
             };
 
             return expectProxyBypassError(1, 'number')
                 .then(() => expectProxyBypassError({}, 'object'))
-                .then(() => expectProxyBypassError(true, 'bool'))
+                .then(() => expectProxyBypassError(true, 'boolean'))
                 .then(() => {
                     expect(exceptionCount).to.be.eql(3);
 
@@ -915,10 +914,10 @@ describe('Runner', () => {
                     });
             };
 
-            await checkIncorrectRequestTimeout(OptionNames.pageRequestTimeout, true, 'Expected "pageRequestTimeout" option to be of type non-negative number, but it was a(n) boolean.');
-            await checkIncorrectRequestTimeout(OptionNames.pageRequestTimeout, -1, 'Expected "pageRequestTimeout" option to be of type non-negative number, but it was a(n) -1.');
-            await checkIncorrectRequestTimeout(OptionNames.ajaxRequestTimeout, true, 'Expected "ajaxRequestTimeout" option to be of type non-negative number, but it was a(n) boolean.');
-            await checkIncorrectRequestTimeout(OptionNames.ajaxRequestTimeout, -1, 'Expected "ajaxRequestTimeout" option to be of type non-negative number, but it was a(n) -1.');
+            await checkIncorrectRequestTimeout(OptionNames.pageRequestTimeout, true, '"pageRequestTimeout" option (boolean) is not of expected type (non-negative number).');
+            await checkIncorrectRequestTimeout(OptionNames.pageRequestTimeout, -1, '"pageRequestTimeout" option (-1) is not of expected type (non-negative number).');
+            await checkIncorrectRequestTimeout(OptionNames.ajaxRequestTimeout, true, '"ajaxRequestTimeout" option (boolean) is not of expected type (non-negative number).');
+            await checkIncorrectRequestTimeout(OptionNames.ajaxRequestTimeout, -1, '"ajaxRequestTimeout" option (-1) is not of expected type (non-negative number).');
 
             expect(errorCount).eql(4);
         });

@@ -31,7 +31,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected the fixture name to be of type string, but it was a(n) object.',
+                                 'The fixture name (object) is not of expected type (string).',
 
                         callsite: '    2 |// (to treat a file as a test, it requires at least one fixture definition\n' +
                                   '    3 |//  with the string argument).\n' +
@@ -60,7 +60,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected the page URL to be of type string, but it was a(n) object.',
+                                 'The page URL (object) is not of expected type (string).',
 
                         callsite: '   1 |fixture `Yo`\n' +
                                   ' > 2 |    .page({ answer: 42 });\n' +
@@ -85,7 +85,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected the fixture.beforeEach hook to be of type function, but it was a(n) string.',
+                                 'The fixture.beforeEach hook (string) is not of expected type (function).',
 
                         callsite: '   1 |fixture `beforeEach is not a function`\n' +
                                   " > 2 |    .beforeEach('yo');\n" +
@@ -110,7 +110,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected the fixture.afterEach hook to be of type function, but it was a(n) string.',
+                                 'The fixture.afterEach hook (string) is not of expected type (function).',
 
                         callsite: '   1 |fixture `afterEach is not a function`\n' +
                                   " > 2 |    .afterEach('yo');\n" +
@@ -135,7 +135,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected the fixture.before hook to be of type function, but it was a(n) string.',
+                                 'The fixture.before hook (string) is not of expected type (function).',
 
                         callsite: '   1 |fixture `before is not a function`\n' +
                                   " > 2 |    .before('yo');\n" +
@@ -160,7 +160,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected the fixture.after hook to be of type function, but it was a(n) string.',
+                                 'The fixture.after hook (string) is not of expected type (function).',
 
                         callsite: '   1 |fixture `after is not a function`\n' +
                                   " > 2 |    .after('yo');\n" +
@@ -187,7 +187,7 @@ describe('API', function () {
                         stackTop: credentialsInNotObject,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected the credentials to be of type non-null object, but it was a(n) string.',
+                                 'The credentials (string) is not of expected type (non-null object).',
 
                         callsite: '   1 |fixture `Credentials is not an object`\n' +
                                   " > 2 |    .httpAuth('');\n" +
@@ -208,7 +208,7 @@ describe('API', function () {
                         stackTop: passIsNotString,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected credentials.password to be of type string, but it was a(n) object.',
+                                 'credentials.password (object) is not of expected type (string).',
 
                         callsite: '   1 |fixture `Password is not a string`\n' +
                                   ' > 2 |    .httpAuth({ username: \'username\', password: {} });\n' +
@@ -229,7 +229,7 @@ describe('API', function () {
                         stackTop: usernameIsNotDefined,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected credentials.username to be of type string, but it was a(n) undefined.',
+                                 'credentials.username (undefined) is not of expected type (string).',
 
                         callsite: '   1 |fixture `Username is not defined`\n' +
                                   " > 2 |    .httpAuth({ password: 'password' });\n" +
@@ -254,7 +254,7 @@ describe('API', function () {
                         stackTop: fixtureHookHasWrongType,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected the hook to be of type RequestHook subclass, but it was a(n) string.',
+                                 'The hook (string) is not of expected type (RequestHook subclass).',
 
                         callsite: '   1 |fixture `RequestHook is undefined`\n' +
                                   ' > 2 |    .requestHooks(\'string\');\n' +
@@ -316,7 +316,7 @@ describe('API', function () {
                         stackTop: file,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected fixture.meta to be of type string or a non-null object, but it was a(n) undefined.',
+                                 'fixture.meta (undefined) is not of expected type (string or a non-null object).',
 
                         callsite: '   1 |fixture(\'Fixture1\')\n' +
                                   '   2 |    .page(\'http://example.com\')\n' +
@@ -342,7 +342,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected the client script to be of type string or a client script initializer, but it was a(n) number.',
+                                 'The client script (number) is not of expected type (string or a client script initializer).',
 
                         callsite: ' > 1 |fixture.clientScripts(8);\n' +
                                   '   2 |\n' +
@@ -390,7 +390,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected the test name to be of type string, but it was a(n) number.',
+                                 'The test name (number) is not of expected type (string).',
 
                         callsite: '    4 |// (to treat a file as a test, it requires at least one fixture definition\n' +
                                   '    5 |//  with the string argument).\n' +
@@ -415,7 +415,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected the test body to be of type function, but it was a(n) string.',
+                                 'The test body (string) is not of expected type (function).',
 
                         callsite: '   1 |fixture `Test body is not a function`;\n' +
                                   '   2 |\n' +
@@ -437,7 +437,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected the test.before hook to be of type function, but it was a(n) number.',
+                                 'The test.before hook (number) is not of expected type (function).',
 
                         callsite: '   1 |fixture `Fixture`;\n' +
                                   '   2 |\n' +
@@ -461,7 +461,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected the test.after hook to be of type function, but it was a(n) number.',
+                                 'The test.after hook (number) is not of expected type (function).',
 
                         callsite: '   1 |fixture `Fixture`;\n' +
                                   '   2 |\n' +
@@ -485,7 +485,7 @@ describe('API', function () {
                         stackTop: testHookArrayContainsNotRequestHookInheritor,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected the hook to be of type RequestHook subclass, but it was a(n) number.',
+                                 'The hook (number) is not of expected type (RequestHook subclass).',
 
                         callsite: "   1 |import { RequestMock } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -572,7 +572,7 @@ describe('API', function () {
                         stackTop: file,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected test.meta to be of type string or a non-null object, but it was a(n) null.',
+                                 'test.meta (null) is not of expected type (string or a non-null object).',
 
                         callsite: '   1 |fixture(\'Fixture1\')\n' +
                                   '   2 |    .page(\'http://example.com\');\n' +
@@ -598,7 +598,7 @@ describe('API', function () {
                         stackTop: file,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected the fixture of \'Test\' test to be of type non-null object, but it was a(n) null.',
+                                 "The fixture of 'Test' test (null) is not of expected type (non-null object).",
 
                         callsite: '   1 |// fixture `Fixture`\n' +
                                   '   2 |\n' +
@@ -621,7 +621,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected the client script to be of type string or a client script initializer, but it was a(n) number.',
+                                 'The client script (number) is not of expected type (string or a client script initializer).',
 
                         callsite: '   1 |fixture `Fixture`;\n' +
                                   '   2 |\n' +
@@ -669,7 +669,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                            'Expected test.timeouts to be of type test timeouts initializer, but it was a(n) number.',
+                            'test.timeouts (number) is not of expected type (test timeouts initializer).',
 
                         callsite: '   1 |fixture `Test timeouts`;\n' +
                             '   2 |\n' +
@@ -693,7 +693,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                            'Expected test.timeouts.pageLoadTimeout to be of type non-negative number, but it was a(n) -1.',
+                            'test.timeouts.pageLoadTimeout (-1) is not of expected type (non-negative number).',
 
                         callsite: '   1 |fixture `Page Load Timeout`;\n' +
                             '   2 |\n' +
@@ -747,7 +747,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected the "visibilityCheck" option to be of type boolean, but it was a(n) number.',
+                                 'The "visibilityCheck" option (number) is not of expected type (boolean).',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -773,7 +773,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected the "timeout" option to be of type non-negative number, but it was a(n) -5.',
+                                 'The "timeout" option (-5) is not of expected type (non-negative number).',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -799,7 +799,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected the "index" argument to be of type number, but it was a(n) NaN.',
+                                 'The "index" argument (NaN) is not of expected type (number).',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -825,7 +825,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected the "index" argument to be of type number, but it was a(n) Infinity.',
+                                 'The "index" argument (Infinity) is not of expected type (number).',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -851,7 +851,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected the "index" argument to be of type number, but it was a(n) string.',
+                                 'The "index" argument (string) is not of expected type (number).',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -877,7 +877,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected the "text" argument to be of type string or a regular expression, but it was a(n) object.',
+                                 'The "text" argument (object) is not of expected type (string or a regular expression).',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -903,7 +903,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected the "attrName" argument to be of type string or a regular expression, but it was a(n) object.',
+                                 'The "attrName" argument (object) is not of expected type (string or a regular expression).',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -929,7 +929,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected the "attrValue" argument to be of type string or a regular expression, but it was a(n) number.',
+                                 'The "attrValue" argument (number) is not of expected type (string or a regular expression).',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -955,7 +955,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected the "filter" argument to be of type string or a function, but it was a(n) object.',
+                                 'The "filter" argument (object) is not of expected type (string or a function).',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -981,7 +981,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected the "filter" argument to be of type string or a function, but it was a(n) object.',
+                                 'The "filter" argument (object) is not of expected type (string or a function).',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1007,7 +1007,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected the "filter" argument to be of type string, function or a number, but it was a(n) object.',
+                                 'The "filter" argument (object) is not of expected type (string, function or a number).',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1033,7 +1033,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected the "filter" argument to be of type string, function or a number, but it was a(n) object.',
+                                 'The "filter" argument (object) is not of expected type (string, function or a number).',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1059,7 +1059,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected the "filter" argument to be of type string, function or a number, but it was a(n) object.',
+                                 'The "filter" argument (object) is not of expected type (string, function or a number).',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1085,7 +1085,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected the "filter" argument to be of type string, function or a number, but it was a(n) object.',
+                                 'The "filter" argument (object) is not of expected type (string, function or a number).',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1112,7 +1112,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected the "filter" argument to be of type string, function or a number, but it was a(n) object.',
+                                 'The "filter" argument (object) is not of expected type (string, function or a number).',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1138,7 +1138,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected the "addCustomDOMProperties" option to be of type non-null object, but it was a(n) number.',
+                                 'The "addCustomDOMProperties" option (number) is not of expected type (non-null object).',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1165,7 +1165,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 "Expected the custom DOM properties method 'prop1' to be of type function, but it was a(n) number.",
+                                 "The custom DOM properties method 'prop1' (number) is not of expected type (function).",
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1191,7 +1191,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected the "addCustomMethods" option to be of type non-null object, but it was a(n) number.',
+                                 'The "addCustomMethods" option (number) is not of expected type (non-null object).',
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1218,7 +1218,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 "Expected the custom method 'prop1' to be of type function, but it was a(n) number.",
+                                 "The custom method 'prop1' (number) is not of expected type (function).",
 
                         callsite: "   1 |import { Selector } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1355,7 +1355,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected the "options" argument to be of type non-null object, but it was a(n) number.',
+                                 'The "options" argument (number) is not of expected type (non-null object).',
 
                         callsite: "   1 |import { ClientFunction } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1381,7 +1381,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected the "dependencies" option to be of type non-null object, but it was a(n) string.',
+                                 'The "dependencies" option (string) is not of expected type (non-null object).',
 
                         callsite: "   1 |import { ClientFunction } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1433,7 +1433,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected the "loginUrl" argument to be of type string, but it was a(n) number.',
+                                 'The "loginUrl" argument (number) is not of expected type (string).',
 
                         callsite: "   1 |import { Role } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1460,7 +1460,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected the "initFn" argument to be of type function, but it was a(n) number.',
+                                 'The "initFn" argument (number) is not of expected type (function).',
 
                         callsite: "   1 |import { Role } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1487,7 +1487,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected the "options" argument to be of type non-null object, but it was a(n) string.',
+                                 'The "options" argument (string) is not of expected type (non-null object).',
 
                         callsite: "   1 |import { Role } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1514,7 +1514,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Expected the "preserveUrl" option to be of type boolean, but it was a(n) object.',
+                                 'The "preserveUrl" option (object) is not of expected type (boolean).',
 
                         callsite: "   1 |import { Role } from 'testcafe';\n" +
                                   '   2 |\n' +

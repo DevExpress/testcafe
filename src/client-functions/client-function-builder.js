@@ -175,7 +175,7 @@ export default class ClientFunctionBuilder {
     }
 
     _validateOptions (options) {
-        assertType(is.nonNullObject, this.callsiteNames.instantiation, 'the "options" argument', options);
+        assertType(is.nonNullObject, this.callsiteNames.instantiation, 'The "options" argument', options);
 
         if (!isNullOrUndefined(options.boundTestRun)) {
             // NOTE: `boundTestRun` can be either TestController or TestRun instance.
@@ -186,7 +186,7 @@ export default class ClientFunctionBuilder {
         }
 
         if (!isNullOrUndefined(options.dependencies))
-            assertType(is.nonNullObject, this.callsiteNames.instantiation, 'the "dependencies" option', options.dependencies);
+            assertType(is.nonNullObject, this.callsiteNames.instantiation, 'The "dependencies" option', options.dependencies);
     }
 
     _getReplicatorTransforms () {

@@ -120,7 +120,7 @@ describe('CLI argument parser', function () {
         });
 
         it('Should raise error if "--ports" option value is not a integer', function () {
-            return assertRaisesError('--ports 1337,yo', 'Expected the port number to be of type non-negative number, but it was a(n) "yo".');
+            return assertRaisesError('--ports 1337,yo', 'The port number ("yo") is not of expected type (non-negative number).');
         });
 
         it('Should raise error if "--ports" option has less than 2 ports specified', function () {
@@ -137,7 +137,7 @@ describe('CLI argument parser', function () {
         });
 
         it('Should raise an error if the "--selector-timeout" option value is not an integer', function () {
-            return assertRaisesError('--selector-timeout yo', 'Expected the Selector timeout to be of type non-negative number, but it was a(n) "yo".');
+            return assertRaisesError('--selector-timeout yo', 'The Selector timeout ("yo") is not of expected type (non-negative number).');
         });
     });
 
@@ -150,7 +150,7 @@ describe('CLI argument parser', function () {
         });
 
         it('Should raise an error if the "--assertion-timeout" option value is not an integer', function () {
-            return assertRaisesError('--assertion-timeout yo', 'Expected the assertion timeout to be of type non-negative number, but it was a(n) "yo".');
+            return assertRaisesError('--assertion-timeout yo', 'The assertion timeout ("yo") is not of expected type (non-negative number).');
         });
     });
 
@@ -163,7 +163,7 @@ describe('CLI argument parser', function () {
         });
 
         it('Should raise an error if the "--page-load-timeout" option value is not an integer', function () {
-            return assertRaisesError('--page-load-timeout yo', 'Expected the page load timeout to be of type non-negative number, but it was a(n) "yo".');
+            return assertRaisesError('--page-load-timeout yo', 'The page load timeout ("yo") is not of expected type (non-negative number).');
         });
     });
 
@@ -176,7 +176,7 @@ describe('CLI argument parser', function () {
             });
 
             it('Should raise an error on invalid option value', () => {
-                return assertRaisesError('--page-request-timeout str', 'Expected the page request timeout to be of type non-negative number, but it was a(n) "str".');
+                return assertRaisesError('--page-request-timeout str', 'The page request timeout ("str") is not of expected type (non-negative number).');
             });
         });
 
@@ -188,7 +188,7 @@ describe('CLI argument parser', function () {
             });
 
             it('Should raise an error on invalid option value', () => {
-                return assertRaisesError('--ajax-request-timeout str', 'Expected the AJAX request timeout to be of type non-negative number, but it was a(n) "str".');
+                return assertRaisesError('--ajax-request-timeout str', 'The AJAX request timeout ("str") is not of expected type (non-negative number).');
             });
         });
     });
@@ -202,7 +202,7 @@ describe('CLI argument parser', function () {
         });
 
         it('Should raise an error if the "--browser-init-timeout" option value is not an integer', function () {
-            return assertRaisesError('--browser-init-timeout yo', 'Expected the browser initialization timeout to be of type non-negative number, but it was a(n) "yo".');
+            return assertRaisesError('--browser-init-timeout yo', 'The browser initialization timeout ("yo") is not of expected type (non-negative number).');
         });
     });
 
@@ -240,7 +240,7 @@ describe('CLI argument parser', function () {
         });
 
         it('Should raise an error if the "--app-init-delay" option value is not an integer', function () {
-            return assertRaisesError('--app-init-delay yo', 'Expected the tested app initialization delay to be of type non-negative number, but it was a(n) "yo".');
+            return assertRaisesError('--app-init-delay yo', 'The tested app initialization delay ("yo") is not of expected type (non-negative number).');
         });
     });
 

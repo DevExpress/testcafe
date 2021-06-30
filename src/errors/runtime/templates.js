@@ -55,7 +55,7 @@ export default {
     [RUNTIME_ERRORS.clientFunctionCannotResolveTestRun]:                 "{#instantiationCallsiteName} cannot implicitly resolve the test run in context of which it should be executed. If you need to call {#instantiationCallsiteName} from the Node.js API callback, pass the test controller manually via {#instantiationCallsiteName}'s `.with({ boundTestRun: t })` method first. Note that you cannot execute {#instantiationCallsiteName} outside the test code.",
     [RUNTIME_ERRORS.regeneratorInClientFunctionCode]:                    `{#instantiationCallsiteName} code, arguments or dependencies cannot contain generators or "async/await" syntax (use Promises instead).`,
     [RUNTIME_ERRORS.invalidClientFunctionTestRunBinding]:                'Cannot resolve the "boundTestRun" option because its value is not a test controller.',
-    [RUNTIME_ERRORS.invalidValueType]:                                   'Expected {smthg} to be of type {type}, but it was a(n) {actual}.',
+    [RUNTIME_ERRORS.invalidValueType]:                                   '{smthg} ({actual}) is not of expected type ({type}).',
     [RUNTIME_ERRORS.unsupportedUrlProtocol]:                             'The "{url}" test page URL includes an unsupported {protocol}:// protocol. TestCafe only supports http://, https:// and file:// protocols.',
     [RUNTIME_ERRORS.testControllerProxyCannotResolveTestRun]:            `Cannot implicitly resolve the test run in the context of which the test controller action should be executed. Use test function's 't' argument instead.`,
     [RUNTIME_ERRORS.timeLimitedPromiseTimeoutExpired]:                   'A Promise timed out.',

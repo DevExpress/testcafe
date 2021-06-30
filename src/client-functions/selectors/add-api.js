@@ -107,21 +107,21 @@ function getSnapshotSync (getSelector, callsite, SelectorBuilder, getVisibleValu
 }
 
 function assertAddCustomDOMPropertiesOptions (properties) {
-    assertType(is.nonNullObject, 'addCustomDOMProperties', 'the "addCustomDOMProperties" option', properties);
+    assertType(is.nonNullObject, 'addCustomDOMProperties', 'The "addCustomDOMProperties" option', properties);
 
     Object.keys(properties).forEach(prop => {
-        assertType(is.function, 'addCustomDOMProperties', `the custom DOM properties method '${prop}'`, properties[prop]);
+        assertType(is.function, 'addCustomDOMProperties', `The custom DOM properties method '${prop}'`, properties[prop]);
     });
 }
 
 function assertAddCustomMethods (properties, opts) {
-    assertType(is.nonNullObject, 'addCustomMethods', 'the "addCustomMethods" option', properties);
+    assertType(is.nonNullObject, 'addCustomMethods', 'The "addCustomMethods" option', properties);
 
     if (opts !== void 0)
-        assertType(is.nonNullObject, 'addCustomMethods', 'the "addCustomMethods" option', opts);
+        assertType(is.nonNullObject, 'addCustomMethods', 'The "addCustomMethods" option', opts);
 
     Object.keys(properties).forEach(prop => {
-        assertType(is.function, 'addCustomMethods', `the custom method '${prop}'`, properties[prop]);
+        assertType(is.function, 'addCustomMethods', `The custom method '${prop}'`, properties[prop]);
     });
 }
 
@@ -470,7 +470,7 @@ function addFilterMethods (options) {
     const { obj, getSelector, SelectorBuilder } = options;
 
     obj.nth = index => {
-        assertType(is.number, 'nth', 'the "index" argument', index);
+        assertType(is.number, 'nth', 'The "index" argument', index);
 
         const apiFn   = prepareApiFnArgs('nth', index);
         const builder = new SelectorBuilder(getSelector(), { index, apiFn }, { instantiation: 'Selector' });
@@ -479,7 +479,7 @@ function addFilterMethods (options) {
     };
 
     obj.withText = text => {
-        assertType([is.string, is.regExp], 'withText', 'the "text" argument', text);
+        assertType([is.string, is.regExp], 'withText', 'The "text" argument', text);
 
         const apiFn = prepareApiFnArgs('withText', text);
 
@@ -502,7 +502,7 @@ function addFilterMethods (options) {
     };
 
     obj.withExactText = text => {
-        assertType(is.string, 'withExactText', 'the "text" argument', text);
+        assertType(is.string, 'withExactText', 'The "text" argument', text);
 
         const selectorFn = () => {
             /* eslint-disable no-undef */
@@ -522,14 +522,14 @@ function addFilterMethods (options) {
     };
 
     obj.withAttribute = (attrName, attrValue) => {
-        assertType([is.string, is.regExp], 'withAttribute', 'the "attrName" argument', attrName);
+        assertType([is.string, is.regExp], 'withAttribute', 'The "attrName" argument', attrName);
 
         const apiFn = prepareApiFnArgs('withAttribute', attrName, attrValue);
 
         attrName = ensureRegExpContext(attrName);
 
         if (attrValue !== void 0) {
-            assertType([is.string, is.regExp], 'withAttribute', 'the "attrValue" argument', attrValue);
+            assertType([is.string, is.regExp], 'withAttribute', 'The "attrValue" argument', attrValue);
             attrValue = ensureRegExpContext(attrValue);
         }
 
@@ -553,7 +553,7 @@ function addFilterMethods (options) {
     };
 
     obj.filter = (filter, dependencies) => {
-        assertType([is.string, is.function], 'filter', 'the "filter" argument', filter);
+        assertType([is.string, is.function], 'filter', 'The "filter" argument', filter);
 
         const apiFn = prepareApiFnArgs('filter', filter);
 
@@ -625,7 +625,7 @@ function addHierarchicalSelectors (options) {
 
     // Find
     obj.find = (filter, dependencies) => {
-        assertType([is.string, is.function], 'find', 'the "filter" argument', filter);
+        assertType([is.string, is.function], 'find', 'The "filter" argument', filter);
 
         const apiFn = prepareApiFnArgs('find', filter);
 
@@ -669,7 +669,7 @@ function addHierarchicalSelectors (options) {
     // Parent
     obj.parent = (filter, dependencies) => {
         if (filter !== void 0)
-            assertType([is.string, is.function, is.number], 'parent', 'the "filter" argument', filter);
+            assertType([is.string, is.function, is.number], 'parent', 'The "filter" argument', filter);
 
         const apiFn = prepareApiFnArgs('parent', filter);
 
@@ -696,7 +696,7 @@ function addHierarchicalSelectors (options) {
     // Child
     obj.child = (filter, dependencies) => {
         if (filter !== void 0)
-            assertType([is.string, is.function, is.number], 'child', 'the "filter" argument', filter);
+            assertType([is.string, is.function, is.number], 'child', 'The "filter" argument', filter);
 
         const apiFn = prepareApiFnArgs('child', filter);
 
@@ -728,7 +728,7 @@ function addHierarchicalSelectors (options) {
     // Sibling
     obj.sibling = (filter, dependencies) => {
         if (filter !== void 0)
-            assertType([is.string, is.function, is.number], 'sibling', 'the "filter" argument', filter);
+            assertType([is.string, is.function, is.number], 'sibling', 'The "filter" argument', filter);
 
         const apiFn = prepareApiFnArgs('sibling', filter);
 
@@ -765,7 +765,7 @@ function addHierarchicalSelectors (options) {
     // Next sibling
     obj.nextSibling = (filter, dependencies) => {
         if (filter !== void 0)
-            assertType([is.string, is.function, is.number], 'nextSibling', 'the "filter" argument', filter);
+            assertType([is.string, is.function, is.number], 'nextSibling', 'The "filter" argument', filter);
 
         const apiFn = prepareApiFnArgs('nextSibling', filter);
 
@@ -806,7 +806,7 @@ function addHierarchicalSelectors (options) {
     // Prev sibling
     obj.prevSibling = (filter, dependencies) => {
         if (filter !== void 0)
-            assertType([is.string, is.function, is.number], 'prevSibling', 'the "filter" argument', filter);
+            assertType([is.string, is.function, is.number], 'prevSibling', 'The "filter" argument', filter);
 
         const apiFn = prepareApiFnArgs('prevSibling', filter);
 
