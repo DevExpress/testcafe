@@ -34,12 +34,7 @@ import WarningLog from '../notifications/warning-log';
 import browserProviderPool from '../browser/provider/pool';
 import BrowserConnection, { BrowserInfo } from '../browser/connection';
 
-const BASE_CONFIGURATION_FILENAME       = '.testcaferc';
-const PRIORITY_CONFIGURATION_EXTENSIONS = {
-    js:   0,
-    json: 1
-};
-const CONFIGURATION_FILENAMES           = Object.keys(PRIORITY_CONFIGURATION_EXTENSIONS).map(ext => `${BASE_CONFIGURATION_FILENAME}.${ext}`);
+const BASE_CONFIGURATION_FILENAME = '.testcaferc';
 
 const DEFAULT_SCREENSHOTS_DIRECTORY = 'screenshots';
 
@@ -79,7 +74,7 @@ interface TestCafeStartOptions {
 type BrowserInfoSource = BrowserInfo | BrowserConnection;
 
 export default class TestCafeConfiguration extends Configuration {
-    public constructor (configFiles: string | string[] = CONFIGURATION_FILENAMES) {
+    public constructor (configFiles: string | string[] = Configuration._getFileNamesByPriority(BASE_CONFIGURATION_FILENAME)) {
         super(configFiles);
     }
 
@@ -258,10 +253,6 @@ export default class TestCafeConfiguration extends Configuration {
     }
 
     public static get FILENAMES (): string[] {
-        return CONFIGURATION_FILENAMES;
-    }
-
-    public static get PRIORITY_EXTENSIONS (): { [key: string]: number } {
-        return PRIORITY_CONFIGURATION_EXTENSIONS;
+        return Configuration._getFileNamesByPriority(BASE_CONFIGURATION_FILENAME);
     }
 }

@@ -7,6 +7,9 @@ const exportableLib         = require('../../lib/api/exportable-lib');
 const selfSignedCertificate = require('openssl-self-signed-certificate');
 const TestCafeConfiguration = require('../../lib/configuration/testcafe-configuration');
 
+const jsFilePriority   = TestCafeConfiguration.CONFIGURATION_EXTENSIONS.indexOf('.js');
+const jsonFilePriority = TestCafeConfiguration.CONFIGURATION_EXTENSIONS.indexOf('.json');
+
 describe('TestCafe factory function', function () {
     let testCafe = null;
     let server   = null;
@@ -134,8 +137,8 @@ describe('TestCafe factory function', function () {
 
             return getTestCafe('localhost', 1338, 1339)
                 .then(() => {
-                    expect(path.basename(testCafe.configuration.defaultPaths[TestCafeConfiguration.PRIORITY_EXTENSIONS.js])).eql(defaultConfigJsFile);
-                    expect(path.basename(testCafe.configuration.defaultPaths[TestCafeConfiguration.PRIORITY_EXTENSIONS.json])).eql(defaultConfigJSONFile);
+                    expect(path.basename(testCafe.configuration.defaultPaths[jsFilePriority])).eql(defaultConfigJsFile);
+                    expect(path.basename(testCafe.configuration.defaultPaths[jsonFilePriority])).eql(defaultConfigJSONFile);
                 });
         });
 
@@ -148,8 +151,8 @@ describe('TestCafe factory function', function () {
                     testCafe = tc;
                 })
                 .then(() => {
-                    expect(path.basename(testCafe.configuration.defaultPaths[TestCafeConfiguration.PRIORITY_EXTENSIONS.js])).eql(defaultConfigJsFile);
-                    expect(path.basename(testCafe.configuration.defaultPaths[TestCafeConfiguration.PRIORITY_EXTENSIONS.json])).eql(defaultConfigJSONFile);
+                    expect(path.basename(testCafe.configuration.defaultPaths[jsFilePriority])).eql(defaultConfigJsFile);
+                    expect(path.basename(testCafe.configuration.defaultPaths[jsonFilePriority])).eql(defaultConfigJSONFile);
                 });
         });
     });

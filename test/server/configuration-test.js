@@ -7,6 +7,7 @@ const nanoid        = require('nanoid');
 const del           = require('del');
 const pathUtil      = require('path');
 
+const BaseConfiguration                       = require('../../lib/configuration/configuration-base');
 const TestCafeConfiguration                   = require('../../lib/configuration/testcafe-configuration');
 const TypeScriptConfiguration                 = require('../../lib/configuration/typescript-configuration');
 const { DEFAULT_TYPESCRIPT_COMPILER_OPTIONS } = require('../../lib/configuration/default-values');
@@ -28,8 +29,11 @@ const createJsConfig = (path, options) => {
     fs.writeFileSync(path, `module.exports = ${JSON.stringify(options)}`);
 };
 
-const createJsTestCafeConfigurationFile   = createJsConfig.bind(null, TestCafeConfiguration.FILENAMES[TestCafeConfiguration.PRIORITY_EXTENSIONS.js]);
-const createJSONTestCafeConfigurationFile = createJSONConfig.bind(null, TestCafeConfiguration.FILENAMES[TestCafeConfiguration.PRIORITY_EXTENSIONS.json]);
+const jsFilePriority   = BaseConfiguration.CONFIGURATION_EXTENSIONS.indexOf('.js');
+const jsonFilePriority = BaseConfiguration.CONFIGURATION_EXTENSIONS.indexOf('.json');
+
+const createJsTestCafeConfigurationFile   = createJsConfig.bind(null, TestCafeConfiguration.FILENAMES[jsFilePriority]);
+const createJSONTestCafeConfigurationFile = createJSONConfig.bind(null, TestCafeConfiguration.FILENAMES[jsonFilePriority]);
 const createTypeScriptConfigurationFile   = createJSONConfig.bind(null, tsConfigPath);
 
 const TEST_TIMEOUT = 5000;
@@ -82,7 +86,7 @@ describe('TestCafeConfiguration', function () {
     describe('Init', () => {
         describe('Exists', () => {
             it('Config is not well-formed', () => {
-                const filePath = testCafeConfiguration.defaultPaths[TestCafeConfiguration.PRIORITY_EXTENSIONS.json];
+                const filePath = testCafeConfiguration.defaultPaths[jsonFilePriority];
 
                 fs.writeFileSync(filePath, '{');
                 consoleWrapper.wrap();
@@ -296,14 +300,14 @@ describe('TestCafeConfiguration', function () {
                 consoleWrapper.wrap();
                 await testCafeConfiguration.init();
                 consoleWrapper.unwrap();
-                await del([testCafeConfiguration.defaultPaths[TestCafeConfiguration.PRIORITY_EXTENSIONS.js]]);
+                await del([testCafeConfiguration.defaultPaths[jsFilePriority]]);
 
                 expect(consoleWrapper.messages.log).contains(WARNING_MESSAGES.multipleConfigurationFilesFound);
             });
         });
 
         it('File doesn\'t exists', () => {
-            fs.unlinkSync(TestCafeConfiguration.FILENAMES[TestCafeConfiguration.PRIORITY_EXTENSIONS.json]);
+            fs.unlinkSync(TestCafeConfiguration.FILENAMES[jsonFilePriority]);
 
             const defaultOptions = cloneDeep(testCafeConfiguration._options);
 
@@ -445,7 +449,7 @@ describe('TypeScriptConfiguration', function () {
             message = err.message;
         }
 
-        expect(message).eql(`"${nonExistingConfiguration.defaultPaths[TestCafeConfiguration.PRIORITY_EXTENSIONS.js]}" is not a valid TypeScript configuration file.`);
+        expect(message).eql(`"${nonExistingConfiguration.defaultPaths[jsFilePriority]}" is not a valid TypeScript configuration file.`);
     });
 
     it('Config is not well-formed', () => {
@@ -599,7 +603,7 @@ describe('TypeScriptConfiguration', function () {
                     return runner.bootstrapper._getTests();
                 })
                 .then(() => {
-                    fs.unlinkSync(TestCafeConfiguration.FILENAMES[TestCafeConfiguration.PRIORITY_EXTENSIONS.json]);
+                    fs.unlinkSync(TestCafeConfiguration.FILENAMES[jsonFilePriority]);
                     typeScriptConfiguration._filePath = customTSConfigFilePath;
 
                     expect(runner.bootstrapper.tsConfigPath).eql(customTSConfigFilePath);
