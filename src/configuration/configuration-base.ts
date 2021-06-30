@@ -19,6 +19,10 @@ import { Dictionary } from './interfaces';
 
 const DEBUG_LOGGER = debug('testcafe:configuration');
 
+const JS_CONFIGURATION_EXTENTION   = '.js';
+const JSON_CONFIGURATION_EXTENTION = '.json';
+const CONFIGURATION_EXTENSIONS     = [JS_CONFIGURATION_EXTENTION, JSON_CONFIGURATION_EXTENTION];
+
 export default class Configuration {
     protected _options: Dictionary<Option>;
     protected _filePath?: string;
@@ -56,6 +60,10 @@ export default class Configuration {
 
     protected static _showConsoleWarning (message: string): void {
         log.write(message);
+    }
+
+    protected static _getFileNamesByPriority (baseFileName: string): string[] {
+        return CONFIGURATION_EXTENSIONS.map(ext => `${baseFileName}${ext}`);
     }
 
     private static _showWarningForError (error: Error, warningTemplate: string, ...args: TemplateArguments): void {
@@ -186,7 +194,7 @@ export default class Configuration {
     }
 
     protected _isJSConfiguration (filePath: string): boolean {
-        return extname(filePath) === '.js';
+        return extname(filePath) === JS_CONFIGURATION_EXTENTION;
     }
 
     public _readJsConfigurationFileContent (filePath = this.filePath): object | null {
@@ -278,5 +286,9 @@ export default class Configuration {
         }
 
         option.source = OptionSource.Input;
+    }
+
+    public static get CONFIGURATION_EXTENSIONS (): string[] {
+        return CONFIGURATION_EXTENSIONS;
     }
 }
