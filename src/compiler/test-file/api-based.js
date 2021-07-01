@@ -130,13 +130,19 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
             this.origRequireExtensions[ext] = origExt;
 
             require.extensions[ext] = (mod, filename) => {
+                const hadGlobalAPI     = this._hasGlobalAPI();
+
+                // NOTE: remove global API so that it will be unavailable for the dependencies
+                if (APIBasedTestFileCompilerBase._isNodeModulesDep(filename) && hadGlobalAPI)
+                    this._removeGlobalAPI();
+
                 if (this.isCompilerServiceMode)
                     this._compileExternalModuleInEsmMode(mod, filename, requireCompilers[ext], origExt);
                 else
                     this._compileExternalModule(mod, filename, requireCompilers[ext], origExt);
 
-                this._addGlobalAPI(testFile);
-                this._addExportAPI(testFile);
+                if (hadGlobalAPI && !this._hasGlobalAPI())
+                    this._addGlobalAPI(testFile);
             };
         });
     }
@@ -191,6 +197,10 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
     _removeGlobalAPI () {
         delete global.fixture;
         delete global.test;
+    }
+
+    _hasGlobalAPI () {
+        return global.fixture && global.test;
     }
 
     _runCompiledCode (compiledCode, filename) {
