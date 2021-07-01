@@ -170,7 +170,7 @@ export default class Configuration {
         this._filePath = existedConfigs[0].filePath;
 
         if (existedConfigs.length > 1) {
-            const configPriorityListStr = this._getConfigPriorityListString(configs);
+            const configPriorityListStr = this._getConfigPriorityListString();
 
             Configuration._showConsoleWarning(renderTemplate(WARNING_MESSAGES.multipleConfigurationFilesFound, this._filePath, configPriorityListStr));
         }
@@ -286,7 +286,7 @@ export default class Configuration {
         option.source = OptionSource.Input;
     }
 
-    protected _getConfigPriorityListString (configs: { filePath: string }[]): string {
-        return configs.map((item, index) => `${index + 1}. ${item.filePath}`).join('\n');
+    protected _getConfigPriorityListString (filesPaths = this.defaultPaths): string {
+        return filesPaths?.map((path, index) => `${index + 1}. ${path}`).join('\n') || '';
     }
 }
