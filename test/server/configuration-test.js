@@ -13,6 +13,8 @@ const { DEFAULT_TYPESCRIPT_COMPILER_OPTIONS } = require('../../lib/configuration
 const RunnerCtor                              = require('../../lib/runner');
 const OptionNames                             = require('../../lib/configuration/option-names');
 const consoleWrapper                          = require('./helpers/console-wrapper');
+const renderTemplate                          = require('../../lib/utils/render-template');
+const WARNING_MESSAGES                        = require('../../lib/notifications/warning-message');
 
 const {
     CONFIGURATION_EXTENSIONS,
@@ -306,7 +308,9 @@ describe('TestCafeConfiguration', function () {
                 consoleWrapper.unwrap();
                 await del([testCafeConfiguration.defaultPaths[jsFilePriority]]);
 
-                expect(consoleWrapper.messages.log).contains('There are multiple configuration files found, TestCafe will only use one.');
+                const configPriorityListStr = testCafeConfiguration.defaultPaths.map((path, index) => `${index + 1}. ${path}`).join('\n') || '';
+
+                expect(consoleWrapper.messages.log).eql(renderTemplate(WARNING_MESSAGES.multipleConfigurationFilesFound, testCafeConfiguration.filePath, configPriorityListStr));
             });
         });
 
