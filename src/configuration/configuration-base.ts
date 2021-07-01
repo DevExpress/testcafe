@@ -16,12 +16,9 @@ import renderTemplate from '../utils/render-template';
 import WARNING_MESSAGES from '../notifications/warning-message';
 import log from '../cli/log';
 import { Dictionary } from './interfaces';
+import { CONFIGURATION_EXTENSIONS, JS_CONFIGURATION_EXTENSION } from './formats';
 
 const DEBUG_LOGGER = debug('testcafe:configuration');
-
-const JS_CONFIGURATION_EXTENTION   = '.js';
-const JSON_CONFIGURATION_EXTENTION = '.json';
-const CONFIGURATION_EXTENSIONS     = [JS_CONFIGURATION_EXTENTION, JSON_CONFIGURATION_EXTENTION];
 
 export default class Configuration {
     protected _options: Dictionary<Option>;
@@ -195,7 +192,7 @@ export default class Configuration {
     }
 
     protected _isJSConfiguration (filePath: string): boolean {
-        return extname(filePath) === JS_CONFIGURATION_EXTENTION;
+        return extname(filePath) === JS_CONFIGURATION_EXTENSION;
     }
 
     public _readJsConfigurationFileContent (filePath = this.filePath): object | null {
@@ -291,9 +288,5 @@ export default class Configuration {
 
     protected _getConfigPriorityListString (configs: { filePath: string }[]): string {
         return configs.map((item, index) => `${index + 1}. ${item.filePath}`).join('\n');
-    }
-
-    public static get CONFIGURATION_EXTENSIONS (): string[] {
-        return CONFIGURATION_EXTENSIONS;
     }
 }
