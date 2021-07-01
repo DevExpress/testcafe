@@ -169,13 +169,14 @@ export default class Configuration {
 
         if (!existedConfigs.length)
             return null;
-        else if (existedConfigs.length > 1) {
-            const priorityList = configs.map((item, index) => `${index + 1}. ${item.filePath}`);
-
-            Configuration._showConsoleWarning(renderTemplate(WARNING_MESSAGES.multipleConfigurationFilesFound, priorityList.join('\n')));
-        }
 
         this._filePath = existedConfigs[0].filePath;
+
+        if (existedConfigs.length > 1) {
+            const configPriorityListStr = this._getConfigPriorityListString(configs);
+
+            Configuration._showConsoleWarning(renderTemplate(WARNING_MESSAGES.multipleConfigurationFilesFound, this._filePath, configPriorityListStr));
+        }
 
         return existedConfigs[0].options;
     }
@@ -286,6 +287,10 @@ export default class Configuration {
         }
 
         option.source = OptionSource.Input;
+    }
+
+    protected _getConfigPriorityListString (configs: { filePath: string }[]): string {
+        return configs.map((item, index) => `${index + 1}. ${item.filePath}`).join('\n');
     }
 
     public static get CONFIGURATION_EXTENSIONS (): string[] {
