@@ -5,10 +5,15 @@ const path                  = require('path');
 const createTestCafe        = require('../../lib/');
 const exportableLib         = require('../../lib/api/exportable-lib');
 const selfSignedCertificate = require('openssl-self-signed-certificate');
-const TestCafeConfiguration = require('../../lib/configuration/testcafe-configuration');
 
-const jsFilePriority   = TestCafeConfiguration.CONFIGURATION_EXTENSIONS.indexOf('.js');
-const jsonFilePriority = TestCafeConfiguration.CONFIGURATION_EXTENSIONS.indexOf('.json');
+const {
+    CONFIGURATION_EXTENSIONS,
+    JS_CONFIGURATION_EXTENSION,
+    JSON_CONFIGURATION_EXTENSION
+} = require('../../lib/configuration/formats');
+
+const jsFilePriority   = CONFIGURATION_EXTENSIONS.indexOf(JS_CONFIGURATION_EXTENSION);
+const jsonFilePriority = CONFIGURATION_EXTENSIONS.indexOf(JSON_CONFIGURATION_EXTENSION);
 
 describe('TestCafe factory function', function () {
     let testCafe = null;

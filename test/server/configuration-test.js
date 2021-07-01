@@ -7,13 +7,18 @@ const nanoid        = require('nanoid');
 const del           = require('del');
 const pathUtil      = require('path');
 
-const BaseConfiguration                       = require('../../lib/configuration/configuration-base');
 const TestCafeConfiguration                   = require('../../lib/configuration/testcafe-configuration');
 const TypeScriptConfiguration                 = require('../../lib/configuration/typescript-configuration');
 const { DEFAULT_TYPESCRIPT_COMPILER_OPTIONS } = require('../../lib/configuration/default-values');
 const RunnerCtor                              = require('../../lib/runner');
 const OptionNames                             = require('../../lib/configuration/option-names');
 const consoleWrapper                          = require('./helpers/console-wrapper');
+
+const {
+    CONFIGURATION_EXTENSIONS,
+    JS_CONFIGURATION_EXTENSION,
+    JSON_CONFIGURATION_EXTENSION
+} = require('../../lib/configuration/formats');
 
 const tsConfigPath           = 'tsconfig.json';
 const customTSConfigFilePath = 'custom-config.json';
@@ -28,8 +33,8 @@ const createJsConfig = (path, options) => {
     fs.writeFileSync(path, `module.exports = ${JSON.stringify(options)}`);
 };
 
-const jsFilePriority   = BaseConfiguration.CONFIGURATION_EXTENSIONS.indexOf('.js');
-const jsonFilePriority = BaseConfiguration.CONFIGURATION_EXTENSIONS.indexOf('.json');
+const jsFilePriority   = CONFIGURATION_EXTENSIONS.indexOf(JS_CONFIGURATION_EXTENSION);
+const jsonFilePriority = CONFIGURATION_EXTENSIONS.indexOf(JSON_CONFIGURATION_EXTENSION);
 
 const createJsTestCafeConfigurationFile   = createJsConfig.bind(null, TestCafeConfiguration.FILENAMES[jsFilePriority]);
 const createJSONTestCafeConfigurationFile = createJSONConfig.bind(null, TestCafeConfiguration.FILENAMES[jsonFilePriority]);
