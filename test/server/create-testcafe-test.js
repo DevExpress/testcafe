@@ -12,8 +12,8 @@ const {
     JSON_CONFIGURATION_EXTENSION
 } = require('../../lib/configuration/formats');
 
-const jsFilePriority   = CONFIGURATION_EXTENSIONS.indexOf(JS_CONFIGURATION_EXTENSION);
-const jsonFilePriority = CONFIGURATION_EXTENSIONS.indexOf(JSON_CONFIGURATION_EXTENSION);
+const jsConfigIndex   = CONFIGURATION_EXTENSIONS.indexOf(JS_CONFIGURATION_EXTENSION);
+const jsonConfigIndex = CONFIGURATION_EXTENSIONS.indexOf(JSON_CONFIGURATION_EXTENSION);
 
 describe('TestCafe factory function', function () {
     let testCafe = null;
@@ -142,8 +142,8 @@ describe('TestCafe factory function', function () {
 
             return getTestCafe('localhost', 1338, 1339)
                 .then(() => {
-                    expect(path.basename(testCafe.configuration.defaultPaths[jsFilePriority])).eql(defaultConfigJsFile);
-                    expect(path.basename(testCafe.configuration.defaultPaths[jsonFilePriority])).eql(defaultConfigJSONFile);
+                    expect(path.basename(testCafe.configuration.defaultPaths[jsConfigIndex])).eql(defaultConfigJsFile);
+                    expect(path.basename(testCafe.configuration.defaultPaths[jsonConfigIndex])).eql(defaultConfigJSONFile);
                 });
         });
 
@@ -156,8 +156,8 @@ describe('TestCafe factory function', function () {
                     testCafe = tc;
                 })
                 .then(() => {
-                    expect(path.basename(testCafe.configuration.defaultPaths[jsFilePriority])).eql(defaultConfigJsFile);
-                    expect(path.basename(testCafe.configuration.defaultPaths[jsonFilePriority])).eql(defaultConfigJSONFile);
+                    expect(path.basename(testCafe.configuration.defaultPaths[jsConfigIndex])).eql(defaultConfigJsFile);
+                    expect(path.basename(testCafe.configuration.defaultPaths[jsonConfigIndex])).eql(defaultConfigJSONFile);
                 });
         });
     });
