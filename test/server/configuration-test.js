@@ -17,7 +17,7 @@ const consoleWrapper                          = require('./helpers/console-wrapp
 const {
     CONFIGURATION_EXTENSIONS,
     JS_CONFIGURATION_EXTENSION,
-    JSON_CONFIGURATION_EXTENSION
+    JSON_CONFIGURATION_EXTENSION,
 } = require('../../lib/configuration/formats');
 
 const tsConfigPath           = 'tsconfig.json';
@@ -33,11 +33,11 @@ const createJsConfig = (path, options) => {
     fs.writeFileSync(path, `module.exports = ${JSON.stringify(options)}`);
 };
 
-const jsFilePriority   = CONFIGURATION_EXTENSIONS.indexOf(JS_CONFIGURATION_EXTENSION);
-const jsonFilePriority = CONFIGURATION_EXTENSIONS.indexOf(JSON_CONFIGURATION_EXTENSION);
+const jsConfigIndex   = CONFIGURATION_EXTENSIONS.indexOf(JS_CONFIGURATION_EXTENSION);
+const jsonConfigIndex = CONFIGURATION_EXTENSIONS.indexOf(JSON_CONFIGURATION_EXTENSION);
 
-const createJsTestCafeConfigurationFile   = createJsConfig.bind(null, TestCafeConfiguration.FILENAMES[jsFilePriority]);
-const createJSONTestCafeConfigurationFile = createJSONConfig.bind(null, TestCafeConfiguration.FILENAMES[jsonFilePriority]);
+const createJsTestCafeConfigurationFile   = createJsConfig.bind(null, TestCafeConfiguration.FILENAMES[jsConfigIndex]);
+const createJSONTestCafeConfigurationFile = createJSONConfig.bind(null, TestCafeConfiguration.FILENAMES[jsonConfigIndex]);
 const createTypeScriptConfigurationFile   = createJSONConfig.bind(null, tsConfigPath);
 
 const TEST_TIMEOUT = 5000;
@@ -90,7 +90,7 @@ describe('TestCafeConfiguration', function () {
     describe('Init', () => {
         describe('Exists', () => {
             it('Config is not well-formed', () => {
-                const filePath = testCafeConfiguration.defaultPaths[jsonFilePriority];
+                const filePath = testCafeConfiguration.defaultPaths[jsonConfigIndex];
 
                 fs.writeFileSync(filePath, '{');
                 consoleWrapper.wrap();
@@ -304,7 +304,7 @@ describe('TestCafeConfiguration', function () {
                 consoleWrapper.wrap();
                 await testCafeConfiguration.init();
                 consoleWrapper.unwrap();
-                await del([testCafeConfiguration.defaultPaths[jsFilePriority]]);
+                await del([testCafeConfiguration.defaultPaths[jsConfigIndex]]);
 
                 const expectedMessage =
                           `There are multiple configuration files found, TestCafe will only use one. The file "${pathUtil.resolve('.testcaferc.js')}" will be used.\n` +
@@ -317,7 +317,7 @@ describe('TestCafeConfiguration', function () {
         });
 
         it('File doesn\'t exists', () => {
-            fs.unlinkSync(TestCafeConfiguration.FILENAMES[jsonFilePriority]);
+            fs.unlinkSync(TestCafeConfiguration.FILENAMES[jsonConfigIndex]);
 
             const defaultOptions = cloneDeep(testCafeConfiguration._options);
 
@@ -459,7 +459,7 @@ describe('TypeScriptConfiguration', function () {
             message = err.message;
         }
 
-        expect(message).eql(`"${nonExistingConfiguration.defaultPaths[jsFilePriority]}" is not a valid TypeScript configuration file.`);
+        expect(message).eql(`"${nonExistingConfiguration.defaultPaths[jsConfigIndex]}" is not a valid TypeScript configuration file.`);
     });
 
     it('Config is not well-formed', () => {
@@ -613,7 +613,7 @@ describe('TypeScriptConfiguration', function () {
                     return runner.bootstrapper._getTests();
                 })
                 .then(() => {
-                    fs.unlinkSync(TestCafeConfiguration.FILENAMES[jsonFilePriority]);
+                    fs.unlinkSync(TestCafeConfiguration.FILENAMES[jsonConfigIndex]);
                     typeScriptConfiguration._filePath = customTSConfigFilePath;
 
                     expect(runner.bootstrapper.tsConfigPath).eql(customTSConfigFilePath);
@@ -708,7 +708,7 @@ describe('TypeScriptConfiguration', function () {
                 'port1':    1234,
                 'port2':    5678,
                 'src':      'path1/folder',
-                'browser':  'ie'
+                'browser':  'ie',
             };
 
             createJsConfig(customConfigFile, options);
