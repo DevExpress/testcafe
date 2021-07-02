@@ -27,19 +27,8 @@ export default class Configuration {
     protected _overriddenOptions: string[];
 
     public constructor (configurationFilesNames: string | null | string[]) {
-        this._options   = {};
-
-        if (configurationFilesNames) {
-            this._defaultPaths = castArray(configurationFilesNames).reduce((result, name) => {
-                const resolveFilePath = Configuration._resolveFilePath(name);
-
-                if (resolveFilePath)
-                    result.push(resolveFilePath);
-
-                return result;
-            }, [] as string[]);
-        }
-
+        this._options           = {};
+        this._defaultPaths      = this._resolveFilePaths(configurationFilesNames);
         this._overriddenOptions = [];
     }
 
@@ -77,6 +66,20 @@ export default class Configuration {
             return null;
 
         return isAbsolute(path) ? path : resolvePathRelativelyCwd(path);
+    }
+
+    private _resolveFilePaths (filesNames: string | null | string[]): string[] | undefined {
+        if (!filesNames)
+            return void 0;
+
+        return castArray(filesNames).reduce((result, name) => {
+            const resolveFilePath = Configuration._resolveFilePath(name);
+
+            if (resolveFilePath)
+                result.push(resolveFilePath);
+
+            return result;
+        }, [] as string[]);
     }
 
     public async init (): Promise<void> {
