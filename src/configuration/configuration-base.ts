@@ -16,7 +16,7 @@ import renderTemplate from '../utils/render-template';
 import WARNING_MESSAGES from '../notifications/warning-message';
 import log from '../cli/log';
 import { Dictionary } from './interfaces';
-import { CONFIGURATION_EXTENSIONS, JS_CONFIGURATION_EXTENSION } from './formats';
+import { JS_CONFIGURATION_EXTENSION } from './formats';
 
 const DEBUG_LOGGER = debug('testcafe:configuration');
 
@@ -46,10 +46,6 @@ export default class Configuration {
 
     protected static _showConsoleWarning (message: string): void {
         log.write(message);
-    }
-
-    protected static _getFileNamesByPriority (baseFileName: string): string[] {
-        return CONFIGURATION_EXTENSIONS.map(ext => `${baseFileName}${ext}`);
     }
 
     private static _showWarningForError (error: Error, warningTemplate: string, ...args: TemplateArguments): void {
