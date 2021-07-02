@@ -13,8 +13,6 @@ const { DEFAULT_TYPESCRIPT_COMPILER_OPTIONS } = require('../../lib/configuration
 const RunnerCtor                              = require('../../lib/runner');
 const OptionNames                             = require('../../lib/configuration/option-names');
 const consoleWrapper                          = require('./helpers/console-wrapper');
-const renderTemplate                          = require('../../lib/utils/render-template');
-const WARNING_MESSAGES                        = require('../../lib/notifications/warning-message');
 
 const {
     CONFIGURATION_EXTENSIONS,
@@ -308,9 +306,13 @@ describe('TestCafeConfiguration', function () {
                 consoleWrapper.unwrap();
                 await del([testCafeConfiguration.defaultPaths[jsFilePriority]]);
 
-                const configPriorityListStr = testCafeConfiguration.defaultPaths.map((path, index) => `${index + 1}. ${path}`).join('\n') || '';
+                const expectedMessage =
+                          `There are multiple configuration files found, TestCafe will only use one. The file "${pathUtil.resolve('.testcaferc.js')}" will be used.\n` +
+                          'The priority order is as follows:\n' +
+                          `1. ${pathUtil.resolve('.testcaferc.js')}\n` +
+                          `2. ${pathUtil.resolve('.testcaferc.json')}`;
 
-                expect(consoleWrapper.messages.log).eql(renderTemplate(WARNING_MESSAGES.multipleConfigurationFilesFound, testCafeConfiguration.filePath, configPriorityListStr));
+                expect(consoleWrapper.messages.log).eql(expectedMessage);
             });
         });
 
