@@ -10,7 +10,7 @@
 t.dispatchEvent(target, eventName[, options])
 ```
 
-The [`t.dispatchEvent`](link-needed) method lets you interact with the page in ways that TestCafe does not support out of the box. To implement an unsupported user action, break it down into discrete DOM events, and use the `t.dispatchEvent` method to fire them.
+The [`t.dispatchEvent`](https://testcafe.io/documentation/402712/reference/test-api/testcontroller/dispatchevent) method lets you interact with the page in ways that TestCafe does not support out of the box. To implement an unsupported user action, break it down into discrete DOM events, and use the `t.dispatchEvent` method to fire them.
 
 >Internet Explorer does [not](https://developer.mozilla.org/en-US/docs/Web/API/Event/Event) support event constructors. As such, TestCafe cannot dispatch DOM events in this browser. 
 
@@ -20,7 +20,7 @@ The following example fires a `touchstart` action on an element with the 'button
 await t.dispatchEvent('#button', 'touchstart',  { eventConstructor: 'TouchEvent' });
 ```
 
-Read the [Custom Actions Guide](link-needed) for more information on DOM events and event constructors.
+Read the [Custom Actions Guide](https://testcafe.io/documentation/402843/guides/advanced-guides/custom-actions) for more information on DOM events and event constructors.
 
 #### Modify request hook headers ([#6140](https://github.com/DevExpress/testcafe/pull/6140))
 
@@ -28,7 +28,7 @@ You can now modify the headers of custom request hooks. Call the `event.setHeade
 
 #### Quarantine mode customization ([#6073](https://github.com/DevExpress/testcafe/pull/6073))
 
-New settings are available in [quarantine mode](link-needed). Quarantine mode repeats failing tests to help users get conclusive test results in sub-optimal conditions. TestCafe v1.15 adds two variables - `successThreshold` and `attemptLimit` - that allow you specify when TestCafe must stop.
+New settings are available in [quarantine mode](https://testcafe.io/documentation/402830/guides/basic-guides/run-tests#quarantine-mode). Quarantine mode repeats failing tests to help users get conclusive test results in sub-optimal conditions. TestCafe v1.15 adds two variables - `successThreshold` and `attemptLimit` - that allow you specify when TestCafe must stop.
 
 The `attemptLimit` variable determines the maximum possible number of test attempts.
 The `successThreshold` variable determines the number of successful attempts necessary for the test to pass.
