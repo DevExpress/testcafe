@@ -22,7 +22,7 @@ export default {
     [RUNTIME_ERRORS.cannotFindBrowser]:                    'Cannot find the browser. "{browser}" is neither a known browser alias, nor a path to an executable file.',
     [RUNTIME_ERRORS.browserProviderNotFound]:              'Cannot find the "{providerName}" browser provider.',
     [RUNTIME_ERRORS.browserNotSet]:                        "You have not specified a browser.",
-    [RUNTIME_ERRORS.testFilesNotFound]:                    'Could not find test files at the following location: "{cwd}"\n' +
+    [RUNTIME_ERRORS.testFilesNotFound]:                    'Could not find test files at the following location: "{cwd}".\n' +
                                                            'Check paths for errors:\n' +
                                                            '{sourceList}\n\n' +
                                                            'or launch TestCafe from a different directory.\n' +
