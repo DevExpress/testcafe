@@ -15,42 +15,41 @@ const DOCUMENTATION_LINKS = {
 export default {
     [RUNTIME_ERRORS.cannotCreateMultipleLiveModeRunners]:  'Cannot launch multiple live mode instances of the TestCafe test runner.',
     [RUNTIME_ERRORS.cannotRunLiveModeRunnerMultipleTimes]: 'Cannot launch the same live mode instance of the TestCafe test runner multiple times.',
-    [RUNTIME_ERRORS.browserDisconnected]:                  'The {userAgent} browser disconnected. If you didn\'t close the browser yourself, browser performance or network issues may be at fault.',
+    [RUNTIME_ERRORS.browserDisconnected]:                  'The {userAgent} browser disconnected. If you did not close the browser yourself, browser performance or network issues may be at fault.',
     [RUNTIME_ERRORS.cannotRunAgainstDisconnectedBrowsers]: 'The following browsers disconnected: {userAgents}. Cannot run further tests.',
     [RUNTIME_ERRORS.testRunRequestInDisconnectedBrowser]:  '"{browser}" disconnected during test execution.',
     [RUNTIME_ERRORS.cannotEstablishBrowserConnection]:     'Cannot establish one or more browser connections.',
     [RUNTIME_ERRORS.cannotFindBrowser]:                    'Cannot find the browser. "{browser}" is neither a known browser alias, nor a path to an executable file.',
     [RUNTIME_ERRORS.browserProviderNotFound]:              'Cannot find the "{providerName}" browser provider.',
-    [RUNTIME_ERRORS.browserNotSet]:                        "You haven't specified a browser.",
-    [RUNTIME_ERRORS.testFilesNotFound]:                    'No test files inside "{cwd}" match the specified patterns.\n' +
-                                                           'Check the patterns for errors:\n' +
+    [RUNTIME_ERRORS.browserNotSet]:                        "You have not specified a browser.",
+    [RUNTIME_ERRORS.testFilesNotFound]:                    'Could not find test files at the following location: "{cwd}"\n' +
+                                                           'Check paths for errors:\n' +
                                                            '{sourceList}\n\n' +
                                                            'or launch TestCafe from a different directory.\n' +
-                                                           `For more information on how to list test files, see ${DOCUMENTATION_LINKS.TEST_SOURCE_PARAMETER}.`,
+                                                           `For more information on how to specify test locations, see ${DOCUMENTATION_LINKS.TEST_SOURCE_PARAMETER}.`,
 
-    [RUNTIME_ERRORS.noTestsToRun]: "Source files do not contain valid 'fixture' and 'test' directives.",
+    [RUNTIME_ERRORS.noTestsToRun]: "Source files do not contain valid 'fixture' and 'test' declarations.",
 
-    [RUNTIME_ERRORS.noTestsToRunDueFiltering]: "Your filter doesn't match any tests.\n" +
-                                               'Modify your filter configuration.\n' +
-                                               `See ${DOCUMENTATION_LINKS.FILTER_SETTINGS}`,
+    [RUNTIME_ERRORS.noTestsToRunDueFiltering]: "No tests match your filter.\n" +
+                                               `See ${DOCUMENTATION_LINKS.FILTER_SETTINGS}.`,
 
     [RUNTIME_ERRORS.cannotFindReporterForAlias]:                         'The "{name}" reporter does not exist. Check the reporter parameter for errors.',
-    [RUNTIME_ERRORS.multipleSameStreamReporters]:                        'Reporters can not share output streams. The following reporters interfere with one another: "{reporters}".',
+    [RUNTIME_ERRORS.multipleSameStreamReporters]:                        'Reporters cannot share output streams. The following reporters interfere with one another: "{reporters}".',
     [RUNTIME_ERRORS.optionValueIsNotValidRegExp]:                        'The "{optionName}" option does not contain a valid regular expression.',
     [RUNTIME_ERRORS.optionValueIsNotValidKeyValue]:                      'The "{optionName}" option does not contain a valid key-value pair.',
-    [RUNTIME_ERRORS.invalidQuarantineOption]:                            'The "{optionName}" option is not valid. Specify "attemptLimit" and "successThreshold" to configure quarantine mode.',
+    [RUNTIME_ERRORS.invalidQuarantineOption]:                            'The "{optionName}" option does not exist. Specify "attemptLimit" and "successThreshold" to configure quarantine mode.',
     [RUNTIME_ERRORS.invalidQuarantineParametersRatio]:                   'The value of "attemptLimit" ({attemptLimit}) should be greater then the value of "successThreshold" ({successThreshold}).',
     [RUNTIME_ERRORS.invalidAttemptLimitValue]:                           'The "{attemptLimit}" parameter only accepts values of {MIN_ATTEMPT_LIMIT} and up.',
     [RUNTIME_ERRORS.invalidSuccessThresholdValue]:                       'The "{successThreshold}" parameter only accepts values of {MIN_SUCCESS_THRESHOLD} and up.',
     [RUNTIME_ERRORS.invalidSpeedValue]:                                  'Speed should be a number between 0.01 and 1.',
     [RUNTIME_ERRORS.invalidConcurrencyFactor]:                           'The concurrency factor should be an integer greater than or equal to 1.',
-    [RUNTIME_ERRORS.cannotDivideRemotesCountByConcurrency]:              'The number of remote browsers should be divisible by the factor of concurrency.',
-    [RUNTIME_ERRORS.cannotSetConcurrencyWithCDPPort]:                    'The concurrency factor can not include the CDP port.',
+    [RUNTIME_ERRORS.cannotDivideRemotesCountByConcurrency]:              'The number of remote browsers should be divisible by the concurrency factor.',
+    [RUNTIME_ERRORS.cannotSetConcurrencyWithCDPPort]:                    'The value of the concurrency factor option includes the CDP port.',
     [RUNTIME_ERRORS.portsOptionRequiresTwoNumbers]:                      'The "--ports" argument accepts two values at a time.',
     [RUNTIME_ERRORS.portIsNotFree]:                                      'Port {portNum} is occupied by another process.',
     [RUNTIME_ERRORS.invalidHostname]:                                    'Cannot resolve hostname "{hostname}".',
     [RUNTIME_ERRORS.cannotFindSpecifiedTestSource]:                      'Cannot find a test file at "{path}".',
-    [RUNTIME_ERRORS.clientFunctionCodeIsNotAFunction]:                   'Cannot execute a clientFunction because {#instantiationCallsiteName} is {type}, and not a function.',
+    [RUNTIME_ERRORS.clientFunctionCodeIsNotAFunction]:                   'Cannot initialize a ClientFunction because {#instantiationCallsiteName} is {type}, and not a function.',
     [RUNTIME_ERRORS.selectorInitializedWithWrongType]:                   'Cannot initialize a Selector because {#instantiationCallsiteName} is {type}, and not one of the following: a CSS selector string, a Selector object, a node snapshot, a function, or a Promise returned by a Selector.',
     [RUNTIME_ERRORS.clientFunctionCannotResolveTestRun]:                 "{#instantiationCallsiteName} cannot implicitly resolve the test run in context of which it should be executed. If you need to call {#instantiationCallsiteName} from the Node.js API callback, pass the test controller manually via {#instantiationCallsiteName}'s `.with({ boundTestRun: t })` method first. Note that you cannot execute {#instantiationCallsiteName} outside the test code.",
     [RUNTIME_ERRORS.regeneratorInClientFunctionCode]:                    `{#instantiationCallsiteName} code, arguments or dependencies cannot contain generators or "async/await" syntax (use Promises instead).`,
@@ -95,8 +94,8 @@ export default {
                                        '* specify the path of the FFmpeg executable in the FFMPEG_PATH environment variable or the ffmpegPath option,\n' +
                                        '* install the @ffmpeg-installer/ffmpeg npm package.',
 
-    [RUNTIME_ERRORS.cannotFindTypescriptConfigurationFile]:            '"{filePath}" does not contain a TypeScript configuration file.',
-    [RUNTIME_ERRORS.clientScriptInitializerIsNotSpecified]:            'Initialize your clientScript with one of the following: a JavaScript script, a JavaScript file path, or the name of a JavaScript module.',
+    [RUNTIME_ERRORS.cannotFindTypescriptConfigurationFile]:            '"{filePath}" is not a valid TypeScript configuration file.',
+    [RUNTIME_ERRORS.clientScriptInitializerIsNotSpecified]:            'Initialize your client script with one of the following: a JavaScript script, a JavaScript file path, or the name of a JavaScript module.',
     [RUNTIME_ERRORS.clientScriptBasePathIsNotSpecified]:               'Specify the base path for the client script file.',
     [RUNTIME_ERRORS.clientScriptInitializerMultipleContentSources]:    'Client scripts can only have one initializer: JavaScript code, a JavaScript file path, or the name of a JavaScript module.',
     [RUNTIME_ERRORS.cannotLoadClientScriptFromPath]:                   'Cannot load a client script from {path}.',
