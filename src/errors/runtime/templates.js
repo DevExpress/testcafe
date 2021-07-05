@@ -44,7 +44,7 @@ export default {
     [RUNTIME_ERRORS.invalidSpeedValue]:                                  'Speed should be a number between 0.01 and 1.',
     [RUNTIME_ERRORS.invalidConcurrencyFactor]:                           'The concurrency factor should be an integer greater than or equal to 1.',
     [RUNTIME_ERRORS.cannotDivideRemotesCountByConcurrency]:              'The number of remote browsers should be divisible by the concurrency factor.',
-    [RUNTIME_ERRORS.cannotSetConcurrencyWithCDPPort]:                    'The value of the concurrency factor option includes the CDP port.',
+    [RUNTIME_ERRORS.cannotSetConcurrencyWithCDPPort]:                    'The value of the "concurrency" option includes the CDP port.',
     [RUNTIME_ERRORS.portsOptionRequiresTwoNumbers]:                      'The "--ports" argument accepts two values at a time.',
     [RUNTIME_ERRORS.portIsNotFree]:                                      'Port {portNum} is occupied by another process.',
     [RUNTIME_ERRORS.invalidHostname]:                                    'Cannot resolve hostname "{hostname}".',
