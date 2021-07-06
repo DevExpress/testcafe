@@ -12,7 +12,7 @@ t.dispatchEvent(target, eventName[, options])
 
 The [`t.dispatchEvent`](https://testcafe.io/documentation/402712/reference/test-api/testcontroller/dispatchevent) method lets you interact with the page in ways that TestCafe does not support out of the box. To implement an unsupported user action, break it down into discrete DOM events, and use the `t.dispatchEvent` method to fire them.
 
->Internet Explorer does [not](https://developer.mozilla.org/en-US/docs/Web/API/Event/Event) support event constructors. As such, TestCafe cannot dispatch DOM events in this browser. 
+>Internet Explorer does [not](https://developer.mozilla.org/en-US/docs/Web/API/Event/Event) support event constructors. As such, TestCafe cannot dispatch DOM events in this browser.
 
 The following example fires a `touchstart` action on an element with the 'button' id:
 
@@ -47,22 +47,15 @@ TestCafe now has the capability to proxy non-HTML documents such as XML and text
 
 ### Bug Fixes
 
-// 1.15.0-rc.2    - 24.3.1
 * TestCafe incorrectly processes elements with negative tabIndex values ([#4848](https://github.com/DevExpress/testcafe/issues/4848)).
 * TestCafe incorrectly processes some eventListeners in multi-window mode ([#5621](https://github.com/DevExpress/testcafe/issues/5621)).
 * TestCafe incorrectly processes the \<base\> HTML tag ([testcafe-hammerhead/#1965](https://github.com/DevExpress/testcafe-hammerhead/issues/1965)).
 * TestCafe doesn't intercept `Navigator.prototype` requests ([PR testcafe-hammerhead/#2643](https://github.com/DevExpress/testcafe-hammerhead/pull/2643) by [@michaelficarra](https://github.com/michaelficarra)).
 * TestCafe doesn't intercept `WorkerGlobalScope.importScripts()` arguments ([testcafe-hammerhead/#2521](https://github.com/DevExpress/testcafe-hammerhead/issues/2521)).
 * A website parsing error causes test failure ([testcafe-hammerhead/#2650](https://github.com/DevExpress/testcafe-hammerhead/issues/2650)).
-
-// 1.15.0-rc.1    - 24.3.0
 * TestCafe stops recording test videos after you skip a fixture ([#6163](https://github.com/DevExpress/testcafe/issues/6163)).
 * Links with empty `download` attributes cause TestCafe to hang ([#6132](https://github.com/DevExpress/testcafe/issues/6132)).
-
-// 1.15.0-alpha.4 - 24.2.2
 * TestCafe reports incorrect line numbers ([#5642](https://github.com/DevExpress/testcafe/issues/5642)).
-
-// 1.15.0-alpha.3 - 24.2.2
 * TestCafe incorrectly processes some for-of statements ([PR testcafe-hammerhead/#2632](https://github.com/DevExpress/testcafe-hammerhead/pull/2632)).
 * TestCafe sometimes directs window location queries to non-window objects ([testcafe-hammerhead/#2611](https://github.com/DevExpress/testcafe-hammerhead/issues/2611)).
 * Performance enhancement: obtaining element attributes ([#6117](https://github.com/DevExpress/testcafe/issues/6117))

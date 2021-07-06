@@ -87,7 +87,7 @@ describe('[API] ClientFunction', function () {
                 only:       'chrome'
             }).catch(function (errs) {
                 expect(errs[0].indexOf(
-                    'Cannot execute a clientFunction because ClientFunction is number, and not a function.'
+                    'Cannot initialize a ClientFunction because ClientFunction is number, and not a function.'
                 )).eql(0);
 
                 expect(errs[0]).contains('> 32 |    await ClientFunction(123)();');
