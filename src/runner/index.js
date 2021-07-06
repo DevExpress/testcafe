@@ -497,7 +497,7 @@ export default class Runner extends EventEmitter {
     }
 
     async _checkRequiredPermissions (browserInfo) {
-        const hasLocalBrowsers = await Bootstrapper._hasLocalBrowsers(browserInfo);
+        const hasLocalBrowsers = await this._hasLocalBrowsers(browserInfo);
 
         const { error } = await authenticationHelper(
             () => findWindow(''),
