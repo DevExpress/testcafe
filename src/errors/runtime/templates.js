@@ -21,7 +21,7 @@ export default {
     [RUNTIME_ERRORS.cannotEstablishBrowserConnection]:     'Cannot establish one or more browser connections.',
     [RUNTIME_ERRORS.cannotFindBrowser]:                    'Cannot find the browser. "{browser}" is neither a known browser alias, nor a path to an executable file.',
     [RUNTIME_ERRORS.browserProviderNotFound]:              'Cannot find the "{providerName}" browser provider.',
-    [RUNTIME_ERRORS.browserNotSet]:                        "You have not specified a browser.",
+    [RUNTIME_ERRORS.browserNotSet]:                        'You have not specified a browser.',
     [RUNTIME_ERRORS.testFilesNotFound]:                    'Could not find test files at the following location: "{cwd}".\n' +
                                                            'Check patterns for errors:\n\n' +
                                                            '{sourceList}\n\n' +
@@ -30,7 +30,7 @@ export default {
 
     [RUNTIME_ERRORS.noTestsToRun]: "Source files do not contain valid 'fixture' and 'test' declarations.",
 
-    [RUNTIME_ERRORS.noTestsToRunDueFiltering]: "No tests match your filter.\n" +
+    [RUNTIME_ERRORS.noTestsToRunDueFiltering]: 'No tests match your filter.\n' +
                                                `See ${DOCUMENTATION_LINKS.FILTER_SETTINGS}.`,
 
     [RUNTIME_ERRORS.cannotFindReporterForAlias]:                         'The "{name}" reporter does not exist. Check the reporter parameter for errors.',
