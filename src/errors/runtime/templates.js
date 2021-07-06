@@ -23,7 +23,7 @@ export default {
     [RUNTIME_ERRORS.browserProviderNotFound]:              'Cannot find the "{providerName}" browser provider.',
     [RUNTIME_ERRORS.browserNotSet]:                        "You have not specified a browser.",
     [RUNTIME_ERRORS.testFilesNotFound]:                    'Could not find test files at the following location: "{cwd}".\n' +
-                                                           'Check paths for errors:\n' +
+                                                           'Check patterns for errors:\n\n' +
                                                            '{sourceList}\n\n' +
                                                            'or launch TestCafe from a different directory.\n' +
                                                            `For more information on how to specify test locations, see ${DOCUMENTATION_LINKS.TEST_SOURCE_PARAMETER}.`,
