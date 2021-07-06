@@ -650,13 +650,13 @@ describe('Runner', () => {
                     BrowserConnection._generateId = origGenerateId;
 
                     expect(err.message).eql(
-                        `No test files inside "${process.cwd()}" match the specified patterns.\n` +
-                        'Check the patterns for errors:\n' +
+                        `Could not find test files at the following location: "${process.cwd()}".\n` +
+                        'Check patterns for errors:\n\n' +
                         'non-existing-file-1.js\n' +
                         'non-existing-file-2.js\n' +
                         '\n' +
                         'or launch TestCafe from a different directory.\n' +
-                        'For more information on how to list test files, see https://testcafe.io/documentation/402639/reference/command-line-interface#file-pathglob-pattern.');
+                        'For more information on how to specify test locations, see https://testcafe.io/documentation/402639/reference/command-line-interface#file-pathglob-pattern.');
 
                     expect(connectionsCount).eql(0);
                 });

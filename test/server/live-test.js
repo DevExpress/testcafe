@@ -393,7 +393,7 @@ describe('TestCafe Live', function () {
         runner = new RunnerMock(testCafe, {});
 
         runner.once('error-occurred', error => {
-            expect(error.message).contain('No test files inside');
+            expect(error.message).contain('Could not find test files at the following location');
 
             done();
         });
