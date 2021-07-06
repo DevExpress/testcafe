@@ -192,7 +192,7 @@ export default class Bootstrapper {
         const sourceList = await parseFileList(this.sources, cwd);
 
         if (!sourceList.length)
-            throw new GeneralError(RUNTIME_ERRORS.testFilesNotFound, cwd, getConcatenatedValuesString(this.sources, '\n', ''));
+            throw new GeneralError(RUNTIME_ERRORS.testFilesNotFound, getConcatenatedValuesString(this.sources, '\n', ''), cwd);
 
         let tests = await guardTimeExecution(
             async () => await this._compileTests({ sourceList, compilerOptions: this.compilerOptions }),
