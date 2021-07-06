@@ -1246,7 +1246,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Cannot execute a clientFunction because ClientFunction is number, and not a function.',
+                                 'Cannot initialize a ClientFunction because ClientFunction is number, and not a function.',
 
                         callsite: "   1 |import { ClientFunction } from 'testcafe';\n" +
                                   '   2 |\n' +
@@ -1273,7 +1273,7 @@ describe('API', function () {
                         stackTop: testfile,
 
                         message: 'Cannot prepare tests due to the following error:\n\n' +
-                                 'Cannot execute a clientFunction because ClientFunction is number, and not a function.',
+                                 'Cannot initialize a ClientFunction because ClientFunction is number, and not a function.',
 
                         callsite: "   1 |import { ClientFunction } from 'testcafe';\n" +
                                   '   2 |\n' +

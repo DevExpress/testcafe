@@ -29,7 +29,7 @@ describe('Client scripts', () => {
                 expect.fail('Should throw the error');
             })
             .catch(e => {
-                expect(e.message).eql('Initialize your clientScript with one of the following: a JavaScript script, a JavaScript file path, or the name of a JavaScript module.');
+                expect(e.message).eql('Initialize your client script with one of the following: a JavaScript script, a JavaScript file path, or the name of a JavaScript module.');
             });
     });
 
