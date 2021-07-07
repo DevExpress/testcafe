@@ -28,6 +28,7 @@ import guardTimeExecution from '../utils/guard-time-execution';
 import asyncFilter from '../utils/async-filter';
 import Fixture from '../api/structure/fixture';
 import MessageBus from '../utils/message-bus';
+import { Hooks } from '../configuration/interfaces';
 
 const DEBUG_SCOPE = 'testcafe:bootstrapper';
 
@@ -85,6 +86,7 @@ export default class Bootstrapper {
     public proxyless: boolean;
     public compilerOptions?: CompilerOptions;
     public browserInitTimeout?: number;
+    public hooks?: Hooks;
 
     private readonly compilerService?: CompilerService;
     private readonly debugLogger: debug.Debugger;
