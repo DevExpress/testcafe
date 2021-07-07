@@ -37,7 +37,7 @@ if (config.useLocalBrowsers && !config.useHeadlessBrowsers) {
                     return testCafe.close();
                 })
                 .finally(() => {
-                    expect(error.message).eql('Reporters can not share output streams. The following reporters interfere with one another: "custom1, custom2".');
+                    expect(error.message).eql('Reporters cannot share output streams. The following reporters interfere with one another: "custom1, custom2".');
                 });
         });
     });

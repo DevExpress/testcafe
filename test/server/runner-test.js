@@ -121,7 +121,7 @@ describe('Runner', () => {
                     throw new Error('Promise rejection expected');
                 })
                 .catch(err => {
-                    expect(err.message).eql("You haven't specified a browser.");
+                    expect(err.message).eql('You have not specified a browser.');
                 });
         });
 
@@ -509,7 +509,7 @@ describe('Runner', () => {
                 .src(['test/server/data/test-suites/test-as-module/without-tests/testfile.js'])
                 .run()
                 .catch(err => {
-                    expect(err.message).eql("Source files do not contain valid 'fixture' and 'test' directives.");
+                    expect(err.message).eql("Source files do not contain valid 'fixture' and 'test' declarations.");
                 });
         });
 
@@ -618,9 +618,8 @@ describe('Runner', () => {
                     throw new Error('Promise rejection expected');
                 })
                 .catch(err => {
-                    expect(err.message).eql("Your filter doesn't match any tests.\n" +
-                        'Modify your filter configuration.\n' +
-                        'See https://testcafe.io/documentation/402638/reference/configuration-file#filter');
+                    expect(err.message).eql('No tests match your filter.\n' +
+                        'See https://testcafe.io/documentation/402638/reference/configuration-file#filter.');
                 });
         });
     });
@@ -650,13 +649,14 @@ describe('Runner', () => {
                     BrowserConnection._generateId = origGenerateId;
 
                     expect(err.message).eql(
-                        `No test files inside "${process.cwd()}" match the specified patterns.\n` +
-                        'Check the patterns for errors:\n' +
+                        `Could not find test files at the following location: "${process.cwd()}".\n` +
+                        'Check patterns for errors:\n' +
+                        '\n' +
                         'non-existing-file-1.js\n' +
                         'non-existing-file-2.js\n' +
                         '\n' +
                         'or launch TestCafe from a different directory.\n' +
-                        'For more information on how to list test files, see https://testcafe.io/documentation/402639/reference/command-line-interface#file-pathglob-pattern.');
+                        'For more information on how to specify test locations, see https://testcafe.io/documentation/402639/reference/command-line-interface#file-pathglob-pattern.');
 
                     expect(connectionsCount).eql(0);
                 });
@@ -747,7 +747,7 @@ describe('Runner', () => {
                 })
                 .catch(err => {
                     expect(err.message).eql('The Chrome 41.0.2227.1 / macOS 10.10.1 browser disconnected. ' +
-                                            'If you didn\'t close the browser yourself, browser performance or network issues may be at fault.');
+                                            'If you did not close the browser yourself, browser performance or network issues may be at fault.');
                 });
         });
 
@@ -1061,7 +1061,7 @@ describe('Runner', () => {
                     throw new Error('Promise rejection expected');
                 })
                 .catch((err) => {
-                    expect(err.message).eql('The concurrency factor can not include the CDP port.');
+                    expect(err.message).eql('The value of the "concurrency" option includes the CDP port.');
                 });
         });
 
@@ -1085,7 +1085,7 @@ describe('Runner', () => {
             await checkQuarantineOptions({ quarantineMode: { attemptLimit: 1 } }, 'The "attemptLimit" parameter only accepts values of 2 and up.');
             await checkQuarantineOptions({ quarantineMode: { attemptLimit: 0 } }, 'The "attemptLimit" parameter only accepts values of 2 and up.');
             await checkQuarantineOptions({ quarantineMode: { successThreshold: 0 } }, 'The "successThreshold" parameter only accepts values of 1 and up.');
-            await checkQuarantineOptions({ quarantineMode: { test: '1' } }, 'The "quarantineMode" option is not valid. Specify "attemptLimit" and "successThreshold" to configure quarantine mode.');
+            await checkQuarantineOptions({ quarantineMode: { test: '1' } }, 'The "quarantineMode" option does not exist. Specify "attemptLimit" and "successThreshold" to configure quarantine mode.');
 
             expect(errorCount).eql(6);
         });

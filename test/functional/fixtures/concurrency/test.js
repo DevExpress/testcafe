@@ -140,7 +140,7 @@ if (config.useLocalBrowsers) {
                     throw new Error('Promise rejection expected');
                 })
                 .catch(function (error) {
-                    expect(error.message).eql('The number of remote browsers should be divisible by the factor of concurrency.');
+                    expect(error.message).eql('The number of remote browsers should be divisible by the concurrency factor.');
                 });
         });
     });

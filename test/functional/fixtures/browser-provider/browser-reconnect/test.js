@@ -95,7 +95,7 @@ describe('Browser reconnect', function () {
                     throw new Error('Test should have failed but it succeeded');
                 })
                 .catch(err => {
-                    expect(err.message).contains("browser disconnected. If you didn't close the browser yourself, browser performance or network issues may be at fault.");
+                    expect(err.message).contains('browser disconnected. If you did not close the browser yourself, browser performance or network issues may be at fault.');
                 });
         });
 
