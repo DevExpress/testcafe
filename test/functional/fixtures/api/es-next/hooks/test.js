@@ -132,8 +132,16 @@ describe('[API] fixture.before/fixture.after hooks', () => {
 });
 
 describe('[API] fixture global before/after hooks', () => {
-    global.fixtureBefore = 0;
-    global.fixtureAfter  = 0;
+    before(() => {
+        global.fixtureBefore = 0;
+        global.fixtureAfter  = 0;
+    });
+
+    after(() => {
+        delete global.fixtureBefore;
+        delete global.fixtureAfter;
+    });
+
 
     const hooks = {
         fixture: {
@@ -153,7 +161,4 @@ describe('[API] fixture global before/after hooks', () => {
     it('Should run hooks for all fixture', () => {
         return runTests('./testcafe-fixtures/fixture-hooks-global.js', null, { only: 'chrome', hooks });
     });
-
-    delete global.fixtureBefore;
-    delete global.fixtureAfter;
 });
