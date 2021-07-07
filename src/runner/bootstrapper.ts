@@ -197,6 +197,18 @@ export default class Bootstrapper {
         return compiler.getTests();
     }
 
+    private _setGlobalHooksToTest (tests: Test[]): Test[] {
+        const fixtureBefore = this.hooks?.fixture?.before || null;
+        const fixtureAfter = this.hooks?.fixture?.after || null;
+
+        return tests.map(item => {
+            item.fixture.globalBeforeFn = fixtureBefore;
+            item.fixture.globalAfterFn = fixtureAfter;
+
+            return item;
+        });
+    }
+
     private async _getTests (): Promise<Test[]> {
         const cwd        = process.cwd();
         const sourceList = await parseFileList(this.sources, cwd);
@@ -229,6 +241,8 @@ export default class Bootstrapper {
 
         if (!tests.length)
             throw new GeneralError(RUNTIME_ERRORS.noTestsToRunDueFiltering);
+
+        tests = this._setGlobalHooksToTest(tests);
 
         return tests;
     }

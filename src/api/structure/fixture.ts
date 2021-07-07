@@ -20,15 +20,19 @@ export default class Fixture extends TestingUnit {
     public afterEachFn: Function | null;
     public beforeFn: Function | null;
     public afterFn: Function | null;
+    public globalBeforeFn: Function | null;
+    public globalAfterFn: Function | null;
 
     public constructor (testFile: TestFile) {
         super(testFile, UnitType.fixture, SPECIAL_BLANK_PAGE);
 
-        this.path         = testFile.filename;
-        this.beforeEachFn = null;
-        this.afterEachFn  = null;
-        this.beforeFn     = null;
-        this.afterFn      = null;
+        this.path           = testFile.filename;
+        this.beforeEachFn   = null;
+        this.afterEachFn    = null;
+        this.beforeFn       = null;
+        this.afterFn        = null;
+        this.globalBeforeFn = null;
+        this.globalAfterFn  = null;
 
         return this.apiOrigin as unknown as Fixture;
     }
