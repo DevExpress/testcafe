@@ -29,7 +29,7 @@ export default class TestRunVideoRecorder {
             fixture:         this.test.fixture.name,
             test:            this.test.name,
             alias:           this._connection.browserInfo.alias,
-            parsedUserAgent: this._connection.browserInfo.parsedUserAgent
+            parsedUserAgent: this._connection.browserInfo.parsedUserAgent,
         };
     }
 
@@ -76,7 +76,7 @@ export default class TestRunVideoRecorder {
         const tempFileNames = {
             tempVideoPath:       `${TEMP_VIDEO_FILE_PREFIX}-${id}.${VIDEO_EXTENSION}`,
             tempMergeConfigPath: `${TEMP_MERGE_CONFIG_FILE_PREFIX}-${id}.${TEMP_MERGE_CONFIG_FILE_EXTENSION}`,
-            tmpMergeName:        `${TEMP_MERGE_FILE_PREFIX}-${id}.${VIDEO_EXTENSION}`
+            tmpMergeName:        `${TEMP_MERGE_FILE_PREFIX}-${id}.${VIDEO_EXTENSION}`,
         };
 
         for (const [tempFile, tempName] of Object.entries(tempFileNames))

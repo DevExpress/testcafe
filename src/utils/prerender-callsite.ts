@@ -17,6 +17,6 @@ export default function prerenderCallsite (callsite: CallsiteRecord): RenderedCa
 
         default: renderCallsiteSync(callsite, { renderer: renderers.default, stackFilter }),
         html:    renderCallsiteSync(callsite, { renderer: renderers.html, stackFilter }),
-        noColor: renderCallsiteSync(callsite, { renderer: renderers.noColor, stackFilter })
+        noColor: renderCallsiteSync(callsite, { renderer: renderers.noColor, stackFilter }),
     };
 }

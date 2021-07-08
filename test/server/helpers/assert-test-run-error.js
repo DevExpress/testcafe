@@ -21,7 +21,7 @@ module.exports = function assertTestRunError (err, expectedFileName, setCallsite
         userAgent:      USER_AGENT_MOCK,
         screenshotPath: SCREENSHOT_PATH,
         testRunPhase:   TEST_RUN_PHASE.initial,
-        callsite:       setCallsite ? testCallsite : null
+        callsite:       setCallsite ? testCallsite : null,
     });
 
     plugin

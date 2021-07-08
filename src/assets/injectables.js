@@ -8,7 +8,7 @@ export const SCRIPTS = [
     TESTCAFE_CORE,
     TESTCAFE_UI,
     TESTCAFE_AUTOMATION,
-    TESTCAFE_DRIVER
+    TESTCAFE_DRIVER,
 ];
 
 export const TESTCAFE_UI_SPRITE = '/testcafe-ui-sprite.png';

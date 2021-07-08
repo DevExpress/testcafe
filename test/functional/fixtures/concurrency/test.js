@@ -6,7 +6,7 @@ const { createReporter } = require('../../utils/reporter');
 
 const {
     getTimeline,
-    deleteTimeline
+    deleteTimeline,
 } = require('./common/timeline');
 
 if (config.useLocalBrowsers) {
@@ -40,7 +40,7 @@ if (config.useLocalBrowsers) {
 
                     end: function (newData) {
                         data += newData;
-                    }
+                    },
                 })
                 .browsers(browsers)
                 .concurrency(concurrency)
@@ -77,7 +77,7 @@ if (config.useLocalBrowsers) {
 
             reportFixtureStart: function (name) {
                 this.write('Fixture ' + name + ' started').newline();
-            }
+            },
         });
 
         beforeEach(function () {
@@ -126,7 +126,7 @@ if (config.useLocalBrowsers) {
                         'Test Long test done',
                         'Fixture Multifixture B started',
                         'Test Short test done',
-                        ''
+                        '',
                     ]);
                 });
         });

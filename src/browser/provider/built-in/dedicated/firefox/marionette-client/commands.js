@@ -7,5 +7,5 @@ export default {
     switchToWindow:   'WebDriver:SwitchToWindow',
     getWindowHandles: 'WebDriver:GetWindowHandles',
     getTitle:         'WebDriver:GetTitle',
-    quit:             'Marionette:Quit'
+    quit:             'Marionette:Quit',
 };

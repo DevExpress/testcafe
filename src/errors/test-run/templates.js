@@ -6,13 +6,13 @@ import {
     formatSelectorCallstack,
     formatUrl,
     replaceLeadingSpacesWithNbsp,
-    formatExpressionMessage
+    formatExpressionMessage,
 } from './utils';
 
 const EXTERNAL_LINKS = {
     createNewIssue:      'https://github.com/DevExpress/testcafe/issues/new?template=bug-report.md',
     troubleshootNetwork: 'https://go.devexpress.com/TestCafe_FAQ_ARequestHasFailed.aspx',
-    viewportSizes:       'https://github.com/DevExpress/device-specs/blob/master/viewport-sizes.json'
+    viewportSizes:       'https://github.com/DevExpress/device-specs/blob/master/viewport-sizes.json',
 };
 
 export default {

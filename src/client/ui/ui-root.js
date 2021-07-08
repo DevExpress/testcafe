@@ -33,5 +33,5 @@ export default {
         const parent     = nativeMethods.nodeParentNodeGetter.call(shadowRoot);
 
         parent.removeChild(shadowRoot);
-    }
+    },
 };

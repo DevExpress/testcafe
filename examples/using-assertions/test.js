@@ -15,7 +15,7 @@ class Page {
 
         this.slider = {
             handle: Selector('.ui-slider-handle'),
-            tick:   Selector('.slider-value')
+            tick:   Selector('.slider-value'),
         };
     }
 }

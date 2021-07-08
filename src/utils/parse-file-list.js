@@ -29,7 +29,7 @@ async function getDefaultDirs (baseDir) {
         caseSensitiveMatch: false,
         expandDirectories:  false,
         onlyDirectories:    true,
-        suppressErrors:     true
+        suppressErrors:     true,
     });
 }
 

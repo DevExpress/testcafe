@@ -5,7 +5,7 @@ import {
     positionUtils,
     promiseUtils,
     scrollController,
-    sendRequestToFrame
+    sendRequestToFrame,
 } from '../deps/testcafe-core';
 import isIframeWindow from '../../../utils/is-window-in-iframe';
 
@@ -57,7 +57,7 @@ export default class ScrollAutomation {
 
         const originalScroll = {
             left: styleUtils.getScrollLeft(scrollElement),
-            top:  styleUtils.getScrollTop(scrollElement)
+            top:  styleUtils.getScrollTop(scrollElement),
         };
 
         left = Math.max(left, 0);
@@ -154,7 +154,7 @@ export default class ScrollAutomation {
 
         return {
             left: fullViewScrollLeft,
-            top:  fullViewScrollTop
+            top:  fullViewScrollTop,
         };
     }
 
@@ -163,7 +163,7 @@ export default class ScrollAutomation {
             x: childDimensions.left - parentDimensions.left + parentDimensions.scroll.left +
                childDimensions.border.left + offsets.x,
             y: childDimensions.top - parentDimensions.top + parentDimensions.scroll.top +
-               childDimensions.border.top + offsets.y
+               childDimensions.border.top + offsets.y,
         };
     }
 
@@ -265,7 +265,7 @@ export default class ScrollAutomation {
                         cmd:             SCROLL_REQUEST_CMD,
                         offsetX:         currentOffsetX,
                         offsetY:         currentOffsetY,
-                        maxScrollMargin: this.maxScrollMargin
+                        maxScrollMargin: this.maxScrollMargin,
                     }, SCROLL_RESPONSE_CMD, window.parent);
                 }
 

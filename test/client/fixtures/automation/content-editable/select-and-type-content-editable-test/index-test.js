@@ -86,7 +86,7 @@ $(document).ready(function () {
                 setInnerHTML($('#6'), sixthElementInnerHTML);
                 setInnerHTML($('#7'), seventhElementInnerHTML);
             }
-        }
+        },
     };
 
     const getRealCaretPosition = function ($element, node, offset) {
@@ -203,7 +203,7 @@ $(document).ready(function () {
                 nodeValue      = $el[0].childNodes[1].childNodes[0].nodeValue;
 
                 runTypeAutomation($el[0], text, {
-                    caretPos: 15
+                    caretPos: 15,
                 }, callback);
             },
 
@@ -219,7 +219,7 @@ $(document).ready(function () {
 
                 equal($el.text(), newElementText);
                 startNext();
-            }
+            },
         });
     });
 
@@ -244,7 +244,7 @@ $(document).ready(function () {
                 newElementText = getElementTextWithoutSelection($el, text);
 
                 runTypeAutomation($el[0], text, {
-                    caretPos: 112
+                    caretPos: 112,
                 }, callback);
             },
 
@@ -260,7 +260,7 @@ $(document).ready(function () {
 
                 equal($el.text(), newElementText);
                 startNext();
-            }
+            },
         });
     });
 
@@ -289,7 +289,7 @@ $(document).ready(function () {
             'Type in element': function (callback) {
                 newElementText = getElementTextWithoutSelection($el, text);
                 runTypeAutomation($el[0], text, {
-                    caretPos: 112
+                    caretPos: 112,
                 }, callback);
             },
 
@@ -305,7 +305,7 @@ $(document).ready(function () {
                 equal($el.text(), newElementText);
 
                 startNext();
-            }
+            },
         });
     });
 
@@ -341,7 +341,7 @@ $(document).ready(function () {
             'Type in element': function (callback) {
                 newElementText = getElementTextWithoutSelection($el, text);
                 runTypeAutomation($el[0], text, {
-                    caretPos: 124
+                    caretPos: 124,
                 }, callback);
             },
 
@@ -366,7 +366,7 @@ $(document).ready(function () {
                 equal($el.text().replace(/\s/g, ''), $.trim(newElementText).replace(/\s/g, ''));
 
                 startNext();
-            }
+            },
         });
     });
 
@@ -401,7 +401,7 @@ $(document).ready(function () {
                 newElementText = getElementTextWithoutSelection($el, text);
 
                 runTypeAutomation($el[0], text, {
-                    caretPos: 124
+                    caretPos: 124,
                 }, callback);
             },
 
@@ -417,7 +417,7 @@ $(document).ready(function () {
                 }
                 equal($el.text().replace(/\s/g, ''), $.trim(newElementText).replace(/\s/g, ''));
                 startNext();
-            }
+            },
         });
     });
 
@@ -442,7 +442,7 @@ $(document).ready(function () {
                 newElementText = getElementTextWithoutSelection($el, text);
 
                 runTypeAutomation($el[0], text, {
-                    caretPos: 112
+                    caretPos: 112,
                 }, callback);
             },
 
@@ -458,7 +458,7 @@ $(document).ready(function () {
                 equal($el.text().replace(/\s/g, ''), $.trim(newElementText).replace(/\s/g, ''));
 
                 startNext();
-            }
+            },
         });
     });
 
@@ -490,7 +490,7 @@ $(document).ready(function () {
                 newElementText = getElementTextWithoutSelection($el, text);
 
                 runTypeAutomation($el[0], text, {
-                    caretPos: 124
+                    caretPos: 124,
                 }, callback);
             },
 
@@ -507,7 +507,7 @@ $(document).ready(function () {
                 equal($el.text().replace(/\s/g, ''), $.trim(newElementText).replace(/\s/g, ''));
 
                 startNext();
-            }
+            },
         });
     });
 
@@ -539,7 +539,7 @@ $(document).ready(function () {
                 newElementText = getElementTextWithoutSelection($el, text);
 
                 runTypeAutomation($el[0], text, {
-                    caretPos: 112
+                    caretPos: 112,
                 }, callback);
             },
 
@@ -555,7 +555,7 @@ $(document).ready(function () {
                 equal($el.text().replace(/\s/g, ''), $.trim(newElementText).replace(/\s/g, ''));
 
                 startNext();
-            }
+            },
         });
     });
 
@@ -586,7 +586,7 @@ $(document).ready(function () {
                 newElementText = getElementTextWithoutSelection($el, text);
 
                 runTypeAutomation($el[0], text, {
-                    caretPos: 124
+                    caretPos: 124,
                 }, callback);
             },
 
@@ -610,7 +610,7 @@ $(document).ready(function () {
                 equal($el.text().replace(/\s/g, ''), $.trim(newElementText).replace(/\s/g, ''));
 
                 startNext();
-            }
+            },
         });
     });
 
@@ -636,7 +636,7 @@ $(document).ready(function () {
                 newElementText = getElementTextWithoutSelection($el, text);
 
                 runTypeAutomation($parent[0], text, {
-                    caretPos: 126
+                    caretPos: 126,
                 }, callback);
             },
 
@@ -653,7 +653,7 @@ $(document).ready(function () {
                 equal($el.text().replace(/\s/g, ''), $.trim(newElementText).replace(/\s/g, ''));
 
                 startNext();
-            }
+            },
         });
     });
 
@@ -685,7 +685,7 @@ $(document).ready(function () {
                 newElementText = getElementTextWithoutSelection($el, text);
 
                 runTypeAutomation($el[0], text, {
-                    caretPos: 152
+                    caretPos: 152,
                 }, callback);
             },
 
@@ -704,7 +704,7 @@ $(document).ready(function () {
 
                 equal($el.text().replace(/\s/g, ''), $.trim(newElementText).replace(/\s/g, ''));
                 startNext();
-            }
+            },
         });
     });
 
@@ -737,7 +737,7 @@ $(document).ready(function () {
 
             'Type in element': function (callback) {
                 runTypeAutomation($el[0], text, {
-                    caretPos: 41
+                    caretPos: 41,
                 }, callback);
             },
 
@@ -758,7 +758,7 @@ $(document).ready(function () {
                 }
 
                 startNext();
-            }
+            },
         });
     });
 
@@ -792,7 +792,7 @@ $(document).ready(function () {
                 currentSelection = contentEditable.getSelection($parent[0], currentSelection, textSelection.hasInverseSelectionContentEditable($parent[0]));
 
                 runTypeAutomation($parent[0], text, {
-                    caretPos: 45
+                    caretPos: 45,
                 }, callback);
             },
 
@@ -805,7 +805,7 @@ $(document).ready(function () {
 
                 equal($typedElement.text().substring(0, 11), 'i el123b el');
                 startNext();
-            }
+            },
         });
     });
 
@@ -839,7 +839,7 @@ $(document).ready(function () {
                 currentSelection = contentEditable.getSelection($parent[0], currentSelection, textSelection.hasInverseSelectionContentEditable($parent[0]));
 
                 runTypeAutomation($parent[0], text, {
-                    caretPos: 45
+                    caretPos: 45,
                 }, callback);
             },
 
@@ -855,7 +855,7 @@ $(document).ready(function () {
                 //checkSelection($parent, node, node.nodeValue.length, node, node.nodeValue.length);
                 // equal($parent[0].childNodes[5].childNodes[0].nodeValue, nodeValue + text);
                 startNext();
-            }
+            },
         });
     });
 
@@ -903,7 +903,7 @@ $(document).ready(function () {
 
             'Type in element': function (callback) {
                 runTypeAutomation($el[0], text, {
-                    caretPos: 41
+                    caretPos: 41,
                 }, callback);
             },
 
@@ -914,7 +914,7 @@ $(document).ready(function () {
                                            startNodeValue.substring(startOffset));
 
                 startNext();
-            }
+            },
         });
     });
 
@@ -960,7 +960,7 @@ $(document).ready(function () {
 
             'Type in element': function (callback) {
                 runTypeAutomation($el[0], text, {
-                    caretPos: 197
+                    caretPos: 197,
                 }, callback);
             },
 
@@ -970,7 +970,7 @@ $(document).ready(function () {
                 equal(endNode.nodeValue, endNodeValue.substring(0, endOffset) + text +
                                          endNodeValue.substring(endOffset));
                 startNext();
-            }
+            },
         });
     });
 });

@@ -42,7 +42,7 @@ test('Hover over elements', async t => {
         'mouseleave:child2:child2',
         'mouseover:container:container',
         'mouseout:container:container',
-        'mouseleave:container:container'
+        'mouseleave:container:container',
     ].join(',');
 
     await t.expect(eventsLog).eql(expectedLog);

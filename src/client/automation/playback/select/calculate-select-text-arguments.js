@@ -26,7 +26,7 @@ function getSelectTextAreaContentArguments (element, argumentsObject) {
 
     return {
         startPos: startLinePosition + startPos,
-        endPos:   endLinePosition + endPos
+        endPos:   endLinePosition + endPos,
     };
 }
 

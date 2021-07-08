@@ -27,7 +27,7 @@ $(document).ready(function () {
             .css({
                 position:   'absolute',
                 marginLeft: x + 'px',
-                marginTop:  y + 'px'
+                marginTop:  y + 'px',
             })
             .addClass(type)
             .addClass(TEST_ELEMENT_CLASS)
@@ -44,7 +44,7 @@ $(document).ready(function () {
                 position: 'absolute',
                 left:     x,
                 top:      y,
-                border:   '1px solid black'
+                border:   '1px solid black',
             })
             .width(150)
             .height(150)
@@ -57,7 +57,7 @@ $(document).ready(function () {
             .css({
                 border:   '1px solid black',
                 padding:  '5px',
-                overflow: 'auto'
+                overflow: 'auto',
             })
             .width(width)
             .height(height)
@@ -89,7 +89,7 @@ $(document).ready(function () {
             'onmousedown',
             'onmousemove',
             'onmouseup',
-            'onclick'
+            'onclick',
         ];
 
         events.forEach(function (eventName) {
@@ -166,7 +166,7 @@ $(document).ready(function () {
                 .css({
                     marginTop:  '100px',
                     marginLeft: '100px',
-                    zIndex:     2
+                    zIndex:     2,
                 })
                 .mouseover(function () {
                     overed = true;
@@ -211,7 +211,7 @@ $(document).ready(function () {
                 marginTop:       offsetY - containerPadding.top - containerBorders.top + 'px',
                 width:           '100%',
                 height:          '1px',
-                backgroundColor: '#ff0000'
+                backgroundColor: '#ff0000',
             })
             .bind('mousedown', function () {
                 clicked = true;
@@ -224,7 +224,7 @@ $(document).ready(function () {
                 height:          '20px',
                 width:           '20px',
                 marginTop:       50 + 'px',
-                backgroundColor: '#ffff00'
+                backgroundColor: '#ffff00',
             })
             .appendTo($div4);
 
@@ -302,7 +302,7 @@ $(document).ready(function () {
                 marginTop:       offsetY - containerPadding.top - containerBorders.top + 'px',
                 width:           '100%',
                 height:          '1px',
-                backgroundColor: '#ff0000'
+                backgroundColor: '#ff0000',
             })
             .bind('mousedown', function () {
                 clicked = true;
@@ -315,7 +315,7 @@ $(document).ready(function () {
                 height:          '20px',
                 width:           '20px',
                 marginTop:       2350 + 'px',
-                backgroundColor: '#ffff00'
+                backgroundColor: '#ffff00',
             })
             .appendTo($div4);
 
@@ -346,14 +346,14 @@ $(document).ready(function () {
         addContainer(1, 5000, 'body');
 
         target.css({
-            backgroundColor: '#ff0000'
+            backgroundColor: '#ff0000',
         });
 
         hammerhead.nativeMethods.scrollTo.call(window, 0, 5050);
 
         const click = new ClickAutomation(target[0], {
             offsetX: 10,
-            offsetY: 5
+            offsetY: 5,
         });
 
         const windowY = styleUtils.getScrollTop(document);
@@ -381,7 +381,7 @@ $(document).ready(function () {
         let clicked = false;
 
         target.css({
-            backgroundColor: '#ff0000'
+            backgroundColor: '#ff0000',
         }).bind('mousedown', function () {
             clicked = true;
         });
@@ -392,14 +392,14 @@ $(document).ready(function () {
             top:             1,
             left:            1,
             right:           1,
-            height:          100
+            height:          100,
         });
 
         hammerhead.nativeMethods.scrollTo.call(window, 0, 5050);
 
         const click = new ClickAutomation(target[0], {
             offsetX: 10,
-            offsetY: 5
+            offsetY: 5,
         });
 
         const windowY = styleUtils.getScrollTop(document);
@@ -422,7 +422,7 @@ $(document).ready(function () {
             .width(150)
             .height(150)
             .css({
-                overflow: 'scroll'
+                overflow: 'scroll',
             });
 
         const $button = $('<input type="button">')
@@ -461,7 +461,7 @@ $(document).ready(function () {
                 //moving scroll to start position for a next test
                 const restoreScrollClick = new ClickAutomation(addDiv(200, 500)[0], new ClickOptions({
                     offsetX: 5,
-                    offsetY: 5
+                    offsetY: 5,
                 }));
 
                 return restoreScrollClick.run();
@@ -544,11 +544,11 @@ $(document).ready(function () {
                 alt:   true,
                 ctrl:  true,
                 shift: true,
-                meta:  true
+                meta:  true,
             },
 
             offsetX: 5,
-            offsetY: 5
+            offsetY: 5,
         }));
 
         click
@@ -612,7 +612,7 @@ $(document).ready(function () {
             .css({
                 marginTop:  '10px',
                 marginLeft: '10px',
-                position:   'relative'
+                position:   'relative',
             })
             .click(function () {
                 btnClicked = true;
@@ -637,7 +637,7 @@ $(document).ready(function () {
         $el.css({
             width:  '100px',
             height: '100px',
-            border: '0px'
+            border: '0px',
         });
 
         $el.click(function (e) {
@@ -648,7 +648,7 @@ $(document).ready(function () {
         const offsets = getOffsetOptions($el[0], 20, 20);
         const click   = new ClickAutomation($el[0], new ClickOptions({
             offsetX: offsets.offsetX,
-            offsetY: offsets.offsetY
+            offsetY: offsets.offsetY,
         }));
 
         click
@@ -667,7 +667,7 @@ $(document).ready(function () {
         $el.css({
             width:  '100px',
             height: '100px',
-            border: '0px'
+            border: '0px',
         });
 
         $el.click(function (e) {
@@ -678,7 +678,7 @@ $(document).ready(function () {
         const offsets = getOffsetOptions($el[0], -20, -20);
         const click   = new ClickAutomation($el[0], new ClickOptions({
             offsetX: offsets.offsetX,
-            offsetY: offsets.offsetY
+            offsetY: offsets.offsetY,
         }));
 
         click
@@ -686,7 +686,7 @@ $(document).ready(function () {
             .then(function () {
                 const expectedPoint = {
                     x: el.offsetLeft + el.offsetWidth - 20,
-                    y: el.offsetTop + el.offsetHeight - 20
+                    y: el.offsetTop + el.offsetHeight - 20,
                 };
 
                 deepEqual(eventPoint, expectedPoint, 'event point is correct');
@@ -829,14 +829,14 @@ $(document).ready(function () {
                 height:     100,
                 overflow:   'hidden',
                 border:     '1px solid green',
-                marginLeft: 50
+                marginLeft: 50,
             })
             .appendTo('body');
 
         const $button = $('<button>Button</button>')
             .css({
                 position: 'relative',
-                left:     -60
+                left:     -60,
             }).appendTo($container);
 
         $(document).click(function () {
@@ -1097,7 +1097,7 @@ $(document).ready(function () {
             .attr('src', window.QUnitGlobals.getResourceUrl('../../data/runner/img.png'))
             .css({
                 width:  '200px',
-                height: '200px'
+                height: '200px',
             })
             .appendTo('body')
             .addClass(TEST_ELEMENT_CLASS);
@@ -1134,7 +1134,7 @@ $(document).ready(function () {
                 ontouchend:   false,
                 onmousedown:  false,
                 onmouseup:    false,
-                onclick:      false
+                onclick:      false,
             };
 
             const bind = function (eventName) {
@@ -1228,7 +1228,7 @@ $(document).ready(function () {
 
                             startNext();
                         });
-                }
+                },
             });
         });
     }

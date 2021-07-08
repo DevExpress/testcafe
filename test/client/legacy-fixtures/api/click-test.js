@@ -50,7 +50,7 @@ $(document).ready(function () {
             .css({
                 position:   'absolute',
                 marginLeft: x + 'px',
-                marginTop:  y + 'px'
+                marginTop:  y + 'px',
             })
             .addClass(type)
             .addClass(TEST_ELEMENT_CLASS)
@@ -224,7 +224,7 @@ $(document).ready(function () {
             function () {
                 $el.css({
                     marginLeft: '120px',
-                    marginTop:  '120px'
+                    marginTop:  '120px',
                 });
                 const $el2 = addInputElement('button', 'button2', 150, 150);
 
@@ -252,7 +252,7 @@ $(document).ready(function () {
             function () {
                 $el.css({
                     marginLeft: '130px',
-                    marginTop:  '130px'
+                    marginTop:  '130px',
                 });
                 addInputElement('button', 'button2', 150, 150);
                 const $el3 = addInputElement('input', 'input1', 170, 170);
@@ -338,7 +338,7 @@ $(document).ready(function () {
         $el.css({
             width:  '100px',
             height: '100px',
-            border: '0px'
+            border: '0px',
         });
 
         runAsyncTest(
@@ -365,7 +365,7 @@ $(document).ready(function () {
         $el.css({
             width:  '100px',
             height: '100px',
-            border: '0px'
+            border: '0px',
         });
 
         runAsyncTest(
@@ -380,7 +380,7 @@ $(document).ready(function () {
                 const el            = $el[0];
                 const expectedPoint = {
                     x: el.offsetLeft + el.offsetWidth - 20,
-                    y: el.offsetTop + el.offsetHeight - 20
+                    y: el.offsetTop + el.offsetHeight - 20,
                 };
 
                 deepEqual(eventPoint, expectedPoint, 'event point is correct');

@@ -36,6 +36,6 @@ test('test', async t => {
     await t.expect(headersObj).eql({
         'x-header-1': 'value-1',
         'x-header-2': 'value-2',
-        'x-header-5': 'value-5'
+        'x-header-5': 'value-5',
     });
 });

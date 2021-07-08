@@ -177,7 +177,7 @@ function getViewportDimension (windowDimension, documentDimension, bodyDimension
 export function getViewportDimensions () {
     return {
         width:  getViewportDimension(window.innerWidth, document.documentElement.clientWidth, document.body.clientWidth),
-        height: getViewportDimension(window.innerHeight, document.documentElement.clientHeight, document.body.clientHeight)
+        height: getViewportDimension(window.innerHeight, document.documentElement.clientHeight, document.body.clientHeight),
     };
 }
 

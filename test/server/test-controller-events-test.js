@@ -17,17 +17,17 @@ class TestRunMock extends TestRun {
             browserConnection:  {},
             screenshotCapturer: {},
             globalWarningLog:   { addPlainMessage: noop },
-            opts:               {}
+            opts:               {},
         });
 
         this.disableMultipleWindows = false;
 
         this.browserConnection = {
             browserInfo: {
-                alias: 'test-browser'
+                alias: 'test-browser',
             },
             isHeadlessBrowser: () => false,
-            activeWindowId:    'id'
+            activeWindowId:    'id',
         };
     }
 
@@ -73,14 +73,14 @@ const options = {
     modifiers: {
         alt:   true,
         ctrl:  true,
-        shift: true
+        shift: true,
     },
     offsetX:            1,
     offsetY:            2,
     destinationOffsetX: 3,
     speed:              1,
     replace:            true,
-    paste:              true
+    paste:              true,
 };
 
 const actionsWithoutOptions = {
@@ -97,7 +97,7 @@ const actionsWithoutOptions = {
     pressKey:                ['enter'],
     takeScreenshot:          [{ path: 'screenshotPath', fullPage: true }],
     takeElementScreenshot:   ['#target', 'screenshotPath'],
-    resizeWindowToFitDevice: ['Sony Xperia Z']
+    resizeWindowToFitDevice: ['Sony Xperia Z'],
 };
 
 const actions = {
@@ -158,7 +158,7 @@ describe('TestController action events', () => {
             screenshots:           null,
             warningLog:            null,
             fixtureHookController: null,
-            opts:                  { TestRunCtor: TestRunMock }
+            opts:                  { TestRunCtor: TestRunMock },
         });
 
         const testRunController = job._createTestRunController();
@@ -186,7 +186,7 @@ describe('TestController action events', () => {
                 const item = { testRunId, name, command, test, fixture, browser };
 
                 doneLog.push(item);
-            }
+            },
         }, task);
 
         // eval and expect has their functional tests
@@ -228,7 +228,7 @@ describe('TestController action events', () => {
                 errorAdapter   = err;
                 resultDuration = duration;
                 actionResult   = { name, command: command.type, err: err.errMsg };
-            }
+            },
         });
 
         testController.testRun.executeCommand = () => {
@@ -256,7 +256,7 @@ describe('TestController action events', () => {
         initializeReporter({
             async reportTestActionDone (name, { duration }) {
                 resultDuration = duration;
-            }
+            },
         });
 
         testController.testRun.executeCommand = () => {
@@ -278,7 +278,7 @@ describe('TestController action events', () => {
 
                 if (command.options)
                     log.push(command.options);
-            }
+            },
         }, task);
 
         const actionsKeys = Object.keys(actionsWithoutOptions);
@@ -300,7 +300,7 @@ describe('TestController action events', () => {
                     item.options = command.options;
 
                 doneLog.push(item);
-            }
+            },
         }, task);
 
         await testController.click('#target', { caretPos: 1, modifiers: { shift: true } });
@@ -318,25 +318,25 @@ describe('TestController action events', () => {
                 options: {
                     caretPos:  1,
                     modifiers: {
-                        shift: true
-                    }
-                }
+                        shift: true,
+                    },
+                },
             },
             { name: 'click' },
             {
                 name:    'resizeWindowToFitDevice',
                 options: {
-                    portraitOrientation: true
-                }
+                    portraitOrientation: true,
+                },
             },
             { name: 'resizeWindowToFitDevice' },
             {
                 name:    'eql',
                 options: {
-                    timeout: 500
-                }
+                    timeout: 500,
+                },
             },
-            { name: 'eql' }
+            { name: 'eql' },
         ];
 
         expect(doneLog).eql(expectedLog);

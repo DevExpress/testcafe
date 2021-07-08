@@ -5,6 +5,6 @@ module.exports.createReporter = (reporterInit) => {
         reportTaskStart:    noop,
         reportTestDone:     noop,
         reportFixtureStart: noop,
-        reportTaskDone:     noop
+        reportTaskDone:     noop,
     }, reporterInit);
 };

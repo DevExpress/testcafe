@@ -96,7 +96,7 @@ describe('TestCafe factory function', function () {
     it('Should pass sslOptions to proxy', () => {
         const sslOptions = {
             key:  selfSignedCertificate.key,
-            cert: selfSignedCertificate.cert
+            cert: selfSignedCertificate.cert,
         };
 
         return getTestCafe('localhost', 1338, 1339, sslOptions)

@@ -14,5 +14,5 @@ export default {
     within:      'within',
     notWithin:   'notWithin',
     match:       'match',
-    notMatch:    'notMatch'
+    notMatch:    'notMatch',
 };

@@ -1,4 +1,4 @@
 export default {
     elementIsInvisibleError: 'elementIsInvisibleError',
-    foundElementIsNotTarget: 'foundElementIsNotTarget'
+    foundElementIsNotTarget: 'foundElementIsNotTarget',
 };

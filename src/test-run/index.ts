@@ -1,7 +1,7 @@
 import {
     pull,
     remove,
-    chain
+    chain,
 } from 'lodash';
 
 import { readSync as read } from 'read-file-relative';
@@ -18,7 +18,7 @@ import {
     RoleSwitchInRoleInitializerError,
     SwitchToWindowPredicateError,
     WindowNotFoundError,
-    RequestHookBaseError
+    RequestHookBaseError,
 } from '../errors/test-run/';
 
 import CLIENT_MESSAGES from './client-messages';
@@ -41,7 +41,7 @@ import {
     ConfigureResponseEvent,
     ResponseEvent,
     RequestHookMethodError,
-    StoragesSnapshot
+    StoragesSnapshot,
 } from 'testcafe-hammerhead';
 import * as INJECTABLES from '../assets/injectables';
 import { findProblematicScripts } from '../custom-client-scripts/utils';
@@ -55,13 +55,13 @@ import {
     isServiceCommand,
     canSetDebuggerBreakpointBeforeCommand,
     isExecutableOnClientCommand,
-    isResizeWindowCommand
+    isResizeWindowCommand,
 } from './commands/utils';
 
 import {
     GetCurrentWindowsCommand,
     SwitchToWindowByPredicateCommand,
-    SwitchToWindowCommand
+    SwitchToWindowCommand,
 } from './commands/actions';
 
 import { RUNTIME_ERRORS, TEST_RUN_ERRORS } from '../errors/types';
@@ -120,7 +120,7 @@ const COMPILER_SERVICE_EVENTS = [
     'setMock',
     'setConfigureResponseEventOptions',
     'setHeaderOnConfigureResponseEvent',
-    'removeHeaderOnConfigureResponseEvent'
+    'removeHeaderOnConfigureResponseEvent',
 ];
 
 const PROXYLESS_COMMANDS = new Map<string, string>();
@@ -304,7 +304,7 @@ export default class TestRun extends AsyncEventEmitter {
     private _getRequestTimeout (test: Test, opts: Dictionary<OptionValue>): RequestTimeout {
         return {
             page: test.timeouts?.pageRequestTimeout || opts.pageRequestTimeout as number,
-            ajax: test.timeouts?.ajaxRequestTimeout || opts.ajaxRequestTimeout as number
+            ajax: test.timeouts?.ajaxRequestTimeout || opts.ajaxRequestTimeout as number,
         };
     }
 
@@ -328,7 +328,7 @@ export default class TestRun extends AsyncEventEmitter {
         this.injectable.userScripts.push(...this.test.clientScripts.map(script => {
             return {
                 url:  getCustomClientScriptUrl(script as ClientScript),
-                page: script.page as RequestFilterRule
+                page: script.page as RequestFilterRule,
             };
         }));
         this.injectable.styles.push(INJECTABLES.TESTCAFE_UI_STYLES);
@@ -369,7 +369,7 @@ export default class TestRun extends AsyncEventEmitter {
             this.session.addRequestEventListeners(rule, {
                 onRequest:           hook.onRequest.bind(hook),
                 onConfigureResponse: hook._onConfigureResponse.bind(hook),
-                onResponse:          hook.onResponse.bind(hook)
+                onResponse:          hook.onResponse.bind(hook),
             }, (err: RequestHookMethodError) => this._onRequestHookMethodError(err, hook._className));
         });
     }
@@ -381,7 +381,7 @@ export default class TestRun extends AsyncEventEmitter {
             this.session.addRequestEventListeners(rule, {
                 onRequest:           (event: RequestEvent) => this.compilerService?.onRequestHookEvent({ testId, hookId, name: RequestHookMethodNames.onRequest, eventData: event }),
                 onConfigureResponse: (event: ConfigureResponseEvent) => this.compilerService?.onRequestHookEvent({ testId, hookId, name: RequestHookMethodNames._onConfigureResponse, eventData: event }),
-                onResponse:          (event: ResponseEvent) => this.compilerService?.onRequestHookEvent({ testId, hookId, name: RequestHookMethodNames.onResponse, eventData: event })
+                onResponse:          (event: ResponseEvent) => this.compilerService?.onRequestHookEvent({ testId, hookId, name: RequestHookMethodNames.onResponse, eventData: event }),
             }, err => this._onRequestHookMethodError(err, hookClassName));
         });
     }
@@ -460,7 +460,7 @@ export default class TestRun extends AsyncEventEmitter {
             retryTestPages:               this.opts.retryTestPages,
             speed:                        this.speed,
             dialogHandler:                JSON.stringify(this.activeDialogHandler),
-            canUseDefaultWindowActions:   JSON.stringify(await this.browserConnection.canUseDefaultWindowActions())
+            canUseDefaultWindowActions:   JSON.stringify(await this.browserConnection.canUseDefaultWindowActions()),
         });
     }
 
@@ -471,7 +471,7 @@ export default class TestRun extends AsyncEventEmitter {
             pageLoadTimeout: this.pageLoadTimeout,
             retryTestPages:  !!this.opts.retryTestPages,
             speed:           this.speed,
-            dialogHandler:   JSON.stringify(this.activeDialogHandler)
+            dialogHandler:   JSON.stringify(this.activeDialogHandler),
         });
     }
 
@@ -595,7 +595,7 @@ export default class TestRun extends AsyncEventEmitter {
             userAgent:      this.browserConnection.userAgent,
             screenshotPath: this.errScreenshotPath || '',
             testRunId:      this.id,
-            testRunPhase:   this.phase
+            testRunPhase:   this.phase,
         });
     }
 
@@ -810,7 +810,7 @@ export default class TestRun extends AsyncEventEmitter {
         command.actual = ReExecutablePromise.fromFn(async () => {
             return self.compilerService?.getAssertionActualValue({
                 testRunId: self.id,
-                commandId: command.id
+                commandId: command.id,
             });
         });
     }
@@ -939,7 +939,7 @@ export default class TestRun extends AsyncEventEmitter {
         Object.assign(actionArgs, {
             result,
             duration,
-            err: errorAdapter
+            err: errorAdapter,
         });
 
         await this.emitActionEvent('action-done', actionArgs);
@@ -1104,11 +1104,11 @@ export default class TestRun extends AsyncEventEmitter {
         if (this.compilerService) {
             await this.compilerService.setCtx({
                 testRunId: this.id,
-                value:     Object.create(null)
+                value:     Object.create(null),
             });
             await this.compilerService.setFixtureCtx({
                 testRunId: this.id,
-                value:     Object.create(null)
+                value:     Object.create(null),
             });
         }
         else {
@@ -1252,7 +1252,7 @@ export default class TestRun extends AsyncEventEmitter {
 
         await this.compilerService.initializeTestRunData({
             testRunId: this.id,
-            testId:    this.test.id
+            testId:    this.test.id,
         });
     }
 

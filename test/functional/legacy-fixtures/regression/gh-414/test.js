@@ -15,7 +15,7 @@ describe("[Regression](GH-414) Should restart a test step if redirect occurs whi
                     'A target element of the click action has not been found in the DOM tree.',
                     'If this element should be created after animation or a time-consuming',
                     'operation is finished, use the waitFor action (available for use in code)',
-                    'to pause test execution until this element appears.'
+                    'to pause test execution until this element appears.',
                 ].join(' ');
 
                 expect(errs[0]).contains(expectedError);

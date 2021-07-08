@@ -12,7 +12,7 @@ describe('Bootstrapper', () => {
 
             const browserConnectionGateway = {
                 startServingConnection: noop,
-                stopServingConnection:  noop
+                stopServingConnection:  noop,
             };
 
             const compilerService = {
@@ -21,7 +21,7 @@ describe('Bootstrapper', () => {
                     await delay(1500);
 
                     return [ new Test({ currentFixture: void 0 }) ];
-                }
+                },
             };
 
             const bootstrapper = new Bootstrapper({ browserConnectionGateway, compilerService });
@@ -33,7 +33,7 @@ describe('Bootstrapper', () => {
                 openBrowser:       noop,
                 isLocalBrowser:    noop,
                 isHeadlessBrowser: () => true,
-                closeBrowser:      noop
+                closeBrowser:      noop,
             };
 
             bootstrapper.browsers = [ new BrowserConnection(browserConnectionGateway, { provider }) ];

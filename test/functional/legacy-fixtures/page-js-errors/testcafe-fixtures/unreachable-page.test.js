@@ -4,5 +4,5 @@
 '@test'['Unreachable page'] = {
     '1. Click body': function () {
         act.click('body');
-    }
+    },
 };

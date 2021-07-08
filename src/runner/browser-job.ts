@@ -43,7 +43,7 @@ export default class BrowserJob extends AsyncEventEmitter {
         warningLog,
         fixtureHookController,
         opts,
-        compilerService
+        compilerService,
     }: BrowserJobInit) {
         super();
 
@@ -80,7 +80,7 @@ export default class BrowserJob extends AsyncEventEmitter {
             warningLog:            this.warningLog,
             fixtureHookController: this.fixtureHookController,
             opts:                  this._opts,
-            compilerService
+            compilerService,
         });
 
         testRunController.on('test-run-create', async testRunInfo => {

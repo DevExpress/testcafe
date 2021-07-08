@@ -31,15 +31,15 @@ describe('PROCESS KILLER', () => {
 
             const stubChildProcess = {
                 stdout: {
-                    on: () => {}
+                    on: () => {},
                 },
                 stderr: {
-                    on: () => {}
+                    on: () => {},
                 },
                 on: (event, listener) => {
                     if (event === 'exit')
                         listener();
-                }
+                },
             };
 
             it('Should try simple kill and stop if it works', async function () {

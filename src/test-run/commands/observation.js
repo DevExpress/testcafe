@@ -10,7 +10,7 @@ export class WaitCommand extends CommandBase {
 
     _getAssignableProperties () {
         return [
-            { name: 'timeout', type: positiveIntegerArgument, required: true }
+            { name: 'timeout', type: positiveIntegerArgument, required: true },
         ];
     }
 }
@@ -25,7 +25,7 @@ export class ExecuteClientFunctionCommandBase extends CommandBase {
             { name: 'instantiationCallsiteName', defaultValue: '' },
             { name: 'fnCode', defaultValue: '' },
             { name: 'args', defaultValue: [] },
-            { name: 'dependencies', defaultValue: [] }
+            { name: 'dependencies', defaultValue: [] },
         ];
     }
 }
@@ -47,7 +47,7 @@ export class ExecuteSelectorCommand extends ExecuteClientFunctionCommandBase {
             { name: 'timeout', defaultValue: null },
             { name: 'apiFnChain' },
             { name: 'needError' },
-            { name: 'index', defaultValue: 0 }
+            { name: 'index', defaultValue: 0 },
         ]);
     }
 }

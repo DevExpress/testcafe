@@ -14,7 +14,7 @@ describe('[API] Resize window actions', function () {
             it('Should validate height argument', function () {
                 return runTests('./testcafe-fixtures/resize-window-test.js', 'Incorrect action height argument', {
                     shouldFail: true,
-                    only:       'chrome'
+                    only:       'chrome',
                 })
                     .catch(function (errs) {
                         expect(errs[0]).to.contains('The "height" argument is expected to be a positive integer, but it was -5.');
@@ -44,7 +44,7 @@ describe('[API] Resize window actions', function () {
             it('Should validate device argument', function () {
                 return runTests('./testcafe-fixtures/resize-window-test.js', 'Incorrect action device argument', {
                     shouldFail: true,
-                    only:       'chrome'
+                    only:       'chrome',
                 })
                     .catch(function (errs) {
                         expect(errs[0]).to.contains('The "device" argument specifies an unsupported "iPhone555" device. For a list of supported devices, refer to "https://github.com/DevExpress/device-specs/blob/master/viewport-sizes.json"');

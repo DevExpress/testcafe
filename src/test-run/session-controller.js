@@ -61,13 +61,13 @@ export default class SessionController extends Session {
                 const uploadRoots = [
                     path.resolve(UPLOADS_DIR_NAME),
                     path.resolve(fixtureDir, UPLOADS_DIR_NAME),
-                    fixtureDir
+                    fixtureDir,
                 ];
 
                 const options = {
                     disablePageCaching:   testRun.disablePageCaching,
                     allowMultipleWindows: TestRun.isMultipleWindowsAllowed(testRun),
-                    requestTimeout:       testRun.requestTimeout
+                    requestTimeout:       testRun.requestTimeout,
                 };
 
                 if (options.allowMultipleWindows)
@@ -81,7 +81,7 @@ export default class SessionController extends Session {
             sessionInfo = {
                 session: session,
                 proxy:   null,
-                url:     null
+                url:     null,
             };
 
             ACTIVE_SESSIONS_MAP[testRun.browserConnection.id] = sessionInfo;
@@ -109,7 +109,7 @@ export default class SessionController extends Session {
             if (externalProxyHost) {
                 externalProxySettings = {
                     url:         externalProxyHost,
-                    bypassRules: testRun.opts.proxyBypass
+                    bypassRules: testRun.opts.proxyBypass,
                 };
             }
 

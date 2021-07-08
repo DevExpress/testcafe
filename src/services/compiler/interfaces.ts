@@ -8,7 +8,7 @@ import {
     RequestFilterRule,
     RequestInfo,
     ResponseEvent,
-    ResponseMock
+    ResponseMock,
 } from 'testcafe-hammerhead';
 
 import { Dictionary } from '../../configuration/interfaces';

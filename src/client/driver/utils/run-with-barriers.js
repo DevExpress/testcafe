@@ -25,7 +25,7 @@ export default function (action, ...args) {
                     .wait()
                     .then(() => scriptExecutionBarrier.wait()),
 
-                pageUnloadBarrier.wait()
+                pageUnloadBarrier.wait(),
             ]);
         })
         .then(() => actionResult);

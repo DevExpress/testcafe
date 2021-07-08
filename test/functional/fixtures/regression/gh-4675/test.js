@@ -9,7 +9,7 @@ function customReporter (name) {
         name,
         reportTaskStart () {
             this.write('');
-        }
+        },
     });
 }
 

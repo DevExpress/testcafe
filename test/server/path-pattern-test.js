@@ -17,7 +17,7 @@ describe('Screenshot path pattern', () => {
         quarantineAttempt: forQuarantine ? 2 : null,
         fixture:           'fixture',
         test:              'test',
-        parsedUserAgent:   parseUserAgent(TEST_USER_AGENT)
+        parsedUserAgent:   parseUserAgent(TEST_USER_AGENT),
     });
 
     const createPathPattern = (pattern, { forQuarantine } = {}) => {
@@ -55,7 +55,7 @@ describe('Screenshot path pattern', () => {
             'Windows',
             '8.1',
             'test-12',
-            'run-2'
+            'run-2',
         ].join('#') + '.png';
 
         const pathPattern = createPathPattern(pattern, { forQuarantine: true });

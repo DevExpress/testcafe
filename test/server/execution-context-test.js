@@ -13,7 +13,7 @@ describe('createExecutionContext', () => {
 
     it('should calculate paths for modules', () => {
         const testRun = {
-            test: { testFile: { filename: `${process.cwd()}/test/server/data/execution-context/fixture.testcafe` } }
+            test: { testFile: { filename: `${process.cwd()}/test/server/data/execution-context/fixture.testcafe` } },
         };
 
         let context = createExecutionContext(testRun);

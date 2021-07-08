@@ -2,7 +2,7 @@ import {
     ConfigureResponseEventOptions,
     RequestEvent,
     ResponseEvent,
-    RequestFilterRuleInit
+    RequestFilterRuleInit,
 } from 'testcafe-hammerhead';
 
 import RequestHook from './hook';
@@ -14,7 +14,7 @@ import { RUNTIME_ERRORS } from '../../errors/types';
 
 import {
     RequestHookLogOptionsInit,
-    RequestHookLogOptions
+    RequestHookLogOptions,
 } from './interfaces';
 
 import { Dictionary } from '../../configuration/interfaces';
@@ -26,7 +26,7 @@ const DEFAULT_OPTIONS: RequestHookLogOptions = {
     stringifyRequestBody:  false,
     logResponseHeaders:    false,
     logResponseBody:       false,
-    stringifyResponseBody: false
+    stringifyResponseBody: false,
 };
 
 interface OptionallyLoggedPart {
@@ -89,7 +89,7 @@ class RequestLoggerImplementation extends RequestHook {
                 timestamp: Date.now(),
                 url:       event._requestInfo.url,
                 method:    event._requestInfo.method,
-            }
+            },
         };
 
         if (this._options.logRequestHeaders)
@@ -111,7 +111,7 @@ class RequestLoggerImplementation extends RequestHook {
 
         loggedReq.response = {
             statusCode: event.statusCode,
-            timestamp:  Date.now()
+            timestamp:  Date.now(),
         };
 
         if (this._options.logResponseHeaders)

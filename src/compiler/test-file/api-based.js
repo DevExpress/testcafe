@@ -1,7 +1,7 @@
 import {
     dirname,
     relative,
-    sep as pathSep
+    sep as pathSep,
 } from 'path';
 
 import { readFileSync } from 'fs';
@@ -123,12 +123,12 @@ export default class APIBasedTestFileCompilerBase extends TestFileCompilerBase {
     _addGlobalAPI (testFile) {
         Object.defineProperty(global, 'fixture', {
             get:          () => new Fixture(testFile),
-            configurable: true
+            configurable: true,
         });
 
         Object.defineProperty(global, 'test', {
             get:          () => new Test(testFile),
-            configurable: true
+            configurable: true,
         });
     }
 

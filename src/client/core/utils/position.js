@@ -20,7 +20,7 @@ export function getIframeClientCoordinates (iframe) {
         left:   iframeRectangleLeft,
         top:    iframeRectangleTop,
         right:  iframeRectangleLeft + styleUtils.getWidth(iframe),
-        bottom: iframeRectangleTop + styleUtils.getHeight(iframe)
+        bottom: iframeRectangleTop + styleUtils.getHeight(iframe),
     };
 }
 
@@ -70,17 +70,17 @@ export function getClientDimensions (target) {
                 bottom: 0,
                 left:   0,
                 right:  0,
-                top:    0
+                top:    0,
             },
             scroll: {
                 left: 0,
-                top:  0
+                top:  0,
             },
 
             left:   clientPoint.x,
             right:  clientPoint.x,
             top:    clientPoint.y,
-            bottom: clientPoint.y
+            bottom: clientPoint.y,
         };
     }
 
@@ -108,7 +108,7 @@ export function getClientDimensions (target) {
             const iframeOffset  = getOffsetPosition(iframeElement);
             const clientOffset  = offsetToClientCoords({
                 x: iframeOffset.left,
-                y: iframeOffset.top
+                y: iframeOffset.top,
             });
             const iframeBorders = styleUtils.getBordersWidth(iframeElement);
 
@@ -141,13 +141,13 @@ export function getClientDimensions (target) {
 
         scroll: {
             left: elementScroll.left,
-            top:  elementScroll.top
+            top:  elementScroll.top,
         },
 
         scrollbar: {
             right:  rightScrollbarWidth,
-            bottom: bottomScrollbarHeight
-        }
+            bottom: bottomScrollbarHeight,
+        },
     };
 }
 
@@ -183,7 +183,7 @@ export function getEventAbsoluteCoordinates (ev) {
 
     return {
         x: pageCoordinates.x + xOffset,
-        y: pageCoordinates.y + yOffset
+        y: pageCoordinates.y + yOffset,
     };
 }
 
@@ -203,12 +203,12 @@ export function getEventPageCoordinates (ev) {
             x: Math.round(curCoordObject.clientX + (html && html.scrollLeft || body && body.scrollLeft || 0) -
                           (html.clientLeft || 0)),
             y: Math.round(curCoordObject.clientY + (html && html.scrollTop || body && body.scrollTop || 0) -
-                          (html.clientTop || 0))
+                          (html.clientTop || 0)),
         };
     }
     return {
         x: Math.round(curCoordObject.pageX),
-        y: Math.round(curCoordObject.pageY)
+        y: Math.round(curCoordObject.pageY),
     };
 }
 
@@ -248,7 +248,7 @@ export function getIframePointRelativeToParentFrame (pos, iframeWin) {
 
     return offsetToClientCoords({
         x: pos.x + iframeOffset.left + iframeBorders.left + iframePadding.left,
-        y: pos.y + iframeOffset.top + iframeBorders.top + iframePadding.top
+        y: pos.y + iframeOffset.top + iframeBorders.top + iframePadding.top,
     });
 }
 
@@ -257,7 +257,7 @@ export function clientToOffsetCoord (coords, currentDocument) {
 
     return {
         x: coords.x + styleUtils.getScrollLeft(doc),
-        y: coords.y + styleUtils.getScrollTop(doc)
+        y: coords.y + styleUtils.getScrollTop(doc),
     };
 }
 
@@ -266,7 +266,7 @@ export function findCenter (el) {
 
     return {
         x: Math.round(rectangle.left + rectangle.width / 2),
-        y: Math.round(rectangle.top + rectangle.height / 2)
+        y: Math.round(rectangle.top + rectangle.height / 2),
     };
 }
 
@@ -285,14 +285,14 @@ export function getElementClientRectangle (el) {
     const rect      = getElementRectangle(el);
     const clientPos = offsetToClientCoords({
         x: rect.left,
-        y: rect.top
+        y: rect.top,
     });
 
     return {
         height: rect.height,
         left:   clientPos.x,
         top:    clientPos.y,
-        width:  rect.width
+        width:  rect.width,
     };
 }
 
@@ -306,7 +306,7 @@ export function calcRelativePosition (dimensions, toDimensions) {
         top: Math.ceil(dimensions.top - (toDimensions.top + toDimensions.border.top)),
 
         bottom: Math.floor(toDimensions.bottom - toDimensions.border.bottom - toDimensions.scrollbar.bottom -
-                           dimensions.bottom)
+                           dimensions.bottom),
     };
 }
 

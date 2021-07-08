@@ -9,13 +9,13 @@ import {
     isTest,
     serialize as serializeTestStructure,
     Unit,
-    Units
+    Units,
 } from '../serialization/test-structure';
 
 import {
     SERVICE_INPUT_FD,
     SERVICE_OUTPUT_FD,
-    SERVICE_SYNC_FD
+    SERVICE_SYNC_FD,
 } from './io';
 
 import { IPCProxy } from '../utils/ipc/proxy';
@@ -27,7 +27,7 @@ import {
     FunctionProperties,
     isFixtureFunctionProperty,
     isTestFunctionProperty,
-    RunTestArguments
+    RunTestArguments,
 } from './protocol';
 
 import {
@@ -49,7 +49,7 @@ import {
     GetAssertionActualValueArguments,
     SetCtxArguments,
     ExecuteRoleInitFnArguments,
-    UpdateRolePropertyArguments
+    UpdateRolePropertyArguments,
 } from './interfaces';
 
 import { CompilerArguments } from '../../compiler/interfaces';
@@ -65,7 +65,7 @@ import {
     RequestEvent,
     RequestFilterRule,
     ResponseMock,
-    responseMockSetBodyMethod
+    responseMockSetBodyMethod,
 } from 'testcafe-hammerhead';
 
 import RequestHook from '../../api/request-hooks/hook';
@@ -75,7 +75,7 @@ import Role from '../../role/role';
 sourceMapSupport.install({
     hookRequire:              true,
     handleUncaughtExceptions: false,
-    environment:              'node'
+    environment:              'node',
 });
 
 interface ServiceState {
@@ -113,7 +113,7 @@ class CompilerService implements CompilerProtocol {
             fixtureCtxs: {},
             units:       {},
             options:     {},
-            roles:       new Map<string, Role>()
+            roles:       new Map<string, Role>(),
         };
     }
 
@@ -163,7 +163,7 @@ class CompilerService implements CompilerProtocol {
             this.getFixtureCtx,
             this.setCtx,
             this.setFixtureCtx,
-            this.updateRoleProperty
+            this.updateRoleProperty,
         ], this);
     }
 
@@ -191,7 +191,7 @@ class CompilerService implements CompilerProtocol {
                 ruleId:          event.requestFilterRule.id,
                 testId,
                 hookId,
-                mock
+                mock,
             });
         };
     }
@@ -201,14 +201,14 @@ class CompilerService implements CompilerProtocol {
             await this.setHeaderOnConfigureResponseEvent({
                 eventId:     event.id,
                 headerName:  name,
-                headerValue: value
+                headerValue: value,
             });
         };
 
         event.removeHeader = async (name: string) => {
             await this.removeHeaderOnConfigureResponseEvent({
                 eventId:    event.id,
-                headerName: name
+                headerName: name,
             });
         };
     }
@@ -218,7 +218,7 @@ class CompilerService implements CompilerProtocol {
             dispatcher: this,
             id:         testRunId,
             options:    this.state.options,
-            test
+            test,
         });
 
         this.state.testRuns[testRunId] = testRunProxy;

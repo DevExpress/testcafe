@@ -29,7 +29,7 @@ describe('Page Load timeout', () => {
         it('Should wait for the window.load event in iframe', function () {
             return runTests('testcafe-fixtures/test-level.js', 'Wait for window.load in iframe', {
                 pageLoadTimeout: 0,
-                selectorTimeout: 10000
+                selectorTimeout: 10000,
             });
         });
 
@@ -39,7 +39,7 @@ describe('Page Load timeout', () => {
                     expect(testReport.warnings).eql([
                         'The \'t.setPageLoadTimeout\' method is deprecated ' +
                         'and will be removed in the next major release. ' +
-                        'Use the \'test.timeouts\' method to set the \'pageLoadTimeout\' instead.\n\n'
+                        'Use the \'test.timeouts\' method to set the \'pageLoadTimeout\' instead.\n\n',
                     ]);
                 });
         });

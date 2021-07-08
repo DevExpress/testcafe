@@ -13,7 +13,7 @@ const DEBUG_LOGGER = debug('testcafe:utils:get-options:ssl');
 const MAX_PATH_LENGTH: Dictionary<number> = {
     'Linux':      4096,
     'Windows_NT': 260,
-    'Darwin':     1024
+    'Darwin':     1024,
 };
 
 const OS_MAX_PATH_LENGTH = MAX_PATH_LENGTH[os.type()];
@@ -44,7 +44,7 @@ export default async function (optionString: string): Promise<Dictionary<string 
             catch (error) {
                 throw new GeneralError(RUNTIME_ERRORS.cannotReadSSLCertFile, key, value, error.stack);
             }
-        }
+        },
     });
 }
 

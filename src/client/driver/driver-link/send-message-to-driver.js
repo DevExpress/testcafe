@@ -1,7 +1,7 @@
 import {
     Promise,
     eventSandbox,
-    nativeMethods
+    nativeMethods,
 } from '../deps/hammerhead';
 
 import { delay } from '../deps/testcafe-core';

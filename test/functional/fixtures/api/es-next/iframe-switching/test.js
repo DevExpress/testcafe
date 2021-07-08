@@ -8,7 +8,7 @@ const DEFAULT_SELECTOR_TIMEOUT   = 5000;
 const DEFAULT_RUN_OPTIONS        = { selectorTimeout: DEFAULT_SELECTOR_TIMEOUT };
 const DEFAULT_FAILED_RUN_OPTIONS = {
     shouldFail:      true,
-    selectorTimeout: DEFAULT_SELECTOR_TIMEOUT
+    selectorTimeout: DEFAULT_SELECTOR_TIMEOUT,
 };
 
 describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
@@ -88,7 +88,7 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
         it('Should raise an error if a switchToIframe target is not loaded', function () {
             return runTests('./testcafe-fixtures/iframe-switching-test.js', "Click in a iframe that's loading too slowly", {
                 shouldFail:      true,
-                selectorTimeout: 200
+                selectorTimeout: 200,
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('Content of the iframe to which you are switching did not load.');
@@ -118,7 +118,7 @@ describe('[API] t.switchToIframe(), t.switchToMainWindow()', function () {
                 selectorTimeout: DEFAULT_SELECTOR_TIMEOUT,
 
                 // NOTE: https://github.com/DevExpress/testcafe-hammerhead/issues/667
-                skip: 'iphone,ipad'
+                skip: 'iphone,ipad',
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('Content of the iframe in which the test is currently operating did not load.');

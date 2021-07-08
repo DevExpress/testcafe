@@ -24,7 +24,7 @@ describe('[Raw API] fixture.beforeEach/fixture.afterEach hooks', () => {
     it('Should not run test and afterEach if fails in beforeEach', () => {
         return runTests('./testcafe-fixtures/fail-in-before-each.testcafe', 'Test', {
             shouldFail: true,
-            only:       'chrome'
+            only:       'chrome',
         })
             .catch(errs => {
                 expect(errs[0]).contains(

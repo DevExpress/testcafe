@@ -27,7 +27,7 @@ $(document).ready(function () {
             .css({
                 position:   'absolute',
                 marginLeft: x + 'px',
-                marginTop:  y + 'px'
+                marginTop:  y + 'px',
             })
             .addClass(type)
             .addClass(TEST_ELEMENT_CLASS)
@@ -45,14 +45,14 @@ $(document).ready(function () {
             e.charCode || 0,
             e.ctrlKey || false,
             e.shiftKey || false,
-            e.altKey || false
+            e.altKey || false,
         ].join(' ');
     };
 
     const logEvent = function (e) {
         eventsLog = [
             eventsLog,
-            getEventLog(e)
+            getEventLog(e),
         ].join(eventsSeparator);
     };
 
@@ -62,7 +62,7 @@ $(document).ready(function () {
         for (let i = 0; i < events.length; i++) {
             log = [
                 log,
-                getEventLog(events[i])
+                getEventLog(events[i]),
             ].join(eventsSeparator);
         }
 
@@ -84,7 +84,7 @@ $(document).ready(function () {
         A: 65,
 
         '1': 49,
-        '"': 222
+        '"': 222,
     };
 
     const CHARCODES = {
@@ -95,7 +95,7 @@ $(document).ready(function () {
 
         '1': 49,
         '!': 33,
-        '"': 34
+        '"': 34,
     };
 
     //tests
@@ -154,7 +154,7 @@ $(document).ready(function () {
         const expectedEvents = [
             { type: 'keydown', keyCode: KEYCODES[literal] },
             { type: 'keypress', keyCode: CHARCODES[literal], charCode: CHARCODES[literal] },
-            { type: 'keyup', keyCode: KEYCODES[literal] }
+            { type: 'keyup', keyCode: KEYCODES[literal] },
         ];
 
         testKeysPress(literal, expectedEvents);
@@ -165,7 +165,7 @@ $(document).ready(function () {
         const expectedEvents = [
             { type: 'keydown', keyCode: KEYCODES[literal] },
             { type: 'keypress', keyCode: CHARCODES[literal], charCode: CHARCODES[literal] },
-            { type: 'keyup', keyCode: KEYCODES[literal] }
+            { type: 'keyup', keyCode: KEYCODES[literal] },
         ];
 
         testKeysPress(literal, expectedEvents);
@@ -181,7 +181,7 @@ $(document).ready(function () {
             { type: 'keydown', keyCode: KEYCODES[bLiteral] },
             { type: 'keypress', keyCode: CHARCODES[bLiteral], charCode: CHARCODES[bLiteral] },
             { type: 'keyup', keyCode: KEYCODES[bLiteral] },
-            { type: 'keyup', keyCode: KEYCODES[aLiteral] }
+            { type: 'keyup', keyCode: KEYCODES[aLiteral] },
         ];
 
         testKeysPress(aLiteral + '+' + bLiteral, expectedEvents);
@@ -194,7 +194,7 @@ $(document).ready(function () {
             { type: 'keydown', keyCode: KEYCODES[literal], ctrlKey: true },
             { type: 'keypress', keyCode: CHARCODES[literal], charCode: CHARCODES[literal], ctrlKey: true },
             { type: 'keyup', keyCode: KEYCODES[literal], ctrlKey: true },
-            { type: 'keyup', keyCode: KEYCODES.ctrl }
+            { type: 'keyup', keyCode: KEYCODES.ctrl },
         ];
 
         testKeysPress('ctrl+b', expectedEvents);
@@ -205,7 +205,7 @@ $(document).ready(function () {
         const expectedEvents = [
             { type: 'keydown', keyCode: KEYCODES[literal] },
             { type: 'keypress', keyCode: CHARCODES[literal], charCode: CHARCODES[literal] },
-            { type: 'keyup', keyCode: KEYCODES[literal] }
+            { type: 'keyup', keyCode: KEYCODES[literal] },
         ];
 
         testKeysPress(literal, expectedEvents);
@@ -218,7 +218,7 @@ $(document).ready(function () {
         const expectedEvents = [
             { type: 'keydown', keyCode: specialKeyCode },
             { type: 'keypress', keyCode: specialKeyCode, charCode: specialKeyCode },
-            { type: 'keyup', keyCode: specialKeyCode }
+            { type: 'keyup', keyCode: specialKeyCode },
         ];
 
         testKeysPress(specialKey, expectedEvents);
@@ -227,7 +227,7 @@ $(document).ready(function () {
     asyncTest('press mapped modifier', function () {
         const expectedEvents = [
             { type: 'keydown', keyCode: KEYCODES.alt, altKey: true },
-            { type: 'keyup', keyCode: KEYCODES.alt }
+            { type: 'keyup', keyCode: KEYCODES.alt },
         ];
 
         testKeysPress('option', expectedEvents);
@@ -239,7 +239,7 @@ $(document).ready(function () {
             { type: 'keydown', keyCode: KEYCODES['"'], shiftKey: true },
             { type: 'keypress', keyCode: CHARCODES['"'], charCode: CHARCODES['"'], shiftKey: true },
             { type: 'keyup', keyCode: KEYCODES['"'], shiftKey: true },
-            { type: 'keyup', keyCode: KEYCODES['shift'] }
+            { type: 'keyup', keyCode: KEYCODES['shift'] },
         ];
 
         testKeysPress('"', expectedEvents);
@@ -256,7 +256,7 @@ $(document).ready(function () {
             { type: 'keydown', keyCode: KEYCODES[literal], shiftKey: true },
             { type: 'keypress', keyCode: CHARCODES[upperLiteral], charCode: CHARCODES[upperLiteral], shiftKey: true },
             { type: 'keyup', keyCode: KEYCODES[literal], shiftKey: true },
-            { type: 'keyup', keyCode: KEYCODES.shift }
+            { type: 'keyup', keyCode: KEYCODES.shift },
         ];
 
         testKeysPress('shift+a', expectedEvents);
@@ -272,7 +272,7 @@ $(document).ready(function () {
             { type: 'keydown', keyCode: KEYCODES[literal], shiftKey: true },
             { type: 'keypress', keyCode: CHARCODES[lowerLiteral], charCode: CHARCODES[lowerLiteral], shiftKey: true },
             { type: 'keyup', keyCode: KEYCODES[literal], shiftKey: true },
-            { type: 'keyup', keyCode: KEYCODES.shift }
+            { type: 'keyup', keyCode: KEYCODES.shift },
         ];
 
         testKeysPress('shift+A', expectedEvents);
@@ -286,7 +286,7 @@ $(document).ready(function () {
         { type: 'keydown', keyCode: KEYCODES[literal], shiftKey: true },
         { type: 'keypress', keyCode: CHARCODES[modifiedLiteral], charCode: CHARCODES[modifiedLiteral], shiftKey: true },
         { type: 'keyup', keyCode: KEYCODES[literal], shiftKey: true },
-        { type: 'keyup', keyCode: KEYCODES.shift }
+        { type: 'keyup', keyCode: KEYCODES.shift },
     ];
 
     asyncTest('shift+1', function () {
@@ -305,7 +305,7 @@ $(document).ready(function () {
     asyncTest('B237817 - ASPxComboBox - pressing "ctrl+end" via act.press does not work', function () {
         const expectedEvents = [
             { type: 'keydown', keyCode: KEYCODES.ctrl, ctrlKey: true },
-            { type: 'keydown', keyCode: KEYCODES.end, ctrlKey: true }
+            { type: 'keydown', keyCode: KEYCODES.end, ctrlKey: true },
         ];
 
         if (browserUtils.isFirefox)

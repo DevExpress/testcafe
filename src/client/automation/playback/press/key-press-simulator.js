@@ -2,14 +2,14 @@ import hammerhead from '../../deps/hammerhead';
 import {
     KEY_MAPS,
     domUtils,
-    getSanitizedKey
+    getSanitizedKey,
 } from '../../deps/testcafe-core';
 
 import typeText from '../type/type-text';
 import {
     getChar,
     getDeepActiveElement,
-    changeLetterCase
+    changeLetterCase,
 } from './utils';
 
 import getKeyCode from '../../utils/get-key-code';

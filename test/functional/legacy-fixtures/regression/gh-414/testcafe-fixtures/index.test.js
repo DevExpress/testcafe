@@ -13,7 +13,7 @@
 
     '3.Assert': function () {
         eq($('#result').text(), 'div3 click');
-    }
+    },
 };
 
 '@test'['Wait for element after redirect - should pass'] = {
@@ -31,7 +31,7 @@
 
     '4.Assert': function () {
         eq($('#result').text(), 'div3 click');
-    }
+    },
 };
 
 '@test'['Redirect before the target element appears - should fail'] = {
@@ -41,5 +41,5 @@
 
     '2.Click div "The second div"': function () {
         act.click('#div2');
-    }
+    },
 };

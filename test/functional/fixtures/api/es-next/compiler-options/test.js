@@ -6,8 +6,8 @@ describe('Compiler options', () => {
             const resultOpts = {
                 'only':            'chrome',
                 'compilerOptions': {
-                    'typescript': {}
-                }
+                    'typescript': {},
+                },
             };
 
             Object.assign(resultOpts, opts);

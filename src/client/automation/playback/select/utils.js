@@ -26,7 +26,7 @@ function ensureRectangleInsideElement (element, rect) {
     if (!domUtils.isTextAreaElement(element)) {
         const clientOffset = positionUtils.offsetToClientCoords({
             x: elementOffset.left,
-            y: elementOffset.top
+            y: elementOffset.top,
         });
 
         const minLeft     = clientOffset.x + elementBorders.left + 1;
@@ -42,7 +42,7 @@ function ensureRectangleInsideElement (element, rect) {
     return {
         left:   left,
         top:    top,
-        bottom: bottom
+        bottom: bottom,
     };
 }
 
@@ -52,7 +52,7 @@ function getAbsoluteRect (rect) {
     return {
         left:   rect.left + documentScroll.left,
         top:    rect.top + documentScroll.top,
-        bottom: rect.bottom + documentScroll.top
+        bottom: rect.bottom + documentScroll.top,
     };
 }
 
@@ -117,7 +117,7 @@ function getSelectionRectangle (element, position) {
         top:    rect.top - topBoundDiff,
         bottom: rect.bottom - topBoundDiff,
         left:   rect.left - leftBoundDiff,
-        right:  rect.right - leftBoundDiff
+        right:  rect.right - leftBoundDiff,
     };
 }
 
@@ -150,7 +150,7 @@ function createFakeDiv (element) {
         left:     elementLeft + 'px',
         top:      elementTop + 'px',
         width:    element.scrollWidth + 'px',
-        height:   element.scrollHeight + 'px'
+        height:   element.scrollHeight + 'px',
     });
 
     hammerhead.nativeMethods.nodeTextContentSetter.call(fakeDiv, domUtils.getElementValue(element) + ' ');
@@ -178,7 +178,7 @@ function getPositionCoordinates (element, position) {
 
     return {
         x: rect.left,
-        y: Math.floor(rect.top + (rect.bottom - rect.top) / 2)
+        y: Math.floor(rect.top + (rect.bottom - rect.top) / 2),
     };
 }
 
@@ -210,7 +210,7 @@ export function getSelectionCoordinatesByNodeAndOffset (element, node, offset) {
 
     return {
         x: rect.left,
-        y: Math.floor(rect.top + (rect.bottom - rect.top) / 2)
+        y: Math.floor(rect.top + (rect.bottom - rect.top) / 2),
     };
 }
 
@@ -297,12 +297,12 @@ export function excludeElementScroll (element, point) {
         (browserUtils.isFirefox || browserUtils.isIE && browserUtils.version > 10)) {
         return {
             x: Math.min(point.x, maxLeft),
-            y: point.y
+            y: point.y,
         };
     }
 
     return {
         x: point.x - elementScroll.left,
-        y: point.y - elementScroll.top
+        y: point.y - elementScroll.top,
     };
 }

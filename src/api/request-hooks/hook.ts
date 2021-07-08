@@ -5,7 +5,7 @@ import {
     ResponseEvent,
     RequestFilterRule,
     RequestFilterRuleInit,
-    generateUniqueId
+    generateUniqueId,
 } from 'testcafe-hammerhead';
 
 import { RequestHookNotImplementedMethodError } from '../../errors/test-run';

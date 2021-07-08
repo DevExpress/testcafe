@@ -26,7 +26,7 @@ export default class RequestBarrier extends EventEmitter {
                 REQUESTS_COLLECTION_DELAY_DEFAULT : delays.additionalRequestsCollection,
 
             pageInitialRequestsCollection: delays.pageInitialRequestsCollection === void 0 ?
-                REQUESTS_COLLECTION_DELAY_DEFAULT : delays.pageInitialRequestsCollection
+                REQUESTS_COLLECTION_DELAY_DEFAULT : delays.pageInitialRequestsCollection,
         };
 
         this.collectingReqs = true;

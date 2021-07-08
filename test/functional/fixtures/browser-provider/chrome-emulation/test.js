@@ -42,7 +42,7 @@ if (config.useLocalBrowsers) {
             const reporter = createReporter({
                 reportTaskStart (startTime, userAgents) {
                     prettyUserAgents = userAgents;
-                }
+                },
             });
 
             await testCafe

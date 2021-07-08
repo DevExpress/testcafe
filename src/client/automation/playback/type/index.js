@@ -49,13 +49,13 @@ export default class TypeAutomation {
 
         this.eventArgs = {
             options: null,
-            element: null
+            element: null,
         };
 
         this.eventState = {
             skipType:         false,
             simulateKeypress: true,
-            simulateTypeChar: true
+            simulateTypeChar: true,
         };
     }
 
@@ -86,7 +86,7 @@ export default class TypeAutomation {
             element = TypeAutomation.findTextEditableChild(activeElement) || activeElement;
 
         const options = extend({
-            keyCode: isPressEvent ? this.currentCharCode : this.currentKeyCode
+            keyCode: isPressEvent ? this.currentCharCode : this.currentKeyCode,
         }, this.modifiers);
 
         if (isPressEvent)
@@ -129,7 +129,7 @@ export default class TypeAutomation {
                 offsetY:   this.elementChanged ? offsetY : this.offsetY,
                 speed:     this.speed,
                 caretPos:  this.caretPos,
-                modifiers: this.modifiers
+                modifiers: this.modifiers,
             });
 
             const clickAutomation = new ClickAutomation(this.element, clickOptions);

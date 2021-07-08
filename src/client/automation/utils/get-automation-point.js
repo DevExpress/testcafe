@@ -11,6 +11,6 @@ export default function getAutomationPoint (element, offsetX, offsetY) {
 
     return {
         x: left + offsetX,
-        y: top + offsetY
+        y: top + offsetY,
     };
 }

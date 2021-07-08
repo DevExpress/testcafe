@@ -3,7 +3,7 @@ import { positionUtils, domUtils } from '../../../deps/testcafe-core';
 import {
     NODE_SNAPSHOT_PROPERTIES,
     ELEMENT_SNAPSHOT_PROPERTIES,
-    ELEMENT_ACTION_SNAPSHOT_PROPERTIES
+    ELEMENT_ACTION_SNAPSHOT_PROPERTIES,
 } from '../../../../../client-functions/selectors/snapshot-properties';
 
 
@@ -36,7 +36,7 @@ const nodeSnapshotPropertyInitializers = {
     },
 
     /*eslint-disable no-restricted-properties*/
-    hasChildElements: node => !!nodeSnapshotPropertyInitializers.childElementCount(node)
+    hasChildElements: node => !!nodeSnapshotPropertyInitializers.childElementCount(node),
     /*eslint-enable no-restricted-properties*/
 };
 
@@ -87,7 +87,7 @@ const elementSnapshotPropertyInitializers = {
             top:    rect.top,
             bottom: rect.bottom,
             width:  rect.width,
-            height: rect.height
+            height: rect.height,
         };
     },
 
@@ -115,7 +115,7 @@ const elementSnapshotPropertyInitializers = {
     },
 
     // eslint-disable-next-line no-restricted-properties
-    innerText: element => element.innerText
+    innerText: element => element.innerText,
 };
 
 export class ElementActionSnapshot extends BaseSnapshot {

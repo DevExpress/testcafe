@@ -82,6 +82,6 @@ export function parseConfig (str) {
 
     return {
         modesString: str.substr(0, configTerminatorMatch.index),
-        userArgs:    str.substr(configTerminatorMatch.index + configTerminatorMatch[1].length)
+        userArgs:    str.substr(configTerminatorMatch.index + configTerminatorMatch[1].length),
     };
 }

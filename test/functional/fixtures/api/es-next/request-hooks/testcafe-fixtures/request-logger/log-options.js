@@ -4,7 +4,7 @@ import { readFileSync } from 'fs';
 const pageUrl = 'http://localhost:3000/fixtures/api/es-next/request-hooks/pages/index.html';
 const logger  = new RequestLogger(pageUrl, {
     logResponseBody:       true,
-    stringifyResponseBody: true
+    stringifyResponseBody: true,
 });
 
 fixture `RequestLogger`

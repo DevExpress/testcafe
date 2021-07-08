@@ -56,7 +56,7 @@ export default class SelectChildClickAutomation {
 
         this.eventsArgs = {
             options: this.modifiers,
-            element: this.element
+            element: this.element,
         };
     }
 
@@ -66,7 +66,7 @@ export default class SelectChildClickAutomation {
 
         return {
             options: this.modifiers,
-            element: browserUtils.isIE && parentSelectSize ? this.parentSelect : childElement
+            element: browserUtils.isIE && parentSelectSize ? this.parentSelect : childElement,
         };
     }
 
@@ -101,7 +101,7 @@ export default class SelectChildClickAutomation {
             offsetY,
             speed,
 
-            modifiers: this.modifiers
+            modifiers: this.modifiers,
         }, false);
 
         const moveAutomation = new MoveAutomation(element, moveOptions);

@@ -79,5 +79,5 @@ export default {
         error.stack += this._renderFrameInfo(frames);
 
         return error;
-    }
+    },
 };

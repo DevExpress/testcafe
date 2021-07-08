@@ -32,6 +32,6 @@ export default async function (options: string): Promise<Dictionary<number | str
 
         async onOptionParsed (key: string, value: string) {
             return convertToArrayIfNecessary(key, value);
-        }
+        },
     });
 }

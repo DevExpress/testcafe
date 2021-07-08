@@ -2,7 +2,7 @@ import indentString from 'indent-string';
 
 const DEFAULT_CONCATENATED_VALUES = {
     SEPARATOR:  ', ',
-    QUOTE_CHAR: '"'
+    QUOTE_CHAR: '"',
 };
 
 function rtrim (str) {

@@ -4,7 +4,7 @@ import getTimeLimitedPromise from 'time-limit-promise';
 const hooksExecuted = {
     fixture1Before: 0,
     fixture1After:  0,
-    fixture2Before: 0
+    fixture2Before: 0,
 };
 
 fixture `Fixture 1`

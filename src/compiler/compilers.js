@@ -12,7 +12,7 @@ function createTestFileCompilers (options = {}) {
         new EsNextTestFileCompiler(),
         new TypeScriptTestFileCompiler(options[CustomizableCompilers.typescript]),
         new CoffeeScriptTestFileCompiler(),
-        new RawTestFileCompiler()
+        new RawTestFileCompiler(),
     ];
 }
 

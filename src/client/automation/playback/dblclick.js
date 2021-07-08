@@ -30,7 +30,7 @@ export default class DblClickAutomation extends VisibleElementAutomation {
         this.eventArgs = null;
 
         this.eventState = {
-            dblClickElement: null
+            dblClickElement: null,
         };
     }
 
@@ -60,7 +60,7 @@ export default class DblClickAutomation extends VisibleElementAutomation {
             offsetY:   eventArgs.screenPoint.y,
             caretPos:  this.caretPos,
             modifiers: this.modifiers,
-            speed:     1
+            speed:     1,
         });
 
         const clickAutomation = new ClickAutomation(document.documentElement, clickOptions);

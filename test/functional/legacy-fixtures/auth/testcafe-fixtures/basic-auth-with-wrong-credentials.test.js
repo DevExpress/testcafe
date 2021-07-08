@@ -7,5 +7,5 @@
 '@test'['Authenticate with wrong credentials'] = {
     'Step 1': function () {
         eq($('#result')[0].innerText, 'not authorized');
-    }
+    },
 };

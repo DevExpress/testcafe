@@ -29,7 +29,7 @@
         '    transportWorkerUrl: "{{{transportWorkerUrl}}}",',
         '    sessionId : "sessionId",',
         '    iframeTaskScriptTemplate: {{{iframeTaskScriptTemplate}}}',
-        '});'
+        '});',
     ].join('');
 
     window.getIframeTaskScript = function (referer, serviceMsgUrl, loc, cookie, transportWorkerUrl) {
@@ -56,7 +56,7 @@
                 '    transportWorkerUrl: "' + transportWorkerUrl + '",',
                 '    iframeTaskScriptTemplate: "' + iframeTaskScript + '",',
                 '    sessionId : "sessionId"',
-                '});'
+                '});',
             ].join(''));
         }
     };
@@ -129,7 +129,7 @@
 
                 set: function (y) {
                     window.scrollTo(window.scrollX, y);
-                }
+                },
             });
         });
     }

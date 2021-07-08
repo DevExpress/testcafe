@@ -25,7 +25,7 @@ class CleanupProcess {
     _sendMessage (id, msg) {
         return Promise.race([
             sendMessageToChildProcess(this.worker, { id, ...msg }),
-            this._waitProcessError()
+            this._waitProcessError(),
         ]);
     }
 
@@ -130,7 +130,7 @@ class CleanupProcess {
                     await Promise.race([
                         this._waitResponseForMessage({ command: COMMANDS.init }),
                         this._waitProcessError(),
-                        exitPromise
+                        exitPromise,
                     ]);
 
                     this.initialized = true;

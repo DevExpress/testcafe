@@ -18,7 +18,7 @@ test
         const { startTestTime, pageOpenedTime } = await t.eval(() => {
             return {
                 pageOpenedTime: window.pageOpenedTime,
-                startTestTime:  Date.now()
+                startTestTime:  Date.now(),
             };
         });
 
@@ -31,7 +31,7 @@ test
         const { startTestTime, pageOpenedTime } = await t.eval(() => {
             return {
                 pageOpenedTime: window.pageOpenedTime,
-                startTestTime:  Date.now()
+                startTestTime:  Date.now(),
             };
         });
 

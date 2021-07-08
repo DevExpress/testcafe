@@ -19,5 +19,5 @@
         // NOTE: We simulate a click performed by a user during TestCafe test execution. If TestCafe
         // doesn't prevent a click, test will fail with an unexpected alert dialog error.
         window['%hammerhead%'].nativeMethods.click.call(document.getElementById('alertDiv'));
-    })
+    }),
 };

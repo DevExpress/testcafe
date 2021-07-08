@@ -33,7 +33,7 @@ export default {
 
         const metaInfo = `Emulating ${deviceName}`;
         const options  = {
-            appendToUserAgent: true
+            appendToUserAgent: true,
         };
 
         this.setUserAgentMetaInfo(browserId, metaInfo, options);
@@ -48,7 +48,7 @@ export default {
 
         runtimeInfo.providerMethods = {
             resizeLocalBrowserWindow: (...args) => this.resizeLocalBrowserWindow(...args),
-            reportWarning:            (...args) => this.reportWarning(browserId, ...args)
+            reportWarning:            (...args) => this.reportWarning(browserId, ...args),
         };
 
         await startLocalChrome(pageUrl, runtimeInfo);
@@ -123,7 +123,7 @@ export default {
             hasCanResizeWindowToDimensions: false,
             hasExecuteClientFunction:       !!client,
             hasSwitchToIframe:              !!client,
-            hasSwitchToMainWindow:          !!client
+            hasSwitchToMainWindow:          !!client,
         };
     },
 
@@ -134,5 +134,5 @@ export default {
 
             await this.resizeWindow(browserId, newWidth, newHeight, outerWidth, outerHeight);
         }
-    }
+    },
 };

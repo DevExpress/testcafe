@@ -26,7 +26,7 @@ export default class FixtureHookController {
                 runningFixtureBeforeHook: false,
                 fixtureBeforeHookErr:     null,
                 pendingTestRunCount:      0,
-                fixtureCtx:               Object.create(null)
+                fixtureCtx:               Object.create(null),
             };
 
             fixtureMap.set(fixture, item);

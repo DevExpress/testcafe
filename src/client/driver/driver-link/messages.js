@@ -17,7 +17,7 @@ export const TYPE = {
     restoreChildLink:            'driver|restore-child-link',
     childWindowIsLoadedInIFrame: 'driver|child-window-is-loaded-in-iframe',
     childWindowIsOpenedInIFrame: 'driver|child-window-is-opened-in-iframe',
-    hasPendingActionFlags:       'driver|has-pending-action-flags'
+    hasPendingActionFlags:       'driver|has-pending-action-flags',
 };
 
 class InterDriverMessage {

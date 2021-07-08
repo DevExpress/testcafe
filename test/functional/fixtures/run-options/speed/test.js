@@ -11,7 +11,7 @@ describe('[API] Speed', function () {
         return runTests('./testcafe-fixtures/speed-test.js', 'Decrease speed in iframe', {
             only:            'chrome',
             speed:           0.4,
-            selectorTimeout: 10000
+            selectorTimeout: 10000,
         });
     });
 });

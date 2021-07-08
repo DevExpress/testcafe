@@ -8,7 +8,7 @@ describe('Request handling', () => {
         const testMock = {
             fixture:       { path: '' },
             clientScripts: [],
-            requestHooks:  []
+            requestHooks:  [],
         };
 
         const testRun = new TestRun({
@@ -16,7 +16,7 @@ describe('Request handling', () => {
             browserConnection:  {},
             screenshotCapturer: {},
             globalWarningLog:   {},
-            opts:               {}
+            opts:               {},
         });
 
         const handleRequestPromise = testRun.ready({ status: { id: 1, consoleMessages: [] } });

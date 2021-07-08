@@ -2,7 +2,7 @@ import {
     flattenDeep,
     find,
     chunk,
-    uniq
+    uniq,
 } from 'lodash';
 
 import stripBom from 'strip-bom';
@@ -47,7 +47,7 @@ export default class Compiler {
             code,
             compiler,
 
-            compiledCode: null
+            compiledCode: null,
         };
     }
 

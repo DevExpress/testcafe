@@ -12,7 +12,7 @@ var basePath = 'http://localhost:3000/legacy-fixtures/using-shared-code/pages/';
     '@testCases': [
         { '@name': 'Cross-domain iframe', pageUrl: 'cross-domain.html' },
         { '@name': 'Same-domain iframe', pageUrl: 'same-domain.html' },
-        { '@name': 'Inline iframe', pageUrl: 'inline.html' }
+        { '@name': 'Inline iframe', pageUrl: 'inline.html' },
     ],
 
     '1.Navigate to test page': function () {
@@ -27,14 +27,14 @@ var basePath = 'http://localhost:3000/legacy-fixtures/using-shared-code/pages/';
 
     '3.Check input value': inIFrame('#iframe', function () {
         eq($('#input')[0].value, this.text);
-    })
+    }),
 };
 
 '@test'['Using mixin in iframe'] = {
     '@testCases': [
         { '@name': 'Cross-domain iframe', pageUrl: 'cross-domain.html' },
         { '@name': 'Same-domain iframe', pageUrl: 'same-domain.html' },
-        { '@name': 'Inline iframe', pageUrl: 'inline.html' }
+        { '@name': 'Inline iframe', pageUrl: 'inline.html' },
     ],
 
     '1.Navigate to test page': function () {
@@ -47,5 +47,5 @@ var basePath = 'http://localhost:3000/legacy-fixtures/using-shared-code/pages/';
 
     '3.Check input value': inIFrame('#iframe', function () {
         eq($('#input')[0].value, this.text);
-    })
+    }),
 };

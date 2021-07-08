@@ -14,7 +14,7 @@ export class CoffeeScriptTestFileParser extends EsNextTestFileParser {
             bare:      true,
             sourceMap: false,
             inlineMap: false,
-            header:    false
+            header:    false,
         });
 
         const ast = transform(code, babelOptions).ast;

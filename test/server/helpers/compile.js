@@ -19,7 +19,7 @@ module.exports = function compile (sources, options) {
 
             return {
                 tests:    sortBy(tests, 'name'),
-                fixtures: sortBy(fixtures, 'name')
+                fixtures: sortBy(fixtures, 'name'),
             };
         });
 };

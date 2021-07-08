@@ -5,7 +5,7 @@ import {
     createBooleanValidator,
     createIntegerValidator,
     createPositiveIntegerValidator,
-    createSpeedValidator
+    createSpeedValidator,
 } from './factories';
 
 import {
@@ -21,7 +21,7 @@ import {
     ActionUnsupportedDeviceTypeError,
     ActionFunctionArgumentError,
     SetTestSpeedArgumentError,
-    ForbiddenCharactersInScreenshotPathError
+    ForbiddenCharactersInScreenshotPathError,
 } from '../../../errors/test-run';
 
 import { assertPageUrl } from '../../../api/test-page-url';

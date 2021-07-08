@@ -5,7 +5,7 @@ const { expect }      = require('chai');
 const {
     PressKeyCommand,
     ExecuteAsyncExpressionCommand,
-    ExecuteExpressionCommand
+    ExecuteExpressionCommand,
 } = require('../../lib/test-run/commands/actions');
 
 const { WaitCommand } = require('../../lib/test-run/commands/observation');
@@ -13,17 +13,17 @@ const { WaitCommand } = require('../../lib/test-run/commands/observation');
 const SessionControllerStub = {
     getSession: () => {
         return { id: 'sessionId' };
-    }
+    },
 };
 
 const ExecuteJSExpressionStub = {
     executeAsyncJsExpression: () => 'async expression result',
-    executeJsExpression:      () => 'expression result'
+    executeJsExpression:      () => 'expression result',
 };
 
 const TestRun = proxyquire('../../lib/test-run/index', {
     './session-controller':    SessionControllerStub,
-    './execute-js-expression': ExecuteJSExpressionStub
+    './execute-js-expression': ExecuteJSExpressionStub,
 });
 
 class TestRunMock extends TestRun {
@@ -33,7 +33,7 @@ class TestRunMock extends TestRun {
             browserConnection:  {},
             screenshotCapturer: {},
             globalWarningLog:   {},
-            opts:               {}
+            opts:               {},
         });
     }
 
@@ -55,8 +55,8 @@ function createDriverStatusMsg (id = 'id') {
             id,
             pageError:       null,
             consoleMessages: [],
-            isCommandResult: true
-        }
+            isCommandResult: true,
+        },
     };
 }
 
@@ -73,7 +73,7 @@ describe('Driver task queue', () => {
     it('Should return real queue length after all client commands are added', async () => {
         const commandExecutionPromises = [
             testRunMock.executeCommand(new PressKeyCommand({ keys: 'a' })),
-            testRunMock.executeCommand(new PressKeyCommand({ keys: 'b' }))
+            testRunMock.executeCommand(new PressKeyCommand({ keys: 'b' })),
         ];
 
         const driverTaskQueueLength     = testRunMock.driverTaskQueue.length;
@@ -90,7 +90,7 @@ describe('Driver task queue', () => {
     it('Should return real queue length after all server commands are added', async () => {
         const commandExecutionPromises = [
             testRunMock.executeCommand(new WaitCommand({ timeout: 0 })),
-            testRunMock.executeCommand(new WaitCommand({ timeout: 0 }))
+            testRunMock.executeCommand(new WaitCommand({ timeout: 0 })),
         ];
 
         const driverTaskQueueLength     = testRunMock.driverTaskQueue.length;
@@ -108,22 +108,22 @@ describe('Driver task queue', () => {
         const commandExecutionPromises = [
             testRunMock.executeCommand(new ExecuteExpressionCommand({
                 resultVariableName: 'el1',
-                expression:         'Selector(\'div\')'
+                expression:         'Selector(\'div\')',
             })),
             testRunMock.executeCommand(new ExecuteExpressionCommand({
                 resultVariableName: 'el2',
-                expression:         'Selector(\'div\')'
+                expression:         'Selector(\'div\')',
             })),
             testRunMock.executeCommand(new ExecuteAsyncExpressionCommand({
-                expression: 'return Selector(\'div\')'
+                expression: 'return Selector(\'div\')',
             })),
             testRunMock.executeCommand(new ExecuteAsyncExpressionCommand({
                 expression: `
                 await t.click('#input1');
                 await t.click('#input2');
                 await t.click('#input3');
-            `
-            }))
+            `,
+            })),
         ];
 
         const driverTaskQueueLength     = testRunMock.driverTaskQueue.length;

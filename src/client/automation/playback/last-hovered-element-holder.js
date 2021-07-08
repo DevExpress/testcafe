@@ -7,5 +7,5 @@ export default {
 
     set (element) {
         lastHoveredElement = element;
-    }
+    },
 };

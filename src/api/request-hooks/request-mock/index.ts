@@ -5,7 +5,7 @@ import {
     RequestEvent,
     ResponseEvent,
     RequestFilterRuleInit,
-    RequestFilterRule
+    RequestFilterRule,
 } from 'testcafe-hammerhead';
 
 import { APIError } from '../../../errors/runtime';

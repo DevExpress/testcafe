@@ -42,7 +42,7 @@ export default function ensureCropOptions (element, options) {
         left:   elementRectangle.left,
         right:  elementRectangle.right,
         top:    elementRectangle.top,
-        bottom: elementRectangle.bottom
+        bottom: elementRectangle.bottom,
     };
 
     const elementMargin       = styleUtils.getElementMargin(element);

@@ -195,7 +195,7 @@ describe('[API] Selector', function () {
         it('Should raise an error if Selector ctor argument is not a function or string', function () {
             return runTests('./testcafe-fixtures/selector-error-test.js', 'Selector fn is not a function or string', {
                 shouldFail: true,
-                only:       'chrome'
+                only:       'chrome',
             }).catch(function (errs) {
                 expect(errs[0].indexOf(
                     'Cannot initialize a Selector because Selector is number, ' +
@@ -210,7 +210,7 @@ describe('[API] Selector', function () {
         it("Should raise error if snapshot property shorthand can't find element in DOM tree", function () {
             return runTests('./testcafe-fixtures/selector-error-test.js', "Snapshot property shorthand - selector doesn't match any element", {
                 shouldFail: true,
-                only:       'chrome'
+                only:       'chrome',
             })
                 .catch(function (errs) {
                     expect(errs[0]).contains(
@@ -224,7 +224,7 @@ describe('[API] Selector', function () {
         it("Should raise error if snapshot shorthand method can't find element in DOM tree", function () {
             return runTests('./testcafe-fixtures/selector-error-test.js', "Snapshot shorthand method - selector doesn't match any element", {
                 shouldFail: true,
-                only:       'chrome'
+                only:       'chrome',
             })
                 .catch(function (errs) {
                     expect(errs[0]).contains(
@@ -238,7 +238,7 @@ describe('[API] Selector', function () {
         it('Should raise error if error occurs in selector during shorthand property evaluation', function () {
             return runTests('./testcafe-fixtures/selector-error-test.js', 'Snapshot property shorthand - selector error', {
                 shouldFail: true,
-                only:       'chrome'
+                only:       'chrome',
             })
                 .catch(function (errs) {
                     expect(errs[0]).contains(
@@ -251,7 +251,7 @@ describe('[API] Selector', function () {
         it('Should raise error if error occurs in selector during shorthand method evaluation', function () {
             return runTests('./testcafe-fixtures/selector-error-test.js', 'Snapshot shorthand method - selector error', {
                 shouldFail: true,
-                only:       'chrome'
+                only:       'chrome',
             })
                 .catch(function (errs) {
                     expect(errs[0]).contains(
@@ -264,7 +264,7 @@ describe('[API] Selector', function () {
         it('Should raise error if error occurs in selector during "count" property evaluation', function () {
             return runTests('./testcafe-fixtures/selector-error-test.js', 'Snapshot "count" property - selector error', {
                 shouldFail: true,
-                only:       'chrome'
+                only:       'chrome',
             })
                 .catch(function (errs) {
                     expect(errs[0]).contains(
@@ -278,7 +278,7 @@ describe('[API] Selector', function () {
         it('Should raise error if error occurs in selector during "exists" property evaluation', function () {
             return runTests('./testcafe-fixtures/selector-error-test.js', 'Snapshot "exists" property - selector error', {
                 shouldFail: true,
-                only:       'chrome'
+                only:       'chrome',
             })
                 .catch(function (errs) {
                     expect(errs[0]).contains(
@@ -292,7 +292,7 @@ describe('[API] Selector', function () {
             function () {
                 return runTests('./testcafe-fixtures/selector-error-test.js', 'Add custom DOM properties method - property throws an error', {
                     shouldFail: true,
-                    only:       'chrome'
+                    only:       'chrome',
                 })
                     .catch(function (errs) {
                         expect(errs[0]).contains(
@@ -307,7 +307,7 @@ describe('[API] Selector', function () {
             function () {
                 return runTests('./testcafe-fixtures/selector-error-test.js', 'Add custom method - method throws an error', {
                     shouldFail: true,
-                    only:       'chrome'
+                    only:       'chrome',
                 })
                     .catch(function (errs) {
                         expect(errs[0]).contains('An error occurred in customMethod code:');
@@ -321,7 +321,7 @@ describe('[API] Selector', function () {
             function () {
                 return runTests('./testcafe-fixtures/selector-error-test.js', 'Add custom method - method throws an error - Selector mode', {
                     shouldFail: true,
-                    only:       'chrome'
+                    only:       'chrome',
                 })
                     .catch(function (errs) {
                         expect(errs[0]).contains(
@@ -341,7 +341,7 @@ describe('[API] Selector', function () {
         it('Should select <option> element by text in Firefox (GH-861)', function () {
             return runTests('./testcafe-fixtures/selector-test.js', '<option> text selector', {
                 only:            'firefox',
-                selectorTimeout: 3000
+                selectorTimeout: 3000,
             });
         });
     });

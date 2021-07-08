@@ -43,7 +43,7 @@ export async function getQuarantineOptions (optionName: string, options: string 
                 throw new GeneralError(RUNTIME_ERRORS.optionValueIsNotValidKeyValue, optionName);
 
             return Number(value);
-        }
+        },
     });
 
     validateQuarantineOptions(parsedOptions, optionName);

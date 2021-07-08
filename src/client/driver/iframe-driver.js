@@ -1,7 +1,7 @@
 import {
     Promise,
     eventSandbox,
-    utils
+    utils,
 } from './deps/hammerhead';
 
 import { pageUnloadBarrier } from './deps/testcafe-core';

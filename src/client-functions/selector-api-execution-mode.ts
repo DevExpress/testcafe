@@ -17,5 +17,5 @@ export default {
             return true;
 
         return isREPL();
-    }
+    },
 };

@@ -28,7 +28,7 @@ describe('[API] t.click()', function () {
     it('Should validate options', function () {
         return runTests('./testcafe-fixtures/click-test.js', 'Incorrect action option', {
             shouldFail: true,
-            only:       'chrome'
+            only:       'chrome',
         })
             .catch(function (errs) {
                 expect(errs[0]).to.contains('The "offsetX" option is expected to be an integer, but it was -3.5.');
@@ -51,7 +51,7 @@ describe('[API] t.click()', function () {
     it('Should validate selector', function () {
         return runTests('./testcafe-fixtures/click-test.js', 'Incorrect action selector', {
             shouldFail: true,
-            only:       'chrome'
+            only:       'chrome',
         })
             .catch(function (errs) {
                 expect(errs[0]).to.contains(
@@ -117,7 +117,7 @@ describe('[API] t.click()', function () {
 
         it('Should fail if try to click on an "option" element in a closed "select" element', function () {
             return runTests('./testcafe-fixtures/click-on-select-child-test.js', 'Click on an invisible "option" element', {
-                shouldFail: true
+                shouldFail: true,
             })
                 .catch(function (errs) {
                     expect(errs[0]).to.contains('The element that matches the specified selector is not visible.');

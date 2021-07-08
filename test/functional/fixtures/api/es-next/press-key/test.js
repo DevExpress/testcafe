@@ -9,7 +9,7 @@ describe('[API] t.pressKey', function () {
     it('Should validate keys argument', function () {
         return runTests('./testcafe-fixtures/press-key-test.js', 'Incorrect keys argument', {
             shouldFail: true,
-            only:       'chrome'
+            only:       'chrome',
         })
             .catch(function (errs) {
                 expect(errs[0]).to.contain('The "keys" argument is expected to be a non-empty string, but it was boolean.');

@@ -2,7 +2,7 @@ import {
     isFinite as isFiniteNumber,
     isRegExp,
     isNil as isNullOrUndefined,
-    castArray
+    castArray,
 } from 'lodash';
 
 import { APIError, GeneralError } from './';
@@ -43,13 +43,13 @@ export const is = {
     number: {
         name:              'number',
         predicate:         isFiniteNumber,
-        getActualValueMsg: getNumberTypeActualValueMsg
+        getActualValueMsg: getNumberTypeActualValueMsg,
     },
 
     nonNegativeNumber: {
         name:              'non-negative number',
         predicate:         isNonNegativeValue,
-        getActualValueMsg: getNumberTypeActualValueMsg
+        getActualValueMsg: getNumberTypeActualValueMsg,
     },
 
     nonNegativeNumberString: {
@@ -60,54 +60,54 @@ export const is = {
             const number = parseInt(value, 10);
 
             return isNaN(number) ? JSON.stringify(value) : number;
-        }
+        },
     },
 
     boolean: {
         name:      'boolean',
-        predicate: (value, type) => type === 'boolean'
+        predicate: (value, type) => type === 'boolean',
     },
 
     string: {
         name:      'string',
-        predicate: (value, type) => type === 'string'
+        predicate: (value, type) => type === 'string',
     },
 
     function: {
         name:      'function',
-        predicate: (value, type) => type === 'function'
+        predicate: (value, type) => type === 'function',
     },
 
     regExp: {
         name:      'regular expression',
-        predicate: isRegExp
+        predicate: isRegExp,
     },
 
     array: {
         name:      'array',
-        predicate: value => Array.isArray(value)
+        predicate: value => Array.isArray(value),
     },
 
     nonNullObject: {
         name:              'non-null object',
         predicate:         (value, type) => type === 'object' && !isNullOrUndefined(value),
-        getActualValueMsg: (value, type) => isNullOrUndefined(value) ? String(value) : type
+        getActualValueMsg: (value, type) => isNullOrUndefined(value) ? String(value) : type,
     },
 
     requestHookSubclass: {
         name:      'RequestHook subclass',
-        predicate: value => value instanceof RequestHook && value.constructor && value.constructor !== RequestHook
+        predicate: value => value instanceof RequestHook && value.constructor && value.constructor !== RequestHook,
     },
 
     clientScriptInitializer: {
         name:      'client script initializer',
-        predicate: obj => hasSomePropInObject(obj, ['path', 'content', 'module'])
+        predicate: obj => hasSomePropInObject(obj, ['path', 'content', 'module']),
     },
 
     testTimeouts: {
         name:      'test timeouts initializer',
-        predicate: obj => hasSomePropInObject(obj, Object.keys(TestTimeout))
-    }
+        predicate: obj => hasSomePropInObject(obj, Object.keys(TestTimeout)),
+    },
 };
 
 export function assertType (types, callsiteName, what, value) {

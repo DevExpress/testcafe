@@ -51,7 +51,7 @@ $(document).ready(function () {
                 const offsets      = getOffsetOptions(div1);
                 const hoverOptions = new MouseOptions({
                     offsetX: offsets.offsetX,
-                    offsetY: offsets.offsetY
+                    offsetY: offsets.offsetY,
                 });
 
                 const hoverAutomation = new HoverAutomation(div1, hoverOptions);
@@ -80,7 +80,7 @@ $(document).ready(function () {
             checkRealEventBlocking: function () {
                 equal(documentClickCount, 1);
                 start();
-            }
+            },
         });
     });
 });

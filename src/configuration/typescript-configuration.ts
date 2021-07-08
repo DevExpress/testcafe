@@ -2,7 +2,7 @@ import Configuration from './configuration-base';
 import {
     DEFAULT_TYPESCRIPT_COMPILER_OPTIONS,
     TYPESCRIPT_COMPILER_NON_OVERRIDABLE_OPTIONS,
-    TYPESCRIPT_BLACKLISTED_OPTIONS
+    TYPESCRIPT_BLACKLISTED_OPTIONS,
 } from './default-values';
 
 import { intersection, omit } from 'lodash';

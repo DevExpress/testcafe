@@ -23,7 +23,7 @@ export function initSelector (name, val, { testRun, ...options }) {
 
         const builder = new SelectorBuilder(val, {
             visibilityCheck: !skipVisibilityCheck,
-            ...builderOptions
+            ...builderOptions,
         }, { instantiation: 'Selector' });
 
         return builder.getCommand([]);

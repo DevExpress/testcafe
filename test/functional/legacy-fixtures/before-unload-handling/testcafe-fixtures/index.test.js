@@ -14,7 +14,7 @@
     '3.Wait for a dialog': function () {
         handleBeforeUnload();
         act.wait(30000);
-    }
+    },
 };
 
 '@test'['Unexpected beforeUnload dialog - should fail'] = {
@@ -28,7 +28,7 @@
 
     '3.Wait for a dialog': function () {
         act.wait(30000);
-    }
+    },
 };
 
 '@test'['No expected beforeUnload dialog - should fail'] = {
@@ -39,5 +39,5 @@
     '2.Wait for a dialog': function () {
         handleBeforeUnload();
         act.wait(30000);
-    }
+    },
 };

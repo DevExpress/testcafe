@@ -95,7 +95,7 @@ describe('CLI argument parser', function () {
                 .then(function (parser) {
                     expect(parser.opts.browsers).eql([
                         'path:/Apps,Libs/\'Firefox.app', 'ie', 'chrome', 'firefox',
-                        'path:/Apps,Libs/"Chrome.app'
+                        'path:/Apps,Libs/"Chrome.app',
                     ]);
                 });
         });
@@ -105,7 +105,7 @@ describe('CLI argument parser', function () {
                 .then(function (parser) {
                     expect(parser.opts.browsers).eql([
                         'path:/Apps/Firefox.app --arg1',
-                        'chrome --arg2'
+                        'chrome --arg2',
                     ]);
                 });
         });
@@ -626,7 +626,7 @@ describe('CLI argument parser', function () {
             .then(parser => {
                 expect(parser.opts.clientScripts).eql([
                     'asserts/jquery.js',
-                    'mockDate.js'
+                    'mockDate.js',
                 ]);
             });
     });
@@ -802,7 +802,7 @@ describe('CLI argument parser', function () {
             { long: '--compiler-options' },
             { long: '--page-request-timeout' },
             { long: '--ajax-request-timeout' },
-            { long: '--cache' }
+            { long: '--cache' },
         ];
 
         const parser  = new CliArgumentParser('');
@@ -843,7 +843,7 @@ describe('CLI argument parser', function () {
             '--disable-page-caching',
             '--disable-page-reloads',
             '--disable-screenshots',
-            '--disable-multiple-windows'
+            '--disable-multiple-windows',
         ].join(' ');
 
         return parse(argumentsString)
