@@ -28,6 +28,7 @@ import guardTimeExecution from '../utils/guard-time-execution';
 import asyncFilter from '../utils/async-filter';
 import Fixture from '../api/structure/fixture';
 import MessageBus from '../utils/message-bus';
+import wrapTestFunction from '../api/wrap-test-function';
 import { assertType, is } from '../errors/runtime/type-assertions';
 
 const DEBUG_SCOPE = 'testcafe:bootstrapper';
@@ -222,6 +223,9 @@ export default class Bootstrapper {
                 item.fixture.globalBeforeFn = item.fixture.globalBeforeFn || fixtureBefore;
                 item.fixture.globalAfterFn  = item.fixture.globalAfterFn || fixtureAfter;
             }
+
+            item.globalBeforeFn = this.hooks?.test?.before ? wrapTestFunction(this.hooks.test.before) : null;
+            item.globalAfterFn = this.hooks?.test?.after ? wrapTestFunction(this.hooks.test.after) : null;
         });
     }
 
