@@ -806,7 +806,7 @@ describe('CLI argument parser', function () {
         ];
 
         const parser  = new CliArgumentParser('');
-        const options = [ ...parser.program.options, ...parser.experimental.options];
+        const options = parser.program.options;
 
         expect(options.length).eql(EXPECTED_OPTIONS.length, CHANGE_CLI_WARNING);
 
