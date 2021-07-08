@@ -1,10 +1,10 @@
 # Changelog
 
-## v1.15.0 (2021-06-28)
+## v1.15.0 (2021-07-09)
 
 ### Enhancements
 
-#### Dispatch DOM events ([#6103](https://github.com/DevExpress/testcafe/pull/6103))
+#### Dispatch DOM events (PR [#6103](https://github.com/DevExpress/testcafe/pull/6103))
 
 ```plaintext
 t.dispatchEvent(target, eventName[, options])
@@ -22,11 +22,11 @@ await t.dispatchEvent('#button', 'touchstart',  { eventConstructor: 'TouchEvent'
 
 Read the [Custom Actions Guide](https://testcafe.io/documentation/402843/guides/advanced-guides/custom-actions) for more information on DOM events and event constructors.
 
-#### Modify request hook headers ([#6140](https://github.com/DevExpress/testcafe/pull/6140))
+#### Modify request hook headers (PR [#6140](https://github.com/DevExpress/testcafe/pull/6140))
 
 You can now modify the headers of custom request hooks. Call the `event.setHeader` and `event.removeHeader` methods. See the [Request Hook article](https://testcafe.io/documentation/402669/reference/test-api/requesthook#change-or-delete-response-headers) for more information.
 
-#### Quarantine mode customization ([#6073](https://github.com/DevExpress/testcafe/pull/6073))
+#### Quarantine mode customization (PR [#6073](https://github.com/DevExpress/testcafe/pull/6073)) by @rob4629
 
 New settings are available in [quarantine mode](https://testcafe.io/documentation/402830/guides/basic-guides/run-tests#quarantine-mode). Quarantine mode repeats failing tests to help users get conclusive test results in sub-optimal conditions. TestCafe v1.15 adds two variables - `successThreshold` and `attemptLimit` - that allow you specify when TestCafe must stop.
 
@@ -47,6 +47,7 @@ TestCafe now has the capability to proxy non-HTML documents such as XML and text
 
 ### Bug Fixes
 
+* TestCafe doesn't raise an error if users specify the CDP port but do not enable concurrency ([PR #6268](https://github.com/DevExpress/testcafe/pull/6268))
 * TestCafe incorrectly processes elements with negative tabIndex values ([#4848](https://github.com/DevExpress/testcafe/issues/4848)).
 * TestCafe incorrectly processes some eventListeners in multi-window mode ([#5621](https://github.com/DevExpress/testcafe/issues/5621)).
 * TestCafe incorrectly processes the \<base\> HTML tag ([testcafe-hammerhead/#1965](https://github.com/DevExpress/testcafe-hammerhead/issues/1965)).
