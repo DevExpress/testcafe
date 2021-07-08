@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.15.0 (2021-07-09)
+## v1.15.0 (2021-07-08)
 
 ### Enhancements
 
@@ -21,10 +21,6 @@ await t.dispatchEvent('#button', 'touchstart',  { eventConstructor: 'TouchEvent'
 ```
 
 Read the [Custom Actions Guide](https://testcafe.io/documentation/402843/guides/advanced-guides/custom-actions) for more information on DOM events and event constructors.
-
-#### Modify request hook headers ([PR #6140](https://github.com/DevExpress/testcafe/pull/6140))
-
-You can now modify the headers of custom request hooks. Call the `event.setHeader` and `event.removeHeader` methods. See the [Request Hook article](https://testcafe.io/documentation/402669/reference/test-api/requesthook#change-or-delete-response-headers) for more information.
 
 #### Quarantine mode customization ([PR #6073](https://github.com/DevExpress/testcafe/pull/6073) by @rob4629)
 
