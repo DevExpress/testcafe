@@ -12,17 +12,6 @@ export interface Dictionary<T> {
     [key: string]: T;
 }
 
-interface Hook {
-    before?: Function;
-    after?: Function;
-}
-
-export interface Hooks {
-    runTest?: Hook;
-    fixture?: Hook;
-    test?: Hook;
-}
-
 export interface RunnerRunOptions {
     skipJsErrors?: boolean;
     skipUncaughtErrors?: boolean;
@@ -41,7 +30,7 @@ export interface RunnerRunOptions {
     pageRequestTimeout?: number;
     ajaxRequestTimeout?: number;
     retryTestPages?: boolean;
-    hooks?: Hooks;
+    hooks?: HooksValue;
 }
 
 export interface GetOptionConfiguration {

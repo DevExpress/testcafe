@@ -13,4 +13,15 @@ interface QuarantineOptionValue {
     successThreshold?: number;
 }
 
-type OptionValue = undefined | null | string | boolean | number | string[] | Function | { [key: string]: any } | ScreenshotOptionValue | QuarantineOptionValue | CompilerOptions;
+interface Hook {
+    before?: Function;
+    after?: Function;
+}
+
+interface HooksValue {
+    runTest?: Hook;
+    fixture?: Hook;
+    test?: Hook;
+}
+
+type OptionValue = undefined | null | string | boolean | number | string[] | Function | { [key: string]: any } | ScreenshotOptionValue | QuarantineOptionValue | CompilerOptions | HooksValue;
