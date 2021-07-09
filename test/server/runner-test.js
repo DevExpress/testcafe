@@ -582,6 +582,17 @@ describe('Runner', () => {
             return testFilter(filter, expectedTestNames);
         });
 
+        it('Should filter by async predicate', () => {
+            const filter = testName => async () => testName.includes('Fixture5');
+
+            const expectedTestNames = [
+                'Fixture5Test1',
+                'Fixture5Test2'
+            ];
+
+            return testFilter(filter, expectedTestNames);
+        });
+
         it('Should filter by fixture name', () => {
             const filter = (testName, fixtureName) => fixtureName === 'Fixture1';
 

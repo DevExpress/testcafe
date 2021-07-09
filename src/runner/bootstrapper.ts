@@ -38,7 +38,7 @@ const DEBUG_SCOPE = 'testcafe:bootstrapper';
 type TestSource = unknown;
 
 interface Filter {
-    (testName: string, fixtureName: string, fixturePath: string, testMeta: Metadata, fixtureMeta: Metadata): boolean;
+    (testName: string, fixtureName: string, fixturePath: string, testMeta: Metadata, fixtureMeta: Metadata): Promise<boolean>;
 }
 
 type BrowserInfoSource = BrowserInfo | BrowserConnection;
@@ -170,8 +170,18 @@ export default class Bootstrapper {
         return BrowserSet.from(browserConnections, this._getBrowserSetOptions());
     }
 
-    private _filterTests (tests: Test[], predicate: Filter): Test[] {
-        return tests.filter(test => predicate(test.name as string, test.fixture.name as string, test.fixture.path, test.meta, test.fixture.meta));
+    private static async asyncFilter<T> (arr: T[], predicate: (item: T) => Promise<boolean>): Promise<T[]> {
+        const results = await Promise.all(arr.map(predicate));
+
+        return arr.filter((_v, index) => results[index]);
+    }
+
+    private _filterTests (tests: Test[], predicate: Filter): Promise<Test[]> {
+        return Bootstrapper.asyncFilter(
+            tests, async (test: Test): Promise<boolean> => predicate(
+                test.name as string, test.fixture.name as string, test.fixture.path, test.meta, test.fixture.meta
+            )
+        );
     }
 
     private async _compileTests ({ sourceList, compilerOptions }: CompilerArguments): Promise<Test[]> {
@@ -214,7 +224,7 @@ export default class Bootstrapper {
             throw new GeneralError(RUNTIME_ERRORS.noTestsToRun);
 
         if (this.filter)
-            tests = this._filterTests(tests, this.filter);
+            tests = await this._filterTests(tests, this.filter);
 
         if (!tests.length)
             throw new GeneralError(RUNTIME_ERRORS.noTestsToRunDueFiltering);
