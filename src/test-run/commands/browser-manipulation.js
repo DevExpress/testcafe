@@ -13,18 +13,18 @@ import {
 
 import { generateScreenshotMark } from '../../screenshots/utils';
 
-function initResizeToFitDeviceOptions (name, val) {
-    return new ResizeToFitDeviceOptions(val, true);
+function initResizeToFitDeviceOptions (name, val, initOptions, validate = true) {
+    return new ResizeToFitDeviceOptions(val, validate);
 }
 
-function initElementScreenshotOptions (name, val) {
-    return new ElementScreenshotOptions(val, true);
+function initElementScreenshotOptions (name, val, initOptions, validate = true) {
+    return new ElementScreenshotOptions(val, validate);
 }
 
 // Commands
 export class TakeScreenshotBaseCommand extends CommandBase {
-    constructor (obj, testRun, type) {
-        super(obj, testRun, type);
+    constructor (obj, testRun, type, validateProperties) {
+        super(obj, testRun, type, validateProperties);
 
         this.markSeed = null;
         this.markData = '';
@@ -49,8 +49,8 @@ export class TakeScreenshotCommand extends TakeScreenshotBaseCommand {
 }
 
 export class TakeElementScreenshotCommand extends TakeScreenshotBaseCommand {
-    constructor (obj, testRun) {
-        super(obj, testRun, TYPE.takeElementScreenshot);
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.takeElementScreenshot, validateProperties);
     }
 
     _getAssignableProperties () {
@@ -88,8 +88,8 @@ export class ResizeWindowCommand extends CommandBase {
 }
 
 export class ResizeWindowToFitDeviceCommand extends CommandBase {
-    constructor (obj, testRun) {
-        super(obj, testRun, TYPE.resizeWindowToFitDevice);
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.resizeWindowToFitDevice, validateProperties);
     }
 
     _getAssignableProperties () {

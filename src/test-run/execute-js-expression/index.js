@@ -1,15 +1,20 @@
 import { runInContext } from 'vm';
+
 import {
     GeneralError,
     TestCompilationError,
     APIError,
     CompositeError,
-} from '../errors/runtime';
-import { UncaughtErrorInCustomScript, UncaughtTestCafeErrorInCustomScript } from '../errors/test-run';
-import { setContextOptions } from '../api/test-controller/execution-context';
+} from '../../errors/runtime';
 
-const ERROR_LINE_COLUMN_REGEXP = /\[JS code\]:(\d+):(\d+)/;
-const ERROR_LINE_OFFSET        = -1;
+import { UncaughtErrorInCustomScript, UncaughtTestCafeErrorInCustomScript } from '../../errors/test-run';
+import { setContextOptions } from '../../api/test-controller/execution-context';
+
+import {
+    ERROR_LINE_COLUMN_REGEXP,
+    ERROR_FILENAME,
+    ERROR_LINE_OFFSET,
+} from './constants';
 
 // NOTE: do not beautify this code since offsets for error lines and columns are coded here
 function wrapInAsync (expression) {
@@ -22,6 +27,9 @@ function getErrorLineColumn (err) {
     if (err.isTestCafeError) {
         if (!err.callsite)
             return {};
+
+        if (err.callsite.id)
+            return { line: 0, column: 0 };
 
         const stackFrames = err.callsite.stackFrames || [];
         const frameIndex  = err.callsite.callsiteFrameIdx;
@@ -46,7 +54,7 @@ function getErrorLineColumn (err) {
 
 function createErrorFormattingOptions () {
     return {
-        filename:   '[JS code]',
+        filename:   ERROR_FILENAME,
         lineOffset: ERROR_LINE_OFFSET,
     };
 }
@@ -74,7 +82,7 @@ export function executeJsExpression (expression, testRun, options) {
     return runInContext(expression, context, errorOptions);
 }
 
-export async function executeAsyncJsExpression (expression, testRun, callsite) {
+export async function executeAsyncJsExpression (expression, testRun, callsite, onBeforeRaisingError) {
     if (!expression || !expression.length)
         return Promise.resolve();
 
@@ -86,10 +94,16 @@ export async function executeAsyncJsExpression (expression, testRun, callsite) {
     }
     catch (err) {
         const { line, column } = getErrorLineColumn(err);
+        let resultError        = null;
 
         if (err.isTestCafeError || isRuntimeError(err))
-            throw new UncaughtTestCafeErrorInCustomScript(err, expression, line, column, callsite);
+            resultError = new UncaughtTestCafeErrorInCustomScript(err, expression, line, column, callsite);
+        else
+            resultError = new UncaughtErrorInCustomScript(err, expression, line, column, callsite);
 
-        throw new UncaughtErrorInCustomScript(err, expression, line, column, callsite);
+        if (onBeforeRaisingError)
+            await onBeforeRaisingError(resultError);
+
+        throw resultError;
     }
 }

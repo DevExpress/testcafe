@@ -1,25 +1,27 @@
 const MULTIPLE_WINDOWS_TESTS_GLOB = 'test/functional/fixtures/multiple-windows/test.js';
 const COMPILER_SERVICE_TESTS_GLOB = 'test/functional/fixtures/compiler-service/test.js';
 const LEGACY_TESTS_GLOB           = 'test/functional/legacy-fixtures/**/test.js';
+const BASIC_TESTS_GLOB            = 'test/functional/fixtures/**/test.js';
 
 const TESTS_GLOB = [
-    'test/functional/fixtures/**/test.js',
+    BASIC_TESTS_GLOB,
     `!${MULTIPLE_WINDOWS_TESTS_GLOB}`,
     `!${COMPILER_SERVICE_TESTS_GLOB}`,
 ];
 
 const MIGRATE_ALL_TESTS_TO_COMPILER_SERVICE_GLOB = [
-    'test/functional/fixtures/app-command/test.js',
-    'test/functional/fixtures/driver/test.js',
-    'test/functional/fixtures/concurrency/test.js',
-    'test/functional/fixtures/driver/test.js',
-    'test/functional/fixtures/hammerhead/gh-2418/test.js',
-    'test/functional/fixtures/hammerhead/gh-2622/test.js',
-    'test/functional/fixtures/live/test.js',
-    'test/functional/fixtures/reporter/test.js',
-    'test/functional/fixtures/api/es-next/roles/test.js',
-    'test/functional/fixtures/api/es-next/hooks/test.js',
-    'test/functional/fixtures/api/es-next/request-hooks/test.js',
+    BASIC_TESTS_GLOB,
+    COMPILER_SERVICE_TESTS_GLOB,
+    '!test/functional/fixtures/multiple-windows/test.js',
+    '!test/functional/fixtures/browser-provider/browser-reconnect/test.js',
+    '!test/functional/fixtures/api/es-next/assertions/test.js',
+    '!test/functional/fixtures/regression/gh-2546/test.js',
+    '!test/functional/fixtures/regression/gh-2846/test.js',
+    '!test/functional/fixtures/regression/gh-2861/test.js',
+    '!test/functional/fixtures/regression/gh-2968/test.js',
+    '!test/functional/fixtures/regression/gh-3021/test.js',
+    '!test/functional/fixtures/regression/gh-3298/test.js',
+    '!test/functional/fixtures/regression/gh-4516/test.js',
 ];
 
 module.exports = {

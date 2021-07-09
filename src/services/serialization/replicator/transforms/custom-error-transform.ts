@@ -1,8 +1,8 @@
-export default class CustomErrorTransform {
-    public readonly type: string;
+import BaseTransform from './base-transform';
 
+export default class CustomErrorTransform extends BaseTransform {
     public constructor () {
-        this.type = 'CustomError';
+        super('CustomError');
     }
 
     private _isBuiltInError (type: string): boolean {
@@ -23,9 +23,5 @@ export default class CustomErrorTransform {
         errorData.stack   = errorData.stack || err.stack;
 
         return errorData;
-    }
-
-    public fromSerializable (val: unknown): unknown {
-        return val;
     }
 }

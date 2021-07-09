@@ -2,19 +2,29 @@ import BaseTransform from '../base-transform';
 import CommandBase from '../../../../../test-run/commands/base';
 import { SerializedCommand } from '../../interfaces';
 import { isObservationCommand } from '../../../../../test-run/commands/utils';
-import AssertionCommand from '../../../../../test-run/commands/assertion';
 import TestRun from '../../../../../test-run';
-import { SetNativeDialogHandlerCommand } from '../../../../../test-run/commands/actions';
+import { ExecuteExpressionCommand, SetNativeDialogHandlerCommand } from '../../../../../test-run/commands/actions';
 import COMMAND_CONSTRUCTORS from './command-constructors';
 import { CommandConstructor, ObservationConstructor } from './types';
+import AssertionCommand from '../../../../../test-run/commands/assertion';
+
+const OBSERVABLE_COMMAND_CONSTRUCTORS_WITH_SKIPPED_ARGUMENT_VALIDATION = [
+    AssertionCommand,
+    ExecuteExpressionCommand,
+];
 
 export default class CommandBaseTransform extends BaseTransform {
     public constructor () {
-        super('ExecuteClientFunctionCommandBase');
+        super('CommandBase');
     }
 
     public shouldTransform (_: unknown, val: unknown): boolean {
         return val instanceof CommandBase;
+    }
+
+    private _skipArgumentValidation (CommandCtor: CommandConstructor, value: SerializedCommand): boolean {
+        return isObservationCommand(value) &&
+            !OBSERVABLE_COMMAND_CONSTRUCTORS_WITH_SKIPPED_ARGUMENT_VALIDATION.includes(CommandCtor);
     }
 
     private _createCommandInstance (CommandCtor: CommandConstructor, value: SerializedCommand): any {
@@ -23,7 +33,7 @@ export default class CommandBaseTransform extends BaseTransform {
         const testRunStub        = {};
         const validateProperties = false;
 
-        if (isObservationCommand(value) && CommandCtor !== AssertionCommand)
+        if (this._skipArgumentValidation(CommandCtor, value))
             return new (CommandCtor as ObservationConstructor)(value, testRunStub as TestRun);
 
         else if (CommandCtor === SetNativeDialogHandlerCommand)

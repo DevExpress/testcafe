@@ -48,9 +48,19 @@ export class AssertionOptions {
 }
 
 export class ResizeToFitDeviceOptions {
+    public constructor (obj: object, validate: boolean);
     public portraitOrientation: boolean;
 }
 
 export class PressOptions extends ActionOptions {
     public confidential: boolean;
+}
+
+export class ElementScreenshotOptions extends ActionOptions {
+    public scrollTargetX: number;
+    public scrollTargetY: number;
+    public includeMargins: number;
+    public includeBorders: number;
+    public includePaddings: number;
+    public crop: CropOptions;
 }

@@ -7,4 +7,6 @@ export interface TestRunProxyInit {
     id: string;
     test: Test;
     options: Dictionary<OptionValue>;
+    browser: Browser;
 }
+

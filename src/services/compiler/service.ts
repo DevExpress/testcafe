@@ -46,10 +46,12 @@ import {
     RemoveRequestEventListenersArguments,
     InitializeTestRunDataArguments,
     TestRunLocator,
-    GetAssertionActualValueArguments,
     SetCtxArguments,
     ExecuteRoleInitFnArguments,
     UpdateRolePropertyArguments,
+    ExecuteJsExpressionArguments,
+    ExecuteAsyncJsExpressionArguments,
+    CommandLocator,
 } from './interfaces';
 
 import { CompilerArguments } from '../../compiler/interfaces';
@@ -71,6 +73,9 @@ import {
 import RequestHook from '../../api/request-hooks/hook';
 import RequestMock from '../../api/request-hooks/request-mock';
 import Role from '../../role/role';
+import { executeJsExpression, executeAsyncJsExpression } from '../../test-run/execute-js-expression';
+import { UncaughtErrorInCustomScript, UncaughtTestCafeErrorInCustomScript } from '../../errors/test-run';
+import { renderHtmlWithoutStack, shouldRenderHtmlWithoutStack } from '../../errors/test-run/render-error-template/utils';
 
 sourceMapSupport.install({
     hookRequire:              true,
@@ -164,6 +169,8 @@ class CompilerService implements CompilerProtocol {
             this.setCtx,
             this.setFixtureCtx,
             this.updateRoleProperty,
+            this.executeJsExpression,
+            this.executeAsyncJsExpression,
         ], this);
     }
 
@@ -213,12 +220,13 @@ class CompilerService implements CompilerProtocol {
         };
     }
 
-    private _initializeTestRunProxy (testRunId: string, test: Test): void {
+    private _initializeTestRunProxy (testRunId: string, test: Test, browser: Browser): void {
         const testRunProxy = new TestRunProxy({
             dispatcher: this,
             id:         testRunId,
             options:    this.state.options,
             test,
+            browser,
         });
 
         this.state.testRuns[testRunId] = testRunProxy;
@@ -285,8 +293,8 @@ class CompilerService implements CompilerProtocol {
         return this.proxy.call(this.executeAction, { id, apiMethodName, command, callsite });
     }
 
-    public async executeCommand ({ command, id }: ExecuteCommandArguments): Promise<unknown> {
-        return this.proxy.call(this.executeCommand, { id, command });
+    public async executeCommand ({ command, id, callsite }: ExecuteCommandArguments): Promise<unknown> {
+        return this.proxy.call(this.executeCommand, { id, command, callsite });
     }
 
     public async onRequestHookEvent ({ name, testId, hookId, eventData }: RequestHookEventArguments): Promise<void> {
@@ -356,10 +364,10 @@ class CompilerService implements CompilerProtocol {
         return await this.proxy.call(this.removeRequestEventListeners, { rules });
     }
 
-    public async initializeTestRunData ({ testRunId, testId }: InitializeTestRunDataArguments): Promise<void> {
+    public async initializeTestRunData ({ testRunId, testId, browser }: InitializeTestRunDataArguments): Promise<void> {
         const test = this.state.units[testId] as Test;
 
-        this._initializeTestRunProxy(testRunId, test);
+        this._initializeTestRunProxy(testRunId, test, browser);
         this._initializeFixtureCtx(test);
     }
 
@@ -371,7 +379,7 @@ class CompilerService implements CompilerProtocol {
         TestController.disableDebugForNonDebugCommands();
     }
 
-    public async getAssertionActualValue ({ testRunId, commandId }: GetAssertionActualValueArguments): Promise<unknown> {
+    public async getAssertionActualValue ({ testRunId, commandId }: CommandLocator): Promise<unknown> {
         return this._getTargetTestRun(testRunId).getAssertionActualValue(commandId);
     }
 
@@ -410,6 +418,37 @@ class CompilerService implements CompilerProtocol {
 
         // @ts-ignore
         role[name] = value;
+    }
+
+    public async executeJsExpression ({ expression, testRunId, options }: ExecuteJsExpressionArguments): Promise<unknown> {
+        const testRunProxy = this._getTargetTestRun(testRunId);
+
+        return executeJsExpression(expression, testRunProxy, options);
+    }
+
+    public async executeAsyncJsExpression ({ expression, testRunId, callsite }: ExecuteAsyncJsExpressionArguments): Promise<unknown> {
+        const testRunProxy = this._getTargetTestRun(testRunId);
+
+        return executeAsyncJsExpression(expression, testRunProxy, callsite, async (err: UncaughtTestCafeErrorInCustomScript | UncaughtErrorInCustomScript) => {
+            if (err instanceof UncaughtTestCafeErrorInCustomScript === false)
+                return;
+
+            const targetError = err as UncaughtTestCafeErrorInCustomScript;
+
+            if (!shouldRenderHtmlWithoutStack(targetError))
+                return;
+
+            testRunProxy.restoreOriginCallsiteForError(targetError);
+
+            // @ts-ignore
+            err.errCallsite = renderHtmlWithoutStack(targetError);
+        });
+    }
+
+    public async executeAssertionFn ({ testRunId, commandId }: CommandLocator): Promise<unknown> {
+        return this
+            ._getTargetTestRun(testRunId)
+            .executeAssertionFn(commandId);
     }
 }
 

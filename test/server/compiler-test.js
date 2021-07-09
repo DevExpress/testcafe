@@ -3,7 +3,7 @@ const fs                  = require('fs');
 const os                  = require('os');
 const path                = require('path');
 const { promisify }       = require('util');
-const expect              = require('chai').expect;
+const { expect }          = require('chai');
 const proxyquire          = require('proxyquire');
 const sinon               = require('sinon');
 const globby              = require('globby');
@@ -17,6 +17,7 @@ const { assertError }     = require('./helpers/assert-runtime-error');
 const compile             = require('./helpers/compile');
 const Module              = require('module');
 const toPosixPath         = require('../../lib/utils/to-posix-path');
+const BaseTestRunMock     = require('./helpers/base-test-run-mock');
 
 const copy      = promisify(fs.copyFile);
 const remove    = promisify(fs.unlink);
@@ -24,21 +25,7 @@ const writeFile = promisify(fs.writeFile);
 
 require('source-map-support').install();
 
-const SessionControllerStub = { getSession: () => {
-    return { id: nanoid(7) };
-} };
-
-const TestRun = proxyquire('../../lib/test-run/index', { './session-controller': SessionControllerStub });
-
-class TestRunMock extends TestRun {
-    _addInjectables () {}
-
-    _initRequestHooks () {}
-
-    get id () {
-        return 'id';
-    }
-
+class TestRunMock extends BaseTestRunMock {
     executeCommand (command) {
         this.commands.push(command);
 
@@ -46,13 +33,7 @@ class TestRunMock extends TestRun {
     }
 
     constructor (expectedError) {
-        super({
-            test:               {},
-            browserConnection:  {},
-            screenshotCapturer: {},
-            globalWarningLog:   {},
-            opts:               {},
-        });
+        super();
 
         this.expectedError = expectedError;
         this.commands = [];

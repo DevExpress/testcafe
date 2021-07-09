@@ -1,6 +1,6 @@
 import BaseTransform from '../base-transform';
 import ReExecutablePromise from '../../../../../utils/re-executable-promise';
-import { reExecutablePromiseMarker } from './marker';
+import { reExecutablePromiseMarkerSymbol } from './marker';
 
 export default class ReExecutablePromiseTransform extends BaseTransform {
     public constructor () {
@@ -12,6 +12,6 @@ export default class ReExecutablePromiseTransform extends BaseTransform {
     }
 
     public fromSerializable (): unknown {
-        return reExecutablePromiseMarker;
+        return reExecutablePromiseMarkerSymbol;
     }
 }

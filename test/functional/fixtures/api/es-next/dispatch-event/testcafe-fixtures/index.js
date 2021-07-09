@@ -225,7 +225,7 @@ test('defaults', async t => {
     await t.expect(log[1].buttons).eql(2);
 });
 
-test('predifined ctor', async t => {
+test('predefined ctor', async t => {
     await t.dispatchEvent(btn, 'customEvent', { eventConstructor: 'MouseEvent' });
 
     await t.expect(getMouseLog()).eql([{ isMouseEvent: true, isCustomEvent: false, detail: 0, type: 'customEvent' }]);

@@ -12,6 +12,7 @@ import TestRunDebugLog from './debug-log';
 import TestRunErrorFormattableAdapter from '../errors/test-run/formattable-adapter';
 import TestCafeErrorList from '../errors/error-list';
 import { GeneralError } from '../errors/runtime';
+
 import {
     RequestHookUnhandledError,
     PageLoadError,
@@ -32,6 +33,7 @@ import ReporterPluginHost from '../reporter/plugin-host';
 import BrowserConsoleMessages from './browser-console-messages';
 import WarningLog from '../notifications/warning-log';
 import WARNING_MESSAGE from '../notifications/warning-message';
+
 import {
     StateSnapshot,
     SPECIAL_ERROR_PAGE,
@@ -42,7 +44,9 @@ import {
     ResponseEvent,
     RequestHookMethodError,
     StoragesSnapshot,
+    generateUniqueId,
 } from 'testcafe-hammerhead';
+
 import * as INJECTABLES from '../assets/injectables';
 import { findProblematicScripts } from '../custom-client-scripts/utils';
 import getCustomClientScriptUrl from '../custom-client-scripts/get-url';
@@ -59,6 +63,8 @@ import {
 } from './commands/utils';
 
 import {
+    ExecuteAsyncExpressionCommand,
+    ExecuteExpressionCommand,
     GetCurrentWindowsCommand,
     SwitchToWindowByPredicateCommand,
     SwitchToWindowCommand,
@@ -98,12 +104,13 @@ import { RE_EXECUTABLE_PROMISE_MARKER_DESCRIPTION } from '../services/serializat
 import ReExecutablePromise from '../utils/re-executable-promise';
 import { ExternalAssertionLibraryError } from '../errors/test-run';
 import addRenderedWarning from '../notifications/add-rendered-warning';
-
+import { ERROR_FILENAME } from './execute-js-expression/constants';
+import getBrowser from '../utils/get-browser';
+import AssertionExecutor from '../assertions/executor';
 
 const lazyRequire                 = require('import-lazy')(require);
 const ClientFunctionBuilder       = lazyRequire('../client-functions/client-function-builder');
 const TestRunBookmark             = lazyRequire('./bookmark');
-const AssertionExecutor           = lazyRequire('../assertions/executor');
 const actionCommands              = lazyRequire('./commands/actions');
 const browserManipulationCommands = lazyRequire('./commands/browser-manipulation');
 const serviceCommands             = lazyRequire('./commands/service');
@@ -220,6 +227,8 @@ export default class TestRun extends AsyncEventEmitter {
     private readonly replicator: any;
     private disconnected: boolean;
     private errScreenshotPath: string | null;
+    private asyncJsExpressionCallsites: Map<string, CallsiteRecord>;
+    public readonly browser: Browser;
 
     public constructor ({ test, browserConnection, screenshotCapturer, globalWarningLog, opts, compilerService }: TestRunInit) {
         super();
@@ -230,6 +239,7 @@ export default class TestRun extends AsyncEventEmitter {
         this.test              = test;
         this.browserConnection = browserConnection;
         this.unstable          = false;
+        this.browser           = getBrowser(browserConnection);
 
         this.phase = TestRunPhase.initial;
 
@@ -285,8 +295,9 @@ export default class TestRun extends AsyncEventEmitter {
 
         this.debugLogger = this.opts.debugLogger;
 
-        this.observedCallsites = new ObservedCallsitesStorage();
-        this.compilerService   = compilerService;
+        this.observedCallsites          = new ObservedCallsitesStorage();
+        this.compilerService            = compilerService;
+        this.asyncJsExpressionCallsites = new Map<string, CallsiteRecord>();
 
         this.replicator = createReplicator([ new SelectorNodeTransform() ]);
 
@@ -796,14 +807,36 @@ export default class TestRun extends AsyncEventEmitter {
     }
 
     // Execute command
-    private _executeJsExpression (command: CommandBase): unknown {
-        const resultVariableName = (command as any).resultVariableName;
-        let expression           = (command as any).expression;
+    private async _executeJsExpression (command: ExecuteExpressionCommand): Promise<unknown> {
+        const resultVariableName = command.resultVariableName;
+        let expression           = command.expression;
 
         if (resultVariableName)
             expression = `${resultVariableName} = ${expression}, ${resultVariableName}`;
 
+        if (this.compilerService) {
+            return this.compilerService.executeJsExpression({
+                expression,
+                testRunId: this.id,
+                options:   { skipVisibilityCheck: false },
+            });
+        }
+
         return executeJsExpression(expression, this, { skipVisibilityCheck: false });
+    }
+
+    private async _executeAsyncJsExpression (command: ExecuteAsyncExpressionCommand, callsite?: string): Promise<unknown> {
+        if (this.compilerService) {
+            this.asyncJsExpressionCallsites.clear();
+
+            return this.compilerService.executeAsyncJsExpression({
+                expression: command.expression,
+                testRunId:  this.id,
+                callsite,
+            });
+        }
+
+        return executeAsyncJsExpression(command.expression, this, callsite);
     }
 
     private _redirectReExecutablePromiseExecutionToCompilerService (command: AssertionCommand): void {
@@ -820,6 +853,15 @@ export default class TestRun extends AsyncEventEmitter {
         });
     }
 
+    private _redirectAssertionFnExecutionToCompilerService (executor: AssertionExecutor): void {
+        executor.fn = () => {
+            return this.compilerService?.executeAssertionFn({
+                testRunId: this.id,
+                commandId: executor.command.id,
+            });
+        };
+    }
+
     private async _executeAssertion (command: AssertionCommand, callsite: CallsiteRecord): Promise<void> {
         if (command.actual === Symbol.for(RE_EXECUTABLE_PROMISE_MARKER_DESCRIPTION))
             this._redirectReExecutablePromiseExecutionToCompilerService(command);
@@ -829,6 +871,7 @@ export default class TestRun extends AsyncEventEmitter {
 
         executor.once('start-assertion-retries', (timeout: number) => this.executeCommand(new serviceCommands.ShowAssertionRetriesStatusCommand(timeout)));
         executor.once('end-assertion-retries', (success: boolean) => this.executeCommand(new serviceCommands.HideAssertionRetriesStatusCommand(success)));
+        executor.once('non-serializable-actual-value', this._redirectAssertionFnExecutionToCompilerService);
 
         const executeFn = this.decoratePreventEmitActionEvents(() => executor.run(), { prevent: true });
 
@@ -969,20 +1012,20 @@ export default class TestRun extends AsyncEventEmitter {
         return customActionsInfo[PROXYLESS_COMMANDS.get(command.type)!];
     }
 
-    public async executeCommand (command: CommandBase, callsite?: CallsiteRecord): Promise<unknown> {
+    public async executeCommand (command: CommandBase, callsite?: CallsiteRecord | string): Promise<unknown> {
         this.debugLog.command(command);
 
         let postAction = null as (() => Promise<unknown>) | null;
 
         if (this.pendingPageError && isCommandRejectableByPageError(command))
-            return this._rejectCommandWithPageError(callsite);
+            return this._rejectCommandWithPageError(callsite as CallsiteRecord);
 
         if (isExecutableOnClientCommand(command))
             this.addingDriverTasksCount++;
 
         this._adjustConfigurationWithCommand(command);
 
-        await this._setBreakpointIfNecessary(command, callsite);
+        await this._setBreakpointIfNecessary(command, callsite as CallsiteRecord);
 
         if (await this._canExecuteCommandThroughCDP(command)) {
             const browserId = this.browserConnection.id;
@@ -1019,7 +1062,7 @@ export default class TestRun extends AsyncEventEmitter {
             return null;
 
         if (command.type === COMMAND_TYPE.debug)
-            return await this._enqueueSetBreakpointCommand(callsite);
+            return await this._enqueueSetBreakpointCommand(callsite as CallsiteRecord);
 
         if (command.type === COMMAND_TYPE.useRole) {
             let fn = (): Promise<void> => this._useRole((command as any).role, callsite as CallsiteRecord);
@@ -1034,10 +1077,10 @@ export default class TestRun extends AsyncEventEmitter {
             return this._executeAssertion(command as AssertionCommand, callsite as CallsiteRecord);
 
         if (command.type === COMMAND_TYPE.executeExpression)
-            return await this._executeJsExpression(command);
+            return await this._executeJsExpression(command as ExecuteExpressionCommand);
 
         if (command.type === COMMAND_TYPE.executeAsyncExpression)
-            return await executeAsyncJsExpression((command as any).expression, this, callsite);
+            return await this._executeAsyncJsExpression(command as ExecuteAsyncExpressionCommand, callsite as string);
 
         if (command.type === COMMAND_TYPE.getBrowserConsoleMessages)
             return await this._enqueueBrowserConsoleMessagesCommand(command, callsite as CallsiteRecord);
@@ -1242,6 +1285,18 @@ export default class TestRun extends AsyncEventEmitter {
         delete testRunTracker.activeTestRuns[this.session.id];
     }
 
+    private _storeCommandCallsitesOfExecutedAsyncJsExpression (callsite: CallsiteRecord): void {
+        // @ts-ignore
+        if (callsite?.filename === ERROR_FILENAME) {
+            const id = generateUniqueId();
+
+            // @ts-ignore
+            callsite.id = id;
+
+            this.asyncJsExpressionCallsites.set(id, callsite as CallsiteRecord);
+        }
+    }
+
     public async emitActionEvent (eventName: string, args: unknown): Promise<void> {
         // @ts-ignore
         if (!this.preventEmitActionEvents)
@@ -1261,6 +1316,7 @@ export default class TestRun extends AsyncEventEmitter {
         await this.compilerService.initializeTestRunData({
             testRunId: this.id,
             testId:    this.test.id,
+            browser:   this.browser,
         });
     }
 

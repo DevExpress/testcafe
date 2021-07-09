@@ -22,7 +22,6 @@ const BrowserConnectionStatus = require('../../lib/browser/connection/status');
 const { noop }                = require('lodash');
 const Test                    = require('../../lib/api/structure/test');
 
-chai.use(require('chai-string'));
 
 describe('Runner', () => {
     let testCafe                  = null;
