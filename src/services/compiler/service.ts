@@ -3,7 +3,6 @@ import Compiler from '../../compiler';
 import TestRunProxy from './test-run-proxy';
 import TestController from '../../api/test-controller';
 
-
 import {
     flatten as flattenTestStructure,
     isFixture,
@@ -25,17 +24,20 @@ import sourceMapSupport from 'source-map-support';
 
 import {
     CompilerProtocol,
+    FunctionProperties,
+    isFixtureFunctionProperty,
+    isTestFunctionProperty,
+    RunTestArguments
+} from './protocol';
+
+import {
     ExecuteActionArguments,
     ExecuteCommandArguments,
     ExecuteMockPredicate,
     ExecuteRequestFilterRulePredicateArguments,
-    FunctionProperties,
-    isFixtureFunctionProperty,
-    isTestFunctionProperty,
     RemoveHeaderOnConfigureResponseEventArguments,
     RequestHookEventArguments,
     RequestHookLocator,
-    RunTestArguments,
     SetConfigureResponseEventOptionsArguments,
     SetHeaderOnConfigureResponseEventArguments,
     SetMockArguments,
@@ -43,11 +45,12 @@ import {
     AddRequestEventListenersArguments,
     RemoveRequestEventListenersArguments,
     InitializeTestRunDataArguments,
-    UseStateSnapshotArguments,
-    SetTestRunPhaseArguments,
     TestRunLocator,
-    SetBrowserConsoleMessagesArguments
-} from './protocol';
+    GetAssertionActualValueArguments,
+    SetCtxArguments,
+    ExecuteRoleInitFnArguments,
+    UpdateRolePropertyArguments
+} from './interfaces';
 
 import { CompilerArguments } from '../../compiler/interfaces';
 import Fixture from '../../api/structure/fixture';
@@ -62,15 +65,12 @@ import {
     RequestEvent,
     RequestFilterRule,
     ResponseMock,
-    responseMockSetBodyMethod,
-    StateSnapshot
+    responseMockSetBodyMethod
 } from 'testcafe-hammerhead';
 
 import RequestHook from '../../api/request-hooks/hook';
 import RequestMock from '../../api/request-hooks/request-mock';
-import TestRunPhase from '../../test-run/phase';
-import { ExecuteClientFunctionCommand, ExecuteSelectorCommand } from '../../test-run/commands/observation';
-import BrowserConsoleMessages from '../../test-run/browser-console-messages';
+import Role from '../../role/role';
 
 sourceMapSupport.install({
     hookRequire:              true,
@@ -83,6 +83,7 @@ interface ServiceState {
     fixtureCtxs: { [id: string]: object };
     units: Units;
     options: Dictionary<OptionValue>;
+    roles: Map<string, Role>;
 }
 
 interface WrapSetMockArguments extends RequestHookLocator {
@@ -111,7 +112,8 @@ class CompilerService implements CompilerProtocol {
             testRuns:    {},
             fixtureCtxs: {},
             units:       {},
-            options:     {}
+            options:     {},
+            roles:       new Map<string, Role>()
         };
     }
 
@@ -122,7 +124,7 @@ class CompilerService implements CompilerProtocol {
     }
 
     private _getTestCtx ({ testRunId }: RunTestArguments, unit: Unit): TestRunProxy {
-        const testRunProxy = this.state.testRuns[testRunId];
+        const testRunProxy = this._getTargetTestRun(testRunId);
 
         testRunProxy.fixtureCtx = this._getFixtureCtx(unit);
 
@@ -155,17 +157,13 @@ class CompilerService implements CompilerProtocol {
             this.addRequestEventListeners,
             this.removeRequestEventListeners,
             this.initializeTestRunData,
-            this.getCurrentUrl,
-            this.getStateSnapshot,
-            this.useStateSnapshot,
-            this.getTestRunPhase,
-            this.setTestRunPhase,
-            this.getActiveDialogHandler,
-            this.getActiveIframeSelector,
-            this.getSpeed,
-            this.getPageLoadTimeout,
-            this.setBrowserConsoleMessages,
-            this.getBrowserConsoleMessages
+            this.getAssertionActualValue,
+            this.executeRoleInitFn,
+            this.getCtx,
+            this.getFixtureCtx,
+            this.setCtx,
+            this.setFixtureCtx,
+            this.updateRoleProperty
         ], this);
     }
 
@@ -233,6 +231,14 @@ class CompilerService implements CompilerProtocol {
             return;
 
         this.state.fixtureCtxs[fixtureId] = Object.create(null);
+    }
+
+    private _getTargetTestRun (testRunId: string): TestRunProxy {
+        return this.state.testRuns[testRunId];
+    }
+
+    private _getTargetRole (roleId: string): Role {
+        return this.state.roles.get(roleId) as Role;
     }
 
     public async setOptions ({ value }: SetOptionsArguments): Promise<void> {
@@ -339,9 +345,7 @@ class CompilerService implements CompilerProtocol {
     }
 
     public async getWarningMessages ({ testRunId }: TestRunLocator): Promise<string[]> {
-        const testRunProxy = this.state.testRuns[testRunId];
-
-        return testRunProxy.warningLog.messages;
+        return this._getTargetTestRun(testRunId).warningLog.messages;
     }
 
     public async addRequestEventListeners ( { hookId, hookClassName, rules }: AddRequestEventListenersArguments): Promise<void> {
@@ -359,14 +363,6 @@ class CompilerService implements CompilerProtocol {
         this._initializeFixtureCtx(test);
     }
 
-    public async getCurrentUrl ({ testRunId }: TestRunLocator): Promise<string> {
-        return this.proxy.call(this.getCurrentUrl, { testRunId });
-    }
-
-    public async getStateSnapshot ({ testRunId }: TestRunLocator): Promise<StateSnapshot> {
-        return this.proxy.call(this.getStateSnapshot, { testRunId });
-    }
-
     public enableDebugForNonDebugCommands (): void {
         TestController.enableDebugForNonDebugCommands();
     }
@@ -375,39 +371,45 @@ class CompilerService implements CompilerProtocol {
         TestController.disableDebugForNonDebugCommands();
     }
 
-    public async useStateSnapshot ({ testRunId, snapshot }: UseStateSnapshotArguments): Promise<void> {
-        return this.proxy.call(this.useStateSnapshot, { testRunId, snapshot });
+    public async getAssertionActualValue ({ testRunId, commandId }: GetAssertionActualValueArguments): Promise<unknown> {
+        return this._getTargetTestRun(testRunId).getAssertionActualValue(commandId);
     }
 
-    public async getTestRunPhase ({ testRunId }: TestRunLocator): Promise<TestRunPhase> {
-        return this.proxy.call(this.getTestRunPhase, { testRunId });
-    }
-    public async setTestRunPhase ({ testRunId, value }: SetTestRunPhaseArguments): Promise<void> {
-        return this.proxy.call(this.setTestRunPhase, { testRunId, value });
+    public async executeRoleInitFn ({ testRunId, roleId }: ExecuteRoleInitFnArguments): Promise<unknown> {
+        const role         = this._getTargetRole(roleId);
+        const testRunProxy = this._getTargetTestRun(testRunId);
+
+        return (role._initFn as Function)(testRunProxy);
     }
 
-    public async getActiveDialogHandler ({ testRunId }: TestRunLocator): Promise<ExecuteClientFunctionCommand | null> {
-        return this.proxy.call(this.getActiveDialogHandler, { testRunId });
+    public async getCtx ({ testRunId }: TestRunLocator): Promise<object> {
+        return this._getTargetTestRun(testRunId).ctx;
     }
 
-    public async getActiveIframeSelector ({ testRunId }: TestRunLocator): Promise<ExecuteSelectorCommand | null> {
-        return this.proxy.call(this.getActiveIframeSelector, { testRunId });
+    public async getFixtureCtx ({ testRunId }: TestRunLocator): Promise<object> {
+        return this._getTargetTestRun(testRunId).fixtureCtx;
     }
 
-    public async getSpeed ({ testRunId }: TestRunLocator): Promise<number> {
-        return this.proxy.call(this.getSpeed, { testRunId });
+    public async setCtx ({ testRunId, value }: SetCtxArguments): Promise<void> {
+        this._getTargetTestRun(testRunId).ctx = value;
     }
 
-    public async getPageLoadTimeout ({ testRunId }: TestRunLocator): Promise<number> {
-        return this.proxy.call(this.getPageLoadTimeout, { testRunId });
+    public async setFixtureCtx ({ testRunId, value }: SetCtxArguments): Promise<void> {
+        this._getTargetTestRun(testRunId).fixtureCtx = value;
     }
 
-    public async setBrowserConsoleMessages ({ testRunId, value }: SetBrowserConsoleMessagesArguments): Promise<void> {
-        return this.proxy.call(this.setBrowserConsoleMessages, { testRunId, value });
+    public onRoleAppeared (role: Role): void {
+        if (this.state.roles.has(role.id))
+            return;
+
+        this.state.roles.set(role.id, role);
     }
 
-    public async getBrowserConsoleMessages ({ testRunId }: TestRunLocator): Promise<BrowserConsoleMessages> {
-        return this.proxy.call(this.getBrowserConsoleMessages, { testRunId });
+    public async updateRoleProperty ({ roleId, name, value }: UpdateRolePropertyArguments): Promise<void> {
+        const role = this._getTargetRole(roleId);
+
+        // @ts-ignore
+        role[name] = value;
     }
 }
 

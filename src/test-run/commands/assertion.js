@@ -31,12 +31,13 @@ function initAssertionParameter (name, val, { skipVisibilityCheck, testRun }) {
 
 // Commands
 export default class AssertionCommand extends CommandBase {
-    constructor (obj, testRun) {
-        super(obj, testRun, TYPE.assertion);
+    constructor (obj, testRun, validateProperties) {
+        super(obj, testRun, TYPE.assertion, validateProperties);
     }
 
     _getAssignableProperties () {
         return [
+            { name: 'id', type: nonEmptyStringArgument, required: false },
             { name: 'assertionType', type: nonEmptyStringArgument, required: true },
             { name: 'actual', init: initAssertionParameter, defaultValue: void 0 },
             { name: 'expected', init: initAssertionParameter, defaultValue: void 0 },

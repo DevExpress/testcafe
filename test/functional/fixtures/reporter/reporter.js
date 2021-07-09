@@ -61,6 +61,11 @@ function generateReporter (log, options = {}) {
 
                 const item = { name, action: 'done', command };
 
+                // NOTE: The 'id' property has a different value for each command
+                // and it's unable to use it for comparison.
+                // This is why we remove it.
+                delete item.command.id;
+
                 if (err)
                     item.err = err.code;
 

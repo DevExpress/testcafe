@@ -3,6 +3,7 @@ import url from 'url';
 import cdp from 'chrome-remote-interface';
 import EventEmitter from 'events';
 import { spawn, ChildProcess } from 'child_process';
+
 import {
     HOST_INPUT_FD,
     HOST_OUTPUT_FD,
@@ -23,46 +24,42 @@ import DEBUG_ACTION from '../../utils/debug-action';
 import {
     CompilerProtocol,
     RunTestArguments,
-    ExecuteActionArguments,
-    FunctionProperties,
-    SetOptionsArguments,
-    ExecuteCommandArguments,
-    RequestHookEventArguments,
-    SetMockArguments,
-    SetConfigureResponseEventOptionsArguments,
-    SetHeaderOnConfigureResponseEventArguments,
-    RemoveHeaderOnConfigureResponseEventArguments,
-    ExecuteRequestFilterRulePredicateArguments,
-    RequestFilterRuleLocator,
-    ExecuteMockPredicate,
-    AddRequestEventListenersArguments,
-    RemoveRequestEventListenersArguments,
-    InitializeTestRunDataArguments,
-    UseStateSnapshotArguments,
-    SetTestRunPhaseArguments,
-    TestRunLocator,
-    SetBrowserConsoleMessagesArguments
+    FunctionProperties
 } from './protocol';
 
 import { CompilerArguments } from '../../compiler/interfaces';
 import Test from '../../api/structure/test';
+
 import {
     RequestInfo,
     ResponseMock,
-    IncomingMessageLikeInitOptions,
-    StateSnapshot
+    IncomingMessageLikeInitOptions
 } from 'testcafe-hammerhead';
 
 import { CallsiteRecord } from 'callsite-record';
-import TestRunPhase from '../../test-run/phase';
-import BrowserConsoleMessages from '../../test-run/browser-console-messages';
-
+import { DebugCommand, DisableDebugCommand } from '../../test-run/commands/observation';
+import MethodShouldNotBeCalledError from '../utils/method-should-not-be-called-error';
 import {
-    DebugCommand,
-    DisableDebugCommand,
-    ExecuteClientFunctionCommand,
-    ExecuteSelectorCommand
-} from '../../test-run/commands/observation';
+    AddRequestEventListenersArguments,
+    ExecuteActionArguments,
+    ExecuteCommandArguments,
+    ExecuteMockPredicate,
+    ExecuteRequestFilterRulePredicateArguments,
+    ExecuteRoleInitFnArguments,
+    GetAssertionActualValueArguments,
+    InitializeTestRunDataArguments,
+    RemoveHeaderOnConfigureResponseEventArguments,
+    RemoveRequestEventListenersArguments,
+    RequestFilterRuleLocator,
+    RequestHookEventArguments,
+    SetConfigureResponseEventOptionsArguments,
+    SetCtxArguments,
+    SetMockArguments,
+    SetHeaderOnConfigureResponseEventArguments,
+    SetOptionsArguments,
+    TestRunLocator,
+    UpdateRolePropertyArguments
+} from './interfaces';
 
 const SERVICE_PATH       = require.resolve('./service');
 const INTERNAL_FILES_URL = url.pathToFileURL(path.join(__dirname, '../../'));
@@ -112,17 +109,13 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
             this.addRequestEventListeners,
             this.removeRequestEventListeners,
             this.initializeTestRunData,
-            this.getCurrentUrl,
-            this.getStateSnapshot,
-            this.useStateSnapshot,
-            this.getTestRunPhase,
-            this.setTestRunPhase,
-            this.getActiveDialogHandler,
-            this.getActiveIframeSelector,
-            this.getSpeed,
-            this.getPageLoadTimeout,
-            this.setBrowserConsoleMessages,
-            this.getBrowserConsoleMessages
+            this.getAssertionActualValue,
+            this.executeRoleInitFn,
+            this.getCtx,
+            this.getFixtureCtx,
+            this.setCtx,
+            this.setFixtureCtx,
+            this.updateRoleProperty
         ], this);
     }
 
@@ -303,7 +296,7 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
     }
 
     public executeActionSync (): never {
-        throw new Error('The method should not be called.');
+        throw new MethodShouldNotBeCalledError();
     }
 
     public async executeCommand ({ command, id }: ExecuteCommandArguments): Promise<unknown> {
@@ -406,47 +399,49 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
         return proxy.call(this.initializeTestRunData, { testRunId, testId });
     }
 
-    public async getCurrentUrl ({ testRunId }: TestRunLocator): Promise<string> {
-        return this._getTargetTestRun(testRunId).getCurrentUrl();
+    public async getAssertionActualValue ({ testRunId, commandId }: GetAssertionActualValueArguments): Promise<unknown> {
+        const { proxy } = await this._getRuntime();
+
+        return proxy.call(this.getAssertionActualValue, { testRunId, commandId: commandId });
     }
 
-    public async getStateSnapshot ({ testRunId }: TestRunLocator): Promise<StateSnapshot> {
-        return this._getTargetTestRun(testRunId).getStateSnapshot();
+    public async executeRoleInitFn ({ testRunId, roleId }: ExecuteRoleInitFnArguments): Promise<unknown> {
+        const { proxy } = await this._getRuntime();
+
+        return proxy.call(this.executeRoleInitFn, { testRunId, roleId });
     }
 
-    public async useStateSnapshot ({ testRunId, snapshot }: UseStateSnapshotArguments): Promise<void> {
-        return this._getTargetTestRun(testRunId).session.useStateSnapshot(snapshot);
+    public async getCtx ({ testRunId }: TestRunLocator): Promise<object> {
+        const { proxy } = await this._getRuntime();
+
+        return proxy.call(this.getCtx, { testRunId });
     }
 
-    public async getTestRunPhase ({ testRunId }: TestRunLocator): Promise<TestRunPhase> {
-        return this._getTargetTestRun(testRunId).phase;
+    public async getFixtureCtx ({ testRunId }: TestRunLocator): Promise<object> {
+        const { proxy } = await this._getRuntime();
+
+        return proxy.call(this.getFixtureCtx, { testRunId });
     }
 
-    public async setTestRunPhase ({ testRunId, value }: SetTestRunPhaseArguments): Promise<void> {
-        this._getTargetTestRun(testRunId).phase = value;
+    public async setCtx ({ testRunId, value }: SetCtxArguments): Promise<void> {
+        const { proxy } = await this._getRuntime();
+
+        return proxy.call(this.setCtx, { testRunId, value });
     }
 
-    public async getActiveDialogHandler ({ testRunId }: TestRunLocator): Promise<ExecuteClientFunctionCommand | null> {
-        return this._getTargetTestRun(testRunId).activeDialogHandler;
+    public async setFixtureCtx ({ testRunId, value }: SetCtxArguments): Promise<void> {
+        const { proxy } = await this._getRuntime();
+
+        return proxy.call(this.setFixtureCtx, { testRunId, value });
     }
 
-    public async getActiveIframeSelector ({ testRunId }: TestRunLocator): Promise<ExecuteSelectorCommand | null> {
-        return this._getTargetTestRun(testRunId).activeIframeSelector;
+    public onRoleAppeared (): void {
+        throw new MethodShouldNotBeCalledError();
     }
 
-    public async getSpeed ({ testRunId }: TestRunLocator): Promise<number> {
-        return this._getTargetTestRun(testRunId).speed;
-    }
+    public async updateRoleProperty ({ roleId, name, value }: UpdateRolePropertyArguments): Promise<void> {
+        const { proxy } = await this._getRuntime();
 
-    public async getPageLoadTimeout ({ testRunId }: TestRunLocator): Promise<number> {
-        return this._getTargetTestRun(testRunId).pageLoadTimeout;
-    }
-
-    public async setBrowserConsoleMessages ({ testRunId, value }: SetBrowserConsoleMessagesArguments): Promise<void> {
-        this._getTargetTestRun(testRunId).consoleMessages = value;
-    }
-
-    public async getBrowserConsoleMessages ({ testRunId }: TestRunLocator): Promise<BrowserConsoleMessages> {
-        return this._getTargetTestRun(testRunId).consoleMessages;
+        return proxy.call(this.updateRoleProperty, { roleId, name, value });
     }
 }

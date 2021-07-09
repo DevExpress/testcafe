@@ -1,10 +1,12 @@
 import Replicator, { Transform } from 'replicator';
 import CustomErrorTransform from './transforms/custom-error-transform';
 import BrowserConsoleMessagesTransform from './transforms/browser-console-messages-transform';
-import CommandBaseTransform from './transforms/command-base-transform';
+import CommandBaseTransform from './transforms/command-base-trasform';
 import RequestFilterRuleTransform from './transforms/request-filter-rule-transform';
 import ResponseMockTransform from './transforms/response-mock-transform';
 import RequestHookEventDataTransform from './transforms/request-hook-event-data-transform';
+import ReExecutablePromiseTransform from './transforms/re-executable-promise-transform';
+import RoleTransform from './transforms/role-transform';
 
 const DEFAULT_ERROR_TRANSFORM_TYPE = '[[Error]]';
 
@@ -28,9 +30,11 @@ export default function (): Replicator {
             customErrorTransform,
             defaultErrorTransform,
             new BrowserConsoleMessagesTransform(),
+            new ReExecutablePromiseTransform(),
             new CommandBaseTransform(),
             new RequestFilterRuleTransform(),
             new ResponseMockTransform(),
-            new RequestHookEventDataTransform()
+            new RequestHookEventDataTransform(),
+            new RoleTransform()
         ]);
 }
