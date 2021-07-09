@@ -21,7 +21,7 @@ const GREEN_PIXEL                    = [0, 255, 0, 255];
 const RED_PIXEL                      = [255, 0, 0, 255];
 
 const VIDEOS_PATH      = config.testVideosDir;
-const VIDEO_FILES_GLOB = path.join(VIDEOS_PATH, '**', '*');
+const VIDEO_FILES_GLOB = path.posix.join(VIDEOS_PATH, '**', '*');
 
 function hasPixel (png, pixel, x, y) {
     const baseIndex = (png.width * y + x) * 4;

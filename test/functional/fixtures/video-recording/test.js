@@ -40,6 +40,10 @@ function checkVideoPaths (videoLog, videoPaths) {
         expect(path.relative(actualPaths[i], loggedPaths[i])).eql('');
 }
 
+const BROWSERS_SUPPORTING_VIDEO_RECORDING     = ['chrome', 'firefox'];
+const BROWSERS_SUPPORTING_VIDEO_RECORDING_STR = BROWSERS_SUPPORTING_VIDEO_RECORDING.toString();
+const COUNT_AFFECTED_BROWSERS                 = config.browsers.filter(browser => BROWSERS_SUPPORTING_VIDEO_RECORDING.includes(browser.alias)).length;
+
 if (config.useLocalBrowsers) {
     describe('Video Recording', () => {
         afterEach(assertionHelper.removeVideosDir);
@@ -49,7 +53,7 @@ if (config.useLocalBrowsers) {
             const videos = [];
 
             return runTests('./testcafe-fixtures/index-test.js', '', {
-                only:         'chrome,firefox',
+                only:         BROWSERS_SUPPORTING_VIDEO_RECORDING_STR,
                 setVideoPath: true,
                 reporter:     customReporter(errs, videos)
             })
@@ -62,7 +66,7 @@ if (config.useLocalBrowsers) {
                 })
                 .then(assertionHelper.getVideoFilesList)
                 .then(videoFiles => {
-                    expect(videoFiles.length).to.equal(3 * config.browsers.length);
+                    expect(videoFiles.length).to.equal(3 * COUNT_AFFECTED_BROWSERS);
 
                     checkVideoPaths(videos, videoFiles);
                 });
@@ -73,7 +77,7 @@ if (config.useLocalBrowsers) {
             const videos = [];
 
             return runTests('./testcafe-fixtures/index-test.js', '', {
-                only:         'chrome,firefox',
+                only:         BROWSERS_SUPPORTING_VIDEO_RECORDING_STR,
                 shouldFail:   true,
                 setVideoPath: true,
                 reporter:     customReporter(errs, videos),
@@ -91,7 +95,7 @@ if (config.useLocalBrowsers) {
                 })
                 .then(assertionHelper.getVideoFilesList)
                 .then(videoFiles => {
-                    expect(videoFiles.length).to.equal(1 * config.browsers.length);
+                    expect(videoFiles.length).to.equal(1 * COUNT_AFFECTED_BROWSERS);
 
                     checkVideoPaths(videos, videoFiles);
                 });
@@ -102,7 +106,7 @@ if (config.useLocalBrowsers) {
             const videos = [];
 
             return runTests('./testcafe-fixtures/index-test.js', '', {
-                only:         'chrome,firefox',
+                only:         BROWSERS_SUPPORTING_VIDEO_RECORDING_STR,
                 shouldFail:   true,
                 setVideoPath: true,
                 reporter:     customReporter(errs, videos),
@@ -120,7 +124,7 @@ if (config.useLocalBrowsers) {
                 })
                 .then(assertionHelper.getVideoFilesList)
                 .then(videoFiles => {
-                    expect(videoFiles.length).to.equal(2 * config.browsers.length);
+                    expect(videoFiles.length).to.equal(2 * COUNT_AFFECTED_BROWSERS);
 
                     checkVideoPaths(videos, videoFiles);
                 });
@@ -128,7 +132,7 @@ if (config.useLocalBrowsers) {
 
         it('Should record only failed tests in a single file', () => {
             return runTests('./testcafe-fixtures/index-test.js', '', {
-                only:         'chrome,firefox',
+                only:         BROWSERS_SUPPORTING_VIDEO_RECORDING_STR,
                 shouldFail:   true,
                 setVideoPath: true,
 
@@ -144,7 +148,7 @@ if (config.useLocalBrowsers) {
                     expect(errors[1]).to.match(/^Error: Error 2/);
                 })
                 .then(videoFiles => {
-                    expect(videoFiles.length).to.equal(1 * config.browsers.length);
+                    expect(videoFiles.length).to.equal(1 * COUNT_AFFECTED_BROWSERS);
                 });
         });
 
