@@ -164,6 +164,7 @@ describe('TestCafeConfiguration', function () {
                             'pathPattern': 'screenshot-path-pattern',
                             'takeOnFails': true,
                             'fullPage':    true,
+                            'thumbnails':  true,
                         },
                     });
 
@@ -175,6 +176,7 @@ describe('TestCafeConfiguration', function () {
                                     pathPattern: 'modified-pattern',
                                     takeOnFails: false,
                                     fullPage:    false,
+                                    thumbnails:  false,
                                 },
                             });
 
@@ -183,6 +185,7 @@ describe('TestCafeConfiguration', function () {
                                 pathPattern: 'modified-pattern',
                                 takeOnFails: false,
                                 fullPage:    false,
+                                thumbnails:  false,
                             });
 
                             expect(testCafeConfiguration._overriddenOptions).eql([
@@ -190,6 +193,7 @@ describe('TestCafeConfiguration', function () {
                                 'screenshots.pathPattern',
                                 'screenshots.takeOnFails',
                                 'screenshots.fullPage',
+                                'screenshots.thumbnails',
                             ]);
                         });
                 });
@@ -251,6 +255,7 @@ describe('TestCafeConfiguration', function () {
                             'pathPattern': 'screenshot-path-pattern-1',
                             'takeOnFails': true,
                             'fullPage':    true,
+                            'thumbnails':  true,
                         },
                         'screenshotPath':         'screenshot-path-2',
                         'screenshotPathPattern':  'screenshot-path-pattern-2',
@@ -266,6 +271,7 @@ describe('TestCafeConfiguration', function () {
                                 pathPattern: 'screenshot-path-pattern-1',
                                 takeOnFails: true,
                                 fullPage:    true,
+                                thumbnails:  true,
                             });
 
                             expect(testCafeConfiguration.getOption('screenshotPath')).eql('screenshot-path-2');
