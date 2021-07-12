@@ -87,7 +87,7 @@ function wrapElement (el) {
     return {
         el:       el,
         skip:     el.shadowRoot && el.tabIndex < 0,
-        children: {}
+        children: {},
     };
 }
 
