@@ -59,107 +59,12 @@ export const findParent                             = hammerhead.utils.dom.findP
 export const getTopSameDomainWindow                 = hammerhead.utils.dom.getTopSameDomainWindow;
 export const getParentExceptShadowRoot              = hammerhead.utils.dom.getParentExceptShadowRoot;
 
-function getElementsWithTabIndex (elements) {
-    return arrayUtils.filter(elements, el => el.tabIndex > 0);
-}
+function canFocus (element, parent, tabIndex) {
+    let activeElement = null;
 
-function getElementsWithoutTabIndex (elements) {
-    return arrayUtils.filter(elements, el => el.tabIndex <= 0);
-}
+    if (parent.nodeType === Node.DOCUMENT_NODE)
+        activeElement = nativeMethods.documentActiveElementGetter.call(parent);
 
-function sortElementsByFocusingIndex (elements) {
-    if (!elements || !elements.length)
-        return [];
-
-    let elementsWithTabIndex = getElementsWithTabIndex(elements);
-
-    //iframes
-    const iframes = arrayUtils.filter(elements, el => isIframeElement(el));
-
-    if (!elementsWithTabIndex.length) {
-        if (iframes.length)
-            elements = insertIframesContentElements(elements, iframes);
-
-        return elements;
-    }
-
-    elementsWithTabIndex          = elementsWithTabIndex.sort(sortBy('tabIndex'));
-    const elementsWithoutTabIndex = getElementsWithoutTabIndex(elements);
-
-    if (iframes.length)
-        return insertIframesContentElements(elementsWithTabIndex, iframes).concat(insertIframesContentElements(elementsWithoutTabIndex, iframes));
-
-    return elementsWithTabIndex.concat(elementsWithoutTabIndex);
-}
-
-function insertIframesContentElements (elements, iframes) {
-    const sortedIframes       = sortElementsByTabIndex(iframes);
-    let results               = [];
-    const iframesElements     = [];
-    let iframeFocusedElements = [];
-    let i                     = 0;
-
-    for (i = 0; i < sortedIframes.length; i++) {
-        //NOTE: We can get elements of the same domain iframe only
-        try {
-            iframeFocusedElements = getFocusableElements(nativeMethods.contentDocumentGetter.call(sortedIframes[i]));
-        }
-        catch (e) {
-            iframeFocusedElements = [];
-        }
-
-        iframesElements.push(sortElementsByFocusingIndex(iframeFocusedElements));
-    }
-
-    for (i = 0; i < elements.length; i++) {
-        results.push(elements[i]);
-
-        if (isIframeElement(elements[i])) {
-            if (browserUtils.isIE) {
-                results.pop();
-
-                const iFrameElements               = iframesElements[arrayUtils.indexOf(iframes, elements[i])];
-                let elementsWithTabIndex           = getElementsWithTabIndex(iFrameElements);
-                const elementsWithoutTabIndexArray = getElementsWithoutTabIndex(iFrameElements);
-
-                elementsWithTabIndex = elementsWithTabIndex.sort(sortBy('tabIndex'));
-                results              = results.concat(elementsWithTabIndex);
-                results.push(elements[i]);
-                results = results.concat(elementsWithoutTabIndexArray);
-            }
-            else {
-                if (browserUtils.isWebKit && iframesElements[arrayUtils.indexOf(iframes, elements[i])].length)
-                    results.pop();
-
-                results = results.concat(iframesElements[arrayUtils.indexOf(iframes, elements[i])]);
-            }
-        }
-    }
-
-    return results;
-}
-
-function sortElementsByTabIndex (elements) {
-    const elementsWithTabIndex = getElementsWithTabIndex(elements);
-
-    if (!elementsWithTabIndex.length)
-        return elements;
-
-    return elementsWithTabIndex.sort(sortBy('tabIndex')).concat(getElementsWithoutTabIndex(elements));
-}
-
-function sortBy (property) {
-    return function (a, b) {
-        if (a[property] < b[property])
-            return -1;
-        if (a[property] > b[property])
-            return 1;
-
-        return 0;
-    };
-}
-
-function canFocus (element, activeElement, tabIndex) {
     if (element === activeElement)
         return true;
 
@@ -178,12 +83,41 @@ function canFocus (element, activeElement, tabIndex) {
     return true;
 }
 
-export function getFocusableElements (doc, sort = false) {
+function wrapElement (el) {
+    return {
+        el:       el,
+        skip:     el.shadowRoot && el.tabIndex < 0,
+        children: {},
+    };
+}
+
+function buildFocusableTree (parent, sort) {
+    const node = wrapElement(parent);
+
+    parent = parent.shadowRoot || parent;
+
+    if (isIframeElement(parent))
+        parent = nativeMethods.contentDocumentGetter.call(parent);
+
+    if (parent.nodeType === Node.DOCUMENT_FRAGMENT_NODE || parent.nodeType === Node.DOCUMENT_NODE) {
+        const elements = filterFocusableElements(parent);
+
+        for (const el of elements) {
+            const key = !sort || el.tabIndex <= 0 ? -1 : el.tabIndex;
+
+            node.children[key] = node.children[key] || [];
+
+            node.children[key].push(buildFocusableTree(el, sort));
+        }
+    }
+
+    return node;
+}
+
+function filterFocusableElements (parent) {
     // NOTE: We don't take into account the case of embedded contentEditable
     // elements and specify the contentEditable attribute for focusable elements
-    const allElements           = doc.querySelectorAll('*');
-    const activeElement         = nativeMethods.documentActiveElementGetter.call(doc);
-    const activeElementTabIndex = getTabIndexAttributeIntValue(activeElement);
+    const allElements           = parent.querySelectorAll('*');
     const invisibleElements     = getInvisibleElements(allElements);
     const inputElementsRegExp   = /^(input|button|select|textarea)$/;
     const focusableElements     = [];
@@ -200,13 +134,15 @@ export function getFocusableElements (doc, sort = false) {
         tabIndex = getTabIndexAttributeIntValue(element);
         needPush = false;
 
-        if (!canFocus(element, activeElement, tabIndex))
+        if (!canFocus(element, parent, tabIndex))
             continue;
 
         if (inputElementsRegExp.test(tagName))
             needPush = true;
-        else if (browserUtils.isIE && isIframeElement(element))
-            focusableElements.push(element);
+        else if (element.shadowRoot)
+            needPush = true;
+        else if (isIframeElement(element))
+            needPush = true;
         else if (isAnchorElement(element) && element.hasAttribute('href'))
             needPush = element.getAttribute('href') !== '' || !browserUtils.isIE || tabIndex !== null;
 
@@ -223,15 +159,28 @@ export function getFocusableElements (doc, sort = false) {
     }
 
     //NOTE: remove children of invisible elements
-    let result = arrayUtils.filter(focusableElements, el => !containsElement(invisibleElements, el));
+    return arrayUtils.filter(focusableElements, el => !containsElement(invisibleElements, el));
+}
 
-    if (activeElementTabIndex && activeElementTabIndex < 0)
-        sort = false;
+function flattenFocusableTree (node) {
+    const result = [];
 
-    if (sort)
-        result = sortElementsByFocusingIndex(result);
+    if (!node.skip && node.el.nodeType !== Node.DOCUMENT_NODE && !isIframeElement(node.el))
+        result.push(node.el);
+
+    for (const prop in node.children) {
+        for (const childNode of node.children[prop])
+            result.push(...flattenFocusableTree(childNode));
+    }
 
     return result;
+}
+
+
+export function getFocusableElements (doc, sort = false) {
+    const root = buildFocusableTree(doc, sort);
+
+    return flattenFocusableTree(root);
 }
 
 function getInvisibleElements (elements) {
@@ -245,7 +194,7 @@ function getInvisibleElements (elements) {
     return invisibleElements;
 }
 
-function getTabIndexAttributeIntValue (el) {
+export function getTabIndexAttributeIntValue (el) {
     let tabIndex = nativeMethods.getAttribute.call(el, 'tabindex');
 
     if (tabIndex !== null) {
