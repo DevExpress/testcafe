@@ -6,7 +6,7 @@ import { InvalidElementScreenshotDimensionsError } from '../errors/test-run/';
 import {
     MARK_LENGTH,
     MARK_RIGHT_MARGIN,
-    MARK_BYTES_PER_PIXEL
+    MARK_BYTES_PER_PIXEL,
 } from './constants';
 
 import WARNING_MESSAGES from '../notifications/warning-message';
@@ -80,7 +80,7 @@ export function getClipInfoByMarkPosition (markPosition, { width, height }) {
         clipLeft,
         clipTop,
         clipRight,
-        clipBottom
+        clipBottom,
     };
 }
 
@@ -98,7 +98,7 @@ export function getClipInfoByCropDimensions ({ clipRight, clipLeft, clipBottom, 
         clipLeft,
         clipTop,
         clipRight,
-        clipBottom
+        clipBottom,
     };
 }
 
@@ -107,7 +107,7 @@ export function calculateClipInfo (pngImage, path, markSeed, clientAreaDimension
         clipRight:  pngImage.width,
         clipBottom: pngImage.height,
         clipLeft:   0,
-        clipTop:    0
+        clipTop:    0,
     };
 
     let markPosition = null;

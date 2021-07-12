@@ -35,7 +35,7 @@ const {
     LEGACY_TESTS_GLOB,
     MULTIPLE_WINDOWS_TESTS_GLOB,
     MIGRATE_ALL_TESTS_TO_COMPILER_SERVICE_GLOB,
-    COMPILER_SERVICE_TESTS_GLOB
+    COMPILER_SERVICE_TESTS_GLOB,
 } = require('./gulp/constants/functional-test-globs');
 
 const {
@@ -44,7 +44,7 @@ const {
     CLIENT_TESTS_LEGACY_SETTINGS,
     CLIENT_TESTS_SAUCELABS_SETTINGS,
     CLIENT_TESTS_DESKTOP_BROWSERS,
-    CLIENT_TESTS_MOBILE_BROWSERS
+    CLIENT_TESTS_MOBILE_BROWSERS,
 } = require('./gulp/constants/client-test-settings');
 
 const readFile = promisify(fs.readFile);
@@ -55,12 +55,12 @@ ll
     .install()
     .tasks([
         'lint',
-        'check-licenses'
+        'check-licenses',
     ])
     .onlyInDebug([
         'styles',
         'client-scripts',
-        'client-scripts-bundle'
+        'client-scripts-bundle',
     ]);
 
 const ARGS          = minimist(process.argv.slice(2));
@@ -106,7 +106,7 @@ gulp.task('lint', () => {
             'gulp/**/*.js',
             '!test/client/vendor/**/*.*',
             '!test/functional/fixtures/api/es-next/custom-client-scripts/data/*.js',
-            'Gulpfile.js'
+            'Gulpfile.js',
         ])
         .pipe(eslint())
         .pipe(eslint.format(process.env.ESLINT_FORMATTER))
@@ -149,7 +149,7 @@ gulp.step('ts-defs', async () => {
                         .replace(NEWLINE_REGEXP, SPACE.repeat(indentLength))
                         .replace(EMPTY_COMMENT_REGEXP, '')
                         .replace(EMPTY_LINES_REGEXP, '');
-                }
+                },
             },
             {},
             partials
@@ -174,7 +174,7 @@ gulp.step('client-scripts-templates-render', () => {
             'src/client/core/index.js.wrapper.mustache',
             'src/client/ui/index.js.wrapper.mustache',
             'src/client/automation/index.js.wrapper.mustache',
-            'src/client/driver/index.js.wrapper.mustache'
+            'src/client/driver/index.js.wrapper.mustache',
         ], { base: 'src' })
         .pipe(rename(file => {
             file.extname  = '';
@@ -184,7 +184,7 @@ gulp.step('client-scripts-templates-render', () => {
             const sourceFilePath = path.resolve('lib', file.relative + '.js');
 
             return {
-                source: fs.readFileSync(sourceFilePath)
+                source: fs.readFileSync(sourceFilePath),
             };
         }))
         .pipe(mustache())
@@ -216,7 +216,7 @@ gulp.step('server-scripts-add-exports', () => {
     return gulp
         .src([
             'lib/**/*.js',
-            '!lib/client/**/*.js'
+            '!lib/client/**/*.js',
         ])
         .pipe(moduleExportsTransform)
         .pipe(gulp.dest('lib'));
@@ -235,7 +235,7 @@ gulp.step('templates', () => {
     return gulp
         .src([
             'src/**/*.mustache',
-            '!src/**/*.js.wrapper.mustache'
+            '!src/**/*.js.wrapper.mustache',
         ])
         .pipe(gulp.dest('lib'));
 });
@@ -245,7 +245,7 @@ gulp.step('images', () => {
         .src([
             'src/**/*.png',
             'src/**/*.ico',
-            'src/**/*.svg'
+            'src/**/*.svg',
         ])
         .pipe(gulp.dest('lib'));
 });
@@ -270,7 +270,7 @@ gulp.step('test-server-run', () => {
         return gulp
             .src('test/server/*-test.js', { read: false })
             .pipe(mocha({
-                timeout: getTimeout(2000)
+                timeout: getTimeout(2000),
             }));
     }
     finally {
@@ -453,7 +453,7 @@ gulp.step('docker-publish-run', done => {
     const PUBLISH_COMMANDS = [
         'docker push',
         'docker pull',
-        'docker image rm -f'
+        'docker image rm -f',
     ];
 
     PUBLISH_TAGS.forEach(tag => {

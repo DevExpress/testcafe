@@ -11,5 +11,5 @@ export default {
     9:  'document',
     10: 'document type',
     11: 'document fragment',
-    12: 'notation'
+    12: 'notation',
 };

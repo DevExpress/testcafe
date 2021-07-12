@@ -46,7 +46,7 @@ export default class TestCafe {
 
         this.proxy.GET(INJECTABLES.TESTCAFE_LEGACY_RUNNER, {
             content:     legacyRunnerScript,
-            contentType: CONTENT_TYPES.javascript
+            contentType: CONTENT_TYPES.javascript,
         });
 
         this.proxy.GET(INJECTABLES.TESTCAFE_AUTOMATION, { content: automationScript, contentType: CONTENT_TYPES.javascript });
@@ -58,7 +58,7 @@ export default class TestCafe {
         this.proxy.GET(INJECTABLES.TESTCAFE_UI_STYLES, {
             content:              uiStyle,
             contentType:          CONTENT_TYPES.css,
-            isShadowUIStylesheet: true
+            isShadowUIStylesheet: true,
         });
     }
 
@@ -66,7 +66,7 @@ export default class TestCafe {
         sourceMapSupport.install({
             hookRequire:              true,
             handleUncaughtExceptions: false,
-            environment:              'node'
+            environment:              'node',
         });
     }
 
@@ -76,7 +76,7 @@ export default class TestCafe {
             proxy:                    this.proxy,
             browserConnectionGateway: this.browserConnectionGateway,
             configuration:            this.configuration.clone(),
-            compilerService:          this.compilerService
+            compilerService:          this.compilerService,
         });
 
         this.runners.push(newRunner);

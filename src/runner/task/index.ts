@@ -13,7 +13,7 @@ import { Dictionary } from '../../configuration/interfaces';
 import {
     ActionEventArg,
     ReportedTestStructureItem,
-    TaskInit
+    TaskInit,
 } from '../interfaces';
 
 import BrowserConnection from '../../browser/connection';
@@ -44,7 +44,7 @@ export default class Task extends AsyncEventEmitter {
         proxy,
         opts,
         runnerWarningLog,
-        compilerService
+        compilerService,
     }: TaskInit) {
         super({ captureRejections: true });
 
@@ -65,7 +65,7 @@ export default class Task extends AsyncEventEmitter {
             enabled: !this.opts.disableScreenshots,
             path,
             pathPattern,
-            fullPage
+            fullPage,
         });
 
         this.fixtureHookController = new FixtureHookController(tests, browserConnectionGroups.length);
@@ -155,10 +155,10 @@ export default class Task extends AsyncEventEmitter {
                         return {
                             id:   test.id,
                             name: test.name as string,
-                            skip: test.skip
+                            skip: test.skip,
                         };
-                    })
-                }
+                    }),
+                },
             };
         });
     }
@@ -173,7 +173,7 @@ export default class Task extends AsyncEventEmitter {
                 fixtureHookController: this.fixtureHookController,
                 compilerService:       this._compilerService,
                 proxy,
-                opts
+                opts,
             });
 
             this._assignBrowserJobEventHandlers(job);

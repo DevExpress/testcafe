@@ -13,7 +13,7 @@ export function createReplicator (transforms: Transform[]): Replicator {
     // so we use identity functions for serialization.
     const replicator = new Replicator({
         serialize:   identity,
-        deserialize: identity
+        deserialize: identity,
     });
 
     return replicator.addTransforms(transforms);

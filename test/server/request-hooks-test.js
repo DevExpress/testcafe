@@ -18,11 +18,11 @@ describe('RequestLogger', () => {
                     'accept':          'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
                     'accept-encoding': 'gzip, deflate',
                     'accept-language': 'en-US,en;q=0.9',
-                    'cache-control':   'max-age=0'
+                    'cache-control':   'max-age=0',
                 },
                 body:      Buffer.from('testParamerValue'),
-                sessionId: testRunId
-            }
+                sessionId: testRunId,
+            },
         };
     };
 
@@ -35,8 +35,8 @@ describe('RequestLogger', () => {
             headers:    {
                 'cache-control': 'max-age=604800',
                 'date':          'Wed, 17 Jan 2018 10:08:08 GMT',
-                'etag':          '359670651'
-            }
+                'etag':          '359670651',
+            },
         };
     };
 
@@ -72,7 +72,7 @@ describe('RequestLogger', () => {
                 logRequestHeaders:  true,
                 logRequestBody:     true,
                 logResponseHeaders: true,
-                logResponseBody:    true
+                logResponseBody:    true,
             });
 
             expect(requests.length).eql(1);
@@ -89,7 +89,7 @@ describe('RequestLogger', () => {
                 logRequestBody:        true,
                 stringifyRequestBody:  true,
                 logResponseBody:       true,
-                stringifyResponseBody: true
+                stringifyResponseBody: true,
             });
 
             expect(requests.length).eql(1);
@@ -119,7 +119,7 @@ describe('RequestLogger', () => {
 
         testRunTracker.resolveContextTestRun = () => {
             return {
-                id: testRunId1
+                id: testRunId1,
             };
         };
 
@@ -165,7 +165,7 @@ describe('RequestLogger', () => {
         return Promise.all([
             logger.count(r => r.request),
             logger.count(r => r.response.statusCode === 304),
-            logger.contains(r => r.request.id === requestEventMock2._requestInfo.requestId)
+            logger.contains(r => r.request.id === requestEventMock2._requestInfo.requestId),
         ])
             .then(data => {
                 expect(data[0]).eql(1);

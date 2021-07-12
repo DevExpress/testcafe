@@ -38,7 +38,7 @@ var isIE11 = !!(navigator.appCodeName === 'Mozilla' &&
 
     '2.Check that handlers were called': function () {
         eq(this.events, ['pointerdown', 'pointerup']);
-    }
+    },
 };
 
 '@test'['Should fail if the first argument is invisible'] = {
@@ -46,7 +46,7 @@ var isIE11 = !!(navigator.appCodeName === 'Mozilla' &&
         var $input = $('#input').css('visibility', 'hidden');
 
         act.click($input);
-    }
+    },
 };
 
 '@test'['Should fail if the first argument is out of the visible area'] = {
@@ -54,9 +54,9 @@ var isIE11 = !!(navigator.appCodeName === 'Mozilla' &&
         var $input = $('#input').css({
             position: 'absolute',
             left:     '-200px',
-            top:      '-200px'
+            top:      '-200px',
         });
 
         act.click($input);
-    }
+    },
 };

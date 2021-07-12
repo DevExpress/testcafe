@@ -56,5 +56,5 @@ export default {
 
     async isLocalBrowser () {
         return true;
-    }
+    },
 };

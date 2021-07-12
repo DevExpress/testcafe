@@ -14,6 +14,6 @@ export default Object.assign(
         'chrome':            chromeProvider,
         'chromium':          chromeProvider,
         'chrome-canary':     chromeProvider,
-        'edge':              edgeProvider
+        'edge':              edgeProvider,
     }
 );

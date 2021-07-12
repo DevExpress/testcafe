@@ -39,7 +39,7 @@ class TypeScriptTestFileParser extends TestFileParserBase {
 
         return {
             key:   name.text,
-            value: this.getStringValue(initializer)
+            value: this.getStringValue(initializer),
         };
     }
 
@@ -112,7 +112,7 @@ class TypeScriptTestFileParser extends TestFileParserBase {
             loc:    loc.loc,
             start:  loc.start,
             end:    loc.end,
-            meta:   merge({}, ...meta)
+            meta:   merge({}, ...meta),
         };
     }
 

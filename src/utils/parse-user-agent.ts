@@ -23,7 +23,7 @@ export interface ParsedUserAgent {
 function calculateBrowser (browserDetails: Bowser.Parser.BrowserDetails): ParsedComponent {
     return {
         name:    browserDetails.name || DEFAULT_NAME,
-        version: browserDetails.version || DEFAULT_VERSION
+        version: browserDetails.version || DEFAULT_VERSION,
     };
 }
 
@@ -47,7 +47,7 @@ function calculateOs (parsedOsDetails: Bowser.Parser.OSDetails): ParsedComponent
 function calculateEngine (engineDetails: Bowser.Parser.EngineDetails): ParsedComponent {
     return {
         name:    engineDetails.name || DEFAULT_NAME,
-        version: engineDetails.version || DEFAULT_VERSION
+        version: engineDetails.version || DEFAULT_VERSION,
     };
 }
 
@@ -69,6 +69,6 @@ export default function parseUserAgent (userAgent: string = ''): ParsedUserAgent
         os,
         engine,
         prettyUserAgent: prettyUserAgent,
-        userAgent
+        userAgent,
     };
 }

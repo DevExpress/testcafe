@@ -11,7 +11,7 @@ const expected = [
     '2 end before',
     '2',
     '2 begin after',
-    '2 end after'
+    '2 end after',
 ];
 
 describe('[Regression](GH-3298) - Fixture hooks of subsequent tests should not overlap each other', function () {

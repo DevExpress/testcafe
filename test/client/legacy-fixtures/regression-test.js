@@ -51,8 +51,8 @@ $(document).ready(function () {
                 ctrl:  options.ctrl,
                 alt:   options.ctrl,
                 shift: options.shift,
-                meta:  options.meta
-            }
+                meta:  options.meta,
+            },
         });
 
         const iframeAutomations = getAutomations(iframe.contentWindow);

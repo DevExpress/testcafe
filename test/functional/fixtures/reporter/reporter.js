@@ -6,7 +6,7 @@ const baseReport = {
     async reportTestDone () {
     },
     async reportTaskDone () {
-    }
+    },
 };
 
 function generateReporter (log, options = {}) {
@@ -15,7 +15,7 @@ function generateReporter (log, options = {}) {
         emitOnDone = true,
         includeBrowserInfo = false,
         includeTestInfo = false,
-        includeCommandInfo = false
+        includeCommandInfo = false,
     } = options;
 
     return function () {
@@ -34,14 +34,14 @@ function generateReporter (log, options = {}) {
                         item.test = {
                             id:    'test-id',
                             name:  test.name,
-                            phase: test.phase
+                            phase: test.phase,
                         };
                     }
 
                     if (fixture.id) {
                         item.fixture = {
                             id:   'fixture-id',
-                            name: fixture.name
+                            name: fixture.name,
                         };
                     }
                 }
@@ -74,20 +74,20 @@ function generateReporter (log, options = {}) {
                         item.test = {
                             id:    'test-id',
                             name:  test.name,
-                            phase: test.phase
+                            phase: test.phase,
                         };
                     }
 
                     if (fixture.id) {
                         item.fixture = {
                             id:   'fixture-id',
-                            name: fixture.name
+                            name: fixture.name,
                         };
                     }
                 }
 
                 log.push(item);
-            }
+            },
         });
     };
 }

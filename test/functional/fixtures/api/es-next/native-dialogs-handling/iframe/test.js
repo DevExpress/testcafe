@@ -9,7 +9,7 @@ const DEFAULT_SELECTOR_TIMEOUT             = 5000;
 const DEFAULT_RUN_IN_IFRAME_OPTIONS        = { selectorTimeout: DEFAULT_SELECTOR_TIMEOUT };
 const DEFAULT_FAILED_RUN_IN_IFRAME_OPTIONS = {
     shouldFail:      true,
-    selectorTimeout: DEFAULT_SELECTOR_TIMEOUT
+    selectorTimeout: DEFAULT_SELECTOR_TIMEOUT,
 };
 const pageUrl                              = 'http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/iframe/pages/page-with-iframe.html';
 const iframeUrl                            = 'http://localhost:3000/fixtures/api/es-next/native-dialogs-handling/iframe/pages/iframe.html';

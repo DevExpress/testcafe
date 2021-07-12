@@ -6,7 +6,7 @@ fixture `Basic authentication - correct credentials`
 
 test.httpAuth({
     username: 'username',
-    password: 'password'
+    password: 'password',
 })('Authenticate with correct credintials', async t => {
     await t.expect(Selector('#result').innerText).eql('authorized');
 });

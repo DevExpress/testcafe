@@ -19,7 +19,7 @@ export function readPng (buffer) {
 
     const parsedPromise = Promise.race([
         promisifyEvent(png, 'parsed'),
-        promisifyEvent(png, 'error')
+        promisifyEvent(png, 'error'),
     ]);
 
     png.parse(buffer);
@@ -41,7 +41,7 @@ export function writePng (filePath, png) {
     const finishPromise = Promise.race([
         promisifyEvent(outStream, 'finish'),
         promisifyEvent(outStream, 'error'),
-        promisifyEvent(pngStream, 'error')
+        promisifyEvent(pngStream, 'error'),
     ]);
 
     pngStream.pipe(outStream);

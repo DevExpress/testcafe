@@ -24,6 +24,6 @@ test('Test', async t => {
         'd2 mouseout',
         'd2 mouseleave',
         'd3 mouseover',
-        'd3 mouseenter'
+        'd3 mouseenter',
     ]);
 });

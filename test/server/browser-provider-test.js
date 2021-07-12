@@ -20,12 +20,12 @@ class BrowserConnectionMock extends BrowserConnection {
     constructor () {
         const browserConnectionGatewayMock = {
             startServingConnection: noop,
-            stopServingConnection:  noop
+            stopServingConnection:  noop,
         };
 
         const providerMock = {
             openBrowser:    noop,
-            isLocalBrowser: noop
+            isLocalBrowser: noop,
         };
 
         super(browserConnectionGatewayMock, { provider: providerMock });
@@ -64,7 +64,7 @@ describe('Browser provider', function () {
 
             expect(browserInfo).include({
                 providerName: 'path',
-                browserName:  '/usr/bin/chrome --arg1 --arg2'
+                browserName:  '/usr/bin/chrome --arg1 --arg2',
             });
         });
 
@@ -73,47 +73,47 @@ describe('Browser provider', function () {
 
             expect(browserInfo).include({
                 providerName: 'path',
-                browserName:  '`/opt/Google Chrome/chrome` --arg1 --arg2'
+                browserName:  '`/opt/Google Chrome/chrome` --arg1 --arg2',
             });
         });
 
         it('Should parse the chrome: alias with arguments', async () => {
             const builtInProviders = {
-                chrome: { isValidBrowserName: sinon.stub() }
+                chrome: { isValidBrowserName: sinon.stub() },
             };
 
             builtInProviders.chrome.isValidBrowserName
                 .withArgs('/usr/bin/chrome --arg1 --arg2').resolves(true);
 
             const mockedBrowserProviderPool = proxyquire('../../lib/browser/provider/pool', {
-                './built-in': builtInProviders
+                './built-in': builtInProviders,
             });
 
             const browserInfo = await mockedBrowserProviderPool.getBrowserInfo('chrome:/usr/bin/chrome --arg1 --arg2');
 
             expect(browserInfo).include({
                 providerName: 'chrome',
-                browserName:  '/usr/bin/chrome --arg1 --arg2'
+                browserName:  '/usr/bin/chrome --arg1 --arg2',
             });
         });
 
         it('Should parse the firefox: alias with arguments', async () => {
             const builtInProviders = {
-                firefox: { isValidBrowserName: sinon.stub() }
+                firefox: { isValidBrowserName: sinon.stub() },
             };
 
             builtInProviders.firefox.isValidBrowserName
                 .withArgs('/usr/bin/firefox -arg1 -arg2').resolves(true);
 
             const mockedBrowserProviderPool = proxyquire('../../lib/browser/provider/pool', {
-                './built-in': builtInProviders
+                './built-in': builtInProviders,
             });
 
             const browserInfo = await mockedBrowserProviderPool.getBrowserInfo('firefox:/usr/bin/firefox -arg1 -arg2');
 
             expect(browserInfo).include({
                 providerName: 'firefox',
-                browserName:  '/usr/bin/firefox -arg1 -arg2'
+                browserName:  '/usr/bin/firefox -arg1 -arg2',
             });
         });
 
@@ -128,7 +128,7 @@ describe('Browser provider', function () {
             open.resolves();
 
             const pathBrowserProvider  = proxyquire('../../lib/browser/provider/built-in/path', {
-                'testcafe-browser-tools': { open, getBrowserInfo, __esModule: false }
+                'testcafe-browser-tools': { open, getBrowserInfo, __esModule: false },
             });
 
             await pathBrowserProvider.openBrowser('id', 'http://example.com', '/usr/bin/chrome --arg1 --arg2');
@@ -137,7 +137,7 @@ describe('Browser provider', function () {
 
             expect(open.args[0]).deep.equal([
                 { path: '/usr/bin/chrome', cmd: '--arg1 --arg2 --internal-arg' },
-                'http://example.com'
+                'http://example.com',
             ]);
         });
 
@@ -152,7 +152,7 @@ describe('Browser provider', function () {
             open.resolves();
 
             const pathBrowserProvider  = proxyquire('../../lib/browser/provider/built-in/path', {
-                'testcafe-browser-tools': { open, getBrowserInfo, __esModule: false }
+                'testcafe-browser-tools': { open, getBrowserInfo, __esModule: false },
             });
 
             await pathBrowserProvider.openBrowser('id', 'http://example.com', '`/opt/Google Chrome/chrome` --arg1 --arg2');
@@ -161,7 +161,7 @@ describe('Browser provider', function () {
 
             expect(open.args[0]).deep.equal([
                 { path: '/opt/Google Chrome/chrome', cmd: '--arg1 --arg2 --internal-arg' },
-                'http://example.com'
+                'http://example.com',
             ]);
         });
 
@@ -170,7 +170,7 @@ describe('Browser provider', function () {
 
             expect(chromeProviderConfig('/usr/bin/chrome --arg1 --arg2')).include({
                 path:     '/usr/bin/chrome',
-                userArgs: '--arg1 --arg2'
+                userArgs: '--arg1 --arg2',
             });
         });
 
@@ -179,7 +179,7 @@ describe('Browser provider', function () {
 
             expect(firefoxProviderConfig('/usr/bin/firefox -arg1 -arg2')).include({
                 path:     '/usr/bin/firefox',
-                userArgs: '-arg1 -arg2'
+                userArgs: '-arg1 -arg2',
             });
         });
     });
@@ -197,7 +197,7 @@ describe('Browser provider', function () {
 
             dispose: function () {
                 return Promise.reject(new Error('Dispose error'));
-            }
+            },
         };
 
         before(function () {
@@ -244,28 +244,28 @@ describe('Browser provider', function () {
         it('Should resolve short form of a scoped provider', function () {
             expect(parseProviderName('@private/package')).to.deep.equal({
                 providerName: '@private/package',
-                moduleName:   '@private/testcafe-browser-provider-package'
+                moduleName:   '@private/testcafe-browser-provider-package',
             });
         });
 
         it('Should resolve long form of a scoped provider', function () {
             expect(parseProviderName('@private/testcafe-browser-provider-package')).to.deep.equal({
                 providerName: '@private/package',
-                moduleName:   '@private/testcafe-browser-provider-package'
+                moduleName:   '@private/testcafe-browser-provider-package',
             });
         });
 
         it('Should resolve short form of a unscoped provider', function () {
             expect(parseProviderName('package')).to.deep.equal({
                 providerName: 'package',
-                moduleName:   'testcafe-browser-provider-package'
+                moduleName:   'testcafe-browser-provider-package',
             });
         });
 
         it('Should resolve long form of a unscoped provider', function () {
             expect(parseProviderName('testcafe-browser-provider-package')).to.deep.equal({
                 providerName: 'package',
-                moduleName:   'testcafe-browser-provider-package'
+                moduleName:   'testcafe-browser-provider-package',
             });
         });
     });
@@ -278,7 +278,7 @@ describe('Browser provider', function () {
 
             dispose: function () {
                 return Promise.resolve();
-            }
+            },
         };
 
         before(function () {
@@ -329,8 +329,8 @@ describe('Browser provider', function () {
                     'testcafe-browser-tools': {
                         getBrowserInfo () {
                             return null;
-                        }
-                    }
+                        },
+                    },
                 });
 
                 const testProvider = Object.assign({}, dedicatedBrowserProviderBase, {
@@ -338,7 +338,7 @@ describe('Browser provider', function () {
 
                     getConfig () {
                         return {};
-                    }
+                    },
                 });
 
                 return testProvider
@@ -353,8 +353,8 @@ describe('Browser provider', function () {
                     'testcafe-browser-tools': {
                         getBrowserInfo () {
                             return { alias: 'browser' };
-                        }
-                    }
+                        },
+                    },
                 });
 
                 const testProvider = Object.assign({}, dedicatedBrowserProviderBase, {
@@ -362,7 +362,7 @@ describe('Browser provider', function () {
 
                     getConfig () {
                         return {};
-                    }
+                    },
                 });
 
                 return testProvider
@@ -380,7 +380,7 @@ describe('Browser provider', function () {
                 const provider = new ProviderCtor({
                     isLocalBrowser:            () => true,
                     isHeadlessBrowser:         () => false,
-                    hasCustomActionForBrowser: () => false
+                    hasCustomActionForBrowser: () => false,
                 });
 
                 const bc = new BrowserConnectionMock();
@@ -396,7 +396,7 @@ describe('Browser provider', function () {
                     isLocalBrowser:            stubFalse,
                     isHeadlessBrowser:         stubFalse,
                     hasCustomActionForBrowser: stubFalse,
-                    takeScreenshot:            noop
+                    takeScreenshot:            noop,
                 });
 
                 const dir            = `temp${nanoid(7)}`;
@@ -424,9 +424,9 @@ describe('Browser provider', function () {
                 'testcafe-browser-tools': {
                     findWindow () {
                         throw new Error('SomeError');
-                    }
+                    },
                 },
-                debug: debugMock
+                debug: debugMock,
             });
 
             const provider = new ProviderCtor(new BrowserProviderPluginHost(remoteProvider));
@@ -471,12 +471,12 @@ describe('Browser provider', function () {
                     default: {
                         findWindow () {
                             throw new Error('SomeError');
-                        }
-                    }
+                        },
+                    },
                 },
 
                 'os-family': { win: false, linux: false, mac: false },
-                'debug':     debugMock
+                'debug':     debugMock,
             });
 
             const provider = new ProviderMock(
@@ -495,7 +495,7 @@ describe('Browser provider', function () {
 
                 The following error occurred while TestCafe was searching for the window descriptor:
 
-                SomeError`
+                SomeError`,
             ]);
         });
     });

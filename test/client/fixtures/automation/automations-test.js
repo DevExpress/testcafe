@@ -61,10 +61,10 @@ $(document).ready(function () {
             $doc.bind(featureDetection.isTouchDevice ? 'touchmove' : 'mousemove', function (e) {
                 const curMousePos = featureDetection.isTouchDevice ? {
                     x: e.originalEvent.targetTouches[0].pageX || e.originalEvent.touches[0].pageX,
-                    y: e.originalEvent.targetTouches[0].pageY || e.originalEvent.touches[0].pageY
+                    y: e.originalEvent.targetTouches[0].pageY || e.originalEvent.touches[0].pageY,
                 } : {
                     x: e.clientX,
-                    y: e.clientY
+                    y: e.clientY,
                 };
 
                 $.each($doc.find('.' + DRAGGABLE_CLASS), function () {
@@ -76,7 +76,7 @@ $(document).ready(function () {
                                   $doc.data(CURSOR_POSITION_PROPERTY).x,
 
                             top: Math.round($this.position().top) + curMousePos.y -
-                                 $doc.data(CURSOR_POSITION_PROPERTY).y
+                                 $doc.data(CURSOR_POSITION_PROPERTY).y,
                         });
                         return false;
                     }
@@ -92,7 +92,7 @@ $(document).ready(function () {
             $win.data(DRAGGABLE_BIND_FLAG, true);
             $win.data(SCROLL_POSITION_PROPERTY, {
                 x: 0,
-                y: 0
+                y: 0,
             });
 
             $win.scroll(function () {
@@ -108,7 +108,7 @@ $(document).ready(function () {
                     if ($(this).data(DRAG_STARTED_PROPERTY)) {
                         $this.css({
                             left: $this.position().left + x,
-                            top:  $this.position().top + y
+                            top:  $this.position().top + y,
                         });
                         return false;
                     }
@@ -123,10 +123,10 @@ $(document).ready(function () {
         $el.bind(featureDetection.isTouchDevice ? 'touchstart' : 'mousedown', function (e) {
             doc[CURSOR_POSITION_PROPERTY] = featureDetection.isTouchDevice ? {
                 x: e.originalEvent.targetTouches[0].pageX || e.originalEvent.touches[0].pageX,
-                y: e.originalEvent.targetTouches[0].pageY || e.originalEvent.touches[0].pageY
+                y: e.originalEvent.targetTouches[0].pageY || e.originalEvent.touches[0].pageY,
             } : {
                 x: e.clientX,
-                y: e.clientY
+                y: e.clientY,
             };
 
             $doc.data(CURSOR_POSITION_PROPERTY, doc[CURSOR_POSITION_PROPERTY]);
@@ -153,7 +153,7 @@ $(document).ready(function () {
                 backgroundColor: 'grey',
                 left:            x ? x + 'px' : '100px',
                 top:             y ? y + 'px' : '850px',
-                zIndex:          5
+                zIndex:          5,
             })
             .appendTo($(currentDocument).find('body'));
 
@@ -225,8 +225,8 @@ $(document).ready(function () {
                 ctrl:  options.ctrl,
                 alt:   options.ctrl,
                 shift: options.shift,
-                meta:  options.meta
-            }
+                meta:  options.meta,
+            },
         });
 
         const clickAutomation = new ClickAutomation(el, clickOptions);
@@ -240,7 +240,7 @@ $(document).ready(function () {
         const offsets     = getOffsetOptions(element);
         const typeOptions = new TypeOptions({
             offsetX: offsets.offsetX,
-            offsetY: offsets.offsetY
+            offsetY: offsets.offsetY,
         });
 
         const typeAutomation = new TypeAutomation(element, text, typeOptions);
@@ -288,7 +288,7 @@ $(document).ready(function () {
             offsetX: offsets.offsetX,
             offsetY: offsets.offsetY,
 
-            modifiers: {}
+            modifiers: {},
         });
 
         const dblClickAutomation = new DblClickAutomation($input[0], clickOptions);
@@ -411,7 +411,7 @@ $(document).ready(function () {
             'Check selection': function () {
                 ok(checkEditorSelection($textarea[0], $textarea[0].value.length));
                 startNext();
-            }
+            },
         });
     });
 
@@ -449,7 +449,7 @@ $(document).ready(function () {
             'Check selection': function () {
                 ok(checkEditorSelection($textarea[0], 0));
                 startNext();
-            }
+            },
         });
     });
 
@@ -473,7 +473,7 @@ $(document).ready(function () {
             'Check selection': function () {
                 ok(checkEditorSelection($textarea[0], 4));
                 startNext();
-            }
+            },
         });
     });
 
@@ -497,7 +497,7 @@ $(document).ready(function () {
             'Check selection': function () {
                 ok(checkEditorSelection($textarea[0], 17));
                 startNext();
-            }
+            },
         });
     });
 
@@ -513,7 +513,7 @@ $(document).ready(function () {
                 left:     '50px',
                 top:      '1200px',
                 border:   '1px solid black',
-                overflow: 'scroll'
+                overflow: 'scroll',
             })
             .width(200)
             .height(150)
@@ -568,7 +568,7 @@ $(document).ready(function () {
                 equal(clickCount, 2);
                 ok(!errorScroll);
                 startNext();
-            }
+            },
         });
     });
 

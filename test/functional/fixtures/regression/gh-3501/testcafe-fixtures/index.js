@@ -18,7 +18,7 @@ test(`Label bound to radio is focused`, async t => {
     await t.expect(log).eql([
         'focus. Target: label1',
         'click. Target: label1',
-        'focus. Target: radio'
+        'focus. Target: radio',
     ]);
 
 
@@ -32,7 +32,7 @@ test(`Label bound to checkbox is focused`, async t => {
     await t.expect(log).eql([
         'focus. Target: label2',
         'click. Target: label2',
-        'focus. Target: checkbox'
+        'focus. Target: checkbox',
     ]);
 });
 

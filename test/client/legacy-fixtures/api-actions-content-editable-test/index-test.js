@@ -139,7 +139,7 @@ $(document).ready(function () {
                 selection.removeAllRanges();
                 document.body.focus();
             }
-        }
+        },
     };
 
     StepIterator.prototype.asyncActionSeries = function (items, runArgumentsIterator, action) {
@@ -506,7 +506,7 @@ $(document).ready(function () {
         const text = 'test';
 
         actionsAPI.type(node, text, {
-            caretPos: 1
+            caretPos: 1,
         });
         window.setTimeout(function () {
             equal(currentErrorType, ERROR_TYPE.emptyFirstArgument, 'correct error type sent');

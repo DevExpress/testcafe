@@ -1,7 +1,7 @@
 import {
     find,
     sortBy,
-    union
+    union,
 } from 'lodash';
 
 import { writable as isWritableStream } from 'is-stream';
@@ -141,7 +141,7 @@ export default class Reporter {
             pendingStarts:              runsPerTest,
             pendingTestRunDonePromise:  Reporter._createPendingPromise(),
             pendingTestRunStartPromise: Reporter._createPendingPromise(),
-            browsers:                   []
+            browsers:                   [],
         };
     }
 
@@ -163,7 +163,7 @@ export default class Reporter {
             quarantine:     reportItem.quarantine,
             skipped:        reportItem.test.skip,
             browsers:       reportItem.browsers,
-            testId:         reportItem.test.id
+            testId:         reportItem.test.id,
         };
     }
 
@@ -190,8 +190,8 @@ export default class Reporter {
                 args:   [
                     reportItem.test.name,
                     reportItem.testRunInfo,
-                    reportItem.test.meta
-                ]
+                    reportItem.test.meta,
+                ],
             });
 
             if (!nextReportItem)
@@ -205,8 +205,8 @@ export default class Reporter {
                 args:   [
                     nextReportItem.fixture.name,
                     nextReportItem.fixture.path,
-                    nextReportItem.fixture.meta
-                ]
+                    nextReportItem.fixture.meta,
+                ],
             });
         }
     }
@@ -265,7 +265,7 @@ export default class Reporter {
             },
             fixture: {
                 name: testRun.test.fixture.name,
-                id:   testRun.test.fixture.id
+                id:   testRun.test.fixture.id,
             },
             command: formatCommand(command, result),
             browser: getBrowser(testRun.browserConnection),
@@ -281,7 +281,7 @@ export default class Reporter {
             const uncaughtError = new ReporterPluginError({
                 name: this.plugin.name,
                 method,
-                originalError
+                originalError,
             });
 
             this.task.emit('error', uncaughtError);
@@ -294,7 +294,7 @@ export default class Reporter {
         const first      = this.reportQueue[0];
 
         const taskProperties = {
-            configuration: this.task.opts
+            configuration: this.task.opts,
         };
 
         await this.dispatchToPlugin({
@@ -304,8 +304,8 @@ export default class Reporter {
                 userAgents,
                 this.testCount,
                 this.task.testStructure,
-                taskProperties
-            ]
+                taskProperties,
+            ],
         });
 
         await this.dispatchToPlugin({
@@ -313,8 +313,8 @@ export default class Reporter {
             args:   [
                 first.fixture.name,
                 first.fixture.path,
-                first.fixture.meta
-            ]
+                first.fixture.meta,
+            ],
         });
     }
 
@@ -338,8 +338,8 @@ export default class Reporter {
                     args:   [
                         reportItem.test.name,
                         reportItem.test.meta,
-                        testStartInfo
-                    ]
+                        testStartInfo,
+                    ],
                 });
             }
 
@@ -375,8 +375,8 @@ export default class Reporter {
                 method: ReporterPluginMethod.reportTestActionStart as string,
                 args:   [
                     apiActionName,
-                    restArgs
-                ]
+                    restArgs,
+                ],
             });
         }
     }
@@ -390,8 +390,8 @@ export default class Reporter {
                 method: ReporterPluginMethod.reportTestActionDone as string,
                 args:   [
                     apiActionName,
-                    restArgs
-                ]
+                    restArgs,
+                ],
             });
         }
     }
@@ -402,7 +402,7 @@ export default class Reporter {
         const result = {
             passedCount:  this.passed,
             failedCount:  this.failed,
-            skippedCount: this.skipped
+            skippedCount: this.skipped,
         };
 
         await this.dispatchToPlugin({
@@ -411,8 +411,8 @@ export default class Reporter {
                 endTime,
                 this.passed,
                 this.task.warningLog.messages,
-                result
-            ]
+                result,
+            ],
         });
 
         (this.pendingTaskDonePromise.resolve as Function)();

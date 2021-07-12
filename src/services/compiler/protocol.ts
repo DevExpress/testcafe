@@ -20,7 +20,7 @@ import {
     SetMockArguments,
     SetOptionsArguments,
     TestRunLocator,
-    UpdateRolePropertyArguments
+    UpdateRolePropertyArguments,
 } from './interfaces';
 
 export const BEFORE_AFTER_PROPERTIES      = ['beforeFn', 'afterFn'] as const;

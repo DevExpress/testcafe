@@ -17,7 +17,7 @@
         act.click('#submitBtn');
     },
 
-    '4. Check text1 upload': '@mixin Check text1.txt upload'
+    '4. Check text1 upload': '@mixin Check text1.txt upload',
 };
 
 '@test'['Upload by using a replaced element'] = {
@@ -37,7 +37,7 @@
         act.click('#submitBtn');
     },
 
-    '5. Check text1 upload': '@mixin Check text1.txt upload'
+    '5. Check text1 upload': '@mixin Check text1.txt upload',
 };
 
 '@test'['Upload by using a removed element'] = {
@@ -53,5 +53,5 @@
         act.click('#submitBtn');
     },
 
-    '4. Check empty upload': '@mixin Check empty upload'
+    '4. Check empty upload': '@mixin Check empty upload',
 };

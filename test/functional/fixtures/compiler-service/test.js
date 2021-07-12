@@ -21,7 +21,7 @@ describe('Compiler service', () => {
                 ` 3 |test(\`Throw an error\`, async t => {` +
                 ` > 4 |    await t.click('#not-exists');` +
                 ` 5 |});` +
-                ` 6 |  at <anonymous> (${path.join(__dirname, 'testcafe-fixtures/error-test.js')}:4:13)`
+                ` 6 |  at <anonymous> (${path.join(__dirname, 'testcafe-fixtures/error-test.js')}:4:13)`,
             ])).to.be.true;
         }
     });

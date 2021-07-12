@@ -4,7 +4,7 @@ import promisifyEvent from 'promisify-event';
 import {
     flatten,
     noop,
-    pull as remove
+    pull as remove,
 } from 'lodash';
 
 import { BrowserConnectionError, GeneralError } from '../errors/runtime';
@@ -60,7 +60,7 @@ export default class BrowserSet extends EventEmitter {
         const timeoutErr    = new GeneralError(RUNTIME_ERRORS.cannotEstablishBrowserConnection);
         const openedOrError = Promise.race([
             promisifyEvent(this, 'error'),
-            promisifyEvent(bc, 'opened')
+            promisifyEvent(bc, 'opened'),
         ]);
 
         return getTimeLimitedPromise(openedOrError, openedTimeout, { rejectWith: timeoutErr });

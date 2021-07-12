@@ -128,7 +128,7 @@ $(document).ready(function () {
             ctrl:  options.ctrl,
             alt:   options.ctrl,
             shift: options.shift,
-            meta:  options.meta
+            meta:  options.meta,
         };
 
         const dblClickAutomation = new DblClickAutomation(el, clickOptions);
@@ -253,7 +253,7 @@ $(document).ready(function () {
                     equal(select.selectedIndex, 0);
                     startNext();
                 });
-            }
+            },
         });
     };
 
@@ -329,7 +329,7 @@ $(document).ready(function () {
                     equal(select.selectedIndex, 0);
                     startNext();
                 });
-            }
+            },
         });
     };
 
@@ -363,7 +363,7 @@ $(document).ready(function () {
                     equal(select.selectedIndex, 0);
                     testCallback();
                 });
-            }
+            },
         });
     };
 
@@ -397,7 +397,7 @@ $(document).ready(function () {
                     equal($select.selectedIndex, browserUtils.isIE || notChangeInChrome ? 0 : 0);
                     testCallback();
                 });
-            }
+            },
         });
     };
 
@@ -413,7 +413,7 @@ $(document).ready(function () {
             ctrl:  options.ctrl,
             alt:   options.ctrl,
             shift: options.shift,
-            meta:  options.meta
+            meta:  options.meta,
         };
 
         const clickAutomation = /opt/i.test(el.tagName) ?
@@ -501,7 +501,7 @@ $(document).ready(function () {
                     equal(select.selectedIndex, 0);
                     startNext();
                 });
-            }
+            },
         });
     });
 
@@ -551,7 +551,7 @@ $(document).ready(function () {
                 runClickAutomation(select, {}, function () {
                     window.setTimeout(startNext, 0);
                 });
-            }
+            },
         });
     });
 
@@ -580,7 +580,7 @@ $(document).ready(function () {
                 equal($(shadowUI.select('.' + OPTION_LIST_CLASS)).is(':visible'), false);
                 equal(select.selectedIndex, 0);
                 startNext();
-            }
+            },
         });
     });
 
@@ -605,7 +605,7 @@ $(document).ready(function () {
                 equal($(shadowUI.select('.' + OPTION_LIST_CLASS)).is(':visible'), false);
                 equal(select.selectedIndex, 0);
                 startNext();
-            }
+            },
         });
     });
 
@@ -630,7 +630,7 @@ $(document).ready(function () {
                 equal($(shadowUI.select('.' + OPTION_LIST_CLASS)).is(':visible'), false);
                 equal(select.selectedIndex, 0);
                 startNext();
-            }
+            },
         });
     });
 
@@ -1010,7 +1010,7 @@ $(document).ready(function () {
                 runClickAutomation(select, {}, function () {
                     window.setTimeout(startNext, 0);
                 });
-            }
+            },
         });
     });
 
@@ -1036,7 +1036,7 @@ $(document).ready(function () {
                 runClickAutomation(select, {}, function () {
                     window.setTimeout(startNext, 0);
                 });
-            }
+            },
         });
     });
 
@@ -1072,7 +1072,7 @@ $(document).ready(function () {
             $select.css({
                 position: 'absolute',
                 top:      '200px',
-                left:     '300px'
+                left:     '300px',
             });
             $select.attr('size', '5');
             select.selectedIndex = 0;
@@ -1100,7 +1100,7 @@ $(document).ready(function () {
             $select.css({
                 position: 'absolute',
                 top:      '200px',
-                left:     '300px'
+                left:     '300px',
             });
             $select.attr('size', '5');
             select.selectedIndex = 0;
@@ -1129,7 +1129,7 @@ $(document).ready(function () {
             $select.css({
                 position: 'absolute',
                 top:      '200px',
-                left:     '300px'
+                left:     '300px',
             });
             $select.attr('size', '5');
             select.selectedIndex = 8;
@@ -1163,7 +1163,7 @@ $(document).ready(function () {
             $select.css({
                 position: 'absolute',
                 top:      '200px',
-                left:     '300px'
+                left:     '300px',
             });
             $select.attr('size', '5');
             select.selectedIndex = 0;
@@ -1197,7 +1197,7 @@ $(document).ready(function () {
             $select.css({
                 position: 'absolute',
                 top:      '200px',
-                left:     '300px'
+                left:     '300px',
             });
             $select.attr('size', '5');
             select.selectedIndex = 0;
@@ -1309,7 +1309,7 @@ $(document).ready(function () {
                 equal(shadowUI.select('.' + OPTION_LIST_CLASS).length, 0);
                 equal(select.selectedIndex, 0);
                 startNext();
-            }
+            },
         });
     });
 
@@ -1358,7 +1358,7 @@ $(document).ready(function () {
                 window.setTimeout(function () {
                     startNext();
                 }, 0);
-            }
+            },
         });
     });
 
@@ -1469,7 +1469,7 @@ $(document).ready(function () {
                         equal(handlersLog.join(), 'option mousedown,option mouseup,select input,select change,option click');
                     startNext();
                 });
-            }
+            },
         });
     });
 
@@ -1514,7 +1514,7 @@ $(document).ready(function () {
                         equal(handlersLog.join(), 'option mousedown,option mouseup,select input,select change,option click,option mousedown,option mouseup,option click');
                     startNext();
                 });
-            }
+            },
         });
     });
 

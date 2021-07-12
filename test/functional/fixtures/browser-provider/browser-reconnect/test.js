@@ -12,7 +12,7 @@ let errors = null;
 const reporter = createReporter({
     reportTestDone (name, testRunInfo) {
         errors = testRunInfo.errs;
-    }
+    },
 });
 
 function createConnection (browser) {

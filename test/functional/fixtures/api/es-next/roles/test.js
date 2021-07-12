@@ -9,7 +9,7 @@ const IFRAME_SELECTOR_TIMEOUT             = 5000;
 const TEST_WITH_IFRAME_RUN_OPTIONS        = { selectorTimeout: IFRAME_SELECTOR_TIMEOUT };
 const TEST_WITH_IFRAME_FAILED_RUN_OPTIONS = {
     shouldFail:      true,
-    selectorTimeout: IFRAME_SELECTOR_TIMEOUT
+    selectorTimeout: IFRAME_SELECTOR_TIMEOUT,
 };
 
 // TODO: IMPORTANT: Azure test tasks hang when a role is used in a test, fix it immediately
@@ -53,7 +53,7 @@ if (config.currentEnvironmentName !== config.testingEnvironmentNames.osXDesktopA
             it('Should fail all tests that use role with the initiliazer error', function () {
                 return runTests('./testcafe-fixtures/init-error-test.js', null, {
                     shouldFail: true,
-                    only:       'chrome,ie,firefox'
+                    only:       'chrome,ie,firefox',
                 })
                     .catch(function (errs) {
                         const testedBrowsers = config.currentEnvironment.browsers;

@@ -109,7 +109,7 @@ test('Default drag events should not be simulated if the mousedown event was pre
             dragend:   window.dragendRaised,
 
             mousedown: window.mousedownRaised,
-            mouseup:   window.mouseupRaised
+            mouseup:   window.mouseupRaised,
         };
     });
 
@@ -132,7 +132,7 @@ test('Default drag events should not be simulated if the mousedown event was pre
             dragend:   true,
 
             mousedown: true,
-            mouseup:   false
+            mouseup:   false,
         });
 
     await clearEventsResult();
@@ -145,6 +145,6 @@ test('Default drag events should not be simulated if the mousedown event was pre
             dragend:   false,
 
             mousedown: true,
-            mouseup:   true
+            mouseup:   true,
         });
 });

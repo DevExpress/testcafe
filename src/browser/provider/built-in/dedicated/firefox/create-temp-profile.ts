@@ -55,13 +55,13 @@ async function generatePreferences (profileDir: string, { marionettePort, config
         // NOTE: We set the foreground configuration for the background budget throttling parameters
         'user_pref("dom.timeout.background_throttling_max_budget", -1);',
         'user_pref("dom.timeout.background_budget_regeneration_rate", 1);',
-        'user_pref("security.enterprise_roots.enabled", true);'
+        'user_pref("security.enterprise_roots.enabled", true);',
     ];
 
     if (marionettePort) {
         prefs = prefs.concat([
             `user_pref("marionette.port", ${marionettePort});`,
-            'user_pref("marionette.enabled", true);'
+            'user_pref("marionette.enabled", true);',
         ]);
     }
 
@@ -86,37 +86,37 @@ async function writeHandlersFile (profileDir: string): Promise<void> {
     const handlersFileName = path.join(profileDir, 'handlers.json');
     const handlers         = {
         defaultHandlersVersion: {
-            ru: 5
+            ru: 5,
         },
         mimeTypes: {
             'application/pdf': {
                 action:     0,
                 extensions: [
-                    'pdf'
-                ]
+                    'pdf',
+                ],
             },
             'text/xml': {
                 action:     0,
                 extensions: [
                     'xml',
                     'xsl',
-                    'xbl'
-                ]
+                    'xbl',
+                ],
             },
             'image/svg+xml': {
                 action:     0,
                 extensions: [
-                    'svg'
-                ]
+                    'svg',
+                ],
             },
             'image/webp': {
                 action:     0,
                 extensions: [
-                    'webp'
-                ]
-            }
+                    'webp',
+                ],
+            },
         },
-        schemes: {}
+        schemes: {},
     };
 
     await writeFile(handlersFileName, JSON.stringify(handlers));

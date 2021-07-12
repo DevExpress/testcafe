@@ -16,7 +16,7 @@ describe('Warning log', () => {
 
         expect(log.messages).eql([
             'Was unable to take a screenshot due to an error.\n\n' + TYPE_ERROR_TEXT,
-            'Was unable to take a screenshot due to an error.\n\n' + SYNTAX_ERROR_TEXT
+            'Was unable to take a screenshot due to an error.\n\n' + SYNTAX_ERROR_TEXT,
         ]);
     });
 
@@ -27,7 +27,7 @@ describe('Warning log', () => {
         log.addWarning(WARNINGS.screenshotError, TYPE_ERROR_TEXT);
 
         expect(log.messages).eql([
-            'Was unable to take a screenshot due to an error.\n\n' + TYPE_ERROR_TEXT
+            'Was unable to take a screenshot due to an error.\n\n' + TYPE_ERROR_TEXT,
         ]);
     });
 
@@ -39,11 +39,11 @@ describe('Warning log', () => {
         log.addWarning(WARNINGS.screenshotError, TYPE_ERROR_TEXT);
 
         expect(log.messages).eql([
-            'Was unable to take a screenshot due to an error.\n\n' + TYPE_ERROR_TEXT
+            'Was unable to take a screenshot due to an error.\n\n' + TYPE_ERROR_TEXT,
         ]);
 
         expect(globalLog.messages).eql([
-            'Was unable to take a screenshot due to an error.\n\n' + TYPE_ERROR_TEXT
+            'Was unable to take a screenshot due to an error.\n\n' + TYPE_ERROR_TEXT,
         ]);
     });
 
@@ -57,7 +57,7 @@ describe('Warning log', () => {
         expect(log.messages).eql([]);
 
         expect(globalLog.messages).eql([
-            'Was unable to take a screenshot due to an error.\n\n' + TYPE_ERROR_TEXT
+            'Was unable to take a screenshot due to an error.\n\n' + TYPE_ERROR_TEXT,
         ]);
     });
 
@@ -69,11 +69,11 @@ describe('Warning log', () => {
         firstLog.copyTo(secondLog);
 
         expect(firstLog.messages).eql([
-            'Was unable to take a screenshot due to an error.\n\n' + TYPE_ERROR_TEXT
+            'Was unable to take a screenshot due to an error.\n\n' + TYPE_ERROR_TEXT,
         ]);
 
         expect(secondLog.messages).eql([
-            'Was unable to take a screenshot due to an error.\n\n' + TYPE_ERROR_TEXT
+            'Was unable to take a screenshot due to an error.\n\n' + TYPE_ERROR_TEXT,
         ]);
     });
 });

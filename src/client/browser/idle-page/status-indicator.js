@@ -42,14 +42,14 @@ function rotateAxes (point, rotationAngle) {
 
     return {
         x: Math.round(point.x * Math.cos(angle) - point.y * Math.sin(angle)),
-        y: Math.round(point.x * Math.sin(angle) + point.y * Math.cos(angle))
+        y: Math.round(point.x * Math.sin(angle) + point.y * Math.cos(angle)),
     };
 }
 
 function moveAxes (point, distance) {
     return {
         x: Math.round(point.x - distance),
-        y: Math.round(point.y - distance)
+        y: Math.round(point.y - distance),
     };
 }
 
@@ -215,12 +215,12 @@ export default class StatusIndicator {
     _setSpinnerGradient () {
         let startGradientPoint = {
             x: Math.round(this.size * START_GRADIENT_POINT_OFFSET.x),
-            y: Math.round(this.size * START_GRADIENT_POINT_OFFSET.y)
+            y: Math.round(this.size * START_GRADIENT_POINT_OFFSET.y),
         };
 
         let endGradientPoint = {
             x: Math.round(this.size * END_GRADIENT_POINT_OFFSET.x),
-            y: Math.round(this.size * END_GRADIENT_POINT_OFFSET.y)
+            y: Math.round(this.size * END_GRADIENT_POINT_OFFSET.y),
         };
 
         if (this.rotationAngle !== 0) {

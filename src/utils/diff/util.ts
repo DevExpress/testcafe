@@ -2,7 +2,7 @@ import { inspect } from 'util';
 import {
     isFunction,
     isBuffer,
-    isString
+    isString,
 } from 'lodash';
 
 export function cleanUpFilter (line: string): boolean {

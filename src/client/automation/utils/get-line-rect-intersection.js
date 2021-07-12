@@ -31,7 +31,7 @@ export default function (startLinePoint, endLinePoint, rect) {
         { x1: rect.left, y1: rect.top, x2: rect.left, y2: rect.bottom, isHorizontal: false }, // left-side
         { x1: rect.right, y1: rect.top, x2: rect.right, y2: rect.bottom, isHorizontal: false }, // right-side
         { x1: rect.left, y1: rect.top, x2: rect.right, y2: rect.top, isHorizontal: true }, // top-side
-        { x1: rect.left, y1: rect.bottom, x2: rect.right, y2: rect.bottom, isHorizontal: true } // bottom-side
+        { x1: rect.left, y1: rect.bottom, x2: rect.right, y2: rect.bottom, isHorizontal: true }, // bottom-side
     ];
 
     for (let i = 0; i < rectLines.length; i++) {

@@ -9,7 +9,7 @@ const { getFreePort } = require('endpoint-utils');
 const resourceRequestCounter = {
     script1: 0,
     script2: 0,
-    img:     0
+    img:     0,
 };
 
 function resolvePath (file) {
@@ -73,7 +73,7 @@ async function run ({ src, browser }) {
         hostname: 'localhost',
         port1:    1335,
         port2:    1336,
-        cache:    true
+        cache:    true,
     });
 
     await testcafe.createRunner()

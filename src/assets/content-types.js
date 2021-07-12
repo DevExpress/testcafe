@@ -3,5 +3,5 @@ export default {
     css:        'text/css',
     png:        'image/png',
     icon:       'image/x-icon',
-    svg:        'image/svg+xml'
+    svg:        'image/svg+xml',
 };

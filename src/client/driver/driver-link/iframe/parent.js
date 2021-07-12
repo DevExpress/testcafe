@@ -2,7 +2,7 @@ import { eventSandbox } from '../../deps/hammerhead';
 import {
     EstablishConnectionMessage,
     CommandExecutedMessage,
-    HasPendingActionFlagsMessage
+    HasPendingActionFlagsMessage,
 } from '../messages';
 import { CurrentIframeIsNotLoadedError } from '../../../../shared/errors';
 import sendMessageToDriver from '../send-message-to-driver';
@@ -24,7 +24,7 @@ export default class ParentIframeDriverLink {
     sendConfirmationMessage (requestMsgId) {
         sendConfirmationMessage({
             requestMsgId,
-            window: this.driverWindow
+            window: this.driverWindow,
         });
     }
 

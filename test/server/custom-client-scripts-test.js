@@ -133,7 +133,7 @@ describe('Client scripts', () => {
         it('Initializer', () => {
             const script = new ClientScript( {
                 page:    'http://example.com',
-                content: testScriptContent
+                content: testScriptContent,
             });
 
             return script.load()
@@ -194,7 +194,7 @@ describe('Client scripts', () => {
     it('Should correct non-unique urls', () => {
         const scripts = [
             { module: testModuleName },
-            { module: testModuleName }
+            { module: testModuleName },
         ];
 
         return loadClientScripts(scripts, testBasePath)
@@ -270,7 +270,7 @@ describe('Client scripts', () => {
             const scripts = [
                 { content: '' },
                 { content: '123' },
-                { content: '' }
+                { content: '' },
             ];
 
             return loadClientScripts(scripts)

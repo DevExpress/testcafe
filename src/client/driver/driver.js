@@ -11,7 +11,7 @@ import {
     waitFor,
     delay,
     getTimeLimitedPromise,
-    browser
+    browser,
 } from './deps/testcafe-core';
 
 import { cursor } from './deps/testcafe-automation';
@@ -24,7 +24,7 @@ import {
     SEND_STATUS_REQUEST_RETRY_DELAY,
     SEND_STATUS_REQUEST_RETRY_COUNT,
     CHECK_STATUS_RETRY_DELAY,
-    CHECK_CHILD_WINDOW_DRIVER_LINK_DELAY
+    CHECK_CHILD_WINDOW_DRIVER_LINK_DELAY,
 } from '../../utils/browser-connection-timeouts';
 
 import TEST_RUN_MESSAGES from '../../test-run/client-messages';
@@ -33,7 +33,7 @@ import { TEST_RUN_ERRORS } from '../../errors/types';
 import {
     isBrowserManipulationCommand,
     isCommandRejectableByPageError,
-    isExecutableInTopWindowOnly
+    isExecutableInTopWindowOnly,
 } from '../../test-run/commands/utils';
 
 import STATUS_BAR_DEBUG_ACTION from '../../utils/debug-action';
@@ -60,7 +60,7 @@ import {
     CannotCloseWindowWithChildrenError,
     CannotCloseWindowWithoutParentError,
     WindowNotFoundError,
-    CannotRestoreChildWindowError
+    CannotRestoreChildWindowError,
 } from '../../shared/errors';
 
 
@@ -75,7 +75,7 @@ import {
     SetNativeDialogHandlerMessage,
     GetWindowsMessage,
     ChildWindowIsLoadedInFrameMessage,
-    TYPE as MESSAGE_TYPE
+    TYPE as MESSAGE_TYPE,
 } from './driver-link/messages';
 
 import ContextStorage from './storage';
@@ -90,7 +90,7 @@ import executeManipulationCommand from './command-executors/browser-manipulation
 import executeNavigateToCommand from './command-executors/execute-navigate-to';
 import {
     getResult as getExecuteSelectorResult,
-    getResultDriverStatus as getExecuteSelectorResultDriverStatus
+    getResultDriverStatus as getExecuteSelectorResultDriverStatus,
 } from './command-executors/execute-selector';
 
 import executeChildWindowDriverLinkSelector from './command-executors/execute-child-window-driver-link-selector';
@@ -127,13 +127,13 @@ const PENDING_CHILD_WINDOW_COUNT           = 'testcafe|driver|pending-child-wind
 const ACTION_IFRAME_ERROR_CTORS = {
     NotLoadedError:   ActionIframeIsNotLoadedError,
     NotFoundError:    ActionElementNotFoundError,
-    IsInvisibleError: ActionElementIsInvisibleError
+    IsInvisibleError: ActionElementIsInvisibleError,
 };
 
 const CURRENT_IFRAME_ERROR_CTORS = {
     NotLoadedError:   CurrentIframeIsNotLoadedError,
     NotFoundError:    CurrentIframeNotFoundError,
-    IsInvisibleError: CurrentIframeIsInvisibleError
+    IsInvisibleError: CurrentIframeIsInvisibleError,
 };
 
 const COMMAND_EXECUTION_MAX_TIMEOUT     = Math.pow(2, 31) - 1;
@@ -290,7 +290,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         if (executingClientFnDescriptor) {
             this._onReady(new DriverStatus({
                 isCommandResult: true,
-                executionError:  new ClientFunctionExecutionInterruptionError(executingClientFnDescriptor.instantiationCallsiteName)
+                executionError:  new ClientFunctionExecutionInterruptionError(executingClientFnDescriptor.instantiationCallsiteName),
             }));
 
             return true;
@@ -359,7 +359,7 @@ export default class Driver extends serviceUtils.EventEmitter {
             .then(() => {
                 this._startInternal({
                     finalizePendingCommand:             true,
-                    isFirstRequestAfterWindowSwitching: true
+                    isFirstRequestAfterWindowSwitching: true,
                 });
 
                 this.setAsMasterInProgress = false;
@@ -367,7 +367,7 @@ export default class Driver extends serviceUtils.EventEmitter {
             .catch(() => {
                 this._onReady(new DriverStatus({
                     isCommandResult: true,
-                    executionError:  new CannotSwitchToWindowError()
+                    executionError:  new CannotSwitchToWindowError(),
                 }));
             });
     }
@@ -441,7 +441,7 @@ export default class Driver extends serviceUtils.EventEmitter {
             cmd:              TEST_RUN_MESSAGES.ready,
             status:           status,
             disableResending: true,
-            allowRejecting:   true
+            allowRejecting:   true,
         };
 
         const requestAttempt = () => getTimeLimitedPromise(transport.asyncServiceMsg(statusRequestOptions), SEND_STATUS_REQUEST_TIME_LIMIT);
@@ -506,7 +506,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         return Promise.resolve({
             success: false,
             errCode,
-            errMsg
+            errMsg,
         });
     }
 
@@ -533,7 +533,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         sendConfirmationMessage({
             requestMsgId: msg.id,
             window:       wnd,
-            result
+            result,
         });
     }
 
@@ -543,7 +543,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         return {
             id:    this.windowId,
             title: document.title,
-            url:   parsedUrl.destUrl
+            url:   parsedUrl.destUrl,
         };
     }
 
@@ -583,14 +583,14 @@ export default class Driver extends serviceUtils.EventEmitter {
         if (!this.parentWindowDriverLink) {
             return Promise.resolve({
                 success: false,
-                errCode: TEST_RUN_ERRORS.cannotCloseWindowWithoutParent
+                errCode: TEST_RUN_ERRORS.cannotCloseWindowWithoutParent,
             });
         }
 
         if (this.childWindowDriverLinks.length) {
             return Promise.resolve({
                 success: false,
-                errCode: TEST_RUN_ERRORS.cannotCloseWindowWithChildrenError
+                errCode: TEST_RUN_ERRORS.cannotCloseWindowWithChildrenError,
             });
         }
 
@@ -618,7 +618,7 @@ export default class Driver extends serviceUtils.EventEmitter {
 
         sendConfirmationMessage({
             requestMsgId: msg.id,
-            window:       wnd
+            window:       wnd,
         });
     }
 
@@ -674,7 +674,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         sendConfirmationMessage({
             requestMsgId: msg.id,
             window:       wnd,
-            result
+            result,
         });
     }
 
@@ -683,7 +683,7 @@ export default class Driver extends serviceUtils.EventEmitter {
 
         sendConfirmationMessage({
             requestMsgId: msg.id,
-            window:       wnd
+            window:       wnd,
         });
     }
 
@@ -714,7 +714,7 @@ export default class Driver extends serviceUtils.EventEmitter {
 
         sendConfirmationMessage({
             requestMsgId: msg.id,
-            window:       wnd
+            window:       wnd,
         });
 
         Promise.resolve()
@@ -724,7 +724,7 @@ export default class Driver extends serviceUtils.EventEmitter {
             .then(() => {
                 this._startInternal({
                     finalizePendingCommand: msg.finalizePendingCommand,
-                    result:                 { id: this.windowId }
+                    result:                 { id: this.windowId },
                 });
 
                 this.setAsMasterInProgress = false;
@@ -732,7 +732,7 @@ export default class Driver extends serviceUtils.EventEmitter {
             .catch(() => {
                 this._onReady(new DriverStatus({
                     isCommandResult: true,
-                    executionError:  new CannotSwitchToWindowError()
+                    executionError:  new CannotSwitchToWindowError(),
                 }));
             });
     }
@@ -742,13 +742,13 @@ export default class Driver extends serviceUtils.EventEmitter {
             .then(() => {
                 sendConfirmationMessage({
                     requestMsgId: msg.id,
-                    window:       wnd
+                    window:       wnd,
                 });
             })
             .catch(() => {
                 this._onReady(new DriverStatus({
                     isCommandResult: true,
-                    executionError:  new CloseChildWindowError()
+                    executionError:  new CloseChildWindowError(),
                 }));
             });
     }
@@ -763,7 +763,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         sendConfirmationMessage({
             requestMsgId: msg.id,
             window,
-            result
+            result,
         });
     }
 
@@ -785,7 +785,7 @@ export default class Driver extends serviceUtils.EventEmitter {
 
         sendConfirmationMessage({
             requestMsgId: msg.id,
-            window:       wnd
+            window:       wnd,
         });
     }
 
@@ -800,7 +800,7 @@ export default class Driver extends serviceUtils.EventEmitter {
     _handleChildWindowIsLoadedInIFrame (msg, wnd) {
         sendConfirmationMessage({
             requestMsgId: msg.id,
-            window:       wnd
+            window:       wnd,
         });
 
         this._resolvePendingChildWindowInIframe();
@@ -884,7 +884,7 @@ export default class Driver extends serviceUtils.EventEmitter {
             .then(status => this._onCommandExecutedInIframe(status))
             .catch(err => this._onCommandExecutedInIframe(new DriverStatus({
                 isCommandResult: true,
-                executionError:  err
+                executionError:  err,
             })));
     }
 
@@ -1023,7 +1023,7 @@ export default class Driver extends serviceUtils.EventEmitter {
 
                 this._onReady(new DriverStatus({
                     isCommandResult: true,
-                    executionError:  new CannotSwitchToWindowError()
+                    executionError:  new CannotSwitchToWindowError(),
                 }));
             });
     }
@@ -1057,7 +1057,7 @@ export default class Driver extends serviceUtils.EventEmitter {
 
                 this._onReady(new DriverStatus({
                     isCommandResult: true,
-                    executionError:  new CannotSwitchToWindowError()
+                    executionError:  new CannotSwitchToWindowError(),
                 }));
             });
     }
@@ -1106,7 +1106,7 @@ export default class Driver extends serviceUtils.EventEmitter {
     _onGetNativeDialogHistoryCommand () {
         this._onReady(new DriverStatus({
             isCommandResult: true,
-            result:          this.nativeDialogsTracker.appearedDialogs
+            result:          this.nativeDialogsTracker.appearedDialogs,
         }));
     }
 
@@ -1166,7 +1166,7 @@ export default class Driver extends serviceUtils.EventEmitter {
             .then(() => this._onReady(new DriverStatus({ isCommandResult: true })))
             .catch(err => this._onReady(new DriverStatus({
                 isCommandResult: true,
-                executionError:  err
+                executionError:  err,
             })));
     }
 
@@ -1190,7 +1190,7 @@ export default class Driver extends serviceUtils.EventEmitter {
 
             await sendMessageToDriver(new CloseWindowCommandMessage({
                 windowId,
-                isCurrentWindow
+                isCurrentWindow,
             }), wnd, WAIT_FOR_WINDOW_DRIVER_RESPONSE_TIMEOUT, CannotSwitchToWindowError);
 
             // NOTE: we do not need to send a new Driver Status if we close the current window
@@ -1199,14 +1199,14 @@ export default class Driver extends serviceUtils.EventEmitter {
 
             if (!isCurrentWindow) {
                 this._onReady(new DriverStatus({
-                    isCommandResult: true
+                    isCommandResult: true,
                 }));
             }
         }
         catch (err) {
             this._onReady(new DriverStatus({
                 isCommandResult: true,
-                executionError:  err
+                executionError:  err,
             }));
         }
     }
@@ -1216,8 +1216,8 @@ export default class Driver extends serviceUtils.EventEmitter {
             isCommandResult: true,
 
             result: {
-                id: this.windowId
-            }
+                id: this.windowId,
+            },
         }));
     }
 
@@ -1227,7 +1227,7 @@ export default class Driver extends serviceUtils.EventEmitter {
 
         this._onReady(new DriverStatus({
             isCommandResult: true,
-            result:          response.result
+            result:          response.result,
         }));
     }
 
@@ -1253,7 +1253,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         if (!result.success) {
             this._onReady(new DriverStatus({
                 isCommandResult: true,
-                executionError:  err || Driver._createWindowValidationError(result)
+                executionError:  err || Driver._createWindowValidationError(result),
             }));
         }
         else {
@@ -1277,7 +1277,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         catch (err) {
             this._onReady(new DriverStatus({
                 isCommandResult: true,
-                executionError:  new CannotRestoreChildWindowError()
+                executionError:  new CannotRestoreChildWindowError(),
             }));
         }
     }
@@ -1292,7 +1292,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         else {
             this._onReady(new DriverStatus({
                 isCommandResult: true,
-                executionError:  new ParentWindowNotFoundError()
+                executionError:  new ParentWindowNotFoundError(),
             }));
         }
     }
@@ -1317,7 +1317,7 @@ export default class Driver extends serviceUtils.EventEmitter {
 
             this._onReady(new DriverStatus({
                 isCommandResult: true,
-                result:          true
+                result:          true,
             }));
         }
         else {
@@ -1326,7 +1326,7 @@ export default class Driver extends serviceUtils.EventEmitter {
 
                 this._onReady(new DriverStatus({
                     isCommandResult: true,
-                    result:          stopAfterNextAction
+                    result:          stopAfterNextAction,
                 }));
             });
         }
@@ -1336,7 +1336,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         this.statusBar._resetState();
 
         this._onReady(new DriverStatus({
-            isCommandResult: true
+            isCommandResult: true,
         }));
     }
 
@@ -1422,7 +1422,7 @@ export default class Driver extends serviceUtils.EventEmitter {
                 .catch(() => {
                     this._onReady(new DriverStatus({
                         isCommandResult: true,
-                        executionError:  CloseChildWindowError
+                        executionError:  CloseChildWindowError,
                     }));
                 });
         }
@@ -1431,7 +1431,7 @@ export default class Driver extends serviceUtils.EventEmitter {
     _onBackupStoragesCommand () {
         this._onReady(new DriverStatus({
             isCommandResult: true,
-            result:          storages.backup()
+            result:          storages.backup(),
         }));
     }
 
@@ -1593,7 +1593,7 @@ export default class Driver extends serviceUtils.EventEmitter {
     setCustomCommandHandlers (command, handler, executeInTopWindowOnly) {
         this.customCommandHandlers[command] = {
             isExecutableInTopWindowOnly: executeInTopWindowOnly,
-            handler
+            handler,
         };
     }
 
@@ -1654,7 +1654,7 @@ export default class Driver extends serviceUtils.EventEmitter {
         const status = pendingStatus || new DriverStatus({
             isCommandResult:                    finalizePendingCommand,
             isFirstRequestAfterWindowSwitching: opts.isFirstRequestAfterWindowSwitching,
-            result:                             opts.result
+            result:                             opts.result,
         });
 
         this.contextStorage.setItem(this.COMMAND_EXECUTING_FLAG, false);

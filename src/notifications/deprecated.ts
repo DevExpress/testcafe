@@ -11,12 +11,12 @@ interface DeprecatedAPI {
 export const DEPRECATED: { [functionality: string]: DeprecatedAPI } = {
     'setPageLoadTimeout': {
         what:       "The 't.setPageLoadTimeout' method",
-        useInstead: "the 'test.timeouts' method to set the 'pageLoadTimeout'"
+        useInstead: "the 'test.timeouts' method to set the 'pageLoadTimeout'",
     },
     'tsConfigPath': {
         what:       `The '${OPTION_NAMES.tsConfigPath}' option`,
-        useInstead: `the '${OPTION_NAMES.compilerOptions}.${CustomizableCompilers.typescript}.configPath' option`
-    }
+        useInstead: `the '${OPTION_NAMES.compilerOptions}.${CustomizableCompilers.typescript}.configPath' option`,
+    },
 };
 
 export function getDeprecationMessage (deprecated: DeprecatedAPI): string {

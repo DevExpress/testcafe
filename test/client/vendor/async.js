@@ -642,7 +642,7 @@
                 _forEach(data, function (task) {
                     q.tasks.push({
                         data:     task,
-                        callback: typeof callback === 'function' ? callback : null
+                        callback: typeof callback === 'function' ? callback : null,
                     });
                     if (q.saturated && q.tasks.length == concurrency)
                         q.saturated();
@@ -671,7 +671,7 @@
             },
             running: function () {
                 return workers;
-            }
+            },
         };
 
         return q;

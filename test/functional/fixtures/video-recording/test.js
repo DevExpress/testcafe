@@ -21,7 +21,7 @@ function customReporter (errs, videos) {
                 });
             },
             async reportTaskDone () {
-            }
+            },
         };
     };
 }
@@ -55,7 +55,7 @@ if (config.useLocalBrowsers) {
             return runTests('./testcafe-fixtures/index-test.js', '', {
                 only:         BROWSERS_SUPPORTING_VIDEO_RECORDING_STR,
                 setVideoPath: true,
-                reporter:     customReporter(errs, videos)
+                reporter:     customReporter(errs, videos),
             })
                 .then(() => {
                     const errors = Object.keys(errs);
@@ -83,8 +83,8 @@ if (config.useLocalBrowsers) {
                 reporter:     customReporter(errs, videos),
 
                 videoOptions: {
-                    singleFile: true
-                }
+                    singleFile: true,
+                },
             })
                 .then(() => {
                     const errors = Object.keys(errs);
@@ -112,8 +112,8 @@ if (config.useLocalBrowsers) {
                 reporter:     customReporter(errs, videos),
 
                 videoOptions: {
-                    failedOnly: true
-                }
+                    failedOnly: true,
+                },
             })
                 .then(() => {
                     const errors = Object.keys(errs);
@@ -138,8 +138,8 @@ if (config.useLocalBrowsers) {
 
                 videoOptions: {
                     failedOnly: true,
-                    singleFile: true
-                }
+                    singleFile: true,
+                },
             })
                 .catch(assertionHelper.getVideoFilesList)
                 .catch(errors => {
@@ -178,8 +178,8 @@ if (config.useLocalBrowsers) {
 
                 videoOptions: {
                     singleFile:  true,
-                    pathPattern: '${TEST_INDEX}_.mp4'
-                }
+                    pathPattern: '${TEST_INDEX}_.mp4',
+                },
             })
                 .catch(() => {
                     expect(testReport.warnings).eql(['The "${TEST_INDEX}" path pattern placeholder cannot be applied to the recorded video.' +

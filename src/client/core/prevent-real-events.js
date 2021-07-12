@@ -7,7 +7,7 @@ import { filter } from './utils/array';
 import {
     isShadowUIElement,
     isWindow,
-    getParents
+    getParents,
 } from './utils/dom';
 
 const browserUtils   = utils.browser;
@@ -18,7 +18,7 @@ const PREVENTED_EVENTS = [
     'click', 'mousedown', 'mouseup', 'dblclick', 'contextmenu', 'mousemove', 'mouseover', 'mouseout',
     'touchstart', 'touchmove', 'touchend', 'keydown', 'keypress', 'input', 'keyup', 'change', 'focus', 'blur',
     'MSPointerDown', 'MSPointerMove', 'MSPointerOver', 'MSPointerOut', 'MSPointerUp', 'pointerdown',
-    'pointermove', 'pointerover', 'pointerout', 'pointerup'
+    'pointermove', 'pointerover', 'pointerout', 'pointerup',
 ];
 
 const F12_KEY_CODE = 123;

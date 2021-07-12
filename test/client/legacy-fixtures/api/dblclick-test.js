@@ -47,7 +47,7 @@ $(document).ready(function () {
             .css({
                 position:   'absolute',
                 marginLeft: x + 'px',
-                marginTop:  y + 'px'
+                marginTop:  y + 'px',
             })
             .addClass(type)
             .addClass(TEST_ELEMENT_CLASS)
@@ -201,7 +201,7 @@ $(document).ready(function () {
                     alt:   true,
                     ctrl:  true,
                     shift: true,
-                    meta:  true
+                    meta:  true,
                 });
             },
             function () {

@@ -16,7 +16,7 @@ test(`Click action with bad network conditions`, async t => {
         offline:            true,
         latency:            10,
         downloadThroughput: 100000,
-        uploadThroughput:   100000
+        uploadThroughput:   100000,
     };
 
     await client.Network.emulateNetworkConditions(networkConditions);

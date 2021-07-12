@@ -56,7 +56,7 @@ $(document).ready(function () {
                 backgroundColor: 'grey',
                 left:            left + 'px',
                 top:             top + 'px',
-                zIndex:          5
+                zIndex:          5,
             })
             .bind(isTouchDevice ? 'touchstart' : 'mousedown', function () {
                 $(this).data('dragStarted', true);
@@ -70,17 +70,17 @@ $(document).ready(function () {
         $(document).bind(isTouchDevice ? 'touchmove' : 'mousemove', function (e) {
             const curMousePos = isTouchDevice ? {
                 x: e.originalEvent.targetTouches[0].pageX || e.originalEvent.touches[0].pageX,
-                y: e.originalEvent.targetTouches[0].pageY || e.originalEvent.touches[0].pageY
+                y: e.originalEvent.targetTouches[0].pageY || e.originalEvent.touches[0].pageY,
             } : {
                 x: e.clientX,
-                y: e.clientY
+                y: e.clientY,
             };
 
             $.each($draggable, function () {
                 if ($(this).data('dragStarted')) {
                     $(this).css({
                         left: curMousePos.x - 50 + $(window).scrollLeft() + 'px',
-                        top:  curMousePos.y - 50 + $(window).scrollTop() + 'px'
+                        top:  curMousePos.y - 50 + $(window).scrollTop() + 'px',
                     });
                 }
             });
@@ -97,7 +97,7 @@ $(document).ready(function () {
                 position:        'absolute',
                 backgroundColor: 'red',
                 left:            left + 'px',
-                top:             top + 'px'
+                top:             top + 'px',
             })
             .addClass(TEST_ELEMENT_CLASS)
             .appendTo('body');
@@ -106,7 +106,7 @@ $(document).ready(function () {
     const getCenter = function (element) {
         return {
             x: Math.floor(element.offsetLeft + element.offsetWidth / 2),
-            y: Math.floor(element.offsetTop + element.offsetHeight / 2)
+            y: Math.floor(element.offsetTop + element.offsetHeight / 2),
         };
     };
 
@@ -340,7 +340,7 @@ $(document).ready(function () {
         const offsetY         = 40;
         const pointTo         = {
             x: draggableOffset.left + offsetX + dragOffsetX,
-            y: draggableOffset.top + offsetY + dragOffsetY
+            y: draggableOffset.top + offsetY + dragOffsetY,
         };
 
         runAsyncTest(
@@ -380,7 +380,7 @@ $(document).ready(function () {
         const offsetY         = 40;
         const pointTo         = {
             x: draggableOffset.left + offsetX + Math.round(dragOffsetX),
-            y: draggableOffset.top + offsetY + Math.round(dragOffsetY)
+            y: draggableOffset.top + offsetY + Math.round(dragOffsetY),
         };
 
         runAsyncTest(

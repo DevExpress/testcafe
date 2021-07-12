@@ -9,5 +9,5 @@
 
     '2.Assert': function () {
         eq($('#pageName').text(), 'T190110 - second page');
-    }
+    },
 };

@@ -17,5 +17,5 @@ export default {
     enter:      'enter',
     tab:        'tab',
     shiftTab:   'shift+tab',
-    esc:        'esc'
+    esc:        'esc',
 };

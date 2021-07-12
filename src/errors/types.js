@@ -83,7 +83,7 @@ export const TEST_RUN_ERRORS = {
     multipleWindowsModeIsDisabledError:                    'E80',
     multipleWindowsModeIsNotSupportedInRemoteBrowserError: 'E81',
     cannotCloseWindowWithoutParent:                        'E82',
-    cannotRestoreChildWindowError:                         'E83'
+    cannotRestoreChildWindowError:                         'E83',
 };
 
 export const RUNTIME_ERRORS = {

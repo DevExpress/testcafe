@@ -2,7 +2,7 @@ import { InvalidSelectorResultError } from '../../../../../shared/errors';
 import {
     exists,
     visible,
-    IsNodeCollection
+    IsNodeCollection,
 } from '../../../utils/element-utils';
 
 import testCafeCore from '../../../deps/testcafe-core';
@@ -15,13 +15,13 @@ const nativeMethods  = hammerhead.nativeMethods;
 const SELECTOR_FILTER_ERROR = {
     filterVisible: 1,
     filterHidden:  2,
-    nth:           3
+    nth:           3,
 };
 
 const FILTER_ERROR_TO_API_RE = {
     [SELECTOR_FILTER_ERROR.filterVisible]: /^\.filterVisible\(\)$/,
     [SELECTOR_FILTER_ERROR.filterHidden]:  /^\.filterHidden\(\)$/,
-    [SELECTOR_FILTER_ERROR.nth]:           /^\.nth\(\d+\)$/
+    [SELECTOR_FILTER_ERROR.nth]:           /^\.nth\(\d+\)$/,
 };
 
 class SelectorFilter {
@@ -118,5 +118,5 @@ class SelectorFilter {
 // Selector filter
 nativeMethods.objectDefineProperty.call(window, window, '%testCafeSelectorFilter%', {
     value:        new SelectorFilter(),
-    configurable: true
+    configurable: true,
 });

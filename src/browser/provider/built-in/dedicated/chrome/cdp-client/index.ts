@@ -12,7 +12,7 @@ import {
     Config,
     RuntimeInfo,
     TouchConfigOptions,
-    Size
+    Size,
 } from '../interfaces';
 import prettyTime from 'pretty-hrtime';
 import { CheckedCDPMethod, ELAPSED_TIME_UPPERBOUNDS } from '../elapsed-upperbounds';
@@ -20,7 +20,7 @@ import guardTimeExecution from '../../../../../../utils/guard-time-execution';
 import {
     ClientFunctionExecutionInterruptionError,
     UncaughtErrorInClientFunctionCode,
-    DomNodeClientFunctionResultError
+    DomNodeClientFunctionResultError,
 } from '../../../../../../shared/errors';
 
 const DEBUG_SCOPE = (id: string): string => `testcafe:browser:provider:built-in:chrome:browser-client:${id}`;
@@ -118,7 +118,7 @@ export class BrowserClient {
                     deviceScaleFactor,
                     mobile,
                     // @ts-ignore
-                    fitWindow: false
+                    fitWindow: false,
                 });
             },
             elapsedTime => this._checkDropOfPerformance(CheckedCDPMethod.SetDeviceMetricsOverride, elapsedTime)
@@ -139,7 +139,7 @@ export class BrowserClient {
         const touchConfig: TouchConfigOptions = {
             enabled:        this._config.touch,
             configuration:  this._config.mobile ? 'mobile' : 'desktop',
-            maxTouchPoints: 1
+            maxTouchPoints: 1,
         };
 
         if (client.Emulation.setEmitTouchEventsForMouse)
@@ -155,14 +155,14 @@ export class BrowserClient {
 
         await this.resizeWindow({
             width:  this._config.width,
-            height: this._config.height
+            height: this._config.height,
         });
     }
 
     private async _setupDownloads (client: remoteChrome.ProtocolApi): Promise<void> {
         await client.Page.setDownloadBehavior({
             behavior:     'allow',
-            downloadPath: DOWNLOADS_DIR
+            downloadPath: DOWNLOADS_DIR,
         });
     }
 
@@ -182,7 +182,7 @@ export class BrowserClient {
 
     private async _injectProxylessStuff (client: remoteChrome.ProtocolApi): Promise<void> {
         await client.Page.addScriptToEvaluateOnNewDocument({
-            source: read('../../../../../../../lib/client/proxyless/index.js') as string
+            source: read('../../../../../../../lib/client/proxyless/index.js') as string,
         });
     }
 

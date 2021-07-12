@@ -5,7 +5,7 @@ import {
     castArray,
     cloneDeep,
     isPlainObject,
-    mergeWith
+    mergeWith,
 } from 'lodash';
 
 import { stat, readFile } from '../utils/promisified-functions';

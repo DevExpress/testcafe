@@ -39,7 +39,7 @@ describe('Runner', () => {
 
         closeBrowser () {
             return Promise.resolve();
-        }
+        },
     };
 
     before(() => {
@@ -301,7 +301,7 @@ describe('Runner', () => {
                     path:        'path',
                     takeOnFails: true,
                     pathPattern: 'pathPattern',
-                    fullPage:    true
+                    fullPage:    true,
                 })
                 ._applyOptions();
 
@@ -316,10 +316,10 @@ describe('Runner', () => {
                 'screenshots': {
                     'path':        'path1',
                     'pathPattern': 'pattern1',
-                    'fullPage':    true
+                    'fullPage':    true,
                 },
                 'screenshotPath':        'path2',
-                'screenshotPathPattern': 'pattern2'
+                'screenshotPathPattern': 'pattern2',
             });
 
             expect(runner._getScreenshotOptions()).eql({
@@ -331,15 +331,15 @@ describe('Runner', () => {
         it('Validate screenshot options. Obsolete options are still validated', () => {
             runner.configuration.mergeOptions({
                 'screenshots': {
-                    'fullPage': true
+                    'fullPage': true,
                 },
                 'screenshotPath':        'path2',
-                'screenshotPathPattern': 'pattern2'
+                'screenshotPathPattern': 'pattern2',
             });
 
             expect(runner._getScreenshotOptions()).eql({
                 path:        'path2',
-                pathPattern: 'pattern2'
+                pathPattern: 'pattern2',
             });
         });
 
@@ -456,14 +456,14 @@ describe('Runner', () => {
             const expectedFiles = [
                 'test/server/data/test-suites/basic/testfile1.js',
                 'test/server/data/test-suites/basic/testfile2.js',
-                'test/server/data/test-suites/basic/testfile3.js'
+                'test/server/data/test-suites/basic/testfile3.js',
             ].map(file => path.resolve(cwd, file));
 
             runner.bootstrapper._getBrowserConnections = () => {
                 runner.bootstrapper._getBrowserConnections = storedGetBrowserConnectionsFn;
 
                 return Promise.resolve({
-                    browserConnectionGroups: []
+                    browserConnectionGroups: [],
                 });
             };
 
@@ -482,7 +482,7 @@ describe('Runner', () => {
                 .src('test/server/data/test-suites/basic/testfile1.js',
                     [
                         'test/server/data/test-suites/basic/*.js',
-                        'test/server/data/test-suites/basic'
+                        'test/server/data/test-suites/basic',
                     ]
                 )
                 .run();
@@ -535,7 +535,7 @@ describe('Runner', () => {
                 .src([
                     'test/server/data/test-suites/basic/testfile1.js',
                     'test/server/data/test-suites/basic/testfile2.js',
-                    'test/server/data/test-suites/filter/meta.js'
+                    'test/server/data/test-suites/filter/meta.js',
                 ]);
         });
 
@@ -569,7 +569,7 @@ describe('Runner', () => {
                 'Fixture3Test1',
                 'Fixture4Test1',
                 'Fixture5Test1',
-                'Fixture5Test2'
+                'Fixture5Test2',
             ];
 
             return testFilter(filter, expectedTestNames);
@@ -580,7 +580,7 @@ describe('Runner', () => {
 
             const expectedTestNames = [
                 'Fixture1Test1',
-                'Fixture1Test2'
+                'Fixture1Test2',
             ];
 
             return testFilter(filter, expectedTestNames);
@@ -734,8 +734,8 @@ describe('Runner', () => {
                         followRedirect: false,
                         headers:        {
                             'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
-                                          '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36'
-                        }
+                                          '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36',
+                        },
                     };
 
                     request(options);
@@ -884,7 +884,7 @@ describe('Runner', () => {
 
             const customLogger = {
                 showBreakpoint: 'foo',
-                hideBreakpoint: () => {}
+                hideBreakpoint: () => {},
             };
 
             runner.configuration.mergeOptions({ debugLogger: customLogger });
@@ -926,11 +926,11 @@ describe('Runner', () => {
 
             const browserConnectionGateway = {
                 startServingConnection: noop,
-                stopServingConnection:  noop
+                stopServingConnection:  noop,
             };
             const compilerService          = {
                 init:     noop,
-                getTests: () => [new Test({ currentFixture: void 0 })]
+                getTests: () => [new Test({ currentFixture: void 0 })],
             };
 
             let runnerLinux = null;
@@ -961,7 +961,7 @@ describe('Runner', () => {
                     proxy:                    testCafe.proxy,
                     browserConnectionGateway: browserConnectionGateway,
                     configuration:            testCafe.configuration.clone(),
-                    compilerService:          compilerService
+                    compilerService:          compilerService,
                 });
 
                 runnerLocal.bootstrapper = setupBootstrapper();
@@ -1114,7 +1114,7 @@ describe('Runner', () => {
                 .catch(() => {
                     expect(runner.warningLog.messages).eql([
                         "The 'tsConfigPath' option is deprecated and will be removed in the next major release. " +
-                        "Use the 'compilerOptions.typescript.configPath' option instead."
+                        "Use the 'compilerOptions.typescript.configPath' option instead.",
                     ]);
                 });
         });
@@ -1133,12 +1133,12 @@ describe('Runner', () => {
 
             await validateCompilerOptions({
                 'wrong-compiler-type': {},
-                'typescript':          {}
+                'typescript':          {},
             }, "You cannot specify options for the 'wrong-compiler-type' compiler.");
 
             await validateCompilerOptions({
                 'wrong-compiler-type-1': {},
-                'wrong-compiler-type-2': {}
+                'wrong-compiler-type-2': {},
             }, "You cannot specify options for the 'wrong-compiler-type-1' and 'wrong-compiler-type-2' compilers.");
         });
     });
@@ -1190,8 +1190,8 @@ describe('Runner', () => {
                     followRedirect: false,
                     headers:        {
                         'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 ' +
-                                      '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36'
-                    }
+                                      '(KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36',
+                    },
                 };
 
                 request(options);
@@ -1210,7 +1210,7 @@ describe('Runner', () => {
 
             isHeadlessBrowser () {
                 return true;
-            }
+            },
         };
 
         function taskDone () {
@@ -1395,7 +1395,7 @@ describe('Runner', () => {
 
             closeBrowser () {
                 return Promise.resolve();
-            }
+            },
         };
 
         beforeEach(function () {

@@ -88,7 +88,7 @@ class TestRunProxy extends AsyncEventEmitter {
             apiMethodName,
             command,
             callsite: renderedCallsite,
-            id:       this.id
+            id:       this.id,
         });
     }
 
@@ -104,7 +104,7 @@ class TestRunProxy extends AsyncEventEmitter {
             apiMethodName,
             command,
             callsite: renderedCallsite,
-            id:       this.id
+            id:       this.id,
         });
     }
 
@@ -122,7 +122,7 @@ class TestRunProxy extends AsyncEventEmitter {
         await this.dispatcher.addRequestEventListeners({
             hookId:        hook.id,
             hookClassName: hook._className,
-            rules:         hook._requestFilterRules
+            rules:         hook._requestFilterRules,
         });
     }
 

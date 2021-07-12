@@ -3,7 +3,7 @@ import { escape as escapeHTML } from 'lodash';
 export const DIFF_COLORS = {
     DIFF_ADDED:        'diff-added',
     DIFF_REMOVED:      'diff-removed',
-    DIFF_NOT_MODIFIED: 'diff-not-modified'
+    DIFF_NOT_MODIFIED: 'diff-not-modified',
 };
 
 function color (name: string, str: string): string {

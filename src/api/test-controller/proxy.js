@@ -24,7 +24,7 @@ delegateAPI(testControllerProxy, TestController.API_LIST, {
         }
 
         return testRun.controller;
-    }
+    },
 });
 
 export default testControllerProxy;

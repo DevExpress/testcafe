@@ -21,7 +21,7 @@ export default class DragToElementAutomation extends DragAutomationBase {
 
         const endPoint = {
             x: elementRect.left + offsets.offsetX,
-            y: elementRect.top + offsets.offsetY
+            y: elementRect.top + offsets.offsetY,
         };
 
         return { element, offsets, endPoint };

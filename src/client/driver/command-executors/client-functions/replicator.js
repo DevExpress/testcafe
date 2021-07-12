@@ -3,7 +3,7 @@ import evalFunction from './eval-function';
 import {
     NodeSnapshot,
     ElementSnapshot,
-    ElementActionSnapshot
+    ElementActionSnapshot,
 } from './selector-executor/node-snapshots';
 
 import { DomNodeClientFunctionResultError, UncaughtErrorInCustomDOMPropertyCode } from '../../../../shared/errors';
@@ -20,7 +20,7 @@ export function createReplicator (transforms) {
     // so we use identity functions for serialization.
     const replicator = new Replicator({
         serialize:   identity,
-        deserialize: identity
+        deserialize: identity,
     });
 
     return replicator.addTransforms(transforms);

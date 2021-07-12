@@ -1,20 +1,20 @@
 import {
     Promise,
     eventSandbox,
-    nativeMethods
+    nativeMethods,
 } from '../../deps/hammerhead';
 
 import {
     domUtils,
     delay,
     waitFor,
-    positionUtils
+    positionUtils,
 } from '../../deps/testcafe-core';
 
 import {
     CurrentIframeIsNotLoadedError,
     CurrentIframeNotFoundError,
-    CurrentIframeIsInvisibleError
+    CurrentIframeIsInvisibleError,
 } from '../../../../shared/errors';
 
 import sendMessageToDriver from '../send-message-to-driver';
@@ -23,7 +23,7 @@ import DriverStatus from '../../status';
 import {
     CHECK_IFRAME_EXISTENCE_INTERVAL,
     CHECK_IFRAME_VISIBLE_INTERVAL,
-    WAIT_IFRAME_RESPONSE_DELAY
+    WAIT_IFRAME_RESPONSE_DELAY,
 } from '../timeouts';
 
 import sendConfirmationMessage from '../send-confirmation-message';
@@ -93,7 +93,7 @@ export default class ChildIframeDriverLink {
         sendConfirmationMessage({
             requestMsgId,
             result: { id: this.driverId },
-            window: this.driverWindow
+            window: this.driverWindow,
         });
     }
 
@@ -107,7 +107,7 @@ export default class ChildIframeDriverLink {
 
                 return Promise.all([
                     sendMessageToDriver(msg, this.driverWindow, this.iframeAvailabilityTimeout, CurrentIframeIsNotLoadedError),
-                    this._waitForCommandResult()
+                    this._waitForCommandResult(),
                 ]);
             })
             .then(result => result[1]);

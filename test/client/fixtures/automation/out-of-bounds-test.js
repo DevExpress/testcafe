@@ -39,7 +39,7 @@ $(document).ready(function () {
                 position:        'absolute',
                 backgroundColor: color ? color : 'grey',
                 left:            x ? x + 'px' : '100px',
-                top:             y ? y + 'px' : '850px'
+                top:             y ? y + 'px' : '850px',
             })
             .appendTo($('body'));
     };
@@ -61,10 +61,10 @@ $(document).ready(function () {
             $doc.bind(featureDetection.isTouchDevice ? 'touchmove' : 'mousemove', function (e) {
                 const curMousePos = featureDetection.isTouchDevice ? {
                     x: e.originalEvent.targetTouches[0].pageX || e.originalEvent.touches[0].pageX,
-                    y: e.originalEvent.targetTouches[0].pageY || e.originalEvent.touches[0].pageY
+                    y: e.originalEvent.targetTouches[0].pageY || e.originalEvent.touches[0].pageY,
                 } : {
                     x: e.clientX,
-                    y: e.clientY
+                    y: e.clientY,
                 };
 
                 $.each($doc.find('.' + DRAGGABLE_CLASS), function () {
@@ -76,7 +76,7 @@ $(document).ready(function () {
                                   $doc.data(CURSOR_POSITION_PROPERTY).x,
 
                             top: Math.round($this.position().top) + curMousePos.y -
-                                 $doc.data(CURSOR_POSITION_PROPERTY).y
+                                 $doc.data(CURSOR_POSITION_PROPERTY).y,
                         });
 
                         return false;
@@ -93,7 +93,7 @@ $(document).ready(function () {
             $win.data(DRAGGABLE_BIND_FLAG, true);
             $win.data(SCROLL_POSITION_PROPERTY, {
                 x: 0,
-                y: 0
+                y: 0,
             });
 
             $win.scroll(function () {
@@ -109,7 +109,7 @@ $(document).ready(function () {
                     if ($(this).data(DRAG_STARTED_PROPERTY)) {
                         $this.css({
                             left: $this.position().left + x,
-                            top:  $this.position().top + y
+                            top:  $this.position().top + y,
                         });
                         return false;
                     }
@@ -124,10 +124,10 @@ $(document).ready(function () {
         $el.bind(featureDetection.isTouchDevice ? 'touchstart' : 'mousedown', function (e) {
             doc[CURSOR_POSITION_PROPERTY] = featureDetection.isTouchDevice ? {
                 x: e.originalEvent.targetTouches[0].pageX || e.originalEvent.touches[0].pageX,
-                y: e.originalEvent.targetTouches[0].pageY || e.originalEvent.touches[0].pageY
+                y: e.originalEvent.targetTouches[0].pageY || e.originalEvent.touches[0].pageY,
             } : {
                 x: e.clientX,
-                y: e.clientY
+                y: e.clientY,
             };
 
             $doc.data(CURSOR_POSITION_PROPERTY, doc[CURSOR_POSITION_PROPERTY]);
@@ -154,7 +154,7 @@ $(document).ready(function () {
                 backgroundColor: 'grey',
                 left:            x ? x + 'px' : '100px',
                 top:             y ? y + 'px' : '850px',
-                zIndex:          5
+                zIndex:          5,
             })
             .appendTo($(curDocument).find('body'));
 
@@ -213,7 +213,7 @@ $(document).ready(function () {
             const smallDivPos       = position.getOffsetPosition($smallDiv[0]);
             const smallDivPosClient = position.offsetToClientCoords({
                 x: smallDivPos.left + offsetX,
-                y: smallDivPos.top + offsetY
+                y: smallDivPos.top + offsetY,
             });
 
             equal(e.clientX, smallDivPosClient.x);
@@ -226,7 +226,7 @@ $(document).ready(function () {
 
         const clickOptions = new ClickOptions({
             offsetX: offsetX,
-            offsetY: offsetY
+            offsetY: offsetY,
         });
 
         const clickAutomation = new ClickAutomation($smallDiv[0], clickOptions);
@@ -260,7 +260,7 @@ $(document).ready(function () {
             const smallDivPos       = position.getOffsetPosition($smallDiv[0]);
             const smallDivPosClient = position.offsetToClientCoords({
                 x: smallDivPos.left + offsetX,
-                y: smallDivPos.top + offsetY
+                y: smallDivPos.top + offsetY,
             });
 
             equal(e.clientX, smallDivPosClient.x);
@@ -273,7 +273,7 @@ $(document).ready(function () {
 
         const clickOptions = new ClickOptions({
             offsetX: offsetX,
-            offsetY: offsetY
+            offsetY: offsetY,
         });
 
         const rClickAutomation = new RClickAutomation($smallDiv[0], clickOptions);
@@ -301,7 +301,7 @@ $(document).ready(function () {
             const smallDivPos       = position.getOffsetPosition($smallDiv[0]);
             const smallDivPosClient = position.offsetToClientCoords({
                 x: smallDivPos.left + offsetX,
-                y: smallDivPos.top + offsetY
+                y: smallDivPos.top + offsetY,
             });
 
             equal(e.clientX, smallDivPosClient.x);
@@ -323,7 +323,7 @@ $(document).ready(function () {
         const clickOptions = new ClickOptions({
             offsetX:   offsetX,
             offsetY:   offsetY,
-            modifiers: {}
+            modifiers: {},
         });
 
         const dblClickAutomation = new DblClickAutomation($smallDiv[0], clickOptions);
@@ -356,7 +356,7 @@ $(document).ready(function () {
         const typeOptions = {
             offsetX:  offsetX,
             offsetY:  offsetY,
-            caretPos: inputCursorPosition
+            caretPos: inputCursorPosition,
         };
 
         const $div = createDiv(inputOffset.left, inputOffset.top + $input.height(), $input.width() +
@@ -386,7 +386,7 @@ $(document).ready(function () {
         const typeOptions         = {
             offsetX:  offsetX,
             offsetY:  offsetY,
-            caretPos: inputCursorPosition
+            caretPos: inputCursorPosition,
         };
 
         runTypeAutomation($input[0], typpingText, typeOptions, function () {
@@ -412,7 +412,7 @@ $(document).ready(function () {
             const smallDraggablePos       = position.getOffsetPosition($smallDraggable[0]);
             const smallDraggablePosClient = position.offsetToClientCoords({
                 x: smallDraggablePos.left + offsetX,
-                y: smallDraggablePos.top + offsetY
+                y: smallDraggablePos.top + offsetY,
             });
 
             equal(e.clientX, smallDraggablePosClient.x + dragOffsetX, 'mousedown clientX correct');
@@ -424,7 +424,7 @@ $(document).ready(function () {
                 const smallDraggablePos       = position.getOffsetPosition($smallDraggable[0]);
                 const smallDraggablePosClient = position.offsetToClientCoords({
                     x: smallDraggablePos.left + offsetX,
-                    y: smallDraggablePos.top + offsetY
+                    y: smallDraggablePos.top + offsetY,
                 });
 
                 equal(e.clientX, smallDraggablePosClient.x, 'mousedown clientX correct');
@@ -436,19 +436,19 @@ $(document).ready(function () {
 
         $bigDraggable.css({
             width:  150 + 'px',
-            height: 150 + 'px'
+            height: 150 + 'px',
         });
 
         $smallDraggable.css({
             width:           50 + 'px',
             height:          50 + 'px',
             zIndex:          15,
-            backgroundColor: 'red'
+            backgroundColor: 'red',
         });
 
         const mouseOptions = new MouseOptions({
             offsetX: offsetX,
-            offsetY: offsetY
+            offsetY: offsetY,
         });
 
         const dragAutomation = new DragToOffsetAutomation($smallDraggable[0], dragOffsetX, dragOffsetY, mouseOptions);

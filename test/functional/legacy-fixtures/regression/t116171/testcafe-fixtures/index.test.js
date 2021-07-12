@@ -27,5 +27,5 @@
     '6.Check result in the iFrame': inIFrame($('#iframe'), function () {
         eq(window.blackClick, 1);
         eq(window.redClick, 1);
-    })
+    }),
 };

@@ -87,7 +87,7 @@ function restorePredicateInRequestFilterRules (test: Test, mapper: RequestFilter
             targetRule.options = mapper({
                 testId: test.id,
                 hookId: hook.id,
-                ruleId: targetRule.id
+                ruleId: targetRule.id,
             });
         }
     });

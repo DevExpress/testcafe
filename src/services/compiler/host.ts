@@ -7,7 +7,7 @@ import { spawn, ChildProcess } from 'child_process';
 import {
     HOST_INPUT_FD,
     HOST_OUTPUT_FD,
-    HOST_SYNC_FD
+    HOST_SYNC_FD,
 } from './io';
 
 import { restore as restoreTestStructure } from '../serialization/test-structure';
@@ -24,7 +24,7 @@ import DEBUG_ACTION from '../../utils/debug-action';
 import {
     CompilerProtocol,
     RunTestArguments,
-    FunctionProperties
+    FunctionProperties,
 } from './protocol';
 
 import { CompilerArguments } from '../../compiler/interfaces';
@@ -33,7 +33,7 @@ import Test from '../../api/structure/test';
 import {
     RequestInfo,
     ResponseMock,
-    IncomingMessageLikeInitOptions
+    IncomingMessageLikeInitOptions,
 } from 'testcafe-hammerhead';
 
 import { CallsiteRecord } from 'callsite-record';
@@ -58,7 +58,7 @@ import {
     SetHeaderOnConfigureResponseEventArguments,
     SetOptionsArguments,
     TestRunLocator,
-    UpdateRolePropertyArguments
+    UpdateRolePropertyArguments,
 } from './interfaces';
 
 const SERVICE_PATH       = require.resolve('./service');
@@ -115,7 +115,7 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
             this.getFixtureCtx,
             this.setCtx,
             this.setFixtureCtx,
-            this.updateRoleProperty
+            this.updateRoleProperty,
         ], this);
     }
 
@@ -134,7 +134,7 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
             // TODO: debugging: refactor to use absolute paths
             await this.cdp.Runtime.evaluate({
                 expression:            `require.main.require('../../api/test-controller').${disableDebugMethodName}()`,
-                includeCommandLineAPI: true
+                includeCommandLineAPI: true,
             });
 
             await this.cdp.Debugger.resume();
@@ -151,7 +151,7 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
             // TODO: debugging: refactor to use absolute paths
             await this.cdp.Runtime.evaluate({
                 expression:            `require.main.require('../../api/test-controller').${enableDebugMethodName}()`,
-                includeCommandLineAPI: true
+                includeCommandLineAPI: true,
             });
 
             await this.cdp.Debugger.resume();
@@ -344,7 +344,7 @@ export default class CompilerHost extends AsyncEventEmitter implements CompilerP
             name,
             testId,
             hookId,
-            eventData
+            eventData,
         });
     }
 

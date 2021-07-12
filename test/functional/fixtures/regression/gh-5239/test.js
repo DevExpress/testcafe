@@ -15,7 +15,7 @@ let warnings            = [];
 const customReporter = createReporter({
     async reportTaskDone (endTime, passed, warns) {
         warnings = warns;
-    }
+    },
 });
 
 async function createServer () {
@@ -86,11 +86,11 @@ describe('[Regression](GH-5239)', function () {
                 retryTestPages: true,
                 browsers:       'ie',
                 src:            './testcafe-fixtures/warnings-test.js',
-                reporter:       customReporter
+                reporter:       customReporter,
             })
                 .then(() => {
                     expect(warnings).eql([
-                        'Cannot enable the \'retryTestPages\' option in "ie". Please ensure that your version of "ie" supports the Service Worker API (https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API).\n'
+                        'Cannot enable the \'retryTestPages\' option in "ie". Please ensure that your version of "ie" supports the Service Worker API (https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API).\n',
                     ]);
                 });
         });

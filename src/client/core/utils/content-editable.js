@@ -336,7 +336,7 @@ function getSelectedPositionInParentByOffset (node, offset) {
 
     return {
         node:   currentNode,
-        offset: currentOffset
+        offset: currentOffset,
     };
 }
 
@@ -346,7 +346,7 @@ function getSelectionStart (el, selection, inverseSelection) {
 
     let correctedStartPosition = {
         node:   startNode,
-        offset: startOffset
+        offset: startOffset,
     };
 
     //NOTE: window.getSelection() can't returns not rendered node like selected node, so we shouldn't check it
@@ -355,7 +355,7 @@ function getSelectionStart (el, selection, inverseSelection) {
 
     return {
         node:   correctedStartPosition.node,
-        offset: correctedStartPosition.offset
+        offset: correctedStartPosition.offset,
     };
 }
 
@@ -365,7 +365,7 @@ function getSelectionEnd (el, selection, inverseSelection) {
 
     let correctedEndPosition = {
         node:   endNode,
-        offset: endOffset
+        offset: endOffset,
     };
 
     //NOTE: window.getSelection() can't returns not rendered node like selected node, so we shouldn't check it
@@ -374,14 +374,14 @@ function getSelectionEnd (el, selection, inverseSelection) {
 
     return {
         node:   correctedEndPosition.node,
-        offset: correctedEndPosition.offset
+        offset: correctedEndPosition.offset,
     };
 }
 
 export function getSelection (el, selection, inverseSelection) {
     return {
         startPos: getSelectionStart(el, selection, inverseSelection),
-        endPos:   getSelectionEnd(el, selection, inverseSelection)
+        endPos:   getSelectionEnd(el, selection, inverseSelection),
     };
 }
 
@@ -433,7 +433,7 @@ function isNodeSelectable (node, includeDescendants) {
 export function calculateNodeAndOffsetByPosition (el, offset) {
     let point = {
         node:   null,
-        offset: offset
+        offset: offset,
     };
 
     function checkChildNodes (target) {

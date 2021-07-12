@@ -13,7 +13,7 @@ const filePath = resolve(process.cwd(), `temp${nanoid(7)}`, 'temp.png');
 class CapturerMock extends Capturer {
     constructor (provider) {
         super(null, void 0, {
-            id: 'browserId', provider
+            id: 'browserId', provider,
         });
     }
 }
@@ -29,10 +29,10 @@ class ScreenshotsMock extends Screenshots {
         this.capturer.pathPattern = {
             data: {
                 parsedUserAgent: {
-                    prettyUserAgent: 'user-agent'
+                    prettyUserAgent: 'user-agent',
                 },
-                quarantineAttempt: 1
-            }
+                quarantineAttempt: 1,
+            },
         };
 
         return this.capturer;
@@ -41,7 +41,7 @@ class ScreenshotsMock extends Screenshots {
 
 const emptyProvider = {
     takeScreenshot: () => {
-    }
+    },
 };
 
 describe('Capturer', () => {
@@ -67,7 +67,7 @@ describe('Capturer', () => {
             enabled:     true,
             path:        process.cwd(),
             pathPattern: '',
-            fullPage:    false
+            fullPage:    false,
         });
 
         const testRunControllerMock = {
@@ -78,7 +78,7 @@ describe('Capturer', () => {
                 this.id                = 'test-run-id';
                 this.browserConnection = browserConnection;
                 this.initialize        = noop;
-            }
+            },
         };
 
         await TestRunController.prototype._createTestRun.call(testRunControllerMock, {
@@ -87,10 +87,10 @@ describe('Capturer', () => {
             browserInfo: {
                 parsedUserAgent: {
                     os: {
-                        name: 'os-name'
-                    }
-                }
-            }
+                        name: 'os-name',
+                    },
+                },
+            },
         });
 
         await screenshots.capturer._capture(false, { customPath: 'screenshot.png' });
@@ -101,7 +101,7 @@ describe('Capturer', () => {
             thumbnailPath:     join(process.cwd(), 'thumbnails', 'screenshot.png'),
             userAgent:         'user-agent',
             quarantineAttempt: 1,
-            takenOnFail:       false
+            takenOnFail:       false,
         });
     });
 });

@@ -5,7 +5,7 @@ import {
     promiseUtils,
     delay,
     getKeyArray,
-    sendRequestToFrame
+    sendRequestToFrame,
 } from '../../deps/testcafe-core';
 import KeyPressSimulator from './key-press-simulator';
 import supportedShortcutHandlers from './shortcuts';
@@ -172,7 +172,7 @@ export default class PressAutomation {
             const msg = {
                 cmd:             PRESS_REQUEST_CMD,
                 keyCombinations: this.keyCombinations,
-                options:         this.options
+                options:         this.options,
             };
 
             return sendRequestToFrame(msg, PRESS_RESPONSE_CMD, nativeMethods.contentWindowGetter.call(activeElement));

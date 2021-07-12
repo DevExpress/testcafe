@@ -16,7 +16,7 @@ const mockDate =
 fixture `Fixture`
     .clientScripts([
         { content: createTestDiv },
-        { content: mockDate }
+        { content: mockDate },
     ]);
 
 test('test', async t => {

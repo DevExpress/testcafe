@@ -369,7 +369,7 @@ export function getElementDescription (el) {
     const attributes = {
         id:      'id',
         name:    'name',
-        'class': 'className'
+        'class': 'className',
     };
 
     const res = [];

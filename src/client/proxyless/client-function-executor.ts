@@ -1,7 +1,7 @@
 import {
     createReplicator,
     FunctionTransform,
-    ClientFunctionNodeTransform
+    ClientFunctionNodeTransform,
 } from './replicator';
 import evalFunction from './eval-function';
 import Replicator from 'replicator';
@@ -35,7 +35,7 @@ export default class ClientFunctionExecutor {
     protected _createReplicator (): Replicator {
         return createReplicator([
             new ClientFunctionNodeTransform(this.command.instantiationCallsiteName),
-            new FunctionTransform()
+            new FunctionTransform(),
         ]);
     }
 

@@ -71,5 +71,5 @@ export default {
 
     buttonUp () {
         return cursorUI.buttonUp();
-    }
+    },
 };

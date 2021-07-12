@@ -2,7 +2,7 @@ import {
     AsyncReader,
     AsyncWriter,
     SyncReader,
-    SyncWriter
+    SyncWriter,
 } from './io';
 
 import EventEmitter from '../../../utils/async-event-emitter';
@@ -12,7 +12,7 @@ import {
     IPCPacket,
     IPCResponsePacket,
     IPCTransport,
-    isIPCResponsePacket
+    isIPCResponsePacket,
 } from './interfaces';
 
 

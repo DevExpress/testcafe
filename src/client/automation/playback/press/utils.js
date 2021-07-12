@@ -2,7 +2,7 @@ import hammerhead from '../../deps/hammerhead';
 import {
     KEY_MAPS,
     domUtils,
-    arrayUtils
+    arrayUtils,
 } from '../../deps/testcafe-core';
 
 import isLetter from '../../utils/is-letter';

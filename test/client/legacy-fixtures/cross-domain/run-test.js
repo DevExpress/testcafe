@@ -50,7 +50,7 @@ asyncTest('run test', function () {
             return $iframe[0];
         }, function () {
             eq(this.testValue, 3);
-        })
+        }),
     ];
 
     const storedIFrameStepExecuted = runner._onIFrameStepExecuted;

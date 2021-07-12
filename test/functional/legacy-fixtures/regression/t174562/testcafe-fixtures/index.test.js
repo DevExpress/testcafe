@@ -14,5 +14,5 @@
     '3.Assert': inIFrame($('#iframe'), function () {
         ok(window.divClicked);
         ok($(window).scrollTop() > 0);
-    })
+    }),
 };

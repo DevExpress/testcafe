@@ -151,7 +151,7 @@ function selectContentEditable (el, from, to, needFocus) {
         startPosition = {
             node:   firstTextNodeChild || el,
             offset: firstTextNodeChild && firstTextNodeChild.nodeValue ?
-                contentEditable.getFirstNonWhitespaceSymbolIndex(firstTextNodeChild.nodeValue) : 0
+                contentEditable.getFirstNonWhitespaceSymbolIndex(firstTextNodeChild.nodeValue) : 0,
         };
     }
 
@@ -160,7 +160,7 @@ function selectContentEditable (el, from, to, needFocus) {
         endPosition         = {
             node:   latestTextNodeChild || el,
             offset: latestTextNodeChild && latestTextNodeChild.nodeValue ?
-                contentEditable.getLastNonWhitespaceSymbolIndex(latestTextNodeChild.nodeValue) : 0
+                contentEditable.getLastNonWhitespaceSymbolIndex(latestTextNodeChild.nodeValue) : 0,
         };
     }
 

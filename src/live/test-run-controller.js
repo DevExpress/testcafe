@@ -23,7 +23,7 @@ class LiveModeTestRunController extends EventEmitter {
             this._testRunCtor = TestRunCtorFactory({
                 created:     testRun => this._onTestRunCreated(testRun),
                 done:        (testRun, forced) => this._onTestRunDone(testRun, forced),
-                readyToNext: testRun => this._onTestRunReadyToNext(testRun)
+                readyToNext: testRun => this._onTestRunReadyToNext(testRun),
             });
         }
 

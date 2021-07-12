@@ -42,7 +42,7 @@ module.exports = class MarionetteClient {
 
         const connectionPromise = Promise.race([
             promisifyEvent(this.socket, 'connect'),
-            promisifyEvent(this.socket, 'error')
+            promisifyEvent(this.socket, 'error'),
         ]);
 
         return await connectionPromise
@@ -93,7 +93,7 @@ module.exports = class MarionetteClient {
 
             const packet = {
                 length: NaN,
-                body:   null
+                body:   null,
             };
 
             packet.length = parseInt(this.buffer.toString('utf8', 0, headerEndIndex), 10) || 0;
@@ -135,13 +135,13 @@ module.exports = class MarionetteClient {
     async _switchToWindow (windowHandle) {
         await this._getResponse({
             command:    COMMANDS.switchToWindow,
-            parameters: { handle: windowHandle }
+            parameters: { handle: windowHandle },
         });
     }
 
     async _getActiveWindowHandle () {
         const windowHandles = await this._getResponse({
-            command: COMMANDS.getWindowHandles
+            command: COMMANDS.getWindowHandles,
         });
 
         for (const handle of windowHandles) {
@@ -199,8 +199,8 @@ module.exports = class MarionetteClient {
             parameters: {
                 full:   fullPage,
                 hash:   false,
-                scroll: false
-            }
+                scroll: false,
+            },
         });
     }
 
@@ -211,7 +211,7 @@ module.exports = class MarionetteClient {
 
         this.protocolInfo = {
             applicationType:    infoPacket.body.applicationType,
-            marionetteProtocol: infoPacket.body.marionetteProtocol
+            marionetteProtocol: infoPacket.body.marionetteProtocol,
         };
 
         this.sessionInfo = await this._getResponse({ command: COMMANDS.newSession });
@@ -225,7 +225,7 @@ module.exports = class MarionetteClient {
     async executeScript (code) {
         return await this._request({
             command:    COMMANDS.executeScript,
-            parameters: { script: `return (${code})()` }
+            parameters: { script: `return (${code})()` },
         });
     }
 
@@ -249,8 +249,8 @@ module.exports = class MarionetteClient {
                     x:      currentRect.x,
                     y:      currentRect.y,
                     width:  width + (currentRect.width - pageRect.width),
-                    height: height + (currentRect.height - pageRect.height)
-                }
+                    height: height + (currentRect.height - pageRect.height),
+                },
             });
 
             ({ value: pageRect } = await this.executeScript(GET_WINDOW_DIMENSIONS_INFO_SCRIPT));

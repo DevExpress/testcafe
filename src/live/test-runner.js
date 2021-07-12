@@ -24,7 +24,7 @@ class LiveModeRunner extends Runner {
 
         this.embeddingOptions({
             TestRunCtor: this.testRunController.TestRunCtor,
-            assets:      []
+            assets:      [],
         });
         this.controller         = this._createController();
         this.configurationCache = null;

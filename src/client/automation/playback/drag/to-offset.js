@@ -20,19 +20,19 @@ export default class DragToOffsetAutomation extends DragAutomationBase {
 
         let endPoint = {
             x: startPoint.x + this.dragOffsetX,
-            y: startPoint.y + this.dragOffsetY
+            y: startPoint.y + this.dragOffsetY,
         };
 
         endPoint = {
             x: Math.min(Math.max(0, endPoint.x), maxX),
-            y: Math.min(Math.max(0, endPoint.y), maxY)
+            y: Math.min(Math.max(0, endPoint.y), maxY),
         };
 
         const element = document.documentElement;
 
         const offsets = {
             offsetX: endPoint.x,
-            offsetY: endPoint.y
+            offsetY: endPoint.y,
         };
 
         return { element, offsets, endPoint };

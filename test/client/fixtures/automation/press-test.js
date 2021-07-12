@@ -304,7 +304,7 @@ $(document).ready(function () {
 
             const s = {
                 '!': 'U+0021',
-                'a': 'U+0041'
+                'a': 'U+0041',
             };
 
             const expectedKeydownSequence = s['a'] + s['a'] + 'Shift' + s['a'] + 'Shift' + s['!'] + 'Enter' + 'Shift' +
@@ -343,7 +343,7 @@ $(document).ready(function () {
                     },
                     set: function () {
                         ok(false);
-                    }
+                    },
                 });
 
                 press

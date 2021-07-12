@@ -6,7 +6,7 @@ module.exports = function getPublishInfo (packageInfo) {
 
     return {
         PUBLISH_TAGS,
-        PUBLISH_REPO
+        PUBLISH_REPO,
     };
 };
 

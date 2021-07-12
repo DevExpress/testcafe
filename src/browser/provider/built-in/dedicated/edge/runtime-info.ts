@@ -11,14 +11,14 @@ export default class EdgeRuntimeInfo extends ChromeRuntimeInfo {
         // and showing the welcome screen
         const preferences = {
             'fre': {
-                'has_user_seen_fre': true
+                'has_user_seen_fre': true,
             },
             'profiles': {
                 'edge_implicitly_signed_in': [{
                     'edge_account_type': 3,
-                    'id':                ''
-                }]
-            }
+                    'id':                '',
+                }],
+            },
         };
 
         await writeFile(path.join(tempDir.path, 'Local State'), JSON.stringify(preferences));

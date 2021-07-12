@@ -22,7 +22,7 @@ const keyArgs = {
     altKey:   true,
     ctrlKey:  true,
     shiftKey: true,
-    metaKey:  true
+    metaKey:  true,
 };
 
 const mouseEventArgs = Object.assign({}, baseArgs, keyArgs, {
@@ -31,22 +31,22 @@ const mouseEventArgs = Object.assign({}, baseArgs, keyArgs, {
     clientX: 3,
     clientY: 4,
     button:  1,
-    buttons: 3
+    buttons: 3,
 });
 
 const keyboardArgs = Object.assign({}, baseArgs, keyArgs, {
     key:     'q',
     keyCode: 82,
-    code:    'KeyT'
+    code:    'KeyT',
 });
 
 const inputArgs = Object.assign({}, baseArgs, {
     data:      'test',
-    inputType: 'insertText'
+    inputType: 'insertText',
 });
 
 const focusArgs = Object.assign({}, baseArgs, {
-    relatedTarget: secondInput
+    relatedTarget: secondInput,
 });
 
 const pointerArgs = Object.assign({}, mouseEventArgs, {
@@ -59,7 +59,7 @@ const pointerArgs = Object.assign({}, mouseEventArgs, {
     tiltY:              22,
     twist:              23,
     pointerType:        'pen',
-    isPrimary:          true
+    isPrimary:          true,
 });
 
 function createExpectedMouseArgs (eventName) {
@@ -70,7 +70,7 @@ function createExpectedMouseArgs (eventName) {
 
 function createExpectedPointerArgs (eventName) {
     return Object.assign({
-        type: eventName
+        type: eventName,
     }, pointerArgs);
 }
 
@@ -107,7 +107,7 @@ test(`mouse`, async t => {
     await t.expect(getMouseLog()).eql([
         createExpectedMouseArgs('mousedown'),
         createExpectedMouseArgs('mouseup'),
-        createExpectedMouseArgs('click')
+        createExpectedMouseArgs('click'),
     ]);
 });
 
@@ -129,7 +129,7 @@ test(`no options`, async t => {
         screenX:    0,
         screenY:    0,
         shiftKey:   false,
-        type:       'mousedown'
+        type:       'mousedown',
     }]);
 });
 
@@ -171,7 +171,7 @@ test(`focus`, async t => {
         createExpectedFocusArgs('focus', 'input2'),
         createExpectedFocusArgs('focusin', 'input2'),
         createExpectedFocusArgs('focusout', 'input2'),
-        createExpectedFocusArgs('blur', 'input2')
+        createExpectedFocusArgs('blur', 'input2'),
     ]);
 });
 
@@ -195,7 +195,7 @@ test(`pointer`, async t => {
         createExpectedPointerArgs('pointerup'),
         createExpectedPointerArgs('pointercancel'),
         createExpectedPointerArgs('pointerout'),
-        createExpectedPointerArgs('pointerleave')
+        createExpectedPointerArgs('pointerleave'),
     ]);
 });
 
@@ -207,7 +207,7 @@ test('defaults', async t => {
         cancelable: false,
         detail:     2,
         button:     1,
-        buttons:    2
+        buttons:    2,
     });
 
     const log = await getMouseLog();
@@ -238,7 +238,7 @@ test('custom event', async t => {
         isMouseEvent:  false,
         isCustomEvent: true,
         type:          'customEvent',
-        detail:        { data: 'testing' }
+        detail:        { data: 'testing' },
     }]);
 });
 
@@ -251,7 +251,7 @@ test.page('http://localhost:3000/fixtures/api/es-next/dispatch-event/pages/drag.
     for (let i = 0; i < 10; i++) {
         await t.dispatchEvent(div, 'mousemove', {
             clientX: i * 10,
-            clientY: i * 20
+            clientY: i * 20,
         });
 
         await t.expect(parseInt(await div.getStyleProperty('top'), 10)).eql(initialTop);

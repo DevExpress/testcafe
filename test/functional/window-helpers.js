@@ -4,7 +4,7 @@ import { ClientFunction } from 'testcafe';
 const getWindowState = ClientFunction(() => ({
     isMaximized: window.outerWidth >= window.screen.availWidth && window.outerHeight >= window.screen.availHeight,
     width:       window.innerWidth,
-    height:      window.innerHeight
+    height:      window.innerHeight,
 }));
 
 export async function saveWindowState (t) {

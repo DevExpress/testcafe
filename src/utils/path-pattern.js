@@ -24,7 +24,7 @@ const PLACEHOLDERS = {
     OS:                 '${OS}',
     OS_VERSION:         '${OS_VERSION}',
     TEST_ID:            '${TEST_ID}',
-    RUN_ID:             '${RUN_ID}'
+    RUN_ID:             '${RUN_ID}',
 };
 
 const DEFAULT_PATH_PATTERN_FOR_REPORT = `${PLACEHOLDERS.DATE}_${PLACEHOLDERS.TIME}\\${PLACEHOLDERS.TEST_ID}\\` +
@@ -57,7 +57,7 @@ export default class PathPattern extends EventEmitter {
             formattedDate:  data.now.format(DATE_FORMAT),
             formattedTime:  data.now.format(TIME_FORMAT),
             fileIndex:      1,
-            errorFileIndex: 1
+            errorFileIndex: 1,
         };
 
         return Object.assign({}, defaultFields, data);
@@ -78,7 +78,7 @@ export default class PathPattern extends EventEmitter {
             [PLACEHOLDERS.BROWSER]:            this.data.parsedUserAgent.name,
             [PLACEHOLDERS.BROWSER_VERSION]:    this.data.parsedUserAgent.version,
             [PLACEHOLDERS.OS]:                 this.data.parsedUserAgent.os.name,
-            [PLACEHOLDERS.OS_VERSION]:         this.data.parsedUserAgent.os.version
+            [PLACEHOLDERS.OS_VERSION]:         this.data.parsedUserAgent.os.version,
         };
     }
 

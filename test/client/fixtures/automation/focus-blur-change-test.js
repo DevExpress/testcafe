@@ -128,7 +128,7 @@ const dumpProperties = function (element) {
 const getArrayDiff = function (a, b) {
     const diff = {
         deleted: [],
-        added:   []
+        added:   [],
     };
 
     a = !a ? [] : a;
@@ -158,8 +158,8 @@ const runClickAutomation = function (el, options) {
             ctrl:  options.ctrl,
             alt:   options.ctrl,
             shift: options.shift,
-            meta:  options.meta
-        }
+            meta:  options.meta,
+        },
     });
 
     const clickAutomation = new ClickAutomation(el, clickOptions);
@@ -171,7 +171,7 @@ const runTypeAutomation = function (element, text) {
     const offsets     = getOffsetOptions(element);
     const typeOptions = new TypeOptions({
         offsetX: offsets.offsetX,
-        offsetY: offsets.offsetY
+        offsetY: offsets.offsetY,
     });
 
     const typeAutomation = new TypeAutomation(element, text, typeOptions);

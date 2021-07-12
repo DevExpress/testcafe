@@ -39,7 +39,7 @@ export class Packet {
             head:      Boolean(buffer[0] & HEAD_MASK),
             tail:      Boolean(buffer[0] & TAIL_MASK),
             size:      dataSize,
-            totalSize: dataSize + Packet.HEADER_SIZE
+            totalSize: dataSize + Packet.HEADER_SIZE,
         };
     }
 
