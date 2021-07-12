@@ -44,6 +44,7 @@ export class TakeScreenshotCommand extends TakeScreenshotBaseCommand {
         return [
             { name: 'path', type: screenshotPathArgument, defaultValue: '' },
             { name: 'fullPage', type: booleanArgument, defaultValue: void 0 },
+            { name: 'thumbnails', type: booleanArgument, defaultValue: void 0 },
         ];
     }
 }
