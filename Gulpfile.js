@@ -273,7 +273,7 @@ gulp.step('test-server-run', () => {
         return gulp
             .src('test/server/*-test.js', { read: false })
             .pipe(mocha({
-                timeout: getTimeout(2000),
+                timeout: getTimeout(4_000)
             }));
     }
     finally {
